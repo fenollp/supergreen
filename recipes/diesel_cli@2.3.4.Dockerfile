@@ -162,14 +162,487 @@ COPY --link --from=dep-n-iana-time-zone-0.1.64-7289403231332002 /tmp/clis-diesel
 ## FROM scratch AS out-7289403231332002
 ## COPY --link --from=dep-n-iana-time-zone-0.1.64-7289403231332002 /tmp/clis-diesel_cli_2-3-4/release/deps/*-7289403231332002* /"""
 
+FROM scratch AS cratesio-autocfg-1.5.0
+ADD --chmod=0664 --unpack --checksum=sha256:c08606f8c3cbf4ce6ec8e28fb0014a2c086708fe954eaa885384a6165172e7e8 \
+  https://static.crates.io/crates/autocfg/autocfg-1.5.0.crate /
+FROM rust-base AS dep-n-autocfg-1.5.0-f2b41e0845677d6c
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-diesel_cli_2-3-4/release/deps
+RUN \
+  --mount=from=cratesio-autocfg-1.5.0,source=/autocfg-1.5.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/autocfg-1.5.0 \
+    env CARGO="$(which cargo)" \
+        CARGO_CRATE_NAME=autocfg \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/autocfg-1.5.0 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/autocfg-1.5.0/Cargo.toml \
+        CARGO_PKG_AUTHORS=Josh' Stone <cuviper@gmail.com>' \
+        CARGO_PKG_DESCRIPTION=Automatic' cfg for Rust compiler features' \
+        CARGO_PKG_HOMEPAGE= \
+        CARGO_PKG_LICENSE=Apache-2.0' OR MIT' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=autocfg \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/cuviper/autocfg' \
+        CARGO_PKG_RUST_VERSION=1.0 \
+        CARGO_PKG_VERSION=1.5.0 \
+        CARGO_PKG_VERSION_MAJOR=1 \
+        CARGO_PKG_VERSION_MINOR=5 \
+        CARGO_PKG_VERSION_PATCH=0 \
+        CARGO_PKG_VERSION_PRE= \
+        CARGOGREEN=1 \
+      rustc '--crate-name' 'autocfg' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=e7a67b13c59b7ba6' '-C' 'extra-filename=-f2b41e0845677d6c' '--out-dir' '/tmp/clis-diesel_cli_2-3-4/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-diesel_cli_2-3-4/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/autocfg-1.5.0/src/lib.rs \
+        1>          /tmp/clis-diesel_cli_2-3-4/release/deps/out-f2b41e0845677d6c-stdout \
+        2>          /tmp/clis-diesel_cli_2-3-4/release/deps/out-f2b41e0845677d6c-stderr \
+        || echo $? >/tmp/clis-diesel_cli_2-3-4/release/deps/out-f2b41e0845677d6c-errcode\
+  ; find /tmp/clis-diesel_cli_2-3-4/release/deps/*-f2b41e0845677d6c* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-f2b41e0845677d6c
+COPY --link --from=dep-n-autocfg-1.5.0-f2b41e0845677d6c /tmp/clis-diesel_cli_2-3-4/release/deps/*-f2b41e0845677d6c* /
+
+## this = "f2b41e0845677d6c"
+## writes = [
+##     "autocfg-f2b41e0845677d6c.d",
+##     "libautocfg-f2b41e0845677d6c.rlib",
+##     "libautocfg-f2b41e0845677d6c.rmeta",
+## ]
+## stderr = [
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-4/release/deps/autocfg-f2b41e0845677d6c.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-4/release/deps/libautocfg-f2b41e0845677d6c.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-4/release/deps/libautocfg-f2b41e0845677d6c.rlib","emit":"link"}',
+## ]
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = '''
+## FROM --platform=$BUILDPLATFORM docker.io/tonistiigi/xx:1.6.1@sha256:923441d7c25f1e2eb5789f82d987693c47b8ed987c4ab3b075d6ed2b5d6779a3 AS xx
+## FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base
+## ARG TARGETPLATFORM
+## RUN \
+##   --mount=from=xx,source=/usr/bin/xx-apk,dst=/usr/bin/xx-apk \
+##   --mount=from=xx,source=/usr/bin/xx-apt,dst=/usr/bin/xx-apt \
+##   --mount=from=xx,source=/usr/bin/xx-apt,dst=/usr/bin/xx-apt-get \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-c++ \
+##   --mount=from=xx,source=/usr/bin/xx-cargo,dst=/usr/bin/xx-cargo \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-cc \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-clang \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-clang++ \
+##   --mount=from=xx,source=/usr/bin/xx-go,dst=/usr/bin/xx-go \
+##   --mount=from=xx,source=/usr/bin/xx-info,dst=/usr/bin/xx-info \
+##   --mount=from=xx,source=/usr/bin/xx-ld-shas,dst=/usr/bin/xx-ld-shas \
+##   --mount=from=xx,source=/usr/bin/xx-verify,dst=/usr/bin/xx-verify \
+##   --mount=from=xx,source=/usr/bin/xx-windres,dst=/usr/bin/xx-windres \
+##     set -eux \
+##  && if   command -v apk >/dev/null 2>&1; then \
+##                                      xx-apk     add     --no-cache                 '<none>'; \
+##     elif command -v apt >/dev/null 2>&1; then \
+##       DEBIAN_FRONTEND=noninteractive xx-apt     install --no-install-recommends -y 'libpq-dev'; \
+##     else \
+##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
+##     fi'''
+##
+## [[stages]]
+##
+## [stages.Cratesio]
+## stage = "cratesio-autocfg-1.5.0"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/autocfg-1.5.0"
+## name = "autocfg"
+## name_dash_version = "autocfg-1.5.0"
+## hash = "c08606f8c3cbf4ce6ec8e28fb0014a2c086708fe954eaa885384a6165172e7e8"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "dep-n-autocfg-1.5.0-f2b41e0845677d6c"
+## script = '''
+## FROM rust-base AS dep-n-autocfg-1.5.0-f2b41e0845677d6c
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-diesel_cli_2-3-4/release/deps
+## RUN \
+##   --mount=from=cratesio-autocfg-1.5.0,source=/autocfg-1.5.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/autocfg-1.5.0 \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CRATE_NAME=autocfg \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/autocfg-1.5.0 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/autocfg-1.5.0/Cargo.toml \
+##         CARGO_PKG_AUTHORS=Josh' Stone <cuviper@gmail.com>' \
+##         CARGO_PKG_DESCRIPTION=Automatic' cfg for Rust compiler features' \
+##         CARGO_PKG_HOMEPAGE= \
+##         CARGO_PKG_LICENSE=Apache-2.0' OR MIT' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=autocfg \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/cuviper/autocfg' \
+##         CARGO_PKG_RUST_VERSION=1.0 \
+##         CARGO_PKG_VERSION=1.5.0 \
+##         CARGO_PKG_VERSION_MAJOR=1 \
+##         CARGO_PKG_VERSION_MINOR=5 \
+##         CARGO_PKG_VERSION_PATCH=0 \
+##         CARGO_PKG_VERSION_PRE= \
+##         CARGOGREEN=1 \
+##       rustc '--crate-name' 'autocfg' '--edition' '2015' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=e7a67b13c59b7ba6' '-C' 'extra-filename=-f2b41e0845677d6c' '--out-dir' '/tmp/clis-diesel_cli_2-3-4/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-diesel_cli_2-3-4/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/autocfg-1.5.0/src/lib.rs \
+##         1>          /tmp/clis-diesel_cli_2-3-4/release/deps/out-f2b41e0845677d6c-stdout \
+##         2>          /tmp/clis-diesel_cli_2-3-4/release/deps/out-f2b41e0845677d6c-stderr \
+##         || echo $? >/tmp/clis-diesel_cli_2-3-4/release/deps/out-f2b41e0845677d6c-errcode\
+##   ; find /tmp/clis-diesel_cli_2-3-4/release/deps/*-f2b41e0845677d6c* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-f2b41e0845677d6c"
+## script = """
+## FROM scratch AS out-f2b41e0845677d6c
+## COPY --link --from=dep-n-autocfg-1.5.0-f2b41e0845677d6c /tmp/clis-diesel_cli_2-3-4/release/deps/*-f2b41e0845677d6c* /"""
+
 FROM scratch AS cratesio-num-traits-0.2.19
 ADD --chmod=0664 --unpack --checksum=sha256:071dfc062690e90b734c0b2273ce72ad0ffa95f0c74596bc250dcfd960262841 \
   https://static.crates.io/crates/num-traits/num-traits-0.2.19.crate /
+FROM rust-base AS dep-x-num-traits-0.2.19-7f58c305ab694e40
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-diesel_cli_2-3-4/release/build/num-traits-7f58c305ab694e40
+RUN \
+  --mount=from=cratesio-num-traits-0.2.19,source=/num-traits-0.2.19,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-traits-0.2.19,rw \
+  --mount=from=out-f2b41e0845677d6c,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libautocfg-f2b41e0845677d6c.rlib,source=/libautocfg-f2b41e0845677d6c.rlib \
+    { \
+        cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-traits-0.2.19/build.rs | sed 's/fn main/fn actual_7f58c305ab694e40_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-traits-0.2.19/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-traits-0.2.19/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-traits-0.2.19/build.rs ; \
+        { \
+          echo ; \
+          echo 'fn main() {' ; \
+          echo '    use std::env::{args_os, var_os};' ; \
+          echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+          echo '        use std::process::{Command, Stdio};' ; \
+          echo '        let mut cmd = Command::new("cargo-green");' ; \
+          echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+          echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+          echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+          echo '        assert!(res.success());' ; \
+          echo '    } else {' ; \
+          echo '        actual_7f58c305ab694e40_main();' ; \
+          echo '    }' ; \
+          echo '}' ; \
+        } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-traits-0.2.19/build.rs ; \
+    } && \
+    env CARGO="$(which cargo)" \
+        CARGO_CRATE_NAME=build_script_build \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-traits-0.2.19 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-traits-0.2.19/Cargo.toml \
+        CARGO_PKG_AUTHORS=The' Rust Project Developers' \
+        CARGO_PKG_DESCRIPTION=Numeric' traits for generic mathematics' \
+        CARGO_PKG_HOMEPAGE=https'://github.com/rust-num/num-traits' \
+        CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=num-traits \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/rust-num/num-traits' \
+        CARGO_PKG_RUST_VERSION=1.60 \
+        CARGO_PKG_VERSION=0.2.19 \
+        CARGO_PKG_VERSION_MAJOR=0 \
+        CARGO_PKG_VERSION_MINOR=2 \
+        CARGO_PKG_VERSION_PATCH=19 \
+        CARGO_PKG_VERSION_PRE= \
+        CARGOGREEN=1 \
+      rustc '--crate-name' 'build_script_build' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'bin' '--emit' 'dep-info,link' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "i128", "libm", "std"))' '-C' 'metadata=15ac99a43e591639' '-C' 'extra-filename=-7f58c305ab694e40' '--out-dir' '/tmp/clis-diesel_cli_2-3-4/release/build/num-traits-7f58c305ab694e40' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-diesel_cli_2-3-4/release/deps' '--extern' 'autocfg=/tmp/clis-diesel_cli_2-3-4/release/deps/libautocfg-f2b41e0845677d6c.rlib' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-traits-0.2.19/build.rs \
+        1>          /tmp/clis-diesel_cli_2-3-4/release/build/num-traits-7f58c305ab694e40/out-7f58c305ab694e40-stdout \
+        2>          /tmp/clis-diesel_cli_2-3-4/release/build/num-traits-7f58c305ab694e40/out-7f58c305ab694e40-stderr \
+        || echo $? >/tmp/clis-diesel_cli_2-3-4/release/build/num-traits-7f58c305ab694e40/out-7f58c305ab694e40-errcode\
+  ; find /tmp/clis-diesel_cli_2-3-4/release/build/num-traits-7f58c305ab694e40/*-7f58c305ab694e40* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-7f58c305ab694e40
+COPY --link --from=dep-x-num-traits-0.2.19-7f58c305ab694e40 /tmp/clis-diesel_cli_2-3-4/release/build/num-traits-7f58c305ab694e40/*-7f58c305ab694e40* /
+
+## this = "7f58c305ab694e40"
+## deps = ["f2b41e0845677d6c"]
+## writes = [
+##     "build_script_build-7f58c305ab694e40",
+##     "build_script_build-7f58c305ab694e40.d",
+## ]
+## stderr = [
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-4/release/build/num-traits-7f58c305ab694e40/build_script_build-7f58c305ab694e40.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-4/release/build/num-traits-7f58c305ab694e40/build_script_build-7f58c305ab694e40","emit":"link"}',
+## ]
+##
+## [[externs]]
+## from = "out-f2b41e0845677d6c"
+## xtern = "libautocfg-f2b41e0845677d6c.rlib"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = '''
+## FROM --platform=$BUILDPLATFORM docker.io/tonistiigi/xx:1.6.1@sha256:923441d7c25f1e2eb5789f82d987693c47b8ed987c4ab3b075d6ed2b5d6779a3 AS xx
+## FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base
+## ARG TARGETPLATFORM
+## RUN \
+##   --mount=from=xx,source=/usr/bin/xx-apk,dst=/usr/bin/xx-apk \
+##   --mount=from=xx,source=/usr/bin/xx-apt,dst=/usr/bin/xx-apt \
+##   --mount=from=xx,source=/usr/bin/xx-apt,dst=/usr/bin/xx-apt-get \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-c++ \
+##   --mount=from=xx,source=/usr/bin/xx-cargo,dst=/usr/bin/xx-cargo \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-cc \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-clang \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-clang++ \
+##   --mount=from=xx,source=/usr/bin/xx-go,dst=/usr/bin/xx-go \
+##   --mount=from=xx,source=/usr/bin/xx-info,dst=/usr/bin/xx-info \
+##   --mount=from=xx,source=/usr/bin/xx-ld-shas,dst=/usr/bin/xx-ld-shas \
+##   --mount=from=xx,source=/usr/bin/xx-verify,dst=/usr/bin/xx-verify \
+##   --mount=from=xx,source=/usr/bin/xx-windres,dst=/usr/bin/xx-windres \
+##     set -eux \
+##  && if   command -v apk >/dev/null 2>&1; then \
+##                                      xx-apk     add     --no-cache                 '<none>'; \
+##     elif command -v apt >/dev/null 2>&1; then \
+##       DEBIAN_FRONTEND=noninteractive xx-apt     install --no-install-recommends -y 'libpq-dev'; \
+##     else \
+##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
+##     fi'''
+##
+## [[stages]]
+##
+## [stages.Cratesio]
+## stage = "cratesio-num-traits-0.2.19"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-traits-0.2.19"
+## name = "num-traits"
+## name_dash_version = "num-traits-0.2.19"
+## hash = "071dfc062690e90b734c0b2273ce72ad0ffa95f0c74596bc250dcfd960262841"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "dep-x-num-traits-0.2.19-7f58c305ab694e40"
+## script = '''
+## FROM rust-base AS dep-x-num-traits-0.2.19-7f58c305ab694e40
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-diesel_cli_2-3-4/release/build/num-traits-7f58c305ab694e40
+## RUN \
+##   --mount=from=cratesio-num-traits-0.2.19,source=/num-traits-0.2.19,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-traits-0.2.19,rw \
+##   --mount=from=out-f2b41e0845677d6c,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libautocfg-f2b41e0845677d6c.rlib,source=/libautocfg-f2b41e0845677d6c.rlib \
+##     { \
+##         cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-traits-0.2.19/build.rs | sed 's/fn main/fn actual_7f58c305ab694e40_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-traits-0.2.19/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-traits-0.2.19/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-traits-0.2.19/build.rs ; \
+##         { \
+##           echo ; \
+##           echo 'fn main() {' ; \
+##           echo '    use std::env::{args_os, var_os};' ; \
+##           echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+##           echo '        use std::process::{Command, Stdio};' ; \
+##           echo '        let mut cmd = Command::new("cargo-green");' ; \
+##           echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+##           echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+##           echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+##           echo '        assert!(res.success());' ; \
+##           echo '    } else {' ; \
+##           echo '        actual_7f58c305ab694e40_main();' ; \
+##           echo '    }' ; \
+##           echo '}' ; \
+##         } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-traits-0.2.19/build.rs ; \
+##     } && \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CRATE_NAME=build_script_build \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-traits-0.2.19 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-traits-0.2.19/Cargo.toml \
+##         CARGO_PKG_AUTHORS=The' Rust Project Developers' \
+##         CARGO_PKG_DESCRIPTION=Numeric' traits for generic mathematics' \
+##         CARGO_PKG_HOMEPAGE=https'://github.com/rust-num/num-traits' \
+##         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=num-traits \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/rust-num/num-traits' \
+##         CARGO_PKG_RUST_VERSION=1.60 \
+##         CARGO_PKG_VERSION=0.2.19 \
+##         CARGO_PKG_VERSION_MAJOR=0 \
+##         CARGO_PKG_VERSION_MINOR=2 \
+##         CARGO_PKG_VERSION_PATCH=19 \
+##         CARGO_PKG_VERSION_PRE= \
+##         CARGOGREEN=1 \
+##       rustc '--crate-name' 'build_script_build' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'bin' '--emit' 'dep-info,link' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "i128", "libm", "std"))' '-C' 'metadata=15ac99a43e591639' '-C' 'extra-filename=-7f58c305ab694e40' '--out-dir' '/tmp/clis-diesel_cli_2-3-4/release/build/num-traits-7f58c305ab694e40' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-diesel_cli_2-3-4/release/deps' '--extern' 'autocfg=/tmp/clis-diesel_cli_2-3-4/release/deps/libautocfg-f2b41e0845677d6c.rlib' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-traits-0.2.19/build.rs \
+##         1>          /tmp/clis-diesel_cli_2-3-4/release/build/num-traits-7f58c305ab694e40/out-7f58c305ab694e40-stdout \
+##         2>          /tmp/clis-diesel_cli_2-3-4/release/build/num-traits-7f58c305ab694e40/out-7f58c305ab694e40-stderr \
+##         || echo $? >/tmp/clis-diesel_cli_2-3-4/release/build/num-traits-7f58c305ab694e40/out-7f58c305ab694e40-errcode\
+##   ; find /tmp/clis-diesel_cli_2-3-4/release/build/num-traits-7f58c305ab694e40/*-7f58c305ab694e40* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-7f58c305ab694e40"
+## script = """
+## FROM scratch AS out-7f58c305ab694e40
+## COPY --link --from=dep-x-num-traits-0.2.19-7f58c305ab694e40 /tmp/clis-diesel_cli_2-3-4/release/build/num-traits-7f58c305ab694e40/*-7f58c305ab694e40* /"""
+
+FROM rust-base AS run-z-num-traits-0.2.19-684bb1d0e614c72e
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-diesel_cli_2-3-4/release/build/num-traits-684bb1d0e614c72e/out
+WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-traits-0.2.19
+RUN \
+  --mount=from=out-7f58c305ab694e40,source=/build_script_build-7f58c305ab694e40,dst=/tmp/clis-diesel_cli_2-3-4/release/build/num-traits-7f58c305ab694e40/build-script-build \
+  --mount=from=cratesio-num-traits-0.2.19,source=/num-traits-0.2.19,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-traits-0.2.19 \
+    env CARGO="$(which cargo)" \
+        CARGO_CFG_FEATURE= \
+        CARGO_CFG_PANIC=unwind \
+        CARGO_CFG_TARGET_ABI= \
+        CARGO_CFG_TARGET_ARCH=x86_64 \
+        CARGO_CFG_TARGET_ENDIAN=little \
+        CARGO_CFG_TARGET_ENV=gnu \
+        CARGO_CFG_TARGET_FAMILY=unix \
+        CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
+        CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+        CARGO_CFG_TARGET_OS=linux \
+        CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+        CARGO_CFG_TARGET_VENDOR=unknown \
+        CARGO_CFG_UNIX= \
+        CARGO_ENCODED_RUSTFLAGS= \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-traits-0.2.19 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-traits-0.2.19/Cargo.toml \
+        CARGO_PKG_AUTHORS=The' Rust Project Developers' \
+        CARGO_PKG_DESCRIPTION=Numeric' traits for generic mathematics' \
+        CARGO_PKG_HOMEPAGE=https'://github.com/rust-num/num-traits' \
+        CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=num-traits \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/rust-num/num-traits' \
+        CARGO_PKG_RUST_VERSION=1.60 \
+        CARGO_PKG_VERSION=0.2.19 \
+        CARGO_PKG_VERSION_MAJOR=0 \
+        CARGO_PKG_VERSION_MINOR=2 \
+        CARGO_PKG_VERSION_PATCH=19 \
+        CARGO_PKG_VERSION_PRE= \
+        DEBUG=false \
+        HOST=x86_64-unknown-linux-gnu \
+        NUM_JOBS=4 \
+        OPT_LEVEL=3 \
+        OUT_DIR=/tmp/clis-diesel_cli_2-3-4/release/build/num-traits-684bb1d0e614c72e/out \
+        PROFILE=release \
+        RUSTC=rustc \
+        RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+        TARGET=x86_64-unknown-linux-gnu \
+        CARGOGREEN=1 \
+      CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-diesel_cli_2-3-4/release/build/num-traits-7f58c305ab694e40/build-script-build \
+        1>          /tmp/clis-diesel_cli_2-3-4/release/build/num-traits-684bb1d0e614c72e/out/out-684bb1d0e614c72e-stdout \
+        2>          /tmp/clis-diesel_cli_2-3-4/release/build/num-traits-684bb1d0e614c72e/out/out-684bb1d0e614c72e-stderr \
+        || echo $? >/tmp/clis-diesel_cli_2-3-4/release/build/num-traits-684bb1d0e614c72e/out/out-684bb1d0e614c72e-errcode\
+  ; find /tmp/clis-diesel_cli_2-3-4/release/build/num-traits-684bb1d0e614c72e/out/*-684bb1d0e614c72e* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-684bb1d0e614c72e
+COPY --link --from=run-z-num-traits-0.2.19-684bb1d0e614c72e /tmp/clis-diesel_cli_2-3-4/release/build/num-traits-684bb1d0e614c72e/out/* /
+
+## this = "684bb1d0e614c72e"
+## deps = [
+##     "f2b41e0845677d6c",
+##     "7f58c305ab694e40",
+## ]
+## stdout = [
+##     "cargo:rustc-check-cfg=cfg(has_total_cmp)",
+##     "cargo:rustc-cfg=has_total_cmp",
+##     "cargo:rerun-if-changed=build.rs",
+## ]
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = '''
+## FROM --platform=$BUILDPLATFORM docker.io/tonistiigi/xx:1.6.1@sha256:923441d7c25f1e2eb5789f82d987693c47b8ed987c4ab3b075d6ed2b5d6779a3 AS xx
+## FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base
+## ARG TARGETPLATFORM
+## RUN \
+##   --mount=from=xx,source=/usr/bin/xx-apk,dst=/usr/bin/xx-apk \
+##   --mount=from=xx,source=/usr/bin/xx-apt,dst=/usr/bin/xx-apt \
+##   --mount=from=xx,source=/usr/bin/xx-apt,dst=/usr/bin/xx-apt-get \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-c++ \
+##   --mount=from=xx,source=/usr/bin/xx-cargo,dst=/usr/bin/xx-cargo \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-cc \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-clang \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-clang++ \
+##   --mount=from=xx,source=/usr/bin/xx-go,dst=/usr/bin/xx-go \
+##   --mount=from=xx,source=/usr/bin/xx-info,dst=/usr/bin/xx-info \
+##   --mount=from=xx,source=/usr/bin/xx-ld-shas,dst=/usr/bin/xx-ld-shas \
+##   --mount=from=xx,source=/usr/bin/xx-verify,dst=/usr/bin/xx-verify \
+##   --mount=from=xx,source=/usr/bin/xx-windres,dst=/usr/bin/xx-windres \
+##     set -eux \
+##  && if   command -v apk >/dev/null 2>&1; then \
+##                                      xx-apk     add     --no-cache                 '<none>'; \
+##     elif command -v apt >/dev/null 2>&1; then \
+##       DEBIAN_FRONTEND=noninteractive xx-apt     install --no-install-recommends -y 'libpq-dev'; \
+##     else \
+##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
+##     fi'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "run-z-num-traits-0.2.19-684bb1d0e614c72e"
+## script = '''
+## FROM rust-base AS run-z-num-traits-0.2.19-684bb1d0e614c72e
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-diesel_cli_2-3-4/release/build/num-traits-684bb1d0e614c72e/out
+## WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-traits-0.2.19
+## RUN \
+##   --mount=from=out-7f58c305ab694e40,source=/build_script_build-7f58c305ab694e40,dst=/tmp/clis-diesel_cli_2-3-4/release/build/num-traits-7f58c305ab694e40/build-script-build \
+##   --mount=from=cratesio-num-traits-0.2.19,source=/num-traits-0.2.19,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-traits-0.2.19 \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CFG_FEATURE= \
+##         CARGO_CFG_PANIC=unwind \
+##         CARGO_CFG_TARGET_ABI= \
+##         CARGO_CFG_TARGET_ARCH=x86_64 \
+##         CARGO_CFG_TARGET_ENDIAN=little \
+##         CARGO_CFG_TARGET_ENV=gnu \
+##         CARGO_CFG_TARGET_FAMILY=unix \
+##         CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
+##         CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+##         CARGO_CFG_TARGET_OS=linux \
+##         CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+##         CARGO_CFG_TARGET_VENDOR=unknown \
+##         CARGO_CFG_UNIX= \
+##         CARGO_ENCODED_RUSTFLAGS= \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-traits-0.2.19 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-traits-0.2.19/Cargo.toml \
+##         CARGO_PKG_AUTHORS=The' Rust Project Developers' \
+##         CARGO_PKG_DESCRIPTION=Numeric' traits for generic mathematics' \
+##         CARGO_PKG_HOMEPAGE=https'://github.com/rust-num/num-traits' \
+##         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=num-traits \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/rust-num/num-traits' \
+##         CARGO_PKG_RUST_VERSION=1.60 \
+##         CARGO_PKG_VERSION=0.2.19 \
+##         CARGO_PKG_VERSION_MAJOR=0 \
+##         CARGO_PKG_VERSION_MINOR=2 \
+##         CARGO_PKG_VERSION_PATCH=19 \
+##         CARGO_PKG_VERSION_PRE= \
+##         DEBUG=false \
+##         HOST=x86_64-unknown-linux-gnu \
+##         NUM_JOBS=4 \
+##         OPT_LEVEL=3 \
+##         OUT_DIR=/tmp/clis-diesel_cli_2-3-4/release/build/num-traits-684bb1d0e614c72e/out \
+##         PROFILE=release \
+##         RUSTC=rustc \
+##         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+##         TARGET=x86_64-unknown-linux-gnu \
+##         CARGOGREEN=1 \
+##       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-diesel_cli_2-3-4/release/build/num-traits-7f58c305ab694e40/build-script-build \
+##         1>          /tmp/clis-diesel_cli_2-3-4/release/build/num-traits-684bb1d0e614c72e/out/out-684bb1d0e614c72e-stdout \
+##         2>          /tmp/clis-diesel_cli_2-3-4/release/build/num-traits-684bb1d0e614c72e/out/out-684bb1d0e614c72e-stderr \
+##         || echo $? >/tmp/clis-diesel_cli_2-3-4/release/build/num-traits-684bb1d0e614c72e/out/out-684bb1d0e614c72e-errcode\
+##   ; find /tmp/clis-diesel_cli_2-3-4/release/build/num-traits-684bb1d0e614c72e/out/*-684bb1d0e614c72e* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-684bb1d0e614c72e"
+## script = """
+## FROM scratch AS out-684bb1d0e614c72e
+## COPY --link --from=run-z-num-traits-0.2.19-684bb1d0e614c72e /tmp/clis-diesel_cli_2-3-4/release/build/num-traits-684bb1d0e614c72e/out/* /"""
+
+
 FROM rust-base AS dep-n-num-traits-0.2.19-c0bc6db5a35592ab
 SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-diesel_cli_2-3-4/release/deps
 RUN \
   --mount=from=cratesio-num-traits-0.2.19,source=/num-traits-0.2.19,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-traits-0.2.19 \
+  --mount=from=out-684bb1d0e614c72e,dst=/tmp/clis-diesel_cli_2-3-4/release/build/num-traits-684bb1d0e614c72e/out,source=/ \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=num_traits \
         CARGO_INCREMENTAL=0 \
@@ -191,7 +664,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         OUT_DIR=/tmp/clis-diesel_cli_2-3-4/release/build/num-traits-684bb1d0e614c72e/out \
         CARGOGREEN=1 \
-      rustc '--crate-name' 'num_traits' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "i128", "libm", "std"))' '-C' 'metadata=c17a377f515d8c61' '-C' 'extra-filename=-c0bc6db5a35592ab' '--out-dir' '/tmp/clis-diesel_cli_2-3-4/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-diesel_cli_2-3-4/release/deps' '--cap-lints' 'warn' '--check-cfg' 'cfg(has_total_cmp)' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-traits-0.2.19/src/lib.rs \
+      rustc '--crate-name' 'num_traits' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "i128", "libm", "std"))' '-C' 'metadata=c17a377f515d8c61' '-C' 'extra-filename=-c0bc6db5a35592ab' '--out-dir' '/tmp/clis-diesel_cli_2-3-4/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-diesel_cli_2-3-4/release/deps' '--cap-lints' 'warn' '--cfg' 'has_total_cmp' '--check-cfg' 'cfg(has_total_cmp)' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-traits-0.2.19/src/lib.rs \
         1>          /tmp/clis-diesel_cli_2-3-4/release/deps/out-c0bc6db5a35592ab-stdout \
         2>          /tmp/clis-diesel_cli_2-3-4/release/deps/out-c0bc6db5a35592ab-stderr \
         || echo $? >/tmp/clis-diesel_cli_2-3-4/release/deps/out-c0bc6db5a35592ab-errcode\
@@ -200,6 +673,12 @@ FROM scratch AS out-c0bc6db5a35592ab
 COPY --link --from=dep-n-num-traits-0.2.19-c0bc6db5a35592ab /tmp/clis-diesel_cli_2-3-4/release/deps/*-c0bc6db5a35592ab* /
 
 ## this = "c0bc6db5a35592ab"
+## deps = [
+##     "684bb1d0e614c72e",
+##     "f2b41e0845677d6c",
+##     "7f58c305ab694e40",
+## ]
+## buildrs_results = ["684bb1d0e614c72e"]
 ## writes = [
 ##     "libnum_traits-c0bc6db5a35592ab.rlib",
 ##     "libnum_traits-c0bc6db5a35592ab.rmeta",
@@ -210,6 +689,11 @@ COPY --link --from=dep-n-num-traits-0.2.19-c0bc6db5a35592ab /tmp/clis-diesel_cli
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-4/release/deps/libnum_traits-c0bc6db5a35592ab.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-4/release/deps/libnum_traits-c0bc6db5a35592ab.rlib","emit":"link"}',
 ## ]
+##
+## [[mounts]]
+## name = "out-684bb1d0e614c72e"
+## src = "/"
+## dst = "/tmp/clis-diesel_cli_2-3-4/release/build/num-traits-684bb1d0e614c72e/out"
 ##
 ## [[stages]]
 ##
@@ -261,6 +745,7 @@ COPY --link --from=dep-n-num-traits-0.2.19-c0bc6db5a35592ab /tmp/clis-diesel_cli
 ## WORKDIR /tmp/clis-diesel_cli_2-3-4/release/deps
 ## RUN \
 ##   --mount=from=cratesio-num-traits-0.2.19,source=/num-traits-0.2.19,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-traits-0.2.19 \
+##   --mount=from=out-684bb1d0e614c72e,dst=/tmp/clis-diesel_cli_2-3-4/release/build/num-traits-684bb1d0e614c72e/out,source=/ \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=num_traits \
 ##         CARGO_INCREMENTAL=0 \
@@ -282,7 +767,7 @@ COPY --link --from=dep-n-num-traits-0.2.19-c0bc6db5a35592ab /tmp/clis-diesel_cli
 ##         CARGO_PKG_VERSION_PRE= \
 ##         OUT_DIR=/tmp/clis-diesel_cli_2-3-4/release/build/num-traits-684bb1d0e614c72e/out \
 ##         CARGOGREEN=1 \
-##       rustc '--crate-name' 'num_traits' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "i128", "libm", "std"))' '-C' 'metadata=c17a377f515d8c61' '-C' 'extra-filename=-c0bc6db5a35592ab' '--out-dir' '/tmp/clis-diesel_cli_2-3-4/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-diesel_cli_2-3-4/release/deps' '--cap-lints' 'warn' '--check-cfg' 'cfg(has_total_cmp)' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-traits-0.2.19/src/lib.rs \
+##       rustc '--crate-name' 'num_traits' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "i128", "libm", "std"))' '-C' 'metadata=c17a377f515d8c61' '-C' 'extra-filename=-c0bc6db5a35592ab' '--out-dir' '/tmp/clis-diesel_cli_2-3-4/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-diesel_cli_2-3-4/release/deps' '--cap-lints' 'warn' '--cfg' 'has_total_cmp' '--check-cfg' 'cfg(has_total_cmp)' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-traits-0.2.19/src/lib.rs \
 ##         1>          /tmp/clis-diesel_cli_2-3-4/release/deps/out-c0bc6db5a35592ab-stdout \
 ##         2>          /tmp/clis-diesel_cli_2-3-4/release/deps/out-c0bc6db5a35592ab-stderr \
 ##         || echo $? >/tmp/clis-diesel_cli_2-3-4/release/deps/out-c0bc6db5a35592ab-errcode\
@@ -308,6 +793,9 @@ RUN \
   --mount=from=out-7289403231332002,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libiana_time_zone-7289403231332002.rmeta,source=/libiana_time_zone-7289403231332002.rmeta \
   --mount=from=out-c0bc6db5a35592ab,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libnum_traits-c0bc6db5a35592ab.rlib,source=/libnum_traits-c0bc6db5a35592ab.rlib \
   --mount=from=out-c0bc6db5a35592ab,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libnum_traits-c0bc6db5a35592ab.rmeta,source=/libnum_traits-c0bc6db5a35592ab.rmeta \
+  --mount=from=out-f2b41e0845677d6c,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libautocfg-f2b41e0845677d6c.rlib,source=/libautocfg-f2b41e0845677d6c.rlib \
+  --mount=from=out-f2b41e0845677d6c,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libautocfg-f2b41e0845677d6c.rmeta,source=/libautocfg-f2b41e0845677d6c.rmeta \
+  --mount=from=out-7f58c305ab694e40,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-7f58c305ab694e40,source=/build_script_build-7f58c305ab694e40 \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=chrono \
         CARGO_INCREMENTAL=0 \
@@ -340,7 +828,11 @@ COPY --link --from=dep-n-chrono-0.4.42-c144cf5d8004261e /tmp/clis-diesel_cli_2-3
 ## deps = [
 ##     "7289403231332002",
 ##     "c0bc6db5a35592ab",
+##     "684bb1d0e614c72e",
+##     "f2b41e0845677d6c",
+##     "7f58c305ab694e40",
 ## ]
+## buildrs_results = ["684bb1d0e614c72e"]
 ## writes = [
 ##     "chrono-c144cf5d8004261e.d",
 ##     "libchrono-c144cf5d8004261e.rlib",
@@ -367,6 +859,18 @@ COPY --link --from=dep-n-chrono-0.4.42-c144cf5d8004261e /tmp/clis-diesel_cli_2-3
 ## [[externs]]
 ## from = "out-c0bc6db5a35592ab"
 ## xtern = "libnum_traits-c0bc6db5a35592ab.rmeta"
+##
+## [[externs]]
+## from = "out-f2b41e0845677d6c"
+## xtern = "libautocfg-f2b41e0845677d6c.rlib"
+##
+## [[externs]]
+## from = "out-f2b41e0845677d6c"
+## xtern = "libautocfg-f2b41e0845677d6c.rmeta"
+##
+## [[externs]]
+## from = "out-7f58c305ab694e40"
+## xtern = "build_script_build-7f58c305ab694e40"
 ##
 ## [[stages]]
 ##
@@ -422,6 +926,9 @@ COPY --link --from=dep-n-chrono-0.4.42-c144cf5d8004261e /tmp/clis-diesel_cli_2-3
 ##   --mount=from=out-7289403231332002,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libiana_time_zone-7289403231332002.rmeta,source=/libiana_time_zone-7289403231332002.rmeta \
 ##   --mount=from=out-c0bc6db5a35592ab,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libnum_traits-c0bc6db5a35592ab.rlib,source=/libnum_traits-c0bc6db5a35592ab.rlib \
 ##   --mount=from=out-c0bc6db5a35592ab,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libnum_traits-c0bc6db5a35592ab.rmeta,source=/libnum_traits-c0bc6db5a35592ab.rmeta \
+##   --mount=from=out-f2b41e0845677d6c,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libautocfg-f2b41e0845677d6c.rlib,source=/libautocfg-f2b41e0845677d6c.rlib \
+##   --mount=from=out-f2b41e0845677d6c,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libautocfg-f2b41e0845677d6c.rmeta,source=/libautocfg-f2b41e0845677d6c.rmeta \
+##   --mount=from=out-7f58c305ab694e40,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-7f58c305ab694e40,source=/build_script_build-7f58c305ab694e40 \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=chrono \
 ##         CARGO_INCREMENTAL=0 \
@@ -2934,6 +3441,360 @@ COPY --link --from=dep-n-unicode-ident-1.0.22-721470d94fc0c354 /tmp/clis-diesel_
 FROM scratch AS cratesio-proc-macro2-1.0.103
 ADD --chmod=0664 --unpack --checksum=sha256:5ee95bc4ef87b8d5ba32e8b7714ccc834865276eab0aed5c9958d00ec45f49e8 \
   https://static.crates.io/crates/proc-macro2/proc-macro2-1.0.103.crate /
+FROM rust-base AS dep-x-proc-macro2-1.0.103-71babfb997932318
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-diesel_cli_2-3-4/release/build/proc-macro2-71babfb997932318
+RUN \
+  --mount=from=cratesio-proc-macro2-1.0.103,source=/proc-macro2-1.0.103,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.103,rw \
+    { \
+        cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.103/build.rs | sed 's/fn main/fn actual_71babfb997932318_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.103/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.103/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.103/build.rs ; \
+        { \
+          echo ; \
+          echo 'fn main() {' ; \
+          echo '    use std::env::{args_os, var_os};' ; \
+          echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+          echo '        use std::process::{Command, Stdio};' ; \
+          echo '        let mut cmd = Command::new("cargo-green");' ; \
+          echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+          echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+          echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+          echo '        assert!(res.success());' ; \
+          echo '    } else {' ; \
+          echo '        actual_71babfb997932318_main();' ; \
+          echo '    }' ; \
+          echo '}' ; \
+        } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.103/build.rs ; \
+    } && \
+    env CARGO="$(which cargo)" \
+        CARGO_CRATE_NAME=build_script_build \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.103 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.103/Cargo.toml \
+        CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>:Alex Crichton <alex@alexcrichton.com>' \
+        CARGO_PKG_DESCRIPTION=A' substitute implementation of the compiler'\'s' `proc_macro` API to decouple token-based libraries from the procedural macro use case.' \
+        CARGO_PKG_HOMEPAGE= \
+        CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=proc-macro2 \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/dtolnay/proc-macro2' \
+        CARGO_PKG_RUST_VERSION=1.60 \
+        CARGO_PKG_VERSION=1.0.103 \
+        CARGO_PKG_VERSION_MAJOR=1 \
+        CARGO_PKG_VERSION_MINOR=0 \
+        CARGO_PKG_VERSION_PATCH=103 \
+        CARGO_PKG_VERSION_PRE= \
+        CARGOGREEN=1 \
+      rustc '--crate-name' 'build_script_build' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'bin' '--emit' 'dep-info,link' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--cfg' 'feature="default"' '--cfg' 'feature="proc-macro"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "nightly", "proc-macro", "span-locations"))' '-C' 'metadata=e9b3d6602bba5c6c' '-C' 'extra-filename=-71babfb997932318' '--out-dir' '/tmp/clis-diesel_cli_2-3-4/release/build/proc-macro2-71babfb997932318' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-diesel_cli_2-3-4/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.103/build.rs \
+        1>          /tmp/clis-diesel_cli_2-3-4/release/build/proc-macro2-71babfb997932318/out-71babfb997932318-stdout \
+        2>          /tmp/clis-diesel_cli_2-3-4/release/build/proc-macro2-71babfb997932318/out-71babfb997932318-stderr \
+        || echo $? >/tmp/clis-diesel_cli_2-3-4/release/build/proc-macro2-71babfb997932318/out-71babfb997932318-errcode\
+  ; find /tmp/clis-diesel_cli_2-3-4/release/build/proc-macro2-71babfb997932318/*-71babfb997932318* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-71babfb997932318
+COPY --link --from=dep-x-proc-macro2-1.0.103-71babfb997932318 /tmp/clis-diesel_cli_2-3-4/release/build/proc-macro2-71babfb997932318/*-71babfb997932318* /
+
+## this = "71babfb997932318"
+## writes = [
+##     "build_script_build-71babfb997932318",
+##     "build_script_build-71babfb997932318.d",
+## ]
+## stderr = [
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-4/release/build/proc-macro2-71babfb997932318/build_script_build-71babfb997932318.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-4/release/build/proc-macro2-71babfb997932318/build_script_build-71babfb997932318","emit":"link"}',
+## ]
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = '''
+## FROM --platform=$BUILDPLATFORM docker.io/tonistiigi/xx:1.6.1@sha256:923441d7c25f1e2eb5789f82d987693c47b8ed987c4ab3b075d6ed2b5d6779a3 AS xx
+## FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base
+## ARG TARGETPLATFORM
+## RUN \
+##   --mount=from=xx,source=/usr/bin/xx-apk,dst=/usr/bin/xx-apk \
+##   --mount=from=xx,source=/usr/bin/xx-apt,dst=/usr/bin/xx-apt \
+##   --mount=from=xx,source=/usr/bin/xx-apt,dst=/usr/bin/xx-apt-get \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-c++ \
+##   --mount=from=xx,source=/usr/bin/xx-cargo,dst=/usr/bin/xx-cargo \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-cc \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-clang \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-clang++ \
+##   --mount=from=xx,source=/usr/bin/xx-go,dst=/usr/bin/xx-go \
+##   --mount=from=xx,source=/usr/bin/xx-info,dst=/usr/bin/xx-info \
+##   --mount=from=xx,source=/usr/bin/xx-ld-shas,dst=/usr/bin/xx-ld-shas \
+##   --mount=from=xx,source=/usr/bin/xx-verify,dst=/usr/bin/xx-verify \
+##   --mount=from=xx,source=/usr/bin/xx-windres,dst=/usr/bin/xx-windres \
+##     set -eux \
+##  && if   command -v apk >/dev/null 2>&1; then \
+##                                      xx-apk     add     --no-cache                 '<none>'; \
+##     elif command -v apt >/dev/null 2>&1; then \
+##       DEBIAN_FRONTEND=noninteractive xx-apt     install --no-install-recommends -y 'libpq-dev'; \
+##     else \
+##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
+##     fi'''
+##
+## [[stages]]
+##
+## [stages.Cratesio]
+## stage = "cratesio-proc-macro2-1.0.103"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.103"
+## name = "proc-macro2"
+## name_dash_version = "proc-macro2-1.0.103"
+## hash = "5ee95bc4ef87b8d5ba32e8b7714ccc834865276eab0aed5c9958d00ec45f49e8"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "dep-x-proc-macro2-1.0.103-71babfb997932318"
+## script = '''
+## FROM rust-base AS dep-x-proc-macro2-1.0.103-71babfb997932318
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-diesel_cli_2-3-4/release/build/proc-macro2-71babfb997932318
+## RUN \
+##   --mount=from=cratesio-proc-macro2-1.0.103,source=/proc-macro2-1.0.103,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.103,rw \
+##     { \
+##         cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.103/build.rs | sed 's/fn main/fn actual_71babfb997932318_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.103/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.103/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.103/build.rs ; \
+##         { \
+##           echo ; \
+##           echo 'fn main() {' ; \
+##           echo '    use std::env::{args_os, var_os};' ; \
+##           echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+##           echo '        use std::process::{Command, Stdio};' ; \
+##           echo '        let mut cmd = Command::new("cargo-green");' ; \
+##           echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+##           echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+##           echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+##           echo '        assert!(res.success());' ; \
+##           echo '    } else {' ; \
+##           echo '        actual_71babfb997932318_main();' ; \
+##           echo '    }' ; \
+##           echo '}' ; \
+##         } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.103/build.rs ; \
+##     } && \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CRATE_NAME=build_script_build \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.103 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.103/Cargo.toml \
+##         CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>:Alex Crichton <alex@alexcrichton.com>' \
+##         CARGO_PKG_DESCRIPTION=A' substitute implementation of the compiler'\'s' `proc_macro` API to decouple token-based libraries from the procedural macro use case.' \
+##         CARGO_PKG_HOMEPAGE= \
+##         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=proc-macro2 \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/dtolnay/proc-macro2' \
+##         CARGO_PKG_RUST_VERSION=1.60 \
+##         CARGO_PKG_VERSION=1.0.103 \
+##         CARGO_PKG_VERSION_MAJOR=1 \
+##         CARGO_PKG_VERSION_MINOR=0 \
+##         CARGO_PKG_VERSION_PATCH=103 \
+##         CARGO_PKG_VERSION_PRE= \
+##         CARGOGREEN=1 \
+##       rustc '--crate-name' 'build_script_build' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'bin' '--emit' 'dep-info,link' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--cfg' 'feature="default"' '--cfg' 'feature="proc-macro"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "nightly", "proc-macro", "span-locations"))' '-C' 'metadata=e9b3d6602bba5c6c' '-C' 'extra-filename=-71babfb997932318' '--out-dir' '/tmp/clis-diesel_cli_2-3-4/release/build/proc-macro2-71babfb997932318' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-diesel_cli_2-3-4/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.103/build.rs \
+##         1>          /tmp/clis-diesel_cli_2-3-4/release/build/proc-macro2-71babfb997932318/out-71babfb997932318-stdout \
+##         2>          /tmp/clis-diesel_cli_2-3-4/release/build/proc-macro2-71babfb997932318/out-71babfb997932318-stderr \
+##         || echo $? >/tmp/clis-diesel_cli_2-3-4/release/build/proc-macro2-71babfb997932318/out-71babfb997932318-errcode\
+##   ; find /tmp/clis-diesel_cli_2-3-4/release/build/proc-macro2-71babfb997932318/*-71babfb997932318* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-71babfb997932318"
+## script = """
+## FROM scratch AS out-71babfb997932318
+## COPY --link --from=dep-x-proc-macro2-1.0.103-71babfb997932318 /tmp/clis-diesel_cli_2-3-4/release/build/proc-macro2-71babfb997932318/*-71babfb997932318* /"""
+
+FROM rust-base AS run-z-proc-macro2-1.0.103-e93dddbb48c6a6fc
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-diesel_cli_2-3-4/release/build/proc-macro2-e93dddbb48c6a6fc/out
+WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.103
+RUN \
+  --mount=from=out-71babfb997932318,source=/build_script_build-71babfb997932318,dst=/tmp/clis-diesel_cli_2-3-4/release/build/proc-macro2-71babfb997932318/build-script-build \
+  --mount=from=cratesio-proc-macro2-1.0.103,source=/proc-macro2-1.0.103,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.103 \
+    env CARGO="$(which cargo)" \
+        CARGO_CFG_FEATURE=default,proc-macro \
+        CARGO_CFG_PANIC=unwind \
+        CARGO_CFG_TARGET_ABI= \
+        CARGO_CFG_TARGET_ARCH=x86_64 \
+        CARGO_CFG_TARGET_ENDIAN=little \
+        CARGO_CFG_TARGET_ENV=gnu \
+        CARGO_CFG_TARGET_FAMILY=unix \
+        CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
+        CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+        CARGO_CFG_TARGET_OS=linux \
+        CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+        CARGO_CFG_TARGET_VENDOR=unknown \
+        CARGO_CFG_UNIX= \
+        CARGO_ENCODED_RUSTFLAGS= \
+        CARGO_FEATURE_DEFAULT=1 \
+        CARGO_FEATURE_PROC_MACRO=1 \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.103 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.103/Cargo.toml \
+        CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>:Alex Crichton <alex@alexcrichton.com>' \
+        CARGO_PKG_DESCRIPTION=A' substitute implementation of the compiler'\'s' `proc_macro` API to decouple token-based libraries from the procedural macro use case.' \
+        CARGO_PKG_HOMEPAGE= \
+        CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=proc-macro2 \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/dtolnay/proc-macro2' \
+        CARGO_PKG_RUST_VERSION=1.60 \
+        CARGO_PKG_VERSION=1.0.103 \
+        CARGO_PKG_VERSION_MAJOR=1 \
+        CARGO_PKG_VERSION_MINOR=0 \
+        CARGO_PKG_VERSION_PATCH=103 \
+        CARGO_PKG_VERSION_PRE= \
+        DEBUG=false \
+        HOST=x86_64-unknown-linux-gnu \
+        NUM_JOBS=4 \
+        OPT_LEVEL=0 \
+        OUT_DIR=/tmp/clis-diesel_cli_2-3-4/release/build/proc-macro2-e93dddbb48c6a6fc/out \
+        PROFILE=release \
+        RUSTC=rustc \
+        RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+        TARGET=x86_64-unknown-linux-gnu \
+        CARGOGREEN=1 \
+      CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-diesel_cli_2-3-4/release/build/proc-macro2-71babfb997932318/build-script-build \
+        1>          /tmp/clis-diesel_cli_2-3-4/release/build/proc-macro2-e93dddbb48c6a6fc/out/out-e93dddbb48c6a6fc-stdout \
+        2>          /tmp/clis-diesel_cli_2-3-4/release/build/proc-macro2-e93dddbb48c6a6fc/out/out-e93dddbb48c6a6fc-stderr \
+        || echo $? >/tmp/clis-diesel_cli_2-3-4/release/build/proc-macro2-e93dddbb48c6a6fc/out/out-e93dddbb48c6a6fc-errcode\
+  ; find /tmp/clis-diesel_cli_2-3-4/release/build/proc-macro2-e93dddbb48c6a6fc/out/*-e93dddbb48c6a6fc* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-e93dddbb48c6a6fc
+COPY --link --from=run-z-proc-macro2-1.0.103-e93dddbb48c6a6fc /tmp/clis-diesel_cli_2-3-4/release/build/proc-macro2-e93dddbb48c6a6fc/out/* /
+
+## this = "e93dddbb48c6a6fc"
+## deps = ["71babfb997932318"]
+## stdout = [
+##     "cargo:rustc-check-cfg=cfg(fuzzing)",
+##     "cargo:rustc-check-cfg=cfg(no_is_available)",
+##     "cargo:rustc-check-cfg=cfg(no_literal_byte_character)",
+##     "cargo:rustc-check-cfg=cfg(no_literal_c_string)",
+##     "cargo:rustc-check-cfg=cfg(no_source_text)",
+##     "cargo:rustc-check-cfg=cfg(proc_macro_span)",
+##     "cargo:rustc-check-cfg=cfg(proc_macro_span_file)",
+##     "cargo:rustc-check-cfg=cfg(proc_macro_span_location)",
+##     "cargo:rustc-check-cfg=cfg(procmacro2_backtrace)",
+##     "cargo:rustc-check-cfg=cfg(procmacro2_build_probe)",
+##     "cargo:rustc-check-cfg=cfg(procmacro2_nightly_testing)",
+##     "cargo:rustc-check-cfg=cfg(procmacro2_semver_exempt)",
+##     "cargo:rustc-check-cfg=cfg(randomize_layout)",
+##     "cargo:rustc-check-cfg=cfg(span_locations)",
+##     "cargo:rustc-check-cfg=cfg(super_unstable)",
+##     "cargo:rustc-check-cfg=cfg(wrap_proc_macro)",
+##     "cargo:rerun-if-changed=src/probe/proc_macro_span.rs",
+##     "cargo:rustc-cfg=wrap_proc_macro",
+##     "cargo:rerun-if-changed=src/probe/proc_macro_span_location.rs",
+##     "cargo:rustc-cfg=proc_macro_span_location",
+##     "cargo:rerun-if-changed=src/probe/proc_macro_span_file.rs",
+##     "cargo:rustc-cfg=proc_macro_span_file",
+##     "cargo:rerun-if-env-changed=RUSTC_BOOTSTRAP",
+## ]
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = '''
+## FROM --platform=$BUILDPLATFORM docker.io/tonistiigi/xx:1.6.1@sha256:923441d7c25f1e2eb5789f82d987693c47b8ed987c4ab3b075d6ed2b5d6779a3 AS xx
+## FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base
+## ARG TARGETPLATFORM
+## RUN \
+##   --mount=from=xx,source=/usr/bin/xx-apk,dst=/usr/bin/xx-apk \
+##   --mount=from=xx,source=/usr/bin/xx-apt,dst=/usr/bin/xx-apt \
+##   --mount=from=xx,source=/usr/bin/xx-apt,dst=/usr/bin/xx-apt-get \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-c++ \
+##   --mount=from=xx,source=/usr/bin/xx-cargo,dst=/usr/bin/xx-cargo \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-cc \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-clang \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-clang++ \
+##   --mount=from=xx,source=/usr/bin/xx-go,dst=/usr/bin/xx-go \
+##   --mount=from=xx,source=/usr/bin/xx-info,dst=/usr/bin/xx-info \
+##   --mount=from=xx,source=/usr/bin/xx-ld-shas,dst=/usr/bin/xx-ld-shas \
+##   --mount=from=xx,source=/usr/bin/xx-verify,dst=/usr/bin/xx-verify \
+##   --mount=from=xx,source=/usr/bin/xx-windres,dst=/usr/bin/xx-windres \
+##     set -eux \
+##  && if   command -v apk >/dev/null 2>&1; then \
+##                                      xx-apk     add     --no-cache                 '<none>'; \
+##     elif command -v apt >/dev/null 2>&1; then \
+##       DEBIAN_FRONTEND=noninteractive xx-apt     install --no-install-recommends -y 'libpq-dev'; \
+##     else \
+##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
+##     fi'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "run-z-proc-macro2-1.0.103-e93dddbb48c6a6fc"
+## script = '''
+## FROM rust-base AS run-z-proc-macro2-1.0.103-e93dddbb48c6a6fc
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-diesel_cli_2-3-4/release/build/proc-macro2-e93dddbb48c6a6fc/out
+## WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.103
+## RUN \
+##   --mount=from=out-71babfb997932318,source=/build_script_build-71babfb997932318,dst=/tmp/clis-diesel_cli_2-3-4/release/build/proc-macro2-71babfb997932318/build-script-build \
+##   --mount=from=cratesio-proc-macro2-1.0.103,source=/proc-macro2-1.0.103,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.103 \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CFG_FEATURE=default,proc-macro \
+##         CARGO_CFG_PANIC=unwind \
+##         CARGO_CFG_TARGET_ABI= \
+##         CARGO_CFG_TARGET_ARCH=x86_64 \
+##         CARGO_CFG_TARGET_ENDIAN=little \
+##         CARGO_CFG_TARGET_ENV=gnu \
+##         CARGO_CFG_TARGET_FAMILY=unix \
+##         CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
+##         CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+##         CARGO_CFG_TARGET_OS=linux \
+##         CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+##         CARGO_CFG_TARGET_VENDOR=unknown \
+##         CARGO_CFG_UNIX= \
+##         CARGO_ENCODED_RUSTFLAGS= \
+##         CARGO_FEATURE_DEFAULT=1 \
+##         CARGO_FEATURE_PROC_MACRO=1 \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.103 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.103/Cargo.toml \
+##         CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>:Alex Crichton <alex@alexcrichton.com>' \
+##         CARGO_PKG_DESCRIPTION=A' substitute implementation of the compiler'\'s' `proc_macro` API to decouple token-based libraries from the procedural macro use case.' \
+##         CARGO_PKG_HOMEPAGE= \
+##         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=proc-macro2 \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/dtolnay/proc-macro2' \
+##         CARGO_PKG_RUST_VERSION=1.60 \
+##         CARGO_PKG_VERSION=1.0.103 \
+##         CARGO_PKG_VERSION_MAJOR=1 \
+##         CARGO_PKG_VERSION_MINOR=0 \
+##         CARGO_PKG_VERSION_PATCH=103 \
+##         CARGO_PKG_VERSION_PRE= \
+##         DEBUG=false \
+##         HOST=x86_64-unknown-linux-gnu \
+##         NUM_JOBS=4 \
+##         OPT_LEVEL=0 \
+##         OUT_DIR=/tmp/clis-diesel_cli_2-3-4/release/build/proc-macro2-e93dddbb48c6a6fc/out \
+##         PROFILE=release \
+##         RUSTC=rustc \
+##         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+##         TARGET=x86_64-unknown-linux-gnu \
+##         CARGOGREEN=1 \
+##       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-diesel_cli_2-3-4/release/build/proc-macro2-71babfb997932318/build-script-build \
+##         1>          /tmp/clis-diesel_cli_2-3-4/release/build/proc-macro2-e93dddbb48c6a6fc/out/out-e93dddbb48c6a6fc-stdout \
+##         2>          /tmp/clis-diesel_cli_2-3-4/release/build/proc-macro2-e93dddbb48c6a6fc/out/out-e93dddbb48c6a6fc-stderr \
+##         || echo $? >/tmp/clis-diesel_cli_2-3-4/release/build/proc-macro2-e93dddbb48c6a6fc/out/out-e93dddbb48c6a6fc-errcode\
+##   ; find /tmp/clis-diesel_cli_2-3-4/release/build/proc-macro2-e93dddbb48c6a6fc/out/*-e93dddbb48c6a6fc* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-e93dddbb48c6a6fc"
+## script = """
+## FROM scratch AS out-e93dddbb48c6a6fc
+## COPY --link --from=run-z-proc-macro2-1.0.103-e93dddbb48c6a6fc /tmp/clis-diesel_cli_2-3-4/release/build/proc-macro2-e93dddbb48c6a6fc/out/* /"""
+
+
 FROM rust-base AS dep-n-proc-macro2-1.0.103-e1e423eb99bb7e63
 SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-diesel_cli_2-3-4/release/deps
@@ -2941,6 +3802,7 @@ RUN \
   --mount=from=cratesio-proc-macro2-1.0.103,source=/proc-macro2-1.0.103,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.103 \
   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rlib,source=/libunicode_ident-721470d94fc0c354.rlib \
   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rmeta,source=/libunicode_ident-721470d94fc0c354.rmeta \
+  --mount=from=out-e93dddbb48c6a6fc,dst=/tmp/clis-diesel_cli_2-3-4/release/build/proc-macro2-e93dddbb48c6a6fc/out,source=/ \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=proc_macro2 \
         CARGO_INCREMENTAL=0 \
@@ -2971,7 +3833,12 @@ FROM scratch AS out-e1e423eb99bb7e63
 COPY --link --from=dep-n-proc-macro2-1.0.103-e1e423eb99bb7e63 /tmp/clis-diesel_cli_2-3-4/release/deps/*-e1e423eb99bb7e63* /
 
 ## this = "e1e423eb99bb7e63"
-## deps = ["721470d94fc0c354"]
+## deps = [
+##     "721470d94fc0c354",
+##     "e93dddbb48c6a6fc",
+##     "71babfb997932318",
+## ]
+## buildrs_results = ["e93dddbb48c6a6fc"]
 ## writes = [
 ##     "libproc_macro2-e1e423eb99bb7e63.rlib",
 ##     "libproc_macro2-e1e423eb99bb7e63.rmeta",
@@ -2990,6 +3857,11 @@ COPY --link --from=dep-n-proc-macro2-1.0.103-e1e423eb99bb7e63 /tmp/clis-diesel_c
 ## [[externs]]
 ## from = "out-721470d94fc0c354"
 ## xtern = "libunicode_ident-721470d94fc0c354.rmeta"
+##
+## [[mounts]]
+## name = "out-e93dddbb48c6a6fc"
+## src = "/"
+## dst = "/tmp/clis-diesel_cli_2-3-4/release/build/proc-macro2-e93dddbb48c6a6fc/out"
 ##
 ## [[stages]]
 ##
@@ -3043,6 +3915,7 @@ COPY --link --from=dep-n-proc-macro2-1.0.103-e1e423eb99bb7e63 /tmp/clis-diesel_c
 ##   --mount=from=cratesio-proc-macro2-1.0.103,source=/proc-macro2-1.0.103,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.103 \
 ##   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rlib,source=/libunicode_ident-721470d94fc0c354.rlib \
 ##   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rmeta,source=/libunicode_ident-721470d94fc0c354.rmeta \
+##   --mount=from=out-e93dddbb48c6a6fc,dst=/tmp/clis-diesel_cli_2-3-4/release/build/proc-macro2-e93dddbb48c6a6fc/out,source=/ \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=proc_macro2 \
 ##         CARGO_INCREMENTAL=0 \
@@ -3081,6 +3954,339 @@ COPY --link --from=dep-n-proc-macro2-1.0.103-e1e423eb99bb7e63 /tmp/clis-diesel_c
 FROM scratch AS cratesio-quote-1.0.41
 ADD --chmod=0664 --unpack --checksum=sha256:ce25767e7b499d1b604768e7cde645d14cc8584231ea6b295e9c9eb22c02e1d1 \
   https://static.crates.io/crates/quote/quote-1.0.41.crate /
+FROM rust-base AS dep-x-quote-1.0.41-c63aae50eb6f480a
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-diesel_cli_2-3-4/release/build/quote-c63aae50eb6f480a
+RUN \
+  --mount=from=cratesio-quote-1.0.41,source=/quote-1.0.41,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.41,rw \
+    { \
+        cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.41/build.rs | sed 's/fn main/fn actual_c63aae50eb6f480a_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.41/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.41/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.41/build.rs ; \
+        { \
+          echo ; \
+          echo 'fn main() {' ; \
+          echo '    use std::env::{args_os, var_os};' ; \
+          echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+          echo '        use std::process::{Command, Stdio};' ; \
+          echo '        let mut cmd = Command::new("cargo-green");' ; \
+          echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+          echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+          echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+          echo '        assert!(res.success());' ; \
+          echo '    } else {' ; \
+          echo '        actual_c63aae50eb6f480a_main();' ; \
+          echo '    }' ; \
+          echo '}' ; \
+        } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.41/build.rs ; \
+    } && \
+    env CARGO="$(which cargo)" \
+        CARGO_CRATE_NAME=build_script_build \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.41 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.41/Cargo.toml \
+        CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>' \
+        CARGO_PKG_DESCRIPTION=Quasi-quoting' macro quote!(...)' \
+        CARGO_PKG_HOMEPAGE= \
+        CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=quote \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/dtolnay/quote' \
+        CARGO_PKG_RUST_VERSION=1.60 \
+        CARGO_PKG_VERSION=1.0.41 \
+        CARGO_PKG_VERSION_MAJOR=1 \
+        CARGO_PKG_VERSION_MINOR=0 \
+        CARGO_PKG_VERSION_PATCH=41 \
+        CARGO_PKG_VERSION_PRE= \
+        CARGOGREEN=1 \
+      rustc '--crate-name' 'build_script_build' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'bin' '--emit' 'dep-info,link' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--cfg' 'feature="default"' '--cfg' 'feature="proc-macro"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "proc-macro"))' '-C' 'metadata=92f410c059164c72' '-C' 'extra-filename=-c63aae50eb6f480a' '--out-dir' '/tmp/clis-diesel_cli_2-3-4/release/build/quote-c63aae50eb6f480a' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-diesel_cli_2-3-4/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.41/build.rs \
+        1>          /tmp/clis-diesel_cli_2-3-4/release/build/quote-c63aae50eb6f480a/out-c63aae50eb6f480a-stdout \
+        2>          /tmp/clis-diesel_cli_2-3-4/release/build/quote-c63aae50eb6f480a/out-c63aae50eb6f480a-stderr \
+        || echo $? >/tmp/clis-diesel_cli_2-3-4/release/build/quote-c63aae50eb6f480a/out-c63aae50eb6f480a-errcode\
+  ; find /tmp/clis-diesel_cli_2-3-4/release/build/quote-c63aae50eb6f480a/*-c63aae50eb6f480a* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-c63aae50eb6f480a
+COPY --link --from=dep-x-quote-1.0.41-c63aae50eb6f480a /tmp/clis-diesel_cli_2-3-4/release/build/quote-c63aae50eb6f480a/*-c63aae50eb6f480a* /
+
+## this = "c63aae50eb6f480a"
+## writes = [
+##     "build_script_build-c63aae50eb6f480a",
+##     "build_script_build-c63aae50eb6f480a.d",
+## ]
+## stderr = [
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-4/release/build/quote-c63aae50eb6f480a/build_script_build-c63aae50eb6f480a.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-4/release/build/quote-c63aae50eb6f480a/build_script_build-c63aae50eb6f480a","emit":"link"}',
+## ]
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = '''
+## FROM --platform=$BUILDPLATFORM docker.io/tonistiigi/xx:1.6.1@sha256:923441d7c25f1e2eb5789f82d987693c47b8ed987c4ab3b075d6ed2b5d6779a3 AS xx
+## FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base
+## ARG TARGETPLATFORM
+## RUN \
+##   --mount=from=xx,source=/usr/bin/xx-apk,dst=/usr/bin/xx-apk \
+##   --mount=from=xx,source=/usr/bin/xx-apt,dst=/usr/bin/xx-apt \
+##   --mount=from=xx,source=/usr/bin/xx-apt,dst=/usr/bin/xx-apt-get \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-c++ \
+##   --mount=from=xx,source=/usr/bin/xx-cargo,dst=/usr/bin/xx-cargo \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-cc \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-clang \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-clang++ \
+##   --mount=from=xx,source=/usr/bin/xx-go,dst=/usr/bin/xx-go \
+##   --mount=from=xx,source=/usr/bin/xx-info,dst=/usr/bin/xx-info \
+##   --mount=from=xx,source=/usr/bin/xx-ld-shas,dst=/usr/bin/xx-ld-shas \
+##   --mount=from=xx,source=/usr/bin/xx-verify,dst=/usr/bin/xx-verify \
+##   --mount=from=xx,source=/usr/bin/xx-windres,dst=/usr/bin/xx-windres \
+##     set -eux \
+##  && if   command -v apk >/dev/null 2>&1; then \
+##                                      xx-apk     add     --no-cache                 '<none>'; \
+##     elif command -v apt >/dev/null 2>&1; then \
+##       DEBIAN_FRONTEND=noninteractive xx-apt     install --no-install-recommends -y 'libpq-dev'; \
+##     else \
+##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
+##     fi'''
+##
+## [[stages]]
+##
+## [stages.Cratesio]
+## stage = "cratesio-quote-1.0.41"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.41"
+## name = "quote"
+## name_dash_version = "quote-1.0.41"
+## hash = "ce25767e7b499d1b604768e7cde645d14cc8584231ea6b295e9c9eb22c02e1d1"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "dep-x-quote-1.0.41-c63aae50eb6f480a"
+## script = '''
+## FROM rust-base AS dep-x-quote-1.0.41-c63aae50eb6f480a
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-diesel_cli_2-3-4/release/build/quote-c63aae50eb6f480a
+## RUN \
+##   --mount=from=cratesio-quote-1.0.41,source=/quote-1.0.41,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.41,rw \
+##     { \
+##         cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.41/build.rs | sed 's/fn main/fn actual_c63aae50eb6f480a_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.41/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.41/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.41/build.rs ; \
+##         { \
+##           echo ; \
+##           echo 'fn main() {' ; \
+##           echo '    use std::env::{args_os, var_os};' ; \
+##           echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+##           echo '        use std::process::{Command, Stdio};' ; \
+##           echo '        let mut cmd = Command::new("cargo-green");' ; \
+##           echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+##           echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+##           echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+##           echo '        assert!(res.success());' ; \
+##           echo '    } else {' ; \
+##           echo '        actual_c63aae50eb6f480a_main();' ; \
+##           echo '    }' ; \
+##           echo '}' ; \
+##         } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.41/build.rs ; \
+##     } && \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CRATE_NAME=build_script_build \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.41 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.41/Cargo.toml \
+##         CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>' \
+##         CARGO_PKG_DESCRIPTION=Quasi-quoting' macro quote!(...)' \
+##         CARGO_PKG_HOMEPAGE= \
+##         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=quote \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/dtolnay/quote' \
+##         CARGO_PKG_RUST_VERSION=1.60 \
+##         CARGO_PKG_VERSION=1.0.41 \
+##         CARGO_PKG_VERSION_MAJOR=1 \
+##         CARGO_PKG_VERSION_MINOR=0 \
+##         CARGO_PKG_VERSION_PATCH=41 \
+##         CARGO_PKG_VERSION_PRE= \
+##         CARGOGREEN=1 \
+##       rustc '--crate-name' 'build_script_build' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'bin' '--emit' 'dep-info,link' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--cfg' 'feature="default"' '--cfg' 'feature="proc-macro"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "proc-macro"))' '-C' 'metadata=92f410c059164c72' '-C' 'extra-filename=-c63aae50eb6f480a' '--out-dir' '/tmp/clis-diesel_cli_2-3-4/release/build/quote-c63aae50eb6f480a' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-diesel_cli_2-3-4/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.41/build.rs \
+##         1>          /tmp/clis-diesel_cli_2-3-4/release/build/quote-c63aae50eb6f480a/out-c63aae50eb6f480a-stdout \
+##         2>          /tmp/clis-diesel_cli_2-3-4/release/build/quote-c63aae50eb6f480a/out-c63aae50eb6f480a-stderr \
+##         || echo $? >/tmp/clis-diesel_cli_2-3-4/release/build/quote-c63aae50eb6f480a/out-c63aae50eb6f480a-errcode\
+##   ; find /tmp/clis-diesel_cli_2-3-4/release/build/quote-c63aae50eb6f480a/*-c63aae50eb6f480a* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-c63aae50eb6f480a"
+## script = """
+## FROM scratch AS out-c63aae50eb6f480a
+## COPY --link --from=dep-x-quote-1.0.41-c63aae50eb6f480a /tmp/clis-diesel_cli_2-3-4/release/build/quote-c63aae50eb6f480a/*-c63aae50eb6f480a* /"""
+
+FROM rust-base AS run-z-quote-1.0.41-edf8f660a3d601cc
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-diesel_cli_2-3-4/release/build/quote-edf8f660a3d601cc/out
+WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.41
+RUN \
+  --mount=from=out-c63aae50eb6f480a,source=/build_script_build-c63aae50eb6f480a,dst=/tmp/clis-diesel_cli_2-3-4/release/build/quote-c63aae50eb6f480a/build-script-build \
+  --mount=from=cratesio-quote-1.0.41,source=/quote-1.0.41,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.41 \
+    env CARGO="$(which cargo)" \
+        CARGO_CFG_FEATURE=default,proc-macro \
+        CARGO_CFG_PANIC=unwind \
+        CARGO_CFG_TARGET_ABI= \
+        CARGO_CFG_TARGET_ARCH=x86_64 \
+        CARGO_CFG_TARGET_ENDIAN=little \
+        CARGO_CFG_TARGET_ENV=gnu \
+        CARGO_CFG_TARGET_FAMILY=unix \
+        CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
+        CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+        CARGO_CFG_TARGET_OS=linux \
+        CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+        CARGO_CFG_TARGET_VENDOR=unknown \
+        CARGO_CFG_UNIX= \
+        CARGO_ENCODED_RUSTFLAGS= \
+        CARGO_FEATURE_DEFAULT=1 \
+        CARGO_FEATURE_PROC_MACRO=1 \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.41 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.41/Cargo.toml \
+        CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>' \
+        CARGO_PKG_DESCRIPTION=Quasi-quoting' macro quote!(...)' \
+        CARGO_PKG_HOMEPAGE= \
+        CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=quote \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/dtolnay/quote' \
+        CARGO_PKG_RUST_VERSION=1.60 \
+        CARGO_PKG_VERSION=1.0.41 \
+        CARGO_PKG_VERSION_MAJOR=1 \
+        CARGO_PKG_VERSION_MINOR=0 \
+        CARGO_PKG_VERSION_PATCH=41 \
+        CARGO_PKG_VERSION_PRE= \
+        DEBUG=false \
+        HOST=x86_64-unknown-linux-gnu \
+        NUM_JOBS=4 \
+        OPT_LEVEL=0 \
+        OUT_DIR=/tmp/clis-diesel_cli_2-3-4/release/build/quote-edf8f660a3d601cc/out \
+        PROFILE=release \
+        RUSTC=rustc \
+        RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+        TARGET=x86_64-unknown-linux-gnu \
+        CARGOGREEN=1 \
+      CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-diesel_cli_2-3-4/release/build/quote-c63aae50eb6f480a/build-script-build \
+        1>          /tmp/clis-diesel_cli_2-3-4/release/build/quote-edf8f660a3d601cc/out/out-edf8f660a3d601cc-stdout \
+        2>          /tmp/clis-diesel_cli_2-3-4/release/build/quote-edf8f660a3d601cc/out/out-edf8f660a3d601cc-stderr \
+        || echo $? >/tmp/clis-diesel_cli_2-3-4/release/build/quote-edf8f660a3d601cc/out/out-edf8f660a3d601cc-errcode\
+  ; find /tmp/clis-diesel_cli_2-3-4/release/build/quote-edf8f660a3d601cc/out/*-edf8f660a3d601cc* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-edf8f660a3d601cc
+COPY --link --from=run-z-quote-1.0.41-edf8f660a3d601cc /tmp/clis-diesel_cli_2-3-4/release/build/quote-edf8f660a3d601cc/out/* /
+
+## this = "edf8f660a3d601cc"
+## deps = ["c63aae50eb6f480a"]
+## stdout = [
+##     "cargo:rerun-if-changed=build.rs",
+##     "cargo:rustc-check-cfg=cfg(no_diagnostic_namespace)",
+## ]
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = '''
+## FROM --platform=$BUILDPLATFORM docker.io/tonistiigi/xx:1.6.1@sha256:923441d7c25f1e2eb5789f82d987693c47b8ed987c4ab3b075d6ed2b5d6779a3 AS xx
+## FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base
+## ARG TARGETPLATFORM
+## RUN \
+##   --mount=from=xx,source=/usr/bin/xx-apk,dst=/usr/bin/xx-apk \
+##   --mount=from=xx,source=/usr/bin/xx-apt,dst=/usr/bin/xx-apt \
+##   --mount=from=xx,source=/usr/bin/xx-apt,dst=/usr/bin/xx-apt-get \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-c++ \
+##   --mount=from=xx,source=/usr/bin/xx-cargo,dst=/usr/bin/xx-cargo \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-cc \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-clang \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-clang++ \
+##   --mount=from=xx,source=/usr/bin/xx-go,dst=/usr/bin/xx-go \
+##   --mount=from=xx,source=/usr/bin/xx-info,dst=/usr/bin/xx-info \
+##   --mount=from=xx,source=/usr/bin/xx-ld-shas,dst=/usr/bin/xx-ld-shas \
+##   --mount=from=xx,source=/usr/bin/xx-verify,dst=/usr/bin/xx-verify \
+##   --mount=from=xx,source=/usr/bin/xx-windres,dst=/usr/bin/xx-windres \
+##     set -eux \
+##  && if   command -v apk >/dev/null 2>&1; then \
+##                                      xx-apk     add     --no-cache                 '<none>'; \
+##     elif command -v apt >/dev/null 2>&1; then \
+##       DEBIAN_FRONTEND=noninteractive xx-apt     install --no-install-recommends -y 'libpq-dev'; \
+##     else \
+##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
+##     fi'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "run-z-quote-1.0.41-edf8f660a3d601cc"
+## script = '''
+## FROM rust-base AS run-z-quote-1.0.41-edf8f660a3d601cc
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-diesel_cli_2-3-4/release/build/quote-edf8f660a3d601cc/out
+## WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.41
+## RUN \
+##   --mount=from=out-c63aae50eb6f480a,source=/build_script_build-c63aae50eb6f480a,dst=/tmp/clis-diesel_cli_2-3-4/release/build/quote-c63aae50eb6f480a/build-script-build \
+##   --mount=from=cratesio-quote-1.0.41,source=/quote-1.0.41,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.41 \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CFG_FEATURE=default,proc-macro \
+##         CARGO_CFG_PANIC=unwind \
+##         CARGO_CFG_TARGET_ABI= \
+##         CARGO_CFG_TARGET_ARCH=x86_64 \
+##         CARGO_CFG_TARGET_ENDIAN=little \
+##         CARGO_CFG_TARGET_ENV=gnu \
+##         CARGO_CFG_TARGET_FAMILY=unix \
+##         CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
+##         CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+##         CARGO_CFG_TARGET_OS=linux \
+##         CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+##         CARGO_CFG_TARGET_VENDOR=unknown \
+##         CARGO_CFG_UNIX= \
+##         CARGO_ENCODED_RUSTFLAGS= \
+##         CARGO_FEATURE_DEFAULT=1 \
+##         CARGO_FEATURE_PROC_MACRO=1 \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.41 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.41/Cargo.toml \
+##         CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>' \
+##         CARGO_PKG_DESCRIPTION=Quasi-quoting' macro quote!(...)' \
+##         CARGO_PKG_HOMEPAGE= \
+##         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=quote \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/dtolnay/quote' \
+##         CARGO_PKG_RUST_VERSION=1.60 \
+##         CARGO_PKG_VERSION=1.0.41 \
+##         CARGO_PKG_VERSION_MAJOR=1 \
+##         CARGO_PKG_VERSION_MINOR=0 \
+##         CARGO_PKG_VERSION_PATCH=41 \
+##         CARGO_PKG_VERSION_PRE= \
+##         DEBUG=false \
+##         HOST=x86_64-unknown-linux-gnu \
+##         NUM_JOBS=4 \
+##         OPT_LEVEL=0 \
+##         OUT_DIR=/tmp/clis-diesel_cli_2-3-4/release/build/quote-edf8f660a3d601cc/out \
+##         PROFILE=release \
+##         RUSTC=rustc \
+##         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+##         TARGET=x86_64-unknown-linux-gnu \
+##         CARGOGREEN=1 \
+##       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-diesel_cli_2-3-4/release/build/quote-c63aae50eb6f480a/build-script-build \
+##         1>          /tmp/clis-diesel_cli_2-3-4/release/build/quote-edf8f660a3d601cc/out/out-edf8f660a3d601cc-stdout \
+##         2>          /tmp/clis-diesel_cli_2-3-4/release/build/quote-edf8f660a3d601cc/out/out-edf8f660a3d601cc-stderr \
+##         || echo $? >/tmp/clis-diesel_cli_2-3-4/release/build/quote-edf8f660a3d601cc/out/out-edf8f660a3d601cc-errcode\
+##   ; find /tmp/clis-diesel_cli_2-3-4/release/build/quote-edf8f660a3d601cc/out/*-edf8f660a3d601cc* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-edf8f660a3d601cc"
+## script = """
+## FROM scratch AS out-edf8f660a3d601cc
+## COPY --link --from=run-z-quote-1.0.41-edf8f660a3d601cc /tmp/clis-diesel_cli_2-3-4/release/build/quote-edf8f660a3d601cc/out/* /"""
+
+
 FROM rust-base AS dep-n-quote-1.0.41-87872b55644e5043
 SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-diesel_cli_2-3-4/release/deps
@@ -3090,6 +4296,8 @@ RUN \
   --mount=from=out-e1e423eb99bb7e63,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libproc_macro2-e1e423eb99bb7e63.rmeta,source=/libproc_macro2-e1e423eb99bb7e63.rmeta \
   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rlib,source=/libunicode_ident-721470d94fc0c354.rlib \
   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rmeta,source=/libunicode_ident-721470d94fc0c354.rmeta \
+  --mount=from=out-71babfb997932318,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-71babfb997932318,source=/build_script_build-71babfb997932318 \
+  --mount=from=out-edf8f660a3d601cc,dst=/tmp/clis-diesel_cli_2-3-4/release/build/quote-edf8f660a3d601cc/out,source=/ \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=quote \
         CARGO_INCREMENTAL=0 \
@@ -3123,6 +4331,14 @@ COPY --link --from=dep-n-quote-1.0.41-87872b55644e5043 /tmp/clis-diesel_cli_2-3-
 ## deps = [
 ##     "e1e423eb99bb7e63",
 ##     "721470d94fc0c354",
+##     "e93dddbb48c6a6fc",
+##     "71babfb997932318",
+##     "edf8f660a3d601cc",
+##     "c63aae50eb6f480a",
+## ]
+## buildrs_results = [
+##     "e93dddbb48c6a6fc",
+##     "edf8f660a3d601cc",
 ## ]
 ## writes = [
 ##     "libquote-87872b55644e5043.rlib",
@@ -3150,6 +4366,15 @@ COPY --link --from=dep-n-quote-1.0.41-87872b55644e5043 /tmp/clis-diesel_cli_2-3-
 ## [[externs]]
 ## from = "out-721470d94fc0c354"
 ## xtern = "libunicode_ident-721470d94fc0c354.rmeta"
+##
+## [[externs]]
+## from = "out-71babfb997932318"
+## xtern = "build_script_build-71babfb997932318"
+##
+## [[mounts]]
+## name = "out-edf8f660a3d601cc"
+## src = "/"
+## dst = "/tmp/clis-diesel_cli_2-3-4/release/build/quote-edf8f660a3d601cc/out"
 ##
 ## [[stages]]
 ##
@@ -3205,6 +4430,8 @@ COPY --link --from=dep-n-quote-1.0.41-87872b55644e5043 /tmp/clis-diesel_cli_2-3-
 ##   --mount=from=out-e1e423eb99bb7e63,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libproc_macro2-e1e423eb99bb7e63.rmeta,source=/libproc_macro2-e1e423eb99bb7e63.rmeta \
 ##   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rlib,source=/libunicode_ident-721470d94fc0c354.rlib \
 ##   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rmeta,source=/libunicode_ident-721470d94fc0c354.rmeta \
+##   --mount=from=out-71babfb997932318,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-71babfb997932318,source=/build_script_build-71babfb997932318 \
+##   --mount=from=out-edf8f660a3d601cc,dst=/tmp/clis-diesel_cli_2-3-4/release/build/quote-edf8f660a3d601cc/out,source=/ \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=quote \
 ##         CARGO_INCREMENTAL=0 \
@@ -3252,8 +4479,10 @@ RUN \
   --mount=from=out-e1e423eb99bb7e63,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libproc_macro2-e1e423eb99bb7e63.rmeta,source=/libproc_macro2-e1e423eb99bb7e63.rmeta \
   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rlib,source=/libunicode_ident-721470d94fc0c354.rlib \
   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rmeta,source=/libunicode_ident-721470d94fc0c354.rmeta \
+  --mount=from=out-71babfb997932318,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-71babfb997932318,source=/build_script_build-71babfb997932318 \
   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rlib,source=/libquote-87872b55644e5043.rlib \
   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rmeta,source=/libquote-87872b55644e5043.rmeta \
+  --mount=from=out-c63aae50eb6f480a,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-c63aae50eb6f480a,source=/build_script_build-c63aae50eb6f480a \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=syn \
         CARGO_INCREMENTAL=0 \
@@ -3286,7 +4515,15 @@ COPY --link --from=dep-n-syn-2.0.108-12379804391f3f43 /tmp/clis-diesel_cli_2-3-4
 ## deps = [
 ##     "e1e423eb99bb7e63",
 ##     "721470d94fc0c354",
+##     "e93dddbb48c6a6fc",
+##     "71babfb997932318",
 ##     "87872b55644e5043",
+##     "edf8f660a3d601cc",
+##     "c63aae50eb6f480a",
+## ]
+## buildrs_results = [
+##     "e93dddbb48c6a6fc",
+##     "edf8f660a3d601cc",
 ## ]
 ## writes = [
 ##     "libsyn-12379804391f3f43.rlib",
@@ -3316,12 +4553,20 @@ COPY --link --from=dep-n-syn-2.0.108-12379804391f3f43 /tmp/clis-diesel_cli_2-3-4
 ## xtern = "libunicode_ident-721470d94fc0c354.rmeta"
 ##
 ## [[externs]]
+## from = "out-71babfb997932318"
+## xtern = "build_script_build-71babfb997932318"
+##
+## [[externs]]
 ## from = "out-87872b55644e5043"
 ## xtern = "libquote-87872b55644e5043.rlib"
 ##
 ## [[externs]]
 ## from = "out-87872b55644e5043"
 ## xtern = "libquote-87872b55644e5043.rmeta"
+##
+## [[externs]]
+## from = "out-c63aae50eb6f480a"
+## xtern = "build_script_build-c63aae50eb6f480a"
 ##
 ## [[stages]]
 ##
@@ -3377,8 +4622,10 @@ COPY --link --from=dep-n-syn-2.0.108-12379804391f3f43 /tmp/clis-diesel_cli_2-3-4
 ##   --mount=from=out-e1e423eb99bb7e63,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libproc_macro2-e1e423eb99bb7e63.rmeta,source=/libproc_macro2-e1e423eb99bb7e63.rmeta \
 ##   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rlib,source=/libunicode_ident-721470d94fc0c354.rlib \
 ##   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rmeta,source=/libunicode_ident-721470d94fc0c354.rmeta \
+##   --mount=from=out-71babfb997932318,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-71babfb997932318,source=/build_script_build-71babfb997932318 \
 ##   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rlib,source=/libquote-87872b55644e5043.rlib \
 ##   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rmeta,source=/libquote-87872b55644e5043.rmeta \
+##   --mount=from=out-c63aae50eb6f480a,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-c63aae50eb6f480a,source=/build_script_build-c63aae50eb6f480a \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=syn \
 ##         CARGO_INCREMENTAL=0 \
@@ -3427,8 +4674,10 @@ RUN \
   --mount=from=out-e1e423eb99bb7e63,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libproc_macro2-e1e423eb99bb7e63.rmeta,source=/libproc_macro2-e1e423eb99bb7e63.rmeta \
   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rlib,source=/libunicode_ident-721470d94fc0c354.rlib \
   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rmeta,source=/libunicode_ident-721470d94fc0c354.rmeta \
+  --mount=from=out-71babfb997932318,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-71babfb997932318,source=/build_script_build-71babfb997932318 \
   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rlib,source=/libquote-87872b55644e5043.rlib \
   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rmeta,source=/libquote-87872b55644e5043.rmeta \
+  --mount=from=out-c63aae50eb6f480a,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-c63aae50eb6f480a,source=/build_script_build-c63aae50eb6f480a \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=diesel_table_macro_syntax \
         CARGO_INCREMENTAL=0 \
@@ -3462,7 +4711,15 @@ COPY --link --from=dep-n-diesel_table_macro_syntax-0.3.0-c43818bdc57f523f /tmp/c
 ##     "12379804391f3f43",
 ##     "e1e423eb99bb7e63",
 ##     "721470d94fc0c354",
+##     "e93dddbb48c6a6fc",
+##     "71babfb997932318",
 ##     "87872b55644e5043",
+##     "edf8f660a3d601cc",
+##     "c63aae50eb6f480a",
+## ]
+## buildrs_results = [
+##     "e93dddbb48c6a6fc",
+##     "edf8f660a3d601cc",
 ## ]
 ## writes = [
 ##     "diesel_table_macro_syntax-c43818bdc57f523f.d",
@@ -3500,12 +4757,20 @@ COPY --link --from=dep-n-diesel_table_macro_syntax-0.3.0-c43818bdc57f523f /tmp/c
 ## xtern = "libunicode_ident-721470d94fc0c354.rmeta"
 ##
 ## [[externs]]
+## from = "out-71babfb997932318"
+## xtern = "build_script_build-71babfb997932318"
+##
+## [[externs]]
 ## from = "out-87872b55644e5043"
 ## xtern = "libquote-87872b55644e5043.rlib"
 ##
 ## [[externs]]
 ## from = "out-87872b55644e5043"
 ## xtern = "libquote-87872b55644e5043.rmeta"
+##
+## [[externs]]
+## from = "out-c63aae50eb6f480a"
+## xtern = "build_script_build-c63aae50eb6f480a"
 ##
 ## [[stages]]
 ##
@@ -3563,8 +4828,10 @@ COPY --link --from=dep-n-diesel_table_macro_syntax-0.3.0-c43818bdc57f523f /tmp/c
 ##   --mount=from=out-e1e423eb99bb7e63,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libproc_macro2-e1e423eb99bb7e63.rmeta,source=/libproc_macro2-e1e423eb99bb7e63.rmeta \
 ##   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rlib,source=/libunicode_ident-721470d94fc0c354.rlib \
 ##   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rmeta,source=/libunicode_ident-721470d94fc0c354.rmeta \
+##   --mount=from=out-71babfb997932318,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-71babfb997932318,source=/build_script_build-71babfb997932318 \
 ##   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rlib,source=/libquote-87872b55644e5043.rlib \
 ##   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rmeta,source=/libquote-87872b55644e5043.rmeta \
+##   --mount=from=out-c63aae50eb6f480a,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-c63aae50eb6f480a,source=/build_script_build-c63aae50eb6f480a \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=diesel_table_macro_syntax \
 ##         CARGO_INCREMENTAL=0 \
@@ -4016,8 +5283,10 @@ RUN \
   --mount=from=out-e1e423eb99bb7e63,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libproc_macro2-e1e423eb99bb7e63.rmeta,source=/libproc_macro2-e1e423eb99bb7e63.rmeta \
   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rlib,source=/libunicode_ident-721470d94fc0c354.rlib \
   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rmeta,source=/libunicode_ident-721470d94fc0c354.rmeta \
+  --mount=from=out-71babfb997932318,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-71babfb997932318,source=/build_script_build-71babfb997932318 \
   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rlib,source=/libquote-87872b55644e5043.rlib \
   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rmeta,source=/libquote-87872b55644e5043.rmeta \
+  --mount=from=out-c63aae50eb6f480a,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-c63aae50eb6f480a,source=/build_script_build-c63aae50eb6f480a \
   --mount=from=out-1134992b51c74a31,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libstrsim-1134992b51c74a31.rlib,source=/libstrsim-1134992b51c74a31.rlib \
   --mount=from=out-1134992b51c74a31,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libstrsim-1134992b51c74a31.rmeta,source=/libstrsim-1134992b51c74a31.rmeta \
   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rlib,source=/libsyn-12379804391f3f43.rlib \
@@ -4058,9 +5327,17 @@ COPY --link --from=dep-n-darling_core-0.21.3-feba89015d51c163 /tmp/clis-diesel_c
 ##     "d1be620aa384f8c6",
 ##     "e1e423eb99bb7e63",
 ##     "721470d94fc0c354",
+##     "e93dddbb48c6a6fc",
+##     "71babfb997932318",
 ##     "87872b55644e5043",
+##     "edf8f660a3d601cc",
+##     "c63aae50eb6f480a",
 ##     "1134992b51c74a31",
 ##     "12379804391f3f43",
+## ]
+## buildrs_results = [
+##     "e93dddbb48c6a6fc",
+##     "edf8f660a3d601cc",
 ## ]
 ## writes = [
 ##     "darling_core-feba89015d51c163.d",
@@ -4106,12 +5383,20 @@ COPY --link --from=dep-n-darling_core-0.21.3-feba89015d51c163 /tmp/clis-diesel_c
 ## xtern = "libunicode_ident-721470d94fc0c354.rmeta"
 ##
 ## [[externs]]
+## from = "out-71babfb997932318"
+## xtern = "build_script_build-71babfb997932318"
+##
+## [[externs]]
 ## from = "out-87872b55644e5043"
 ## xtern = "libquote-87872b55644e5043.rlib"
 ##
 ## [[externs]]
 ## from = "out-87872b55644e5043"
 ## xtern = "libquote-87872b55644e5043.rmeta"
+##
+## [[externs]]
+## from = "out-c63aae50eb6f480a"
+## xtern = "build_script_build-c63aae50eb6f480a"
 ##
 ## [[externs]]
 ## from = "out-1134992b51c74a31"
@@ -4187,8 +5472,10 @@ COPY --link --from=dep-n-darling_core-0.21.3-feba89015d51c163 /tmp/clis-diesel_c
 ##   --mount=from=out-e1e423eb99bb7e63,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libproc_macro2-e1e423eb99bb7e63.rmeta,source=/libproc_macro2-e1e423eb99bb7e63.rmeta \
 ##   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rlib,source=/libunicode_ident-721470d94fc0c354.rlib \
 ##   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rmeta,source=/libunicode_ident-721470d94fc0c354.rmeta \
+##   --mount=from=out-71babfb997932318,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-71babfb997932318,source=/build_script_build-71babfb997932318 \
 ##   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rlib,source=/libquote-87872b55644e5043.rlib \
 ##   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rmeta,source=/libquote-87872b55644e5043.rmeta \
+##   --mount=from=out-c63aae50eb6f480a,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-c63aae50eb6f480a,source=/build_script_build-c63aae50eb6f480a \
 ##   --mount=from=out-1134992b51c74a31,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libstrsim-1134992b51c74a31.rlib,source=/libstrsim-1134992b51c74a31.rlib \
 ##   --mount=from=out-1134992b51c74a31,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libstrsim-1134992b51c74a31.rmeta,source=/libstrsim-1134992b51c74a31.rmeta \
 ##   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rlib,source=/libsyn-12379804391f3f43.rlib \
@@ -4242,7 +5529,9 @@ RUN \
   --mount=from=out-d1be620aa384f8c6,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libident_case-d1be620aa384f8c6.rlib,source=/libident_case-d1be620aa384f8c6.rlib \
   --mount=from=out-e1e423eb99bb7e63,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libproc_macro2-e1e423eb99bb7e63.rlib,source=/libproc_macro2-e1e423eb99bb7e63.rlib \
   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rlib,source=/libunicode_ident-721470d94fc0c354.rlib \
+  --mount=from=out-71babfb997932318,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-71babfb997932318,source=/build_script_build-71babfb997932318 \
   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rlib,source=/libquote-87872b55644e5043.rlib \
+  --mount=from=out-c63aae50eb6f480a,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-c63aae50eb6f480a,source=/build_script_build-c63aae50eb6f480a \
   --mount=from=out-1134992b51c74a31,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libstrsim-1134992b51c74a31.rlib,source=/libstrsim-1134992b51c74a31.rlib \
   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rlib,source=/libsyn-12379804391f3f43.rlib \
     env CARGO="$(which cargo)" \
@@ -4282,9 +5571,17 @@ COPY --link --from=dep-n-darling_macro-0.21.3-48fe319515ec65ff /tmp/clis-diesel_
 ##     "d1be620aa384f8c6",
 ##     "e1e423eb99bb7e63",
 ##     "721470d94fc0c354",
+##     "e93dddbb48c6a6fc",
+##     "71babfb997932318",
 ##     "87872b55644e5043",
+##     "edf8f660a3d601cc",
+##     "c63aae50eb6f480a",
 ##     "1134992b51c74a31",
 ##     "12379804391f3f43",
+## ]
+## buildrs_results = [
+##     "e93dddbb48c6a6fc",
+##     "edf8f660a3d601cc",
 ## ]
 ## writes = [
 ##     "darling_macro-48fe319515ec65ff.d",
@@ -4316,8 +5613,16 @@ COPY --link --from=dep-n-darling_macro-0.21.3-48fe319515ec65ff /tmp/clis-diesel_
 ## xtern = "libunicode_ident-721470d94fc0c354.rlib"
 ##
 ## [[externs]]
+## from = "out-71babfb997932318"
+## xtern = "build_script_build-71babfb997932318"
+##
+## [[externs]]
 ## from = "out-87872b55644e5043"
 ## xtern = "libquote-87872b55644e5043.rlib"
+##
+## [[externs]]
+## from = "out-c63aae50eb6f480a"
+## xtern = "build_script_build-c63aae50eb6f480a"
 ##
 ## [[externs]]
 ## from = "out-1134992b51c74a31"
@@ -4382,7 +5687,9 @@ COPY --link --from=dep-n-darling_macro-0.21.3-48fe319515ec65ff /tmp/clis-diesel_
 ##   --mount=from=out-d1be620aa384f8c6,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libident_case-d1be620aa384f8c6.rlib,source=/libident_case-d1be620aa384f8c6.rlib \
 ##   --mount=from=out-e1e423eb99bb7e63,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libproc_macro2-e1e423eb99bb7e63.rlib,source=/libproc_macro2-e1e423eb99bb7e63.rlib \
 ##   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rlib,source=/libunicode_ident-721470d94fc0c354.rlib \
+##   --mount=from=out-71babfb997932318,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-71babfb997932318,source=/build_script_build-71babfb997932318 \
 ##   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rlib,source=/libquote-87872b55644e5043.rlib \
+##   --mount=from=out-c63aae50eb6f480a,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-c63aae50eb6f480a,source=/build_script_build-c63aae50eb6f480a \
 ##   --mount=from=out-1134992b51c74a31,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libstrsim-1134992b51c74a31.rlib,source=/libstrsim-1134992b51c74a31.rlib \
 ##   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rlib,source=/libsyn-12379804391f3f43.rlib \
 ##     env CARGO="$(which cargo)" \
@@ -4439,8 +5746,10 @@ RUN \
   --mount=from=out-e1e423eb99bb7e63,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libproc_macro2-e1e423eb99bb7e63.rmeta,source=/libproc_macro2-e1e423eb99bb7e63.rmeta \
   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rlib,source=/libunicode_ident-721470d94fc0c354.rlib \
   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rmeta,source=/libunicode_ident-721470d94fc0c354.rmeta \
+  --mount=from=out-71babfb997932318,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-71babfb997932318,source=/build_script_build-71babfb997932318 \
   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rlib,source=/libquote-87872b55644e5043.rlib \
   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rmeta,source=/libquote-87872b55644e5043.rmeta \
+  --mount=from=out-c63aae50eb6f480a,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-c63aae50eb6f480a,source=/build_script_build-c63aae50eb6f480a \
   --mount=from=out-1134992b51c74a31,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libstrsim-1134992b51c74a31.rlib,source=/libstrsim-1134992b51c74a31.rlib \
   --mount=from=out-1134992b51c74a31,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libstrsim-1134992b51c74a31.rmeta,source=/libstrsim-1134992b51c74a31.rmeta \
   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rlib,source=/libsyn-12379804391f3f43.rlib \
@@ -4483,10 +5792,18 @@ COPY --link --from=dep-n-darling-0.21.3-9c2515b9354b63f7 /tmp/clis-diesel_cli_2-
 ##     "d1be620aa384f8c6",
 ##     "e1e423eb99bb7e63",
 ##     "721470d94fc0c354",
+##     "e93dddbb48c6a6fc",
+##     "71babfb997932318",
 ##     "87872b55644e5043",
+##     "edf8f660a3d601cc",
+##     "c63aae50eb6f480a",
 ##     "1134992b51c74a31",
 ##     "12379804391f3f43",
 ##     "48fe319515ec65ff",
+## ]
+## buildrs_results = [
+##     "e93dddbb48c6a6fc",
+##     "edf8f660a3d601cc",
 ## ]
 ## writes = [
 ##     "darling-9c2515b9354b63f7.d",
@@ -4540,12 +5857,20 @@ COPY --link --from=dep-n-darling-0.21.3-9c2515b9354b63f7 /tmp/clis-diesel_cli_2-
 ## xtern = "libunicode_ident-721470d94fc0c354.rmeta"
 ##
 ## [[externs]]
+## from = "out-71babfb997932318"
+## xtern = "build_script_build-71babfb997932318"
+##
+## [[externs]]
 ## from = "out-87872b55644e5043"
 ## xtern = "libquote-87872b55644e5043.rlib"
 ##
 ## [[externs]]
 ## from = "out-87872b55644e5043"
 ## xtern = "libquote-87872b55644e5043.rmeta"
+##
+## [[externs]]
+## from = "out-c63aae50eb6f480a"
+## xtern = "build_script_build-c63aae50eb6f480a"
 ##
 ## [[externs]]
 ## from = "out-1134992b51c74a31"
@@ -4627,8 +5952,10 @@ COPY --link --from=dep-n-darling-0.21.3-9c2515b9354b63f7 /tmp/clis-diesel_cli_2-
 ##   --mount=from=out-e1e423eb99bb7e63,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libproc_macro2-e1e423eb99bb7e63.rmeta,source=/libproc_macro2-e1e423eb99bb7e63.rmeta \
 ##   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rlib,source=/libunicode_ident-721470d94fc0c354.rlib \
 ##   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rmeta,source=/libunicode_ident-721470d94fc0c354.rmeta \
+##   --mount=from=out-71babfb997932318,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-71babfb997932318,source=/build_script_build-71babfb997932318 \
 ##   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rlib,source=/libquote-87872b55644e5043.rlib \
 ##   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rmeta,source=/libquote-87872b55644e5043.rmeta \
+##   --mount=from=out-c63aae50eb6f480a,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-c63aae50eb6f480a,source=/build_script_build-c63aae50eb6f480a \
 ##   --mount=from=out-1134992b51c74a31,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libstrsim-1134992b51c74a31.rlib,source=/libstrsim-1134992b51c74a31.rlib \
 ##   --mount=from=out-1134992b51c74a31,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libstrsim-1134992b51c74a31.rmeta,source=/libstrsim-1134992b51c74a31.rmeta \
 ##   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rlib,source=/libsyn-12379804391f3f43.rlib \
@@ -4956,8 +6283,10 @@ RUN \
   --mount=from=out-e1e423eb99bb7e63,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libproc_macro2-e1e423eb99bb7e63.rmeta,source=/libproc_macro2-e1e423eb99bb7e63.rmeta \
   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rlib,source=/libunicode_ident-721470d94fc0c354.rlib \
   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rmeta,source=/libunicode_ident-721470d94fc0c354.rmeta \
+  --mount=from=out-71babfb997932318,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-71babfb997932318,source=/build_script_build-71babfb997932318 \
   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rlib,source=/libquote-87872b55644e5043.rlib \
   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rmeta,source=/libquote-87872b55644e5043.rmeta \
+  --mount=from=out-c63aae50eb6f480a,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-c63aae50eb6f480a,source=/build_script_build-c63aae50eb6f480a \
   --mount=from=out-1134992b51c74a31,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libstrsim-1134992b51c74a31.rlib,source=/libstrsim-1134992b51c74a31.rlib \
   --mount=from=out-1134992b51c74a31,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libstrsim-1134992b51c74a31.rmeta,source=/libstrsim-1134992b51c74a31.rmeta \
   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rlib,source=/libsyn-12379804391f3f43.rlib \
@@ -5003,12 +6332,20 @@ COPY --link --from=dep-n-dsl_auto_type-0.2.0-e72117f7acff2466 /tmp/clis-diesel_c
 ##     "d1be620aa384f8c6",
 ##     "e1e423eb99bb7e63",
 ##     "721470d94fc0c354",
+##     "e93dddbb48c6a6fc",
+##     "71babfb997932318",
 ##     "87872b55644e5043",
+##     "edf8f660a3d601cc",
+##     "c63aae50eb6f480a",
 ##     "1134992b51c74a31",
 ##     "12379804391f3f43",
 ##     "48fe319515ec65ff",
 ##     "7892953c40c7027d",
 ##     "3c7b5c3a02d329ae",
+## ]
+## buildrs_results = [
+##     "e93dddbb48c6a6fc",
+##     "edf8f660a3d601cc",
 ## ]
 ## writes = [
 ##     "dsl_auto_type-e72117f7acff2466.d",
@@ -5070,12 +6407,20 @@ COPY --link --from=dep-n-dsl_auto_type-0.2.0-e72117f7acff2466 /tmp/clis-diesel_c
 ## xtern = "libunicode_ident-721470d94fc0c354.rmeta"
 ##
 ## [[externs]]
+## from = "out-71babfb997932318"
+## xtern = "build_script_build-71babfb997932318"
+##
+## [[externs]]
 ## from = "out-87872b55644e5043"
 ## xtern = "libquote-87872b55644e5043.rlib"
 ##
 ## [[externs]]
 ## from = "out-87872b55644e5043"
 ## xtern = "libquote-87872b55644e5043.rmeta"
+##
+## [[externs]]
+## from = "out-c63aae50eb6f480a"
+## xtern = "build_script_build-c63aae50eb6f480a"
 ##
 ## [[externs]]
 ## from = "out-1134992b51c74a31"
@@ -5175,8 +6520,10 @@ COPY --link --from=dep-n-dsl_auto_type-0.2.0-e72117f7acff2466 /tmp/clis-diesel_c
 ##   --mount=from=out-e1e423eb99bb7e63,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libproc_macro2-e1e423eb99bb7e63.rmeta,source=/libproc_macro2-e1e423eb99bb7e63.rmeta \
 ##   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rlib,source=/libunicode_ident-721470d94fc0c354.rlib \
 ##   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rmeta,source=/libunicode_ident-721470d94fc0c354.rmeta \
+##   --mount=from=out-71babfb997932318,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-71babfb997932318,source=/build_script_build-71babfb997932318 \
 ##   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rlib,source=/libquote-87872b55644e5043.rlib \
 ##   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rmeta,source=/libquote-87872b55644e5043.rmeta \
+##   --mount=from=out-c63aae50eb6f480a,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-c63aae50eb6f480a,source=/build_script_build-c63aae50eb6f480a \
 ##   --mount=from=out-1134992b51c74a31,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libstrsim-1134992b51c74a31.rlib,source=/libstrsim-1134992b51c74a31.rlib \
 ##   --mount=from=out-1134992b51c74a31,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libstrsim-1134992b51c74a31.rmeta,source=/libstrsim-1134992b51c74a31.rmeta \
 ##   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rlib,source=/libsyn-12379804391f3f43.rlib \
@@ -5223,6 +6570,335 @@ COPY --link --from=dep-n-dsl_auto_type-0.2.0-e72117f7acff2466 /tmp/clis-diesel_c
 FROM scratch AS cratesio-diesel_derives-2.3.5
 ADD --chmod=0664 --unpack --checksum=sha256:8587cbca3c929fb198e7950d761d31ca72b80aa6e07c1b7bec5879d187720436 \
   https://static.crates.io/crates/diesel_derives/diesel_derives-2.3.5.crate /
+FROM rust-base AS dep-x-diesel_derives-2.3.5-26a0fe0ac7c340f6
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-diesel_cli_2-3-4/release/build/diesel_derives-26a0fe0ac7c340f6
+RUN \
+  --mount=from=cratesio-diesel_derives-2.3.5,source=/diesel_derives-2.3.5,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/diesel_derives-2.3.5,rw \
+    { \
+        cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/diesel_derives-2.3.5/build.rs | sed 's/fn main/fn actual_26a0fe0ac7c340f6_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/diesel_derives-2.3.5/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/diesel_derives-2.3.5/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/diesel_derives-2.3.5/build.rs ; \
+        { \
+          echo ; \
+          echo 'fn main() {' ; \
+          echo '    use std::env::{args_os, var_os};' ; \
+          echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+          echo '        use std::process::{Command, Stdio};' ; \
+          echo '        let mut cmd = Command::new("cargo-green");' ; \
+          echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+          echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+          echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+          echo '        assert!(res.success());' ; \
+          echo '    } else {' ; \
+          echo '        actual_26a0fe0ac7c340f6_main();' ; \
+          echo '    }' ; \
+          echo '}' ; \
+        } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/diesel_derives-2.3.5/build.rs ; \
+    } && \
+    env CARGO="$(which cargo)" \
+        CARGO_CRATE_NAME=build_script_build \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/diesel_derives-2.3.5 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/diesel_derives-2.3.5/Cargo.toml \
+        CARGO_PKG_AUTHORS= \
+        CARGO_PKG_DESCRIPTION=You' should not use this crate directly, it is internal to Diesel.' \
+        CARGO_PKG_HOMEPAGE=https'://diesel.rs' \
+        CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=diesel_derives \
+        CARGO_PKG_README= \
+        CARGO_PKG_REPOSITORY=https'://github.com/diesel-rs/diesel/' \
+        CARGO_PKG_RUST_VERSION=1.86.0 \
+        CARGO_PKG_VERSION=2.3.5 \
+        CARGO_PKG_VERSION_MAJOR=2 \
+        CARGO_PKG_VERSION_MINOR=3 \
+        CARGO_PKG_VERSION_PATCH=5 \
+        CARGO_PKG_VERSION_PRE= \
+        CARGOGREEN=1 \
+      rustc '--crate-name' 'build_script_build' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'bin' '--emit' 'dep-info,link' '-C' 'embed-bitcode=no' '--warn' 'unexpected_cfgs' '--check-cfg' 'cfg(diesel_docsrs)' '-C' 'debug-assertions=off' '--cfg' 'feature="default"' '--cfg' 'feature="postgres"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("128-column-tables", "32-column-tables", "64-column-tables", "chrono", "default", "mysql", "nightly", "numeric", "postgres", "r2d2", "sqlite", "time", "with-deprecated", "without-deprecated"))' '-C' 'metadata=ee989506012ef802' '-C' 'extra-filename=-26a0fe0ac7c340f6' '--out-dir' '/tmp/clis-diesel_cli_2-3-4/release/build/diesel_derives-26a0fe0ac7c340f6' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-diesel_cli_2-3-4/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/diesel_derives-2.3.5/build.rs \
+        1>          /tmp/clis-diesel_cli_2-3-4/release/build/diesel_derives-26a0fe0ac7c340f6/out-26a0fe0ac7c340f6-stdout \
+        2>          /tmp/clis-diesel_cli_2-3-4/release/build/diesel_derives-26a0fe0ac7c340f6/out-26a0fe0ac7c340f6-stderr \
+        || echo $? >/tmp/clis-diesel_cli_2-3-4/release/build/diesel_derives-26a0fe0ac7c340f6/out-26a0fe0ac7c340f6-errcode\
+  ; find /tmp/clis-diesel_cli_2-3-4/release/build/diesel_derives-26a0fe0ac7c340f6/*-26a0fe0ac7c340f6* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-26a0fe0ac7c340f6
+COPY --link --from=dep-x-diesel_derives-2.3.5-26a0fe0ac7c340f6 /tmp/clis-diesel_cli_2-3-4/release/build/diesel_derives-26a0fe0ac7c340f6/*-26a0fe0ac7c340f6* /
+
+## this = "26a0fe0ac7c340f6"
+## writes = [
+##     "build_script_build-26a0fe0ac7c340f6",
+##     "build_script_build-26a0fe0ac7c340f6.d",
+## ]
+## stderr = [
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-4/release/build/diesel_derives-26a0fe0ac7c340f6/build_script_build-26a0fe0ac7c340f6.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-4/release/build/diesel_derives-26a0fe0ac7c340f6/build_script_build-26a0fe0ac7c340f6","emit":"link"}',
+## ]
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = '''
+## FROM --platform=$BUILDPLATFORM docker.io/tonistiigi/xx:1.6.1@sha256:923441d7c25f1e2eb5789f82d987693c47b8ed987c4ab3b075d6ed2b5d6779a3 AS xx
+## FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base
+## ARG TARGETPLATFORM
+## RUN \
+##   --mount=from=xx,source=/usr/bin/xx-apk,dst=/usr/bin/xx-apk \
+##   --mount=from=xx,source=/usr/bin/xx-apt,dst=/usr/bin/xx-apt \
+##   --mount=from=xx,source=/usr/bin/xx-apt,dst=/usr/bin/xx-apt-get \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-c++ \
+##   --mount=from=xx,source=/usr/bin/xx-cargo,dst=/usr/bin/xx-cargo \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-cc \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-clang \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-clang++ \
+##   --mount=from=xx,source=/usr/bin/xx-go,dst=/usr/bin/xx-go \
+##   --mount=from=xx,source=/usr/bin/xx-info,dst=/usr/bin/xx-info \
+##   --mount=from=xx,source=/usr/bin/xx-ld-shas,dst=/usr/bin/xx-ld-shas \
+##   --mount=from=xx,source=/usr/bin/xx-verify,dst=/usr/bin/xx-verify \
+##   --mount=from=xx,source=/usr/bin/xx-windres,dst=/usr/bin/xx-windres \
+##     set -eux \
+##  && if   command -v apk >/dev/null 2>&1; then \
+##                                      xx-apk     add     --no-cache                 '<none>'; \
+##     elif command -v apt >/dev/null 2>&1; then \
+##       DEBIAN_FRONTEND=noninteractive xx-apt     install --no-install-recommends -y 'libpq-dev'; \
+##     else \
+##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
+##     fi'''
+##
+## [[stages]]
+##
+## [stages.Cratesio]
+## stage = "cratesio-diesel_derives-2.3.5"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/diesel_derives-2.3.5"
+## name = "diesel_derives"
+## name_dash_version = "diesel_derives-2.3.5"
+## hash = "8587cbca3c929fb198e7950d761d31ca72b80aa6e07c1b7bec5879d187720436"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "dep-x-diesel_derives-2.3.5-26a0fe0ac7c340f6"
+## script = '''
+## FROM rust-base AS dep-x-diesel_derives-2.3.5-26a0fe0ac7c340f6
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-diesel_cli_2-3-4/release/build/diesel_derives-26a0fe0ac7c340f6
+## RUN \
+##   --mount=from=cratesio-diesel_derives-2.3.5,source=/diesel_derives-2.3.5,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/diesel_derives-2.3.5,rw \
+##     { \
+##         cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/diesel_derives-2.3.5/build.rs | sed 's/fn main/fn actual_26a0fe0ac7c340f6_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/diesel_derives-2.3.5/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/diesel_derives-2.3.5/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/diesel_derives-2.3.5/build.rs ; \
+##         { \
+##           echo ; \
+##           echo 'fn main() {' ; \
+##           echo '    use std::env::{args_os, var_os};' ; \
+##           echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+##           echo '        use std::process::{Command, Stdio};' ; \
+##           echo '        let mut cmd = Command::new("cargo-green");' ; \
+##           echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+##           echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+##           echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+##           echo '        assert!(res.success());' ; \
+##           echo '    } else {' ; \
+##           echo '        actual_26a0fe0ac7c340f6_main();' ; \
+##           echo '    }' ; \
+##           echo '}' ; \
+##         } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/diesel_derives-2.3.5/build.rs ; \
+##     } && \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CRATE_NAME=build_script_build \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/diesel_derives-2.3.5 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/diesel_derives-2.3.5/Cargo.toml \
+##         CARGO_PKG_AUTHORS= \
+##         CARGO_PKG_DESCRIPTION=You' should not use this crate directly, it is internal to Diesel.' \
+##         CARGO_PKG_HOMEPAGE=https'://diesel.rs' \
+##         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=diesel_derives \
+##         CARGO_PKG_README= \
+##         CARGO_PKG_REPOSITORY=https'://github.com/diesel-rs/diesel/' \
+##         CARGO_PKG_RUST_VERSION=1.86.0 \
+##         CARGO_PKG_VERSION=2.3.5 \
+##         CARGO_PKG_VERSION_MAJOR=2 \
+##         CARGO_PKG_VERSION_MINOR=3 \
+##         CARGO_PKG_VERSION_PATCH=5 \
+##         CARGO_PKG_VERSION_PRE= \
+##         CARGOGREEN=1 \
+##       rustc '--crate-name' 'build_script_build' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'bin' '--emit' 'dep-info,link' '-C' 'embed-bitcode=no' '--warn' 'unexpected_cfgs' '--check-cfg' 'cfg(diesel_docsrs)' '-C' 'debug-assertions=off' '--cfg' 'feature="default"' '--cfg' 'feature="postgres"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("128-column-tables", "32-column-tables", "64-column-tables", "chrono", "default", "mysql", "nightly", "numeric", "postgres", "r2d2", "sqlite", "time", "with-deprecated", "without-deprecated"))' '-C' 'metadata=ee989506012ef802' '-C' 'extra-filename=-26a0fe0ac7c340f6' '--out-dir' '/tmp/clis-diesel_cli_2-3-4/release/build/diesel_derives-26a0fe0ac7c340f6' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-diesel_cli_2-3-4/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/diesel_derives-2.3.5/build.rs \
+##         1>          /tmp/clis-diesel_cli_2-3-4/release/build/diesel_derives-26a0fe0ac7c340f6/out-26a0fe0ac7c340f6-stdout \
+##         2>          /tmp/clis-diesel_cli_2-3-4/release/build/diesel_derives-26a0fe0ac7c340f6/out-26a0fe0ac7c340f6-stderr \
+##         || echo $? >/tmp/clis-diesel_cli_2-3-4/release/build/diesel_derives-26a0fe0ac7c340f6/out-26a0fe0ac7c340f6-errcode\
+##   ; find /tmp/clis-diesel_cli_2-3-4/release/build/diesel_derives-26a0fe0ac7c340f6/*-26a0fe0ac7c340f6* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-26a0fe0ac7c340f6"
+## script = """
+## FROM scratch AS out-26a0fe0ac7c340f6
+## COPY --link --from=dep-x-diesel_derives-2.3.5-26a0fe0ac7c340f6 /tmp/clis-diesel_cli_2-3-4/release/build/diesel_derives-26a0fe0ac7c340f6/*-26a0fe0ac7c340f6* /"""
+
+FROM rust-base AS run-z-diesel_derives-2.3.5-0be4771cf3c80127
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-diesel_cli_2-3-4/release/build/diesel_derives-0be4771cf3c80127/out
+WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/diesel_derives-2.3.5
+RUN \
+  --mount=from=out-26a0fe0ac7c340f6,source=/build_script_build-26a0fe0ac7c340f6,dst=/tmp/clis-diesel_cli_2-3-4/release/build/diesel_derives-26a0fe0ac7c340f6/build-script-build \
+  --mount=from=cratesio-diesel_derives-2.3.5,source=/diesel_derives-2.3.5,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/diesel_derives-2.3.5 \
+    env CARGO="$(which cargo)" \
+        CARGO_CFG_FEATURE=default,postgres \
+        CARGO_CFG_PANIC=unwind \
+        CARGO_CFG_TARGET_ABI= \
+        CARGO_CFG_TARGET_ARCH=x86_64 \
+        CARGO_CFG_TARGET_ENDIAN=little \
+        CARGO_CFG_TARGET_ENV=gnu \
+        CARGO_CFG_TARGET_FAMILY=unix \
+        CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
+        CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+        CARGO_CFG_TARGET_OS=linux \
+        CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+        CARGO_CFG_TARGET_VENDOR=unknown \
+        CARGO_CFG_UNIX= \
+        CARGO_ENCODED_RUSTFLAGS= \
+        CARGO_FEATURE_DEFAULT=1 \
+        CARGO_FEATURE_POSTGRES=1 \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/diesel_derives-2.3.5 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/diesel_derives-2.3.5/Cargo.toml \
+        CARGO_PKG_AUTHORS= \
+        CARGO_PKG_DESCRIPTION=You' should not use this crate directly, it is internal to Diesel.' \
+        CARGO_PKG_HOMEPAGE=https'://diesel.rs' \
+        CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=diesel_derives \
+        CARGO_PKG_README= \
+        CARGO_PKG_REPOSITORY=https'://github.com/diesel-rs/diesel/' \
+        CARGO_PKG_RUST_VERSION=1.86.0 \
+        CARGO_PKG_VERSION=2.3.5 \
+        CARGO_PKG_VERSION_MAJOR=2 \
+        CARGO_PKG_VERSION_MINOR=3 \
+        CARGO_PKG_VERSION_PATCH=5 \
+        CARGO_PKG_VERSION_PRE= \
+        DEBUG=false \
+        HOST=x86_64-unknown-linux-gnu \
+        NUM_JOBS=4 \
+        OPT_LEVEL=0 \
+        OUT_DIR=/tmp/clis-diesel_cli_2-3-4/release/build/diesel_derives-0be4771cf3c80127/out \
+        PROFILE=release \
+        RUSTC=rustc \
+        RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+        TARGET=x86_64-unknown-linux-gnu \
+        CARGOGREEN=1 \
+      CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-diesel_cli_2-3-4/release/build/diesel_derives-26a0fe0ac7c340f6/build-script-build \
+        1>          /tmp/clis-diesel_cli_2-3-4/release/build/diesel_derives-0be4771cf3c80127/out/out-0be4771cf3c80127-stdout \
+        2>          /tmp/clis-diesel_cli_2-3-4/release/build/diesel_derives-0be4771cf3c80127/out/out-0be4771cf3c80127-stderr \
+        || echo $? >/tmp/clis-diesel_cli_2-3-4/release/build/diesel_derives-0be4771cf3c80127/out/out-0be4771cf3c80127-errcode\
+  ; find /tmp/clis-diesel_cli_2-3-4/release/build/diesel_derives-0be4771cf3c80127/out/*-0be4771cf3c80127* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-0be4771cf3c80127
+COPY --link --from=run-z-diesel_derives-2.3.5-0be4771cf3c80127 /tmp/clis-diesel_cli_2-3-4/release/build/diesel_derives-0be4771cf3c80127/out/* /
+
+## this = "0be4771cf3c80127"
+## deps = ["26a0fe0ac7c340f6"]
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = '''
+## FROM --platform=$BUILDPLATFORM docker.io/tonistiigi/xx:1.6.1@sha256:923441d7c25f1e2eb5789f82d987693c47b8ed987c4ab3b075d6ed2b5d6779a3 AS xx
+## FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base
+## ARG TARGETPLATFORM
+## RUN \
+##   --mount=from=xx,source=/usr/bin/xx-apk,dst=/usr/bin/xx-apk \
+##   --mount=from=xx,source=/usr/bin/xx-apt,dst=/usr/bin/xx-apt \
+##   --mount=from=xx,source=/usr/bin/xx-apt,dst=/usr/bin/xx-apt-get \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-c++ \
+##   --mount=from=xx,source=/usr/bin/xx-cargo,dst=/usr/bin/xx-cargo \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-cc \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-clang \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-clang++ \
+##   --mount=from=xx,source=/usr/bin/xx-go,dst=/usr/bin/xx-go \
+##   --mount=from=xx,source=/usr/bin/xx-info,dst=/usr/bin/xx-info \
+##   --mount=from=xx,source=/usr/bin/xx-ld-shas,dst=/usr/bin/xx-ld-shas \
+##   --mount=from=xx,source=/usr/bin/xx-verify,dst=/usr/bin/xx-verify \
+##   --mount=from=xx,source=/usr/bin/xx-windres,dst=/usr/bin/xx-windres \
+##     set -eux \
+##  && if   command -v apk >/dev/null 2>&1; then \
+##                                      xx-apk     add     --no-cache                 '<none>'; \
+##     elif command -v apt >/dev/null 2>&1; then \
+##       DEBIAN_FRONTEND=noninteractive xx-apt     install --no-install-recommends -y 'libpq-dev'; \
+##     else \
+##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
+##     fi'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "run-z-diesel_derives-2.3.5-0be4771cf3c80127"
+## script = '''
+## FROM rust-base AS run-z-diesel_derives-2.3.5-0be4771cf3c80127
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-diesel_cli_2-3-4/release/build/diesel_derives-0be4771cf3c80127/out
+## WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/diesel_derives-2.3.5
+## RUN \
+##   --mount=from=out-26a0fe0ac7c340f6,source=/build_script_build-26a0fe0ac7c340f6,dst=/tmp/clis-diesel_cli_2-3-4/release/build/diesel_derives-26a0fe0ac7c340f6/build-script-build \
+##   --mount=from=cratesio-diesel_derives-2.3.5,source=/diesel_derives-2.3.5,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/diesel_derives-2.3.5 \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CFG_FEATURE=default,postgres \
+##         CARGO_CFG_PANIC=unwind \
+##         CARGO_CFG_TARGET_ABI= \
+##         CARGO_CFG_TARGET_ARCH=x86_64 \
+##         CARGO_CFG_TARGET_ENDIAN=little \
+##         CARGO_CFG_TARGET_ENV=gnu \
+##         CARGO_CFG_TARGET_FAMILY=unix \
+##         CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
+##         CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+##         CARGO_CFG_TARGET_OS=linux \
+##         CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+##         CARGO_CFG_TARGET_VENDOR=unknown \
+##         CARGO_CFG_UNIX= \
+##         CARGO_ENCODED_RUSTFLAGS= \
+##         CARGO_FEATURE_DEFAULT=1 \
+##         CARGO_FEATURE_POSTGRES=1 \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/diesel_derives-2.3.5 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/diesel_derives-2.3.5/Cargo.toml \
+##         CARGO_PKG_AUTHORS= \
+##         CARGO_PKG_DESCRIPTION=You' should not use this crate directly, it is internal to Diesel.' \
+##         CARGO_PKG_HOMEPAGE=https'://diesel.rs' \
+##         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=diesel_derives \
+##         CARGO_PKG_README= \
+##         CARGO_PKG_REPOSITORY=https'://github.com/diesel-rs/diesel/' \
+##         CARGO_PKG_RUST_VERSION=1.86.0 \
+##         CARGO_PKG_VERSION=2.3.5 \
+##         CARGO_PKG_VERSION_MAJOR=2 \
+##         CARGO_PKG_VERSION_MINOR=3 \
+##         CARGO_PKG_VERSION_PATCH=5 \
+##         CARGO_PKG_VERSION_PRE= \
+##         DEBUG=false \
+##         HOST=x86_64-unknown-linux-gnu \
+##         NUM_JOBS=4 \
+##         OPT_LEVEL=0 \
+##         OUT_DIR=/tmp/clis-diesel_cli_2-3-4/release/build/diesel_derives-0be4771cf3c80127/out \
+##         PROFILE=release \
+##         RUSTC=rustc \
+##         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+##         TARGET=x86_64-unknown-linux-gnu \
+##         CARGOGREEN=1 \
+##       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-diesel_cli_2-3-4/release/build/diesel_derives-26a0fe0ac7c340f6/build-script-build \
+##         1>          /tmp/clis-diesel_cli_2-3-4/release/build/diesel_derives-0be4771cf3c80127/out/out-0be4771cf3c80127-stdout \
+##         2>          /tmp/clis-diesel_cli_2-3-4/release/build/diesel_derives-0be4771cf3c80127/out/out-0be4771cf3c80127-stderr \
+##         || echo $? >/tmp/clis-diesel_cli_2-3-4/release/build/diesel_derives-0be4771cf3c80127/out/out-0be4771cf3c80127-errcode\
+##   ; find /tmp/clis-diesel_cli_2-3-4/release/build/diesel_derives-0be4771cf3c80127/out/*-0be4771cf3c80127* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-0be4771cf3c80127"
+## script = """
+## FROM scratch AS out-0be4771cf3c80127
+## COPY --link --from=run-z-diesel_derives-2.3.5-0be4771cf3c80127 /tmp/clis-diesel_cli_2-3-4/release/build/diesel_derives-0be4771cf3c80127/out/* /"""
+
+
 FROM rust-base AS dep-n-diesel_derives-2.3.5-c1175053a5aa4368
 SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-diesel_cli_2-3-4/release/deps
@@ -5232,7 +6908,9 @@ RUN \
   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rlib,source=/libsyn-12379804391f3f43.rlib \
   --mount=from=out-e1e423eb99bb7e63,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libproc_macro2-e1e423eb99bb7e63.rlib,source=/libproc_macro2-e1e423eb99bb7e63.rlib \
   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rlib,source=/libunicode_ident-721470d94fc0c354.rlib \
+  --mount=from=out-71babfb997932318,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-71babfb997932318,source=/build_script_build-71babfb997932318 \
   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rlib,source=/libquote-87872b55644e5043.rlib \
+  --mount=from=out-c63aae50eb6f480a,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-c63aae50eb6f480a,source=/build_script_build-c63aae50eb6f480a \
   --mount=from=out-e72117f7acff2466,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libdsl_auto_type-e72117f7acff2466.rlib,source=/libdsl_auto_type-e72117f7acff2466.rlib \
   --mount=from=out-9c2515b9354b63f7,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libdarling-9c2515b9354b63f7.rlib,source=/libdarling-9c2515b9354b63f7.rlib \
   --mount=from=out-feba89015d51c163,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libdarling_core-feba89015d51c163.rlib,source=/libdarling_core-feba89015d51c163.rlib \
@@ -5242,6 +6920,7 @@ RUN \
   --mount=from=out-48fe319515ec65ff,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libdarling_macro-48fe319515ec65ff.so,source=/libdarling_macro-48fe319515ec65ff.so \
   --mount=from=out-7892953c40c7027d,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libeither-7892953c40c7027d.rlib,source=/libeither-7892953c40c7027d.rlib \
   --mount=from=out-3c7b5c3a02d329ae,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libheck-3c7b5c3a02d329ae.rlib,source=/libheck-3c7b5c3a02d329ae.rlib \
+  --mount=from=out-0be4771cf3c80127,dst=/tmp/clis-diesel_cli_2-3-4/release/build/diesel_derives-0be4771cf3c80127/out,source=/ \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=diesel_derives \
         CARGO_INCREMENTAL=0 \
@@ -5277,7 +6956,11 @@ COPY --link --from=dep-n-diesel_derives-2.3.5-c1175053a5aa4368 /tmp/clis-diesel_
 ##     "12379804391f3f43",
 ##     "e1e423eb99bb7e63",
 ##     "721470d94fc0c354",
+##     "e93dddbb48c6a6fc",
+##     "71babfb997932318",
 ##     "87872b55644e5043",
+##     "edf8f660a3d601cc",
+##     "c63aae50eb6f480a",
 ##     "e72117f7acff2466",
 ##     "9c2515b9354b63f7",
 ##     "feba89015d51c163",
@@ -5287,6 +6970,13 @@ COPY --link --from=dep-n-diesel_derives-2.3.5-c1175053a5aa4368 /tmp/clis-diesel_
 ##     "48fe319515ec65ff",
 ##     "7892953c40c7027d",
 ##     "3c7b5c3a02d329ae",
+##     "0be4771cf3c80127",
+##     "26a0fe0ac7c340f6",
+## ]
+## buildrs_results = [
+##     "e93dddbb48c6a6fc",
+##     "edf8f660a3d601cc",
+##     "0be4771cf3c80127",
 ## ]
 ## writes = [
 ##     "diesel_derives-c1175053a5aa4368.d",
@@ -5314,8 +7004,16 @@ COPY --link --from=dep-n-diesel_derives-2.3.5-c1175053a5aa4368 /tmp/clis-diesel_
 ## xtern = "libunicode_ident-721470d94fc0c354.rlib"
 ##
 ## [[externs]]
+## from = "out-71babfb997932318"
+## xtern = "build_script_build-71babfb997932318"
+##
+## [[externs]]
 ## from = "out-87872b55644e5043"
 ## xtern = "libquote-87872b55644e5043.rlib"
+##
+## [[externs]]
+## from = "out-c63aae50eb6f480a"
+## xtern = "build_script_build-c63aae50eb6f480a"
 ##
 ## [[externs]]
 ## from = "out-e72117f7acff2466"
@@ -5352,6 +7050,11 @@ COPY --link --from=dep-n-diesel_derives-2.3.5-c1175053a5aa4368 /tmp/clis-diesel_
 ## [[externs]]
 ## from = "out-3c7b5c3a02d329ae"
 ## xtern = "libheck-3c7b5c3a02d329ae.rlib"
+##
+## [[mounts]]
+## name = "out-0be4771cf3c80127"
+## src = "/"
+## dst = "/tmp/clis-diesel_cli_2-3-4/release/build/diesel_derives-0be4771cf3c80127/out"
 ##
 ## [[stages]]
 ##
@@ -5407,7 +7110,9 @@ COPY --link --from=dep-n-diesel_derives-2.3.5-c1175053a5aa4368 /tmp/clis-diesel_
 ##   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rlib,source=/libsyn-12379804391f3f43.rlib \
 ##   --mount=from=out-e1e423eb99bb7e63,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libproc_macro2-e1e423eb99bb7e63.rlib,source=/libproc_macro2-e1e423eb99bb7e63.rlib \
 ##   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rlib,source=/libunicode_ident-721470d94fc0c354.rlib \
+##   --mount=from=out-71babfb997932318,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-71babfb997932318,source=/build_script_build-71babfb997932318 \
 ##   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rlib,source=/libquote-87872b55644e5043.rlib \
+##   --mount=from=out-c63aae50eb6f480a,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-c63aae50eb6f480a,source=/build_script_build-c63aae50eb6f480a \
 ##   --mount=from=out-e72117f7acff2466,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libdsl_auto_type-e72117f7acff2466.rlib,source=/libdsl_auto_type-e72117f7acff2466.rlib \
 ##   --mount=from=out-9c2515b9354b63f7,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libdarling-9c2515b9354b63f7.rlib,source=/libdarling-9c2515b9354b63f7.rlib \
 ##   --mount=from=out-feba89015d51c163,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libdarling_core-feba89015d51c163.rlib,source=/libdarling_core-feba89015d51c163.rlib \
@@ -5417,6 +7122,7 @@ COPY --link --from=dep-n-diesel_derives-2.3.5-c1175053a5aa4368 /tmp/clis-diesel_
 ##   --mount=from=out-48fe319515ec65ff,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libdarling_macro-48fe319515ec65ff.so,source=/libdarling_macro-48fe319515ec65ff.so \
 ##   --mount=from=out-7892953c40c7027d,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libeither-7892953c40c7027d.rlib,source=/libeither-7892953c40c7027d.rlib \
 ##   --mount=from=out-3c7b5c3a02d329ae,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libheck-3c7b5c3a02d329ae.rlib,source=/libheck-3c7b5c3a02d329ae.rlib \
+##   --mount=from=out-0be4771cf3c80127,dst=/tmp/clis-diesel_cli_2-3-4/release/build/diesel_derives-0be4771cf3c80127/out,source=/ \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=diesel_derives \
 ##         CARGO_INCREMENTAL=0 \
@@ -5723,11 +7429,367 @@ COPY --link --from=dep-n-itoa-1.0.15-810c45601233a792 /tmp/clis-diesel_cli_2-3-4
 FROM scratch AS cratesio-libc-0.2.177
 ADD --chmod=0664 --unpack --checksum=sha256:2874a2af47a2325c2001a6e6fad9b16a53b802102b528163885171cf92b15976 \
   https://static.crates.io/crates/libc/libc-0.2.177.crate /
+FROM rust-base AS dep-x-libc-0.2.177-880d2e011f9f14fa
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-diesel_cli_2-3-4/release/build/libc-880d2e011f9f14fa
+RUN \
+  --mount=from=cratesio-libc-0.2.177,source=/libc-0.2.177,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.177,rw \
+    { \
+        cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.177/build.rs | sed 's/fn main/fn actual_880d2e011f9f14fa_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.177/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.177/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.177/build.rs ; \
+        { \
+          echo ; \
+          echo 'fn main() {' ; \
+          echo '    use std::env::{args_os, var_os};' ; \
+          echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+          echo '        use std::process::{Command, Stdio};' ; \
+          echo '        let mut cmd = Command::new("cargo-green");' ; \
+          echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+          echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+          echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+          echo '        assert!(res.success());' ; \
+          echo '    } else {' ; \
+          echo '        actual_880d2e011f9f14fa_main();' ; \
+          echo '    }' ; \
+          echo '}' ; \
+        } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.177/build.rs ; \
+    } && \
+    env CARGO="$(which cargo)" \
+        CARGO_CRATE_NAME=build_script_build \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.177 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.177/Cargo.toml \
+        CARGO_PKG_AUTHORS=The' Rust Project Developers' \
+        CARGO_PKG_DESCRIPTION=Raw' FFI bindings to platform libraries like libc.' \
+        CARGO_PKG_HOMEPAGE= \
+        CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=libc \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/libc' \
+        CARGO_PKG_RUST_VERSION=1.63 \
+        CARGO_PKG_VERSION=0.2.177 \
+        CARGO_PKG_VERSION_MAJOR=0 \
+        CARGO_PKG_VERSION_MINOR=2 \
+        CARGO_PKG_VERSION_PATCH=177 \
+        CARGO_PKG_VERSION_PRE= \
+        CARGOGREEN=1 \
+      rustc '--crate-name' 'build_script_build' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'bin' '--emit' 'dep-info,link' '-C' 'embed-bitcode=no' '--allow' 'clippy::used_underscore_binding' '--allow' 'unused_qualifications' '--warn' 'clippy::unnecessary_semicolon' '--allow' 'clippy::unnecessary_cast' '--allow' 'clippy::uninlined_format_args' '--warn' 'clippy::ptr_as_ptr' '--allow' 'clippy::non_minimal_cfg' '--allow' 'clippy::missing_safety_doc' '--warn' 'clippy::map_unwrap_or' '--warn' 'clippy::manual_assert' '--allow' 'clippy::identity_op' '--warn' 'clippy::explicit_iter_loop' '--allow' 'clippy::expl_impl_clone_on_copy' '-C' 'debug-assertions=off' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("align", "const-extern-fn", "default", "extra_traits", "rustc-dep-of-std", "rustc-std-workspace-core", "std", "use_std"))' '-C' 'metadata=96eab844752761d5' '-C' 'extra-filename=-880d2e011f9f14fa' '--out-dir' '/tmp/clis-diesel_cli_2-3-4/release/build/libc-880d2e011f9f14fa' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-diesel_cli_2-3-4/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.177/build.rs \
+        1>          /tmp/clis-diesel_cli_2-3-4/release/build/libc-880d2e011f9f14fa/out-880d2e011f9f14fa-stdout \
+        2>          /tmp/clis-diesel_cli_2-3-4/release/build/libc-880d2e011f9f14fa/out-880d2e011f9f14fa-stderr \
+        || echo $? >/tmp/clis-diesel_cli_2-3-4/release/build/libc-880d2e011f9f14fa/out-880d2e011f9f14fa-errcode\
+  ; find /tmp/clis-diesel_cli_2-3-4/release/build/libc-880d2e011f9f14fa/*-880d2e011f9f14fa* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-880d2e011f9f14fa
+COPY --link --from=dep-x-libc-0.2.177-880d2e011f9f14fa /tmp/clis-diesel_cli_2-3-4/release/build/libc-880d2e011f9f14fa/*-880d2e011f9f14fa* /
+
+## this = "880d2e011f9f14fa"
+## writes = [
+##     "build_script_build-880d2e011f9f14fa",
+##     "build_script_build-880d2e011f9f14fa.d",
+## ]
+## stderr = [
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-4/release/build/libc-880d2e011f9f14fa/build_script_build-880d2e011f9f14fa.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-4/release/build/libc-880d2e011f9f14fa/build_script_build-880d2e011f9f14fa","emit":"link"}',
+## ]
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = '''
+## FROM --platform=$BUILDPLATFORM docker.io/tonistiigi/xx:1.6.1@sha256:923441d7c25f1e2eb5789f82d987693c47b8ed987c4ab3b075d6ed2b5d6779a3 AS xx
+## FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base
+## ARG TARGETPLATFORM
+## RUN \
+##   --mount=from=xx,source=/usr/bin/xx-apk,dst=/usr/bin/xx-apk \
+##   --mount=from=xx,source=/usr/bin/xx-apt,dst=/usr/bin/xx-apt \
+##   --mount=from=xx,source=/usr/bin/xx-apt,dst=/usr/bin/xx-apt-get \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-c++ \
+##   --mount=from=xx,source=/usr/bin/xx-cargo,dst=/usr/bin/xx-cargo \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-cc \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-clang \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-clang++ \
+##   --mount=from=xx,source=/usr/bin/xx-go,dst=/usr/bin/xx-go \
+##   --mount=from=xx,source=/usr/bin/xx-info,dst=/usr/bin/xx-info \
+##   --mount=from=xx,source=/usr/bin/xx-ld-shas,dst=/usr/bin/xx-ld-shas \
+##   --mount=from=xx,source=/usr/bin/xx-verify,dst=/usr/bin/xx-verify \
+##   --mount=from=xx,source=/usr/bin/xx-windres,dst=/usr/bin/xx-windres \
+##     set -eux \
+##  && if   command -v apk >/dev/null 2>&1; then \
+##                                      xx-apk     add     --no-cache                 '<none>'; \
+##     elif command -v apt >/dev/null 2>&1; then \
+##       DEBIAN_FRONTEND=noninteractive xx-apt     install --no-install-recommends -y 'libpq-dev'; \
+##     else \
+##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
+##     fi'''
+##
+## [[stages]]
+##
+## [stages.Cratesio]
+## stage = "cratesio-libc-0.2.177"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.177"
+## name = "libc"
+## name_dash_version = "libc-0.2.177"
+## hash = "2874a2af47a2325c2001a6e6fad9b16a53b802102b528163885171cf92b15976"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "dep-x-libc-0.2.177-880d2e011f9f14fa"
+## script = '''
+## FROM rust-base AS dep-x-libc-0.2.177-880d2e011f9f14fa
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-diesel_cli_2-3-4/release/build/libc-880d2e011f9f14fa
+## RUN \
+##   --mount=from=cratesio-libc-0.2.177,source=/libc-0.2.177,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.177,rw \
+##     { \
+##         cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.177/build.rs | sed 's/fn main/fn actual_880d2e011f9f14fa_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.177/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.177/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.177/build.rs ; \
+##         { \
+##           echo ; \
+##           echo 'fn main() {' ; \
+##           echo '    use std::env::{args_os, var_os};' ; \
+##           echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+##           echo '        use std::process::{Command, Stdio};' ; \
+##           echo '        let mut cmd = Command::new("cargo-green");' ; \
+##           echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+##           echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+##           echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+##           echo '        assert!(res.success());' ; \
+##           echo '    } else {' ; \
+##           echo '        actual_880d2e011f9f14fa_main();' ; \
+##           echo '    }' ; \
+##           echo '}' ; \
+##         } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.177/build.rs ; \
+##     } && \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CRATE_NAME=build_script_build \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.177 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.177/Cargo.toml \
+##         CARGO_PKG_AUTHORS=The' Rust Project Developers' \
+##         CARGO_PKG_DESCRIPTION=Raw' FFI bindings to platform libraries like libc.' \
+##         CARGO_PKG_HOMEPAGE= \
+##         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=libc \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/libc' \
+##         CARGO_PKG_RUST_VERSION=1.63 \
+##         CARGO_PKG_VERSION=0.2.177 \
+##         CARGO_PKG_VERSION_MAJOR=0 \
+##         CARGO_PKG_VERSION_MINOR=2 \
+##         CARGO_PKG_VERSION_PATCH=177 \
+##         CARGO_PKG_VERSION_PRE= \
+##         CARGOGREEN=1 \
+##       rustc '--crate-name' 'build_script_build' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'bin' '--emit' 'dep-info,link' '-C' 'embed-bitcode=no' '--allow' 'clippy::used_underscore_binding' '--allow' 'unused_qualifications' '--warn' 'clippy::unnecessary_semicolon' '--allow' 'clippy::unnecessary_cast' '--allow' 'clippy::uninlined_format_args' '--warn' 'clippy::ptr_as_ptr' '--allow' 'clippy::non_minimal_cfg' '--allow' 'clippy::missing_safety_doc' '--warn' 'clippy::map_unwrap_or' '--warn' 'clippy::manual_assert' '--allow' 'clippy::identity_op' '--warn' 'clippy::explicit_iter_loop' '--allow' 'clippy::expl_impl_clone_on_copy' '-C' 'debug-assertions=off' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("align", "const-extern-fn", "default", "extra_traits", "rustc-dep-of-std", "rustc-std-workspace-core", "std", "use_std"))' '-C' 'metadata=96eab844752761d5' '-C' 'extra-filename=-880d2e011f9f14fa' '--out-dir' '/tmp/clis-diesel_cli_2-3-4/release/build/libc-880d2e011f9f14fa' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-diesel_cli_2-3-4/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.177/build.rs \
+##         1>          /tmp/clis-diesel_cli_2-3-4/release/build/libc-880d2e011f9f14fa/out-880d2e011f9f14fa-stdout \
+##         2>          /tmp/clis-diesel_cli_2-3-4/release/build/libc-880d2e011f9f14fa/out-880d2e011f9f14fa-stderr \
+##         || echo $? >/tmp/clis-diesel_cli_2-3-4/release/build/libc-880d2e011f9f14fa/out-880d2e011f9f14fa-errcode\
+##   ; find /tmp/clis-diesel_cli_2-3-4/release/build/libc-880d2e011f9f14fa/*-880d2e011f9f14fa* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-880d2e011f9f14fa"
+## script = """
+## FROM scratch AS out-880d2e011f9f14fa
+## COPY --link --from=dep-x-libc-0.2.177-880d2e011f9f14fa /tmp/clis-diesel_cli_2-3-4/release/build/libc-880d2e011f9f14fa/*-880d2e011f9f14fa* /"""
+
+FROM rust-base AS run-z-libc-0.2.177-a2e72ddbcd62bc9f
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-diesel_cli_2-3-4/release/build/libc-a2e72ddbcd62bc9f/out
+WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.177
+RUN \
+  --mount=from=out-880d2e011f9f14fa,source=/build_script_build-880d2e011f9f14fa,dst=/tmp/clis-diesel_cli_2-3-4/release/build/libc-880d2e011f9f14fa/build-script-build \
+  --mount=from=cratesio-libc-0.2.177,source=/libc-0.2.177,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.177 \
+    env CARGO="$(which cargo)" \
+        CARGO_CFG_FEATURE=default,std \
+        CARGO_CFG_PANIC=unwind \
+        CARGO_CFG_TARGET_ABI= \
+        CARGO_CFG_TARGET_ARCH=x86_64 \
+        CARGO_CFG_TARGET_ENDIAN=little \
+        CARGO_CFG_TARGET_ENV=gnu \
+        CARGO_CFG_TARGET_FAMILY=unix \
+        CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
+        CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+        CARGO_CFG_TARGET_OS=linux \
+        CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+        CARGO_CFG_TARGET_VENDOR=unknown \
+        CARGO_CFG_UNIX= \
+        CARGO_ENCODED_RUSTFLAGS= \
+        CARGO_FEATURE_DEFAULT=1 \
+        CARGO_FEATURE_STD=1 \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.177 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.177/Cargo.toml \
+        CARGO_PKG_AUTHORS=The' Rust Project Developers' \
+        CARGO_PKG_DESCRIPTION=Raw' FFI bindings to platform libraries like libc.' \
+        CARGO_PKG_HOMEPAGE= \
+        CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=libc \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/libc' \
+        CARGO_PKG_RUST_VERSION=1.63 \
+        CARGO_PKG_VERSION=0.2.177 \
+        CARGO_PKG_VERSION_MAJOR=0 \
+        CARGO_PKG_VERSION_MINOR=2 \
+        CARGO_PKG_VERSION_PATCH=177 \
+        CARGO_PKG_VERSION_PRE= \
+        DEBUG=false \
+        HOST=x86_64-unknown-linux-gnu \
+        NUM_JOBS=4 \
+        OPT_LEVEL=3 \
+        OUT_DIR=/tmp/clis-diesel_cli_2-3-4/release/build/libc-a2e72ddbcd62bc9f/out \
+        PROFILE=release \
+        RUSTC=rustc \
+        RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+        TARGET=x86_64-unknown-linux-gnu \
+        CARGOGREEN=1 \
+      CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-diesel_cli_2-3-4/release/build/libc-880d2e011f9f14fa/build-script-build \
+        1>          /tmp/clis-diesel_cli_2-3-4/release/build/libc-a2e72ddbcd62bc9f/out/out-a2e72ddbcd62bc9f-stdout \
+        2>          /tmp/clis-diesel_cli_2-3-4/release/build/libc-a2e72ddbcd62bc9f/out/out-a2e72ddbcd62bc9f-stderr \
+        || echo $? >/tmp/clis-diesel_cli_2-3-4/release/build/libc-a2e72ddbcd62bc9f/out/out-a2e72ddbcd62bc9f-errcode\
+  ; find /tmp/clis-diesel_cli_2-3-4/release/build/libc-a2e72ddbcd62bc9f/out/*-a2e72ddbcd62bc9f* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-a2e72ddbcd62bc9f
+COPY --link --from=run-z-libc-0.2.177-a2e72ddbcd62bc9f /tmp/clis-diesel_cli_2-3-4/release/build/libc-a2e72ddbcd62bc9f/out/* /
+
+## this = "a2e72ddbcd62bc9f"
+## deps = ["880d2e011f9f14fa"]
+## stdout = [
+##     "cargo:rerun-if-changed=build.rs",
+##     "cargo:rerun-if-env-changed=RUST_LIBC_UNSTABLE_FREEBSD_VERSION",
+##     "cargo:rustc-cfg=freebsd12",
+##     "cargo:rerun-if-env-changed=RUST_LIBC_UNSTABLE_MUSL_V1_2_3",
+##     "cargo:rerun-if-env-changed=RUST_LIBC_UNSTABLE_LINUX_TIME_BITS64",
+##     "cargo:rerun-if-env-changed=RUST_LIBC_UNSTABLE_GNU_FILE_OFFSET_BITS",
+##     "cargo:rerun-if-env-changed=RUST_LIBC_UNSTABLE_GNU_TIME_BITS",
+##     "cargo:rustc-check-cfg=cfg(emscripten_old_stat_abi)",
+##     "cargo:rustc-check-cfg=cfg(espidf_time32)",
+##     "cargo:rustc-check-cfg=cfg(freebsd10)",
+##     "cargo:rustc-check-cfg=cfg(freebsd11)",
+##     "cargo:rustc-check-cfg=cfg(freebsd12)",
+##     "cargo:rustc-check-cfg=cfg(freebsd13)",
+##     "cargo:rustc-check-cfg=cfg(freebsd14)",
+##     "cargo:rustc-check-cfg=cfg(freebsd15)",
+##     "cargo:rustc-check-cfg=cfg(gnu_file_offset_bits64)",
+##     "cargo:rustc-check-cfg=cfg(gnu_time_bits64)",
+##     "cargo:rustc-check-cfg=cfg(libc_deny_warnings)",
+##     "cargo:rustc-check-cfg=cfg(libc_thread_local)",
+##     "cargo:rustc-check-cfg=cfg(linux_time_bits64)",
+##     "cargo:rustc-check-cfg=cfg(musl_v1_2_3)",
+##     'cargo:rustc-check-cfg=cfg(target_os,values("switch","aix","ohos","hurd","rtems","visionos","nuttx","cygwin"))',
+##     'cargo:rustc-check-cfg=cfg(target_env,values("illumos","wasi","aix","ohos","nto71_iosock","nto80"))',
+##     'cargo:rustc-check-cfg=cfg(target_arch,values("loongarch64","mips32r6","mips64r6","csky"))',
+## ]
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = '''
+## FROM --platform=$BUILDPLATFORM docker.io/tonistiigi/xx:1.6.1@sha256:923441d7c25f1e2eb5789f82d987693c47b8ed987c4ab3b075d6ed2b5d6779a3 AS xx
+## FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base
+## ARG TARGETPLATFORM
+## RUN \
+##   --mount=from=xx,source=/usr/bin/xx-apk,dst=/usr/bin/xx-apk \
+##   --mount=from=xx,source=/usr/bin/xx-apt,dst=/usr/bin/xx-apt \
+##   --mount=from=xx,source=/usr/bin/xx-apt,dst=/usr/bin/xx-apt-get \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-c++ \
+##   --mount=from=xx,source=/usr/bin/xx-cargo,dst=/usr/bin/xx-cargo \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-cc \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-clang \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-clang++ \
+##   --mount=from=xx,source=/usr/bin/xx-go,dst=/usr/bin/xx-go \
+##   --mount=from=xx,source=/usr/bin/xx-info,dst=/usr/bin/xx-info \
+##   --mount=from=xx,source=/usr/bin/xx-ld-shas,dst=/usr/bin/xx-ld-shas \
+##   --mount=from=xx,source=/usr/bin/xx-verify,dst=/usr/bin/xx-verify \
+##   --mount=from=xx,source=/usr/bin/xx-windres,dst=/usr/bin/xx-windres \
+##     set -eux \
+##  && if   command -v apk >/dev/null 2>&1; then \
+##                                      xx-apk     add     --no-cache                 '<none>'; \
+##     elif command -v apt >/dev/null 2>&1; then \
+##       DEBIAN_FRONTEND=noninteractive xx-apt     install --no-install-recommends -y 'libpq-dev'; \
+##     else \
+##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
+##     fi'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "run-z-libc-0.2.177-a2e72ddbcd62bc9f"
+## script = '''
+## FROM rust-base AS run-z-libc-0.2.177-a2e72ddbcd62bc9f
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-diesel_cli_2-3-4/release/build/libc-a2e72ddbcd62bc9f/out
+## WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.177
+## RUN \
+##   --mount=from=out-880d2e011f9f14fa,source=/build_script_build-880d2e011f9f14fa,dst=/tmp/clis-diesel_cli_2-3-4/release/build/libc-880d2e011f9f14fa/build-script-build \
+##   --mount=from=cratesio-libc-0.2.177,source=/libc-0.2.177,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.177 \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CFG_FEATURE=default,std \
+##         CARGO_CFG_PANIC=unwind \
+##         CARGO_CFG_TARGET_ABI= \
+##         CARGO_CFG_TARGET_ARCH=x86_64 \
+##         CARGO_CFG_TARGET_ENDIAN=little \
+##         CARGO_CFG_TARGET_ENV=gnu \
+##         CARGO_CFG_TARGET_FAMILY=unix \
+##         CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
+##         CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+##         CARGO_CFG_TARGET_OS=linux \
+##         CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+##         CARGO_CFG_TARGET_VENDOR=unknown \
+##         CARGO_CFG_UNIX= \
+##         CARGO_ENCODED_RUSTFLAGS= \
+##         CARGO_FEATURE_DEFAULT=1 \
+##         CARGO_FEATURE_STD=1 \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.177 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.177/Cargo.toml \
+##         CARGO_PKG_AUTHORS=The' Rust Project Developers' \
+##         CARGO_PKG_DESCRIPTION=Raw' FFI bindings to platform libraries like libc.' \
+##         CARGO_PKG_HOMEPAGE= \
+##         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=libc \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/libc' \
+##         CARGO_PKG_RUST_VERSION=1.63 \
+##         CARGO_PKG_VERSION=0.2.177 \
+##         CARGO_PKG_VERSION_MAJOR=0 \
+##         CARGO_PKG_VERSION_MINOR=2 \
+##         CARGO_PKG_VERSION_PATCH=177 \
+##         CARGO_PKG_VERSION_PRE= \
+##         DEBUG=false \
+##         HOST=x86_64-unknown-linux-gnu \
+##         NUM_JOBS=4 \
+##         OPT_LEVEL=3 \
+##         OUT_DIR=/tmp/clis-diesel_cli_2-3-4/release/build/libc-a2e72ddbcd62bc9f/out \
+##         PROFILE=release \
+##         RUSTC=rustc \
+##         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+##         TARGET=x86_64-unknown-linux-gnu \
+##         CARGOGREEN=1 \
+##       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-diesel_cli_2-3-4/release/build/libc-880d2e011f9f14fa/build-script-build \
+##         1>          /tmp/clis-diesel_cli_2-3-4/release/build/libc-a2e72ddbcd62bc9f/out/out-a2e72ddbcd62bc9f-stdout \
+##         2>          /tmp/clis-diesel_cli_2-3-4/release/build/libc-a2e72ddbcd62bc9f/out/out-a2e72ddbcd62bc9f-stderr \
+##         || echo $? >/tmp/clis-diesel_cli_2-3-4/release/build/libc-a2e72ddbcd62bc9f/out/out-a2e72ddbcd62bc9f-errcode\
+##   ; find /tmp/clis-diesel_cli_2-3-4/release/build/libc-a2e72ddbcd62bc9f/out/*-a2e72ddbcd62bc9f* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-a2e72ddbcd62bc9f"
+## script = """
+## FROM scratch AS out-a2e72ddbcd62bc9f
+## COPY --link --from=run-z-libc-0.2.177-a2e72ddbcd62bc9f /tmp/clis-diesel_cli_2-3-4/release/build/libc-a2e72ddbcd62bc9f/out/* /"""
+
+
 FROM rust-base AS dep-n-libc-0.2.177-7f08a5fdefdb5905
 SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-diesel_cli_2-3-4/release/deps
 RUN \
   --mount=from=cratesio-libc-0.2.177,source=/libc-0.2.177,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.177 \
+  --mount=from=out-a2e72ddbcd62bc9f,dst=/tmp/clis-diesel_cli_2-3-4/release/build/libc-a2e72ddbcd62bc9f/out,source=/ \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=libc \
         CARGO_INCREMENTAL=0 \
@@ -5758,6 +7820,11 @@ FROM scratch AS out-7f08a5fdefdb5905
 COPY --link --from=dep-n-libc-0.2.177-7f08a5fdefdb5905 /tmp/clis-diesel_cli_2-3-4/release/deps/*-7f08a5fdefdb5905* /
 
 ## this = "7f08a5fdefdb5905"
+## deps = [
+##     "a2e72ddbcd62bc9f",
+##     "880d2e011f9f14fa",
+## ]
+## buildrs_results = ["a2e72ddbcd62bc9f"]
 ## writes = [
 ##     "libc-7f08a5fdefdb5905.d",
 ##     "liblibc-7f08a5fdefdb5905.rlib",
@@ -5768,6 +7835,11 @@ COPY --link --from=dep-n-libc-0.2.177-7f08a5fdefdb5905 /tmp/clis-diesel_cli_2-3-
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-4/release/deps/liblibc-7f08a5fdefdb5905.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-4/release/deps/liblibc-7f08a5fdefdb5905.rlib","emit":"link"}',
 ## ]
+##
+## [[mounts]]
+## name = "out-a2e72ddbcd62bc9f"
+## src = "/"
+## dst = "/tmp/clis-diesel_cli_2-3-4/release/build/libc-a2e72ddbcd62bc9f/out"
 ##
 ## [[stages]]
 ##
@@ -5819,6 +7891,7 @@ COPY --link --from=dep-n-libc-0.2.177-7f08a5fdefdb5905 /tmp/clis-diesel_cli_2-3-
 ## WORKDIR /tmp/clis-diesel_cli_2-3-4/release/deps
 ## RUN \
 ##   --mount=from=cratesio-libc-0.2.177,source=/libc-0.2.177,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.177 \
+##   --mount=from=out-a2e72ddbcd62bc9f,dst=/tmp/clis-diesel_cli_2-3-4/release/build/libc-a2e72ddbcd62bc9f/out,source=/ \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=libc \
 ##         CARGO_INCREMENTAL=0 \
@@ -5854,17 +7927,547 @@ COPY --link --from=dep-n-libc-0.2.177-7f08a5fdefdb5905 /tmp/clis-diesel_cli_2-3-
 ## FROM scratch AS out-7f08a5fdefdb5905
 ## COPY --link --from=dep-n-libc-0.2.177-7f08a5fdefdb5905 /tmp/clis-diesel_cli_2-3-4/release/deps/*-7f08a5fdefdb5905* /"""
 
+FROM scratch AS cratesio-pkg-config-0.3.32
+ADD --chmod=0664 --unpack --checksum=sha256:7edddbd0b52d732b21ad9a5fab5c704c14cd949e5e9a1ec5929a24fded1b904c \
+  https://static.crates.io/crates/pkg-config/pkg-config-0.3.32.crate /
+FROM rust-base AS dep-n-pkg-config-0.3.32-ec662f2448b0e090
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-diesel_cli_2-3-4/release/deps
+RUN \
+  --mount=from=cratesio-pkg-config-0.3.32,source=/pkg-config-0.3.32,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/pkg-config-0.3.32 \
+    env CARGO="$(which cargo)" \
+        CARGO_CRATE_NAME=pkg_config \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/pkg-config-0.3.32 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/pkg-config-0.3.32/Cargo.toml \
+        CARGO_PKG_AUTHORS=Alex' Crichton <alex@alexcrichton.com>' \
+        CARGO_PKG_DESCRIPTION=A' library to run the pkg-config system tool at build time in order to be used in\
+Cargo build scripts.\
+' \
+        CARGO_PKG_HOMEPAGE= \
+        CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=pkg-config \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/pkg-config-rs' \
+        CARGO_PKG_RUST_VERSION=1.31 \
+        CARGO_PKG_VERSION=0.3.32 \
+        CARGO_PKG_VERSION_MAJOR=0 \
+        CARGO_PKG_VERSION_MINOR=3 \
+        CARGO_PKG_VERSION_PATCH=32 \
+        CARGO_PKG_VERSION_PRE= \
+        CARGOGREEN=1 \
+      rustc '--crate-name' 'pkg_config' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=29cc7c1d14f646fa' '-C' 'extra-filename=-ec662f2448b0e090' '--out-dir' '/tmp/clis-diesel_cli_2-3-4/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-diesel_cli_2-3-4/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/pkg-config-0.3.32/src/lib.rs \
+        1>          /tmp/clis-diesel_cli_2-3-4/release/deps/out-ec662f2448b0e090-stdout \
+        2>          /tmp/clis-diesel_cli_2-3-4/release/deps/out-ec662f2448b0e090-stderr \
+        || echo $? >/tmp/clis-diesel_cli_2-3-4/release/deps/out-ec662f2448b0e090-errcode\
+  ; find /tmp/clis-diesel_cli_2-3-4/release/deps/*-ec662f2448b0e090* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-ec662f2448b0e090
+COPY --link --from=dep-n-pkg-config-0.3.32-ec662f2448b0e090 /tmp/clis-diesel_cli_2-3-4/release/deps/*-ec662f2448b0e090* /
+
+## this = "ec662f2448b0e090"
+## writes = [
+##     "libpkg_config-ec662f2448b0e090.rlib",
+##     "libpkg_config-ec662f2448b0e090.rmeta",
+##     "pkg_config-ec662f2448b0e090.d",
+## ]
+## stderr = [
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-4/release/deps/pkg_config-ec662f2448b0e090.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-4/release/deps/libpkg_config-ec662f2448b0e090.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-4/release/deps/libpkg_config-ec662f2448b0e090.rlib","emit":"link"}',
+## ]
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = '''
+## FROM --platform=$BUILDPLATFORM docker.io/tonistiigi/xx:1.6.1@sha256:923441d7c25f1e2eb5789f82d987693c47b8ed987c4ab3b075d6ed2b5d6779a3 AS xx
+## FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base
+## ARG TARGETPLATFORM
+## RUN \
+##   --mount=from=xx,source=/usr/bin/xx-apk,dst=/usr/bin/xx-apk \
+##   --mount=from=xx,source=/usr/bin/xx-apt,dst=/usr/bin/xx-apt \
+##   --mount=from=xx,source=/usr/bin/xx-apt,dst=/usr/bin/xx-apt-get \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-c++ \
+##   --mount=from=xx,source=/usr/bin/xx-cargo,dst=/usr/bin/xx-cargo \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-cc \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-clang \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-clang++ \
+##   --mount=from=xx,source=/usr/bin/xx-go,dst=/usr/bin/xx-go \
+##   --mount=from=xx,source=/usr/bin/xx-info,dst=/usr/bin/xx-info \
+##   --mount=from=xx,source=/usr/bin/xx-ld-shas,dst=/usr/bin/xx-ld-shas \
+##   --mount=from=xx,source=/usr/bin/xx-verify,dst=/usr/bin/xx-verify \
+##   --mount=from=xx,source=/usr/bin/xx-windres,dst=/usr/bin/xx-windres \
+##     set -eux \
+##  && if   command -v apk >/dev/null 2>&1; then \
+##                                      xx-apk     add     --no-cache                 '<none>'; \
+##     elif command -v apt >/dev/null 2>&1; then \
+##       DEBIAN_FRONTEND=noninteractive xx-apt     install --no-install-recommends -y 'libpq-dev'; \
+##     else \
+##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
+##     fi'''
+##
+## [[stages]]
+##
+## [stages.Cratesio]
+## stage = "cratesio-pkg-config-0.3.32"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/pkg-config-0.3.32"
+## name = "pkg-config"
+## name_dash_version = "pkg-config-0.3.32"
+## hash = "7edddbd0b52d732b21ad9a5fab5c704c14cd949e5e9a1ec5929a24fded1b904c"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "dep-n-pkg-config-0.3.32-ec662f2448b0e090"
+## script = '''
+## FROM rust-base AS dep-n-pkg-config-0.3.32-ec662f2448b0e090
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-diesel_cli_2-3-4/release/deps
+## RUN \
+##   --mount=from=cratesio-pkg-config-0.3.32,source=/pkg-config-0.3.32,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/pkg-config-0.3.32 \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CRATE_NAME=pkg_config \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/pkg-config-0.3.32 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/pkg-config-0.3.32/Cargo.toml \
+##         CARGO_PKG_AUTHORS=Alex' Crichton <alex@alexcrichton.com>' \
+##         CARGO_PKG_DESCRIPTION=A' library to run the pkg-config system tool at build time in order to be used in\
+## Cargo build scripts.\
+## ' \
+##         CARGO_PKG_HOMEPAGE= \
+##         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=pkg-config \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/pkg-config-rs' \
+##         CARGO_PKG_RUST_VERSION=1.31 \
+##         CARGO_PKG_VERSION=0.3.32 \
+##         CARGO_PKG_VERSION_MAJOR=0 \
+##         CARGO_PKG_VERSION_MINOR=3 \
+##         CARGO_PKG_VERSION_PATCH=32 \
+##         CARGO_PKG_VERSION_PRE= \
+##         CARGOGREEN=1 \
+##       rustc '--crate-name' 'pkg_config' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=29cc7c1d14f646fa' '-C' 'extra-filename=-ec662f2448b0e090' '--out-dir' '/tmp/clis-diesel_cli_2-3-4/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-diesel_cli_2-3-4/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/pkg-config-0.3.32/src/lib.rs \
+##         1>          /tmp/clis-diesel_cli_2-3-4/release/deps/out-ec662f2448b0e090-stdout \
+##         2>          /tmp/clis-diesel_cli_2-3-4/release/deps/out-ec662f2448b0e090-stderr \
+##         || echo $? >/tmp/clis-diesel_cli_2-3-4/release/deps/out-ec662f2448b0e090-errcode\
+##   ; find /tmp/clis-diesel_cli_2-3-4/release/deps/*-ec662f2448b0e090* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-ec662f2448b0e090"
+## script = """
+## FROM scratch AS out-ec662f2448b0e090
+## COPY --link --from=dep-n-pkg-config-0.3.32-ec662f2448b0e090 /tmp/clis-diesel_cli_2-3-4/release/deps/*-ec662f2448b0e090* /"""
+
 FROM scratch AS cratesio-pq-sys-0.7.5
 ADD --chmod=0664 --unpack --checksum=sha256:574ddd6a267294433f140b02a726b0640c43cf7c6f717084684aaa3b285aba61 \
   https://static.crates.io/crates/pq-sys/pq-sys-0.7.5.crate /
+FROM rust-base AS dep-x-pq-sys-0.7.5-cd02570aab934144
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-diesel_cli_2-3-4/release/build/pq-sys-cd02570aab934144
+RUN \
+  --mount=from=cratesio-pq-sys-0.7.5,source=/pq-sys-0.7.5,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/pq-sys-0.7.5,rw \
+  --mount=from=out-ec662f2448b0e090,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libpkg_config-ec662f2448b0e090.rlib,source=/libpkg_config-ec662f2448b0e090.rlib \
+    { \
+        cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/pq-sys-0.7.5/build.rs | sed 's/fn main/fn actual_cd02570aab934144_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/pq-sys-0.7.5/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/pq-sys-0.7.5/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/pq-sys-0.7.5/build.rs ; \
+        { \
+          echo ; \
+          echo 'fn main() {' ; \
+          echo '    use std::env::{args_os, var_os};' ; \
+          echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+          echo '        use std::process::{Command, Stdio};' ; \
+          echo '        let mut cmd = Command::new("cargo-green");' ; \
+          echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+          echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+          echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+          echo '        assert!(res.success());' ; \
+          echo '    } else {' ; \
+          echo '        actual_cd02570aab934144_main();' ; \
+          echo '    }' ; \
+          echo '}' ; \
+        } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/pq-sys-0.7.5/build.rs ; \
+    } && \
+    env CARGO="$(which cargo)" \
+        CARGO_CRATE_NAME=build_script_build \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/pq-sys-0.7.5 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/pq-sys-0.7.5/Cargo.toml \
+        CARGO_PKG_AUTHORS= \
+        CARGO_PKG_DESCRIPTION=Auto-generated' rust bindings for libpq' \
+        CARGO_PKG_HOMEPAGE= \
+        CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=pq-sys \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/sgrif/pq-sys' \
+        CARGO_PKG_RUST_VERSION=1.82.0 \
+        CARGO_PKG_VERSION=0.7.5 \
+        CARGO_PKG_VERSION_MAJOR=0 \
+        CARGO_PKG_VERSION_MINOR=7 \
+        CARGO_PKG_VERSION_PATCH=5 \
+        CARGO_PKG_VERSION_PRE= \
+        CARGOGREEN=1 \
+      rustc '--crate-name' 'build_script_build' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'bin' '--emit' 'dep-info,link' '-C' 'embed-bitcode=no' '--warn' 'unexpected_cfgs' '--check-cfg' 'cfg(buildscript_run)' '-C' 'debug-assertions=off' '--cfg' 'feature="default"' '--cfg' 'feature="pkg-config"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("buildtime_bindgen", "bundled", "bundled_without_openssl", "default", "pkg-config"))' '-C' 'metadata=777ca9ed10e26c95' '-C' 'extra-filename=-cd02570aab934144' '--out-dir' '/tmp/clis-diesel_cli_2-3-4/release/build/pq-sys-cd02570aab934144' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-diesel_cli_2-3-4/release/deps' '--extern' 'pkg_config=/tmp/clis-diesel_cli_2-3-4/release/deps/libpkg_config-ec662f2448b0e090.rlib' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/pq-sys-0.7.5/build.rs \
+        1>          /tmp/clis-diesel_cli_2-3-4/release/build/pq-sys-cd02570aab934144/out-cd02570aab934144-stdout \
+        2>          /tmp/clis-diesel_cli_2-3-4/release/build/pq-sys-cd02570aab934144/out-cd02570aab934144-stderr \
+        || echo $? >/tmp/clis-diesel_cli_2-3-4/release/build/pq-sys-cd02570aab934144/out-cd02570aab934144-errcode\
+  ; find /tmp/clis-diesel_cli_2-3-4/release/build/pq-sys-cd02570aab934144/*-cd02570aab934144* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-cd02570aab934144
+COPY --link --from=dep-x-pq-sys-0.7.5-cd02570aab934144 /tmp/clis-diesel_cli_2-3-4/release/build/pq-sys-cd02570aab934144/*-cd02570aab934144* /
+
+## this = "cd02570aab934144"
+## deps = ["ec662f2448b0e090"]
+## writes = [
+##     "build_script_build-cd02570aab934144",
+##     "build_script_build-cd02570aab934144.d",
+## ]
+## stderr = [
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-4/release/build/pq-sys-cd02570aab934144/build_script_build-cd02570aab934144.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-4/release/build/pq-sys-cd02570aab934144/build_script_build-cd02570aab934144","emit":"link"}',
+## ]
+##
+## [[externs]]
+## from = "out-ec662f2448b0e090"
+## xtern = "libpkg_config-ec662f2448b0e090.rlib"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = '''
+## FROM --platform=$BUILDPLATFORM docker.io/tonistiigi/xx:1.6.1@sha256:923441d7c25f1e2eb5789f82d987693c47b8ed987c4ab3b075d6ed2b5d6779a3 AS xx
+## FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base
+## ARG TARGETPLATFORM
+## RUN \
+##   --mount=from=xx,source=/usr/bin/xx-apk,dst=/usr/bin/xx-apk \
+##   --mount=from=xx,source=/usr/bin/xx-apt,dst=/usr/bin/xx-apt \
+##   --mount=from=xx,source=/usr/bin/xx-apt,dst=/usr/bin/xx-apt-get \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-c++ \
+##   --mount=from=xx,source=/usr/bin/xx-cargo,dst=/usr/bin/xx-cargo \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-cc \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-clang \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-clang++ \
+##   --mount=from=xx,source=/usr/bin/xx-go,dst=/usr/bin/xx-go \
+##   --mount=from=xx,source=/usr/bin/xx-info,dst=/usr/bin/xx-info \
+##   --mount=from=xx,source=/usr/bin/xx-ld-shas,dst=/usr/bin/xx-ld-shas \
+##   --mount=from=xx,source=/usr/bin/xx-verify,dst=/usr/bin/xx-verify \
+##   --mount=from=xx,source=/usr/bin/xx-windres,dst=/usr/bin/xx-windres \
+##     set -eux \
+##  && if   command -v apk >/dev/null 2>&1; then \
+##                                      xx-apk     add     --no-cache                 '<none>'; \
+##     elif command -v apt >/dev/null 2>&1; then \
+##       DEBIAN_FRONTEND=noninteractive xx-apt     install --no-install-recommends -y 'libpq-dev'; \
+##     else \
+##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
+##     fi'''
+##
+## [[stages]]
+##
+## [stages.Cratesio]
+## stage = "cratesio-pq-sys-0.7.5"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/pq-sys-0.7.5"
+## name = "pq-sys"
+## name_dash_version = "pq-sys-0.7.5"
+## hash = "574ddd6a267294433f140b02a726b0640c43cf7c6f717084684aaa3b285aba61"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "dep-x-pq-sys-0.7.5-cd02570aab934144"
+## script = '''
+## FROM rust-base AS dep-x-pq-sys-0.7.5-cd02570aab934144
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-diesel_cli_2-3-4/release/build/pq-sys-cd02570aab934144
+## RUN \
+##   --mount=from=cratesio-pq-sys-0.7.5,source=/pq-sys-0.7.5,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/pq-sys-0.7.5,rw \
+##   --mount=from=out-ec662f2448b0e090,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libpkg_config-ec662f2448b0e090.rlib,source=/libpkg_config-ec662f2448b0e090.rlib \
+##     { \
+##         cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/pq-sys-0.7.5/build.rs | sed 's/fn main/fn actual_cd02570aab934144_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/pq-sys-0.7.5/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/pq-sys-0.7.5/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/pq-sys-0.7.5/build.rs ; \
+##         { \
+##           echo ; \
+##           echo 'fn main() {' ; \
+##           echo '    use std::env::{args_os, var_os};' ; \
+##           echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+##           echo '        use std::process::{Command, Stdio};' ; \
+##           echo '        let mut cmd = Command::new("cargo-green");' ; \
+##           echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+##           echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+##           echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+##           echo '        assert!(res.success());' ; \
+##           echo '    } else {' ; \
+##           echo '        actual_cd02570aab934144_main();' ; \
+##           echo '    }' ; \
+##           echo '}' ; \
+##         } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/pq-sys-0.7.5/build.rs ; \
+##     } && \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CRATE_NAME=build_script_build \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/pq-sys-0.7.5 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/pq-sys-0.7.5/Cargo.toml \
+##         CARGO_PKG_AUTHORS= \
+##         CARGO_PKG_DESCRIPTION=Auto-generated' rust bindings for libpq' \
+##         CARGO_PKG_HOMEPAGE= \
+##         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=pq-sys \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/sgrif/pq-sys' \
+##         CARGO_PKG_RUST_VERSION=1.82.0 \
+##         CARGO_PKG_VERSION=0.7.5 \
+##         CARGO_PKG_VERSION_MAJOR=0 \
+##         CARGO_PKG_VERSION_MINOR=7 \
+##         CARGO_PKG_VERSION_PATCH=5 \
+##         CARGO_PKG_VERSION_PRE= \
+##         CARGOGREEN=1 \
+##       rustc '--crate-name' 'build_script_build' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'bin' '--emit' 'dep-info,link' '-C' 'embed-bitcode=no' '--warn' 'unexpected_cfgs' '--check-cfg' 'cfg(buildscript_run)' '-C' 'debug-assertions=off' '--cfg' 'feature="default"' '--cfg' 'feature="pkg-config"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("buildtime_bindgen", "bundled", "bundled_without_openssl", "default", "pkg-config"))' '-C' 'metadata=777ca9ed10e26c95' '-C' 'extra-filename=-cd02570aab934144' '--out-dir' '/tmp/clis-diesel_cli_2-3-4/release/build/pq-sys-cd02570aab934144' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-diesel_cli_2-3-4/release/deps' '--extern' 'pkg_config=/tmp/clis-diesel_cli_2-3-4/release/deps/libpkg_config-ec662f2448b0e090.rlib' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/pq-sys-0.7.5/build.rs \
+##         1>          /tmp/clis-diesel_cli_2-3-4/release/build/pq-sys-cd02570aab934144/out-cd02570aab934144-stdout \
+##         2>          /tmp/clis-diesel_cli_2-3-4/release/build/pq-sys-cd02570aab934144/out-cd02570aab934144-stderr \
+##         || echo $? >/tmp/clis-diesel_cli_2-3-4/release/build/pq-sys-cd02570aab934144/out-cd02570aab934144-errcode\
+##   ; find /tmp/clis-diesel_cli_2-3-4/release/build/pq-sys-cd02570aab934144/*-cd02570aab934144* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-cd02570aab934144"
+## script = """
+## FROM scratch AS out-cd02570aab934144
+## COPY --link --from=dep-x-pq-sys-0.7.5-cd02570aab934144 /tmp/clis-diesel_cli_2-3-4/release/build/pq-sys-cd02570aab934144/*-cd02570aab934144* /"""
+
+FROM rust-base AS run-z-pq-sys-0.7.5-e63dae8d54788400
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-diesel_cli_2-3-4/release/build/pq-sys-e63dae8d54788400/out
+WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/pq-sys-0.7.5
+RUN \
+  --mount=from=out-cd02570aab934144,source=/build_script_build-cd02570aab934144,dst=/tmp/clis-diesel_cli_2-3-4/release/build/pq-sys-cd02570aab934144/build-script-build \
+  --mount=from=cratesio-pq-sys-0.7.5,source=/pq-sys-0.7.5,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/pq-sys-0.7.5 \
+    env CARGO="$(which cargo)" \
+        CARGO_CFG_FEATURE=default,pkg-config \
+        CARGO_CFG_PANIC=unwind \
+        CARGO_CFG_TARGET_ABI= \
+        CARGO_CFG_TARGET_ARCH=x86_64 \
+        CARGO_CFG_TARGET_ENDIAN=little \
+        CARGO_CFG_TARGET_ENV=gnu \
+        CARGO_CFG_TARGET_FAMILY=unix \
+        CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
+        CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+        CARGO_CFG_TARGET_OS=linux \
+        CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+        CARGO_CFG_TARGET_VENDOR=unknown \
+        CARGO_CFG_UNIX= \
+        CARGO_ENCODED_RUSTFLAGS= \
+        CARGO_FEATURE_DEFAULT=1 \
+        CARGO_FEATURE_PKG_CONFIG=1 \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/pq-sys-0.7.5 \
+        CARGO_MANIFEST_LINKS=pq \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/pq-sys-0.7.5/Cargo.toml \
+        CARGO_PKG_AUTHORS= \
+        CARGO_PKG_DESCRIPTION=Auto-generated' rust bindings for libpq' \
+        CARGO_PKG_HOMEPAGE= \
+        CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=pq-sys \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/sgrif/pq-sys' \
+        CARGO_PKG_RUST_VERSION=1.82.0 \
+        CARGO_PKG_VERSION=0.7.5 \
+        CARGO_PKG_VERSION_MAJOR=0 \
+        CARGO_PKG_VERSION_MINOR=7 \
+        CARGO_PKG_VERSION_PATCH=5 \
+        CARGO_PKG_VERSION_PRE= \
+        DEBUG=false \
+        HOST=x86_64-unknown-linux-gnu \
+        NUM_JOBS=4 \
+        OPT_LEVEL=3 \
+        OUT_DIR=/tmp/clis-diesel_cli_2-3-4/release/build/pq-sys-e63dae8d54788400/out \
+        PROFILE=release \
+        RUSTC=rustc \
+        RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+        TARGET=x86_64-unknown-linux-gnu \
+        CARGOGREEN=1 \
+      CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-diesel_cli_2-3-4/release/build/pq-sys-cd02570aab934144/build-script-build \
+        1>          /tmp/clis-diesel_cli_2-3-4/release/build/pq-sys-e63dae8d54788400/out/out-e63dae8d54788400-stdout \
+        2>          /tmp/clis-diesel_cli_2-3-4/release/build/pq-sys-e63dae8d54788400/out/out-e63dae8d54788400-stderr \
+        || echo $? >/tmp/clis-diesel_cli_2-3-4/release/build/pq-sys-e63dae8d54788400/out/out-e63dae8d54788400-errcode\
+  ; find /tmp/clis-diesel_cli_2-3-4/release/build/pq-sys-e63dae8d54788400/out/*-e63dae8d54788400* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-e63dae8d54788400
+COPY --link --from=run-z-pq-sys-0.7.5-e63dae8d54788400 /tmp/clis-diesel_cli_2-3-4/release/build/pq-sys-e63dae8d54788400/out/* /
+
+## this = "e63dae8d54788400"
+## deps = [
+##     "ec662f2448b0e090",
+##     "cd02570aab934144",
+## ]
+## writes = ["bindings.rs"]
+## stdout = [
+##     "cargo::rustc-cfg=buildscript_run",
+##     "cargo:rustc-link-lib=pq",
+##     "cargo:rerun-if-env-changed=PQ_LIB_STATIC",
+##     "cargo:rerun-if-env-changed=TARGET",
+##     'cargo:rerun-if-env-changed="PQ_LIB_DIR_X86_64_UNKNOWN_LINUX_GNU"',
+##     '"PQ_LIB_DIR_X86_64_UNKNOWN_LINUX_GNU" = Err(NotPresent)',
+##     'cargo:rerun-if-env-changed="PQ_LIB_DIR"',
+##     '"PQ_LIB_DIR" = Err(NotPresent)',
+##     "cargo:rerun-if-env-changed=LIBPQ_NO_PKG_CONFIG",
+##     "cargo:rerun-if-env-changed=PKG_CONFIG_x86_64-unknown-linux-gnu",
+##     "cargo:rerun-if-env-changed=PKG_CONFIG_x86_64_unknown_linux_gnu",
+##     "cargo:rerun-if-env-changed=HOST_PKG_CONFIG",
+##     "cargo:rerun-if-env-changed=PKG_CONFIG",
+##     "cargo:rerun-if-env-changed=LIBPQ_STATIC",
+##     "cargo:rerun-if-env-changed=LIBPQ_DYNAMIC",
+##     "cargo:rerun-if-env-changed=PKG_CONFIG_ALL_STATIC",
+##     "cargo:rerun-if-env-changed=PKG_CONFIG_ALL_DYNAMIC",
+##     "cargo:rerun-if-env-changed=PKG_CONFIG_PATH_x86_64-unknown-linux-gnu",
+##     "cargo:rerun-if-env-changed=PKG_CONFIG_PATH_x86_64_unknown_linux_gnu",
+##     "cargo:rerun-if-env-changed=HOST_PKG_CONFIG_PATH",
+##     "cargo:rerun-if-env-changed=PKG_CONFIG_PATH",
+##     "cargo:rerun-if-env-changed=PKG_CONFIG_LIBDIR_x86_64-unknown-linux-gnu",
+##     "cargo:rerun-if-env-changed=PKG_CONFIG_LIBDIR_x86_64_unknown_linux_gnu",
+##     "cargo:rerun-if-env-changed=HOST_PKG_CONFIG_LIBDIR",
+##     "cargo:rerun-if-env-changed=PKG_CONFIG_LIBDIR",
+##     "cargo:rerun-if-env-changed=PKG_CONFIG_SYSROOT_DIR_x86_64-unknown-linux-gnu",
+##     "cargo:rerun-if-env-changed=PKG_CONFIG_SYSROOT_DIR_x86_64_unknown_linux_gnu",
+##     "cargo:rerun-if-env-changed=HOST_PKG_CONFIG_SYSROOT_DIR",
+##     "cargo:rerun-if-env-changed=PKG_CONFIG_SYSROOT_DIR",
+##     "cargo:rerun-if-env-changed=LIBPQ_STATIC",
+##     "cargo:rerun-if-env-changed=LIBPQ_DYNAMIC",
+##     "cargo:rerun-if-env-changed=PKG_CONFIG_ALL_STATIC",
+##     "cargo:rerun-if-env-changed=PKG_CONFIG_ALL_DYNAMIC",
+##     "cargo:rerun-if-env-changed=PKG_CONFIG_PATH_x86_64-unknown-linux-gnu",
+##     "cargo:rerun-if-env-changed=PKG_CONFIG_PATH_x86_64_unknown_linux_gnu",
+##     "cargo:rerun-if-env-changed=HOST_PKG_CONFIG_PATH",
+##     "cargo:rerun-if-env-changed=PKG_CONFIG_PATH",
+##     "cargo:rerun-if-env-changed=PKG_CONFIG_LIBDIR_x86_64-unknown-linux-gnu",
+##     "cargo:rerun-if-env-changed=PKG_CONFIG_LIBDIR_x86_64_unknown_linux_gnu",
+##     "cargo:rerun-if-env-changed=HOST_PKG_CONFIG_LIBDIR",
+##     "cargo:rerun-if-env-changed=PKG_CONFIG_LIBDIR",
+##     "cargo:rerun-if-env-changed=PKG_CONFIG_SYSROOT_DIR_x86_64-unknown-linux-gnu",
+##     "cargo:rerun-if-env-changed=PKG_CONFIG_SYSROOT_DIR_x86_64_unknown_linux_gnu",
+##     "cargo:rerun-if-env-changed=HOST_PKG_CONFIG_SYSROOT_DIR",
+##     "cargo:rerun-if-env-changed=PKG_CONFIG_SYSROOT_DIR",
+##     "cargo:rerun-if-env-changed=PG_CONFIG_X86_64_UNKNOWN_LINUX_GNU",
+##     "cargo:rustc-link-search=native=/usr/lib/x86_64-linux-gnu",
+##     "cargo:rerun-if-env-changed=PQ_LIB_STATIC_X86_64_UNKNOWN_LINUX_GNU",
+##     "cargo:rustc-link-lib=pq",
+## ]
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = '''
+## FROM --platform=$BUILDPLATFORM docker.io/tonistiigi/xx:1.6.1@sha256:923441d7c25f1e2eb5789f82d987693c47b8ed987c4ab3b075d6ed2b5d6779a3 AS xx
+## FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base
+## ARG TARGETPLATFORM
+## RUN \
+##   --mount=from=xx,source=/usr/bin/xx-apk,dst=/usr/bin/xx-apk \
+##   --mount=from=xx,source=/usr/bin/xx-apt,dst=/usr/bin/xx-apt \
+##   --mount=from=xx,source=/usr/bin/xx-apt,dst=/usr/bin/xx-apt-get \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-c++ \
+##   --mount=from=xx,source=/usr/bin/xx-cargo,dst=/usr/bin/xx-cargo \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-cc \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-clang \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-clang++ \
+##   --mount=from=xx,source=/usr/bin/xx-go,dst=/usr/bin/xx-go \
+##   --mount=from=xx,source=/usr/bin/xx-info,dst=/usr/bin/xx-info \
+##   --mount=from=xx,source=/usr/bin/xx-ld-shas,dst=/usr/bin/xx-ld-shas \
+##   --mount=from=xx,source=/usr/bin/xx-verify,dst=/usr/bin/xx-verify \
+##   --mount=from=xx,source=/usr/bin/xx-windres,dst=/usr/bin/xx-windres \
+##     set -eux \
+##  && if   command -v apk >/dev/null 2>&1; then \
+##                                      xx-apk     add     --no-cache                 '<none>'; \
+##     elif command -v apt >/dev/null 2>&1; then \
+##       DEBIAN_FRONTEND=noninteractive xx-apt     install --no-install-recommends -y 'libpq-dev'; \
+##     else \
+##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
+##     fi'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "run-z-pq-sys-0.7.5-e63dae8d54788400"
+## script = '''
+## FROM rust-base AS run-z-pq-sys-0.7.5-e63dae8d54788400
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-diesel_cli_2-3-4/release/build/pq-sys-e63dae8d54788400/out
+## WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/pq-sys-0.7.5
+## RUN \
+##   --mount=from=out-cd02570aab934144,source=/build_script_build-cd02570aab934144,dst=/tmp/clis-diesel_cli_2-3-4/release/build/pq-sys-cd02570aab934144/build-script-build \
+##   --mount=from=cratesio-pq-sys-0.7.5,source=/pq-sys-0.7.5,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/pq-sys-0.7.5 \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CFG_FEATURE=default,pkg-config \
+##         CARGO_CFG_PANIC=unwind \
+##         CARGO_CFG_TARGET_ABI= \
+##         CARGO_CFG_TARGET_ARCH=x86_64 \
+##         CARGO_CFG_TARGET_ENDIAN=little \
+##         CARGO_CFG_TARGET_ENV=gnu \
+##         CARGO_CFG_TARGET_FAMILY=unix \
+##         CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
+##         CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+##         CARGO_CFG_TARGET_OS=linux \
+##         CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+##         CARGO_CFG_TARGET_VENDOR=unknown \
+##         CARGO_CFG_UNIX= \
+##         CARGO_ENCODED_RUSTFLAGS= \
+##         CARGO_FEATURE_DEFAULT=1 \
+##         CARGO_FEATURE_PKG_CONFIG=1 \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/pq-sys-0.7.5 \
+##         CARGO_MANIFEST_LINKS=pq \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/pq-sys-0.7.5/Cargo.toml \
+##         CARGO_PKG_AUTHORS= \
+##         CARGO_PKG_DESCRIPTION=Auto-generated' rust bindings for libpq' \
+##         CARGO_PKG_HOMEPAGE= \
+##         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=pq-sys \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/sgrif/pq-sys' \
+##         CARGO_PKG_RUST_VERSION=1.82.0 \
+##         CARGO_PKG_VERSION=0.7.5 \
+##         CARGO_PKG_VERSION_MAJOR=0 \
+##         CARGO_PKG_VERSION_MINOR=7 \
+##         CARGO_PKG_VERSION_PATCH=5 \
+##         CARGO_PKG_VERSION_PRE= \
+##         DEBUG=false \
+##         HOST=x86_64-unknown-linux-gnu \
+##         NUM_JOBS=4 \
+##         OPT_LEVEL=3 \
+##         OUT_DIR=/tmp/clis-diesel_cli_2-3-4/release/build/pq-sys-e63dae8d54788400/out \
+##         PROFILE=release \
+##         RUSTC=rustc \
+##         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+##         TARGET=x86_64-unknown-linux-gnu \
+##         CARGOGREEN=1 \
+##       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-diesel_cli_2-3-4/release/build/pq-sys-cd02570aab934144/build-script-build \
+##         1>          /tmp/clis-diesel_cli_2-3-4/release/build/pq-sys-e63dae8d54788400/out/out-e63dae8d54788400-stdout \
+##         2>          /tmp/clis-diesel_cli_2-3-4/release/build/pq-sys-e63dae8d54788400/out/out-e63dae8d54788400-stderr \
+##         || echo $? >/tmp/clis-diesel_cli_2-3-4/release/build/pq-sys-e63dae8d54788400/out/out-e63dae8d54788400-errcode\
+##   ; find /tmp/clis-diesel_cli_2-3-4/release/build/pq-sys-e63dae8d54788400/out/*-e63dae8d54788400* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-e63dae8d54788400"
+## script = """
+## FROM scratch AS out-e63dae8d54788400
+## COPY --link --from=run-z-pq-sys-0.7.5-e63dae8d54788400 /tmp/clis-diesel_cli_2-3-4/release/build/pq-sys-e63dae8d54788400/out/* /"""
+
+
 FROM rust-base AS dep-n-pq-sys-0.7.5-da2e6b7bc41290c2
 SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-diesel_cli_2-3-4/release/deps
 RUN \
   --mount=from=cratesio-pq-sys-0.7.5,source=/pq-sys-0.7.5,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/pq-sys-0.7.5 \
-  --mount=from=crate_out-e63dae8d54788400,dst=/tmp/clis-diesel_cli_2-3-4/release/build/pq-sys-e63dae8d54788400/out \
   --mount=from=out-7f08a5fdefdb5905,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/liblibc-7f08a5fdefdb5905.rlib,source=/liblibc-7f08a5fdefdb5905.rlib \
   --mount=from=out-7f08a5fdefdb5905,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/liblibc-7f08a5fdefdb5905.rmeta,source=/liblibc-7f08a5fdefdb5905.rmeta \
+  --mount=from=out-880d2e011f9f14fa,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-880d2e011f9f14fa,source=/build_script_build-880d2e011f9f14fa \
+  --mount=from=out-e63dae8d54788400,dst=/tmp/clis-diesel_cli_2-3-4/release/build/pq-sys-e63dae8d54788400/out,source=/ \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=pq_sys \
         CARGO_INCREMENTAL=0 \
@@ -5895,7 +8498,18 @@ FROM scratch AS out-da2e6b7bc41290c2
 COPY --link --from=dep-n-pq-sys-0.7.5-da2e6b7bc41290c2 /tmp/clis-diesel_cli_2-3-4/release/deps/*-da2e6b7bc41290c2* /
 
 ## this = "da2e6b7bc41290c2"
-## deps = ["7f08a5fdefdb5905"]
+## deps = [
+##     "7f08a5fdefdb5905",
+##     "a2e72ddbcd62bc9f",
+##     "880d2e011f9f14fa",
+##     "e63dae8d54788400",
+##     "ec662f2448b0e090",
+##     "cd02570aab934144",
+## ]
+## buildrs_results = [
+##     "a2e72ddbcd62bc9f",
+##     "e63dae8d54788400",
+## ]
 ## writes = [
 ##     "libpq_sys-da2e6b7bc41290c2.rlib",
 ##     "libpq_sys-da2e6b7bc41290c2.rmeta",
@@ -5915,9 +8529,14 @@ COPY --link --from=dep-n-pq-sys-0.7.5-da2e6b7bc41290c2 /tmp/clis-diesel_cli_2-3-
 ## from = "out-7f08a5fdefdb5905"
 ## xtern = "liblibc-7f08a5fdefdb5905.rmeta"
 ##
-## [[contexts]]
-## name = "crate_out-e63dae8d54788400"
-## uri = "/tmp/clis-diesel_cli_2-3-4/release/build/pq-sys-e63dae8d54788400/out"
+## [[externs]]
+## from = "out-880d2e011f9f14fa"
+## xtern = "build_script_build-880d2e011f9f14fa"
+##
+## [[mounts]]
+## name = "out-e63dae8d54788400"
+## src = "/"
+## dst = "/tmp/clis-diesel_cli_2-3-4/release/build/pq-sys-e63dae8d54788400/out"
 ##
 ## [[stages]]
 ##
@@ -5969,9 +8588,10 @@ COPY --link --from=dep-n-pq-sys-0.7.5-da2e6b7bc41290c2 /tmp/clis-diesel_cli_2-3-
 ## WORKDIR /tmp/clis-diesel_cli_2-3-4/release/deps
 ## RUN \
 ##   --mount=from=cratesio-pq-sys-0.7.5,source=/pq-sys-0.7.5,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/pq-sys-0.7.5 \
-##   --mount=from=crate_out-e63dae8d54788400,dst=/tmp/clis-diesel_cli_2-3-4/release/build/pq-sys-e63dae8d54788400/out \
 ##   --mount=from=out-7f08a5fdefdb5905,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/liblibc-7f08a5fdefdb5905.rlib,source=/liblibc-7f08a5fdefdb5905.rlib \
 ##   --mount=from=out-7f08a5fdefdb5905,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/liblibc-7f08a5fdefdb5905.rmeta,source=/liblibc-7f08a5fdefdb5905.rmeta \
+##   --mount=from=out-880d2e011f9f14fa,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-880d2e011f9f14fa,source=/build_script_build-880d2e011f9f14fa \
+##   --mount=from=out-e63dae8d54788400,dst=/tmp/clis-diesel_cli_2-3-4/release/build/pq-sys-e63dae8d54788400/out,source=/ \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=pq_sys \
 ##         CARGO_INCREMENTAL=0 \
@@ -6028,8 +8648,10 @@ RUN \
   --mount=from=out-e1e423eb99bb7e63,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libproc_macro2-e1e423eb99bb7e63.rmeta,source=/libproc_macro2-e1e423eb99bb7e63.rmeta \
   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rlib,source=/libunicode_ident-721470d94fc0c354.rlib \
   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rmeta,source=/libunicode_ident-721470d94fc0c354.rmeta \
+  --mount=from=out-71babfb997932318,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-71babfb997932318,source=/build_script_build-71babfb997932318 \
   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rlib,source=/libquote-87872b55644e5043.rlib \
   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rmeta,source=/libquote-87872b55644e5043.rmeta \
+  --mount=from=out-c63aae50eb6f480a,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-c63aae50eb6f480a,source=/build_script_build-c63aae50eb6f480a \
   --mount=from=out-e72117f7acff2466,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libdsl_auto_type-e72117f7acff2466.rlib,source=/libdsl_auto_type-e72117f7acff2466.rlib \
   --mount=from=out-e72117f7acff2466,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libdsl_auto_type-e72117f7acff2466.rmeta,source=/libdsl_auto_type-e72117f7acff2466.rmeta \
   --mount=from=out-9c2515b9354b63f7,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libdarling-9c2515b9354b63f7.rlib,source=/libdarling-9c2515b9354b63f7.rlib \
@@ -6047,6 +8669,7 @@ RUN \
   --mount=from=out-7892953c40c7027d,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libeither-7892953c40c7027d.rmeta,source=/libeither-7892953c40c7027d.rmeta \
   --mount=from=out-3c7b5c3a02d329ae,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libheck-3c7b5c3a02d329ae.rlib,source=/libheck-3c7b5c3a02d329ae.rlib \
   --mount=from=out-3c7b5c3a02d329ae,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libheck-3c7b5c3a02d329ae.rmeta,source=/libheck-3c7b5c3a02d329ae.rmeta \
+  --mount=from=out-26a0fe0ac7c340f6,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-26a0fe0ac7c340f6,source=/build_script_build-26a0fe0ac7c340f6 \
   --mount=from=out-6daa53e662c18c24,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libdowncast_rs-6daa53e662c18c24.rlib,source=/libdowncast_rs-6daa53e662c18c24.rlib \
   --mount=from=out-6daa53e662c18c24,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libdowncast_rs-6daa53e662c18c24.rmeta,source=/libdowncast_rs-6daa53e662c18c24.rmeta \
   --mount=from=out-810c45601233a792,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libitoa-810c45601233a792.rlib,source=/libitoa-810c45601233a792.rlib \
@@ -6055,6 +8678,11 @@ RUN \
   --mount=from=out-da2e6b7bc41290c2,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libpq_sys-da2e6b7bc41290c2.rmeta,source=/libpq_sys-da2e6b7bc41290c2.rmeta \
   --mount=from=out-7f08a5fdefdb5905,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/liblibc-7f08a5fdefdb5905.rlib,source=/liblibc-7f08a5fdefdb5905.rlib \
   --mount=from=out-7f08a5fdefdb5905,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/liblibc-7f08a5fdefdb5905.rmeta,source=/liblibc-7f08a5fdefdb5905.rmeta \
+  --mount=from=out-880d2e011f9f14fa,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-880d2e011f9f14fa,source=/build_script_build-880d2e011f9f14fa \
+  --mount=from=out-e63dae8d54788400,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/bindings.rs,source=/bindings.rs \
+  --mount=from=out-ec662f2448b0e090,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libpkg_config-ec662f2448b0e090.rlib,source=/libpkg_config-ec662f2448b0e090.rlib \
+  --mount=from=out-ec662f2448b0e090,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libpkg_config-ec662f2448b0e090.rmeta,source=/libpkg_config-ec662f2448b0e090.rmeta \
+  --mount=from=out-cd02570aab934144,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-cd02570aab934144,source=/build_script_build-cd02570aab934144 \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=diesel \
         CARGO_INCREMENTAL=0 \
@@ -6092,7 +8720,11 @@ COPY --link --from=dep-n-diesel-2.3.4-0bd750ca487311f5 /tmp/clis-diesel_cli_2-3-
 ##     "12379804391f3f43",
 ##     "e1e423eb99bb7e63",
 ##     "721470d94fc0c354",
+##     "e93dddbb48c6a6fc",
+##     "71babfb997932318",
 ##     "87872b55644e5043",
+##     "edf8f660a3d601cc",
+##     "c63aae50eb6f480a",
 ##     "e72117f7acff2466",
 ##     "9c2515b9354b63f7",
 ##     "feba89015d51c163",
@@ -6102,10 +8734,24 @@ COPY --link --from=dep-n-diesel-2.3.4-0bd750ca487311f5 /tmp/clis-diesel_cli_2-3-
 ##     "48fe319515ec65ff",
 ##     "7892953c40c7027d",
 ##     "3c7b5c3a02d329ae",
+##     "0be4771cf3c80127",
+##     "26a0fe0ac7c340f6",
 ##     "6daa53e662c18c24",
 ##     "810c45601233a792",
 ##     "da2e6b7bc41290c2",
 ##     "7f08a5fdefdb5905",
+##     "a2e72ddbcd62bc9f",
+##     "880d2e011f9f14fa",
+##     "e63dae8d54788400",
+##     "ec662f2448b0e090",
+##     "cd02570aab934144",
+## ]
+## buildrs_results = [
+##     "e93dddbb48c6a6fc",
+##     "edf8f660a3d601cc",
+##     "0be4771cf3c80127",
+##     "a2e72ddbcd62bc9f",
+##     "e63dae8d54788400",
 ## ]
 ## writes = [
 ##     "diesel-0bd750ca487311f5.d",
@@ -6171,12 +8817,20 @@ COPY --link --from=dep-n-diesel-2.3.4-0bd750ca487311f5 /tmp/clis-diesel_cli_2-3-
 ## xtern = "libunicode_ident-721470d94fc0c354.rmeta"
 ##
 ## [[externs]]
+## from = "out-71babfb997932318"
+## xtern = "build_script_build-71babfb997932318"
+##
+## [[externs]]
 ## from = "out-87872b55644e5043"
 ## xtern = "libquote-87872b55644e5043.rlib"
 ##
 ## [[externs]]
 ## from = "out-87872b55644e5043"
 ## xtern = "libquote-87872b55644e5043.rmeta"
+##
+## [[externs]]
+## from = "out-c63aae50eb6f480a"
+## xtern = "build_script_build-c63aae50eb6f480a"
 ##
 ## [[externs]]
 ## from = "out-e72117f7acff2466"
@@ -6247,6 +8901,10 @@ COPY --link --from=dep-n-diesel-2.3.4-0bd750ca487311f5 /tmp/clis-diesel_cli_2-3-
 ## xtern = "libheck-3c7b5c3a02d329ae.rmeta"
 ##
 ## [[externs]]
+## from = "out-26a0fe0ac7c340f6"
+## xtern = "build_script_build-26a0fe0ac7c340f6"
+##
+## [[externs]]
 ## from = "out-6daa53e662c18c24"
 ## xtern = "libdowncast_rs-6daa53e662c18c24.rlib"
 ##
@@ -6278,9 +8936,25 @@ COPY --link --from=dep-n-diesel-2.3.4-0bd750ca487311f5 /tmp/clis-diesel_cli_2-3-
 ## from = "out-7f08a5fdefdb5905"
 ## xtern = "liblibc-7f08a5fdefdb5905.rmeta"
 ##
-## [[contexts]]
-## name = "crate_out-e63dae8d54788400"
-## uri = "/tmp/clis-diesel_cli_2-3-4/release/build/pq-sys-e63dae8d54788400/out"
+## [[externs]]
+## from = "out-880d2e011f9f14fa"
+## xtern = "build_script_build-880d2e011f9f14fa"
+##
+## [[externs]]
+## from = "out-e63dae8d54788400"
+## xtern = "bindings.rs"
+##
+## [[externs]]
+## from = "out-ec662f2448b0e090"
+## xtern = "libpkg_config-ec662f2448b0e090.rlib"
+##
+## [[externs]]
+## from = "out-ec662f2448b0e090"
+## xtern = "libpkg_config-ec662f2448b0e090.rmeta"
+##
+## [[externs]]
+## from = "out-cd02570aab934144"
+## xtern = "build_script_build-cd02570aab934144"
 ##
 ## [[stages]]
 ##
@@ -6345,8 +9019,10 @@ COPY --link --from=dep-n-diesel-2.3.4-0bd750ca487311f5 /tmp/clis-diesel_cli_2-3-
 ##   --mount=from=out-e1e423eb99bb7e63,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libproc_macro2-e1e423eb99bb7e63.rmeta,source=/libproc_macro2-e1e423eb99bb7e63.rmeta \
 ##   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rlib,source=/libunicode_ident-721470d94fc0c354.rlib \
 ##   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rmeta,source=/libunicode_ident-721470d94fc0c354.rmeta \
+##   --mount=from=out-71babfb997932318,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-71babfb997932318,source=/build_script_build-71babfb997932318 \
 ##   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rlib,source=/libquote-87872b55644e5043.rlib \
 ##   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rmeta,source=/libquote-87872b55644e5043.rmeta \
+##   --mount=from=out-c63aae50eb6f480a,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-c63aae50eb6f480a,source=/build_script_build-c63aae50eb6f480a \
 ##   --mount=from=out-e72117f7acff2466,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libdsl_auto_type-e72117f7acff2466.rlib,source=/libdsl_auto_type-e72117f7acff2466.rlib \
 ##   --mount=from=out-e72117f7acff2466,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libdsl_auto_type-e72117f7acff2466.rmeta,source=/libdsl_auto_type-e72117f7acff2466.rmeta \
 ##   --mount=from=out-9c2515b9354b63f7,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libdarling-9c2515b9354b63f7.rlib,source=/libdarling-9c2515b9354b63f7.rlib \
@@ -6364,6 +9040,7 @@ COPY --link --from=dep-n-diesel-2.3.4-0bd750ca487311f5 /tmp/clis-diesel_cli_2-3-
 ##   --mount=from=out-7892953c40c7027d,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libeither-7892953c40c7027d.rmeta,source=/libeither-7892953c40c7027d.rmeta \
 ##   --mount=from=out-3c7b5c3a02d329ae,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libheck-3c7b5c3a02d329ae.rlib,source=/libheck-3c7b5c3a02d329ae.rlib \
 ##   --mount=from=out-3c7b5c3a02d329ae,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libheck-3c7b5c3a02d329ae.rmeta,source=/libheck-3c7b5c3a02d329ae.rmeta \
+##   --mount=from=out-26a0fe0ac7c340f6,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-26a0fe0ac7c340f6,source=/build_script_build-26a0fe0ac7c340f6 \
 ##   --mount=from=out-6daa53e662c18c24,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libdowncast_rs-6daa53e662c18c24.rlib,source=/libdowncast_rs-6daa53e662c18c24.rlib \
 ##   --mount=from=out-6daa53e662c18c24,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libdowncast_rs-6daa53e662c18c24.rmeta,source=/libdowncast_rs-6daa53e662c18c24.rmeta \
 ##   --mount=from=out-810c45601233a792,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libitoa-810c45601233a792.rlib,source=/libitoa-810c45601233a792.rlib \
@@ -6372,6 +9049,11 @@ COPY --link --from=dep-n-diesel-2.3.4-0bd750ca487311f5 /tmp/clis-diesel_cli_2-3-
 ##   --mount=from=out-da2e6b7bc41290c2,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libpq_sys-da2e6b7bc41290c2.rmeta,source=/libpq_sys-da2e6b7bc41290c2.rmeta \
 ##   --mount=from=out-7f08a5fdefdb5905,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/liblibc-7f08a5fdefdb5905.rlib,source=/liblibc-7f08a5fdefdb5905.rlib \
 ##   --mount=from=out-7f08a5fdefdb5905,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/liblibc-7f08a5fdefdb5905.rmeta,source=/liblibc-7f08a5fdefdb5905.rmeta \
+##   --mount=from=out-880d2e011f9f14fa,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-880d2e011f9f14fa,source=/build_script_build-880d2e011f9f14fa \
+##   --mount=from=out-e63dae8d54788400,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/bindings.rs,source=/bindings.rs \
+##   --mount=from=out-ec662f2448b0e090,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libpkg_config-ec662f2448b0e090.rlib,source=/libpkg_config-ec662f2448b0e090.rlib \
+##   --mount=from=out-ec662f2448b0e090,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libpkg_config-ec662f2448b0e090.rmeta,source=/libpkg_config-ec662f2448b0e090.rmeta \
+##   --mount=from=out-cd02570aab934144,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-cd02570aab934144,source=/build_script_build-cd02570aab934144 \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=diesel \
 ##         CARGO_INCREMENTAL=0 \
@@ -6409,12 +9091,357 @@ COPY --link --from=dep-n-diesel-2.3.4-0bd750ca487311f5 /tmp/clis-diesel_cli_2-3-
 FROM scratch AS cratesio-serde_core-1.0.228
 ADD --chmod=0664 --unpack --checksum=sha256:41d385c7d4ca58e59fc732af25c3983b67ac852c1a25000afe1175de458b67ad \
   https://static.crates.io/crates/serde_core/serde_core-1.0.228.crate /
+FROM rust-base AS dep-x-serde_core-1.0.228-d7b3469e26105631
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-diesel_cli_2-3-4/release/build/serde_core-d7b3469e26105631
+RUN \
+  --mount=from=cratesio-serde_core-1.0.228,source=/serde_core-1.0.228,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_core-1.0.228,rw \
+    { \
+        cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_core-1.0.228/build.rs | sed 's/fn main/fn actual_d7b3469e26105631_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_core-1.0.228/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_core-1.0.228/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_core-1.0.228/build.rs ; \
+        { \
+          echo ; \
+          echo 'fn main() {' ; \
+          echo '    use std::env::{args_os, var_os};' ; \
+          echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+          echo '        use std::process::{Command, Stdio};' ; \
+          echo '        let mut cmd = Command::new("cargo-green");' ; \
+          echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+          echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+          echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+          echo '        assert!(res.success());' ; \
+          echo '    } else {' ; \
+          echo '        actual_d7b3469e26105631_main();' ; \
+          echo '    }' ; \
+          echo '}' ; \
+        } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_core-1.0.228/build.rs ; \
+    } && \
+    env CARGO="$(which cargo)" \
+        CARGO_CRATE_NAME=build_script_build \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_core-1.0.228 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_core-1.0.228/Cargo.toml \
+        CARGO_PKG_AUTHORS=Erick' Tryzelaar <erick.tryzelaar@gmail.com>:David Tolnay <dtolnay@gmail.com>' \
+        CARGO_PKG_DESCRIPTION=Serde' traits only, with no support for derive -- use the `serde` crate instead' \
+        CARGO_PKG_HOMEPAGE=https'://serde.rs' \
+        CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=serde_core \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/serde-rs/serde' \
+        CARGO_PKG_RUST_VERSION=1.56 \
+        CARGO_PKG_VERSION=1.0.228 \
+        CARGO_PKG_VERSION_MAJOR=1 \
+        CARGO_PKG_VERSION_MINOR=0 \
+        CARGO_PKG_VERSION_PATCH=228 \
+        CARGO_PKG_VERSION_PRE= \
+        CARGOGREEN=1 \
+      rustc '--crate-name' 'build_script_build' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'bin' '--emit' 'dep-info,link' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--cfg' 'feature="alloc"' '--cfg' 'feature="result"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "default", "rc", "result", "std", "unstable"))' '-C' 'metadata=400a62da1dac90f8' '-C' 'extra-filename=-d7b3469e26105631' '--out-dir' '/tmp/clis-diesel_cli_2-3-4/release/build/serde_core-d7b3469e26105631' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-diesel_cli_2-3-4/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_core-1.0.228/build.rs \
+        1>          /tmp/clis-diesel_cli_2-3-4/release/build/serde_core-d7b3469e26105631/out-d7b3469e26105631-stdout \
+        2>          /tmp/clis-diesel_cli_2-3-4/release/build/serde_core-d7b3469e26105631/out-d7b3469e26105631-stderr \
+        || echo $? >/tmp/clis-diesel_cli_2-3-4/release/build/serde_core-d7b3469e26105631/out-d7b3469e26105631-errcode\
+  ; find /tmp/clis-diesel_cli_2-3-4/release/build/serde_core-d7b3469e26105631/*-d7b3469e26105631* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-d7b3469e26105631
+COPY --link --from=dep-x-serde_core-1.0.228-d7b3469e26105631 /tmp/clis-diesel_cli_2-3-4/release/build/serde_core-d7b3469e26105631/*-d7b3469e26105631* /
+
+## this = "d7b3469e26105631"
+## writes = [
+##     "build_script_build-d7b3469e26105631",
+##     "build_script_build-d7b3469e26105631.d",
+## ]
+## stderr = [
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-4/release/build/serde_core-d7b3469e26105631/build_script_build-d7b3469e26105631.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-4/release/build/serde_core-d7b3469e26105631/build_script_build-d7b3469e26105631","emit":"link"}',
+## ]
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = '''
+## FROM --platform=$BUILDPLATFORM docker.io/tonistiigi/xx:1.6.1@sha256:923441d7c25f1e2eb5789f82d987693c47b8ed987c4ab3b075d6ed2b5d6779a3 AS xx
+## FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base
+## ARG TARGETPLATFORM
+## RUN \
+##   --mount=from=xx,source=/usr/bin/xx-apk,dst=/usr/bin/xx-apk \
+##   --mount=from=xx,source=/usr/bin/xx-apt,dst=/usr/bin/xx-apt \
+##   --mount=from=xx,source=/usr/bin/xx-apt,dst=/usr/bin/xx-apt-get \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-c++ \
+##   --mount=from=xx,source=/usr/bin/xx-cargo,dst=/usr/bin/xx-cargo \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-cc \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-clang \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-clang++ \
+##   --mount=from=xx,source=/usr/bin/xx-go,dst=/usr/bin/xx-go \
+##   --mount=from=xx,source=/usr/bin/xx-info,dst=/usr/bin/xx-info \
+##   --mount=from=xx,source=/usr/bin/xx-ld-shas,dst=/usr/bin/xx-ld-shas \
+##   --mount=from=xx,source=/usr/bin/xx-verify,dst=/usr/bin/xx-verify \
+##   --mount=from=xx,source=/usr/bin/xx-windres,dst=/usr/bin/xx-windres \
+##     set -eux \
+##  && if   command -v apk >/dev/null 2>&1; then \
+##                                      xx-apk     add     --no-cache                 '<none>'; \
+##     elif command -v apt >/dev/null 2>&1; then \
+##       DEBIAN_FRONTEND=noninteractive xx-apt     install --no-install-recommends -y 'libpq-dev'; \
+##     else \
+##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
+##     fi'''
+##
+## [[stages]]
+##
+## [stages.Cratesio]
+## stage = "cratesio-serde_core-1.0.228"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_core-1.0.228"
+## name = "serde_core"
+## name_dash_version = "serde_core-1.0.228"
+## hash = "41d385c7d4ca58e59fc732af25c3983b67ac852c1a25000afe1175de458b67ad"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "dep-x-serde_core-1.0.228-d7b3469e26105631"
+## script = '''
+## FROM rust-base AS dep-x-serde_core-1.0.228-d7b3469e26105631
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-diesel_cli_2-3-4/release/build/serde_core-d7b3469e26105631
+## RUN \
+##   --mount=from=cratesio-serde_core-1.0.228,source=/serde_core-1.0.228,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_core-1.0.228,rw \
+##     { \
+##         cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_core-1.0.228/build.rs | sed 's/fn main/fn actual_d7b3469e26105631_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_core-1.0.228/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_core-1.0.228/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_core-1.0.228/build.rs ; \
+##         { \
+##           echo ; \
+##           echo 'fn main() {' ; \
+##           echo '    use std::env::{args_os, var_os};' ; \
+##           echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+##           echo '        use std::process::{Command, Stdio};' ; \
+##           echo '        let mut cmd = Command::new("cargo-green");' ; \
+##           echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+##           echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+##           echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+##           echo '        assert!(res.success());' ; \
+##           echo '    } else {' ; \
+##           echo '        actual_d7b3469e26105631_main();' ; \
+##           echo '    }' ; \
+##           echo '}' ; \
+##         } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_core-1.0.228/build.rs ; \
+##     } && \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CRATE_NAME=build_script_build \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_core-1.0.228 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_core-1.0.228/Cargo.toml \
+##         CARGO_PKG_AUTHORS=Erick' Tryzelaar <erick.tryzelaar@gmail.com>:David Tolnay <dtolnay@gmail.com>' \
+##         CARGO_PKG_DESCRIPTION=Serde' traits only, with no support for derive -- use the `serde` crate instead' \
+##         CARGO_PKG_HOMEPAGE=https'://serde.rs' \
+##         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=serde_core \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/serde-rs/serde' \
+##         CARGO_PKG_RUST_VERSION=1.56 \
+##         CARGO_PKG_VERSION=1.0.228 \
+##         CARGO_PKG_VERSION_MAJOR=1 \
+##         CARGO_PKG_VERSION_MINOR=0 \
+##         CARGO_PKG_VERSION_PATCH=228 \
+##         CARGO_PKG_VERSION_PRE= \
+##         CARGOGREEN=1 \
+##       rustc '--crate-name' 'build_script_build' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'bin' '--emit' 'dep-info,link' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--cfg' 'feature="alloc"' '--cfg' 'feature="result"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "default", "rc", "result", "std", "unstable"))' '-C' 'metadata=400a62da1dac90f8' '-C' 'extra-filename=-d7b3469e26105631' '--out-dir' '/tmp/clis-diesel_cli_2-3-4/release/build/serde_core-d7b3469e26105631' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-diesel_cli_2-3-4/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_core-1.0.228/build.rs \
+##         1>          /tmp/clis-diesel_cli_2-3-4/release/build/serde_core-d7b3469e26105631/out-d7b3469e26105631-stdout \
+##         2>          /tmp/clis-diesel_cli_2-3-4/release/build/serde_core-d7b3469e26105631/out-d7b3469e26105631-stderr \
+##         || echo $? >/tmp/clis-diesel_cli_2-3-4/release/build/serde_core-d7b3469e26105631/out-d7b3469e26105631-errcode\
+##   ; find /tmp/clis-diesel_cli_2-3-4/release/build/serde_core-d7b3469e26105631/*-d7b3469e26105631* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-d7b3469e26105631"
+## script = """
+## FROM scratch AS out-d7b3469e26105631
+## COPY --link --from=dep-x-serde_core-1.0.228-d7b3469e26105631 /tmp/clis-diesel_cli_2-3-4/release/build/serde_core-d7b3469e26105631/*-d7b3469e26105631* /"""
+
+FROM rust-base AS run-z-serde_core-1.0.228-542dbc5d310e9565
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-diesel_cli_2-3-4/release/build/serde_core-542dbc5d310e9565/out
+WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_core-1.0.228
+RUN \
+  --mount=from=out-d7b3469e26105631,source=/build_script_build-d7b3469e26105631,dst=/tmp/clis-diesel_cli_2-3-4/release/build/serde_core-d7b3469e26105631/build-script-build \
+  --mount=from=cratesio-serde_core-1.0.228,source=/serde_core-1.0.228,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_core-1.0.228 \
+    env CARGO="$(which cargo)" \
+        CARGO_CFG_FEATURE=alloc,result,std \
+        CARGO_CFG_PANIC=unwind \
+        CARGO_CFG_TARGET_ABI= \
+        CARGO_CFG_TARGET_ARCH=x86_64 \
+        CARGO_CFG_TARGET_ENDIAN=little \
+        CARGO_CFG_TARGET_ENV=gnu \
+        CARGO_CFG_TARGET_FAMILY=unix \
+        CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
+        CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+        CARGO_CFG_TARGET_OS=linux \
+        CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+        CARGO_CFG_TARGET_VENDOR=unknown \
+        CARGO_CFG_UNIX= \
+        CARGO_ENCODED_RUSTFLAGS= \
+        CARGO_FEATURE_ALLOC=1 \
+        CARGO_FEATURE_RESULT=1 \
+        CARGO_FEATURE_STD=1 \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_core-1.0.228 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_core-1.0.228/Cargo.toml \
+        CARGO_PKG_AUTHORS=Erick' Tryzelaar <erick.tryzelaar@gmail.com>:David Tolnay <dtolnay@gmail.com>' \
+        CARGO_PKG_DESCRIPTION=Serde' traits only, with no support for derive -- use the `serde` crate instead' \
+        CARGO_PKG_HOMEPAGE=https'://serde.rs' \
+        CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=serde_core \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/serde-rs/serde' \
+        CARGO_PKG_RUST_VERSION=1.56 \
+        CARGO_PKG_VERSION=1.0.228 \
+        CARGO_PKG_VERSION_MAJOR=1 \
+        CARGO_PKG_VERSION_MINOR=0 \
+        CARGO_PKG_VERSION_PATCH=228 \
+        CARGO_PKG_VERSION_PRE= \
+        DEBUG=false \
+        HOST=x86_64-unknown-linux-gnu \
+        NUM_JOBS=4 \
+        OPT_LEVEL=3 \
+        OUT_DIR=/tmp/clis-diesel_cli_2-3-4/release/build/serde_core-542dbc5d310e9565/out \
+        PROFILE=release \
+        RUSTC=rustc \
+        RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+        TARGET=x86_64-unknown-linux-gnu \
+        CARGOGREEN=1 \
+      CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-diesel_cli_2-3-4/release/build/serde_core-d7b3469e26105631/build-script-build \
+        1>          /tmp/clis-diesel_cli_2-3-4/release/build/serde_core-542dbc5d310e9565/out/out-542dbc5d310e9565-stdout \
+        2>          /tmp/clis-diesel_cli_2-3-4/release/build/serde_core-542dbc5d310e9565/out/out-542dbc5d310e9565-stderr \
+        || echo $? >/tmp/clis-diesel_cli_2-3-4/release/build/serde_core-542dbc5d310e9565/out/out-542dbc5d310e9565-errcode\
+  ; find /tmp/clis-diesel_cli_2-3-4/release/build/serde_core-542dbc5d310e9565/out/*-542dbc5d310e9565* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-542dbc5d310e9565
+COPY --link --from=run-z-serde_core-1.0.228-542dbc5d310e9565 /tmp/clis-diesel_cli_2-3-4/release/build/serde_core-542dbc5d310e9565/out/* /
+
+## this = "542dbc5d310e9565"
+## deps = ["d7b3469e26105631"]
+## writes = ["private.rs"]
+## stdout = [
+##     "cargo:rerun-if-changed=build.rs",
+##     "cargo:rustc-check-cfg=cfg(if_docsrs_then_no_serde_core)",
+##     "cargo:rustc-check-cfg=cfg(no_core_cstr)",
+##     "cargo:rustc-check-cfg=cfg(no_core_error)",
+##     "cargo:rustc-check-cfg=cfg(no_core_net)",
+##     "cargo:rustc-check-cfg=cfg(no_core_num_saturating)",
+##     "cargo:rustc-check-cfg=cfg(no_diagnostic_namespace)",
+##     "cargo:rustc-check-cfg=cfg(no_serde_derive)",
+##     "cargo:rustc-check-cfg=cfg(no_std_atomic)",
+##     "cargo:rustc-check-cfg=cfg(no_std_atomic64)",
+##     "cargo:rustc-check-cfg=cfg(no_target_has_atomic)",
+## ]
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = '''
+## FROM --platform=$BUILDPLATFORM docker.io/tonistiigi/xx:1.6.1@sha256:923441d7c25f1e2eb5789f82d987693c47b8ed987c4ab3b075d6ed2b5d6779a3 AS xx
+## FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base
+## ARG TARGETPLATFORM
+## RUN \
+##   --mount=from=xx,source=/usr/bin/xx-apk,dst=/usr/bin/xx-apk \
+##   --mount=from=xx,source=/usr/bin/xx-apt,dst=/usr/bin/xx-apt \
+##   --mount=from=xx,source=/usr/bin/xx-apt,dst=/usr/bin/xx-apt-get \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-c++ \
+##   --mount=from=xx,source=/usr/bin/xx-cargo,dst=/usr/bin/xx-cargo \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-cc \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-clang \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-clang++ \
+##   --mount=from=xx,source=/usr/bin/xx-go,dst=/usr/bin/xx-go \
+##   --mount=from=xx,source=/usr/bin/xx-info,dst=/usr/bin/xx-info \
+##   --mount=from=xx,source=/usr/bin/xx-ld-shas,dst=/usr/bin/xx-ld-shas \
+##   --mount=from=xx,source=/usr/bin/xx-verify,dst=/usr/bin/xx-verify \
+##   --mount=from=xx,source=/usr/bin/xx-windres,dst=/usr/bin/xx-windres \
+##     set -eux \
+##  && if   command -v apk >/dev/null 2>&1; then \
+##                                      xx-apk     add     --no-cache                 '<none>'; \
+##     elif command -v apt >/dev/null 2>&1; then \
+##       DEBIAN_FRONTEND=noninteractive xx-apt     install --no-install-recommends -y 'libpq-dev'; \
+##     else \
+##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
+##     fi'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "run-z-serde_core-1.0.228-542dbc5d310e9565"
+## script = '''
+## FROM rust-base AS run-z-serde_core-1.0.228-542dbc5d310e9565
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-diesel_cli_2-3-4/release/build/serde_core-542dbc5d310e9565/out
+## WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_core-1.0.228
+## RUN \
+##   --mount=from=out-d7b3469e26105631,source=/build_script_build-d7b3469e26105631,dst=/tmp/clis-diesel_cli_2-3-4/release/build/serde_core-d7b3469e26105631/build-script-build \
+##   --mount=from=cratesio-serde_core-1.0.228,source=/serde_core-1.0.228,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_core-1.0.228 \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CFG_FEATURE=alloc,result,std \
+##         CARGO_CFG_PANIC=unwind \
+##         CARGO_CFG_TARGET_ABI= \
+##         CARGO_CFG_TARGET_ARCH=x86_64 \
+##         CARGO_CFG_TARGET_ENDIAN=little \
+##         CARGO_CFG_TARGET_ENV=gnu \
+##         CARGO_CFG_TARGET_FAMILY=unix \
+##         CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
+##         CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+##         CARGO_CFG_TARGET_OS=linux \
+##         CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+##         CARGO_CFG_TARGET_VENDOR=unknown \
+##         CARGO_CFG_UNIX= \
+##         CARGO_ENCODED_RUSTFLAGS= \
+##         CARGO_FEATURE_ALLOC=1 \
+##         CARGO_FEATURE_RESULT=1 \
+##         CARGO_FEATURE_STD=1 \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_core-1.0.228 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_core-1.0.228/Cargo.toml \
+##         CARGO_PKG_AUTHORS=Erick' Tryzelaar <erick.tryzelaar@gmail.com>:David Tolnay <dtolnay@gmail.com>' \
+##         CARGO_PKG_DESCRIPTION=Serde' traits only, with no support for derive -- use the `serde` crate instead' \
+##         CARGO_PKG_HOMEPAGE=https'://serde.rs' \
+##         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=serde_core \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/serde-rs/serde' \
+##         CARGO_PKG_RUST_VERSION=1.56 \
+##         CARGO_PKG_VERSION=1.0.228 \
+##         CARGO_PKG_VERSION_MAJOR=1 \
+##         CARGO_PKG_VERSION_MINOR=0 \
+##         CARGO_PKG_VERSION_PATCH=228 \
+##         CARGO_PKG_VERSION_PRE= \
+##         DEBUG=false \
+##         HOST=x86_64-unknown-linux-gnu \
+##         NUM_JOBS=4 \
+##         OPT_LEVEL=3 \
+##         OUT_DIR=/tmp/clis-diesel_cli_2-3-4/release/build/serde_core-542dbc5d310e9565/out \
+##         PROFILE=release \
+##         RUSTC=rustc \
+##         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+##         TARGET=x86_64-unknown-linux-gnu \
+##         CARGOGREEN=1 \
+##       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-diesel_cli_2-3-4/release/build/serde_core-d7b3469e26105631/build-script-build \
+##         1>          /tmp/clis-diesel_cli_2-3-4/release/build/serde_core-542dbc5d310e9565/out/out-542dbc5d310e9565-stdout \
+##         2>          /tmp/clis-diesel_cli_2-3-4/release/build/serde_core-542dbc5d310e9565/out/out-542dbc5d310e9565-stderr \
+##         || echo $? >/tmp/clis-diesel_cli_2-3-4/release/build/serde_core-542dbc5d310e9565/out/out-542dbc5d310e9565-errcode\
+##   ; find /tmp/clis-diesel_cli_2-3-4/release/build/serde_core-542dbc5d310e9565/out/*-542dbc5d310e9565* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-542dbc5d310e9565"
+## script = """
+## FROM scratch AS out-542dbc5d310e9565
+## COPY --link --from=run-z-serde_core-1.0.228-542dbc5d310e9565 /tmp/clis-diesel_cli_2-3-4/release/build/serde_core-542dbc5d310e9565/out/* /"""
+
+
 FROM rust-base AS dep-n-serde_core-1.0.228-8e892930c8cabc4c
 SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-diesel_cli_2-3-4/release/deps
 RUN \
   --mount=from=cratesio-serde_core-1.0.228,source=/serde_core-1.0.228,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_core-1.0.228 \
-  --mount=from=crate_out-542dbc5d310e9565,dst=/tmp/clis-diesel_cli_2-3-4/release/build/serde_core-542dbc5d310e9565/out \
+  --mount=from=out-542dbc5d310e9565,dst=/tmp/clis-diesel_cli_2-3-4/release/build/serde_core-542dbc5d310e9565/out,source=/ \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=serde_core \
         CARGO_INCREMENTAL=0 \
@@ -6445,6 +9472,11 @@ FROM scratch AS out-8e892930c8cabc4c
 COPY --link --from=dep-n-serde_core-1.0.228-8e892930c8cabc4c /tmp/clis-diesel_cli_2-3-4/release/deps/*-8e892930c8cabc4c* /
 
 ## this = "8e892930c8cabc4c"
+## deps = [
+##     "542dbc5d310e9565",
+##     "d7b3469e26105631",
+## ]
+## buildrs_results = ["542dbc5d310e9565"]
 ## writes = [
 ##     "libserde_core-8e892930c8cabc4c.rlib",
 ##     "libserde_core-8e892930c8cabc4c.rmeta",
@@ -6456,9 +9488,10 @@ COPY --link --from=dep-n-serde_core-1.0.228-8e892930c8cabc4c /tmp/clis-diesel_cl
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-4/release/deps/libserde_core-8e892930c8cabc4c.rlib","emit":"link"}',
 ## ]
 ##
-## [[contexts]]
-## name = "crate_out-542dbc5d310e9565"
-## uri = "/tmp/clis-diesel_cli_2-3-4/release/build/serde_core-542dbc5d310e9565/out"
+## [[mounts]]
+## name = "out-542dbc5d310e9565"
+## src = "/"
+## dst = "/tmp/clis-diesel_cli_2-3-4/release/build/serde_core-542dbc5d310e9565/out"
 ##
 ## [[stages]]
 ##
@@ -6510,7 +9543,7 @@ COPY --link --from=dep-n-serde_core-1.0.228-8e892930c8cabc4c /tmp/clis-diesel_cl
 ## WORKDIR /tmp/clis-diesel_cli_2-3-4/release/deps
 ## RUN \
 ##   --mount=from=cratesio-serde_core-1.0.228,source=/serde_core-1.0.228,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_core-1.0.228 \
-##   --mount=from=crate_out-542dbc5d310e9565,dst=/tmp/clis-diesel_cli_2-3-4/release/build/serde_core-542dbc5d310e9565/out \
+##   --mount=from=out-542dbc5d310e9565,dst=/tmp/clis-diesel_cli_2-3-4/release/build/serde_core-542dbc5d310e9565/out,source=/ \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=serde_core \
 ##         CARGO_INCREMENTAL=0 \
@@ -6556,7 +9589,9 @@ RUN \
   --mount=from=cratesio-serde_derive-1.0.228,source=/serde_derive-1.0.228,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_derive-1.0.228 \
   --mount=from=out-e1e423eb99bb7e63,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libproc_macro2-e1e423eb99bb7e63.rlib,source=/libproc_macro2-e1e423eb99bb7e63.rlib \
   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rlib,source=/libunicode_ident-721470d94fc0c354.rlib \
+  --mount=from=out-71babfb997932318,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-71babfb997932318,source=/build_script_build-71babfb997932318 \
   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rlib,source=/libquote-87872b55644e5043.rlib \
+  --mount=from=out-c63aae50eb6f480a,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-c63aae50eb6f480a,source=/build_script_build-c63aae50eb6f480a \
   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rlib,source=/libsyn-12379804391f3f43.rlib \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=serde_derive \
@@ -6590,8 +9625,16 @@ COPY --link --from=dep-n-serde_derive-1.0.228-6a6518b24fbf25e4 /tmp/clis-diesel_
 ## deps = [
 ##     "e1e423eb99bb7e63",
 ##     "721470d94fc0c354",
+##     "e93dddbb48c6a6fc",
+##     "71babfb997932318",
 ##     "87872b55644e5043",
+##     "edf8f660a3d601cc",
+##     "c63aae50eb6f480a",
 ##     "12379804391f3f43",
+## ]
+## buildrs_results = [
+##     "e93dddbb48c6a6fc",
+##     "edf8f660a3d601cc",
 ## ]
 ## writes = [
 ##     "libserde_derive-6a6518b24fbf25e4.so",
@@ -6611,8 +9654,16 @@ COPY --link --from=dep-n-serde_derive-1.0.228-6a6518b24fbf25e4 /tmp/clis-diesel_
 ## xtern = "libunicode_ident-721470d94fc0c354.rlib"
 ##
 ## [[externs]]
+## from = "out-71babfb997932318"
+## xtern = "build_script_build-71babfb997932318"
+##
+## [[externs]]
 ## from = "out-87872b55644e5043"
 ## xtern = "libquote-87872b55644e5043.rlib"
+##
+## [[externs]]
+## from = "out-c63aae50eb6f480a"
+## xtern = "build_script_build-c63aae50eb6f480a"
 ##
 ## [[externs]]
 ## from = "out-12379804391f3f43"
@@ -6670,7 +9721,9 @@ COPY --link --from=dep-n-serde_derive-1.0.228-6a6518b24fbf25e4 /tmp/clis-diesel_
 ##   --mount=from=cratesio-serde_derive-1.0.228,source=/serde_derive-1.0.228,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_derive-1.0.228 \
 ##   --mount=from=out-e1e423eb99bb7e63,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libproc_macro2-e1e423eb99bb7e63.rlib,source=/libproc_macro2-e1e423eb99bb7e63.rlib \
 ##   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rlib,source=/libunicode_ident-721470d94fc0c354.rlib \
+##   --mount=from=out-71babfb997932318,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-71babfb997932318,source=/build_script_build-71babfb997932318 \
 ##   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rlib,source=/libquote-87872b55644e5043.rlib \
+##   --mount=from=out-c63aae50eb6f480a,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-c63aae50eb6f480a,source=/build_script_build-c63aae50eb6f480a \
 ##   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rlib,source=/libsyn-12379804391f3f43.rlib \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=serde_derive \
@@ -6709,23 +9762,376 @@ COPY --link --from=dep-n-serde_derive-1.0.228-6a6518b24fbf25e4 /tmp/clis-diesel_
 FROM scratch AS cratesio-serde-1.0.228
 ADD --chmod=0664 --unpack --checksum=sha256:9a8e94ea7f378bd32cbbd37198a4a91436180c5bb472411e48b5ec2e2124ae9e \
   https://static.crates.io/crates/serde/serde-1.0.228.crate /
+FROM rust-base AS dep-x-serde-1.0.228-9e59eb4de4feaddb
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-diesel_cli_2-3-4/release/build/serde-9e59eb4de4feaddb
+RUN \
+  --mount=from=cratesio-serde-1.0.228,source=/serde-1.0.228,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.228,rw \
+    { \
+        cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.228/build.rs | sed 's/fn main/fn actual_9e59eb4de4feaddb_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.228/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.228/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.228/build.rs ; \
+        { \
+          echo ; \
+          echo 'fn main() {' ; \
+          echo '    use std::env::{args_os, var_os};' ; \
+          echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+          echo '        use std::process::{Command, Stdio};' ; \
+          echo '        let mut cmd = Command::new("cargo-green");' ; \
+          echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+          echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+          echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+          echo '        assert!(res.success());' ; \
+          echo '    } else {' ; \
+          echo '        actual_9e59eb4de4feaddb_main();' ; \
+          echo '    }' ; \
+          echo '}' ; \
+        } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.228/build.rs ; \
+    } && \
+    env CARGO="$(which cargo)" \
+        CARGO_CRATE_NAME=build_script_build \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.228 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.228/Cargo.toml \
+        CARGO_PKG_AUTHORS=Erick' Tryzelaar <erick.tryzelaar@gmail.com>:David Tolnay <dtolnay@gmail.com>' \
+        CARGO_PKG_DESCRIPTION=A' generic serialization/deserialization framework' \
+        CARGO_PKG_HOMEPAGE=https'://serde.rs' \
+        CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=serde \
+        CARGO_PKG_README=crates-io.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/serde-rs/serde' \
+        CARGO_PKG_RUST_VERSION=1.56 \
+        CARGO_PKG_VERSION=1.0.228 \
+        CARGO_PKG_VERSION_MAJOR=1 \
+        CARGO_PKG_VERSION_MINOR=0 \
+        CARGO_PKG_VERSION_PATCH=228 \
+        CARGO_PKG_VERSION_PRE= \
+        CARGOGREEN=1 \
+      rustc '--crate-name' 'build_script_build' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'bin' '--emit' 'dep-info,link' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--cfg' 'feature="default"' '--cfg' 'feature="derive"' '--cfg' 'feature="serde_derive"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "default", "derive", "rc", "serde_derive", "std", "unstable"))' '-C' 'metadata=5f0742752ccd5b47' '-C' 'extra-filename=-9e59eb4de4feaddb' '--out-dir' '/tmp/clis-diesel_cli_2-3-4/release/build/serde-9e59eb4de4feaddb' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-diesel_cli_2-3-4/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.228/build.rs \
+        1>          /tmp/clis-diesel_cli_2-3-4/release/build/serde-9e59eb4de4feaddb/out-9e59eb4de4feaddb-stdout \
+        2>          /tmp/clis-diesel_cli_2-3-4/release/build/serde-9e59eb4de4feaddb/out-9e59eb4de4feaddb-stderr \
+        || echo $? >/tmp/clis-diesel_cli_2-3-4/release/build/serde-9e59eb4de4feaddb/out-9e59eb4de4feaddb-errcode\
+  ; find /tmp/clis-diesel_cli_2-3-4/release/build/serde-9e59eb4de4feaddb/*-9e59eb4de4feaddb* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-9e59eb4de4feaddb
+COPY --link --from=dep-x-serde-1.0.228-9e59eb4de4feaddb /tmp/clis-diesel_cli_2-3-4/release/build/serde-9e59eb4de4feaddb/*-9e59eb4de4feaddb* /
+
+## this = "9e59eb4de4feaddb"
+## writes = [
+##     "build_script_build-9e59eb4de4feaddb",
+##     "build_script_build-9e59eb4de4feaddb.d",
+## ]
+## stderr = [
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-4/release/build/serde-9e59eb4de4feaddb/build_script_build-9e59eb4de4feaddb.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-4/release/build/serde-9e59eb4de4feaddb/build_script_build-9e59eb4de4feaddb","emit":"link"}',
+## ]
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = '''
+## FROM --platform=$BUILDPLATFORM docker.io/tonistiigi/xx:1.6.1@sha256:923441d7c25f1e2eb5789f82d987693c47b8ed987c4ab3b075d6ed2b5d6779a3 AS xx
+## FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base
+## ARG TARGETPLATFORM
+## RUN \
+##   --mount=from=xx,source=/usr/bin/xx-apk,dst=/usr/bin/xx-apk \
+##   --mount=from=xx,source=/usr/bin/xx-apt,dst=/usr/bin/xx-apt \
+##   --mount=from=xx,source=/usr/bin/xx-apt,dst=/usr/bin/xx-apt-get \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-c++ \
+##   --mount=from=xx,source=/usr/bin/xx-cargo,dst=/usr/bin/xx-cargo \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-cc \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-clang \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-clang++ \
+##   --mount=from=xx,source=/usr/bin/xx-go,dst=/usr/bin/xx-go \
+##   --mount=from=xx,source=/usr/bin/xx-info,dst=/usr/bin/xx-info \
+##   --mount=from=xx,source=/usr/bin/xx-ld-shas,dst=/usr/bin/xx-ld-shas \
+##   --mount=from=xx,source=/usr/bin/xx-verify,dst=/usr/bin/xx-verify \
+##   --mount=from=xx,source=/usr/bin/xx-windres,dst=/usr/bin/xx-windres \
+##     set -eux \
+##  && if   command -v apk >/dev/null 2>&1; then \
+##                                      xx-apk     add     --no-cache                 '<none>'; \
+##     elif command -v apt >/dev/null 2>&1; then \
+##       DEBIAN_FRONTEND=noninteractive xx-apt     install --no-install-recommends -y 'libpq-dev'; \
+##     else \
+##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
+##     fi'''
+##
+## [[stages]]
+##
+## [stages.Cratesio]
+## stage = "cratesio-serde-1.0.228"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.228"
+## name = "serde"
+## name_dash_version = "serde-1.0.228"
+## hash = "9a8e94ea7f378bd32cbbd37198a4a91436180c5bb472411e48b5ec2e2124ae9e"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "dep-x-serde-1.0.228-9e59eb4de4feaddb"
+## script = '''
+## FROM rust-base AS dep-x-serde-1.0.228-9e59eb4de4feaddb
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-diesel_cli_2-3-4/release/build/serde-9e59eb4de4feaddb
+## RUN \
+##   --mount=from=cratesio-serde-1.0.228,source=/serde-1.0.228,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.228,rw \
+##     { \
+##         cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.228/build.rs | sed 's/fn main/fn actual_9e59eb4de4feaddb_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.228/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.228/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.228/build.rs ; \
+##         { \
+##           echo ; \
+##           echo 'fn main() {' ; \
+##           echo '    use std::env::{args_os, var_os};' ; \
+##           echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+##           echo '        use std::process::{Command, Stdio};' ; \
+##           echo '        let mut cmd = Command::new("cargo-green");' ; \
+##           echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+##           echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+##           echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+##           echo '        assert!(res.success());' ; \
+##           echo '    } else {' ; \
+##           echo '        actual_9e59eb4de4feaddb_main();' ; \
+##           echo '    }' ; \
+##           echo '}' ; \
+##         } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.228/build.rs ; \
+##     } && \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CRATE_NAME=build_script_build \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.228 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.228/Cargo.toml \
+##         CARGO_PKG_AUTHORS=Erick' Tryzelaar <erick.tryzelaar@gmail.com>:David Tolnay <dtolnay@gmail.com>' \
+##         CARGO_PKG_DESCRIPTION=A' generic serialization/deserialization framework' \
+##         CARGO_PKG_HOMEPAGE=https'://serde.rs' \
+##         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=serde \
+##         CARGO_PKG_README=crates-io.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/serde-rs/serde' \
+##         CARGO_PKG_RUST_VERSION=1.56 \
+##         CARGO_PKG_VERSION=1.0.228 \
+##         CARGO_PKG_VERSION_MAJOR=1 \
+##         CARGO_PKG_VERSION_MINOR=0 \
+##         CARGO_PKG_VERSION_PATCH=228 \
+##         CARGO_PKG_VERSION_PRE= \
+##         CARGOGREEN=1 \
+##       rustc '--crate-name' 'build_script_build' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'bin' '--emit' 'dep-info,link' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--cfg' 'feature="default"' '--cfg' 'feature="derive"' '--cfg' 'feature="serde_derive"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "default", "derive", "rc", "serde_derive", "std", "unstable"))' '-C' 'metadata=5f0742752ccd5b47' '-C' 'extra-filename=-9e59eb4de4feaddb' '--out-dir' '/tmp/clis-diesel_cli_2-3-4/release/build/serde-9e59eb4de4feaddb' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-diesel_cli_2-3-4/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.228/build.rs \
+##         1>          /tmp/clis-diesel_cli_2-3-4/release/build/serde-9e59eb4de4feaddb/out-9e59eb4de4feaddb-stdout \
+##         2>          /tmp/clis-diesel_cli_2-3-4/release/build/serde-9e59eb4de4feaddb/out-9e59eb4de4feaddb-stderr \
+##         || echo $? >/tmp/clis-diesel_cli_2-3-4/release/build/serde-9e59eb4de4feaddb/out-9e59eb4de4feaddb-errcode\
+##   ; find /tmp/clis-diesel_cli_2-3-4/release/build/serde-9e59eb4de4feaddb/*-9e59eb4de4feaddb* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-9e59eb4de4feaddb"
+## script = """
+## FROM scratch AS out-9e59eb4de4feaddb
+## COPY --link --from=dep-x-serde-1.0.228-9e59eb4de4feaddb /tmp/clis-diesel_cli_2-3-4/release/build/serde-9e59eb4de4feaddb/*-9e59eb4de4feaddb* /"""
+
+FROM rust-base AS run-z-serde-1.0.228-cfe125327cacaf16
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-diesel_cli_2-3-4/release/build/serde-cfe125327cacaf16/out
+WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.228
+RUN \
+  --mount=from=out-9e59eb4de4feaddb,source=/build_script_build-9e59eb4de4feaddb,dst=/tmp/clis-diesel_cli_2-3-4/release/build/serde-9e59eb4de4feaddb/build-script-build \
+  --mount=from=cratesio-serde-1.0.228,source=/serde-1.0.228,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.228 \
+    env CARGO="$(which cargo)" \
+        CARGO_CFG_FEATURE=default,derive,serde_derive,std \
+        CARGO_CFG_PANIC=unwind \
+        CARGO_CFG_TARGET_ABI= \
+        CARGO_CFG_TARGET_ARCH=x86_64 \
+        CARGO_CFG_TARGET_ENDIAN=little \
+        CARGO_CFG_TARGET_ENV=gnu \
+        CARGO_CFG_TARGET_FAMILY=unix \
+        CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
+        CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+        CARGO_CFG_TARGET_OS=linux \
+        CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+        CARGO_CFG_TARGET_VENDOR=unknown \
+        CARGO_CFG_UNIX= \
+        CARGO_ENCODED_RUSTFLAGS= \
+        CARGO_FEATURE_DEFAULT=1 \
+        CARGO_FEATURE_DERIVE=1 \
+        CARGO_FEATURE_SERDE_DERIVE=1 \
+        CARGO_FEATURE_STD=1 \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.228 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.228/Cargo.toml \
+        CARGO_PKG_AUTHORS=Erick' Tryzelaar <erick.tryzelaar@gmail.com>:David Tolnay <dtolnay@gmail.com>' \
+        CARGO_PKG_DESCRIPTION=A' generic serialization/deserialization framework' \
+        CARGO_PKG_HOMEPAGE=https'://serde.rs' \
+        CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=serde \
+        CARGO_PKG_README=crates-io.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/serde-rs/serde' \
+        CARGO_PKG_RUST_VERSION=1.56 \
+        CARGO_PKG_VERSION=1.0.228 \
+        CARGO_PKG_VERSION_MAJOR=1 \
+        CARGO_PKG_VERSION_MINOR=0 \
+        CARGO_PKG_VERSION_PATCH=228 \
+        CARGO_PKG_VERSION_PRE= \
+        DEBUG=false \
+        HOST=x86_64-unknown-linux-gnu \
+        NUM_JOBS=4 \
+        OPT_LEVEL=3 \
+        OUT_DIR=/tmp/clis-diesel_cli_2-3-4/release/build/serde-cfe125327cacaf16/out \
+        PROFILE=release \
+        RUSTC=rustc \
+        RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+        TARGET=x86_64-unknown-linux-gnu \
+        CARGOGREEN=1 \
+      CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-diesel_cli_2-3-4/release/build/serde-9e59eb4de4feaddb/build-script-build \
+        1>          /tmp/clis-diesel_cli_2-3-4/release/build/serde-cfe125327cacaf16/out/out-cfe125327cacaf16-stdout \
+        2>          /tmp/clis-diesel_cli_2-3-4/release/build/serde-cfe125327cacaf16/out/out-cfe125327cacaf16-stderr \
+        || echo $? >/tmp/clis-diesel_cli_2-3-4/release/build/serde-cfe125327cacaf16/out/out-cfe125327cacaf16-errcode\
+  ; find /tmp/clis-diesel_cli_2-3-4/release/build/serde-cfe125327cacaf16/out/*-cfe125327cacaf16* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-cfe125327cacaf16
+COPY --link --from=run-z-serde-1.0.228-cfe125327cacaf16 /tmp/clis-diesel_cli_2-3-4/release/build/serde-cfe125327cacaf16/out/* /
+
+## this = "cfe125327cacaf16"
+## deps = ["9e59eb4de4feaddb"]
+## writes = ["private.rs"]
+## stdout = [
+##     "cargo:rerun-if-changed=build.rs",
+##     "cargo:rustc-cfg=if_docsrs_then_no_serde_core",
+##     'cargo:rustc-check-cfg=cfg(feature, values("result"))',
+##     "cargo:rustc-check-cfg=cfg(if_docsrs_then_no_serde_core)",
+##     "cargo:rustc-check-cfg=cfg(no_core_cstr)",
+##     "cargo:rustc-check-cfg=cfg(no_core_error)",
+##     "cargo:rustc-check-cfg=cfg(no_core_net)",
+##     "cargo:rustc-check-cfg=cfg(no_core_num_saturating)",
+##     "cargo:rustc-check-cfg=cfg(no_diagnostic_namespace)",
+##     "cargo:rustc-check-cfg=cfg(no_serde_derive)",
+##     "cargo:rustc-check-cfg=cfg(no_std_atomic)",
+##     "cargo:rustc-check-cfg=cfg(no_std_atomic64)",
+##     "cargo:rustc-check-cfg=cfg(no_target_has_atomic)",
+## ]
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = '''
+## FROM --platform=$BUILDPLATFORM docker.io/tonistiigi/xx:1.6.1@sha256:923441d7c25f1e2eb5789f82d987693c47b8ed987c4ab3b075d6ed2b5d6779a3 AS xx
+## FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base
+## ARG TARGETPLATFORM
+## RUN \
+##   --mount=from=xx,source=/usr/bin/xx-apk,dst=/usr/bin/xx-apk \
+##   --mount=from=xx,source=/usr/bin/xx-apt,dst=/usr/bin/xx-apt \
+##   --mount=from=xx,source=/usr/bin/xx-apt,dst=/usr/bin/xx-apt-get \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-c++ \
+##   --mount=from=xx,source=/usr/bin/xx-cargo,dst=/usr/bin/xx-cargo \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-cc \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-clang \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-clang++ \
+##   --mount=from=xx,source=/usr/bin/xx-go,dst=/usr/bin/xx-go \
+##   --mount=from=xx,source=/usr/bin/xx-info,dst=/usr/bin/xx-info \
+##   --mount=from=xx,source=/usr/bin/xx-ld-shas,dst=/usr/bin/xx-ld-shas \
+##   --mount=from=xx,source=/usr/bin/xx-verify,dst=/usr/bin/xx-verify \
+##   --mount=from=xx,source=/usr/bin/xx-windres,dst=/usr/bin/xx-windres \
+##     set -eux \
+##  && if   command -v apk >/dev/null 2>&1; then \
+##                                      xx-apk     add     --no-cache                 '<none>'; \
+##     elif command -v apt >/dev/null 2>&1; then \
+##       DEBIAN_FRONTEND=noninteractive xx-apt     install --no-install-recommends -y 'libpq-dev'; \
+##     else \
+##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
+##     fi'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "run-z-serde-1.0.228-cfe125327cacaf16"
+## script = '''
+## FROM rust-base AS run-z-serde-1.0.228-cfe125327cacaf16
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-diesel_cli_2-3-4/release/build/serde-cfe125327cacaf16/out
+## WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.228
+## RUN \
+##   --mount=from=out-9e59eb4de4feaddb,source=/build_script_build-9e59eb4de4feaddb,dst=/tmp/clis-diesel_cli_2-3-4/release/build/serde-9e59eb4de4feaddb/build-script-build \
+##   --mount=from=cratesio-serde-1.0.228,source=/serde-1.0.228,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.228 \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CFG_FEATURE=default,derive,serde_derive,std \
+##         CARGO_CFG_PANIC=unwind \
+##         CARGO_CFG_TARGET_ABI= \
+##         CARGO_CFG_TARGET_ARCH=x86_64 \
+##         CARGO_CFG_TARGET_ENDIAN=little \
+##         CARGO_CFG_TARGET_ENV=gnu \
+##         CARGO_CFG_TARGET_FAMILY=unix \
+##         CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
+##         CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+##         CARGO_CFG_TARGET_OS=linux \
+##         CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+##         CARGO_CFG_TARGET_VENDOR=unknown \
+##         CARGO_CFG_UNIX= \
+##         CARGO_ENCODED_RUSTFLAGS= \
+##         CARGO_FEATURE_DEFAULT=1 \
+##         CARGO_FEATURE_DERIVE=1 \
+##         CARGO_FEATURE_SERDE_DERIVE=1 \
+##         CARGO_FEATURE_STD=1 \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.228 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.228/Cargo.toml \
+##         CARGO_PKG_AUTHORS=Erick' Tryzelaar <erick.tryzelaar@gmail.com>:David Tolnay <dtolnay@gmail.com>' \
+##         CARGO_PKG_DESCRIPTION=A' generic serialization/deserialization framework' \
+##         CARGO_PKG_HOMEPAGE=https'://serde.rs' \
+##         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=serde \
+##         CARGO_PKG_README=crates-io.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/serde-rs/serde' \
+##         CARGO_PKG_RUST_VERSION=1.56 \
+##         CARGO_PKG_VERSION=1.0.228 \
+##         CARGO_PKG_VERSION_MAJOR=1 \
+##         CARGO_PKG_VERSION_MINOR=0 \
+##         CARGO_PKG_VERSION_PATCH=228 \
+##         CARGO_PKG_VERSION_PRE= \
+##         DEBUG=false \
+##         HOST=x86_64-unknown-linux-gnu \
+##         NUM_JOBS=4 \
+##         OPT_LEVEL=3 \
+##         OUT_DIR=/tmp/clis-diesel_cli_2-3-4/release/build/serde-cfe125327cacaf16/out \
+##         PROFILE=release \
+##         RUSTC=rustc \
+##         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+##         TARGET=x86_64-unknown-linux-gnu \
+##         CARGOGREEN=1 \
+##       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-diesel_cli_2-3-4/release/build/serde-9e59eb4de4feaddb/build-script-build \
+##         1>          /tmp/clis-diesel_cli_2-3-4/release/build/serde-cfe125327cacaf16/out/out-cfe125327cacaf16-stdout \
+##         2>          /tmp/clis-diesel_cli_2-3-4/release/build/serde-cfe125327cacaf16/out/out-cfe125327cacaf16-stderr \
+##         || echo $? >/tmp/clis-diesel_cli_2-3-4/release/build/serde-cfe125327cacaf16/out/out-cfe125327cacaf16-errcode\
+##   ; find /tmp/clis-diesel_cli_2-3-4/release/build/serde-cfe125327cacaf16/out/*-cfe125327cacaf16* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-cfe125327cacaf16"
+## script = """
+## FROM scratch AS out-cfe125327cacaf16
+## COPY --link --from=run-z-serde-1.0.228-cfe125327cacaf16 /tmp/clis-diesel_cli_2-3-4/release/build/serde-cfe125327cacaf16/out/* /"""
+
+
 FROM rust-base AS dep-n-serde-1.0.228-02668a5ba984a64f
 SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-diesel_cli_2-3-4/release/deps
 RUN \
   --mount=from=cratesio-serde-1.0.228,source=/serde-1.0.228,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.228 \
-  --mount=from=crate_out-cfe125327cacaf16,dst=/tmp/clis-diesel_cli_2-3-4/release/build/serde-cfe125327cacaf16/out \
   --mount=from=out-8e892930c8cabc4c,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde_core-8e892930c8cabc4c.rlib,source=/libserde_core-8e892930c8cabc4c.rlib \
   --mount=from=out-8e892930c8cabc4c,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde_core-8e892930c8cabc4c.rmeta,source=/libserde_core-8e892930c8cabc4c.rmeta \
+  --mount=from=out-542dbc5d310e9565,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/private.rs,source=/private.rs \
+  --mount=from=out-d7b3469e26105631,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-d7b3469e26105631,source=/build_script_build-d7b3469e26105631 \
   --mount=from=out-6a6518b24fbf25e4,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde_derive-6a6518b24fbf25e4.so,source=/libserde_derive-6a6518b24fbf25e4.so \
   --mount=from=out-e1e423eb99bb7e63,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libproc_macro2-e1e423eb99bb7e63.rlib,source=/libproc_macro2-e1e423eb99bb7e63.rlib \
   --mount=from=out-e1e423eb99bb7e63,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libproc_macro2-e1e423eb99bb7e63.rmeta,source=/libproc_macro2-e1e423eb99bb7e63.rmeta \
   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rlib,source=/libunicode_ident-721470d94fc0c354.rlib \
   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rmeta,source=/libunicode_ident-721470d94fc0c354.rmeta \
+  --mount=from=out-71babfb997932318,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-71babfb997932318,source=/build_script_build-71babfb997932318 \
   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rlib,source=/libquote-87872b55644e5043.rlib \
   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rmeta,source=/libquote-87872b55644e5043.rmeta \
+  --mount=from=out-c63aae50eb6f480a,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-c63aae50eb6f480a,source=/build_script_build-c63aae50eb6f480a \
   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rlib,source=/libsyn-12379804391f3f43.rlib \
   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rmeta,source=/libsyn-12379804391f3f43.rmeta \
+  --mount=from=out-cfe125327cacaf16,dst=/tmp/clis-diesel_cli_2-3-4/release/build/serde-cfe125327cacaf16/out,source=/ \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=serde \
         CARGO_INCREMENTAL=0 \
@@ -6758,11 +10164,25 @@ COPY --link --from=dep-n-serde-1.0.228-02668a5ba984a64f /tmp/clis-diesel_cli_2-3
 ## this = "02668a5ba984a64f"
 ## deps = [
 ##     "8e892930c8cabc4c",
+##     "542dbc5d310e9565",
+##     "d7b3469e26105631",
 ##     "6a6518b24fbf25e4",
 ##     "e1e423eb99bb7e63",
 ##     "721470d94fc0c354",
+##     "e93dddbb48c6a6fc",
+##     "71babfb997932318",
 ##     "87872b55644e5043",
+##     "edf8f660a3d601cc",
+##     "c63aae50eb6f480a",
 ##     "12379804391f3f43",
+##     "cfe125327cacaf16",
+##     "9e59eb4de4feaddb",
+## ]
+## buildrs_results = [
+##     "542dbc5d310e9565",
+##     "e93dddbb48c6a6fc",
+##     "edf8f660a3d601cc",
+##     "cfe125327cacaf16",
 ## ]
 ## writes = [
 ##     "libserde-02668a5ba984a64f.rlib",
@@ -6782,6 +10202,14 @@ COPY --link --from=dep-n-serde-1.0.228-02668a5ba984a64f /tmp/clis-diesel_cli_2-3
 ## [[externs]]
 ## from = "out-8e892930c8cabc4c"
 ## xtern = "libserde_core-8e892930c8cabc4c.rmeta"
+##
+## [[externs]]
+## from = "out-542dbc5d310e9565"
+## xtern = "private.rs"
+##
+## [[externs]]
+## from = "out-d7b3469e26105631"
+## xtern = "build_script_build-d7b3469e26105631"
 ##
 ## [[externs]]
 ## from = "out-6a6518b24fbf25e4"
@@ -6804,12 +10232,20 @@ COPY --link --from=dep-n-serde-1.0.228-02668a5ba984a64f /tmp/clis-diesel_cli_2-3
 ## xtern = "libunicode_ident-721470d94fc0c354.rmeta"
 ##
 ## [[externs]]
+## from = "out-71babfb997932318"
+## xtern = "build_script_build-71babfb997932318"
+##
+## [[externs]]
 ## from = "out-87872b55644e5043"
 ## xtern = "libquote-87872b55644e5043.rlib"
 ##
 ## [[externs]]
 ## from = "out-87872b55644e5043"
 ## xtern = "libquote-87872b55644e5043.rmeta"
+##
+## [[externs]]
+## from = "out-c63aae50eb6f480a"
+## xtern = "build_script_build-c63aae50eb6f480a"
 ##
 ## [[externs]]
 ## from = "out-12379804391f3f43"
@@ -6819,13 +10255,10 @@ COPY --link --from=dep-n-serde-1.0.228-02668a5ba984a64f /tmp/clis-diesel_cli_2-3
 ## from = "out-12379804391f3f43"
 ## xtern = "libsyn-12379804391f3f43.rmeta"
 ##
-## [[contexts]]
-## name = "crate_out-cfe125327cacaf16"
-## uri = "/tmp/clis-diesel_cli_2-3-4/release/build/serde-cfe125327cacaf16/out"
-##
-## [[contexts]]
-## name = "crate_out-542dbc5d310e9565"
-## uri = "/tmp/clis-diesel_cli_2-3-4/release/build/serde_core-542dbc5d310e9565/out"
+## [[mounts]]
+## name = "out-cfe125327cacaf16"
+## src = "/"
+## dst = "/tmp/clis-diesel_cli_2-3-4/release/build/serde-cfe125327cacaf16/out"
 ##
 ## [[stages]]
 ##
@@ -6877,18 +10310,22 @@ COPY --link --from=dep-n-serde-1.0.228-02668a5ba984a64f /tmp/clis-diesel_cli_2-3
 ## WORKDIR /tmp/clis-diesel_cli_2-3-4/release/deps
 ## RUN \
 ##   --mount=from=cratesio-serde-1.0.228,source=/serde-1.0.228,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.228 \
-##   --mount=from=crate_out-cfe125327cacaf16,dst=/tmp/clis-diesel_cli_2-3-4/release/build/serde-cfe125327cacaf16/out \
 ##   --mount=from=out-8e892930c8cabc4c,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde_core-8e892930c8cabc4c.rlib,source=/libserde_core-8e892930c8cabc4c.rlib \
 ##   --mount=from=out-8e892930c8cabc4c,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde_core-8e892930c8cabc4c.rmeta,source=/libserde_core-8e892930c8cabc4c.rmeta \
+##   --mount=from=out-542dbc5d310e9565,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/private.rs,source=/private.rs \
+##   --mount=from=out-d7b3469e26105631,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-d7b3469e26105631,source=/build_script_build-d7b3469e26105631 \
 ##   --mount=from=out-6a6518b24fbf25e4,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde_derive-6a6518b24fbf25e4.so,source=/libserde_derive-6a6518b24fbf25e4.so \
 ##   --mount=from=out-e1e423eb99bb7e63,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libproc_macro2-e1e423eb99bb7e63.rlib,source=/libproc_macro2-e1e423eb99bb7e63.rlib \
 ##   --mount=from=out-e1e423eb99bb7e63,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libproc_macro2-e1e423eb99bb7e63.rmeta,source=/libproc_macro2-e1e423eb99bb7e63.rmeta \
 ##   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rlib,source=/libunicode_ident-721470d94fc0c354.rlib \
 ##   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rmeta,source=/libunicode_ident-721470d94fc0c354.rmeta \
+##   --mount=from=out-71babfb997932318,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-71babfb997932318,source=/build_script_build-71babfb997932318 \
 ##   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rlib,source=/libquote-87872b55644e5043.rlib \
 ##   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rmeta,source=/libquote-87872b55644e5043.rmeta \
+##   --mount=from=out-c63aae50eb6f480a,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-c63aae50eb6f480a,source=/build_script_build-c63aae50eb6f480a \
 ##   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rlib,source=/libsyn-12379804391f3f43.rlib \
 ##   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rmeta,source=/libsyn-12379804391f3f43.rmeta \
+##   --mount=from=out-cfe125327cacaf16,dst=/tmp/clis-diesel_cli_2-3-4/release/build/serde-cfe125327cacaf16/out,source=/ \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=serde \
 ##         CARGO_INCREMENTAL=0 \
@@ -6934,6 +10371,8 @@ RUN \
   --mount=from=cratesio-serde_spanned-1.0.3,source=/serde_spanned-1.0.3,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_spanned-1.0.3 \
   --mount=from=out-8e892930c8cabc4c,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde_core-8e892930c8cabc4c.rlib,source=/libserde_core-8e892930c8cabc4c.rlib \
   --mount=from=out-8e892930c8cabc4c,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde_core-8e892930c8cabc4c.rmeta,source=/libserde_core-8e892930c8cabc4c.rmeta \
+  --mount=from=out-542dbc5d310e9565,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/private.rs,source=/private.rs \
+  --mount=from=out-d7b3469e26105631,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-d7b3469e26105631,source=/build_script_build-d7b3469e26105631 \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=serde_spanned \
         CARGO_INCREMENTAL=0 \
@@ -6963,7 +10402,12 @@ FROM scratch AS out-4fa12932e3d6e0f1
 COPY --link --from=dep-n-serde_spanned-1.0.3-4fa12932e3d6e0f1 /tmp/clis-diesel_cli_2-3-4/release/deps/*-4fa12932e3d6e0f1* /
 
 ## this = "4fa12932e3d6e0f1"
-## deps = ["8e892930c8cabc4c"]
+## deps = [
+##     "8e892930c8cabc4c",
+##     "542dbc5d310e9565",
+##     "d7b3469e26105631",
+## ]
+## buildrs_results = ["542dbc5d310e9565"]
 ## writes = [
 ##     "libserde_spanned-4fa12932e3d6e0f1.rlib",
 ##     "libserde_spanned-4fa12932e3d6e0f1.rmeta",
@@ -6983,9 +10427,13 @@ COPY --link --from=dep-n-serde_spanned-1.0.3-4fa12932e3d6e0f1 /tmp/clis-diesel_c
 ## from = "out-8e892930c8cabc4c"
 ## xtern = "libserde_core-8e892930c8cabc4c.rmeta"
 ##
-## [[contexts]]
-## name = "crate_out-542dbc5d310e9565"
-## uri = "/tmp/clis-diesel_cli_2-3-4/release/build/serde_core-542dbc5d310e9565/out"
+## [[externs]]
+## from = "out-542dbc5d310e9565"
+## xtern = "private.rs"
+##
+## [[externs]]
+## from = "out-d7b3469e26105631"
+## xtern = "build_script_build-d7b3469e26105631"
 ##
 ## [[stages]]
 ##
@@ -7039,6 +10487,8 @@ COPY --link --from=dep-n-serde_spanned-1.0.3-4fa12932e3d6e0f1 /tmp/clis-diesel_c
 ##   --mount=from=cratesio-serde_spanned-1.0.3,source=/serde_spanned-1.0.3,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_spanned-1.0.3 \
 ##   --mount=from=out-8e892930c8cabc4c,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde_core-8e892930c8cabc4c.rlib,source=/libserde_core-8e892930c8cabc4c.rlib \
 ##   --mount=from=out-8e892930c8cabc4c,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde_core-8e892930c8cabc4c.rmeta,source=/libserde_core-8e892930c8cabc4c.rmeta \
+##   --mount=from=out-542dbc5d310e9565,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/private.rs,source=/private.rs \
+##   --mount=from=out-d7b3469e26105631,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-d7b3469e26105631,source=/build_script_build-d7b3469e26105631 \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=serde_spanned \
 ##         CARGO_INCREMENTAL=0 \
@@ -7083,6 +10533,8 @@ RUN \
   --mount=from=cratesio-toml_datetime-0.7.3,source=/toml_datetime-0.7.3,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/toml_datetime-0.7.3 \
   --mount=from=out-8e892930c8cabc4c,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde_core-8e892930c8cabc4c.rlib,source=/libserde_core-8e892930c8cabc4c.rlib \
   --mount=from=out-8e892930c8cabc4c,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde_core-8e892930c8cabc4c.rmeta,source=/libserde_core-8e892930c8cabc4c.rmeta \
+  --mount=from=out-542dbc5d310e9565,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/private.rs,source=/private.rs \
+  --mount=from=out-d7b3469e26105631,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-d7b3469e26105631,source=/build_script_build-d7b3469e26105631 \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=toml_datetime \
         CARGO_INCREMENTAL=0 \
@@ -7112,7 +10564,12 @@ FROM scratch AS out-c09fc58966664a16
 COPY --link --from=dep-n-toml_datetime-0.7.3-c09fc58966664a16 /tmp/clis-diesel_cli_2-3-4/release/deps/*-c09fc58966664a16* /
 
 ## this = "c09fc58966664a16"
-## deps = ["8e892930c8cabc4c"]
+## deps = [
+##     "8e892930c8cabc4c",
+##     "542dbc5d310e9565",
+##     "d7b3469e26105631",
+## ]
+## buildrs_results = ["542dbc5d310e9565"]
 ## writes = [
 ##     "libtoml_datetime-c09fc58966664a16.rlib",
 ##     "libtoml_datetime-c09fc58966664a16.rmeta",
@@ -7132,9 +10589,13 @@ COPY --link --from=dep-n-toml_datetime-0.7.3-c09fc58966664a16 /tmp/clis-diesel_c
 ## from = "out-8e892930c8cabc4c"
 ## xtern = "libserde_core-8e892930c8cabc4c.rmeta"
 ##
-## [[contexts]]
-## name = "crate_out-542dbc5d310e9565"
-## uri = "/tmp/clis-diesel_cli_2-3-4/release/build/serde_core-542dbc5d310e9565/out"
+## [[externs]]
+## from = "out-542dbc5d310e9565"
+## xtern = "private.rs"
+##
+## [[externs]]
+## from = "out-d7b3469e26105631"
+## xtern = "build_script_build-d7b3469e26105631"
 ##
 ## [[stages]]
 ##
@@ -7188,6 +10649,8 @@ COPY --link --from=dep-n-toml_datetime-0.7.3-c09fc58966664a16 /tmp/clis-diesel_c
 ##   --mount=from=cratesio-toml_datetime-0.7.3,source=/toml_datetime-0.7.3,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/toml_datetime-0.7.3 \
 ##   --mount=from=out-8e892930c8cabc4c,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde_core-8e892930c8cabc4c.rlib,source=/libserde_core-8e892930c8cabc4c.rlib \
 ##   --mount=from=out-8e892930c8cabc4c,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde_core-8e892930c8cabc4c.rmeta,source=/libserde_core-8e892930c8cabc4c.rmeta \
+##   --mount=from=out-542dbc5d310e9565,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/private.rs,source=/private.rs \
+##   --mount=from=out-d7b3469e26105631,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-d7b3469e26105631,source=/build_script_build-d7b3469e26105631 \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=toml_datetime \
 ##         CARGO_INCREMENTAL=0 \
@@ -7517,6 +10980,8 @@ RUN \
   --mount=from=cratesio-toml-0.9.8,source=/toml-0.9.8,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/toml-0.9.8 \
   --mount=from=out-8e892930c8cabc4c,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde_core-8e892930c8cabc4c.rlib,source=/libserde_core-8e892930c8cabc4c.rlib \
   --mount=from=out-8e892930c8cabc4c,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde_core-8e892930c8cabc4c.rmeta,source=/libserde_core-8e892930c8cabc4c.rmeta \
+  --mount=from=out-542dbc5d310e9565,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/private.rs,source=/private.rs \
+  --mount=from=out-d7b3469e26105631,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-d7b3469e26105631,source=/build_script_build-d7b3469e26105631 \
   --mount=from=out-4fa12932e3d6e0f1,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde_spanned-4fa12932e3d6e0f1.rlib,source=/libserde_spanned-4fa12932e3d6e0f1.rlib \
   --mount=from=out-4fa12932e3d6e0f1,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde_spanned-4fa12932e3d6e0f1.rmeta,source=/libserde_spanned-4fa12932e3d6e0f1.rmeta \
   --mount=from=out-c09fc58966664a16,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libtoml_datetime-c09fc58966664a16.rlib,source=/libtoml_datetime-c09fc58966664a16.rlib \
@@ -7559,11 +11024,14 @@ COPY --link --from=dep-n-toml-0.9.8-b57e3684947ab9f7 /tmp/clis-diesel_cli_2-3-4/
 ## this = "b57e3684947ab9f7"
 ## deps = [
 ##     "8e892930c8cabc4c",
+##     "542dbc5d310e9565",
+##     "d7b3469e26105631",
 ##     "4fa12932e3d6e0f1",
 ##     "c09fc58966664a16",
 ##     "4f766194a1aa6d0b",
 ##     "5d47119b38aa8292",
 ## ]
+## buildrs_results = ["542dbc5d310e9565"]
 ## writes = [
 ##     "libtoml-b57e3684947ab9f7.rlib",
 ##     "libtoml-b57e3684947ab9f7.rmeta",
@@ -7587,6 +11055,14 @@ COPY --link --from=dep-n-toml-0.9.8-b57e3684947ab9f7 /tmp/clis-diesel_cli_2-3-4/
 ## [[externs]]
 ## from = "out-8e892930c8cabc4c"
 ## xtern = "libserde_core-8e892930c8cabc4c.rmeta"
+##
+## [[externs]]
+## from = "out-542dbc5d310e9565"
+## xtern = "private.rs"
+##
+## [[externs]]
+## from = "out-d7b3469e26105631"
+## xtern = "build_script_build-d7b3469e26105631"
 ##
 ## [[externs]]
 ## from = "out-4fa12932e3d6e0f1"
@@ -7619,10 +11095,6 @@ COPY --link --from=dep-n-toml-0.9.8-b57e3684947ab9f7 /tmp/clis-diesel_cli_2-3-4/
 ## [[externs]]
 ## from = "out-5d47119b38aa8292"
 ## xtern = "libwinnow-5d47119b38aa8292.rmeta"
-##
-## [[contexts]]
-## name = "crate_out-542dbc5d310e9565"
-## uri = "/tmp/clis-diesel_cli_2-3-4/release/build/serde_core-542dbc5d310e9565/out"
 ##
 ## [[stages]]
 ##
@@ -7676,6 +11148,8 @@ COPY --link --from=dep-n-toml-0.9.8-b57e3684947ab9f7 /tmp/clis-diesel_cli_2-3-4/
 ##   --mount=from=cratesio-toml-0.9.8,source=/toml-0.9.8,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/toml-0.9.8 \
 ##   --mount=from=out-8e892930c8cabc4c,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde_core-8e892930c8cabc4c.rlib,source=/libserde_core-8e892930c8cabc4c.rlib \
 ##   --mount=from=out-8e892930c8cabc4c,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde_core-8e892930c8cabc4c.rmeta,source=/libserde_core-8e892930c8cabc4c.rmeta \
+##   --mount=from=out-542dbc5d310e9565,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/private.rs,source=/private.rs \
+##   --mount=from=out-d7b3469e26105631,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-d7b3469e26105631,source=/build_script_build-d7b3469e26105631 \
 ##   --mount=from=out-4fa12932e3d6e0f1,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde_spanned-4fa12932e3d6e0f1.rlib,source=/libserde_spanned-4fa12932e3d6e0f1.rlib \
 ##   --mount=from=out-4fa12932e3d6e0f1,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde_spanned-4fa12932e3d6e0f1.rmeta,source=/libserde_spanned-4fa12932e3d6e0f1.rmeta \
 ##   --mount=from=out-c09fc58966664a16,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libtoml_datetime-c09fc58966664a16.rlib,source=/libtoml_datetime-c09fc58966664a16.rlib \
@@ -7733,15 +11207,20 @@ RUN \
   --mount=from=out-02668a5ba984a64f,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde-02668a5ba984a64f.rmeta,source=/libserde-02668a5ba984a64f.rmeta \
   --mount=from=out-8e892930c8cabc4c,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde_core-8e892930c8cabc4c.rlib,source=/libserde_core-8e892930c8cabc4c.rlib \
   --mount=from=out-8e892930c8cabc4c,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde_core-8e892930c8cabc4c.rmeta,source=/libserde_core-8e892930c8cabc4c.rmeta \
+  --mount=from=out-542dbc5d310e9565,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/private.rs,source=/private.rs \
+  --mount=from=out-d7b3469e26105631,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-d7b3469e26105631,source=/build_script_build-d7b3469e26105631 \
   --mount=from=out-6a6518b24fbf25e4,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde_derive-6a6518b24fbf25e4.so,source=/libserde_derive-6a6518b24fbf25e4.so \
   --mount=from=out-e1e423eb99bb7e63,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libproc_macro2-e1e423eb99bb7e63.rlib,source=/libproc_macro2-e1e423eb99bb7e63.rlib \
   --mount=from=out-e1e423eb99bb7e63,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libproc_macro2-e1e423eb99bb7e63.rmeta,source=/libproc_macro2-e1e423eb99bb7e63.rmeta \
   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rlib,source=/libunicode_ident-721470d94fc0c354.rlib \
   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rmeta,source=/libunicode_ident-721470d94fc0c354.rmeta \
+  --mount=from=out-71babfb997932318,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-71babfb997932318,source=/build_script_build-71babfb997932318 \
   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rlib,source=/libquote-87872b55644e5043.rlib \
   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rmeta,source=/libquote-87872b55644e5043.rmeta \
+  --mount=from=out-c63aae50eb6f480a,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-c63aae50eb6f480a,source=/build_script_build-c63aae50eb6f480a \
   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rlib,source=/libsyn-12379804391f3f43.rlib \
   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rmeta,source=/libsyn-12379804391f3f43.rmeta \
+  --mount=from=out-9e59eb4de4feaddb,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-9e59eb4de4feaddb,source=/build_script_build-9e59eb4de4feaddb \
   --mount=from=out-b57e3684947ab9f7,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libtoml-b57e3684947ab9f7.rlib,source=/libtoml-b57e3684947ab9f7.rlib \
   --mount=from=out-b57e3684947ab9f7,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libtoml-b57e3684947ab9f7.rmeta,source=/libtoml-b57e3684947ab9f7.rmeta \
   --mount=from=out-4fa12932e3d6e0f1,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde_spanned-4fa12932e3d6e0f1.rlib,source=/libserde_spanned-4fa12932e3d6e0f1.rlib \
@@ -7784,16 +11263,30 @@ COPY --link --from=dep-n-migrations_internals-2.3.0-43afef42d6696369 /tmp/clis-d
 ## deps = [
 ##     "02668a5ba984a64f",
 ##     "8e892930c8cabc4c",
+##     "542dbc5d310e9565",
+##     "d7b3469e26105631",
 ##     "6a6518b24fbf25e4",
 ##     "e1e423eb99bb7e63",
 ##     "721470d94fc0c354",
+##     "e93dddbb48c6a6fc",
+##     "71babfb997932318",
 ##     "87872b55644e5043",
+##     "edf8f660a3d601cc",
+##     "c63aae50eb6f480a",
 ##     "12379804391f3f43",
+##     "cfe125327cacaf16",
+##     "9e59eb4de4feaddb",
 ##     "b57e3684947ab9f7",
 ##     "4fa12932e3d6e0f1",
 ##     "c09fc58966664a16",
 ##     "4f766194a1aa6d0b",
 ##     "5d47119b38aa8292",
+## ]
+## buildrs_results = [
+##     "542dbc5d310e9565",
+##     "e93dddbb48c6a6fc",
+##     "edf8f660a3d601cc",
+##     "cfe125327cacaf16",
 ## ]
 ## writes = [
 ##     "libmigrations_internals-43afef42d6696369.rlib",
@@ -7823,6 +11316,14 @@ COPY --link --from=dep-n-migrations_internals-2.3.0-43afef42d6696369 /tmp/clis-d
 ## xtern = "libserde_core-8e892930c8cabc4c.rmeta"
 ##
 ## [[externs]]
+## from = "out-542dbc5d310e9565"
+## xtern = "private.rs"
+##
+## [[externs]]
+## from = "out-d7b3469e26105631"
+## xtern = "build_script_build-d7b3469e26105631"
+##
+## [[externs]]
 ## from = "out-6a6518b24fbf25e4"
 ## xtern = "libserde_derive-6a6518b24fbf25e4.so"
 ##
@@ -7843,6 +11344,10 @@ COPY --link --from=dep-n-migrations_internals-2.3.0-43afef42d6696369 /tmp/clis-d
 ## xtern = "libunicode_ident-721470d94fc0c354.rmeta"
 ##
 ## [[externs]]
+## from = "out-71babfb997932318"
+## xtern = "build_script_build-71babfb997932318"
+##
+## [[externs]]
 ## from = "out-87872b55644e5043"
 ## xtern = "libquote-87872b55644e5043.rlib"
 ##
@@ -7851,12 +11356,20 @@ COPY --link --from=dep-n-migrations_internals-2.3.0-43afef42d6696369 /tmp/clis-d
 ## xtern = "libquote-87872b55644e5043.rmeta"
 ##
 ## [[externs]]
+## from = "out-c63aae50eb6f480a"
+## xtern = "build_script_build-c63aae50eb6f480a"
+##
+## [[externs]]
 ## from = "out-12379804391f3f43"
 ## xtern = "libsyn-12379804391f3f43.rlib"
 ##
 ## [[externs]]
 ## from = "out-12379804391f3f43"
 ## xtern = "libsyn-12379804391f3f43.rmeta"
+##
+## [[externs]]
+## from = "out-9e59eb4de4feaddb"
+## xtern = "build_script_build-9e59eb4de4feaddb"
 ##
 ## [[externs]]
 ## from = "out-b57e3684947ab9f7"
@@ -7897,14 +11410,6 @@ COPY --link --from=dep-n-migrations_internals-2.3.0-43afef42d6696369 /tmp/clis-d
 ## [[externs]]
 ## from = "out-5d47119b38aa8292"
 ## xtern = "libwinnow-5d47119b38aa8292.rmeta"
-##
-## [[contexts]]
-## name = "crate_out-cfe125327cacaf16"
-## uri = "/tmp/clis-diesel_cli_2-3-4/release/build/serde-cfe125327cacaf16/out"
-##
-## [[contexts]]
-## name = "crate_out-542dbc5d310e9565"
-## uri = "/tmp/clis-diesel_cli_2-3-4/release/build/serde_core-542dbc5d310e9565/out"
 ##
 ## [[stages]]
 ##
@@ -7960,15 +11465,20 @@ COPY --link --from=dep-n-migrations_internals-2.3.0-43afef42d6696369 /tmp/clis-d
 ##   --mount=from=out-02668a5ba984a64f,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde-02668a5ba984a64f.rmeta,source=/libserde-02668a5ba984a64f.rmeta \
 ##   --mount=from=out-8e892930c8cabc4c,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde_core-8e892930c8cabc4c.rlib,source=/libserde_core-8e892930c8cabc4c.rlib \
 ##   --mount=from=out-8e892930c8cabc4c,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde_core-8e892930c8cabc4c.rmeta,source=/libserde_core-8e892930c8cabc4c.rmeta \
+##   --mount=from=out-542dbc5d310e9565,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/private.rs,source=/private.rs \
+##   --mount=from=out-d7b3469e26105631,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-d7b3469e26105631,source=/build_script_build-d7b3469e26105631 \
 ##   --mount=from=out-6a6518b24fbf25e4,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde_derive-6a6518b24fbf25e4.so,source=/libserde_derive-6a6518b24fbf25e4.so \
 ##   --mount=from=out-e1e423eb99bb7e63,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libproc_macro2-e1e423eb99bb7e63.rlib,source=/libproc_macro2-e1e423eb99bb7e63.rlib \
 ##   --mount=from=out-e1e423eb99bb7e63,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libproc_macro2-e1e423eb99bb7e63.rmeta,source=/libproc_macro2-e1e423eb99bb7e63.rmeta \
 ##   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rlib,source=/libunicode_ident-721470d94fc0c354.rlib \
 ##   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rmeta,source=/libunicode_ident-721470d94fc0c354.rmeta \
+##   --mount=from=out-71babfb997932318,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-71babfb997932318,source=/build_script_build-71babfb997932318 \
 ##   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rlib,source=/libquote-87872b55644e5043.rlib \
 ##   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rmeta,source=/libquote-87872b55644e5043.rmeta \
+##   --mount=from=out-c63aae50eb6f480a,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-c63aae50eb6f480a,source=/build_script_build-c63aae50eb6f480a \
 ##   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rlib,source=/libsyn-12379804391f3f43.rlib \
 ##   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rmeta,source=/libsyn-12379804391f3f43.rmeta \
+##   --mount=from=out-9e59eb4de4feaddb,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-9e59eb4de4feaddb,source=/build_script_build-9e59eb4de4feaddb \
 ##   --mount=from=out-b57e3684947ab9f7,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libtoml-b57e3684947ab9f7.rlib,source=/libtoml-b57e3684947ab9f7.rlib \
 ##   --mount=from=out-b57e3684947ab9f7,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libtoml-b57e3684947ab9f7.rmeta,source=/libtoml-b57e3684947ab9f7.rmeta \
 ##   --mount=from=out-4fa12932e3d6e0f1,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde_spanned-4fa12932e3d6e0f1.rlib,source=/libserde_spanned-4fa12932e3d6e0f1.rlib \
@@ -8013,13 +11523,192 @@ COPY --link --from=dep-n-migrations_internals-2.3.0-43afef42d6696369 /tmp/clis-d
 ## FROM scratch AS out-43afef42d6696369
 ## COPY --link --from=dep-n-migrations_internals-2.3.0-43afef42d6696369 /tmp/clis-diesel_cli_2-3-4/release/deps/*-43afef42d6696369* /"""
 
+FROM rust-base AS run-z-serde_core-1.0.228-931deb6df1623450
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-diesel_cli_2-3-4/release/build/serde_core-931deb6df1623450/out
+WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_core-1.0.228
+RUN \
+  --mount=from=out-d7b3469e26105631,source=/build_script_build-d7b3469e26105631,dst=/tmp/clis-diesel_cli_2-3-4/release/build/serde_core-d7b3469e26105631/build-script-build \
+  --mount=from=cratesio-serde_core-1.0.228,source=/serde_core-1.0.228,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_core-1.0.228 \
+    env CARGO="$(which cargo)" \
+        CARGO_CFG_FEATURE=alloc,result,std \
+        CARGO_CFG_PANIC=unwind \
+        CARGO_CFG_TARGET_ABI= \
+        CARGO_CFG_TARGET_ARCH=x86_64 \
+        CARGO_CFG_TARGET_ENDIAN=little \
+        CARGO_CFG_TARGET_ENV=gnu \
+        CARGO_CFG_TARGET_FAMILY=unix \
+        CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
+        CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+        CARGO_CFG_TARGET_OS=linux \
+        CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+        CARGO_CFG_TARGET_VENDOR=unknown \
+        CARGO_CFG_UNIX= \
+        CARGO_ENCODED_RUSTFLAGS= \
+        CARGO_FEATURE_ALLOC=1 \
+        CARGO_FEATURE_RESULT=1 \
+        CARGO_FEATURE_STD=1 \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_core-1.0.228 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_core-1.0.228/Cargo.toml \
+        CARGO_PKG_AUTHORS=Erick' Tryzelaar <erick.tryzelaar@gmail.com>:David Tolnay <dtolnay@gmail.com>' \
+        CARGO_PKG_DESCRIPTION=Serde' traits only, with no support for derive -- use the `serde` crate instead' \
+        CARGO_PKG_HOMEPAGE=https'://serde.rs' \
+        CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=serde_core \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/serde-rs/serde' \
+        CARGO_PKG_RUST_VERSION=1.56 \
+        CARGO_PKG_VERSION=1.0.228 \
+        CARGO_PKG_VERSION_MAJOR=1 \
+        CARGO_PKG_VERSION_MINOR=0 \
+        CARGO_PKG_VERSION_PATCH=228 \
+        CARGO_PKG_VERSION_PRE= \
+        DEBUG=false \
+        HOST=x86_64-unknown-linux-gnu \
+        NUM_JOBS=4 \
+        OPT_LEVEL=0 \
+        OUT_DIR=/tmp/clis-diesel_cli_2-3-4/release/build/serde_core-931deb6df1623450/out \
+        PROFILE=release \
+        RUSTC=rustc \
+        RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+        TARGET=x86_64-unknown-linux-gnu \
+        CARGOGREEN=1 \
+      CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-diesel_cli_2-3-4/release/build/serde_core-d7b3469e26105631/build-script-build \
+        1>          /tmp/clis-diesel_cli_2-3-4/release/build/serde_core-931deb6df1623450/out/out-931deb6df1623450-stdout \
+        2>          /tmp/clis-diesel_cli_2-3-4/release/build/serde_core-931deb6df1623450/out/out-931deb6df1623450-stderr \
+        || echo $? >/tmp/clis-diesel_cli_2-3-4/release/build/serde_core-931deb6df1623450/out/out-931deb6df1623450-errcode\
+  ; find /tmp/clis-diesel_cli_2-3-4/release/build/serde_core-931deb6df1623450/out/*-931deb6df1623450* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-931deb6df1623450
+COPY --link --from=run-z-serde_core-1.0.228-931deb6df1623450 /tmp/clis-diesel_cli_2-3-4/release/build/serde_core-931deb6df1623450/out/* /
+
+## this = "931deb6df1623450"
+## deps = ["d7b3469e26105631"]
+## writes = ["private.rs"]
+## stdout = [
+##     "cargo:rerun-if-changed=build.rs",
+##     "cargo:rustc-check-cfg=cfg(if_docsrs_then_no_serde_core)",
+##     "cargo:rustc-check-cfg=cfg(no_core_cstr)",
+##     "cargo:rustc-check-cfg=cfg(no_core_error)",
+##     "cargo:rustc-check-cfg=cfg(no_core_net)",
+##     "cargo:rustc-check-cfg=cfg(no_core_num_saturating)",
+##     "cargo:rustc-check-cfg=cfg(no_diagnostic_namespace)",
+##     "cargo:rustc-check-cfg=cfg(no_serde_derive)",
+##     "cargo:rustc-check-cfg=cfg(no_std_atomic)",
+##     "cargo:rustc-check-cfg=cfg(no_std_atomic64)",
+##     "cargo:rustc-check-cfg=cfg(no_target_has_atomic)",
+## ]
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = '''
+## FROM --platform=$BUILDPLATFORM docker.io/tonistiigi/xx:1.6.1@sha256:923441d7c25f1e2eb5789f82d987693c47b8ed987c4ab3b075d6ed2b5d6779a3 AS xx
+## FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base
+## ARG TARGETPLATFORM
+## RUN \
+##   --mount=from=xx,source=/usr/bin/xx-apk,dst=/usr/bin/xx-apk \
+##   --mount=from=xx,source=/usr/bin/xx-apt,dst=/usr/bin/xx-apt \
+##   --mount=from=xx,source=/usr/bin/xx-apt,dst=/usr/bin/xx-apt-get \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-c++ \
+##   --mount=from=xx,source=/usr/bin/xx-cargo,dst=/usr/bin/xx-cargo \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-cc \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-clang \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-clang++ \
+##   --mount=from=xx,source=/usr/bin/xx-go,dst=/usr/bin/xx-go \
+##   --mount=from=xx,source=/usr/bin/xx-info,dst=/usr/bin/xx-info \
+##   --mount=from=xx,source=/usr/bin/xx-ld-shas,dst=/usr/bin/xx-ld-shas \
+##   --mount=from=xx,source=/usr/bin/xx-verify,dst=/usr/bin/xx-verify \
+##   --mount=from=xx,source=/usr/bin/xx-windres,dst=/usr/bin/xx-windres \
+##     set -eux \
+##  && if   command -v apk >/dev/null 2>&1; then \
+##                                      xx-apk     add     --no-cache                 '<none>'; \
+##     elif command -v apt >/dev/null 2>&1; then \
+##       DEBIAN_FRONTEND=noninteractive xx-apt     install --no-install-recommends -y 'libpq-dev'; \
+##     else \
+##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
+##     fi'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "run-z-serde_core-1.0.228-931deb6df1623450"
+## script = '''
+## FROM rust-base AS run-z-serde_core-1.0.228-931deb6df1623450
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-diesel_cli_2-3-4/release/build/serde_core-931deb6df1623450/out
+## WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_core-1.0.228
+## RUN \
+##   --mount=from=out-d7b3469e26105631,source=/build_script_build-d7b3469e26105631,dst=/tmp/clis-diesel_cli_2-3-4/release/build/serde_core-d7b3469e26105631/build-script-build \
+##   --mount=from=cratesio-serde_core-1.0.228,source=/serde_core-1.0.228,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_core-1.0.228 \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CFG_FEATURE=alloc,result,std \
+##         CARGO_CFG_PANIC=unwind \
+##         CARGO_CFG_TARGET_ABI= \
+##         CARGO_CFG_TARGET_ARCH=x86_64 \
+##         CARGO_CFG_TARGET_ENDIAN=little \
+##         CARGO_CFG_TARGET_ENV=gnu \
+##         CARGO_CFG_TARGET_FAMILY=unix \
+##         CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
+##         CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+##         CARGO_CFG_TARGET_OS=linux \
+##         CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+##         CARGO_CFG_TARGET_VENDOR=unknown \
+##         CARGO_CFG_UNIX= \
+##         CARGO_ENCODED_RUSTFLAGS= \
+##         CARGO_FEATURE_ALLOC=1 \
+##         CARGO_FEATURE_RESULT=1 \
+##         CARGO_FEATURE_STD=1 \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_core-1.0.228 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_core-1.0.228/Cargo.toml \
+##         CARGO_PKG_AUTHORS=Erick' Tryzelaar <erick.tryzelaar@gmail.com>:David Tolnay <dtolnay@gmail.com>' \
+##         CARGO_PKG_DESCRIPTION=Serde' traits only, with no support for derive -- use the `serde` crate instead' \
+##         CARGO_PKG_HOMEPAGE=https'://serde.rs' \
+##         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=serde_core \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/serde-rs/serde' \
+##         CARGO_PKG_RUST_VERSION=1.56 \
+##         CARGO_PKG_VERSION=1.0.228 \
+##         CARGO_PKG_VERSION_MAJOR=1 \
+##         CARGO_PKG_VERSION_MINOR=0 \
+##         CARGO_PKG_VERSION_PATCH=228 \
+##         CARGO_PKG_VERSION_PRE= \
+##         DEBUG=false \
+##         HOST=x86_64-unknown-linux-gnu \
+##         NUM_JOBS=4 \
+##         OPT_LEVEL=0 \
+##         OUT_DIR=/tmp/clis-diesel_cli_2-3-4/release/build/serde_core-931deb6df1623450/out \
+##         PROFILE=release \
+##         RUSTC=rustc \
+##         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+##         TARGET=x86_64-unknown-linux-gnu \
+##         CARGOGREEN=1 \
+##       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-diesel_cli_2-3-4/release/build/serde_core-d7b3469e26105631/build-script-build \
+##         1>          /tmp/clis-diesel_cli_2-3-4/release/build/serde_core-931deb6df1623450/out/out-931deb6df1623450-stdout \
+##         2>          /tmp/clis-diesel_cli_2-3-4/release/build/serde_core-931deb6df1623450/out/out-931deb6df1623450-stderr \
+##         || echo $? >/tmp/clis-diesel_cli_2-3-4/release/build/serde_core-931deb6df1623450/out/out-931deb6df1623450-errcode\
+##   ; find /tmp/clis-diesel_cli_2-3-4/release/build/serde_core-931deb6df1623450/out/*-931deb6df1623450* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-931deb6df1623450"
+## script = """
+## FROM scratch AS out-931deb6df1623450
+## COPY --link --from=run-z-serde_core-1.0.228-931deb6df1623450 /tmp/clis-diesel_cli_2-3-4/release/build/serde_core-931deb6df1623450/out/* /"""
+
 
 FROM rust-base AS dep-n-serde_core-1.0.228-a60f7305e674893c
 SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-diesel_cli_2-3-4/release/deps
 RUN \
   --mount=from=cratesio-serde_core-1.0.228,source=/serde_core-1.0.228,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_core-1.0.228 \
-  --mount=from=crate_out-931deb6df1623450,dst=/tmp/clis-diesel_cli_2-3-4/release/build/serde_core-931deb6df1623450/out \
+  --mount=from=out-931deb6df1623450,dst=/tmp/clis-diesel_cli_2-3-4/release/build/serde_core-931deb6df1623450/out,source=/ \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=serde_core \
         CARGO_INCREMENTAL=0 \
@@ -8050,6 +11739,11 @@ FROM scratch AS out-a60f7305e674893c
 COPY --link --from=dep-n-serde_core-1.0.228-a60f7305e674893c /tmp/clis-diesel_cli_2-3-4/release/deps/*-a60f7305e674893c* /
 
 ## this = "a60f7305e674893c"
+## deps = [
+##     "931deb6df1623450",
+##     "d7b3469e26105631",
+## ]
+## buildrs_results = ["931deb6df1623450"]
 ## writes = [
 ##     "libserde_core-a60f7305e674893c.rlib",
 ##     "libserde_core-a60f7305e674893c.rmeta",
@@ -8061,9 +11755,10 @@ COPY --link --from=dep-n-serde_core-1.0.228-a60f7305e674893c /tmp/clis-diesel_cl
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-4/release/deps/libserde_core-a60f7305e674893c.rlib","emit":"link"}',
 ## ]
 ##
-## [[contexts]]
-## name = "crate_out-931deb6df1623450"
-## uri = "/tmp/clis-diesel_cli_2-3-4/release/build/serde_core-931deb6df1623450/out"
+## [[mounts]]
+## name = "out-931deb6df1623450"
+## src = "/"
+## dst = "/tmp/clis-diesel_cli_2-3-4/release/build/serde_core-931deb6df1623450/out"
 ##
 ## [[stages]]
 ##
@@ -8115,7 +11810,7 @@ COPY --link --from=dep-n-serde_core-1.0.228-a60f7305e674893c /tmp/clis-diesel_cl
 ## WORKDIR /tmp/clis-diesel_cli_2-3-4/release/deps
 ## RUN \
 ##   --mount=from=cratesio-serde_core-1.0.228,source=/serde_core-1.0.228,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_core-1.0.228 \
-##   --mount=from=crate_out-931deb6df1623450,dst=/tmp/clis-diesel_cli_2-3-4/release/build/serde_core-931deb6df1623450/out \
+##   --mount=from=out-931deb6df1623450,dst=/tmp/clis-diesel_cli_2-3-4/release/build/serde_core-931deb6df1623450/out,source=/ \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=serde_core \
 ##         CARGO_INCREMENTAL=0 \
@@ -8151,24 +11846,211 @@ COPY --link --from=dep-n-serde_core-1.0.228-a60f7305e674893c /tmp/clis-diesel_cl
 ## FROM scratch AS out-a60f7305e674893c
 ## COPY --link --from=dep-n-serde_core-1.0.228-a60f7305e674893c /tmp/clis-diesel_cli_2-3-4/release/deps/*-a60f7305e674893c* /"""
 
+FROM rust-base AS run-z-serde-1.0.228-a1cdeff7daa9b299
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-diesel_cli_2-3-4/release/build/serde-a1cdeff7daa9b299/out
+WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.228
+RUN \
+  --mount=from=out-9e59eb4de4feaddb,source=/build_script_build-9e59eb4de4feaddb,dst=/tmp/clis-diesel_cli_2-3-4/release/build/serde-9e59eb4de4feaddb/build-script-build \
+  --mount=from=cratesio-serde-1.0.228,source=/serde-1.0.228,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.228 \
+    env CARGO="$(which cargo)" \
+        CARGO_CFG_FEATURE=default,derive,serde_derive,std \
+        CARGO_CFG_PANIC=unwind \
+        CARGO_CFG_TARGET_ABI= \
+        CARGO_CFG_TARGET_ARCH=x86_64 \
+        CARGO_CFG_TARGET_ENDIAN=little \
+        CARGO_CFG_TARGET_ENV=gnu \
+        CARGO_CFG_TARGET_FAMILY=unix \
+        CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
+        CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+        CARGO_CFG_TARGET_OS=linux \
+        CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+        CARGO_CFG_TARGET_VENDOR=unknown \
+        CARGO_CFG_UNIX= \
+        CARGO_ENCODED_RUSTFLAGS= \
+        CARGO_FEATURE_DEFAULT=1 \
+        CARGO_FEATURE_DERIVE=1 \
+        CARGO_FEATURE_SERDE_DERIVE=1 \
+        CARGO_FEATURE_STD=1 \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.228 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.228/Cargo.toml \
+        CARGO_PKG_AUTHORS=Erick' Tryzelaar <erick.tryzelaar@gmail.com>:David Tolnay <dtolnay@gmail.com>' \
+        CARGO_PKG_DESCRIPTION=A' generic serialization/deserialization framework' \
+        CARGO_PKG_HOMEPAGE=https'://serde.rs' \
+        CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=serde \
+        CARGO_PKG_README=crates-io.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/serde-rs/serde' \
+        CARGO_PKG_RUST_VERSION=1.56 \
+        CARGO_PKG_VERSION=1.0.228 \
+        CARGO_PKG_VERSION_MAJOR=1 \
+        CARGO_PKG_VERSION_MINOR=0 \
+        CARGO_PKG_VERSION_PATCH=228 \
+        CARGO_PKG_VERSION_PRE= \
+        DEBUG=false \
+        HOST=x86_64-unknown-linux-gnu \
+        NUM_JOBS=4 \
+        OPT_LEVEL=0 \
+        OUT_DIR=/tmp/clis-diesel_cli_2-3-4/release/build/serde-a1cdeff7daa9b299/out \
+        PROFILE=release \
+        RUSTC=rustc \
+        RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+        TARGET=x86_64-unknown-linux-gnu \
+        CARGOGREEN=1 \
+      CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-diesel_cli_2-3-4/release/build/serde-9e59eb4de4feaddb/build-script-build \
+        1>          /tmp/clis-diesel_cli_2-3-4/release/build/serde-a1cdeff7daa9b299/out/out-a1cdeff7daa9b299-stdout \
+        2>          /tmp/clis-diesel_cli_2-3-4/release/build/serde-a1cdeff7daa9b299/out/out-a1cdeff7daa9b299-stderr \
+        || echo $? >/tmp/clis-diesel_cli_2-3-4/release/build/serde-a1cdeff7daa9b299/out/out-a1cdeff7daa9b299-errcode\
+  ; find /tmp/clis-diesel_cli_2-3-4/release/build/serde-a1cdeff7daa9b299/out/*-a1cdeff7daa9b299* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-a1cdeff7daa9b299
+COPY --link --from=run-z-serde-1.0.228-a1cdeff7daa9b299 /tmp/clis-diesel_cli_2-3-4/release/build/serde-a1cdeff7daa9b299/out/* /
+
+## this = "a1cdeff7daa9b299"
+## deps = ["9e59eb4de4feaddb"]
+## writes = ["private.rs"]
+## stdout = [
+##     "cargo:rerun-if-changed=build.rs",
+##     "cargo:rustc-cfg=if_docsrs_then_no_serde_core",
+##     'cargo:rustc-check-cfg=cfg(feature, values("result"))',
+##     "cargo:rustc-check-cfg=cfg(if_docsrs_then_no_serde_core)",
+##     "cargo:rustc-check-cfg=cfg(no_core_cstr)",
+##     "cargo:rustc-check-cfg=cfg(no_core_error)",
+##     "cargo:rustc-check-cfg=cfg(no_core_net)",
+##     "cargo:rustc-check-cfg=cfg(no_core_num_saturating)",
+##     "cargo:rustc-check-cfg=cfg(no_diagnostic_namespace)",
+##     "cargo:rustc-check-cfg=cfg(no_serde_derive)",
+##     "cargo:rustc-check-cfg=cfg(no_std_atomic)",
+##     "cargo:rustc-check-cfg=cfg(no_std_atomic64)",
+##     "cargo:rustc-check-cfg=cfg(no_target_has_atomic)",
+## ]
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = '''
+## FROM --platform=$BUILDPLATFORM docker.io/tonistiigi/xx:1.6.1@sha256:923441d7c25f1e2eb5789f82d987693c47b8ed987c4ab3b075d6ed2b5d6779a3 AS xx
+## FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base
+## ARG TARGETPLATFORM
+## RUN \
+##   --mount=from=xx,source=/usr/bin/xx-apk,dst=/usr/bin/xx-apk \
+##   --mount=from=xx,source=/usr/bin/xx-apt,dst=/usr/bin/xx-apt \
+##   --mount=from=xx,source=/usr/bin/xx-apt,dst=/usr/bin/xx-apt-get \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-c++ \
+##   --mount=from=xx,source=/usr/bin/xx-cargo,dst=/usr/bin/xx-cargo \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-cc \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-clang \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-clang++ \
+##   --mount=from=xx,source=/usr/bin/xx-go,dst=/usr/bin/xx-go \
+##   --mount=from=xx,source=/usr/bin/xx-info,dst=/usr/bin/xx-info \
+##   --mount=from=xx,source=/usr/bin/xx-ld-shas,dst=/usr/bin/xx-ld-shas \
+##   --mount=from=xx,source=/usr/bin/xx-verify,dst=/usr/bin/xx-verify \
+##   --mount=from=xx,source=/usr/bin/xx-windres,dst=/usr/bin/xx-windres \
+##     set -eux \
+##  && if   command -v apk >/dev/null 2>&1; then \
+##                                      xx-apk     add     --no-cache                 '<none>'; \
+##     elif command -v apt >/dev/null 2>&1; then \
+##       DEBIAN_FRONTEND=noninteractive xx-apt     install --no-install-recommends -y 'libpq-dev'; \
+##     else \
+##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
+##     fi'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "run-z-serde-1.0.228-a1cdeff7daa9b299"
+## script = '''
+## FROM rust-base AS run-z-serde-1.0.228-a1cdeff7daa9b299
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-diesel_cli_2-3-4/release/build/serde-a1cdeff7daa9b299/out
+## WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.228
+## RUN \
+##   --mount=from=out-9e59eb4de4feaddb,source=/build_script_build-9e59eb4de4feaddb,dst=/tmp/clis-diesel_cli_2-3-4/release/build/serde-9e59eb4de4feaddb/build-script-build \
+##   --mount=from=cratesio-serde-1.0.228,source=/serde-1.0.228,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.228 \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CFG_FEATURE=default,derive,serde_derive,std \
+##         CARGO_CFG_PANIC=unwind \
+##         CARGO_CFG_TARGET_ABI= \
+##         CARGO_CFG_TARGET_ARCH=x86_64 \
+##         CARGO_CFG_TARGET_ENDIAN=little \
+##         CARGO_CFG_TARGET_ENV=gnu \
+##         CARGO_CFG_TARGET_FAMILY=unix \
+##         CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
+##         CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+##         CARGO_CFG_TARGET_OS=linux \
+##         CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+##         CARGO_CFG_TARGET_VENDOR=unknown \
+##         CARGO_CFG_UNIX= \
+##         CARGO_ENCODED_RUSTFLAGS= \
+##         CARGO_FEATURE_DEFAULT=1 \
+##         CARGO_FEATURE_DERIVE=1 \
+##         CARGO_FEATURE_SERDE_DERIVE=1 \
+##         CARGO_FEATURE_STD=1 \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.228 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.228/Cargo.toml \
+##         CARGO_PKG_AUTHORS=Erick' Tryzelaar <erick.tryzelaar@gmail.com>:David Tolnay <dtolnay@gmail.com>' \
+##         CARGO_PKG_DESCRIPTION=A' generic serialization/deserialization framework' \
+##         CARGO_PKG_HOMEPAGE=https'://serde.rs' \
+##         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=serde \
+##         CARGO_PKG_README=crates-io.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/serde-rs/serde' \
+##         CARGO_PKG_RUST_VERSION=1.56 \
+##         CARGO_PKG_VERSION=1.0.228 \
+##         CARGO_PKG_VERSION_MAJOR=1 \
+##         CARGO_PKG_VERSION_MINOR=0 \
+##         CARGO_PKG_VERSION_PATCH=228 \
+##         CARGO_PKG_VERSION_PRE= \
+##         DEBUG=false \
+##         HOST=x86_64-unknown-linux-gnu \
+##         NUM_JOBS=4 \
+##         OPT_LEVEL=0 \
+##         OUT_DIR=/tmp/clis-diesel_cli_2-3-4/release/build/serde-a1cdeff7daa9b299/out \
+##         PROFILE=release \
+##         RUSTC=rustc \
+##         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+##         TARGET=x86_64-unknown-linux-gnu \
+##         CARGOGREEN=1 \
+##       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-diesel_cli_2-3-4/release/build/serde-9e59eb4de4feaddb/build-script-build \
+##         1>          /tmp/clis-diesel_cli_2-3-4/release/build/serde-a1cdeff7daa9b299/out/out-a1cdeff7daa9b299-stdout \
+##         2>          /tmp/clis-diesel_cli_2-3-4/release/build/serde-a1cdeff7daa9b299/out/out-a1cdeff7daa9b299-stderr \
+##         || echo $? >/tmp/clis-diesel_cli_2-3-4/release/build/serde-a1cdeff7daa9b299/out/out-a1cdeff7daa9b299-errcode\
+##   ; find /tmp/clis-diesel_cli_2-3-4/release/build/serde-a1cdeff7daa9b299/out/*-a1cdeff7daa9b299* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-a1cdeff7daa9b299"
+## script = """
+## FROM scratch AS out-a1cdeff7daa9b299
+## COPY --link --from=run-z-serde-1.0.228-a1cdeff7daa9b299 /tmp/clis-diesel_cli_2-3-4/release/build/serde-a1cdeff7daa9b299/out/* /"""
+
 
 FROM rust-base AS dep-n-serde-1.0.228-289f31e68e5dd789
 SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-diesel_cli_2-3-4/release/deps
 RUN \
   --mount=from=cratesio-serde-1.0.228,source=/serde-1.0.228,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.228 \
-  --mount=from=crate_out-a1cdeff7daa9b299,dst=/tmp/clis-diesel_cli_2-3-4/release/build/serde-a1cdeff7daa9b299/out \
   --mount=from=out-a60f7305e674893c,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde_core-a60f7305e674893c.rlib,source=/libserde_core-a60f7305e674893c.rlib \
   --mount=from=out-a60f7305e674893c,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde_core-a60f7305e674893c.rmeta,source=/libserde_core-a60f7305e674893c.rmeta \
+  --mount=from=out-931deb6df1623450,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/private.rs,source=/private.rs \
+  --mount=from=out-d7b3469e26105631,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-d7b3469e26105631,source=/build_script_build-d7b3469e26105631 \
   --mount=from=out-6a6518b24fbf25e4,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde_derive-6a6518b24fbf25e4.so,source=/libserde_derive-6a6518b24fbf25e4.so \
   --mount=from=out-e1e423eb99bb7e63,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libproc_macro2-e1e423eb99bb7e63.rlib,source=/libproc_macro2-e1e423eb99bb7e63.rlib \
   --mount=from=out-e1e423eb99bb7e63,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libproc_macro2-e1e423eb99bb7e63.rmeta,source=/libproc_macro2-e1e423eb99bb7e63.rmeta \
   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rlib,source=/libunicode_ident-721470d94fc0c354.rlib \
   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rmeta,source=/libunicode_ident-721470d94fc0c354.rmeta \
+  --mount=from=out-71babfb997932318,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-71babfb997932318,source=/build_script_build-71babfb997932318 \
   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rlib,source=/libquote-87872b55644e5043.rlib \
   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rmeta,source=/libquote-87872b55644e5043.rmeta \
+  --mount=from=out-c63aae50eb6f480a,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-c63aae50eb6f480a,source=/build_script_build-c63aae50eb6f480a \
   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rlib,source=/libsyn-12379804391f3f43.rlib \
   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rmeta,source=/libsyn-12379804391f3f43.rmeta \
+  --mount=from=out-a1cdeff7daa9b299,dst=/tmp/clis-diesel_cli_2-3-4/release/build/serde-a1cdeff7daa9b299/out,source=/ \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=serde \
         CARGO_INCREMENTAL=0 \
@@ -8201,11 +12083,25 @@ COPY --link --from=dep-n-serde-1.0.228-289f31e68e5dd789 /tmp/clis-diesel_cli_2-3
 ## this = "289f31e68e5dd789"
 ## deps = [
 ##     "a60f7305e674893c",
+##     "931deb6df1623450",
+##     "d7b3469e26105631",
 ##     "6a6518b24fbf25e4",
 ##     "e1e423eb99bb7e63",
 ##     "721470d94fc0c354",
+##     "e93dddbb48c6a6fc",
+##     "71babfb997932318",
 ##     "87872b55644e5043",
+##     "edf8f660a3d601cc",
+##     "c63aae50eb6f480a",
 ##     "12379804391f3f43",
+##     "a1cdeff7daa9b299",
+##     "9e59eb4de4feaddb",
+## ]
+## buildrs_results = [
+##     "931deb6df1623450",
+##     "e93dddbb48c6a6fc",
+##     "edf8f660a3d601cc",
+##     "a1cdeff7daa9b299",
 ## ]
 ## writes = [
 ##     "libserde-289f31e68e5dd789.rlib",
@@ -8225,6 +12121,14 @@ COPY --link --from=dep-n-serde-1.0.228-289f31e68e5dd789 /tmp/clis-diesel_cli_2-3
 ## [[externs]]
 ## from = "out-a60f7305e674893c"
 ## xtern = "libserde_core-a60f7305e674893c.rmeta"
+##
+## [[externs]]
+## from = "out-931deb6df1623450"
+## xtern = "private.rs"
+##
+## [[externs]]
+## from = "out-d7b3469e26105631"
+## xtern = "build_script_build-d7b3469e26105631"
 ##
 ## [[externs]]
 ## from = "out-6a6518b24fbf25e4"
@@ -8247,12 +12151,20 @@ COPY --link --from=dep-n-serde-1.0.228-289f31e68e5dd789 /tmp/clis-diesel_cli_2-3
 ## xtern = "libunicode_ident-721470d94fc0c354.rmeta"
 ##
 ## [[externs]]
+## from = "out-71babfb997932318"
+## xtern = "build_script_build-71babfb997932318"
+##
+## [[externs]]
 ## from = "out-87872b55644e5043"
 ## xtern = "libquote-87872b55644e5043.rlib"
 ##
 ## [[externs]]
 ## from = "out-87872b55644e5043"
 ## xtern = "libquote-87872b55644e5043.rmeta"
+##
+## [[externs]]
+## from = "out-c63aae50eb6f480a"
+## xtern = "build_script_build-c63aae50eb6f480a"
 ##
 ## [[externs]]
 ## from = "out-12379804391f3f43"
@@ -8262,13 +12174,10 @@ COPY --link --from=dep-n-serde-1.0.228-289f31e68e5dd789 /tmp/clis-diesel_cli_2-3
 ## from = "out-12379804391f3f43"
 ## xtern = "libsyn-12379804391f3f43.rmeta"
 ##
-## [[contexts]]
-## name = "crate_out-a1cdeff7daa9b299"
-## uri = "/tmp/clis-diesel_cli_2-3-4/release/build/serde-a1cdeff7daa9b299/out"
-##
-## [[contexts]]
-## name = "crate_out-931deb6df1623450"
-## uri = "/tmp/clis-diesel_cli_2-3-4/release/build/serde_core-931deb6df1623450/out"
+## [[mounts]]
+## name = "out-a1cdeff7daa9b299"
+## src = "/"
+## dst = "/tmp/clis-diesel_cli_2-3-4/release/build/serde-a1cdeff7daa9b299/out"
 ##
 ## [[stages]]
 ##
@@ -8320,18 +12229,22 @@ COPY --link --from=dep-n-serde-1.0.228-289f31e68e5dd789 /tmp/clis-diesel_cli_2-3
 ## WORKDIR /tmp/clis-diesel_cli_2-3-4/release/deps
 ## RUN \
 ##   --mount=from=cratesio-serde-1.0.228,source=/serde-1.0.228,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.228 \
-##   --mount=from=crate_out-a1cdeff7daa9b299,dst=/tmp/clis-diesel_cli_2-3-4/release/build/serde-a1cdeff7daa9b299/out \
 ##   --mount=from=out-a60f7305e674893c,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde_core-a60f7305e674893c.rlib,source=/libserde_core-a60f7305e674893c.rlib \
 ##   --mount=from=out-a60f7305e674893c,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde_core-a60f7305e674893c.rmeta,source=/libserde_core-a60f7305e674893c.rmeta \
+##   --mount=from=out-931deb6df1623450,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/private.rs,source=/private.rs \
+##   --mount=from=out-d7b3469e26105631,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-d7b3469e26105631,source=/build_script_build-d7b3469e26105631 \
 ##   --mount=from=out-6a6518b24fbf25e4,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde_derive-6a6518b24fbf25e4.so,source=/libserde_derive-6a6518b24fbf25e4.so \
 ##   --mount=from=out-e1e423eb99bb7e63,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libproc_macro2-e1e423eb99bb7e63.rlib,source=/libproc_macro2-e1e423eb99bb7e63.rlib \
 ##   --mount=from=out-e1e423eb99bb7e63,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libproc_macro2-e1e423eb99bb7e63.rmeta,source=/libproc_macro2-e1e423eb99bb7e63.rmeta \
 ##   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rlib,source=/libunicode_ident-721470d94fc0c354.rlib \
 ##   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rmeta,source=/libunicode_ident-721470d94fc0c354.rmeta \
+##   --mount=from=out-71babfb997932318,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-71babfb997932318,source=/build_script_build-71babfb997932318 \
 ##   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rlib,source=/libquote-87872b55644e5043.rlib \
 ##   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rmeta,source=/libquote-87872b55644e5043.rmeta \
+##   --mount=from=out-c63aae50eb6f480a,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-c63aae50eb6f480a,source=/build_script_build-c63aae50eb6f480a \
 ##   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rlib,source=/libsyn-12379804391f3f43.rlib \
 ##   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rmeta,source=/libsyn-12379804391f3f43.rmeta \
+##   --mount=from=out-a1cdeff7daa9b299,dst=/tmp/clis-diesel_cli_2-3-4/release/build/serde-a1cdeff7daa9b299/out,source=/ \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=serde \
 ##         CARGO_INCREMENTAL=0 \
@@ -8375,6 +12288,8 @@ RUN \
   --mount=from=cratesio-serde_spanned-1.0.3,source=/serde_spanned-1.0.3,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_spanned-1.0.3 \
   --mount=from=out-a60f7305e674893c,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde_core-a60f7305e674893c.rlib,source=/libserde_core-a60f7305e674893c.rlib \
   --mount=from=out-a60f7305e674893c,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde_core-a60f7305e674893c.rmeta,source=/libserde_core-a60f7305e674893c.rmeta \
+  --mount=from=out-931deb6df1623450,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/private.rs,source=/private.rs \
+  --mount=from=out-d7b3469e26105631,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-d7b3469e26105631,source=/build_script_build-d7b3469e26105631 \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=serde_spanned \
         CARGO_INCREMENTAL=0 \
@@ -8404,7 +12319,12 @@ FROM scratch AS out-cff56db8fb79d998
 COPY --link --from=dep-n-serde_spanned-1.0.3-cff56db8fb79d998 /tmp/clis-diesel_cli_2-3-4/release/deps/*-cff56db8fb79d998* /
 
 ## this = "cff56db8fb79d998"
-## deps = ["a60f7305e674893c"]
+## deps = [
+##     "a60f7305e674893c",
+##     "931deb6df1623450",
+##     "d7b3469e26105631",
+## ]
+## buildrs_results = ["931deb6df1623450"]
 ## writes = [
 ##     "libserde_spanned-cff56db8fb79d998.rlib",
 ##     "libserde_spanned-cff56db8fb79d998.rmeta",
@@ -8424,9 +12344,13 @@ COPY --link --from=dep-n-serde_spanned-1.0.3-cff56db8fb79d998 /tmp/clis-diesel_c
 ## from = "out-a60f7305e674893c"
 ## xtern = "libserde_core-a60f7305e674893c.rmeta"
 ##
-## [[contexts]]
-## name = "crate_out-931deb6df1623450"
-## uri = "/tmp/clis-diesel_cli_2-3-4/release/build/serde_core-931deb6df1623450/out"
+## [[externs]]
+## from = "out-931deb6df1623450"
+## xtern = "private.rs"
+##
+## [[externs]]
+## from = "out-d7b3469e26105631"
+## xtern = "build_script_build-d7b3469e26105631"
 ##
 ## [[stages]]
 ##
@@ -8480,6 +12404,8 @@ COPY --link --from=dep-n-serde_spanned-1.0.3-cff56db8fb79d998 /tmp/clis-diesel_c
 ##   --mount=from=cratesio-serde_spanned-1.0.3,source=/serde_spanned-1.0.3,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_spanned-1.0.3 \
 ##   --mount=from=out-a60f7305e674893c,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde_core-a60f7305e674893c.rlib,source=/libserde_core-a60f7305e674893c.rlib \
 ##   --mount=from=out-a60f7305e674893c,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde_core-a60f7305e674893c.rmeta,source=/libserde_core-a60f7305e674893c.rmeta \
+##   --mount=from=out-931deb6df1623450,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/private.rs,source=/private.rs \
+##   --mount=from=out-d7b3469e26105631,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-d7b3469e26105631,source=/build_script_build-d7b3469e26105631 \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=serde_spanned \
 ##         CARGO_INCREMENTAL=0 \
@@ -8522,6 +12448,8 @@ RUN \
   --mount=from=cratesio-toml_datetime-0.7.3,source=/toml_datetime-0.7.3,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/toml_datetime-0.7.3 \
   --mount=from=out-a60f7305e674893c,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde_core-a60f7305e674893c.rlib,source=/libserde_core-a60f7305e674893c.rlib \
   --mount=from=out-a60f7305e674893c,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde_core-a60f7305e674893c.rmeta,source=/libserde_core-a60f7305e674893c.rmeta \
+  --mount=from=out-931deb6df1623450,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/private.rs,source=/private.rs \
+  --mount=from=out-d7b3469e26105631,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-d7b3469e26105631,source=/build_script_build-d7b3469e26105631 \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=toml_datetime \
         CARGO_INCREMENTAL=0 \
@@ -8551,7 +12479,12 @@ FROM scratch AS out-4ef4113d39ae9ab0
 COPY --link --from=dep-n-toml_datetime-0.7.3-4ef4113d39ae9ab0 /tmp/clis-diesel_cli_2-3-4/release/deps/*-4ef4113d39ae9ab0* /
 
 ## this = "4ef4113d39ae9ab0"
-## deps = ["a60f7305e674893c"]
+## deps = [
+##     "a60f7305e674893c",
+##     "931deb6df1623450",
+##     "d7b3469e26105631",
+## ]
+## buildrs_results = ["931deb6df1623450"]
 ## writes = [
 ##     "libtoml_datetime-4ef4113d39ae9ab0.rlib",
 ##     "libtoml_datetime-4ef4113d39ae9ab0.rmeta",
@@ -8571,9 +12504,13 @@ COPY --link --from=dep-n-toml_datetime-0.7.3-4ef4113d39ae9ab0 /tmp/clis-diesel_c
 ## from = "out-a60f7305e674893c"
 ## xtern = "libserde_core-a60f7305e674893c.rmeta"
 ##
-## [[contexts]]
-## name = "crate_out-931deb6df1623450"
-## uri = "/tmp/clis-diesel_cli_2-3-4/release/build/serde_core-931deb6df1623450/out"
+## [[externs]]
+## from = "out-931deb6df1623450"
+## xtern = "private.rs"
+##
+## [[externs]]
+## from = "out-d7b3469e26105631"
+## xtern = "build_script_build-d7b3469e26105631"
 ##
 ## [[stages]]
 ##
@@ -8627,6 +12564,8 @@ COPY --link --from=dep-n-toml_datetime-0.7.3-4ef4113d39ae9ab0 /tmp/clis-diesel_c
 ##   --mount=from=cratesio-toml_datetime-0.7.3,source=/toml_datetime-0.7.3,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/toml_datetime-0.7.3 \
 ##   --mount=from=out-a60f7305e674893c,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde_core-a60f7305e674893c.rlib,source=/libserde_core-a60f7305e674893c.rlib \
 ##   --mount=from=out-a60f7305e674893c,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde_core-a60f7305e674893c.rmeta,source=/libserde_core-a60f7305e674893c.rmeta \
+##   --mount=from=out-931deb6df1623450,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/private.rs,source=/private.rs \
+##   --mount=from=out-d7b3469e26105631,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-d7b3469e26105631,source=/build_script_build-d7b3469e26105631 \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=toml_datetime \
 ##         CARGO_INCREMENTAL=0 \
@@ -8950,6 +12889,8 @@ RUN \
   --mount=from=cratesio-toml-0.9.8,source=/toml-0.9.8,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/toml-0.9.8 \
   --mount=from=out-a60f7305e674893c,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde_core-a60f7305e674893c.rlib,source=/libserde_core-a60f7305e674893c.rlib \
   --mount=from=out-a60f7305e674893c,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde_core-a60f7305e674893c.rmeta,source=/libserde_core-a60f7305e674893c.rmeta \
+  --mount=from=out-931deb6df1623450,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/private.rs,source=/private.rs \
+  --mount=from=out-d7b3469e26105631,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-d7b3469e26105631,source=/build_script_build-d7b3469e26105631 \
   --mount=from=out-cff56db8fb79d998,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde_spanned-cff56db8fb79d998.rlib,source=/libserde_spanned-cff56db8fb79d998.rlib \
   --mount=from=out-cff56db8fb79d998,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde_spanned-cff56db8fb79d998.rmeta,source=/libserde_spanned-cff56db8fb79d998.rmeta \
   --mount=from=out-4ef4113d39ae9ab0,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libtoml_datetime-4ef4113d39ae9ab0.rlib,source=/libtoml_datetime-4ef4113d39ae9ab0.rlib \
@@ -8992,11 +12933,14 @@ COPY --link --from=dep-n-toml-0.9.8-deb8f99a2c787169 /tmp/clis-diesel_cli_2-3-4/
 ## this = "deb8f99a2c787169"
 ## deps = [
 ##     "a60f7305e674893c",
+##     "931deb6df1623450",
+##     "d7b3469e26105631",
 ##     "cff56db8fb79d998",
 ##     "4ef4113d39ae9ab0",
 ##     "4286ea87172d5d89",
 ##     "ce852a86b42ec63b",
 ## ]
+## buildrs_results = ["931deb6df1623450"]
 ## writes = [
 ##     "libtoml-deb8f99a2c787169.rlib",
 ##     "libtoml-deb8f99a2c787169.rmeta",
@@ -9020,6 +12964,14 @@ COPY --link --from=dep-n-toml-0.9.8-deb8f99a2c787169 /tmp/clis-diesel_cli_2-3-4/
 ## [[externs]]
 ## from = "out-a60f7305e674893c"
 ## xtern = "libserde_core-a60f7305e674893c.rmeta"
+##
+## [[externs]]
+## from = "out-931deb6df1623450"
+## xtern = "private.rs"
+##
+## [[externs]]
+## from = "out-d7b3469e26105631"
+## xtern = "build_script_build-d7b3469e26105631"
 ##
 ## [[externs]]
 ## from = "out-cff56db8fb79d998"
@@ -9052,10 +13004,6 @@ COPY --link --from=dep-n-toml-0.9.8-deb8f99a2c787169 /tmp/clis-diesel_cli_2-3-4/
 ## [[externs]]
 ## from = "out-ce852a86b42ec63b"
 ## xtern = "libwinnow-ce852a86b42ec63b.rmeta"
-##
-## [[contexts]]
-## name = "crate_out-931deb6df1623450"
-## uri = "/tmp/clis-diesel_cli_2-3-4/release/build/serde_core-931deb6df1623450/out"
 ##
 ## [[stages]]
 ##
@@ -9109,6 +13057,8 @@ COPY --link --from=dep-n-toml-0.9.8-deb8f99a2c787169 /tmp/clis-diesel_cli_2-3-4/
 ##   --mount=from=cratesio-toml-0.9.8,source=/toml-0.9.8,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/toml-0.9.8 \
 ##   --mount=from=out-a60f7305e674893c,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde_core-a60f7305e674893c.rlib,source=/libserde_core-a60f7305e674893c.rlib \
 ##   --mount=from=out-a60f7305e674893c,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde_core-a60f7305e674893c.rmeta,source=/libserde_core-a60f7305e674893c.rmeta \
+##   --mount=from=out-931deb6df1623450,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/private.rs,source=/private.rs \
+##   --mount=from=out-d7b3469e26105631,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-d7b3469e26105631,source=/build_script_build-d7b3469e26105631 \
 ##   --mount=from=out-cff56db8fb79d998,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde_spanned-cff56db8fb79d998.rlib,source=/libserde_spanned-cff56db8fb79d998.rlib \
 ##   --mount=from=out-cff56db8fb79d998,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde_spanned-cff56db8fb79d998.rmeta,source=/libserde_spanned-cff56db8fb79d998.rmeta \
 ##   --mount=from=out-4ef4113d39ae9ab0,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libtoml_datetime-4ef4113d39ae9ab0.rlib,source=/libtoml_datetime-4ef4113d39ae9ab0.rlib \
@@ -9164,15 +13114,20 @@ RUN \
   --mount=from=out-289f31e68e5dd789,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde-289f31e68e5dd789.rmeta,source=/libserde-289f31e68e5dd789.rmeta \
   --mount=from=out-a60f7305e674893c,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde_core-a60f7305e674893c.rlib,source=/libserde_core-a60f7305e674893c.rlib \
   --mount=from=out-a60f7305e674893c,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde_core-a60f7305e674893c.rmeta,source=/libserde_core-a60f7305e674893c.rmeta \
+  --mount=from=out-931deb6df1623450,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/private.rs,source=/private.rs \
+  --mount=from=out-d7b3469e26105631,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-d7b3469e26105631,source=/build_script_build-d7b3469e26105631 \
   --mount=from=out-6a6518b24fbf25e4,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde_derive-6a6518b24fbf25e4.so,source=/libserde_derive-6a6518b24fbf25e4.so \
   --mount=from=out-e1e423eb99bb7e63,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libproc_macro2-e1e423eb99bb7e63.rlib,source=/libproc_macro2-e1e423eb99bb7e63.rlib \
   --mount=from=out-e1e423eb99bb7e63,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libproc_macro2-e1e423eb99bb7e63.rmeta,source=/libproc_macro2-e1e423eb99bb7e63.rmeta \
   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rlib,source=/libunicode_ident-721470d94fc0c354.rlib \
   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rmeta,source=/libunicode_ident-721470d94fc0c354.rmeta \
+  --mount=from=out-71babfb997932318,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-71babfb997932318,source=/build_script_build-71babfb997932318 \
   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rlib,source=/libquote-87872b55644e5043.rlib \
   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rmeta,source=/libquote-87872b55644e5043.rmeta \
+  --mount=from=out-c63aae50eb6f480a,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-c63aae50eb6f480a,source=/build_script_build-c63aae50eb6f480a \
   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rlib,source=/libsyn-12379804391f3f43.rlib \
   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rmeta,source=/libsyn-12379804391f3f43.rmeta \
+  --mount=from=out-9e59eb4de4feaddb,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-9e59eb4de4feaddb,source=/build_script_build-9e59eb4de4feaddb \
   --mount=from=out-deb8f99a2c787169,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libtoml-deb8f99a2c787169.rlib,source=/libtoml-deb8f99a2c787169.rlib \
   --mount=from=out-deb8f99a2c787169,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libtoml-deb8f99a2c787169.rmeta,source=/libtoml-deb8f99a2c787169.rmeta \
   --mount=from=out-cff56db8fb79d998,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde_spanned-cff56db8fb79d998.rlib,source=/libserde_spanned-cff56db8fb79d998.rlib \
@@ -9215,16 +13170,30 @@ COPY --link --from=dep-n-migrations_internals-2.3.0-72a12522b941e05f /tmp/clis-d
 ## deps = [
 ##     "289f31e68e5dd789",
 ##     "a60f7305e674893c",
+##     "931deb6df1623450",
+##     "d7b3469e26105631",
 ##     "6a6518b24fbf25e4",
 ##     "e1e423eb99bb7e63",
 ##     "721470d94fc0c354",
+##     "e93dddbb48c6a6fc",
+##     "71babfb997932318",
 ##     "87872b55644e5043",
+##     "edf8f660a3d601cc",
+##     "c63aae50eb6f480a",
 ##     "12379804391f3f43",
+##     "a1cdeff7daa9b299",
+##     "9e59eb4de4feaddb",
 ##     "deb8f99a2c787169",
 ##     "cff56db8fb79d998",
 ##     "4ef4113d39ae9ab0",
 ##     "4286ea87172d5d89",
 ##     "ce852a86b42ec63b",
+## ]
+## buildrs_results = [
+##     "931deb6df1623450",
+##     "e93dddbb48c6a6fc",
+##     "edf8f660a3d601cc",
+##     "a1cdeff7daa9b299",
 ## ]
 ## writes = [
 ##     "libmigrations_internals-72a12522b941e05f.rlib",
@@ -9254,6 +13223,14 @@ COPY --link --from=dep-n-migrations_internals-2.3.0-72a12522b941e05f /tmp/clis-d
 ## xtern = "libserde_core-a60f7305e674893c.rmeta"
 ##
 ## [[externs]]
+## from = "out-931deb6df1623450"
+## xtern = "private.rs"
+##
+## [[externs]]
+## from = "out-d7b3469e26105631"
+## xtern = "build_script_build-d7b3469e26105631"
+##
+## [[externs]]
 ## from = "out-6a6518b24fbf25e4"
 ## xtern = "libserde_derive-6a6518b24fbf25e4.so"
 ##
@@ -9274,6 +13251,10 @@ COPY --link --from=dep-n-migrations_internals-2.3.0-72a12522b941e05f /tmp/clis-d
 ## xtern = "libunicode_ident-721470d94fc0c354.rmeta"
 ##
 ## [[externs]]
+## from = "out-71babfb997932318"
+## xtern = "build_script_build-71babfb997932318"
+##
+## [[externs]]
 ## from = "out-87872b55644e5043"
 ## xtern = "libquote-87872b55644e5043.rlib"
 ##
@@ -9282,12 +13263,20 @@ COPY --link --from=dep-n-migrations_internals-2.3.0-72a12522b941e05f /tmp/clis-d
 ## xtern = "libquote-87872b55644e5043.rmeta"
 ##
 ## [[externs]]
+## from = "out-c63aae50eb6f480a"
+## xtern = "build_script_build-c63aae50eb6f480a"
+##
+## [[externs]]
 ## from = "out-12379804391f3f43"
 ## xtern = "libsyn-12379804391f3f43.rlib"
 ##
 ## [[externs]]
 ## from = "out-12379804391f3f43"
 ## xtern = "libsyn-12379804391f3f43.rmeta"
+##
+## [[externs]]
+## from = "out-9e59eb4de4feaddb"
+## xtern = "build_script_build-9e59eb4de4feaddb"
 ##
 ## [[externs]]
 ## from = "out-deb8f99a2c787169"
@@ -9328,14 +13317,6 @@ COPY --link --from=dep-n-migrations_internals-2.3.0-72a12522b941e05f /tmp/clis-d
 ## [[externs]]
 ## from = "out-ce852a86b42ec63b"
 ## xtern = "libwinnow-ce852a86b42ec63b.rmeta"
-##
-## [[contexts]]
-## name = "crate_out-a1cdeff7daa9b299"
-## uri = "/tmp/clis-diesel_cli_2-3-4/release/build/serde-a1cdeff7daa9b299/out"
-##
-## [[contexts]]
-## name = "crate_out-931deb6df1623450"
-## uri = "/tmp/clis-diesel_cli_2-3-4/release/build/serde_core-931deb6df1623450/out"
 ##
 ## [[stages]]
 ##
@@ -9391,15 +13372,20 @@ COPY --link --from=dep-n-migrations_internals-2.3.0-72a12522b941e05f /tmp/clis-d
 ##   --mount=from=out-289f31e68e5dd789,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde-289f31e68e5dd789.rmeta,source=/libserde-289f31e68e5dd789.rmeta \
 ##   --mount=from=out-a60f7305e674893c,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde_core-a60f7305e674893c.rlib,source=/libserde_core-a60f7305e674893c.rlib \
 ##   --mount=from=out-a60f7305e674893c,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde_core-a60f7305e674893c.rmeta,source=/libserde_core-a60f7305e674893c.rmeta \
+##   --mount=from=out-931deb6df1623450,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/private.rs,source=/private.rs \
+##   --mount=from=out-d7b3469e26105631,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-d7b3469e26105631,source=/build_script_build-d7b3469e26105631 \
 ##   --mount=from=out-6a6518b24fbf25e4,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde_derive-6a6518b24fbf25e4.so,source=/libserde_derive-6a6518b24fbf25e4.so \
 ##   --mount=from=out-e1e423eb99bb7e63,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libproc_macro2-e1e423eb99bb7e63.rlib,source=/libproc_macro2-e1e423eb99bb7e63.rlib \
 ##   --mount=from=out-e1e423eb99bb7e63,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libproc_macro2-e1e423eb99bb7e63.rmeta,source=/libproc_macro2-e1e423eb99bb7e63.rmeta \
 ##   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rlib,source=/libunicode_ident-721470d94fc0c354.rlib \
 ##   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rmeta,source=/libunicode_ident-721470d94fc0c354.rmeta \
+##   --mount=from=out-71babfb997932318,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-71babfb997932318,source=/build_script_build-71babfb997932318 \
 ##   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rlib,source=/libquote-87872b55644e5043.rlib \
 ##   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rmeta,source=/libquote-87872b55644e5043.rmeta \
+##   --mount=from=out-c63aae50eb6f480a,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-c63aae50eb6f480a,source=/build_script_build-c63aae50eb6f480a \
 ##   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rlib,source=/libsyn-12379804391f3f43.rlib \
 ##   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rmeta,source=/libsyn-12379804391f3f43.rmeta \
+##   --mount=from=out-9e59eb4de4feaddb,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-9e59eb4de4feaddb,source=/build_script_build-9e59eb4de4feaddb \
 ##   --mount=from=out-deb8f99a2c787169,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libtoml-deb8f99a2c787169.rlib,source=/libtoml-deb8f99a2c787169.rlib \
 ##   --mount=from=out-deb8f99a2c787169,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libtoml-deb8f99a2c787169.rmeta,source=/libtoml-deb8f99a2c787169.rmeta \
 ##   --mount=from=out-cff56db8fb79d998,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde_spanned-cff56db8fb79d998.rlib,source=/libserde_spanned-cff56db8fb79d998.rlib \
@@ -9455,11 +13441,16 @@ RUN \
   --mount=from=out-72a12522b941e05f,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libmigrations_internals-72a12522b941e05f.rlib,source=/libmigrations_internals-72a12522b941e05f.rlib \
   --mount=from=out-289f31e68e5dd789,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde-289f31e68e5dd789.rlib,source=/libserde-289f31e68e5dd789.rlib \
   --mount=from=out-a60f7305e674893c,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde_core-a60f7305e674893c.rlib,source=/libserde_core-a60f7305e674893c.rlib \
+  --mount=from=out-931deb6df1623450,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/private.rs,source=/private.rs \
+  --mount=from=out-d7b3469e26105631,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-d7b3469e26105631,source=/build_script_build-d7b3469e26105631 \
   --mount=from=out-6a6518b24fbf25e4,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde_derive-6a6518b24fbf25e4.so,source=/libserde_derive-6a6518b24fbf25e4.so \
   --mount=from=out-e1e423eb99bb7e63,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libproc_macro2-e1e423eb99bb7e63.rlib,source=/libproc_macro2-e1e423eb99bb7e63.rlib \
   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rlib,source=/libunicode_ident-721470d94fc0c354.rlib \
+  --mount=from=out-71babfb997932318,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-71babfb997932318,source=/build_script_build-71babfb997932318 \
   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rlib,source=/libquote-87872b55644e5043.rlib \
+  --mount=from=out-c63aae50eb6f480a,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-c63aae50eb6f480a,source=/build_script_build-c63aae50eb6f480a \
   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rlib,source=/libsyn-12379804391f3f43.rlib \
+  --mount=from=out-9e59eb4de4feaddb,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-9e59eb4de4feaddb,source=/build_script_build-9e59eb4de4feaddb \
   --mount=from=out-deb8f99a2c787169,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libtoml-deb8f99a2c787169.rlib,source=/libtoml-deb8f99a2c787169.rlib \
   --mount=from=out-cff56db8fb79d998,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde_spanned-cff56db8fb79d998.rlib,source=/libserde_spanned-cff56db8fb79d998.rlib \
   --mount=from=out-4ef4113d39ae9ab0,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libtoml_datetime-4ef4113d39ae9ab0.rlib,source=/libtoml_datetime-4ef4113d39ae9ab0.rlib \
@@ -9498,16 +13489,30 @@ COPY --link --from=dep-n-migrations_macros-2.3.0-379f8a51c39501b4 /tmp/clis-dies
 ##     "72a12522b941e05f",
 ##     "289f31e68e5dd789",
 ##     "a60f7305e674893c",
+##     "931deb6df1623450",
+##     "d7b3469e26105631",
 ##     "6a6518b24fbf25e4",
 ##     "e1e423eb99bb7e63",
 ##     "721470d94fc0c354",
+##     "e93dddbb48c6a6fc",
+##     "71babfb997932318",
 ##     "87872b55644e5043",
+##     "edf8f660a3d601cc",
+##     "c63aae50eb6f480a",
 ##     "12379804391f3f43",
+##     "a1cdeff7daa9b299",
+##     "9e59eb4de4feaddb",
 ##     "deb8f99a2c787169",
 ##     "cff56db8fb79d998",
 ##     "4ef4113d39ae9ab0",
 ##     "4286ea87172d5d89",
 ##     "ce852a86b42ec63b",
+## ]
+## buildrs_results = [
+##     "931deb6df1623450",
+##     "e93dddbb48c6a6fc",
+##     "edf8f660a3d601cc",
+##     "a1cdeff7daa9b299",
 ## ]
 ## writes = [
 ##     "libmigrations_macros-379f8a51c39501b4.so",
@@ -9531,6 +13536,14 @@ COPY --link --from=dep-n-migrations_macros-2.3.0-379f8a51c39501b4 /tmp/clis-dies
 ## xtern = "libserde_core-a60f7305e674893c.rlib"
 ##
 ## [[externs]]
+## from = "out-931deb6df1623450"
+## xtern = "private.rs"
+##
+## [[externs]]
+## from = "out-d7b3469e26105631"
+## xtern = "build_script_build-d7b3469e26105631"
+##
+## [[externs]]
 ## from = "out-6a6518b24fbf25e4"
 ## xtern = "libserde_derive-6a6518b24fbf25e4.so"
 ##
@@ -9543,12 +13556,24 @@ COPY --link --from=dep-n-migrations_macros-2.3.0-379f8a51c39501b4 /tmp/clis-dies
 ## xtern = "libunicode_ident-721470d94fc0c354.rlib"
 ##
 ## [[externs]]
+## from = "out-71babfb997932318"
+## xtern = "build_script_build-71babfb997932318"
+##
+## [[externs]]
 ## from = "out-87872b55644e5043"
 ## xtern = "libquote-87872b55644e5043.rlib"
 ##
 ## [[externs]]
+## from = "out-c63aae50eb6f480a"
+## xtern = "build_script_build-c63aae50eb6f480a"
+##
+## [[externs]]
 ## from = "out-12379804391f3f43"
 ## xtern = "libsyn-12379804391f3f43.rlib"
+##
+## [[externs]]
+## from = "out-9e59eb4de4feaddb"
+## xtern = "build_script_build-9e59eb4de4feaddb"
 ##
 ## [[externs]]
 ## from = "out-deb8f99a2c787169"
@@ -9569,14 +13594,6 @@ COPY --link --from=dep-n-migrations_macros-2.3.0-379f8a51c39501b4 /tmp/clis-dies
 ## [[externs]]
 ## from = "out-ce852a86b42ec63b"
 ## xtern = "libwinnow-ce852a86b42ec63b.rlib"
-##
-## [[contexts]]
-## name = "crate_out-a1cdeff7daa9b299"
-## uri = "/tmp/clis-diesel_cli_2-3-4/release/build/serde-a1cdeff7daa9b299/out"
-##
-## [[contexts]]
-## name = "crate_out-931deb6df1623450"
-## uri = "/tmp/clis-diesel_cli_2-3-4/release/build/serde_core-931deb6df1623450/out"
 ##
 ## [[stages]]
 ##
@@ -9631,11 +13648,16 @@ COPY --link --from=dep-n-migrations_macros-2.3.0-379f8a51c39501b4 /tmp/clis-dies
 ##   --mount=from=out-72a12522b941e05f,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libmigrations_internals-72a12522b941e05f.rlib,source=/libmigrations_internals-72a12522b941e05f.rlib \
 ##   --mount=from=out-289f31e68e5dd789,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde-289f31e68e5dd789.rlib,source=/libserde-289f31e68e5dd789.rlib \
 ##   --mount=from=out-a60f7305e674893c,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde_core-a60f7305e674893c.rlib,source=/libserde_core-a60f7305e674893c.rlib \
+##   --mount=from=out-931deb6df1623450,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/private.rs,source=/private.rs \
+##   --mount=from=out-d7b3469e26105631,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-d7b3469e26105631,source=/build_script_build-d7b3469e26105631 \
 ##   --mount=from=out-6a6518b24fbf25e4,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde_derive-6a6518b24fbf25e4.so,source=/libserde_derive-6a6518b24fbf25e4.so \
 ##   --mount=from=out-e1e423eb99bb7e63,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libproc_macro2-e1e423eb99bb7e63.rlib,source=/libproc_macro2-e1e423eb99bb7e63.rlib \
 ##   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rlib,source=/libunicode_ident-721470d94fc0c354.rlib \
+##   --mount=from=out-71babfb997932318,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-71babfb997932318,source=/build_script_build-71babfb997932318 \
 ##   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rlib,source=/libquote-87872b55644e5043.rlib \
+##   --mount=from=out-c63aae50eb6f480a,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-c63aae50eb6f480a,source=/build_script_build-c63aae50eb6f480a \
 ##   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rlib,source=/libsyn-12379804391f3f43.rlib \
+##   --mount=from=out-9e59eb4de4feaddb,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-9e59eb4de4feaddb,source=/build_script_build-9e59eb4de4feaddb \
 ##   --mount=from=out-deb8f99a2c787169,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libtoml-deb8f99a2c787169.rlib,source=/libtoml-deb8f99a2c787169.rlib \
 ##   --mount=from=out-cff56db8fb79d998,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde_spanned-cff56db8fb79d998.rlib,source=/libserde_spanned-cff56db8fb79d998.rlib \
 ##   --mount=from=out-4ef4113d39ae9ab0,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libtoml_datetime-4ef4113d39ae9ab0.rlib,source=/libtoml_datetime-4ef4113d39ae9ab0.rlib \
@@ -9698,8 +13720,10 @@ RUN \
   --mount=from=out-e1e423eb99bb7e63,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libproc_macro2-e1e423eb99bb7e63.rmeta,source=/libproc_macro2-e1e423eb99bb7e63.rmeta \
   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rlib,source=/libunicode_ident-721470d94fc0c354.rlib \
   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rmeta,source=/libunicode_ident-721470d94fc0c354.rmeta \
+  --mount=from=out-71babfb997932318,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-71babfb997932318,source=/build_script_build-71babfb997932318 \
   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rlib,source=/libquote-87872b55644e5043.rlib \
   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rmeta,source=/libquote-87872b55644e5043.rmeta \
+  --mount=from=out-c63aae50eb6f480a,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-c63aae50eb6f480a,source=/build_script_build-c63aae50eb6f480a \
   --mount=from=out-e72117f7acff2466,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libdsl_auto_type-e72117f7acff2466.rlib,source=/libdsl_auto_type-e72117f7acff2466.rlib \
   --mount=from=out-e72117f7acff2466,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libdsl_auto_type-e72117f7acff2466.rmeta,source=/libdsl_auto_type-e72117f7acff2466.rmeta \
   --mount=from=out-9c2515b9354b63f7,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libdarling-9c2515b9354b63f7.rlib,source=/libdarling-9c2515b9354b63f7.rlib \
@@ -9717,6 +13741,7 @@ RUN \
   --mount=from=out-7892953c40c7027d,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libeither-7892953c40c7027d.rmeta,source=/libeither-7892953c40c7027d.rmeta \
   --mount=from=out-3c7b5c3a02d329ae,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libheck-3c7b5c3a02d329ae.rlib,source=/libheck-3c7b5c3a02d329ae.rlib \
   --mount=from=out-3c7b5c3a02d329ae,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libheck-3c7b5c3a02d329ae.rmeta,source=/libheck-3c7b5c3a02d329ae.rmeta \
+  --mount=from=out-26a0fe0ac7c340f6,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-26a0fe0ac7c340f6,source=/build_script_build-26a0fe0ac7c340f6 \
   --mount=from=out-6daa53e662c18c24,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libdowncast_rs-6daa53e662c18c24.rlib,source=/libdowncast_rs-6daa53e662c18c24.rlib \
   --mount=from=out-6daa53e662c18c24,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libdowncast_rs-6daa53e662c18c24.rmeta,source=/libdowncast_rs-6daa53e662c18c24.rmeta \
   --mount=from=out-810c45601233a792,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libitoa-810c45601233a792.rlib,source=/libitoa-810c45601233a792.rlib \
@@ -9725,13 +13750,21 @@ RUN \
   --mount=from=out-da2e6b7bc41290c2,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libpq_sys-da2e6b7bc41290c2.rmeta,source=/libpq_sys-da2e6b7bc41290c2.rmeta \
   --mount=from=out-7f08a5fdefdb5905,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/liblibc-7f08a5fdefdb5905.rlib,source=/liblibc-7f08a5fdefdb5905.rlib \
   --mount=from=out-7f08a5fdefdb5905,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/liblibc-7f08a5fdefdb5905.rmeta,source=/liblibc-7f08a5fdefdb5905.rmeta \
+  --mount=from=out-880d2e011f9f14fa,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-880d2e011f9f14fa,source=/build_script_build-880d2e011f9f14fa \
+  --mount=from=out-e63dae8d54788400,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/bindings.rs,source=/bindings.rs \
+  --mount=from=out-ec662f2448b0e090,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libpkg_config-ec662f2448b0e090.rlib,source=/libpkg_config-ec662f2448b0e090.rlib \
+  --mount=from=out-ec662f2448b0e090,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libpkg_config-ec662f2448b0e090.rmeta,source=/libpkg_config-ec662f2448b0e090.rmeta \
+  --mount=from=out-cd02570aab934144,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-cd02570aab934144,source=/build_script_build-cd02570aab934144 \
   --mount=from=out-43afef42d6696369,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libmigrations_internals-43afef42d6696369.rlib,source=/libmigrations_internals-43afef42d6696369.rlib \
   --mount=from=out-43afef42d6696369,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libmigrations_internals-43afef42d6696369.rmeta,source=/libmigrations_internals-43afef42d6696369.rmeta \
   --mount=from=out-02668a5ba984a64f,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde-02668a5ba984a64f.rlib,source=/libserde-02668a5ba984a64f.rlib \
   --mount=from=out-02668a5ba984a64f,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde-02668a5ba984a64f.rmeta,source=/libserde-02668a5ba984a64f.rmeta \
   --mount=from=out-8e892930c8cabc4c,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde_core-8e892930c8cabc4c.rlib,source=/libserde_core-8e892930c8cabc4c.rlib \
   --mount=from=out-8e892930c8cabc4c,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde_core-8e892930c8cabc4c.rmeta,source=/libserde_core-8e892930c8cabc4c.rmeta \
+  --mount=from=out-542dbc5d310e9565,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/private.rs,source=/private.rs \
+  --mount=from=out-d7b3469e26105631,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-d7b3469e26105631,source=/build_script_build-d7b3469e26105631 \
   --mount=from=out-6a6518b24fbf25e4,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde_derive-6a6518b24fbf25e4.so,source=/libserde_derive-6a6518b24fbf25e4.so \
+  --mount=from=out-9e59eb4de4feaddb,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-9e59eb4de4feaddb,source=/build_script_build-9e59eb4de4feaddb \
   --mount=from=out-b57e3684947ab9f7,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libtoml-b57e3684947ab9f7.rlib,source=/libtoml-b57e3684947ab9f7.rlib \
   --mount=from=out-b57e3684947ab9f7,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libtoml-b57e3684947ab9f7.rmeta,source=/libtoml-b57e3684947ab9f7.rmeta \
   --mount=from=out-4fa12932e3d6e0f1,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde_spanned-4fa12932e3d6e0f1.rlib,source=/libserde_spanned-4fa12932e3d6e0f1.rlib \
@@ -9797,7 +13830,11 @@ COPY --link --from=dep-n-diesel_migrations-2.3.1-a3172a766124d605 /tmp/clis-dies
 ##     "12379804391f3f43",
 ##     "e1e423eb99bb7e63",
 ##     "721470d94fc0c354",
+##     "e93dddbb48c6a6fc",
+##     "71babfb997932318",
 ##     "87872b55644e5043",
+##     "edf8f660a3d601cc",
+##     "c63aae50eb6f480a",
 ##     "e72117f7acff2466",
 ##     "9c2515b9354b63f7",
 ##     "feba89015d51c163",
@@ -9807,14 +13844,25 @@ COPY --link --from=dep-n-diesel_migrations-2.3.1-a3172a766124d605 /tmp/clis-dies
 ##     "48fe319515ec65ff",
 ##     "7892953c40c7027d",
 ##     "3c7b5c3a02d329ae",
+##     "0be4771cf3c80127",
+##     "26a0fe0ac7c340f6",
 ##     "6daa53e662c18c24",
 ##     "810c45601233a792",
 ##     "da2e6b7bc41290c2",
 ##     "7f08a5fdefdb5905",
+##     "a2e72ddbcd62bc9f",
+##     "880d2e011f9f14fa",
+##     "e63dae8d54788400",
+##     "ec662f2448b0e090",
+##     "cd02570aab934144",
 ##     "43afef42d6696369",
 ##     "02668a5ba984a64f",
 ##     "8e892930c8cabc4c",
+##     "542dbc5d310e9565",
+##     "d7b3469e26105631",
 ##     "6a6518b24fbf25e4",
+##     "cfe125327cacaf16",
+##     "9e59eb4de4feaddb",
 ##     "b57e3684947ab9f7",
 ##     "4fa12932e3d6e0f1",
 ##     "c09fc58966664a16",
@@ -9824,11 +13872,24 @@ COPY --link --from=dep-n-diesel_migrations-2.3.1-a3172a766124d605 /tmp/clis-dies
 ##     "72a12522b941e05f",
 ##     "289f31e68e5dd789",
 ##     "a60f7305e674893c",
+##     "931deb6df1623450",
+##     "a1cdeff7daa9b299",
 ##     "deb8f99a2c787169",
 ##     "cff56db8fb79d998",
 ##     "4ef4113d39ae9ab0",
 ##     "4286ea87172d5d89",
 ##     "ce852a86b42ec63b",
+## ]
+## buildrs_results = [
+##     "e93dddbb48c6a6fc",
+##     "edf8f660a3d601cc",
+##     "0be4771cf3c80127",
+##     "a2e72ddbcd62bc9f",
+##     "e63dae8d54788400",
+##     "542dbc5d310e9565",
+##     "cfe125327cacaf16",
+##     "931deb6df1623450",
+##     "a1cdeff7daa9b299",
 ## ]
 ## writes = [
 ##     "diesel_migrations-a3172a766124d605.d",
@@ -9902,12 +13963,20 @@ COPY --link --from=dep-n-diesel_migrations-2.3.1-a3172a766124d605 /tmp/clis-dies
 ## xtern = "libunicode_ident-721470d94fc0c354.rmeta"
 ##
 ## [[externs]]
+## from = "out-71babfb997932318"
+## xtern = "build_script_build-71babfb997932318"
+##
+## [[externs]]
 ## from = "out-87872b55644e5043"
 ## xtern = "libquote-87872b55644e5043.rlib"
 ##
 ## [[externs]]
 ## from = "out-87872b55644e5043"
 ## xtern = "libquote-87872b55644e5043.rmeta"
+##
+## [[externs]]
+## from = "out-c63aae50eb6f480a"
+## xtern = "build_script_build-c63aae50eb6f480a"
 ##
 ## [[externs]]
 ## from = "out-e72117f7acff2466"
@@ -9978,6 +14047,10 @@ COPY --link --from=dep-n-diesel_migrations-2.3.1-a3172a766124d605 /tmp/clis-dies
 ## xtern = "libheck-3c7b5c3a02d329ae.rmeta"
 ##
 ## [[externs]]
+## from = "out-26a0fe0ac7c340f6"
+## xtern = "build_script_build-26a0fe0ac7c340f6"
+##
+## [[externs]]
 ## from = "out-6daa53e662c18c24"
 ## xtern = "libdowncast_rs-6daa53e662c18c24.rlib"
 ##
@@ -10010,6 +14083,26 @@ COPY --link --from=dep-n-diesel_migrations-2.3.1-a3172a766124d605 /tmp/clis-dies
 ## xtern = "liblibc-7f08a5fdefdb5905.rmeta"
 ##
 ## [[externs]]
+## from = "out-880d2e011f9f14fa"
+## xtern = "build_script_build-880d2e011f9f14fa"
+##
+## [[externs]]
+## from = "out-e63dae8d54788400"
+## xtern = "bindings.rs"
+##
+## [[externs]]
+## from = "out-ec662f2448b0e090"
+## xtern = "libpkg_config-ec662f2448b0e090.rlib"
+##
+## [[externs]]
+## from = "out-ec662f2448b0e090"
+## xtern = "libpkg_config-ec662f2448b0e090.rmeta"
+##
+## [[externs]]
+## from = "out-cd02570aab934144"
+## xtern = "build_script_build-cd02570aab934144"
+##
+## [[externs]]
 ## from = "out-43afef42d6696369"
 ## xtern = "libmigrations_internals-43afef42d6696369.rlib"
 ##
@@ -10034,8 +14127,20 @@ COPY --link --from=dep-n-diesel_migrations-2.3.1-a3172a766124d605 /tmp/clis-dies
 ## xtern = "libserde_core-8e892930c8cabc4c.rmeta"
 ##
 ## [[externs]]
+## from = "out-542dbc5d310e9565"
+## xtern = "private.rs"
+##
+## [[externs]]
+## from = "out-d7b3469e26105631"
+## xtern = "build_script_build-d7b3469e26105631"
+##
+## [[externs]]
 ## from = "out-6a6518b24fbf25e4"
 ## xtern = "libserde_derive-6a6518b24fbf25e4.so"
+##
+## [[externs]]
+## from = "out-9e59eb4de4feaddb"
+## xtern = "build_script_build-9e59eb4de4feaddb"
 ##
 ## [[externs]]
 ## from = "out-b57e3684947ab9f7"
@@ -10145,26 +14250,6 @@ COPY --link --from=dep-n-diesel_migrations-2.3.1-a3172a766124d605 /tmp/clis-dies
 ## from = "out-ce852a86b42ec63b"
 ## xtern = "libwinnow-ce852a86b42ec63b.rmeta"
 ##
-## [[contexts]]
-## name = "crate_out-e63dae8d54788400"
-## uri = "/tmp/clis-diesel_cli_2-3-4/release/build/pq-sys-e63dae8d54788400/out"
-##
-## [[contexts]]
-## name = "crate_out-cfe125327cacaf16"
-## uri = "/tmp/clis-diesel_cli_2-3-4/release/build/serde-cfe125327cacaf16/out"
-##
-## [[contexts]]
-## name = "crate_out-542dbc5d310e9565"
-## uri = "/tmp/clis-diesel_cli_2-3-4/release/build/serde_core-542dbc5d310e9565/out"
-##
-## [[contexts]]
-## name = "crate_out-a1cdeff7daa9b299"
-## uri = "/tmp/clis-diesel_cli_2-3-4/release/build/serde-a1cdeff7daa9b299/out"
-##
-## [[contexts]]
-## name = "crate_out-931deb6df1623450"
-## uri = "/tmp/clis-diesel_cli_2-3-4/release/build/serde_core-931deb6df1623450/out"
-##
 ## [[stages]]
 ##
 ## [stages.Script]
@@ -10230,8 +14315,10 @@ COPY --link --from=dep-n-diesel_migrations-2.3.1-a3172a766124d605 /tmp/clis-dies
 ##   --mount=from=out-e1e423eb99bb7e63,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libproc_macro2-e1e423eb99bb7e63.rmeta,source=/libproc_macro2-e1e423eb99bb7e63.rmeta \
 ##   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rlib,source=/libunicode_ident-721470d94fc0c354.rlib \
 ##   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rmeta,source=/libunicode_ident-721470d94fc0c354.rmeta \
+##   --mount=from=out-71babfb997932318,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-71babfb997932318,source=/build_script_build-71babfb997932318 \
 ##   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rlib,source=/libquote-87872b55644e5043.rlib \
 ##   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rmeta,source=/libquote-87872b55644e5043.rmeta \
+##   --mount=from=out-c63aae50eb6f480a,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-c63aae50eb6f480a,source=/build_script_build-c63aae50eb6f480a \
 ##   --mount=from=out-e72117f7acff2466,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libdsl_auto_type-e72117f7acff2466.rlib,source=/libdsl_auto_type-e72117f7acff2466.rlib \
 ##   --mount=from=out-e72117f7acff2466,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libdsl_auto_type-e72117f7acff2466.rmeta,source=/libdsl_auto_type-e72117f7acff2466.rmeta \
 ##   --mount=from=out-9c2515b9354b63f7,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libdarling-9c2515b9354b63f7.rlib,source=/libdarling-9c2515b9354b63f7.rlib \
@@ -10249,6 +14336,7 @@ COPY --link --from=dep-n-diesel_migrations-2.3.1-a3172a766124d605 /tmp/clis-dies
 ##   --mount=from=out-7892953c40c7027d,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libeither-7892953c40c7027d.rmeta,source=/libeither-7892953c40c7027d.rmeta \
 ##   --mount=from=out-3c7b5c3a02d329ae,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libheck-3c7b5c3a02d329ae.rlib,source=/libheck-3c7b5c3a02d329ae.rlib \
 ##   --mount=from=out-3c7b5c3a02d329ae,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libheck-3c7b5c3a02d329ae.rmeta,source=/libheck-3c7b5c3a02d329ae.rmeta \
+##   --mount=from=out-26a0fe0ac7c340f6,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-26a0fe0ac7c340f6,source=/build_script_build-26a0fe0ac7c340f6 \
 ##   --mount=from=out-6daa53e662c18c24,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libdowncast_rs-6daa53e662c18c24.rlib,source=/libdowncast_rs-6daa53e662c18c24.rlib \
 ##   --mount=from=out-6daa53e662c18c24,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libdowncast_rs-6daa53e662c18c24.rmeta,source=/libdowncast_rs-6daa53e662c18c24.rmeta \
 ##   --mount=from=out-810c45601233a792,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libitoa-810c45601233a792.rlib,source=/libitoa-810c45601233a792.rlib \
@@ -10257,13 +14345,21 @@ COPY --link --from=dep-n-diesel_migrations-2.3.1-a3172a766124d605 /tmp/clis-dies
 ##   --mount=from=out-da2e6b7bc41290c2,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libpq_sys-da2e6b7bc41290c2.rmeta,source=/libpq_sys-da2e6b7bc41290c2.rmeta \
 ##   --mount=from=out-7f08a5fdefdb5905,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/liblibc-7f08a5fdefdb5905.rlib,source=/liblibc-7f08a5fdefdb5905.rlib \
 ##   --mount=from=out-7f08a5fdefdb5905,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/liblibc-7f08a5fdefdb5905.rmeta,source=/liblibc-7f08a5fdefdb5905.rmeta \
+##   --mount=from=out-880d2e011f9f14fa,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-880d2e011f9f14fa,source=/build_script_build-880d2e011f9f14fa \
+##   --mount=from=out-e63dae8d54788400,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/bindings.rs,source=/bindings.rs \
+##   --mount=from=out-ec662f2448b0e090,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libpkg_config-ec662f2448b0e090.rlib,source=/libpkg_config-ec662f2448b0e090.rlib \
+##   --mount=from=out-ec662f2448b0e090,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libpkg_config-ec662f2448b0e090.rmeta,source=/libpkg_config-ec662f2448b0e090.rmeta \
+##   --mount=from=out-cd02570aab934144,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-cd02570aab934144,source=/build_script_build-cd02570aab934144 \
 ##   --mount=from=out-43afef42d6696369,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libmigrations_internals-43afef42d6696369.rlib,source=/libmigrations_internals-43afef42d6696369.rlib \
 ##   --mount=from=out-43afef42d6696369,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libmigrations_internals-43afef42d6696369.rmeta,source=/libmigrations_internals-43afef42d6696369.rmeta \
 ##   --mount=from=out-02668a5ba984a64f,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde-02668a5ba984a64f.rlib,source=/libserde-02668a5ba984a64f.rlib \
 ##   --mount=from=out-02668a5ba984a64f,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde-02668a5ba984a64f.rmeta,source=/libserde-02668a5ba984a64f.rmeta \
 ##   --mount=from=out-8e892930c8cabc4c,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde_core-8e892930c8cabc4c.rlib,source=/libserde_core-8e892930c8cabc4c.rlib \
 ##   --mount=from=out-8e892930c8cabc4c,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde_core-8e892930c8cabc4c.rmeta,source=/libserde_core-8e892930c8cabc4c.rmeta \
+##   --mount=from=out-542dbc5d310e9565,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/private.rs,source=/private.rs \
+##   --mount=from=out-d7b3469e26105631,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-d7b3469e26105631,source=/build_script_build-d7b3469e26105631 \
 ##   --mount=from=out-6a6518b24fbf25e4,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde_derive-6a6518b24fbf25e4.so,source=/libserde_derive-6a6518b24fbf25e4.so \
+##   --mount=from=out-9e59eb4de4feaddb,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-9e59eb4de4feaddb,source=/build_script_build-9e59eb4de4feaddb \
 ##   --mount=from=out-b57e3684947ab9f7,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libtoml-b57e3684947ab9f7.rlib,source=/libtoml-b57e3684947ab9f7.rlib \
 ##   --mount=from=out-b57e3684947ab9f7,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libtoml-b57e3684947ab9f7.rmeta,source=/libtoml-b57e3684947ab9f7.rmeta \
 ##   --mount=from=out-4fa12932e3d6e0f1,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde_spanned-4fa12932e3d6e0f1.rlib,source=/libserde_spanned-4fa12932e3d6e0f1.rlib \
@@ -10456,6 +14552,358 @@ COPY --link --from=dep-n-unicode-ident-1.0.22-0365cb06b1ebfd56 /tmp/clis-diesel_
 ## COPY --link --from=dep-n-unicode-ident-1.0.22-0365cb06b1ebfd56 /tmp/clis-diesel_cli_2-3-4/release/deps/*-0365cb06b1ebfd56* /"""
 
 
+FROM rust-base AS dep-x-proc-macro2-1.0.103-162f014ecf4c578f
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-diesel_cli_2-3-4/release/build/proc-macro2-162f014ecf4c578f
+RUN \
+  --mount=from=cratesio-proc-macro2-1.0.103,source=/proc-macro2-1.0.103,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.103,rw \
+    { \
+        cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.103/build.rs | sed 's/fn main/fn actual_162f014ecf4c578f_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.103/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.103/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.103/build.rs ; \
+        { \
+          echo ; \
+          echo 'fn main() {' ; \
+          echo '    use std::env::{args_os, var_os};' ; \
+          echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+          echo '        use std::process::{Command, Stdio};' ; \
+          echo '        let mut cmd = Command::new("cargo-green");' ; \
+          echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+          echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+          echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+          echo '        assert!(res.success());' ; \
+          echo '    } else {' ; \
+          echo '        actual_162f014ecf4c578f_main();' ; \
+          echo '    }' ; \
+          echo '}' ; \
+        } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.103/build.rs ; \
+    } && \
+    env CARGO="$(which cargo)" \
+        CARGO_CRATE_NAME=build_script_build \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.103 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.103/Cargo.toml \
+        CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>:Alex Crichton <alex@alexcrichton.com>' \
+        CARGO_PKG_DESCRIPTION=A' substitute implementation of the compiler'\'s' `proc_macro` API to decouple token-based libraries from the procedural macro use case.' \
+        CARGO_PKG_HOMEPAGE= \
+        CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=proc-macro2 \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/dtolnay/proc-macro2' \
+        CARGO_PKG_RUST_VERSION=1.60 \
+        CARGO_PKG_VERSION=1.0.103 \
+        CARGO_PKG_VERSION_MAJOR=1 \
+        CARGO_PKG_VERSION_MINOR=0 \
+        CARGO_PKG_VERSION_PATCH=103 \
+        CARGO_PKG_VERSION_PRE= \
+        CARGOGREEN=1 \
+      rustc '--crate-name' 'build_script_build' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'bin' '--emit' 'dep-info,link' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--cfg' 'feature="proc-macro"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "nightly", "proc-macro", "span-locations"))' '-C' 'metadata=a4337579eb845027' '-C' 'extra-filename=-162f014ecf4c578f' '--out-dir' '/tmp/clis-diesel_cli_2-3-4/release/build/proc-macro2-162f014ecf4c578f' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-diesel_cli_2-3-4/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.103/build.rs \
+        1>          /tmp/clis-diesel_cli_2-3-4/release/build/proc-macro2-162f014ecf4c578f/out-162f014ecf4c578f-stdout \
+        2>          /tmp/clis-diesel_cli_2-3-4/release/build/proc-macro2-162f014ecf4c578f/out-162f014ecf4c578f-stderr \
+        || echo $? >/tmp/clis-diesel_cli_2-3-4/release/build/proc-macro2-162f014ecf4c578f/out-162f014ecf4c578f-errcode\
+  ; find /tmp/clis-diesel_cli_2-3-4/release/build/proc-macro2-162f014ecf4c578f/*-162f014ecf4c578f* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-162f014ecf4c578f
+COPY --link --from=dep-x-proc-macro2-1.0.103-162f014ecf4c578f /tmp/clis-diesel_cli_2-3-4/release/build/proc-macro2-162f014ecf4c578f/*-162f014ecf4c578f* /
+
+## this = "162f014ecf4c578f"
+## writes = [
+##     "build_script_build-162f014ecf4c578f",
+##     "build_script_build-162f014ecf4c578f.d",
+## ]
+## stderr = [
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-4/release/build/proc-macro2-162f014ecf4c578f/build_script_build-162f014ecf4c578f.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-4/release/build/proc-macro2-162f014ecf4c578f/build_script_build-162f014ecf4c578f","emit":"link"}',
+## ]
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = '''
+## FROM --platform=$BUILDPLATFORM docker.io/tonistiigi/xx:1.6.1@sha256:923441d7c25f1e2eb5789f82d987693c47b8ed987c4ab3b075d6ed2b5d6779a3 AS xx
+## FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base
+## ARG TARGETPLATFORM
+## RUN \
+##   --mount=from=xx,source=/usr/bin/xx-apk,dst=/usr/bin/xx-apk \
+##   --mount=from=xx,source=/usr/bin/xx-apt,dst=/usr/bin/xx-apt \
+##   --mount=from=xx,source=/usr/bin/xx-apt,dst=/usr/bin/xx-apt-get \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-c++ \
+##   --mount=from=xx,source=/usr/bin/xx-cargo,dst=/usr/bin/xx-cargo \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-cc \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-clang \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-clang++ \
+##   --mount=from=xx,source=/usr/bin/xx-go,dst=/usr/bin/xx-go \
+##   --mount=from=xx,source=/usr/bin/xx-info,dst=/usr/bin/xx-info \
+##   --mount=from=xx,source=/usr/bin/xx-ld-shas,dst=/usr/bin/xx-ld-shas \
+##   --mount=from=xx,source=/usr/bin/xx-verify,dst=/usr/bin/xx-verify \
+##   --mount=from=xx,source=/usr/bin/xx-windres,dst=/usr/bin/xx-windres \
+##     set -eux \
+##  && if   command -v apk >/dev/null 2>&1; then \
+##                                      xx-apk     add     --no-cache                 '<none>'; \
+##     elif command -v apt >/dev/null 2>&1; then \
+##       DEBIAN_FRONTEND=noninteractive xx-apt     install --no-install-recommends -y 'libpq-dev'; \
+##     else \
+##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
+##     fi'''
+##
+## [[stages]]
+##
+## [stages.Cratesio]
+## stage = "cratesio-proc-macro2-1.0.103"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.103"
+## name = "proc-macro2"
+## name_dash_version = "proc-macro2-1.0.103"
+## hash = "5ee95bc4ef87b8d5ba32e8b7714ccc834865276eab0aed5c9958d00ec45f49e8"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "dep-x-proc-macro2-1.0.103-162f014ecf4c578f"
+## script = '''
+## FROM rust-base AS dep-x-proc-macro2-1.0.103-162f014ecf4c578f
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-diesel_cli_2-3-4/release/build/proc-macro2-162f014ecf4c578f
+## RUN \
+##   --mount=from=cratesio-proc-macro2-1.0.103,source=/proc-macro2-1.0.103,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.103,rw \
+##     { \
+##         cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.103/build.rs | sed 's/fn main/fn actual_162f014ecf4c578f_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.103/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.103/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.103/build.rs ; \
+##         { \
+##           echo ; \
+##           echo 'fn main() {' ; \
+##           echo '    use std::env::{args_os, var_os};' ; \
+##           echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+##           echo '        use std::process::{Command, Stdio};' ; \
+##           echo '        let mut cmd = Command::new("cargo-green");' ; \
+##           echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+##           echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+##           echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+##           echo '        assert!(res.success());' ; \
+##           echo '    } else {' ; \
+##           echo '        actual_162f014ecf4c578f_main();' ; \
+##           echo '    }' ; \
+##           echo '}' ; \
+##         } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.103/build.rs ; \
+##     } && \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CRATE_NAME=build_script_build \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.103 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.103/Cargo.toml \
+##         CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>:Alex Crichton <alex@alexcrichton.com>' \
+##         CARGO_PKG_DESCRIPTION=A' substitute implementation of the compiler'\'s' `proc_macro` API to decouple token-based libraries from the procedural macro use case.' \
+##         CARGO_PKG_HOMEPAGE= \
+##         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=proc-macro2 \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/dtolnay/proc-macro2' \
+##         CARGO_PKG_RUST_VERSION=1.60 \
+##         CARGO_PKG_VERSION=1.0.103 \
+##         CARGO_PKG_VERSION_MAJOR=1 \
+##         CARGO_PKG_VERSION_MINOR=0 \
+##         CARGO_PKG_VERSION_PATCH=103 \
+##         CARGO_PKG_VERSION_PRE= \
+##         CARGOGREEN=1 \
+##       rustc '--crate-name' 'build_script_build' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'bin' '--emit' 'dep-info,link' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--cfg' 'feature="proc-macro"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "nightly", "proc-macro", "span-locations"))' '-C' 'metadata=a4337579eb845027' '-C' 'extra-filename=-162f014ecf4c578f' '--out-dir' '/tmp/clis-diesel_cli_2-3-4/release/build/proc-macro2-162f014ecf4c578f' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-diesel_cli_2-3-4/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.103/build.rs \
+##         1>          /tmp/clis-diesel_cli_2-3-4/release/build/proc-macro2-162f014ecf4c578f/out-162f014ecf4c578f-stdout \
+##         2>          /tmp/clis-diesel_cli_2-3-4/release/build/proc-macro2-162f014ecf4c578f/out-162f014ecf4c578f-stderr \
+##         || echo $? >/tmp/clis-diesel_cli_2-3-4/release/build/proc-macro2-162f014ecf4c578f/out-162f014ecf4c578f-errcode\
+##   ; find /tmp/clis-diesel_cli_2-3-4/release/build/proc-macro2-162f014ecf4c578f/*-162f014ecf4c578f* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-162f014ecf4c578f"
+## script = """
+## FROM scratch AS out-162f014ecf4c578f
+## COPY --link --from=dep-x-proc-macro2-1.0.103-162f014ecf4c578f /tmp/clis-diesel_cli_2-3-4/release/build/proc-macro2-162f014ecf4c578f/*-162f014ecf4c578f* /"""
+
+FROM rust-base AS run-z-proc-macro2-1.0.103-b1ca438ee48148a5
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-diesel_cli_2-3-4/release/build/proc-macro2-b1ca438ee48148a5/out
+WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.103
+RUN \
+  --mount=from=out-162f014ecf4c578f,source=/build_script_build-162f014ecf4c578f,dst=/tmp/clis-diesel_cli_2-3-4/release/build/proc-macro2-162f014ecf4c578f/build-script-build \
+  --mount=from=cratesio-proc-macro2-1.0.103,source=/proc-macro2-1.0.103,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.103 \
+    env CARGO="$(which cargo)" \
+        CARGO_CFG_FEATURE=proc-macro \
+        CARGO_CFG_PANIC=unwind \
+        CARGO_CFG_TARGET_ABI= \
+        CARGO_CFG_TARGET_ARCH=x86_64 \
+        CARGO_CFG_TARGET_ENDIAN=little \
+        CARGO_CFG_TARGET_ENV=gnu \
+        CARGO_CFG_TARGET_FAMILY=unix \
+        CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
+        CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+        CARGO_CFG_TARGET_OS=linux \
+        CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+        CARGO_CFG_TARGET_VENDOR=unknown \
+        CARGO_CFG_UNIX= \
+        CARGO_ENCODED_RUSTFLAGS= \
+        CARGO_FEATURE_PROC_MACRO=1 \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.103 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.103/Cargo.toml \
+        CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>:Alex Crichton <alex@alexcrichton.com>' \
+        CARGO_PKG_DESCRIPTION=A' substitute implementation of the compiler'\'s' `proc_macro` API to decouple token-based libraries from the procedural macro use case.' \
+        CARGO_PKG_HOMEPAGE= \
+        CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=proc-macro2 \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/dtolnay/proc-macro2' \
+        CARGO_PKG_RUST_VERSION=1.60 \
+        CARGO_PKG_VERSION=1.0.103 \
+        CARGO_PKG_VERSION_MAJOR=1 \
+        CARGO_PKG_VERSION_MINOR=0 \
+        CARGO_PKG_VERSION_PATCH=103 \
+        CARGO_PKG_VERSION_PRE= \
+        DEBUG=false \
+        HOST=x86_64-unknown-linux-gnu \
+        NUM_JOBS=4 \
+        OPT_LEVEL=3 \
+        OUT_DIR=/tmp/clis-diesel_cli_2-3-4/release/build/proc-macro2-b1ca438ee48148a5/out \
+        PROFILE=release \
+        RUSTC=rustc \
+        RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+        TARGET=x86_64-unknown-linux-gnu \
+        CARGOGREEN=1 \
+      CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-diesel_cli_2-3-4/release/build/proc-macro2-162f014ecf4c578f/build-script-build \
+        1>          /tmp/clis-diesel_cli_2-3-4/release/build/proc-macro2-b1ca438ee48148a5/out/out-b1ca438ee48148a5-stdout \
+        2>          /tmp/clis-diesel_cli_2-3-4/release/build/proc-macro2-b1ca438ee48148a5/out/out-b1ca438ee48148a5-stderr \
+        || echo $? >/tmp/clis-diesel_cli_2-3-4/release/build/proc-macro2-b1ca438ee48148a5/out/out-b1ca438ee48148a5-errcode\
+  ; find /tmp/clis-diesel_cli_2-3-4/release/build/proc-macro2-b1ca438ee48148a5/out/*-b1ca438ee48148a5* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-b1ca438ee48148a5
+COPY --link --from=run-z-proc-macro2-1.0.103-b1ca438ee48148a5 /tmp/clis-diesel_cli_2-3-4/release/build/proc-macro2-b1ca438ee48148a5/out/* /
+
+## this = "b1ca438ee48148a5"
+## deps = ["162f014ecf4c578f"]
+## stdout = [
+##     "cargo:rustc-check-cfg=cfg(fuzzing)",
+##     "cargo:rustc-check-cfg=cfg(no_is_available)",
+##     "cargo:rustc-check-cfg=cfg(no_literal_byte_character)",
+##     "cargo:rustc-check-cfg=cfg(no_literal_c_string)",
+##     "cargo:rustc-check-cfg=cfg(no_source_text)",
+##     "cargo:rustc-check-cfg=cfg(proc_macro_span)",
+##     "cargo:rustc-check-cfg=cfg(proc_macro_span_file)",
+##     "cargo:rustc-check-cfg=cfg(proc_macro_span_location)",
+##     "cargo:rustc-check-cfg=cfg(procmacro2_backtrace)",
+##     "cargo:rustc-check-cfg=cfg(procmacro2_build_probe)",
+##     "cargo:rustc-check-cfg=cfg(procmacro2_nightly_testing)",
+##     "cargo:rustc-check-cfg=cfg(procmacro2_semver_exempt)",
+##     "cargo:rustc-check-cfg=cfg(randomize_layout)",
+##     "cargo:rustc-check-cfg=cfg(span_locations)",
+##     "cargo:rustc-check-cfg=cfg(super_unstable)",
+##     "cargo:rustc-check-cfg=cfg(wrap_proc_macro)",
+##     "cargo:rerun-if-changed=src/probe/proc_macro_span.rs",
+##     "cargo:rustc-cfg=wrap_proc_macro",
+##     "cargo:rerun-if-changed=src/probe/proc_macro_span_location.rs",
+##     "cargo:rustc-cfg=proc_macro_span_location",
+##     "cargo:rerun-if-changed=src/probe/proc_macro_span_file.rs",
+##     "cargo:rustc-cfg=proc_macro_span_file",
+##     "cargo:rerun-if-env-changed=RUSTC_BOOTSTRAP",
+## ]
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = '''
+## FROM --platform=$BUILDPLATFORM docker.io/tonistiigi/xx:1.6.1@sha256:923441d7c25f1e2eb5789f82d987693c47b8ed987c4ab3b075d6ed2b5d6779a3 AS xx
+## FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base
+## ARG TARGETPLATFORM
+## RUN \
+##   --mount=from=xx,source=/usr/bin/xx-apk,dst=/usr/bin/xx-apk \
+##   --mount=from=xx,source=/usr/bin/xx-apt,dst=/usr/bin/xx-apt \
+##   --mount=from=xx,source=/usr/bin/xx-apt,dst=/usr/bin/xx-apt-get \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-c++ \
+##   --mount=from=xx,source=/usr/bin/xx-cargo,dst=/usr/bin/xx-cargo \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-cc \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-clang \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-clang++ \
+##   --mount=from=xx,source=/usr/bin/xx-go,dst=/usr/bin/xx-go \
+##   --mount=from=xx,source=/usr/bin/xx-info,dst=/usr/bin/xx-info \
+##   --mount=from=xx,source=/usr/bin/xx-ld-shas,dst=/usr/bin/xx-ld-shas \
+##   --mount=from=xx,source=/usr/bin/xx-verify,dst=/usr/bin/xx-verify \
+##   --mount=from=xx,source=/usr/bin/xx-windres,dst=/usr/bin/xx-windres \
+##     set -eux \
+##  && if   command -v apk >/dev/null 2>&1; then \
+##                                      xx-apk     add     --no-cache                 '<none>'; \
+##     elif command -v apt >/dev/null 2>&1; then \
+##       DEBIAN_FRONTEND=noninteractive xx-apt     install --no-install-recommends -y 'libpq-dev'; \
+##     else \
+##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
+##     fi'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "run-z-proc-macro2-1.0.103-b1ca438ee48148a5"
+## script = '''
+## FROM rust-base AS run-z-proc-macro2-1.0.103-b1ca438ee48148a5
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-diesel_cli_2-3-4/release/build/proc-macro2-b1ca438ee48148a5/out
+## WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.103
+## RUN \
+##   --mount=from=out-162f014ecf4c578f,source=/build_script_build-162f014ecf4c578f,dst=/tmp/clis-diesel_cli_2-3-4/release/build/proc-macro2-162f014ecf4c578f/build-script-build \
+##   --mount=from=cratesio-proc-macro2-1.0.103,source=/proc-macro2-1.0.103,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.103 \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CFG_FEATURE=proc-macro \
+##         CARGO_CFG_PANIC=unwind \
+##         CARGO_CFG_TARGET_ABI= \
+##         CARGO_CFG_TARGET_ARCH=x86_64 \
+##         CARGO_CFG_TARGET_ENDIAN=little \
+##         CARGO_CFG_TARGET_ENV=gnu \
+##         CARGO_CFG_TARGET_FAMILY=unix \
+##         CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
+##         CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+##         CARGO_CFG_TARGET_OS=linux \
+##         CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+##         CARGO_CFG_TARGET_VENDOR=unknown \
+##         CARGO_CFG_UNIX= \
+##         CARGO_ENCODED_RUSTFLAGS= \
+##         CARGO_FEATURE_PROC_MACRO=1 \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.103 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.103/Cargo.toml \
+##         CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>:Alex Crichton <alex@alexcrichton.com>' \
+##         CARGO_PKG_DESCRIPTION=A' substitute implementation of the compiler'\'s' `proc_macro` API to decouple token-based libraries from the procedural macro use case.' \
+##         CARGO_PKG_HOMEPAGE= \
+##         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=proc-macro2 \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/dtolnay/proc-macro2' \
+##         CARGO_PKG_RUST_VERSION=1.60 \
+##         CARGO_PKG_VERSION=1.0.103 \
+##         CARGO_PKG_VERSION_MAJOR=1 \
+##         CARGO_PKG_VERSION_MINOR=0 \
+##         CARGO_PKG_VERSION_PATCH=103 \
+##         CARGO_PKG_VERSION_PRE= \
+##         DEBUG=false \
+##         HOST=x86_64-unknown-linux-gnu \
+##         NUM_JOBS=4 \
+##         OPT_LEVEL=3 \
+##         OUT_DIR=/tmp/clis-diesel_cli_2-3-4/release/build/proc-macro2-b1ca438ee48148a5/out \
+##         PROFILE=release \
+##         RUSTC=rustc \
+##         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+##         TARGET=x86_64-unknown-linux-gnu \
+##         CARGOGREEN=1 \
+##       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-diesel_cli_2-3-4/release/build/proc-macro2-162f014ecf4c578f/build-script-build \
+##         1>          /tmp/clis-diesel_cli_2-3-4/release/build/proc-macro2-b1ca438ee48148a5/out/out-b1ca438ee48148a5-stdout \
+##         2>          /tmp/clis-diesel_cli_2-3-4/release/build/proc-macro2-b1ca438ee48148a5/out/out-b1ca438ee48148a5-stderr \
+##         || echo $? >/tmp/clis-diesel_cli_2-3-4/release/build/proc-macro2-b1ca438ee48148a5/out/out-b1ca438ee48148a5-errcode\
+##   ; find /tmp/clis-diesel_cli_2-3-4/release/build/proc-macro2-b1ca438ee48148a5/out/*-b1ca438ee48148a5* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-b1ca438ee48148a5"
+## script = """
+## FROM scratch AS out-b1ca438ee48148a5
+## COPY --link --from=run-z-proc-macro2-1.0.103-b1ca438ee48148a5 /tmp/clis-diesel_cli_2-3-4/release/build/proc-macro2-b1ca438ee48148a5/out/* /"""
+
+
 FROM rust-base AS dep-n-proc-macro2-1.0.103-3601cbc26533d3b4
 SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-diesel_cli_2-3-4/release/deps
@@ -10463,6 +14911,7 @@ RUN \
   --mount=from=cratesio-proc-macro2-1.0.103,source=/proc-macro2-1.0.103,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.103 \
   --mount=from=out-0365cb06b1ebfd56,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-0365cb06b1ebfd56.rlib,source=/libunicode_ident-0365cb06b1ebfd56.rlib \
   --mount=from=out-0365cb06b1ebfd56,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-0365cb06b1ebfd56.rmeta,source=/libunicode_ident-0365cb06b1ebfd56.rmeta \
+  --mount=from=out-b1ca438ee48148a5,dst=/tmp/clis-diesel_cli_2-3-4/release/build/proc-macro2-b1ca438ee48148a5/out,source=/ \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=proc_macro2 \
         CARGO_INCREMENTAL=0 \
@@ -10493,7 +14942,12 @@ FROM scratch AS out-3601cbc26533d3b4
 COPY --link --from=dep-n-proc-macro2-1.0.103-3601cbc26533d3b4 /tmp/clis-diesel_cli_2-3-4/release/deps/*-3601cbc26533d3b4* /
 
 ## this = "3601cbc26533d3b4"
-## deps = ["0365cb06b1ebfd56"]
+## deps = [
+##     "0365cb06b1ebfd56",
+##     "b1ca438ee48148a5",
+##     "162f014ecf4c578f",
+## ]
+## buildrs_results = ["b1ca438ee48148a5"]
 ## writes = [
 ##     "libproc_macro2-3601cbc26533d3b4.rlib",
 ##     "libproc_macro2-3601cbc26533d3b4.rmeta",
@@ -10512,6 +14966,11 @@ COPY --link --from=dep-n-proc-macro2-1.0.103-3601cbc26533d3b4 /tmp/clis-diesel_c
 ## [[externs]]
 ## from = "out-0365cb06b1ebfd56"
 ## xtern = "libunicode_ident-0365cb06b1ebfd56.rmeta"
+##
+## [[mounts]]
+## name = "out-b1ca438ee48148a5"
+## src = "/"
+## dst = "/tmp/clis-diesel_cli_2-3-4/release/build/proc-macro2-b1ca438ee48148a5/out"
 ##
 ## [[stages]]
 ##
@@ -10565,6 +15024,7 @@ COPY --link --from=dep-n-proc-macro2-1.0.103-3601cbc26533d3b4 /tmp/clis-diesel_c
 ##   --mount=from=cratesio-proc-macro2-1.0.103,source=/proc-macro2-1.0.103,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.103 \
 ##   --mount=from=out-0365cb06b1ebfd56,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-0365cb06b1ebfd56.rlib,source=/libunicode_ident-0365cb06b1ebfd56.rlib \
 ##   --mount=from=out-0365cb06b1ebfd56,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-0365cb06b1ebfd56.rmeta,source=/libunicode_ident-0365cb06b1ebfd56.rmeta \
+##   --mount=from=out-b1ca438ee48148a5,dst=/tmp/clis-diesel_cli_2-3-4/release/build/proc-macro2-b1ca438ee48148a5/out,source=/ \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=proc_macro2 \
 ##         CARGO_INCREMENTAL=0 \
@@ -10601,6 +15061,337 @@ COPY --link --from=dep-n-proc-macro2-1.0.103-3601cbc26533d3b4 /tmp/clis-diesel_c
 ## COPY --link --from=dep-n-proc-macro2-1.0.103-3601cbc26533d3b4 /tmp/clis-diesel_cli_2-3-4/release/deps/*-3601cbc26533d3b4* /"""
 
 
+FROM rust-base AS dep-x-quote-1.0.41-bd78c93267945b7c
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-diesel_cli_2-3-4/release/build/quote-bd78c93267945b7c
+RUN \
+  --mount=from=cratesio-quote-1.0.41,source=/quote-1.0.41,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.41,rw \
+    { \
+        cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.41/build.rs | sed 's/fn main/fn actual_bd78c93267945b7c_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.41/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.41/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.41/build.rs ; \
+        { \
+          echo ; \
+          echo 'fn main() {' ; \
+          echo '    use std::env::{args_os, var_os};' ; \
+          echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+          echo '        use std::process::{Command, Stdio};' ; \
+          echo '        let mut cmd = Command::new("cargo-green");' ; \
+          echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+          echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+          echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+          echo '        assert!(res.success());' ; \
+          echo '    } else {' ; \
+          echo '        actual_bd78c93267945b7c_main();' ; \
+          echo '    }' ; \
+          echo '}' ; \
+        } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.41/build.rs ; \
+    } && \
+    env CARGO="$(which cargo)" \
+        CARGO_CRATE_NAME=build_script_build \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.41 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.41/Cargo.toml \
+        CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>' \
+        CARGO_PKG_DESCRIPTION=Quasi-quoting' macro quote!(...)' \
+        CARGO_PKG_HOMEPAGE= \
+        CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=quote \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/dtolnay/quote' \
+        CARGO_PKG_RUST_VERSION=1.60 \
+        CARGO_PKG_VERSION=1.0.41 \
+        CARGO_PKG_VERSION_MAJOR=1 \
+        CARGO_PKG_VERSION_MINOR=0 \
+        CARGO_PKG_VERSION_PATCH=41 \
+        CARGO_PKG_VERSION_PRE= \
+        CARGOGREEN=1 \
+      rustc '--crate-name' 'build_script_build' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'bin' '--emit' 'dep-info,link' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--cfg' 'feature="proc-macro"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "proc-macro"))' '-C' 'metadata=43c86e0055f37b1f' '-C' 'extra-filename=-bd78c93267945b7c' '--out-dir' '/tmp/clis-diesel_cli_2-3-4/release/build/quote-bd78c93267945b7c' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-diesel_cli_2-3-4/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.41/build.rs \
+        1>          /tmp/clis-diesel_cli_2-3-4/release/build/quote-bd78c93267945b7c/out-bd78c93267945b7c-stdout \
+        2>          /tmp/clis-diesel_cli_2-3-4/release/build/quote-bd78c93267945b7c/out-bd78c93267945b7c-stderr \
+        || echo $? >/tmp/clis-diesel_cli_2-3-4/release/build/quote-bd78c93267945b7c/out-bd78c93267945b7c-errcode\
+  ; find /tmp/clis-diesel_cli_2-3-4/release/build/quote-bd78c93267945b7c/*-bd78c93267945b7c* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-bd78c93267945b7c
+COPY --link --from=dep-x-quote-1.0.41-bd78c93267945b7c /tmp/clis-diesel_cli_2-3-4/release/build/quote-bd78c93267945b7c/*-bd78c93267945b7c* /
+
+## this = "bd78c93267945b7c"
+## writes = [
+##     "build_script_build-bd78c93267945b7c",
+##     "build_script_build-bd78c93267945b7c.d",
+## ]
+## stderr = [
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-4/release/build/quote-bd78c93267945b7c/build_script_build-bd78c93267945b7c.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-4/release/build/quote-bd78c93267945b7c/build_script_build-bd78c93267945b7c","emit":"link"}',
+## ]
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = '''
+## FROM --platform=$BUILDPLATFORM docker.io/tonistiigi/xx:1.6.1@sha256:923441d7c25f1e2eb5789f82d987693c47b8ed987c4ab3b075d6ed2b5d6779a3 AS xx
+## FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base
+## ARG TARGETPLATFORM
+## RUN \
+##   --mount=from=xx,source=/usr/bin/xx-apk,dst=/usr/bin/xx-apk \
+##   --mount=from=xx,source=/usr/bin/xx-apt,dst=/usr/bin/xx-apt \
+##   --mount=from=xx,source=/usr/bin/xx-apt,dst=/usr/bin/xx-apt-get \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-c++ \
+##   --mount=from=xx,source=/usr/bin/xx-cargo,dst=/usr/bin/xx-cargo \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-cc \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-clang \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-clang++ \
+##   --mount=from=xx,source=/usr/bin/xx-go,dst=/usr/bin/xx-go \
+##   --mount=from=xx,source=/usr/bin/xx-info,dst=/usr/bin/xx-info \
+##   --mount=from=xx,source=/usr/bin/xx-ld-shas,dst=/usr/bin/xx-ld-shas \
+##   --mount=from=xx,source=/usr/bin/xx-verify,dst=/usr/bin/xx-verify \
+##   --mount=from=xx,source=/usr/bin/xx-windres,dst=/usr/bin/xx-windres \
+##     set -eux \
+##  && if   command -v apk >/dev/null 2>&1; then \
+##                                      xx-apk     add     --no-cache                 '<none>'; \
+##     elif command -v apt >/dev/null 2>&1; then \
+##       DEBIAN_FRONTEND=noninteractive xx-apt     install --no-install-recommends -y 'libpq-dev'; \
+##     else \
+##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
+##     fi'''
+##
+## [[stages]]
+##
+## [stages.Cratesio]
+## stage = "cratesio-quote-1.0.41"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.41"
+## name = "quote"
+## name_dash_version = "quote-1.0.41"
+## hash = "ce25767e7b499d1b604768e7cde645d14cc8584231ea6b295e9c9eb22c02e1d1"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "dep-x-quote-1.0.41-bd78c93267945b7c"
+## script = '''
+## FROM rust-base AS dep-x-quote-1.0.41-bd78c93267945b7c
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-diesel_cli_2-3-4/release/build/quote-bd78c93267945b7c
+## RUN \
+##   --mount=from=cratesio-quote-1.0.41,source=/quote-1.0.41,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.41,rw \
+##     { \
+##         cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.41/build.rs | sed 's/fn main/fn actual_bd78c93267945b7c_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.41/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.41/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.41/build.rs ; \
+##         { \
+##           echo ; \
+##           echo 'fn main() {' ; \
+##           echo '    use std::env::{args_os, var_os};' ; \
+##           echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+##           echo '        use std::process::{Command, Stdio};' ; \
+##           echo '        let mut cmd = Command::new("cargo-green");' ; \
+##           echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+##           echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+##           echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+##           echo '        assert!(res.success());' ; \
+##           echo '    } else {' ; \
+##           echo '        actual_bd78c93267945b7c_main();' ; \
+##           echo '    }' ; \
+##           echo '}' ; \
+##         } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.41/build.rs ; \
+##     } && \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CRATE_NAME=build_script_build \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.41 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.41/Cargo.toml \
+##         CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>' \
+##         CARGO_PKG_DESCRIPTION=Quasi-quoting' macro quote!(...)' \
+##         CARGO_PKG_HOMEPAGE= \
+##         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=quote \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/dtolnay/quote' \
+##         CARGO_PKG_RUST_VERSION=1.60 \
+##         CARGO_PKG_VERSION=1.0.41 \
+##         CARGO_PKG_VERSION_MAJOR=1 \
+##         CARGO_PKG_VERSION_MINOR=0 \
+##         CARGO_PKG_VERSION_PATCH=41 \
+##         CARGO_PKG_VERSION_PRE= \
+##         CARGOGREEN=1 \
+##       rustc '--crate-name' 'build_script_build' '--edition' '2018' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'bin' '--emit' 'dep-info,link' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--cfg' 'feature="proc-macro"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "proc-macro"))' '-C' 'metadata=43c86e0055f37b1f' '-C' 'extra-filename=-bd78c93267945b7c' '--out-dir' '/tmp/clis-diesel_cli_2-3-4/release/build/quote-bd78c93267945b7c' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-diesel_cli_2-3-4/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.41/build.rs \
+##         1>          /tmp/clis-diesel_cli_2-3-4/release/build/quote-bd78c93267945b7c/out-bd78c93267945b7c-stdout \
+##         2>          /tmp/clis-diesel_cli_2-3-4/release/build/quote-bd78c93267945b7c/out-bd78c93267945b7c-stderr \
+##         || echo $? >/tmp/clis-diesel_cli_2-3-4/release/build/quote-bd78c93267945b7c/out-bd78c93267945b7c-errcode\
+##   ; find /tmp/clis-diesel_cli_2-3-4/release/build/quote-bd78c93267945b7c/*-bd78c93267945b7c* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-bd78c93267945b7c"
+## script = """
+## FROM scratch AS out-bd78c93267945b7c
+## COPY --link --from=dep-x-quote-1.0.41-bd78c93267945b7c /tmp/clis-diesel_cli_2-3-4/release/build/quote-bd78c93267945b7c/*-bd78c93267945b7c* /"""
+
+FROM rust-base AS run-z-quote-1.0.41-4ecb38cd9bec3e1b
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-diesel_cli_2-3-4/release/build/quote-4ecb38cd9bec3e1b/out
+WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.41
+RUN \
+  --mount=from=out-bd78c93267945b7c,source=/build_script_build-bd78c93267945b7c,dst=/tmp/clis-diesel_cli_2-3-4/release/build/quote-bd78c93267945b7c/build-script-build \
+  --mount=from=cratesio-quote-1.0.41,source=/quote-1.0.41,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.41 \
+    env CARGO="$(which cargo)" \
+        CARGO_CFG_FEATURE=proc-macro \
+        CARGO_CFG_PANIC=unwind \
+        CARGO_CFG_TARGET_ABI= \
+        CARGO_CFG_TARGET_ARCH=x86_64 \
+        CARGO_CFG_TARGET_ENDIAN=little \
+        CARGO_CFG_TARGET_ENV=gnu \
+        CARGO_CFG_TARGET_FAMILY=unix \
+        CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
+        CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+        CARGO_CFG_TARGET_OS=linux \
+        CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+        CARGO_CFG_TARGET_VENDOR=unknown \
+        CARGO_CFG_UNIX= \
+        CARGO_ENCODED_RUSTFLAGS= \
+        CARGO_FEATURE_PROC_MACRO=1 \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.41 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.41/Cargo.toml \
+        CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>' \
+        CARGO_PKG_DESCRIPTION=Quasi-quoting' macro quote!(...)' \
+        CARGO_PKG_HOMEPAGE= \
+        CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=quote \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/dtolnay/quote' \
+        CARGO_PKG_RUST_VERSION=1.60 \
+        CARGO_PKG_VERSION=1.0.41 \
+        CARGO_PKG_VERSION_MAJOR=1 \
+        CARGO_PKG_VERSION_MINOR=0 \
+        CARGO_PKG_VERSION_PATCH=41 \
+        CARGO_PKG_VERSION_PRE= \
+        DEBUG=false \
+        HOST=x86_64-unknown-linux-gnu \
+        NUM_JOBS=4 \
+        OPT_LEVEL=3 \
+        OUT_DIR=/tmp/clis-diesel_cli_2-3-4/release/build/quote-4ecb38cd9bec3e1b/out \
+        PROFILE=release \
+        RUSTC=rustc \
+        RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+        TARGET=x86_64-unknown-linux-gnu \
+        CARGOGREEN=1 \
+      CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-diesel_cli_2-3-4/release/build/quote-bd78c93267945b7c/build-script-build \
+        1>          /tmp/clis-diesel_cli_2-3-4/release/build/quote-4ecb38cd9bec3e1b/out/out-4ecb38cd9bec3e1b-stdout \
+        2>          /tmp/clis-diesel_cli_2-3-4/release/build/quote-4ecb38cd9bec3e1b/out/out-4ecb38cd9bec3e1b-stderr \
+        || echo $? >/tmp/clis-diesel_cli_2-3-4/release/build/quote-4ecb38cd9bec3e1b/out/out-4ecb38cd9bec3e1b-errcode\
+  ; find /tmp/clis-diesel_cli_2-3-4/release/build/quote-4ecb38cd9bec3e1b/out/*-4ecb38cd9bec3e1b* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-4ecb38cd9bec3e1b
+COPY --link --from=run-z-quote-1.0.41-4ecb38cd9bec3e1b /tmp/clis-diesel_cli_2-3-4/release/build/quote-4ecb38cd9bec3e1b/out/* /
+
+## this = "4ecb38cd9bec3e1b"
+## deps = ["bd78c93267945b7c"]
+## stdout = [
+##     "cargo:rerun-if-changed=build.rs",
+##     "cargo:rustc-check-cfg=cfg(no_diagnostic_namespace)",
+## ]
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = '''
+## FROM --platform=$BUILDPLATFORM docker.io/tonistiigi/xx:1.6.1@sha256:923441d7c25f1e2eb5789f82d987693c47b8ed987c4ab3b075d6ed2b5d6779a3 AS xx
+## FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base
+## ARG TARGETPLATFORM
+## RUN \
+##   --mount=from=xx,source=/usr/bin/xx-apk,dst=/usr/bin/xx-apk \
+##   --mount=from=xx,source=/usr/bin/xx-apt,dst=/usr/bin/xx-apt \
+##   --mount=from=xx,source=/usr/bin/xx-apt,dst=/usr/bin/xx-apt-get \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-c++ \
+##   --mount=from=xx,source=/usr/bin/xx-cargo,dst=/usr/bin/xx-cargo \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-cc \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-clang \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-clang++ \
+##   --mount=from=xx,source=/usr/bin/xx-go,dst=/usr/bin/xx-go \
+##   --mount=from=xx,source=/usr/bin/xx-info,dst=/usr/bin/xx-info \
+##   --mount=from=xx,source=/usr/bin/xx-ld-shas,dst=/usr/bin/xx-ld-shas \
+##   --mount=from=xx,source=/usr/bin/xx-verify,dst=/usr/bin/xx-verify \
+##   --mount=from=xx,source=/usr/bin/xx-windres,dst=/usr/bin/xx-windres \
+##     set -eux \
+##  && if   command -v apk >/dev/null 2>&1; then \
+##                                      xx-apk     add     --no-cache                 '<none>'; \
+##     elif command -v apt >/dev/null 2>&1; then \
+##       DEBIAN_FRONTEND=noninteractive xx-apt     install --no-install-recommends -y 'libpq-dev'; \
+##     else \
+##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
+##     fi'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "run-z-quote-1.0.41-4ecb38cd9bec3e1b"
+## script = '''
+## FROM rust-base AS run-z-quote-1.0.41-4ecb38cd9bec3e1b
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-diesel_cli_2-3-4/release/build/quote-4ecb38cd9bec3e1b/out
+## WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.41
+## RUN \
+##   --mount=from=out-bd78c93267945b7c,source=/build_script_build-bd78c93267945b7c,dst=/tmp/clis-diesel_cli_2-3-4/release/build/quote-bd78c93267945b7c/build-script-build \
+##   --mount=from=cratesio-quote-1.0.41,source=/quote-1.0.41,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.41 \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CFG_FEATURE=proc-macro \
+##         CARGO_CFG_PANIC=unwind \
+##         CARGO_CFG_TARGET_ABI= \
+##         CARGO_CFG_TARGET_ARCH=x86_64 \
+##         CARGO_CFG_TARGET_ENDIAN=little \
+##         CARGO_CFG_TARGET_ENV=gnu \
+##         CARGO_CFG_TARGET_FAMILY=unix \
+##         CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
+##         CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+##         CARGO_CFG_TARGET_OS=linux \
+##         CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+##         CARGO_CFG_TARGET_VENDOR=unknown \
+##         CARGO_CFG_UNIX= \
+##         CARGO_ENCODED_RUSTFLAGS= \
+##         CARGO_FEATURE_PROC_MACRO=1 \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.41 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.41/Cargo.toml \
+##         CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>' \
+##         CARGO_PKG_DESCRIPTION=Quasi-quoting' macro quote!(...)' \
+##         CARGO_PKG_HOMEPAGE= \
+##         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=quote \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/dtolnay/quote' \
+##         CARGO_PKG_RUST_VERSION=1.60 \
+##         CARGO_PKG_VERSION=1.0.41 \
+##         CARGO_PKG_VERSION_MAJOR=1 \
+##         CARGO_PKG_VERSION_MINOR=0 \
+##         CARGO_PKG_VERSION_PATCH=41 \
+##         CARGO_PKG_VERSION_PRE= \
+##         DEBUG=false \
+##         HOST=x86_64-unknown-linux-gnu \
+##         NUM_JOBS=4 \
+##         OPT_LEVEL=3 \
+##         OUT_DIR=/tmp/clis-diesel_cli_2-3-4/release/build/quote-4ecb38cd9bec3e1b/out \
+##         PROFILE=release \
+##         RUSTC=rustc \
+##         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+##         TARGET=x86_64-unknown-linux-gnu \
+##         CARGOGREEN=1 \
+##       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-diesel_cli_2-3-4/release/build/quote-bd78c93267945b7c/build-script-build \
+##         1>          /tmp/clis-diesel_cli_2-3-4/release/build/quote-4ecb38cd9bec3e1b/out/out-4ecb38cd9bec3e1b-stdout \
+##         2>          /tmp/clis-diesel_cli_2-3-4/release/build/quote-4ecb38cd9bec3e1b/out/out-4ecb38cd9bec3e1b-stderr \
+##         || echo $? >/tmp/clis-diesel_cli_2-3-4/release/build/quote-4ecb38cd9bec3e1b/out/out-4ecb38cd9bec3e1b-errcode\
+##   ; find /tmp/clis-diesel_cli_2-3-4/release/build/quote-4ecb38cd9bec3e1b/out/*-4ecb38cd9bec3e1b* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-4ecb38cd9bec3e1b"
+## script = """
+## FROM scratch AS out-4ecb38cd9bec3e1b
+## COPY --link --from=run-z-quote-1.0.41-4ecb38cd9bec3e1b /tmp/clis-diesel_cli_2-3-4/release/build/quote-4ecb38cd9bec3e1b/out/* /"""
+
+
 FROM rust-base AS dep-n-quote-1.0.41-316b4b6e617b3daf
 SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-diesel_cli_2-3-4/release/deps
@@ -10610,6 +15401,8 @@ RUN \
   --mount=from=out-3601cbc26533d3b4,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libproc_macro2-3601cbc26533d3b4.rmeta,source=/libproc_macro2-3601cbc26533d3b4.rmeta \
   --mount=from=out-0365cb06b1ebfd56,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-0365cb06b1ebfd56.rlib,source=/libunicode_ident-0365cb06b1ebfd56.rlib \
   --mount=from=out-0365cb06b1ebfd56,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-0365cb06b1ebfd56.rmeta,source=/libunicode_ident-0365cb06b1ebfd56.rmeta \
+  --mount=from=out-162f014ecf4c578f,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-162f014ecf4c578f,source=/build_script_build-162f014ecf4c578f \
+  --mount=from=out-4ecb38cd9bec3e1b,dst=/tmp/clis-diesel_cli_2-3-4/release/build/quote-4ecb38cd9bec3e1b/out,source=/ \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=quote \
         CARGO_INCREMENTAL=0 \
@@ -10643,6 +15436,14 @@ COPY --link --from=dep-n-quote-1.0.41-316b4b6e617b3daf /tmp/clis-diesel_cli_2-3-
 ## deps = [
 ##     "3601cbc26533d3b4",
 ##     "0365cb06b1ebfd56",
+##     "b1ca438ee48148a5",
+##     "162f014ecf4c578f",
+##     "4ecb38cd9bec3e1b",
+##     "bd78c93267945b7c",
+## ]
+## buildrs_results = [
+##     "b1ca438ee48148a5",
+##     "4ecb38cd9bec3e1b",
 ## ]
 ## writes = [
 ##     "libquote-316b4b6e617b3daf.rlib",
@@ -10670,6 +15471,15 @@ COPY --link --from=dep-n-quote-1.0.41-316b4b6e617b3daf /tmp/clis-diesel_cli_2-3-
 ## [[externs]]
 ## from = "out-0365cb06b1ebfd56"
 ## xtern = "libunicode_ident-0365cb06b1ebfd56.rmeta"
+##
+## [[externs]]
+## from = "out-162f014ecf4c578f"
+## xtern = "build_script_build-162f014ecf4c578f"
+##
+## [[mounts]]
+## name = "out-4ecb38cd9bec3e1b"
+## src = "/"
+## dst = "/tmp/clis-diesel_cli_2-3-4/release/build/quote-4ecb38cd9bec3e1b/out"
 ##
 ## [[stages]]
 ##
@@ -10725,6 +15535,8 @@ COPY --link --from=dep-n-quote-1.0.41-316b4b6e617b3daf /tmp/clis-diesel_cli_2-3-
 ##   --mount=from=out-3601cbc26533d3b4,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libproc_macro2-3601cbc26533d3b4.rmeta,source=/libproc_macro2-3601cbc26533d3b4.rmeta \
 ##   --mount=from=out-0365cb06b1ebfd56,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-0365cb06b1ebfd56.rlib,source=/libunicode_ident-0365cb06b1ebfd56.rlib \
 ##   --mount=from=out-0365cb06b1ebfd56,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-0365cb06b1ebfd56.rmeta,source=/libunicode_ident-0365cb06b1ebfd56.rmeta \
+##   --mount=from=out-162f014ecf4c578f,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-162f014ecf4c578f,source=/build_script_build-162f014ecf4c578f \
+##   --mount=from=out-4ecb38cd9bec3e1b,dst=/tmp/clis-diesel_cli_2-3-4/release/build/quote-4ecb38cd9bec3e1b/out,source=/ \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=quote \
 ##         CARGO_INCREMENTAL=0 \
@@ -10770,8 +15582,10 @@ RUN \
   --mount=from=out-3601cbc26533d3b4,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libproc_macro2-3601cbc26533d3b4.rmeta,source=/libproc_macro2-3601cbc26533d3b4.rmeta \
   --mount=from=out-0365cb06b1ebfd56,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-0365cb06b1ebfd56.rlib,source=/libunicode_ident-0365cb06b1ebfd56.rlib \
   --mount=from=out-0365cb06b1ebfd56,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-0365cb06b1ebfd56.rmeta,source=/libunicode_ident-0365cb06b1ebfd56.rmeta \
+  --mount=from=out-162f014ecf4c578f,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-162f014ecf4c578f,source=/build_script_build-162f014ecf4c578f \
   --mount=from=out-316b4b6e617b3daf,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-316b4b6e617b3daf.rlib,source=/libquote-316b4b6e617b3daf.rlib \
   --mount=from=out-316b4b6e617b3daf,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-316b4b6e617b3daf.rmeta,source=/libquote-316b4b6e617b3daf.rmeta \
+  --mount=from=out-bd78c93267945b7c,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-bd78c93267945b7c,source=/build_script_build-bd78c93267945b7c \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=syn \
         CARGO_INCREMENTAL=0 \
@@ -10804,7 +15618,15 @@ COPY --link --from=dep-n-syn-2.0.108-25accd7577246ffb /tmp/clis-diesel_cli_2-3-4
 ## deps = [
 ##     "3601cbc26533d3b4",
 ##     "0365cb06b1ebfd56",
+##     "b1ca438ee48148a5",
+##     "162f014ecf4c578f",
 ##     "316b4b6e617b3daf",
+##     "4ecb38cd9bec3e1b",
+##     "bd78c93267945b7c",
+## ]
+## buildrs_results = [
+##     "b1ca438ee48148a5",
+##     "4ecb38cd9bec3e1b",
 ## ]
 ## writes = [
 ##     "libsyn-25accd7577246ffb.rlib",
@@ -10834,12 +15656,20 @@ COPY --link --from=dep-n-syn-2.0.108-25accd7577246ffb /tmp/clis-diesel_cli_2-3-4
 ## xtern = "libunicode_ident-0365cb06b1ebfd56.rmeta"
 ##
 ## [[externs]]
+## from = "out-162f014ecf4c578f"
+## xtern = "build_script_build-162f014ecf4c578f"
+##
+## [[externs]]
 ## from = "out-316b4b6e617b3daf"
 ## xtern = "libquote-316b4b6e617b3daf.rlib"
 ##
 ## [[externs]]
 ## from = "out-316b4b6e617b3daf"
 ## xtern = "libquote-316b4b6e617b3daf.rmeta"
+##
+## [[externs]]
+## from = "out-bd78c93267945b7c"
+## xtern = "build_script_build-bd78c93267945b7c"
 ##
 ## [[stages]]
 ##
@@ -10895,8 +15725,10 @@ COPY --link --from=dep-n-syn-2.0.108-25accd7577246ffb /tmp/clis-diesel_cli_2-3-4
 ##   --mount=from=out-3601cbc26533d3b4,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libproc_macro2-3601cbc26533d3b4.rmeta,source=/libproc_macro2-3601cbc26533d3b4.rmeta \
 ##   --mount=from=out-0365cb06b1ebfd56,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-0365cb06b1ebfd56.rlib,source=/libunicode_ident-0365cb06b1ebfd56.rlib \
 ##   --mount=from=out-0365cb06b1ebfd56,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-0365cb06b1ebfd56.rmeta,source=/libunicode_ident-0365cb06b1ebfd56.rmeta \
+##   --mount=from=out-162f014ecf4c578f,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-162f014ecf4c578f,source=/build_script_build-162f014ecf4c578f \
 ##   --mount=from=out-316b4b6e617b3daf,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-316b4b6e617b3daf.rlib,source=/libquote-316b4b6e617b3daf.rlib \
 ##   --mount=from=out-316b4b6e617b3daf,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-316b4b6e617b3daf.rmeta,source=/libquote-316b4b6e617b3daf.rmeta \
+##   --mount=from=out-bd78c93267945b7c,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-bd78c93267945b7c,source=/build_script_build-bd78c93267945b7c \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=syn \
 ##         CARGO_INCREMENTAL=0 \
@@ -10943,8 +15775,10 @@ RUN \
   --mount=from=out-3601cbc26533d3b4,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libproc_macro2-3601cbc26533d3b4.rmeta,source=/libproc_macro2-3601cbc26533d3b4.rmeta \
   --mount=from=out-0365cb06b1ebfd56,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-0365cb06b1ebfd56.rlib,source=/libunicode_ident-0365cb06b1ebfd56.rlib \
   --mount=from=out-0365cb06b1ebfd56,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-0365cb06b1ebfd56.rmeta,source=/libunicode_ident-0365cb06b1ebfd56.rmeta \
+  --mount=from=out-162f014ecf4c578f,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-162f014ecf4c578f,source=/build_script_build-162f014ecf4c578f \
   --mount=from=out-316b4b6e617b3daf,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-316b4b6e617b3daf.rlib,source=/libquote-316b4b6e617b3daf.rlib \
   --mount=from=out-316b4b6e617b3daf,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-316b4b6e617b3daf.rmeta,source=/libquote-316b4b6e617b3daf.rmeta \
+  --mount=from=out-bd78c93267945b7c,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-bd78c93267945b7c,source=/build_script_build-bd78c93267945b7c \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=diesel_table_macro_syntax \
         CARGO_INCREMENTAL=0 \
@@ -10978,7 +15812,15 @@ COPY --link --from=dep-n-diesel_table_macro_syntax-0.3.0-08e3d1c2beab4944 /tmp/c
 ##     "25accd7577246ffb",
 ##     "3601cbc26533d3b4",
 ##     "0365cb06b1ebfd56",
+##     "b1ca438ee48148a5",
+##     "162f014ecf4c578f",
 ##     "316b4b6e617b3daf",
+##     "4ecb38cd9bec3e1b",
+##     "bd78c93267945b7c",
+## ]
+## buildrs_results = [
+##     "b1ca438ee48148a5",
+##     "4ecb38cd9bec3e1b",
 ## ]
 ## writes = [
 ##     "diesel_table_macro_syntax-08e3d1c2beab4944.d",
@@ -11016,12 +15858,20 @@ COPY --link --from=dep-n-diesel_table_macro_syntax-0.3.0-08e3d1c2beab4944 /tmp/c
 ## xtern = "libunicode_ident-0365cb06b1ebfd56.rmeta"
 ##
 ## [[externs]]
+## from = "out-162f014ecf4c578f"
+## xtern = "build_script_build-162f014ecf4c578f"
+##
+## [[externs]]
 ## from = "out-316b4b6e617b3daf"
 ## xtern = "libquote-316b4b6e617b3daf.rlib"
 ##
 ## [[externs]]
 ## from = "out-316b4b6e617b3daf"
 ## xtern = "libquote-316b4b6e617b3daf.rmeta"
+##
+## [[externs]]
+## from = "out-bd78c93267945b7c"
+## xtern = "build_script_build-bd78c93267945b7c"
 ##
 ## [[stages]]
 ##
@@ -11079,8 +15929,10 @@ COPY --link --from=dep-n-diesel_table_macro_syntax-0.3.0-08e3d1c2beab4944 /tmp/c
 ##   --mount=from=out-3601cbc26533d3b4,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libproc_macro2-3601cbc26533d3b4.rmeta,source=/libproc_macro2-3601cbc26533d3b4.rmeta \
 ##   --mount=from=out-0365cb06b1ebfd56,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-0365cb06b1ebfd56.rlib,source=/libunicode_ident-0365cb06b1ebfd56.rlib \
 ##   --mount=from=out-0365cb06b1ebfd56,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-0365cb06b1ebfd56.rmeta,source=/libunicode_ident-0365cb06b1ebfd56.rmeta \
+##   --mount=from=out-162f014ecf4c578f,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-162f014ecf4c578f,source=/build_script_build-162f014ecf4c578f \
 ##   --mount=from=out-316b4b6e617b3daf,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-316b4b6e617b3daf.rlib,source=/libquote-316b4b6e617b3daf.rlib \
 ##   --mount=from=out-316b4b6e617b3daf,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-316b4b6e617b3daf.rmeta,source=/libquote-316b4b6e617b3daf.rmeta \
+##   --mount=from=out-bd78c93267945b7c,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-bd78c93267945b7c,source=/build_script_build-bd78c93267945b7c \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=diesel_table_macro_syntax \
 ##         CARGO_INCREMENTAL=0 \
@@ -11933,6 +16785,354 @@ COPY --link --from=dep-n-linux-raw-sys-0.11.0-ebded25e6abcab7c /tmp/clis-diesel_
 FROM scratch AS cratesio-rustix-1.1.2
 ADD --chmod=0664 --unpack --checksum=sha256:cd15f8a2c5551a84d56efdc1cd049089e409ac19a3072d5037a17fd70719ff3e \
   https://static.crates.io/crates/rustix/rustix-1.1.2.crate /
+FROM rust-base AS dep-x-rustix-1.1.2-4864f07ddb011df8
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-diesel_cli_2-3-4/release/build/rustix-4864f07ddb011df8
+RUN \
+  --mount=from=cratesio-rustix-1.1.2,source=/rustix-1.1.2,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustix-1.1.2,rw \
+    { \
+        cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustix-1.1.2/build.rs | sed 's/fn main/fn actual_4864f07ddb011df8_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustix-1.1.2/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustix-1.1.2/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustix-1.1.2/build.rs ; \
+        { \
+          echo ; \
+          echo 'fn main() {' ; \
+          echo '    use std::env::{args_os, var_os};' ; \
+          echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+          echo '        use std::process::{Command, Stdio};' ; \
+          echo '        let mut cmd = Command::new("cargo-green");' ; \
+          echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+          echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+          echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+          echo '        assert!(res.success());' ; \
+          echo '    } else {' ; \
+          echo '        actual_4864f07ddb011df8_main();' ; \
+          echo '    }' ; \
+          echo '}' ; \
+        } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustix-1.1.2/build.rs ; \
+    } && \
+    env CARGO="$(which cargo)" \
+        CARGO_CRATE_NAME=build_script_build \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustix-1.1.2 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustix-1.1.2/Cargo.toml \
+        CARGO_PKG_AUTHORS=Dan' Gohman <dev@sunfishcode.online>:Jakub Konka <kubkon@jakubkonka.com>' \
+        CARGO_PKG_DESCRIPTION=Safe' Rust bindings to POSIX/Unix/Linux/Winsock-like syscalls' \
+        CARGO_PKG_HOMEPAGE= \
+        CARGO_PKG_LICENSE=Apache-2.0' WITH LLVM-exception OR Apache-2.0 OR MIT' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=rustix \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/bytecodealliance/rustix' \
+        CARGO_PKG_RUST_VERSION=1.63 \
+        CARGO_PKG_VERSION=1.1.2 \
+        CARGO_PKG_VERSION_MAJOR=1 \
+        CARGO_PKG_VERSION_MINOR=1 \
+        CARGO_PKG_VERSION_PATCH=2 \
+        CARGO_PKG_VERSION_PRE= \
+        CARGOGREEN=1 \
+      rustc '--crate-name' 'build_script_build' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'bin' '--emit' 'dep-info,link' '-C' 'embed-bitcode=no' '--warn' 'unexpected_cfgs' '--check-cfg' 'cfg(alloc_c_string)' '--check-cfg' 'cfg(alloc_ffi)' '--check-cfg' 'cfg(apple)' '--check-cfg' 'cfg(asm_experimental_arch)' '--check-cfg' 'cfg(bsd)' '--check-cfg' 'cfg(core_c_str)' '--check-cfg' 'cfg(core_ffi_c)' '--check-cfg' 'cfg(core_intrinsics)' '--check-cfg' 'cfg(criterion)' '--check-cfg' 'cfg(document_experimental_runtime_api)' '--check-cfg' 'cfg(error_in_core)' '--check-cfg' 'cfg(fix_y2038)' '--check-cfg' 'cfg(freebsdlike)' '--check-cfg' 'cfg(libc)' '--check-cfg' 'cfg(linux_kernel)' '--check-cfg' 'cfg(linux_like)' '--check-cfg' 'cfg(linux_raw)' '--check-cfg' 'cfg(linux_raw_dep)' '--check-cfg' 'cfg(lower_upper_exp_for_non_zero)' '--check-cfg' 'cfg(netbsdlike)' '--check-cfg' 'cfg(rustc_attrs)' '--check-cfg' 'cfg(rustc_diagnostics)' '--check-cfg' 'cfg(solarish)' '--check-cfg' 'cfg(staged_api)' '--check-cfg' 'cfg(static_assertions)' '--check-cfg' 'cfg(thumb_mode)' '--check-cfg' 'cfg(wasi)' '--check-cfg' 'cfg(wasi_ext)' '--check-cfg' 'cfg(wasip2)' '--check-cfg' 'cfg(target_arch, values("xtensa"))' '--check-cfg' 'cfg(target_os, values("cygwin"))' '-C' 'debug-assertions=off' '--cfg' 'feature="alloc"' '--cfg' 'feature="default"' '--cfg' 'feature="fs"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("all-apis", "alloc", "core", "default", "event", "fs", "io_uring", "libc", "libc_errno", "linux_4_11", "linux_5_1", "linux_5_11", "linux_latest", "mm", "mount", "net", "param", "pipe", "process", "pty", "rand", "runtime", "rustc-dep-of-std", "rustc-std-workspace-alloc", "shm", "std", "stdio", "system", "termios", "thread", "time", "try_close", "use-explicitly-provided-auxv", "use-libc", "use-libc-auxv"))' '-C' 'metadata=d1b36aabd68aec63' '-C' 'extra-filename=-4864f07ddb011df8' '--out-dir' '/tmp/clis-diesel_cli_2-3-4/release/build/rustix-4864f07ddb011df8' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-diesel_cli_2-3-4/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustix-1.1.2/build.rs \
+        1>          /tmp/clis-diesel_cli_2-3-4/release/build/rustix-4864f07ddb011df8/out-4864f07ddb011df8-stdout \
+        2>          /tmp/clis-diesel_cli_2-3-4/release/build/rustix-4864f07ddb011df8/out-4864f07ddb011df8-stderr \
+        || echo $? >/tmp/clis-diesel_cli_2-3-4/release/build/rustix-4864f07ddb011df8/out-4864f07ddb011df8-errcode\
+  ; find /tmp/clis-diesel_cli_2-3-4/release/build/rustix-4864f07ddb011df8/*-4864f07ddb011df8* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-4864f07ddb011df8
+COPY --link --from=dep-x-rustix-1.1.2-4864f07ddb011df8 /tmp/clis-diesel_cli_2-3-4/release/build/rustix-4864f07ddb011df8/*-4864f07ddb011df8* /
+
+## this = "4864f07ddb011df8"
+## writes = [
+##     "build_script_build-4864f07ddb011df8",
+##     "build_script_build-4864f07ddb011df8.d",
+## ]
+## stderr = [
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-4/release/build/rustix-4864f07ddb011df8/build_script_build-4864f07ddb011df8.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-4/release/build/rustix-4864f07ddb011df8/build_script_build-4864f07ddb011df8","emit":"link"}',
+## ]
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = '''
+## FROM --platform=$BUILDPLATFORM docker.io/tonistiigi/xx:1.6.1@sha256:923441d7c25f1e2eb5789f82d987693c47b8ed987c4ab3b075d6ed2b5d6779a3 AS xx
+## FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base
+## ARG TARGETPLATFORM
+## RUN \
+##   --mount=from=xx,source=/usr/bin/xx-apk,dst=/usr/bin/xx-apk \
+##   --mount=from=xx,source=/usr/bin/xx-apt,dst=/usr/bin/xx-apt \
+##   --mount=from=xx,source=/usr/bin/xx-apt,dst=/usr/bin/xx-apt-get \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-c++ \
+##   --mount=from=xx,source=/usr/bin/xx-cargo,dst=/usr/bin/xx-cargo \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-cc \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-clang \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-clang++ \
+##   --mount=from=xx,source=/usr/bin/xx-go,dst=/usr/bin/xx-go \
+##   --mount=from=xx,source=/usr/bin/xx-info,dst=/usr/bin/xx-info \
+##   --mount=from=xx,source=/usr/bin/xx-ld-shas,dst=/usr/bin/xx-ld-shas \
+##   --mount=from=xx,source=/usr/bin/xx-verify,dst=/usr/bin/xx-verify \
+##   --mount=from=xx,source=/usr/bin/xx-windres,dst=/usr/bin/xx-windres \
+##     set -eux \
+##  && if   command -v apk >/dev/null 2>&1; then \
+##                                      xx-apk     add     --no-cache                 '<none>'; \
+##     elif command -v apt >/dev/null 2>&1; then \
+##       DEBIAN_FRONTEND=noninteractive xx-apt     install --no-install-recommends -y 'libpq-dev'; \
+##     else \
+##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
+##     fi'''
+##
+## [[stages]]
+##
+## [stages.Cratesio]
+## stage = "cratesio-rustix-1.1.2"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustix-1.1.2"
+## name = "rustix"
+## name_dash_version = "rustix-1.1.2"
+## hash = "cd15f8a2c5551a84d56efdc1cd049089e409ac19a3072d5037a17fd70719ff3e"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "dep-x-rustix-1.1.2-4864f07ddb011df8"
+## script = '''
+## FROM rust-base AS dep-x-rustix-1.1.2-4864f07ddb011df8
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-diesel_cli_2-3-4/release/build/rustix-4864f07ddb011df8
+## RUN \
+##   --mount=from=cratesio-rustix-1.1.2,source=/rustix-1.1.2,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustix-1.1.2,rw \
+##     { \
+##         cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustix-1.1.2/build.rs | sed 's/fn main/fn actual_4864f07ddb011df8_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustix-1.1.2/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustix-1.1.2/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustix-1.1.2/build.rs ; \
+##         { \
+##           echo ; \
+##           echo 'fn main() {' ; \
+##           echo '    use std::env::{args_os, var_os};' ; \
+##           echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+##           echo '        use std::process::{Command, Stdio};' ; \
+##           echo '        let mut cmd = Command::new("cargo-green");' ; \
+##           echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+##           echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+##           echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+##           echo '        assert!(res.success());' ; \
+##           echo '    } else {' ; \
+##           echo '        actual_4864f07ddb011df8_main();' ; \
+##           echo '    }' ; \
+##           echo '}' ; \
+##         } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustix-1.1.2/build.rs ; \
+##     } && \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CRATE_NAME=build_script_build \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustix-1.1.2 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustix-1.1.2/Cargo.toml \
+##         CARGO_PKG_AUTHORS=Dan' Gohman <dev@sunfishcode.online>:Jakub Konka <kubkon@jakubkonka.com>' \
+##         CARGO_PKG_DESCRIPTION=Safe' Rust bindings to POSIX/Unix/Linux/Winsock-like syscalls' \
+##         CARGO_PKG_HOMEPAGE= \
+##         CARGO_PKG_LICENSE=Apache-2.0' WITH LLVM-exception OR Apache-2.0 OR MIT' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=rustix \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/bytecodealliance/rustix' \
+##         CARGO_PKG_RUST_VERSION=1.63 \
+##         CARGO_PKG_VERSION=1.1.2 \
+##         CARGO_PKG_VERSION_MAJOR=1 \
+##         CARGO_PKG_VERSION_MINOR=1 \
+##         CARGO_PKG_VERSION_PATCH=2 \
+##         CARGO_PKG_VERSION_PRE= \
+##         CARGOGREEN=1 \
+##       rustc '--crate-name' 'build_script_build' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'bin' '--emit' 'dep-info,link' '-C' 'embed-bitcode=no' '--warn' 'unexpected_cfgs' '--check-cfg' 'cfg(alloc_c_string)' '--check-cfg' 'cfg(alloc_ffi)' '--check-cfg' 'cfg(apple)' '--check-cfg' 'cfg(asm_experimental_arch)' '--check-cfg' 'cfg(bsd)' '--check-cfg' 'cfg(core_c_str)' '--check-cfg' 'cfg(core_ffi_c)' '--check-cfg' 'cfg(core_intrinsics)' '--check-cfg' 'cfg(criterion)' '--check-cfg' 'cfg(document_experimental_runtime_api)' '--check-cfg' 'cfg(error_in_core)' '--check-cfg' 'cfg(fix_y2038)' '--check-cfg' 'cfg(freebsdlike)' '--check-cfg' 'cfg(libc)' '--check-cfg' 'cfg(linux_kernel)' '--check-cfg' 'cfg(linux_like)' '--check-cfg' 'cfg(linux_raw)' '--check-cfg' 'cfg(linux_raw_dep)' '--check-cfg' 'cfg(lower_upper_exp_for_non_zero)' '--check-cfg' 'cfg(netbsdlike)' '--check-cfg' 'cfg(rustc_attrs)' '--check-cfg' 'cfg(rustc_diagnostics)' '--check-cfg' 'cfg(solarish)' '--check-cfg' 'cfg(staged_api)' '--check-cfg' 'cfg(static_assertions)' '--check-cfg' 'cfg(thumb_mode)' '--check-cfg' 'cfg(wasi)' '--check-cfg' 'cfg(wasi_ext)' '--check-cfg' 'cfg(wasip2)' '--check-cfg' 'cfg(target_arch, values("xtensa"))' '--check-cfg' 'cfg(target_os, values("cygwin"))' '-C' 'debug-assertions=off' '--cfg' 'feature="alloc"' '--cfg' 'feature="default"' '--cfg' 'feature="fs"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("all-apis", "alloc", "core", "default", "event", "fs", "io_uring", "libc", "libc_errno", "linux_4_11", "linux_5_1", "linux_5_11", "linux_latest", "mm", "mount", "net", "param", "pipe", "process", "pty", "rand", "runtime", "rustc-dep-of-std", "rustc-std-workspace-alloc", "shm", "std", "stdio", "system", "termios", "thread", "time", "try_close", "use-explicitly-provided-auxv", "use-libc", "use-libc-auxv"))' '-C' 'metadata=d1b36aabd68aec63' '-C' 'extra-filename=-4864f07ddb011df8' '--out-dir' '/tmp/clis-diesel_cli_2-3-4/release/build/rustix-4864f07ddb011df8' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-diesel_cli_2-3-4/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustix-1.1.2/build.rs \
+##         1>          /tmp/clis-diesel_cli_2-3-4/release/build/rustix-4864f07ddb011df8/out-4864f07ddb011df8-stdout \
+##         2>          /tmp/clis-diesel_cli_2-3-4/release/build/rustix-4864f07ddb011df8/out-4864f07ddb011df8-stderr \
+##         || echo $? >/tmp/clis-diesel_cli_2-3-4/release/build/rustix-4864f07ddb011df8/out-4864f07ddb011df8-errcode\
+##   ; find /tmp/clis-diesel_cli_2-3-4/release/build/rustix-4864f07ddb011df8/*-4864f07ddb011df8* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-4864f07ddb011df8"
+## script = """
+## FROM scratch AS out-4864f07ddb011df8
+## COPY --link --from=dep-x-rustix-1.1.2-4864f07ddb011df8 /tmp/clis-diesel_cli_2-3-4/release/build/rustix-4864f07ddb011df8/*-4864f07ddb011df8* /"""
+
+FROM rust-base AS run-z-rustix-1.1.2-9cd11e10d1300933
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-diesel_cli_2-3-4/release/build/rustix-9cd11e10d1300933/out
+WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustix-1.1.2
+RUN \
+  --mount=from=out-4864f07ddb011df8,source=/build_script_build-4864f07ddb011df8,dst=/tmp/clis-diesel_cli_2-3-4/release/build/rustix-4864f07ddb011df8/build-script-build \
+  --mount=from=cratesio-rustix-1.1.2,source=/rustix-1.1.2,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustix-1.1.2 \
+    env CARGO="$(which cargo)" \
+        CARGO_CFG_FEATURE=alloc,default,fs,std \
+        CARGO_CFG_PANIC=unwind \
+        CARGO_CFG_TARGET_ABI= \
+        CARGO_CFG_TARGET_ARCH=x86_64 \
+        CARGO_CFG_TARGET_ENDIAN=little \
+        CARGO_CFG_TARGET_ENV=gnu \
+        CARGO_CFG_TARGET_FAMILY=unix \
+        CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
+        CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+        CARGO_CFG_TARGET_OS=linux \
+        CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+        CARGO_CFG_TARGET_VENDOR=unknown \
+        CARGO_CFG_UNIX= \
+        CARGO_ENCODED_RUSTFLAGS= \
+        CARGO_FEATURE_ALLOC=1 \
+        CARGO_FEATURE_DEFAULT=1 \
+        CARGO_FEATURE_FS=1 \
+        CARGO_FEATURE_STD=1 \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustix-1.1.2 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustix-1.1.2/Cargo.toml \
+        CARGO_PKG_AUTHORS=Dan' Gohman <dev@sunfishcode.online>:Jakub Konka <kubkon@jakubkonka.com>' \
+        CARGO_PKG_DESCRIPTION=Safe' Rust bindings to POSIX/Unix/Linux/Winsock-like syscalls' \
+        CARGO_PKG_HOMEPAGE= \
+        CARGO_PKG_LICENSE=Apache-2.0' WITH LLVM-exception OR Apache-2.0 OR MIT' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=rustix \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/bytecodealliance/rustix' \
+        CARGO_PKG_RUST_VERSION=1.63 \
+        CARGO_PKG_VERSION=1.1.2 \
+        CARGO_PKG_VERSION_MAJOR=1 \
+        CARGO_PKG_VERSION_MINOR=1 \
+        CARGO_PKG_VERSION_PATCH=2 \
+        CARGO_PKG_VERSION_PRE= \
+        DEBUG=false \
+        HOST=x86_64-unknown-linux-gnu \
+        NUM_JOBS=4 \
+        OPT_LEVEL=3 \
+        OUT_DIR=/tmp/clis-diesel_cli_2-3-4/release/build/rustix-9cd11e10d1300933/out \
+        PROFILE=release \
+        RUSTC=rustc \
+        RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+        TARGET=x86_64-unknown-linux-gnu \
+        CARGOGREEN=1 \
+      CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-diesel_cli_2-3-4/release/build/rustix-4864f07ddb011df8/build-script-build \
+        1>          /tmp/clis-diesel_cli_2-3-4/release/build/rustix-9cd11e10d1300933/out/out-9cd11e10d1300933-stdout \
+        2>          /tmp/clis-diesel_cli_2-3-4/release/build/rustix-9cd11e10d1300933/out/out-9cd11e10d1300933-stderr \
+        || echo $? >/tmp/clis-diesel_cli_2-3-4/release/build/rustix-9cd11e10d1300933/out/out-9cd11e10d1300933-errcode\
+  ; find /tmp/clis-diesel_cli_2-3-4/release/build/rustix-9cd11e10d1300933/out/*-9cd11e10d1300933* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-9cd11e10d1300933
+COPY --link --from=run-z-rustix-1.1.2-9cd11e10d1300933 /tmp/clis-diesel_cli_2-3-4/release/build/rustix-9cd11e10d1300933/out/* /
+
+## this = "9cd11e10d1300933"
+## deps = ["4864f07ddb011df8"]
+## stdout = [
+##     "cargo:rerun-if-changed=build.rs",
+##     "cargo:rustc-cfg=static_assertions",
+##     "cargo:rustc-cfg=lower_upper_exp_for_non_zero",
+##     "cargo:rustc-cfg=rustc_diagnostics",
+##     "cargo:rustc-cfg=linux_raw_dep",
+##     "cargo:rustc-cfg=linux_raw",
+##     "cargo:rustc-cfg=linux_like",
+##     "cargo:rustc-cfg=linux_kernel",
+##     "cargo:rerun-if-env-changed=CARGO_CFG_RUSTIX_USE_EXPERIMENTAL_ASM",
+##     "cargo:rerun-if-env-changed=CARGO_CFG_RUSTIX_USE_LIBC",
+##     "cargo:rerun-if-env-changed=CARGO_FEATURE_USE_LIBC",
+##     "cargo:rerun-if-env-changed=CARGO_FEATURE_RUSTC_DEP_OF_STD",
+##     "cargo:rerun-if-env-changed=CARGO_CFG_MIRI",
+## ]
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = '''
+## FROM --platform=$BUILDPLATFORM docker.io/tonistiigi/xx:1.6.1@sha256:923441d7c25f1e2eb5789f82d987693c47b8ed987c4ab3b075d6ed2b5d6779a3 AS xx
+## FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base
+## ARG TARGETPLATFORM
+## RUN \
+##   --mount=from=xx,source=/usr/bin/xx-apk,dst=/usr/bin/xx-apk \
+##   --mount=from=xx,source=/usr/bin/xx-apt,dst=/usr/bin/xx-apt \
+##   --mount=from=xx,source=/usr/bin/xx-apt,dst=/usr/bin/xx-apt-get \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-c++ \
+##   --mount=from=xx,source=/usr/bin/xx-cargo,dst=/usr/bin/xx-cargo \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-cc \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-clang \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-clang++ \
+##   --mount=from=xx,source=/usr/bin/xx-go,dst=/usr/bin/xx-go \
+##   --mount=from=xx,source=/usr/bin/xx-info,dst=/usr/bin/xx-info \
+##   --mount=from=xx,source=/usr/bin/xx-ld-shas,dst=/usr/bin/xx-ld-shas \
+##   --mount=from=xx,source=/usr/bin/xx-verify,dst=/usr/bin/xx-verify \
+##   --mount=from=xx,source=/usr/bin/xx-windres,dst=/usr/bin/xx-windres \
+##     set -eux \
+##  && if   command -v apk >/dev/null 2>&1; then \
+##                                      xx-apk     add     --no-cache                 '<none>'; \
+##     elif command -v apt >/dev/null 2>&1; then \
+##       DEBIAN_FRONTEND=noninteractive xx-apt     install --no-install-recommends -y 'libpq-dev'; \
+##     else \
+##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
+##     fi'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "run-z-rustix-1.1.2-9cd11e10d1300933"
+## script = '''
+## FROM rust-base AS run-z-rustix-1.1.2-9cd11e10d1300933
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-diesel_cli_2-3-4/release/build/rustix-9cd11e10d1300933/out
+## WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustix-1.1.2
+## RUN \
+##   --mount=from=out-4864f07ddb011df8,source=/build_script_build-4864f07ddb011df8,dst=/tmp/clis-diesel_cli_2-3-4/release/build/rustix-4864f07ddb011df8/build-script-build \
+##   --mount=from=cratesio-rustix-1.1.2,source=/rustix-1.1.2,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustix-1.1.2 \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CFG_FEATURE=alloc,default,fs,std \
+##         CARGO_CFG_PANIC=unwind \
+##         CARGO_CFG_TARGET_ABI= \
+##         CARGO_CFG_TARGET_ARCH=x86_64 \
+##         CARGO_CFG_TARGET_ENDIAN=little \
+##         CARGO_CFG_TARGET_ENV=gnu \
+##         CARGO_CFG_TARGET_FAMILY=unix \
+##         CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
+##         CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+##         CARGO_CFG_TARGET_OS=linux \
+##         CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+##         CARGO_CFG_TARGET_VENDOR=unknown \
+##         CARGO_CFG_UNIX= \
+##         CARGO_ENCODED_RUSTFLAGS= \
+##         CARGO_FEATURE_ALLOC=1 \
+##         CARGO_FEATURE_DEFAULT=1 \
+##         CARGO_FEATURE_FS=1 \
+##         CARGO_FEATURE_STD=1 \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustix-1.1.2 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustix-1.1.2/Cargo.toml \
+##         CARGO_PKG_AUTHORS=Dan' Gohman <dev@sunfishcode.online>:Jakub Konka <kubkon@jakubkonka.com>' \
+##         CARGO_PKG_DESCRIPTION=Safe' Rust bindings to POSIX/Unix/Linux/Winsock-like syscalls' \
+##         CARGO_PKG_HOMEPAGE= \
+##         CARGO_PKG_LICENSE=Apache-2.0' WITH LLVM-exception OR Apache-2.0 OR MIT' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=rustix \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/bytecodealliance/rustix' \
+##         CARGO_PKG_RUST_VERSION=1.63 \
+##         CARGO_PKG_VERSION=1.1.2 \
+##         CARGO_PKG_VERSION_MAJOR=1 \
+##         CARGO_PKG_VERSION_MINOR=1 \
+##         CARGO_PKG_VERSION_PATCH=2 \
+##         CARGO_PKG_VERSION_PRE= \
+##         DEBUG=false \
+##         HOST=x86_64-unknown-linux-gnu \
+##         NUM_JOBS=4 \
+##         OPT_LEVEL=3 \
+##         OUT_DIR=/tmp/clis-diesel_cli_2-3-4/release/build/rustix-9cd11e10d1300933/out \
+##         PROFILE=release \
+##         RUSTC=rustc \
+##         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+##         TARGET=x86_64-unknown-linux-gnu \
+##         CARGOGREEN=1 \
+##       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-diesel_cli_2-3-4/release/build/rustix-4864f07ddb011df8/build-script-build \
+##         1>          /tmp/clis-diesel_cli_2-3-4/release/build/rustix-9cd11e10d1300933/out/out-9cd11e10d1300933-stdout \
+##         2>          /tmp/clis-diesel_cli_2-3-4/release/build/rustix-9cd11e10d1300933/out/out-9cd11e10d1300933-stderr \
+##         || echo $? >/tmp/clis-diesel_cli_2-3-4/release/build/rustix-9cd11e10d1300933/out/out-9cd11e10d1300933-errcode\
+##   ; find /tmp/clis-diesel_cli_2-3-4/release/build/rustix-9cd11e10d1300933/out/*-9cd11e10d1300933* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-9cd11e10d1300933"
+## script = """
+## FROM scratch AS out-9cd11e10d1300933
+## COPY --link --from=run-z-rustix-1.1.2-9cd11e10d1300933 /tmp/clis-diesel_cli_2-3-4/release/build/rustix-9cd11e10d1300933/out/* /"""
+
+
 FROM rust-base AS dep-n-rustix-1.1.2-004b5f74bdc719b9
 SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-diesel_cli_2-3-4/release/deps
@@ -11942,6 +17142,7 @@ RUN \
   --mount=from=out-4675c163a7bf2c28,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libbitflags-4675c163a7bf2c28.rmeta,source=/libbitflags-4675c163a7bf2c28.rmeta \
   --mount=from=out-ebded25e6abcab7c,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/liblinux_raw_sys-ebded25e6abcab7c.rlib,source=/liblinux_raw_sys-ebded25e6abcab7c.rlib \
   --mount=from=out-ebded25e6abcab7c,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/liblinux_raw_sys-ebded25e6abcab7c.rmeta,source=/liblinux_raw_sys-ebded25e6abcab7c.rmeta \
+  --mount=from=out-9cd11e10d1300933,dst=/tmp/clis-diesel_cli_2-3-4/release/build/rustix-9cd11e10d1300933/out,source=/ \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=rustix \
         CARGO_INCREMENTAL=0 \
@@ -11975,7 +17176,10 @@ COPY --link --from=dep-n-rustix-1.1.2-004b5f74bdc719b9 /tmp/clis-diesel_cli_2-3-
 ## deps = [
 ##     "4675c163a7bf2c28",
 ##     "ebded25e6abcab7c",
+##     "9cd11e10d1300933",
+##     "4864f07ddb011df8",
 ## ]
+## buildrs_results = ["9cd11e10d1300933"]
 ## writes = [
 ##     "librustix-004b5f74bdc719b9.rlib",
 ##     "librustix-004b5f74bdc719b9.rmeta",
@@ -12002,6 +17206,11 @@ COPY --link --from=dep-n-rustix-1.1.2-004b5f74bdc719b9 /tmp/clis-diesel_cli_2-3-
 ## [[externs]]
 ## from = "out-ebded25e6abcab7c"
 ## xtern = "liblinux_raw_sys-ebded25e6abcab7c.rmeta"
+##
+## [[mounts]]
+## name = "out-9cd11e10d1300933"
+## src = "/"
+## dst = "/tmp/clis-diesel_cli_2-3-4/release/build/rustix-9cd11e10d1300933/out"
 ##
 ## [[stages]]
 ##
@@ -12057,6 +17266,7 @@ COPY --link --from=dep-n-rustix-1.1.2-004b5f74bdc719b9 /tmp/clis-diesel_cli_2-3-
 ##   --mount=from=out-4675c163a7bf2c28,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libbitflags-4675c163a7bf2c28.rmeta,source=/libbitflags-4675c163a7bf2c28.rmeta \
 ##   --mount=from=out-ebded25e6abcab7c,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/liblinux_raw_sys-ebded25e6abcab7c.rlib,source=/liblinux_raw_sys-ebded25e6abcab7c.rlib \
 ##   --mount=from=out-ebded25e6abcab7c,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/liblinux_raw_sys-ebded25e6abcab7c.rmeta,source=/liblinux_raw_sys-ebded25e6abcab7c.rmeta \
+##   --mount=from=out-9cd11e10d1300933,dst=/tmp/clis-diesel_cli_2-3-4/release/build/rustix-9cd11e10d1300933/out,source=/ \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=rustix \
 ##         CARGO_INCREMENTAL=0 \
@@ -12108,6 +17318,7 @@ RUN \
   --mount=from=out-4675c163a7bf2c28,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libbitflags-4675c163a7bf2c28.rmeta,source=/libbitflags-4675c163a7bf2c28.rmeta \
   --mount=from=out-ebded25e6abcab7c,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/liblinux_raw_sys-ebded25e6abcab7c.rlib,source=/liblinux_raw_sys-ebded25e6abcab7c.rlib \
   --mount=from=out-ebded25e6abcab7c,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/liblinux_raw_sys-ebded25e6abcab7c.rmeta,source=/liblinux_raw_sys-ebded25e6abcab7c.rmeta \
+  --mount=from=out-4864f07ddb011df8,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-4864f07ddb011df8,source=/build_script_build-4864f07ddb011df8 \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=fd_lock \
         CARGO_INCREMENTAL=0 \
@@ -12142,7 +17353,10 @@ COPY --link --from=dep-n-fd-lock-4.0.4-19b4a9fbac6296c8 /tmp/clis-diesel_cli_2-3
 ##     "004b5f74bdc719b9",
 ##     "4675c163a7bf2c28",
 ##     "ebded25e6abcab7c",
+##     "9cd11e10d1300933",
+##     "4864f07ddb011df8",
 ## ]
+## buildrs_results = ["9cd11e10d1300933"]
 ## writes = [
 ##     "fd_lock-19b4a9fbac6296c8.d",
 ##     "libfd_lock-19b4a9fbac6296c8.rlib",
@@ -12185,6 +17399,10 @@ COPY --link --from=dep-n-fd-lock-4.0.4-19b4a9fbac6296c8 /tmp/clis-diesel_cli_2-3
 ## [[externs]]
 ## from = "out-ebded25e6abcab7c"
 ## xtern = "liblinux_raw_sys-ebded25e6abcab7c.rmeta"
+##
+## [[externs]]
+## from = "out-4864f07ddb011df8"
+## xtern = "build_script_build-4864f07ddb011df8"
 ##
 ## [[stages]]
 ##
@@ -12244,6 +17462,7 @@ COPY --link --from=dep-n-fd-lock-4.0.4-19b4a9fbac6296c8 /tmp/clis-diesel_cli_2-3
 ##   --mount=from=out-4675c163a7bf2c28,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libbitflags-4675c163a7bf2c28.rmeta,source=/libbitflags-4675c163a7bf2c28.rmeta \
 ##   --mount=from=out-ebded25e6abcab7c,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/liblinux_raw_sys-ebded25e6abcab7c.rlib,source=/liblinux_raw_sys-ebded25e6abcab7c.rlib \
 ##   --mount=from=out-ebded25e6abcab7c,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/liblinux_raw_sys-ebded25e6abcab7c.rmeta,source=/liblinux_raw_sys-ebded25e6abcab7c.rmeta \
+##   --mount=from=out-4864f07ddb011df8,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-4864f07ddb011df8,source=/build_script_build-4864f07ddb011df8 \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=fd_lock \
 ##         CARGO_INCREMENTAL=0 \
@@ -13211,15 +18430,20 @@ RUN \
   --mount=from=out-02668a5ba984a64f,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde-02668a5ba984a64f.rmeta,source=/libserde-02668a5ba984a64f.rmeta \
   --mount=from=out-8e892930c8cabc4c,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde_core-8e892930c8cabc4c.rlib,source=/libserde_core-8e892930c8cabc4c.rlib \
   --mount=from=out-8e892930c8cabc4c,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde_core-8e892930c8cabc4c.rmeta,source=/libserde_core-8e892930c8cabc4c.rmeta \
+  --mount=from=out-542dbc5d310e9565,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/private.rs,source=/private.rs \
+  --mount=from=out-d7b3469e26105631,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-d7b3469e26105631,source=/build_script_build-d7b3469e26105631 \
   --mount=from=out-6a6518b24fbf25e4,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde_derive-6a6518b24fbf25e4.so,source=/libserde_derive-6a6518b24fbf25e4.so \
   --mount=from=out-e1e423eb99bb7e63,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libproc_macro2-e1e423eb99bb7e63.rlib,source=/libproc_macro2-e1e423eb99bb7e63.rlib \
   --mount=from=out-e1e423eb99bb7e63,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libproc_macro2-e1e423eb99bb7e63.rmeta,source=/libproc_macro2-e1e423eb99bb7e63.rmeta \
   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rlib,source=/libunicode_ident-721470d94fc0c354.rlib \
   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rmeta,source=/libunicode_ident-721470d94fc0c354.rmeta \
+  --mount=from=out-71babfb997932318,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-71babfb997932318,source=/build_script_build-71babfb997932318 \
   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rlib,source=/libquote-87872b55644e5043.rlib \
   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rmeta,source=/libquote-87872b55644e5043.rmeta \
+  --mount=from=out-c63aae50eb6f480a,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-c63aae50eb6f480a,source=/build_script_build-c63aae50eb6f480a \
   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rlib,source=/libsyn-12379804391f3f43.rlib \
   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rmeta,source=/libsyn-12379804391f3f43.rmeta \
+  --mount=from=out-9e59eb4de4feaddb,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-9e59eb4de4feaddb,source=/build_script_build-9e59eb4de4feaddb \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=serde_regex \
         CARGO_INCREMENTAL=0 \
@@ -13258,11 +18482,25 @@ COPY --link --from=dep-n-serde_regex-1.1.0-777e1b7f11d7b2b4 /tmp/clis-diesel_cli
 ##     "5c437b077fc6adbb",
 ##     "02668a5ba984a64f",
 ##     "8e892930c8cabc4c",
+##     "542dbc5d310e9565",
+##     "d7b3469e26105631",
 ##     "6a6518b24fbf25e4",
 ##     "e1e423eb99bb7e63",
 ##     "721470d94fc0c354",
+##     "e93dddbb48c6a6fc",
+##     "71babfb997932318",
 ##     "87872b55644e5043",
+##     "edf8f660a3d601cc",
+##     "c63aae50eb6f480a",
 ##     "12379804391f3f43",
+##     "cfe125327cacaf16",
+##     "9e59eb4de4feaddb",
+## ]
+## buildrs_results = [
+##     "542dbc5d310e9565",
+##     "e93dddbb48c6a6fc",
+##     "edf8f660a3d601cc",
+##     "cfe125327cacaf16",
 ## ]
 ## writes = [
 ##     "libserde_regex-777e1b7f11d7b2b4.rlib",
@@ -13332,6 +18570,14 @@ COPY --link --from=dep-n-serde_regex-1.1.0-777e1b7f11d7b2b4 /tmp/clis-diesel_cli
 ## xtern = "libserde_core-8e892930c8cabc4c.rmeta"
 ##
 ## [[externs]]
+## from = "out-542dbc5d310e9565"
+## xtern = "private.rs"
+##
+## [[externs]]
+## from = "out-d7b3469e26105631"
+## xtern = "build_script_build-d7b3469e26105631"
+##
+## [[externs]]
 ## from = "out-6a6518b24fbf25e4"
 ## xtern = "libserde_derive-6a6518b24fbf25e4.so"
 ##
@@ -13352,12 +18598,20 @@ COPY --link --from=dep-n-serde_regex-1.1.0-777e1b7f11d7b2b4 /tmp/clis-diesel_cli
 ## xtern = "libunicode_ident-721470d94fc0c354.rmeta"
 ##
 ## [[externs]]
+## from = "out-71babfb997932318"
+## xtern = "build_script_build-71babfb997932318"
+##
+## [[externs]]
 ## from = "out-87872b55644e5043"
 ## xtern = "libquote-87872b55644e5043.rlib"
 ##
 ## [[externs]]
 ## from = "out-87872b55644e5043"
 ## xtern = "libquote-87872b55644e5043.rmeta"
+##
+## [[externs]]
+## from = "out-c63aae50eb6f480a"
+## xtern = "build_script_build-c63aae50eb6f480a"
 ##
 ## [[externs]]
 ## from = "out-12379804391f3f43"
@@ -13367,13 +18621,9 @@ COPY --link --from=dep-n-serde_regex-1.1.0-777e1b7f11d7b2b4 /tmp/clis-diesel_cli
 ## from = "out-12379804391f3f43"
 ## xtern = "libsyn-12379804391f3f43.rmeta"
 ##
-## [[contexts]]
-## name = "crate_out-cfe125327cacaf16"
-## uri = "/tmp/clis-diesel_cli_2-3-4/release/build/serde-cfe125327cacaf16/out"
-##
-## [[contexts]]
-## name = "crate_out-542dbc5d310e9565"
-## uri = "/tmp/clis-diesel_cli_2-3-4/release/build/serde_core-542dbc5d310e9565/out"
+## [[externs]]
+## from = "out-9e59eb4de4feaddb"
+## xtern = "build_script_build-9e59eb4de4feaddb"
 ##
 ## [[stages]]
 ##
@@ -13439,15 +18689,20 @@ COPY --link --from=dep-n-serde_regex-1.1.0-777e1b7f11d7b2b4 /tmp/clis-diesel_cli
 ##   --mount=from=out-02668a5ba984a64f,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde-02668a5ba984a64f.rmeta,source=/libserde-02668a5ba984a64f.rmeta \
 ##   --mount=from=out-8e892930c8cabc4c,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde_core-8e892930c8cabc4c.rlib,source=/libserde_core-8e892930c8cabc4c.rlib \
 ##   --mount=from=out-8e892930c8cabc4c,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde_core-8e892930c8cabc4c.rmeta,source=/libserde_core-8e892930c8cabc4c.rmeta \
+##   --mount=from=out-542dbc5d310e9565,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/private.rs,source=/private.rs \
+##   --mount=from=out-d7b3469e26105631,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-d7b3469e26105631,source=/build_script_build-d7b3469e26105631 \
 ##   --mount=from=out-6a6518b24fbf25e4,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde_derive-6a6518b24fbf25e4.so,source=/libserde_derive-6a6518b24fbf25e4.so \
 ##   --mount=from=out-e1e423eb99bb7e63,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libproc_macro2-e1e423eb99bb7e63.rlib,source=/libproc_macro2-e1e423eb99bb7e63.rlib \
 ##   --mount=from=out-e1e423eb99bb7e63,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libproc_macro2-e1e423eb99bb7e63.rmeta,source=/libproc_macro2-e1e423eb99bb7e63.rmeta \
 ##   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rlib,source=/libunicode_ident-721470d94fc0c354.rlib \
 ##   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rmeta,source=/libunicode_ident-721470d94fc0c354.rmeta \
+##   --mount=from=out-71babfb997932318,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-71babfb997932318,source=/build_script_build-71babfb997932318 \
 ##   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rlib,source=/libquote-87872b55644e5043.rlib \
 ##   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rmeta,source=/libquote-87872b55644e5043.rmeta \
+##   --mount=from=out-c63aae50eb6f480a,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-c63aae50eb6f480a,source=/build_script_build-c63aae50eb6f480a \
 ##   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rlib,source=/libsyn-12379804391f3f43.rlib \
 ##   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rmeta,source=/libsyn-12379804391f3f43.rmeta \
+##   --mount=from=out-9e59eb4de4feaddb,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-9e59eb4de4feaddb,source=/build_script_build-9e59eb4de4feaddb \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=serde_regex \
 ##         CARGO_INCREMENTAL=0 \
@@ -13625,6 +18880,7 @@ RUN \
   --mount=from=cratesio-console-0.15.11,source=/console-0.15.11,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/console-0.15.11 \
   --mount=from=out-7f08a5fdefdb5905,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/liblibc-7f08a5fdefdb5905.rlib,source=/liblibc-7f08a5fdefdb5905.rlib \
   --mount=from=out-7f08a5fdefdb5905,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/liblibc-7f08a5fdefdb5905.rmeta,source=/liblibc-7f08a5fdefdb5905.rmeta \
+  --mount=from=out-880d2e011f9f14fa,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-880d2e011f9f14fa,source=/build_script_build-880d2e011f9f14fa \
   --mount=from=out-d2455ec75a446def,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libonce_cell-d2455ec75a446def.rlib,source=/libonce_cell-d2455ec75a446def.rlib \
   --mount=from=out-d2455ec75a446def,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libonce_cell-d2455ec75a446def.rmeta,source=/libonce_cell-d2455ec75a446def.rmeta \
     env CARGO="$(which cargo)" \
@@ -13658,8 +18914,11 @@ COPY --link --from=dep-n-console-0.15.11-6cfd276d6c1b9a9b /tmp/clis-diesel_cli_2
 ## this = "6cfd276d6c1b9a9b"
 ## deps = [
 ##     "7f08a5fdefdb5905",
+##     "a2e72ddbcd62bc9f",
+##     "880d2e011f9f14fa",
 ##     "d2455ec75a446def",
 ## ]
+## buildrs_results = ["a2e72ddbcd62bc9f"]
 ## writes = [
 ##     "console-6cfd276d6c1b9a9b.d",
 ##     "libconsole-6cfd276d6c1b9a9b.rlib",
@@ -13678,6 +18937,10 @@ COPY --link --from=dep-n-console-0.15.11-6cfd276d6c1b9a9b /tmp/clis-diesel_cli_2
 ## [[externs]]
 ## from = "out-7f08a5fdefdb5905"
 ## xtern = "liblibc-7f08a5fdefdb5905.rmeta"
+##
+## [[externs]]
+## from = "out-880d2e011f9f14fa"
+## xtern = "build_script_build-880d2e011f9f14fa"
 ##
 ## [[externs]]
 ## from = "out-d2455ec75a446def"
@@ -13739,6 +19002,7 @@ COPY --link --from=dep-n-console-0.15.11-6cfd276d6c1b9a9b /tmp/clis-diesel_cli_2
 ##   --mount=from=cratesio-console-0.15.11,source=/console-0.15.11,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/console-0.15.11 \
 ##   --mount=from=out-7f08a5fdefdb5905,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/liblibc-7f08a5fdefdb5905.rlib,source=/liblibc-7f08a5fdefdb5905.rlib \
 ##   --mount=from=out-7f08a5fdefdb5905,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/liblibc-7f08a5fdefdb5905.rmeta,source=/liblibc-7f08a5fdefdb5905.rmeta \
+##   --mount=from=out-880d2e011f9f14fa,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-880d2e011f9f14fa,source=/build_script_build-880d2e011f9f14fa \
 ##   --mount=from=out-d2455ec75a446def,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libonce_cell-d2455ec75a446def.rlib,source=/libonce_cell-d2455ec75a446def.rlib \
 ##   --mount=from=out-d2455ec75a446def,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libonce_cell-d2455ec75a446def.rmeta,source=/libonce_cell-d2455ec75a446def.rmeta \
 ##     env CARGO="$(which cargo)" \
@@ -14080,6 +19344,7 @@ RUN \
   --mount=from=out-6cfd276d6c1b9a9b,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libconsole-6cfd276d6c1b9a9b.rmeta,source=/libconsole-6cfd276d6c1b9a9b.rmeta \
   --mount=from=out-7f08a5fdefdb5905,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/liblibc-7f08a5fdefdb5905.rlib,source=/liblibc-7f08a5fdefdb5905.rlib \
   --mount=from=out-7f08a5fdefdb5905,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/liblibc-7f08a5fdefdb5905.rmeta,source=/liblibc-7f08a5fdefdb5905.rmeta \
+  --mount=from=out-880d2e011f9f14fa,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-880d2e011f9f14fa,source=/build_script_build-880d2e011f9f14fa \
   --mount=from=out-d2455ec75a446def,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libonce_cell-d2455ec75a446def.rlib,source=/libonce_cell-d2455ec75a446def.rlib \
   --mount=from=out-d2455ec75a446def,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libonce_cell-d2455ec75a446def.rmeta,source=/libonce_cell-d2455ec75a446def.rmeta \
   --mount=from=out-2c71dd8bab7abfb3,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsimilar-2c71dd8bab7abfb3.rlib,source=/libsimilar-2c71dd8bab7abfb3.rlib \
@@ -14118,10 +19383,13 @@ COPY --link --from=dep-n-similar-asserts-1.7.0-3379046ff2c61642 /tmp/clis-diesel
 ## deps = [
 ##     "6cfd276d6c1b9a9b",
 ##     "7f08a5fdefdb5905",
+##     "a2e72ddbcd62bc9f",
+##     "880d2e011f9f14fa",
 ##     "d2455ec75a446def",
 ##     "2c71dd8bab7abfb3",
 ##     "a70dafa21eb76dac",
 ## ]
+## buildrs_results = ["a2e72ddbcd62bc9f"]
 ## writes = [
 ##     "libsimilar_asserts-3379046ff2c61642.rlib",
 ##     "libsimilar_asserts-3379046ff2c61642.rmeta",
@@ -14148,6 +19416,10 @@ COPY --link --from=dep-n-similar-asserts-1.7.0-3379046ff2c61642 /tmp/clis-diesel
 ## [[externs]]
 ## from = "out-7f08a5fdefdb5905"
 ## xtern = "liblibc-7f08a5fdefdb5905.rmeta"
+##
+## [[externs]]
+## from = "out-880d2e011f9f14fa"
+## xtern = "build_script_build-880d2e011f9f14fa"
 ##
 ## [[externs]]
 ## from = "out-d2455ec75a446def"
@@ -14227,6 +19499,7 @@ COPY --link --from=dep-n-similar-asserts-1.7.0-3379046ff2c61642 /tmp/clis-diesel
 ##   --mount=from=out-6cfd276d6c1b9a9b,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libconsole-6cfd276d6c1b9a9b.rmeta,source=/libconsole-6cfd276d6c1b9a9b.rmeta \
 ##   --mount=from=out-7f08a5fdefdb5905,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/liblibc-7f08a5fdefdb5905.rlib,source=/liblibc-7f08a5fdefdb5905.rlib \
 ##   --mount=from=out-7f08a5fdefdb5905,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/liblibc-7f08a5fdefdb5905.rmeta,source=/liblibc-7f08a5fdefdb5905.rmeta \
+##   --mount=from=out-880d2e011f9f14fa,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-880d2e011f9f14fa,source=/build_script_build-880d2e011f9f14fa \
 ##   --mount=from=out-d2455ec75a446def,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libonce_cell-d2455ec75a446def.rlib,source=/libonce_cell-d2455ec75a446def.rlib \
 ##   --mount=from=out-d2455ec75a446def,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libonce_cell-d2455ec75a446def.rmeta,source=/libonce_cell-d2455ec75a446def.rmeta \
 ##   --mount=from=out-2c71dd8bab7abfb3,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsimilar-2c71dd8bab7abfb3.rlib,source=/libsimilar-2c71dd8bab7abfb3.rlib \
@@ -14277,7 +19550,9 @@ RUN \
   --mount=from=cratesio-thiserror-impl-2.0.17,source=/thiserror-impl-2.0.17,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thiserror-impl-2.0.17 \
   --mount=from=out-e1e423eb99bb7e63,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libproc_macro2-e1e423eb99bb7e63.rlib,source=/libproc_macro2-e1e423eb99bb7e63.rlib \
   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rlib,source=/libunicode_ident-721470d94fc0c354.rlib \
+  --mount=from=out-71babfb997932318,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-71babfb997932318,source=/build_script_build-71babfb997932318 \
   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rlib,source=/libquote-87872b55644e5043.rlib \
+  --mount=from=out-c63aae50eb6f480a,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-c63aae50eb6f480a,source=/build_script_build-c63aae50eb6f480a \
   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rlib,source=/libsyn-12379804391f3f43.rlib \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=thiserror_impl \
@@ -14311,8 +19586,16 @@ COPY --link --from=dep-n-thiserror-impl-2.0.17-d12f251f78756cbc /tmp/clis-diesel
 ## deps = [
 ##     "e1e423eb99bb7e63",
 ##     "721470d94fc0c354",
+##     "e93dddbb48c6a6fc",
+##     "71babfb997932318",
 ##     "87872b55644e5043",
+##     "edf8f660a3d601cc",
+##     "c63aae50eb6f480a",
 ##     "12379804391f3f43",
+## ]
+## buildrs_results = [
+##     "e93dddbb48c6a6fc",
+##     "edf8f660a3d601cc",
 ## ]
 ## writes = [
 ##     "libthiserror_impl-d12f251f78756cbc.so",
@@ -14332,8 +19615,16 @@ COPY --link --from=dep-n-thiserror-impl-2.0.17-d12f251f78756cbc /tmp/clis-diesel
 ## xtern = "libunicode_ident-721470d94fc0c354.rlib"
 ##
 ## [[externs]]
+## from = "out-71babfb997932318"
+## xtern = "build_script_build-71babfb997932318"
+##
+## [[externs]]
 ## from = "out-87872b55644e5043"
 ## xtern = "libquote-87872b55644e5043.rlib"
+##
+## [[externs]]
+## from = "out-c63aae50eb6f480a"
+## xtern = "build_script_build-c63aae50eb6f480a"
 ##
 ## [[externs]]
 ## from = "out-12379804391f3f43"
@@ -14391,7 +19682,9 @@ COPY --link --from=dep-n-thiserror-impl-2.0.17-d12f251f78756cbc /tmp/clis-diesel
 ##   --mount=from=cratesio-thiserror-impl-2.0.17,source=/thiserror-impl-2.0.17,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thiserror-impl-2.0.17 \
 ##   --mount=from=out-e1e423eb99bb7e63,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libproc_macro2-e1e423eb99bb7e63.rlib,source=/libproc_macro2-e1e423eb99bb7e63.rlib \
 ##   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rlib,source=/libunicode_ident-721470d94fc0c354.rlib \
+##   --mount=from=out-71babfb997932318,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-71babfb997932318,source=/build_script_build-71babfb997932318 \
 ##   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rlib,source=/libquote-87872b55644e5043.rlib \
+##   --mount=from=out-c63aae50eb6f480a,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-c63aae50eb6f480a,source=/build_script_build-c63aae50eb6f480a \
 ##   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rlib,source=/libsyn-12379804391f3f43.rlib \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=thiserror_impl \
@@ -14430,17 +19723,356 @@ COPY --link --from=dep-n-thiserror-impl-2.0.17-d12f251f78756cbc /tmp/clis-diesel
 FROM scratch AS cratesio-thiserror-2.0.17
 ADD --chmod=0664 --unpack --checksum=sha256:f63587ca0f12b72a0600bcba1d40081f830876000bb46dd2337a3051618f4fc8 \
   https://static.crates.io/crates/thiserror/thiserror-2.0.17.crate /
+FROM rust-base AS dep-x-thiserror-2.0.17-4bfe9ea2e7e5814f
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-diesel_cli_2-3-4/release/build/thiserror-4bfe9ea2e7e5814f
+RUN \
+  --mount=from=cratesio-thiserror-2.0.17,source=/thiserror-2.0.17,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thiserror-2.0.17,rw \
+    { \
+        cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thiserror-2.0.17/build.rs | sed 's/fn main/fn actual_4bfe9ea2e7e5814f_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thiserror-2.0.17/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thiserror-2.0.17/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thiserror-2.0.17/build.rs ; \
+        { \
+          echo ; \
+          echo 'fn main() {' ; \
+          echo '    use std::env::{args_os, var_os};' ; \
+          echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+          echo '        use std::process::{Command, Stdio};' ; \
+          echo '        let mut cmd = Command::new("cargo-green");' ; \
+          echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+          echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+          echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+          echo '        assert!(res.success());' ; \
+          echo '    } else {' ; \
+          echo '        actual_4bfe9ea2e7e5814f_main();' ; \
+          echo '    }' ; \
+          echo '}' ; \
+        } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thiserror-2.0.17/build.rs ; \
+    } && \
+    env CARGO="$(which cargo)" \
+        CARGO_CRATE_NAME=build_script_build \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thiserror-2.0.17 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thiserror-2.0.17/Cargo.toml \
+        CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>' \
+        CARGO_PKG_DESCRIPTION=derive'(Error)' \
+        CARGO_PKG_HOMEPAGE= \
+        CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=thiserror \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/dtolnay/thiserror' \
+        CARGO_PKG_RUST_VERSION=1.61 \
+        CARGO_PKG_VERSION=2.0.17 \
+        CARGO_PKG_VERSION_MAJOR=2 \
+        CARGO_PKG_VERSION_MINOR=0 \
+        CARGO_PKG_VERSION_PATCH=17 \
+        CARGO_PKG_VERSION_PRE= \
+        CARGOGREEN=1 \
+      rustc '--crate-name' 'build_script_build' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'bin' '--emit' 'dep-info,link' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "std"))' '-C' 'metadata=f025caf073281666' '-C' 'extra-filename=-4bfe9ea2e7e5814f' '--out-dir' '/tmp/clis-diesel_cli_2-3-4/release/build/thiserror-4bfe9ea2e7e5814f' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-diesel_cli_2-3-4/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thiserror-2.0.17/build.rs \
+        1>          /tmp/clis-diesel_cli_2-3-4/release/build/thiserror-4bfe9ea2e7e5814f/out-4bfe9ea2e7e5814f-stdout \
+        2>          /tmp/clis-diesel_cli_2-3-4/release/build/thiserror-4bfe9ea2e7e5814f/out-4bfe9ea2e7e5814f-stderr \
+        || echo $? >/tmp/clis-diesel_cli_2-3-4/release/build/thiserror-4bfe9ea2e7e5814f/out-4bfe9ea2e7e5814f-errcode\
+  ; find /tmp/clis-diesel_cli_2-3-4/release/build/thiserror-4bfe9ea2e7e5814f/*-4bfe9ea2e7e5814f* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-4bfe9ea2e7e5814f
+COPY --link --from=dep-x-thiserror-2.0.17-4bfe9ea2e7e5814f /tmp/clis-diesel_cli_2-3-4/release/build/thiserror-4bfe9ea2e7e5814f/*-4bfe9ea2e7e5814f* /
+
+## this = "4bfe9ea2e7e5814f"
+## writes = [
+##     "build_script_build-4bfe9ea2e7e5814f",
+##     "build_script_build-4bfe9ea2e7e5814f.d",
+## ]
+## stderr = [
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-4/release/build/thiserror-4bfe9ea2e7e5814f/build_script_build-4bfe9ea2e7e5814f.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-4/release/build/thiserror-4bfe9ea2e7e5814f/build_script_build-4bfe9ea2e7e5814f","emit":"link"}',
+## ]
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = '''
+## FROM --platform=$BUILDPLATFORM docker.io/tonistiigi/xx:1.6.1@sha256:923441d7c25f1e2eb5789f82d987693c47b8ed987c4ab3b075d6ed2b5d6779a3 AS xx
+## FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base
+## ARG TARGETPLATFORM
+## RUN \
+##   --mount=from=xx,source=/usr/bin/xx-apk,dst=/usr/bin/xx-apk \
+##   --mount=from=xx,source=/usr/bin/xx-apt,dst=/usr/bin/xx-apt \
+##   --mount=from=xx,source=/usr/bin/xx-apt,dst=/usr/bin/xx-apt-get \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-c++ \
+##   --mount=from=xx,source=/usr/bin/xx-cargo,dst=/usr/bin/xx-cargo \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-cc \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-clang \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-clang++ \
+##   --mount=from=xx,source=/usr/bin/xx-go,dst=/usr/bin/xx-go \
+##   --mount=from=xx,source=/usr/bin/xx-info,dst=/usr/bin/xx-info \
+##   --mount=from=xx,source=/usr/bin/xx-ld-shas,dst=/usr/bin/xx-ld-shas \
+##   --mount=from=xx,source=/usr/bin/xx-verify,dst=/usr/bin/xx-verify \
+##   --mount=from=xx,source=/usr/bin/xx-windres,dst=/usr/bin/xx-windres \
+##     set -eux \
+##  && if   command -v apk >/dev/null 2>&1; then \
+##                                      xx-apk     add     --no-cache                 '<none>'; \
+##     elif command -v apt >/dev/null 2>&1; then \
+##       DEBIAN_FRONTEND=noninteractive xx-apt     install --no-install-recommends -y 'libpq-dev'; \
+##     else \
+##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
+##     fi'''
+##
+## [[stages]]
+##
+## [stages.Cratesio]
+## stage = "cratesio-thiserror-2.0.17"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thiserror-2.0.17"
+## name = "thiserror"
+## name_dash_version = "thiserror-2.0.17"
+## hash = "f63587ca0f12b72a0600bcba1d40081f830876000bb46dd2337a3051618f4fc8"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "dep-x-thiserror-2.0.17-4bfe9ea2e7e5814f"
+## script = '''
+## FROM rust-base AS dep-x-thiserror-2.0.17-4bfe9ea2e7e5814f
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-diesel_cli_2-3-4/release/build/thiserror-4bfe9ea2e7e5814f
+## RUN \
+##   --mount=from=cratesio-thiserror-2.0.17,source=/thiserror-2.0.17,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thiserror-2.0.17,rw \
+##     { \
+##         cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thiserror-2.0.17/build.rs | sed 's/fn main/fn actual_4bfe9ea2e7e5814f_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thiserror-2.0.17/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thiserror-2.0.17/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thiserror-2.0.17/build.rs ; \
+##         { \
+##           echo ; \
+##           echo 'fn main() {' ; \
+##           echo '    use std::env::{args_os, var_os};' ; \
+##           echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+##           echo '        use std::process::{Command, Stdio};' ; \
+##           echo '        let mut cmd = Command::new("cargo-green");' ; \
+##           echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+##           echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+##           echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+##           echo '        assert!(res.success());' ; \
+##           echo '    } else {' ; \
+##           echo '        actual_4bfe9ea2e7e5814f_main();' ; \
+##           echo '    }' ; \
+##           echo '}' ; \
+##         } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thiserror-2.0.17/build.rs ; \
+##     } && \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CRATE_NAME=build_script_build \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thiserror-2.0.17 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thiserror-2.0.17/Cargo.toml \
+##         CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>' \
+##         CARGO_PKG_DESCRIPTION=derive'(Error)' \
+##         CARGO_PKG_HOMEPAGE= \
+##         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=thiserror \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/dtolnay/thiserror' \
+##         CARGO_PKG_RUST_VERSION=1.61 \
+##         CARGO_PKG_VERSION=2.0.17 \
+##         CARGO_PKG_VERSION_MAJOR=2 \
+##         CARGO_PKG_VERSION_MINOR=0 \
+##         CARGO_PKG_VERSION_PATCH=17 \
+##         CARGO_PKG_VERSION_PRE= \
+##         CARGOGREEN=1 \
+##       rustc '--crate-name' 'build_script_build' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'bin' '--emit' 'dep-info,link' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--cfg' 'feature="default"' '--cfg' 'feature="std"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("default", "std"))' '-C' 'metadata=f025caf073281666' '-C' 'extra-filename=-4bfe9ea2e7e5814f' '--out-dir' '/tmp/clis-diesel_cli_2-3-4/release/build/thiserror-4bfe9ea2e7e5814f' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-diesel_cli_2-3-4/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thiserror-2.0.17/build.rs \
+##         1>          /tmp/clis-diesel_cli_2-3-4/release/build/thiserror-4bfe9ea2e7e5814f/out-4bfe9ea2e7e5814f-stdout \
+##         2>          /tmp/clis-diesel_cli_2-3-4/release/build/thiserror-4bfe9ea2e7e5814f/out-4bfe9ea2e7e5814f-stderr \
+##         || echo $? >/tmp/clis-diesel_cli_2-3-4/release/build/thiserror-4bfe9ea2e7e5814f/out-4bfe9ea2e7e5814f-errcode\
+##   ; find /tmp/clis-diesel_cli_2-3-4/release/build/thiserror-4bfe9ea2e7e5814f/*-4bfe9ea2e7e5814f* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-4bfe9ea2e7e5814f"
+## script = """
+## FROM scratch AS out-4bfe9ea2e7e5814f
+## COPY --link --from=dep-x-thiserror-2.0.17-4bfe9ea2e7e5814f /tmp/clis-diesel_cli_2-3-4/release/build/thiserror-4bfe9ea2e7e5814f/*-4bfe9ea2e7e5814f* /"""
+
+FROM rust-base AS run-z-thiserror-2.0.17-f12921cd12623463
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-diesel_cli_2-3-4/release/build/thiserror-f12921cd12623463/out
+WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thiserror-2.0.17
+RUN \
+  --mount=from=out-4bfe9ea2e7e5814f,source=/build_script_build-4bfe9ea2e7e5814f,dst=/tmp/clis-diesel_cli_2-3-4/release/build/thiserror-4bfe9ea2e7e5814f/build-script-build \
+  --mount=from=cratesio-thiserror-2.0.17,source=/thiserror-2.0.17,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thiserror-2.0.17 \
+    env CARGO="$(which cargo)" \
+        CARGO_CFG_FEATURE=default,std \
+        CARGO_CFG_PANIC=unwind \
+        CARGO_CFG_TARGET_ABI= \
+        CARGO_CFG_TARGET_ARCH=x86_64 \
+        CARGO_CFG_TARGET_ENDIAN=little \
+        CARGO_CFG_TARGET_ENV=gnu \
+        CARGO_CFG_TARGET_FAMILY=unix \
+        CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
+        CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+        CARGO_CFG_TARGET_OS=linux \
+        CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+        CARGO_CFG_TARGET_VENDOR=unknown \
+        CARGO_CFG_UNIX= \
+        CARGO_ENCODED_RUSTFLAGS= \
+        CARGO_FEATURE_DEFAULT=1 \
+        CARGO_FEATURE_STD=1 \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thiserror-2.0.17 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thiserror-2.0.17/Cargo.toml \
+        CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>' \
+        CARGO_PKG_DESCRIPTION=derive'(Error)' \
+        CARGO_PKG_HOMEPAGE= \
+        CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=thiserror \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/dtolnay/thiserror' \
+        CARGO_PKG_RUST_VERSION=1.61 \
+        CARGO_PKG_VERSION=2.0.17 \
+        CARGO_PKG_VERSION_MAJOR=2 \
+        CARGO_PKG_VERSION_MINOR=0 \
+        CARGO_PKG_VERSION_PATCH=17 \
+        CARGO_PKG_VERSION_PRE= \
+        DEBUG=false \
+        HOST=x86_64-unknown-linux-gnu \
+        NUM_JOBS=4 \
+        OPT_LEVEL=3 \
+        OUT_DIR=/tmp/clis-diesel_cli_2-3-4/release/build/thiserror-f12921cd12623463/out \
+        PROFILE=release \
+        RUSTC=rustc \
+        RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+        TARGET=x86_64-unknown-linux-gnu \
+        CARGOGREEN=1 \
+      CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-diesel_cli_2-3-4/release/build/thiserror-4bfe9ea2e7e5814f/build-script-build \
+        1>          /tmp/clis-diesel_cli_2-3-4/release/build/thiserror-f12921cd12623463/out/out-f12921cd12623463-stdout \
+        2>          /tmp/clis-diesel_cli_2-3-4/release/build/thiserror-f12921cd12623463/out/out-f12921cd12623463-stderr \
+        || echo $? >/tmp/clis-diesel_cli_2-3-4/release/build/thiserror-f12921cd12623463/out/out-f12921cd12623463-errcode\
+  ; find /tmp/clis-diesel_cli_2-3-4/release/build/thiserror-f12921cd12623463/out/*-f12921cd12623463* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-f12921cd12623463
+COPY --link --from=run-z-thiserror-2.0.17-f12921cd12623463 /tmp/clis-diesel_cli_2-3-4/release/build/thiserror-f12921cd12623463/out/* /
+
+## this = "f12921cd12623463"
+## deps = ["4bfe9ea2e7e5814f"]
+## writes = ["private.rs"]
+## stdout = [
+##     "cargo:rerun-if-changed=build/probe.rs",
+##     "cargo:rustc-check-cfg=cfg(error_generic_member_access)",
+##     "cargo:rustc-check-cfg=cfg(thiserror_nightly_testing)",
+##     "cargo:rustc-check-cfg=cfg(thiserror_no_backtrace_type)",
+##     "cargo:rerun-if-env-changed=RUSTC_BOOTSTRAP",
+## ]
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = '''
+## FROM --platform=$BUILDPLATFORM docker.io/tonistiigi/xx:1.6.1@sha256:923441d7c25f1e2eb5789f82d987693c47b8ed987c4ab3b075d6ed2b5d6779a3 AS xx
+## FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base
+## ARG TARGETPLATFORM
+## RUN \
+##   --mount=from=xx,source=/usr/bin/xx-apk,dst=/usr/bin/xx-apk \
+##   --mount=from=xx,source=/usr/bin/xx-apt,dst=/usr/bin/xx-apt \
+##   --mount=from=xx,source=/usr/bin/xx-apt,dst=/usr/bin/xx-apt-get \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-c++ \
+##   --mount=from=xx,source=/usr/bin/xx-cargo,dst=/usr/bin/xx-cargo \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-cc \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-clang \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-clang++ \
+##   --mount=from=xx,source=/usr/bin/xx-go,dst=/usr/bin/xx-go \
+##   --mount=from=xx,source=/usr/bin/xx-info,dst=/usr/bin/xx-info \
+##   --mount=from=xx,source=/usr/bin/xx-ld-shas,dst=/usr/bin/xx-ld-shas \
+##   --mount=from=xx,source=/usr/bin/xx-verify,dst=/usr/bin/xx-verify \
+##   --mount=from=xx,source=/usr/bin/xx-windres,dst=/usr/bin/xx-windres \
+##     set -eux \
+##  && if   command -v apk >/dev/null 2>&1; then \
+##                                      xx-apk     add     --no-cache                 '<none>'; \
+##     elif command -v apt >/dev/null 2>&1; then \
+##       DEBIAN_FRONTEND=noninteractive xx-apt     install --no-install-recommends -y 'libpq-dev'; \
+##     else \
+##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
+##     fi'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "run-z-thiserror-2.0.17-f12921cd12623463"
+## script = '''
+## FROM rust-base AS run-z-thiserror-2.0.17-f12921cd12623463
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-diesel_cli_2-3-4/release/build/thiserror-f12921cd12623463/out
+## WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thiserror-2.0.17
+## RUN \
+##   --mount=from=out-4bfe9ea2e7e5814f,source=/build_script_build-4bfe9ea2e7e5814f,dst=/tmp/clis-diesel_cli_2-3-4/release/build/thiserror-4bfe9ea2e7e5814f/build-script-build \
+##   --mount=from=cratesio-thiserror-2.0.17,source=/thiserror-2.0.17,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thiserror-2.0.17 \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CFG_FEATURE=default,std \
+##         CARGO_CFG_PANIC=unwind \
+##         CARGO_CFG_TARGET_ABI= \
+##         CARGO_CFG_TARGET_ARCH=x86_64 \
+##         CARGO_CFG_TARGET_ENDIAN=little \
+##         CARGO_CFG_TARGET_ENV=gnu \
+##         CARGO_CFG_TARGET_FAMILY=unix \
+##         CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
+##         CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+##         CARGO_CFG_TARGET_OS=linux \
+##         CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+##         CARGO_CFG_TARGET_VENDOR=unknown \
+##         CARGO_CFG_UNIX= \
+##         CARGO_ENCODED_RUSTFLAGS= \
+##         CARGO_FEATURE_DEFAULT=1 \
+##         CARGO_FEATURE_STD=1 \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thiserror-2.0.17 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thiserror-2.0.17/Cargo.toml \
+##         CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>' \
+##         CARGO_PKG_DESCRIPTION=derive'(Error)' \
+##         CARGO_PKG_HOMEPAGE= \
+##         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=thiserror \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/dtolnay/thiserror' \
+##         CARGO_PKG_RUST_VERSION=1.61 \
+##         CARGO_PKG_VERSION=2.0.17 \
+##         CARGO_PKG_VERSION_MAJOR=2 \
+##         CARGO_PKG_VERSION_MINOR=0 \
+##         CARGO_PKG_VERSION_PATCH=17 \
+##         CARGO_PKG_VERSION_PRE= \
+##         DEBUG=false \
+##         HOST=x86_64-unknown-linux-gnu \
+##         NUM_JOBS=4 \
+##         OPT_LEVEL=3 \
+##         OUT_DIR=/tmp/clis-diesel_cli_2-3-4/release/build/thiserror-f12921cd12623463/out \
+##         PROFILE=release \
+##         RUSTC=rustc \
+##         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+##         TARGET=x86_64-unknown-linux-gnu \
+##         CARGOGREEN=1 \
+##       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-diesel_cli_2-3-4/release/build/thiserror-4bfe9ea2e7e5814f/build-script-build \
+##         1>          /tmp/clis-diesel_cli_2-3-4/release/build/thiserror-f12921cd12623463/out/out-f12921cd12623463-stdout \
+##         2>          /tmp/clis-diesel_cli_2-3-4/release/build/thiserror-f12921cd12623463/out/out-f12921cd12623463-stderr \
+##         || echo $? >/tmp/clis-diesel_cli_2-3-4/release/build/thiserror-f12921cd12623463/out/out-f12921cd12623463-errcode\
+##   ; find /tmp/clis-diesel_cli_2-3-4/release/build/thiserror-f12921cd12623463/out/*-f12921cd12623463* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-f12921cd12623463"
+## script = """
+## FROM scratch AS out-f12921cd12623463
+## COPY --link --from=run-z-thiserror-2.0.17-f12921cd12623463 /tmp/clis-diesel_cli_2-3-4/release/build/thiserror-f12921cd12623463/out/* /"""
+
+
 FROM rust-base AS dep-n-thiserror-2.0.17-e5c667c55e08b99f
 SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-diesel_cli_2-3-4/release/deps
 RUN \
   --mount=from=cratesio-thiserror-2.0.17,source=/thiserror-2.0.17,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thiserror-2.0.17 \
-  --mount=from=crate_out-f12921cd12623463,dst=/tmp/clis-diesel_cli_2-3-4/release/build/thiserror-f12921cd12623463/out \
   --mount=from=out-d12f251f78756cbc,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libthiserror_impl-d12f251f78756cbc.so,source=/libthiserror_impl-d12f251f78756cbc.so \
   --mount=from=out-e1e423eb99bb7e63,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libproc_macro2-e1e423eb99bb7e63.rlib,source=/libproc_macro2-e1e423eb99bb7e63.rlib \
   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rlib,source=/libunicode_ident-721470d94fc0c354.rlib \
+  --mount=from=out-71babfb997932318,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-71babfb997932318,source=/build_script_build-71babfb997932318 \
   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rlib,source=/libquote-87872b55644e5043.rlib \
+  --mount=from=out-c63aae50eb6f480a,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-c63aae50eb6f480a,source=/build_script_build-c63aae50eb6f480a \
   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rlib,source=/libsyn-12379804391f3f43.rlib \
+  --mount=from=out-f12921cd12623463,dst=/tmp/clis-diesel_cli_2-3-4/release/build/thiserror-f12921cd12623463/out,source=/ \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=thiserror \
         CARGO_INCREMENTAL=0 \
@@ -14475,8 +20107,19 @@ COPY --link --from=dep-n-thiserror-2.0.17-e5c667c55e08b99f /tmp/clis-diesel_cli_
 ##     "d12f251f78756cbc",
 ##     "e1e423eb99bb7e63",
 ##     "721470d94fc0c354",
+##     "e93dddbb48c6a6fc",
+##     "71babfb997932318",
 ##     "87872b55644e5043",
+##     "edf8f660a3d601cc",
+##     "c63aae50eb6f480a",
 ##     "12379804391f3f43",
+##     "f12921cd12623463",
+##     "4bfe9ea2e7e5814f",
+## ]
+## buildrs_results = [
+##     "e93dddbb48c6a6fc",
+##     "edf8f660a3d601cc",
+##     "f12921cd12623463",
 ## ]
 ## writes = [
 ##     "libthiserror-e5c667c55e08b99f.rlib",
@@ -14502,16 +20145,25 @@ COPY --link --from=dep-n-thiserror-2.0.17-e5c667c55e08b99f /tmp/clis-diesel_cli_
 ## xtern = "libunicode_ident-721470d94fc0c354.rlib"
 ##
 ## [[externs]]
+## from = "out-71babfb997932318"
+## xtern = "build_script_build-71babfb997932318"
+##
+## [[externs]]
 ## from = "out-87872b55644e5043"
 ## xtern = "libquote-87872b55644e5043.rlib"
+##
+## [[externs]]
+## from = "out-c63aae50eb6f480a"
+## xtern = "build_script_build-c63aae50eb6f480a"
 ##
 ## [[externs]]
 ## from = "out-12379804391f3f43"
 ## xtern = "libsyn-12379804391f3f43.rlib"
 ##
-## [[contexts]]
-## name = "crate_out-f12921cd12623463"
-## uri = "/tmp/clis-diesel_cli_2-3-4/release/build/thiserror-f12921cd12623463/out"
+## [[mounts]]
+## name = "out-f12921cd12623463"
+## src = "/"
+## dst = "/tmp/clis-diesel_cli_2-3-4/release/build/thiserror-f12921cd12623463/out"
 ##
 ## [[stages]]
 ##
@@ -14563,12 +20215,14 @@ COPY --link --from=dep-n-thiserror-2.0.17-e5c667c55e08b99f /tmp/clis-diesel_cli_
 ## WORKDIR /tmp/clis-diesel_cli_2-3-4/release/deps
 ## RUN \
 ##   --mount=from=cratesio-thiserror-2.0.17,source=/thiserror-2.0.17,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thiserror-2.0.17 \
-##   --mount=from=crate_out-f12921cd12623463,dst=/tmp/clis-diesel_cli_2-3-4/release/build/thiserror-f12921cd12623463/out \
 ##   --mount=from=out-d12f251f78756cbc,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libthiserror_impl-d12f251f78756cbc.so,source=/libthiserror_impl-d12f251f78756cbc.so \
 ##   --mount=from=out-e1e423eb99bb7e63,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libproc_macro2-e1e423eb99bb7e63.rlib,source=/libproc_macro2-e1e423eb99bb7e63.rlib \
 ##   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rlib,source=/libunicode_ident-721470d94fc0c354.rlib \
+##   --mount=from=out-71babfb997932318,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-71babfb997932318,source=/build_script_build-71babfb997932318 \
 ##   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rlib,source=/libquote-87872b55644e5043.rlib \
+##   --mount=from=out-c63aae50eb6f480a,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-c63aae50eb6f480a,source=/build_script_build-c63aae50eb6f480a \
 ##   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rlib,source=/libsyn-12379804391f3f43.rlib \
+##   --mount=from=out-f12921cd12623463,dst=/tmp/clis-diesel_cli_2-3-4/release/build/thiserror-f12921cd12623463/out,source=/ \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=thiserror \
 ##         CARGO_INCREMENTAL=0 \
@@ -14748,7 +20402,9 @@ RUN \
   --mount=from=cratesio-tracing-attributes-0.1.30,source=/tracing-attributes-0.1.30,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/tracing-attributes-0.1.30 \
   --mount=from=out-e1e423eb99bb7e63,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libproc_macro2-e1e423eb99bb7e63.rlib,source=/libproc_macro2-e1e423eb99bb7e63.rlib \
   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rlib,source=/libunicode_ident-721470d94fc0c354.rlib \
+  --mount=from=out-71babfb997932318,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-71babfb997932318,source=/build_script_build-71babfb997932318 \
   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rlib,source=/libquote-87872b55644e5043.rlib \
+  --mount=from=out-c63aae50eb6f480a,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-c63aae50eb6f480a,source=/build_script_build-c63aae50eb6f480a \
   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rlib,source=/libsyn-12379804391f3f43.rlib \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=tracing_attributes \
@@ -14783,8 +20439,16 @@ COPY --link --from=dep-n-tracing-attributes-0.1.30-ed0ebb6cffc5de85 /tmp/clis-di
 ## deps = [
 ##     "e1e423eb99bb7e63",
 ##     "721470d94fc0c354",
+##     "e93dddbb48c6a6fc",
+##     "71babfb997932318",
 ##     "87872b55644e5043",
+##     "edf8f660a3d601cc",
+##     "c63aae50eb6f480a",
 ##     "12379804391f3f43",
+## ]
+## buildrs_results = [
+##     "e93dddbb48c6a6fc",
+##     "edf8f660a3d601cc",
 ## ]
 ## writes = [
 ##     "libtracing_attributes-ed0ebb6cffc5de85.so",
@@ -14804,8 +20468,16 @@ COPY --link --from=dep-n-tracing-attributes-0.1.30-ed0ebb6cffc5de85 /tmp/clis-di
 ## xtern = "libunicode_ident-721470d94fc0c354.rlib"
 ##
 ## [[externs]]
+## from = "out-71babfb997932318"
+## xtern = "build_script_build-71babfb997932318"
+##
+## [[externs]]
 ## from = "out-87872b55644e5043"
 ## xtern = "libquote-87872b55644e5043.rlib"
+##
+## [[externs]]
+## from = "out-c63aae50eb6f480a"
+## xtern = "build_script_build-c63aae50eb6f480a"
 ##
 ## [[externs]]
 ## from = "out-12379804391f3f43"
@@ -14863,7 +20535,9 @@ COPY --link --from=dep-n-tracing-attributes-0.1.30-ed0ebb6cffc5de85 /tmp/clis-di
 ##   --mount=from=cratesio-tracing-attributes-0.1.30,source=/tracing-attributes-0.1.30,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/tracing-attributes-0.1.30 \
 ##   --mount=from=out-e1e423eb99bb7e63,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libproc_macro2-e1e423eb99bb7e63.rlib,source=/libproc_macro2-e1e423eb99bb7e63.rlib \
 ##   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rlib,source=/libunicode_ident-721470d94fc0c354.rlib \
+##   --mount=from=out-71babfb997932318,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-71babfb997932318,source=/build_script_build-71babfb997932318 \
 ##   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rlib,source=/libquote-87872b55644e5043.rlib \
+##   --mount=from=out-c63aae50eb6f480a,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-c63aae50eb6f480a,source=/build_script_build-c63aae50eb6f480a \
 ##   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rlib,source=/libsyn-12379804391f3f43.rlib \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=tracing_attributes \
@@ -15062,8 +20736,10 @@ RUN \
   --mount=from=out-e1e423eb99bb7e63,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libproc_macro2-e1e423eb99bb7e63.rmeta,source=/libproc_macro2-e1e423eb99bb7e63.rmeta \
   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rlib,source=/libunicode_ident-721470d94fc0c354.rlib \
   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rmeta,source=/libunicode_ident-721470d94fc0c354.rmeta \
+  --mount=from=out-71babfb997932318,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-71babfb997932318,source=/build_script_build-71babfb997932318 \
   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rlib,source=/libquote-87872b55644e5043.rlib \
   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rmeta,source=/libquote-87872b55644e5043.rmeta \
+  --mount=from=out-c63aae50eb6f480a,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-c63aae50eb6f480a,source=/build_script_build-c63aae50eb6f480a \
   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rlib,source=/libsyn-12379804391f3f43.rlib \
   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rmeta,source=/libsyn-12379804391f3f43.rmeta \
   --mount=from=out-14bfd91571100c90,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libtracing_core-14bfd91571100c90.rlib,source=/libtracing_core-14bfd91571100c90.rlib \
@@ -15105,10 +20781,18 @@ COPY --link --from=dep-n-tracing-0.1.41-5b69739c2af13760 /tmp/clis-diesel_cli_2-
 ##     "ed0ebb6cffc5de85",
 ##     "e1e423eb99bb7e63",
 ##     "721470d94fc0c354",
+##     "e93dddbb48c6a6fc",
+##     "71babfb997932318",
 ##     "87872b55644e5043",
+##     "edf8f660a3d601cc",
+##     "c63aae50eb6f480a",
 ##     "12379804391f3f43",
 ##     "14bfd91571100c90",
 ##     "d2455ec75a446def",
+## ]
+## buildrs_results = [
+##     "e93dddbb48c6a6fc",
+##     "edf8f660a3d601cc",
 ## ]
 ## writes = [
 ##     "libtracing-5b69739c2af13760.rlib",
@@ -15150,12 +20834,20 @@ COPY --link --from=dep-n-tracing-0.1.41-5b69739c2af13760 /tmp/clis-diesel_cli_2-
 ## xtern = "libunicode_ident-721470d94fc0c354.rmeta"
 ##
 ## [[externs]]
+## from = "out-71babfb997932318"
+## xtern = "build_script_build-71babfb997932318"
+##
+## [[externs]]
 ## from = "out-87872b55644e5043"
 ## xtern = "libquote-87872b55644e5043.rlib"
 ##
 ## [[externs]]
 ## from = "out-87872b55644e5043"
 ## xtern = "libquote-87872b55644e5043.rmeta"
+##
+## [[externs]]
+## from = "out-c63aae50eb6f480a"
+## xtern = "build_script_build-c63aae50eb6f480a"
 ##
 ## [[externs]]
 ## from = "out-12379804391f3f43"
@@ -15238,8 +20930,10 @@ COPY --link --from=dep-n-tracing-0.1.41-5b69739c2af13760 /tmp/clis-diesel_cli_2-
 ##   --mount=from=out-e1e423eb99bb7e63,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libproc_macro2-e1e423eb99bb7e63.rmeta,source=/libproc_macro2-e1e423eb99bb7e63.rmeta \
 ##   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rlib,source=/libunicode_ident-721470d94fc0c354.rlib \
 ##   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rmeta,source=/libunicode_ident-721470d94fc0c354.rmeta \
+##   --mount=from=out-71babfb997932318,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-71babfb997932318,source=/build_script_build-71babfb997932318 \
 ##   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rlib,source=/libquote-87872b55644e5043.rlib \
 ##   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rmeta,source=/libquote-87872b55644e5043.rmeta \
+##   --mount=from=out-c63aae50eb6f480a,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-c63aae50eb6f480a,source=/build_script_build-c63aae50eb6f480a \
 ##   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rlib,source=/libsyn-12379804391f3f43.rlib \
 ##   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rmeta,source=/libsyn-12379804391f3f43.rmeta \
 ##   --mount=from=out-14bfd91571100c90,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libtracing_core-14bfd91571100c90.rlib,source=/libtracing_core-14bfd91571100c90.rlib \
@@ -16490,8 +22184,10 @@ RUN \
   --mount=from=out-e1e423eb99bb7e63,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libproc_macro2-e1e423eb99bb7e63.rmeta,source=/libproc_macro2-e1e423eb99bb7e63.rmeta \
   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rlib,source=/libunicode_ident-721470d94fc0c354.rlib \
   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rmeta,source=/libunicode_ident-721470d94fc0c354.rmeta \
+  --mount=from=out-71babfb997932318,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-71babfb997932318,source=/build_script_build-71babfb997932318 \
   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rlib,source=/libquote-87872b55644e5043.rlib \
   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rmeta,source=/libquote-87872b55644e5043.rmeta \
+  --mount=from=out-c63aae50eb6f480a,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-c63aae50eb6f480a,source=/build_script_build-c63aae50eb6f480a \
   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rlib,source=/libsyn-12379804391f3f43.rlib \
   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rmeta,source=/libsyn-12379804391f3f43.rmeta \
   --mount=from=out-14bfd91571100c90,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libtracing_core-14bfd91571100c90.rlib,source=/libtracing_core-14bfd91571100c90.rlib \
@@ -16548,11 +22244,19 @@ COPY --link --from=dep-n-tracing-subscriber-0.3.20-1f6f2301ada06e13 /tmp/clis-di
 ##     "ed0ebb6cffc5de85",
 ##     "e1e423eb99bb7e63",
 ##     "721470d94fc0c354",
+##     "e93dddbb48c6a6fc",
+##     "71babfb997932318",
 ##     "87872b55644e5043",
+##     "edf8f660a3d601cc",
+##     "c63aae50eb6f480a",
 ##     "12379804391f3f43",
 ##     "14bfd91571100c90",
 ##     "7896bb55325d2b35",
 ##     "877adab5a6821b57",
+## ]
+## buildrs_results = [
+##     "e93dddbb48c6a6fc",
+##     "edf8f660a3d601cc",
 ## ]
 ## writes = [
 ##     "libtracing_subscriber-1f6f2301ada06e13.rlib",
@@ -16698,12 +22402,20 @@ COPY --link --from=dep-n-tracing-subscriber-0.3.20-1f6f2301ada06e13 /tmp/clis-di
 ## xtern = "libunicode_ident-721470d94fc0c354.rmeta"
 ##
 ## [[externs]]
+## from = "out-71babfb997932318"
+## xtern = "build_script_build-71babfb997932318"
+##
+## [[externs]]
 ## from = "out-87872b55644e5043"
 ## xtern = "libquote-87872b55644e5043.rlib"
 ##
 ## [[externs]]
 ## from = "out-87872b55644e5043"
 ## xtern = "libquote-87872b55644e5043.rmeta"
+##
+## [[externs]]
+## from = "out-c63aae50eb6f480a"
+## xtern = "build_script_build-c63aae50eb6f480a"
 ##
 ## [[externs]]
 ## from = "out-12379804391f3f43"
@@ -16820,8 +22532,10 @@ COPY --link --from=dep-n-tracing-subscriber-0.3.20-1f6f2301ada06e13 /tmp/clis-di
 ##   --mount=from=out-e1e423eb99bb7e63,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libproc_macro2-e1e423eb99bb7e63.rmeta,source=/libproc_macro2-e1e423eb99bb7e63.rmeta \
 ##   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rlib,source=/libunicode_ident-721470d94fc0c354.rlib \
 ##   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rmeta,source=/libunicode_ident-721470d94fc0c354.rmeta \
+##   --mount=from=out-71babfb997932318,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-71babfb997932318,source=/build_script_build-71babfb997932318 \
 ##   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rlib,source=/libquote-87872b55644e5043.rlib \
 ##   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rmeta,source=/libquote-87872b55644e5043.rmeta \
+##   --mount=from=out-c63aae50eb6f480a,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-c63aae50eb6f480a,source=/build_script_build-c63aae50eb6f480a \
 ##   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rlib,source=/libsyn-12379804391f3f43.rlib \
 ##   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rmeta,source=/libsyn-12379804391f3f43.rmeta \
 ##   --mount=from=out-14bfd91571100c90,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libtracing_core-14bfd91571100c90.rlib,source=/libtracing_core-14bfd91571100c90.rlib \
@@ -17152,7 +22866,9 @@ RUN \
   --mount=from=cratesio-displaydoc-0.2.5,source=/displaydoc-0.2.5,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/displaydoc-0.2.5 \
   --mount=from=out-e1e423eb99bb7e63,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libproc_macro2-e1e423eb99bb7e63.rlib,source=/libproc_macro2-e1e423eb99bb7e63.rlib \
   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rlib,source=/libunicode_ident-721470d94fc0c354.rlib \
+  --mount=from=out-71babfb997932318,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-71babfb997932318,source=/build_script_build-71babfb997932318 \
   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rlib,source=/libquote-87872b55644e5043.rlib \
+  --mount=from=out-c63aae50eb6f480a,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-c63aae50eb6f480a,source=/build_script_build-c63aae50eb6f480a \
   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rlib,source=/libsyn-12379804391f3f43.rlib \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=displaydoc \
@@ -17187,8 +22903,16 @@ COPY --link --from=dep-n-displaydoc-0.2.5-0cf9247df685d72e /tmp/clis-diesel_cli_
 ## deps = [
 ##     "e1e423eb99bb7e63",
 ##     "721470d94fc0c354",
+##     "e93dddbb48c6a6fc",
+##     "71babfb997932318",
 ##     "87872b55644e5043",
+##     "edf8f660a3d601cc",
+##     "c63aae50eb6f480a",
 ##     "12379804391f3f43",
+## ]
+## buildrs_results = [
+##     "e93dddbb48c6a6fc",
+##     "edf8f660a3d601cc",
 ## ]
 ## writes = [
 ##     "displaydoc-0cf9247df685d72e.d",
@@ -17208,8 +22932,16 @@ COPY --link --from=dep-n-displaydoc-0.2.5-0cf9247df685d72e /tmp/clis-diesel_cli_
 ## xtern = "libunicode_ident-721470d94fc0c354.rlib"
 ##
 ## [[externs]]
+## from = "out-71babfb997932318"
+## xtern = "build_script_build-71babfb997932318"
+##
+## [[externs]]
 ## from = "out-87872b55644e5043"
 ## xtern = "libquote-87872b55644e5043.rlib"
+##
+## [[externs]]
+## from = "out-c63aae50eb6f480a"
+## xtern = "build_script_build-c63aae50eb6f480a"
 ##
 ## [[externs]]
 ## from = "out-12379804391f3f43"
@@ -17267,7 +22999,9 @@ COPY --link --from=dep-n-displaydoc-0.2.5-0cf9247df685d72e /tmp/clis-diesel_cli_
 ##   --mount=from=cratesio-displaydoc-0.2.5,source=/displaydoc-0.2.5,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/displaydoc-0.2.5 \
 ##   --mount=from=out-e1e423eb99bb7e63,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libproc_macro2-e1e423eb99bb7e63.rlib,source=/libproc_macro2-e1e423eb99bb7e63.rlib \
 ##   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rlib,source=/libunicode_ident-721470d94fc0c354.rlib \
+##   --mount=from=out-71babfb997932318,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-71babfb997932318,source=/build_script_build-71babfb997932318 \
 ##   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rlib,source=/libquote-87872b55644e5043.rlib \
+##   --mount=from=out-c63aae50eb6f480a,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-c63aae50eb6f480a,source=/build_script_build-c63aae50eb6f480a \
 ##   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rlib,source=/libsyn-12379804391f3f43.rlib \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=displaydoc \
@@ -17450,8 +23184,10 @@ RUN \
   --mount=from=out-e1e423eb99bb7e63,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libproc_macro2-e1e423eb99bb7e63.rmeta,source=/libproc_macro2-e1e423eb99bb7e63.rmeta \
   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rlib,source=/libunicode_ident-721470d94fc0c354.rlib \
   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rmeta,source=/libunicode_ident-721470d94fc0c354.rmeta \
+  --mount=from=out-71babfb997932318,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-71babfb997932318,source=/build_script_build-71babfb997932318 \
   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rlib,source=/libquote-87872b55644e5043.rlib \
   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rmeta,source=/libquote-87872b55644e5043.rmeta \
+  --mount=from=out-c63aae50eb6f480a,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-c63aae50eb6f480a,source=/build_script_build-c63aae50eb6f480a \
   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rlib,source=/libsyn-12379804391f3f43.rlib \
   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rmeta,source=/libsyn-12379804391f3f43.rmeta \
     env CARGO="$(which cargo)" \
@@ -17486,8 +23222,16 @@ COPY --link --from=dep-n-synstructure-0.13.2-970c5c05eccdb71d /tmp/clis-diesel_c
 ## deps = [
 ##     "e1e423eb99bb7e63",
 ##     "721470d94fc0c354",
+##     "e93dddbb48c6a6fc",
+##     "71babfb997932318",
 ##     "87872b55644e5043",
+##     "edf8f660a3d601cc",
+##     "c63aae50eb6f480a",
 ##     "12379804391f3f43",
+## ]
+## buildrs_results = [
+##     "e93dddbb48c6a6fc",
+##     "edf8f660a3d601cc",
 ## ]
 ## writes = [
 ##     "libsynstructure-970c5c05eccdb71d.rlib",
@@ -17517,12 +23261,20 @@ COPY --link --from=dep-n-synstructure-0.13.2-970c5c05eccdb71d /tmp/clis-diesel_c
 ## xtern = "libunicode_ident-721470d94fc0c354.rmeta"
 ##
 ## [[externs]]
+## from = "out-71babfb997932318"
+## xtern = "build_script_build-71babfb997932318"
+##
+## [[externs]]
 ## from = "out-87872b55644e5043"
 ## xtern = "libquote-87872b55644e5043.rlib"
 ##
 ## [[externs]]
 ## from = "out-87872b55644e5043"
 ## xtern = "libquote-87872b55644e5043.rmeta"
+##
+## [[externs]]
+## from = "out-c63aae50eb6f480a"
+## xtern = "build_script_build-c63aae50eb6f480a"
 ##
 ## [[externs]]
 ## from = "out-12379804391f3f43"
@@ -17586,8 +23338,10 @@ COPY --link --from=dep-n-synstructure-0.13.2-970c5c05eccdb71d /tmp/clis-diesel_c
 ##   --mount=from=out-e1e423eb99bb7e63,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libproc_macro2-e1e423eb99bb7e63.rmeta,source=/libproc_macro2-e1e423eb99bb7e63.rmeta \
 ##   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rlib,source=/libunicode_ident-721470d94fc0c354.rlib \
 ##   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rmeta,source=/libunicode_ident-721470d94fc0c354.rmeta \
+##   --mount=from=out-71babfb997932318,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-71babfb997932318,source=/build_script_build-71babfb997932318 \
 ##   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rlib,source=/libquote-87872b55644e5043.rlib \
 ##   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rmeta,source=/libquote-87872b55644e5043.rmeta \
+##   --mount=from=out-c63aae50eb6f480a,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-c63aae50eb6f480a,source=/build_script_build-c63aae50eb6f480a \
 ##   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rlib,source=/libsyn-12379804391f3f43.rlib \
 ##   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rmeta,source=/libsyn-12379804391f3f43.rmeta \
 ##     env CARGO="$(which cargo)" \
@@ -17634,7 +23388,9 @@ RUN \
   --mount=from=cratesio-yoke-derive-0.8.1,source=/yoke-derive-0.8.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/yoke-derive-0.8.1 \
   --mount=from=out-e1e423eb99bb7e63,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libproc_macro2-e1e423eb99bb7e63.rlib,source=/libproc_macro2-e1e423eb99bb7e63.rlib \
   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rlib,source=/libunicode_ident-721470d94fc0c354.rlib \
+  --mount=from=out-71babfb997932318,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-71babfb997932318,source=/build_script_build-71babfb997932318 \
   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rlib,source=/libquote-87872b55644e5043.rlib \
+  --mount=from=out-c63aae50eb6f480a,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-c63aae50eb6f480a,source=/build_script_build-c63aae50eb6f480a \
   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rlib,source=/libsyn-12379804391f3f43.rlib \
   --mount=from=out-970c5c05eccdb71d,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsynstructure-970c5c05eccdb71d.rlib,source=/libsynstructure-970c5c05eccdb71d.rlib \
     env CARGO="$(which cargo)" \
@@ -17669,9 +23425,17 @@ COPY --link --from=dep-n-yoke-derive-0.8.1-290271a78a512ac0 /tmp/clis-diesel_cli
 ## deps = [
 ##     "e1e423eb99bb7e63",
 ##     "721470d94fc0c354",
+##     "e93dddbb48c6a6fc",
+##     "71babfb997932318",
 ##     "87872b55644e5043",
+##     "edf8f660a3d601cc",
+##     "c63aae50eb6f480a",
 ##     "12379804391f3f43",
 ##     "970c5c05eccdb71d",
+## ]
+## buildrs_results = [
+##     "e93dddbb48c6a6fc",
+##     "edf8f660a3d601cc",
 ## ]
 ## writes = [
 ##     "libyoke_derive-290271a78a512ac0.so",
@@ -17691,8 +23455,16 @@ COPY --link --from=dep-n-yoke-derive-0.8.1-290271a78a512ac0 /tmp/clis-diesel_cli
 ## xtern = "libunicode_ident-721470d94fc0c354.rlib"
 ##
 ## [[externs]]
+## from = "out-71babfb997932318"
+## xtern = "build_script_build-71babfb997932318"
+##
+## [[externs]]
 ## from = "out-87872b55644e5043"
 ## xtern = "libquote-87872b55644e5043.rlib"
+##
+## [[externs]]
+## from = "out-c63aae50eb6f480a"
+## xtern = "build_script_build-c63aae50eb6f480a"
 ##
 ## [[externs]]
 ## from = "out-12379804391f3f43"
@@ -17754,7 +23526,9 @@ COPY --link --from=dep-n-yoke-derive-0.8.1-290271a78a512ac0 /tmp/clis-diesel_cli
 ##   --mount=from=cratesio-yoke-derive-0.8.1,source=/yoke-derive-0.8.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/yoke-derive-0.8.1 \
 ##   --mount=from=out-e1e423eb99bb7e63,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libproc_macro2-e1e423eb99bb7e63.rlib,source=/libproc_macro2-e1e423eb99bb7e63.rlib \
 ##   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rlib,source=/libunicode_ident-721470d94fc0c354.rlib \
+##   --mount=from=out-71babfb997932318,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-71babfb997932318,source=/build_script_build-71babfb997932318 \
 ##   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rlib,source=/libquote-87872b55644e5043.rlib \
+##   --mount=from=out-c63aae50eb6f480a,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-c63aae50eb6f480a,source=/build_script_build-c63aae50eb6f480a \
 ##   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rlib,source=/libsyn-12379804391f3f43.rlib \
 ##   --mount=from=out-970c5c05eccdb71d,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsynstructure-970c5c05eccdb71d.rlib,source=/libsynstructure-970c5c05eccdb71d.rlib \
 ##     env CARGO="$(which cargo)" \
@@ -17801,7 +23575,9 @@ RUN \
   --mount=from=cratesio-zerofrom-derive-0.1.6,source=/zerofrom-derive-0.1.6,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zerofrom-derive-0.1.6 \
   --mount=from=out-e1e423eb99bb7e63,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libproc_macro2-e1e423eb99bb7e63.rlib,source=/libproc_macro2-e1e423eb99bb7e63.rlib \
   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rlib,source=/libunicode_ident-721470d94fc0c354.rlib \
+  --mount=from=out-71babfb997932318,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-71babfb997932318,source=/build_script_build-71babfb997932318 \
   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rlib,source=/libquote-87872b55644e5043.rlib \
+  --mount=from=out-c63aae50eb6f480a,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-c63aae50eb6f480a,source=/build_script_build-c63aae50eb6f480a \
   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rlib,source=/libsyn-12379804391f3f43.rlib \
   --mount=from=out-970c5c05eccdb71d,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsynstructure-970c5c05eccdb71d.rlib,source=/libsynstructure-970c5c05eccdb71d.rlib \
     env CARGO="$(which cargo)" \
@@ -17836,9 +23612,17 @@ COPY --link --from=dep-n-zerofrom-derive-0.1.6-06be7dc3ecf1b8da /tmp/clis-diesel
 ## deps = [
 ##     "e1e423eb99bb7e63",
 ##     "721470d94fc0c354",
+##     "e93dddbb48c6a6fc",
+##     "71babfb997932318",
 ##     "87872b55644e5043",
+##     "edf8f660a3d601cc",
+##     "c63aae50eb6f480a",
 ##     "12379804391f3f43",
 ##     "970c5c05eccdb71d",
+## ]
+## buildrs_results = [
+##     "e93dddbb48c6a6fc",
+##     "edf8f660a3d601cc",
 ## ]
 ## writes = [
 ##     "libzerofrom_derive-06be7dc3ecf1b8da.so",
@@ -17858,8 +23642,16 @@ COPY --link --from=dep-n-zerofrom-derive-0.1.6-06be7dc3ecf1b8da /tmp/clis-diesel
 ## xtern = "libunicode_ident-721470d94fc0c354.rlib"
 ##
 ## [[externs]]
+## from = "out-71babfb997932318"
+## xtern = "build_script_build-71babfb997932318"
+##
+## [[externs]]
 ## from = "out-87872b55644e5043"
 ## xtern = "libquote-87872b55644e5043.rlib"
+##
+## [[externs]]
+## from = "out-c63aae50eb6f480a"
+## xtern = "build_script_build-c63aae50eb6f480a"
 ##
 ## [[externs]]
 ## from = "out-12379804391f3f43"
@@ -17921,7 +23713,9 @@ COPY --link --from=dep-n-zerofrom-derive-0.1.6-06be7dc3ecf1b8da /tmp/clis-diesel
 ##   --mount=from=cratesio-zerofrom-derive-0.1.6,source=/zerofrom-derive-0.1.6,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zerofrom-derive-0.1.6 \
 ##   --mount=from=out-e1e423eb99bb7e63,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libproc_macro2-e1e423eb99bb7e63.rlib,source=/libproc_macro2-e1e423eb99bb7e63.rlib \
 ##   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rlib,source=/libunicode_ident-721470d94fc0c354.rlib \
+##   --mount=from=out-71babfb997932318,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-71babfb997932318,source=/build_script_build-71babfb997932318 \
 ##   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rlib,source=/libquote-87872b55644e5043.rlib \
+##   --mount=from=out-c63aae50eb6f480a,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-c63aae50eb6f480a,source=/build_script_build-c63aae50eb6f480a \
 ##   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rlib,source=/libsyn-12379804391f3f43.rlib \
 ##   --mount=from=out-970c5c05eccdb71d,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsynstructure-970c5c05eccdb71d.rlib,source=/libsynstructure-970c5c05eccdb71d.rlib \
 ##     env CARGO="$(which cargo)" \
@@ -17969,7 +23763,9 @@ RUN \
   --mount=from=out-06be7dc3ecf1b8da,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libzerofrom_derive-06be7dc3ecf1b8da.so,source=/libzerofrom_derive-06be7dc3ecf1b8da.so \
   --mount=from=out-e1e423eb99bb7e63,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libproc_macro2-e1e423eb99bb7e63.rlib,source=/libproc_macro2-e1e423eb99bb7e63.rlib \
   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rlib,source=/libunicode_ident-721470d94fc0c354.rlib \
+  --mount=from=out-71babfb997932318,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-71babfb997932318,source=/build_script_build-71babfb997932318 \
   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rlib,source=/libquote-87872b55644e5043.rlib \
+  --mount=from=out-c63aae50eb6f480a,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-c63aae50eb6f480a,source=/build_script_build-c63aae50eb6f480a \
   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rlib,source=/libsyn-12379804391f3f43.rlib \
   --mount=from=out-970c5c05eccdb71d,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsynstructure-970c5c05eccdb71d.rlib,source=/libsynstructure-970c5c05eccdb71d.rlib \
     env CARGO="$(which cargo)" \
@@ -18005,9 +23801,17 @@ COPY --link --from=dep-n-zerofrom-0.1.6-fd6ca56bf471d8cd /tmp/clis-diesel_cli_2-
 ##     "06be7dc3ecf1b8da",
 ##     "e1e423eb99bb7e63",
 ##     "721470d94fc0c354",
+##     "e93dddbb48c6a6fc",
+##     "71babfb997932318",
 ##     "87872b55644e5043",
+##     "edf8f660a3d601cc",
+##     "c63aae50eb6f480a",
 ##     "12379804391f3f43",
 ##     "970c5c05eccdb71d",
+## ]
+## buildrs_results = [
+##     "e93dddbb48c6a6fc",
+##     "edf8f660a3d601cc",
 ## ]
 ## writes = [
 ##     "libzerofrom-fd6ca56bf471d8cd.rlib",
@@ -18033,8 +23837,16 @@ COPY --link --from=dep-n-zerofrom-0.1.6-fd6ca56bf471d8cd /tmp/clis-diesel_cli_2-
 ## xtern = "libunicode_ident-721470d94fc0c354.rlib"
 ##
 ## [[externs]]
+## from = "out-71babfb997932318"
+## xtern = "build_script_build-71babfb997932318"
+##
+## [[externs]]
 ## from = "out-87872b55644e5043"
 ## xtern = "libquote-87872b55644e5043.rlib"
+##
+## [[externs]]
+## from = "out-c63aae50eb6f480a"
+## xtern = "build_script_build-c63aae50eb6f480a"
 ##
 ## [[externs]]
 ## from = "out-12379804391f3f43"
@@ -18097,7 +23909,9 @@ COPY --link --from=dep-n-zerofrom-0.1.6-fd6ca56bf471d8cd /tmp/clis-diesel_cli_2-
 ##   --mount=from=out-06be7dc3ecf1b8da,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libzerofrom_derive-06be7dc3ecf1b8da.so,source=/libzerofrom_derive-06be7dc3ecf1b8da.so \
 ##   --mount=from=out-e1e423eb99bb7e63,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libproc_macro2-e1e423eb99bb7e63.rlib,source=/libproc_macro2-e1e423eb99bb7e63.rlib \
 ##   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rlib,source=/libunicode_ident-721470d94fc0c354.rlib \
+##   --mount=from=out-71babfb997932318,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-71babfb997932318,source=/build_script_build-71babfb997932318 \
 ##   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rlib,source=/libquote-87872b55644e5043.rlib \
+##   --mount=from=out-c63aae50eb6f480a,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-c63aae50eb6f480a,source=/build_script_build-c63aae50eb6f480a \
 ##   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rlib,source=/libsyn-12379804391f3f43.rlib \
 ##   --mount=from=out-970c5c05eccdb71d,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsynstructure-970c5c05eccdb71d.rlib,source=/libsynstructure-970c5c05eccdb71d.rlib \
 ##     env CARGO="$(which cargo)" \
@@ -18149,8 +23963,10 @@ RUN \
   --mount=from=out-e1e423eb99bb7e63,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libproc_macro2-e1e423eb99bb7e63.rmeta,source=/libproc_macro2-e1e423eb99bb7e63.rmeta \
   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rlib,source=/libunicode_ident-721470d94fc0c354.rlib \
   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rmeta,source=/libunicode_ident-721470d94fc0c354.rmeta \
+  --mount=from=out-71babfb997932318,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-71babfb997932318,source=/build_script_build-71babfb997932318 \
   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rlib,source=/libquote-87872b55644e5043.rlib \
   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rmeta,source=/libquote-87872b55644e5043.rmeta \
+  --mount=from=out-c63aae50eb6f480a,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-c63aae50eb6f480a,source=/build_script_build-c63aae50eb6f480a \
   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rlib,source=/libsyn-12379804391f3f43.rlib \
   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rmeta,source=/libsyn-12379804391f3f43.rmeta \
   --mount=from=out-970c5c05eccdb71d,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsynstructure-970c5c05eccdb71d.rlib,source=/libsynstructure-970c5c05eccdb71d.rlib \
@@ -18192,11 +24008,19 @@ COPY --link --from=dep-n-yoke-0.8.1-377af84ad5c50fa7 /tmp/clis-diesel_cli_2-3-4/
 ##     "290271a78a512ac0",
 ##     "e1e423eb99bb7e63",
 ##     "721470d94fc0c354",
+##     "e93dddbb48c6a6fc",
+##     "71babfb997932318",
 ##     "87872b55644e5043",
+##     "edf8f660a3d601cc",
+##     "c63aae50eb6f480a",
 ##     "12379804391f3f43",
 ##     "970c5c05eccdb71d",
 ##     "fd6ca56bf471d8cd",
 ##     "06be7dc3ecf1b8da",
+## ]
+## buildrs_results = [
+##     "e93dddbb48c6a6fc",
+##     "edf8f660a3d601cc",
 ## ]
 ## writes = [
 ##     "libyoke-377af84ad5c50fa7.rlib",
@@ -18238,12 +24062,20 @@ COPY --link --from=dep-n-yoke-0.8.1-377af84ad5c50fa7 /tmp/clis-diesel_cli_2-3-4/
 ## xtern = "libunicode_ident-721470d94fc0c354.rmeta"
 ##
 ## [[externs]]
+## from = "out-71babfb997932318"
+## xtern = "build_script_build-71babfb997932318"
+##
+## [[externs]]
 ## from = "out-87872b55644e5043"
 ## xtern = "libquote-87872b55644e5043.rlib"
 ##
 ## [[externs]]
 ## from = "out-87872b55644e5043"
 ## xtern = "libquote-87872b55644e5043.rmeta"
+##
+## [[externs]]
+## from = "out-c63aae50eb6f480a"
+## xtern = "build_script_build-c63aae50eb6f480a"
 ##
 ## [[externs]]
 ## from = "out-12379804391f3f43"
@@ -18330,8 +24162,10 @@ COPY --link --from=dep-n-yoke-0.8.1-377af84ad5c50fa7 /tmp/clis-diesel_cli_2-3-4/
 ##   --mount=from=out-e1e423eb99bb7e63,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libproc_macro2-e1e423eb99bb7e63.rmeta,source=/libproc_macro2-e1e423eb99bb7e63.rmeta \
 ##   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rlib,source=/libunicode_ident-721470d94fc0c354.rlib \
 ##   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rmeta,source=/libunicode_ident-721470d94fc0c354.rmeta \
+##   --mount=from=out-71babfb997932318,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-71babfb997932318,source=/build_script_build-71babfb997932318 \
 ##   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rlib,source=/libquote-87872b55644e5043.rlib \
 ##   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rmeta,source=/libquote-87872b55644e5043.rmeta \
+##   --mount=from=out-c63aae50eb6f480a,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-c63aae50eb6f480a,source=/build_script_build-c63aae50eb6f480a \
 ##   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rlib,source=/libsyn-12379804391f3f43.rlib \
 ##   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rmeta,source=/libsyn-12379804391f3f43.rmeta \
 ##   --mount=from=out-970c5c05eccdb71d,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsynstructure-970c5c05eccdb71d.rlib,source=/libsynstructure-970c5c05eccdb71d.rlib \
@@ -18383,7 +24217,9 @@ RUN \
   --mount=from=cratesio-zerovec-derive-0.11.2,source=/zerovec-derive-0.11.2,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zerovec-derive-0.11.2 \
   --mount=from=out-e1e423eb99bb7e63,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libproc_macro2-e1e423eb99bb7e63.rlib,source=/libproc_macro2-e1e423eb99bb7e63.rlib \
   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rlib,source=/libunicode_ident-721470d94fc0c354.rlib \
+  --mount=from=out-71babfb997932318,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-71babfb997932318,source=/build_script_build-71babfb997932318 \
   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rlib,source=/libquote-87872b55644e5043.rlib \
+  --mount=from=out-c63aae50eb6f480a,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-c63aae50eb6f480a,source=/build_script_build-c63aae50eb6f480a \
   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rlib,source=/libsyn-12379804391f3f43.rlib \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=zerovec_derive \
@@ -18417,8 +24253,16 @@ COPY --link --from=dep-n-zerovec-derive-0.11.2-b508b166d717b91e /tmp/clis-diesel
 ## deps = [
 ##     "e1e423eb99bb7e63",
 ##     "721470d94fc0c354",
+##     "e93dddbb48c6a6fc",
+##     "71babfb997932318",
 ##     "87872b55644e5043",
+##     "edf8f660a3d601cc",
+##     "c63aae50eb6f480a",
 ##     "12379804391f3f43",
+## ]
+## buildrs_results = [
+##     "e93dddbb48c6a6fc",
+##     "edf8f660a3d601cc",
 ## ]
 ## writes = [
 ##     "libzerovec_derive-b508b166d717b91e.so",
@@ -18438,8 +24282,16 @@ COPY --link --from=dep-n-zerovec-derive-0.11.2-b508b166d717b91e /tmp/clis-diesel
 ## xtern = "libunicode_ident-721470d94fc0c354.rlib"
 ##
 ## [[externs]]
+## from = "out-71babfb997932318"
+## xtern = "build_script_build-71babfb997932318"
+##
+## [[externs]]
 ## from = "out-87872b55644e5043"
 ## xtern = "libquote-87872b55644e5043.rlib"
+##
+## [[externs]]
+## from = "out-c63aae50eb6f480a"
+## xtern = "build_script_build-c63aae50eb6f480a"
 ##
 ## [[externs]]
 ## from = "out-12379804391f3f43"
@@ -18497,7 +24349,9 @@ COPY --link --from=dep-n-zerovec-derive-0.11.2-b508b166d717b91e /tmp/clis-diesel
 ##   --mount=from=cratesio-zerovec-derive-0.11.2,source=/zerovec-derive-0.11.2,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zerovec-derive-0.11.2 \
 ##   --mount=from=out-e1e423eb99bb7e63,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libproc_macro2-e1e423eb99bb7e63.rlib,source=/libproc_macro2-e1e423eb99bb7e63.rlib \
 ##   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rlib,source=/libunicode_ident-721470d94fc0c354.rlib \
+##   --mount=from=out-71babfb997932318,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-71babfb997932318,source=/build_script_build-71babfb997932318 \
 ##   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rlib,source=/libquote-87872b55644e5043.rlib \
+##   --mount=from=out-c63aae50eb6f480a,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-c63aae50eb6f480a,source=/build_script_build-c63aae50eb6f480a \
 ##   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rlib,source=/libsyn-12379804391f3f43.rlib \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=zerovec_derive \
@@ -18550,8 +24404,10 @@ RUN \
   --mount=from=out-e1e423eb99bb7e63,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libproc_macro2-e1e423eb99bb7e63.rmeta,source=/libproc_macro2-e1e423eb99bb7e63.rmeta \
   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rlib,source=/libunicode_ident-721470d94fc0c354.rlib \
   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rmeta,source=/libunicode_ident-721470d94fc0c354.rmeta \
+  --mount=from=out-71babfb997932318,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-71babfb997932318,source=/build_script_build-71babfb997932318 \
   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rlib,source=/libquote-87872b55644e5043.rlib \
   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rmeta,source=/libquote-87872b55644e5043.rmeta \
+  --mount=from=out-c63aae50eb6f480a,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-c63aae50eb6f480a,source=/build_script_build-c63aae50eb6f480a \
   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rlib,source=/libsyn-12379804391f3f43.rlib \
   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rmeta,source=/libsyn-12379804391f3f43.rmeta \
   --mount=from=out-970c5c05eccdb71d,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsynstructure-970c5c05eccdb71d.rlib,source=/libsynstructure-970c5c05eccdb71d.rlib \
@@ -18595,12 +24451,20 @@ COPY --link --from=dep-n-zerovec-0.11.5-c4e0f8ac739debd7 /tmp/clis-diesel_cli_2-
 ##     "290271a78a512ac0",
 ##     "e1e423eb99bb7e63",
 ##     "721470d94fc0c354",
+##     "e93dddbb48c6a6fc",
+##     "71babfb997932318",
 ##     "87872b55644e5043",
+##     "edf8f660a3d601cc",
+##     "c63aae50eb6f480a",
 ##     "12379804391f3f43",
 ##     "970c5c05eccdb71d",
 ##     "fd6ca56bf471d8cd",
 ##     "06be7dc3ecf1b8da",
 ##     "b508b166d717b91e",
+## ]
+## buildrs_results = [
+##     "e93dddbb48c6a6fc",
+##     "edf8f660a3d601cc",
 ## ]
 ## writes = [
 ##     "libzerovec-c4e0f8ac739debd7.rlib",
@@ -18650,12 +24514,20 @@ COPY --link --from=dep-n-zerovec-0.11.5-c4e0f8ac739debd7 /tmp/clis-diesel_cli_2-
 ## xtern = "libunicode_ident-721470d94fc0c354.rmeta"
 ##
 ## [[externs]]
+## from = "out-71babfb997932318"
+## xtern = "build_script_build-71babfb997932318"
+##
+## [[externs]]
 ## from = "out-87872b55644e5043"
 ## xtern = "libquote-87872b55644e5043.rlib"
 ##
 ## [[externs]]
 ## from = "out-87872b55644e5043"
 ## xtern = "libquote-87872b55644e5043.rmeta"
+##
+## [[externs]]
+## from = "out-c63aae50eb6f480a"
+## xtern = "build_script_build-c63aae50eb6f480a"
 ##
 ## [[externs]]
 ## from = "out-12379804391f3f43"
@@ -18748,8 +24620,10 @@ COPY --link --from=dep-n-zerovec-0.11.5-c4e0f8ac739debd7 /tmp/clis-diesel_cli_2-
 ##   --mount=from=out-e1e423eb99bb7e63,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libproc_macro2-e1e423eb99bb7e63.rmeta,source=/libproc_macro2-e1e423eb99bb7e63.rmeta \
 ##   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rlib,source=/libunicode_ident-721470d94fc0c354.rlib \
 ##   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rmeta,source=/libunicode_ident-721470d94fc0c354.rmeta \
+##   --mount=from=out-71babfb997932318,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-71babfb997932318,source=/build_script_build-71babfb997932318 \
 ##   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rlib,source=/libquote-87872b55644e5043.rlib \
 ##   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rmeta,source=/libquote-87872b55644e5043.rmeta \
+##   --mount=from=out-c63aae50eb6f480a,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-c63aae50eb6f480a,source=/build_script_build-c63aae50eb6f480a \
 ##   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rlib,source=/libsyn-12379804391f3f43.rlib \
 ##   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rmeta,source=/libsyn-12379804391f3f43.rmeta \
 ##   --mount=from=out-970c5c05eccdb71d,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsynstructure-970c5c05eccdb71d.rlib,source=/libsynstructure-970c5c05eccdb71d.rlib \
@@ -18811,8 +24685,10 @@ RUN \
   --mount=from=out-e1e423eb99bb7e63,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libproc_macro2-e1e423eb99bb7e63.rmeta,source=/libproc_macro2-e1e423eb99bb7e63.rmeta \
   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rlib,source=/libunicode_ident-721470d94fc0c354.rlib \
   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rmeta,source=/libunicode_ident-721470d94fc0c354.rmeta \
+  --mount=from=out-71babfb997932318,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-71babfb997932318,source=/build_script_build-71babfb997932318 \
   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rlib,source=/libquote-87872b55644e5043.rlib \
   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rmeta,source=/libquote-87872b55644e5043.rmeta \
+  --mount=from=out-c63aae50eb6f480a,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-c63aae50eb6f480a,source=/build_script_build-c63aae50eb6f480a \
   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rlib,source=/libsyn-12379804391f3f43.rlib \
   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rmeta,source=/libsyn-12379804391f3f43.rmeta \
   --mount=from=out-970c5c05eccdb71d,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsynstructure-970c5c05eccdb71d.rlib,source=/libsynstructure-970c5c05eccdb71d.rlib \
@@ -18857,12 +24733,20 @@ COPY --link --from=dep-n-potential_utf-0.1.4-2a4901e5ac2935df /tmp/clis-diesel_c
 ##     "290271a78a512ac0",
 ##     "e1e423eb99bb7e63",
 ##     "721470d94fc0c354",
+##     "e93dddbb48c6a6fc",
+##     "71babfb997932318",
 ##     "87872b55644e5043",
+##     "edf8f660a3d601cc",
+##     "c63aae50eb6f480a",
 ##     "12379804391f3f43",
 ##     "970c5c05eccdb71d",
 ##     "fd6ca56bf471d8cd",
 ##     "06be7dc3ecf1b8da",
 ##     "b508b166d717b91e",
+## ]
+## buildrs_results = [
+##     "e93dddbb48c6a6fc",
+##     "edf8f660a3d601cc",
 ## ]
 ## writes = [
 ##     "libpotential_utf-2a4901e5ac2935df.rlib",
@@ -18920,12 +24804,20 @@ COPY --link --from=dep-n-potential_utf-0.1.4-2a4901e5ac2935df /tmp/clis-diesel_c
 ## xtern = "libunicode_ident-721470d94fc0c354.rmeta"
 ##
 ## [[externs]]
+## from = "out-71babfb997932318"
+## xtern = "build_script_build-71babfb997932318"
+##
+## [[externs]]
 ## from = "out-87872b55644e5043"
 ## xtern = "libquote-87872b55644e5043.rlib"
 ##
 ## [[externs]]
 ## from = "out-87872b55644e5043"
 ## xtern = "libquote-87872b55644e5043.rmeta"
+##
+## [[externs]]
+## from = "out-c63aae50eb6f480a"
+## xtern = "build_script_build-c63aae50eb6f480a"
 ##
 ## [[externs]]
 ## from = "out-12379804391f3f43"
@@ -19020,8 +24912,10 @@ COPY --link --from=dep-n-potential_utf-0.1.4-2a4901e5ac2935df /tmp/clis-diesel_c
 ##   --mount=from=out-e1e423eb99bb7e63,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libproc_macro2-e1e423eb99bb7e63.rmeta,source=/libproc_macro2-e1e423eb99bb7e63.rmeta \
 ##   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rlib,source=/libunicode_ident-721470d94fc0c354.rlib \
 ##   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rmeta,source=/libunicode_ident-721470d94fc0c354.rmeta \
+##   --mount=from=out-71babfb997932318,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-71babfb997932318,source=/build_script_build-71babfb997932318 \
 ##   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rlib,source=/libquote-87872b55644e5043.rlib \
 ##   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rmeta,source=/libquote-87872b55644e5043.rmeta \
+##   --mount=from=out-c63aae50eb6f480a,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-c63aae50eb6f480a,source=/build_script_build-c63aae50eb6f480a \
 ##   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rlib,source=/libsyn-12379804391f3f43.rlib \
 ##   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rmeta,source=/libsyn-12379804391f3f43.rmeta \
 ##   --mount=from=out-970c5c05eccdb71d,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsynstructure-970c5c05eccdb71d.rlib,source=/libsynstructure-970c5c05eccdb71d.rlib \
@@ -19077,8 +24971,10 @@ RUN \
   --mount=from=out-e1e423eb99bb7e63,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libproc_macro2-e1e423eb99bb7e63.rmeta,source=/libproc_macro2-e1e423eb99bb7e63.rmeta \
   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rlib,source=/libunicode_ident-721470d94fc0c354.rlib \
   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rmeta,source=/libunicode_ident-721470d94fc0c354.rmeta \
+  --mount=from=out-71babfb997932318,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-71babfb997932318,source=/build_script_build-71babfb997932318 \
   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rlib,source=/libquote-87872b55644e5043.rlib \
   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rmeta,source=/libquote-87872b55644e5043.rmeta \
+  --mount=from=out-c63aae50eb6f480a,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-c63aae50eb6f480a,source=/build_script_build-c63aae50eb6f480a \
   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rlib,source=/libsyn-12379804391f3f43.rlib \
   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rmeta,source=/libsyn-12379804391f3f43.rmeta \
   --mount=from=out-2a4901e5ac2935df,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libpotential_utf-2a4901e5ac2935df.rlib,source=/libpotential_utf-2a4901e5ac2935df.rlib \
@@ -19129,7 +25025,11 @@ COPY --link --from=dep-n-icu_collections-2.1.1-b2b7254b2f284fdf /tmp/clis-diesel
 ##     "0cf9247df685d72e",
 ##     "e1e423eb99bb7e63",
 ##     "721470d94fc0c354",
+##     "e93dddbb48c6a6fc",
+##     "71babfb997932318",
 ##     "87872b55644e5043",
+##     "edf8f660a3d601cc",
+##     "c63aae50eb6f480a",
 ##     "12379804391f3f43",
 ##     "2a4901e5ac2935df",
 ##     "c4e0f8ac739debd7",
@@ -19140,6 +25040,10 @@ COPY --link --from=dep-n-icu_collections-2.1.1-b2b7254b2f284fdf /tmp/clis-diesel
 ##     "fd6ca56bf471d8cd",
 ##     "06be7dc3ecf1b8da",
 ##     "b508b166d717b91e",
+## ]
+## buildrs_results = [
+##     "e93dddbb48c6a6fc",
+##     "edf8f660a3d601cc",
 ## ]
 ## writes = [
 ##     "icu_collections-b2b7254b2f284fdf.d",
@@ -19173,12 +25077,20 @@ COPY --link --from=dep-n-icu_collections-2.1.1-b2b7254b2f284fdf /tmp/clis-diesel
 ## xtern = "libunicode_ident-721470d94fc0c354.rmeta"
 ##
 ## [[externs]]
+## from = "out-71babfb997932318"
+## xtern = "build_script_build-71babfb997932318"
+##
+## [[externs]]
 ## from = "out-87872b55644e5043"
 ## xtern = "libquote-87872b55644e5043.rlib"
 ##
 ## [[externs]]
 ## from = "out-87872b55644e5043"
 ## xtern = "libquote-87872b55644e5043.rmeta"
+##
+## [[externs]]
+## from = "out-c63aae50eb6f480a"
+## xtern = "build_script_build-c63aae50eb6f480a"
 ##
 ## [[externs]]
 ## from = "out-12379804391f3f43"
@@ -19303,8 +25215,10 @@ COPY --link --from=dep-n-icu_collections-2.1.1-b2b7254b2f284fdf /tmp/clis-diesel
 ##   --mount=from=out-e1e423eb99bb7e63,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libproc_macro2-e1e423eb99bb7e63.rmeta,source=/libproc_macro2-e1e423eb99bb7e63.rmeta \
 ##   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rlib,source=/libunicode_ident-721470d94fc0c354.rlib \
 ##   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rmeta,source=/libunicode_ident-721470d94fc0c354.rmeta \
+##   --mount=from=out-71babfb997932318,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-71babfb997932318,source=/build_script_build-71babfb997932318 \
 ##   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rlib,source=/libquote-87872b55644e5043.rlib \
 ##   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rmeta,source=/libquote-87872b55644e5043.rmeta \
+##   --mount=from=out-c63aae50eb6f480a,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-c63aae50eb6f480a,source=/build_script_build-c63aae50eb6f480a \
 ##   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rlib,source=/libsyn-12379804391f3f43.rlib \
 ##   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rmeta,source=/libsyn-12379804391f3f43.rmeta \
 ##   --mount=from=out-2a4901e5ac2935df,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libpotential_utf-2a4901e5ac2935df.rlib,source=/libpotential_utf-2a4901e5ac2935df.rlib \
@@ -19359,11 +25273,341 @@ COPY --link --from=dep-n-icu_collections-2.1.1-b2b7254b2f284fdf /tmp/clis-diesel
 FROM scratch AS cratesio-icu_normalizer_data-2.1.1
 ADD --chmod=0664 --unpack --checksum=sha256:7aedcccd01fc5fe81e6b489c15b247b8b0690feb23304303a9e560f37efc560a \
   https://static.crates.io/crates/icu_normalizer_data/icu_normalizer_data-2.1.1.crate /
+FROM rust-base AS dep-x-icu_normalizer_data-2.1.1-21ea0b3ad361ca24
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-diesel_cli_2-3-4/release/build/icu_normalizer_data-21ea0b3ad361ca24
+RUN \
+  --mount=from=cratesio-icu_normalizer_data-2.1.1,source=/icu_normalizer_data-2.1.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/icu_normalizer_data-2.1.1,rw \
+    { \
+        cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/icu_normalizer_data-2.1.1/build.rs | sed 's/fn main/fn actual_21ea0b3ad361ca24_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/icu_normalizer_data-2.1.1/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/icu_normalizer_data-2.1.1/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/icu_normalizer_data-2.1.1/build.rs ; \
+        { \
+          echo ; \
+          echo 'fn main() {' ; \
+          echo '    use std::env::{args_os, var_os};' ; \
+          echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+          echo '        use std::process::{Command, Stdio};' ; \
+          echo '        let mut cmd = Command::new("cargo-green");' ; \
+          echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+          echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+          echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+          echo '        assert!(res.success());' ; \
+          echo '    } else {' ; \
+          echo '        actual_21ea0b3ad361ca24_main();' ; \
+          echo '    }' ; \
+          echo '}' ; \
+        } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/icu_normalizer_data-2.1.1/build.rs ; \
+    } && \
+    env CARGO="$(which cargo)" \
+        CARGO_CRATE_NAME=build_script_build \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/icu_normalizer_data-2.1.1 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/icu_normalizer_data-2.1.1/Cargo.toml \
+        CARGO_PKG_AUTHORS=The' ICU4X Project Developers' \
+        CARGO_PKG_DESCRIPTION=Data' for the icu_normalizer crate' \
+        CARGO_PKG_HOMEPAGE=https'://icu4x.unicode.org' \
+        CARGO_PKG_LICENSE=Unicode-3.0 \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=icu_normalizer_data \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/unicode-org/icu4x' \
+        CARGO_PKG_RUST_VERSION=1.83 \
+        CARGO_PKG_VERSION=2.1.1 \
+        CARGO_PKG_VERSION_MAJOR=2 \
+        CARGO_PKG_VERSION_MINOR=1 \
+        CARGO_PKG_VERSION_PATCH=1 \
+        CARGO_PKG_VERSION_PRE= \
+        CARGOGREEN=1 \
+      rustc '--crate-name' 'build_script_build' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'bin' '--emit' 'dep-info,link' '-C' 'embed-bitcode=no' '--warn' 'unexpected_cfgs' '--check-cfg' 'cfg(icu4x_custom_data)' '-C' 'debug-assertions=off' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=8e8a33f5681cc5ae' '-C' 'extra-filename=-21ea0b3ad361ca24' '--out-dir' '/tmp/clis-diesel_cli_2-3-4/release/build/icu_normalizer_data-21ea0b3ad361ca24' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-diesel_cli_2-3-4/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/icu_normalizer_data-2.1.1/build.rs \
+        1>          /tmp/clis-diesel_cli_2-3-4/release/build/icu_normalizer_data-21ea0b3ad361ca24/out-21ea0b3ad361ca24-stdout \
+        2>          /tmp/clis-diesel_cli_2-3-4/release/build/icu_normalizer_data-21ea0b3ad361ca24/out-21ea0b3ad361ca24-stderr \
+        || echo $? >/tmp/clis-diesel_cli_2-3-4/release/build/icu_normalizer_data-21ea0b3ad361ca24/out-21ea0b3ad361ca24-errcode\
+  ; find /tmp/clis-diesel_cli_2-3-4/release/build/icu_normalizer_data-21ea0b3ad361ca24/*-21ea0b3ad361ca24* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-21ea0b3ad361ca24
+COPY --link --from=dep-x-icu_normalizer_data-2.1.1-21ea0b3ad361ca24 /tmp/clis-diesel_cli_2-3-4/release/build/icu_normalizer_data-21ea0b3ad361ca24/*-21ea0b3ad361ca24* /
+
+## this = "21ea0b3ad361ca24"
+## writes = [
+##     "build_script_build-21ea0b3ad361ca24",
+##     "build_script_build-21ea0b3ad361ca24.d",
+## ]
+## stderr = [
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-4/release/build/icu_normalizer_data-21ea0b3ad361ca24/build_script_build-21ea0b3ad361ca24.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-4/release/build/icu_normalizer_data-21ea0b3ad361ca24/build_script_build-21ea0b3ad361ca24","emit":"link"}',
+## ]
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = '''
+## FROM --platform=$BUILDPLATFORM docker.io/tonistiigi/xx:1.6.1@sha256:923441d7c25f1e2eb5789f82d987693c47b8ed987c4ab3b075d6ed2b5d6779a3 AS xx
+## FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base
+## ARG TARGETPLATFORM
+## RUN \
+##   --mount=from=xx,source=/usr/bin/xx-apk,dst=/usr/bin/xx-apk \
+##   --mount=from=xx,source=/usr/bin/xx-apt,dst=/usr/bin/xx-apt \
+##   --mount=from=xx,source=/usr/bin/xx-apt,dst=/usr/bin/xx-apt-get \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-c++ \
+##   --mount=from=xx,source=/usr/bin/xx-cargo,dst=/usr/bin/xx-cargo \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-cc \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-clang \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-clang++ \
+##   --mount=from=xx,source=/usr/bin/xx-go,dst=/usr/bin/xx-go \
+##   --mount=from=xx,source=/usr/bin/xx-info,dst=/usr/bin/xx-info \
+##   --mount=from=xx,source=/usr/bin/xx-ld-shas,dst=/usr/bin/xx-ld-shas \
+##   --mount=from=xx,source=/usr/bin/xx-verify,dst=/usr/bin/xx-verify \
+##   --mount=from=xx,source=/usr/bin/xx-windres,dst=/usr/bin/xx-windres \
+##     set -eux \
+##  && if   command -v apk >/dev/null 2>&1; then \
+##                                      xx-apk     add     --no-cache                 '<none>'; \
+##     elif command -v apt >/dev/null 2>&1; then \
+##       DEBIAN_FRONTEND=noninteractive xx-apt     install --no-install-recommends -y 'libpq-dev'; \
+##     else \
+##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
+##     fi'''
+##
+## [[stages]]
+##
+## [stages.Cratesio]
+## stage = "cratesio-icu_normalizer_data-2.1.1"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/icu_normalizer_data-2.1.1"
+## name = "icu_normalizer_data"
+## name_dash_version = "icu_normalizer_data-2.1.1"
+## hash = "7aedcccd01fc5fe81e6b489c15b247b8b0690feb23304303a9e560f37efc560a"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "dep-x-icu_normalizer_data-2.1.1-21ea0b3ad361ca24"
+## script = '''
+## FROM rust-base AS dep-x-icu_normalizer_data-2.1.1-21ea0b3ad361ca24
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-diesel_cli_2-3-4/release/build/icu_normalizer_data-21ea0b3ad361ca24
+## RUN \
+##   --mount=from=cratesio-icu_normalizer_data-2.1.1,source=/icu_normalizer_data-2.1.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/icu_normalizer_data-2.1.1,rw \
+##     { \
+##         cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/icu_normalizer_data-2.1.1/build.rs | sed 's/fn main/fn actual_21ea0b3ad361ca24_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/icu_normalizer_data-2.1.1/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/icu_normalizer_data-2.1.1/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/icu_normalizer_data-2.1.1/build.rs ; \
+##         { \
+##           echo ; \
+##           echo 'fn main() {' ; \
+##           echo '    use std::env::{args_os, var_os};' ; \
+##           echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+##           echo '        use std::process::{Command, Stdio};' ; \
+##           echo '        let mut cmd = Command::new("cargo-green");' ; \
+##           echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+##           echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+##           echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+##           echo '        assert!(res.success());' ; \
+##           echo '    } else {' ; \
+##           echo '        actual_21ea0b3ad361ca24_main();' ; \
+##           echo '    }' ; \
+##           echo '}' ; \
+##         } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/icu_normalizer_data-2.1.1/build.rs ; \
+##     } && \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CRATE_NAME=build_script_build \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/icu_normalizer_data-2.1.1 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/icu_normalizer_data-2.1.1/Cargo.toml \
+##         CARGO_PKG_AUTHORS=The' ICU4X Project Developers' \
+##         CARGO_PKG_DESCRIPTION=Data' for the icu_normalizer crate' \
+##         CARGO_PKG_HOMEPAGE=https'://icu4x.unicode.org' \
+##         CARGO_PKG_LICENSE=Unicode-3.0 \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=icu_normalizer_data \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/unicode-org/icu4x' \
+##         CARGO_PKG_RUST_VERSION=1.83 \
+##         CARGO_PKG_VERSION=2.1.1 \
+##         CARGO_PKG_VERSION_MAJOR=2 \
+##         CARGO_PKG_VERSION_MINOR=1 \
+##         CARGO_PKG_VERSION_PATCH=1 \
+##         CARGO_PKG_VERSION_PRE= \
+##         CARGOGREEN=1 \
+##       rustc '--crate-name' 'build_script_build' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'bin' '--emit' 'dep-info,link' '-C' 'embed-bitcode=no' '--warn' 'unexpected_cfgs' '--check-cfg' 'cfg(icu4x_custom_data)' '-C' 'debug-assertions=off' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=8e8a33f5681cc5ae' '-C' 'extra-filename=-21ea0b3ad361ca24' '--out-dir' '/tmp/clis-diesel_cli_2-3-4/release/build/icu_normalizer_data-21ea0b3ad361ca24' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-diesel_cli_2-3-4/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/icu_normalizer_data-2.1.1/build.rs \
+##         1>          /tmp/clis-diesel_cli_2-3-4/release/build/icu_normalizer_data-21ea0b3ad361ca24/out-21ea0b3ad361ca24-stdout \
+##         2>          /tmp/clis-diesel_cli_2-3-4/release/build/icu_normalizer_data-21ea0b3ad361ca24/out-21ea0b3ad361ca24-stderr \
+##         || echo $? >/tmp/clis-diesel_cli_2-3-4/release/build/icu_normalizer_data-21ea0b3ad361ca24/out-21ea0b3ad361ca24-errcode\
+##   ; find /tmp/clis-diesel_cli_2-3-4/release/build/icu_normalizer_data-21ea0b3ad361ca24/*-21ea0b3ad361ca24* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-21ea0b3ad361ca24"
+## script = """
+## FROM scratch AS out-21ea0b3ad361ca24
+## COPY --link --from=dep-x-icu_normalizer_data-2.1.1-21ea0b3ad361ca24 /tmp/clis-diesel_cli_2-3-4/release/build/icu_normalizer_data-21ea0b3ad361ca24/*-21ea0b3ad361ca24* /"""
+
+FROM rust-base AS run-z-icu_normalizer_data-2.1.1-ca55f8cea487cfa3
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-diesel_cli_2-3-4/release/build/icu_normalizer_data-ca55f8cea487cfa3/out
+WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/icu_normalizer_data-2.1.1
+RUN \
+  --mount=from=out-21ea0b3ad361ca24,source=/build_script_build-21ea0b3ad361ca24,dst=/tmp/clis-diesel_cli_2-3-4/release/build/icu_normalizer_data-21ea0b3ad361ca24/build-script-build \
+  --mount=from=cratesio-icu_normalizer_data-2.1.1,source=/icu_normalizer_data-2.1.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/icu_normalizer_data-2.1.1 \
+    env CARGO="$(which cargo)" \
+        CARGO_CFG_FEATURE= \
+        CARGO_CFG_PANIC=unwind \
+        CARGO_CFG_TARGET_ABI= \
+        CARGO_CFG_TARGET_ARCH=x86_64 \
+        CARGO_CFG_TARGET_ENDIAN=little \
+        CARGO_CFG_TARGET_ENV=gnu \
+        CARGO_CFG_TARGET_FAMILY=unix \
+        CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
+        CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+        CARGO_CFG_TARGET_OS=linux \
+        CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+        CARGO_CFG_TARGET_VENDOR=unknown \
+        CARGO_CFG_UNIX= \
+        CARGO_ENCODED_RUSTFLAGS= \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/icu_normalizer_data-2.1.1 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/icu_normalizer_data-2.1.1/Cargo.toml \
+        CARGO_PKG_AUTHORS=The' ICU4X Project Developers' \
+        CARGO_PKG_DESCRIPTION=Data' for the icu_normalizer crate' \
+        CARGO_PKG_HOMEPAGE=https'://icu4x.unicode.org' \
+        CARGO_PKG_LICENSE=Unicode-3.0 \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=icu_normalizer_data \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/unicode-org/icu4x' \
+        CARGO_PKG_RUST_VERSION=1.83 \
+        CARGO_PKG_VERSION=2.1.1 \
+        CARGO_PKG_VERSION_MAJOR=2 \
+        CARGO_PKG_VERSION_MINOR=1 \
+        CARGO_PKG_VERSION_PATCH=1 \
+        CARGO_PKG_VERSION_PRE= \
+        DEBUG=false \
+        HOST=x86_64-unknown-linux-gnu \
+        NUM_JOBS=4 \
+        OPT_LEVEL=3 \
+        OUT_DIR=/tmp/clis-diesel_cli_2-3-4/release/build/icu_normalizer_data-ca55f8cea487cfa3/out \
+        PROFILE=release \
+        RUSTC=rustc \
+        RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+        TARGET=x86_64-unknown-linux-gnu \
+        CARGOGREEN=1 \
+      CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-diesel_cli_2-3-4/release/build/icu_normalizer_data-21ea0b3ad361ca24/build-script-build \
+        1>          /tmp/clis-diesel_cli_2-3-4/release/build/icu_normalizer_data-ca55f8cea487cfa3/out/out-ca55f8cea487cfa3-stdout \
+        2>          /tmp/clis-diesel_cli_2-3-4/release/build/icu_normalizer_data-ca55f8cea487cfa3/out/out-ca55f8cea487cfa3-stderr \
+        || echo $? >/tmp/clis-diesel_cli_2-3-4/release/build/icu_normalizer_data-ca55f8cea487cfa3/out/out-ca55f8cea487cfa3-errcode\
+  ; find /tmp/clis-diesel_cli_2-3-4/release/build/icu_normalizer_data-ca55f8cea487cfa3/out/*-ca55f8cea487cfa3* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-ca55f8cea487cfa3
+COPY --link --from=run-z-icu_normalizer_data-2.1.1-ca55f8cea487cfa3 /tmp/clis-diesel_cli_2-3-4/release/build/icu_normalizer_data-ca55f8cea487cfa3/out/* /
+
+## this = "ca55f8cea487cfa3"
+## deps = ["21ea0b3ad361ca24"]
+## stdout = [
+##     "cargo:rerun-if-env-changed=ICU4X_DATA_DIR",
+##     "cargo:rustc-check-cfg=cfg(icu4c_enable_renaming)",
+## ]
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = '''
+## FROM --platform=$BUILDPLATFORM docker.io/tonistiigi/xx:1.6.1@sha256:923441d7c25f1e2eb5789f82d987693c47b8ed987c4ab3b075d6ed2b5d6779a3 AS xx
+## FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base
+## ARG TARGETPLATFORM
+## RUN \
+##   --mount=from=xx,source=/usr/bin/xx-apk,dst=/usr/bin/xx-apk \
+##   --mount=from=xx,source=/usr/bin/xx-apt,dst=/usr/bin/xx-apt \
+##   --mount=from=xx,source=/usr/bin/xx-apt,dst=/usr/bin/xx-apt-get \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-c++ \
+##   --mount=from=xx,source=/usr/bin/xx-cargo,dst=/usr/bin/xx-cargo \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-cc \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-clang \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-clang++ \
+##   --mount=from=xx,source=/usr/bin/xx-go,dst=/usr/bin/xx-go \
+##   --mount=from=xx,source=/usr/bin/xx-info,dst=/usr/bin/xx-info \
+##   --mount=from=xx,source=/usr/bin/xx-ld-shas,dst=/usr/bin/xx-ld-shas \
+##   --mount=from=xx,source=/usr/bin/xx-verify,dst=/usr/bin/xx-verify \
+##   --mount=from=xx,source=/usr/bin/xx-windres,dst=/usr/bin/xx-windres \
+##     set -eux \
+##  && if   command -v apk >/dev/null 2>&1; then \
+##                                      xx-apk     add     --no-cache                 '<none>'; \
+##     elif command -v apt >/dev/null 2>&1; then \
+##       DEBIAN_FRONTEND=noninteractive xx-apt     install --no-install-recommends -y 'libpq-dev'; \
+##     else \
+##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
+##     fi'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "run-z-icu_normalizer_data-2.1.1-ca55f8cea487cfa3"
+## script = '''
+## FROM rust-base AS run-z-icu_normalizer_data-2.1.1-ca55f8cea487cfa3
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-diesel_cli_2-3-4/release/build/icu_normalizer_data-ca55f8cea487cfa3/out
+## WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/icu_normalizer_data-2.1.1
+## RUN \
+##   --mount=from=out-21ea0b3ad361ca24,source=/build_script_build-21ea0b3ad361ca24,dst=/tmp/clis-diesel_cli_2-3-4/release/build/icu_normalizer_data-21ea0b3ad361ca24/build-script-build \
+##   --mount=from=cratesio-icu_normalizer_data-2.1.1,source=/icu_normalizer_data-2.1.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/icu_normalizer_data-2.1.1 \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CFG_FEATURE= \
+##         CARGO_CFG_PANIC=unwind \
+##         CARGO_CFG_TARGET_ABI= \
+##         CARGO_CFG_TARGET_ARCH=x86_64 \
+##         CARGO_CFG_TARGET_ENDIAN=little \
+##         CARGO_CFG_TARGET_ENV=gnu \
+##         CARGO_CFG_TARGET_FAMILY=unix \
+##         CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
+##         CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+##         CARGO_CFG_TARGET_OS=linux \
+##         CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+##         CARGO_CFG_TARGET_VENDOR=unknown \
+##         CARGO_CFG_UNIX= \
+##         CARGO_ENCODED_RUSTFLAGS= \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/icu_normalizer_data-2.1.1 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/icu_normalizer_data-2.1.1/Cargo.toml \
+##         CARGO_PKG_AUTHORS=The' ICU4X Project Developers' \
+##         CARGO_PKG_DESCRIPTION=Data' for the icu_normalizer crate' \
+##         CARGO_PKG_HOMEPAGE=https'://icu4x.unicode.org' \
+##         CARGO_PKG_LICENSE=Unicode-3.0 \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=icu_normalizer_data \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/unicode-org/icu4x' \
+##         CARGO_PKG_RUST_VERSION=1.83 \
+##         CARGO_PKG_VERSION=2.1.1 \
+##         CARGO_PKG_VERSION_MAJOR=2 \
+##         CARGO_PKG_VERSION_MINOR=1 \
+##         CARGO_PKG_VERSION_PATCH=1 \
+##         CARGO_PKG_VERSION_PRE= \
+##         DEBUG=false \
+##         HOST=x86_64-unknown-linux-gnu \
+##         NUM_JOBS=4 \
+##         OPT_LEVEL=3 \
+##         OUT_DIR=/tmp/clis-diesel_cli_2-3-4/release/build/icu_normalizer_data-ca55f8cea487cfa3/out \
+##         PROFILE=release \
+##         RUSTC=rustc \
+##         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+##         TARGET=x86_64-unknown-linux-gnu \
+##         CARGOGREEN=1 \
+##       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-diesel_cli_2-3-4/release/build/icu_normalizer_data-21ea0b3ad361ca24/build-script-build \
+##         1>          /tmp/clis-diesel_cli_2-3-4/release/build/icu_normalizer_data-ca55f8cea487cfa3/out/out-ca55f8cea487cfa3-stdout \
+##         2>          /tmp/clis-diesel_cli_2-3-4/release/build/icu_normalizer_data-ca55f8cea487cfa3/out/out-ca55f8cea487cfa3-stderr \
+##         || echo $? >/tmp/clis-diesel_cli_2-3-4/release/build/icu_normalizer_data-ca55f8cea487cfa3/out/out-ca55f8cea487cfa3-errcode\
+##   ; find /tmp/clis-diesel_cli_2-3-4/release/build/icu_normalizer_data-ca55f8cea487cfa3/out/*-ca55f8cea487cfa3* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-ca55f8cea487cfa3"
+## script = """
+## FROM scratch AS out-ca55f8cea487cfa3
+## COPY --link --from=run-z-icu_normalizer_data-2.1.1-ca55f8cea487cfa3 /tmp/clis-diesel_cli_2-3-4/release/build/icu_normalizer_data-ca55f8cea487cfa3/out/* /"""
+
+
 FROM rust-base AS dep-n-icu_normalizer_data-2.1.1-fc0a70c3bc112445
 SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-diesel_cli_2-3-4/release/deps
 RUN \
   --mount=from=cratesio-icu_normalizer_data-2.1.1,source=/icu_normalizer_data-2.1.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/icu_normalizer_data-2.1.1 \
+  --mount=from=out-ca55f8cea487cfa3,dst=/tmp/clis-diesel_cli_2-3-4/release/build/icu_normalizer_data-ca55f8cea487cfa3/out,source=/ \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=icu_normalizer_data \
         CARGO_INCREMENTAL=0 \
@@ -19394,6 +25638,11 @@ FROM scratch AS out-fc0a70c3bc112445
 COPY --link --from=dep-n-icu_normalizer_data-2.1.1-fc0a70c3bc112445 /tmp/clis-diesel_cli_2-3-4/release/deps/*-fc0a70c3bc112445* /
 
 ## this = "fc0a70c3bc112445"
+## deps = [
+##     "ca55f8cea487cfa3",
+##     "21ea0b3ad361ca24",
+## ]
+## buildrs_results = ["ca55f8cea487cfa3"]
 ## writes = [
 ##     "icu_normalizer_data-fc0a70c3bc112445.d",
 ##     "libicu_normalizer_data-fc0a70c3bc112445.rlib",
@@ -19404,6 +25653,11 @@ COPY --link --from=dep-n-icu_normalizer_data-2.1.1-fc0a70c3bc112445 /tmp/clis-di
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-4/release/deps/libicu_normalizer_data-fc0a70c3bc112445.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-4/release/deps/libicu_normalizer_data-fc0a70c3bc112445.rlib","emit":"link"}',
 ## ]
+##
+## [[mounts]]
+## name = "out-ca55f8cea487cfa3"
+## src = "/"
+## dst = "/tmp/clis-diesel_cli_2-3-4/release/build/icu_normalizer_data-ca55f8cea487cfa3/out"
 ##
 ## [[stages]]
 ##
@@ -19455,6 +25709,7 @@ COPY --link --from=dep-n-icu_normalizer_data-2.1.1-fc0a70c3bc112445 /tmp/clis-di
 ## WORKDIR /tmp/clis-diesel_cli_2-3-4/release/deps
 ## RUN \
 ##   --mount=from=cratesio-icu_normalizer_data-2.1.1,source=/icu_normalizer_data-2.1.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/icu_normalizer_data-2.1.1 \
+##   --mount=from=out-ca55f8cea487cfa3,dst=/tmp/clis-diesel_cli_2-3-4/release/build/icu_normalizer_data-ca55f8cea487cfa3/out,source=/ \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=icu_normalizer_data \
 ##         CARGO_INCREMENTAL=0 \
@@ -19635,8 +25890,10 @@ RUN \
   --mount=from=out-e1e423eb99bb7e63,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libproc_macro2-e1e423eb99bb7e63.rmeta,source=/libproc_macro2-e1e423eb99bb7e63.rmeta \
   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rlib,source=/libunicode_ident-721470d94fc0c354.rlib \
   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rmeta,source=/libunicode_ident-721470d94fc0c354.rmeta \
+  --mount=from=out-71babfb997932318,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-71babfb997932318,source=/build_script_build-71babfb997932318 \
   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rlib,source=/libquote-87872b55644e5043.rlib \
   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rmeta,source=/libquote-87872b55644e5043.rmeta \
+  --mount=from=out-c63aae50eb6f480a,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-c63aae50eb6f480a,source=/build_script_build-c63aae50eb6f480a \
   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rlib,source=/libsyn-12379804391f3f43.rlib \
   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rmeta,source=/libsyn-12379804391f3f43.rmeta \
   --mount=from=out-c4e0f8ac739debd7,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libzerovec-c4e0f8ac739debd7.rlib,source=/libzerovec-c4e0f8ac739debd7.rlib \
@@ -19685,7 +25942,11 @@ COPY --link --from=dep-n-tinystr-0.8.2-f5693d8924a01c9a /tmp/clis-diesel_cli_2-3
 ##     "0cf9247df685d72e",
 ##     "e1e423eb99bb7e63",
 ##     "721470d94fc0c354",
+##     "e93dddbb48c6a6fc",
+##     "71babfb997932318",
 ##     "87872b55644e5043",
+##     "edf8f660a3d601cc",
+##     "c63aae50eb6f480a",
 ##     "12379804391f3f43",
 ##     "c4e0f8ac739debd7",
 ##     "377af84ad5c50fa7",
@@ -19695,6 +25956,10 @@ COPY --link --from=dep-n-tinystr-0.8.2-f5693d8924a01c9a /tmp/clis-diesel_cli_2-3
 ##     "fd6ca56bf471d8cd",
 ##     "06be7dc3ecf1b8da",
 ##     "b508b166d717b91e",
+## ]
+## buildrs_results = [
+##     "e93dddbb48c6a6fc",
+##     "edf8f660a3d601cc",
 ## ]
 ## writes = [
 ##     "libtinystr-f5693d8924a01c9a.rlib",
@@ -19728,12 +25993,20 @@ COPY --link --from=dep-n-tinystr-0.8.2-f5693d8924a01c9a /tmp/clis-diesel_cli_2-3
 ## xtern = "libunicode_ident-721470d94fc0c354.rmeta"
 ##
 ## [[externs]]
+## from = "out-71babfb997932318"
+## xtern = "build_script_build-71babfb997932318"
+##
+## [[externs]]
 ## from = "out-87872b55644e5043"
 ## xtern = "libquote-87872b55644e5043.rlib"
 ##
 ## [[externs]]
 ## from = "out-87872b55644e5043"
 ## xtern = "libquote-87872b55644e5043.rmeta"
+##
+## [[externs]]
+## from = "out-c63aae50eb6f480a"
+## xtern = "build_script_build-c63aae50eb6f480a"
 ##
 ## [[externs]]
 ## from = "out-12379804391f3f43"
@@ -19850,8 +26123,10 @@ COPY --link --from=dep-n-tinystr-0.8.2-f5693d8924a01c9a /tmp/clis-diesel_cli_2-3
 ##   --mount=from=out-e1e423eb99bb7e63,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libproc_macro2-e1e423eb99bb7e63.rmeta,source=/libproc_macro2-e1e423eb99bb7e63.rmeta \
 ##   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rlib,source=/libunicode_ident-721470d94fc0c354.rlib \
 ##   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rmeta,source=/libunicode_ident-721470d94fc0c354.rmeta \
+##   --mount=from=out-71babfb997932318,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-71babfb997932318,source=/build_script_build-71babfb997932318 \
 ##   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rlib,source=/libquote-87872b55644e5043.rlib \
 ##   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rmeta,source=/libquote-87872b55644e5043.rmeta \
+##   --mount=from=out-c63aae50eb6f480a,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-c63aae50eb6f480a,source=/build_script_build-c63aae50eb6f480a \
 ##   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rlib,source=/libsyn-12379804391f3f43.rlib \
 ##   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rmeta,source=/libsyn-12379804391f3f43.rmeta \
 ##   --mount=from=out-c4e0f8ac739debd7,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libzerovec-c4e0f8ac739debd7.rlib,source=/libzerovec-c4e0f8ac739debd7.rlib \
@@ -20046,8 +26321,10 @@ RUN \
   --mount=from=out-e1e423eb99bb7e63,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libproc_macro2-e1e423eb99bb7e63.rmeta,source=/libproc_macro2-e1e423eb99bb7e63.rmeta \
   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rlib,source=/libunicode_ident-721470d94fc0c354.rlib \
   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rmeta,source=/libunicode_ident-721470d94fc0c354.rmeta \
+  --mount=from=out-71babfb997932318,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-71babfb997932318,source=/build_script_build-71babfb997932318 \
   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rlib,source=/libquote-87872b55644e5043.rlib \
   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rmeta,source=/libquote-87872b55644e5043.rmeta \
+  --mount=from=out-c63aae50eb6f480a,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-c63aae50eb6f480a,source=/build_script_build-c63aae50eb6f480a \
   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rlib,source=/libsyn-12379804391f3f43.rlib \
   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rmeta,source=/libsyn-12379804391f3f43.rmeta \
   --mount=from=out-ad3def025bd69b3c,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/liblitemap-ad3def025bd69b3c.rlib,source=/liblitemap-ad3def025bd69b3c.rlib \
@@ -20102,7 +26379,11 @@ COPY --link --from=dep-n-icu_locale_core-2.1.1-8e55e6198d125104 /tmp/clis-diesel
 ##     "0cf9247df685d72e",
 ##     "e1e423eb99bb7e63",
 ##     "721470d94fc0c354",
+##     "e93dddbb48c6a6fc",
+##     "71babfb997932318",
 ##     "87872b55644e5043",
+##     "edf8f660a3d601cc",
+##     "c63aae50eb6f480a",
 ##     "12379804391f3f43",
 ##     "ad3def025bd69b3c",
 ##     "f5693d8924a01c9a",
@@ -20115,6 +26396,10 @@ COPY --link --from=dep-n-icu_locale_core-2.1.1-8e55e6198d125104 /tmp/clis-diesel
 ##     "06be7dc3ecf1b8da",
 ##     "b508b166d717b91e",
 ##     "20033e03ccdc4c14",
+## ]
+## buildrs_results = [
+##     "e93dddbb48c6a6fc",
+##     "edf8f660a3d601cc",
 ## ]
 ## writes = [
 ##     "icu_locale_core-8e55e6198d125104.d",
@@ -20148,12 +26433,20 @@ COPY --link --from=dep-n-icu_locale_core-2.1.1-8e55e6198d125104 /tmp/clis-diesel
 ## xtern = "libunicode_ident-721470d94fc0c354.rmeta"
 ##
 ## [[externs]]
+## from = "out-71babfb997932318"
+## xtern = "build_script_build-71babfb997932318"
+##
+## [[externs]]
 ## from = "out-87872b55644e5043"
 ## xtern = "libquote-87872b55644e5043.rlib"
 ##
 ## [[externs]]
 ## from = "out-87872b55644e5043"
 ## xtern = "libquote-87872b55644e5043.rmeta"
+##
+## [[externs]]
+## from = "out-c63aae50eb6f480a"
+## xtern = "build_script_build-c63aae50eb6f480a"
 ##
 ## [[externs]]
 ## from = "out-12379804391f3f43"
@@ -20294,8 +26587,10 @@ COPY --link --from=dep-n-icu_locale_core-2.1.1-8e55e6198d125104 /tmp/clis-diesel
 ##   --mount=from=out-e1e423eb99bb7e63,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libproc_macro2-e1e423eb99bb7e63.rmeta,source=/libproc_macro2-e1e423eb99bb7e63.rmeta \
 ##   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rlib,source=/libunicode_ident-721470d94fc0c354.rlib \
 ##   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rmeta,source=/libunicode_ident-721470d94fc0c354.rmeta \
+##   --mount=from=out-71babfb997932318,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-71babfb997932318,source=/build_script_build-71babfb997932318 \
 ##   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rlib,source=/libquote-87872b55644e5043.rlib \
 ##   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rmeta,source=/libquote-87872b55644e5043.rmeta \
+##   --mount=from=out-c63aae50eb6f480a,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-c63aae50eb6f480a,source=/build_script_build-c63aae50eb6f480a \
 ##   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rlib,source=/libsyn-12379804391f3f43.rlib \
 ##   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rmeta,source=/libsyn-12379804391f3f43.rmeta \
 ##   --mount=from=out-ad3def025bd69b3c,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/liblitemap-ad3def025bd69b3c.rlib,source=/liblitemap-ad3def025bd69b3c.rlib \
@@ -20364,8 +26659,10 @@ RUN \
   --mount=from=out-e1e423eb99bb7e63,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libproc_macro2-e1e423eb99bb7e63.rmeta,source=/libproc_macro2-e1e423eb99bb7e63.rmeta \
   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rlib,source=/libunicode_ident-721470d94fc0c354.rlib \
   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rmeta,source=/libunicode_ident-721470d94fc0c354.rmeta \
+  --mount=from=out-71babfb997932318,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-71babfb997932318,source=/build_script_build-71babfb997932318 \
   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rlib,source=/libquote-87872b55644e5043.rlib \
   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rmeta,source=/libquote-87872b55644e5043.rmeta \
+  --mount=from=out-c63aae50eb6f480a,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-c63aae50eb6f480a,source=/build_script_build-c63aae50eb6f480a \
   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rlib,source=/libsyn-12379804391f3f43.rlib \
   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rmeta,source=/libsyn-12379804391f3f43.rmeta \
   --mount=from=out-377af84ad5c50fa7,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libyoke-377af84ad5c50fa7.rlib,source=/libyoke-377af84ad5c50fa7.rlib \
@@ -20411,7 +26708,11 @@ COPY --link --from=dep-n-zerotrie-0.2.3-0bb13315df787db5 /tmp/clis-diesel_cli_2-
 ##     "0cf9247df685d72e",
 ##     "e1e423eb99bb7e63",
 ##     "721470d94fc0c354",
+##     "e93dddbb48c6a6fc",
+##     "71babfb997932318",
 ##     "87872b55644e5043",
+##     "edf8f660a3d601cc",
+##     "c63aae50eb6f480a",
 ##     "12379804391f3f43",
 ##     "377af84ad5c50fa7",
 ##     "f134cbd7ddd3c999",
@@ -20419,6 +26720,10 @@ COPY --link --from=dep-n-zerotrie-0.2.3-0bb13315df787db5 /tmp/clis-diesel_cli_2-
 ##     "970c5c05eccdb71d",
 ##     "fd6ca56bf471d8cd",
 ##     "06be7dc3ecf1b8da",
+## ]
+## buildrs_results = [
+##     "e93dddbb48c6a6fc",
+##     "edf8f660a3d601cc",
 ## ]
 ## writes = [
 ##     "libzerotrie-0bb13315df787db5.rlib",
@@ -20452,12 +26757,20 @@ COPY --link --from=dep-n-zerotrie-0.2.3-0bb13315df787db5 /tmp/clis-diesel_cli_2-
 ## xtern = "libunicode_ident-721470d94fc0c354.rmeta"
 ##
 ## [[externs]]
+## from = "out-71babfb997932318"
+## xtern = "build_script_build-71babfb997932318"
+##
+## [[externs]]
 ## from = "out-87872b55644e5043"
 ## xtern = "libquote-87872b55644e5043.rlib"
 ##
 ## [[externs]]
 ## from = "out-87872b55644e5043"
 ## xtern = "libquote-87872b55644e5043.rmeta"
+##
+## [[externs]]
+## from = "out-c63aae50eb6f480a"
+## xtern = "build_script_build-c63aae50eb6f480a"
 ##
 ## [[externs]]
 ## from = "out-12379804391f3f43"
@@ -20562,8 +26875,10 @@ COPY --link --from=dep-n-zerotrie-0.2.3-0bb13315df787db5 /tmp/clis-diesel_cli_2-
 ##   --mount=from=out-e1e423eb99bb7e63,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libproc_macro2-e1e423eb99bb7e63.rmeta,source=/libproc_macro2-e1e423eb99bb7e63.rmeta \
 ##   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rlib,source=/libunicode_ident-721470d94fc0c354.rlib \
 ##   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rmeta,source=/libunicode_ident-721470d94fc0c354.rmeta \
+##   --mount=from=out-71babfb997932318,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-71babfb997932318,source=/build_script_build-71babfb997932318 \
 ##   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rlib,source=/libquote-87872b55644e5043.rlib \
 ##   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rmeta,source=/libquote-87872b55644e5043.rmeta \
+##   --mount=from=out-c63aae50eb6f480a,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-c63aae50eb6f480a,source=/build_script_build-c63aae50eb6f480a \
 ##   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rlib,source=/libsyn-12379804391f3f43.rlib \
 ##   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rmeta,source=/libsyn-12379804391f3f43.rmeta \
 ##   --mount=from=out-377af84ad5c50fa7,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libyoke-377af84ad5c50fa7.rlib,source=/libyoke-377af84ad5c50fa7.rlib \
@@ -20623,8 +26938,10 @@ RUN \
   --mount=from=out-e1e423eb99bb7e63,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libproc_macro2-e1e423eb99bb7e63.rmeta,source=/libproc_macro2-e1e423eb99bb7e63.rmeta \
   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rlib,source=/libunicode_ident-721470d94fc0c354.rlib \
   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rmeta,source=/libunicode_ident-721470d94fc0c354.rmeta \
+  --mount=from=out-71babfb997932318,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-71babfb997932318,source=/build_script_build-71babfb997932318 \
   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rlib,source=/libquote-87872b55644e5043.rlib \
   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rmeta,source=/libquote-87872b55644e5043.rmeta \
+  --mount=from=out-c63aae50eb6f480a,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-c63aae50eb6f480a,source=/build_script_build-c63aae50eb6f480a \
   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rlib,source=/libsyn-12379804391f3f43.rlib \
   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rmeta,source=/libsyn-12379804391f3f43.rmeta \
   --mount=from=out-8e55e6198d125104,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libicu_locale_core-8e55e6198d125104.rlib,source=/libicu_locale_core-8e55e6198d125104.rlib \
@@ -20683,7 +27000,11 @@ COPY --link --from=dep-n-icu_provider-2.1.1-b3023f33ef14f135 /tmp/clis-diesel_cl
 ##     "0cf9247df685d72e",
 ##     "e1e423eb99bb7e63",
 ##     "721470d94fc0c354",
+##     "e93dddbb48c6a6fc",
+##     "71babfb997932318",
 ##     "87872b55644e5043",
+##     "edf8f660a3d601cc",
+##     "c63aae50eb6f480a",
 ##     "12379804391f3f43",
 ##     "8e55e6198d125104",
 ##     "ad3def025bd69b3c",
@@ -20698,6 +27019,10 @@ COPY --link --from=dep-n-icu_provider-2.1.1-b3023f33ef14f135 /tmp/clis-diesel_cl
 ##     "b508b166d717b91e",
 ##     "20033e03ccdc4c14",
 ##     "0bb13315df787db5",
+## ]
+## buildrs_results = [
+##     "e93dddbb48c6a6fc",
+##     "edf8f660a3d601cc",
 ## ]
 ## writes = [
 ##     "icu_provider-b3023f33ef14f135.d",
@@ -20731,12 +27056,20 @@ COPY --link --from=dep-n-icu_provider-2.1.1-b3023f33ef14f135 /tmp/clis-diesel_cl
 ## xtern = "libunicode_ident-721470d94fc0c354.rmeta"
 ##
 ## [[externs]]
+## from = "out-71babfb997932318"
+## xtern = "build_script_build-71babfb997932318"
+##
+## [[externs]]
 ## from = "out-87872b55644e5043"
 ## xtern = "libquote-87872b55644e5043.rlib"
 ##
 ## [[externs]]
 ## from = "out-87872b55644e5043"
 ## xtern = "libquote-87872b55644e5043.rmeta"
+##
+## [[externs]]
+## from = "out-c63aae50eb6f480a"
+## xtern = "build_script_build-c63aae50eb6f480a"
 ##
 ## [[externs]]
 ## from = "out-12379804391f3f43"
@@ -20893,8 +27226,10 @@ COPY --link --from=dep-n-icu_provider-2.1.1-b3023f33ef14f135 /tmp/clis-diesel_cl
 ##   --mount=from=out-e1e423eb99bb7e63,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libproc_macro2-e1e423eb99bb7e63.rmeta,source=/libproc_macro2-e1e423eb99bb7e63.rmeta \
 ##   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rlib,source=/libunicode_ident-721470d94fc0c354.rlib \
 ##   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rmeta,source=/libunicode_ident-721470d94fc0c354.rmeta \
+##   --mount=from=out-71babfb997932318,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-71babfb997932318,source=/build_script_build-71babfb997932318 \
 ##   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rlib,source=/libquote-87872b55644e5043.rlib \
 ##   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rmeta,source=/libquote-87872b55644e5043.rmeta \
+##   --mount=from=out-c63aae50eb6f480a,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-c63aae50eb6f480a,source=/build_script_build-c63aae50eb6f480a \
 ##   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rlib,source=/libsyn-12379804391f3f43.rlib \
 ##   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rmeta,source=/libsyn-12379804391f3f43.rmeta \
 ##   --mount=from=out-8e55e6198d125104,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libicu_locale_core-8e55e6198d125104.rlib,source=/libicu_locale_core-8e55e6198d125104.rlib \
@@ -20969,8 +27304,10 @@ RUN \
   --mount=from=out-e1e423eb99bb7e63,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libproc_macro2-e1e423eb99bb7e63.rmeta,source=/libproc_macro2-e1e423eb99bb7e63.rmeta \
   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rlib,source=/libunicode_ident-721470d94fc0c354.rlib \
   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rmeta,source=/libunicode_ident-721470d94fc0c354.rmeta \
+  --mount=from=out-71babfb997932318,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-71babfb997932318,source=/build_script_build-71babfb997932318 \
   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rlib,source=/libquote-87872b55644e5043.rlib \
   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rmeta,source=/libquote-87872b55644e5043.rmeta \
+  --mount=from=out-c63aae50eb6f480a,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-c63aae50eb6f480a,source=/build_script_build-c63aae50eb6f480a \
   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rlib,source=/libsyn-12379804391f3f43.rlib \
   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rmeta,source=/libsyn-12379804391f3f43.rmeta \
   --mount=from=out-2a4901e5ac2935df,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libpotential_utf-2a4901e5ac2935df.rlib,source=/libpotential_utf-2a4901e5ac2935df.rlib \
@@ -20990,6 +27327,7 @@ RUN \
   --mount=from=out-b508b166d717b91e,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libzerovec_derive-b508b166d717b91e.so,source=/libzerovec_derive-b508b166d717b91e.so \
   --mount=from=out-fc0a70c3bc112445,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libicu_normalizer_data-fc0a70c3bc112445.rlib,source=/libicu_normalizer_data-fc0a70c3bc112445.rlib \
   --mount=from=out-fc0a70c3bc112445,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libicu_normalizer_data-fc0a70c3bc112445.rmeta,source=/libicu_normalizer_data-fc0a70c3bc112445.rmeta \
+  --mount=from=out-21ea0b3ad361ca24,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-21ea0b3ad361ca24,source=/build_script_build-21ea0b3ad361ca24 \
   --mount=from=out-b3023f33ef14f135,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libicu_provider-b3023f33ef14f135.rlib,source=/libicu_provider-b3023f33ef14f135.rlib \
   --mount=from=out-b3023f33ef14f135,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libicu_provider-b3023f33ef14f135.rmeta,source=/libicu_provider-b3023f33ef14f135.rmeta \
   --mount=from=out-8e55e6198d125104,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libicu_locale_core-8e55e6198d125104.rlib,source=/libicu_locale_core-8e55e6198d125104.rlib \
@@ -21038,7 +27376,11 @@ COPY --link --from=dep-n-icu_normalizer-2.1.1-775d205705559e1d /tmp/clis-diesel_
 ##     "0cf9247df685d72e",
 ##     "e1e423eb99bb7e63",
 ##     "721470d94fc0c354",
+##     "e93dddbb48c6a6fc",
+##     "71babfb997932318",
 ##     "87872b55644e5043",
+##     "edf8f660a3d601cc",
+##     "c63aae50eb6f480a",
 ##     "12379804391f3f43",
 ##     "2a4901e5ac2935df",
 ##     "c4e0f8ac739debd7",
@@ -21050,6 +27392,8 @@ COPY --link --from=dep-n-icu_normalizer-2.1.1-775d205705559e1d /tmp/clis-diesel_
 ##     "06be7dc3ecf1b8da",
 ##     "b508b166d717b91e",
 ##     "fc0a70c3bc112445",
+##     "ca55f8cea487cfa3",
+##     "21ea0b3ad361ca24",
 ##     "b3023f33ef14f135",
 ##     "8e55e6198d125104",
 ##     "ad3def025bd69b3c",
@@ -21057,6 +27401,11 @@ COPY --link --from=dep-n-icu_normalizer-2.1.1-775d205705559e1d /tmp/clis-diesel_
 ##     "20033e03ccdc4c14",
 ##     "0bb13315df787db5",
 ##     "a6c315a67b85c35f",
+## ]
+## buildrs_results = [
+##     "e93dddbb48c6a6fc",
+##     "edf8f660a3d601cc",
+##     "ca55f8cea487cfa3",
 ## ]
 ## writes = [
 ##     "icu_normalizer-775d205705559e1d.d",
@@ -21098,12 +27447,20 @@ COPY --link --from=dep-n-icu_normalizer-2.1.1-775d205705559e1d /tmp/clis-diesel_
 ## xtern = "libunicode_ident-721470d94fc0c354.rmeta"
 ##
 ## [[externs]]
+## from = "out-71babfb997932318"
+## xtern = "build_script_build-71babfb997932318"
+##
+## [[externs]]
 ## from = "out-87872b55644e5043"
 ## xtern = "libquote-87872b55644e5043.rlib"
 ##
 ## [[externs]]
 ## from = "out-87872b55644e5043"
 ## xtern = "libquote-87872b55644e5043.rmeta"
+##
+## [[externs]]
+## from = "out-c63aae50eb6f480a"
+## xtern = "build_script_build-c63aae50eb6f480a"
 ##
 ## [[externs]]
 ## from = "out-12379804391f3f43"
@@ -21180,6 +27537,10 @@ COPY --link --from=dep-n-icu_normalizer-2.1.1-775d205705559e1d /tmp/clis-diesel_
 ## [[externs]]
 ## from = "out-fc0a70c3bc112445"
 ## xtern = "libicu_normalizer_data-fc0a70c3bc112445.rmeta"
+##
+## [[externs]]
+## from = "out-21ea0b3ad361ca24"
+## xtern = "build_script_build-21ea0b3ad361ca24"
 ##
 ## [[externs]]
 ## from = "out-b3023f33ef14f135"
@@ -21294,8 +27655,10 @@ COPY --link --from=dep-n-icu_normalizer-2.1.1-775d205705559e1d /tmp/clis-diesel_
 ##   --mount=from=out-e1e423eb99bb7e63,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libproc_macro2-e1e423eb99bb7e63.rmeta,source=/libproc_macro2-e1e423eb99bb7e63.rmeta \
 ##   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rlib,source=/libunicode_ident-721470d94fc0c354.rlib \
 ##   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rmeta,source=/libunicode_ident-721470d94fc0c354.rmeta \
+##   --mount=from=out-71babfb997932318,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-71babfb997932318,source=/build_script_build-71babfb997932318 \
 ##   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rlib,source=/libquote-87872b55644e5043.rlib \
 ##   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rmeta,source=/libquote-87872b55644e5043.rmeta \
+##   --mount=from=out-c63aae50eb6f480a,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-c63aae50eb6f480a,source=/build_script_build-c63aae50eb6f480a \
 ##   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rlib,source=/libsyn-12379804391f3f43.rlib \
 ##   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rmeta,source=/libsyn-12379804391f3f43.rmeta \
 ##   --mount=from=out-2a4901e5ac2935df,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libpotential_utf-2a4901e5ac2935df.rlib,source=/libpotential_utf-2a4901e5ac2935df.rlib \
@@ -21315,6 +27678,7 @@ COPY --link --from=dep-n-icu_normalizer-2.1.1-775d205705559e1d /tmp/clis-diesel_
 ##   --mount=from=out-b508b166d717b91e,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libzerovec_derive-b508b166d717b91e.so,source=/libzerovec_derive-b508b166d717b91e.so \
 ##   --mount=from=out-fc0a70c3bc112445,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libicu_normalizer_data-fc0a70c3bc112445.rlib,source=/libicu_normalizer_data-fc0a70c3bc112445.rlib \
 ##   --mount=from=out-fc0a70c3bc112445,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libicu_normalizer_data-fc0a70c3bc112445.rmeta,source=/libicu_normalizer_data-fc0a70c3bc112445.rmeta \
+##   --mount=from=out-21ea0b3ad361ca24,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-21ea0b3ad361ca24,source=/build_script_build-21ea0b3ad361ca24 \
 ##   --mount=from=out-b3023f33ef14f135,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libicu_provider-b3023f33ef14f135.rlib,source=/libicu_provider-b3023f33ef14f135.rlib \
 ##   --mount=from=out-b3023f33ef14f135,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libicu_provider-b3023f33ef14f135.rmeta,source=/libicu_provider-b3023f33ef14f135.rmeta \
 ##   --mount=from=out-8e55e6198d125104,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libicu_locale_core-8e55e6198d125104.rlib,source=/libicu_locale_core-8e55e6198d125104.rlib \
@@ -21366,11 +27730,341 @@ COPY --link --from=dep-n-icu_normalizer-2.1.1-775d205705559e1d /tmp/clis-diesel_
 FROM scratch AS cratesio-icu_properties_data-2.1.1
 ADD --chmod=0664 --unpack --checksum=sha256:02845b3647bb045f1100ecd6480ff52f34c35f82d9880e029d329c21d1054899 \
   https://static.crates.io/crates/icu_properties_data/icu_properties_data-2.1.1.crate /
+FROM rust-base AS dep-x-icu_properties_data-2.1.1-59ba212a9df776ba
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-diesel_cli_2-3-4/release/build/icu_properties_data-59ba212a9df776ba
+RUN \
+  --mount=from=cratesio-icu_properties_data-2.1.1,source=/icu_properties_data-2.1.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/icu_properties_data-2.1.1,rw \
+    { \
+        cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/icu_properties_data-2.1.1/build.rs | sed 's/fn main/fn actual_59ba212a9df776ba_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/icu_properties_data-2.1.1/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/icu_properties_data-2.1.1/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/icu_properties_data-2.1.1/build.rs ; \
+        { \
+          echo ; \
+          echo 'fn main() {' ; \
+          echo '    use std::env::{args_os, var_os};' ; \
+          echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+          echo '        use std::process::{Command, Stdio};' ; \
+          echo '        let mut cmd = Command::new("cargo-green");' ; \
+          echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+          echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+          echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+          echo '        assert!(res.success());' ; \
+          echo '    } else {' ; \
+          echo '        actual_59ba212a9df776ba_main();' ; \
+          echo '    }' ; \
+          echo '}' ; \
+        } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/icu_properties_data-2.1.1/build.rs ; \
+    } && \
+    env CARGO="$(which cargo)" \
+        CARGO_CRATE_NAME=build_script_build \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/icu_properties_data-2.1.1 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/icu_properties_data-2.1.1/Cargo.toml \
+        CARGO_PKG_AUTHORS=The' ICU4X Project Developers' \
+        CARGO_PKG_DESCRIPTION=Data' for the icu_properties crate' \
+        CARGO_PKG_HOMEPAGE=https'://icu4x.unicode.org' \
+        CARGO_PKG_LICENSE=Unicode-3.0 \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=icu_properties_data \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/unicode-org/icu4x' \
+        CARGO_PKG_RUST_VERSION=1.83 \
+        CARGO_PKG_VERSION=2.1.1 \
+        CARGO_PKG_VERSION_MAJOR=2 \
+        CARGO_PKG_VERSION_MINOR=1 \
+        CARGO_PKG_VERSION_PATCH=1 \
+        CARGO_PKG_VERSION_PRE= \
+        CARGOGREEN=1 \
+      rustc '--crate-name' 'build_script_build' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'bin' '--emit' 'dep-info,link' '-C' 'embed-bitcode=no' '--warn' 'unexpected_cfgs' '--check-cfg' 'cfg(icu4x_custom_data)' '-C' 'debug-assertions=off' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=84a7c1d73d244d30' '-C' 'extra-filename=-59ba212a9df776ba' '--out-dir' '/tmp/clis-diesel_cli_2-3-4/release/build/icu_properties_data-59ba212a9df776ba' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-diesel_cli_2-3-4/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/icu_properties_data-2.1.1/build.rs \
+        1>          /tmp/clis-diesel_cli_2-3-4/release/build/icu_properties_data-59ba212a9df776ba/out-59ba212a9df776ba-stdout \
+        2>          /tmp/clis-diesel_cli_2-3-4/release/build/icu_properties_data-59ba212a9df776ba/out-59ba212a9df776ba-stderr \
+        || echo $? >/tmp/clis-diesel_cli_2-3-4/release/build/icu_properties_data-59ba212a9df776ba/out-59ba212a9df776ba-errcode\
+  ; find /tmp/clis-diesel_cli_2-3-4/release/build/icu_properties_data-59ba212a9df776ba/*-59ba212a9df776ba* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-59ba212a9df776ba
+COPY --link --from=dep-x-icu_properties_data-2.1.1-59ba212a9df776ba /tmp/clis-diesel_cli_2-3-4/release/build/icu_properties_data-59ba212a9df776ba/*-59ba212a9df776ba* /
+
+## this = "59ba212a9df776ba"
+## writes = [
+##     "build_script_build-59ba212a9df776ba",
+##     "build_script_build-59ba212a9df776ba.d",
+## ]
+## stderr = [
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-4/release/build/icu_properties_data-59ba212a9df776ba/build_script_build-59ba212a9df776ba.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-4/release/build/icu_properties_data-59ba212a9df776ba/build_script_build-59ba212a9df776ba","emit":"link"}',
+## ]
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = '''
+## FROM --platform=$BUILDPLATFORM docker.io/tonistiigi/xx:1.6.1@sha256:923441d7c25f1e2eb5789f82d987693c47b8ed987c4ab3b075d6ed2b5d6779a3 AS xx
+## FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base
+## ARG TARGETPLATFORM
+## RUN \
+##   --mount=from=xx,source=/usr/bin/xx-apk,dst=/usr/bin/xx-apk \
+##   --mount=from=xx,source=/usr/bin/xx-apt,dst=/usr/bin/xx-apt \
+##   --mount=from=xx,source=/usr/bin/xx-apt,dst=/usr/bin/xx-apt-get \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-c++ \
+##   --mount=from=xx,source=/usr/bin/xx-cargo,dst=/usr/bin/xx-cargo \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-cc \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-clang \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-clang++ \
+##   --mount=from=xx,source=/usr/bin/xx-go,dst=/usr/bin/xx-go \
+##   --mount=from=xx,source=/usr/bin/xx-info,dst=/usr/bin/xx-info \
+##   --mount=from=xx,source=/usr/bin/xx-ld-shas,dst=/usr/bin/xx-ld-shas \
+##   --mount=from=xx,source=/usr/bin/xx-verify,dst=/usr/bin/xx-verify \
+##   --mount=from=xx,source=/usr/bin/xx-windres,dst=/usr/bin/xx-windres \
+##     set -eux \
+##  && if   command -v apk >/dev/null 2>&1; then \
+##                                      xx-apk     add     --no-cache                 '<none>'; \
+##     elif command -v apt >/dev/null 2>&1; then \
+##       DEBIAN_FRONTEND=noninteractive xx-apt     install --no-install-recommends -y 'libpq-dev'; \
+##     else \
+##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
+##     fi'''
+##
+## [[stages]]
+##
+## [stages.Cratesio]
+## stage = "cratesio-icu_properties_data-2.1.1"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/icu_properties_data-2.1.1"
+## name = "icu_properties_data"
+## name_dash_version = "icu_properties_data-2.1.1"
+## hash = "02845b3647bb045f1100ecd6480ff52f34c35f82d9880e029d329c21d1054899"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "dep-x-icu_properties_data-2.1.1-59ba212a9df776ba"
+## script = '''
+## FROM rust-base AS dep-x-icu_properties_data-2.1.1-59ba212a9df776ba
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-diesel_cli_2-3-4/release/build/icu_properties_data-59ba212a9df776ba
+## RUN \
+##   --mount=from=cratesio-icu_properties_data-2.1.1,source=/icu_properties_data-2.1.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/icu_properties_data-2.1.1,rw \
+##     { \
+##         cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/icu_properties_data-2.1.1/build.rs | sed 's/fn main/fn actual_59ba212a9df776ba_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/icu_properties_data-2.1.1/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/icu_properties_data-2.1.1/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/icu_properties_data-2.1.1/build.rs ; \
+##         { \
+##           echo ; \
+##           echo 'fn main() {' ; \
+##           echo '    use std::env::{args_os, var_os};' ; \
+##           echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+##           echo '        use std::process::{Command, Stdio};' ; \
+##           echo '        let mut cmd = Command::new("cargo-green");' ; \
+##           echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+##           echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+##           echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+##           echo '        assert!(res.success());' ; \
+##           echo '    } else {' ; \
+##           echo '        actual_59ba212a9df776ba_main();' ; \
+##           echo '    }' ; \
+##           echo '}' ; \
+##         } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/icu_properties_data-2.1.1/build.rs ; \
+##     } && \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CRATE_NAME=build_script_build \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/icu_properties_data-2.1.1 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/icu_properties_data-2.1.1/Cargo.toml \
+##         CARGO_PKG_AUTHORS=The' ICU4X Project Developers' \
+##         CARGO_PKG_DESCRIPTION=Data' for the icu_properties crate' \
+##         CARGO_PKG_HOMEPAGE=https'://icu4x.unicode.org' \
+##         CARGO_PKG_LICENSE=Unicode-3.0 \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=icu_properties_data \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/unicode-org/icu4x' \
+##         CARGO_PKG_RUST_VERSION=1.83 \
+##         CARGO_PKG_VERSION=2.1.1 \
+##         CARGO_PKG_VERSION_MAJOR=2 \
+##         CARGO_PKG_VERSION_MINOR=1 \
+##         CARGO_PKG_VERSION_PATCH=1 \
+##         CARGO_PKG_VERSION_PRE= \
+##         CARGOGREEN=1 \
+##       rustc '--crate-name' 'build_script_build' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'bin' '--emit' 'dep-info,link' '-C' 'embed-bitcode=no' '--warn' 'unexpected_cfgs' '--check-cfg' 'cfg(icu4x_custom_data)' '-C' 'debug-assertions=off' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values())' '-C' 'metadata=84a7c1d73d244d30' '-C' 'extra-filename=-59ba212a9df776ba' '--out-dir' '/tmp/clis-diesel_cli_2-3-4/release/build/icu_properties_data-59ba212a9df776ba' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-diesel_cli_2-3-4/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/icu_properties_data-2.1.1/build.rs \
+##         1>          /tmp/clis-diesel_cli_2-3-4/release/build/icu_properties_data-59ba212a9df776ba/out-59ba212a9df776ba-stdout \
+##         2>          /tmp/clis-diesel_cli_2-3-4/release/build/icu_properties_data-59ba212a9df776ba/out-59ba212a9df776ba-stderr \
+##         || echo $? >/tmp/clis-diesel_cli_2-3-4/release/build/icu_properties_data-59ba212a9df776ba/out-59ba212a9df776ba-errcode\
+##   ; find /tmp/clis-diesel_cli_2-3-4/release/build/icu_properties_data-59ba212a9df776ba/*-59ba212a9df776ba* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-59ba212a9df776ba"
+## script = """
+## FROM scratch AS out-59ba212a9df776ba
+## COPY --link --from=dep-x-icu_properties_data-2.1.1-59ba212a9df776ba /tmp/clis-diesel_cli_2-3-4/release/build/icu_properties_data-59ba212a9df776ba/*-59ba212a9df776ba* /"""
+
+FROM rust-base AS run-z-icu_properties_data-2.1.1-e3f49788cec17391
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-diesel_cli_2-3-4/release/build/icu_properties_data-e3f49788cec17391/out
+WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/icu_properties_data-2.1.1
+RUN \
+  --mount=from=out-59ba212a9df776ba,source=/build_script_build-59ba212a9df776ba,dst=/tmp/clis-diesel_cli_2-3-4/release/build/icu_properties_data-59ba212a9df776ba/build-script-build \
+  --mount=from=cratesio-icu_properties_data-2.1.1,source=/icu_properties_data-2.1.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/icu_properties_data-2.1.1 \
+    env CARGO="$(which cargo)" \
+        CARGO_CFG_FEATURE= \
+        CARGO_CFG_PANIC=unwind \
+        CARGO_CFG_TARGET_ABI= \
+        CARGO_CFG_TARGET_ARCH=x86_64 \
+        CARGO_CFG_TARGET_ENDIAN=little \
+        CARGO_CFG_TARGET_ENV=gnu \
+        CARGO_CFG_TARGET_FAMILY=unix \
+        CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
+        CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+        CARGO_CFG_TARGET_OS=linux \
+        CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+        CARGO_CFG_TARGET_VENDOR=unknown \
+        CARGO_CFG_UNIX= \
+        CARGO_ENCODED_RUSTFLAGS= \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/icu_properties_data-2.1.1 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/icu_properties_data-2.1.1/Cargo.toml \
+        CARGO_PKG_AUTHORS=The' ICU4X Project Developers' \
+        CARGO_PKG_DESCRIPTION=Data' for the icu_properties crate' \
+        CARGO_PKG_HOMEPAGE=https'://icu4x.unicode.org' \
+        CARGO_PKG_LICENSE=Unicode-3.0 \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=icu_properties_data \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/unicode-org/icu4x' \
+        CARGO_PKG_RUST_VERSION=1.83 \
+        CARGO_PKG_VERSION=2.1.1 \
+        CARGO_PKG_VERSION_MAJOR=2 \
+        CARGO_PKG_VERSION_MINOR=1 \
+        CARGO_PKG_VERSION_PATCH=1 \
+        CARGO_PKG_VERSION_PRE= \
+        DEBUG=false \
+        HOST=x86_64-unknown-linux-gnu \
+        NUM_JOBS=4 \
+        OPT_LEVEL=3 \
+        OUT_DIR=/tmp/clis-diesel_cli_2-3-4/release/build/icu_properties_data-e3f49788cec17391/out \
+        PROFILE=release \
+        RUSTC=rustc \
+        RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+        TARGET=x86_64-unknown-linux-gnu \
+        CARGOGREEN=1 \
+      CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-diesel_cli_2-3-4/release/build/icu_properties_data-59ba212a9df776ba/build-script-build \
+        1>          /tmp/clis-diesel_cli_2-3-4/release/build/icu_properties_data-e3f49788cec17391/out/out-e3f49788cec17391-stdout \
+        2>          /tmp/clis-diesel_cli_2-3-4/release/build/icu_properties_data-e3f49788cec17391/out/out-e3f49788cec17391-stderr \
+        || echo $? >/tmp/clis-diesel_cli_2-3-4/release/build/icu_properties_data-e3f49788cec17391/out/out-e3f49788cec17391-errcode\
+  ; find /tmp/clis-diesel_cli_2-3-4/release/build/icu_properties_data-e3f49788cec17391/out/*-e3f49788cec17391* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-e3f49788cec17391
+COPY --link --from=run-z-icu_properties_data-2.1.1-e3f49788cec17391 /tmp/clis-diesel_cli_2-3-4/release/build/icu_properties_data-e3f49788cec17391/out/* /
+
+## this = "e3f49788cec17391"
+## deps = ["59ba212a9df776ba"]
+## stdout = [
+##     "cargo:rerun-if-env-changed=ICU4X_DATA_DIR",
+##     "cargo:rustc-check-cfg=cfg(icu4c_enable_renaming)",
+## ]
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = '''
+## FROM --platform=$BUILDPLATFORM docker.io/tonistiigi/xx:1.6.1@sha256:923441d7c25f1e2eb5789f82d987693c47b8ed987c4ab3b075d6ed2b5d6779a3 AS xx
+## FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base
+## ARG TARGETPLATFORM
+## RUN \
+##   --mount=from=xx,source=/usr/bin/xx-apk,dst=/usr/bin/xx-apk \
+##   --mount=from=xx,source=/usr/bin/xx-apt,dst=/usr/bin/xx-apt \
+##   --mount=from=xx,source=/usr/bin/xx-apt,dst=/usr/bin/xx-apt-get \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-c++ \
+##   --mount=from=xx,source=/usr/bin/xx-cargo,dst=/usr/bin/xx-cargo \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-cc \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-clang \
+##   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-clang++ \
+##   --mount=from=xx,source=/usr/bin/xx-go,dst=/usr/bin/xx-go \
+##   --mount=from=xx,source=/usr/bin/xx-info,dst=/usr/bin/xx-info \
+##   --mount=from=xx,source=/usr/bin/xx-ld-shas,dst=/usr/bin/xx-ld-shas \
+##   --mount=from=xx,source=/usr/bin/xx-verify,dst=/usr/bin/xx-verify \
+##   --mount=from=xx,source=/usr/bin/xx-windres,dst=/usr/bin/xx-windres \
+##     set -eux \
+##  && if   command -v apk >/dev/null 2>&1; then \
+##                                      xx-apk     add     --no-cache                 '<none>'; \
+##     elif command -v apt >/dev/null 2>&1; then \
+##       DEBIAN_FRONTEND=noninteractive xx-apt     install --no-install-recommends -y 'libpq-dev'; \
+##     else \
+##       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
+##     fi'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "run-z-icu_properties_data-2.1.1-e3f49788cec17391"
+## script = '''
+## FROM rust-base AS run-z-icu_properties_data-2.1.1-e3f49788cec17391
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-diesel_cli_2-3-4/release/build/icu_properties_data-e3f49788cec17391/out
+## WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/icu_properties_data-2.1.1
+## RUN \
+##   --mount=from=out-59ba212a9df776ba,source=/build_script_build-59ba212a9df776ba,dst=/tmp/clis-diesel_cli_2-3-4/release/build/icu_properties_data-59ba212a9df776ba/build-script-build \
+##   --mount=from=cratesio-icu_properties_data-2.1.1,source=/icu_properties_data-2.1.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/icu_properties_data-2.1.1 \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CFG_FEATURE= \
+##         CARGO_CFG_PANIC=unwind \
+##         CARGO_CFG_TARGET_ABI= \
+##         CARGO_CFG_TARGET_ARCH=x86_64 \
+##         CARGO_CFG_TARGET_ENDIAN=little \
+##         CARGO_CFG_TARGET_ENV=gnu \
+##         CARGO_CFG_TARGET_FAMILY=unix \
+##         CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
+##         CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+##         CARGO_CFG_TARGET_OS=linux \
+##         CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+##         CARGO_CFG_TARGET_VENDOR=unknown \
+##         CARGO_CFG_UNIX= \
+##         CARGO_ENCODED_RUSTFLAGS= \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/icu_properties_data-2.1.1 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/icu_properties_data-2.1.1/Cargo.toml \
+##         CARGO_PKG_AUTHORS=The' ICU4X Project Developers' \
+##         CARGO_PKG_DESCRIPTION=Data' for the icu_properties crate' \
+##         CARGO_PKG_HOMEPAGE=https'://icu4x.unicode.org' \
+##         CARGO_PKG_LICENSE=Unicode-3.0 \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=icu_properties_data \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/unicode-org/icu4x' \
+##         CARGO_PKG_RUST_VERSION=1.83 \
+##         CARGO_PKG_VERSION=2.1.1 \
+##         CARGO_PKG_VERSION_MAJOR=2 \
+##         CARGO_PKG_VERSION_MINOR=1 \
+##         CARGO_PKG_VERSION_PATCH=1 \
+##         CARGO_PKG_VERSION_PRE= \
+##         DEBUG=false \
+##         HOST=x86_64-unknown-linux-gnu \
+##         NUM_JOBS=4 \
+##         OPT_LEVEL=3 \
+##         OUT_DIR=/tmp/clis-diesel_cli_2-3-4/release/build/icu_properties_data-e3f49788cec17391/out \
+##         PROFILE=release \
+##         RUSTC=rustc \
+##         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+##         TARGET=x86_64-unknown-linux-gnu \
+##         CARGOGREEN=1 \
+##       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-diesel_cli_2-3-4/release/build/icu_properties_data-59ba212a9df776ba/build-script-build \
+##         1>          /tmp/clis-diesel_cli_2-3-4/release/build/icu_properties_data-e3f49788cec17391/out/out-e3f49788cec17391-stdout \
+##         2>          /tmp/clis-diesel_cli_2-3-4/release/build/icu_properties_data-e3f49788cec17391/out/out-e3f49788cec17391-stderr \
+##         || echo $? >/tmp/clis-diesel_cli_2-3-4/release/build/icu_properties_data-e3f49788cec17391/out/out-e3f49788cec17391-errcode\
+##   ; find /tmp/clis-diesel_cli_2-3-4/release/build/icu_properties_data-e3f49788cec17391/out/*-e3f49788cec17391* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-e3f49788cec17391"
+## script = """
+## FROM scratch AS out-e3f49788cec17391
+## COPY --link --from=run-z-icu_properties_data-2.1.1-e3f49788cec17391 /tmp/clis-diesel_cli_2-3-4/release/build/icu_properties_data-e3f49788cec17391/out/* /"""
+
+
 FROM rust-base AS dep-n-icu_properties_data-2.1.1-f2509a0a78ce5660
 SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-diesel_cli_2-3-4/release/deps
 RUN \
   --mount=from=cratesio-icu_properties_data-2.1.1,source=/icu_properties_data-2.1.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/icu_properties_data-2.1.1 \
+  --mount=from=out-e3f49788cec17391,dst=/tmp/clis-diesel_cli_2-3-4/release/build/icu_properties_data-e3f49788cec17391/out,source=/ \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=icu_properties_data \
         CARGO_INCREMENTAL=0 \
@@ -21401,6 +28095,11 @@ FROM scratch AS out-f2509a0a78ce5660
 COPY --link --from=dep-n-icu_properties_data-2.1.1-f2509a0a78ce5660 /tmp/clis-diesel_cli_2-3-4/release/deps/*-f2509a0a78ce5660* /
 
 ## this = "f2509a0a78ce5660"
+## deps = [
+##     "e3f49788cec17391",
+##     "59ba212a9df776ba",
+## ]
+## buildrs_results = ["e3f49788cec17391"]
 ## writes = [
 ##     "icu_properties_data-f2509a0a78ce5660.d",
 ##     "libicu_properties_data-f2509a0a78ce5660.rlib",
@@ -21411,6 +28110,11 @@ COPY --link --from=dep-n-icu_properties_data-2.1.1-f2509a0a78ce5660 /tmp/clis-di
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-4/release/deps/libicu_properties_data-f2509a0a78ce5660.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-diesel_cli_2-3-4/release/deps/libicu_properties_data-f2509a0a78ce5660.rlib","emit":"link"}',
 ## ]
+##
+## [[mounts]]
+## name = "out-e3f49788cec17391"
+## src = "/"
+## dst = "/tmp/clis-diesel_cli_2-3-4/release/build/icu_properties_data-e3f49788cec17391/out"
 ##
 ## [[stages]]
 ##
@@ -21462,6 +28166,7 @@ COPY --link --from=dep-n-icu_properties_data-2.1.1-f2509a0a78ce5660 /tmp/clis-di
 ## WORKDIR /tmp/clis-diesel_cli_2-3-4/release/deps
 ## RUN \
 ##   --mount=from=cratesio-icu_properties_data-2.1.1,source=/icu_properties_data-2.1.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/icu_properties_data-2.1.1 \
+##   --mount=from=out-e3f49788cec17391,dst=/tmp/clis-diesel_cli_2-3-4/release/build/icu_properties_data-e3f49788cec17391/out,source=/ \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=icu_properties_data \
 ##         CARGO_INCREMENTAL=0 \
@@ -21512,8 +28217,10 @@ RUN \
   --mount=from=out-e1e423eb99bb7e63,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libproc_macro2-e1e423eb99bb7e63.rmeta,source=/libproc_macro2-e1e423eb99bb7e63.rmeta \
   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rlib,source=/libunicode_ident-721470d94fc0c354.rlib \
   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rmeta,source=/libunicode_ident-721470d94fc0c354.rmeta \
+  --mount=from=out-71babfb997932318,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-71babfb997932318,source=/build_script_build-71babfb997932318 \
   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rlib,source=/libquote-87872b55644e5043.rlib \
   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rmeta,source=/libquote-87872b55644e5043.rmeta \
+  --mount=from=out-c63aae50eb6f480a,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-c63aae50eb6f480a,source=/build_script_build-c63aae50eb6f480a \
   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rlib,source=/libsyn-12379804391f3f43.rlib \
   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rmeta,source=/libsyn-12379804391f3f43.rmeta \
   --mount=from=out-2a4901e5ac2935df,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libpotential_utf-2a4901e5ac2935df.rlib,source=/libpotential_utf-2a4901e5ac2935df.rlib \
@@ -21541,6 +28248,7 @@ RUN \
   --mount=from=out-20033e03ccdc4c14,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libwriteable-20033e03ccdc4c14.rmeta,source=/libwriteable-20033e03ccdc4c14.rmeta \
   --mount=from=out-f2509a0a78ce5660,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libicu_properties_data-f2509a0a78ce5660.rlib,source=/libicu_properties_data-f2509a0a78ce5660.rlib \
   --mount=from=out-f2509a0a78ce5660,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libicu_properties_data-f2509a0a78ce5660.rmeta,source=/libicu_properties_data-f2509a0a78ce5660.rmeta \
+  --mount=from=out-59ba212a9df776ba,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-59ba212a9df776ba,source=/build_script_build-59ba212a9df776ba \
   --mount=from=out-b3023f33ef14f135,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libicu_provider-b3023f33ef14f135.rlib,source=/libicu_provider-b3023f33ef14f135.rlib \
   --mount=from=out-b3023f33ef14f135,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libicu_provider-b3023f33ef14f135.rmeta,source=/libicu_provider-b3023f33ef14f135.rmeta \
   --mount=from=out-0bb13315df787db5,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libzerotrie-0bb13315df787db5.rlib,source=/libzerotrie-0bb13315df787db5.rlib \
@@ -21579,7 +28287,11 @@ COPY --link --from=dep-n-icu_properties-2.1.1-2142576b56af48dd /tmp/clis-diesel_
 ##     "0cf9247df685d72e",
 ##     "e1e423eb99bb7e63",
 ##     "721470d94fc0c354",
+##     "e93dddbb48c6a6fc",
+##     "71babfb997932318",
 ##     "87872b55644e5043",
+##     "edf8f660a3d601cc",
+##     "c63aae50eb6f480a",
 ##     "12379804391f3f43",
 ##     "2a4901e5ac2935df",
 ##     "c4e0f8ac739debd7",
@@ -21595,8 +28307,15 @@ COPY --link --from=dep-n-icu_properties-2.1.1-2142576b56af48dd /tmp/clis-diesel_
 ##     "f5693d8924a01c9a",
 ##     "20033e03ccdc4c14",
 ##     "f2509a0a78ce5660",
+##     "e3f49788cec17391",
+##     "59ba212a9df776ba",
 ##     "b3023f33ef14f135",
 ##     "0bb13315df787db5",
+## ]
+## buildrs_results = [
+##     "e93dddbb48c6a6fc",
+##     "edf8f660a3d601cc",
+##     "e3f49788cec17391",
 ## ]
 ## writes = [
 ##     "icu_properties-2142576b56af48dd.d",
@@ -21638,12 +28357,20 @@ COPY --link --from=dep-n-icu_properties-2.1.1-2142576b56af48dd /tmp/clis-diesel_
 ## xtern = "libunicode_ident-721470d94fc0c354.rmeta"
 ##
 ## [[externs]]
+## from = "out-71babfb997932318"
+## xtern = "build_script_build-71babfb997932318"
+##
+## [[externs]]
 ## from = "out-87872b55644e5043"
 ## xtern = "libquote-87872b55644e5043.rlib"
 ##
 ## [[externs]]
 ## from = "out-87872b55644e5043"
 ## xtern = "libquote-87872b55644e5043.rmeta"
+##
+## [[externs]]
+## from = "out-c63aae50eb6f480a"
+## xtern = "build_script_build-c63aae50eb6f480a"
 ##
 ## [[externs]]
 ## from = "out-12379804391f3f43"
@@ -21754,6 +28481,10 @@ COPY --link --from=dep-n-icu_properties-2.1.1-2142576b56af48dd /tmp/clis-diesel_
 ## xtern = "libicu_properties_data-f2509a0a78ce5660.rmeta"
 ##
 ## [[externs]]
+## from = "out-59ba212a9df776ba"
+## xtern = "build_script_build-59ba212a9df776ba"
+##
+## [[externs]]
 ## from = "out-b3023f33ef14f135"
 ## xtern = "libicu_provider-b3023f33ef14f135.rlib"
 ##
@@ -21826,8 +28557,10 @@ COPY --link --from=dep-n-icu_properties-2.1.1-2142576b56af48dd /tmp/clis-diesel_
 ##   --mount=from=out-e1e423eb99bb7e63,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libproc_macro2-e1e423eb99bb7e63.rmeta,source=/libproc_macro2-e1e423eb99bb7e63.rmeta \
 ##   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rlib,source=/libunicode_ident-721470d94fc0c354.rlib \
 ##   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rmeta,source=/libunicode_ident-721470d94fc0c354.rmeta \
+##   --mount=from=out-71babfb997932318,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-71babfb997932318,source=/build_script_build-71babfb997932318 \
 ##   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rlib,source=/libquote-87872b55644e5043.rlib \
 ##   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rmeta,source=/libquote-87872b55644e5043.rmeta \
+##   --mount=from=out-c63aae50eb6f480a,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-c63aae50eb6f480a,source=/build_script_build-c63aae50eb6f480a \
 ##   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rlib,source=/libsyn-12379804391f3f43.rlib \
 ##   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rmeta,source=/libsyn-12379804391f3f43.rmeta \
 ##   --mount=from=out-2a4901e5ac2935df,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libpotential_utf-2a4901e5ac2935df.rlib,source=/libpotential_utf-2a4901e5ac2935df.rlib \
@@ -21855,6 +28588,7 @@ COPY --link --from=dep-n-icu_properties-2.1.1-2142576b56af48dd /tmp/clis-diesel_
 ##   --mount=from=out-20033e03ccdc4c14,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libwriteable-20033e03ccdc4c14.rmeta,source=/libwriteable-20033e03ccdc4c14.rmeta \
 ##   --mount=from=out-f2509a0a78ce5660,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libicu_properties_data-f2509a0a78ce5660.rlib,source=/libicu_properties_data-f2509a0a78ce5660.rlib \
 ##   --mount=from=out-f2509a0a78ce5660,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libicu_properties_data-f2509a0a78ce5660.rmeta,source=/libicu_properties_data-f2509a0a78ce5660.rmeta \
+##   --mount=from=out-59ba212a9df776ba,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-59ba212a9df776ba,source=/build_script_build-59ba212a9df776ba \
 ##   --mount=from=out-b3023f33ef14f135,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libicu_provider-b3023f33ef14f135.rlib,source=/libicu_provider-b3023f33ef14f135.rlib \
 ##   --mount=from=out-b3023f33ef14f135,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libicu_provider-b3023f33ef14f135.rmeta,source=/libicu_provider-b3023f33ef14f135.rmeta \
 ##   --mount=from=out-0bb13315df787db5,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libzerotrie-0bb13315df787db5.rlib,source=/libzerotrie-0bb13315df787db5.rlib \
@@ -21910,8 +28644,10 @@ RUN \
   --mount=from=out-e1e423eb99bb7e63,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libproc_macro2-e1e423eb99bb7e63.rmeta,source=/libproc_macro2-e1e423eb99bb7e63.rmeta \
   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rlib,source=/libunicode_ident-721470d94fc0c354.rlib \
   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rmeta,source=/libunicode_ident-721470d94fc0c354.rmeta \
+  --mount=from=out-71babfb997932318,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-71babfb997932318,source=/build_script_build-71babfb997932318 \
   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rlib,source=/libquote-87872b55644e5043.rlib \
   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rmeta,source=/libquote-87872b55644e5043.rmeta \
+  --mount=from=out-c63aae50eb6f480a,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-c63aae50eb6f480a,source=/build_script_build-c63aae50eb6f480a \
   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rlib,source=/libsyn-12379804391f3f43.rlib \
   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rmeta,source=/libsyn-12379804391f3f43.rmeta \
   --mount=from=out-2a4901e5ac2935df,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libpotential_utf-2a4901e5ac2935df.rlib,source=/libpotential_utf-2a4901e5ac2935df.rlib \
@@ -21931,6 +28667,7 @@ RUN \
   --mount=from=out-b508b166d717b91e,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libzerovec_derive-b508b166d717b91e.so,source=/libzerovec_derive-b508b166d717b91e.so \
   --mount=from=out-fc0a70c3bc112445,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libicu_normalizer_data-fc0a70c3bc112445.rlib,source=/libicu_normalizer_data-fc0a70c3bc112445.rlib \
   --mount=from=out-fc0a70c3bc112445,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libicu_normalizer_data-fc0a70c3bc112445.rmeta,source=/libicu_normalizer_data-fc0a70c3bc112445.rmeta \
+  --mount=from=out-21ea0b3ad361ca24,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-21ea0b3ad361ca24,source=/build_script_build-21ea0b3ad361ca24 \
   --mount=from=out-b3023f33ef14f135,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libicu_provider-b3023f33ef14f135.rlib,source=/libicu_provider-b3023f33ef14f135.rlib \
   --mount=from=out-b3023f33ef14f135,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libicu_provider-b3023f33ef14f135.rmeta,source=/libicu_provider-b3023f33ef14f135.rmeta \
   --mount=from=out-8e55e6198d125104,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libicu_locale_core-8e55e6198d125104.rlib,source=/libicu_locale_core-8e55e6198d125104.rlib \
@@ -21949,6 +28686,7 @@ RUN \
   --mount=from=out-2142576b56af48dd,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libicu_properties-2142576b56af48dd.rmeta,source=/libicu_properties-2142576b56af48dd.rmeta \
   --mount=from=out-f2509a0a78ce5660,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libicu_properties_data-f2509a0a78ce5660.rlib,source=/libicu_properties_data-f2509a0a78ce5660.rlib \
   --mount=from=out-f2509a0a78ce5660,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libicu_properties_data-f2509a0a78ce5660.rmeta,source=/libicu_properties_data-f2509a0a78ce5660.rmeta \
+  --mount=from=out-59ba212a9df776ba,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-59ba212a9df776ba,source=/build_script_build-59ba212a9df776ba \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=idna_adapter \
         CARGO_INCREMENTAL=0 \
@@ -21984,7 +28722,11 @@ COPY --link --from=dep-n-idna_adapter-1.2.1-4d72253aa34b4d3c /tmp/clis-diesel_cl
 ##     "0cf9247df685d72e",
 ##     "e1e423eb99bb7e63",
 ##     "721470d94fc0c354",
+##     "e93dddbb48c6a6fc",
+##     "71babfb997932318",
 ##     "87872b55644e5043",
+##     "edf8f660a3d601cc",
+##     "c63aae50eb6f480a",
 ##     "12379804391f3f43",
 ##     "2a4901e5ac2935df",
 ##     "c4e0f8ac739debd7",
@@ -21996,6 +28738,8 @@ COPY --link --from=dep-n-idna_adapter-1.2.1-4d72253aa34b4d3c /tmp/clis-diesel_cl
 ##     "06be7dc3ecf1b8da",
 ##     "b508b166d717b91e",
 ##     "fc0a70c3bc112445",
+##     "ca55f8cea487cfa3",
+##     "21ea0b3ad361ca24",
 ##     "b3023f33ef14f135",
 ##     "8e55e6198d125104",
 ##     "ad3def025bd69b3c",
@@ -22005,6 +28749,14 @@ COPY --link --from=dep-n-idna_adapter-1.2.1-4d72253aa34b4d3c /tmp/clis-diesel_cl
 ##     "a6c315a67b85c35f",
 ##     "2142576b56af48dd",
 ##     "f2509a0a78ce5660",
+##     "e3f49788cec17391",
+##     "59ba212a9df776ba",
+## ]
+## buildrs_results = [
+##     "e93dddbb48c6a6fc",
+##     "edf8f660a3d601cc",
+##     "ca55f8cea487cfa3",
+##     "e3f49788cec17391",
 ## ]
 ## writes = [
 ##     "idna_adapter-4d72253aa34b4d3c.d",
@@ -22054,12 +28806,20 @@ COPY --link --from=dep-n-idna_adapter-1.2.1-4d72253aa34b4d3c /tmp/clis-diesel_cl
 ## xtern = "libunicode_ident-721470d94fc0c354.rmeta"
 ##
 ## [[externs]]
+## from = "out-71babfb997932318"
+## xtern = "build_script_build-71babfb997932318"
+##
+## [[externs]]
 ## from = "out-87872b55644e5043"
 ## xtern = "libquote-87872b55644e5043.rlib"
 ##
 ## [[externs]]
 ## from = "out-87872b55644e5043"
 ## xtern = "libquote-87872b55644e5043.rmeta"
+##
+## [[externs]]
+## from = "out-c63aae50eb6f480a"
+## xtern = "build_script_build-c63aae50eb6f480a"
 ##
 ## [[externs]]
 ## from = "out-12379804391f3f43"
@@ -22138,6 +28898,10 @@ COPY --link --from=dep-n-idna_adapter-1.2.1-4d72253aa34b4d3c /tmp/clis-diesel_cl
 ## xtern = "libicu_normalizer_data-fc0a70c3bc112445.rmeta"
 ##
 ## [[externs]]
+## from = "out-21ea0b3ad361ca24"
+## xtern = "build_script_build-21ea0b3ad361ca24"
+##
+## [[externs]]
 ## from = "out-b3023f33ef14f135"
 ## xtern = "libicu_provider-b3023f33ef14f135.rlib"
 ##
@@ -22209,6 +28973,10 @@ COPY --link --from=dep-n-idna_adapter-1.2.1-4d72253aa34b4d3c /tmp/clis-diesel_cl
 ## from = "out-f2509a0a78ce5660"
 ## xtern = "libicu_properties_data-f2509a0a78ce5660.rmeta"
 ##
+## [[externs]]
+## from = "out-59ba212a9df776ba"
+## xtern = "build_script_build-59ba212a9df776ba"
+##
 ## [[stages]]
 ##
 ## [stages.Script]
@@ -22268,8 +29036,10 @@ COPY --link --from=dep-n-idna_adapter-1.2.1-4d72253aa34b4d3c /tmp/clis-diesel_cl
 ##   --mount=from=out-e1e423eb99bb7e63,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libproc_macro2-e1e423eb99bb7e63.rmeta,source=/libproc_macro2-e1e423eb99bb7e63.rmeta \
 ##   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rlib,source=/libunicode_ident-721470d94fc0c354.rlib \
 ##   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rmeta,source=/libunicode_ident-721470d94fc0c354.rmeta \
+##   --mount=from=out-71babfb997932318,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-71babfb997932318,source=/build_script_build-71babfb997932318 \
 ##   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rlib,source=/libquote-87872b55644e5043.rlib \
 ##   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rmeta,source=/libquote-87872b55644e5043.rmeta \
+##   --mount=from=out-c63aae50eb6f480a,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-c63aae50eb6f480a,source=/build_script_build-c63aae50eb6f480a \
 ##   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rlib,source=/libsyn-12379804391f3f43.rlib \
 ##   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rmeta,source=/libsyn-12379804391f3f43.rmeta \
 ##   --mount=from=out-2a4901e5ac2935df,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libpotential_utf-2a4901e5ac2935df.rlib,source=/libpotential_utf-2a4901e5ac2935df.rlib \
@@ -22289,6 +29059,7 @@ COPY --link --from=dep-n-idna_adapter-1.2.1-4d72253aa34b4d3c /tmp/clis-diesel_cl
 ##   --mount=from=out-b508b166d717b91e,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libzerovec_derive-b508b166d717b91e.so,source=/libzerovec_derive-b508b166d717b91e.so \
 ##   --mount=from=out-fc0a70c3bc112445,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libicu_normalizer_data-fc0a70c3bc112445.rlib,source=/libicu_normalizer_data-fc0a70c3bc112445.rlib \
 ##   --mount=from=out-fc0a70c3bc112445,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libicu_normalizer_data-fc0a70c3bc112445.rmeta,source=/libicu_normalizer_data-fc0a70c3bc112445.rmeta \
+##   --mount=from=out-21ea0b3ad361ca24,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-21ea0b3ad361ca24,source=/build_script_build-21ea0b3ad361ca24 \
 ##   --mount=from=out-b3023f33ef14f135,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libicu_provider-b3023f33ef14f135.rlib,source=/libicu_provider-b3023f33ef14f135.rlib \
 ##   --mount=from=out-b3023f33ef14f135,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libicu_provider-b3023f33ef14f135.rmeta,source=/libicu_provider-b3023f33ef14f135.rmeta \
 ##   --mount=from=out-8e55e6198d125104,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libicu_locale_core-8e55e6198d125104.rlib,source=/libicu_locale_core-8e55e6198d125104.rlib \
@@ -22307,6 +29078,7 @@ COPY --link --from=dep-n-idna_adapter-1.2.1-4d72253aa34b4d3c /tmp/clis-diesel_cl
 ##   --mount=from=out-2142576b56af48dd,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libicu_properties-2142576b56af48dd.rmeta,source=/libicu_properties-2142576b56af48dd.rmeta \
 ##   --mount=from=out-f2509a0a78ce5660,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libicu_properties_data-f2509a0a78ce5660.rlib,source=/libicu_properties_data-f2509a0a78ce5660.rlib \
 ##   --mount=from=out-f2509a0a78ce5660,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libicu_properties_data-f2509a0a78ce5660.rmeta,source=/libicu_properties_data-f2509a0a78ce5660.rmeta \
+##   --mount=from=out-59ba212a9df776ba,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-59ba212a9df776ba,source=/build_script_build-59ba212a9df776ba \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=idna_adapter \
 ##         CARGO_INCREMENTAL=0 \
@@ -22492,8 +29264,10 @@ RUN \
   --mount=from=out-e1e423eb99bb7e63,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libproc_macro2-e1e423eb99bb7e63.rmeta,source=/libproc_macro2-e1e423eb99bb7e63.rmeta \
   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rlib,source=/libunicode_ident-721470d94fc0c354.rlib \
   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rmeta,source=/libunicode_ident-721470d94fc0c354.rmeta \
+  --mount=from=out-71babfb997932318,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-71babfb997932318,source=/build_script_build-71babfb997932318 \
   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rlib,source=/libquote-87872b55644e5043.rlib \
   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rmeta,source=/libquote-87872b55644e5043.rmeta \
+  --mount=from=out-c63aae50eb6f480a,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-c63aae50eb6f480a,source=/build_script_build-c63aae50eb6f480a \
   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rlib,source=/libsyn-12379804391f3f43.rlib \
   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rmeta,source=/libsyn-12379804391f3f43.rmeta \
   --mount=from=out-2a4901e5ac2935df,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libpotential_utf-2a4901e5ac2935df.rlib,source=/libpotential_utf-2a4901e5ac2935df.rlib \
@@ -22513,6 +29287,7 @@ RUN \
   --mount=from=out-b508b166d717b91e,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libzerovec_derive-b508b166d717b91e.so,source=/libzerovec_derive-b508b166d717b91e.so \
   --mount=from=out-fc0a70c3bc112445,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libicu_normalizer_data-fc0a70c3bc112445.rlib,source=/libicu_normalizer_data-fc0a70c3bc112445.rlib \
   --mount=from=out-fc0a70c3bc112445,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libicu_normalizer_data-fc0a70c3bc112445.rmeta,source=/libicu_normalizer_data-fc0a70c3bc112445.rmeta \
+  --mount=from=out-21ea0b3ad361ca24,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-21ea0b3ad361ca24,source=/build_script_build-21ea0b3ad361ca24 \
   --mount=from=out-b3023f33ef14f135,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libicu_provider-b3023f33ef14f135.rlib,source=/libicu_provider-b3023f33ef14f135.rlib \
   --mount=from=out-b3023f33ef14f135,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libicu_provider-b3023f33ef14f135.rmeta,source=/libicu_provider-b3023f33ef14f135.rmeta \
   --mount=from=out-8e55e6198d125104,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libicu_locale_core-8e55e6198d125104.rlib,source=/libicu_locale_core-8e55e6198d125104.rlib \
@@ -22531,6 +29306,7 @@ RUN \
   --mount=from=out-2142576b56af48dd,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libicu_properties-2142576b56af48dd.rmeta,source=/libicu_properties-2142576b56af48dd.rmeta \
   --mount=from=out-f2509a0a78ce5660,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libicu_properties_data-f2509a0a78ce5660.rlib,source=/libicu_properties_data-f2509a0a78ce5660.rlib \
   --mount=from=out-f2509a0a78ce5660,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libicu_properties_data-f2509a0a78ce5660.rmeta,source=/libicu_properties_data-f2509a0a78ce5660.rmeta \
+  --mount=from=out-59ba212a9df776ba,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-59ba212a9df776ba,source=/build_script_build-59ba212a9df776ba \
   --mount=from=out-8bf8296d4ba1f9b2,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libutf8_iter-8bf8296d4ba1f9b2.rlib,source=/libutf8_iter-8bf8296d4ba1f9b2.rlib \
   --mount=from=out-8bf8296d4ba1f9b2,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libutf8_iter-8bf8296d4ba1f9b2.rmeta,source=/libutf8_iter-8bf8296d4ba1f9b2.rmeta \
     env CARGO="$(which cargo)" \
@@ -22569,7 +29345,11 @@ COPY --link --from=dep-n-idna-1.1.0-9a46f685f5dd32e0 /tmp/clis-diesel_cli_2-3-4/
 ##     "0cf9247df685d72e",
 ##     "e1e423eb99bb7e63",
 ##     "721470d94fc0c354",
+##     "e93dddbb48c6a6fc",
+##     "71babfb997932318",
 ##     "87872b55644e5043",
+##     "edf8f660a3d601cc",
+##     "c63aae50eb6f480a",
 ##     "12379804391f3f43",
 ##     "2a4901e5ac2935df",
 ##     "c4e0f8ac739debd7",
@@ -22581,6 +29361,8 @@ COPY --link --from=dep-n-idna-1.1.0-9a46f685f5dd32e0 /tmp/clis-diesel_cli_2-3-4/
 ##     "06be7dc3ecf1b8da",
 ##     "b508b166d717b91e",
 ##     "fc0a70c3bc112445",
+##     "ca55f8cea487cfa3",
+##     "21ea0b3ad361ca24",
 ##     "b3023f33ef14f135",
 ##     "8e55e6198d125104",
 ##     "ad3def025bd69b3c",
@@ -22590,7 +29372,15 @@ COPY --link --from=dep-n-idna-1.1.0-9a46f685f5dd32e0 /tmp/clis-diesel_cli_2-3-4/
 ##     "a6c315a67b85c35f",
 ##     "2142576b56af48dd",
 ##     "f2509a0a78ce5660",
+##     "e3f49788cec17391",
+##     "59ba212a9df776ba",
 ##     "8bf8296d4ba1f9b2",
+## ]
+## buildrs_results = [
+##     "e93dddbb48c6a6fc",
+##     "edf8f660a3d601cc",
+##     "ca55f8cea487cfa3",
+##     "e3f49788cec17391",
 ## ]
 ## writes = [
 ##     "idna-9a46f685f5dd32e0.d",
@@ -22648,12 +29438,20 @@ COPY --link --from=dep-n-idna-1.1.0-9a46f685f5dd32e0 /tmp/clis-diesel_cli_2-3-4/
 ## xtern = "libunicode_ident-721470d94fc0c354.rmeta"
 ##
 ## [[externs]]
+## from = "out-71babfb997932318"
+## xtern = "build_script_build-71babfb997932318"
+##
+## [[externs]]
 ## from = "out-87872b55644e5043"
 ## xtern = "libquote-87872b55644e5043.rlib"
 ##
 ## [[externs]]
 ## from = "out-87872b55644e5043"
 ## xtern = "libquote-87872b55644e5043.rmeta"
+##
+## [[externs]]
+## from = "out-c63aae50eb6f480a"
+## xtern = "build_script_build-c63aae50eb6f480a"
 ##
 ## [[externs]]
 ## from = "out-12379804391f3f43"
@@ -22732,6 +29530,10 @@ COPY --link --from=dep-n-idna-1.1.0-9a46f685f5dd32e0 /tmp/clis-diesel_cli_2-3-4/
 ## xtern = "libicu_normalizer_data-fc0a70c3bc112445.rmeta"
 ##
 ## [[externs]]
+## from = "out-21ea0b3ad361ca24"
+## xtern = "build_script_build-21ea0b3ad361ca24"
+##
+## [[externs]]
 ## from = "out-b3023f33ef14f135"
 ## xtern = "libicu_provider-b3023f33ef14f135.rlib"
 ##
@@ -22804,6 +29606,10 @@ COPY --link --from=dep-n-idna-1.1.0-9a46f685f5dd32e0 /tmp/clis-diesel_cli_2-3-4/
 ## xtern = "libicu_properties_data-f2509a0a78ce5660.rmeta"
 ##
 ## [[externs]]
+## from = "out-59ba212a9df776ba"
+## xtern = "build_script_build-59ba212a9df776ba"
+##
+## [[externs]]
 ## from = "out-8bf8296d4ba1f9b2"
 ## xtern = "libutf8_iter-8bf8296d4ba1f9b2.rlib"
 ##
@@ -22872,8 +29678,10 @@ COPY --link --from=dep-n-idna-1.1.0-9a46f685f5dd32e0 /tmp/clis-diesel_cli_2-3-4/
 ##   --mount=from=out-e1e423eb99bb7e63,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libproc_macro2-e1e423eb99bb7e63.rmeta,source=/libproc_macro2-e1e423eb99bb7e63.rmeta \
 ##   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rlib,source=/libunicode_ident-721470d94fc0c354.rlib \
 ##   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rmeta,source=/libunicode_ident-721470d94fc0c354.rmeta \
+##   --mount=from=out-71babfb997932318,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-71babfb997932318,source=/build_script_build-71babfb997932318 \
 ##   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rlib,source=/libquote-87872b55644e5043.rlib \
 ##   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rmeta,source=/libquote-87872b55644e5043.rmeta \
+##   --mount=from=out-c63aae50eb6f480a,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-c63aae50eb6f480a,source=/build_script_build-c63aae50eb6f480a \
 ##   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rlib,source=/libsyn-12379804391f3f43.rlib \
 ##   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rmeta,source=/libsyn-12379804391f3f43.rmeta \
 ##   --mount=from=out-2a4901e5ac2935df,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libpotential_utf-2a4901e5ac2935df.rlib,source=/libpotential_utf-2a4901e5ac2935df.rlib \
@@ -22893,6 +29701,7 @@ COPY --link --from=dep-n-idna-1.1.0-9a46f685f5dd32e0 /tmp/clis-diesel_cli_2-3-4/
 ##   --mount=from=out-b508b166d717b91e,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libzerovec_derive-b508b166d717b91e.so,source=/libzerovec_derive-b508b166d717b91e.so \
 ##   --mount=from=out-fc0a70c3bc112445,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libicu_normalizer_data-fc0a70c3bc112445.rlib,source=/libicu_normalizer_data-fc0a70c3bc112445.rlib \
 ##   --mount=from=out-fc0a70c3bc112445,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libicu_normalizer_data-fc0a70c3bc112445.rmeta,source=/libicu_normalizer_data-fc0a70c3bc112445.rmeta \
+##   --mount=from=out-21ea0b3ad361ca24,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-21ea0b3ad361ca24,source=/build_script_build-21ea0b3ad361ca24 \
 ##   --mount=from=out-b3023f33ef14f135,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libicu_provider-b3023f33ef14f135.rlib,source=/libicu_provider-b3023f33ef14f135.rlib \
 ##   --mount=from=out-b3023f33ef14f135,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libicu_provider-b3023f33ef14f135.rmeta,source=/libicu_provider-b3023f33ef14f135.rmeta \
 ##   --mount=from=out-8e55e6198d125104,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libicu_locale_core-8e55e6198d125104.rlib,source=/libicu_locale_core-8e55e6198d125104.rlib \
@@ -22911,6 +29720,7 @@ COPY --link --from=dep-n-idna-1.1.0-9a46f685f5dd32e0 /tmp/clis-diesel_cli_2-3-4/
 ##   --mount=from=out-2142576b56af48dd,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libicu_properties-2142576b56af48dd.rmeta,source=/libicu_properties-2142576b56af48dd.rmeta \
 ##   --mount=from=out-f2509a0a78ce5660,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libicu_properties_data-f2509a0a78ce5660.rlib,source=/libicu_properties_data-f2509a0a78ce5660.rlib \
 ##   --mount=from=out-f2509a0a78ce5660,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libicu_properties_data-f2509a0a78ce5660.rmeta,source=/libicu_properties_data-f2509a0a78ce5660.rmeta \
+##   --mount=from=out-59ba212a9df776ba,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-59ba212a9df776ba,source=/build_script_build-59ba212a9df776ba \
 ##   --mount=from=out-8bf8296d4ba1f9b2,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libutf8_iter-8bf8296d4ba1f9b2.rlib,source=/libutf8_iter-8bf8296d4ba1f9b2.rlib \
 ##   --mount=from=out-8bf8296d4ba1f9b2,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libutf8_iter-8bf8296d4ba1f9b2.rmeta,source=/libutf8_iter-8bf8296d4ba1f9b2.rmeta \
 ##     env CARGO="$(which cargo)" \
@@ -22972,8 +29782,10 @@ RUN \
   --mount=from=out-e1e423eb99bb7e63,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libproc_macro2-e1e423eb99bb7e63.rmeta,source=/libproc_macro2-e1e423eb99bb7e63.rmeta \
   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rlib,source=/libunicode_ident-721470d94fc0c354.rlib \
   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rmeta,source=/libunicode_ident-721470d94fc0c354.rmeta \
+  --mount=from=out-71babfb997932318,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-71babfb997932318,source=/build_script_build-71babfb997932318 \
   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rlib,source=/libquote-87872b55644e5043.rlib \
   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rmeta,source=/libquote-87872b55644e5043.rmeta \
+  --mount=from=out-c63aae50eb6f480a,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-c63aae50eb6f480a,source=/build_script_build-c63aae50eb6f480a \
   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rlib,source=/libsyn-12379804391f3f43.rlib \
   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rmeta,source=/libsyn-12379804391f3f43.rmeta \
   --mount=from=out-2a4901e5ac2935df,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libpotential_utf-2a4901e5ac2935df.rlib,source=/libpotential_utf-2a4901e5ac2935df.rlib \
@@ -22993,6 +29805,7 @@ RUN \
   --mount=from=out-b508b166d717b91e,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libzerovec_derive-b508b166d717b91e.so,source=/libzerovec_derive-b508b166d717b91e.so \
   --mount=from=out-fc0a70c3bc112445,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libicu_normalizer_data-fc0a70c3bc112445.rlib,source=/libicu_normalizer_data-fc0a70c3bc112445.rlib \
   --mount=from=out-fc0a70c3bc112445,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libicu_normalizer_data-fc0a70c3bc112445.rmeta,source=/libicu_normalizer_data-fc0a70c3bc112445.rmeta \
+  --mount=from=out-21ea0b3ad361ca24,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-21ea0b3ad361ca24,source=/build_script_build-21ea0b3ad361ca24 \
   --mount=from=out-b3023f33ef14f135,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libicu_provider-b3023f33ef14f135.rlib,source=/libicu_provider-b3023f33ef14f135.rlib \
   --mount=from=out-b3023f33ef14f135,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libicu_provider-b3023f33ef14f135.rmeta,source=/libicu_provider-b3023f33ef14f135.rmeta \
   --mount=from=out-8e55e6198d125104,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libicu_locale_core-8e55e6198d125104.rlib,source=/libicu_locale_core-8e55e6198d125104.rlib \
@@ -23011,13 +29824,17 @@ RUN \
   --mount=from=out-2142576b56af48dd,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libicu_properties-2142576b56af48dd.rmeta,source=/libicu_properties-2142576b56af48dd.rmeta \
   --mount=from=out-f2509a0a78ce5660,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libicu_properties_data-f2509a0a78ce5660.rlib,source=/libicu_properties_data-f2509a0a78ce5660.rlib \
   --mount=from=out-f2509a0a78ce5660,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libicu_properties_data-f2509a0a78ce5660.rmeta,source=/libicu_properties_data-f2509a0a78ce5660.rmeta \
+  --mount=from=out-59ba212a9df776ba,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-59ba212a9df776ba,source=/build_script_build-59ba212a9df776ba \
   --mount=from=out-8bf8296d4ba1f9b2,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libutf8_iter-8bf8296d4ba1f9b2.rlib,source=/libutf8_iter-8bf8296d4ba1f9b2.rlib \
   --mount=from=out-8bf8296d4ba1f9b2,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libutf8_iter-8bf8296d4ba1f9b2.rmeta,source=/libutf8_iter-8bf8296d4ba1f9b2.rmeta \
   --mount=from=out-02668a5ba984a64f,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde-02668a5ba984a64f.rlib,source=/libserde-02668a5ba984a64f.rlib \
   --mount=from=out-02668a5ba984a64f,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde-02668a5ba984a64f.rmeta,source=/libserde-02668a5ba984a64f.rmeta \
   --mount=from=out-8e892930c8cabc4c,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde_core-8e892930c8cabc4c.rlib,source=/libserde_core-8e892930c8cabc4c.rlib \
   --mount=from=out-8e892930c8cabc4c,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde_core-8e892930c8cabc4c.rmeta,source=/libserde_core-8e892930c8cabc4c.rmeta \
+  --mount=from=out-542dbc5d310e9565,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/private.rs,source=/private.rs \
+  --mount=from=out-d7b3469e26105631,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-d7b3469e26105631,source=/build_script_build-d7b3469e26105631 \
   --mount=from=out-6a6518b24fbf25e4,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde_derive-6a6518b24fbf25e4.so,source=/libserde_derive-6a6518b24fbf25e4.so \
+  --mount=from=out-9e59eb4de4feaddb,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-9e59eb4de4feaddb,source=/build_script_build-9e59eb4de4feaddb \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=url \
         CARGO_INCREMENTAL=0 \
@@ -23057,7 +29874,11 @@ COPY --link --from=dep-n-url-2.5.7-afd17e70e89baaf9 /tmp/clis-diesel_cli_2-3-4/r
 ##     "0cf9247df685d72e",
 ##     "e1e423eb99bb7e63",
 ##     "721470d94fc0c354",
+##     "e93dddbb48c6a6fc",
+##     "71babfb997932318",
 ##     "87872b55644e5043",
+##     "edf8f660a3d601cc",
+##     "c63aae50eb6f480a",
 ##     "12379804391f3f43",
 ##     "2a4901e5ac2935df",
 ##     "c4e0f8ac739debd7",
@@ -23069,6 +29890,8 @@ COPY --link --from=dep-n-url-2.5.7-afd17e70e89baaf9 /tmp/clis-diesel_cli_2-3-4/r
 ##     "06be7dc3ecf1b8da",
 ##     "b508b166d717b91e",
 ##     "fc0a70c3bc112445",
+##     "ca55f8cea487cfa3",
+##     "21ea0b3ad361ca24",
 ##     "b3023f33ef14f135",
 ##     "8e55e6198d125104",
 ##     "ad3def025bd69b3c",
@@ -23078,10 +29901,24 @@ COPY --link --from=dep-n-url-2.5.7-afd17e70e89baaf9 /tmp/clis-diesel_cli_2-3-4/r
 ##     "a6c315a67b85c35f",
 ##     "2142576b56af48dd",
 ##     "f2509a0a78ce5660",
+##     "e3f49788cec17391",
+##     "59ba212a9df776ba",
 ##     "8bf8296d4ba1f9b2",
 ##     "02668a5ba984a64f",
 ##     "8e892930c8cabc4c",
+##     "542dbc5d310e9565",
+##     "d7b3469e26105631",
 ##     "6a6518b24fbf25e4",
+##     "cfe125327cacaf16",
+##     "9e59eb4de4feaddb",
+## ]
+## buildrs_results = [
+##     "e93dddbb48c6a6fc",
+##     "edf8f660a3d601cc",
+##     "ca55f8cea487cfa3",
+##     "e3f49788cec17391",
+##     "542dbc5d310e9565",
+##     "cfe125327cacaf16",
 ## ]
 ## writes = [
 ##     "liburl-afd17e70e89baaf9.rlib",
@@ -23163,12 +30000,20 @@ COPY --link --from=dep-n-url-2.5.7-afd17e70e89baaf9 /tmp/clis-diesel_cli_2-3-4/r
 ## xtern = "libunicode_ident-721470d94fc0c354.rmeta"
 ##
 ## [[externs]]
+## from = "out-71babfb997932318"
+## xtern = "build_script_build-71babfb997932318"
+##
+## [[externs]]
 ## from = "out-87872b55644e5043"
 ## xtern = "libquote-87872b55644e5043.rlib"
 ##
 ## [[externs]]
 ## from = "out-87872b55644e5043"
 ## xtern = "libquote-87872b55644e5043.rmeta"
+##
+## [[externs]]
+## from = "out-c63aae50eb6f480a"
+## xtern = "build_script_build-c63aae50eb6f480a"
 ##
 ## [[externs]]
 ## from = "out-12379804391f3f43"
@@ -23247,6 +30092,10 @@ COPY --link --from=dep-n-url-2.5.7-afd17e70e89baaf9 /tmp/clis-diesel_cli_2-3-4/r
 ## xtern = "libicu_normalizer_data-fc0a70c3bc112445.rmeta"
 ##
 ## [[externs]]
+## from = "out-21ea0b3ad361ca24"
+## xtern = "build_script_build-21ea0b3ad361ca24"
+##
+## [[externs]]
 ## from = "out-b3023f33ef14f135"
 ## xtern = "libicu_provider-b3023f33ef14f135.rlib"
 ##
@@ -23319,6 +30168,10 @@ COPY --link --from=dep-n-url-2.5.7-afd17e70e89baaf9 /tmp/clis-diesel_cli_2-3-4/r
 ## xtern = "libicu_properties_data-f2509a0a78ce5660.rmeta"
 ##
 ## [[externs]]
+## from = "out-59ba212a9df776ba"
+## xtern = "build_script_build-59ba212a9df776ba"
+##
+## [[externs]]
 ## from = "out-8bf8296d4ba1f9b2"
 ## xtern = "libutf8_iter-8bf8296d4ba1f9b2.rlib"
 ##
@@ -23343,16 +30196,20 @@ COPY --link --from=dep-n-url-2.5.7-afd17e70e89baaf9 /tmp/clis-diesel_cli_2-3-4/r
 ## xtern = "libserde_core-8e892930c8cabc4c.rmeta"
 ##
 ## [[externs]]
+## from = "out-542dbc5d310e9565"
+## xtern = "private.rs"
+##
+## [[externs]]
+## from = "out-d7b3469e26105631"
+## xtern = "build_script_build-d7b3469e26105631"
+##
+## [[externs]]
 ## from = "out-6a6518b24fbf25e4"
 ## xtern = "libserde_derive-6a6518b24fbf25e4.so"
 ##
-## [[contexts]]
-## name = "crate_out-cfe125327cacaf16"
-## uri = "/tmp/clis-diesel_cli_2-3-4/release/build/serde-cfe125327cacaf16/out"
-##
-## [[contexts]]
-## name = "crate_out-542dbc5d310e9565"
-## uri = "/tmp/clis-diesel_cli_2-3-4/release/build/serde_core-542dbc5d310e9565/out"
+## [[externs]]
+## from = "out-9e59eb4de4feaddb"
+## xtern = "build_script_build-9e59eb4de4feaddb"
 ##
 ## [[stages]]
 ##
@@ -23421,8 +30278,10 @@ COPY --link --from=dep-n-url-2.5.7-afd17e70e89baaf9 /tmp/clis-diesel_cli_2-3-4/r
 ##   --mount=from=out-e1e423eb99bb7e63,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libproc_macro2-e1e423eb99bb7e63.rmeta,source=/libproc_macro2-e1e423eb99bb7e63.rmeta \
 ##   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rlib,source=/libunicode_ident-721470d94fc0c354.rlib \
 ##   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rmeta,source=/libunicode_ident-721470d94fc0c354.rmeta \
+##   --mount=from=out-71babfb997932318,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-71babfb997932318,source=/build_script_build-71babfb997932318 \
 ##   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rlib,source=/libquote-87872b55644e5043.rlib \
 ##   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rmeta,source=/libquote-87872b55644e5043.rmeta \
+##   --mount=from=out-c63aae50eb6f480a,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-c63aae50eb6f480a,source=/build_script_build-c63aae50eb6f480a \
 ##   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rlib,source=/libsyn-12379804391f3f43.rlib \
 ##   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rmeta,source=/libsyn-12379804391f3f43.rmeta \
 ##   --mount=from=out-2a4901e5ac2935df,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libpotential_utf-2a4901e5ac2935df.rlib,source=/libpotential_utf-2a4901e5ac2935df.rlib \
@@ -23442,6 +30301,7 @@ COPY --link --from=dep-n-url-2.5.7-afd17e70e89baaf9 /tmp/clis-diesel_cli_2-3-4/r
 ##   --mount=from=out-b508b166d717b91e,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libzerovec_derive-b508b166d717b91e.so,source=/libzerovec_derive-b508b166d717b91e.so \
 ##   --mount=from=out-fc0a70c3bc112445,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libicu_normalizer_data-fc0a70c3bc112445.rlib,source=/libicu_normalizer_data-fc0a70c3bc112445.rlib \
 ##   --mount=from=out-fc0a70c3bc112445,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libicu_normalizer_data-fc0a70c3bc112445.rmeta,source=/libicu_normalizer_data-fc0a70c3bc112445.rmeta \
+##   --mount=from=out-21ea0b3ad361ca24,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-21ea0b3ad361ca24,source=/build_script_build-21ea0b3ad361ca24 \
 ##   --mount=from=out-b3023f33ef14f135,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libicu_provider-b3023f33ef14f135.rlib,source=/libicu_provider-b3023f33ef14f135.rlib \
 ##   --mount=from=out-b3023f33ef14f135,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libicu_provider-b3023f33ef14f135.rmeta,source=/libicu_provider-b3023f33ef14f135.rmeta \
 ##   --mount=from=out-8e55e6198d125104,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libicu_locale_core-8e55e6198d125104.rlib,source=/libicu_locale_core-8e55e6198d125104.rlib \
@@ -23460,13 +30320,17 @@ COPY --link --from=dep-n-url-2.5.7-afd17e70e89baaf9 /tmp/clis-diesel_cli_2-3-4/r
 ##   --mount=from=out-2142576b56af48dd,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libicu_properties-2142576b56af48dd.rmeta,source=/libicu_properties-2142576b56af48dd.rmeta \
 ##   --mount=from=out-f2509a0a78ce5660,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libicu_properties_data-f2509a0a78ce5660.rlib,source=/libicu_properties_data-f2509a0a78ce5660.rlib \
 ##   --mount=from=out-f2509a0a78ce5660,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libicu_properties_data-f2509a0a78ce5660.rmeta,source=/libicu_properties_data-f2509a0a78ce5660.rmeta \
+##   --mount=from=out-59ba212a9df776ba,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-59ba212a9df776ba,source=/build_script_build-59ba212a9df776ba \
 ##   --mount=from=out-8bf8296d4ba1f9b2,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libutf8_iter-8bf8296d4ba1f9b2.rlib,source=/libutf8_iter-8bf8296d4ba1f9b2.rlib \
 ##   --mount=from=out-8bf8296d4ba1f9b2,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libutf8_iter-8bf8296d4ba1f9b2.rmeta,source=/libutf8_iter-8bf8296d4ba1f9b2.rmeta \
 ##   --mount=from=out-02668a5ba984a64f,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde-02668a5ba984a64f.rlib,source=/libserde-02668a5ba984a64f.rlib \
 ##   --mount=from=out-02668a5ba984a64f,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde-02668a5ba984a64f.rmeta,source=/libserde-02668a5ba984a64f.rmeta \
 ##   --mount=from=out-8e892930c8cabc4c,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde_core-8e892930c8cabc4c.rlib,source=/libserde_core-8e892930c8cabc4c.rlib \
 ##   --mount=from=out-8e892930c8cabc4c,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde_core-8e892930c8cabc4c.rmeta,source=/libserde_core-8e892930c8cabc4c.rmeta \
+##   --mount=from=out-542dbc5d310e9565,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/private.rs,source=/private.rs \
+##   --mount=from=out-d7b3469e26105631,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-d7b3469e26105631,source=/build_script_build-d7b3469e26105631 \
 ##   --mount=from=out-6a6518b24fbf25e4,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde_derive-6a6518b24fbf25e4.so,source=/libserde_derive-6a6518b24fbf25e4.so \
+##   --mount=from=out-9e59eb4de4feaddb,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-9e59eb4de4feaddb,source=/build_script_build-9e59eb4de4feaddb \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=url \
 ##         CARGO_INCREMENTAL=0 \
@@ -23512,6 +30376,8 @@ RUN \
   --mount=from=out-c144cf5d8004261e,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libchrono-c144cf5d8004261e.rlib,source=/libchrono-c144cf5d8004261e.rlib \
   --mount=from=out-7289403231332002,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libiana_time_zone-7289403231332002.rlib,source=/libiana_time_zone-7289403231332002.rlib \
   --mount=from=out-c0bc6db5a35592ab,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libnum_traits-c0bc6db5a35592ab.rlib,source=/libnum_traits-c0bc6db5a35592ab.rlib \
+  --mount=from=out-f2b41e0845677d6c,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libautocfg-f2b41e0845677d6c.rlib,source=/libautocfg-f2b41e0845677d6c.rlib \
+  --mount=from=out-7f58c305ab694e40,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-7f58c305ab694e40,source=/build_script_build-7f58c305ab694e40 \
   --mount=from=out-683d74b5d0e8003d,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libclap-683d74b5d0e8003d.rlib,source=/libclap-683d74b5d0e8003d.rlib \
   --mount=from=out-3ed7fa954e6cf6ed,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libclap_builder-3ed7fa954e6cf6ed.rlib,source=/libclap_builder-3ed7fa954e6cf6ed.rlib \
   --mount=from=out-177a6f7e9d423fc6,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libanstream-177a6f7e9d423fc6.rlib,source=/libanstream-177a6f7e9d423fc6.rlib \
@@ -23532,7 +30398,9 @@ RUN \
   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rlib,source=/libsyn-12379804391f3f43.rlib \
   --mount=from=out-e1e423eb99bb7e63,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libproc_macro2-e1e423eb99bb7e63.rlib,source=/libproc_macro2-e1e423eb99bb7e63.rlib \
   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rlib,source=/libunicode_ident-721470d94fc0c354.rlib \
+  --mount=from=out-71babfb997932318,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-71babfb997932318,source=/build_script_build-71babfb997932318 \
   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rlib,source=/libquote-87872b55644e5043.rlib \
+  --mount=from=out-c63aae50eb6f480a,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-c63aae50eb6f480a,source=/build_script_build-c63aae50eb6f480a \
   --mount=from=out-e72117f7acff2466,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libdsl_auto_type-e72117f7acff2466.rlib,source=/libdsl_auto_type-e72117f7acff2466.rlib \
   --mount=from=out-9c2515b9354b63f7,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libdarling-9c2515b9354b63f7.rlib,source=/libdarling-9c2515b9354b63f7.rlib \
   --mount=from=out-feba89015d51c163,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libdarling_core-feba89015d51c163.rlib,source=/libdarling_core-feba89015d51c163.rlib \
@@ -23542,15 +30410,23 @@ RUN \
   --mount=from=out-48fe319515ec65ff,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libdarling_macro-48fe319515ec65ff.so,source=/libdarling_macro-48fe319515ec65ff.so \
   --mount=from=out-7892953c40c7027d,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libeither-7892953c40c7027d.rlib,source=/libeither-7892953c40c7027d.rlib \
   --mount=from=out-3c7b5c3a02d329ae,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libheck-3c7b5c3a02d329ae.rlib,source=/libheck-3c7b5c3a02d329ae.rlib \
+  --mount=from=out-26a0fe0ac7c340f6,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-26a0fe0ac7c340f6,source=/build_script_build-26a0fe0ac7c340f6 \
   --mount=from=out-6daa53e662c18c24,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libdowncast_rs-6daa53e662c18c24.rlib,source=/libdowncast_rs-6daa53e662c18c24.rlib \
   --mount=from=out-810c45601233a792,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libitoa-810c45601233a792.rlib,source=/libitoa-810c45601233a792.rlib \
   --mount=from=out-da2e6b7bc41290c2,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libpq_sys-da2e6b7bc41290c2.rlib,source=/libpq_sys-da2e6b7bc41290c2.rlib \
   --mount=from=out-7f08a5fdefdb5905,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/liblibc-7f08a5fdefdb5905.rlib,source=/liblibc-7f08a5fdefdb5905.rlib \
+  --mount=from=out-880d2e011f9f14fa,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-880d2e011f9f14fa,source=/build_script_build-880d2e011f9f14fa \
+  --mount=from=out-e63dae8d54788400,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/bindings.rs,source=/bindings.rs \
+  --mount=from=out-ec662f2448b0e090,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libpkg_config-ec662f2448b0e090.rlib,source=/libpkg_config-ec662f2448b0e090.rlib \
+  --mount=from=out-cd02570aab934144,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-cd02570aab934144,source=/build_script_build-cd02570aab934144 \
   --mount=from=out-a3172a766124d605,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libdiesel_migrations-a3172a766124d605.rlib,source=/libdiesel_migrations-a3172a766124d605.rlib \
   --mount=from=out-43afef42d6696369,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libmigrations_internals-43afef42d6696369.rlib,source=/libmigrations_internals-43afef42d6696369.rlib \
   --mount=from=out-02668a5ba984a64f,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde-02668a5ba984a64f.rlib,source=/libserde-02668a5ba984a64f.rlib \
   --mount=from=out-8e892930c8cabc4c,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde_core-8e892930c8cabc4c.rlib,source=/libserde_core-8e892930c8cabc4c.rlib \
+  --mount=from=out-542dbc5d310e9565,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/private.rs,source=/private.rs \
+  --mount=from=out-d7b3469e26105631,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-d7b3469e26105631,source=/build_script_build-d7b3469e26105631 \
   --mount=from=out-6a6518b24fbf25e4,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde_derive-6a6518b24fbf25e4.so,source=/libserde_derive-6a6518b24fbf25e4.so \
+  --mount=from=out-9e59eb4de4feaddb,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-9e59eb4de4feaddb,source=/build_script_build-9e59eb4de4feaddb \
   --mount=from=out-b57e3684947ab9f7,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libtoml-b57e3684947ab9f7.rlib,source=/libtoml-b57e3684947ab9f7.rlib \
   --mount=from=out-4fa12932e3d6e0f1,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde_spanned-4fa12932e3d6e0f1.rlib,source=/libserde_spanned-4fa12932e3d6e0f1.rlib \
   --mount=from=out-c09fc58966664a16,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libtoml_datetime-c09fc58966664a16.rlib,source=/libtoml_datetime-c09fc58966664a16.rlib \
@@ -23569,7 +30445,9 @@ RUN \
   --mount=from=out-25accd7577246ffb,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-25accd7577246ffb.rlib,source=/libsyn-25accd7577246ffb.rlib \
   --mount=from=out-3601cbc26533d3b4,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libproc_macro2-3601cbc26533d3b4.rlib,source=/libproc_macro2-3601cbc26533d3b4.rlib \
   --mount=from=out-0365cb06b1ebfd56,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-0365cb06b1ebfd56.rlib,source=/libunicode_ident-0365cb06b1ebfd56.rlib \
+  --mount=from=out-162f014ecf4c578f,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-162f014ecf4c578f,source=/build_script_build-162f014ecf4c578f \
   --mount=from=out-316b4b6e617b3daf,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-316b4b6e617b3daf.rlib,source=/libquote-316b4b6e617b3daf.rlib \
+  --mount=from=out-bd78c93267945b7c,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-bd78c93267945b7c,source=/build_script_build-bd78c93267945b7c \
   --mount=from=out-c22c8b2dc1b153a1,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libdiffy-c22c8b2dc1b153a1.rlib,source=/libdiffy-c22c8b2dc1b153a1.rlib \
   --mount=from=out-31102385d21b7bcc,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libnu_ansi_term-31102385d21b7bcc.rlib,source=/libnu_ansi_term-31102385d21b7bcc.rlib \
   --mount=from=out-a7a36740c7fdfc20,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libdotenvy-a7a36740c7fdfc20.rlib,source=/libdotenvy-a7a36740c7fdfc20.rlib \
@@ -23578,6 +30456,7 @@ RUN \
   --mount=from=out-a1237c3fef9abf24,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libcfg_if-a1237c3fef9abf24.rlib,source=/libcfg_if-a1237c3fef9abf24.rlib \
   --mount=from=out-004b5f74bdc719b9,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/librustix-004b5f74bdc719b9.rlib,source=/librustix-004b5f74bdc719b9.rlib \
   --mount=from=out-ebded25e6abcab7c,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/liblinux_raw_sys-ebded25e6abcab7c.rlib,source=/liblinux_raw_sys-ebded25e6abcab7c.rlib \
+  --mount=from=out-4864f07ddb011df8,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-4864f07ddb011df8,source=/build_script_build-4864f07ddb011df8 \
   --mount=from=out-ad0c109067a97cd8,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libheck-ad0c109067a97cd8.rlib,source=/libheck-ad0c109067a97cd8.rlib \
   --mount=from=out-d3db30f1d9f384a1,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libregex-d3db30f1d9f384a1.rlib,source=/libregex-d3db30f1d9f384a1.rlib \
   --mount=from=out-c2809bdd98497ef3,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libaho_corasick-c2809bdd98497ef3.rlib,source=/libaho_corasick-c2809bdd98497ef3.rlib \
@@ -23592,6 +30471,7 @@ RUN \
   --mount=from=out-a70dafa21eb76dac,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_segmentation-a70dafa21eb76dac.rlib,source=/libunicode_segmentation-a70dafa21eb76dac.rlib \
   --mount=from=out-e5c667c55e08b99f,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libthiserror-e5c667c55e08b99f.rlib,source=/libthiserror-e5c667c55e08b99f.rlib \
   --mount=from=out-d12f251f78756cbc,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libthiserror_impl-d12f251f78756cbc.so,source=/libthiserror_impl-d12f251f78756cbc.so \
+  --mount=from=out-4bfe9ea2e7e5814f,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-4bfe9ea2e7e5814f,source=/build_script_build-4bfe9ea2e7e5814f \
   --mount=from=out-5b69739c2af13760,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libtracing-5b69739c2af13760.rlib,source=/libtracing-5b69739c2af13760.rlib \
   --mount=from=out-a22006e28be69faf,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libpin_project_lite-a22006e28be69faf.rlib,source=/libpin_project_lite-a22006e28be69faf.rlib \
   --mount=from=out-ed0ebb6cffc5de85,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libtracing_attributes-ed0ebb6cffc5de85.so,source=/libtracing_attributes-ed0ebb6cffc5de85.so \
@@ -23622,6 +30502,7 @@ RUN \
   --mount=from=out-06be7dc3ecf1b8da,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libzerofrom_derive-06be7dc3ecf1b8da.so,source=/libzerofrom_derive-06be7dc3ecf1b8da.so \
   --mount=from=out-b508b166d717b91e,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libzerovec_derive-b508b166d717b91e.so,source=/libzerovec_derive-b508b166d717b91e.so \
   --mount=from=out-fc0a70c3bc112445,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libicu_normalizer_data-fc0a70c3bc112445.rlib,source=/libicu_normalizer_data-fc0a70c3bc112445.rlib \
+  --mount=from=out-21ea0b3ad361ca24,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-21ea0b3ad361ca24,source=/build_script_build-21ea0b3ad361ca24 \
   --mount=from=out-b3023f33ef14f135,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libicu_provider-b3023f33ef14f135.rlib,source=/libicu_provider-b3023f33ef14f135.rlib \
   --mount=from=out-8e55e6198d125104,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libicu_locale_core-8e55e6198d125104.rlib,source=/libicu_locale_core-8e55e6198d125104.rlib \
   --mount=from=out-ad3def025bd69b3c,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/liblitemap-ad3def025bd69b3c.rlib,source=/liblitemap-ad3def025bd69b3c.rlib \
@@ -23630,6 +30511,7 @@ RUN \
   --mount=from=out-0bb13315df787db5,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libzerotrie-0bb13315df787db5.rlib,source=/libzerotrie-0bb13315df787db5.rlib \
   --mount=from=out-2142576b56af48dd,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libicu_properties-2142576b56af48dd.rlib,source=/libicu_properties-2142576b56af48dd.rlib \
   --mount=from=out-f2509a0a78ce5660,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libicu_properties_data-f2509a0a78ce5660.rlib,source=/libicu_properties_data-f2509a0a78ce5660.rlib \
+  --mount=from=out-59ba212a9df776ba,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-59ba212a9df776ba,source=/build_script_build-59ba212a9df776ba \
   --mount=from=out-8bf8296d4ba1f9b2,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libutf8_iter-8bf8296d4ba1f9b2.rlib,source=/libutf8_iter-8bf8296d4ba1f9b2.rlib \
     env CARGO="$(which cargo)" \
         CARGO_BIN_NAME=diesel \
@@ -23662,15 +30544,18 @@ RUN \
 FROM scratch AS out-e1db645c2ed0211b
 COPY --link --from=dep-n-diesel_cli-2.3.4-e1db645c2ed0211b /tmp/clis-diesel_cli_2-3-4/release/deps/*-e1db645c2ed0211b* /
 
-# Pipe this file to (not portable due to usage of local build contexts):
+# Pipe this file to:
 # DOCKER_BUILDKIT="1" \
-#   docker build --output=. --build-context=crate_out-e63dae8d54788400=/tmp/clis-diesel_cli_2-3-4/release/build/pq-sys-e63dae8d54788400/out --build-context=crate_out-cfe125327cacaf16=/tmp/clis-diesel_cli_2-3-4/release/build/serde-cfe125327cacaf16/out --build-context=crate_out-542dbc5d310e9565=/tmp/clis-diesel_cli_2-3-4/release/build/serde_core-542dbc5d310e9565/out --build-context=crate_out-a1cdeff7daa9b299=/tmp/clis-diesel_cli_2-3-4/release/build/serde-a1cdeff7daa9b299/out --build-context=crate_out-931deb6df1623450=/tmp/clis-diesel_cli_2-3-4/release/build/serde_core-931deb6df1623450/out --build-context=crate_out-f12921cd12623463=/tmp/clis-diesel_cli_2-3-4/release/build/thiserror-f12921cd12623463/out - <THIS_FILE
+#   docker build --output=. - <THIS_FILE
 
 ## this = "e1db645c2ed0211b"
 ## deps = [
 ##     "c144cf5d8004261e",
 ##     "7289403231332002",
 ##     "c0bc6db5a35592ab",
+##     "684bb1d0e614c72e",
+##     "f2b41e0845677d6c",
+##     "7f58c305ab694e40",
 ##     "683d74b5d0e8003d",
 ##     "3ed7fa954e6cf6ed",
 ##     "177a6f7e9d423fc6",
@@ -23691,7 +30576,11 @@ COPY --link --from=dep-n-diesel_cli-2.3.4-e1db645c2ed0211b /tmp/clis-diesel_cli_
 ##     "12379804391f3f43",
 ##     "e1e423eb99bb7e63",
 ##     "721470d94fc0c354",
+##     "e93dddbb48c6a6fc",
+##     "71babfb997932318",
 ##     "87872b55644e5043",
+##     "edf8f660a3d601cc",
+##     "c63aae50eb6f480a",
 ##     "e72117f7acff2466",
 ##     "9c2515b9354b63f7",
 ##     "feba89015d51c163",
@@ -23701,15 +30590,26 @@ COPY --link --from=dep-n-diesel_cli-2.3.4-e1db645c2ed0211b /tmp/clis-diesel_cli_
 ##     "48fe319515ec65ff",
 ##     "7892953c40c7027d",
 ##     "3c7b5c3a02d329ae",
+##     "0be4771cf3c80127",
+##     "26a0fe0ac7c340f6",
 ##     "6daa53e662c18c24",
 ##     "810c45601233a792",
 ##     "da2e6b7bc41290c2",
 ##     "7f08a5fdefdb5905",
+##     "a2e72ddbcd62bc9f",
+##     "880d2e011f9f14fa",
+##     "e63dae8d54788400",
+##     "ec662f2448b0e090",
+##     "cd02570aab934144",
 ##     "a3172a766124d605",
 ##     "43afef42d6696369",
 ##     "02668a5ba984a64f",
 ##     "8e892930c8cabc4c",
+##     "542dbc5d310e9565",
+##     "d7b3469e26105631",
 ##     "6a6518b24fbf25e4",
+##     "cfe125327cacaf16",
+##     "9e59eb4de4feaddb",
 ##     "b57e3684947ab9f7",
 ##     "4fa12932e3d6e0f1",
 ##     "c09fc58966664a16",
@@ -23719,6 +30619,8 @@ COPY --link --from=dep-n-diesel_cli-2.3.4-e1db645c2ed0211b /tmp/clis-diesel_cli_
 ##     "72a12522b941e05f",
 ##     "289f31e68e5dd789",
 ##     "a60f7305e674893c",
+##     "931deb6df1623450",
+##     "a1cdeff7daa9b299",
 ##     "deb8f99a2c787169",
 ##     "cff56db8fb79d998",
 ##     "4ef4113d39ae9ab0",
@@ -23728,7 +30630,11 @@ COPY --link --from=dep-n-diesel_cli-2.3.4-e1db645c2ed0211b /tmp/clis-diesel_cli_
 ##     "25accd7577246ffb",
 ##     "3601cbc26533d3b4",
 ##     "0365cb06b1ebfd56",
+##     "b1ca438ee48148a5",
+##     "162f014ecf4c578f",
 ##     "316b4b6e617b3daf",
+##     "4ecb38cd9bec3e1b",
+##     "bd78c93267945b7c",
 ##     "c22c8b2dc1b153a1",
 ##     "31102385d21b7bcc",
 ##     "a7a36740c7fdfc20",
@@ -23737,6 +30643,8 @@ COPY --link --from=dep-n-diesel_cli-2.3.4-e1db645c2ed0211b /tmp/clis-diesel_cli_
 ##     "a1237c3fef9abf24",
 ##     "004b5f74bdc719b9",
 ##     "ebded25e6abcab7c",
+##     "9cd11e10d1300933",
+##     "4864f07ddb011df8",
 ##     "ad0c109067a97cd8",
 ##     "d3db30f1d9f384a1",
 ##     "c2809bdd98497ef3",
@@ -23751,6 +30659,8 @@ COPY --link --from=dep-n-diesel_cli-2.3.4-e1db645c2ed0211b /tmp/clis-diesel_cli_
 ##     "a70dafa21eb76dac",
 ##     "e5c667c55e08b99f",
 ##     "d12f251f78756cbc",
+##     "f12921cd12623463",
+##     "4bfe9ea2e7e5814f",
 ##     "5b69739c2af13760",
 ##     "a22006e28be69faf",
 ##     "ed0ebb6cffc5de85",
@@ -23781,6 +30691,8 @@ COPY --link --from=dep-n-diesel_cli-2.3.4-e1db645c2ed0211b /tmp/clis-diesel_cli_
 ##     "06be7dc3ecf1b8da",
 ##     "b508b166d717b91e",
 ##     "fc0a70c3bc112445",
+##     "ca55f8cea487cfa3",
+##     "21ea0b3ad361ca24",
 ##     "b3023f33ef14f135",
 ##     "8e55e6198d125104",
 ##     "ad3def025bd69b3c",
@@ -23789,7 +30701,27 @@ COPY --link --from=dep-n-diesel_cli-2.3.4-e1db645c2ed0211b /tmp/clis-diesel_cli_
 ##     "0bb13315df787db5",
 ##     "2142576b56af48dd",
 ##     "f2509a0a78ce5660",
+##     "e3f49788cec17391",
+##     "59ba212a9df776ba",
 ##     "8bf8296d4ba1f9b2",
+## ]
+## buildrs_results = [
+##     "684bb1d0e614c72e",
+##     "e93dddbb48c6a6fc",
+##     "edf8f660a3d601cc",
+##     "0be4771cf3c80127",
+##     "a2e72ddbcd62bc9f",
+##     "e63dae8d54788400",
+##     "542dbc5d310e9565",
+##     "cfe125327cacaf16",
+##     "931deb6df1623450",
+##     "a1cdeff7daa9b299",
+##     "b1ca438ee48148a5",
+##     "4ecb38cd9bec3e1b",
+##     "9cd11e10d1300933",
+##     "f12921cd12623463",
+##     "ca55f8cea487cfa3",
+##     "e3f49788cec17391",
 ## ]
 ## writes = [
 ##     "diesel-e1db645c2ed0211b",
@@ -23811,6 +30743,14 @@ COPY --link --from=dep-n-diesel_cli-2.3.4-e1db645c2ed0211b /tmp/clis-diesel_cli_
 ## [[externs]]
 ## from = "out-c0bc6db5a35592ab"
 ## xtern = "libnum_traits-c0bc6db5a35592ab.rlib"
+##
+## [[externs]]
+## from = "out-f2b41e0845677d6c"
+## xtern = "libautocfg-f2b41e0845677d6c.rlib"
+##
+## [[externs]]
+## from = "out-7f58c305ab694e40"
+## xtern = "build_script_build-7f58c305ab694e40"
 ##
 ## [[externs]]
 ## from = "out-683d74b5d0e8003d"
@@ -23893,8 +30833,16 @@ COPY --link --from=dep-n-diesel_cli-2.3.4-e1db645c2ed0211b /tmp/clis-diesel_cli_
 ## xtern = "libunicode_ident-721470d94fc0c354.rlib"
 ##
 ## [[externs]]
+## from = "out-71babfb997932318"
+## xtern = "build_script_build-71babfb997932318"
+##
+## [[externs]]
 ## from = "out-87872b55644e5043"
 ## xtern = "libquote-87872b55644e5043.rlib"
+##
+## [[externs]]
+## from = "out-c63aae50eb6f480a"
+## xtern = "build_script_build-c63aae50eb6f480a"
 ##
 ## [[externs]]
 ## from = "out-e72117f7acff2466"
@@ -23933,6 +30881,10 @@ COPY --link --from=dep-n-diesel_cli-2.3.4-e1db645c2ed0211b /tmp/clis-diesel_cli_
 ## xtern = "libheck-3c7b5c3a02d329ae.rlib"
 ##
 ## [[externs]]
+## from = "out-26a0fe0ac7c340f6"
+## xtern = "build_script_build-26a0fe0ac7c340f6"
+##
+## [[externs]]
 ## from = "out-6daa53e662c18c24"
 ## xtern = "libdowncast_rs-6daa53e662c18c24.rlib"
 ##
@@ -23947,6 +30899,22 @@ COPY --link --from=dep-n-diesel_cli-2.3.4-e1db645c2ed0211b /tmp/clis-diesel_cli_
 ## [[externs]]
 ## from = "out-7f08a5fdefdb5905"
 ## xtern = "liblibc-7f08a5fdefdb5905.rlib"
+##
+## [[externs]]
+## from = "out-880d2e011f9f14fa"
+## xtern = "build_script_build-880d2e011f9f14fa"
+##
+## [[externs]]
+## from = "out-e63dae8d54788400"
+## xtern = "bindings.rs"
+##
+## [[externs]]
+## from = "out-ec662f2448b0e090"
+## xtern = "libpkg_config-ec662f2448b0e090.rlib"
+##
+## [[externs]]
+## from = "out-cd02570aab934144"
+## xtern = "build_script_build-cd02570aab934144"
 ##
 ## [[externs]]
 ## from = "out-a3172a766124d605"
@@ -23965,8 +30933,20 @@ COPY --link --from=dep-n-diesel_cli-2.3.4-e1db645c2ed0211b /tmp/clis-diesel_cli_
 ## xtern = "libserde_core-8e892930c8cabc4c.rlib"
 ##
 ## [[externs]]
+## from = "out-542dbc5d310e9565"
+## xtern = "private.rs"
+##
+## [[externs]]
+## from = "out-d7b3469e26105631"
+## xtern = "build_script_build-d7b3469e26105631"
+##
+## [[externs]]
 ## from = "out-6a6518b24fbf25e4"
 ## xtern = "libserde_derive-6a6518b24fbf25e4.so"
+##
+## [[externs]]
+## from = "out-9e59eb4de4feaddb"
+## xtern = "build_script_build-9e59eb4de4feaddb"
 ##
 ## [[externs]]
 ## from = "out-b57e3684947ab9f7"
@@ -24041,8 +31021,16 @@ COPY --link --from=dep-n-diesel_cli-2.3.4-e1db645c2ed0211b /tmp/clis-diesel_cli_
 ## xtern = "libunicode_ident-0365cb06b1ebfd56.rlib"
 ##
 ## [[externs]]
+## from = "out-162f014ecf4c578f"
+## xtern = "build_script_build-162f014ecf4c578f"
+##
+## [[externs]]
 ## from = "out-316b4b6e617b3daf"
 ## xtern = "libquote-316b4b6e617b3daf.rlib"
+##
+## [[externs]]
+## from = "out-bd78c93267945b7c"
+## xtern = "build_script_build-bd78c93267945b7c"
 ##
 ## [[externs]]
 ## from = "out-c22c8b2dc1b153a1"
@@ -24075,6 +31063,10 @@ COPY --link --from=dep-n-diesel_cli-2.3.4-e1db645c2ed0211b /tmp/clis-diesel_cli_
 ## [[externs]]
 ## from = "out-ebded25e6abcab7c"
 ## xtern = "liblinux_raw_sys-ebded25e6abcab7c.rlib"
+##
+## [[externs]]
+## from = "out-4864f07ddb011df8"
+## xtern = "build_script_build-4864f07ddb011df8"
 ##
 ## [[externs]]
 ## from = "out-ad0c109067a97cd8"
@@ -24131,6 +31123,10 @@ COPY --link --from=dep-n-diesel_cli-2.3.4-e1db645c2ed0211b /tmp/clis-diesel_cli_
 ## [[externs]]
 ## from = "out-d12f251f78756cbc"
 ## xtern = "libthiserror_impl-d12f251f78756cbc.so"
+##
+## [[externs]]
+## from = "out-4bfe9ea2e7e5814f"
+## xtern = "build_script_build-4bfe9ea2e7e5814f"
 ##
 ## [[externs]]
 ## from = "out-5b69739c2af13760"
@@ -24253,6 +31249,10 @@ COPY --link --from=dep-n-diesel_cli-2.3.4-e1db645c2ed0211b /tmp/clis-diesel_cli_
 ## xtern = "libicu_normalizer_data-fc0a70c3bc112445.rlib"
 ##
 ## [[externs]]
+## from = "out-21ea0b3ad361ca24"
+## xtern = "build_script_build-21ea0b3ad361ca24"
+##
+## [[externs]]
 ## from = "out-b3023f33ef14f135"
 ## xtern = "libicu_provider-b3023f33ef14f135.rlib"
 ##
@@ -24285,32 +31285,12 @@ COPY --link --from=dep-n-diesel_cli-2.3.4-e1db645c2ed0211b /tmp/clis-diesel_cli_
 ## xtern = "libicu_properties_data-f2509a0a78ce5660.rlib"
 ##
 ## [[externs]]
+## from = "out-59ba212a9df776ba"
+## xtern = "build_script_build-59ba212a9df776ba"
+##
+## [[externs]]
 ## from = "out-8bf8296d4ba1f9b2"
 ## xtern = "libutf8_iter-8bf8296d4ba1f9b2.rlib"
-##
-## [[contexts]]
-## name = "crate_out-e63dae8d54788400"
-## uri = "/tmp/clis-diesel_cli_2-3-4/release/build/pq-sys-e63dae8d54788400/out"
-##
-## [[contexts]]
-## name = "crate_out-cfe125327cacaf16"
-## uri = "/tmp/clis-diesel_cli_2-3-4/release/build/serde-cfe125327cacaf16/out"
-##
-## [[contexts]]
-## name = "crate_out-542dbc5d310e9565"
-## uri = "/tmp/clis-diesel_cli_2-3-4/release/build/serde_core-542dbc5d310e9565/out"
-##
-## [[contexts]]
-## name = "crate_out-a1cdeff7daa9b299"
-## uri = "/tmp/clis-diesel_cli_2-3-4/release/build/serde-a1cdeff7daa9b299/out"
-##
-## [[contexts]]
-## name = "crate_out-931deb6df1623450"
-## uri = "/tmp/clis-diesel_cli_2-3-4/release/build/serde_core-931deb6df1623450/out"
-##
-## [[contexts]]
-## name = "crate_out-f12921cd12623463"
-## uri = "/tmp/clis-diesel_cli_2-3-4/release/build/thiserror-f12921cd12623463/out"
 ##
 ## [[stages]]
 ##
@@ -24365,6 +31345,8 @@ COPY --link --from=dep-n-diesel_cli-2.3.4-e1db645c2ed0211b /tmp/clis-diesel_cli_
 ##   --mount=from=out-c144cf5d8004261e,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libchrono-c144cf5d8004261e.rlib,source=/libchrono-c144cf5d8004261e.rlib \
 ##   --mount=from=out-7289403231332002,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libiana_time_zone-7289403231332002.rlib,source=/libiana_time_zone-7289403231332002.rlib \
 ##   --mount=from=out-c0bc6db5a35592ab,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libnum_traits-c0bc6db5a35592ab.rlib,source=/libnum_traits-c0bc6db5a35592ab.rlib \
+##   --mount=from=out-f2b41e0845677d6c,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libautocfg-f2b41e0845677d6c.rlib,source=/libautocfg-f2b41e0845677d6c.rlib \
+##   --mount=from=out-7f58c305ab694e40,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-7f58c305ab694e40,source=/build_script_build-7f58c305ab694e40 \
 ##   --mount=from=out-683d74b5d0e8003d,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libclap-683d74b5d0e8003d.rlib,source=/libclap-683d74b5d0e8003d.rlib \
 ##   --mount=from=out-3ed7fa954e6cf6ed,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libclap_builder-3ed7fa954e6cf6ed.rlib,source=/libclap_builder-3ed7fa954e6cf6ed.rlib \
 ##   --mount=from=out-177a6f7e9d423fc6,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libanstream-177a6f7e9d423fc6.rlib,source=/libanstream-177a6f7e9d423fc6.rlib \
@@ -24385,7 +31367,9 @@ COPY --link --from=dep-n-diesel_cli-2.3.4-e1db645c2ed0211b /tmp/clis-diesel_cli_
 ##   --mount=from=out-12379804391f3f43,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-12379804391f3f43.rlib,source=/libsyn-12379804391f3f43.rlib \
 ##   --mount=from=out-e1e423eb99bb7e63,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libproc_macro2-e1e423eb99bb7e63.rlib,source=/libproc_macro2-e1e423eb99bb7e63.rlib \
 ##   --mount=from=out-721470d94fc0c354,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-721470d94fc0c354.rlib,source=/libunicode_ident-721470d94fc0c354.rlib \
+##   --mount=from=out-71babfb997932318,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-71babfb997932318,source=/build_script_build-71babfb997932318 \
 ##   --mount=from=out-87872b55644e5043,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-87872b55644e5043.rlib,source=/libquote-87872b55644e5043.rlib \
+##   --mount=from=out-c63aae50eb6f480a,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-c63aae50eb6f480a,source=/build_script_build-c63aae50eb6f480a \
 ##   --mount=from=out-e72117f7acff2466,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libdsl_auto_type-e72117f7acff2466.rlib,source=/libdsl_auto_type-e72117f7acff2466.rlib \
 ##   --mount=from=out-9c2515b9354b63f7,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libdarling-9c2515b9354b63f7.rlib,source=/libdarling-9c2515b9354b63f7.rlib \
 ##   --mount=from=out-feba89015d51c163,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libdarling_core-feba89015d51c163.rlib,source=/libdarling_core-feba89015d51c163.rlib \
@@ -24395,15 +31379,23 @@ COPY --link --from=dep-n-diesel_cli-2.3.4-e1db645c2ed0211b /tmp/clis-diesel_cli_
 ##   --mount=from=out-48fe319515ec65ff,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libdarling_macro-48fe319515ec65ff.so,source=/libdarling_macro-48fe319515ec65ff.so \
 ##   --mount=from=out-7892953c40c7027d,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libeither-7892953c40c7027d.rlib,source=/libeither-7892953c40c7027d.rlib \
 ##   --mount=from=out-3c7b5c3a02d329ae,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libheck-3c7b5c3a02d329ae.rlib,source=/libheck-3c7b5c3a02d329ae.rlib \
+##   --mount=from=out-26a0fe0ac7c340f6,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-26a0fe0ac7c340f6,source=/build_script_build-26a0fe0ac7c340f6 \
 ##   --mount=from=out-6daa53e662c18c24,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libdowncast_rs-6daa53e662c18c24.rlib,source=/libdowncast_rs-6daa53e662c18c24.rlib \
 ##   --mount=from=out-810c45601233a792,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libitoa-810c45601233a792.rlib,source=/libitoa-810c45601233a792.rlib \
 ##   --mount=from=out-da2e6b7bc41290c2,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libpq_sys-da2e6b7bc41290c2.rlib,source=/libpq_sys-da2e6b7bc41290c2.rlib \
 ##   --mount=from=out-7f08a5fdefdb5905,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/liblibc-7f08a5fdefdb5905.rlib,source=/liblibc-7f08a5fdefdb5905.rlib \
+##   --mount=from=out-880d2e011f9f14fa,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-880d2e011f9f14fa,source=/build_script_build-880d2e011f9f14fa \
+##   --mount=from=out-e63dae8d54788400,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/bindings.rs,source=/bindings.rs \
+##   --mount=from=out-ec662f2448b0e090,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libpkg_config-ec662f2448b0e090.rlib,source=/libpkg_config-ec662f2448b0e090.rlib \
+##   --mount=from=out-cd02570aab934144,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-cd02570aab934144,source=/build_script_build-cd02570aab934144 \
 ##   --mount=from=out-a3172a766124d605,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libdiesel_migrations-a3172a766124d605.rlib,source=/libdiesel_migrations-a3172a766124d605.rlib \
 ##   --mount=from=out-43afef42d6696369,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libmigrations_internals-43afef42d6696369.rlib,source=/libmigrations_internals-43afef42d6696369.rlib \
 ##   --mount=from=out-02668a5ba984a64f,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde-02668a5ba984a64f.rlib,source=/libserde-02668a5ba984a64f.rlib \
 ##   --mount=from=out-8e892930c8cabc4c,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde_core-8e892930c8cabc4c.rlib,source=/libserde_core-8e892930c8cabc4c.rlib \
+##   --mount=from=out-542dbc5d310e9565,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/private.rs,source=/private.rs \
+##   --mount=from=out-d7b3469e26105631,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-d7b3469e26105631,source=/build_script_build-d7b3469e26105631 \
 ##   --mount=from=out-6a6518b24fbf25e4,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde_derive-6a6518b24fbf25e4.so,source=/libserde_derive-6a6518b24fbf25e4.so \
+##   --mount=from=out-9e59eb4de4feaddb,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-9e59eb4de4feaddb,source=/build_script_build-9e59eb4de4feaddb \
 ##   --mount=from=out-b57e3684947ab9f7,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libtoml-b57e3684947ab9f7.rlib,source=/libtoml-b57e3684947ab9f7.rlib \
 ##   --mount=from=out-4fa12932e3d6e0f1,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libserde_spanned-4fa12932e3d6e0f1.rlib,source=/libserde_spanned-4fa12932e3d6e0f1.rlib \
 ##   --mount=from=out-c09fc58966664a16,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libtoml_datetime-c09fc58966664a16.rlib,source=/libtoml_datetime-c09fc58966664a16.rlib \
@@ -24422,7 +31414,9 @@ COPY --link --from=dep-n-diesel_cli-2.3.4-e1db645c2ed0211b /tmp/clis-diesel_cli_
 ##   --mount=from=out-25accd7577246ffb,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libsyn-25accd7577246ffb.rlib,source=/libsyn-25accd7577246ffb.rlib \
 ##   --mount=from=out-3601cbc26533d3b4,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libproc_macro2-3601cbc26533d3b4.rlib,source=/libproc_macro2-3601cbc26533d3b4.rlib \
 ##   --mount=from=out-0365cb06b1ebfd56,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_ident-0365cb06b1ebfd56.rlib,source=/libunicode_ident-0365cb06b1ebfd56.rlib \
+##   --mount=from=out-162f014ecf4c578f,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-162f014ecf4c578f,source=/build_script_build-162f014ecf4c578f \
 ##   --mount=from=out-316b4b6e617b3daf,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libquote-316b4b6e617b3daf.rlib,source=/libquote-316b4b6e617b3daf.rlib \
+##   --mount=from=out-bd78c93267945b7c,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-bd78c93267945b7c,source=/build_script_build-bd78c93267945b7c \
 ##   --mount=from=out-c22c8b2dc1b153a1,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libdiffy-c22c8b2dc1b153a1.rlib,source=/libdiffy-c22c8b2dc1b153a1.rlib \
 ##   --mount=from=out-31102385d21b7bcc,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libnu_ansi_term-31102385d21b7bcc.rlib,source=/libnu_ansi_term-31102385d21b7bcc.rlib \
 ##   --mount=from=out-a7a36740c7fdfc20,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libdotenvy-a7a36740c7fdfc20.rlib,source=/libdotenvy-a7a36740c7fdfc20.rlib \
@@ -24431,6 +31425,7 @@ COPY --link --from=dep-n-diesel_cli-2.3.4-e1db645c2ed0211b /tmp/clis-diesel_cli_
 ##   --mount=from=out-a1237c3fef9abf24,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libcfg_if-a1237c3fef9abf24.rlib,source=/libcfg_if-a1237c3fef9abf24.rlib \
 ##   --mount=from=out-004b5f74bdc719b9,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/librustix-004b5f74bdc719b9.rlib,source=/librustix-004b5f74bdc719b9.rlib \
 ##   --mount=from=out-ebded25e6abcab7c,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/liblinux_raw_sys-ebded25e6abcab7c.rlib,source=/liblinux_raw_sys-ebded25e6abcab7c.rlib \
+##   --mount=from=out-4864f07ddb011df8,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-4864f07ddb011df8,source=/build_script_build-4864f07ddb011df8 \
 ##   --mount=from=out-ad0c109067a97cd8,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libheck-ad0c109067a97cd8.rlib,source=/libheck-ad0c109067a97cd8.rlib \
 ##   --mount=from=out-d3db30f1d9f384a1,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libregex-d3db30f1d9f384a1.rlib,source=/libregex-d3db30f1d9f384a1.rlib \
 ##   --mount=from=out-c2809bdd98497ef3,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libaho_corasick-c2809bdd98497ef3.rlib,source=/libaho_corasick-c2809bdd98497ef3.rlib \
@@ -24445,6 +31440,7 @@ COPY --link --from=dep-n-diesel_cli-2.3.4-e1db645c2ed0211b /tmp/clis-diesel_cli_
 ##   --mount=from=out-a70dafa21eb76dac,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libunicode_segmentation-a70dafa21eb76dac.rlib,source=/libunicode_segmentation-a70dafa21eb76dac.rlib \
 ##   --mount=from=out-e5c667c55e08b99f,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libthiserror-e5c667c55e08b99f.rlib,source=/libthiserror-e5c667c55e08b99f.rlib \
 ##   --mount=from=out-d12f251f78756cbc,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libthiserror_impl-d12f251f78756cbc.so,source=/libthiserror_impl-d12f251f78756cbc.so \
+##   --mount=from=out-4bfe9ea2e7e5814f,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-4bfe9ea2e7e5814f,source=/build_script_build-4bfe9ea2e7e5814f \
 ##   --mount=from=out-5b69739c2af13760,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libtracing-5b69739c2af13760.rlib,source=/libtracing-5b69739c2af13760.rlib \
 ##   --mount=from=out-a22006e28be69faf,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libpin_project_lite-a22006e28be69faf.rlib,source=/libpin_project_lite-a22006e28be69faf.rlib \
 ##   --mount=from=out-ed0ebb6cffc5de85,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libtracing_attributes-ed0ebb6cffc5de85.so,source=/libtracing_attributes-ed0ebb6cffc5de85.so \
@@ -24475,6 +31471,7 @@ COPY --link --from=dep-n-diesel_cli-2.3.4-e1db645c2ed0211b /tmp/clis-diesel_cli_
 ##   --mount=from=out-06be7dc3ecf1b8da,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libzerofrom_derive-06be7dc3ecf1b8da.so,source=/libzerofrom_derive-06be7dc3ecf1b8da.so \
 ##   --mount=from=out-b508b166d717b91e,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libzerovec_derive-b508b166d717b91e.so,source=/libzerovec_derive-b508b166d717b91e.so \
 ##   --mount=from=out-fc0a70c3bc112445,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libicu_normalizer_data-fc0a70c3bc112445.rlib,source=/libicu_normalizer_data-fc0a70c3bc112445.rlib \
+##   --mount=from=out-21ea0b3ad361ca24,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-21ea0b3ad361ca24,source=/build_script_build-21ea0b3ad361ca24 \
 ##   --mount=from=out-b3023f33ef14f135,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libicu_provider-b3023f33ef14f135.rlib,source=/libicu_provider-b3023f33ef14f135.rlib \
 ##   --mount=from=out-8e55e6198d125104,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libicu_locale_core-8e55e6198d125104.rlib,source=/libicu_locale_core-8e55e6198d125104.rlib \
 ##   --mount=from=out-ad3def025bd69b3c,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/liblitemap-ad3def025bd69b3c.rlib,source=/liblitemap-ad3def025bd69b3c.rlib \
@@ -24483,6 +31480,7 @@ COPY --link --from=dep-n-diesel_cli-2.3.4-e1db645c2ed0211b /tmp/clis-diesel_cli_
 ##   --mount=from=out-0bb13315df787db5,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libzerotrie-0bb13315df787db5.rlib,source=/libzerotrie-0bb13315df787db5.rlib \
 ##   --mount=from=out-2142576b56af48dd,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libicu_properties-2142576b56af48dd.rlib,source=/libicu_properties-2142576b56af48dd.rlib \
 ##   --mount=from=out-f2509a0a78ce5660,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libicu_properties_data-f2509a0a78ce5660.rlib,source=/libicu_properties_data-f2509a0a78ce5660.rlib \
+##   --mount=from=out-59ba212a9df776ba,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/build_script_build-59ba212a9df776ba,source=/build_script_build-59ba212a9df776ba \
 ##   --mount=from=out-8bf8296d4ba1f9b2,dst=/tmp/clis-diesel_cli_2-3-4/release/deps/libutf8_iter-8bf8296d4ba1f9b2.rlib,source=/libutf8_iter-8bf8296d4ba1f9b2.rlib \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_BIN_NAME=diesel \
