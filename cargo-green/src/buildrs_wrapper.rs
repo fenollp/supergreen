@@ -128,7 +128,8 @@ async fn do_exec_buildrs(
         .map_err(|e| anyhow!("Failed to `mkdir -p {out_dir_var}`: {e}"))?;
 
     let run_stage = Stage::try_new(format!("run-{crate_id}"))?;
-    let out_stage = Stage::try_new(format!("ran-{mdid}"))?;
+    // let out_stage = Stage::try_new(format!("ran-{mdid}"))?;
+    let out_stage = Stage::output(mdid)?;
 
     let mut mds = HashMap::<Utf8PathBuf, Md>::new(); // A file cache FIXME: merge both into Mds
 
