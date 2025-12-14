@@ -101,9 +101,9 @@ impl BaseImage {
         let block = self.image_inline.clone().unwrap_or_else(|| {
             let base = self.image.noscheme();
             // TODO? ARG RUST_BASE=myorg/myapp:latest \n FROM $RUST_BASE (+ similar for non-stable imgs)
-            format!("FROM --platform=$BUILDPLATFORM {base} AS {RST}\n")
+            format!("FROM --platform=$BUILDPLATFORM {base} AS {RST}\nRUN rustup target add aarch64-apple-darwin\n")
         });
-        (self.with_network, block)
+        (Network::Default, block)
     }
 }
 
