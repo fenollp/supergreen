@@ -48,11 +48,16 @@ EOF
     rm -rf $tmpd
 }
 
-files=(recipes/*.Dockerfile)
 if [[ $# -ne 0 ]]; then
-    files=($@)
+    for file in "$@"; do
+        echo $file
+        rm -f "${file//Dockerfile/$format}"
+        dockerfilegraph "$file"
+    done
+    exit
 fi
 
+files=(recipes/*.Dockerfile)
 for file in "${!files[@]}"; do
     file=${files[$file]}
     echo $file
