@@ -537,7 +537,7 @@ set -x
     CARGOGREEN_EXPERIMENT=finalpathnonprimary \
     PATH=$install_dir/bin:"$PATH" \
     CARGO_TARGET_DIR="$tmptrgt" \
-      $CARGO green -v $arg1 $jobs --all-targets --all-features $frozen -p cargo-green
+      $CARGO green -v $arg1 $jobs --all-targets --all-features $frozen --target=aarch64-apple-darwin -p cargo-green
     exit ;;
 esac
 
@@ -609,10 +609,10 @@ send \
   'until' '[[' -f "$tmpgooo".installed ']];' 'do' sleep '.1;' 'done' '&&' rm "$tmpgooo".* \
   '&&' 'if' '[[' "$reset" '=' '1' ']];' 'then' docker buildx rm "$BUILDX_BUILDER" --force '||' 'exit' '1;' 'fi' \
   '&&' 'case' "$name_at_version" 'in' ntpd'@*)' export NTPD_RS_GIT_REV=$ntpd_locked_commit '&&' export NTPD_RS_GIT_DATE=$ntpd_locked_date ';;' '*)' ';;' 'esac' \
-  '&&' "${envvars[@]}" $CARGO green -vv install --timings $jobs --root=$tmpbins $frozen --force "$(as_install "$name_at_version")" "$args" \
+  '&&' "${envvars[@]}" $CARGO green -vv install --timings $jobs --root=$tmpbins $frozen --force --target=aarch64-apple-darwin "$(as_install "$name_at_version")" "$args" \
   '&&' tmux kill-session -t "$session_name"
 tmux select-layout even-vertical
-
+ # TARGET_CC=x86_64-unknown-linux-gnu
 tmux attach-session -t "$session_name"
 
 if [[ "$final" = '1' ]]; then
@@ -623,3 +623,29 @@ fi
 echo "$name_at_version"
 echo "Target dir: $tmptrgt"
 echo "Logs: $tmplogs"
+
+
+# IFS='' read -r -d '' CARGOGREEN_BASE_IMAGE_INLINE <<"EOF"
+# FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base
+# RUN rustup target add aarch64-apple-darwin
+# EOF
+# echo "$CARGOGREEN_BASE_IMAGE_INLINE" # (with quotes to preserve newlines)
+# export CARGOGREEN_BASE_IMAGE_INLINE
+# export CARGOGREEN_BASE_IMAGE=docker-image://docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e
+
+
+# error: linking with `cc` failed: exit status: 1
+#   |
+#   = note:  "cc" "/tmp/rustcLlyqlR/symbols.o" "<17 object files omitted>" "/tmp/clis-buildxargs_master/aarch64-apple-darwin/release/deps/{libshlex-b31f2a78402cf9f0,libpico_args-52d4487b5973ba08,libbuildxargs-fd1a1a18a358f273}.rlib" "<sysroot>/lib/rustlib/aarch64-apple-darwin/lib/{libstd-*,libpanic_unwind-*,libobject-*,libmemchr-*,libaddr2line-*,libgimli-*,librustc_demangle-*,libstd_detect-*,libhashbrown-*,librustc_std_workspace_alloc-*,libminiz_oxide-*,libadler2-*,libunwind-*,libcfg_if-*,liblibc-*,librustc_std_workspace_core-*,liballoc-*,libcore-*,libcompiler_builtins-*}.rlib" "-lSystem" "-lc" "-lm" "-arch" "arm64" "-mmacosx-version-min=11.0.0" "-o" "/tmp/clis-buildxargs_master/aarch64-apple-darwin/release/deps/buildxargs-220b345dbec99acd" "-Wl,-dead_strip" "-nodefaultlibs"
+#   = note: some arguments are omitted. use `--verbose` to show all linker arguments
+#   = note: cc: error: unrecognized command-line option '-arch'; did you mean '-march='?
+#           cc: error: unrecognized command-line option '-mmacosx-version-min=11.0.0'
+
+
+
+# Starting `BUILDX_BUILDER="supergreen" DOCKER_BUILDKIT="1" /usr/local/bin/docker build --network=default --platform=local --pull=false --target=out-386819565014ba9c --output=type=tar - </tmp/clis-buildxargs_master/x86_64-unknown-linux-gnu/release/buildxargs-386819565014ba9c.Dockerfile`
+# error: linking with `cc` failed: exit status: 1
+#   |
+#   = note:  "cc" "-m64" "/tmp/rustcv5BLWP/symbols.o" "<17 object files omitted>" "-Wl,--as-needed" "-Wl,-Bstatic" "/tmp/clis-buildxargs_master/x86_64-unknown-linux-gnu/release/deps/{libshlex-67f023d986ddbb59,libpico_args-8ac386521b035801,libbuildxargs-352e2b496e4f93ce}.rlib" "<sysroot>/lib/rustlib/x86_64-unknown-linux-gnu/lib/{libstd-*,libpanic_unwind-*,libobject-*,libmemchr-*,libaddr2line-*,libgimli-*,librustc_demangle-*,libstd_detect-*,libhashbrown-*,librustc_std_workspace_alloc-*,libminiz_oxide-*,libadler2-*,libunwind-*,libcfg_if-*,liblibc-*,librustc_std_workspace_core-*,liballoc-*,libcore-*,libcompiler_builtins-*}.rlib" "-Wl,-Bdynamic" "-lgcc_s" "-lutil" "-lrt" "-lpthread" "-lm" "-ldl" "-lc" "-L" "/tmp/rustcv5BLWP/raw-dylibs" "-B<sysroot>/lib/rustlib/aarch64-unknown-linux-gnu/bin/gcc-ld" "-fuse-ld=lld" "-Wl,--eh-frame-hdr" "-Wl,-z,noexecstack" "-L" "<sysroot>/lib/rustlib/x86_64-unknown-linux-gnu/lib" "-o" "/tmp/clis-buildxargs_master/x86_64-unknown-linux-gnu/release/deps/buildxargs-386819565014ba9c" "-Wl,--gc-sections" "-pie" "-Wl,-z,relro,-z,now" "-Wl,-O1" "-Wl,--strip-debug" "-nodefaultlibs"
+#   = note: some arguments are omitted. use `--verbose` to show all linker arguments
+#   = note: cc: error: unrecognized command-line option '-m64'

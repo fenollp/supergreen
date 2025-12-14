@@ -74,16 +74,16 @@ impl BaseImage {
 
     #[must_use]
     fn from_rustcv(
-        VersionMeta { semver, commit_hash, commit_date, channel, .. }: VersionMeta,
+        VersionMeta { semver, commit_hash, commit_date, channel, host, .. }: VersionMeta,
     ) -> Option<Self> {
         if channel == Channel::Stable {
             assert!(STABLE_RUST.contains(":1-"));
             let minored = STABLE_RUST.as_str().replace(":1-", &format!(":{semver}-"));
             return Some(Self::from_image(minored.try_into().unwrap()));
         }
-        commit_hash
-            .zip(commit_date)
-            .map(|(commit, date)| RustcV { version: semver, commit, date, channel }.as_base_image())
+        commit_hash.zip(commit_date).map(|(commit, date)| {
+            RustcV { version: semver, commit, date, channel, host }.as_base_image()
+        })
     }
 
     #[must_use]
@@ -98,12 +98,21 @@ impl BaseImage {
 
     #[must_use]
     pub(crate) fn as_block(&self) -> (Network, String) {
+        let mut with_network = self.with_network;
         let block = self.image_inline.clone().unwrap_or_else(|| {
             let base = self.image.noscheme();
             // TODO? ARG RUST_BASE=myorg/myapp:latest \n FROM $RUST_BASE (+ similar for non-stable imgs)
-            format!("FROM --platform=$BUILDPLATFORM {base} AS {RST}\n")
+            let target = "aarch64-apple-darwin";
+            let target_is_host = false;
+            let add = if target_is_host {
+                "".to_owned()
+            } else {
+                with_network = Network::Default;
+                format!("\nRUN rustup target add {target}")
+            };
+            format!("FROM --platform=$BUILDPLATFORM {base} AS {RST}{add}\n")
         });
-        (self.with_network, block)
+        (with_network, block)
     }
 }
 
@@ -115,17 +124,21 @@ struct RustcV {
     commit: String,
     date: String,
     channel: Channel,
+    host: String,
 }
 
 impl RustcV {
     #[must_use]
     fn as_base_image(&self) -> BaseImage {
         // TODO: dynamically resolve + cache this, if network is up.
+        //TODO: hardcode per host + script to check + bump and release when new ones
         let rustup_version = "1.28.1";
         let rustup_checksum = "a3339fb004c3d0bb9862ba0bce001861fe5cbde9c10d16591eb3f39ee6cd3e7f";
 
         // FIXME: multiplatformify (using auto ARG.s) (use rustc_version::VersionMeta.host)
-        let host = "x86_64-unknown-linux-gnu";
+        // let host = "x86_64-unknown-linux-gnu";
+        // let host = "aarch64-apple-darwin";
+        let host = &self.host;
 
         // have buildkit call rustc with `--target $(adapted $TARGETPLATFORM)`, if not given `--target`
         // `adapted` translates buildkit platform format to rustc's
@@ -175,28 +188,64 @@ impl RustcV {
 
         let block = format!(
             r#"
-FROM scratch AS rustup-{channel}-{date}
-ADD --chmod=0144 --checksum=sha256:{rustup_checksum} \
+FROM scratch AS rustup-{short_checksum}
+SHELL
+ADD --link --chmod=0144 --checksum=sha256:{rustup_checksum} \
   https://static.rust-lang.org/rustup/archive/{rustup_version}/{host}/rustup-init /rustup-init
 {packages_block}
 ENV RUSTUP_HOME=/usr/local/rustup \
      CARGO_HOME=/usr/local/cargo \
            PATH=/usr/local/cargo/bin:$PATH
 RUN \
- --mount=from=rustup-{channel}-{date},source=/rustup-init,dst=/rustup-init \
-   set -eux \
-&& /rustup-init --verbose -y --no-modify-path --profile minimal --default-toolchain {channel}-{date} --default-host {host} \
+ --mount=from=rustup-{short_checksum},source=/rustup-init,dst=/rustup-init \
+   set -eux \ <<EOR
+&& /rustup-init --verbose -y --no-modify-path --profile minimal --default-toolchain {channel}-{date} --default-host {host} --target {host} \
 && chmod -R a+w $RUSTUP_HOME $CARGO_HOME \
 && rustup --version \
 && cargo --version \
 && rustc --version
 "#,
             packages_block = packages_block.trim(),
+            short_checksum = &rustup_checksum[..7],
         );
 
         BaseImage { with_network, image, image_inline: Some(block) }
     }
 }
+
+// From https://github.com/rust-lang/rustup/blob/2d80024a0fe21bd9f082d89f672a471ef638562e/rustup-init.sh#L57
+//
+// rustup-init 1.29.0 (2eaaa4bb0 2025-12-11)
+//
+// The installer for rustup
+//
+// Usage: rustup-init[EXE] [OPTIONS]
+//
+// Options:
+//   -v, --verbose
+//           Set log level to 'DEBUG' if 'RUSTUP_LOG' is unset
+//   -q, --quiet
+//           Disable progress output, set log level to 'WARN' if 'RUSTUP_LOG' is unset
+//   -y
+//           Disable confirmation prompt
+//       --default-host <DEFAULT_HOST>
+//           Choose a default host triple
+//       --default-toolchain <DEFAULT_TOOLCHAIN>
+//           Choose a default toolchain to install. Use 'none' to not install any toolchains at all
+//       --profile <PROFILE>
+//           [default: default] [possible values: minimal, default, complete]
+//   -c, --component <COMPONENT>
+//           Comma-separated list of component names to also install
+//   -t, --target <TARGET>
+//           Comma-separated list of target names to also install
+//       --no-update-default-toolchain
+//           Don't update any existing default toolchain after install
+//       --no-modify-path
+//           Don't configure the PATH environment variable
+//   -h, --help
+//           Print help
+//   -V, --version
+//           Print version
 
 #[test]
 fn test_from_rustc_v() {

@@ -160,6 +160,8 @@ impl Green {
                 if !item.noscheme().contains('/') {
                     bail!("{origin} must contain a registry and namespace: {item:?}")
                 }
+                //allow tags
+                //replace {branch}
                 if item.tagged() || item.locked() {
                     bail!("{origin} must not contain a tag nor digest: {item:?}")
                 }
