@@ -106,7 +106,7 @@ jobs:
 
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v6
+      uses: actions/download-artifact@v7
       with:
         name: cargo-green
 
@@ -118,7 +118,7 @@ jobs:
         mv ./cargo-green ~/.cargo/bin/
     - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
       name: Retrieve saved builder data
-      uses: actions/download-artifact@v6
+      uses: actions/download-artifact@v7
       with:
         name: builder-data
         path: /home/runner/builder-cache
@@ -428,7 +428,7 @@ jobs:
 
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v6
+      uses: actions/download-artifact@v7
       with:
         name: cargo-green
 
@@ -440,7 +440,7 @@ jobs:
         mv ./cargo-green ~/.cargo/bin/
     - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
       name: Retrieve saved builder data
-      uses: actions/download-artifact@v6
+      uses: actions/download-artifact@v7
       with:
         name: builder-data
         path: /home/runner/builder-cache
@@ -750,7 +750,7 @@ jobs:
 
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v6
+      uses: actions/download-artifact@v7
       with:
         name: cargo-green
 
@@ -762,7 +762,7 @@ jobs:
         mv ./cargo-green ~/.cargo/bin/
     - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
       name: Retrieve saved builder data
-      uses: actions/download-artifact@v6
+      uses: actions/download-artifact@v7
       with:
         name: builder-data
         path: /home/runner/builder-cache
@@ -1072,7 +1072,7 @@ jobs:
     - run: rustup component add llvm-tools-preview
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v6
+      uses: actions/download-artifact@v7
       with:
         name: cargo-green
 
@@ -1084,7 +1084,7 @@ jobs:
         mv ./cargo-green ~/.cargo/bin/
     - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
       name: Retrieve saved builder data
-      uses: actions/download-artifact@v6
+      uses: actions/download-artifact@v7
       with:
         name: builder-data
         path: /home/runner/builder-cache
@@ -1394,7 +1394,7 @@ jobs:
 
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v6
+      uses: actions/download-artifact@v7
       with:
         name: cargo-green
 
@@ -1406,7 +1406,7 @@ jobs:
         mv ./cargo-green ~/.cargo/bin/
     - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
       name: Retrieve saved builder data
-      uses: actions/download-artifact@v6
+      uses: actions/download-artifact@v7
       with:
         name: builder-data
         path: /home/runner/builder-cache
@@ -1716,7 +1716,7 @@ jobs:
 
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v6
+      uses: actions/download-artifact@v7
       with:
         name: cargo-green
 
@@ -1728,7 +1728,7 @@ jobs:
         mv ./cargo-green ~/.cargo/bin/
     - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
       name: Retrieve saved builder data
-      uses: actions/download-artifact@v6
+      uses: actions/download-artifact@v7
       with:
         name: builder-data
         path: /home/runner/builder-cache
@@ -2038,7 +2038,7 @@ jobs:
 
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v6
+      uses: actions/download-artifact@v7
       with:
         name: cargo-green
 
@@ -2050,7 +2050,7 @@ jobs:
         mv ./cargo-green ~/.cargo/bin/
     - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
       name: Retrieve saved builder data
-      uses: actions/download-artifact@v6
+      uses: actions/download-artifact@v7
       with:
         name: builder-data
         path: /home/runner/builder-cache
@@ -2360,7 +2360,7 @@ jobs:
 
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v6
+      uses: actions/download-artifact@v7
       with:
         name: cargo-green
 
@@ -2372,7 +2372,7 @@ jobs:
         mv ./cargo-green ~/.cargo/bin/
     - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
       name: Retrieve saved builder data
-      uses: actions/download-artifact@v6
+      uses: actions/download-artifact@v7
       with:
         name: builder-data
         path: /home/runner/builder-cache
@@ -2682,7 +2682,7 @@ jobs:
 
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v6
+      uses: actions/download-artifact@v7
       with:
         name: cargo-green
 
@@ -2694,7 +2694,7 @@ jobs:
         mv ./cargo-green ~/.cargo/bin/
     - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
       name: Retrieve saved builder data
-      uses: actions/download-artifact@v6
+      uses: actions/download-artifact@v7
       with:
         name: builder-data
         path: /home/runner/builder-cache
@@ -3004,7 +3004,7 @@ jobs:
 
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v6
+      uses: actions/download-artifact@v7
       with:
         name: cargo-green
 
@@ -3016,7 +3016,7 @@ jobs:
         mv ./cargo-green ~/.cargo/bin/
     - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
       name: Retrieve saved builder data
-      uses: actions/download-artifact@v6
+      uses: actions/download-artifact@v7
       with:
         name: builder-data
         path: /home/runner/builder-cache
@@ -3327,7 +3327,7 @@ jobs:
 
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v6
+      uses: actions/download-artifact@v7
       with:
         name: cargo-green
 
@@ -3339,7 +3339,7 @@ jobs:
         mv ./cargo-green ~/.cargo/bin/
     - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
       name: Retrieve saved builder data
-      uses: actions/download-artifact@v6
+      uses: actions/download-artifact@v7
       with:
         name: builder-data
         path: /home/runner/builder-cache
@@ -3649,7 +3649,7 @@ jobs:
 
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v6
+      uses: actions/download-artifact@v7
       with:
         name: cargo-green
 
@@ -3661,7 +3661,7 @@ jobs:
         mv ./cargo-green ~/.cargo/bin/
     - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
       name: Retrieve saved builder data
-      uses: actions/download-artifact@v6
+      uses: actions/download-artifact@v7
       with:
         name: builder-data
         path: /home/runner/builder-cache
@@ -3971,7 +3971,7 @@ jobs:
 
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v6
+      uses: actions/download-artifact@v7
       with:
         name: cargo-green
 
@@ -3983,7 +3983,7 @@ jobs:
         mv ./cargo-green ~/.cargo/bin/
     - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
       name: Retrieve saved builder data
-      uses: actions/download-artifact@v6
+      uses: actions/download-artifact@v7
       with:
         name: builder-data
         path: /home/runner/builder-cache
@@ -4293,7 +4293,7 @@ jobs:
 
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v6
+      uses: actions/download-artifact@v7
       with:
         name: cargo-green
 
@@ -4305,7 +4305,7 @@ jobs:
         mv ./cargo-green ~/.cargo/bin/
     - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
       name: Retrieve saved builder data
-      uses: actions/download-artifact@v6
+      uses: actions/download-artifact@v7
       with:
         name: builder-data
         path: /home/runner/builder-cache
@@ -4615,7 +4615,7 @@ jobs:
 
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v6
+      uses: actions/download-artifact@v7
       with:
         name: cargo-green
 
@@ -4627,7 +4627,7 @@ jobs:
         mv ./cargo-green ~/.cargo/bin/
     - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
       name: Retrieve saved builder data
-      uses: actions/download-artifact@v6
+      uses: actions/download-artifact@v7
       with:
         name: builder-data
         path: /home/runner/builder-cache
@@ -4937,7 +4937,7 @@ jobs:
 
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v6
+      uses: actions/download-artifact@v7
       with:
         name: cargo-green
 
@@ -4949,7 +4949,7 @@ jobs:
         mv ./cargo-green ~/.cargo/bin/
     - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
       name: Retrieve saved builder data
-      uses: actions/download-artifact@v6
+      uses: actions/download-artifact@v7
       with:
         name: builder-data
         path: /home/runner/builder-cache
@@ -5259,7 +5259,7 @@ jobs:
 
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v6
+      uses: actions/download-artifact@v7
       with:
         name: cargo-green
 
@@ -5271,7 +5271,7 @@ jobs:
         mv ./cargo-green ~/.cargo/bin/
     - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
       name: Retrieve saved builder data
-      uses: actions/download-artifact@v6
+      uses: actions/download-artifact@v7
       with:
         name: builder-data
         path: /home/runner/builder-cache
@@ -5581,7 +5581,7 @@ jobs:
 
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v6
+      uses: actions/download-artifact@v7
       with:
         name: cargo-green
 
@@ -5593,7 +5593,7 @@ jobs:
         mv ./cargo-green ~/.cargo/bin/
     - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
       name: Retrieve saved builder data
-      uses: actions/download-artifact@v6
+      uses: actions/download-artifact@v7
       with:
         name: builder-data
         path: /home/runner/builder-cache
@@ -5903,7 +5903,7 @@ jobs:
 
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v6
+      uses: actions/download-artifact@v7
       with:
         name: cargo-green
 
@@ -5915,7 +5915,7 @@ jobs:
         mv ./cargo-green ~/.cargo/bin/
     - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
       name: Retrieve saved builder data
-      uses: actions/download-artifact@v6
+      uses: actions/download-artifact@v7
       with:
         name: builder-data
         path: /home/runner/builder-cache
@@ -6225,7 +6225,7 @@ jobs:
 
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v6
+      uses: actions/download-artifact@v7
       with:
         name: cargo-green
 
@@ -6237,7 +6237,7 @@ jobs:
         mv ./cargo-green ~/.cargo/bin/
     - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
       name: Retrieve saved builder data
-      uses: actions/download-artifact@v6
+      uses: actions/download-artifact@v7
       with:
         name: builder-data
         path: /home/runner/builder-cache
@@ -6547,7 +6547,7 @@ jobs:
 
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v6
+      uses: actions/download-artifact@v7
       with:
         name: cargo-green
 
@@ -6559,7 +6559,7 @@ jobs:
         mv ./cargo-green ~/.cargo/bin/
     - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
       name: Retrieve saved builder data
-      uses: actions/download-artifact@v6
+      uses: actions/download-artifact@v7
       with:
         name: builder-data
         path: /home/runner/builder-cache
@@ -6869,7 +6869,7 @@ jobs:
 
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v6
+      uses: actions/download-artifact@v7
       with:
         name: cargo-green
 
@@ -6881,7 +6881,7 @@ jobs:
         mv ./cargo-green ~/.cargo/bin/
     - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
       name: Retrieve saved builder data
-      uses: actions/download-artifact@v6
+      uses: actions/download-artifact@v7
       with:
         name: builder-data
         path: /home/runner/builder-cache
@@ -7191,7 +7191,7 @@ jobs:
 
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v6
+      uses: actions/download-artifact@v7
       with:
         name: cargo-green
 
@@ -7203,7 +7203,7 @@ jobs:
         mv ./cargo-green ~/.cargo/bin/
     - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
       name: Retrieve saved builder data
-      uses: actions/download-artifact@v6
+      uses: actions/download-artifact@v7
       with:
         name: builder-data
         path: /home/runner/builder-cache
@@ -7513,7 +7513,7 @@ jobs:
 
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v6
+      uses: actions/download-artifact@v7
       with:
         name: cargo-green
 
@@ -7525,7 +7525,7 @@ jobs:
         mv ./cargo-green ~/.cargo/bin/
     - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
       name: Retrieve saved builder data
-      uses: actions/download-artifact@v6
+      uses: actions/download-artifact@v7
       with:
         name: builder-data
         path: /home/runner/builder-cache
@@ -7835,7 +7835,7 @@ jobs:
 
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v6
+      uses: actions/download-artifact@v7
       with:
         name: cargo-green
 
@@ -7847,7 +7847,7 @@ jobs:
         mv ./cargo-green ~/.cargo/bin/
     - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
       name: Retrieve saved builder data
-      uses: actions/download-artifact@v6
+      uses: actions/download-artifact@v7
       with:
         name: builder-data
         path: /home/runner/builder-cache
@@ -8157,7 +8157,7 @@ jobs:
 
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v6
+      uses: actions/download-artifact@v7
       with:
         name: cargo-green
 
@@ -8169,7 +8169,7 @@ jobs:
         mv ./cargo-green ~/.cargo/bin/
     - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
       name: Retrieve saved builder data
-      uses: actions/download-artifact@v6
+      uses: actions/download-artifact@v7
       with:
         name: builder-data
         path: /home/runner/builder-cache
@@ -8479,7 +8479,7 @@ jobs:
 
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v6
+      uses: actions/download-artifact@v7
       with:
         name: cargo-green
 
@@ -8491,7 +8491,7 @@ jobs:
         mv ./cargo-green ~/.cargo/bin/
     - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
       name: Retrieve saved builder data
-      uses: actions/download-artifact@v6
+      uses: actions/download-artifact@v7
       with:
         name: builder-data
         path: /home/runner/builder-cache
@@ -8801,7 +8801,7 @@ jobs:
 
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v6
+      uses: actions/download-artifact@v7
       with:
         name: cargo-green
 
@@ -8813,7 +8813,7 @@ jobs:
         mv ./cargo-green ~/.cargo/bin/
     - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
       name: Retrieve saved builder data
-      uses: actions/download-artifact@v6
+      uses: actions/download-artifact@v7
       with:
         name: builder-data
         path: /home/runner/builder-cache
