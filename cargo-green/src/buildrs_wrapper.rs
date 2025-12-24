@@ -27,7 +27,7 @@ macro_rules! ENV_EXECUTE_BUILDRS {
 pub(crate) fn rewrite_main(mdid: MdId, input: &Utf8Path) -> String {
     format!(
         r#"    {{ \
-        cat {input} | sed 's/fn main/fn actual_{mdid}_main/' >{input}~ && mv {input}~ {input} ; \
+        cat {input} | sed -E 's/^(pub[()a-z]* +)?(async +)?fn +main/\1\2fn actual_{mdid}_main/' >{input}~ && mv {input}~ {input} ; \
         {{ \
           echo ; \
           echo 'fn main() {{' ; \
