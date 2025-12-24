@@ -7,12 +7,12 @@ See
 * and <https://docs.docker.com/build/cache/backends/registry/>
 
 ```toml
-cache-images = [ "docker-image://my.org/team/my-project", "docker-image://some.org/global/cache" ]
+cache-images = [ "docker-image://my.org/team/my-project:main", "docker-image://my.org/team/my-project:cached-{branch}", "docker-image://some.org/global/cache" ]
 ```
 
 *This environment variable takes precedence over any `Cargo.toml` settings:*
 ```shell
 # Note: values here are comma-separated.
-export CARGOGREEN_CACHE_IMAGES="docker-image://my.org/team/my-project,docker-image://some.org/global/cache"
+export CARGOGREEN_CACHE_IMAGES="docker-image://my.org/team/my-project,docker-image://my.org/team/my-project:cached-{branch},docker-image://some.org/global/cache"
 ```
 
