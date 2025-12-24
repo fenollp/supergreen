@@ -2,10 +2,11 @@ use std::{
     collections::BTreeMap,
     env,
     error::Error,
+    fs::DirBuilder,
     io::Write,
     ops::Not,
     os::unix::{
-        fs::{MetadataExt, OpenOptionsExt},
+        fs::{DirBuilderExt, MetadataExt, OpenOptionsExt},
         process::ExitStatusExt,
     },
     process::{ExitStatus, Stdio},
@@ -509,23 +510,37 @@ async fn run_build(
                         f.read_to_end(&mut buf)
                             .await
                             .map_err(|e| anyhow!("Failed unTARing buffer: {e}"))?;
-                        debug!("produced {name} 0x{}", sha256::digest(&buf));
-
-                        let mut opts = AtomicWriteFile::options();
-                        opts.mode(mode);
-                        let mut file = opts
-                            .open(&fname)
-                            .map_err(|e| anyhow!("Failed opening atomic {fname}: {e}"))?;
-                        file.write_all(&buf).map_err(|e| anyhow!("Failed writing unTARed: {e}"))?;
-                        file.commit().map_err(|e| anyhow!("Failed writing unTARed: {e}"))?;
+                        debug!("produced {}B {name} 0x{}", buf.len(), sha256::digest(&buf));
 
                         assert_eq!(f.link_name().unwrap(), None);
-                        assert_eq!(f.header().entry_type().as_byte(), 0x30);
                         assert_eq!(f.header().uid().unwrap(), 0);
                         assert_eq!(f.header().gid().unwrap(), 0);
                         //assert_eq!(f.header().mtime().unwrap(), 42);
                         assert_eq!(f.header().username(), Ok(Some("")));
                         assert_eq!(f.header().groupname(), Ok(Some("")));
+
+                        match f.header().entry_type().as_byte() {
+                            0x30 => {
+                                let mut opts = AtomicWriteFile::options();
+                                opts.mode(mode);
+                                let mut file = opts
+                                    .open(&fname)
+                                    .map_err(|e| anyhow!("Failed opening atomic {fname}: {e}"))?;
+                                file.write_all(&buf)
+                                    .map_err(|e| anyhow!("Failed writing unTARed: {e}"))?;
+                                file.commit()
+                                    .map_err(|e| anyhow!("Failed writing unTARed: {e}"))?;
+                            }
+
+                            0x35 => {
+                                DirBuilder::new()
+                                    .mode(mode)
+                                    .create(&fname)
+                                    .map_err(|e| anyhow!("Failed `mkdir -p {fname}`: {e}"))?;
+                            }
+
+                            entryty => bail!("BUG: unexpected entry type {entryty:#x}"),
+                        }
 
                         assert_eq!(
                             fname.metadata().unwrap().mode() & 0o777,
