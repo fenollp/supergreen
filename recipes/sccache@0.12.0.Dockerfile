@@ -39,7 +39,7 @@ WORKDIR /tmp/clis-sccache_0-12-0/release/build/libc-f44500b11cabc82b
 RUN \
   --mount=from=cratesio-libc-0.2.177,source=/libc-0.2.177,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.177,rw \
     { \
-        cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.177/build.rs | sed -E 's/^fn +main/fn actual_f44500b11cabc82b_main/;s/^async +fn +main/async fn actual_f44500b11cabc82b_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.177/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.177/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.177/build.rs ; \
+        cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.177/build.rs | sed -E 's/^(pub[()a-z]* +)?(async +)?fn +main/\1\2fn actual_f44500b11cabc82b_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.177/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.177/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.177/build.rs ; \
         { \
           echo ; \
           echo 'fn main() {' ; \
@@ -146,7 +146,7 @@ COPY --link --from=dep-x-libc-0.2.177-f44500b11cabc82b /tmp/clis-sccache_0-12-0/
 ## RUN \
 ##   --mount=from=cratesio-libc-0.2.177,source=/libc-0.2.177,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.177,rw \
 ##     { \
-##         cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.177/build.rs | sed -E 's/^fn +main/fn actual_f44500b11cabc82b_main/;s/^async +fn +main/async fn actual_f44500b11cabc82b_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.177/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.177/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.177/build.rs ; \
+##         cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.177/build.rs | sed -E 's/^(pub[()a-z]* +)?(async +)?fn +main/\1\2fn actual_f44500b11cabc82b_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.177/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.177/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.177/build.rs ; \
 ##         { \
 ##           echo ; \
 ##           echo 'fn main() {' ; \
@@ -1303,7 +1303,7 @@ RUN \
   --mount=from=out-1ab6ce00f36e8644,dst=/tmp/clis-sccache_0-12-0/release/deps/libpkg_config-1ab6ce00f36e8644.rlib,source=/libpkg_config-1ab6ce00f36e8644.rlib \
   --mount=from=out-a3292a77a4476164,dst=/tmp/clis-sccache_0-12-0/release/deps/libvcpkg-a3292a77a4476164.rlib,source=/libvcpkg-a3292a77a4476164.rlib \
     { \
-        cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/openssl-sys-0.9.107/build/main.rs | sed -E 's/^fn +main/fn actual_7a431b22b13a863f_main/;s/^async +fn +main/async fn actual_7a431b22b13a863f_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/openssl-sys-0.9.107/build/main.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/openssl-sys-0.9.107/build/main.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/openssl-sys-0.9.107/build/main.rs ; \
+        cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/openssl-sys-0.9.107/build/main.rs | sed -E 's/^(pub[()a-z]* +)?(async +)?fn +main/\1\2fn actual_7a431b22b13a863f_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/openssl-sys-0.9.107/build/main.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/openssl-sys-0.9.107/build/main.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/openssl-sys-0.9.107/build/main.rs ; \
         { \
           echo ; \
           echo 'fn main() {' ; \
@@ -1456,7 +1456,7 @@ COPY --link --from=dep-x-openssl-sys-0.9.107-7a431b22b13a863f /tmp/clis-sccache_
 ##   --mount=from=out-1ab6ce00f36e8644,dst=/tmp/clis-sccache_0-12-0/release/deps/libpkg_config-1ab6ce00f36e8644.rlib,source=/libpkg_config-1ab6ce00f36e8644.rlib \
 ##   --mount=from=out-a3292a77a4476164,dst=/tmp/clis-sccache_0-12-0/release/deps/libvcpkg-a3292a77a4476164.rlib,source=/libvcpkg-a3292a77a4476164.rlib \
 ##     { \
-##         cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/openssl-sys-0.9.107/build/main.rs | sed -E 's/^fn +main/fn actual_7a431b22b13a863f_main/;s/^async +fn +main/async fn actual_7a431b22b13a863f_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/openssl-sys-0.9.107/build/main.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/openssl-sys-0.9.107/build/main.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/openssl-sys-0.9.107/build/main.rs ; \
+##         cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/openssl-sys-0.9.107/build/main.rs | sed -E 's/^(pub[()a-z]* +)?(async +)?fn +main/\1\2fn actual_7a431b22b13a863f_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/openssl-sys-0.9.107/build/main.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/openssl-sys-0.9.107/build/main.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/openssl-sys-0.9.107/build/main.rs ; \
 ##         { \
 ##           echo ; \
 ##           echo 'fn main() {' ; \

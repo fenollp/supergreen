@@ -15,7 +15,7 @@ WORKDIR /tmp/clis-stu_0-7-5/release/build/libc-55bd35d1ef212c79
 RUN \
   --mount=from=cratesio-libc-0.2.172,source=/libc-0.2.172,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.172,rw \
     { \
-        cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.172/build.rs | sed -E 's/^fn +main/fn actual_55bd35d1ef212c79_main/;s/^async +fn +main/async fn actual_55bd35d1ef212c79_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.172/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.172/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.172/build.rs ; \
+        cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.172/build.rs | sed -E 's/^(pub[()a-z]* +)?(async +)?fn +main/\1\2fn actual_55bd35d1ef212c79_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.172/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.172/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.172/build.rs ; \
         { \
           echo ; \
           echo 'fn main() {' ; \
@@ -98,7 +98,7 @@ COPY --link --from=dep-x-libc-0.2.172-55bd35d1ef212c79 /tmp/clis-stu_0-7-5/relea
 ## RUN \
 ##   --mount=from=cratesio-libc-0.2.172,source=/libc-0.2.172,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.172,rw \
 ##     { \
-##         cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.172/build.rs | sed -E 's/^fn +main/fn actual_55bd35d1ef212c79_main/;s/^async +fn +main/async fn actual_55bd35d1ef212c79_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.172/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.172/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.172/build.rs ; \
+##         cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.172/build.rs | sed -E 's/^(pub[()a-z]* +)?(async +)?fn +main/\1\2fn actual_55bd35d1ef212c79_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.172/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.172/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.172/build.rs ; \
 ##         { \
 ##           echo ; \
 ##           echo 'fn main() {' ; \
@@ -1249,7 +1249,7 @@ RUN \
   --mount=from=out-4ebb5633c029d02a,dst=/tmp/clis-stu_0-7-5/release/deps/libdunce-4ebb5633c029d02a.rlib,source=/libdunce-4ebb5633c029d02a.rlib \
   --mount=from=out-e6abd85383eef4c9,dst=/tmp/clis-stu_0-7-5/release/deps/libfs_extra-e6abd85383eef4c9.rlib,source=/libfs_extra-e6abd85383eef4c9.rlib \
     { \
-        cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/builder/main.rs | sed -E 's/^fn +main/fn actual_590398941c1af7ae_main/;s/^async +fn +main/async fn actual_590398941c1af7ae_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/builder/main.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/builder/main.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/builder/main.rs ; \
+        cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/builder/main.rs | sed -E 's/^(pub[()a-z]* +)?(async +)?fn +main/\1\2fn actual_590398941c1af7ae_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/builder/main.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/builder/main.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/builder/main.rs ; \
         { \
           echo ; \
           echo 'fn main() {' ; \
@@ -1383,7 +1383,7 @@ COPY --link --from=dep-x-aws-lc-sys-0.27.1-590398941c1af7ae /tmp/clis-stu_0-7-5/
 ##   --mount=from=out-4ebb5633c029d02a,dst=/tmp/clis-stu_0-7-5/release/deps/libdunce-4ebb5633c029d02a.rlib,source=/libdunce-4ebb5633c029d02a.rlib \
 ##   --mount=from=out-e6abd85383eef4c9,dst=/tmp/clis-stu_0-7-5/release/deps/libfs_extra-e6abd85383eef4c9.rlib,source=/libfs_extra-e6abd85383eef4c9.rlib \
 ##     { \
-##         cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/builder/main.rs | sed -E 's/^fn +main/fn actual_590398941c1af7ae_main/;s/^async +fn +main/async fn actual_590398941c1af7ae_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/builder/main.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/builder/main.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/builder/main.rs ; \
+##         cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/builder/main.rs | sed -E 's/^(pub[()a-z]* +)?(async +)?fn +main/\1\2fn actual_590398941c1af7ae_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/builder/main.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/builder/main.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/builder/main.rs ; \
 ##         { \
 ##           echo ; \
 ##           echo 'fn main() {' ; \
@@ -2815,7 +2815,7 @@ WORKDIR /tmp/clis-stu_0-7-5/release/build/aws-lc-rs-bc8082a139a1fe57
 RUN \
   --mount=from=cratesio-aws-lc-rs-1.12.6,source=/aws-lc-rs-1.12.6,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.12.6,rw \
     { \
-        cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.12.6/build.rs | sed -E 's/^fn +main/fn actual_bc8082a139a1fe57_main/;s/^async +fn +main/async fn actual_bc8082a139a1fe57_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.12.6/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.12.6/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.12.6/build.rs ; \
+        cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.12.6/build.rs | sed -E 's/^(pub[()a-z]* +)?(async +)?fn +main/\1\2fn actual_bc8082a139a1fe57_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.12.6/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.12.6/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.12.6/build.rs ; \
         { \
           echo ; \
           echo 'fn main() {' ; \
@@ -2897,7 +2897,7 @@ COPY --link --from=dep-x-aws-lc-rs-1.12.6-bc8082a139a1fe57 /tmp/clis-stu_0-7-5/r
 ## RUN \
 ##   --mount=from=cratesio-aws-lc-rs-1.12.6,source=/aws-lc-rs-1.12.6,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.12.6,rw \
 ##     { \
-##         cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.12.6/build.rs | sed -E 's/^fn +main/fn actual_bc8082a139a1fe57_main/;s/^async +fn +main/async fn actual_bc8082a139a1fe57_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.12.6/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.12.6/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.12.6/build.rs ; \
+##         cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.12.6/build.rs | sed -E 's/^(pub[()a-z]* +)?(async +)?fn +main/\1\2fn actual_bc8082a139a1fe57_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.12.6/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.12.6/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.12.6/build.rs ; \
 ##         { \
 ##           echo ; \
 ##           echo 'fn main() {' ; \
