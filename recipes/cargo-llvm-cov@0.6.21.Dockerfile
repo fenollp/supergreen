@@ -15,7 +15,7 @@ WORKDIR /tmp/clis-cargo-llvm-cov_0-6-21/release/build/anyhow-6fb05533be45625d
 RUN \
   --mount=from=cratesio-anyhow-1.0.100,source=/anyhow-1.0.100,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.100,rw \
     { \
-        cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.100/build.rs | sed 's/fn main/fn actual_6fb05533be45625d_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.100/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.100/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.100/build.rs ; \
+        cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.100/build.rs | sed -E 's/^fn +main/fn actual_6fb05533be45625d_main/;s/^async +fn +main/async fn actual_6fb05533be45625d_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.100/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.100/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.100/build.rs ; \
         { \
           echo ; \
           echo 'fn main() {' ; \
@@ -97,7 +97,7 @@ COPY --link --from=dep-x-anyhow-1.0.100-6fb05533be45625d /tmp/clis-cargo-llvm-co
 ## RUN \
 ##   --mount=from=cratesio-anyhow-1.0.100,source=/anyhow-1.0.100,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.100,rw \
 ##     { \
-##         cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.100/build.rs | sed 's/fn main/fn actual_6fb05533be45625d_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.100/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.100/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.100/build.rs ; \
+##         cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.100/build.rs | sed -E 's/^fn +main/fn actual_6fb05533be45625d_main/;s/^async +fn +main/async fn actual_6fb05533be45625d_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.100/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.100/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.100/build.rs ; \
 ##         { \
 ##           echo ; \
 ##           echo 'fn main() {' ; \
@@ -587,7 +587,7 @@ WORKDIR /tmp/clis-cargo-llvm-cov_0-6-21/release/build/camino-8cfb2e2da73f614c
 RUN \
   --mount=from=cratesio-camino-1.2.1,source=/camino-1.2.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/camino-1.2.1,rw \
     { \
-        cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/camino-1.2.1/build.rs | sed 's/fn main/fn actual_8cfb2e2da73f614c_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/camino-1.2.1/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/camino-1.2.1/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/camino-1.2.1/build.rs ; \
+        cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/camino-1.2.1/build.rs | sed -E 's/^fn +main/fn actual_8cfb2e2da73f614c_main/;s/^async +fn +main/async fn actual_8cfb2e2da73f614c_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/camino-1.2.1/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/camino-1.2.1/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/camino-1.2.1/build.rs ; \
         { \
           echo ; \
           echo 'fn main() {' ; \
@@ -669,7 +669,7 @@ COPY --link --from=dep-x-camino-1.2.1-8cfb2e2da73f614c /tmp/clis-cargo-llvm-cov_
 ## RUN \
 ##   --mount=from=cratesio-camino-1.2.1,source=/camino-1.2.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/camino-1.2.1,rw \
 ##     { \
-##         cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/camino-1.2.1/build.rs | sed 's/fn main/fn actual_8cfb2e2da73f614c_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/camino-1.2.1/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/camino-1.2.1/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/camino-1.2.1/build.rs ; \
+##         cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/camino-1.2.1/build.rs | sed -E 's/^fn +main/fn actual_8cfb2e2da73f614c_main/;s/^async +fn +main/async fn actual_8cfb2e2da73f614c_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/camino-1.2.1/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/camino-1.2.1/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/camino-1.2.1/build.rs ; \
 ##         { \
 ##           echo ; \
 ##           echo 'fn main() {' ; \
@@ -997,7 +997,7 @@ WORKDIR /tmp/clis-cargo-llvm-cov_0-6-21/release/build/serde_core-12ade0da5b513fa
 RUN \
   --mount=from=cratesio-serde_core-1.0.228,source=/serde_core-1.0.228,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_core-1.0.228,rw \
     { \
-        cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_core-1.0.228/build.rs | sed 's/fn main/fn actual_12ade0da5b513fa9_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_core-1.0.228/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_core-1.0.228/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_core-1.0.228/build.rs ; \
+        cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_core-1.0.228/build.rs | sed -E 's/^fn +main/fn actual_12ade0da5b513fa9_main/;s/^async +fn +main/async fn actual_12ade0da5b513fa9_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_core-1.0.228/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_core-1.0.228/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_core-1.0.228/build.rs ; \
         { \
           echo ; \
           echo 'fn main() {' ; \
@@ -1079,7 +1079,7 @@ COPY --link --from=dep-x-serde_core-1.0.228-12ade0da5b513fa9 /tmp/clis-cargo-llv
 ## RUN \
 ##   --mount=from=cratesio-serde_core-1.0.228,source=/serde_core-1.0.228,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_core-1.0.228,rw \
 ##     { \
-##         cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_core-1.0.228/build.rs | sed 's/fn main/fn actual_12ade0da5b513fa9_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_core-1.0.228/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_core-1.0.228/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_core-1.0.228/build.rs ; \
+##         cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_core-1.0.228/build.rs | sed -E 's/^fn +main/fn actual_12ade0da5b513fa9_main/;s/^async +fn +main/async fn actual_12ade0da5b513fa9_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_core-1.0.228/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_core-1.0.228/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_core-1.0.228/build.rs ; \
 ##         { \
 ##           echo ; \
 ##           echo 'fn main() {' ; \
@@ -1413,7 +1413,7 @@ WORKDIR /tmp/clis-cargo-llvm-cov_0-6-21/release/build/serde-3e1989de765eae82
 RUN \
   --mount=from=cratesio-serde-1.0.228,source=/serde-1.0.228,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.228,rw \
     { \
-        cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.228/build.rs | sed 's/fn main/fn actual_3e1989de765eae82_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.228/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.228/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.228/build.rs ; \
+        cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.228/build.rs | sed -E 's/^fn +main/fn actual_3e1989de765eae82_main/;s/^async +fn +main/async fn actual_3e1989de765eae82_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.228/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.228/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.228/build.rs ; \
         { \
           echo ; \
           echo 'fn main() {' ; \
@@ -1495,7 +1495,7 @@ COPY --link --from=dep-x-serde-1.0.228-3e1989de765eae82 /tmp/clis-cargo-llvm-cov
 ## RUN \
 ##   --mount=from=cratesio-serde-1.0.228,source=/serde-1.0.228,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.228,rw \
 ##     { \
-##         cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.228/build.rs | sed 's/fn main/fn actual_3e1989de765eae82_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.228/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.228/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.228/build.rs ; \
+##         cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.228/build.rs | sed -E 's/^fn +main/fn actual_3e1989de765eae82_main/;s/^async +fn +main/async fn actual_3e1989de765eae82_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.228/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.228/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.228/build.rs ; \
 ##         { \
 ##           echo ; \
 ##           echo 'fn main() {' ; \
@@ -1966,7 +1966,7 @@ WORKDIR /tmp/clis-cargo-llvm-cov_0-6-21/release/build/proc-macro2-3f47fd2d3cbd48
 RUN \
   --mount=from=cratesio-proc-macro2-1.0.101,source=/proc-macro2-1.0.101,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.101,rw \
     { \
-        cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.101/build.rs | sed 's/fn main/fn actual_3f47fd2d3cbd486d_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.101/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.101/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.101/build.rs ; \
+        cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.101/build.rs | sed -E 's/^fn +main/fn actual_3f47fd2d3cbd486d_main/;s/^async +fn +main/async fn actual_3f47fd2d3cbd486d_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.101/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.101/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.101/build.rs ; \
         { \
           echo ; \
           echo 'fn main() {' ; \
@@ -2048,7 +2048,7 @@ COPY --link --from=dep-x-proc-macro2-1.0.101-3f47fd2d3cbd486d /tmp/clis-cargo-ll
 ## RUN \
 ##   --mount=from=cratesio-proc-macro2-1.0.101,source=/proc-macro2-1.0.101,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.101,rw \
 ##     { \
-##         cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.101/build.rs | sed 's/fn main/fn actual_3f47fd2d3cbd486d_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.101/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.101/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.101/build.rs ; \
+##         cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.101/build.rs | sed -E 's/^fn +main/fn actual_3f47fd2d3cbd486d_main/;s/^async +fn +main/async fn actual_3f47fd2d3cbd486d_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.101/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.101/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.101/build.rs ; \
 ##         { \
 ##           echo ; \
 ##           echo 'fn main() {' ; \
@@ -2400,7 +2400,7 @@ WORKDIR /tmp/clis-cargo-llvm-cov_0-6-21/release/build/quote-81ea639c5c5b4fc2
 RUN \
   --mount=from=cratesio-quote-1.0.41,source=/quote-1.0.41,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.41,rw \
     { \
-        cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.41/build.rs | sed 's/fn main/fn actual_81ea639c5c5b4fc2_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.41/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.41/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.41/build.rs ; \
+        cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.41/build.rs | sed -E 's/^fn +main/fn actual_81ea639c5c5b4fc2_main/;s/^async +fn +main/async fn actual_81ea639c5c5b4fc2_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.41/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.41/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.41/build.rs ; \
         { \
           echo ; \
           echo 'fn main() {' ; \
@@ -2482,7 +2482,7 @@ COPY --link --from=dep-x-quote-1.0.41-81ea639c5c5b4fc2 /tmp/clis-cargo-llvm-cov_
 ## RUN \
 ##   --mount=from=cratesio-quote-1.0.41,source=/quote-1.0.41,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.41,rw \
 ##     { \
-##         cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.41/build.rs | sed 's/fn main/fn actual_81ea639c5c5b4fc2_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.41/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.41/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.41/build.rs ; \
+##         cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.41/build.rs | sed -E 's/^fn +main/fn actual_81ea639c5c5b4fc2_main/;s/^async +fn +main/async fn actual_81ea639c5c5b4fc2_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.41/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.41/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.41/build.rs ; \
 ##         { \
 ##           echo ; \
 ##           echo 'fn main() {' ; \
@@ -4175,7 +4175,7 @@ WORKDIR /tmp/clis-cargo-llvm-cov_0-6-21/release/build/libc-db320b9a6c9c6641
 RUN \
   --mount=from=cratesio-libc-0.2.177,source=/libc-0.2.177,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.177,rw \
     { \
-        cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.177/build.rs | sed 's/fn main/fn actual_db320b9a6c9c6641_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.177/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.177/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.177/build.rs ; \
+        cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.177/build.rs | sed -E 's/^fn +main/fn actual_db320b9a6c9c6641_main/;s/^async +fn +main/async fn actual_db320b9a6c9c6641_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.177/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.177/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.177/build.rs ; \
         { \
           echo ; \
           echo 'fn main() {' ; \
@@ -4257,7 +4257,7 @@ COPY --link --from=dep-x-libc-0.2.177-db320b9a6c9c6641 /tmp/clis-cargo-llvm-cov_
 ## RUN \
 ##   --mount=from=cratesio-libc-0.2.177,source=/libc-0.2.177,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.177,rw \
 ##     { \
-##         cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.177/build.rs | sed 's/fn main/fn actual_db320b9a6c9c6641_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.177/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.177/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.177/build.rs ; \
+##         cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.177/build.rs | sed -E 's/^fn +main/fn actual_db320b9a6c9c6641_main/;s/^async +fn +main/async fn actual_db320b9a6c9c6641_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.177/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.177/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.177/build.rs ; \
 ##         { \
 ##           echo ; \
 ##           echo 'fn main() {' ; \
@@ -5248,7 +5248,7 @@ RUN \
   --mount=from=cratesio-fs-err-3.1.3,source=/fs-err-3.1.3,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/fs-err-3.1.3,rw \
   --mount=from=out-a9e37ecd989e4d86,dst=/tmp/clis-cargo-llvm-cov_0-6-21/release/deps/libautocfg-a9e37ecd989e4d86.rlib,source=/libautocfg-a9e37ecd989e4d86.rlib \
     { \
-        cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/fs-err-3.1.3/build.rs | sed 's/fn main/fn actual_a1263e74d286e1d2_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/fs-err-3.1.3/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/fs-err-3.1.3/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/fs-err-3.1.3/build.rs ; \
+        cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/fs-err-3.1.3/build.rs | sed -E 's/^fn +main/fn actual_a1263e74d286e1d2_main/;s/^async +fn +main/async fn actual_a1263e74d286e1d2_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/fs-err-3.1.3/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/fs-err-3.1.3/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/fs-err-3.1.3/build.rs ; \
         { \
           echo ; \
           echo 'fn main() {' ; \
@@ -5336,7 +5336,7 @@ COPY --link --from=dep-x-fs-err-3.1.3-a1263e74d286e1d2 /tmp/clis-cargo-llvm-cov_
 ##   --mount=from=cratesio-fs-err-3.1.3,source=/fs-err-3.1.3,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/fs-err-3.1.3,rw \
 ##   --mount=from=out-a9e37ecd989e4d86,dst=/tmp/clis-cargo-llvm-cov_0-6-21/release/deps/libautocfg-a9e37ecd989e4d86.rlib,source=/libautocfg-a9e37ecd989e4d86.rlib \
 ##     { \
-##         cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/fs-err-3.1.3/build.rs | sed 's/fn main/fn actual_a1263e74d286e1d2_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/fs-err-3.1.3/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/fs-err-3.1.3/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/fs-err-3.1.3/build.rs ; \
+##         cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/fs-err-3.1.3/build.rs | sed -E 's/^fn +main/fn actual_a1263e74d286e1d2_main/;s/^async +fn +main/async fn actual_a1263e74d286e1d2_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/fs-err-3.1.3/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/fs-err-3.1.3/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/fs-err-3.1.3/build.rs ; \
 ##         { \
 ##           echo ; \
 ##           echo 'fn main() {' ; \
@@ -7684,7 +7684,7 @@ WORKDIR /tmp/clis-cargo-llvm-cov_0-6-21/release/build/serde_json-de42943f1de030b
 RUN \
   --mount=from=cratesio-serde_json-1.0.145,source=/serde_json-1.0.145,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.145,rw \
     { \
-        cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.145/build.rs | sed 's/fn main/fn actual_de42943f1de030b4_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.145/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.145/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.145/build.rs ; \
+        cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.145/build.rs | sed -E 's/^fn +main/fn actual_de42943f1de030b4_main/;s/^async +fn +main/async fn actual_de42943f1de030b4_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.145/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.145/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.145/build.rs ; \
         { \
           echo ; \
           echo 'fn main() {' ; \
@@ -7766,7 +7766,7 @@ COPY --link --from=dep-x-serde_json-1.0.145-de42943f1de030b4 /tmp/clis-cargo-llv
 ## RUN \
 ##   --mount=from=cratesio-serde_json-1.0.145,source=/serde_json-1.0.145,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.145,rw \
 ##     { \
-##         cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.145/build.rs | sed 's/fn main/fn actual_de42943f1de030b4_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.145/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.145/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.145/build.rs ; \
+##         cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.145/build.rs | sed -E 's/^fn +main/fn actual_de42943f1de030b4_main/;s/^async +fn +main/async fn actual_de42943f1de030b4_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.145/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.145/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.145/build.rs ; \
 ##         { \
 ##           echo ; \
 ##           echo 'fn main() {' ; \
@@ -8748,7 +8748,7 @@ WORKDIR /tmp/clis-cargo-llvm-cov_0-6-21/release/build/rustix-6d64d76769a36c53
 RUN \
   --mount=from=cratesio-rustix-1.1.2,source=/rustix-1.1.2,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustix-1.1.2,rw \
     { \
-        cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustix-1.1.2/build.rs | sed 's/fn main/fn actual_6d64d76769a36c53_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustix-1.1.2/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustix-1.1.2/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustix-1.1.2/build.rs ; \
+        cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustix-1.1.2/build.rs | sed -E 's/^fn +main/fn actual_6d64d76769a36c53_main/;s/^async +fn +main/async fn actual_6d64d76769a36c53_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustix-1.1.2/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustix-1.1.2/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustix-1.1.2/build.rs ; \
         { \
           echo ; \
           echo 'fn main() {' ; \
@@ -8830,7 +8830,7 @@ COPY --link --from=dep-x-rustix-1.1.2-6d64d76769a36c53 /tmp/clis-cargo-llvm-cov_
 ## RUN \
 ##   --mount=from=cratesio-rustix-1.1.2,source=/rustix-1.1.2,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustix-1.1.2,rw \
 ##     { \
-##         cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustix-1.1.2/build.rs | sed 's/fn main/fn actual_6d64d76769a36c53_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustix-1.1.2/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustix-1.1.2/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustix-1.1.2/build.rs ; \
+##         cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustix-1.1.2/build.rs | sed -E 's/^fn +main/fn actual_6d64d76769a36c53_main/;s/^async +fn +main/async fn actual_6d64d76769a36c53_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustix-1.1.2/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustix-1.1.2/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustix-1.1.2/build.rs ; \
 ##         { \
 ##           echo ; \
 ##           echo 'fn main() {' ; \

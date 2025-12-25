@@ -122,7 +122,7 @@ WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/libc-7560e7c5c88ec4c4
 RUN \
   --mount=from=cratesio-libc-0.2.176,source=/libc-0.2.176,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.176,rw \
     { \
-        cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.176/build.rs | sed 's/fn main/fn actual_7560e7c5c88ec4c4_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.176/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.176/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.176/build.rs ; \
+        cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.176/build.rs | sed -E 's/^fn +main/fn actual_7560e7c5c88ec4c4_main/;s/^async +fn +main/async fn actual_7560e7c5c88ec4c4_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.176/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.176/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.176/build.rs ; \
         { \
           echo ; \
           echo 'fn main() {' ; \
@@ -204,7 +204,7 @@ COPY --link --from=dep-x-libc-0.2.176-7560e7c5c88ec4c4 /tmp/clis-ntpd_1-7-0-alph
 ## RUN \
 ##   --mount=from=cratesio-libc-0.2.176,source=/libc-0.2.176,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.176,rw \
 ##     { \
-##         cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.176/build.rs | sed 's/fn main/fn actual_7560e7c5c88ec4c4_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.176/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.176/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.176/build.rs ; \
+##         cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.176/build.rs | sed -E 's/^fn +main/fn actual_7560e7c5c88ec4c4_main/;s/^async +fn +main/async fn actual_7560e7c5c88ec4c4_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.176/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.176/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.176/build.rs ; \
 ##         { \
 ##           echo ; \
 ##           echo 'fn main() {' ; \
@@ -1615,7 +1615,7 @@ RUN \
   --mount=from=out-bcbfd880a9747f76,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibloading-bcbfd880a9747f76.rlib,source=/liblibloading-bcbfd880a9747f76.rlib \
   --mount=from=out-d905bd04d466c2b4,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcfg_if-d905bd04d466c2b4.rlib,source=/libcfg_if-d905bd04d466c2b4.rlib \
     { \
-        cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.32.2/builder/main.rs | sed 's/fn main/fn actual_b91f62695d1e67bd_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.32.2/builder/main.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.32.2/builder/main.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.32.2/builder/main.rs ; \
+        cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.32.2/builder/main.rs | sed -E 's/^fn +main/fn actual_b91f62695d1e67bd_main/;s/^async +fn +main/async fn actual_b91f62695d1e67bd_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.32.2/builder/main.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.32.2/builder/main.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.32.2/builder/main.rs ; \
         { \
           echo ; \
           echo 'fn main() {' ; \
@@ -1767,7 +1767,7 @@ COPY --link --from=dep-x-aws-lc-sys-0.32.2-b91f62695d1e67bd /tmp/clis-ntpd_1-7-0
 ##   --mount=from=out-bcbfd880a9747f76,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibloading-bcbfd880a9747f76.rlib,source=/liblibloading-bcbfd880a9747f76.rlib \
 ##   --mount=from=out-d905bd04d466c2b4,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcfg_if-d905bd04d466c2b4.rlib,source=/libcfg_if-d905bd04d466c2b4.rlib \
 ##     { \
-##         cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.32.2/builder/main.rs | sed 's/fn main/fn actual_b91f62695d1e67bd_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.32.2/builder/main.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.32.2/builder/main.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.32.2/builder/main.rs ; \
+##         cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.32.2/builder/main.rs | sed -E 's/^fn +main/fn actual_b91f62695d1e67bd_main/;s/^async +fn +main/async fn actual_b91f62695d1e67bd_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.32.2/builder/main.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.32.2/builder/main.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.32.2/builder/main.rs ; \
 ##         { \
 ##           echo ; \
 ##           echo 'fn main() {' ; \
@@ -1862,7 +1862,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         DEBUG=false \
         HOST=x86_64-unknown-linux-gnu \
-        NUM_JOBS=1 \
+        NUM_JOBS=4 \
         OPT_LEVEL=3 \
         OUT_DIR=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out \
         PROFILE=release \
@@ -1877,10 +1877,6 @@ RUN \
   ; find /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out/*-2d875791ad1d3d18* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-2d875791ad1d3d18
 COPY --link --from=run-z-aws-lc-sys-0.32.2-2d875791ad1d3d18 /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out/* /
-
-# Pipe this file to:
-#  \
-#    <THIS_FILE
 
 ## this = "2d875791ad1d3d18"
 ## deps = [
@@ -1897,6 +1893,1079 @@ COPY --link --from=run-z-aws-lc-sys-0.32.2-2d875791ad1d3d18 /tmp/clis-ntpd_1-7-0
 ##     "bcbfd880a9747f76",
 ##     "d905bd04d466c2b4",
 ##     "b91f62695d1e67bd",
+## ]
+## writes = [
+##     "001247bc65c2f5e5-cpucap.o",
+##     "020bc241f4dae036-bignum_madd_n25519.o",
+##     "020bc241f4dae036-bignum_madd_n25519_alt.o",
+##     "020bc241f4dae036-bignum_mod_n25519.o",
+##     "020bc241f4dae036-bignum_neg_p25519.o",
+##     "020bc241f4dae036-curve25519_x25519.o",
+##     "020bc241f4dae036-curve25519_x25519_alt.o",
+##     "020bc241f4dae036-curve25519_x25519base.o",
+##     "020bc241f4dae036-curve25519_x25519base_alt.o",
+##     "020bc241f4dae036-edwards25519_decode.o",
+##     "020bc241f4dae036-edwards25519_decode_alt.o",
+##     "020bc241f4dae036-edwards25519_encode.o",
+##     "020bc241f4dae036-edwards25519_scalarmulbase.o",
+##     "020bc241f4dae036-edwards25519_scalarmulbase_alt.o",
+##     "020bc241f4dae036-edwards25519_scalarmuldouble.o",
+##     "020bc241f4dae036-edwards25519_scalarmuldouble_alt.o",
+##     "056c1e7192c7090b-p5_pbev2.o",
+##     "056c1e7192c7090b-pkcs8.o",
+##     "056c1e7192c7090b-pkcs8_x509.o",
+##     "0c919c82d61b4518-ecdsa_asn1.o",
+##     "11289f19be935446-rsa_decrepit.o",
+##     "175e87304cd4663c-cfb.o",
+##     "199386740f3660f1-ripemd.o",
+##     "1c7e26962210e9ee-kem_kyber.o",
+##     "1c7e26962210e9ee-kyber1024r3_ref.o",
+##     "1c7e26962210e9ee-kyber512r3_ref.o",
+##     "1c7e26962210e9ee-kyber768r3_ref.o",
+##     "1eca0b6fab589d4a-chacha-x86_64.o",
+##     "27a075eab3d35364-pem_all.o",
+##     "27a075eab3d35364-pem_info.o",
+##     "27a075eab3d35364-pem_lib.o",
+##     "27a075eab3d35364-pem_oth.o",
+##     "27a075eab3d35364-pem_pk8.o",
+##     "27a075eab3d35364-pem_pkey.o",
+##     "27a075eab3d35364-pem_x509.o",
+##     "27a075eab3d35364-pem_xaux.o",
+##     "2d40dbbd793ef942-jitterentropy-base.o",
+##     "2d40dbbd793ef942-jitterentropy-gcd.o",
+##     "2d40dbbd793ef942-jitterentropy-health.o",
+##     "2d40dbbd793ef942-jitterentropy-noise.o",
+##     "2d40dbbd793ef942-jitterentropy-sha3.o",
+##     "2d40dbbd793ef942-jitterentropy-timer.o",
+##     "30a9a10d3f98970e-crypto.o",
+##     "30a9a10d3f98970e-ex_data.o",
+##     "30a9a10d3f98970e-mem.o",
+##     "30a9a10d3f98970e-refcount_c11.o",
+##     "30a9a10d3f98970e-refcount_lock.o",
+##     "30a9a10d3f98970e-refcount_win.o",
+##     "30a9a10d3f98970e-thread.o",
+##     "30a9a10d3f98970e-thread_none.o",
+##     "30a9a10d3f98970e-thread_pthread.o",
+##     "30a9a10d3f98970e-thread_win.o",
+##     "3f2f442030472042-base64_bio.o",
+##     "4433246e317b5e42-bignum_add_p384.o",
+##     "4433246e317b5e42-bignum_deamont_p384.o",
+##     "4433246e317b5e42-bignum_deamont_p384_alt.o",
+##     "4433246e317b5e42-bignum_littleendian_6.o",
+##     "4433246e317b5e42-bignum_montinv_p384.o",
+##     "4433246e317b5e42-bignum_montmul_p384.o",
+##     "4433246e317b5e42-bignum_montmul_p384_alt.o",
+##     "4433246e317b5e42-bignum_montsqr_p384.o",
+##     "4433246e317b5e42-bignum_montsqr_p384_alt.o",
+##     "4433246e317b5e42-bignum_neg_p384.o",
+##     "4433246e317b5e42-bignum_nonzero_6.o",
+##     "4433246e317b5e42-bignum_sub_p384.o",
+##     "4433246e317b5e42-bignum_tomont_p384.o",
+##     "4433246e317b5e42-bignum_tomont_p384_alt.o",
+##     "4433246e317b5e42-p384_montjdouble.o",
+##     "4433246e317b5e42-p384_montjdouble_alt.o",
+##     "4433246e317b5e42-p384_montjscalarmul.o",
+##     "4433246e317b5e42-p384_montjscalarmul_alt.o",
+##     "45070f5a112d041b-fork_detect.o",
+##     "45070f5a112d041b-snapsafe_detect.o",
+##     "45070f5a112d041b-ube.o",
+##     "4696e3d2cc941c84-pmbtoken.o",
+##     "4696e3d2cc941c84-trust_token.o",
+##     "4696e3d2cc941c84-voprf.o",
+##     "46ab76b5467ff2b0-obj_decrepit.o",
+##     "48649240ed88c783-siphash.o",
+##     "4a91b32c84b73ad7-ecdh_extra.o",
+##     "564c5311b313cdb2-aes128gcmsiv-x86_64.o",
+##     "564c5311b313cdb2-aesni-sha1-x86_64.o",
+##     "564c5311b313cdb2-aesni-sha256-x86_64.o",
+##     "564c5311b313cdb2-chacha20_poly1305_x86_64.o",
+##     "57454e98e6b3bf86-sha3_keccak_f1600.o",
+##     "5d4700fda13603f0-poly1305.o",
+##     "5d4700fda13603f0-poly1305_arm.o",
+##     "5d4700fda13603f0-poly1305_vec.o",
+##     "5da2666a73fb65eb-hrss.o",
+##     "60df219e9fcbc210-stack.o",
+##     "62e235b24f99f4ff-blake2.o",
+##     "65fbbb68d007b209-hpke.o",
+##     "6e6559d38d003e66-spake25519.o",
+##     "6e8bb48415b74ed4-dh_decrepit.o",
+##     "6f8e1f92835a38cb-x509_decrepit.o",
+##     "7510312e0f5aa0be-evp_asn1.o",
+##     "7510312e0f5aa0be-p_dh.o",
+##     "7510312e0f5aa0be-p_dh_asn1.o",
+##     "7510312e0f5aa0be-p_dsa.o",
+##     "7510312e0f5aa0be-p_dsa_asn1.o",
+##     "7510312e0f5aa0be-p_ec_asn1.o",
+##     "7510312e0f5aa0be-p_ed25519_asn1.o",
+##     "7510312e0f5aa0be-p_hmac_asn1.o",
+##     "7510312e0f5aa0be-p_kem_asn1.o",
+##     "7510312e0f5aa0be-p_methods.o",
+##     "7510312e0f5aa0be-p_pqdsa_asn1.o",
+##     "7510312e0f5aa0be-p_rsa_asn1.o",
+##     "7510312e0f5aa0be-p_x25519.o",
+##     "7510312e0f5aa0be-p_x25519_asn1.o",
+##     "7510312e0f5aa0be-print.o",
+##     "7510312e0f5aa0be-scrypt.o",
+##     "7510312e0f5aa0be-sign.o",
+##     "76322f89f5cc2d96-bio.o",
+##     "76322f89f5cc2d96-bio_addr.o",
+##     "76322f89f5cc2d96-bio_mem.o",
+##     "76322f89f5cc2d96-connect.o",
+##     "76322f89f5cc2d96-dgram.o",
+##     "76322f89f5cc2d96-errno.o",
+##     "76322f89f5cc2d96-fd.o",
+##     "76322f89f5cc2d96-file.o",
+##     "76322f89f5cc2d96-hexdump.o",
+##     "76322f89f5cc2d96-md.o",
+##     "76322f89f5cc2d96-pair.o",
+##     "76322f89f5cc2d96-printf.o",
+##     "76322f89f5cc2d96-socket.o",
+##     "76322f89f5cc2d96-socket_helper.o",
+##     "763c374fde874a6d-console.o",
+##     "7a596fe31a02c0e2-bn_asn1.o",
+##     "7a596fe31a02c0e2-convert.o",
+##     "7ac4c9359514b807-obj.o",
+##     "7ac4c9359514b807-obj_xref.o",
+##     "7bf3e571b6558a6b-ccrandomgeneratebytes.o",
+##     "7bf3e571b6558a6b-deterministic.o",
+##     "7bf3e571b6558a6b-getentropy.o",
+##     "7bf3e571b6558a6b-rand_extra.o",
+##     "7bf3e571b6558a6b-snapsafe_fallback.o",
+##     "7bf3e571b6558a6b-urandom.o",
+##     "7bf3e571b6558a6b-windows.o",
+##     "81d9a39ddc6b1c4e-aesni-gcm-avx512.o",
+##     "81d9a39ddc6b1c4e-aesni-gcm-x86_64.o",
+##     "81d9a39ddc6b1c4e-aesni-x86_64.o",
+##     "81d9a39ddc6b1c4e-aesni-xts-avx512.o",
+##     "81d9a39ddc6b1c4e-ghash-ssse3-x86_64.o",
+##     "81d9a39ddc6b1c4e-ghash-x86_64.o",
+##     "81d9a39ddc6b1c4e-md5-x86_64.o",
+##     "81d9a39ddc6b1c4e-p256-x86_64-asm.o",
+##     "81d9a39ddc6b1c4e-p256_beeu-x86_64-asm.o",
+##     "81d9a39ddc6b1c4e-rdrand-x86_64.o",
+##     "81d9a39ddc6b1c4e-rsaz-2k-avx512.o",
+##     "81d9a39ddc6b1c4e-rsaz-3k-avx512.o",
+##     "81d9a39ddc6b1c4e-rsaz-4k-avx512.o",
+##     "81d9a39ddc6b1c4e-rsaz-avx2.o",
+##     "81d9a39ddc6b1c4e-sha1-x86_64.o",
+##     "81d9a39ddc6b1c4e-sha256-x86_64.o",
+##     "81d9a39ddc6b1c4e-sha512-x86_64.o",
+##     "81d9a39ddc6b1c4e-vpaes-x86_64.o",
+##     "81d9a39ddc6b1c4e-x86_64-mont.o",
+##     "81d9a39ddc6b1c4e-x86_64-mont5.o",
+##     "86cc0a4f50e0e3bd-evp_do_all.o",
+##     "88572c8521602bd1-bignum_add_p521.o",
+##     "88572c8521602bd1-bignum_fromlebytes_p521.o",
+##     "88572c8521602bd1-bignum_inv_p521.o",
+##     "88572c8521602bd1-bignum_mul_p521.o",
+##     "88572c8521602bd1-bignum_mul_p521_alt.o",
+##     "88572c8521602bd1-bignum_neg_p521.o",
+##     "88572c8521602bd1-bignum_sqr_p521.o",
+##     "88572c8521602bd1-bignum_sqr_p521_alt.o",
+##     "88572c8521602bd1-bignum_sub_p521.o",
+##     "88572c8521602bd1-bignum_tolebytes_p521.o",
+##     "88572c8521602bd1-p521_jdouble.o",
+##     "88572c8521602bd1-p521_jdouble_alt.o",
+##     "88572c8521602bd1-p521_jscalarmul.o",
+##     "88572c8521602bd1-p521_jscalarmul_alt.o",
+##     "89981633f66afe17-cipher_extra.o",
+##     "89981633f66afe17-derive_key.o",
+##     "89981633f66afe17-e_aes_cbc_hmac_sha1.o",
+##     "89981633f66afe17-e_aes_cbc_hmac_sha256.o",
+##     "89981633f66afe17-e_aesctrhmac.o",
+##     "89981633f66afe17-e_aesgcmsiv.o",
+##     "89981633f66afe17-e_chacha20poly1305.o",
+##     "89981633f66afe17-e_des.o",
+##     "89981633f66afe17-e_null.o",
+##     "89981633f66afe17-e_rc2.o",
+##     "89981633f66afe17-e_rc4.o",
+##     "89981633f66afe17-e_tls.o",
+##     "89981633f66afe17-tls_cbc.o",
+##     "8f1694c3e3041570-bignum_montinv_p256.o",
+##     "8f1694c3e3041570-p256_montjscalarmul.o",
+##     "8f1694c3e3041570-p256_montjscalarmul_alt.o",
+##     "904ef411c1476e9d-cipher.o",
+##     "925ae38753d351a6-pool.o",
+##     "a3e95cd5f24d649a-err.o",
+##     "a4677c68e4880270-buf.o",
+##     "a4a065efb8ac7b35-cast.o",
+##     "a4a065efb8ac7b35-cast_tables.o",
+##     "a6455f51a2435c3f-chacha.o",
+##     "a8d01793eb1214d2-poly_rq_mul.o",
+##     "ad45968d24b0237e-base64.o",
+##     "b0fd2550ab09b04e-rsa_asn1.o",
+##     "b0fd2550ab09b04e-rsa_crypt.o",
+##     "b0fd2550ab09b04e-rsa_print.o",
+##     "b0fd2550ab09b04e-rsassa_pss_asn1.o",
+##     "b129d77c83f8bbf0-trampoline-x86_64.o",
+##     "bc1b343226bc6a17-a_bitstr.o",
+##     "bc1b343226bc6a17-a_bool.o",
+##     "bc1b343226bc6a17-a_d2i_fp.o",
+##     "bc1b343226bc6a17-a_dup.o",
+##     "bc1b343226bc6a17-a_gentm.o",
+##     "bc1b343226bc6a17-a_i2d_fp.o",
+##     "bc1b343226bc6a17-a_int.o",
+##     "bc1b343226bc6a17-a_mbstr.o",
+##     "bc1b343226bc6a17-a_object.o",
+##     "bc1b343226bc6a17-a_octet.o",
+##     "bc1b343226bc6a17-a_strex.o",
+##     "bc1b343226bc6a17-a_strnid.o",
+##     "bc1b343226bc6a17-a_time.o",
+##     "bc1b343226bc6a17-a_type.o",
+##     "bc1b343226bc6a17-a_utctm.o",
+##     "bc1b343226bc6a17-a_utf8.o",
+##     "bc1b343226bc6a17-asn1_lib.o",
+##     "bc1b343226bc6a17-asn1_par.o",
+##     "bc1b343226bc6a17-asn_pack.o",
+##     "bc1b343226bc6a17-f_int.o",
+##     "bc1b343226bc6a17-f_string.o",
+##     "bc1b343226bc6a17-posix_time.o",
+##     "bc1b343226bc6a17-tasn_dec.o",
+##     "bc1b343226bc6a17-tasn_enc.o",
+##     "bc1b343226bc6a17-tasn_fre.o",
+##     "bc1b343226bc6a17-tasn_new.o",
+##     "bc1b343226bc6a17-tasn_typ.o",
+##     "bc1b343226bc6a17-tasn_utl.o",
+##     "c1300545a7d60e2b-dh_asn1.o",
+##     "c1300545a7d60e2b-params.o",
+##     "c2f744a0f6403e0c-err_data.o",
+##     "c4fcddba145918af-asn1_compat.o",
+##     "c4fcddba145918af-ber.o",
+##     "c4fcddba145918af-cbb.o",
+##     "c4fcddba145918af-cbs.o",
+##     "c4fcddba145918af-unicode.o",
+##     "c7e9326d9b5d7de8-blowfish.o",
+##     "caa8b30982b4915c-ocsp_asn.o",
+##     "caa8b30982b4915c-ocsp_client.o",
+##     "caa8b30982b4915c-ocsp_extension.o",
+##     "caa8b30982b4915c-ocsp_http.o",
+##     "caa8b30982b4915c-ocsp_lib.o",
+##     "caa8b30982b4915c-ocsp_print.o",
+##     "caa8b30982b4915c-ocsp_server.o",
+##     "caa8b30982b4915c-ocsp_verify.o",
+##     "d7fed99e8aa5a9b1-rc4.o",
+##     "da5030c6f3330e8d-des.o",
+##     "db3b6bfb95261072-rust_wrapper.o",
+##     "dcb7d53a9be33b0c-engine.o",
+##     "dfe446faf29f8012-ec_asn1.o",
+##     "dfe446faf29f8012-ec_derive.o",
+##     "dfe446faf29f8012-hash_to_curve.o",
+##     "e3caa0b8b118742c-pkcs7.o",
+##     "e3caa0b8b118742c-pkcs7_asn1.o",
+##     "e3caa0b8b118742c-pkcs7_x509.o",
+##     "e4ecb171c489b811-conf.o",
+##     "e616dc00b7af72b9-intt.o",
+##     "e616dc00b7af72b9-mulcache_compute.o",
+##     "e616dc00b7af72b9-ntt.o",
+##     "e616dc00b7af72b9-nttfrombytes.o",
+##     "e616dc00b7af72b9-ntttobytes.o",
+##     "e616dc00b7af72b9-nttunpack.o",
+##     "e616dc00b7af72b9-polyvec_basemul_acc_montgomery_cached_asm_k2.o",
+##     "e616dc00b7af72b9-polyvec_basemul_acc_montgomery_cached_asm_k3.o",
+##     "e616dc00b7af72b9-polyvec_basemul_acc_montgomery_cached_asm_k4.o",
+##     "e616dc00b7af72b9-reduce.o",
+##     "e616dc00b7af72b9-rej_uniform_asm.o",
+##     "e616dc00b7af72b9-tomont.o",
+##     "e71c6558e17b1ce7-digest_extra.o",
+##     "ea2b51a0b6630529-lhash.o",
+##     "ebcd52e9457b6221-a_digest.o",
+##     "ebcd52e9457b6221-a_sign.o",
+##     "ebcd52e9457b6221-a_verify.o",
+##     "ebcd52e9457b6221-algorithm.o",
+##     "ebcd52e9457b6221-asn1_gen.o",
+##     "ebcd52e9457b6221-by_dir.o",
+##     "ebcd52e9457b6221-by_file.o",
+##     "ebcd52e9457b6221-i2d_pr.o",
+##     "ebcd52e9457b6221-name_print.o",
+##     "ebcd52e9457b6221-policy.o",
+##     "ebcd52e9457b6221-rsa_pss.o",
+##     "ebcd52e9457b6221-t_crl.o",
+##     "ebcd52e9457b6221-t_req.o",
+##     "ebcd52e9457b6221-t_x509.o",
+##     "ebcd52e9457b6221-t_x509a.o",
+##     "ebcd52e9457b6221-v3_akey.o",
+##     "ebcd52e9457b6221-v3_akeya.o",
+##     "ebcd52e9457b6221-v3_alt.o",
+##     "ebcd52e9457b6221-v3_bcons.o",
+##     "ebcd52e9457b6221-v3_bitst.o",
+##     "ebcd52e9457b6221-v3_conf.o",
+##     "ebcd52e9457b6221-v3_cpols.o",
+##     "ebcd52e9457b6221-v3_crld.o",
+##     "ebcd52e9457b6221-v3_enum.o",
+##     "ebcd52e9457b6221-v3_extku.o",
+##     "ebcd52e9457b6221-v3_genn.o",
+##     "ebcd52e9457b6221-v3_ia5.o",
+##     "ebcd52e9457b6221-v3_info.o",
+##     "ebcd52e9457b6221-v3_int.o",
+##     "ebcd52e9457b6221-v3_lib.o",
+##     "ebcd52e9457b6221-v3_ncons.o",
+##     "ebcd52e9457b6221-v3_ocsp.o",
+##     "ebcd52e9457b6221-v3_pcons.o",
+##     "ebcd52e9457b6221-v3_pmaps.o",
+##     "ebcd52e9457b6221-v3_prn.o",
+##     "ebcd52e9457b6221-v3_purp.o",
+##     "ebcd52e9457b6221-v3_skey.o",
+##     "ebcd52e9457b6221-v3_utl.o",
+##     "ebcd52e9457b6221-x509.o",
+##     "ebcd52e9457b6221-x509_att.o",
+##     "ebcd52e9457b6221-x509_cmp.o",
+##     "ebcd52e9457b6221-x509_d2.o",
+##     "ebcd52e9457b6221-x509_def.o",
+##     "ebcd52e9457b6221-x509_ext.o",
+##     "ebcd52e9457b6221-x509_lu.o",
+##     "ebcd52e9457b6221-x509_obj.o",
+##     "ebcd52e9457b6221-x509_req.o",
+##     "ebcd52e9457b6221-x509_set.o",
+##     "ebcd52e9457b6221-x509_trs.o",
+##     "ebcd52e9457b6221-x509_txt.o",
+##     "ebcd52e9457b6221-x509_v3.o",
+##     "ebcd52e9457b6221-x509_vfy.o",
+##     "ebcd52e9457b6221-x509_vpm.o",
+##     "ebcd52e9457b6221-x509cset.o",
+##     "ebcd52e9457b6221-x509name.o",
+##     "ebcd52e9457b6221-x509rset.o",
+##     "ebcd52e9457b6221-x509spki.o",
+##     "ebcd52e9457b6221-x_algor.o",
+##     "ebcd52e9457b6221-x_all.o",
+##     "ebcd52e9457b6221-x_attrib.o",
+##     "ebcd52e9457b6221-x_crl.o",
+##     "ebcd52e9457b6221-x_exten.o",
+##     "ebcd52e9457b6221-x_name.o",
+##     "ebcd52e9457b6221-x_pubkey.o",
+##     "ebcd52e9457b6221-x_req.o",
+##     "ebcd52e9457b6221-x_sig.o",
+##     "ebcd52e9457b6221-x_spki.o",
+##     "ebcd52e9457b6221-x_val.o",
+##     "ebcd52e9457b6221-x_x509.o",
+##     "ebcd52e9457b6221-x_x509a.o",
+##     "f8e4fd781484bd36-bcm.o",
+##     "f8e4fd781484bd36-fips_shared_support.o",
+##     "fb1f39df2ea6f08f-dsa.o",
+##     "fb1f39df2ea6f08f-dsa_asn1.o",
+##     "fe5b6d61933e4a91-fips202.o",
+##     "flag_check",
+##     "flag_check.c",
+##     "libaws_lc_0_32_2_crypto.a",
+##     "openssl/",
+##     "openssl/aead.h",
+##     "openssl/aes.h",
+##     "openssl/arm_arch.h",
+##     "openssl/asm_base.h",
+##     "openssl/asn1.h",
+##     "openssl/asn1_mac.h",
+##     "openssl/asn1t.h",
+##     "openssl/base.h",
+##     "openssl/base.h.in",
+##     "openssl/base64.h",
+##     "openssl/bio.h",
+##     "openssl/blake2.h",
+##     "openssl/blowfish.h",
+##     "openssl/bn.h",
+##     "openssl/boringssl_prefix_symbols.h",
+##     "openssl/boringssl_prefix_symbols_asm.h",
+##     "openssl/boringssl_prefix_symbols_nasm.inc",
+##     "openssl/buf.h",
+##     "openssl/buffer.h",
+##     "openssl/bytestring.h",
+##     "openssl/chacha.h",
+##     "openssl/cipher.h",
+##     "openssl/cmac.h",
+##     "openssl/conf.h",
+##     "openssl/cpu.h",
+##     "openssl/crypto.h",
+##     "openssl/ctrdrbg.h",
+##     "openssl/curve25519.h",
+##     "openssl/des.h",
+##     "openssl/dh.h",
+##     "openssl/digest.h",
+##     "openssl/dsa.h",
+##     "openssl/dtls1.h",
+##     "openssl/e_os2.h",
+##     "openssl/ec.h",
+##     "openssl/ec_key.h",
+##     "openssl/ecdh.h",
+##     "openssl/ecdsa.h",
+##     "openssl/engine.h",
+##     "openssl/err.h",
+##     "openssl/evp.h",
+##     "openssl/evp_errors.h",
+##     "openssl/ex_data.h",
+##     "openssl/experimental/",
+##     "openssl/experimental/kem_deterministic_api.h",
+##     "openssl/hkdf.h",
+##     "openssl/hmac.h",
+##     "openssl/hpke.h",
+##     "openssl/hrss.h",
+##     "openssl/is_awslc.h",
+##     "openssl/kdf.h",
+##     "openssl/lhash.h",
+##     "openssl/md4.h",
+##     "openssl/md5.h",
+##     "openssl/mem.h",
+##     "openssl/nid.h",
+##     "openssl/obj.h",
+##     "openssl/obj_mac.h",
+##     "openssl/objects.h",
+##     "openssl/ocsp.h",
+##     "openssl/opensslconf.h",
+##     "openssl/opensslv.h",
+##     "openssl/opensslv.h.in",
+##     "openssl/ossl_typ.h",
+##     "openssl/pem.h",
+##     "openssl/pkcs12.h",
+##     "openssl/pkcs7.h",
+##     "openssl/pkcs8.h",
+##     "openssl/poly1305.h",
+##     "openssl/pool.h",
+##     "openssl/posix_time.h",
+##     "openssl/rand.h",
+##     "openssl/rc4.h",
+##     "openssl/ripemd.h",
+##     "openssl/rsa.h",
+##     "openssl/safestack.h",
+##     "openssl/service_indicator.h",
+##     "openssl/sha.h",
+##     "openssl/siphash.h",
+##     "openssl/span.h",
+##     "openssl/sshkdf.h",
+##     "openssl/ssl.h",
+##     "openssl/ssl3.h",
+##     "openssl/stack.h",
+##     "openssl/target.h",
+##     "openssl/thread.h",
+##     "openssl/time.h",
+##     "openssl/tls1.h",
+##     "openssl/trust_token.h",
+##     "openssl/type_check.h",
+##     "openssl/ui.h",
+##     "openssl/x509.h",
+##     "openssl/x509_vfy.h",
+##     "openssl/x509v3.h",
+##     "openssl/x509v3_errors.h",
+##     "rust_wrapper.h",
+## ]
+## stdout = [
+##     "cargo:rerun-if-env-changed=AWS_LC_SYS_NO_PREFIX_x86_64_unknown_linux_gnu",
+##     "cargo:rerun-if-env-changed=AWS_LC_SYS_NO_PREFIX",
+##     "cargo:rerun-if-env-changed=AWS_LC_SYS_PREGENERATING_BINDINGS_x86_64_unknown_linux_gnu",
+##     "cargo:rerun-if-env-changed=AWS_LC_SYS_PREGENERATING_BINDINGS",
+##     "cargo:rerun-if-env-changed=AWS_LC_SYS_EXTERNAL_BINDGEN_x86_64_unknown_linux_gnu",
+##     "cargo:rerun-if-env-changed=AWS_LC_SYS_EXTERNAL_BINDGEN",
+##     "cargo:rerun-if-env-changed=AWS_LC_SYS_NO_ASM_x86_64_unknown_linux_gnu",
+##     "cargo:rerun-if-env-changed=AWS_LC_SYS_NO_ASM",
+##     "cargo:rerun-if-env-changed=AWS_LC_SYS_CFLAGS_x86_64_unknown_linux_gnu",
+##     "cargo:rerun-if-env-changed=AWS_LC_SYS_CFLAGS",
+##     "cargo:rerun-if-env-changed=CFLAGS_x86_64_unknown_linux_gnu",
+##     "cargo:rerun-if-env-changed=CFLAGS",
+##     "cargo:rerun-if-env-changed=AWS_LC_SYS_PREBUILT_NASM_x86_64_unknown_linux_gnu",
+##     "cargo:rerun-if-env-changed=AWS_LC_SYS_PREBUILT_NASM",
+##     "cargo:rerun-if-env-changed=AWS_LC_SYS_C_STD_x86_64_unknown_linux_gnu",
+##     "cargo:rerun-if-env-changed=AWS_LC_SYS_C_STD",
+##     "cargo:rerun-if-env-changed=AWS_LC_SYS_CMAKE_BUILDER_x86_64_unknown_linux_gnu",
+##     "cargo:rerun-if-env-changed=AWS_LC_SYS_CMAKE_BUILDER",
+##     "cargo:rerun-if-env-changed=AWS_LC_SYS_NO_PREGENERATED_SRC_x86_64_unknown_linux_gnu",
+##     "cargo:rerun-if-env-changed=AWS_LC_SYS_NO_PREGENERATED_SRC",
+##     "cargo:rerun-if-env-changed=AWS_LC_SYS_EFFECTIVE_TARGET_x86_64_unknown_linux_gnu",
+##     "cargo:rerun-if-env-changed=AWS_LC_SYS_EFFECTIVE_TARGET",
+##     "cargo:rustc-cfg=x86_64_unknown_linux_gnu",
+##     "cargo:rerun-if-env-changed=AWS_LC_SYS_STATIC_x86_64_unknown_linux_gnu",
+##     "cargo:rerun-if-env-changed=AWS_LC_SYS_STATIC",
+##     "default_for Target: 'x86_64-unknown-linux-gnu'",
+##     "cargo:rerun-if-env-changed=CARGO_FEATURE_SSL",
+##     "cargo:warning=Building with: CC",
+##     'cargo:warning=Symbol Prefix: Some("aws_lc_0_32_2")',
+##     "default_for Target: 'x86_64-unknown-linux-gnu'",
+##     "cargo:rerun-if-env-changed=CARGO_FEATURE_SSL",
+##     "cargo:root=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out",
+##     "default_for Target: 'x86_64-unknown-linux-gnu'",
+##     "OPT_LEVEL = Some(3)",
+##     "OUT_DIR = Some(/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out)",
+##     "TARGET = Some(x86_64-unknown-linux-gnu)",
+##     "HOST = Some(x86_64-unknown-linux-gnu)",
+##     "cargo:rerun-if-env-changed=CC_x86_64-unknown-linux-gnu",
+##     "CC_x86_64-unknown-linux-gnu = None",
+##     "cargo:rerun-if-env-changed=CC_x86_64_unknown_linux_gnu",
+##     "CC_x86_64_unknown_linux_gnu = None",
+##     "cargo:rerun-if-env-changed=HOST_CC",
+##     "HOST_CC = None",
+##     "cargo:rerun-if-env-changed=CC",
+##     "CC = None",
+##     "cargo:rerun-if-env-changed=CC_ENABLE_DEBUG_OUTPUT",
+##     "RUSTC_WRAPPER = None",
+##     "cargo:rerun-if-env-changed=CRATE_CC_NO_DEFAULTS",
+##     "CRATE_CC_NO_DEFAULTS = None",
+##     "DEBUG = Some(false)",
+##     "CARGO_CFG_TARGET_FEATURE = Some(fxsr,sse,sse2)",
+##     "cargo:rerun-if-env-changed=CFLAGS",
+##     "CFLAGS = None",
+##     "cargo:rerun-if-env-changed=HOST_CFLAGS",
+##     "HOST_CFLAGS = None",
+##     "cargo:rerun-if-env-changed=CFLAGS_x86_64_unknown_linux_gnu",
+##     "CFLAGS_x86_64_unknown_linux_gnu = None",
+##     "cargo:rerun-if-env-changed=CFLAGS_x86_64-unknown-linux-gnu",
+##     "CFLAGS_x86_64-unknown-linux-gnu = None",
+##     "CARGO_ENCODED_RUSTFLAGS = Some()",
+##     "OPT_LEVEL = Some(3)",
+##     "TARGET = Some(x86_64-unknown-linux-gnu)",
+##     "HOST = Some(x86_64-unknown-linux-gnu)",
+##     "cargo:rerun-if-env-changed=CC_x86_64-unknown-linux-gnu",
+##     "CC_x86_64-unknown-linux-gnu = None",
+##     "cargo:rerun-if-env-changed=CC_x86_64_unknown_linux_gnu",
+##     "CC_x86_64_unknown_linux_gnu = None",
+##     "cargo:rerun-if-env-changed=HOST_CC",
+##     "HOST_CC = None",
+##     "cargo:rerun-if-env-changed=CC",
+##     "CC = None",
+##     "cargo:rerun-if-env-changed=CC_ENABLE_DEBUG_OUTPUT",
+##     "RUSTC_WRAPPER = None",
+##     "cargo:rerun-if-env-changed=CRATE_CC_NO_DEFAULTS",
+##     "CRATE_CC_NO_DEFAULTS = None",
+##     "DEBUG = Some(false)",
+##     "CARGO_CFG_TARGET_FEATURE = Some(fxsr,sse,sse2)",
+##     "cargo:rerun-if-env-changed=CFLAGS",
+##     "CFLAGS = None",
+##     "cargo:rerun-if-env-changed=HOST_CFLAGS",
+##     "HOST_CFLAGS = None",
+##     "cargo:rerun-if-env-changed=CFLAGS_x86_64_unknown_linux_gnu",
+##     "CFLAGS_x86_64_unknown_linux_gnu = None",
+##     "cargo:rerun-if-env-changed=CFLAGS_x86_64-unknown-linux-gnu",
+##     "CFLAGS_x86_64-unknown-linux-gnu = None",
+##     "CARGO_ENCODED_RUSTFLAGS = Some()",
+##     """cargo:warning=Compilation of 'c11.c' succeeded - Ok(["/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out/out-c11/7dfda64fdf5a526c-c11.o"]).""",
+##     "cargo:rerun-if-env-changed=AWS_LC_SYS_CC_x86_64_unknown_linux_gnu",
+##     "cargo:rerun-if-env-changed=AWS_LC_SYS_CC",
+##     "cargo:rerun-if-env-changed=CC_x86_64_unknown_linux_gnu",
+##     "cargo:rerun-if-env-changed=CC",
+##     "cargo:rerun-if-env-changed=AWS_LC_SYS_CXX_x86_64_unknown_linux_gnu",
+##     "cargo:rerun-if-env-changed=AWS_LC_SYS_CXX",
+##     "cargo:rerun-if-env-changed=CXX_x86_64_unknown_linux_gnu",
+##     "cargo:rerun-if-env-changed=CXX",
+##     "OUT_DIR = Some(/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out)",
+##     "cargo:rerun-if-env-changed=CC_ENABLE_DEBUG_OUTPUT",
+##     "cargo:rerun-if-env-changed=CRATE_CC_NO_DEFAULTS",
+##     "CRATE_CC_NO_DEFAULTS = None",
+##     "TARGET = Some(x86_64-unknown-linux-gnu)",
+##     "CARGO_CFG_TARGET_FEATURE = Some(fxsr,sse,sse2)",
+##     "HOST = Some(x86_64-unknown-linux-gnu)",
+##     "cargo:rerun-if-env-changed=CFLAGS",
+##     "CFLAGS = None",
+##     "cargo:rerun-if-env-changed=HOST_CFLAGS",
+##     "HOST_CFLAGS = None",
+##     "cargo:rerun-if-env-changed=CFLAGS_x86_64_unknown_linux_gnu",
+##     "CFLAGS_x86_64_unknown_linux_gnu = None",
+##     "cargo:rerun-if-env-changed=CFLAGS_x86_64-unknown-linux-gnu",
+##     "CFLAGS_x86_64-unknown-linux-gnu = None",
+##     "cargo:warning=Using flag: -ffile-prefix-map=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.32.2=",
+##     "OPT_LEVEL = Some(3)",
+##     "TARGET = Some(x86_64-unknown-linux-gnu)",
+##     "HOST = Some(x86_64-unknown-linux-gnu)",
+##     "cargo:rerun-if-env-changed=CC_x86_64-unknown-linux-gnu",
+##     "CC_x86_64-unknown-linux-gnu = None",
+##     "cargo:rerun-if-env-changed=CC_x86_64_unknown_linux_gnu",
+##     "CC_x86_64_unknown_linux_gnu = None",
+##     "cargo:rerun-if-env-changed=HOST_CC",
+##     "HOST_CC = None",
+##     "cargo:rerun-if-env-changed=CC",
+##     "CC = None",
+##     "cargo:rerun-if-env-changed=CC_ENABLE_DEBUG_OUTPUT",
+##     "RUSTC_WRAPPER = None",
+##     "cargo:rerun-if-env-changed=CRATE_CC_NO_DEFAULTS",
+##     "CRATE_CC_NO_DEFAULTS = None",
+##     "DEBUG = Some(false)",
+##     "CARGO_CFG_TARGET_FEATURE = Some(fxsr,sse,sse2)",
+##     "cargo:rerun-if-env-changed=CFLAGS",
+##     "CFLAGS = None",
+##     "cargo:rerun-if-env-changed=HOST_CFLAGS",
+##     "HOST_CFLAGS = None",
+##     "cargo:rerun-if-env-changed=CFLAGS_x86_64_unknown_linux_gnu",
+##     "CFLAGS_x86_64_unknown_linux_gnu = None",
+##     "cargo:rerun-if-env-changed=CFLAGS_x86_64-unknown-linux-gnu",
+##     "CFLAGS_x86_64-unknown-linux-gnu = None",
+##     "CARGO_ENCODED_RUSTFLAGS = Some()",
+##     """cargo:warning=Compilation of 'stdalign_check.c' succeeded - Ok(["/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out/out-stdalign_check/7dfda64fdf5a526c-stdalign_check.o"]).""",
+##     "OPT_LEVEL = Some(3)",
+##     "TARGET = Some(x86_64-unknown-linux-gnu)",
+##     "HOST = Some(x86_64-unknown-linux-gnu)",
+##     "cargo:rerun-if-env-changed=CC_x86_64-unknown-linux-gnu",
+##     "CC_x86_64-unknown-linux-gnu = None",
+##     "cargo:rerun-if-env-changed=CC_x86_64_unknown_linux_gnu",
+##     "CC_x86_64_unknown_linux_gnu = None",
+##     "cargo:rerun-if-env-changed=HOST_CC",
+##     "HOST_CC = None",
+##     "cargo:rerun-if-env-changed=CC",
+##     "CC = None",
+##     "cargo:rerun-if-env-changed=CC_ENABLE_DEBUG_OUTPUT",
+##     "RUSTC_WRAPPER = None",
+##     "cargo:rerun-if-env-changed=CRATE_CC_NO_DEFAULTS",
+##     "CRATE_CC_NO_DEFAULTS = None",
+##     "DEBUG = Some(false)",
+##     "CARGO_CFG_TARGET_FEATURE = Some(fxsr,sse,sse2)",
+##     "cargo:rerun-if-env-changed=CFLAGS",
+##     "CFLAGS = None",
+##     "cargo:rerun-if-env-changed=HOST_CFLAGS",
+##     "HOST_CFLAGS = None",
+##     "cargo:rerun-if-env-changed=CFLAGS_x86_64_unknown_linux_gnu",
+##     "CFLAGS_x86_64_unknown_linux_gnu = None",
+##     "cargo:rerun-if-env-changed=CFLAGS_x86_64-unknown-linux-gnu",
+##     "CFLAGS_x86_64-unknown-linux-gnu = None",
+##     "CARGO_ENCODED_RUSTFLAGS = Some()",
+##     """cargo:warning=Compilation of 'builtin_swap_check.c' succeeded - Ok(["/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out/out-builtin_swap_check/7dfda64fdf5a526c-builtin_swap_check.o"]).""",
+##     "OPT_LEVEL = Some(3)",
+##     "TARGET = Some(x86_64-unknown-linux-gnu)",
+##     "HOST = Some(x86_64-unknown-linux-gnu)",
+##     "cargo:rerun-if-env-changed=CC_x86_64-unknown-linux-gnu",
+##     "CC_x86_64-unknown-linux-gnu = None",
+##     "cargo:rerun-if-env-changed=CC_x86_64_unknown_linux_gnu",
+##     "CC_x86_64_unknown_linux_gnu = None",
+##     "cargo:rerun-if-env-changed=HOST_CC",
+##     "HOST_CC = None",
+##     "cargo:rerun-if-env-changed=CC",
+##     "CC = None",
+##     "cargo:rerun-if-env-changed=CC_ENABLE_DEBUG_OUTPUT",
+##     "RUSTC_WRAPPER = None",
+##     "cargo:rerun-if-env-changed=CRATE_CC_NO_DEFAULTS",
+##     "CRATE_CC_NO_DEFAULTS = None",
+##     "DEBUG = Some(false)",
+##     "CARGO_CFG_TARGET_FEATURE = Some(fxsr,sse,sse2)",
+##     "cargo:rerun-if-env-changed=CFLAGS",
+##     "CFLAGS = None",
+##     "cargo:rerun-if-env-changed=HOST_CFLAGS",
+##     "HOST_CFLAGS = None",
+##     "cargo:rerun-if-env-changed=CFLAGS_x86_64_unknown_linux_gnu",
+##     "CFLAGS_x86_64_unknown_linux_gnu = None",
+##     "cargo:rerun-if-env-changed=CFLAGS_x86_64-unknown-linux-gnu",
+##     "CFLAGS_x86_64-unknown-linux-gnu = None",
+##     "CARGO_ENCODED_RUSTFLAGS = Some()",
+##     """cargo:warning=Compilation of 'linux_random_h.c' succeeded - Ok(["/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out/out-linux_random_h/7dfda64fdf5a526c-linux_random_h.o"]).""",
+##     "OPT_LEVEL = Some(3)",
+##     "OUT_DIR = Some(/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out)",
+##     "TARGET = Some(x86_64-unknown-linux-gnu)",
+##     "HOST = Some(x86_64-unknown-linux-gnu)",
+##     "cargo:rerun-if-env-changed=CC_x86_64-unknown-linux-gnu",
+##     "CC_x86_64-unknown-linux-gnu = None",
+##     "cargo:rerun-if-env-changed=CC_x86_64_unknown_linux_gnu",
+##     "CC_x86_64_unknown_linux_gnu = None",
+##     "cargo:rerun-if-env-changed=HOST_CC",
+##     "HOST_CC = None",
+##     "cargo:rerun-if-env-changed=CC",
+##     "CC = None",
+##     "cargo:rerun-if-env-changed=CC_ENABLE_DEBUG_OUTPUT",
+##     "RUSTC_WRAPPER = None",
+##     "cargo:rerun-if-env-changed=CRATE_CC_NO_DEFAULTS",
+##     "CRATE_CC_NO_DEFAULTS = None",
+##     "DEBUG = Some(false)",
+##     "CARGO_CFG_TARGET_FEATURE = Some(fxsr,sse,sse2)",
+##     "cargo:rerun-if-env-changed=CFLAGS",
+##     "CFLAGS = None",
+##     "cargo:rerun-if-env-changed=HOST_CFLAGS",
+##     "HOST_CFLAGS = None",
+##     "cargo:rerun-if-env-changed=CFLAGS_x86_64_unknown_linux_gnu",
+##     "CFLAGS_x86_64_unknown_linux_gnu = None",
+##     "cargo:rerun-if-env-changed=CFLAGS_x86_64-unknown-linux-gnu",
+##     "CFLAGS_x86_64-unknown-linux-gnu = None",
+##     "CARGO_ENCODED_RUSTFLAGS = Some()",
+##     "cargo:rerun-if-env-changed=CFLAGS_x86_64_unknown_linux_gnu",
+##     "cargo:rerun-if-env-changed=CFLAGS",
+##     "OPT_LEVEL = Some(3)",
+##     "OUT_DIR = Some(/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out)",
+##     "TARGET = Some(x86_64-unknown-linux-gnu)",
+##     "HOST = Some(x86_64-unknown-linux-gnu)",
+##     "cargo:rerun-if-env-changed=CC_x86_64-unknown-linux-gnu",
+##     "CC_x86_64-unknown-linux-gnu = None",
+##     "cargo:rerun-if-env-changed=CC_x86_64_unknown_linux_gnu",
+##     "CC_x86_64_unknown_linux_gnu = None",
+##     "cargo:rerun-if-env-changed=HOST_CC",
+##     "HOST_CC = None",
+##     "cargo:rerun-if-env-changed=CC",
+##     "CC = None",
+##     "cargo:rerun-if-env-changed=CC_ENABLE_DEBUG_OUTPUT",
+##     "RUSTC_WRAPPER = None",
+##     "cargo:rerun-if-env-changed=CRATE_CC_NO_DEFAULTS",
+##     "CRATE_CC_NO_DEFAULTS = None",
+##     "DEBUG = Some(false)",
+##     "CARGO_CFG_TARGET_FEATURE = Some(fxsr,sse,sse2)",
+##     "cargo:rerun-if-env-changed=CFLAGS",
+##     "CFLAGS = None",
+##     "cargo:rerun-if-env-changed=HOST_CFLAGS",
+##     "HOST_CFLAGS = None",
+##     "cargo:rerun-if-env-changed=CFLAGS_x86_64_unknown_linux_gnu",
+##     "CFLAGS_x86_64_unknown_linux_gnu = None",
+##     "cargo:rerun-if-env-changed=CFLAGS_x86_64-unknown-linux-gnu",
+##     "CFLAGS_x86_64-unknown-linux-gnu = None",
+##     "CARGO_ENCODED_RUSTFLAGS = Some()",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "cargo:rerun-if-env-changed=AR_x86_64-unknown-linux-gnu",
+##     "AR_x86_64-unknown-linux-gnu = None",
+##     "cargo:rerun-if-env-changed=AR_x86_64_unknown_linux_gnu",
+##     "AR_x86_64_unknown_linux_gnu = None",
+##     "cargo:rerun-if-env-changed=HOST_AR",
+##     "HOST_AR = None",
+##     "cargo:rerun-if-env-changed=AR",
+##     "AR = None",
+##     "cargo:rerun-if-env-changed=ARFLAGS",
+##     "ARFLAGS = None",
+##     "cargo:rerun-if-env-changed=HOST_ARFLAGS",
+##     "HOST_ARFLAGS = None",
+##     "cargo:rerun-if-env-changed=ARFLAGS_x86_64_unknown_linux_gnu",
+##     "ARFLAGS_x86_64_unknown_linux_gnu = None",
+##     "cargo:rerun-if-env-changed=ARFLAGS_x86_64-unknown-linux-gnu",
+##     "ARFLAGS_x86_64-unknown-linux-gnu = None",
+##     "cargo:rustc-link-lib=static=aws_lc_0_32_2_crypto",
+##     "cargo:rustc-link-search=native=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out",
+##     "cargo:rerun-if-env-changed=AWS_LC_SYS_INCLUDES_x86_64_unknown_linux_gnu",
+##     "cargo:rerun-if-env-changed=AWS_LC_SYS_INCLUDES",
+##     "cargo:include=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out/include",
+##     "cargo:libcrypto=aws_lc_0_32_2_crypto",
+##     "cargo:conf=OPENSSL_NO_ASYNC,OPENSSL_NO_BF,OPENSSL_NO_BLAKE2,OPENSSL_NO_BUF_FREELISTS,OPENSSL_NO_CAMELLIA,OPENSSL_NO_CAPIENG,OPENSSL_NO_CAST,OPENSSL_NO_CMS,OPENSSL_NO_COMP,OPENSSL_NO_CRYPTO_MDEBUG,OPENSSL_NO_CT,OPENSSL_NO_DANE,OPENSSL_NO_DEPRECATED,OPENSSL_NO_DGRAM,OPENSSL_NO_DYNAMIC_ENGINE,OPENSSL_NO_EC_NISTP_64_GCC_128,OPENSSL_NO_EC2M,OPENSSL_NO_EGD,OPENSSL_NO_ENGINE,OPENSSL_NO_GMP,OPENSSL_NO_GOST,OPENSSL_NO_HEARTBEATS,OPENSSL_NO_HW,OPENSSL_NO_IDEA,OPENSSL_NO_JPAKE,OPENSSL_NO_KRB5,OPENSSL_NO_MD2,OPENSSL_NO_MDC2,OPENSSL_NO_OCB,OPENSSL_NO_RC2,OPENSSL_NO_RC5,OPENSSL_NO_RFC3779,OPENSSL_NO_RIPEMD,OPENSSL_NO_RMD160,OPENSSL_NO_SCTP,OPENSSL_NO_SEED,OPENSSL_NO_SM2,OPENSSL_NO_SM3,OPENSSL_NO_SM4,OPENSSL_NO_SRP,OPENSSL_NO_SSL_TRACE,OPENSSL_NO_SSL2,OPENSSL_NO_SSL3,OPENSSL_NO_SSL3_METHOD,OPENSSL_NO_STATIC_ENGINE,OPENSSL_NO_STORE,OPENSSL_NO_TS,OPENSSL_NO_WHIRLPOOL",
+##     "cargo:rerun-if-changed=builder/",
+##     "cargo:rerun-if-changed=aws-lc/",
 ## ]
 ##
 ## [[stages]]
@@ -1953,7 +3022,7 @@ COPY --link --from=run-z-aws-lc-sys-0.32.2-2d875791ad1d3d18 /tmp/clis-ntpd_1-7-0
 ##         CARGO_PKG_VERSION_PRE= \
 ##         DEBUG=false \
 ##         HOST=x86_64-unknown-linux-gnu \
-##         NUM_JOBS=1 \
+##         NUM_JOBS=4 \
 ##         OPT_LEVEL=3 \
 ##         OUT_DIR=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out \
 ##         PROFILE=release \
@@ -1974,6 +3043,3535 @@ COPY --link --from=run-z-aws-lc-sys-0.32.2-2d875791ad1d3d18 /tmp/clis-ntpd_1-7-0
 ## script = """
 ## FROM scratch AS out-2d875791ad1d3d18
 ## COPY --link --from=run-z-aws-lc-sys-0.32.2-2d875791ad1d3d18 /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out/* /"""
+
+
+FROM rust-base AS dep-n-aws-lc-sys-0.32.2-135dbb753da3a4f4
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps
+RUN \
+  --mount=from=cratesio-aws-lc-sys-0.32.2,source=/aws-lc-sys-0.32.2,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.32.2 \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out,source=/ \
+    env CARGO="$(which cargo)" \
+        CARGO_CRATE_NAME=aws_lc_sys \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.32.2 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.32.2/Cargo.toml \
+        CARGO_PKG_AUTHORS=AWS-LC \
+        CARGO_PKG_DESCRIPTION=AWS-LC' is a general-purpose cryptographic library maintained by the AWS Cryptography team for AWS and their customers. It іs based on code from the Google BoringSSL project and the OpenSSL project.' \
+        CARGO_PKG_HOMEPAGE= \
+        CARGO_PKG_LICENSE=ISC' AND (Apache-2.0 OR ISC) AND OpenSSL' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=aws-lc-sys \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/aws/aws-lc-rs' \
+        CARGO_PKG_RUST_VERSION=1.70.0 \
+        CARGO_PKG_VERSION=0.32.2 \
+        CARGO_PKG_VERSION_MAJOR=0 \
+        CARGO_PKG_VERSION_MINOR=32 \
+        CARGO_PKG_VERSION_PATCH=2 \
+        CARGO_PKG_VERSION_PRE= \
+        OUT_DIR=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out \
+        CARGOGREEN=1 \
+      rustc '--crate-name' 'aws_lc_sys' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="prebuilt-nasm"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("asan", "bindgen", "prebuilt-nasm", "ssl"))' '-C' 'metadata=cdb74aa0cb1849cf' '-C' 'extra-filename=-135dbb753da3a4f4' '--out-dir' '/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' '--cap-lints' 'warn' '-L' 'native=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out' '-l' 'static=aws_lc_0_32_2_crypto' '--cfg' 'x86_64_unknown_linux_gnu' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.32.2/src/lib.rs \
+        1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-135dbb753da3a4f4-stdout \
+        2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-135dbb753da3a4f4-stderr \
+        || echo $? >/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-135dbb753da3a4f4-errcode\
+  ; find /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/*-135dbb753da3a4f4* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-135dbb753da3a4f4
+COPY --link --from=dep-n-aws-lc-sys-0.32.2-135dbb753da3a4f4 /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/*-135dbb753da3a4f4* /
+
+## this = "135dbb753da3a4f4"
+## deps = [
+##     "2d875791ad1d3d18",
+##     "d2948f7c0c8497b1",
+##     "4dc141be22bbffce",
+##     "60426161aa87c673",
+##     "99856d878c8e44ce",
+##     "7560e7c5c88ec4c4",
+##     "b166d1c75d83103c",
+##     "336c2d9100ab92f8",
+##     "3ff4fdb389eab124",
+##     "25a6bb4144c31f83",
+##     "19400729ba85cd55",
+##     "d905bd04d466c2b4",
+##     "bcbfd880a9747f76",
+##     "b91f62695d1e67bd",
+## ]
+## buildrs_results = ["2d875791ad1d3d18"]
+## writes = [
+##     "aws_lc_sys-135dbb753da3a4f4.d",
+##     "libaws_lc_sys-135dbb753da3a4f4.rlib",
+##     "libaws_lc_sys-135dbb753da3a4f4.rmeta",
+## ]
+## stderr = [
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/aws_lc_sys-135dbb753da3a4f4.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libaws_lc_sys-135dbb753da3a4f4.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libaws_lc_sys-135dbb753da3a4f4.rlib","emit":"link"}',
+## ]
+##
+## [[mounts]]
+## name = "out-2d875791ad1d3d18"
+## src = "/"
+## dst = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
+##
+## [[stages]]
+##
+## [stages.Cratesio]
+## stage = "cratesio-aws-lc-sys-0.32.2"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.32.2"
+## name = "aws-lc-sys"
+## name_dash_version = "aws-lc-sys-0.32.2"
+## hash = "a2b715a6010afb9e457ca2b7c9d2b9c344baa8baed7b38dc476034c171b32575"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "dep-n-aws-lc-sys-0.32.2-135dbb753da3a4f4"
+## script = '''
+## FROM rust-base AS dep-n-aws-lc-sys-0.32.2-135dbb753da3a4f4
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps
+## RUN \
+##   --mount=from=cratesio-aws-lc-sys-0.32.2,source=/aws-lc-sys-0.32.2,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.32.2 \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out,source=/ \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CRATE_NAME=aws_lc_sys \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.32.2 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.32.2/Cargo.toml \
+##         CARGO_PKG_AUTHORS=AWS-LC \
+##         CARGO_PKG_DESCRIPTION=AWS-LC' is a general-purpose cryptographic library maintained by the AWS Cryptography team for AWS and their customers. It іs based on code from the Google BoringSSL project and the OpenSSL project.' \
+##         CARGO_PKG_HOMEPAGE= \
+##         CARGO_PKG_LICENSE=ISC' AND (Apache-2.0 OR ISC) AND OpenSSL' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=aws-lc-sys \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/aws/aws-lc-rs' \
+##         CARGO_PKG_RUST_VERSION=1.70.0 \
+##         CARGO_PKG_VERSION=0.32.2 \
+##         CARGO_PKG_VERSION_MAJOR=0 \
+##         CARGO_PKG_VERSION_MINOR=32 \
+##         CARGO_PKG_VERSION_PATCH=2 \
+##         CARGO_PKG_VERSION_PRE= \
+##         OUT_DIR=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out \
+##         CARGOGREEN=1 \
+##       rustc '--crate-name' 'aws_lc_sys' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="prebuilt-nasm"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("asan", "bindgen", "prebuilt-nasm", "ssl"))' '-C' 'metadata=cdb74aa0cb1849cf' '-C' 'extra-filename=-135dbb753da3a4f4' '--out-dir' '/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' '--cap-lints' 'warn' '-L' 'native=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out' '-l' 'static=aws_lc_0_32_2_crypto' '--cfg' 'x86_64_unknown_linux_gnu' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.32.2/src/lib.rs \
+##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-135dbb753da3a4f4-stdout \
+##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-135dbb753da3a4f4-stderr \
+##         || echo $? >/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-135dbb753da3a4f4-errcode\
+##   ; find /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/*-135dbb753da3a4f4* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-135dbb753da3a4f4"
+## script = """
+## FROM scratch AS out-135dbb753da3a4f4
+## COPY --link --from=dep-n-aws-lc-sys-0.32.2-135dbb753da3a4f4 /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/*-135dbb753da3a4f4* /"""
+
+FROM scratch AS cratesio-zeroize-1.8.2
+ADD --chmod=0664 --unpack --checksum=sha256:b97154e67e32c85465826e8bcc1c59429aaaf107c1e4a9e53c8d8ccd5eff88d0 \
+  https://static.crates.io/crates/zeroize/zeroize-1.8.2.crate /
+FROM rust-base AS dep-n-zeroize-1.8.2-fd233fb45e407496
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps
+RUN \
+  --mount=from=cratesio-zeroize-1.8.2,source=/zeroize-1.8.2,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zeroize-1.8.2 \
+    env CARGO="$(which cargo)" \
+        CARGO_CRATE_NAME=zeroize \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zeroize-1.8.2 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zeroize-1.8.2/Cargo.toml \
+        CARGO_PKG_AUTHORS=The' RustCrypto Project Developers' \
+        CARGO_PKG_DESCRIPTION=Securely' clear secrets from memory with a simple trait built on\
+stable Rust primitives which guarantee memory is zeroed using an\
+operation will not be '\'optimized' away'\'' by the compiler.\
+Uses a portable pure Rust implementation that works everywhere,\
+even WASM!\
+' \
+        CARGO_PKG_HOMEPAGE=https'://github.com/RustCrypto/utils/tree/master/zeroize' \
+        CARGO_PKG_LICENSE=Apache-2.0' OR MIT' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=zeroize \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/RustCrypto/utils' \
+        CARGO_PKG_RUST_VERSION=1.60 \
+        CARGO_PKG_VERSION=1.8.2 \
+        CARGO_PKG_VERSION_MAJOR=1 \
+        CARGO_PKG_VERSION_MINOR=8 \
+        CARGO_PKG_VERSION_PATCH=2 \
+        CARGO_PKG_VERSION_PRE= \
+        CARGOGREEN=1 \
+      rustc '--crate-name' 'zeroize' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="alloc"' '--cfg' 'feature="default"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("aarch64", "alloc", "default", "derive", "serde", "simd", "std", "zeroize_derive"))' '-C' 'metadata=5daff4024ec909c2' '-C' 'extra-filename=-fd233fb45e407496' '--out-dir' '/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zeroize-1.8.2/src/lib.rs \
+        1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-fd233fb45e407496-stdout \
+        2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-fd233fb45e407496-stderr \
+        || echo $? >/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-fd233fb45e407496-errcode\
+  ; find /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/*-fd233fb45e407496* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-fd233fb45e407496
+COPY --link --from=dep-n-zeroize-1.8.2-fd233fb45e407496 /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/*-fd233fb45e407496* /
+
+## this = "fd233fb45e407496"
+## writes = [
+##     "libzeroize-fd233fb45e407496.rlib",
+##     "libzeroize-fd233fb45e407496.rmeta",
+##     "zeroize-fd233fb45e407496.d",
+## ]
+## stderr = [
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/zeroize-fd233fb45e407496.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libzeroize-fd233fb45e407496.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libzeroize-fd233fb45e407496.rlib","emit":"link"}',
+## ]
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
+##
+## [[stages]]
+##
+## [stages.Cratesio]
+## stage = "cratesio-zeroize-1.8.2"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zeroize-1.8.2"
+## name = "zeroize"
+## name_dash_version = "zeroize-1.8.2"
+## hash = "b97154e67e32c85465826e8bcc1c59429aaaf107c1e4a9e53c8d8ccd5eff88d0"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "dep-n-zeroize-1.8.2-fd233fb45e407496"
+## script = '''
+## FROM rust-base AS dep-n-zeroize-1.8.2-fd233fb45e407496
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps
+## RUN \
+##   --mount=from=cratesio-zeroize-1.8.2,source=/zeroize-1.8.2,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zeroize-1.8.2 \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CRATE_NAME=zeroize \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zeroize-1.8.2 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zeroize-1.8.2/Cargo.toml \
+##         CARGO_PKG_AUTHORS=The' RustCrypto Project Developers' \
+##         CARGO_PKG_DESCRIPTION=Securely' clear secrets from memory with a simple trait built on\
+## stable Rust primitives which guarantee memory is zeroed using an\
+## operation will not be '\'optimized' away'\'' by the compiler.\
+## Uses a portable pure Rust implementation that works everywhere,\
+## even WASM!\
+## ' \
+##         CARGO_PKG_HOMEPAGE=https'://github.com/RustCrypto/utils/tree/master/zeroize' \
+##         CARGO_PKG_LICENSE=Apache-2.0' OR MIT' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=zeroize \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/RustCrypto/utils' \
+##         CARGO_PKG_RUST_VERSION=1.60 \
+##         CARGO_PKG_VERSION=1.8.2 \
+##         CARGO_PKG_VERSION_MAJOR=1 \
+##         CARGO_PKG_VERSION_MINOR=8 \
+##         CARGO_PKG_VERSION_PATCH=2 \
+##         CARGO_PKG_VERSION_PRE= \
+##         CARGOGREEN=1 \
+##       rustc '--crate-name' 'zeroize' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="alloc"' '--cfg' 'feature="default"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("aarch64", "alloc", "default", "derive", "serde", "simd", "std", "zeroize_derive"))' '-C' 'metadata=5daff4024ec909c2' '-C' 'extra-filename=-fd233fb45e407496' '--out-dir' '/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zeroize-1.8.2/src/lib.rs \
+##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-fd233fb45e407496-stdout \
+##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-fd233fb45e407496-stderr \
+##         || echo $? >/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-fd233fb45e407496-errcode\
+##   ; find /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/*-fd233fb45e407496* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-fd233fb45e407496"
+## script = """
+## FROM scratch AS out-fd233fb45e407496
+## COPY --link --from=dep-n-zeroize-1.8.2-fd233fb45e407496 /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/*-fd233fb45e407496* /"""
+
+FROM scratch AS cratesio-aws-lc-rs-1.14.1
+ADD --chmod=0664 --unpack --checksum=sha256:879b6c89592deb404ba4dc0ae6b58ffd1795c78991cbb5b8bc441c48a070440d \
+  https://static.crates.io/crates/aws-lc-rs/aws-lc-rs-1.14.1.crate /
+FROM rust-base AS dep-x-aws-lc-rs-1.14.1-6215be1cd523c855
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-rs-6215be1cd523c855
+RUN \
+  --mount=from=cratesio-aws-lc-rs-1.14.1,source=/aws-lc-rs-1.14.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.14.1,rw \
+    { \
+        cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.14.1/build.rs | sed -E 's/^fn +main/fn actual_6215be1cd523c855_main/;s/^async +fn +main/async fn actual_6215be1cd523c855_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.14.1/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.14.1/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.14.1/build.rs ; \
+        { \
+          echo ; \
+          echo 'fn main() {' ; \
+          echo '    use std::env::{args_os, var_os};' ; \
+          echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+          echo '        use std::process::{Command, Stdio};' ; \
+          echo '        let mut cmd = Command::new("cargo-green");' ; \
+          echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+          echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+          echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+          echo '        assert!(res.success());' ; \
+          echo '    } else {' ; \
+          echo '        actual_6215be1cd523c855_main();' ; \
+          echo '    }' ; \
+          echo '}' ; \
+        } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.14.1/build.rs ; \
+    } && \
+    env CARGO="$(which cargo)" \
+        CARGO_CRATE_NAME=build_script_build \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.14.1 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.14.1/Cargo.toml \
+        CARGO_PKG_AUTHORS=AWS-LibCrypto \
+        CARGO_PKG_DESCRIPTION=aws-lc-rs' is a cryptographic library using AWS-LC for its cryptographic operations. This library strives to be API-compatible with the popular Rust library named ring.' \
+        CARGO_PKG_HOMEPAGE=https'://github.com/aws/aws-lc-rs' \
+        CARGO_PKG_LICENSE=ISC' AND (Apache-2.0 OR ISC)' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=aws-lc-rs \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/aws/aws-lc-rs' \
+        CARGO_PKG_RUST_VERSION=1.70.0 \
+        CARGO_PKG_VERSION=1.14.1 \
+        CARGO_PKG_VERSION_MAJOR=1 \
+        CARGO_PKG_VERSION_MINOR=14 \
+        CARGO_PKG_VERSION_PATCH=1 \
+        CARGO_PKG_VERSION_PRE= \
+        CARGOGREEN=1 \
+      rustc '--crate-name' 'build_script_build' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'bin' '--emit' 'dep-info,link' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--cfg' 'feature="aws-lc-sys"' '--cfg' 'feature="prebuilt-nasm"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "asan", "aws-lc-sys", "bindgen", "default", "fips", "non-fips", "prebuilt-nasm", "ring-io", "ring-sig-verify", "test_logging", "unstable"))' '-C' 'metadata=6dd67a5001d657c2' '-C' 'extra-filename=-6215be1cd523c855' '--out-dir' '/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-rs-6215be1cd523c855' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.14.1/build.rs \
+        1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-rs-6215be1cd523c855/out-6215be1cd523c855-stdout \
+        2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-rs-6215be1cd523c855/out-6215be1cd523c855-stderr \
+        || echo $? >/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-rs-6215be1cd523c855/out-6215be1cd523c855-errcode\
+  ; find /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-rs-6215be1cd523c855/*-6215be1cd523c855* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-6215be1cd523c855
+COPY --link --from=dep-x-aws-lc-rs-1.14.1-6215be1cd523c855 /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-rs-6215be1cd523c855/*-6215be1cd523c855* /
+
+## this = "6215be1cd523c855"
+## writes = [
+##     "build_script_build-6215be1cd523c855",
+##     "build_script_build-6215be1cd523c855.d",
+## ]
+## stderr = [
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-rs-6215be1cd523c855/build_script_build-6215be1cd523c855.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-rs-6215be1cd523c855/build_script_build-6215be1cd523c855","emit":"link"}',
+## ]
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
+##
+## [[stages]]
+##
+## [stages.Cratesio]
+## stage = "cratesio-aws-lc-rs-1.14.1"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.14.1"
+## name = "aws-lc-rs"
+## name_dash_version = "aws-lc-rs-1.14.1"
+## hash = "879b6c89592deb404ba4dc0ae6b58ffd1795c78991cbb5b8bc441c48a070440d"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "dep-x-aws-lc-rs-1.14.1-6215be1cd523c855"
+## script = '''
+## FROM rust-base AS dep-x-aws-lc-rs-1.14.1-6215be1cd523c855
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-rs-6215be1cd523c855
+## RUN \
+##   --mount=from=cratesio-aws-lc-rs-1.14.1,source=/aws-lc-rs-1.14.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.14.1,rw \
+##     { \
+##         cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.14.1/build.rs | sed -E 's/^fn +main/fn actual_6215be1cd523c855_main/;s/^async +fn +main/async fn actual_6215be1cd523c855_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.14.1/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.14.1/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.14.1/build.rs ; \
+##         { \
+##           echo ; \
+##           echo 'fn main() {' ; \
+##           echo '    use std::env::{args_os, var_os};' ; \
+##           echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+##           echo '        use std::process::{Command, Stdio};' ; \
+##           echo '        let mut cmd = Command::new("cargo-green");' ; \
+##           echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+##           echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+##           echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+##           echo '        assert!(res.success());' ; \
+##           echo '    } else {' ; \
+##           echo '        actual_6215be1cd523c855_main();' ; \
+##           echo '    }' ; \
+##           echo '}' ; \
+##         } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.14.1/build.rs ; \
+##     } && \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CRATE_NAME=build_script_build \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.14.1 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.14.1/Cargo.toml \
+##         CARGO_PKG_AUTHORS=AWS-LibCrypto \
+##         CARGO_PKG_DESCRIPTION=aws-lc-rs' is a cryptographic library using AWS-LC for its cryptographic operations. This library strives to be API-compatible with the popular Rust library named ring.' \
+##         CARGO_PKG_HOMEPAGE=https'://github.com/aws/aws-lc-rs' \
+##         CARGO_PKG_LICENSE=ISC' AND (Apache-2.0 OR ISC)' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=aws-lc-rs \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/aws/aws-lc-rs' \
+##         CARGO_PKG_RUST_VERSION=1.70.0 \
+##         CARGO_PKG_VERSION=1.14.1 \
+##         CARGO_PKG_VERSION_MAJOR=1 \
+##         CARGO_PKG_VERSION_MINOR=14 \
+##         CARGO_PKG_VERSION_PATCH=1 \
+##         CARGO_PKG_VERSION_PRE= \
+##         CARGOGREEN=1 \
+##       rustc '--crate-name' 'build_script_build' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'bin' '--emit' 'dep-info,link' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--cfg' 'feature="aws-lc-sys"' '--cfg' 'feature="prebuilt-nasm"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "asan", "aws-lc-sys", "bindgen", "default", "fips", "non-fips", "prebuilt-nasm", "ring-io", "ring-sig-verify", "test_logging", "unstable"))' '-C' 'metadata=6dd67a5001d657c2' '-C' 'extra-filename=-6215be1cd523c855' '--out-dir' '/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-rs-6215be1cd523c855' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.14.1/build.rs \
+##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-rs-6215be1cd523c855/out-6215be1cd523c855-stdout \
+##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-rs-6215be1cd523c855/out-6215be1cd523c855-stderr \
+##         || echo $? >/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-rs-6215be1cd523c855/out-6215be1cd523c855-errcode\
+##   ; find /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-rs-6215be1cd523c855/*-6215be1cd523c855* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-6215be1cd523c855"
+## script = """
+## FROM scratch AS out-6215be1cd523c855
+## COPY --link --from=dep-x-aws-lc-rs-1.14.1-6215be1cd523c855 /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-rs-6215be1cd523c855/*-6215be1cd523c855* /"""
+
+FROM rust-base AS run-z-aws-lc-rs-1.14.1-7ef21a73dd92a44b
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-rs-7ef21a73dd92a44b/out
+WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.14.1
+RUN \
+  --mount=from=out-6215be1cd523c855,source=/build_script_build-6215be1cd523c855,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-rs-6215be1cd523c855/build-script-build \
+  --mount=from=cratesio-aws-lc-rs-1.14.1,source=/aws-lc-rs-1.14.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.14.1 \
+    env CARGO="$(which cargo)" \
+        CARGO_CFG_FEATURE=aws-lc-sys,prebuilt-nasm \
+        CARGO_CFG_PANIC=unwind \
+        CARGO_CFG_TARGET_ABI= \
+        CARGO_CFG_TARGET_ARCH=x86_64 \
+        CARGO_CFG_TARGET_ENDIAN=little \
+        CARGO_CFG_TARGET_ENV=gnu \
+        CARGO_CFG_TARGET_FAMILY=unix \
+        CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
+        CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+        CARGO_CFG_TARGET_OS=linux \
+        CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+        CARGO_CFG_TARGET_VENDOR=unknown \
+        CARGO_CFG_UNIX= \
+        CARGO_ENCODED_RUSTFLAGS= \
+        CARGO_FEATURE_AWS_LC_SYS=1 \
+        CARGO_FEATURE_PREBUILT_NASM=1 \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.14.1 \
+        CARGO_MANIFEST_LINKS=aws_lc_rs_1_14_1_sys \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.14.1/Cargo.toml \
+        CARGO_PKG_AUTHORS=AWS-LibCrypto \
+        CARGO_PKG_DESCRIPTION=aws-lc-rs' is a cryptographic library using AWS-LC for its cryptographic operations. This library strives to be API-compatible with the popular Rust library named ring.' \
+        CARGO_PKG_HOMEPAGE=https'://github.com/aws/aws-lc-rs' \
+        CARGO_PKG_LICENSE=ISC' AND (Apache-2.0 OR ISC)' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=aws-lc-rs \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/aws/aws-lc-rs' \
+        CARGO_PKG_RUST_VERSION=1.70.0 \
+        CARGO_PKG_VERSION=1.14.1 \
+        CARGO_PKG_VERSION_MAJOR=1 \
+        CARGO_PKG_VERSION_MINOR=14 \
+        CARGO_PKG_VERSION_PATCH=1 \
+        CARGO_PKG_VERSION_PRE= \
+        DEBUG=false \
+        DEP_AWS_LC_0_32_2_CONF=OPENSSL_NO_ASYNC,OPENSSL_NO_BF,OPENSSL_NO_BLAKE2,OPENSSL_NO_BUF_FREELISTS,OPENSSL_NO_CAMELLIA,OPENSSL_NO_CAPIENG,OPENSSL_NO_CAST,OPENSSL_NO_CMS,OPENSSL_NO_COMP,OPENSSL_NO_CRYPTO_MDEBUG,OPENSSL_NO_CT,OPENSSL_NO_DANE,OPENSSL_NO_DEPRECATED,OPENSSL_NO_DGRAM,OPENSSL_NO_DYNAMIC_ENGINE,OPENSSL_NO_EC_NISTP_64_GCC_128,OPENSSL_NO_EC2M,OPENSSL_NO_EGD,OPENSSL_NO_ENGINE,OPENSSL_NO_GMP,OPENSSL_NO_GOST,OPENSSL_NO_HEARTBEATS,OPENSSL_NO_HW,OPENSSL_NO_IDEA,OPENSSL_NO_JPAKE,OPENSSL_NO_KRB5,OPENSSL_NO_MD2,OPENSSL_NO_MDC2,OPENSSL_NO_OCB,OPENSSL_NO_RC2,OPENSSL_NO_RC5,OPENSSL_NO_RFC3779,OPENSSL_NO_RIPEMD,OPENSSL_NO_RMD160,OPENSSL_NO_SCTP,OPENSSL_NO_SEED,OPENSSL_NO_SM2,OPENSSL_NO_SM3,OPENSSL_NO_SM4,OPENSSL_NO_SRP,OPENSSL_NO_SSL_TRACE,OPENSSL_NO_SSL2,OPENSSL_NO_SSL3,OPENSSL_NO_SSL3_METHOD,OPENSSL_NO_STATIC_ENGINE,OPENSSL_NO_STORE,OPENSSL_NO_TS,OPENSSL_NO_WHIRLPOOL \
+        DEP_AWS_LC_0_32_2_INCLUDE=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out/include \
+        DEP_AWS_LC_0_32_2_LIBCRYPTO=aws_lc_0_32_2_crypto \
+        DEP_AWS_LC_0_32_2_ROOT=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out \
+        HOST=x86_64-unknown-linux-gnu \
+        NUM_JOBS=4 \
+        OPT_LEVEL=3 \
+        OUT_DIR=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-rs-7ef21a73dd92a44b/out \
+        PROFILE=release \
+        RUSTC=rustc \
+        RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+        TARGET=x86_64-unknown-linux-gnu \
+        CARGOGREEN=1 \
+      CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-rs-6215be1cd523c855/build-script-build \
+        1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-rs-7ef21a73dd92a44b/out/out-7ef21a73dd92a44b-stdout \
+        2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-rs-7ef21a73dd92a44b/out/out-7ef21a73dd92a44b-stderr \
+        || echo $? >/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-rs-7ef21a73dd92a44b/out/out-7ef21a73dd92a44b-errcode\
+  ; find /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-rs-7ef21a73dd92a44b/out/*-7ef21a73dd92a44b* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-7ef21a73dd92a44b
+COPY --link --from=run-z-aws-lc-rs-1.14.1-7ef21a73dd92a44b /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-rs-7ef21a73dd92a44b/out/* /
+
+## this = "7ef21a73dd92a44b"
+## deps = ["6215be1cd523c855"]
+## stdout = [
+##     "cargo:rustc-check-cfg=cfg(disable_slow_tests)",
+##     "cargo:rerun-if-env-changed=AWS_LC_RS_DISABLE_SLOW_TESTS",
+##     "cargo:include=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out/include",
+##     "cargo:libcrypto=aws_lc_0_32_2_crypto",
+##     "cargo:root=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out",
+##     "cargo:conf=OPENSSL_NO_ASYNC,OPENSSL_NO_BF,OPENSSL_NO_BLAKE2,OPENSSL_NO_BUF_FREELISTS,OPENSSL_NO_CAMELLIA,OPENSSL_NO_CAPIENG,OPENSSL_NO_CAST,OPENSSL_NO_CMS,OPENSSL_NO_COMP,OPENSSL_NO_CRYPTO_MDEBUG,OPENSSL_NO_CT,OPENSSL_NO_DANE,OPENSSL_NO_DEPRECATED,OPENSSL_NO_DGRAM,OPENSSL_NO_DYNAMIC_ENGINE,OPENSSL_NO_EC_NISTP_64_GCC_128,OPENSSL_NO_EC2M,OPENSSL_NO_EGD,OPENSSL_NO_ENGINE,OPENSSL_NO_GMP,OPENSSL_NO_GOST,OPENSSL_NO_HEARTBEATS,OPENSSL_NO_HW,OPENSSL_NO_IDEA,OPENSSL_NO_JPAKE,OPENSSL_NO_KRB5,OPENSSL_NO_MD2,OPENSSL_NO_MDC2,OPENSSL_NO_OCB,OPENSSL_NO_RC2,OPENSSL_NO_RC5,OPENSSL_NO_RFC3779,OPENSSL_NO_RIPEMD,OPENSSL_NO_RMD160,OPENSSL_NO_SCTP,OPENSSL_NO_SEED,OPENSSL_NO_SM2,OPENSSL_NO_SM3,OPENSSL_NO_SM4,OPENSSL_NO_SRP,OPENSSL_NO_SSL_TRACE,OPENSSL_NO_SSL2,OPENSSL_NO_SSL3,OPENSSL_NO_SSL3_METHOD,OPENSSL_NO_STATIC_ENGINE,OPENSSL_NO_STORE,OPENSSL_NO_TS,OPENSSL_NO_WHIRLPOOL",
+## ]
+## stderr = [
+##     "cargo:rerun-if-env-changed=DEP_AWS_LC_0_32_2_INCLUDE",
+##     "cargo:rerun-if-env-changed=DEP_AWS_LC_0_32_2_LIBCRYPTO",
+##     "cargo:rerun-if-env-changed=DEP_AWS_LC_0_32_2_ROOT",
+##     "cargo:rerun-if-env-changed=DEP_AWS_LC_0_32_2_CONF",
+## ]
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "run-z-aws-lc-rs-1.14.1-7ef21a73dd92a44b"
+## script = '''
+## FROM rust-base AS run-z-aws-lc-rs-1.14.1-7ef21a73dd92a44b
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-rs-7ef21a73dd92a44b/out
+## WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.14.1
+## RUN \
+##   --mount=from=out-6215be1cd523c855,source=/build_script_build-6215be1cd523c855,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-rs-6215be1cd523c855/build-script-build \
+##   --mount=from=cratesio-aws-lc-rs-1.14.1,source=/aws-lc-rs-1.14.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.14.1 \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CFG_FEATURE=aws-lc-sys,prebuilt-nasm \
+##         CARGO_CFG_PANIC=unwind \
+##         CARGO_CFG_TARGET_ABI= \
+##         CARGO_CFG_TARGET_ARCH=x86_64 \
+##         CARGO_CFG_TARGET_ENDIAN=little \
+##         CARGO_CFG_TARGET_ENV=gnu \
+##         CARGO_CFG_TARGET_FAMILY=unix \
+##         CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
+##         CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+##         CARGO_CFG_TARGET_OS=linux \
+##         CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+##         CARGO_CFG_TARGET_VENDOR=unknown \
+##         CARGO_CFG_UNIX= \
+##         CARGO_ENCODED_RUSTFLAGS= \
+##         CARGO_FEATURE_AWS_LC_SYS=1 \
+##         CARGO_FEATURE_PREBUILT_NASM=1 \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.14.1 \
+##         CARGO_MANIFEST_LINKS=aws_lc_rs_1_14_1_sys \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.14.1/Cargo.toml \
+##         CARGO_PKG_AUTHORS=AWS-LibCrypto \
+##         CARGO_PKG_DESCRIPTION=aws-lc-rs' is a cryptographic library using AWS-LC for its cryptographic operations. This library strives to be API-compatible with the popular Rust library named ring.' \
+##         CARGO_PKG_HOMEPAGE=https'://github.com/aws/aws-lc-rs' \
+##         CARGO_PKG_LICENSE=ISC' AND (Apache-2.0 OR ISC)' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=aws-lc-rs \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/aws/aws-lc-rs' \
+##         CARGO_PKG_RUST_VERSION=1.70.0 \
+##         CARGO_PKG_VERSION=1.14.1 \
+##         CARGO_PKG_VERSION_MAJOR=1 \
+##         CARGO_PKG_VERSION_MINOR=14 \
+##         CARGO_PKG_VERSION_PATCH=1 \
+##         CARGO_PKG_VERSION_PRE= \
+##         DEBUG=false \
+##         DEP_AWS_LC_0_32_2_CONF=OPENSSL_NO_ASYNC,OPENSSL_NO_BF,OPENSSL_NO_BLAKE2,OPENSSL_NO_BUF_FREELISTS,OPENSSL_NO_CAMELLIA,OPENSSL_NO_CAPIENG,OPENSSL_NO_CAST,OPENSSL_NO_CMS,OPENSSL_NO_COMP,OPENSSL_NO_CRYPTO_MDEBUG,OPENSSL_NO_CT,OPENSSL_NO_DANE,OPENSSL_NO_DEPRECATED,OPENSSL_NO_DGRAM,OPENSSL_NO_DYNAMIC_ENGINE,OPENSSL_NO_EC_NISTP_64_GCC_128,OPENSSL_NO_EC2M,OPENSSL_NO_EGD,OPENSSL_NO_ENGINE,OPENSSL_NO_GMP,OPENSSL_NO_GOST,OPENSSL_NO_HEARTBEATS,OPENSSL_NO_HW,OPENSSL_NO_IDEA,OPENSSL_NO_JPAKE,OPENSSL_NO_KRB5,OPENSSL_NO_MD2,OPENSSL_NO_MDC2,OPENSSL_NO_OCB,OPENSSL_NO_RC2,OPENSSL_NO_RC5,OPENSSL_NO_RFC3779,OPENSSL_NO_RIPEMD,OPENSSL_NO_RMD160,OPENSSL_NO_SCTP,OPENSSL_NO_SEED,OPENSSL_NO_SM2,OPENSSL_NO_SM3,OPENSSL_NO_SM4,OPENSSL_NO_SRP,OPENSSL_NO_SSL_TRACE,OPENSSL_NO_SSL2,OPENSSL_NO_SSL3,OPENSSL_NO_SSL3_METHOD,OPENSSL_NO_STATIC_ENGINE,OPENSSL_NO_STORE,OPENSSL_NO_TS,OPENSSL_NO_WHIRLPOOL \
+##         DEP_AWS_LC_0_32_2_INCLUDE=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out/include \
+##         DEP_AWS_LC_0_32_2_LIBCRYPTO=aws_lc_0_32_2_crypto \
+##         DEP_AWS_LC_0_32_2_ROOT=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out \
+##         HOST=x86_64-unknown-linux-gnu \
+##         NUM_JOBS=4 \
+##         OPT_LEVEL=3 \
+##         OUT_DIR=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-rs-7ef21a73dd92a44b/out \
+##         PROFILE=release \
+##         RUSTC=rustc \
+##         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+##         TARGET=x86_64-unknown-linux-gnu \
+##         CARGOGREEN=1 \
+##       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-rs-6215be1cd523c855/build-script-build \
+##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-rs-7ef21a73dd92a44b/out/out-7ef21a73dd92a44b-stdout \
+##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-rs-7ef21a73dd92a44b/out/out-7ef21a73dd92a44b-stderr \
+##         || echo $? >/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-rs-7ef21a73dd92a44b/out/out-7ef21a73dd92a44b-errcode\
+##   ; find /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-rs-7ef21a73dd92a44b/out/*-7ef21a73dd92a44b* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-7ef21a73dd92a44b"
+## script = """
+## FROM scratch AS out-7ef21a73dd92a44b
+## COPY --link --from=run-z-aws-lc-rs-1.14.1-7ef21a73dd92a44b /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-rs-7ef21a73dd92a44b/out/* /"""
+
+
+FROM rust-base AS dep-n-aws-lc-rs-1.14.1-90227bfec647f88b
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps
+RUN \
+  --mount=from=cratesio-aws-lc-rs-1.14.1,source=/aws-lc-rs-1.14.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.14.1 \
+  --mount=from=out-135dbb753da3a4f4,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libaws_lc_sys-135dbb753da3a4f4.rlib,source=/libaws_lc_sys-135dbb753da3a4f4.rlib \
+  --mount=from=out-135dbb753da3a4f4,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libaws_lc_sys-135dbb753da3a4f4.rmeta,source=/libaws_lc_sys-135dbb753da3a4f4.rmeta \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/001247bc65c2f5e5-cpucap.o,source=/001247bc65c2f5e5-cpucap.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/020bc241f4dae036-bignum_madd_n25519.o,source=/020bc241f4dae036-bignum_madd_n25519.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/020bc241f4dae036-bignum_madd_n25519_alt.o,source=/020bc241f4dae036-bignum_madd_n25519_alt.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/020bc241f4dae036-bignum_mod_n25519.o,source=/020bc241f4dae036-bignum_mod_n25519.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/020bc241f4dae036-bignum_neg_p25519.o,source=/020bc241f4dae036-bignum_neg_p25519.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/020bc241f4dae036-curve25519_x25519.o,source=/020bc241f4dae036-curve25519_x25519.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/020bc241f4dae036-curve25519_x25519_alt.o,source=/020bc241f4dae036-curve25519_x25519_alt.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/020bc241f4dae036-curve25519_x25519base.o,source=/020bc241f4dae036-curve25519_x25519base.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/020bc241f4dae036-curve25519_x25519base_alt.o,source=/020bc241f4dae036-curve25519_x25519base_alt.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/020bc241f4dae036-edwards25519_decode.o,source=/020bc241f4dae036-edwards25519_decode.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/020bc241f4dae036-edwards25519_decode_alt.o,source=/020bc241f4dae036-edwards25519_decode_alt.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/020bc241f4dae036-edwards25519_encode.o,source=/020bc241f4dae036-edwards25519_encode.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/020bc241f4dae036-edwards25519_scalarmulbase.o,source=/020bc241f4dae036-edwards25519_scalarmulbase.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/020bc241f4dae036-edwards25519_scalarmulbase_alt.o,source=/020bc241f4dae036-edwards25519_scalarmulbase_alt.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/020bc241f4dae036-edwards25519_scalarmuldouble.o,source=/020bc241f4dae036-edwards25519_scalarmuldouble.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/020bc241f4dae036-edwards25519_scalarmuldouble_alt.o,source=/020bc241f4dae036-edwards25519_scalarmuldouble_alt.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/056c1e7192c7090b-p5_pbev2.o,source=/056c1e7192c7090b-p5_pbev2.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/056c1e7192c7090b-pkcs8.o,source=/056c1e7192c7090b-pkcs8.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/056c1e7192c7090b-pkcs8_x509.o,source=/056c1e7192c7090b-pkcs8_x509.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/0c919c82d61b4518-ecdsa_asn1.o,source=/0c919c82d61b4518-ecdsa_asn1.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/11289f19be935446-rsa_decrepit.o,source=/11289f19be935446-rsa_decrepit.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/175e87304cd4663c-cfb.o,source=/175e87304cd4663c-cfb.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/199386740f3660f1-ripemd.o,source=/199386740f3660f1-ripemd.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/1c7e26962210e9ee-kem_kyber.o,source=/1c7e26962210e9ee-kem_kyber.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/1c7e26962210e9ee-kyber1024r3_ref.o,source=/1c7e26962210e9ee-kyber1024r3_ref.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/1c7e26962210e9ee-kyber512r3_ref.o,source=/1c7e26962210e9ee-kyber512r3_ref.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/1c7e26962210e9ee-kyber768r3_ref.o,source=/1c7e26962210e9ee-kyber768r3_ref.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/1eca0b6fab589d4a-chacha-x86_64.o,source=/1eca0b6fab589d4a-chacha-x86_64.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/27a075eab3d35364-pem_all.o,source=/27a075eab3d35364-pem_all.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/27a075eab3d35364-pem_info.o,source=/27a075eab3d35364-pem_info.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/27a075eab3d35364-pem_lib.o,source=/27a075eab3d35364-pem_lib.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/27a075eab3d35364-pem_oth.o,source=/27a075eab3d35364-pem_oth.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/27a075eab3d35364-pem_pk8.o,source=/27a075eab3d35364-pem_pk8.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/27a075eab3d35364-pem_pkey.o,source=/27a075eab3d35364-pem_pkey.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/27a075eab3d35364-pem_x509.o,source=/27a075eab3d35364-pem_x509.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/27a075eab3d35364-pem_xaux.o,source=/27a075eab3d35364-pem_xaux.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/2d40dbbd793ef942-jitterentropy-base.o,source=/2d40dbbd793ef942-jitterentropy-base.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/2d40dbbd793ef942-jitterentropy-gcd.o,source=/2d40dbbd793ef942-jitterentropy-gcd.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/2d40dbbd793ef942-jitterentropy-health.o,source=/2d40dbbd793ef942-jitterentropy-health.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/2d40dbbd793ef942-jitterentropy-noise.o,source=/2d40dbbd793ef942-jitterentropy-noise.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/2d40dbbd793ef942-jitterentropy-sha3.o,source=/2d40dbbd793ef942-jitterentropy-sha3.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/2d40dbbd793ef942-jitterentropy-timer.o,source=/2d40dbbd793ef942-jitterentropy-timer.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/30a9a10d3f98970e-crypto.o,source=/30a9a10d3f98970e-crypto.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/30a9a10d3f98970e-ex_data.o,source=/30a9a10d3f98970e-ex_data.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/30a9a10d3f98970e-mem.o,source=/30a9a10d3f98970e-mem.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/30a9a10d3f98970e-refcount_c11.o,source=/30a9a10d3f98970e-refcount_c11.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/30a9a10d3f98970e-refcount_lock.o,source=/30a9a10d3f98970e-refcount_lock.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/30a9a10d3f98970e-refcount_win.o,source=/30a9a10d3f98970e-refcount_win.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/30a9a10d3f98970e-thread.o,source=/30a9a10d3f98970e-thread.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/30a9a10d3f98970e-thread_none.o,source=/30a9a10d3f98970e-thread_none.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/30a9a10d3f98970e-thread_pthread.o,source=/30a9a10d3f98970e-thread_pthread.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/30a9a10d3f98970e-thread_win.o,source=/30a9a10d3f98970e-thread_win.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/3f2f442030472042-base64_bio.o,source=/3f2f442030472042-base64_bio.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/4433246e317b5e42-bignum_add_p384.o,source=/4433246e317b5e42-bignum_add_p384.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/4433246e317b5e42-bignum_deamont_p384.o,source=/4433246e317b5e42-bignum_deamont_p384.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/4433246e317b5e42-bignum_deamont_p384_alt.o,source=/4433246e317b5e42-bignum_deamont_p384_alt.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/4433246e317b5e42-bignum_littleendian_6.o,source=/4433246e317b5e42-bignum_littleendian_6.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/4433246e317b5e42-bignum_montinv_p384.o,source=/4433246e317b5e42-bignum_montinv_p384.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/4433246e317b5e42-bignum_montmul_p384.o,source=/4433246e317b5e42-bignum_montmul_p384.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/4433246e317b5e42-bignum_montmul_p384_alt.o,source=/4433246e317b5e42-bignum_montmul_p384_alt.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/4433246e317b5e42-bignum_montsqr_p384.o,source=/4433246e317b5e42-bignum_montsqr_p384.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/4433246e317b5e42-bignum_montsqr_p384_alt.o,source=/4433246e317b5e42-bignum_montsqr_p384_alt.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/4433246e317b5e42-bignum_neg_p384.o,source=/4433246e317b5e42-bignum_neg_p384.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/4433246e317b5e42-bignum_nonzero_6.o,source=/4433246e317b5e42-bignum_nonzero_6.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/4433246e317b5e42-bignum_sub_p384.o,source=/4433246e317b5e42-bignum_sub_p384.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/4433246e317b5e42-bignum_tomont_p384.o,source=/4433246e317b5e42-bignum_tomont_p384.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/4433246e317b5e42-bignum_tomont_p384_alt.o,source=/4433246e317b5e42-bignum_tomont_p384_alt.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/4433246e317b5e42-p384_montjdouble.o,source=/4433246e317b5e42-p384_montjdouble.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/4433246e317b5e42-p384_montjdouble_alt.o,source=/4433246e317b5e42-p384_montjdouble_alt.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/4433246e317b5e42-p384_montjscalarmul.o,source=/4433246e317b5e42-p384_montjscalarmul.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/4433246e317b5e42-p384_montjscalarmul_alt.o,source=/4433246e317b5e42-p384_montjscalarmul_alt.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/45070f5a112d041b-fork_detect.o,source=/45070f5a112d041b-fork_detect.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/45070f5a112d041b-snapsafe_detect.o,source=/45070f5a112d041b-snapsafe_detect.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/45070f5a112d041b-ube.o,source=/45070f5a112d041b-ube.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/4696e3d2cc941c84-pmbtoken.o,source=/4696e3d2cc941c84-pmbtoken.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/4696e3d2cc941c84-trust_token.o,source=/4696e3d2cc941c84-trust_token.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/4696e3d2cc941c84-voprf.o,source=/4696e3d2cc941c84-voprf.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/46ab76b5467ff2b0-obj_decrepit.o,source=/46ab76b5467ff2b0-obj_decrepit.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/48649240ed88c783-siphash.o,source=/48649240ed88c783-siphash.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/4a91b32c84b73ad7-ecdh_extra.o,source=/4a91b32c84b73ad7-ecdh_extra.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/564c5311b313cdb2-aes128gcmsiv-x86_64.o,source=/564c5311b313cdb2-aes128gcmsiv-x86_64.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/564c5311b313cdb2-aesni-sha1-x86_64.o,source=/564c5311b313cdb2-aesni-sha1-x86_64.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/564c5311b313cdb2-aesni-sha256-x86_64.o,source=/564c5311b313cdb2-aesni-sha256-x86_64.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/564c5311b313cdb2-chacha20_poly1305_x86_64.o,source=/564c5311b313cdb2-chacha20_poly1305_x86_64.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/57454e98e6b3bf86-sha3_keccak_f1600.o,source=/57454e98e6b3bf86-sha3_keccak_f1600.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/5d4700fda13603f0-poly1305.o,source=/5d4700fda13603f0-poly1305.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/5d4700fda13603f0-poly1305_arm.o,source=/5d4700fda13603f0-poly1305_arm.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/5d4700fda13603f0-poly1305_vec.o,source=/5d4700fda13603f0-poly1305_vec.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/5da2666a73fb65eb-hrss.o,source=/5da2666a73fb65eb-hrss.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/60df219e9fcbc210-stack.o,source=/60df219e9fcbc210-stack.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/62e235b24f99f4ff-blake2.o,source=/62e235b24f99f4ff-blake2.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/65fbbb68d007b209-hpke.o,source=/65fbbb68d007b209-hpke.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/6e6559d38d003e66-spake25519.o,source=/6e6559d38d003e66-spake25519.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/6e8bb48415b74ed4-dh_decrepit.o,source=/6e8bb48415b74ed4-dh_decrepit.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/6f8e1f92835a38cb-x509_decrepit.o,source=/6f8e1f92835a38cb-x509_decrepit.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/7510312e0f5aa0be-evp_asn1.o,source=/7510312e0f5aa0be-evp_asn1.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/7510312e0f5aa0be-p_dh.o,source=/7510312e0f5aa0be-p_dh.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/7510312e0f5aa0be-p_dh_asn1.o,source=/7510312e0f5aa0be-p_dh_asn1.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/7510312e0f5aa0be-p_dsa.o,source=/7510312e0f5aa0be-p_dsa.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/7510312e0f5aa0be-p_dsa_asn1.o,source=/7510312e0f5aa0be-p_dsa_asn1.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/7510312e0f5aa0be-p_ec_asn1.o,source=/7510312e0f5aa0be-p_ec_asn1.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/7510312e0f5aa0be-p_ed25519_asn1.o,source=/7510312e0f5aa0be-p_ed25519_asn1.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/7510312e0f5aa0be-p_hmac_asn1.o,source=/7510312e0f5aa0be-p_hmac_asn1.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/7510312e0f5aa0be-p_kem_asn1.o,source=/7510312e0f5aa0be-p_kem_asn1.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/7510312e0f5aa0be-p_methods.o,source=/7510312e0f5aa0be-p_methods.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/7510312e0f5aa0be-p_pqdsa_asn1.o,source=/7510312e0f5aa0be-p_pqdsa_asn1.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/7510312e0f5aa0be-p_rsa_asn1.o,source=/7510312e0f5aa0be-p_rsa_asn1.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/7510312e0f5aa0be-p_x25519.o,source=/7510312e0f5aa0be-p_x25519.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/7510312e0f5aa0be-p_x25519_asn1.o,source=/7510312e0f5aa0be-p_x25519_asn1.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/7510312e0f5aa0be-print.o,source=/7510312e0f5aa0be-print.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/7510312e0f5aa0be-scrypt.o,source=/7510312e0f5aa0be-scrypt.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/7510312e0f5aa0be-sign.o,source=/7510312e0f5aa0be-sign.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/76322f89f5cc2d96-bio.o,source=/76322f89f5cc2d96-bio.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/76322f89f5cc2d96-bio_addr.o,source=/76322f89f5cc2d96-bio_addr.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/76322f89f5cc2d96-bio_mem.o,source=/76322f89f5cc2d96-bio_mem.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/76322f89f5cc2d96-connect.o,source=/76322f89f5cc2d96-connect.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/76322f89f5cc2d96-dgram.o,source=/76322f89f5cc2d96-dgram.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/76322f89f5cc2d96-errno.o,source=/76322f89f5cc2d96-errno.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/76322f89f5cc2d96-fd.o,source=/76322f89f5cc2d96-fd.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/76322f89f5cc2d96-file.o,source=/76322f89f5cc2d96-file.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/76322f89f5cc2d96-hexdump.o,source=/76322f89f5cc2d96-hexdump.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/76322f89f5cc2d96-md.o,source=/76322f89f5cc2d96-md.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/76322f89f5cc2d96-pair.o,source=/76322f89f5cc2d96-pair.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/76322f89f5cc2d96-printf.o,source=/76322f89f5cc2d96-printf.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/76322f89f5cc2d96-socket.o,source=/76322f89f5cc2d96-socket.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/76322f89f5cc2d96-socket_helper.o,source=/76322f89f5cc2d96-socket_helper.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/763c374fde874a6d-console.o,source=/763c374fde874a6d-console.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/7a596fe31a02c0e2-bn_asn1.o,source=/7a596fe31a02c0e2-bn_asn1.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/7a596fe31a02c0e2-convert.o,source=/7a596fe31a02c0e2-convert.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/7ac4c9359514b807-obj.o,source=/7ac4c9359514b807-obj.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/7ac4c9359514b807-obj_xref.o,source=/7ac4c9359514b807-obj_xref.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/7bf3e571b6558a6b-ccrandomgeneratebytes.o,source=/7bf3e571b6558a6b-ccrandomgeneratebytes.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/7bf3e571b6558a6b-deterministic.o,source=/7bf3e571b6558a6b-deterministic.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/7bf3e571b6558a6b-getentropy.o,source=/7bf3e571b6558a6b-getentropy.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/7bf3e571b6558a6b-rand_extra.o,source=/7bf3e571b6558a6b-rand_extra.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/7bf3e571b6558a6b-snapsafe_fallback.o,source=/7bf3e571b6558a6b-snapsafe_fallback.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/7bf3e571b6558a6b-urandom.o,source=/7bf3e571b6558a6b-urandom.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/7bf3e571b6558a6b-windows.o,source=/7bf3e571b6558a6b-windows.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/81d9a39ddc6b1c4e-aesni-gcm-avx512.o,source=/81d9a39ddc6b1c4e-aesni-gcm-avx512.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/81d9a39ddc6b1c4e-aesni-gcm-x86_64.o,source=/81d9a39ddc6b1c4e-aesni-gcm-x86_64.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/81d9a39ddc6b1c4e-aesni-x86_64.o,source=/81d9a39ddc6b1c4e-aesni-x86_64.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/81d9a39ddc6b1c4e-aesni-xts-avx512.o,source=/81d9a39ddc6b1c4e-aesni-xts-avx512.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/81d9a39ddc6b1c4e-ghash-ssse3-x86_64.o,source=/81d9a39ddc6b1c4e-ghash-ssse3-x86_64.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/81d9a39ddc6b1c4e-ghash-x86_64.o,source=/81d9a39ddc6b1c4e-ghash-x86_64.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/81d9a39ddc6b1c4e-md5-x86_64.o,source=/81d9a39ddc6b1c4e-md5-x86_64.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/81d9a39ddc6b1c4e-p256-x86_64-asm.o,source=/81d9a39ddc6b1c4e-p256-x86_64-asm.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/81d9a39ddc6b1c4e-p256_beeu-x86_64-asm.o,source=/81d9a39ddc6b1c4e-p256_beeu-x86_64-asm.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/81d9a39ddc6b1c4e-rdrand-x86_64.o,source=/81d9a39ddc6b1c4e-rdrand-x86_64.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/81d9a39ddc6b1c4e-rsaz-2k-avx512.o,source=/81d9a39ddc6b1c4e-rsaz-2k-avx512.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/81d9a39ddc6b1c4e-rsaz-3k-avx512.o,source=/81d9a39ddc6b1c4e-rsaz-3k-avx512.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/81d9a39ddc6b1c4e-rsaz-4k-avx512.o,source=/81d9a39ddc6b1c4e-rsaz-4k-avx512.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/81d9a39ddc6b1c4e-rsaz-avx2.o,source=/81d9a39ddc6b1c4e-rsaz-avx2.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/81d9a39ddc6b1c4e-sha1-x86_64.o,source=/81d9a39ddc6b1c4e-sha1-x86_64.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/81d9a39ddc6b1c4e-sha256-x86_64.o,source=/81d9a39ddc6b1c4e-sha256-x86_64.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/81d9a39ddc6b1c4e-sha512-x86_64.o,source=/81d9a39ddc6b1c4e-sha512-x86_64.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/81d9a39ddc6b1c4e-vpaes-x86_64.o,source=/81d9a39ddc6b1c4e-vpaes-x86_64.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/81d9a39ddc6b1c4e-x86_64-mont.o,source=/81d9a39ddc6b1c4e-x86_64-mont.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/81d9a39ddc6b1c4e-x86_64-mont5.o,source=/81d9a39ddc6b1c4e-x86_64-mont5.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/86cc0a4f50e0e3bd-evp_do_all.o,source=/86cc0a4f50e0e3bd-evp_do_all.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/88572c8521602bd1-bignum_add_p521.o,source=/88572c8521602bd1-bignum_add_p521.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/88572c8521602bd1-bignum_fromlebytes_p521.o,source=/88572c8521602bd1-bignum_fromlebytes_p521.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/88572c8521602bd1-bignum_inv_p521.o,source=/88572c8521602bd1-bignum_inv_p521.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/88572c8521602bd1-bignum_mul_p521.o,source=/88572c8521602bd1-bignum_mul_p521.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/88572c8521602bd1-bignum_mul_p521_alt.o,source=/88572c8521602bd1-bignum_mul_p521_alt.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/88572c8521602bd1-bignum_neg_p521.o,source=/88572c8521602bd1-bignum_neg_p521.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/88572c8521602bd1-bignum_sqr_p521.o,source=/88572c8521602bd1-bignum_sqr_p521.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/88572c8521602bd1-bignum_sqr_p521_alt.o,source=/88572c8521602bd1-bignum_sqr_p521_alt.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/88572c8521602bd1-bignum_sub_p521.o,source=/88572c8521602bd1-bignum_sub_p521.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/88572c8521602bd1-bignum_tolebytes_p521.o,source=/88572c8521602bd1-bignum_tolebytes_p521.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/88572c8521602bd1-p521_jdouble.o,source=/88572c8521602bd1-p521_jdouble.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/88572c8521602bd1-p521_jdouble_alt.o,source=/88572c8521602bd1-p521_jdouble_alt.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/88572c8521602bd1-p521_jscalarmul.o,source=/88572c8521602bd1-p521_jscalarmul.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/88572c8521602bd1-p521_jscalarmul_alt.o,source=/88572c8521602bd1-p521_jscalarmul_alt.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/89981633f66afe17-cipher_extra.o,source=/89981633f66afe17-cipher_extra.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/89981633f66afe17-derive_key.o,source=/89981633f66afe17-derive_key.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/89981633f66afe17-e_aes_cbc_hmac_sha1.o,source=/89981633f66afe17-e_aes_cbc_hmac_sha1.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/89981633f66afe17-e_aes_cbc_hmac_sha256.o,source=/89981633f66afe17-e_aes_cbc_hmac_sha256.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/89981633f66afe17-e_aesctrhmac.o,source=/89981633f66afe17-e_aesctrhmac.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/89981633f66afe17-e_aesgcmsiv.o,source=/89981633f66afe17-e_aesgcmsiv.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/89981633f66afe17-e_chacha20poly1305.o,source=/89981633f66afe17-e_chacha20poly1305.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/89981633f66afe17-e_des.o,source=/89981633f66afe17-e_des.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/89981633f66afe17-e_null.o,source=/89981633f66afe17-e_null.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/89981633f66afe17-e_rc2.o,source=/89981633f66afe17-e_rc2.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/89981633f66afe17-e_rc4.o,source=/89981633f66afe17-e_rc4.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/89981633f66afe17-e_tls.o,source=/89981633f66afe17-e_tls.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/89981633f66afe17-tls_cbc.o,source=/89981633f66afe17-tls_cbc.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/8f1694c3e3041570-bignum_montinv_p256.o,source=/8f1694c3e3041570-bignum_montinv_p256.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/8f1694c3e3041570-p256_montjscalarmul.o,source=/8f1694c3e3041570-p256_montjscalarmul.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/8f1694c3e3041570-p256_montjscalarmul_alt.o,source=/8f1694c3e3041570-p256_montjscalarmul_alt.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/904ef411c1476e9d-cipher.o,source=/904ef411c1476e9d-cipher.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/925ae38753d351a6-pool.o,source=/925ae38753d351a6-pool.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/a3e95cd5f24d649a-err.o,source=/a3e95cd5f24d649a-err.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/a4677c68e4880270-buf.o,source=/a4677c68e4880270-buf.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/a4a065efb8ac7b35-cast.o,source=/a4a065efb8ac7b35-cast.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/a4a065efb8ac7b35-cast_tables.o,source=/a4a065efb8ac7b35-cast_tables.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/a6455f51a2435c3f-chacha.o,source=/a6455f51a2435c3f-chacha.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/a8d01793eb1214d2-poly_rq_mul.o,source=/a8d01793eb1214d2-poly_rq_mul.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ad45968d24b0237e-base64.o,source=/ad45968d24b0237e-base64.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/b0fd2550ab09b04e-rsa_asn1.o,source=/b0fd2550ab09b04e-rsa_asn1.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/b0fd2550ab09b04e-rsa_crypt.o,source=/b0fd2550ab09b04e-rsa_crypt.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/b0fd2550ab09b04e-rsa_print.o,source=/b0fd2550ab09b04e-rsa_print.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/b0fd2550ab09b04e-rsassa_pss_asn1.o,source=/b0fd2550ab09b04e-rsassa_pss_asn1.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/b129d77c83f8bbf0-trampoline-x86_64.o,source=/b129d77c83f8bbf0-trampoline-x86_64.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/bc1b343226bc6a17-a_bitstr.o,source=/bc1b343226bc6a17-a_bitstr.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/bc1b343226bc6a17-a_bool.o,source=/bc1b343226bc6a17-a_bool.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/bc1b343226bc6a17-a_d2i_fp.o,source=/bc1b343226bc6a17-a_d2i_fp.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/bc1b343226bc6a17-a_dup.o,source=/bc1b343226bc6a17-a_dup.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/bc1b343226bc6a17-a_gentm.o,source=/bc1b343226bc6a17-a_gentm.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/bc1b343226bc6a17-a_i2d_fp.o,source=/bc1b343226bc6a17-a_i2d_fp.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/bc1b343226bc6a17-a_int.o,source=/bc1b343226bc6a17-a_int.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/bc1b343226bc6a17-a_mbstr.o,source=/bc1b343226bc6a17-a_mbstr.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/bc1b343226bc6a17-a_object.o,source=/bc1b343226bc6a17-a_object.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/bc1b343226bc6a17-a_octet.o,source=/bc1b343226bc6a17-a_octet.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/bc1b343226bc6a17-a_strex.o,source=/bc1b343226bc6a17-a_strex.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/bc1b343226bc6a17-a_strnid.o,source=/bc1b343226bc6a17-a_strnid.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/bc1b343226bc6a17-a_time.o,source=/bc1b343226bc6a17-a_time.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/bc1b343226bc6a17-a_type.o,source=/bc1b343226bc6a17-a_type.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/bc1b343226bc6a17-a_utctm.o,source=/bc1b343226bc6a17-a_utctm.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/bc1b343226bc6a17-a_utf8.o,source=/bc1b343226bc6a17-a_utf8.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/bc1b343226bc6a17-asn1_lib.o,source=/bc1b343226bc6a17-asn1_lib.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/bc1b343226bc6a17-asn1_par.o,source=/bc1b343226bc6a17-asn1_par.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/bc1b343226bc6a17-asn_pack.o,source=/bc1b343226bc6a17-asn_pack.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/bc1b343226bc6a17-f_int.o,source=/bc1b343226bc6a17-f_int.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/bc1b343226bc6a17-f_string.o,source=/bc1b343226bc6a17-f_string.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/bc1b343226bc6a17-posix_time.o,source=/bc1b343226bc6a17-posix_time.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/bc1b343226bc6a17-tasn_dec.o,source=/bc1b343226bc6a17-tasn_dec.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/bc1b343226bc6a17-tasn_enc.o,source=/bc1b343226bc6a17-tasn_enc.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/bc1b343226bc6a17-tasn_fre.o,source=/bc1b343226bc6a17-tasn_fre.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/bc1b343226bc6a17-tasn_new.o,source=/bc1b343226bc6a17-tasn_new.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/bc1b343226bc6a17-tasn_typ.o,source=/bc1b343226bc6a17-tasn_typ.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/bc1b343226bc6a17-tasn_utl.o,source=/bc1b343226bc6a17-tasn_utl.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/c1300545a7d60e2b-dh_asn1.o,source=/c1300545a7d60e2b-dh_asn1.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/c1300545a7d60e2b-params.o,source=/c1300545a7d60e2b-params.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/c2f744a0f6403e0c-err_data.o,source=/c2f744a0f6403e0c-err_data.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/c4fcddba145918af-asn1_compat.o,source=/c4fcddba145918af-asn1_compat.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/c4fcddba145918af-ber.o,source=/c4fcddba145918af-ber.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/c4fcddba145918af-cbb.o,source=/c4fcddba145918af-cbb.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/c4fcddba145918af-cbs.o,source=/c4fcddba145918af-cbs.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/c4fcddba145918af-unicode.o,source=/c4fcddba145918af-unicode.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/c7e9326d9b5d7de8-blowfish.o,source=/c7e9326d9b5d7de8-blowfish.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/caa8b30982b4915c-ocsp_asn.o,source=/caa8b30982b4915c-ocsp_asn.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/caa8b30982b4915c-ocsp_client.o,source=/caa8b30982b4915c-ocsp_client.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/caa8b30982b4915c-ocsp_extension.o,source=/caa8b30982b4915c-ocsp_extension.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/caa8b30982b4915c-ocsp_http.o,source=/caa8b30982b4915c-ocsp_http.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/caa8b30982b4915c-ocsp_lib.o,source=/caa8b30982b4915c-ocsp_lib.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/caa8b30982b4915c-ocsp_print.o,source=/caa8b30982b4915c-ocsp_print.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/caa8b30982b4915c-ocsp_server.o,source=/caa8b30982b4915c-ocsp_server.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/caa8b30982b4915c-ocsp_verify.o,source=/caa8b30982b4915c-ocsp_verify.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/d7fed99e8aa5a9b1-rc4.o,source=/d7fed99e8aa5a9b1-rc4.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/da5030c6f3330e8d-des.o,source=/da5030c6f3330e8d-des.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/db3b6bfb95261072-rust_wrapper.o,source=/db3b6bfb95261072-rust_wrapper.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/dcb7d53a9be33b0c-engine.o,source=/dcb7d53a9be33b0c-engine.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/dfe446faf29f8012-ec_asn1.o,source=/dfe446faf29f8012-ec_asn1.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/dfe446faf29f8012-ec_derive.o,source=/dfe446faf29f8012-ec_derive.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/dfe446faf29f8012-hash_to_curve.o,source=/dfe446faf29f8012-hash_to_curve.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/e3caa0b8b118742c-pkcs7.o,source=/e3caa0b8b118742c-pkcs7.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/e3caa0b8b118742c-pkcs7_asn1.o,source=/e3caa0b8b118742c-pkcs7_asn1.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/e3caa0b8b118742c-pkcs7_x509.o,source=/e3caa0b8b118742c-pkcs7_x509.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/e4ecb171c489b811-conf.o,source=/e4ecb171c489b811-conf.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/e616dc00b7af72b9-intt.o,source=/e616dc00b7af72b9-intt.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/e616dc00b7af72b9-mulcache_compute.o,source=/e616dc00b7af72b9-mulcache_compute.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/e616dc00b7af72b9-ntt.o,source=/e616dc00b7af72b9-ntt.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/e616dc00b7af72b9-nttfrombytes.o,source=/e616dc00b7af72b9-nttfrombytes.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/e616dc00b7af72b9-ntttobytes.o,source=/e616dc00b7af72b9-ntttobytes.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/e616dc00b7af72b9-nttunpack.o,source=/e616dc00b7af72b9-nttunpack.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/e616dc00b7af72b9-polyvec_basemul_acc_montgomery_cached_asm_k2.o,source=/e616dc00b7af72b9-polyvec_basemul_acc_montgomery_cached_asm_k2.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/e616dc00b7af72b9-polyvec_basemul_acc_montgomery_cached_asm_k3.o,source=/e616dc00b7af72b9-polyvec_basemul_acc_montgomery_cached_asm_k3.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/e616dc00b7af72b9-polyvec_basemul_acc_montgomery_cached_asm_k4.o,source=/e616dc00b7af72b9-polyvec_basemul_acc_montgomery_cached_asm_k4.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/e616dc00b7af72b9-reduce.o,source=/e616dc00b7af72b9-reduce.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/e616dc00b7af72b9-rej_uniform_asm.o,source=/e616dc00b7af72b9-rej_uniform_asm.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/e616dc00b7af72b9-tomont.o,source=/e616dc00b7af72b9-tomont.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/e71c6558e17b1ce7-digest_extra.o,source=/e71c6558e17b1ce7-digest_extra.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ea2b51a0b6630529-lhash.o,source=/ea2b51a0b6630529-lhash.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-a_digest.o,source=/ebcd52e9457b6221-a_digest.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-a_sign.o,source=/ebcd52e9457b6221-a_sign.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-a_verify.o,source=/ebcd52e9457b6221-a_verify.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-algorithm.o,source=/ebcd52e9457b6221-algorithm.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-asn1_gen.o,source=/ebcd52e9457b6221-asn1_gen.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-by_dir.o,source=/ebcd52e9457b6221-by_dir.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-by_file.o,source=/ebcd52e9457b6221-by_file.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-i2d_pr.o,source=/ebcd52e9457b6221-i2d_pr.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-name_print.o,source=/ebcd52e9457b6221-name_print.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-policy.o,source=/ebcd52e9457b6221-policy.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-rsa_pss.o,source=/ebcd52e9457b6221-rsa_pss.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-t_crl.o,source=/ebcd52e9457b6221-t_crl.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-t_req.o,source=/ebcd52e9457b6221-t_req.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-t_x509.o,source=/ebcd52e9457b6221-t_x509.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-t_x509a.o,source=/ebcd52e9457b6221-t_x509a.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-v3_akey.o,source=/ebcd52e9457b6221-v3_akey.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-v3_akeya.o,source=/ebcd52e9457b6221-v3_akeya.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-v3_alt.o,source=/ebcd52e9457b6221-v3_alt.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-v3_bcons.o,source=/ebcd52e9457b6221-v3_bcons.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-v3_bitst.o,source=/ebcd52e9457b6221-v3_bitst.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-v3_conf.o,source=/ebcd52e9457b6221-v3_conf.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-v3_cpols.o,source=/ebcd52e9457b6221-v3_cpols.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-v3_crld.o,source=/ebcd52e9457b6221-v3_crld.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-v3_enum.o,source=/ebcd52e9457b6221-v3_enum.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-v3_extku.o,source=/ebcd52e9457b6221-v3_extku.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-v3_genn.o,source=/ebcd52e9457b6221-v3_genn.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-v3_ia5.o,source=/ebcd52e9457b6221-v3_ia5.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-v3_info.o,source=/ebcd52e9457b6221-v3_info.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-v3_int.o,source=/ebcd52e9457b6221-v3_int.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-v3_lib.o,source=/ebcd52e9457b6221-v3_lib.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-v3_ncons.o,source=/ebcd52e9457b6221-v3_ncons.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-v3_ocsp.o,source=/ebcd52e9457b6221-v3_ocsp.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-v3_pcons.o,source=/ebcd52e9457b6221-v3_pcons.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-v3_pmaps.o,source=/ebcd52e9457b6221-v3_pmaps.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-v3_prn.o,source=/ebcd52e9457b6221-v3_prn.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-v3_purp.o,source=/ebcd52e9457b6221-v3_purp.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-v3_skey.o,source=/ebcd52e9457b6221-v3_skey.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-v3_utl.o,source=/ebcd52e9457b6221-v3_utl.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-x509.o,source=/ebcd52e9457b6221-x509.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-x509_att.o,source=/ebcd52e9457b6221-x509_att.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-x509_cmp.o,source=/ebcd52e9457b6221-x509_cmp.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-x509_d2.o,source=/ebcd52e9457b6221-x509_d2.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-x509_def.o,source=/ebcd52e9457b6221-x509_def.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-x509_ext.o,source=/ebcd52e9457b6221-x509_ext.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-x509_lu.o,source=/ebcd52e9457b6221-x509_lu.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-x509_obj.o,source=/ebcd52e9457b6221-x509_obj.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-x509_req.o,source=/ebcd52e9457b6221-x509_req.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-x509_set.o,source=/ebcd52e9457b6221-x509_set.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-x509_trs.o,source=/ebcd52e9457b6221-x509_trs.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-x509_txt.o,source=/ebcd52e9457b6221-x509_txt.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-x509_v3.o,source=/ebcd52e9457b6221-x509_v3.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-x509_vfy.o,source=/ebcd52e9457b6221-x509_vfy.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-x509_vpm.o,source=/ebcd52e9457b6221-x509_vpm.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-x509cset.o,source=/ebcd52e9457b6221-x509cset.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-x509name.o,source=/ebcd52e9457b6221-x509name.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-x509rset.o,source=/ebcd52e9457b6221-x509rset.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-x509spki.o,source=/ebcd52e9457b6221-x509spki.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-x_algor.o,source=/ebcd52e9457b6221-x_algor.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-x_all.o,source=/ebcd52e9457b6221-x_all.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-x_attrib.o,source=/ebcd52e9457b6221-x_attrib.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-x_crl.o,source=/ebcd52e9457b6221-x_crl.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-x_exten.o,source=/ebcd52e9457b6221-x_exten.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-x_name.o,source=/ebcd52e9457b6221-x_name.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-x_pubkey.o,source=/ebcd52e9457b6221-x_pubkey.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-x_req.o,source=/ebcd52e9457b6221-x_req.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-x_sig.o,source=/ebcd52e9457b6221-x_sig.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-x_spki.o,source=/ebcd52e9457b6221-x_spki.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-x_val.o,source=/ebcd52e9457b6221-x_val.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-x_x509.o,source=/ebcd52e9457b6221-x_x509.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-x_x509a.o,source=/ebcd52e9457b6221-x_x509a.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/f8e4fd781484bd36-bcm.o,source=/f8e4fd781484bd36-bcm.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/f8e4fd781484bd36-fips_shared_support.o,source=/f8e4fd781484bd36-fips_shared_support.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/fb1f39df2ea6f08f-dsa.o,source=/fb1f39df2ea6f08f-dsa.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/fb1f39df2ea6f08f-dsa_asn1.o,source=/fb1f39df2ea6f08f-dsa_asn1.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/fe5b6d61933e4a91-fips202.o,source=/fe5b6d61933e4a91-fips202.o \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/flag_check,source=/flag_check \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/flag_check.c,source=/flag_check.c \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libaws_lc_0_32_2_crypto.a,source=/libaws_lc_0_32_2_crypto.a \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/openssl,source=/openssl \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/aead.h,source=/aead.h \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/aes.h,source=/aes.h \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/arm_arch.h,source=/arm_arch.h \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/asm_base.h,source=/asm_base.h \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/asn1.h,source=/asn1.h \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/asn1_mac.h,source=/asn1_mac.h \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/asn1t.h,source=/asn1t.h \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/base.h,source=/base.h \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/base.h.in,source=/base.h.in \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/base64.h,source=/base64.h \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/bio.h,source=/bio.h \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/blake2.h,source=/blake2.h \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/blowfish.h,source=/blowfish.h \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/bn.h,source=/bn.h \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/boringssl_prefix_symbols.h,source=/boringssl_prefix_symbols.h \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/boringssl_prefix_symbols_asm.h,source=/boringssl_prefix_symbols_asm.h \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/boringssl_prefix_symbols_nasm.inc,source=/boringssl_prefix_symbols_nasm.inc \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/buf.h,source=/buf.h \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/buffer.h,source=/buffer.h \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/bytestring.h,source=/bytestring.h \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/chacha.h,source=/chacha.h \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/cipher.h,source=/cipher.h \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/cmac.h,source=/cmac.h \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/conf.h,source=/conf.h \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/cpu.h,source=/cpu.h \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/crypto.h,source=/crypto.h \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ctrdrbg.h,source=/ctrdrbg.h \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/curve25519.h,source=/curve25519.h \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/des.h,source=/des.h \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/dh.h,source=/dh.h \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/digest.h,source=/digest.h \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/dsa.h,source=/dsa.h \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/dtls1.h,source=/dtls1.h \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/e_os2.h,source=/e_os2.h \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ec.h,source=/ec.h \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ec_key.h,source=/ec_key.h \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ecdh.h,source=/ecdh.h \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ecdsa.h,source=/ecdsa.h \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/engine.h,source=/engine.h \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/err.h,source=/err.h \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/evp.h,source=/evp.h \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/evp_errors.h,source=/evp_errors.h \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ex_data.h,source=/ex_data.h \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/experimental,source=/experimental \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/kem_deterministic_api.h,source=/kem_deterministic_api.h \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/hkdf.h,source=/hkdf.h \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/hmac.h,source=/hmac.h \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/hpke.h,source=/hpke.h \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/hrss.h,source=/hrss.h \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/is_awslc.h,source=/is_awslc.h \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/kdf.h,source=/kdf.h \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/lhash.h,source=/lhash.h \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/md4.h,source=/md4.h \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/md5.h,source=/md5.h \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/mem.h,source=/mem.h \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/nid.h,source=/nid.h \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/obj.h,source=/obj.h \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/obj_mac.h,source=/obj_mac.h \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/objects.h,source=/objects.h \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ocsp.h,source=/ocsp.h \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/opensslconf.h,source=/opensslconf.h \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/opensslv.h,source=/opensslv.h \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/opensslv.h.in,source=/opensslv.h.in \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ossl_typ.h,source=/ossl_typ.h \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/pem.h,source=/pem.h \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/pkcs12.h,source=/pkcs12.h \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/pkcs7.h,source=/pkcs7.h \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/pkcs8.h,source=/pkcs8.h \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/poly1305.h,source=/poly1305.h \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/pool.h,source=/pool.h \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/posix_time.h,source=/posix_time.h \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/rand.h,source=/rand.h \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/rc4.h,source=/rc4.h \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ripemd.h,source=/ripemd.h \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/rsa.h,source=/rsa.h \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/safestack.h,source=/safestack.h \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/service_indicator.h,source=/service_indicator.h \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/sha.h,source=/sha.h \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/siphash.h,source=/siphash.h \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/span.h,source=/span.h \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/sshkdf.h,source=/sshkdf.h \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ssl.h,source=/ssl.h \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ssl3.h,source=/ssl3.h \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/stack.h,source=/stack.h \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/target.h,source=/target.h \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/thread.h,source=/thread.h \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/time.h,source=/time.h \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/tls1.h,source=/tls1.h \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/trust_token.h,source=/trust_token.h \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/type_check.h,source=/type_check.h \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ui.h,source=/ui.h \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/x509.h,source=/x509.h \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/x509_vfy.h,source=/x509_vfy.h \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/x509v3.h,source=/x509v3.h \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/x509v3_errors.h,source=/x509v3_errors.h \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/rust_wrapper.h,source=/rust_wrapper.h \
+  --mount=from=out-d2948f7c0c8497b1,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libfind_msvc_tools-d2948f7c0c8497b1.rlib,source=/libfind_msvc_tools-d2948f7c0c8497b1.rlib \
+  --mount=from=out-d2948f7c0c8497b1,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libfind_msvc_tools-d2948f7c0c8497b1.rmeta,source=/libfind_msvc_tools-d2948f7c0c8497b1.rmeta \
+  --mount=from=out-4dc141be22bbffce,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libjobserver-4dc141be22bbffce.rlib,source=/libjobserver-4dc141be22bbffce.rlib \
+  --mount=from=out-4dc141be22bbffce,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libjobserver-4dc141be22bbffce.rmeta,source=/libjobserver-4dc141be22bbffce.rmeta \
+  --mount=from=out-60426161aa87c673,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibc-60426161aa87c673.rlib,source=/liblibc-60426161aa87c673.rlib \
+  --mount=from=out-60426161aa87c673,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibc-60426161aa87c673.rmeta,source=/liblibc-60426161aa87c673.rmeta \
+  --mount=from=out-7560e7c5c88ec4c4,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/build_script_build-7560e7c5c88ec4c4,source=/build_script_build-7560e7c5c88ec4c4 \
+  --mount=from=out-b166d1c75d83103c,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libshlex-b166d1c75d83103c.rlib,source=/libshlex-b166d1c75d83103c.rlib \
+  --mount=from=out-b166d1c75d83103c,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libshlex-b166d1c75d83103c.rmeta,source=/libshlex-b166d1c75d83103c.rmeta \
+  --mount=from=out-336c2d9100ab92f8,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcc-336c2d9100ab92f8.rlib,source=/libcc-336c2d9100ab92f8.rlib \
+  --mount=from=out-336c2d9100ab92f8,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcc-336c2d9100ab92f8.rmeta,source=/libcc-336c2d9100ab92f8.rmeta \
+  --mount=from=out-3ff4fdb389eab124,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcmake-3ff4fdb389eab124.rlib,source=/libcmake-3ff4fdb389eab124.rlib \
+  --mount=from=out-3ff4fdb389eab124,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcmake-3ff4fdb389eab124.rmeta,source=/libcmake-3ff4fdb389eab124.rmeta \
+  --mount=from=out-25a6bb4144c31f83,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libdunce-25a6bb4144c31f83.rlib,source=/libdunce-25a6bb4144c31f83.rlib \
+  --mount=from=out-25a6bb4144c31f83,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libdunce-25a6bb4144c31f83.rmeta,source=/libdunce-25a6bb4144c31f83.rmeta \
+  --mount=from=out-19400729ba85cd55,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libfs_extra-19400729ba85cd55.rlib,source=/libfs_extra-19400729ba85cd55.rlib \
+  --mount=from=out-19400729ba85cd55,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libfs_extra-19400729ba85cd55.rmeta,source=/libfs_extra-19400729ba85cd55.rmeta \
+  --mount=from=out-d905bd04d466c2b4,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcfg_if-d905bd04d466c2b4.rlib,source=/libcfg_if-d905bd04d466c2b4.rlib \
+  --mount=from=out-d905bd04d466c2b4,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcfg_if-d905bd04d466c2b4.rmeta,source=/libcfg_if-d905bd04d466c2b4.rmeta \
+  --mount=from=out-bcbfd880a9747f76,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibloading-bcbfd880a9747f76.rlib,source=/liblibloading-bcbfd880a9747f76.rlib \
+  --mount=from=out-bcbfd880a9747f76,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibloading-bcbfd880a9747f76.rmeta,source=/liblibloading-bcbfd880a9747f76.rmeta \
+  --mount=from=out-b91f62695d1e67bd,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/build_script_main-b91f62695d1e67bd,source=/build_script_main-b91f62695d1e67bd \
+  --mount=from=out-fd233fb45e407496,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libzeroize-fd233fb45e407496.rlib,source=/libzeroize-fd233fb45e407496.rlib \
+  --mount=from=out-fd233fb45e407496,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libzeroize-fd233fb45e407496.rmeta,source=/libzeroize-fd233fb45e407496.rmeta \
+  --mount=from=out-7ef21a73dd92a44b,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-rs-7ef21a73dd92a44b/out,source=/ \
+    env CARGO="$(which cargo)" \
+        CARGO_CRATE_NAME=aws_lc_rs \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.14.1 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.14.1/Cargo.toml \
+        CARGO_PKG_AUTHORS=AWS-LibCrypto \
+        CARGO_PKG_DESCRIPTION=aws-lc-rs' is a cryptographic library using AWS-LC for its cryptographic operations. This library strives to be API-compatible with the popular Rust library named ring.' \
+        CARGO_PKG_HOMEPAGE=https'://github.com/aws/aws-lc-rs' \
+        CARGO_PKG_LICENSE=ISC' AND (Apache-2.0 OR ISC)' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=aws-lc-rs \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/aws/aws-lc-rs' \
+        CARGO_PKG_RUST_VERSION=1.70.0 \
+        CARGO_PKG_VERSION=1.14.1 \
+        CARGO_PKG_VERSION_MAJOR=1 \
+        CARGO_PKG_VERSION_MINOR=14 \
+        CARGO_PKG_VERSION_PATCH=1 \
+        CARGO_PKG_VERSION_PRE= \
+        OUT_DIR=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-rs-7ef21a73dd92a44b/out \
+        CARGOGREEN=1 \
+      rustc '--crate-name' 'aws_lc_rs' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="aws-lc-sys"' '--cfg' 'feature="prebuilt-nasm"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "asan", "aws-lc-sys", "bindgen", "default", "fips", "non-fips", "prebuilt-nasm", "ring-io", "ring-sig-verify", "test_logging", "unstable"))' '-C' 'metadata=a340ec5982025e66' '-C' 'extra-filename=-90227bfec647f88b' '--out-dir' '/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' '--extern' 'aws_lc_sys=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libaws_lc_sys-135dbb753da3a4f4.rmeta' '--extern' 'zeroize=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libzeroize-fd233fb45e407496.rmeta' '--cap-lints' 'warn' '-L' 'native=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out' '--check-cfg' 'cfg(disable_slow_tests)' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.14.1/src/lib.rs \
+        1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-90227bfec647f88b-stdout \
+        2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-90227bfec647f88b-stderr \
+        || echo $? >/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-90227bfec647f88b-errcode\
+  ; find /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/*-90227bfec647f88b* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-90227bfec647f88b
+COPY --link --from=dep-n-aws-lc-rs-1.14.1-90227bfec647f88b /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/*-90227bfec647f88b* /
+
+# Pipe this file to:
+#  \
+#    <THIS_FILE
+
+## this = "90227bfec647f88b"
+## deps = [
+##     "135dbb753da3a4f4",
+##     "2d875791ad1d3d18",
+##     "d2948f7c0c8497b1",
+##     "4dc141be22bbffce",
+##     "60426161aa87c673",
+##     "99856d878c8e44ce",
+##     "7560e7c5c88ec4c4",
+##     "b166d1c75d83103c",
+##     "336c2d9100ab92f8",
+##     "3ff4fdb389eab124",
+##     "25a6bb4144c31f83",
+##     "19400729ba85cd55",
+##     "d905bd04d466c2b4",
+##     "bcbfd880a9747f76",
+##     "b91f62695d1e67bd",
+##     "fd233fb45e407496",
+##     "7ef21a73dd92a44b",
+##     "6215be1cd523c855",
+## ]
+## buildrs_results = [
+##     "2d875791ad1d3d18",
+##     "7ef21a73dd92a44b",
+## ]
+##
+## [[externs]]
+## from = "out-135dbb753da3a4f4"
+## xtern = "libaws_lc_sys-135dbb753da3a4f4.rlib"
+##
+## [[externs]]
+## from = "out-135dbb753da3a4f4"
+## xtern = "libaws_lc_sys-135dbb753da3a4f4.rmeta"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "001247bc65c2f5e5-cpucap.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "020bc241f4dae036-bignum_madd_n25519.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "020bc241f4dae036-bignum_madd_n25519_alt.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "020bc241f4dae036-bignum_mod_n25519.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "020bc241f4dae036-bignum_neg_p25519.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "020bc241f4dae036-curve25519_x25519.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "020bc241f4dae036-curve25519_x25519_alt.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "020bc241f4dae036-curve25519_x25519base.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "020bc241f4dae036-curve25519_x25519base_alt.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "020bc241f4dae036-edwards25519_decode.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "020bc241f4dae036-edwards25519_decode_alt.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "020bc241f4dae036-edwards25519_encode.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "020bc241f4dae036-edwards25519_scalarmulbase.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "020bc241f4dae036-edwards25519_scalarmulbase_alt.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "020bc241f4dae036-edwards25519_scalarmuldouble.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "020bc241f4dae036-edwards25519_scalarmuldouble_alt.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "056c1e7192c7090b-p5_pbev2.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "056c1e7192c7090b-pkcs8.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "056c1e7192c7090b-pkcs8_x509.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "0c919c82d61b4518-ecdsa_asn1.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "11289f19be935446-rsa_decrepit.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "175e87304cd4663c-cfb.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "199386740f3660f1-ripemd.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "1c7e26962210e9ee-kem_kyber.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "1c7e26962210e9ee-kyber1024r3_ref.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "1c7e26962210e9ee-kyber512r3_ref.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "1c7e26962210e9ee-kyber768r3_ref.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "1eca0b6fab589d4a-chacha-x86_64.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "27a075eab3d35364-pem_all.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "27a075eab3d35364-pem_info.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "27a075eab3d35364-pem_lib.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "27a075eab3d35364-pem_oth.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "27a075eab3d35364-pem_pk8.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "27a075eab3d35364-pem_pkey.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "27a075eab3d35364-pem_x509.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "27a075eab3d35364-pem_xaux.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "2d40dbbd793ef942-jitterentropy-base.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "2d40dbbd793ef942-jitterentropy-gcd.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "2d40dbbd793ef942-jitterentropy-health.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "2d40dbbd793ef942-jitterentropy-noise.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "2d40dbbd793ef942-jitterentropy-sha3.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "2d40dbbd793ef942-jitterentropy-timer.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "30a9a10d3f98970e-crypto.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "30a9a10d3f98970e-ex_data.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "30a9a10d3f98970e-mem.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "30a9a10d3f98970e-refcount_c11.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "30a9a10d3f98970e-refcount_lock.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "30a9a10d3f98970e-refcount_win.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "30a9a10d3f98970e-thread.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "30a9a10d3f98970e-thread_none.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "30a9a10d3f98970e-thread_pthread.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "30a9a10d3f98970e-thread_win.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "3f2f442030472042-base64_bio.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "4433246e317b5e42-bignum_add_p384.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "4433246e317b5e42-bignum_deamont_p384.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "4433246e317b5e42-bignum_deamont_p384_alt.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "4433246e317b5e42-bignum_littleendian_6.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "4433246e317b5e42-bignum_montinv_p384.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "4433246e317b5e42-bignum_montmul_p384.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "4433246e317b5e42-bignum_montmul_p384_alt.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "4433246e317b5e42-bignum_montsqr_p384.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "4433246e317b5e42-bignum_montsqr_p384_alt.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "4433246e317b5e42-bignum_neg_p384.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "4433246e317b5e42-bignum_nonzero_6.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "4433246e317b5e42-bignum_sub_p384.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "4433246e317b5e42-bignum_tomont_p384.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "4433246e317b5e42-bignum_tomont_p384_alt.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "4433246e317b5e42-p384_montjdouble.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "4433246e317b5e42-p384_montjdouble_alt.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "4433246e317b5e42-p384_montjscalarmul.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "4433246e317b5e42-p384_montjscalarmul_alt.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "45070f5a112d041b-fork_detect.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "45070f5a112d041b-snapsafe_detect.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "45070f5a112d041b-ube.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "4696e3d2cc941c84-pmbtoken.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "4696e3d2cc941c84-trust_token.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "4696e3d2cc941c84-voprf.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "46ab76b5467ff2b0-obj_decrepit.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "48649240ed88c783-siphash.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "4a91b32c84b73ad7-ecdh_extra.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "564c5311b313cdb2-aes128gcmsiv-x86_64.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "564c5311b313cdb2-aesni-sha1-x86_64.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "564c5311b313cdb2-aesni-sha256-x86_64.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "564c5311b313cdb2-chacha20_poly1305_x86_64.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "57454e98e6b3bf86-sha3_keccak_f1600.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "5d4700fda13603f0-poly1305.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "5d4700fda13603f0-poly1305_arm.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "5d4700fda13603f0-poly1305_vec.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "5da2666a73fb65eb-hrss.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "60df219e9fcbc210-stack.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "62e235b24f99f4ff-blake2.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "65fbbb68d007b209-hpke.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "6e6559d38d003e66-spake25519.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "6e8bb48415b74ed4-dh_decrepit.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "6f8e1f92835a38cb-x509_decrepit.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "7510312e0f5aa0be-evp_asn1.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "7510312e0f5aa0be-p_dh.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "7510312e0f5aa0be-p_dh_asn1.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "7510312e0f5aa0be-p_dsa.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "7510312e0f5aa0be-p_dsa_asn1.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "7510312e0f5aa0be-p_ec_asn1.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "7510312e0f5aa0be-p_ed25519_asn1.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "7510312e0f5aa0be-p_hmac_asn1.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "7510312e0f5aa0be-p_kem_asn1.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "7510312e0f5aa0be-p_methods.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "7510312e0f5aa0be-p_pqdsa_asn1.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "7510312e0f5aa0be-p_rsa_asn1.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "7510312e0f5aa0be-p_x25519.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "7510312e0f5aa0be-p_x25519_asn1.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "7510312e0f5aa0be-print.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "7510312e0f5aa0be-scrypt.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "7510312e0f5aa0be-sign.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "76322f89f5cc2d96-bio.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "76322f89f5cc2d96-bio_addr.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "76322f89f5cc2d96-bio_mem.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "76322f89f5cc2d96-connect.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "76322f89f5cc2d96-dgram.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "76322f89f5cc2d96-errno.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "76322f89f5cc2d96-fd.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "76322f89f5cc2d96-file.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "76322f89f5cc2d96-hexdump.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "76322f89f5cc2d96-md.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "76322f89f5cc2d96-pair.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "76322f89f5cc2d96-printf.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "76322f89f5cc2d96-socket.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "76322f89f5cc2d96-socket_helper.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "763c374fde874a6d-console.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "7a596fe31a02c0e2-bn_asn1.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "7a596fe31a02c0e2-convert.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "7ac4c9359514b807-obj.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "7ac4c9359514b807-obj_xref.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "7bf3e571b6558a6b-ccrandomgeneratebytes.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "7bf3e571b6558a6b-deterministic.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "7bf3e571b6558a6b-getentropy.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "7bf3e571b6558a6b-rand_extra.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "7bf3e571b6558a6b-snapsafe_fallback.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "7bf3e571b6558a6b-urandom.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "7bf3e571b6558a6b-windows.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "81d9a39ddc6b1c4e-aesni-gcm-avx512.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "81d9a39ddc6b1c4e-aesni-gcm-x86_64.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "81d9a39ddc6b1c4e-aesni-x86_64.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "81d9a39ddc6b1c4e-aesni-xts-avx512.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "81d9a39ddc6b1c4e-ghash-ssse3-x86_64.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "81d9a39ddc6b1c4e-ghash-x86_64.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "81d9a39ddc6b1c4e-md5-x86_64.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "81d9a39ddc6b1c4e-p256-x86_64-asm.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "81d9a39ddc6b1c4e-p256_beeu-x86_64-asm.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "81d9a39ddc6b1c4e-rdrand-x86_64.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "81d9a39ddc6b1c4e-rsaz-2k-avx512.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "81d9a39ddc6b1c4e-rsaz-3k-avx512.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "81d9a39ddc6b1c4e-rsaz-4k-avx512.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "81d9a39ddc6b1c4e-rsaz-avx2.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "81d9a39ddc6b1c4e-sha1-x86_64.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "81d9a39ddc6b1c4e-sha256-x86_64.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "81d9a39ddc6b1c4e-sha512-x86_64.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "81d9a39ddc6b1c4e-vpaes-x86_64.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "81d9a39ddc6b1c4e-x86_64-mont.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "81d9a39ddc6b1c4e-x86_64-mont5.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "86cc0a4f50e0e3bd-evp_do_all.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "88572c8521602bd1-bignum_add_p521.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "88572c8521602bd1-bignum_fromlebytes_p521.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "88572c8521602bd1-bignum_inv_p521.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "88572c8521602bd1-bignum_mul_p521.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "88572c8521602bd1-bignum_mul_p521_alt.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "88572c8521602bd1-bignum_neg_p521.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "88572c8521602bd1-bignum_sqr_p521.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "88572c8521602bd1-bignum_sqr_p521_alt.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "88572c8521602bd1-bignum_sub_p521.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "88572c8521602bd1-bignum_tolebytes_p521.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "88572c8521602bd1-p521_jdouble.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "88572c8521602bd1-p521_jdouble_alt.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "88572c8521602bd1-p521_jscalarmul.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "88572c8521602bd1-p521_jscalarmul_alt.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "89981633f66afe17-cipher_extra.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "89981633f66afe17-derive_key.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "89981633f66afe17-e_aes_cbc_hmac_sha1.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "89981633f66afe17-e_aes_cbc_hmac_sha256.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "89981633f66afe17-e_aesctrhmac.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "89981633f66afe17-e_aesgcmsiv.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "89981633f66afe17-e_chacha20poly1305.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "89981633f66afe17-e_des.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "89981633f66afe17-e_null.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "89981633f66afe17-e_rc2.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "89981633f66afe17-e_rc4.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "89981633f66afe17-e_tls.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "89981633f66afe17-tls_cbc.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "8f1694c3e3041570-bignum_montinv_p256.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "8f1694c3e3041570-p256_montjscalarmul.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "8f1694c3e3041570-p256_montjscalarmul_alt.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "904ef411c1476e9d-cipher.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "925ae38753d351a6-pool.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "a3e95cd5f24d649a-err.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "a4677c68e4880270-buf.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "a4a065efb8ac7b35-cast.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "a4a065efb8ac7b35-cast_tables.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "a6455f51a2435c3f-chacha.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "a8d01793eb1214d2-poly_rq_mul.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "ad45968d24b0237e-base64.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "b0fd2550ab09b04e-rsa_asn1.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "b0fd2550ab09b04e-rsa_crypt.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "b0fd2550ab09b04e-rsa_print.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "b0fd2550ab09b04e-rsassa_pss_asn1.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "b129d77c83f8bbf0-trampoline-x86_64.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "bc1b343226bc6a17-a_bitstr.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "bc1b343226bc6a17-a_bool.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "bc1b343226bc6a17-a_d2i_fp.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "bc1b343226bc6a17-a_dup.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "bc1b343226bc6a17-a_gentm.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "bc1b343226bc6a17-a_i2d_fp.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "bc1b343226bc6a17-a_int.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "bc1b343226bc6a17-a_mbstr.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "bc1b343226bc6a17-a_object.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "bc1b343226bc6a17-a_octet.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "bc1b343226bc6a17-a_strex.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "bc1b343226bc6a17-a_strnid.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "bc1b343226bc6a17-a_time.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "bc1b343226bc6a17-a_type.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "bc1b343226bc6a17-a_utctm.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "bc1b343226bc6a17-a_utf8.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "bc1b343226bc6a17-asn1_lib.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "bc1b343226bc6a17-asn1_par.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "bc1b343226bc6a17-asn_pack.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "bc1b343226bc6a17-f_int.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "bc1b343226bc6a17-f_string.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "bc1b343226bc6a17-posix_time.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "bc1b343226bc6a17-tasn_dec.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "bc1b343226bc6a17-tasn_enc.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "bc1b343226bc6a17-tasn_fre.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "bc1b343226bc6a17-tasn_new.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "bc1b343226bc6a17-tasn_typ.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "bc1b343226bc6a17-tasn_utl.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "c1300545a7d60e2b-dh_asn1.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "c1300545a7d60e2b-params.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "c2f744a0f6403e0c-err_data.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "c4fcddba145918af-asn1_compat.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "c4fcddba145918af-ber.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "c4fcddba145918af-cbb.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "c4fcddba145918af-cbs.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "c4fcddba145918af-unicode.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "c7e9326d9b5d7de8-blowfish.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "caa8b30982b4915c-ocsp_asn.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "caa8b30982b4915c-ocsp_client.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "caa8b30982b4915c-ocsp_extension.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "caa8b30982b4915c-ocsp_http.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "caa8b30982b4915c-ocsp_lib.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "caa8b30982b4915c-ocsp_print.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "caa8b30982b4915c-ocsp_server.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "caa8b30982b4915c-ocsp_verify.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "d7fed99e8aa5a9b1-rc4.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "da5030c6f3330e8d-des.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "db3b6bfb95261072-rust_wrapper.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "dcb7d53a9be33b0c-engine.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "dfe446faf29f8012-ec_asn1.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "dfe446faf29f8012-ec_derive.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "dfe446faf29f8012-hash_to_curve.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "e3caa0b8b118742c-pkcs7.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "e3caa0b8b118742c-pkcs7_asn1.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "e3caa0b8b118742c-pkcs7_x509.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "e4ecb171c489b811-conf.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "e616dc00b7af72b9-intt.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "e616dc00b7af72b9-mulcache_compute.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "e616dc00b7af72b9-ntt.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "e616dc00b7af72b9-nttfrombytes.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "e616dc00b7af72b9-ntttobytes.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "e616dc00b7af72b9-nttunpack.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "e616dc00b7af72b9-polyvec_basemul_acc_montgomery_cached_asm_k2.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "e616dc00b7af72b9-polyvec_basemul_acc_montgomery_cached_asm_k3.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "e616dc00b7af72b9-polyvec_basemul_acc_montgomery_cached_asm_k4.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "e616dc00b7af72b9-reduce.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "e616dc00b7af72b9-rej_uniform_asm.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "e616dc00b7af72b9-tomont.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "e71c6558e17b1ce7-digest_extra.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "ea2b51a0b6630529-lhash.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "ebcd52e9457b6221-a_digest.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "ebcd52e9457b6221-a_sign.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "ebcd52e9457b6221-a_verify.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "ebcd52e9457b6221-algorithm.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "ebcd52e9457b6221-asn1_gen.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "ebcd52e9457b6221-by_dir.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "ebcd52e9457b6221-by_file.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "ebcd52e9457b6221-i2d_pr.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "ebcd52e9457b6221-name_print.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "ebcd52e9457b6221-policy.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "ebcd52e9457b6221-rsa_pss.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "ebcd52e9457b6221-t_crl.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "ebcd52e9457b6221-t_req.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "ebcd52e9457b6221-t_x509.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "ebcd52e9457b6221-t_x509a.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "ebcd52e9457b6221-v3_akey.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "ebcd52e9457b6221-v3_akeya.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "ebcd52e9457b6221-v3_alt.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "ebcd52e9457b6221-v3_bcons.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "ebcd52e9457b6221-v3_bitst.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "ebcd52e9457b6221-v3_conf.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "ebcd52e9457b6221-v3_cpols.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "ebcd52e9457b6221-v3_crld.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "ebcd52e9457b6221-v3_enum.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "ebcd52e9457b6221-v3_extku.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "ebcd52e9457b6221-v3_genn.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "ebcd52e9457b6221-v3_ia5.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "ebcd52e9457b6221-v3_info.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "ebcd52e9457b6221-v3_int.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "ebcd52e9457b6221-v3_lib.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "ebcd52e9457b6221-v3_ncons.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "ebcd52e9457b6221-v3_ocsp.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "ebcd52e9457b6221-v3_pcons.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "ebcd52e9457b6221-v3_pmaps.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "ebcd52e9457b6221-v3_prn.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "ebcd52e9457b6221-v3_purp.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "ebcd52e9457b6221-v3_skey.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "ebcd52e9457b6221-v3_utl.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "ebcd52e9457b6221-x509.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "ebcd52e9457b6221-x509_att.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "ebcd52e9457b6221-x509_cmp.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "ebcd52e9457b6221-x509_d2.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "ebcd52e9457b6221-x509_def.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "ebcd52e9457b6221-x509_ext.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "ebcd52e9457b6221-x509_lu.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "ebcd52e9457b6221-x509_obj.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "ebcd52e9457b6221-x509_req.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "ebcd52e9457b6221-x509_set.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "ebcd52e9457b6221-x509_trs.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "ebcd52e9457b6221-x509_txt.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "ebcd52e9457b6221-x509_v3.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "ebcd52e9457b6221-x509_vfy.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "ebcd52e9457b6221-x509_vpm.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "ebcd52e9457b6221-x509cset.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "ebcd52e9457b6221-x509name.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "ebcd52e9457b6221-x509rset.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "ebcd52e9457b6221-x509spki.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "ebcd52e9457b6221-x_algor.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "ebcd52e9457b6221-x_all.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "ebcd52e9457b6221-x_attrib.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "ebcd52e9457b6221-x_crl.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "ebcd52e9457b6221-x_exten.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "ebcd52e9457b6221-x_name.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "ebcd52e9457b6221-x_pubkey.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "ebcd52e9457b6221-x_req.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "ebcd52e9457b6221-x_sig.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "ebcd52e9457b6221-x_spki.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "ebcd52e9457b6221-x_val.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "ebcd52e9457b6221-x_x509.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "ebcd52e9457b6221-x_x509a.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "f8e4fd781484bd36-bcm.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "f8e4fd781484bd36-fips_shared_support.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "fb1f39df2ea6f08f-dsa.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "fb1f39df2ea6f08f-dsa_asn1.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "fe5b6d61933e4a91-fips202.o"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "flag_check"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "flag_check.c"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "libaws_lc_0_32_2_crypto.a"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "openssl"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "aead.h"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "aes.h"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "arm_arch.h"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "asm_base.h"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "asn1.h"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "asn1_mac.h"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "asn1t.h"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "base.h"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "base.h.in"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "base64.h"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "bio.h"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "blake2.h"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "blowfish.h"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "bn.h"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "boringssl_prefix_symbols.h"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "boringssl_prefix_symbols_asm.h"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "boringssl_prefix_symbols_nasm.inc"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "buf.h"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "buffer.h"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "bytestring.h"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "chacha.h"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "cipher.h"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "cmac.h"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "conf.h"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "cpu.h"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "crypto.h"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "ctrdrbg.h"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "curve25519.h"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "des.h"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "dh.h"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "digest.h"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "dsa.h"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "dtls1.h"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "e_os2.h"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "ec.h"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "ec_key.h"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "ecdh.h"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "ecdsa.h"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "engine.h"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "err.h"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "evp.h"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "evp_errors.h"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "ex_data.h"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "experimental"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "kem_deterministic_api.h"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "hkdf.h"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "hmac.h"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "hpke.h"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "hrss.h"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "is_awslc.h"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "kdf.h"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "lhash.h"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "md4.h"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "md5.h"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "mem.h"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "nid.h"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "obj.h"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "obj_mac.h"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "objects.h"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "ocsp.h"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "opensslconf.h"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "opensslv.h"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "opensslv.h.in"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "ossl_typ.h"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "pem.h"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "pkcs12.h"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "pkcs7.h"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "pkcs8.h"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "poly1305.h"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "pool.h"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "posix_time.h"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "rand.h"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "rc4.h"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "ripemd.h"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "rsa.h"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "safestack.h"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "service_indicator.h"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "sha.h"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "siphash.h"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "span.h"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "sshkdf.h"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "ssl.h"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "ssl3.h"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "stack.h"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "target.h"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "thread.h"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "time.h"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "tls1.h"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "trust_token.h"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "type_check.h"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "ui.h"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "x509.h"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "x509_vfy.h"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "x509v3.h"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "x509v3_errors.h"
+##
+## [[externs]]
+## from = "out-2d875791ad1d3d18"
+## xtern = "rust_wrapper.h"
+##
+## [[externs]]
+## from = "out-d2948f7c0c8497b1"
+## xtern = "libfind_msvc_tools-d2948f7c0c8497b1.rlib"
+##
+## [[externs]]
+## from = "out-d2948f7c0c8497b1"
+## xtern = "libfind_msvc_tools-d2948f7c0c8497b1.rmeta"
+##
+## [[externs]]
+## from = "out-4dc141be22bbffce"
+## xtern = "libjobserver-4dc141be22bbffce.rlib"
+##
+## [[externs]]
+## from = "out-4dc141be22bbffce"
+## xtern = "libjobserver-4dc141be22bbffce.rmeta"
+##
+## [[externs]]
+## from = "out-60426161aa87c673"
+## xtern = "liblibc-60426161aa87c673.rlib"
+##
+## [[externs]]
+## from = "out-60426161aa87c673"
+## xtern = "liblibc-60426161aa87c673.rmeta"
+##
+## [[externs]]
+## from = "out-7560e7c5c88ec4c4"
+## xtern = "build_script_build-7560e7c5c88ec4c4"
+##
+## [[externs]]
+## from = "out-b166d1c75d83103c"
+## xtern = "libshlex-b166d1c75d83103c.rlib"
+##
+## [[externs]]
+## from = "out-b166d1c75d83103c"
+## xtern = "libshlex-b166d1c75d83103c.rmeta"
+##
+## [[externs]]
+## from = "out-336c2d9100ab92f8"
+## xtern = "libcc-336c2d9100ab92f8.rlib"
+##
+## [[externs]]
+## from = "out-336c2d9100ab92f8"
+## xtern = "libcc-336c2d9100ab92f8.rmeta"
+##
+## [[externs]]
+## from = "out-3ff4fdb389eab124"
+## xtern = "libcmake-3ff4fdb389eab124.rlib"
+##
+## [[externs]]
+## from = "out-3ff4fdb389eab124"
+## xtern = "libcmake-3ff4fdb389eab124.rmeta"
+##
+## [[externs]]
+## from = "out-25a6bb4144c31f83"
+## xtern = "libdunce-25a6bb4144c31f83.rlib"
+##
+## [[externs]]
+## from = "out-25a6bb4144c31f83"
+## xtern = "libdunce-25a6bb4144c31f83.rmeta"
+##
+## [[externs]]
+## from = "out-19400729ba85cd55"
+## xtern = "libfs_extra-19400729ba85cd55.rlib"
+##
+## [[externs]]
+## from = "out-19400729ba85cd55"
+## xtern = "libfs_extra-19400729ba85cd55.rmeta"
+##
+## [[externs]]
+## from = "out-d905bd04d466c2b4"
+## xtern = "libcfg_if-d905bd04d466c2b4.rlib"
+##
+## [[externs]]
+## from = "out-d905bd04d466c2b4"
+## xtern = "libcfg_if-d905bd04d466c2b4.rmeta"
+##
+## [[externs]]
+## from = "out-bcbfd880a9747f76"
+## xtern = "liblibloading-bcbfd880a9747f76.rlib"
+##
+## [[externs]]
+## from = "out-bcbfd880a9747f76"
+## xtern = "liblibloading-bcbfd880a9747f76.rmeta"
+##
+## [[externs]]
+## from = "out-b91f62695d1e67bd"
+## xtern = "build_script_main-b91f62695d1e67bd"
+##
+## [[externs]]
+## from = "out-fd233fb45e407496"
+## xtern = "libzeroize-fd233fb45e407496.rlib"
+##
+## [[externs]]
+## from = "out-fd233fb45e407496"
+## xtern = "libzeroize-fd233fb45e407496.rmeta"
+##
+## [[mounts]]
+## name = "out-7ef21a73dd92a44b"
+## src = "/"
+## dst = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-rs-7ef21a73dd92a44b/out"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
+##
+## [[stages]]
+##
+## [stages.Cratesio]
+## stage = "cratesio-aws-lc-rs-1.14.1"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.14.1"
+## name = "aws-lc-rs"
+## name_dash_version = "aws-lc-rs-1.14.1"
+## hash = "879b6c89592deb404ba4dc0ae6b58ffd1795c78991cbb5b8bc441c48a070440d"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "dep-n-aws-lc-rs-1.14.1-90227bfec647f88b"
+## script = '''
+## FROM rust-base AS dep-n-aws-lc-rs-1.14.1-90227bfec647f88b
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps
+## RUN \
+##   --mount=from=cratesio-aws-lc-rs-1.14.1,source=/aws-lc-rs-1.14.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.14.1 \
+##   --mount=from=out-135dbb753da3a4f4,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libaws_lc_sys-135dbb753da3a4f4.rlib,source=/libaws_lc_sys-135dbb753da3a4f4.rlib \
+##   --mount=from=out-135dbb753da3a4f4,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libaws_lc_sys-135dbb753da3a4f4.rmeta,source=/libaws_lc_sys-135dbb753da3a4f4.rmeta \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/001247bc65c2f5e5-cpucap.o,source=/001247bc65c2f5e5-cpucap.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/020bc241f4dae036-bignum_madd_n25519.o,source=/020bc241f4dae036-bignum_madd_n25519.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/020bc241f4dae036-bignum_madd_n25519_alt.o,source=/020bc241f4dae036-bignum_madd_n25519_alt.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/020bc241f4dae036-bignum_mod_n25519.o,source=/020bc241f4dae036-bignum_mod_n25519.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/020bc241f4dae036-bignum_neg_p25519.o,source=/020bc241f4dae036-bignum_neg_p25519.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/020bc241f4dae036-curve25519_x25519.o,source=/020bc241f4dae036-curve25519_x25519.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/020bc241f4dae036-curve25519_x25519_alt.o,source=/020bc241f4dae036-curve25519_x25519_alt.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/020bc241f4dae036-curve25519_x25519base.o,source=/020bc241f4dae036-curve25519_x25519base.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/020bc241f4dae036-curve25519_x25519base_alt.o,source=/020bc241f4dae036-curve25519_x25519base_alt.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/020bc241f4dae036-edwards25519_decode.o,source=/020bc241f4dae036-edwards25519_decode.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/020bc241f4dae036-edwards25519_decode_alt.o,source=/020bc241f4dae036-edwards25519_decode_alt.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/020bc241f4dae036-edwards25519_encode.o,source=/020bc241f4dae036-edwards25519_encode.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/020bc241f4dae036-edwards25519_scalarmulbase.o,source=/020bc241f4dae036-edwards25519_scalarmulbase.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/020bc241f4dae036-edwards25519_scalarmulbase_alt.o,source=/020bc241f4dae036-edwards25519_scalarmulbase_alt.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/020bc241f4dae036-edwards25519_scalarmuldouble.o,source=/020bc241f4dae036-edwards25519_scalarmuldouble.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/020bc241f4dae036-edwards25519_scalarmuldouble_alt.o,source=/020bc241f4dae036-edwards25519_scalarmuldouble_alt.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/056c1e7192c7090b-p5_pbev2.o,source=/056c1e7192c7090b-p5_pbev2.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/056c1e7192c7090b-pkcs8.o,source=/056c1e7192c7090b-pkcs8.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/056c1e7192c7090b-pkcs8_x509.o,source=/056c1e7192c7090b-pkcs8_x509.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/0c919c82d61b4518-ecdsa_asn1.o,source=/0c919c82d61b4518-ecdsa_asn1.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/11289f19be935446-rsa_decrepit.o,source=/11289f19be935446-rsa_decrepit.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/175e87304cd4663c-cfb.o,source=/175e87304cd4663c-cfb.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/199386740f3660f1-ripemd.o,source=/199386740f3660f1-ripemd.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/1c7e26962210e9ee-kem_kyber.o,source=/1c7e26962210e9ee-kem_kyber.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/1c7e26962210e9ee-kyber1024r3_ref.o,source=/1c7e26962210e9ee-kyber1024r3_ref.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/1c7e26962210e9ee-kyber512r3_ref.o,source=/1c7e26962210e9ee-kyber512r3_ref.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/1c7e26962210e9ee-kyber768r3_ref.o,source=/1c7e26962210e9ee-kyber768r3_ref.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/1eca0b6fab589d4a-chacha-x86_64.o,source=/1eca0b6fab589d4a-chacha-x86_64.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/27a075eab3d35364-pem_all.o,source=/27a075eab3d35364-pem_all.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/27a075eab3d35364-pem_info.o,source=/27a075eab3d35364-pem_info.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/27a075eab3d35364-pem_lib.o,source=/27a075eab3d35364-pem_lib.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/27a075eab3d35364-pem_oth.o,source=/27a075eab3d35364-pem_oth.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/27a075eab3d35364-pem_pk8.o,source=/27a075eab3d35364-pem_pk8.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/27a075eab3d35364-pem_pkey.o,source=/27a075eab3d35364-pem_pkey.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/27a075eab3d35364-pem_x509.o,source=/27a075eab3d35364-pem_x509.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/27a075eab3d35364-pem_xaux.o,source=/27a075eab3d35364-pem_xaux.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/2d40dbbd793ef942-jitterentropy-base.o,source=/2d40dbbd793ef942-jitterentropy-base.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/2d40dbbd793ef942-jitterentropy-gcd.o,source=/2d40dbbd793ef942-jitterentropy-gcd.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/2d40dbbd793ef942-jitterentropy-health.o,source=/2d40dbbd793ef942-jitterentropy-health.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/2d40dbbd793ef942-jitterentropy-noise.o,source=/2d40dbbd793ef942-jitterentropy-noise.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/2d40dbbd793ef942-jitterentropy-sha3.o,source=/2d40dbbd793ef942-jitterentropy-sha3.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/2d40dbbd793ef942-jitterentropy-timer.o,source=/2d40dbbd793ef942-jitterentropy-timer.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/30a9a10d3f98970e-crypto.o,source=/30a9a10d3f98970e-crypto.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/30a9a10d3f98970e-ex_data.o,source=/30a9a10d3f98970e-ex_data.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/30a9a10d3f98970e-mem.o,source=/30a9a10d3f98970e-mem.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/30a9a10d3f98970e-refcount_c11.o,source=/30a9a10d3f98970e-refcount_c11.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/30a9a10d3f98970e-refcount_lock.o,source=/30a9a10d3f98970e-refcount_lock.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/30a9a10d3f98970e-refcount_win.o,source=/30a9a10d3f98970e-refcount_win.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/30a9a10d3f98970e-thread.o,source=/30a9a10d3f98970e-thread.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/30a9a10d3f98970e-thread_none.o,source=/30a9a10d3f98970e-thread_none.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/30a9a10d3f98970e-thread_pthread.o,source=/30a9a10d3f98970e-thread_pthread.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/30a9a10d3f98970e-thread_win.o,source=/30a9a10d3f98970e-thread_win.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/3f2f442030472042-base64_bio.o,source=/3f2f442030472042-base64_bio.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/4433246e317b5e42-bignum_add_p384.o,source=/4433246e317b5e42-bignum_add_p384.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/4433246e317b5e42-bignum_deamont_p384.o,source=/4433246e317b5e42-bignum_deamont_p384.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/4433246e317b5e42-bignum_deamont_p384_alt.o,source=/4433246e317b5e42-bignum_deamont_p384_alt.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/4433246e317b5e42-bignum_littleendian_6.o,source=/4433246e317b5e42-bignum_littleendian_6.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/4433246e317b5e42-bignum_montinv_p384.o,source=/4433246e317b5e42-bignum_montinv_p384.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/4433246e317b5e42-bignum_montmul_p384.o,source=/4433246e317b5e42-bignum_montmul_p384.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/4433246e317b5e42-bignum_montmul_p384_alt.o,source=/4433246e317b5e42-bignum_montmul_p384_alt.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/4433246e317b5e42-bignum_montsqr_p384.o,source=/4433246e317b5e42-bignum_montsqr_p384.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/4433246e317b5e42-bignum_montsqr_p384_alt.o,source=/4433246e317b5e42-bignum_montsqr_p384_alt.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/4433246e317b5e42-bignum_neg_p384.o,source=/4433246e317b5e42-bignum_neg_p384.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/4433246e317b5e42-bignum_nonzero_6.o,source=/4433246e317b5e42-bignum_nonzero_6.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/4433246e317b5e42-bignum_sub_p384.o,source=/4433246e317b5e42-bignum_sub_p384.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/4433246e317b5e42-bignum_tomont_p384.o,source=/4433246e317b5e42-bignum_tomont_p384.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/4433246e317b5e42-bignum_tomont_p384_alt.o,source=/4433246e317b5e42-bignum_tomont_p384_alt.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/4433246e317b5e42-p384_montjdouble.o,source=/4433246e317b5e42-p384_montjdouble.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/4433246e317b5e42-p384_montjdouble_alt.o,source=/4433246e317b5e42-p384_montjdouble_alt.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/4433246e317b5e42-p384_montjscalarmul.o,source=/4433246e317b5e42-p384_montjscalarmul.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/4433246e317b5e42-p384_montjscalarmul_alt.o,source=/4433246e317b5e42-p384_montjscalarmul_alt.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/45070f5a112d041b-fork_detect.o,source=/45070f5a112d041b-fork_detect.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/45070f5a112d041b-snapsafe_detect.o,source=/45070f5a112d041b-snapsafe_detect.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/45070f5a112d041b-ube.o,source=/45070f5a112d041b-ube.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/4696e3d2cc941c84-pmbtoken.o,source=/4696e3d2cc941c84-pmbtoken.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/4696e3d2cc941c84-trust_token.o,source=/4696e3d2cc941c84-trust_token.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/4696e3d2cc941c84-voprf.o,source=/4696e3d2cc941c84-voprf.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/46ab76b5467ff2b0-obj_decrepit.o,source=/46ab76b5467ff2b0-obj_decrepit.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/48649240ed88c783-siphash.o,source=/48649240ed88c783-siphash.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/4a91b32c84b73ad7-ecdh_extra.o,source=/4a91b32c84b73ad7-ecdh_extra.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/564c5311b313cdb2-aes128gcmsiv-x86_64.o,source=/564c5311b313cdb2-aes128gcmsiv-x86_64.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/564c5311b313cdb2-aesni-sha1-x86_64.o,source=/564c5311b313cdb2-aesni-sha1-x86_64.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/564c5311b313cdb2-aesni-sha256-x86_64.o,source=/564c5311b313cdb2-aesni-sha256-x86_64.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/564c5311b313cdb2-chacha20_poly1305_x86_64.o,source=/564c5311b313cdb2-chacha20_poly1305_x86_64.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/57454e98e6b3bf86-sha3_keccak_f1600.o,source=/57454e98e6b3bf86-sha3_keccak_f1600.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/5d4700fda13603f0-poly1305.o,source=/5d4700fda13603f0-poly1305.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/5d4700fda13603f0-poly1305_arm.o,source=/5d4700fda13603f0-poly1305_arm.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/5d4700fda13603f0-poly1305_vec.o,source=/5d4700fda13603f0-poly1305_vec.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/5da2666a73fb65eb-hrss.o,source=/5da2666a73fb65eb-hrss.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/60df219e9fcbc210-stack.o,source=/60df219e9fcbc210-stack.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/62e235b24f99f4ff-blake2.o,source=/62e235b24f99f4ff-blake2.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/65fbbb68d007b209-hpke.o,source=/65fbbb68d007b209-hpke.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/6e6559d38d003e66-spake25519.o,source=/6e6559d38d003e66-spake25519.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/6e8bb48415b74ed4-dh_decrepit.o,source=/6e8bb48415b74ed4-dh_decrepit.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/6f8e1f92835a38cb-x509_decrepit.o,source=/6f8e1f92835a38cb-x509_decrepit.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/7510312e0f5aa0be-evp_asn1.o,source=/7510312e0f5aa0be-evp_asn1.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/7510312e0f5aa0be-p_dh.o,source=/7510312e0f5aa0be-p_dh.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/7510312e0f5aa0be-p_dh_asn1.o,source=/7510312e0f5aa0be-p_dh_asn1.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/7510312e0f5aa0be-p_dsa.o,source=/7510312e0f5aa0be-p_dsa.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/7510312e0f5aa0be-p_dsa_asn1.o,source=/7510312e0f5aa0be-p_dsa_asn1.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/7510312e0f5aa0be-p_ec_asn1.o,source=/7510312e0f5aa0be-p_ec_asn1.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/7510312e0f5aa0be-p_ed25519_asn1.o,source=/7510312e0f5aa0be-p_ed25519_asn1.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/7510312e0f5aa0be-p_hmac_asn1.o,source=/7510312e0f5aa0be-p_hmac_asn1.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/7510312e0f5aa0be-p_kem_asn1.o,source=/7510312e0f5aa0be-p_kem_asn1.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/7510312e0f5aa0be-p_methods.o,source=/7510312e0f5aa0be-p_methods.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/7510312e0f5aa0be-p_pqdsa_asn1.o,source=/7510312e0f5aa0be-p_pqdsa_asn1.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/7510312e0f5aa0be-p_rsa_asn1.o,source=/7510312e0f5aa0be-p_rsa_asn1.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/7510312e0f5aa0be-p_x25519.o,source=/7510312e0f5aa0be-p_x25519.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/7510312e0f5aa0be-p_x25519_asn1.o,source=/7510312e0f5aa0be-p_x25519_asn1.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/7510312e0f5aa0be-print.o,source=/7510312e0f5aa0be-print.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/7510312e0f5aa0be-scrypt.o,source=/7510312e0f5aa0be-scrypt.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/7510312e0f5aa0be-sign.o,source=/7510312e0f5aa0be-sign.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/76322f89f5cc2d96-bio.o,source=/76322f89f5cc2d96-bio.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/76322f89f5cc2d96-bio_addr.o,source=/76322f89f5cc2d96-bio_addr.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/76322f89f5cc2d96-bio_mem.o,source=/76322f89f5cc2d96-bio_mem.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/76322f89f5cc2d96-connect.o,source=/76322f89f5cc2d96-connect.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/76322f89f5cc2d96-dgram.o,source=/76322f89f5cc2d96-dgram.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/76322f89f5cc2d96-errno.o,source=/76322f89f5cc2d96-errno.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/76322f89f5cc2d96-fd.o,source=/76322f89f5cc2d96-fd.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/76322f89f5cc2d96-file.o,source=/76322f89f5cc2d96-file.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/76322f89f5cc2d96-hexdump.o,source=/76322f89f5cc2d96-hexdump.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/76322f89f5cc2d96-md.o,source=/76322f89f5cc2d96-md.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/76322f89f5cc2d96-pair.o,source=/76322f89f5cc2d96-pair.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/76322f89f5cc2d96-printf.o,source=/76322f89f5cc2d96-printf.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/76322f89f5cc2d96-socket.o,source=/76322f89f5cc2d96-socket.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/76322f89f5cc2d96-socket_helper.o,source=/76322f89f5cc2d96-socket_helper.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/763c374fde874a6d-console.o,source=/763c374fde874a6d-console.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/7a596fe31a02c0e2-bn_asn1.o,source=/7a596fe31a02c0e2-bn_asn1.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/7a596fe31a02c0e2-convert.o,source=/7a596fe31a02c0e2-convert.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/7ac4c9359514b807-obj.o,source=/7ac4c9359514b807-obj.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/7ac4c9359514b807-obj_xref.o,source=/7ac4c9359514b807-obj_xref.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/7bf3e571b6558a6b-ccrandomgeneratebytes.o,source=/7bf3e571b6558a6b-ccrandomgeneratebytes.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/7bf3e571b6558a6b-deterministic.o,source=/7bf3e571b6558a6b-deterministic.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/7bf3e571b6558a6b-getentropy.o,source=/7bf3e571b6558a6b-getentropy.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/7bf3e571b6558a6b-rand_extra.o,source=/7bf3e571b6558a6b-rand_extra.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/7bf3e571b6558a6b-snapsafe_fallback.o,source=/7bf3e571b6558a6b-snapsafe_fallback.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/7bf3e571b6558a6b-urandom.o,source=/7bf3e571b6558a6b-urandom.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/7bf3e571b6558a6b-windows.o,source=/7bf3e571b6558a6b-windows.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/81d9a39ddc6b1c4e-aesni-gcm-avx512.o,source=/81d9a39ddc6b1c4e-aesni-gcm-avx512.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/81d9a39ddc6b1c4e-aesni-gcm-x86_64.o,source=/81d9a39ddc6b1c4e-aesni-gcm-x86_64.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/81d9a39ddc6b1c4e-aesni-x86_64.o,source=/81d9a39ddc6b1c4e-aesni-x86_64.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/81d9a39ddc6b1c4e-aesni-xts-avx512.o,source=/81d9a39ddc6b1c4e-aesni-xts-avx512.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/81d9a39ddc6b1c4e-ghash-ssse3-x86_64.o,source=/81d9a39ddc6b1c4e-ghash-ssse3-x86_64.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/81d9a39ddc6b1c4e-ghash-x86_64.o,source=/81d9a39ddc6b1c4e-ghash-x86_64.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/81d9a39ddc6b1c4e-md5-x86_64.o,source=/81d9a39ddc6b1c4e-md5-x86_64.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/81d9a39ddc6b1c4e-p256-x86_64-asm.o,source=/81d9a39ddc6b1c4e-p256-x86_64-asm.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/81d9a39ddc6b1c4e-p256_beeu-x86_64-asm.o,source=/81d9a39ddc6b1c4e-p256_beeu-x86_64-asm.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/81d9a39ddc6b1c4e-rdrand-x86_64.o,source=/81d9a39ddc6b1c4e-rdrand-x86_64.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/81d9a39ddc6b1c4e-rsaz-2k-avx512.o,source=/81d9a39ddc6b1c4e-rsaz-2k-avx512.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/81d9a39ddc6b1c4e-rsaz-3k-avx512.o,source=/81d9a39ddc6b1c4e-rsaz-3k-avx512.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/81d9a39ddc6b1c4e-rsaz-4k-avx512.o,source=/81d9a39ddc6b1c4e-rsaz-4k-avx512.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/81d9a39ddc6b1c4e-rsaz-avx2.o,source=/81d9a39ddc6b1c4e-rsaz-avx2.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/81d9a39ddc6b1c4e-sha1-x86_64.o,source=/81d9a39ddc6b1c4e-sha1-x86_64.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/81d9a39ddc6b1c4e-sha256-x86_64.o,source=/81d9a39ddc6b1c4e-sha256-x86_64.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/81d9a39ddc6b1c4e-sha512-x86_64.o,source=/81d9a39ddc6b1c4e-sha512-x86_64.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/81d9a39ddc6b1c4e-vpaes-x86_64.o,source=/81d9a39ddc6b1c4e-vpaes-x86_64.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/81d9a39ddc6b1c4e-x86_64-mont.o,source=/81d9a39ddc6b1c4e-x86_64-mont.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/81d9a39ddc6b1c4e-x86_64-mont5.o,source=/81d9a39ddc6b1c4e-x86_64-mont5.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/86cc0a4f50e0e3bd-evp_do_all.o,source=/86cc0a4f50e0e3bd-evp_do_all.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/88572c8521602bd1-bignum_add_p521.o,source=/88572c8521602bd1-bignum_add_p521.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/88572c8521602bd1-bignum_fromlebytes_p521.o,source=/88572c8521602bd1-bignum_fromlebytes_p521.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/88572c8521602bd1-bignum_inv_p521.o,source=/88572c8521602bd1-bignum_inv_p521.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/88572c8521602bd1-bignum_mul_p521.o,source=/88572c8521602bd1-bignum_mul_p521.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/88572c8521602bd1-bignum_mul_p521_alt.o,source=/88572c8521602bd1-bignum_mul_p521_alt.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/88572c8521602bd1-bignum_neg_p521.o,source=/88572c8521602bd1-bignum_neg_p521.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/88572c8521602bd1-bignum_sqr_p521.o,source=/88572c8521602bd1-bignum_sqr_p521.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/88572c8521602bd1-bignum_sqr_p521_alt.o,source=/88572c8521602bd1-bignum_sqr_p521_alt.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/88572c8521602bd1-bignum_sub_p521.o,source=/88572c8521602bd1-bignum_sub_p521.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/88572c8521602bd1-bignum_tolebytes_p521.o,source=/88572c8521602bd1-bignum_tolebytes_p521.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/88572c8521602bd1-p521_jdouble.o,source=/88572c8521602bd1-p521_jdouble.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/88572c8521602bd1-p521_jdouble_alt.o,source=/88572c8521602bd1-p521_jdouble_alt.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/88572c8521602bd1-p521_jscalarmul.o,source=/88572c8521602bd1-p521_jscalarmul.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/88572c8521602bd1-p521_jscalarmul_alt.o,source=/88572c8521602bd1-p521_jscalarmul_alt.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/89981633f66afe17-cipher_extra.o,source=/89981633f66afe17-cipher_extra.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/89981633f66afe17-derive_key.o,source=/89981633f66afe17-derive_key.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/89981633f66afe17-e_aes_cbc_hmac_sha1.o,source=/89981633f66afe17-e_aes_cbc_hmac_sha1.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/89981633f66afe17-e_aes_cbc_hmac_sha256.o,source=/89981633f66afe17-e_aes_cbc_hmac_sha256.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/89981633f66afe17-e_aesctrhmac.o,source=/89981633f66afe17-e_aesctrhmac.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/89981633f66afe17-e_aesgcmsiv.o,source=/89981633f66afe17-e_aesgcmsiv.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/89981633f66afe17-e_chacha20poly1305.o,source=/89981633f66afe17-e_chacha20poly1305.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/89981633f66afe17-e_des.o,source=/89981633f66afe17-e_des.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/89981633f66afe17-e_null.o,source=/89981633f66afe17-e_null.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/89981633f66afe17-e_rc2.o,source=/89981633f66afe17-e_rc2.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/89981633f66afe17-e_rc4.o,source=/89981633f66afe17-e_rc4.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/89981633f66afe17-e_tls.o,source=/89981633f66afe17-e_tls.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/89981633f66afe17-tls_cbc.o,source=/89981633f66afe17-tls_cbc.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/8f1694c3e3041570-bignum_montinv_p256.o,source=/8f1694c3e3041570-bignum_montinv_p256.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/8f1694c3e3041570-p256_montjscalarmul.o,source=/8f1694c3e3041570-p256_montjscalarmul.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/8f1694c3e3041570-p256_montjscalarmul_alt.o,source=/8f1694c3e3041570-p256_montjscalarmul_alt.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/904ef411c1476e9d-cipher.o,source=/904ef411c1476e9d-cipher.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/925ae38753d351a6-pool.o,source=/925ae38753d351a6-pool.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/a3e95cd5f24d649a-err.o,source=/a3e95cd5f24d649a-err.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/a4677c68e4880270-buf.o,source=/a4677c68e4880270-buf.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/a4a065efb8ac7b35-cast.o,source=/a4a065efb8ac7b35-cast.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/a4a065efb8ac7b35-cast_tables.o,source=/a4a065efb8ac7b35-cast_tables.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/a6455f51a2435c3f-chacha.o,source=/a6455f51a2435c3f-chacha.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/a8d01793eb1214d2-poly_rq_mul.o,source=/a8d01793eb1214d2-poly_rq_mul.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ad45968d24b0237e-base64.o,source=/ad45968d24b0237e-base64.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/b0fd2550ab09b04e-rsa_asn1.o,source=/b0fd2550ab09b04e-rsa_asn1.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/b0fd2550ab09b04e-rsa_crypt.o,source=/b0fd2550ab09b04e-rsa_crypt.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/b0fd2550ab09b04e-rsa_print.o,source=/b0fd2550ab09b04e-rsa_print.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/b0fd2550ab09b04e-rsassa_pss_asn1.o,source=/b0fd2550ab09b04e-rsassa_pss_asn1.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/b129d77c83f8bbf0-trampoline-x86_64.o,source=/b129d77c83f8bbf0-trampoline-x86_64.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/bc1b343226bc6a17-a_bitstr.o,source=/bc1b343226bc6a17-a_bitstr.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/bc1b343226bc6a17-a_bool.o,source=/bc1b343226bc6a17-a_bool.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/bc1b343226bc6a17-a_d2i_fp.o,source=/bc1b343226bc6a17-a_d2i_fp.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/bc1b343226bc6a17-a_dup.o,source=/bc1b343226bc6a17-a_dup.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/bc1b343226bc6a17-a_gentm.o,source=/bc1b343226bc6a17-a_gentm.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/bc1b343226bc6a17-a_i2d_fp.o,source=/bc1b343226bc6a17-a_i2d_fp.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/bc1b343226bc6a17-a_int.o,source=/bc1b343226bc6a17-a_int.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/bc1b343226bc6a17-a_mbstr.o,source=/bc1b343226bc6a17-a_mbstr.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/bc1b343226bc6a17-a_object.o,source=/bc1b343226bc6a17-a_object.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/bc1b343226bc6a17-a_octet.o,source=/bc1b343226bc6a17-a_octet.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/bc1b343226bc6a17-a_strex.o,source=/bc1b343226bc6a17-a_strex.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/bc1b343226bc6a17-a_strnid.o,source=/bc1b343226bc6a17-a_strnid.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/bc1b343226bc6a17-a_time.o,source=/bc1b343226bc6a17-a_time.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/bc1b343226bc6a17-a_type.o,source=/bc1b343226bc6a17-a_type.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/bc1b343226bc6a17-a_utctm.o,source=/bc1b343226bc6a17-a_utctm.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/bc1b343226bc6a17-a_utf8.o,source=/bc1b343226bc6a17-a_utf8.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/bc1b343226bc6a17-asn1_lib.o,source=/bc1b343226bc6a17-asn1_lib.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/bc1b343226bc6a17-asn1_par.o,source=/bc1b343226bc6a17-asn1_par.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/bc1b343226bc6a17-asn_pack.o,source=/bc1b343226bc6a17-asn_pack.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/bc1b343226bc6a17-f_int.o,source=/bc1b343226bc6a17-f_int.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/bc1b343226bc6a17-f_string.o,source=/bc1b343226bc6a17-f_string.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/bc1b343226bc6a17-posix_time.o,source=/bc1b343226bc6a17-posix_time.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/bc1b343226bc6a17-tasn_dec.o,source=/bc1b343226bc6a17-tasn_dec.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/bc1b343226bc6a17-tasn_enc.o,source=/bc1b343226bc6a17-tasn_enc.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/bc1b343226bc6a17-tasn_fre.o,source=/bc1b343226bc6a17-tasn_fre.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/bc1b343226bc6a17-tasn_new.o,source=/bc1b343226bc6a17-tasn_new.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/bc1b343226bc6a17-tasn_typ.o,source=/bc1b343226bc6a17-tasn_typ.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/bc1b343226bc6a17-tasn_utl.o,source=/bc1b343226bc6a17-tasn_utl.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/c1300545a7d60e2b-dh_asn1.o,source=/c1300545a7d60e2b-dh_asn1.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/c1300545a7d60e2b-params.o,source=/c1300545a7d60e2b-params.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/c2f744a0f6403e0c-err_data.o,source=/c2f744a0f6403e0c-err_data.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/c4fcddba145918af-asn1_compat.o,source=/c4fcddba145918af-asn1_compat.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/c4fcddba145918af-ber.o,source=/c4fcddba145918af-ber.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/c4fcddba145918af-cbb.o,source=/c4fcddba145918af-cbb.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/c4fcddba145918af-cbs.o,source=/c4fcddba145918af-cbs.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/c4fcddba145918af-unicode.o,source=/c4fcddba145918af-unicode.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/c7e9326d9b5d7de8-blowfish.o,source=/c7e9326d9b5d7de8-blowfish.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/caa8b30982b4915c-ocsp_asn.o,source=/caa8b30982b4915c-ocsp_asn.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/caa8b30982b4915c-ocsp_client.o,source=/caa8b30982b4915c-ocsp_client.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/caa8b30982b4915c-ocsp_extension.o,source=/caa8b30982b4915c-ocsp_extension.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/caa8b30982b4915c-ocsp_http.o,source=/caa8b30982b4915c-ocsp_http.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/caa8b30982b4915c-ocsp_lib.o,source=/caa8b30982b4915c-ocsp_lib.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/caa8b30982b4915c-ocsp_print.o,source=/caa8b30982b4915c-ocsp_print.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/caa8b30982b4915c-ocsp_server.o,source=/caa8b30982b4915c-ocsp_server.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/caa8b30982b4915c-ocsp_verify.o,source=/caa8b30982b4915c-ocsp_verify.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/d7fed99e8aa5a9b1-rc4.o,source=/d7fed99e8aa5a9b1-rc4.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/da5030c6f3330e8d-des.o,source=/da5030c6f3330e8d-des.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/db3b6bfb95261072-rust_wrapper.o,source=/db3b6bfb95261072-rust_wrapper.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/dcb7d53a9be33b0c-engine.o,source=/dcb7d53a9be33b0c-engine.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/dfe446faf29f8012-ec_asn1.o,source=/dfe446faf29f8012-ec_asn1.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/dfe446faf29f8012-ec_derive.o,source=/dfe446faf29f8012-ec_derive.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/dfe446faf29f8012-hash_to_curve.o,source=/dfe446faf29f8012-hash_to_curve.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/e3caa0b8b118742c-pkcs7.o,source=/e3caa0b8b118742c-pkcs7.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/e3caa0b8b118742c-pkcs7_asn1.o,source=/e3caa0b8b118742c-pkcs7_asn1.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/e3caa0b8b118742c-pkcs7_x509.o,source=/e3caa0b8b118742c-pkcs7_x509.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/e4ecb171c489b811-conf.o,source=/e4ecb171c489b811-conf.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/e616dc00b7af72b9-intt.o,source=/e616dc00b7af72b9-intt.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/e616dc00b7af72b9-mulcache_compute.o,source=/e616dc00b7af72b9-mulcache_compute.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/e616dc00b7af72b9-ntt.o,source=/e616dc00b7af72b9-ntt.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/e616dc00b7af72b9-nttfrombytes.o,source=/e616dc00b7af72b9-nttfrombytes.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/e616dc00b7af72b9-ntttobytes.o,source=/e616dc00b7af72b9-ntttobytes.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/e616dc00b7af72b9-nttunpack.o,source=/e616dc00b7af72b9-nttunpack.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/e616dc00b7af72b9-polyvec_basemul_acc_montgomery_cached_asm_k2.o,source=/e616dc00b7af72b9-polyvec_basemul_acc_montgomery_cached_asm_k2.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/e616dc00b7af72b9-polyvec_basemul_acc_montgomery_cached_asm_k3.o,source=/e616dc00b7af72b9-polyvec_basemul_acc_montgomery_cached_asm_k3.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/e616dc00b7af72b9-polyvec_basemul_acc_montgomery_cached_asm_k4.o,source=/e616dc00b7af72b9-polyvec_basemul_acc_montgomery_cached_asm_k4.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/e616dc00b7af72b9-reduce.o,source=/e616dc00b7af72b9-reduce.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/e616dc00b7af72b9-rej_uniform_asm.o,source=/e616dc00b7af72b9-rej_uniform_asm.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/e616dc00b7af72b9-tomont.o,source=/e616dc00b7af72b9-tomont.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/e71c6558e17b1ce7-digest_extra.o,source=/e71c6558e17b1ce7-digest_extra.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ea2b51a0b6630529-lhash.o,source=/ea2b51a0b6630529-lhash.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-a_digest.o,source=/ebcd52e9457b6221-a_digest.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-a_sign.o,source=/ebcd52e9457b6221-a_sign.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-a_verify.o,source=/ebcd52e9457b6221-a_verify.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-algorithm.o,source=/ebcd52e9457b6221-algorithm.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-asn1_gen.o,source=/ebcd52e9457b6221-asn1_gen.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-by_dir.o,source=/ebcd52e9457b6221-by_dir.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-by_file.o,source=/ebcd52e9457b6221-by_file.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-i2d_pr.o,source=/ebcd52e9457b6221-i2d_pr.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-name_print.o,source=/ebcd52e9457b6221-name_print.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-policy.o,source=/ebcd52e9457b6221-policy.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-rsa_pss.o,source=/ebcd52e9457b6221-rsa_pss.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-t_crl.o,source=/ebcd52e9457b6221-t_crl.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-t_req.o,source=/ebcd52e9457b6221-t_req.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-t_x509.o,source=/ebcd52e9457b6221-t_x509.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-t_x509a.o,source=/ebcd52e9457b6221-t_x509a.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-v3_akey.o,source=/ebcd52e9457b6221-v3_akey.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-v3_akeya.o,source=/ebcd52e9457b6221-v3_akeya.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-v3_alt.o,source=/ebcd52e9457b6221-v3_alt.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-v3_bcons.o,source=/ebcd52e9457b6221-v3_bcons.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-v3_bitst.o,source=/ebcd52e9457b6221-v3_bitst.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-v3_conf.o,source=/ebcd52e9457b6221-v3_conf.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-v3_cpols.o,source=/ebcd52e9457b6221-v3_cpols.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-v3_crld.o,source=/ebcd52e9457b6221-v3_crld.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-v3_enum.o,source=/ebcd52e9457b6221-v3_enum.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-v3_extku.o,source=/ebcd52e9457b6221-v3_extku.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-v3_genn.o,source=/ebcd52e9457b6221-v3_genn.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-v3_ia5.o,source=/ebcd52e9457b6221-v3_ia5.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-v3_info.o,source=/ebcd52e9457b6221-v3_info.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-v3_int.o,source=/ebcd52e9457b6221-v3_int.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-v3_lib.o,source=/ebcd52e9457b6221-v3_lib.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-v3_ncons.o,source=/ebcd52e9457b6221-v3_ncons.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-v3_ocsp.o,source=/ebcd52e9457b6221-v3_ocsp.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-v3_pcons.o,source=/ebcd52e9457b6221-v3_pcons.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-v3_pmaps.o,source=/ebcd52e9457b6221-v3_pmaps.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-v3_prn.o,source=/ebcd52e9457b6221-v3_prn.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-v3_purp.o,source=/ebcd52e9457b6221-v3_purp.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-v3_skey.o,source=/ebcd52e9457b6221-v3_skey.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-v3_utl.o,source=/ebcd52e9457b6221-v3_utl.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-x509.o,source=/ebcd52e9457b6221-x509.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-x509_att.o,source=/ebcd52e9457b6221-x509_att.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-x509_cmp.o,source=/ebcd52e9457b6221-x509_cmp.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-x509_d2.o,source=/ebcd52e9457b6221-x509_d2.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-x509_def.o,source=/ebcd52e9457b6221-x509_def.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-x509_ext.o,source=/ebcd52e9457b6221-x509_ext.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-x509_lu.o,source=/ebcd52e9457b6221-x509_lu.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-x509_obj.o,source=/ebcd52e9457b6221-x509_obj.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-x509_req.o,source=/ebcd52e9457b6221-x509_req.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-x509_set.o,source=/ebcd52e9457b6221-x509_set.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-x509_trs.o,source=/ebcd52e9457b6221-x509_trs.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-x509_txt.o,source=/ebcd52e9457b6221-x509_txt.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-x509_v3.o,source=/ebcd52e9457b6221-x509_v3.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-x509_vfy.o,source=/ebcd52e9457b6221-x509_vfy.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-x509_vpm.o,source=/ebcd52e9457b6221-x509_vpm.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-x509cset.o,source=/ebcd52e9457b6221-x509cset.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-x509name.o,source=/ebcd52e9457b6221-x509name.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-x509rset.o,source=/ebcd52e9457b6221-x509rset.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-x509spki.o,source=/ebcd52e9457b6221-x509spki.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-x_algor.o,source=/ebcd52e9457b6221-x_algor.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-x_all.o,source=/ebcd52e9457b6221-x_all.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-x_attrib.o,source=/ebcd52e9457b6221-x_attrib.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-x_crl.o,source=/ebcd52e9457b6221-x_crl.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-x_exten.o,source=/ebcd52e9457b6221-x_exten.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-x_name.o,source=/ebcd52e9457b6221-x_name.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-x_pubkey.o,source=/ebcd52e9457b6221-x_pubkey.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-x_req.o,source=/ebcd52e9457b6221-x_req.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-x_sig.o,source=/ebcd52e9457b6221-x_sig.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-x_spki.o,source=/ebcd52e9457b6221-x_spki.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-x_val.o,source=/ebcd52e9457b6221-x_val.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-x_x509.o,source=/ebcd52e9457b6221-x_x509.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ebcd52e9457b6221-x_x509a.o,source=/ebcd52e9457b6221-x_x509a.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/f8e4fd781484bd36-bcm.o,source=/f8e4fd781484bd36-bcm.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/f8e4fd781484bd36-fips_shared_support.o,source=/f8e4fd781484bd36-fips_shared_support.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/fb1f39df2ea6f08f-dsa.o,source=/fb1f39df2ea6f08f-dsa.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/fb1f39df2ea6f08f-dsa_asn1.o,source=/fb1f39df2ea6f08f-dsa_asn1.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/fe5b6d61933e4a91-fips202.o,source=/fe5b6d61933e4a91-fips202.o \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/flag_check,source=/flag_check \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/flag_check.c,source=/flag_check.c \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libaws_lc_0_32_2_crypto.a,source=/libaws_lc_0_32_2_crypto.a \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/openssl,source=/openssl \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/aead.h,source=/aead.h \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/aes.h,source=/aes.h \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/arm_arch.h,source=/arm_arch.h \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/asm_base.h,source=/asm_base.h \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/asn1.h,source=/asn1.h \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/asn1_mac.h,source=/asn1_mac.h \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/asn1t.h,source=/asn1t.h \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/base.h,source=/base.h \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/base.h.in,source=/base.h.in \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/base64.h,source=/base64.h \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/bio.h,source=/bio.h \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/blake2.h,source=/blake2.h \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/blowfish.h,source=/blowfish.h \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/bn.h,source=/bn.h \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/boringssl_prefix_symbols.h,source=/boringssl_prefix_symbols.h \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/boringssl_prefix_symbols_asm.h,source=/boringssl_prefix_symbols_asm.h \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/boringssl_prefix_symbols_nasm.inc,source=/boringssl_prefix_symbols_nasm.inc \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/buf.h,source=/buf.h \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/buffer.h,source=/buffer.h \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/bytestring.h,source=/bytestring.h \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/chacha.h,source=/chacha.h \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/cipher.h,source=/cipher.h \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/cmac.h,source=/cmac.h \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/conf.h,source=/conf.h \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/cpu.h,source=/cpu.h \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/crypto.h,source=/crypto.h \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ctrdrbg.h,source=/ctrdrbg.h \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/curve25519.h,source=/curve25519.h \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/des.h,source=/des.h \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/dh.h,source=/dh.h \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/digest.h,source=/digest.h \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/dsa.h,source=/dsa.h \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/dtls1.h,source=/dtls1.h \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/e_os2.h,source=/e_os2.h \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ec.h,source=/ec.h \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ec_key.h,source=/ec_key.h \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ecdh.h,source=/ecdh.h \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ecdsa.h,source=/ecdsa.h \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/engine.h,source=/engine.h \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/err.h,source=/err.h \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/evp.h,source=/evp.h \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/evp_errors.h,source=/evp_errors.h \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ex_data.h,source=/ex_data.h \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/experimental,source=/experimental \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/kem_deterministic_api.h,source=/kem_deterministic_api.h \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/hkdf.h,source=/hkdf.h \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/hmac.h,source=/hmac.h \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/hpke.h,source=/hpke.h \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/hrss.h,source=/hrss.h \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/is_awslc.h,source=/is_awslc.h \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/kdf.h,source=/kdf.h \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/lhash.h,source=/lhash.h \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/md4.h,source=/md4.h \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/md5.h,source=/md5.h \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/mem.h,source=/mem.h \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/nid.h,source=/nid.h \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/obj.h,source=/obj.h \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/obj_mac.h,source=/obj_mac.h \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/objects.h,source=/objects.h \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ocsp.h,source=/ocsp.h \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/opensslconf.h,source=/opensslconf.h \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/opensslv.h,source=/opensslv.h \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/opensslv.h.in,source=/opensslv.h.in \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ossl_typ.h,source=/ossl_typ.h \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/pem.h,source=/pem.h \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/pkcs12.h,source=/pkcs12.h \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/pkcs7.h,source=/pkcs7.h \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/pkcs8.h,source=/pkcs8.h \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/poly1305.h,source=/poly1305.h \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/pool.h,source=/pool.h \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/posix_time.h,source=/posix_time.h \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/rand.h,source=/rand.h \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/rc4.h,source=/rc4.h \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ripemd.h,source=/ripemd.h \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/rsa.h,source=/rsa.h \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/safestack.h,source=/safestack.h \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/service_indicator.h,source=/service_indicator.h \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/sha.h,source=/sha.h \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/siphash.h,source=/siphash.h \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/span.h,source=/span.h \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/sshkdf.h,source=/sshkdf.h \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ssl.h,source=/ssl.h \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ssl3.h,source=/ssl3.h \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/stack.h,source=/stack.h \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/target.h,source=/target.h \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/thread.h,source=/thread.h \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/time.h,source=/time.h \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/tls1.h,source=/tls1.h \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/trust_token.h,source=/trust_token.h \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/type_check.h,source=/type_check.h \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ui.h,source=/ui.h \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/x509.h,source=/x509.h \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/x509_vfy.h,source=/x509_vfy.h \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/x509v3.h,source=/x509v3.h \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/x509v3_errors.h,source=/x509v3_errors.h \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/rust_wrapper.h,source=/rust_wrapper.h \
+##   --mount=from=out-d2948f7c0c8497b1,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libfind_msvc_tools-d2948f7c0c8497b1.rlib,source=/libfind_msvc_tools-d2948f7c0c8497b1.rlib \
+##   --mount=from=out-d2948f7c0c8497b1,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libfind_msvc_tools-d2948f7c0c8497b1.rmeta,source=/libfind_msvc_tools-d2948f7c0c8497b1.rmeta \
+##   --mount=from=out-4dc141be22bbffce,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libjobserver-4dc141be22bbffce.rlib,source=/libjobserver-4dc141be22bbffce.rlib \
+##   --mount=from=out-4dc141be22bbffce,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libjobserver-4dc141be22bbffce.rmeta,source=/libjobserver-4dc141be22bbffce.rmeta \
+##   --mount=from=out-60426161aa87c673,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibc-60426161aa87c673.rlib,source=/liblibc-60426161aa87c673.rlib \
+##   --mount=from=out-60426161aa87c673,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibc-60426161aa87c673.rmeta,source=/liblibc-60426161aa87c673.rmeta \
+##   --mount=from=out-7560e7c5c88ec4c4,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/build_script_build-7560e7c5c88ec4c4,source=/build_script_build-7560e7c5c88ec4c4 \
+##   --mount=from=out-b166d1c75d83103c,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libshlex-b166d1c75d83103c.rlib,source=/libshlex-b166d1c75d83103c.rlib \
+##   --mount=from=out-b166d1c75d83103c,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libshlex-b166d1c75d83103c.rmeta,source=/libshlex-b166d1c75d83103c.rmeta \
+##   --mount=from=out-336c2d9100ab92f8,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcc-336c2d9100ab92f8.rlib,source=/libcc-336c2d9100ab92f8.rlib \
+##   --mount=from=out-336c2d9100ab92f8,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcc-336c2d9100ab92f8.rmeta,source=/libcc-336c2d9100ab92f8.rmeta \
+##   --mount=from=out-3ff4fdb389eab124,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcmake-3ff4fdb389eab124.rlib,source=/libcmake-3ff4fdb389eab124.rlib \
+##   --mount=from=out-3ff4fdb389eab124,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcmake-3ff4fdb389eab124.rmeta,source=/libcmake-3ff4fdb389eab124.rmeta \
+##   --mount=from=out-25a6bb4144c31f83,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libdunce-25a6bb4144c31f83.rlib,source=/libdunce-25a6bb4144c31f83.rlib \
+##   --mount=from=out-25a6bb4144c31f83,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libdunce-25a6bb4144c31f83.rmeta,source=/libdunce-25a6bb4144c31f83.rmeta \
+##   --mount=from=out-19400729ba85cd55,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libfs_extra-19400729ba85cd55.rlib,source=/libfs_extra-19400729ba85cd55.rlib \
+##   --mount=from=out-19400729ba85cd55,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libfs_extra-19400729ba85cd55.rmeta,source=/libfs_extra-19400729ba85cd55.rmeta \
+##   --mount=from=out-d905bd04d466c2b4,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcfg_if-d905bd04d466c2b4.rlib,source=/libcfg_if-d905bd04d466c2b4.rlib \
+##   --mount=from=out-d905bd04d466c2b4,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcfg_if-d905bd04d466c2b4.rmeta,source=/libcfg_if-d905bd04d466c2b4.rmeta \
+##   --mount=from=out-bcbfd880a9747f76,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibloading-bcbfd880a9747f76.rlib,source=/liblibloading-bcbfd880a9747f76.rlib \
+##   --mount=from=out-bcbfd880a9747f76,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibloading-bcbfd880a9747f76.rmeta,source=/liblibloading-bcbfd880a9747f76.rmeta \
+##   --mount=from=out-b91f62695d1e67bd,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/build_script_main-b91f62695d1e67bd,source=/build_script_main-b91f62695d1e67bd \
+##   --mount=from=out-fd233fb45e407496,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libzeroize-fd233fb45e407496.rlib,source=/libzeroize-fd233fb45e407496.rlib \
+##   --mount=from=out-fd233fb45e407496,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libzeroize-fd233fb45e407496.rmeta,source=/libzeroize-fd233fb45e407496.rmeta \
+##   --mount=from=out-7ef21a73dd92a44b,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-rs-7ef21a73dd92a44b/out,source=/ \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CRATE_NAME=aws_lc_rs \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.14.1 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.14.1/Cargo.toml \
+##         CARGO_PKG_AUTHORS=AWS-LibCrypto \
+##         CARGO_PKG_DESCRIPTION=aws-lc-rs' is a cryptographic library using AWS-LC for its cryptographic operations. This library strives to be API-compatible with the popular Rust library named ring.' \
+##         CARGO_PKG_HOMEPAGE=https'://github.com/aws/aws-lc-rs' \
+##         CARGO_PKG_LICENSE=ISC' AND (Apache-2.0 OR ISC)' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=aws-lc-rs \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/aws/aws-lc-rs' \
+##         CARGO_PKG_RUST_VERSION=1.70.0 \
+##         CARGO_PKG_VERSION=1.14.1 \
+##         CARGO_PKG_VERSION_MAJOR=1 \
+##         CARGO_PKG_VERSION_MINOR=14 \
+##         CARGO_PKG_VERSION_PATCH=1 \
+##         CARGO_PKG_VERSION_PRE= \
+##         OUT_DIR=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-rs-7ef21a73dd92a44b/out \
+##         CARGOGREEN=1 \
+##       rustc '--crate-name' 'aws_lc_rs' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'embed-bitcode=no' '--cfg' 'feature="aws-lc-sys"' '--cfg' 'feature="prebuilt-nasm"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "asan", "aws-lc-sys", "bindgen", "default", "fips", "non-fips", "prebuilt-nasm", "ring-io", "ring-sig-verify", "test_logging", "unstable"))' '-C' 'metadata=a340ec5982025e66' '-C' 'extra-filename=-90227bfec647f88b' '--out-dir' '/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' '--extern' 'aws_lc_sys=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libaws_lc_sys-135dbb753da3a4f4.rmeta' '--extern' 'zeroize=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libzeroize-fd233fb45e407496.rmeta' '--cap-lints' 'warn' '-L' 'native=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out' '--check-cfg' 'cfg(disable_slow_tests)' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.14.1/src/lib.rs \
+##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-90227bfec647f88b-stdout \
+##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-90227bfec647f88b-stderr \
+##         || echo $? >/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-90227bfec647f88b-errcode\
+##   ; find /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/*-90227bfec647f88b* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-90227bfec647f88b"
+## script = """
+## FROM scratch AS out-90227bfec647f88b
+## COPY --link --from=dep-n-aws-lc-rs-1.14.1-90227bfec647f88b /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/*-90227bfec647f88b* /"""
 
 FROM scratch
 

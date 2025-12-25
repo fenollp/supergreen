@@ -15,7 +15,7 @@ WORKDIR /tmp/clis-stu_0-7-5/release/build/libc-55bd35d1ef212c79
 RUN \
   --mount=from=cratesio-libc-0.2.172,source=/libc-0.2.172,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.172,rw \
     { \
-        cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.172/build.rs | sed 's/fn main/fn actual_55bd35d1ef212c79_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.172/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.172/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.172/build.rs ; \
+        cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.172/build.rs | sed -E 's/^fn +main/fn actual_55bd35d1ef212c79_main/;s/^async +fn +main/async fn actual_55bd35d1ef212c79_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.172/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.172/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.172/build.rs ; \
         { \
           echo ; \
           echo 'fn main() {' ; \
@@ -98,7 +98,7 @@ COPY --link --from=dep-x-libc-0.2.172-55bd35d1ef212c79 /tmp/clis-stu_0-7-5/relea
 ## RUN \
 ##   --mount=from=cratesio-libc-0.2.172,source=/libc-0.2.172,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.172,rw \
 ##     { \
-##         cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.172/build.rs | sed 's/fn main/fn actual_55bd35d1ef212c79_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.172/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.172/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.172/build.rs ; \
+##         cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.172/build.rs | sed -E 's/^fn +main/fn actual_55bd35d1ef212c79_main/;s/^async +fn +main/async fn actual_55bd35d1ef212c79_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.172/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.172/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.172/build.rs ; \
 ##         { \
 ##           echo ; \
 ##           echo 'fn main() {' ; \
@@ -1249,7 +1249,7 @@ RUN \
   --mount=from=out-4ebb5633c029d02a,dst=/tmp/clis-stu_0-7-5/release/deps/libdunce-4ebb5633c029d02a.rlib,source=/libdunce-4ebb5633c029d02a.rlib \
   --mount=from=out-e6abd85383eef4c9,dst=/tmp/clis-stu_0-7-5/release/deps/libfs_extra-e6abd85383eef4c9.rlib,source=/libfs_extra-e6abd85383eef4c9.rlib \
     { \
-        cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/builder/main.rs | sed 's/fn main/fn actual_590398941c1af7ae_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/builder/main.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/builder/main.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/builder/main.rs ; \
+        cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/builder/main.rs | sed -E 's/^fn +main/fn actual_590398941c1af7ae_main/;s/^async +fn +main/async fn actual_590398941c1af7ae_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/builder/main.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/builder/main.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/builder/main.rs ; \
         { \
           echo ; \
           echo 'fn main() {' ; \
@@ -1383,7 +1383,7 @@ COPY --link --from=dep-x-aws-lc-sys-0.27.1-590398941c1af7ae /tmp/clis-stu_0-7-5/
 ##   --mount=from=out-4ebb5633c029d02a,dst=/tmp/clis-stu_0-7-5/release/deps/libdunce-4ebb5633c029d02a.rlib,source=/libdunce-4ebb5633c029d02a.rlib \
 ##   --mount=from=out-e6abd85383eef4c9,dst=/tmp/clis-stu_0-7-5/release/deps/libfs_extra-e6abd85383eef4c9.rlib,source=/libfs_extra-e6abd85383eef4c9.rlib \
 ##     { \
-##         cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/builder/main.rs | sed 's/fn main/fn actual_590398941c1af7ae_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/builder/main.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/builder/main.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/builder/main.rs ; \
+##         cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/builder/main.rs | sed -E 's/^fn +main/fn actual_590398941c1af7ae_main/;s/^async +fn +main/async fn actual_590398941c1af7ae_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/builder/main.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/builder/main.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/builder/main.rs ; \
 ##         { \
 ##           echo ; \
 ##           echo 'fn main() {' ; \
@@ -1478,7 +1478,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         DEBUG=false \
         HOST=x86_64-unknown-linux-gnu \
-        NUM_JOBS=1 \
+        NUM_JOBS=4 \
         OPT_LEVEL=3 \
         OUT_DIR=/tmp/clis-stu_0-7-5/release/build/aws-lc-sys-e68d7f20dd3d392b/out \
         PROFILE=release \
@@ -1494,10 +1494,6 @@ RUN \
 FROM scratch AS out-e68d7f20dd3d392b
 COPY --link --from=run-z-aws-lc-sys-0.27.1-e68d7f20dd3d392b /tmp/clis-stu_0-7-5/release/build/aws-lc-sys-e68d7f20dd3d392b/out/* /
 
-# Pipe this file to:
-#  \
-#    <THIS_FILE
-
 ## this = "e68d7f20dd3d392b"
 ## deps = [
 ##     "947438b818448e5e",
@@ -1510,6 +1506,944 @@ COPY --link --from=run-z-aws-lc-sys-0.27.1-e68d7f20dd3d392b /tmp/clis-stu_0-7-5/
 ##     "4ebb5633c029d02a",
 ##     "e6abd85383eef4c9",
 ##     "590398941c1af7ae",
+## ]
+## writes = [
+##     "001247bc65c2f5e5-cpucap.o",
+##     "056c1e7192c7090b-p5_pbev2.o",
+##     "056c1e7192c7090b-pkcs8.o",
+##     "056c1e7192c7090b-pkcs8_x509.o",
+##     "0c919c82d61b4518-ecdsa_asn1.o",
+##     "11289f19be935446-rsa_decrepit.o",
+##     "175e87304cd4663c-cfb.o",
+##     "199386740f3660f1-ripemd.o",
+##     "1c7e26962210e9ee-kem_kyber.o",
+##     "1c7e26962210e9ee-kyber1024r3_ref.o",
+##     "1c7e26962210e9ee-kyber512r3_ref.o",
+##     "1c7e26962210e9ee-kyber768r3_ref.o",
+##     "1eca0b6fab589d4a-chacha-x86_64.o",
+##     "258e88680d941df9-bignum_montinv_p256.o",
+##     "258e88680d941df9-p256_montjscalarmul.o",
+##     "258e88680d941df9-p256_montjscalarmul_alt.o",
+##     "27a075eab3d35364-pem_all.o",
+##     "27a075eab3d35364-pem_info.o",
+##     "27a075eab3d35364-pem_lib.o",
+##     "27a075eab3d35364-pem_oth.o",
+##     "27a075eab3d35364-pem_pk8.o",
+##     "27a075eab3d35364-pem_pkey.o",
+##     "27a075eab3d35364-pem_x509.o",
+##     "27a075eab3d35364-pem_xaux.o",
+##     "30a9a10d3f98970e-crypto.o",
+##     "30a9a10d3f98970e-ex_data.o",
+##     "30a9a10d3f98970e-mem.o",
+##     "30a9a10d3f98970e-refcount_c11.o",
+##     "30a9a10d3f98970e-refcount_lock.o",
+##     "30a9a10d3f98970e-refcount_win.o",
+##     "30a9a10d3f98970e-thread.o",
+##     "30a9a10d3f98970e-thread_none.o",
+##     "30a9a10d3f98970e-thread_pthread.o",
+##     "30a9a10d3f98970e-thread_win.o",
+##     "3f2f442030472042-base64_bio.o",
+##     "4696e3d2cc941c84-pmbtoken.o",
+##     "4696e3d2cc941c84-trust_token.o",
+##     "4696e3d2cc941c84-voprf.o",
+##     "46ab76b5467ff2b0-obj_decrepit.o",
+##     "48649240ed88c783-siphash.o",
+##     "4a91b32c84b73ad7-ecdh_extra.o",
+##     "523d3b4857de3c81-bignum_add_p384.o",
+##     "523d3b4857de3c81-bignum_deamont_p384.o",
+##     "523d3b4857de3c81-bignum_deamont_p384_alt.o",
+##     "523d3b4857de3c81-bignum_littleendian_6.o",
+##     "523d3b4857de3c81-bignum_montinv_p384.o",
+##     "523d3b4857de3c81-bignum_montmul_p384.o",
+##     "523d3b4857de3c81-bignum_montmul_p384_alt.o",
+##     "523d3b4857de3c81-bignum_montsqr_p384.o",
+##     "523d3b4857de3c81-bignum_montsqr_p384_alt.o",
+##     "523d3b4857de3c81-bignum_neg_p384.o",
+##     "523d3b4857de3c81-bignum_nonzero_6.o",
+##     "523d3b4857de3c81-bignum_sub_p384.o",
+##     "523d3b4857de3c81-bignum_tomont_p384.o",
+##     "523d3b4857de3c81-bignum_tomont_p384_alt.o",
+##     "523d3b4857de3c81-p384_montjdouble.o",
+##     "523d3b4857de3c81-p384_montjdouble_alt.o",
+##     "523d3b4857de3c81-p384_montjscalarmul.o",
+##     "523d3b4857de3c81-p384_montjscalarmul_alt.o",
+##     "564c5311b313cdb2-aes128gcmsiv-x86_64.o",
+##     "564c5311b313cdb2-aesni-sha1-x86_64.o",
+##     "564c5311b313cdb2-aesni-sha256-x86_64.o",
+##     "564c5311b313cdb2-chacha20_poly1305_x86_64.o",
+##     "5d4700fda13603f0-poly1305.o",
+##     "5d4700fda13603f0-poly1305_arm.o",
+##     "5d4700fda13603f0-poly1305_vec.o",
+##     "5da2666a73fb65eb-hrss.o",
+##     "60df219e9fcbc210-stack.o",
+##     "62e235b24f99f4ff-blake2.o",
+##     "65fbbb68d007b209-hpke.o",
+##     "6e6559d38d003e66-spake25519.o",
+##     "6e8bb48415b74ed4-dh_decrepit.o",
+##     "6f8e1f92835a38cb-x509_decrepit.o",
+##     "7510312e0f5aa0be-evp_asn1.o",
+##     "7510312e0f5aa0be-p_dh.o",
+##     "7510312e0f5aa0be-p_dh_asn1.o",
+##     "7510312e0f5aa0be-p_dsa.o",
+##     "7510312e0f5aa0be-p_dsa_asn1.o",
+##     "7510312e0f5aa0be-p_ec_asn1.o",
+##     "7510312e0f5aa0be-p_ed25519_asn1.o",
+##     "7510312e0f5aa0be-p_hmac_asn1.o",
+##     "7510312e0f5aa0be-p_kem_asn1.o",
+##     "7510312e0f5aa0be-p_methods.o",
+##     "7510312e0f5aa0be-p_pqdsa_asn1.o",
+##     "7510312e0f5aa0be-p_rsa_asn1.o",
+##     "7510312e0f5aa0be-p_x25519.o",
+##     "7510312e0f5aa0be-p_x25519_asn1.o",
+##     "7510312e0f5aa0be-print.o",
+##     "7510312e0f5aa0be-scrypt.o",
+##     "7510312e0f5aa0be-sign.o",
+##     "76322f89f5cc2d96-bio.o",
+##     "76322f89f5cc2d96-bio_mem.o",
+##     "76322f89f5cc2d96-connect.o",
+##     "76322f89f5cc2d96-errno.o",
+##     "76322f89f5cc2d96-fd.o",
+##     "76322f89f5cc2d96-file.o",
+##     "76322f89f5cc2d96-hexdump.o",
+##     "76322f89f5cc2d96-pair.o",
+##     "76322f89f5cc2d96-printf.o",
+##     "76322f89f5cc2d96-socket.o",
+##     "76322f89f5cc2d96-socket_helper.o",
+##     "7a596fe31a02c0e2-bn_asn1.o",
+##     "7a596fe31a02c0e2-convert.o",
+##     "7ac4c9359514b807-obj.o",
+##     "7ac4c9359514b807-obj_xref.o",
+##     "7bf3e571b6558a6b-deterministic.o",
+##     "7bf3e571b6558a6b-entropy_passive.o",
+##     "7bf3e571b6558a6b-forkunsafe.o",
+##     "7bf3e571b6558a6b-rand_extra.o",
+##     "7bf3e571b6558a6b-windows.o",
+##     "81d9a39ddc6b1c4e-aesni-gcm-avx512.o",
+##     "81d9a39ddc6b1c4e-aesni-gcm-x86_64.o",
+##     "81d9a39ddc6b1c4e-aesni-x86_64.o",
+##     "81d9a39ddc6b1c4e-aesni-xts-avx512.o",
+##     "81d9a39ddc6b1c4e-ghash-ssse3-x86_64.o",
+##     "81d9a39ddc6b1c4e-ghash-x86_64.o",
+##     "81d9a39ddc6b1c4e-md5-x86_64.o",
+##     "81d9a39ddc6b1c4e-p256-x86_64-asm.o",
+##     "81d9a39ddc6b1c4e-p256_beeu-x86_64-asm.o",
+##     "81d9a39ddc6b1c4e-rdrand-x86_64.o",
+##     "81d9a39ddc6b1c4e-rsaz-2k-avx512.o",
+##     "81d9a39ddc6b1c4e-rsaz-3k-avx512.o",
+##     "81d9a39ddc6b1c4e-rsaz-4k-avx512.o",
+##     "81d9a39ddc6b1c4e-rsaz-avx2.o",
+##     "81d9a39ddc6b1c4e-sha1-x86_64.o",
+##     "81d9a39ddc6b1c4e-sha256-x86_64.o",
+##     "81d9a39ddc6b1c4e-sha512-x86_64.o",
+##     "81d9a39ddc6b1c4e-vpaes-x86_64.o",
+##     "81d9a39ddc6b1c4e-x86_64-mont.o",
+##     "81d9a39ddc6b1c4e-x86_64-mont5.o",
+##     "86cc0a4f50e0e3bd-evp_do_all.o",
+##     "89981633f66afe17-cipher_extra.o",
+##     "89981633f66afe17-derive_key.o",
+##     "89981633f66afe17-e_aes_cbc_hmac_sha1.o",
+##     "89981633f66afe17-e_aes_cbc_hmac_sha256.o",
+##     "89981633f66afe17-e_aesctrhmac.o",
+##     "89981633f66afe17-e_aesgcmsiv.o",
+##     "89981633f66afe17-e_chacha20poly1305.o",
+##     "89981633f66afe17-e_des.o",
+##     "89981633f66afe17-e_null.o",
+##     "89981633f66afe17-e_rc2.o",
+##     "89981633f66afe17-e_rc4.o",
+##     "89981633f66afe17-e_tls.o",
+##     "89981633f66afe17-tls_cbc.o",
+##     "904ef411c1476e9d-cipher.o",
+##     "904ef411c1476e9d-md.o",
+##     "925ae38753d351a6-pool.o",
+##     "a3e95cd5f24d649a-err.o",
+##     "a4677c68e4880270-buf.o",
+##     "a4a065efb8ac7b35-cast.o",
+##     "a4a065efb8ac7b35-cast_tables.o",
+##     "a6455f51a2435c3f-chacha.o",
+##     "a8d01793eb1214d2-poly_rq_mul.o",
+##     "ad45968d24b0237e-base64.o",
+##     "b0fd2550ab09b04e-rsa_asn1.o",
+##     "b0fd2550ab09b04e-rsa_crypt.o",
+##     "b0fd2550ab09b04e-rsa_print.o",
+##     "b0fd2550ab09b04e-rsassa_pss_asn1.o",
+##     "b129d77c83f8bbf0-trampoline-x86_64.o",
+##     "bc1b343226bc6a17-a_bitstr.o",
+##     "bc1b343226bc6a17-a_bool.o",
+##     "bc1b343226bc6a17-a_d2i_fp.o",
+##     "bc1b343226bc6a17-a_dup.o",
+##     "bc1b343226bc6a17-a_gentm.o",
+##     "bc1b343226bc6a17-a_i2d_fp.o",
+##     "bc1b343226bc6a17-a_int.o",
+##     "bc1b343226bc6a17-a_mbstr.o",
+##     "bc1b343226bc6a17-a_object.o",
+##     "bc1b343226bc6a17-a_octet.o",
+##     "bc1b343226bc6a17-a_strex.o",
+##     "bc1b343226bc6a17-a_strnid.o",
+##     "bc1b343226bc6a17-a_time.o",
+##     "bc1b343226bc6a17-a_type.o",
+##     "bc1b343226bc6a17-a_utctm.o",
+##     "bc1b343226bc6a17-a_utf8.o",
+##     "bc1b343226bc6a17-asn1_lib.o",
+##     "bc1b343226bc6a17-asn1_par.o",
+##     "bc1b343226bc6a17-asn_pack.o",
+##     "bc1b343226bc6a17-f_int.o",
+##     "bc1b343226bc6a17-f_string.o",
+##     "bc1b343226bc6a17-posix_time.o",
+##     "bc1b343226bc6a17-tasn_dec.o",
+##     "bc1b343226bc6a17-tasn_enc.o",
+##     "bc1b343226bc6a17-tasn_fre.o",
+##     "bc1b343226bc6a17-tasn_new.o",
+##     "bc1b343226bc6a17-tasn_typ.o",
+##     "bc1b343226bc6a17-tasn_utl.o",
+##     "c1300545a7d60e2b-dh_asn1.o",
+##     "c1300545a7d60e2b-params.o",
+##     "c2f744a0f6403e0c-err_data.o",
+##     "c4fcddba145918af-asn1_compat.o",
+##     "c4fcddba145918af-ber.o",
+##     "c4fcddba145918af-cbb.o",
+##     "c4fcddba145918af-cbs.o",
+##     "c4fcddba145918af-unicode.o",
+##     "c7e9326d9b5d7de8-blowfish.o",
+##     "caa8b30982b4915c-ocsp_asn.o",
+##     "caa8b30982b4915c-ocsp_client.o",
+##     "caa8b30982b4915c-ocsp_extension.o",
+##     "caa8b30982b4915c-ocsp_http.o",
+##     "caa8b30982b4915c-ocsp_lib.o",
+##     "caa8b30982b4915c-ocsp_print.o",
+##     "caa8b30982b4915c-ocsp_server.o",
+##     "caa8b30982b4915c-ocsp_verify.o",
+##     "d7fed99e8aa5a9b1-rc4.o",
+##     "da5030c6f3330e8d-des.o",
+##     "db3b6bfb95261072-rust_wrapper.o",
+##     "dbc60140080f57e9-bignum_madd_n25519.o",
+##     "dbc60140080f57e9-bignum_madd_n25519_alt.o",
+##     "dbc60140080f57e9-bignum_mod_n25519.o",
+##     "dbc60140080f57e9-bignum_neg_p25519.o",
+##     "dbc60140080f57e9-curve25519_x25519.o",
+##     "dbc60140080f57e9-curve25519_x25519_alt.o",
+##     "dbc60140080f57e9-curve25519_x25519base.o",
+##     "dbc60140080f57e9-curve25519_x25519base_alt.o",
+##     "dbc60140080f57e9-edwards25519_decode.o",
+##     "dbc60140080f57e9-edwards25519_decode_alt.o",
+##     "dbc60140080f57e9-edwards25519_encode.o",
+##     "dbc60140080f57e9-edwards25519_scalarmulbase.o",
+##     "dbc60140080f57e9-edwards25519_scalarmulbase_alt.o",
+##     "dbc60140080f57e9-edwards25519_scalarmuldouble.o",
+##     "dbc60140080f57e9-edwards25519_scalarmuldouble_alt.o",
+##     "dcb7d53a9be33b0c-engine.o",
+##     "dfe446faf29f8012-ec_asn1.o",
+##     "dfe446faf29f8012-ec_derive.o",
+##     "dfe446faf29f8012-hash_to_curve.o",
+##     "e3caa0b8b118742c-pkcs7.o",
+##     "e3caa0b8b118742c-pkcs7_asn1.o",
+##     "e3caa0b8b118742c-pkcs7_x509.o",
+##     "e4ecb171c489b811-conf.o",
+##     "e71c6558e17b1ce7-digest_extra.o",
+##     "ea2b51a0b6630529-lhash.o",
+##     "ebcd52e9457b6221-a_digest.o",
+##     "ebcd52e9457b6221-a_sign.o",
+##     "ebcd52e9457b6221-a_verify.o",
+##     "ebcd52e9457b6221-algorithm.o",
+##     "ebcd52e9457b6221-asn1_gen.o",
+##     "ebcd52e9457b6221-by_dir.o",
+##     "ebcd52e9457b6221-by_file.o",
+##     "ebcd52e9457b6221-i2d_pr.o",
+##     "ebcd52e9457b6221-name_print.o",
+##     "ebcd52e9457b6221-policy.o",
+##     "ebcd52e9457b6221-rsa_pss.o",
+##     "ebcd52e9457b6221-t_crl.o",
+##     "ebcd52e9457b6221-t_req.o",
+##     "ebcd52e9457b6221-t_x509.o",
+##     "ebcd52e9457b6221-t_x509a.o",
+##     "ebcd52e9457b6221-v3_akey.o",
+##     "ebcd52e9457b6221-v3_akeya.o",
+##     "ebcd52e9457b6221-v3_alt.o",
+##     "ebcd52e9457b6221-v3_bcons.o",
+##     "ebcd52e9457b6221-v3_bitst.o",
+##     "ebcd52e9457b6221-v3_conf.o",
+##     "ebcd52e9457b6221-v3_cpols.o",
+##     "ebcd52e9457b6221-v3_crld.o",
+##     "ebcd52e9457b6221-v3_enum.o",
+##     "ebcd52e9457b6221-v3_extku.o",
+##     "ebcd52e9457b6221-v3_genn.o",
+##     "ebcd52e9457b6221-v3_ia5.o",
+##     "ebcd52e9457b6221-v3_info.o",
+##     "ebcd52e9457b6221-v3_int.o",
+##     "ebcd52e9457b6221-v3_lib.o",
+##     "ebcd52e9457b6221-v3_ncons.o",
+##     "ebcd52e9457b6221-v3_ocsp.o",
+##     "ebcd52e9457b6221-v3_pcons.o",
+##     "ebcd52e9457b6221-v3_pmaps.o",
+##     "ebcd52e9457b6221-v3_prn.o",
+##     "ebcd52e9457b6221-v3_purp.o",
+##     "ebcd52e9457b6221-v3_skey.o",
+##     "ebcd52e9457b6221-v3_utl.o",
+##     "ebcd52e9457b6221-x509.o",
+##     "ebcd52e9457b6221-x509_att.o",
+##     "ebcd52e9457b6221-x509_cmp.o",
+##     "ebcd52e9457b6221-x509_d2.o",
+##     "ebcd52e9457b6221-x509_def.o",
+##     "ebcd52e9457b6221-x509_ext.o",
+##     "ebcd52e9457b6221-x509_lu.o",
+##     "ebcd52e9457b6221-x509_obj.o",
+##     "ebcd52e9457b6221-x509_req.o",
+##     "ebcd52e9457b6221-x509_set.o",
+##     "ebcd52e9457b6221-x509_trs.o",
+##     "ebcd52e9457b6221-x509_txt.o",
+##     "ebcd52e9457b6221-x509_v3.o",
+##     "ebcd52e9457b6221-x509_vfy.o",
+##     "ebcd52e9457b6221-x509_vpm.o",
+##     "ebcd52e9457b6221-x509cset.o",
+##     "ebcd52e9457b6221-x509name.o",
+##     "ebcd52e9457b6221-x509rset.o",
+##     "ebcd52e9457b6221-x509spki.o",
+##     "ebcd52e9457b6221-x_algor.o",
+##     "ebcd52e9457b6221-x_all.o",
+##     "ebcd52e9457b6221-x_attrib.o",
+##     "ebcd52e9457b6221-x_crl.o",
+##     "ebcd52e9457b6221-x_exten.o",
+##     "ebcd52e9457b6221-x_name.o",
+##     "ebcd52e9457b6221-x_pubkey.o",
+##     "ebcd52e9457b6221-x_req.o",
+##     "ebcd52e9457b6221-x_sig.o",
+##     "ebcd52e9457b6221-x_spki.o",
+##     "ebcd52e9457b6221-x_val.o",
+##     "ebcd52e9457b6221-x_x509.o",
+##     "ebcd52e9457b6221-x_x509a.o",
+##     "edae2d9e273b891e-bignum_add_p521.o",
+##     "edae2d9e273b891e-bignum_fromlebytes_p521.o",
+##     "edae2d9e273b891e-bignum_inv_p521.o",
+##     "edae2d9e273b891e-bignum_mul_p521.o",
+##     "edae2d9e273b891e-bignum_mul_p521_alt.o",
+##     "edae2d9e273b891e-bignum_neg_p521.o",
+##     "edae2d9e273b891e-bignum_sqr_p521.o",
+##     "edae2d9e273b891e-bignum_sqr_p521_alt.o",
+##     "edae2d9e273b891e-bignum_sub_p521.o",
+##     "edae2d9e273b891e-bignum_tolebytes_p521.o",
+##     "edae2d9e273b891e-p521_jdouble.o",
+##     "edae2d9e273b891e-p521_jdouble_alt.o",
+##     "edae2d9e273b891e-p521_jscalarmul.o",
+##     "edae2d9e273b891e-p521_jscalarmul_alt.o",
+##     "f8e4fd781484bd36-bcm.o",
+##     "f8e4fd781484bd36-fips_shared_support.o",
+##     "fb1f39df2ea6f08f-dsa.o",
+##     "fb1f39df2ea6f08f-dsa_asn1.o",
+##     "fe5b6d61933e4a91-fips202.o",
+##     "flag_check",
+##     "flag_check.c",
+##     "libaws_lc_0_27_1_crypto.a",
+##     "openssl/",
+##     "openssl/aead.h",
+##     "openssl/aes.h",
+##     "openssl/arm_arch.h",
+##     "openssl/asm_base.h",
+##     "openssl/asn1.h",
+##     "openssl/asn1_mac.h",
+##     "openssl/asn1t.h",
+##     "openssl/base.h",
+##     "openssl/base64.h",
+##     "openssl/bio.h",
+##     "openssl/blake2.h",
+##     "openssl/blowfish.h",
+##     "openssl/bn.h",
+##     "openssl/boringssl_prefix_symbols.h",
+##     "openssl/boringssl_prefix_symbols_asm.h",
+##     "openssl/boringssl_prefix_symbols_nasm.inc",
+##     "openssl/buf.h",
+##     "openssl/buffer.h",
+##     "openssl/bytestring.h",
+##     "openssl/chacha.h",
+##     "openssl/cipher.h",
+##     "openssl/cmac.h",
+##     "openssl/conf.h",
+##     "openssl/cpu.h",
+##     "openssl/crypto.h",
+##     "openssl/ctrdrbg.h",
+##     "openssl/curve25519.h",
+##     "openssl/des.h",
+##     "openssl/dh.h",
+##     "openssl/digest.h",
+##     "openssl/dsa.h",
+##     "openssl/dtls1.h",
+##     "openssl/e_os2.h",
+##     "openssl/ec.h",
+##     "openssl/ec_key.h",
+##     "openssl/ecdh.h",
+##     "openssl/ecdsa.h",
+##     "openssl/engine.h",
+##     "openssl/err.h",
+##     "openssl/evp.h",
+##     "openssl/evp_errors.h",
+##     "openssl/ex_data.h",
+##     "openssl/experimental/",
+##     "openssl/experimental/kem_deterministic_api.h",
+##     "openssl/hkdf.h",
+##     "openssl/hmac.h",
+##     "openssl/hpke.h",
+##     "openssl/hrss.h",
+##     "openssl/is_awslc.h",
+##     "openssl/kdf.h",
+##     "openssl/lhash.h",
+##     "openssl/md4.h",
+##     "openssl/md5.h",
+##     "openssl/mem.h",
+##     "openssl/nid.h",
+##     "openssl/obj.h",
+##     "openssl/obj_mac.h",
+##     "openssl/objects.h",
+##     "openssl/ocsp.h",
+##     "openssl/opensslconf.h",
+##     "openssl/opensslv.h",
+##     "openssl/ossl_typ.h",
+##     "openssl/pem.h",
+##     "openssl/pkcs12.h",
+##     "openssl/pkcs7.h",
+##     "openssl/pkcs8.h",
+##     "openssl/poly1305.h",
+##     "openssl/pool.h",
+##     "openssl/posix_time.h",
+##     "openssl/rand.h",
+##     "openssl/rc4.h",
+##     "openssl/ripemd.h",
+##     "openssl/rsa.h",
+##     "openssl/safestack.h",
+##     "openssl/service_indicator.h",
+##     "openssl/sha.h",
+##     "openssl/siphash.h",
+##     "openssl/span.h",
+##     "openssl/sshkdf.h",
+##     "openssl/ssl.h",
+##     "openssl/ssl3.h",
+##     "openssl/stack.h",
+##     "openssl/target.h",
+##     "openssl/thread.h",
+##     "openssl/time.h",
+##     "openssl/tls1.h",
+##     "openssl/trust_token.h",
+##     "openssl/type_check.h",
+##     "openssl/x509.h",
+##     "openssl/x509_vfy.h",
+##     "openssl/x509v3.h",
+##     "openssl/x509v3_errors.h",
+##     "rust_wrapper.h",
+## ]
+## stdout = [
+##     "cargo:rerun-if-env-changed=AWS_LC_SYS_NO_PREFIX",
+##     "cargo:rerun-if-env-changed=AWS_LC_SYS_PREGENERATING_BINDINGS",
+##     "cargo:rerun-if-env-changed=AWS_LC_SYS_EXTERNAL_BINDGEN",
+##     "cargo:rerun-if-env-changed=AWS_LC_SYS_NO_ASM",
+##     "cargo:rerun-if-env-changed=AWS_LC_SYS_CFLAGS",
+##     "cargo:rerun-if-env-changed=AWS_LC_SYS_PREBUILT_NASM",
+##     "cargo:rerun-if-env-changed=AWS_LC_SYS_C_STD",
+##     "cargo:rustc-cfg=x86_64_unknown_linux_gnu",
+##     "cargo:rerun-if-env-changed=AWS_LC_SYS_CMAKE_BUILDER",
+##     "cargo:rerun-if-env-changed=AWS_LC_SYS_STATIC",
+##     "default_for Target: 'x86_64-unknown-linux-gnu'",
+##     "cargo:rerun-if-env-changed=CARGO_FEATURE_SSL",
+##     "cargo:warning=Building with: CC",
+##     'cargo:warning=Symbol Prefix: Some("aws_lc_0_27_1")',
+##     "default_for Target: 'x86_64-unknown-linux-gnu'",
+##     "cargo:rerun-if-env-changed=CARGO_FEATURE_SSL",
+##     "cargo:root=/tmp/clis-stu_0-7-5/release/build/aws-lc-sys-e68d7f20dd3d392b/out",
+##     "default_for Target: 'x86_64-unknown-linux-gnu'",
+##     "OPT_LEVEL = Some(3)",
+##     "OUT_DIR = Some(/tmp/clis-stu_0-7-5/release/build/aws-lc-sys-e68d7f20dd3d392b/out)",
+##     "TARGET = Some(x86_64-unknown-linux-gnu)",
+##     "HOST = Some(x86_64-unknown-linux-gnu)",
+##     "cargo:rerun-if-env-changed=CC_x86_64-unknown-linux-gnu",
+##     "CC_x86_64-unknown-linux-gnu = None",
+##     "cargo:rerun-if-env-changed=CC_x86_64_unknown_linux_gnu",
+##     "CC_x86_64_unknown_linux_gnu = None",
+##     "cargo:rerun-if-env-changed=HOST_CC",
+##     "HOST_CC = None",
+##     "cargo:rerun-if-env-changed=CC",
+##     "CC = None",
+##     "cargo:rerun-if-env-changed=CC_ENABLE_DEBUG_OUTPUT",
+##     "RUSTC_WRAPPER = None",
+##     "cargo:rerun-if-env-changed=CRATE_CC_NO_DEFAULTS",
+##     "CRATE_CC_NO_DEFAULTS = None",
+##     "DEBUG = Some(false)",
+##     "CARGO_CFG_TARGET_FEATURE = Some(fxsr,sse,sse2)",
+##     "cargo:rerun-if-env-changed=CFLAGS",
+##     "CFLAGS = None",
+##     "cargo:rerun-if-env-changed=HOST_CFLAGS",
+##     "HOST_CFLAGS = None",
+##     "cargo:rerun-if-env-changed=CFLAGS_x86_64_unknown_linux_gnu",
+##     "CFLAGS_x86_64_unknown_linux_gnu = None",
+##     "cargo:rerun-if-env-changed=CFLAGS_x86_64-unknown-linux-gnu",
+##     "CFLAGS_x86_64-unknown-linux-gnu = None",
+##     "CARGO_ENCODED_RUSTFLAGS = Some()",
+##     "OPT_LEVEL = Some(3)",
+##     "TARGET = Some(x86_64-unknown-linux-gnu)",
+##     "HOST = Some(x86_64-unknown-linux-gnu)",
+##     "cargo:rerun-if-env-changed=CC_x86_64-unknown-linux-gnu",
+##     "CC_x86_64-unknown-linux-gnu = None",
+##     "cargo:rerun-if-env-changed=CC_x86_64_unknown_linux_gnu",
+##     "CC_x86_64_unknown_linux_gnu = None",
+##     "cargo:rerun-if-env-changed=HOST_CC",
+##     "HOST_CC = None",
+##     "cargo:rerun-if-env-changed=CC",
+##     "CC = None",
+##     "cargo:rerun-if-env-changed=CC_ENABLE_DEBUG_OUTPUT",
+##     "RUSTC_WRAPPER = None",
+##     "cargo:rerun-if-env-changed=CRATE_CC_NO_DEFAULTS",
+##     "CRATE_CC_NO_DEFAULTS = None",
+##     "DEBUG = Some(false)",
+##     "CARGO_CFG_TARGET_FEATURE = Some(fxsr,sse,sse2)",
+##     "cargo:rerun-if-env-changed=CFLAGS",
+##     "CFLAGS = None",
+##     "cargo:rerun-if-env-changed=HOST_CFLAGS",
+##     "HOST_CFLAGS = None",
+##     "cargo:rerun-if-env-changed=CFLAGS_x86_64_unknown_linux_gnu",
+##     "CFLAGS_x86_64_unknown_linux_gnu = None",
+##     "cargo:rerun-if-env-changed=CFLAGS_x86_64-unknown-linux-gnu",
+##     "CFLAGS_x86_64-unknown-linux-gnu = None",
+##     "CARGO_ENCODED_RUSTFLAGS = Some()",
+##     """cargo:warning=Compilation of 'c11.c' succeeded - Ok(["/tmp/clis-stu_0-7-5/release/build/aws-lc-sys-e68d7f20dd3d392b/out/out-c11/7dfda64fdf5a526c-c11.o"]).""",
+##     "cargo:rerun-if-env-changed=CC",
+##     "cargo:rerun-if-env-changed=CXX",
+##     "OUT_DIR = Some(/tmp/clis-stu_0-7-5/release/build/aws-lc-sys-e68d7f20dd3d392b/out)",
+##     "cargo:rerun-if-env-changed=CC_ENABLE_DEBUG_OUTPUT",
+##     "cargo:rerun-if-env-changed=CRATE_CC_NO_DEFAULTS",
+##     "CRATE_CC_NO_DEFAULTS = None",
+##     "TARGET = Some(x86_64-unknown-linux-gnu)",
+##     "CARGO_CFG_TARGET_FEATURE = Some(fxsr,sse,sse2)",
+##     "HOST = Some(x86_64-unknown-linux-gnu)",
+##     "cargo:rerun-if-env-changed=CFLAGS",
+##     "CFLAGS = None",
+##     "cargo:rerun-if-env-changed=HOST_CFLAGS",
+##     "HOST_CFLAGS = None",
+##     "cargo:rerun-if-env-changed=CFLAGS_x86_64_unknown_linux_gnu",
+##     "CFLAGS_x86_64_unknown_linux_gnu = None",
+##     "cargo:rerun-if-env-changed=CFLAGS_x86_64-unknown-linux-gnu",
+##     "CFLAGS_x86_64-unknown-linux-gnu = None",
+##     "cargo:warning=Using flag: -ffile-prefix-map=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1=",
+##     "OPT_LEVEL = Some(3)",
+##     "TARGET = Some(x86_64-unknown-linux-gnu)",
+##     "HOST = Some(x86_64-unknown-linux-gnu)",
+##     "cargo:rerun-if-env-changed=CC_x86_64-unknown-linux-gnu",
+##     "CC_x86_64-unknown-linux-gnu = None",
+##     "cargo:rerun-if-env-changed=CC_x86_64_unknown_linux_gnu",
+##     "CC_x86_64_unknown_linux_gnu = None",
+##     "cargo:rerun-if-env-changed=HOST_CC",
+##     "HOST_CC = None",
+##     "cargo:rerun-if-env-changed=CC",
+##     "CC = None",
+##     "cargo:rerun-if-env-changed=CC_ENABLE_DEBUG_OUTPUT",
+##     "RUSTC_WRAPPER = None",
+##     "cargo:rerun-if-env-changed=CRATE_CC_NO_DEFAULTS",
+##     "CRATE_CC_NO_DEFAULTS = None",
+##     "DEBUG = Some(false)",
+##     "CARGO_CFG_TARGET_FEATURE = Some(fxsr,sse,sse2)",
+##     "cargo:rerun-if-env-changed=CFLAGS",
+##     "CFLAGS = None",
+##     "cargo:rerun-if-env-changed=HOST_CFLAGS",
+##     "HOST_CFLAGS = None",
+##     "cargo:rerun-if-env-changed=CFLAGS_x86_64_unknown_linux_gnu",
+##     "CFLAGS_x86_64_unknown_linux_gnu = None",
+##     "cargo:rerun-if-env-changed=CFLAGS_x86_64-unknown-linux-gnu",
+##     "CFLAGS_x86_64-unknown-linux-gnu = None",
+##     "CARGO_ENCODED_RUSTFLAGS = Some()",
+##     """cargo:warning=Compilation of 'stdalign_check.c' succeeded - Ok(["/tmp/clis-stu_0-7-5/release/build/aws-lc-sys-e68d7f20dd3d392b/out/out-stdalign_check/7dfda64fdf5a526c-stdalign_check.o"]).""",
+##     "OPT_LEVEL = Some(3)",
+##     "TARGET = Some(x86_64-unknown-linux-gnu)",
+##     "HOST = Some(x86_64-unknown-linux-gnu)",
+##     "cargo:rerun-if-env-changed=CC_x86_64-unknown-linux-gnu",
+##     "CC_x86_64-unknown-linux-gnu = None",
+##     "cargo:rerun-if-env-changed=CC_x86_64_unknown_linux_gnu",
+##     "CC_x86_64_unknown_linux_gnu = None",
+##     "cargo:rerun-if-env-changed=HOST_CC",
+##     "HOST_CC = None",
+##     "cargo:rerun-if-env-changed=CC",
+##     "CC = None",
+##     "cargo:rerun-if-env-changed=CC_ENABLE_DEBUG_OUTPUT",
+##     "RUSTC_WRAPPER = None",
+##     "cargo:rerun-if-env-changed=CRATE_CC_NO_DEFAULTS",
+##     "CRATE_CC_NO_DEFAULTS = None",
+##     "DEBUG = Some(false)",
+##     "CARGO_CFG_TARGET_FEATURE = Some(fxsr,sse,sse2)",
+##     "cargo:rerun-if-env-changed=CFLAGS",
+##     "CFLAGS = None",
+##     "cargo:rerun-if-env-changed=HOST_CFLAGS",
+##     "HOST_CFLAGS = None",
+##     "cargo:rerun-if-env-changed=CFLAGS_x86_64_unknown_linux_gnu",
+##     "CFLAGS_x86_64_unknown_linux_gnu = None",
+##     "cargo:rerun-if-env-changed=CFLAGS_x86_64-unknown-linux-gnu",
+##     "CFLAGS_x86_64-unknown-linux-gnu = None",
+##     "CARGO_ENCODED_RUSTFLAGS = Some()",
+##     """cargo:warning=Compilation of 'builtin_swap_check.c' succeeded - Ok(["/tmp/clis-stu_0-7-5/release/build/aws-lc-sys-e68d7f20dd3d392b/out/out-builtin_swap_check/7dfda64fdf5a526c-builtin_swap_check.o"]).""",
+##     "OPT_LEVEL = Some(3)",
+##     "OUT_DIR = Some(/tmp/clis-stu_0-7-5/release/build/aws-lc-sys-e68d7f20dd3d392b/out)",
+##     "TARGET = Some(x86_64-unknown-linux-gnu)",
+##     "HOST = Some(x86_64-unknown-linux-gnu)",
+##     "cargo:rerun-if-env-changed=CC_x86_64-unknown-linux-gnu",
+##     "CC_x86_64-unknown-linux-gnu = None",
+##     "cargo:rerun-if-env-changed=CC_x86_64_unknown_linux_gnu",
+##     "CC_x86_64_unknown_linux_gnu = None",
+##     "cargo:rerun-if-env-changed=HOST_CC",
+##     "HOST_CC = None",
+##     "cargo:rerun-if-env-changed=CC",
+##     "CC = None",
+##     "cargo:rerun-if-env-changed=CC_ENABLE_DEBUG_OUTPUT",
+##     "RUSTC_WRAPPER = None",
+##     "cargo:rerun-if-env-changed=CRATE_CC_NO_DEFAULTS",
+##     "CRATE_CC_NO_DEFAULTS = None",
+##     "DEBUG = Some(false)",
+##     "CARGO_CFG_TARGET_FEATURE = Some(fxsr,sse,sse2)",
+##     "cargo:rerun-if-env-changed=CFLAGS",
+##     "CFLAGS = None",
+##     "cargo:rerun-if-env-changed=HOST_CFLAGS",
+##     "HOST_CFLAGS = None",
+##     "cargo:rerun-if-env-changed=CFLAGS_x86_64_unknown_linux_gnu",
+##     "CFLAGS_x86_64_unknown_linux_gnu = None",
+##     "cargo:rerun-if-env-changed=CFLAGS_x86_64-unknown-linux-gnu",
+##     "CFLAGS_x86_64-unknown-linux-gnu = None",
+##     "CARGO_ENCODED_RUSTFLAGS = Some()",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "cargo:rerun-if-env-changed=AR_x86_64-unknown-linux-gnu",
+##     "AR_x86_64-unknown-linux-gnu = None",
+##     "cargo:rerun-if-env-changed=AR_x86_64_unknown_linux_gnu",
+##     "AR_x86_64_unknown_linux_gnu = None",
+##     "cargo:rerun-if-env-changed=HOST_AR",
+##     "HOST_AR = None",
+##     "cargo:rerun-if-env-changed=AR",
+##     "AR = None",
+##     "cargo:rerun-if-env-changed=ARFLAGS",
+##     "ARFLAGS = None",
+##     "cargo:rerun-if-env-changed=HOST_ARFLAGS",
+##     "HOST_ARFLAGS = None",
+##     "cargo:rerun-if-env-changed=ARFLAGS_x86_64_unknown_linux_gnu",
+##     "ARFLAGS_x86_64_unknown_linux_gnu = None",
+##     "cargo:rerun-if-env-changed=ARFLAGS_x86_64-unknown-linux-gnu",
+##     "ARFLAGS_x86_64-unknown-linux-gnu = None",
+##     "cargo:rustc-link-lib=static=aws_lc_0_27_1_crypto",
+##     "cargo:rustc-link-search=native=/tmp/clis-stu_0-7-5/release/build/aws-lc-sys-e68d7f20dd3d392b/out",
+##     "cargo:rerun-if-env-changed=AWS_LC_SYS_INCLUDES",
+##     "cargo:include=/tmp/clis-stu_0-7-5/release/build/aws-lc-sys-e68d7f20dd3d392b/out/include",
+##     "cargo:libcrypto=aws_lc_0_27_1_crypto",
+##     "cargo:conf=OPENSSL_NO_ASYNC,OPENSSL_NO_BF,OPENSSL_NO_BLAKE2,OPENSSL_NO_BUF_FREELISTS,OPENSSL_NO_CAMELLIA,OPENSSL_NO_CAPIENG,OPENSSL_NO_CAST,OPENSSL_NO_CMS,OPENSSL_NO_COMP,OPENSSL_NO_CRYPTO_MDEBUG,OPENSSL_NO_CT,OPENSSL_NO_DANE,OPENSSL_NO_DEPRECATED,OPENSSL_NO_DGRAM,OPENSSL_NO_DYNAMIC_ENGINE,OPENSSL_NO_EC_NISTP_64_GCC_128,OPENSSL_NO_EC2M,OPENSSL_NO_EGD,OPENSSL_NO_ENGINE,OPENSSL_NO_GMP,OPENSSL_NO_GOST,OPENSSL_NO_HEARTBEATS,OPENSSL_NO_HW,OPENSSL_NO_IDEA,OPENSSL_NO_JPAKE,OPENSSL_NO_KRB5,OPENSSL_NO_MD2,OPENSSL_NO_MDC2,OPENSSL_NO_OCB,OPENSSL_NO_RC2,OPENSSL_NO_RC5,OPENSSL_NO_RFC3779,OPENSSL_NO_RIPEMD,OPENSSL_NO_RMD160,OPENSSL_NO_SCTP,OPENSSL_NO_SEED,OPENSSL_NO_SM2,OPENSSL_NO_SM3,OPENSSL_NO_SM4,OPENSSL_NO_SRP,OPENSSL_NO_SSL_TRACE,OPENSSL_NO_SSL2,OPENSSL_NO_SSL3,OPENSSL_NO_SSL3_METHOD,OPENSSL_NO_STATIC_ENGINE,OPENSSL_NO_STORE,OPENSSL_NO_TS,OPENSSL_NO_WHIRLPOOL",
+##     "cargo:rerun-if-changed=builder/",
+##     "cargo:rerun-if-changed=aws-lc/",
 ## ]
 ##
 ## [[stages]]
@@ -1566,7 +2500,7 @@ COPY --link --from=run-z-aws-lc-sys-0.27.1-e68d7f20dd3d392b /tmp/clis-stu_0-7-5/
 ##         CARGO_PKG_VERSION_PRE= \
 ##         DEBUG=false \
 ##         HOST=x86_64-unknown-linux-gnu \
-##         NUM_JOBS=1 \
+##         NUM_JOBS=4 \
 ##         OPT_LEVEL=3 \
 ##         OUT_DIR=/tmp/clis-stu_0-7-5/release/build/aws-lc-sys-e68d7f20dd3d392b/out \
 ##         PROFILE=release \
@@ -1587,6 +2521,3352 @@ COPY --link --from=run-z-aws-lc-sys-0.27.1-e68d7f20dd3d392b /tmp/clis-stu_0-7-5/
 ## script = """
 ## FROM scratch AS out-e68d7f20dd3d392b
 ## COPY --link --from=run-z-aws-lc-sys-0.27.1-e68d7f20dd3d392b /tmp/clis-stu_0-7-5/release/build/aws-lc-sys-e68d7f20dd3d392b/out/* /"""
+
+
+FROM rust-base AS dep-n-aws-lc-sys-0.27.1-d7d98da815527774
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-stu_0-7-5/release/deps
+RUN \
+  --mount=from=cratesio-aws-lc-sys-0.27.1,source=/aws-lc-sys-0.27.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1 \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/build/aws-lc-sys-e68d7f20dd3d392b/out,source=/ \
+    env CARGO="$(which cargo)" \
+        CARGO_CRATE_NAME=aws_lc_sys \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/Cargo.toml \
+        CARGO_PKG_AUTHORS=AWS-LC \
+        CARGO_PKG_DESCRIPTION=AWS-LC' is a general-purpose cryptographic library maintained by the AWS Cryptography team for AWS and their customers. It іs based on code from the Google BoringSSL project and the OpenSSL project.' \
+        CARGO_PKG_HOMEPAGE= \
+        CARGO_PKG_LICENSE=ISC' AND (Apache-2.0 OR ISC) AND OpenSSL' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=aws-lc-sys \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/aws/aws-lc-rs' \
+        CARGO_PKG_RUST_VERSION=1.63.0 \
+        CARGO_PKG_VERSION=0.27.1 \
+        CARGO_PKG_VERSION_MAJOR=0 \
+        CARGO_PKG_VERSION_MINOR=27 \
+        CARGO_PKG_VERSION_PATCH=1 \
+        CARGO_PKG_VERSION_PRE= \
+        OUT_DIR=/tmp/clis-stu_0-7-5/release/build/aws-lc-sys-e68d7f20dd3d392b/out \
+        CARGOGREEN=1 \
+      rustc '--crate-name' 'aws_lc_sys' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'linker-plugin-lto' '-C' 'codegen-units=1' '--cfg' 'feature="prebuilt-nasm"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("asan", "bindgen", "prebuilt-nasm", "ssl"))' '-C' 'metadata=c69c38cc43ed4989' '-C' 'extra-filename=-d7d98da815527774' '--out-dir' '/tmp/clis-stu_0-7-5/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-stu_0-7-5/release/deps' '--cap-lints' 'warn' '-L' 'native=/tmp/clis-stu_0-7-5/release/build/aws-lc-sys-e68d7f20dd3d392b/out' '-l' 'static=aws_lc_0_27_1_crypto' '--cfg' 'x86_64_unknown_linux_gnu' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/src/lib.rs \
+        1>          /tmp/clis-stu_0-7-5/release/deps/out-d7d98da815527774-stdout \
+        2>          /tmp/clis-stu_0-7-5/release/deps/out-d7d98da815527774-stderr \
+        || echo $? >/tmp/clis-stu_0-7-5/release/deps/out-d7d98da815527774-errcode\
+  ; find /tmp/clis-stu_0-7-5/release/deps/*-d7d98da815527774* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-d7d98da815527774
+COPY --link --from=dep-n-aws-lc-sys-0.27.1-d7d98da815527774 /tmp/clis-stu_0-7-5/release/deps/*-d7d98da815527774* /
+
+## this = "d7d98da815527774"
+## deps = [
+##     "e68d7f20dd3d392b",
+##     "5253d2060227d8a0",
+##     "d68e352a3cdc3b08",
+##     "4dfd14a0b71a19ea",
+##     "55bd35d1ef212c79",
+##     "e58644cb7f510602",
+##     "947438b818448e5e",
+##     "3741a1f4e7374899",
+##     "4ebb5633c029d02a",
+##     "e6abd85383eef4c9",
+##     "590398941c1af7ae",
+## ]
+## buildrs_results = ["e68d7f20dd3d392b"]
+## writes = [
+##     "aws_lc_sys-d7d98da815527774.d",
+##     "libaws_lc_sys-d7d98da815527774.rlib",
+##     "libaws_lc_sys-d7d98da815527774.rmeta",
+## ]
+## stderr = [
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-stu_0-7-5/release/deps/aws_lc_sys-d7d98da815527774.d","emit":"dep-info"}',
+##     '{"$message_type":"diagnostic","message":"function pointer comparisons do not produce meaningful results since their addresses are not guaranteed to be unique","code":{"code":"unpredictable_function_pointer_comparisons","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/src/x86_64_unknown_linux_gnu_crypto.rs","byte_start":306001,"byte_end":306225,"line_start":7548,"line_end":7554,"column_start":5,"column_end":6,"is_primary":true,"text":[{"text":"    pub bwrite: ::std::option::Option<","highlight_start":5,"highlight_end":39},{"text":"        unsafe extern \"C\" fn(","highlight_start":1,"highlight_end":30},{"text":"            arg1: *mut BIO,","highlight_start":1,"highlight_end":28},{"text":"            arg2: *const ::std::os::raw::c_char,","highlight_start":1,"highlight_end":49},{"text":"            arg3: ::std::os::raw::c_int,","highlight_start":1,"highlight_end":41},{"text":"        ) -> ::std::os::raw::c_int,","highlight_start":1,"highlight_end":36},{"text":"    >,","highlight_start":1,"highlight_end":6}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":{"span":{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/src/x86_64_unknown_linux_gnu_crypto.rs","byte_start":305871,"byte_end":305880,"line_start":7544,"line_end":7544,"column_start":30,"column_end":39,"is_primary":false,"text":[{"text":"#[derive(Debug, Copy, Clone, PartialEq, Eq)]","highlight_start":30,"highlight_end":39}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null},"macro_decl_name":"#[derive(PartialEq)]","def_site_span":{"file_name":"/rustc/1159e78c4747b02ef996e55082b704c09b970588/library/core/src/cmp.rs","byte_start":10189,"byte_end":10208,"line_start":275,"line_end":275,"column_start":1,"column_end":20,"is_primary":false,"text":[],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}}}],"children":[{"message":"the address of the same function can vary between different codegen units","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"furthermore, different functions could have the same address after being merged together","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"for more information visit <https://doc.rust-lang.org/nightly/core/ptr/fn.fn_addr_eq.html>","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"`#[warn(unpredictable_function_pointer_comparisons)]` on by default","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: function pointer comparisons do not produce meaningful results since their addresses are not guaranteed to be unique\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/src/x86_64_unknown_linux_gnu_crypto.rs:7548:5\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m7544\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m   \u001b[0m\u001b[0m#[derive(Debug, Copy, Clone, PartialEq, Eq)]\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m---------\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12min this derive macro expansion\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m...\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m7548\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[33m/\u001b[0m\u001b[0m \u001b[0m\u001b[0m    pub bwrite: ::std::option::Option<\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m7549\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[33m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m        unsafe extern \"C\" fn(\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m7550\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[33m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m            arg1: *mut BIO,\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m7551\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[33m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m            arg2: *const ::std::os::raw::c_char,\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m7552\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[33m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m            arg3: ::std::os::raw::c_int,\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m7553\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[33m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m        ) -> ::std::os::raw::c_int,\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m7554\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[33m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    >,\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[33m|_____^\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: the address of the same function can vary between different codegen units\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: furthermore, different functions could have the same address after being merged together\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: for more information visit <https://doc.rust-lang.org/nightly/core/ptr/fn.fn_addr_eq.html>\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: `#[warn(unpredictable_function_pointer_comparisons)]` on by default\u001b[0m\n\n"}',
+##     '{"$message_type":"diagnostic","message":"function pointer comparisons do not produce meaningful results since their addresses are not guaranteed to be unique","code":{"code":"unpredictable_function_pointer_comparisons","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/src/x86_64_unknown_linux_gnu_crypto.rs","byte_start":306231,"byte_end":306452,"line_start":7555,"line_end":7561,"column_start":5,"column_end":6,"is_primary":true,"text":[{"text":"    pub bread: ::std::option::Option<","highlight_start":5,"highlight_end":38},{"text":"        unsafe extern \"C\" fn(","highlight_start":1,"highlight_end":30},{"text":"            arg1: *mut BIO,","highlight_start":1,"highlight_end":28},{"text":"            arg2: *mut ::std::os::raw::c_char,","highlight_start":1,"highlight_end":47},{"text":"            arg3: ::std::os::raw::c_int,","highlight_start":1,"highlight_end":41},{"text":"        ) -> ::std::os::raw::c_int,","highlight_start":1,"highlight_end":36},{"text":"    >,","highlight_start":1,"highlight_end":6}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":{"span":{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/src/x86_64_unknown_linux_gnu_crypto.rs","byte_start":305871,"byte_end":305880,"line_start":7544,"line_end":7544,"column_start":30,"column_end":39,"is_primary":false,"text":[{"text":"#[derive(Debug, Copy, Clone, PartialEq, Eq)]","highlight_start":30,"highlight_end":39}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null},"macro_decl_name":"#[derive(PartialEq)]","def_site_span":{"file_name":"/rustc/1159e78c4747b02ef996e55082b704c09b970588/library/core/src/cmp.rs","byte_start":10189,"byte_end":10208,"line_start":275,"line_end":275,"column_start":1,"column_end":20,"is_primary":false,"text":[],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}}}],"children":[{"message":"the address of the same function can vary between different codegen units","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"furthermore, different functions could have the same address after being merged together","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"for more information visit <https://doc.rust-lang.org/nightly/core/ptr/fn.fn_addr_eq.html>","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: function pointer comparisons do not produce meaningful results since their addresses are not guaranteed to be unique\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/src/x86_64_unknown_linux_gnu_crypto.rs:7555:5\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m7544\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m   \u001b[0m\u001b[0m#[derive(Debug, Copy, Clone, PartialEq, Eq)]\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m---------\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12min this derive macro expansion\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m...\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m7555\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[33m/\u001b[0m\u001b[0m \u001b[0m\u001b[0m    pub bread: ::std::option::Option<\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m7556\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[33m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m        unsafe extern \"C\" fn(\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m7557\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[33m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m            arg1: *mut BIO,\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m7558\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[33m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m            arg2: *mut ::std::os::raw::c_char,\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m7559\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[33m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m            arg3: ::std::os::raw::c_int,\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m7560\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[33m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m        ) -> ::std::os::raw::c_int,\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m7561\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[33m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    >,\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[33m|_____^\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: the address of the same function can vary between different codegen units\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: furthermore, different functions could have the same address after being merged together\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: for more information visit <https://doc.rust-lang.org/nightly/core/ptr/fn.fn_addr_eq.html>\u001b[0m\n\n"}',
+##     '{"$message_type":"diagnostic","message":"function pointer comparisons do not produce meaningful results since their addresses are not guaranteed to be unique","code":{"code":"unpredictable_function_pointer_comparisons","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/src/x86_64_unknown_linux_gnu_crypto.rs","byte_start":306458,"byte_end":306640,"line_start":7562,"line_end":7567,"column_start":5,"column_end":6,"is_primary":true,"text":[{"text":"    pub bputs: ::std::option::Option<","highlight_start":5,"highlight_end":38},{"text":"        unsafe extern \"C\" fn(","highlight_start":1,"highlight_end":30},{"text":"            arg1: *mut BIO,","highlight_start":1,"highlight_end":28},{"text":"            arg2: *const ::std::os::raw::c_char,","highlight_start":1,"highlight_end":49},{"text":"        ) -> ::std::os::raw::c_int,","highlight_start":1,"highlight_end":36},{"text":"    >,","highlight_start":1,"highlight_end":6}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":{"span":{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/src/x86_64_unknown_linux_gnu_crypto.rs","byte_start":305871,"byte_end":305880,"line_start":7544,"line_end":7544,"column_start":30,"column_end":39,"is_primary":false,"text":[{"text":"#[derive(Debug, Copy, Clone, PartialEq, Eq)]","highlight_start":30,"highlight_end":39}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null},"macro_decl_name":"#[derive(PartialEq)]","def_site_span":{"file_name":"/rustc/1159e78c4747b02ef996e55082b704c09b970588/library/core/src/cmp.rs","byte_start":10189,"byte_end":10208,"line_start":275,"line_end":275,"column_start":1,"column_end":20,"is_primary":false,"text":[],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}}}],"children":[{"message":"the address of the same function can vary between different codegen units","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"furthermore, different functions could have the same address after being merged together","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"for more information visit <https://doc.rust-lang.org/nightly/core/ptr/fn.fn_addr_eq.html>","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: function pointer comparisons do not produce meaningful results since their addresses are not guaranteed to be unique\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/src/x86_64_unknown_linux_gnu_crypto.rs:7562:5\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m7544\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m   \u001b[0m\u001b[0m#[derive(Debug, Copy, Clone, PartialEq, Eq)]\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m---------\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12min this derive macro expansion\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m...\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m7562\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[33m/\u001b[0m\u001b[0m \u001b[0m\u001b[0m    pub bputs: ::std::option::Option<\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m7563\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[33m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m        unsafe extern \"C\" fn(\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m7564\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[33m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m            arg1: *mut BIO,\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m7565\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[33m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m            arg2: *const ::std::os::raw::c_char,\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m7566\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[33m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m        ) -> ::std::os::raw::c_int,\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m7567\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[33m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    >,\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[33m|_____^\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: the address of the same function can vary between different codegen units\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: furthermore, different functions could have the same address after being merged together\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: for more information visit <https://doc.rust-lang.org/nightly/core/ptr/fn.fn_addr_eq.html>\u001b[0m\n\n"}',
+##     '{"$message_type":"diagnostic","message":"function pointer comparisons do not produce meaningful results since their addresses are not guaranteed to be unique","code":{"code":"unpredictable_function_pointer_comparisons","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/src/x86_64_unknown_linux_gnu_crypto.rs","byte_start":306646,"byte_end":306867,"line_start":7568,"line_end":7574,"column_start":5,"column_end":6,"is_primary":true,"text":[{"text":"    pub bgets: ::std::option::Option<","highlight_start":5,"highlight_end":38},{"text":"        unsafe extern \"C\" fn(","highlight_start":1,"highlight_end":30},{"text":"            arg1: *mut BIO,","highlight_start":1,"highlight_end":28},{"text":"            arg2: *mut ::std::os::raw::c_char,","highlight_start":1,"highlight_end":47},{"text":"            arg3: ::std::os::raw::c_int,","highlight_start":1,"highlight_end":41},{"text":"        ) -> ::std::os::raw::c_int,","highlight_start":1,"highlight_end":36},{"text":"    >,","highlight_start":1,"highlight_end":6}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":{"span":{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/src/x86_64_unknown_linux_gnu_crypto.rs","byte_start":305871,"byte_end":305880,"line_start":7544,"line_end":7544,"column_start":30,"column_end":39,"is_primary":false,"text":[{"text":"#[derive(Debug, Copy, Clone, PartialEq, Eq)]","highlight_start":30,"highlight_end":39}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null},"macro_decl_name":"#[derive(PartialEq)]","def_site_span":{"file_name":"/rustc/1159e78c4747b02ef996e55082b704c09b970588/library/core/src/cmp.rs","byte_start":10189,"byte_end":10208,"line_start":275,"line_end":275,"column_start":1,"column_end":20,"is_primary":false,"text":[],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}}}],"children":[{"message":"the address of the same function can vary between different codegen units","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"furthermore, different functions could have the same address after being merged together","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"for more information visit <https://doc.rust-lang.org/nightly/core/ptr/fn.fn_addr_eq.html>","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: function pointer comparisons do not produce meaningful results since their addresses are not guaranteed to be unique\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/src/x86_64_unknown_linux_gnu_crypto.rs:7568:5\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m7544\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m   \u001b[0m\u001b[0m#[derive(Debug, Copy, Clone, PartialEq, Eq)]\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m---------\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12min this derive macro expansion\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m...\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m7568\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[33m/\u001b[0m\u001b[0m \u001b[0m\u001b[0m    pub bgets: ::std::option::Option<\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m7569\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[33m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m        unsafe extern \"C\" fn(\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m7570\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[33m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m            arg1: *mut BIO,\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m7571\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[33m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m            arg2: *mut ::std::os::raw::c_char,\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m7572\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[33m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m            arg3: ::std::os::raw::c_int,\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m7573\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[33m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m        ) -> ::std::os::raw::c_int,\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m7574\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[33m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    >,\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[33m|_____^\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: the address of the same function can vary between different codegen units\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: furthermore, different functions could have the same address after being merged together\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: for more information visit <https://doc.rust-lang.org/nightly/core/ptr/fn.fn_addr_eq.html>\u001b[0m\n\n"}',
+##     '{"$message_type":"diagnostic","message":"function pointer comparisons do not produce meaningful results since their addresses are not guaranteed to be unique","code":{"code":"unpredictable_function_pointer_comparisons","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/src/x86_64_unknown_linux_gnu_crypto.rs","byte_start":306873,"byte_end":307136,"line_start":7575,"line_end":7582,"column_start":5,"column_end":6,"is_primary":true,"text":[{"text":"    pub ctrl: ::std::option::Option<","highlight_start":5,"highlight_end":37},{"text":"        unsafe extern \"C\" fn(","highlight_start":1,"highlight_end":30},{"text":"            arg1: *mut BIO,","highlight_start":1,"highlight_end":28},{"text":"            arg2: ::std::os::raw::c_int,","highlight_start":1,"highlight_end":41},{"text":"            arg3: ::std::os::raw::c_long,","highlight_start":1,"highlight_end":42},{"text":"            arg4: *mut ::std::os::raw::c_void,","highlight_start":1,"highlight_end":47},{"text":"        ) -> ::std::os::raw::c_long,","highlight_start":1,"highlight_end":37},{"text":"    >,","highlight_start":1,"highlight_end":6}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":{"span":{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/src/x86_64_unknown_linux_gnu_crypto.rs","byte_start":305871,"byte_end":305880,"line_start":7544,"line_end":7544,"column_start":30,"column_end":39,"is_primary":false,"text":[{"text":"#[derive(Debug, Copy, Clone, PartialEq, Eq)]","highlight_start":30,"highlight_end":39}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null},"macro_decl_name":"#[derive(PartialEq)]","def_site_span":{"file_name":"/rustc/1159e78c4747b02ef996e55082b704c09b970588/library/core/src/cmp.rs","byte_start":10189,"byte_end":10208,"line_start":275,"line_end":275,"column_start":1,"column_end":20,"is_primary":false,"text":[],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}}}],"children":[{"message":"the address of the same function can vary between different codegen units","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"furthermore, different functions could have the same address after being merged together","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"for more information visit <https://doc.rust-lang.org/nightly/core/ptr/fn.fn_addr_eq.html>","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: function pointer comparisons do not produce meaningful results since their addresses are not guaranteed to be unique\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/src/x86_64_unknown_linux_gnu_crypto.rs:7575:5\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m7544\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m   \u001b[0m\u001b[0m#[derive(Debug, Copy, Clone, PartialEq, Eq)]\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m---------\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12min this derive macro expansion\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m...\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m7575\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[33m/\u001b[0m\u001b[0m \u001b[0m\u001b[0m    pub ctrl: ::std::option::Option<\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m7576\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[33m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m        unsafe extern \"C\" fn(\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m7577\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[33m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m            arg1: *mut BIO,\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m7578\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[33m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m            arg2: ::std::os::raw::c_int,\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m...\u001b[0m\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[33m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m7581\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[33m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m        ) -> ::std::os::raw::c_long,\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m7582\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[33m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    >,\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[33m|_____^\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: the address of the same function can vary between different codegen units\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: furthermore, different functions could have the same address after being merged together\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: for more information visit <https://doc.rust-lang.org/nightly/core/ptr/fn.fn_addr_eq.html>\u001b[0m\n\n"}',
+##     '{"$message_type":"diagnostic","message":"function pointer comparisons do not produce meaningful results since their addresses are not guaranteed to be unique","code":{"code":"unpredictable_function_pointer_comparisons","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/src/x86_64_unknown_linux_gnu_crypto.rs","byte_start":307142,"byte_end":307246,"line_start":7583,"line_end":7584,"column_start":5,"column_end":93,"is_primary":true,"text":[{"text":"    pub create:","highlight_start":5,"highlight_end":16},{"text":"        ::std::option::Option<unsafe extern \"C\" fn(arg1: *mut BIO) -> ::std::os::raw::c_int>,","highlight_start":1,"highlight_end":93}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":{"span":{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/src/x86_64_unknown_linux_gnu_crypto.rs","byte_start":305871,"byte_end":305880,"line_start":7544,"line_end":7544,"column_start":30,"column_end":39,"is_primary":false,"text":[{"text":"#[derive(Debug, Copy, Clone, PartialEq, Eq)]","highlight_start":30,"highlight_end":39}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null},"macro_decl_name":"#[derive(PartialEq)]","def_site_span":{"file_name":"/rustc/1159e78c4747b02ef996e55082b704c09b970588/library/core/src/cmp.rs","byte_start":10189,"byte_end":10208,"line_start":275,"line_end":275,"column_start":1,"column_end":20,"is_primary":false,"text":[],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}}}],"children":[{"message":"the address of the same function can vary between different codegen units","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"furthermore, different functions could have the same address after being merged together","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"for more information visit <https://doc.rust-lang.org/nightly/core/ptr/fn.fn_addr_eq.html>","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: function pointer comparisons do not produce meaningful results since their addresses are not guaranteed to be unique\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/src/x86_64_unknown_linux_gnu_crypto.rs:7583:5\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m7544\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m   \u001b[0m\u001b[0m#[derive(Debug, Copy, Clone, PartialEq, Eq)]\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m---------\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12min this derive macro expansion\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m...\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m7583\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[33m/\u001b[0m\u001b[0m \u001b[0m\u001b[0m    pub create:\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m7584\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[33m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m        ::std::option::Option<unsafe extern \"C\" fn(arg1: *mut BIO) -> ::std::os::raw::c_int>,\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[33m|____________________________________________________________________________________________^\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: the address of the same function can vary between different codegen units\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: furthermore, different functions could have the same address after being merged together\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: for more information visit <https://doc.rust-lang.org/nightly/core/ptr/fn.fn_addr_eq.html>\u001b[0m\n\n"}',
+##     '{"$message_type":"diagnostic","message":"function pointer comparisons do not produce meaningful results since their addresses are not guaranteed to be unique","code":{"code":"unpredictable_function_pointer_comparisons","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/src/x86_64_unknown_linux_gnu_crypto.rs","byte_start":307252,"byte_end":307357,"line_start":7585,"line_end":7586,"column_start":5,"column_end":93,"is_primary":true,"text":[{"text":"    pub destroy:","highlight_start":5,"highlight_end":17},{"text":"        ::std::option::Option<unsafe extern \"C\" fn(arg1: *mut BIO) -> ::std::os::raw::c_int>,","highlight_start":1,"highlight_end":93}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":{"span":{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/src/x86_64_unknown_linux_gnu_crypto.rs","byte_start":305871,"byte_end":305880,"line_start":7544,"line_end":7544,"column_start":30,"column_end":39,"is_primary":false,"text":[{"text":"#[derive(Debug, Copy, Clone, PartialEq, Eq)]","highlight_start":30,"highlight_end":39}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null},"macro_decl_name":"#[derive(PartialEq)]","def_site_span":{"file_name":"/rustc/1159e78c4747b02ef996e55082b704c09b970588/library/core/src/cmp.rs","byte_start":10189,"byte_end":10208,"line_start":275,"line_end":275,"column_start":1,"column_end":20,"is_primary":false,"text":[],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}}}],"children":[{"message":"the address of the same function can vary between different codegen units","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"furthermore, different functions could have the same address after being merged together","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"for more information visit <https://doc.rust-lang.org/nightly/core/ptr/fn.fn_addr_eq.html>","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: function pointer comparisons do not produce meaningful results since their addresses are not guaranteed to be unique\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/src/x86_64_unknown_linux_gnu_crypto.rs:7585:5\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m7544\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m   \u001b[0m\u001b[0m#[derive(Debug, Copy, Clone, PartialEq, Eq)]\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m---------\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12min this derive macro expansion\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m...\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m7585\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[33m/\u001b[0m\u001b[0m \u001b[0m\u001b[0m    pub destroy:\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m7586\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[33m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m        ::std::option::Option<unsafe extern \"C\" fn(arg1: *mut BIO) -> ::std::os::raw::c_int>,\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[33m|____________________________________________________________________________________________^\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: the address of the same function can vary between different codegen units\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: furthermore, different functions could have the same address after being merged together\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: for more information visit <https://doc.rust-lang.org/nightly/core/ptr/fn.fn_addr_eq.html>\u001b[0m\n\n"}',
+##     '{"$message_type":"diagnostic","message":"function pointer comparisons do not produce meaningful results since their addresses are not guaranteed to be unique","code":{"code":"unpredictable_function_pointer_comparisons","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/src/x86_64_unknown_linux_gnu_crypto.rs","byte_start":307363,"byte_end":307577,"line_start":7587,"line_end":7593,"column_start":5,"column_end":6,"is_primary":true,"text":[{"text":"    pub callback_ctrl: ::std::option::Option<","highlight_start":5,"highlight_end":46},{"text":"        unsafe extern \"C\" fn(","highlight_start":1,"highlight_end":30},{"text":"            arg1: *mut BIO,","highlight_start":1,"highlight_end":28},{"text":"            arg2: ::std::os::raw::c_int,","highlight_start":1,"highlight_end":41},{"text":"            arg3: bio_info_cb,","highlight_start":1,"highlight_end":31},{"text":"        ) -> ::std::os::raw::c_long,","highlight_start":1,"highlight_end":37},{"text":"    >,","highlight_start":1,"highlight_end":6}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":{"span":{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/src/x86_64_unknown_linux_gnu_crypto.rs","byte_start":305871,"byte_end":305880,"line_start":7544,"line_end":7544,"column_start":30,"column_end":39,"is_primary":false,"text":[{"text":"#[derive(Debug, Copy, Clone, PartialEq, Eq)]","highlight_start":30,"highlight_end":39}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null},"macro_decl_name":"#[derive(PartialEq)]","def_site_span":{"file_name":"/rustc/1159e78c4747b02ef996e55082b704c09b970588/library/core/src/cmp.rs","byte_start":10189,"byte_end":10208,"line_start":275,"line_end":275,"column_start":1,"column_end":20,"is_primary":false,"text":[],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}}}],"children":[{"message":"the address of the same function can vary between different codegen units","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"furthermore, different functions could have the same address after being merged together","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"for more information visit <https://doc.rust-lang.org/nightly/core/ptr/fn.fn_addr_eq.html>","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: function pointer comparisons do not produce meaningful results since their addresses are not guaranteed to be unique\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/src/x86_64_unknown_linux_gnu_crypto.rs:7587:5\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m7544\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m   \u001b[0m\u001b[0m#[derive(Debug, Copy, Clone, PartialEq, Eq)]\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m---------\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12min this derive macro expansion\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m...\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m7587\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[33m/\u001b[0m\u001b[0m \u001b[0m\u001b[0m    pub callback_ctrl: ::std::option::Option<\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m7588\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[33m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m        unsafe extern \"C\" fn(\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m7589\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[33m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m            arg1: *mut BIO,\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m7590\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[33m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m            arg2: ::std::os::raw::c_int,\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m7591\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[33m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m            arg3: bio_info_cb,\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m7592\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[33m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m        ) -> ::std::os::raw::c_long,\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m7593\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[33m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    >,\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[33m|_____^\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: the address of the same function can vary between different codegen units\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: furthermore, different functions could have the same address after being merged together\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: for more information visit <https://doc.rust-lang.org/nightly/core/ptr/fn.fn_addr_eq.html>\u001b[0m\n\n"}',
+##     '{"$message_type":"diagnostic","message":"function pointer comparisons do not produce meaningful results since their addresses are not guaranteed to be unique","code":{"code":"unpredictable_function_pointer_comparisons","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/src/x86_64_unknown_linux_gnu_crypto.rs","byte_start":311120,"byte_end":311155,"line_start":7724,"line_end":7724,"column_start":5,"column_end":40,"is_primary":true,"text":[{"text":"    pub callback_ex: BIO_callback_fn_ex,","highlight_start":5,"highlight_end":40}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":{"span":{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/src/x86_64_unknown_linux_gnu_crypto.rs","byte_start":311012,"byte_end":311021,"line_start":7720,"line_end":7720,"column_start":30,"column_end":39,"is_primary":false,"text":[{"text":"#[derive(Debug, Copy, Clone, PartialEq, Eq)]","highlight_start":30,"highlight_end":39}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null},"macro_decl_name":"#[derive(PartialEq)]","def_site_span":{"file_name":"/rustc/1159e78c4747b02ef996e55082b704c09b970588/library/core/src/cmp.rs","byte_start":10189,"byte_end":10208,"line_start":275,"line_end":275,"column_start":1,"column_end":20,"is_primary":false,"text":[],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}}}],"children":[{"message":"the address of the same function can vary between different codegen units","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"furthermore, different functions could have the same address after being merged together","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"for more information visit <https://doc.rust-lang.org/nightly/core/ptr/fn.fn_addr_eq.html>","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: function pointer comparisons do not produce meaningful results since their addresses are not guaranteed to be unique\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/src/x86_64_unknown_linux_gnu_crypto.rs:7724:5\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m7720\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m#[derive(Debug, Copy, Clone, PartialEq, Eq)]\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                              \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m---------\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12min this derive macro expansion\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m...\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m7724\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    pub callback_ex: BIO_callback_fn_ex,\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: the address of the same function can vary between different codegen units\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: furthermore, different functions could have the same address after being merged together\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: for more information visit <https://doc.rust-lang.org/nightly/core/ptr/fn.fn_addr_eq.html>\u001b[0m\n\n"}',
+##     '{"$message_type":"diagnostic","message":"function pointer comparisons do not produce meaningful results since their addresses are not guaranteed to be unique","code":{"code":"unpredictable_function_pointer_comparisons","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/src/x86_64_unknown_linux_gnu_crypto.rs","byte_start":414472,"byte_end":414505,"line_start":11090,"line_end":11090,"column_start":5,"column_end":38,"is_primary":true,"text":[{"text":"    pub asn1_ex_new: ASN1_ex_new_func,","highlight_start":5,"highlight_end":38}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":{"span":{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/src/x86_64_unknown_linux_gnu_crypto.rs","byte_start":414371,"byte_end":414380,"line_start":11087,"line_end":11087,"column_start":30,"column_end":39,"is_primary":false,"text":[{"text":"#[derive(Debug, Copy, Clone, PartialEq, Eq)]","highlight_start":30,"highlight_end":39}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null},"macro_decl_name":"#[derive(PartialEq)]","def_site_span":{"file_name":"/rustc/1159e78c4747b02ef996e55082b704c09b970588/library/core/src/cmp.rs","byte_start":10189,"byte_end":10208,"line_start":275,"line_end":275,"column_start":1,"column_end":20,"is_primary":false,"text":[],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}}}],"children":[{"message":"the address of the same function can vary between different codegen units","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"furthermore, different functions could have the same address after being merged together","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"for more information visit <https://doc.rust-lang.org/nightly/core/ptr/fn.fn_addr_eq.html>","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: function pointer comparisons do not produce meaningful results since their addresses are not guaranteed to be unique\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/src/x86_64_unknown_linux_gnu_crypto.rs:11090:5\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m11087\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m#[derive(Debug, Copy, Clone, PartialEq, Eq)]\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                              \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m---------\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12min this derive macro expansion\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m...\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m11090\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    pub asn1_ex_new: ASN1_ex_new_func,\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: the address of the same function can vary between different codegen units\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: furthermore, different functions could have the same address after being merged together\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: for more information visit <https://doc.rust-lang.org/nightly/core/ptr/fn.fn_addr_eq.html>\u001b[0m\n\n"}',
+##     '{"$message_type":"diagnostic","message":"function pointer comparisons do not produce meaningful results since their addresses are not guaranteed to be unique","code":{"code":"unpredictable_function_pointer_comparisons","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/src/x86_64_unknown_linux_gnu_crypto.rs","byte_start":414511,"byte_end":414546,"line_start":11091,"line_end":11091,"column_start":5,"column_end":40,"is_primary":true,"text":[{"text":"    pub asn1_ex_free: ASN1_ex_free_func,","highlight_start":5,"highlight_end":40}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":{"span":{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/src/x86_64_unknown_linux_gnu_crypto.rs","byte_start":414371,"byte_end":414380,"line_start":11087,"line_end":11087,"column_start":30,"column_end":39,"is_primary":false,"text":[{"text":"#[derive(Debug, Copy, Clone, PartialEq, Eq)]","highlight_start":30,"highlight_end":39}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null},"macro_decl_name":"#[derive(PartialEq)]","def_site_span":{"file_name":"/rustc/1159e78c4747b02ef996e55082b704c09b970588/library/core/src/cmp.rs","byte_start":10189,"byte_end":10208,"line_start":275,"line_end":275,"column_start":1,"column_end":20,"is_primary":false,"text":[],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}}}],"children":[{"message":"the address of the same function can vary between different codegen units","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"furthermore, different functions could have the same address after being merged together","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"for more information visit <https://doc.rust-lang.org/nightly/core/ptr/fn.fn_addr_eq.html>","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: function pointer comparisons do not produce meaningful results since their addresses are not guaranteed to be unique\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/src/x86_64_unknown_linux_gnu_crypto.rs:11091:5\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m11087\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m#[derive(Debug, Copy, Clone, PartialEq, Eq)]\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                              \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m---------\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12min this derive macro expansion\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m...\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m11091\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    pub asn1_ex_free: ASN1_ex_free_func,\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: the address of the same function can vary between different codegen units\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: furthermore, different functions could have the same address after being merged together\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: for more information visit <https://doc.rust-lang.org/nightly/core/ptr/fn.fn_addr_eq.html>\u001b[0m\n\n"}',
+##     '{"$message_type":"diagnostic","message":"function pointer comparisons do not produce meaningful results since their addresses are not guaranteed to be unique","code":{"code":"unpredictable_function_pointer_comparisons","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/src/x86_64_unknown_linux_gnu_crypto.rs","byte_start":414552,"byte_end":414580,"line_start":11092,"line_end":11092,"column_start":5,"column_end":33,"is_primary":true,"text":[{"text":"    pub asn1_ex_d2i: ASN1_ex_d2i,","highlight_start":5,"highlight_end":33}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":{"span":{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/src/x86_64_unknown_linux_gnu_crypto.rs","byte_start":414371,"byte_end":414380,"line_start":11087,"line_end":11087,"column_start":30,"column_end":39,"is_primary":false,"text":[{"text":"#[derive(Debug, Copy, Clone, PartialEq, Eq)]","highlight_start":30,"highlight_end":39}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null},"macro_decl_name":"#[derive(PartialEq)]","def_site_span":{"file_name":"/rustc/1159e78c4747b02ef996e55082b704c09b970588/library/core/src/cmp.rs","byte_start":10189,"byte_end":10208,"line_start":275,"line_end":275,"column_start":1,"column_end":20,"is_primary":false,"text":[],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}}}],"children":[{"message":"the address of the same function can vary between different codegen units","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"furthermore, different functions could have the same address after being merged together","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"for more information visit <https://doc.rust-lang.org/nightly/core/ptr/fn.fn_addr_eq.html>","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: function pointer comparisons do not produce meaningful results since their addresses are not guaranteed to be unique\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/src/x86_64_unknown_linux_gnu_crypto.rs:11092:5\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m11087\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m#[derive(Debug, Copy, Clone, PartialEq, Eq)]\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                              \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m---------\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12min this derive macro expansion\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m...\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m11092\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    pub asn1_ex_d2i: ASN1_ex_d2i,\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: the address of the same function can vary between different codegen units\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: furthermore, different functions could have the same address after being merged together\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: for more information visit <https://doc.rust-lang.org/nightly/core/ptr/fn.fn_addr_eq.html>\u001b[0m\n\n"}',
+##     '{"$message_type":"diagnostic","message":"function pointer comparisons do not produce meaningful results since their addresses are not guaranteed to be unique","code":{"code":"unpredictable_function_pointer_comparisons","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/src/x86_64_unknown_linux_gnu_crypto.rs","byte_start":414586,"byte_end":414614,"line_start":11093,"line_end":11093,"column_start":5,"column_end":33,"is_primary":true,"text":[{"text":"    pub asn1_ex_i2d: ASN1_ex_i2d,","highlight_start":5,"highlight_end":33}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":{"span":{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/src/x86_64_unknown_linux_gnu_crypto.rs","byte_start":414371,"byte_end":414380,"line_start":11087,"line_end":11087,"column_start":30,"column_end":39,"is_primary":false,"text":[{"text":"#[derive(Debug, Copy, Clone, PartialEq, Eq)]","highlight_start":30,"highlight_end":39}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null},"macro_decl_name":"#[derive(PartialEq)]","def_site_span":{"file_name":"/rustc/1159e78c4747b02ef996e55082b704c09b970588/library/core/src/cmp.rs","byte_start":10189,"byte_end":10208,"line_start":275,"line_end":275,"column_start":1,"column_end":20,"is_primary":false,"text":[],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}}}],"children":[{"message":"the address of the same function can vary between different codegen units","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"furthermore, different functions could have the same address after being merged together","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"for more information visit <https://doc.rust-lang.org/nightly/core/ptr/fn.fn_addr_eq.html>","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: function pointer comparisons do not produce meaningful results since their addresses are not guaranteed to be unique\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/src/x86_64_unknown_linux_gnu_crypto.rs:11093:5\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m11087\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m#[derive(Debug, Copy, Clone, PartialEq, Eq)]\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                              \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m---------\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12min this derive macro expansion\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m...\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m11093\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    pub asn1_ex_i2d: ASN1_ex_i2d,\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: the address of the same function can vary between different codegen units\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: furthermore, different functions could have the same address after being merged together\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: for more information visit <https://doc.rust-lang.org/nightly/core/ptr/fn.fn_addr_eq.html>\u001b[0m\n\n"}',
+##     '{"$message_type":"diagnostic","message":"function pointer comparisons do not produce meaningful results since their addresses are not guaranteed to be unique","code":{"code":"unpredictable_function_pointer_comparisons","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/src/x86_64_unknown_linux_gnu_crypto.rs","byte_start":414620,"byte_end":414657,"line_start":11094,"line_end":11094,"column_start":5,"column_end":42,"is_primary":true,"text":[{"text":"    pub asn1_ex_print: ASN1_ex_print_func,","highlight_start":5,"highlight_end":42}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":{"span":{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/src/x86_64_unknown_linux_gnu_crypto.rs","byte_start":414371,"byte_end":414380,"line_start":11087,"line_end":11087,"column_start":30,"column_end":39,"is_primary":false,"text":[{"text":"#[derive(Debug, Copy, Clone, PartialEq, Eq)]","highlight_start":30,"highlight_end":39}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null},"macro_decl_name":"#[derive(PartialEq)]","def_site_span":{"file_name":"/rustc/1159e78c4747b02ef996e55082b704c09b970588/library/core/src/cmp.rs","byte_start":10189,"byte_end":10208,"line_start":275,"line_end":275,"column_start":1,"column_end":20,"is_primary":false,"text":[],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}}}],"children":[{"message":"the address of the same function can vary between different codegen units","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"furthermore, different functions could have the same address after being merged together","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"for more information visit <https://doc.rust-lang.org/nightly/core/ptr/fn.fn_addr_eq.html>","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: function pointer comparisons do not produce meaningful results since their addresses are not guaranteed to be unique\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/src/x86_64_unknown_linux_gnu_crypto.rs:11094:5\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m11087\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m#[derive(Debug, Copy, Clone, PartialEq, Eq)]\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                              \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m---------\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12min this derive macro expansion\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m...\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m11094\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    pub asn1_ex_print: ASN1_ex_print_func,\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: the address of the same function can vary between different codegen units\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: furthermore, different functions could have the same address after being merged together\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: for more information visit <https://doc.rust-lang.org/nightly/core/ptr/fn.fn_addr_eq.html>\u001b[0m\n\n"}',
+##     '{"$message_type":"diagnostic","message":"function pointer comparisons do not produce meaningful results since their addresses are not guaranteed to be unique","code":{"code":"unpredictable_function_pointer_comparisons","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/src/x86_64_unknown_linux_gnu_crypto.rs","byte_start":417635,"byte_end":417659,"line_start":11195,"line_end":11195,"column_start":5,"column_end":29,"is_primary":true,"text":[{"text":"    pub asn1_cb: ASN1_aux_cb,","highlight_start":5,"highlight_end":29}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":{"span":{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/src/x86_64_unknown_linux_gnu_crypto.rs","byte_start":417480,"byte_end":417489,"line_start":11190,"line_end":11190,"column_start":30,"column_end":39,"is_primary":false,"text":[{"text":"#[derive(Debug, Copy, Clone, PartialEq, Eq)]","highlight_start":30,"highlight_end":39}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null},"macro_decl_name":"#[derive(PartialEq)]","def_site_span":{"file_name":"/rustc/1159e78c4747b02ef996e55082b704c09b970588/library/core/src/cmp.rs","byte_start":10189,"byte_end":10208,"line_start":275,"line_end":275,"column_start":1,"column_end":20,"is_primary":false,"text":[],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}}}],"children":[{"message":"the address of the same function can vary between different codegen units","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"furthermore, different functions could have the same address after being merged together","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"for more information visit <https://doc.rust-lang.org/nightly/core/ptr/fn.fn_addr_eq.html>","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: function pointer comparisons do not produce meaningful results since their addresses are not guaranteed to be unique\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/src/x86_64_unknown_linux_gnu_crypto.rs:11195:5\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m11190\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m#[derive(Debug, Copy, Clone, PartialEq, Eq)]\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                              \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m---------\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12min this derive macro expansion\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m...\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m11195\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    pub asn1_cb: ASN1_aux_cb,\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: the address of the same function can vary between different codegen units\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: furthermore, different functions could have the same address after being merged together\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: for more information visit <https://doc.rust-lang.org/nightly/core/ptr/fn.fn_addr_eq.html>\u001b[0m\n\n"}',
+##     '{"$message_type":"diagnostic","message":"function pointer comparisons do not produce meaningful results since their addresses are not guaranteed to be unique","code":{"code":"unpredictable_function_pointer_comparisons","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/src/x86_64_unknown_linux_gnu_crypto.rs","byte_start":510985,"byte_end":511200,"line_start":14273,"line_end":14279,"column_start":5,"column_end":6,"is_primary":true,"text":[{"text":"    pub update: ::std::option::Option<","highlight_start":5,"highlight_end":39},{"text":"        unsafe extern \"C\" fn(","highlight_start":1,"highlight_end":30},{"text":"            ctx: *mut EVP_MD_CTX,","highlight_start":1,"highlight_end":34},{"text":"            data: *const ::std::os::raw::c_void,","highlight_start":1,"highlight_end":49},{"text":"            count: usize,","highlight_start":1,"highlight_end":26},{"text":"        ) -> ::std::os::raw::c_int,","highlight_start":1,"highlight_end":36},{"text":"    >,","highlight_start":1,"highlight_end":6}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":{"span":{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/src/x86_64_unknown_linux_gnu_crypto.rs","byte_start":510861,"byte_end":510870,"line_start":14269,"line_end":14269,"column_start":30,"column_end":39,"is_primary":false,"text":[{"text":"#[derive(Debug, Copy, Clone, PartialEq, Eq)]","highlight_start":30,"highlight_end":39}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null},"macro_decl_name":"#[derive(PartialEq)]","def_site_span":{"file_name":"/rustc/1159e78c4747b02ef996e55082b704c09b970588/library/core/src/cmp.rs","byte_start":10189,"byte_end":10208,"line_start":275,"line_end":275,"column_start":1,"column_end":20,"is_primary":false,"text":[],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}}}],"children":[{"message":"the address of the same function can vary between different codegen units","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"furthermore, different functions could have the same address after being merged together","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"for more information visit <https://doc.rust-lang.org/nightly/core/ptr/fn.fn_addr_eq.html>","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: function pointer comparisons do not produce meaningful results since their addresses are not guaranteed to be unique\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/src/x86_64_unknown_linux_gnu_crypto.rs:14273:5\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m14269\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m   \u001b[0m\u001b[0m#[derive(Debug, Copy, Clone, PartialEq, Eq)]\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m---------\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12min this derive macro expansion\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m...\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m14273\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[33m/\u001b[0m\u001b[0m \u001b[0m\u001b[0m    pub update: ::std::option::Option<\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m14274\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[33m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m        unsafe extern \"C\" fn(\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m14275\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[33m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m            ctx: *mut EVP_MD_CTX,\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m14276\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[33m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m            data: *const ::std::os::raw::c_void,\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m14277\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[33m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m            count: usize,\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m14278\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[33m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m        ) -> ::std::os::raw::c_int,\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m14279\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[33m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    >,\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[33m|_____^\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: the address of the same function can vary between different codegen units\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: furthermore, different functions could have the same address after being merged together\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: for more information visit <https://doc.rust-lang.org/nightly/core/ptr/fn.fn_addr_eq.html>\u001b[0m\n\n"}',
+##     '{"$message_type":"diagnostic","message":"function pointer comparisons do not produce meaningful results since their addresses are not guaranteed to be unique","code":{"code":"unpredictable_function_pointer_comparisons","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/src/x86_64_unknown_linux_gnu_crypto.rs","byte_start":828744,"byte_end":828771,"line_start":24310,"line_end":24310,"column_start":5,"column_end":32,"is_primary":true,"text":[{"text":"    pub ext_new: X509V3_EXT_NEW,","highlight_start":5,"highlight_end":32}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":{"span":{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/src/x86_64_unknown_linux_gnu_crypto.rs","byte_start":828582,"byte_end":828591,"line_start":24305,"line_end":24305,"column_start":30,"column_end":39,"is_primary":false,"text":[{"text":"#[derive(Debug, Copy, Clone, PartialEq, Eq)]","highlight_start":30,"highlight_end":39}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null},"macro_decl_name":"#[derive(PartialEq)]","def_site_span":{"file_name":"/rustc/1159e78c4747b02ef996e55082b704c09b970588/library/core/src/cmp.rs","byte_start":10189,"byte_end":10208,"line_start":275,"line_end":275,"column_start":1,"column_end":20,"is_primary":false,"text":[],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}}}],"children":[{"message":"the address of the same function can vary between different codegen units","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"furthermore, different functions could have the same address after being merged together","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"for more information visit <https://doc.rust-lang.org/nightly/core/ptr/fn.fn_addr_eq.html>","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: function pointer comparisons do not produce meaningful results since their addresses are not guaranteed to be unique\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/src/x86_64_unknown_linux_gnu_crypto.rs:24310:5\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m24305\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m#[derive(Debug, Copy, Clone, PartialEq, Eq)]\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                              \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m---------\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12min this derive macro expansion\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m...\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m24310\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    pub ext_new: X509V3_EXT_NEW,\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: the address of the same function can vary between different codegen units\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: furthermore, different functions could have the same address after being merged together\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: for more information visit <https://doc.rust-lang.org/nightly/core/ptr/fn.fn_addr_eq.html>\u001b[0m\n\n"}',
+##     '{"$message_type":"diagnostic","message":"function pointer comparisons do not produce meaningful results since their addresses are not guaranteed to be unique","code":{"code":"unpredictable_function_pointer_comparisons","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/src/x86_64_unknown_linux_gnu_crypto.rs","byte_start":828777,"byte_end":828806,"line_start":24311,"line_end":24311,"column_start":5,"column_end":34,"is_primary":true,"text":[{"text":"    pub ext_free: X509V3_EXT_FREE,","highlight_start":5,"highlight_end":34}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":{"span":{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/src/x86_64_unknown_linux_gnu_crypto.rs","byte_start":828582,"byte_end":828591,"line_start":24305,"line_end":24305,"column_start":30,"column_end":39,"is_primary":false,"text":[{"text":"#[derive(Debug, Copy, Clone, PartialEq, Eq)]","highlight_start":30,"highlight_end":39}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null},"macro_decl_name":"#[derive(PartialEq)]","def_site_span":{"file_name":"/rustc/1159e78c4747b02ef996e55082b704c09b970588/library/core/src/cmp.rs","byte_start":10189,"byte_end":10208,"line_start":275,"line_end":275,"column_start":1,"column_end":20,"is_primary":false,"text":[],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}}}],"children":[{"message":"the address of the same function can vary between different codegen units","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"furthermore, different functions could have the same address after being merged together","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"for more information visit <https://doc.rust-lang.org/nightly/core/ptr/fn.fn_addr_eq.html>","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: function pointer comparisons do not produce meaningful results since their addresses are not guaranteed to be unique\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/src/x86_64_unknown_linux_gnu_crypto.rs:24311:5\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m24305\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m#[derive(Debug, Copy, Clone, PartialEq, Eq)]\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                              \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m---------\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12min this derive macro expansion\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m...\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m24311\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    pub ext_free: X509V3_EXT_FREE,\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: the address of the same function can vary between different codegen units\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: furthermore, different functions could have the same address after being merged together\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: for more information visit <https://doc.rust-lang.org/nightly/core/ptr/fn.fn_addr_eq.html>\u001b[0m\n\n"}',
+##     '{"$message_type":"diagnostic","message":"function pointer comparisons do not produce meaningful results since their addresses are not guaranteed to be unique","code":{"code":"unpredictable_function_pointer_comparisons","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/src/x86_64_unknown_linux_gnu_crypto.rs","byte_start":828812,"byte_end":828835,"line_start":24312,"line_end":24312,"column_start":5,"column_end":28,"is_primary":true,"text":[{"text":"    pub d2i: X509V3_EXT_D2I,","highlight_start":5,"highlight_end":28}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":{"span":{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/src/x86_64_unknown_linux_gnu_crypto.rs","byte_start":828582,"byte_end":828591,"line_start":24305,"line_end":24305,"column_start":30,"column_end":39,"is_primary":false,"text":[{"text":"#[derive(Debug, Copy, Clone, PartialEq, Eq)]","highlight_start":30,"highlight_end":39}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null},"macro_decl_name":"#[derive(PartialEq)]","def_site_span":{"file_name":"/rustc/1159e78c4747b02ef996e55082b704c09b970588/library/core/src/cmp.rs","byte_start":10189,"byte_end":10208,"line_start":275,"line_end":275,"column_start":1,"column_end":20,"is_primary":false,"text":[],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}}}],"children":[{"message":"the address of the same function can vary between different codegen units","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"furthermore, different functions could have the same address after being merged together","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"for more information visit <https://doc.rust-lang.org/nightly/core/ptr/fn.fn_addr_eq.html>","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: function pointer comparisons do not produce meaningful results since their addresses are not guaranteed to be unique\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/src/x86_64_unknown_linux_gnu_crypto.rs:24312:5\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m24305\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m#[derive(Debug, Copy, Clone, PartialEq, Eq)]\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                              \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m---------\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12min this derive macro expansion\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m...\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m24312\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    pub d2i: X509V3_EXT_D2I,\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: the address of the same function can vary between different codegen units\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: furthermore, different functions could have the same address after being merged together\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: for more information visit <https://doc.rust-lang.org/nightly/core/ptr/fn.fn_addr_eq.html>\u001b[0m\n\n"}',
+##     '{"$message_type":"diagnostic","message":"function pointer comparisons do not produce meaningful results since their addresses are not guaranteed to be unique","code":{"code":"unpredictable_function_pointer_comparisons","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/src/x86_64_unknown_linux_gnu_crypto.rs","byte_start":828841,"byte_end":828864,"line_start":24313,"line_end":24313,"column_start":5,"column_end":28,"is_primary":true,"text":[{"text":"    pub i2d: X509V3_EXT_I2D,","highlight_start":5,"highlight_end":28}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":{"span":{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/src/x86_64_unknown_linux_gnu_crypto.rs","byte_start":828582,"byte_end":828591,"line_start":24305,"line_end":24305,"column_start":30,"column_end":39,"is_primary":false,"text":[{"text":"#[derive(Debug, Copy, Clone, PartialEq, Eq)]","highlight_start":30,"highlight_end":39}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null},"macro_decl_name":"#[derive(PartialEq)]","def_site_span":{"file_name":"/rustc/1159e78c4747b02ef996e55082b704c09b970588/library/core/src/cmp.rs","byte_start":10189,"byte_end":10208,"line_start":275,"line_end":275,"column_start":1,"column_end":20,"is_primary":false,"text":[],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}}}],"children":[{"message":"the address of the same function can vary between different codegen units","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"furthermore, different functions could have the same address after being merged together","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"for more information visit <https://doc.rust-lang.org/nightly/core/ptr/fn.fn_addr_eq.html>","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: function pointer comparisons do not produce meaningful results since their addresses are not guaranteed to be unique\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/src/x86_64_unknown_linux_gnu_crypto.rs:24313:5\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m24305\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m#[derive(Debug, Copy, Clone, PartialEq, Eq)]\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                              \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m---------\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12min this derive macro expansion\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m...\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m24313\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    pub i2d: X509V3_EXT_I2D,\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: the address of the same function can vary between different codegen units\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: furthermore, different functions could have the same address after being merged together\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: for more information visit <https://doc.rust-lang.org/nightly/core/ptr/fn.fn_addr_eq.html>\u001b[0m\n\n"}',
+##     '{"$message_type":"diagnostic","message":"function pointer comparisons do not produce meaningful results since their addresses are not guaranteed to be unique","code":{"code":"unpredictable_function_pointer_comparisons","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/src/x86_64_unknown_linux_gnu_crypto.rs","byte_start":828870,"byte_end":828893,"line_start":24314,"line_end":24314,"column_start":5,"column_end":28,"is_primary":true,"text":[{"text":"    pub i2s: X509V3_EXT_I2S,","highlight_start":5,"highlight_end":28}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":{"span":{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/src/x86_64_unknown_linux_gnu_crypto.rs","byte_start":828582,"byte_end":828591,"line_start":24305,"line_end":24305,"column_start":30,"column_end":39,"is_primary":false,"text":[{"text":"#[derive(Debug, Copy, Clone, PartialEq, Eq)]","highlight_start":30,"highlight_end":39}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null},"macro_decl_name":"#[derive(PartialEq)]","def_site_span":{"file_name":"/rustc/1159e78c4747b02ef996e55082b704c09b970588/library/core/src/cmp.rs","byte_start":10189,"byte_end":10208,"line_start":275,"line_end":275,"column_start":1,"column_end":20,"is_primary":false,"text":[],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}}}],"children":[{"message":"the address of the same function can vary between different codegen units","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"furthermore, different functions could have the same address after being merged together","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"for more information visit <https://doc.rust-lang.org/nightly/core/ptr/fn.fn_addr_eq.html>","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: function pointer comparisons do not produce meaningful results since their addresses are not guaranteed to be unique\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/src/x86_64_unknown_linux_gnu_crypto.rs:24314:5\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m24305\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m#[derive(Debug, Copy, Clone, PartialEq, Eq)]\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                              \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m---------\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12min this derive macro expansion\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m...\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m24314\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    pub i2s: X509V3_EXT_I2S,\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: the address of the same function can vary between different codegen units\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: furthermore, different functions could have the same address after being merged together\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: for more information visit <https://doc.rust-lang.org/nightly/core/ptr/fn.fn_addr_eq.html>\u001b[0m\n\n"}',
+##     '{"$message_type":"diagnostic","message":"function pointer comparisons do not produce meaningful results since their addresses are not guaranteed to be unique","code":{"code":"unpredictable_function_pointer_comparisons","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/src/x86_64_unknown_linux_gnu_crypto.rs","byte_start":828899,"byte_end":828922,"line_start":24315,"line_end":24315,"column_start":5,"column_end":28,"is_primary":true,"text":[{"text":"    pub s2i: X509V3_EXT_S2I,","highlight_start":5,"highlight_end":28}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":{"span":{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/src/x86_64_unknown_linux_gnu_crypto.rs","byte_start":828582,"byte_end":828591,"line_start":24305,"line_end":24305,"column_start":30,"column_end":39,"is_primary":false,"text":[{"text":"#[derive(Debug, Copy, Clone, PartialEq, Eq)]","highlight_start":30,"highlight_end":39}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null},"macro_decl_name":"#[derive(PartialEq)]","def_site_span":{"file_name":"/rustc/1159e78c4747b02ef996e55082b704c09b970588/library/core/src/cmp.rs","byte_start":10189,"byte_end":10208,"line_start":275,"line_end":275,"column_start":1,"column_end":20,"is_primary":false,"text":[],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}}}],"children":[{"message":"the address of the same function can vary between different codegen units","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"furthermore, different functions could have the same address after being merged together","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"for more information visit <https://doc.rust-lang.org/nightly/core/ptr/fn.fn_addr_eq.html>","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: function pointer comparisons do not produce meaningful results since their addresses are not guaranteed to be unique\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/src/x86_64_unknown_linux_gnu_crypto.rs:24315:5\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m24305\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m#[derive(Debug, Copy, Clone, PartialEq, Eq)]\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                              \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m---------\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12min this derive macro expansion\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m...\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m24315\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    pub s2i: X509V3_EXT_S2I,\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: the address of the same function can vary between different codegen units\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: furthermore, different functions could have the same address after being merged together\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: for more information visit <https://doc.rust-lang.org/nightly/core/ptr/fn.fn_addr_eq.html>\u001b[0m\n\n"}',
+##     '{"$message_type":"diagnostic","message":"function pointer comparisons do not produce meaningful results since their addresses are not guaranteed to be unique","code":{"code":"unpredictable_function_pointer_comparisons","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/src/x86_64_unknown_linux_gnu_crypto.rs","byte_start":828928,"byte_end":828951,"line_start":24316,"line_end":24316,"column_start":5,"column_end":28,"is_primary":true,"text":[{"text":"    pub i2v: X509V3_EXT_I2V,","highlight_start":5,"highlight_end":28}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":{"span":{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/src/x86_64_unknown_linux_gnu_crypto.rs","byte_start":828582,"byte_end":828591,"line_start":24305,"line_end":24305,"column_start":30,"column_end":39,"is_primary":false,"text":[{"text":"#[derive(Debug, Copy, Clone, PartialEq, Eq)]","highlight_start":30,"highlight_end":39}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null},"macro_decl_name":"#[derive(PartialEq)]","def_site_span":{"file_name":"/rustc/1159e78c4747b02ef996e55082b704c09b970588/library/core/src/cmp.rs","byte_start":10189,"byte_end":10208,"line_start":275,"line_end":275,"column_start":1,"column_end":20,"is_primary":false,"text":[],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}}}],"children":[{"message":"the address of the same function can vary between different codegen units","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"furthermore, different functions could have the same address after being merged together","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"for more information visit <https://doc.rust-lang.org/nightly/core/ptr/fn.fn_addr_eq.html>","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: function pointer comparisons do not produce meaningful results since their addresses are not guaranteed to be unique\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/src/x86_64_unknown_linux_gnu_crypto.rs:24316:5\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m24305\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m#[derive(Debug, Copy, Clone, PartialEq, Eq)]\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                              \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m---------\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12min this derive macro expansion\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m...\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m24316\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    pub i2v: X509V3_EXT_I2V,\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: the address of the same function can vary between different codegen units\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: furthermore, different functions could have the same address after being merged together\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: for more information visit <https://doc.rust-lang.org/nightly/core/ptr/fn.fn_addr_eq.html>\u001b[0m\n\n"}',
+##     '{"$message_type":"diagnostic","message":"function pointer comparisons do not produce meaningful results since their addresses are not guaranteed to be unique","code":{"code":"unpredictable_function_pointer_comparisons","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/src/x86_64_unknown_linux_gnu_crypto.rs","byte_start":828957,"byte_end":828980,"line_start":24317,"line_end":24317,"column_start":5,"column_end":28,"is_primary":true,"text":[{"text":"    pub v2i: X509V3_EXT_V2I,","highlight_start":5,"highlight_end":28}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":{"span":{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/src/x86_64_unknown_linux_gnu_crypto.rs","byte_start":828582,"byte_end":828591,"line_start":24305,"line_end":24305,"column_start":30,"column_end":39,"is_primary":false,"text":[{"text":"#[derive(Debug, Copy, Clone, PartialEq, Eq)]","highlight_start":30,"highlight_end":39}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null},"macro_decl_name":"#[derive(PartialEq)]","def_site_span":{"file_name":"/rustc/1159e78c4747b02ef996e55082b704c09b970588/library/core/src/cmp.rs","byte_start":10189,"byte_end":10208,"line_start":275,"line_end":275,"column_start":1,"column_end":20,"is_primary":false,"text":[],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}}}],"children":[{"message":"the address of the same function can vary between different codegen units","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"furthermore, different functions could have the same address after being merged together","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"for more information visit <https://doc.rust-lang.org/nightly/core/ptr/fn.fn_addr_eq.html>","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: function pointer comparisons do not produce meaningful results since their addresses are not guaranteed to be unique\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/src/x86_64_unknown_linux_gnu_crypto.rs:24317:5\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m24305\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m#[derive(Debug, Copy, Clone, PartialEq, Eq)]\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                              \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m---------\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12min this derive macro expansion\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m...\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m24317\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    pub v2i: X509V3_EXT_V2I,\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: the address of the same function can vary between different codegen units\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: furthermore, different functions could have the same address after being merged together\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: for more information visit <https://doc.rust-lang.org/nightly/core/ptr/fn.fn_addr_eq.html>\u001b[0m\n\n"}',
+##     '{"$message_type":"diagnostic","message":"function pointer comparisons do not produce meaningful results since their addresses are not guaranteed to be unique","code":{"code":"unpredictable_function_pointer_comparisons","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/src/x86_64_unknown_linux_gnu_crypto.rs","byte_start":828986,"byte_end":829009,"line_start":24318,"line_end":24318,"column_start":5,"column_end":28,"is_primary":true,"text":[{"text":"    pub i2r: X509V3_EXT_I2R,","highlight_start":5,"highlight_end":28}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":{"span":{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/src/x86_64_unknown_linux_gnu_crypto.rs","byte_start":828582,"byte_end":828591,"line_start":24305,"line_end":24305,"column_start":30,"column_end":39,"is_primary":false,"text":[{"text":"#[derive(Debug, Copy, Clone, PartialEq, Eq)]","highlight_start":30,"highlight_end":39}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null},"macro_decl_name":"#[derive(PartialEq)]","def_site_span":{"file_name":"/rustc/1159e78c4747b02ef996e55082b704c09b970588/library/core/src/cmp.rs","byte_start":10189,"byte_end":10208,"line_start":275,"line_end":275,"column_start":1,"column_end":20,"is_primary":false,"text":[],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}}}],"children":[{"message":"the address of the same function can vary between different codegen units","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"furthermore, different functions could have the same address after being merged together","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"for more information visit <https://doc.rust-lang.org/nightly/core/ptr/fn.fn_addr_eq.html>","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: function pointer comparisons do not produce meaningful results since their addresses are not guaranteed to be unique\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/src/x86_64_unknown_linux_gnu_crypto.rs:24318:5\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m24305\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m#[derive(Debug, Copy, Clone, PartialEq, Eq)]\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                              \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m---------\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12min this derive macro expansion\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m...\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m24318\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    pub i2r: X509V3_EXT_I2R,\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: the address of the same function can vary between different codegen units\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: furthermore, different functions could have the same address after being merged together\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: for more information visit <https://doc.rust-lang.org/nightly/core/ptr/fn.fn_addr_eq.html>\u001b[0m\n\n"}',
+##     '{"$message_type":"diagnostic","message":"function pointer comparisons do not produce meaningful results since their addresses are not guaranteed to be unique","code":{"code":"unpredictable_function_pointer_comparisons","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/src/x86_64_unknown_linux_gnu_crypto.rs","byte_start":829015,"byte_end":829038,"line_start":24319,"line_end":24319,"column_start":5,"column_end":28,"is_primary":true,"text":[{"text":"    pub r2i: X509V3_EXT_R2I,","highlight_start":5,"highlight_end":28}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":{"span":{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/src/x86_64_unknown_linux_gnu_crypto.rs","byte_start":828582,"byte_end":828591,"line_start":24305,"line_end":24305,"column_start":30,"column_end":39,"is_primary":false,"text":[{"text":"#[derive(Debug, Copy, Clone, PartialEq, Eq)]","highlight_start":30,"highlight_end":39}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null},"macro_decl_name":"#[derive(PartialEq)]","def_site_span":{"file_name":"/rustc/1159e78c4747b02ef996e55082b704c09b970588/library/core/src/cmp.rs","byte_start":10189,"byte_end":10208,"line_start":275,"line_end":275,"column_start":1,"column_end":20,"is_primary":false,"text":[],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}}}],"children":[{"message":"the address of the same function can vary between different codegen units","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"furthermore, different functions could have the same address after being merged together","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"for more information visit <https://doc.rust-lang.org/nightly/core/ptr/fn.fn_addr_eq.html>","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: function pointer comparisons do not produce meaningful results since their addresses are not guaranteed to be unique\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/src/x86_64_unknown_linux_gnu_crypto.rs:24319:5\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m24305\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m#[derive(Debug, Copy, Clone, PartialEq, Eq)]\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                              \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m---------\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12min this derive macro expansion\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m...\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m24319\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    pub r2i: X509V3_EXT_R2I,\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: the address of the same function can vary between different codegen units\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: furthermore, different functions could have the same address after being merged together\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: for more information visit <https://doc.rust-lang.org/nightly/core/ptr/fn.fn_addr_eq.html>\u001b[0m\n\n"}',
+##     '{"$message_type":"diagnostic","message":"function pointer comparisons do not produce meaningful results since their addresses are not guaranteed to be unique","code":{"code":"unpredictable_function_pointer_comparisons","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/src/x86_64_unknown_linux_gnu_crypto.rs","byte_start":846225,"byte_end":846452,"line_start":24874,"line_end":24880,"column_start":5,"column_end":6,"is_primary":true,"text":[{"text":"    pub check_purpose: ::std::option::Option<","highlight_start":5,"highlight_end":46},{"text":"        unsafe extern \"C\" fn(","highlight_start":1,"highlight_end":30},{"text":"            arg1: *const x509_purpose_st,","highlight_start":1,"highlight_end":42},{"text":"            arg2: *const X509,","highlight_start":1,"highlight_end":31},{"text":"            arg3: ::std::os::raw::c_int,","highlight_start":1,"highlight_end":41},{"text":"        ) -> ::std::os::raw::c_int,","highlight_start":1,"highlight_end":36},{"text":"    >,","highlight_start":1,"highlight_end":6}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":{"span":{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/src/x86_64_unknown_linux_gnu_crypto.rs","byte_start":846060,"byte_end":846069,"line_start":24869,"line_end":24869,"column_start":30,"column_end":39,"is_primary":false,"text":[{"text":"#[derive(Debug, Copy, Clone, PartialEq, Eq)]","highlight_start":30,"highlight_end":39}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null},"macro_decl_name":"#[derive(PartialEq)]","def_site_span":{"file_name":"/rustc/1159e78c4747b02ef996e55082b704c09b970588/library/core/src/cmp.rs","byte_start":10189,"byte_end":10208,"line_start":275,"line_end":275,"column_start":1,"column_end":20,"is_primary":false,"text":[],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}}}],"children":[{"message":"the address of the same function can vary between different codegen units","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"furthermore, different functions could have the same address after being merged together","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"for more information visit <https://doc.rust-lang.org/nightly/core/ptr/fn.fn_addr_eq.html>","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: function pointer comparisons do not produce meaningful results since their addresses are not guaranteed to be unique\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/src/x86_64_unknown_linux_gnu_crypto.rs:24874:5\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m24869\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m   \u001b[0m\u001b[0m#[derive(Debug, Copy, Clone, PartialEq, Eq)]\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m---------\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12min this derive macro expansion\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m...\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m24874\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[33m/\u001b[0m\u001b[0m \u001b[0m\u001b[0m    pub check_purpose: ::std::option::Option<\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m24875\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[33m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m        unsafe extern \"C\" fn(\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m24876\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[33m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m            arg1: *const x509_purpose_st,\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m24877\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[33m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m            arg2: *const X509,\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m24878\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[33m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m            arg3: ::std::os::raw::c_int,\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m24879\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[33m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m        ) -> ::std::os::raw::c_int,\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m24880\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[33m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    >,\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[33m|_____^\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: the address of the same function can vary between different codegen units\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: furthermore, different functions could have the same address after being merged together\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: for more information visit <https://doc.rust-lang.org/nightly/core/ptr/fn.fn_addr_eq.html>\u001b[0m\n\n"}',
+##     '{"$message_type":"diagnostic","message":"function pointer comparisons do not produce meaningful results since their addresses are not guaranteed to be unique","code":{"code":"unpredictable_function_pointer_comparisons","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/src/x86_64_unknown_linux_gnu_crypto.rs","byte_start":852356,"byte_end":852498,"line_start":25078,"line_end":25080,"column_start":5,"column_end":6,"is_primary":true,"text":[{"text":"    pub check_trust: ::std::option::Option<","highlight_start":5,"highlight_end":44},{"text":"        unsafe extern \"C\" fn(arg1: *const X509_TRUST, arg2: *mut X509) -> ::std::os::raw::c_int,","highlight_start":1,"highlight_end":97},{"text":"    >,","highlight_start":1,"highlight_end":6}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":{"span":{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/src/x86_64_unknown_linux_gnu_crypto.rs","byte_start":852233,"byte_end":852242,"line_start":25074,"line_end":25074,"column_start":30,"column_end":39,"is_primary":false,"text":[{"text":"#[derive(Debug, Copy, Clone, PartialEq, Eq)]","highlight_start":30,"highlight_end":39}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null},"macro_decl_name":"#[derive(PartialEq)]","def_site_span":{"file_name":"/rustc/1159e78c4747b02ef996e55082b704c09b970588/library/core/src/cmp.rs","byte_start":10189,"byte_end":10208,"line_start":275,"line_end":275,"column_start":1,"column_end":20,"is_primary":false,"text":[],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}}}],"children":[{"message":"the address of the same function can vary between different codegen units","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"furthermore, different functions could have the same address after being merged together","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"for more information visit <https://doc.rust-lang.org/nightly/core/ptr/fn.fn_addr_eq.html>","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: function pointer comparisons do not produce meaningful results since their addresses are not guaranteed to be unique\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/src/x86_64_unknown_linux_gnu_crypto.rs:25078:5\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m25074\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m   \u001b[0m\u001b[0m#[derive(Debug, Copy, Clone, PartialEq, Eq)]\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m---------\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12min this derive macro expansion\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m...\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m25078\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[33m/\u001b[0m\u001b[0m \u001b[0m\u001b[0m    pub check_trust: ::std::option::Option<\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m25079\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[33m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m        unsafe extern \"C\" fn(arg1: *const X509_TRUST, arg2: *mut X509) -> ::std::os::raw::c_int,\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m25080\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[33m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    >,\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[33m|_____^\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: the address of the same function can vary between different codegen units\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: furthermore, different functions could have the same address after being merged together\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: for more information visit <https://doc.rust-lang.org/nightly/core/ptr/fn.fn_addr_eq.html>\u001b[0m\n\n"}',
+##     '{"$message_type":"diagnostic","message":"function pointer comparisons do not produce meaningful results since their addresses are not guaranteed to be unique","code":{"code":"unpredictable_function_pointer_comparisons","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/src/x86_64_unknown_linux_gnu_crypto.rs","byte_start":958737,"byte_end":958869,"line_start":28443,"line_end":28445,"column_start":5,"column_end":6,"is_primary":true,"text":[{"text":"    pub seed: ::std::option::Option<","highlight_start":5,"highlight_end":37},{"text":"        unsafe extern \"C\" fn(buf: *const ::std::os::raw::c_void, num: ::std::os::raw::c_int),","highlight_start":1,"highlight_end":94},{"text":"    >,","highlight_start":1,"highlight_end":6}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":{"span":{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/src/x86_64_unknown_linux_gnu_crypto.rs","byte_start":958691,"byte_end":958700,"line_start":28441,"line_end":28441,"column_start":39,"column_end":48,"is_primary":false,"text":[{"text":"#[derive(Debug, Default, Copy, Clone, PartialEq, Eq)]","highlight_start":39,"highlight_end":48}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null},"macro_decl_name":"#[derive(PartialEq)]","def_site_span":{"file_name":"/rustc/1159e78c4747b02ef996e55082b704c09b970588/library/core/src/cmp.rs","byte_start":10189,"byte_end":10208,"line_start":275,"line_end":275,"column_start":1,"column_end":20,"is_primary":false,"text":[],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}}}],"children":[{"message":"the address of the same function can vary between different codegen units","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"furthermore, different functions could have the same address after being merged together","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"for more information visit <https://doc.rust-lang.org/nightly/core/ptr/fn.fn_addr_eq.html>","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: function pointer comparisons do not produce meaningful results since their addresses are not guaranteed to be unique\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/src/x86_64_unknown_linux_gnu_crypto.rs:28443:5\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m28441\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m   \u001b[0m\u001b[0m#[derive(Debug, Default, Copy, Clone, PartialEq, Eq)]\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                         \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m---------\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12min this derive macro expansion\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m28442\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m   \u001b[0m\u001b[0mpub struct rand_meth_st {\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m28443\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[33m/\u001b[0m\u001b[0m \u001b[0m\u001b[0m    pub seed: ::std::option::Option<\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m28444\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[33m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m        unsafe extern \"C\" fn(buf: *const ::std::os::raw::c_void, num: ::std::os::raw::c_int),\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m28445\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[33m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    >,\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[33m|_____^\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: the address of the same function can vary between different codegen units\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: furthermore, different functions could have the same address after being merged together\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: for more information visit <https://doc.rust-lang.org/nightly/core/ptr/fn.fn_addr_eq.html>\u001b[0m\n\n"}',
+##     '{"$message_type":"diagnostic","message":"function pointer comparisons do not produce meaningful results since their addresses are not guaranteed to be unique","code":{"code":"unpredictable_function_pointer_comparisons","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/src/x86_64_unknown_linux_gnu_crypto.rs","byte_start":958875,"byte_end":958995,"line_start":28446,"line_end":28448,"column_start":5,"column_end":6,"is_primary":true,"text":[{"text":"    pub bytes: ::std::option::Option<","highlight_start":5,"highlight_end":38},{"text":"        unsafe extern \"C\" fn(buf: *mut u8, num: usize) -> ::std::os::raw::c_int,","highlight_start":1,"highlight_end":81},{"text":"    >,","highlight_start":1,"highlight_end":6}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":{"span":{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/src/x86_64_unknown_linux_gnu_crypto.rs","byte_start":958691,"byte_end":958700,"line_start":28441,"line_end":28441,"column_start":39,"column_end":48,"is_primary":false,"text":[{"text":"#[derive(Debug, Default, Copy, Clone, PartialEq, Eq)]","highlight_start":39,"highlight_end":48}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null},"macro_decl_name":"#[derive(PartialEq)]","def_site_span":{"file_name":"/rustc/1159e78c4747b02ef996e55082b704c09b970588/library/core/src/cmp.rs","byte_start":10189,"byte_end":10208,"line_start":275,"line_end":275,"column_start":1,"column_end":20,"is_primary":false,"text":[],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}}}],"children":[{"message":"the address of the same function can vary between different codegen units","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"furthermore, different functions could have the same address after being merged together","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"for more information visit <https://doc.rust-lang.org/nightly/core/ptr/fn.fn_addr_eq.html>","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: function pointer comparisons do not produce meaningful results since their addresses are not guaranteed to be unique\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/src/x86_64_unknown_linux_gnu_crypto.rs:28446:5\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m28441\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m   \u001b[0m\u001b[0m#[derive(Debug, Default, Copy, Clone, PartialEq, Eq)]\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                         \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m---------\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12min this derive macro expansion\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m...\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m28446\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[33m/\u001b[0m\u001b[0m \u001b[0m\u001b[0m    pub bytes: ::std::option::Option<\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m28447\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[33m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m        unsafe extern \"C\" fn(buf: *mut u8, num: usize) -> ::std::os::raw::c_int,\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m28448\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[33m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    >,\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[33m|_____^\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: the address of the same function can vary between different codegen units\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: furthermore, different functions could have the same address after being merged together\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: for more information visit <https://doc.rust-lang.org/nightly/core/ptr/fn.fn_addr_eq.html>\u001b[0m\n\n"}',
+##     '{"$message_type":"diagnostic","message":"function pointer comparisons do not produce meaningful results since their addresses are not guaranteed to be unique","code":{"code":"unpredictable_function_pointer_comparisons","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/src/x86_64_unknown_linux_gnu_crypto.rs","byte_start":959001,"byte_end":959059,"line_start":28449,"line_end":28449,"column_start":5,"column_end":63,"is_primary":true,"text":[{"text":"    pub cleanup: ::std::option::Option<unsafe extern \"C\" fn()>,","highlight_start":5,"highlight_end":63}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":{"span":{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/src/x86_64_unknown_linux_gnu_crypto.rs","byte_start":958691,"byte_end":958700,"line_start":28441,"line_end":28441,"column_start":39,"column_end":48,"is_primary":false,"text":[{"text":"#[derive(Debug, Default, Copy, Clone, PartialEq, Eq)]","highlight_start":39,"highlight_end":48}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null},"macro_decl_name":"#[derive(PartialEq)]","def_site_span":{"file_name":"/rustc/1159e78c4747b02ef996e55082b704c09b970588/library/core/src/cmp.rs","byte_start":10189,"byte_end":10208,"line_start":275,"line_end":275,"column_start":1,"column_end":20,"is_primary":false,"text":[],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}}}],"children":[{"message":"the address of the same function can vary between different codegen units","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"furthermore, different functions could have the same address after being merged together","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"for more information visit <https://doc.rust-lang.org/nightly/core/ptr/fn.fn_addr_eq.html>","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: function pointer comparisons do not produce meaningful results since their addresses are not guaranteed to be unique\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/src/x86_64_unknown_linux_gnu_crypto.rs:28449:5\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m28441\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m#[derive(Debug, Default, Copy, Clone, PartialEq, Eq)]\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                       \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m---------\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12min this derive macro expansion\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m...\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m28449\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    pub cleanup: ::std::option::Option<unsafe extern \"C\" fn()>,\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: the address of the same function can vary between different codegen units\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: furthermore, different functions could have the same address after being merged together\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: for more information visit <https://doc.rust-lang.org/nightly/core/ptr/fn.fn_addr_eq.html>\u001b[0m\n\n"}',
+##     '{"$message_type":"diagnostic","message":"function pointer comparisons do not produce meaningful results since their addresses are not guaranteed to be unique","code":{"code":"unpredictable_function_pointer_comparisons","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/src/x86_64_unknown_linux_gnu_crypto.rs","byte_start":959065,"byte_end":959257,"line_start":28450,"line_end":28456,"column_start":5,"column_end":6,"is_primary":true,"text":[{"text":"    pub add: ::std::option::Option<","highlight_start":5,"highlight_end":36},{"text":"        unsafe extern \"C\" fn(","highlight_start":1,"highlight_end":30},{"text":"            buf: *const ::std::os::raw::c_void,","highlight_start":1,"highlight_end":48},{"text":"            num: ::std::os::raw::c_int,","highlight_start":1,"highlight_end":40},{"text":"            entropy: f64,","highlight_start":1,"highlight_end":26},{"text":"        ),","highlight_start":1,"highlight_end":11},{"text":"    >,","highlight_start":1,"highlight_end":6}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":{"span":{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/src/x86_64_unknown_linux_gnu_crypto.rs","byte_start":958691,"byte_end":958700,"line_start":28441,"line_end":28441,"column_start":39,"column_end":48,"is_primary":false,"text":[{"text":"#[derive(Debug, Default, Copy, Clone, PartialEq, Eq)]","highlight_start":39,"highlight_end":48}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null},"macro_decl_name":"#[derive(PartialEq)]","def_site_span":{"file_name":"/rustc/1159e78c4747b02ef996e55082b704c09b970588/library/core/src/cmp.rs","byte_start":10189,"byte_end":10208,"line_start":275,"line_end":275,"column_start":1,"column_end":20,"is_primary":false,"text":[],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}}}],"children":[{"message":"the address of the same function can vary between different codegen units","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"furthermore, different functions could have the same address after being merged together","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"for more information visit <https://doc.rust-lang.org/nightly/core/ptr/fn.fn_addr_eq.html>","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: function pointer comparisons do not produce meaningful results since their addresses are not guaranteed to be unique\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/src/x86_64_unknown_linux_gnu_crypto.rs:28450:5\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m28441\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m   \u001b[0m\u001b[0m#[derive(Debug, Default, Copy, Clone, PartialEq, Eq)]\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                         \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m---------\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12min this derive macro expansion\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m...\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m28450\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[33m/\u001b[0m\u001b[0m \u001b[0m\u001b[0m    pub add: ::std::option::Option<\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m28451\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[33m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m        unsafe extern \"C\" fn(\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m28452\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[33m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m            buf: *const ::std::os::raw::c_void,\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m28453\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[33m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m            num: ::std::os::raw::c_int,\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m28454\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[33m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m            entropy: f64,\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m28455\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[33m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m        ),\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m28456\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[33m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    >,\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[33m|_____^\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: the address of the same function can vary between different codegen units\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: furthermore, different functions could have the same address after being merged together\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: for more information visit <https://doc.rust-lang.org/nightly/core/ptr/fn.fn_addr_eq.html>\u001b[0m\n\n"}',
+##     '{"$message_type":"diagnostic","message":"function pointer comparisons do not produce meaningful results since their addresses are not guaranteed to be unique","code":{"code":"unpredictable_function_pointer_comparisons","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/src/x86_64_unknown_linux_gnu_crypto.rs","byte_start":959263,"byte_end":959388,"line_start":28457,"line_end":28459,"column_start":5,"column_end":6,"is_primary":true,"text":[{"text":"    pub pseudorand: ::std::option::Option<","highlight_start":5,"highlight_end":43},{"text":"        unsafe extern \"C\" fn(buf: *mut u8, num: usize) -> ::std::os::raw::c_int,","highlight_start":1,"highlight_end":81},{"text":"    >,","highlight_start":1,"highlight_end":6}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":{"span":{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/src/x86_64_unknown_linux_gnu_crypto.rs","byte_start":958691,"byte_end":958700,"line_start":28441,"line_end":28441,"column_start":39,"column_end":48,"is_primary":false,"text":[{"text":"#[derive(Debug, Default, Copy, Clone, PartialEq, Eq)]","highlight_start":39,"highlight_end":48}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null},"macro_decl_name":"#[derive(PartialEq)]","def_site_span":{"file_name":"/rustc/1159e78c4747b02ef996e55082b704c09b970588/library/core/src/cmp.rs","byte_start":10189,"byte_end":10208,"line_start":275,"line_end":275,"column_start":1,"column_end":20,"is_primary":false,"text":[],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}}}],"children":[{"message":"the address of the same function can vary between different codegen units","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"furthermore, different functions could have the same address after being merged together","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"for more information visit <https://doc.rust-lang.org/nightly/core/ptr/fn.fn_addr_eq.html>","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: function pointer comparisons do not produce meaningful results since their addresses are not guaranteed to be unique\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/src/x86_64_unknown_linux_gnu_crypto.rs:28457:5\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m28441\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m   \u001b[0m\u001b[0m#[derive(Debug, Default, Copy, Clone, PartialEq, Eq)]\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                         \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m---------\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12min this derive macro expansion\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m...\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m28457\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[33m/\u001b[0m\u001b[0m \u001b[0m\u001b[0m    pub pseudorand: ::std::option::Option<\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m28458\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[33m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m        unsafe extern \"C\" fn(buf: *mut u8, num: usize) -> ::std::os::raw::c_int,\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m28459\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[33m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    >,\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[33m|_____^\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: the address of the same function can vary between different codegen units\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: furthermore, different functions could have the same address after being merged together\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: for more information visit <https://doc.rust-lang.org/nightly/core/ptr/fn.fn_addr_eq.html>\u001b[0m\n\n"}',
+##     '{"$message_type":"diagnostic","message":"function pointer comparisons do not produce meaningful results since their addresses are not guaranteed to be unique","code":{"code":"unpredictable_function_pointer_comparisons","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/src/x86_64_unknown_linux_gnu_crypto.rs","byte_start":959394,"byte_end":959476,"line_start":28460,"line_end":28460,"column_start":5,"column_end":87,"is_primary":true,"text":[{"text":"    pub status: ::std::option::Option<unsafe extern \"C\" fn() -> ::std::os::raw::c_int>,","highlight_start":5,"highlight_end":87}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":{"span":{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/src/x86_64_unknown_linux_gnu_crypto.rs","byte_start":958691,"byte_end":958700,"line_start":28441,"line_end":28441,"column_start":39,"column_end":48,"is_primary":false,"text":[{"text":"#[derive(Debug, Default, Copy, Clone, PartialEq, Eq)]","highlight_start":39,"highlight_end":48}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null},"macro_decl_name":"#[derive(PartialEq)]","def_site_span":{"file_name":"/rustc/1159e78c4747b02ef996e55082b704c09b970588/library/core/src/cmp.rs","byte_start":10189,"byte_end":10208,"line_start":275,"line_end":275,"column_start":1,"column_end":20,"is_primary":false,"text":[],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}}}],"children":[{"message":"the address of the same function can vary between different codegen units","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"furthermore, different functions could have the same address after being merged together","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"for more information visit <https://doc.rust-lang.org/nightly/core/ptr/fn.fn_addr_eq.html>","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: function pointer comparisons do not produce meaningful results since their addresses are not guaranteed to be unique\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/src/x86_64_unknown_linux_gnu_crypto.rs:28460:5\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m28441\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m#[derive(Debug, Default, Copy, Clone, PartialEq, Eq)]\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                       \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m---------\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12min this derive macro expansion\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m...\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m28460\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    pub status: ::std::option::Option<unsafe extern \"C\" fn() -> ::std::os::raw::c_int>,\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: the address of the same function can vary between different codegen units\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: furthermore, different functions could have the same address after being merged together\u001b[0m\n\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: for more information visit <https://doc.rust-lang.org/nightly/core/ptr/fn.fn_addr_eq.html>\u001b[0m\n\n"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-stu_0-7-5/release/deps/libaws_lc_sys-d7d98da815527774.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-stu_0-7-5/release/deps/libaws_lc_sys-d7d98da815527774.rlib","emit":"link"}',
+##     '{"$message_type":"diagnostic","message":"34 warnings emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 34 warnings emitted\u001b[0m\n\n"}',
+## ]
+##
+## [[mounts]]
+## name = "out-e68d7f20dd3d392b"
+## src = "/"
+## dst = "/tmp/clis-stu_0-7-5/release/build/aws-lc-sys-e68d7f20dd3d392b/out"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
+##
+## [[stages]]
+##
+## [stages.Cratesio]
+## stage = "cratesio-aws-lc-sys-0.27.1"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1"
+## name = "aws-lc-sys"
+## name_dash_version = "aws-lc-sys-0.27.1"
+## hash = "77926887776171ced7d662120a75998e444d3750c951abfe07f90da130514b1f"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "dep-n-aws-lc-sys-0.27.1-d7d98da815527774"
+## script = '''
+## FROM rust-base AS dep-n-aws-lc-sys-0.27.1-d7d98da815527774
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-stu_0-7-5/release/deps
+## RUN \
+##   --mount=from=cratesio-aws-lc-sys-0.27.1,source=/aws-lc-sys-0.27.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1 \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/build/aws-lc-sys-e68d7f20dd3d392b/out,source=/ \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CRATE_NAME=aws_lc_sys \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/Cargo.toml \
+##         CARGO_PKG_AUTHORS=AWS-LC \
+##         CARGO_PKG_DESCRIPTION=AWS-LC' is a general-purpose cryptographic library maintained by the AWS Cryptography team for AWS and their customers. It іs based on code from the Google BoringSSL project and the OpenSSL project.' \
+##         CARGO_PKG_HOMEPAGE= \
+##         CARGO_PKG_LICENSE=ISC' AND (Apache-2.0 OR ISC) AND OpenSSL' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=aws-lc-sys \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/aws/aws-lc-rs' \
+##         CARGO_PKG_RUST_VERSION=1.63.0 \
+##         CARGO_PKG_VERSION=0.27.1 \
+##         CARGO_PKG_VERSION_MAJOR=0 \
+##         CARGO_PKG_VERSION_MINOR=27 \
+##         CARGO_PKG_VERSION_PATCH=1 \
+##         CARGO_PKG_VERSION_PRE= \
+##         OUT_DIR=/tmp/clis-stu_0-7-5/release/build/aws-lc-sys-e68d7f20dd3d392b/out \
+##         CARGOGREEN=1 \
+##       rustc '--crate-name' 'aws_lc_sys' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'linker-plugin-lto' '-C' 'codegen-units=1' '--cfg' 'feature="prebuilt-nasm"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("asan", "bindgen", "prebuilt-nasm", "ssl"))' '-C' 'metadata=c69c38cc43ed4989' '-C' 'extra-filename=-d7d98da815527774' '--out-dir' '/tmp/clis-stu_0-7-5/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-stu_0-7-5/release/deps' '--cap-lints' 'warn' '-L' 'native=/tmp/clis-stu_0-7-5/release/build/aws-lc-sys-e68d7f20dd3d392b/out' '-l' 'static=aws_lc_0_27_1_crypto' '--cfg' 'x86_64_unknown_linux_gnu' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.27.1/src/lib.rs \
+##         1>          /tmp/clis-stu_0-7-5/release/deps/out-d7d98da815527774-stdout \
+##         2>          /tmp/clis-stu_0-7-5/release/deps/out-d7d98da815527774-stderr \
+##         || echo $? >/tmp/clis-stu_0-7-5/release/deps/out-d7d98da815527774-errcode\
+##   ; find /tmp/clis-stu_0-7-5/release/deps/*-d7d98da815527774* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-d7d98da815527774"
+## script = """
+## FROM scratch AS out-d7d98da815527774
+## COPY --link --from=dep-n-aws-lc-sys-0.27.1-d7d98da815527774 /tmp/clis-stu_0-7-5/release/deps/*-d7d98da815527774* /"""
+
+FROM scratch AS cratesio-zeroize-1.8.1
+ADD --chmod=0664 --unpack --checksum=sha256:ced3678a2879b30306d323f4542626697a464a97c0a07c9aebf7ebca65cd4dde \
+  https://static.crates.io/crates/zeroize/zeroize-1.8.1.crate /
+FROM rust-base AS dep-n-zeroize-1.8.1-fd6e94371433d6e2
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-stu_0-7-5/release/deps
+RUN \
+  --mount=from=cratesio-zeroize-1.8.1,source=/zeroize-1.8.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zeroize-1.8.1 \
+    env CARGO="$(which cargo)" \
+        CARGO_CRATE_NAME=zeroize \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zeroize-1.8.1 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zeroize-1.8.1/Cargo.toml \
+        CARGO_PKG_AUTHORS=The' RustCrypto Project Developers' \
+        CARGO_PKG_DESCRIPTION=Securely' clear secrets from memory with a simple trait built on\
+stable Rust primitives which guarantee memory is zeroed using an\
+operation will not be '\'optimized' away'\'' by the compiler.\
+Uses a portable pure Rust implementation that works everywhere,\
+even WASM!\
+' \
+        CARGO_PKG_HOMEPAGE= \
+        CARGO_PKG_LICENSE=Apache-2.0' OR MIT' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=zeroize \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/RustCrypto/utils/tree/master/zeroize' \
+        CARGO_PKG_RUST_VERSION=1.60 \
+        CARGO_PKG_VERSION=1.8.1 \
+        CARGO_PKG_VERSION_MAJOR=1 \
+        CARGO_PKG_VERSION_MINOR=8 \
+        CARGO_PKG_VERSION_PATCH=1 \
+        CARGO_PKG_VERSION_PRE= \
+        CARGOGREEN=1 \
+      rustc '--crate-name' 'zeroize' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'linker-plugin-lto' '-C' 'codegen-units=1' '--cfg' 'feature="alloc"' '--cfg' 'feature="default"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("aarch64", "alloc", "default", "derive", "serde", "simd", "std", "zeroize_derive"))' '-C' 'metadata=9d2931928a386d0d' '-C' 'extra-filename=-fd6e94371433d6e2' '--out-dir' '/tmp/clis-stu_0-7-5/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-stu_0-7-5/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zeroize-1.8.1/src/lib.rs \
+        1>          /tmp/clis-stu_0-7-5/release/deps/out-fd6e94371433d6e2-stdout \
+        2>          /tmp/clis-stu_0-7-5/release/deps/out-fd6e94371433d6e2-stderr \
+        || echo $? >/tmp/clis-stu_0-7-5/release/deps/out-fd6e94371433d6e2-errcode\
+  ; find /tmp/clis-stu_0-7-5/release/deps/*-fd6e94371433d6e2* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-fd6e94371433d6e2
+COPY --link --from=dep-n-zeroize-1.8.1-fd6e94371433d6e2 /tmp/clis-stu_0-7-5/release/deps/*-fd6e94371433d6e2* /
+
+## this = "fd6e94371433d6e2"
+## writes = [
+##     "libzeroize-fd6e94371433d6e2.rlib",
+##     "libzeroize-fd6e94371433d6e2.rmeta",
+##     "zeroize-fd6e94371433d6e2.d",
+## ]
+## stderr = [
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-stu_0-7-5/release/deps/zeroize-fd6e94371433d6e2.d","emit":"dep-info"}',
+##     '{"$message_type":"diagnostic","message":"unnecessary qualification","code":{"code":"unused_qualifications","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zeroize-1.8.1/src/lib.rs","byte_start":14304,"byte_end":14324,"line_start":415,"line_end":415,"column_start":63,"column_end":83,"is_primary":true,"text":[{"text":"            volatile_set((self as *mut Self).cast::<u8>(), 0, mem::size_of::<Self>());","highlight_start":63,"highlight_end":83}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"the lint level is defined here","code":null,"level":"note","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zeroize-1.8.1/src/lib.rs","byte_start":292,"byte_end":313,"line_start":7,"line_end":7,"column_start":41,"column_end":62,"is_primary":true,"text":[{"text":"#![warn(missing_docs, rust_2018_idioms, unused_qualifications)]","highlight_start":41,"highlight_end":62}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[],"rendered":null},{"message":"remove the unnecessary path segments","code":null,"level":"help","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zeroize-1.8.1/src/lib.rs","byte_start":14304,"byte_end":14309,"line_start":415,"line_end":415,"column_start":63,"column_end":68,"is_primary":true,"text":[{"text":"            volatile_set((self as *mut Self).cast::<u8>(), 0, mem::size_of::<Self>());","highlight_start":63,"highlight_end":68}],"label":null,"suggested_replacement":"","suggestion_applicability":"MachineApplicable","expansion":null}],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unnecessary qualification\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zeroize-1.8.1/src/lib.rs:415:63\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m415\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m            volatile_set((self as *mut Self).cast::<u8>(), 0, mem::size_of::<Self>());\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                                               \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;10mnote\u001b[0m\u001b[0m: the lint level is defined here\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zeroize-1.8.1/src/lib.rs:7:41\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m7\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m#![warn(missing_docs, rust_2018_idioms, unused_qualifications)]\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                         \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;10m^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;14mhelp\u001b[0m\u001b[0m: remove the unnecessary path segments\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m415\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[38;5;9m- \u001b[0m\u001b[0m            volatile_set((self as *mut Self).cast::<u8>(), 0, \u001b[0m\u001b[0m\u001b[38;5;9mmem::\u001b[0m\u001b[0msize_of::<Self>());\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m415\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[38;5;10m+ \u001b[0m\u001b[0m            volatile_set((self as *mut Self).cast::<u8>(), 0, size_of::<Self>());\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\n"}',
+##     '{"$message_type":"diagnostic","message":"unnecessary qualification","code":{"code":"unused_qualifications","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zeroize-1.8.1/src/lib.rs","byte_start":15847,"byte_end":15864,"line_start":460,"line_end":460,"column_start":43,"column_end":60,"is_primary":true,"text":[{"text":"        let size = self.len().checked_mul(mem::size_of::<Z>()).unwrap();","highlight_start":43,"highlight_end":60}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"remove the unnecessary path segments","code":null,"level":"help","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zeroize-1.8.1/src/lib.rs","byte_start":15847,"byte_end":15852,"line_start":460,"line_end":460,"column_start":43,"column_end":48,"is_primary":true,"text":[{"text":"        let size = self.len().checked_mul(mem::size_of::<Z>()).unwrap();","highlight_start":43,"highlight_end":48}],"label":null,"suggested_replacement":"","suggestion_applicability":"MachineApplicable","expansion":null}],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unnecessary qualification\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zeroize-1.8.1/src/lib.rs:460:43\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m460\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m        let size = self.len().checked_mul(mem::size_of::<Z>()).unwrap();\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                           \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;14mhelp\u001b[0m\u001b[0m: remove the unnecessary path segments\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m460\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[38;5;9m- \u001b[0m\u001b[0m        let size = self.len().checked_mul(\u001b[0m\u001b[0m\u001b[38;5;9mmem::\u001b[0m\u001b[0msize_of::<Z>()).unwrap();\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m460\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[38;5;10m+ \u001b[0m\u001b[0m        let size = self.len().checked_mul(size_of::<Z>()).unwrap();\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\n"}',
+##     '{"$message_type":"diagnostic","message":"unnecessary qualification","code":{"code":"unused_qualifications","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zeroize-1.8.1/src/lib.rs","byte_start":26854,"byte_end":26871,"line_start":840,"line_end":840,"column_start":16,"column_end":33,"is_primary":true,"text":[{"text":"    let size = mem::size_of::<F>();","highlight_start":16,"highlight_end":33}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"remove the unnecessary path segments","code":null,"level":"help","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zeroize-1.8.1/src/lib.rs","byte_start":26854,"byte_end":26859,"line_start":840,"line_end":840,"column_start":16,"column_end":21,"is_primary":true,"text":[{"text":"    let size = mem::size_of::<F>();","highlight_start":16,"highlight_end":21}],"label":null,"suggested_replacement":"","suggestion_applicability":"MachineApplicable","expansion":null}],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unnecessary qualification\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zeroize-1.8.1/src/lib.rs:840:16\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m840\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    let size = mem::size_of::<F>();\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;14mhelp\u001b[0m\u001b[0m: remove the unnecessary path segments\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m840\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[38;5;9m- \u001b[0m\u001b[0m    let size = \u001b[0m\u001b[0m\u001b[38;5;9mmem::\u001b[0m\u001b[0msize_of::<F>();\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m840\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[38;5;10m+ \u001b[0m\u001b[0m    let size = size_of::<F>();\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\n"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-stu_0-7-5/release/deps/libzeroize-fd6e94371433d6e2.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-stu_0-7-5/release/deps/libzeroize-fd6e94371433d6e2.rlib","emit":"link"}',
+##     '{"$message_type":"diagnostic","message":"3 warnings emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 3 warnings emitted\u001b[0m\n\n"}',
+## ]
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
+##
+## [[stages]]
+##
+## [stages.Cratesio]
+## stage = "cratesio-zeroize-1.8.1"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zeroize-1.8.1"
+## name = "zeroize"
+## name_dash_version = "zeroize-1.8.1"
+## hash = "ced3678a2879b30306d323f4542626697a464a97c0a07c9aebf7ebca65cd4dde"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "dep-n-zeroize-1.8.1-fd6e94371433d6e2"
+## script = '''
+## FROM rust-base AS dep-n-zeroize-1.8.1-fd6e94371433d6e2
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-stu_0-7-5/release/deps
+## RUN \
+##   --mount=from=cratesio-zeroize-1.8.1,source=/zeroize-1.8.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zeroize-1.8.1 \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CRATE_NAME=zeroize \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zeroize-1.8.1 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zeroize-1.8.1/Cargo.toml \
+##         CARGO_PKG_AUTHORS=The' RustCrypto Project Developers' \
+##         CARGO_PKG_DESCRIPTION=Securely' clear secrets from memory with a simple trait built on\
+## stable Rust primitives which guarantee memory is zeroed using an\
+## operation will not be '\'optimized' away'\'' by the compiler.\
+## Uses a portable pure Rust implementation that works everywhere,\
+## even WASM!\
+## ' \
+##         CARGO_PKG_HOMEPAGE= \
+##         CARGO_PKG_LICENSE=Apache-2.0' OR MIT' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=zeroize \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/RustCrypto/utils/tree/master/zeroize' \
+##         CARGO_PKG_RUST_VERSION=1.60 \
+##         CARGO_PKG_VERSION=1.8.1 \
+##         CARGO_PKG_VERSION_MAJOR=1 \
+##         CARGO_PKG_VERSION_MINOR=8 \
+##         CARGO_PKG_VERSION_PATCH=1 \
+##         CARGO_PKG_VERSION_PRE= \
+##         CARGOGREEN=1 \
+##       rustc '--crate-name' 'zeroize' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'linker-plugin-lto' '-C' 'codegen-units=1' '--cfg' 'feature="alloc"' '--cfg' 'feature="default"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("aarch64", "alloc", "default", "derive", "serde", "simd", "std", "zeroize_derive"))' '-C' 'metadata=9d2931928a386d0d' '-C' 'extra-filename=-fd6e94371433d6e2' '--out-dir' '/tmp/clis-stu_0-7-5/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-stu_0-7-5/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zeroize-1.8.1/src/lib.rs \
+##         1>          /tmp/clis-stu_0-7-5/release/deps/out-fd6e94371433d6e2-stdout \
+##         2>          /tmp/clis-stu_0-7-5/release/deps/out-fd6e94371433d6e2-stderr \
+##         || echo $? >/tmp/clis-stu_0-7-5/release/deps/out-fd6e94371433d6e2-errcode\
+##   ; find /tmp/clis-stu_0-7-5/release/deps/*-fd6e94371433d6e2* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-fd6e94371433d6e2"
+## script = """
+## FROM scratch AS out-fd6e94371433d6e2
+## COPY --link --from=dep-n-zeroize-1.8.1-fd6e94371433d6e2 /tmp/clis-stu_0-7-5/release/deps/*-fd6e94371433d6e2* /"""
+
+FROM scratch AS cratesio-aws-lc-rs-1.12.6
+ADD --chmod=0664 --unpack --checksum=sha256:dabb68eb3a7aa08b46fddfd59a3d55c978243557a90ab804769f7e20e67d2b01 \
+  https://static.crates.io/crates/aws-lc-rs/aws-lc-rs-1.12.6.crate /
+FROM rust-base AS dep-x-aws-lc-rs-1.12.6-bc8082a139a1fe57
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-stu_0-7-5/release/build/aws-lc-rs-bc8082a139a1fe57
+RUN \
+  --mount=from=cratesio-aws-lc-rs-1.12.6,source=/aws-lc-rs-1.12.6,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.12.6,rw \
+    { \
+        cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.12.6/build.rs | sed -E 's/^fn +main/fn actual_bc8082a139a1fe57_main/;s/^async +fn +main/async fn actual_bc8082a139a1fe57_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.12.6/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.12.6/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.12.6/build.rs ; \
+        { \
+          echo ; \
+          echo 'fn main() {' ; \
+          echo '    use std::env::{args_os, var_os};' ; \
+          echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+          echo '        use std::process::{Command, Stdio};' ; \
+          echo '        let mut cmd = Command::new("cargo-green");' ; \
+          echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+          echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+          echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+          echo '        assert!(res.success());' ; \
+          echo '    } else {' ; \
+          echo '        actual_bc8082a139a1fe57_main();' ; \
+          echo '    }' ; \
+          echo '}' ; \
+        } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.12.6/build.rs ; \
+    } && \
+    env CARGO="$(which cargo)" \
+        CARGO_CRATE_NAME=build_script_build \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.12.6 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.12.6/Cargo.toml \
+        CARGO_PKG_AUTHORS=AWS-LibCrypto \
+        CARGO_PKG_DESCRIPTION=aws-lc-rs' is a cryptographic library using AWS-LC for its cryptographic operations. This library strives to be API-compatible with the popular Rust library named ring.' \
+        CARGO_PKG_HOMEPAGE=https'://github.com/aws/aws-lc-rs' \
+        CARGO_PKG_LICENSE=ISC' AND (Apache-2.0 OR ISC)' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=aws-lc-rs \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/aws/aws-lc-rs' \
+        CARGO_PKG_RUST_VERSION=1.63.0 \
+        CARGO_PKG_VERSION=1.12.6 \
+        CARGO_PKG_VERSION_MAJOR=1 \
+        CARGO_PKG_VERSION_MINOR=12 \
+        CARGO_PKG_VERSION_PATCH=6 \
+        CARGO_PKG_VERSION_PRE= \
+        CARGOGREEN=1 \
+      rustc '--crate-name' 'build_script_build' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'bin' '--emit' 'dep-info,link' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--cfg' 'feature="aws-lc-sys"' '--cfg' 'feature="prebuilt-nasm"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "asan", "aws-lc-sys", "bindgen", "default", "fips", "non-fips", "prebuilt-nasm", "ring-io", "ring-sig-verify", "test_logging", "unstable"))' '-C' 'metadata=c1cdf56273e14508' '-C' 'extra-filename=-bc8082a139a1fe57' '--out-dir' '/tmp/clis-stu_0-7-5/release/build/aws-lc-rs-bc8082a139a1fe57' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-stu_0-7-5/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.12.6/build.rs \
+        1>          /tmp/clis-stu_0-7-5/release/build/aws-lc-rs-bc8082a139a1fe57/out-bc8082a139a1fe57-stdout \
+        2>          /tmp/clis-stu_0-7-5/release/build/aws-lc-rs-bc8082a139a1fe57/out-bc8082a139a1fe57-stderr \
+        || echo $? >/tmp/clis-stu_0-7-5/release/build/aws-lc-rs-bc8082a139a1fe57/out-bc8082a139a1fe57-errcode\
+  ; find /tmp/clis-stu_0-7-5/release/build/aws-lc-rs-bc8082a139a1fe57/*-bc8082a139a1fe57* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-bc8082a139a1fe57
+COPY --link --from=dep-x-aws-lc-rs-1.12.6-bc8082a139a1fe57 /tmp/clis-stu_0-7-5/release/build/aws-lc-rs-bc8082a139a1fe57/*-bc8082a139a1fe57* /
+
+## this = "bc8082a139a1fe57"
+## writes = [
+##     "build_script_build-bc8082a139a1fe57",
+##     "build_script_build-bc8082a139a1fe57.d",
+## ]
+## stderr = [
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-stu_0-7-5/release/build/aws-lc-rs-bc8082a139a1fe57/build_script_build-bc8082a139a1fe57.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-stu_0-7-5/release/build/aws-lc-rs-bc8082a139a1fe57/build_script_build-bc8082a139a1fe57","emit":"link"}',
+## ]
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
+##
+## [[stages]]
+##
+## [stages.Cratesio]
+## stage = "cratesio-aws-lc-rs-1.12.6"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.12.6"
+## name = "aws-lc-rs"
+## name_dash_version = "aws-lc-rs-1.12.6"
+## hash = "dabb68eb3a7aa08b46fddfd59a3d55c978243557a90ab804769f7e20e67d2b01"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "dep-x-aws-lc-rs-1.12.6-bc8082a139a1fe57"
+## script = '''
+## FROM rust-base AS dep-x-aws-lc-rs-1.12.6-bc8082a139a1fe57
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-stu_0-7-5/release/build/aws-lc-rs-bc8082a139a1fe57
+## RUN \
+##   --mount=from=cratesio-aws-lc-rs-1.12.6,source=/aws-lc-rs-1.12.6,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.12.6,rw \
+##     { \
+##         cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.12.6/build.rs | sed -E 's/^fn +main/fn actual_bc8082a139a1fe57_main/;s/^async +fn +main/async fn actual_bc8082a139a1fe57_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.12.6/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.12.6/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.12.6/build.rs ; \
+##         { \
+##           echo ; \
+##           echo 'fn main() {' ; \
+##           echo '    use std::env::{args_os, var_os};' ; \
+##           echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+##           echo '        use std::process::{Command, Stdio};' ; \
+##           echo '        let mut cmd = Command::new("cargo-green");' ; \
+##           echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+##           echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+##           echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+##           echo '        assert!(res.success());' ; \
+##           echo '    } else {' ; \
+##           echo '        actual_bc8082a139a1fe57_main();' ; \
+##           echo '    }' ; \
+##           echo '}' ; \
+##         } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.12.6/build.rs ; \
+##     } && \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CRATE_NAME=build_script_build \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.12.6 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.12.6/Cargo.toml \
+##         CARGO_PKG_AUTHORS=AWS-LibCrypto \
+##         CARGO_PKG_DESCRIPTION=aws-lc-rs' is a cryptographic library using AWS-LC for its cryptographic operations. This library strives to be API-compatible with the popular Rust library named ring.' \
+##         CARGO_PKG_HOMEPAGE=https'://github.com/aws/aws-lc-rs' \
+##         CARGO_PKG_LICENSE=ISC' AND (Apache-2.0 OR ISC)' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=aws-lc-rs \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/aws/aws-lc-rs' \
+##         CARGO_PKG_RUST_VERSION=1.63.0 \
+##         CARGO_PKG_VERSION=1.12.6 \
+##         CARGO_PKG_VERSION_MAJOR=1 \
+##         CARGO_PKG_VERSION_MINOR=12 \
+##         CARGO_PKG_VERSION_PATCH=6 \
+##         CARGO_PKG_VERSION_PRE= \
+##         CARGOGREEN=1 \
+##       rustc '--crate-name' 'build_script_build' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'bin' '--emit' 'dep-info,link' '-C' 'embed-bitcode=no' '-C' 'debug-assertions=off' '--cfg' 'feature="aws-lc-sys"' '--cfg' 'feature="prebuilt-nasm"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "asan", "aws-lc-sys", "bindgen", "default", "fips", "non-fips", "prebuilt-nasm", "ring-io", "ring-sig-verify", "test_logging", "unstable"))' '-C' 'metadata=c1cdf56273e14508' '-C' 'extra-filename=-bc8082a139a1fe57' '--out-dir' '/tmp/clis-stu_0-7-5/release/build/aws-lc-rs-bc8082a139a1fe57' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-stu_0-7-5/release/deps' '--cap-lints' 'warn' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.12.6/build.rs \
+##         1>          /tmp/clis-stu_0-7-5/release/build/aws-lc-rs-bc8082a139a1fe57/out-bc8082a139a1fe57-stdout \
+##         2>          /tmp/clis-stu_0-7-5/release/build/aws-lc-rs-bc8082a139a1fe57/out-bc8082a139a1fe57-stderr \
+##         || echo $? >/tmp/clis-stu_0-7-5/release/build/aws-lc-rs-bc8082a139a1fe57/out-bc8082a139a1fe57-errcode\
+##   ; find /tmp/clis-stu_0-7-5/release/build/aws-lc-rs-bc8082a139a1fe57/*-bc8082a139a1fe57* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-bc8082a139a1fe57"
+## script = """
+## FROM scratch AS out-bc8082a139a1fe57
+## COPY --link --from=dep-x-aws-lc-rs-1.12.6-bc8082a139a1fe57 /tmp/clis-stu_0-7-5/release/build/aws-lc-rs-bc8082a139a1fe57/*-bc8082a139a1fe57* /"""
+
+FROM rust-base AS run-z-aws-lc-rs-1.12.6-6bf63cc1b640d11a
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-stu_0-7-5/release/build/aws-lc-rs-6bf63cc1b640d11a/out
+WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.12.6
+RUN \
+  --mount=from=out-bc8082a139a1fe57,source=/build_script_build-bc8082a139a1fe57,dst=/tmp/clis-stu_0-7-5/release/build/aws-lc-rs-bc8082a139a1fe57/build-script-build \
+  --mount=from=cratesio-aws-lc-rs-1.12.6,source=/aws-lc-rs-1.12.6,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.12.6 \
+    env CARGO="$(which cargo)" \
+        CARGO_CFG_FEATURE=aws-lc-sys,prebuilt-nasm \
+        CARGO_CFG_PANIC=unwind \
+        CARGO_CFG_TARGET_ABI= \
+        CARGO_CFG_TARGET_ARCH=x86_64 \
+        CARGO_CFG_TARGET_ENDIAN=little \
+        CARGO_CFG_TARGET_ENV=gnu \
+        CARGO_CFG_TARGET_FAMILY=unix \
+        CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
+        CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+        CARGO_CFG_TARGET_OS=linux \
+        CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+        CARGO_CFG_TARGET_VENDOR=unknown \
+        CARGO_CFG_UNIX= \
+        CARGO_ENCODED_RUSTFLAGS= \
+        CARGO_FEATURE_AWS_LC_SYS=1 \
+        CARGO_FEATURE_PREBUILT_NASM=1 \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.12.6 \
+        CARGO_MANIFEST_LINKS=aws_lc_rs_1_12_6_sys \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.12.6/Cargo.toml \
+        CARGO_PKG_AUTHORS=AWS-LibCrypto \
+        CARGO_PKG_DESCRIPTION=aws-lc-rs' is a cryptographic library using AWS-LC for its cryptographic operations. This library strives to be API-compatible with the popular Rust library named ring.' \
+        CARGO_PKG_HOMEPAGE=https'://github.com/aws/aws-lc-rs' \
+        CARGO_PKG_LICENSE=ISC' AND (Apache-2.0 OR ISC)' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=aws-lc-rs \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/aws/aws-lc-rs' \
+        CARGO_PKG_RUST_VERSION=1.63.0 \
+        CARGO_PKG_VERSION=1.12.6 \
+        CARGO_PKG_VERSION_MAJOR=1 \
+        CARGO_PKG_VERSION_MINOR=12 \
+        CARGO_PKG_VERSION_PATCH=6 \
+        CARGO_PKG_VERSION_PRE= \
+        DEBUG=false \
+        DEP_AWS_LC_0_27_1_CONF=OPENSSL_NO_ASYNC,OPENSSL_NO_BF,OPENSSL_NO_BLAKE2,OPENSSL_NO_BUF_FREELISTS,OPENSSL_NO_CAMELLIA,OPENSSL_NO_CAPIENG,OPENSSL_NO_CAST,OPENSSL_NO_CMS,OPENSSL_NO_COMP,OPENSSL_NO_CRYPTO_MDEBUG,OPENSSL_NO_CT,OPENSSL_NO_DANE,OPENSSL_NO_DEPRECATED,OPENSSL_NO_DGRAM,OPENSSL_NO_DYNAMIC_ENGINE,OPENSSL_NO_EC_NISTP_64_GCC_128,OPENSSL_NO_EC2M,OPENSSL_NO_EGD,OPENSSL_NO_ENGINE,OPENSSL_NO_GMP,OPENSSL_NO_GOST,OPENSSL_NO_HEARTBEATS,OPENSSL_NO_HW,OPENSSL_NO_IDEA,OPENSSL_NO_JPAKE,OPENSSL_NO_KRB5,OPENSSL_NO_MD2,OPENSSL_NO_MDC2,OPENSSL_NO_OCB,OPENSSL_NO_RC2,OPENSSL_NO_RC5,OPENSSL_NO_RFC3779,OPENSSL_NO_RIPEMD,OPENSSL_NO_RMD160,OPENSSL_NO_SCTP,OPENSSL_NO_SEED,OPENSSL_NO_SM2,OPENSSL_NO_SM3,OPENSSL_NO_SM4,OPENSSL_NO_SRP,OPENSSL_NO_SSL_TRACE,OPENSSL_NO_SSL2,OPENSSL_NO_SSL3,OPENSSL_NO_SSL3_METHOD,OPENSSL_NO_STATIC_ENGINE,OPENSSL_NO_STORE,OPENSSL_NO_TS,OPENSSL_NO_WHIRLPOOL \
+        DEP_AWS_LC_0_27_1_INCLUDE=/tmp/clis-stu_0-7-5/release/build/aws-lc-sys-e68d7f20dd3d392b/out/include \
+        DEP_AWS_LC_0_27_1_LIBCRYPTO=aws_lc_0_27_1_crypto \
+        DEP_AWS_LC_0_27_1_ROOT=/tmp/clis-stu_0-7-5/release/build/aws-lc-sys-e68d7f20dd3d392b/out \
+        HOST=x86_64-unknown-linux-gnu \
+        NUM_JOBS=4 \
+        OPT_LEVEL=3 \
+        OUT_DIR=/tmp/clis-stu_0-7-5/release/build/aws-lc-rs-6bf63cc1b640d11a/out \
+        PROFILE=release \
+        RUSTC=rustc \
+        RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+        TARGET=x86_64-unknown-linux-gnu \
+        CARGOGREEN=1 \
+      CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-stu_0-7-5/release/build/aws-lc-rs-bc8082a139a1fe57/build-script-build \
+        1>          /tmp/clis-stu_0-7-5/release/build/aws-lc-rs-6bf63cc1b640d11a/out/out-6bf63cc1b640d11a-stdout \
+        2>          /tmp/clis-stu_0-7-5/release/build/aws-lc-rs-6bf63cc1b640d11a/out/out-6bf63cc1b640d11a-stderr \
+        || echo $? >/tmp/clis-stu_0-7-5/release/build/aws-lc-rs-6bf63cc1b640d11a/out/out-6bf63cc1b640d11a-errcode\
+  ; find /tmp/clis-stu_0-7-5/release/build/aws-lc-rs-6bf63cc1b640d11a/out/*-6bf63cc1b640d11a* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-6bf63cc1b640d11a
+COPY --link --from=run-z-aws-lc-rs-1.12.6-6bf63cc1b640d11a /tmp/clis-stu_0-7-5/release/build/aws-lc-rs-6bf63cc1b640d11a/out/* /
+
+## this = "6bf63cc1b640d11a"
+## deps = ["bc8082a139a1fe57"]
+## stdout = [
+##     "cargo:rustc-check-cfg=cfg(disable_slow_tests)",
+##     "cargo:rerun-if-env-changed=AWS_LC_RS_DISABLE_SLOW_TESTS",
+##     "cargo:include=/tmp/clis-stu_0-7-5/release/build/aws-lc-sys-e68d7f20dd3d392b/out/include",
+##     "cargo:libcrypto=aws_lc_0_27_1_crypto",
+##     "cargo:root=/tmp/clis-stu_0-7-5/release/build/aws-lc-sys-e68d7f20dd3d392b/out",
+##     "cargo:conf=OPENSSL_NO_ASYNC,OPENSSL_NO_BF,OPENSSL_NO_BLAKE2,OPENSSL_NO_BUF_FREELISTS,OPENSSL_NO_CAMELLIA,OPENSSL_NO_CAPIENG,OPENSSL_NO_CAST,OPENSSL_NO_CMS,OPENSSL_NO_COMP,OPENSSL_NO_CRYPTO_MDEBUG,OPENSSL_NO_CT,OPENSSL_NO_DANE,OPENSSL_NO_DEPRECATED,OPENSSL_NO_DGRAM,OPENSSL_NO_DYNAMIC_ENGINE,OPENSSL_NO_EC_NISTP_64_GCC_128,OPENSSL_NO_EC2M,OPENSSL_NO_EGD,OPENSSL_NO_ENGINE,OPENSSL_NO_GMP,OPENSSL_NO_GOST,OPENSSL_NO_HEARTBEATS,OPENSSL_NO_HW,OPENSSL_NO_IDEA,OPENSSL_NO_JPAKE,OPENSSL_NO_KRB5,OPENSSL_NO_MD2,OPENSSL_NO_MDC2,OPENSSL_NO_OCB,OPENSSL_NO_RC2,OPENSSL_NO_RC5,OPENSSL_NO_RFC3779,OPENSSL_NO_RIPEMD,OPENSSL_NO_RMD160,OPENSSL_NO_SCTP,OPENSSL_NO_SEED,OPENSSL_NO_SM2,OPENSSL_NO_SM3,OPENSSL_NO_SM4,OPENSSL_NO_SRP,OPENSSL_NO_SSL_TRACE,OPENSSL_NO_SSL2,OPENSSL_NO_SSL3,OPENSSL_NO_SSL3_METHOD,OPENSSL_NO_STATIC_ENGINE,OPENSSL_NO_STORE,OPENSSL_NO_TS,OPENSSL_NO_WHIRLPOOL",
+## ]
+## stderr = [
+##     "cargo:rerun-if-env-changed=DEP_AWS_LC_0_27_1_INCLUDE",
+##     "cargo:rerun-if-env-changed=DEP_AWS_LC_0_27_1_LIBCRYPTO",
+##     "cargo:rerun-if-env-changed=DEP_AWS_LC_0_27_1_ROOT",
+##     "cargo:rerun-if-env-changed=DEP_AWS_LC_0_27_1_CONF",
+## ]
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "run-z-aws-lc-rs-1.12.6-6bf63cc1b640d11a"
+## script = '''
+## FROM rust-base AS run-z-aws-lc-rs-1.12.6-6bf63cc1b640d11a
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-stu_0-7-5/release/build/aws-lc-rs-6bf63cc1b640d11a/out
+## WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.12.6
+## RUN \
+##   --mount=from=out-bc8082a139a1fe57,source=/build_script_build-bc8082a139a1fe57,dst=/tmp/clis-stu_0-7-5/release/build/aws-lc-rs-bc8082a139a1fe57/build-script-build \
+##   --mount=from=cratesio-aws-lc-rs-1.12.6,source=/aws-lc-rs-1.12.6,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.12.6 \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CFG_FEATURE=aws-lc-sys,prebuilt-nasm \
+##         CARGO_CFG_PANIC=unwind \
+##         CARGO_CFG_TARGET_ABI= \
+##         CARGO_CFG_TARGET_ARCH=x86_64 \
+##         CARGO_CFG_TARGET_ENDIAN=little \
+##         CARGO_CFG_TARGET_ENV=gnu \
+##         CARGO_CFG_TARGET_FAMILY=unix \
+##         CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
+##         CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+##         CARGO_CFG_TARGET_OS=linux \
+##         CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+##         CARGO_CFG_TARGET_VENDOR=unknown \
+##         CARGO_CFG_UNIX= \
+##         CARGO_ENCODED_RUSTFLAGS= \
+##         CARGO_FEATURE_AWS_LC_SYS=1 \
+##         CARGO_FEATURE_PREBUILT_NASM=1 \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.12.6 \
+##         CARGO_MANIFEST_LINKS=aws_lc_rs_1_12_6_sys \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.12.6/Cargo.toml \
+##         CARGO_PKG_AUTHORS=AWS-LibCrypto \
+##         CARGO_PKG_DESCRIPTION=aws-lc-rs' is a cryptographic library using AWS-LC for its cryptographic operations. This library strives to be API-compatible with the popular Rust library named ring.' \
+##         CARGO_PKG_HOMEPAGE=https'://github.com/aws/aws-lc-rs' \
+##         CARGO_PKG_LICENSE=ISC' AND (Apache-2.0 OR ISC)' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=aws-lc-rs \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/aws/aws-lc-rs' \
+##         CARGO_PKG_RUST_VERSION=1.63.0 \
+##         CARGO_PKG_VERSION=1.12.6 \
+##         CARGO_PKG_VERSION_MAJOR=1 \
+##         CARGO_PKG_VERSION_MINOR=12 \
+##         CARGO_PKG_VERSION_PATCH=6 \
+##         CARGO_PKG_VERSION_PRE= \
+##         DEBUG=false \
+##         DEP_AWS_LC_0_27_1_CONF=OPENSSL_NO_ASYNC,OPENSSL_NO_BF,OPENSSL_NO_BLAKE2,OPENSSL_NO_BUF_FREELISTS,OPENSSL_NO_CAMELLIA,OPENSSL_NO_CAPIENG,OPENSSL_NO_CAST,OPENSSL_NO_CMS,OPENSSL_NO_COMP,OPENSSL_NO_CRYPTO_MDEBUG,OPENSSL_NO_CT,OPENSSL_NO_DANE,OPENSSL_NO_DEPRECATED,OPENSSL_NO_DGRAM,OPENSSL_NO_DYNAMIC_ENGINE,OPENSSL_NO_EC_NISTP_64_GCC_128,OPENSSL_NO_EC2M,OPENSSL_NO_EGD,OPENSSL_NO_ENGINE,OPENSSL_NO_GMP,OPENSSL_NO_GOST,OPENSSL_NO_HEARTBEATS,OPENSSL_NO_HW,OPENSSL_NO_IDEA,OPENSSL_NO_JPAKE,OPENSSL_NO_KRB5,OPENSSL_NO_MD2,OPENSSL_NO_MDC2,OPENSSL_NO_OCB,OPENSSL_NO_RC2,OPENSSL_NO_RC5,OPENSSL_NO_RFC3779,OPENSSL_NO_RIPEMD,OPENSSL_NO_RMD160,OPENSSL_NO_SCTP,OPENSSL_NO_SEED,OPENSSL_NO_SM2,OPENSSL_NO_SM3,OPENSSL_NO_SM4,OPENSSL_NO_SRP,OPENSSL_NO_SSL_TRACE,OPENSSL_NO_SSL2,OPENSSL_NO_SSL3,OPENSSL_NO_SSL3_METHOD,OPENSSL_NO_STATIC_ENGINE,OPENSSL_NO_STORE,OPENSSL_NO_TS,OPENSSL_NO_WHIRLPOOL \
+##         DEP_AWS_LC_0_27_1_INCLUDE=/tmp/clis-stu_0-7-5/release/build/aws-lc-sys-e68d7f20dd3d392b/out/include \
+##         DEP_AWS_LC_0_27_1_LIBCRYPTO=aws_lc_0_27_1_crypto \
+##         DEP_AWS_LC_0_27_1_ROOT=/tmp/clis-stu_0-7-5/release/build/aws-lc-sys-e68d7f20dd3d392b/out \
+##         HOST=x86_64-unknown-linux-gnu \
+##         NUM_JOBS=4 \
+##         OPT_LEVEL=3 \
+##         OUT_DIR=/tmp/clis-stu_0-7-5/release/build/aws-lc-rs-6bf63cc1b640d11a/out \
+##         PROFILE=release \
+##         RUSTC=rustc \
+##         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+##         TARGET=x86_64-unknown-linux-gnu \
+##         CARGOGREEN=1 \
+##       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-stu_0-7-5/release/build/aws-lc-rs-bc8082a139a1fe57/build-script-build \
+##         1>          /tmp/clis-stu_0-7-5/release/build/aws-lc-rs-6bf63cc1b640d11a/out/out-6bf63cc1b640d11a-stdout \
+##         2>          /tmp/clis-stu_0-7-5/release/build/aws-lc-rs-6bf63cc1b640d11a/out/out-6bf63cc1b640d11a-stderr \
+##         || echo $? >/tmp/clis-stu_0-7-5/release/build/aws-lc-rs-6bf63cc1b640d11a/out/out-6bf63cc1b640d11a-errcode\
+##   ; find /tmp/clis-stu_0-7-5/release/build/aws-lc-rs-6bf63cc1b640d11a/out/*-6bf63cc1b640d11a* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-6bf63cc1b640d11a"
+## script = """
+## FROM scratch AS out-6bf63cc1b640d11a
+## COPY --link --from=run-z-aws-lc-rs-1.12.6-6bf63cc1b640d11a /tmp/clis-stu_0-7-5/release/build/aws-lc-rs-6bf63cc1b640d11a/out/* /"""
+
+
+FROM rust-base AS dep-n-aws-lc-rs-1.12.6-98a89d00042f88c9
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-stu_0-7-5/release/deps
+RUN \
+  --mount=from=cratesio-aws-lc-rs-1.12.6,source=/aws-lc-rs-1.12.6,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.12.6 \
+  --mount=from=out-d7d98da815527774,dst=/tmp/clis-stu_0-7-5/release/deps/libaws_lc_sys-d7d98da815527774.rlib,source=/libaws_lc_sys-d7d98da815527774.rlib \
+  --mount=from=out-d7d98da815527774,dst=/tmp/clis-stu_0-7-5/release/deps/libaws_lc_sys-d7d98da815527774.rmeta,source=/libaws_lc_sys-d7d98da815527774.rmeta \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/001247bc65c2f5e5-cpucap.o,source=/001247bc65c2f5e5-cpucap.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/056c1e7192c7090b-p5_pbev2.o,source=/056c1e7192c7090b-p5_pbev2.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/056c1e7192c7090b-pkcs8.o,source=/056c1e7192c7090b-pkcs8.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/056c1e7192c7090b-pkcs8_x509.o,source=/056c1e7192c7090b-pkcs8_x509.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/0c919c82d61b4518-ecdsa_asn1.o,source=/0c919c82d61b4518-ecdsa_asn1.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/11289f19be935446-rsa_decrepit.o,source=/11289f19be935446-rsa_decrepit.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/175e87304cd4663c-cfb.o,source=/175e87304cd4663c-cfb.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/199386740f3660f1-ripemd.o,source=/199386740f3660f1-ripemd.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/1c7e26962210e9ee-kem_kyber.o,source=/1c7e26962210e9ee-kem_kyber.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/1c7e26962210e9ee-kyber1024r3_ref.o,source=/1c7e26962210e9ee-kyber1024r3_ref.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/1c7e26962210e9ee-kyber512r3_ref.o,source=/1c7e26962210e9ee-kyber512r3_ref.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/1c7e26962210e9ee-kyber768r3_ref.o,source=/1c7e26962210e9ee-kyber768r3_ref.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/1eca0b6fab589d4a-chacha-x86_64.o,source=/1eca0b6fab589d4a-chacha-x86_64.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/258e88680d941df9-bignum_montinv_p256.o,source=/258e88680d941df9-bignum_montinv_p256.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/258e88680d941df9-p256_montjscalarmul.o,source=/258e88680d941df9-p256_montjscalarmul.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/258e88680d941df9-p256_montjscalarmul_alt.o,source=/258e88680d941df9-p256_montjscalarmul_alt.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/27a075eab3d35364-pem_all.o,source=/27a075eab3d35364-pem_all.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/27a075eab3d35364-pem_info.o,source=/27a075eab3d35364-pem_info.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/27a075eab3d35364-pem_lib.o,source=/27a075eab3d35364-pem_lib.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/27a075eab3d35364-pem_oth.o,source=/27a075eab3d35364-pem_oth.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/27a075eab3d35364-pem_pk8.o,source=/27a075eab3d35364-pem_pk8.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/27a075eab3d35364-pem_pkey.o,source=/27a075eab3d35364-pem_pkey.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/27a075eab3d35364-pem_x509.o,source=/27a075eab3d35364-pem_x509.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/27a075eab3d35364-pem_xaux.o,source=/27a075eab3d35364-pem_xaux.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/30a9a10d3f98970e-crypto.o,source=/30a9a10d3f98970e-crypto.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/30a9a10d3f98970e-ex_data.o,source=/30a9a10d3f98970e-ex_data.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/30a9a10d3f98970e-mem.o,source=/30a9a10d3f98970e-mem.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/30a9a10d3f98970e-refcount_c11.o,source=/30a9a10d3f98970e-refcount_c11.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/30a9a10d3f98970e-refcount_lock.o,source=/30a9a10d3f98970e-refcount_lock.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/30a9a10d3f98970e-refcount_win.o,source=/30a9a10d3f98970e-refcount_win.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/30a9a10d3f98970e-thread.o,source=/30a9a10d3f98970e-thread.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/30a9a10d3f98970e-thread_none.o,source=/30a9a10d3f98970e-thread_none.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/30a9a10d3f98970e-thread_pthread.o,source=/30a9a10d3f98970e-thread_pthread.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/30a9a10d3f98970e-thread_win.o,source=/30a9a10d3f98970e-thread_win.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/3f2f442030472042-base64_bio.o,source=/3f2f442030472042-base64_bio.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/4696e3d2cc941c84-pmbtoken.o,source=/4696e3d2cc941c84-pmbtoken.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/4696e3d2cc941c84-trust_token.o,source=/4696e3d2cc941c84-trust_token.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/4696e3d2cc941c84-voprf.o,source=/4696e3d2cc941c84-voprf.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/46ab76b5467ff2b0-obj_decrepit.o,source=/46ab76b5467ff2b0-obj_decrepit.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/48649240ed88c783-siphash.o,source=/48649240ed88c783-siphash.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/4a91b32c84b73ad7-ecdh_extra.o,source=/4a91b32c84b73ad7-ecdh_extra.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/523d3b4857de3c81-bignum_add_p384.o,source=/523d3b4857de3c81-bignum_add_p384.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/523d3b4857de3c81-bignum_deamont_p384.o,source=/523d3b4857de3c81-bignum_deamont_p384.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/523d3b4857de3c81-bignum_deamont_p384_alt.o,source=/523d3b4857de3c81-bignum_deamont_p384_alt.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/523d3b4857de3c81-bignum_littleendian_6.o,source=/523d3b4857de3c81-bignum_littleendian_6.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/523d3b4857de3c81-bignum_montinv_p384.o,source=/523d3b4857de3c81-bignum_montinv_p384.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/523d3b4857de3c81-bignum_montmul_p384.o,source=/523d3b4857de3c81-bignum_montmul_p384.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/523d3b4857de3c81-bignum_montmul_p384_alt.o,source=/523d3b4857de3c81-bignum_montmul_p384_alt.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/523d3b4857de3c81-bignum_montsqr_p384.o,source=/523d3b4857de3c81-bignum_montsqr_p384.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/523d3b4857de3c81-bignum_montsqr_p384_alt.o,source=/523d3b4857de3c81-bignum_montsqr_p384_alt.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/523d3b4857de3c81-bignum_neg_p384.o,source=/523d3b4857de3c81-bignum_neg_p384.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/523d3b4857de3c81-bignum_nonzero_6.o,source=/523d3b4857de3c81-bignum_nonzero_6.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/523d3b4857de3c81-bignum_sub_p384.o,source=/523d3b4857de3c81-bignum_sub_p384.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/523d3b4857de3c81-bignum_tomont_p384.o,source=/523d3b4857de3c81-bignum_tomont_p384.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/523d3b4857de3c81-bignum_tomont_p384_alt.o,source=/523d3b4857de3c81-bignum_tomont_p384_alt.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/523d3b4857de3c81-p384_montjdouble.o,source=/523d3b4857de3c81-p384_montjdouble.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/523d3b4857de3c81-p384_montjdouble_alt.o,source=/523d3b4857de3c81-p384_montjdouble_alt.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/523d3b4857de3c81-p384_montjscalarmul.o,source=/523d3b4857de3c81-p384_montjscalarmul.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/523d3b4857de3c81-p384_montjscalarmul_alt.o,source=/523d3b4857de3c81-p384_montjscalarmul_alt.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/564c5311b313cdb2-aes128gcmsiv-x86_64.o,source=/564c5311b313cdb2-aes128gcmsiv-x86_64.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/564c5311b313cdb2-aesni-sha1-x86_64.o,source=/564c5311b313cdb2-aesni-sha1-x86_64.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/564c5311b313cdb2-aesni-sha256-x86_64.o,source=/564c5311b313cdb2-aesni-sha256-x86_64.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/564c5311b313cdb2-chacha20_poly1305_x86_64.o,source=/564c5311b313cdb2-chacha20_poly1305_x86_64.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/5d4700fda13603f0-poly1305.o,source=/5d4700fda13603f0-poly1305.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/5d4700fda13603f0-poly1305_arm.o,source=/5d4700fda13603f0-poly1305_arm.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/5d4700fda13603f0-poly1305_vec.o,source=/5d4700fda13603f0-poly1305_vec.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/5da2666a73fb65eb-hrss.o,source=/5da2666a73fb65eb-hrss.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/60df219e9fcbc210-stack.o,source=/60df219e9fcbc210-stack.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/62e235b24f99f4ff-blake2.o,source=/62e235b24f99f4ff-blake2.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/65fbbb68d007b209-hpke.o,source=/65fbbb68d007b209-hpke.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/6e6559d38d003e66-spake25519.o,source=/6e6559d38d003e66-spake25519.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/6e8bb48415b74ed4-dh_decrepit.o,source=/6e8bb48415b74ed4-dh_decrepit.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/6f8e1f92835a38cb-x509_decrepit.o,source=/6f8e1f92835a38cb-x509_decrepit.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/7510312e0f5aa0be-evp_asn1.o,source=/7510312e0f5aa0be-evp_asn1.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/7510312e0f5aa0be-p_dh.o,source=/7510312e0f5aa0be-p_dh.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/7510312e0f5aa0be-p_dh_asn1.o,source=/7510312e0f5aa0be-p_dh_asn1.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/7510312e0f5aa0be-p_dsa.o,source=/7510312e0f5aa0be-p_dsa.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/7510312e0f5aa0be-p_dsa_asn1.o,source=/7510312e0f5aa0be-p_dsa_asn1.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/7510312e0f5aa0be-p_ec_asn1.o,source=/7510312e0f5aa0be-p_ec_asn1.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/7510312e0f5aa0be-p_ed25519_asn1.o,source=/7510312e0f5aa0be-p_ed25519_asn1.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/7510312e0f5aa0be-p_hmac_asn1.o,source=/7510312e0f5aa0be-p_hmac_asn1.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/7510312e0f5aa0be-p_kem_asn1.o,source=/7510312e0f5aa0be-p_kem_asn1.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/7510312e0f5aa0be-p_methods.o,source=/7510312e0f5aa0be-p_methods.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/7510312e0f5aa0be-p_pqdsa_asn1.o,source=/7510312e0f5aa0be-p_pqdsa_asn1.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/7510312e0f5aa0be-p_rsa_asn1.o,source=/7510312e0f5aa0be-p_rsa_asn1.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/7510312e0f5aa0be-p_x25519.o,source=/7510312e0f5aa0be-p_x25519.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/7510312e0f5aa0be-p_x25519_asn1.o,source=/7510312e0f5aa0be-p_x25519_asn1.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/7510312e0f5aa0be-print.o,source=/7510312e0f5aa0be-print.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/7510312e0f5aa0be-scrypt.o,source=/7510312e0f5aa0be-scrypt.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/7510312e0f5aa0be-sign.o,source=/7510312e0f5aa0be-sign.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/76322f89f5cc2d96-bio.o,source=/76322f89f5cc2d96-bio.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/76322f89f5cc2d96-bio_mem.o,source=/76322f89f5cc2d96-bio_mem.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/76322f89f5cc2d96-connect.o,source=/76322f89f5cc2d96-connect.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/76322f89f5cc2d96-errno.o,source=/76322f89f5cc2d96-errno.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/76322f89f5cc2d96-fd.o,source=/76322f89f5cc2d96-fd.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/76322f89f5cc2d96-file.o,source=/76322f89f5cc2d96-file.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/76322f89f5cc2d96-hexdump.o,source=/76322f89f5cc2d96-hexdump.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/76322f89f5cc2d96-pair.o,source=/76322f89f5cc2d96-pair.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/76322f89f5cc2d96-printf.o,source=/76322f89f5cc2d96-printf.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/76322f89f5cc2d96-socket.o,source=/76322f89f5cc2d96-socket.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/76322f89f5cc2d96-socket_helper.o,source=/76322f89f5cc2d96-socket_helper.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/7a596fe31a02c0e2-bn_asn1.o,source=/7a596fe31a02c0e2-bn_asn1.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/7a596fe31a02c0e2-convert.o,source=/7a596fe31a02c0e2-convert.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/7ac4c9359514b807-obj.o,source=/7ac4c9359514b807-obj.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/7ac4c9359514b807-obj_xref.o,source=/7ac4c9359514b807-obj_xref.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/7bf3e571b6558a6b-deterministic.o,source=/7bf3e571b6558a6b-deterministic.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/7bf3e571b6558a6b-entropy_passive.o,source=/7bf3e571b6558a6b-entropy_passive.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/7bf3e571b6558a6b-forkunsafe.o,source=/7bf3e571b6558a6b-forkunsafe.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/7bf3e571b6558a6b-rand_extra.o,source=/7bf3e571b6558a6b-rand_extra.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/7bf3e571b6558a6b-windows.o,source=/7bf3e571b6558a6b-windows.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/81d9a39ddc6b1c4e-aesni-gcm-avx512.o,source=/81d9a39ddc6b1c4e-aesni-gcm-avx512.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/81d9a39ddc6b1c4e-aesni-gcm-x86_64.o,source=/81d9a39ddc6b1c4e-aesni-gcm-x86_64.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/81d9a39ddc6b1c4e-aesni-x86_64.o,source=/81d9a39ddc6b1c4e-aesni-x86_64.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/81d9a39ddc6b1c4e-aesni-xts-avx512.o,source=/81d9a39ddc6b1c4e-aesni-xts-avx512.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/81d9a39ddc6b1c4e-ghash-ssse3-x86_64.o,source=/81d9a39ddc6b1c4e-ghash-ssse3-x86_64.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/81d9a39ddc6b1c4e-ghash-x86_64.o,source=/81d9a39ddc6b1c4e-ghash-x86_64.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/81d9a39ddc6b1c4e-md5-x86_64.o,source=/81d9a39ddc6b1c4e-md5-x86_64.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/81d9a39ddc6b1c4e-p256-x86_64-asm.o,source=/81d9a39ddc6b1c4e-p256-x86_64-asm.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/81d9a39ddc6b1c4e-p256_beeu-x86_64-asm.o,source=/81d9a39ddc6b1c4e-p256_beeu-x86_64-asm.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/81d9a39ddc6b1c4e-rdrand-x86_64.o,source=/81d9a39ddc6b1c4e-rdrand-x86_64.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/81d9a39ddc6b1c4e-rsaz-2k-avx512.o,source=/81d9a39ddc6b1c4e-rsaz-2k-avx512.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/81d9a39ddc6b1c4e-rsaz-3k-avx512.o,source=/81d9a39ddc6b1c4e-rsaz-3k-avx512.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/81d9a39ddc6b1c4e-rsaz-4k-avx512.o,source=/81d9a39ddc6b1c4e-rsaz-4k-avx512.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/81d9a39ddc6b1c4e-rsaz-avx2.o,source=/81d9a39ddc6b1c4e-rsaz-avx2.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/81d9a39ddc6b1c4e-sha1-x86_64.o,source=/81d9a39ddc6b1c4e-sha1-x86_64.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/81d9a39ddc6b1c4e-sha256-x86_64.o,source=/81d9a39ddc6b1c4e-sha256-x86_64.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/81d9a39ddc6b1c4e-sha512-x86_64.o,source=/81d9a39ddc6b1c4e-sha512-x86_64.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/81d9a39ddc6b1c4e-vpaes-x86_64.o,source=/81d9a39ddc6b1c4e-vpaes-x86_64.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/81d9a39ddc6b1c4e-x86_64-mont.o,source=/81d9a39ddc6b1c4e-x86_64-mont.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/81d9a39ddc6b1c4e-x86_64-mont5.o,source=/81d9a39ddc6b1c4e-x86_64-mont5.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/86cc0a4f50e0e3bd-evp_do_all.o,source=/86cc0a4f50e0e3bd-evp_do_all.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/89981633f66afe17-cipher_extra.o,source=/89981633f66afe17-cipher_extra.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/89981633f66afe17-derive_key.o,source=/89981633f66afe17-derive_key.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/89981633f66afe17-e_aes_cbc_hmac_sha1.o,source=/89981633f66afe17-e_aes_cbc_hmac_sha1.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/89981633f66afe17-e_aes_cbc_hmac_sha256.o,source=/89981633f66afe17-e_aes_cbc_hmac_sha256.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/89981633f66afe17-e_aesctrhmac.o,source=/89981633f66afe17-e_aesctrhmac.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/89981633f66afe17-e_aesgcmsiv.o,source=/89981633f66afe17-e_aesgcmsiv.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/89981633f66afe17-e_chacha20poly1305.o,source=/89981633f66afe17-e_chacha20poly1305.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/89981633f66afe17-e_des.o,source=/89981633f66afe17-e_des.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/89981633f66afe17-e_null.o,source=/89981633f66afe17-e_null.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/89981633f66afe17-e_rc2.o,source=/89981633f66afe17-e_rc2.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/89981633f66afe17-e_rc4.o,source=/89981633f66afe17-e_rc4.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/89981633f66afe17-e_tls.o,source=/89981633f66afe17-e_tls.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/89981633f66afe17-tls_cbc.o,source=/89981633f66afe17-tls_cbc.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/904ef411c1476e9d-cipher.o,source=/904ef411c1476e9d-cipher.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/904ef411c1476e9d-md.o,source=/904ef411c1476e9d-md.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/925ae38753d351a6-pool.o,source=/925ae38753d351a6-pool.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/a3e95cd5f24d649a-err.o,source=/a3e95cd5f24d649a-err.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/a4677c68e4880270-buf.o,source=/a4677c68e4880270-buf.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/a4a065efb8ac7b35-cast.o,source=/a4a065efb8ac7b35-cast.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/a4a065efb8ac7b35-cast_tables.o,source=/a4a065efb8ac7b35-cast_tables.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/a6455f51a2435c3f-chacha.o,source=/a6455f51a2435c3f-chacha.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/a8d01793eb1214d2-poly_rq_mul.o,source=/a8d01793eb1214d2-poly_rq_mul.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ad45968d24b0237e-base64.o,source=/ad45968d24b0237e-base64.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/b0fd2550ab09b04e-rsa_asn1.o,source=/b0fd2550ab09b04e-rsa_asn1.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/b0fd2550ab09b04e-rsa_crypt.o,source=/b0fd2550ab09b04e-rsa_crypt.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/b0fd2550ab09b04e-rsa_print.o,source=/b0fd2550ab09b04e-rsa_print.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/b0fd2550ab09b04e-rsassa_pss_asn1.o,source=/b0fd2550ab09b04e-rsassa_pss_asn1.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/b129d77c83f8bbf0-trampoline-x86_64.o,source=/b129d77c83f8bbf0-trampoline-x86_64.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/bc1b343226bc6a17-a_bitstr.o,source=/bc1b343226bc6a17-a_bitstr.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/bc1b343226bc6a17-a_bool.o,source=/bc1b343226bc6a17-a_bool.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/bc1b343226bc6a17-a_d2i_fp.o,source=/bc1b343226bc6a17-a_d2i_fp.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/bc1b343226bc6a17-a_dup.o,source=/bc1b343226bc6a17-a_dup.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/bc1b343226bc6a17-a_gentm.o,source=/bc1b343226bc6a17-a_gentm.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/bc1b343226bc6a17-a_i2d_fp.o,source=/bc1b343226bc6a17-a_i2d_fp.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/bc1b343226bc6a17-a_int.o,source=/bc1b343226bc6a17-a_int.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/bc1b343226bc6a17-a_mbstr.o,source=/bc1b343226bc6a17-a_mbstr.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/bc1b343226bc6a17-a_object.o,source=/bc1b343226bc6a17-a_object.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/bc1b343226bc6a17-a_octet.o,source=/bc1b343226bc6a17-a_octet.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/bc1b343226bc6a17-a_strex.o,source=/bc1b343226bc6a17-a_strex.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/bc1b343226bc6a17-a_strnid.o,source=/bc1b343226bc6a17-a_strnid.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/bc1b343226bc6a17-a_time.o,source=/bc1b343226bc6a17-a_time.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/bc1b343226bc6a17-a_type.o,source=/bc1b343226bc6a17-a_type.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/bc1b343226bc6a17-a_utctm.o,source=/bc1b343226bc6a17-a_utctm.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/bc1b343226bc6a17-a_utf8.o,source=/bc1b343226bc6a17-a_utf8.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/bc1b343226bc6a17-asn1_lib.o,source=/bc1b343226bc6a17-asn1_lib.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/bc1b343226bc6a17-asn1_par.o,source=/bc1b343226bc6a17-asn1_par.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/bc1b343226bc6a17-asn_pack.o,source=/bc1b343226bc6a17-asn_pack.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/bc1b343226bc6a17-f_int.o,source=/bc1b343226bc6a17-f_int.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/bc1b343226bc6a17-f_string.o,source=/bc1b343226bc6a17-f_string.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/bc1b343226bc6a17-posix_time.o,source=/bc1b343226bc6a17-posix_time.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/bc1b343226bc6a17-tasn_dec.o,source=/bc1b343226bc6a17-tasn_dec.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/bc1b343226bc6a17-tasn_enc.o,source=/bc1b343226bc6a17-tasn_enc.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/bc1b343226bc6a17-tasn_fre.o,source=/bc1b343226bc6a17-tasn_fre.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/bc1b343226bc6a17-tasn_new.o,source=/bc1b343226bc6a17-tasn_new.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/bc1b343226bc6a17-tasn_typ.o,source=/bc1b343226bc6a17-tasn_typ.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/bc1b343226bc6a17-tasn_utl.o,source=/bc1b343226bc6a17-tasn_utl.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/c1300545a7d60e2b-dh_asn1.o,source=/c1300545a7d60e2b-dh_asn1.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/c1300545a7d60e2b-params.o,source=/c1300545a7d60e2b-params.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/c2f744a0f6403e0c-err_data.o,source=/c2f744a0f6403e0c-err_data.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/c4fcddba145918af-asn1_compat.o,source=/c4fcddba145918af-asn1_compat.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/c4fcddba145918af-ber.o,source=/c4fcddba145918af-ber.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/c4fcddba145918af-cbb.o,source=/c4fcddba145918af-cbb.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/c4fcddba145918af-cbs.o,source=/c4fcddba145918af-cbs.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/c4fcddba145918af-unicode.o,source=/c4fcddba145918af-unicode.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/c7e9326d9b5d7de8-blowfish.o,source=/c7e9326d9b5d7de8-blowfish.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/caa8b30982b4915c-ocsp_asn.o,source=/caa8b30982b4915c-ocsp_asn.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/caa8b30982b4915c-ocsp_client.o,source=/caa8b30982b4915c-ocsp_client.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/caa8b30982b4915c-ocsp_extension.o,source=/caa8b30982b4915c-ocsp_extension.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/caa8b30982b4915c-ocsp_http.o,source=/caa8b30982b4915c-ocsp_http.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/caa8b30982b4915c-ocsp_lib.o,source=/caa8b30982b4915c-ocsp_lib.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/caa8b30982b4915c-ocsp_print.o,source=/caa8b30982b4915c-ocsp_print.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/caa8b30982b4915c-ocsp_server.o,source=/caa8b30982b4915c-ocsp_server.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/caa8b30982b4915c-ocsp_verify.o,source=/caa8b30982b4915c-ocsp_verify.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/d7fed99e8aa5a9b1-rc4.o,source=/d7fed99e8aa5a9b1-rc4.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/da5030c6f3330e8d-des.o,source=/da5030c6f3330e8d-des.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/db3b6bfb95261072-rust_wrapper.o,source=/db3b6bfb95261072-rust_wrapper.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/dbc60140080f57e9-bignum_madd_n25519.o,source=/dbc60140080f57e9-bignum_madd_n25519.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/dbc60140080f57e9-bignum_madd_n25519_alt.o,source=/dbc60140080f57e9-bignum_madd_n25519_alt.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/dbc60140080f57e9-bignum_mod_n25519.o,source=/dbc60140080f57e9-bignum_mod_n25519.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/dbc60140080f57e9-bignum_neg_p25519.o,source=/dbc60140080f57e9-bignum_neg_p25519.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/dbc60140080f57e9-curve25519_x25519.o,source=/dbc60140080f57e9-curve25519_x25519.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/dbc60140080f57e9-curve25519_x25519_alt.o,source=/dbc60140080f57e9-curve25519_x25519_alt.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/dbc60140080f57e9-curve25519_x25519base.o,source=/dbc60140080f57e9-curve25519_x25519base.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/dbc60140080f57e9-curve25519_x25519base_alt.o,source=/dbc60140080f57e9-curve25519_x25519base_alt.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/dbc60140080f57e9-edwards25519_decode.o,source=/dbc60140080f57e9-edwards25519_decode.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/dbc60140080f57e9-edwards25519_decode_alt.o,source=/dbc60140080f57e9-edwards25519_decode_alt.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/dbc60140080f57e9-edwards25519_encode.o,source=/dbc60140080f57e9-edwards25519_encode.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/dbc60140080f57e9-edwards25519_scalarmulbase.o,source=/dbc60140080f57e9-edwards25519_scalarmulbase.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/dbc60140080f57e9-edwards25519_scalarmulbase_alt.o,source=/dbc60140080f57e9-edwards25519_scalarmulbase_alt.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/dbc60140080f57e9-edwards25519_scalarmuldouble.o,source=/dbc60140080f57e9-edwards25519_scalarmuldouble.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/dbc60140080f57e9-edwards25519_scalarmuldouble_alt.o,source=/dbc60140080f57e9-edwards25519_scalarmuldouble_alt.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/dcb7d53a9be33b0c-engine.o,source=/dcb7d53a9be33b0c-engine.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/dfe446faf29f8012-ec_asn1.o,source=/dfe446faf29f8012-ec_asn1.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/dfe446faf29f8012-ec_derive.o,source=/dfe446faf29f8012-ec_derive.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/dfe446faf29f8012-hash_to_curve.o,source=/dfe446faf29f8012-hash_to_curve.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/e3caa0b8b118742c-pkcs7.o,source=/e3caa0b8b118742c-pkcs7.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/e3caa0b8b118742c-pkcs7_asn1.o,source=/e3caa0b8b118742c-pkcs7_asn1.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/e3caa0b8b118742c-pkcs7_x509.o,source=/e3caa0b8b118742c-pkcs7_x509.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/e4ecb171c489b811-conf.o,source=/e4ecb171c489b811-conf.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/e71c6558e17b1ce7-digest_extra.o,source=/e71c6558e17b1ce7-digest_extra.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ea2b51a0b6630529-lhash.o,source=/ea2b51a0b6630529-lhash.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-a_digest.o,source=/ebcd52e9457b6221-a_digest.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-a_sign.o,source=/ebcd52e9457b6221-a_sign.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-a_verify.o,source=/ebcd52e9457b6221-a_verify.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-algorithm.o,source=/ebcd52e9457b6221-algorithm.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-asn1_gen.o,source=/ebcd52e9457b6221-asn1_gen.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-by_dir.o,source=/ebcd52e9457b6221-by_dir.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-by_file.o,source=/ebcd52e9457b6221-by_file.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-i2d_pr.o,source=/ebcd52e9457b6221-i2d_pr.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-name_print.o,source=/ebcd52e9457b6221-name_print.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-policy.o,source=/ebcd52e9457b6221-policy.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-rsa_pss.o,source=/ebcd52e9457b6221-rsa_pss.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-t_crl.o,source=/ebcd52e9457b6221-t_crl.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-t_req.o,source=/ebcd52e9457b6221-t_req.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-t_x509.o,source=/ebcd52e9457b6221-t_x509.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-t_x509a.o,source=/ebcd52e9457b6221-t_x509a.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-v3_akey.o,source=/ebcd52e9457b6221-v3_akey.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-v3_akeya.o,source=/ebcd52e9457b6221-v3_akeya.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-v3_alt.o,source=/ebcd52e9457b6221-v3_alt.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-v3_bcons.o,source=/ebcd52e9457b6221-v3_bcons.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-v3_bitst.o,source=/ebcd52e9457b6221-v3_bitst.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-v3_conf.o,source=/ebcd52e9457b6221-v3_conf.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-v3_cpols.o,source=/ebcd52e9457b6221-v3_cpols.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-v3_crld.o,source=/ebcd52e9457b6221-v3_crld.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-v3_enum.o,source=/ebcd52e9457b6221-v3_enum.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-v3_extku.o,source=/ebcd52e9457b6221-v3_extku.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-v3_genn.o,source=/ebcd52e9457b6221-v3_genn.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-v3_ia5.o,source=/ebcd52e9457b6221-v3_ia5.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-v3_info.o,source=/ebcd52e9457b6221-v3_info.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-v3_int.o,source=/ebcd52e9457b6221-v3_int.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-v3_lib.o,source=/ebcd52e9457b6221-v3_lib.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-v3_ncons.o,source=/ebcd52e9457b6221-v3_ncons.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-v3_ocsp.o,source=/ebcd52e9457b6221-v3_ocsp.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-v3_pcons.o,source=/ebcd52e9457b6221-v3_pcons.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-v3_pmaps.o,source=/ebcd52e9457b6221-v3_pmaps.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-v3_prn.o,source=/ebcd52e9457b6221-v3_prn.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-v3_purp.o,source=/ebcd52e9457b6221-v3_purp.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-v3_skey.o,source=/ebcd52e9457b6221-v3_skey.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-v3_utl.o,source=/ebcd52e9457b6221-v3_utl.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-x509.o,source=/ebcd52e9457b6221-x509.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-x509_att.o,source=/ebcd52e9457b6221-x509_att.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-x509_cmp.o,source=/ebcd52e9457b6221-x509_cmp.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-x509_d2.o,source=/ebcd52e9457b6221-x509_d2.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-x509_def.o,source=/ebcd52e9457b6221-x509_def.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-x509_ext.o,source=/ebcd52e9457b6221-x509_ext.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-x509_lu.o,source=/ebcd52e9457b6221-x509_lu.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-x509_obj.o,source=/ebcd52e9457b6221-x509_obj.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-x509_req.o,source=/ebcd52e9457b6221-x509_req.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-x509_set.o,source=/ebcd52e9457b6221-x509_set.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-x509_trs.o,source=/ebcd52e9457b6221-x509_trs.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-x509_txt.o,source=/ebcd52e9457b6221-x509_txt.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-x509_v3.o,source=/ebcd52e9457b6221-x509_v3.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-x509_vfy.o,source=/ebcd52e9457b6221-x509_vfy.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-x509_vpm.o,source=/ebcd52e9457b6221-x509_vpm.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-x509cset.o,source=/ebcd52e9457b6221-x509cset.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-x509name.o,source=/ebcd52e9457b6221-x509name.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-x509rset.o,source=/ebcd52e9457b6221-x509rset.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-x509spki.o,source=/ebcd52e9457b6221-x509spki.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-x_algor.o,source=/ebcd52e9457b6221-x_algor.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-x_all.o,source=/ebcd52e9457b6221-x_all.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-x_attrib.o,source=/ebcd52e9457b6221-x_attrib.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-x_crl.o,source=/ebcd52e9457b6221-x_crl.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-x_exten.o,source=/ebcd52e9457b6221-x_exten.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-x_name.o,source=/ebcd52e9457b6221-x_name.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-x_pubkey.o,source=/ebcd52e9457b6221-x_pubkey.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-x_req.o,source=/ebcd52e9457b6221-x_req.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-x_sig.o,source=/ebcd52e9457b6221-x_sig.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-x_spki.o,source=/ebcd52e9457b6221-x_spki.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-x_val.o,source=/ebcd52e9457b6221-x_val.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-x_x509.o,source=/ebcd52e9457b6221-x_x509.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-x_x509a.o,source=/ebcd52e9457b6221-x_x509a.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/edae2d9e273b891e-bignum_add_p521.o,source=/edae2d9e273b891e-bignum_add_p521.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/edae2d9e273b891e-bignum_fromlebytes_p521.o,source=/edae2d9e273b891e-bignum_fromlebytes_p521.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/edae2d9e273b891e-bignum_inv_p521.o,source=/edae2d9e273b891e-bignum_inv_p521.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/edae2d9e273b891e-bignum_mul_p521.o,source=/edae2d9e273b891e-bignum_mul_p521.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/edae2d9e273b891e-bignum_mul_p521_alt.o,source=/edae2d9e273b891e-bignum_mul_p521_alt.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/edae2d9e273b891e-bignum_neg_p521.o,source=/edae2d9e273b891e-bignum_neg_p521.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/edae2d9e273b891e-bignum_sqr_p521.o,source=/edae2d9e273b891e-bignum_sqr_p521.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/edae2d9e273b891e-bignum_sqr_p521_alt.o,source=/edae2d9e273b891e-bignum_sqr_p521_alt.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/edae2d9e273b891e-bignum_sub_p521.o,source=/edae2d9e273b891e-bignum_sub_p521.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/edae2d9e273b891e-bignum_tolebytes_p521.o,source=/edae2d9e273b891e-bignum_tolebytes_p521.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/edae2d9e273b891e-p521_jdouble.o,source=/edae2d9e273b891e-p521_jdouble.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/edae2d9e273b891e-p521_jdouble_alt.o,source=/edae2d9e273b891e-p521_jdouble_alt.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/edae2d9e273b891e-p521_jscalarmul.o,source=/edae2d9e273b891e-p521_jscalarmul.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/edae2d9e273b891e-p521_jscalarmul_alt.o,source=/edae2d9e273b891e-p521_jscalarmul_alt.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/f8e4fd781484bd36-bcm.o,source=/f8e4fd781484bd36-bcm.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/f8e4fd781484bd36-fips_shared_support.o,source=/f8e4fd781484bd36-fips_shared_support.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/fb1f39df2ea6f08f-dsa.o,source=/fb1f39df2ea6f08f-dsa.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/fb1f39df2ea6f08f-dsa_asn1.o,source=/fb1f39df2ea6f08f-dsa_asn1.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/fe5b6d61933e4a91-fips202.o,source=/fe5b6d61933e4a91-fips202.o \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/flag_check,source=/flag_check \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/flag_check.c,source=/flag_check.c \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/libaws_lc_0_27_1_crypto.a,source=/libaws_lc_0_27_1_crypto.a \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/openssl,source=/openssl \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/aead.h,source=/aead.h \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/aes.h,source=/aes.h \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/arm_arch.h,source=/arm_arch.h \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/asm_base.h,source=/asm_base.h \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/asn1.h,source=/asn1.h \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/asn1_mac.h,source=/asn1_mac.h \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/asn1t.h,source=/asn1t.h \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/base.h,source=/base.h \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/base64.h,source=/base64.h \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/bio.h,source=/bio.h \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/blake2.h,source=/blake2.h \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/blowfish.h,source=/blowfish.h \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/bn.h,source=/bn.h \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/boringssl_prefix_symbols.h,source=/boringssl_prefix_symbols.h \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/boringssl_prefix_symbols_asm.h,source=/boringssl_prefix_symbols_asm.h \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/boringssl_prefix_symbols_nasm.inc,source=/boringssl_prefix_symbols_nasm.inc \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/buf.h,source=/buf.h \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/buffer.h,source=/buffer.h \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/bytestring.h,source=/bytestring.h \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/chacha.h,source=/chacha.h \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/cipher.h,source=/cipher.h \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/cmac.h,source=/cmac.h \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/conf.h,source=/conf.h \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/cpu.h,source=/cpu.h \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/crypto.h,source=/crypto.h \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ctrdrbg.h,source=/ctrdrbg.h \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/curve25519.h,source=/curve25519.h \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/des.h,source=/des.h \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/dh.h,source=/dh.h \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/digest.h,source=/digest.h \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/dsa.h,source=/dsa.h \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/dtls1.h,source=/dtls1.h \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/e_os2.h,source=/e_os2.h \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ec.h,source=/ec.h \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ec_key.h,source=/ec_key.h \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ecdh.h,source=/ecdh.h \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ecdsa.h,source=/ecdsa.h \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/engine.h,source=/engine.h \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/err.h,source=/err.h \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/evp.h,source=/evp.h \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/evp_errors.h,source=/evp_errors.h \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ex_data.h,source=/ex_data.h \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/experimental,source=/experimental \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/kem_deterministic_api.h,source=/kem_deterministic_api.h \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/hkdf.h,source=/hkdf.h \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/hmac.h,source=/hmac.h \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/hpke.h,source=/hpke.h \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/hrss.h,source=/hrss.h \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/is_awslc.h,source=/is_awslc.h \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/kdf.h,source=/kdf.h \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/lhash.h,source=/lhash.h \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/md4.h,source=/md4.h \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/md5.h,source=/md5.h \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/mem.h,source=/mem.h \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/nid.h,source=/nid.h \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/obj.h,source=/obj.h \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/obj_mac.h,source=/obj_mac.h \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/objects.h,source=/objects.h \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ocsp.h,source=/ocsp.h \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/opensslconf.h,source=/opensslconf.h \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/opensslv.h,source=/opensslv.h \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ossl_typ.h,source=/ossl_typ.h \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/pem.h,source=/pem.h \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/pkcs12.h,source=/pkcs12.h \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/pkcs7.h,source=/pkcs7.h \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/pkcs8.h,source=/pkcs8.h \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/poly1305.h,source=/poly1305.h \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/pool.h,source=/pool.h \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/posix_time.h,source=/posix_time.h \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/rand.h,source=/rand.h \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/rc4.h,source=/rc4.h \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ripemd.h,source=/ripemd.h \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/rsa.h,source=/rsa.h \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/safestack.h,source=/safestack.h \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/service_indicator.h,source=/service_indicator.h \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/sha.h,source=/sha.h \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/siphash.h,source=/siphash.h \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/span.h,source=/span.h \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/sshkdf.h,source=/sshkdf.h \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ssl.h,source=/ssl.h \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ssl3.h,source=/ssl3.h \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/stack.h,source=/stack.h \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/target.h,source=/target.h \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/thread.h,source=/thread.h \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/time.h,source=/time.h \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/tls1.h,source=/tls1.h \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/trust_token.h,source=/trust_token.h \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/type_check.h,source=/type_check.h \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/x509.h,source=/x509.h \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/x509_vfy.h,source=/x509_vfy.h \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/x509v3.h,source=/x509v3.h \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/x509v3_errors.h,source=/x509v3_errors.h \
+  --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/rust_wrapper.h,source=/rust_wrapper.h \
+  --mount=from=out-5253d2060227d8a0,dst=/tmp/clis-stu_0-7-5/release/deps/libjobserver-5253d2060227d8a0.rlib,source=/libjobserver-5253d2060227d8a0.rlib \
+  --mount=from=out-5253d2060227d8a0,dst=/tmp/clis-stu_0-7-5/release/deps/libjobserver-5253d2060227d8a0.rmeta,source=/libjobserver-5253d2060227d8a0.rmeta \
+  --mount=from=out-d68e352a3cdc3b08,dst=/tmp/clis-stu_0-7-5/release/deps/liblibc-d68e352a3cdc3b08.rlib,source=/liblibc-d68e352a3cdc3b08.rlib \
+  --mount=from=out-d68e352a3cdc3b08,dst=/tmp/clis-stu_0-7-5/release/deps/liblibc-d68e352a3cdc3b08.rmeta,source=/liblibc-d68e352a3cdc3b08.rmeta \
+  --mount=from=out-55bd35d1ef212c79,dst=/tmp/clis-stu_0-7-5/release/deps/build_script_build-55bd35d1ef212c79,source=/build_script_build-55bd35d1ef212c79 \
+  --mount=from=out-e58644cb7f510602,dst=/tmp/clis-stu_0-7-5/release/deps/libshlex-e58644cb7f510602.rlib,source=/libshlex-e58644cb7f510602.rlib \
+  --mount=from=out-e58644cb7f510602,dst=/tmp/clis-stu_0-7-5/release/deps/libshlex-e58644cb7f510602.rmeta,source=/libshlex-e58644cb7f510602.rmeta \
+  --mount=from=out-947438b818448e5e,dst=/tmp/clis-stu_0-7-5/release/deps/libcc-947438b818448e5e.rlib,source=/libcc-947438b818448e5e.rlib \
+  --mount=from=out-947438b818448e5e,dst=/tmp/clis-stu_0-7-5/release/deps/libcc-947438b818448e5e.rmeta,source=/libcc-947438b818448e5e.rmeta \
+  --mount=from=out-3741a1f4e7374899,dst=/tmp/clis-stu_0-7-5/release/deps/libcmake-3741a1f4e7374899.rlib,source=/libcmake-3741a1f4e7374899.rlib \
+  --mount=from=out-3741a1f4e7374899,dst=/tmp/clis-stu_0-7-5/release/deps/libcmake-3741a1f4e7374899.rmeta,source=/libcmake-3741a1f4e7374899.rmeta \
+  --mount=from=out-4ebb5633c029d02a,dst=/tmp/clis-stu_0-7-5/release/deps/libdunce-4ebb5633c029d02a.rlib,source=/libdunce-4ebb5633c029d02a.rlib \
+  --mount=from=out-4ebb5633c029d02a,dst=/tmp/clis-stu_0-7-5/release/deps/libdunce-4ebb5633c029d02a.rmeta,source=/libdunce-4ebb5633c029d02a.rmeta \
+  --mount=from=out-e6abd85383eef4c9,dst=/tmp/clis-stu_0-7-5/release/deps/libfs_extra-e6abd85383eef4c9.rlib,source=/libfs_extra-e6abd85383eef4c9.rlib \
+  --mount=from=out-e6abd85383eef4c9,dst=/tmp/clis-stu_0-7-5/release/deps/libfs_extra-e6abd85383eef4c9.rmeta,source=/libfs_extra-e6abd85383eef4c9.rmeta \
+  --mount=from=out-590398941c1af7ae,dst=/tmp/clis-stu_0-7-5/release/deps/build_script_main-590398941c1af7ae,source=/build_script_main-590398941c1af7ae \
+  --mount=from=out-fd6e94371433d6e2,dst=/tmp/clis-stu_0-7-5/release/deps/libzeroize-fd6e94371433d6e2.rlib,source=/libzeroize-fd6e94371433d6e2.rlib \
+  --mount=from=out-fd6e94371433d6e2,dst=/tmp/clis-stu_0-7-5/release/deps/libzeroize-fd6e94371433d6e2.rmeta,source=/libzeroize-fd6e94371433d6e2.rmeta \
+  --mount=from=out-6bf63cc1b640d11a,dst=/tmp/clis-stu_0-7-5/release/build/aws-lc-rs-6bf63cc1b640d11a/out,source=/ \
+    env CARGO="$(which cargo)" \
+        CARGO_CRATE_NAME=aws_lc_rs \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.12.6 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.12.6/Cargo.toml \
+        CARGO_PKG_AUTHORS=AWS-LibCrypto \
+        CARGO_PKG_DESCRIPTION=aws-lc-rs' is a cryptographic library using AWS-LC for its cryptographic operations. This library strives to be API-compatible with the popular Rust library named ring.' \
+        CARGO_PKG_HOMEPAGE=https'://github.com/aws/aws-lc-rs' \
+        CARGO_PKG_LICENSE=ISC' AND (Apache-2.0 OR ISC)' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=aws-lc-rs \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/aws/aws-lc-rs' \
+        CARGO_PKG_RUST_VERSION=1.63.0 \
+        CARGO_PKG_VERSION=1.12.6 \
+        CARGO_PKG_VERSION_MAJOR=1 \
+        CARGO_PKG_VERSION_MINOR=12 \
+        CARGO_PKG_VERSION_PATCH=6 \
+        CARGO_PKG_VERSION_PRE= \
+        OUT_DIR=/tmp/clis-stu_0-7-5/release/build/aws-lc-rs-6bf63cc1b640d11a/out \
+        CARGOGREEN=1 \
+      rustc '--crate-name' 'aws_lc_rs' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'linker-plugin-lto' '-C' 'codegen-units=1' '--cfg' 'feature="aws-lc-sys"' '--cfg' 'feature="prebuilt-nasm"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "asan", "aws-lc-sys", "bindgen", "default", "fips", "non-fips", "prebuilt-nasm", "ring-io", "ring-sig-verify", "test_logging", "unstable"))' '-C' 'metadata=e73bc9d4da2008a4' '-C' 'extra-filename=-98a89d00042f88c9' '--out-dir' '/tmp/clis-stu_0-7-5/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-stu_0-7-5/release/deps' '--extern' 'aws_lc_sys=/tmp/clis-stu_0-7-5/release/deps/libaws_lc_sys-d7d98da815527774.rmeta' '--extern' 'zeroize=/tmp/clis-stu_0-7-5/release/deps/libzeroize-fd6e94371433d6e2.rmeta' '--cap-lints' 'warn' '-L' 'native=/tmp/clis-stu_0-7-5/release/build/aws-lc-sys-e68d7f20dd3d392b/out' '--check-cfg' 'cfg(disable_slow_tests)' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.12.6/src/lib.rs \
+        1>          /tmp/clis-stu_0-7-5/release/deps/out-98a89d00042f88c9-stdout \
+        2>          /tmp/clis-stu_0-7-5/release/deps/out-98a89d00042f88c9-stderr \
+        || echo $? >/tmp/clis-stu_0-7-5/release/deps/out-98a89d00042f88c9-errcode\
+  ; find /tmp/clis-stu_0-7-5/release/deps/*-98a89d00042f88c9* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-98a89d00042f88c9
+COPY --link --from=dep-n-aws-lc-rs-1.12.6-98a89d00042f88c9 /tmp/clis-stu_0-7-5/release/deps/*-98a89d00042f88c9* /
+
+# Pipe this file to:
+#  \
+#    <THIS_FILE
+
+## this = "98a89d00042f88c9"
+## deps = [
+##     "d7d98da815527774",
+##     "e68d7f20dd3d392b",
+##     "5253d2060227d8a0",
+##     "d68e352a3cdc3b08",
+##     "4dfd14a0b71a19ea",
+##     "55bd35d1ef212c79",
+##     "e58644cb7f510602",
+##     "947438b818448e5e",
+##     "3741a1f4e7374899",
+##     "4ebb5633c029d02a",
+##     "e6abd85383eef4c9",
+##     "590398941c1af7ae",
+##     "fd6e94371433d6e2",
+##     "6bf63cc1b640d11a",
+##     "bc8082a139a1fe57",
+## ]
+## buildrs_results = [
+##     "e68d7f20dd3d392b",
+##     "6bf63cc1b640d11a",
+## ]
+##
+## [[externs]]
+## from = "out-d7d98da815527774"
+## xtern = "libaws_lc_sys-d7d98da815527774.rlib"
+##
+## [[externs]]
+## from = "out-d7d98da815527774"
+## xtern = "libaws_lc_sys-d7d98da815527774.rmeta"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "001247bc65c2f5e5-cpucap.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "056c1e7192c7090b-p5_pbev2.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "056c1e7192c7090b-pkcs8.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "056c1e7192c7090b-pkcs8_x509.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "0c919c82d61b4518-ecdsa_asn1.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "11289f19be935446-rsa_decrepit.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "175e87304cd4663c-cfb.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "199386740f3660f1-ripemd.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "1c7e26962210e9ee-kem_kyber.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "1c7e26962210e9ee-kyber1024r3_ref.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "1c7e26962210e9ee-kyber512r3_ref.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "1c7e26962210e9ee-kyber768r3_ref.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "1eca0b6fab589d4a-chacha-x86_64.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "258e88680d941df9-bignum_montinv_p256.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "258e88680d941df9-p256_montjscalarmul.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "258e88680d941df9-p256_montjscalarmul_alt.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "27a075eab3d35364-pem_all.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "27a075eab3d35364-pem_info.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "27a075eab3d35364-pem_lib.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "27a075eab3d35364-pem_oth.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "27a075eab3d35364-pem_pk8.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "27a075eab3d35364-pem_pkey.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "27a075eab3d35364-pem_x509.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "27a075eab3d35364-pem_xaux.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "30a9a10d3f98970e-crypto.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "30a9a10d3f98970e-ex_data.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "30a9a10d3f98970e-mem.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "30a9a10d3f98970e-refcount_c11.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "30a9a10d3f98970e-refcount_lock.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "30a9a10d3f98970e-refcount_win.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "30a9a10d3f98970e-thread.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "30a9a10d3f98970e-thread_none.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "30a9a10d3f98970e-thread_pthread.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "30a9a10d3f98970e-thread_win.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "3f2f442030472042-base64_bio.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "4696e3d2cc941c84-pmbtoken.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "4696e3d2cc941c84-trust_token.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "4696e3d2cc941c84-voprf.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "46ab76b5467ff2b0-obj_decrepit.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "48649240ed88c783-siphash.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "4a91b32c84b73ad7-ecdh_extra.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "523d3b4857de3c81-bignum_add_p384.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "523d3b4857de3c81-bignum_deamont_p384.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "523d3b4857de3c81-bignum_deamont_p384_alt.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "523d3b4857de3c81-bignum_littleendian_6.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "523d3b4857de3c81-bignum_montinv_p384.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "523d3b4857de3c81-bignum_montmul_p384.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "523d3b4857de3c81-bignum_montmul_p384_alt.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "523d3b4857de3c81-bignum_montsqr_p384.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "523d3b4857de3c81-bignum_montsqr_p384_alt.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "523d3b4857de3c81-bignum_neg_p384.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "523d3b4857de3c81-bignum_nonzero_6.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "523d3b4857de3c81-bignum_sub_p384.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "523d3b4857de3c81-bignum_tomont_p384.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "523d3b4857de3c81-bignum_tomont_p384_alt.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "523d3b4857de3c81-p384_montjdouble.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "523d3b4857de3c81-p384_montjdouble_alt.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "523d3b4857de3c81-p384_montjscalarmul.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "523d3b4857de3c81-p384_montjscalarmul_alt.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "564c5311b313cdb2-aes128gcmsiv-x86_64.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "564c5311b313cdb2-aesni-sha1-x86_64.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "564c5311b313cdb2-aesni-sha256-x86_64.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "564c5311b313cdb2-chacha20_poly1305_x86_64.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "5d4700fda13603f0-poly1305.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "5d4700fda13603f0-poly1305_arm.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "5d4700fda13603f0-poly1305_vec.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "5da2666a73fb65eb-hrss.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "60df219e9fcbc210-stack.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "62e235b24f99f4ff-blake2.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "65fbbb68d007b209-hpke.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "6e6559d38d003e66-spake25519.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "6e8bb48415b74ed4-dh_decrepit.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "6f8e1f92835a38cb-x509_decrepit.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "7510312e0f5aa0be-evp_asn1.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "7510312e0f5aa0be-p_dh.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "7510312e0f5aa0be-p_dh_asn1.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "7510312e0f5aa0be-p_dsa.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "7510312e0f5aa0be-p_dsa_asn1.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "7510312e0f5aa0be-p_ec_asn1.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "7510312e0f5aa0be-p_ed25519_asn1.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "7510312e0f5aa0be-p_hmac_asn1.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "7510312e0f5aa0be-p_kem_asn1.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "7510312e0f5aa0be-p_methods.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "7510312e0f5aa0be-p_pqdsa_asn1.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "7510312e0f5aa0be-p_rsa_asn1.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "7510312e0f5aa0be-p_x25519.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "7510312e0f5aa0be-p_x25519_asn1.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "7510312e0f5aa0be-print.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "7510312e0f5aa0be-scrypt.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "7510312e0f5aa0be-sign.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "76322f89f5cc2d96-bio.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "76322f89f5cc2d96-bio_mem.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "76322f89f5cc2d96-connect.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "76322f89f5cc2d96-errno.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "76322f89f5cc2d96-fd.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "76322f89f5cc2d96-file.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "76322f89f5cc2d96-hexdump.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "76322f89f5cc2d96-pair.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "76322f89f5cc2d96-printf.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "76322f89f5cc2d96-socket.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "76322f89f5cc2d96-socket_helper.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "7a596fe31a02c0e2-bn_asn1.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "7a596fe31a02c0e2-convert.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "7ac4c9359514b807-obj.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "7ac4c9359514b807-obj_xref.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "7bf3e571b6558a6b-deterministic.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "7bf3e571b6558a6b-entropy_passive.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "7bf3e571b6558a6b-forkunsafe.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "7bf3e571b6558a6b-rand_extra.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "7bf3e571b6558a6b-windows.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "81d9a39ddc6b1c4e-aesni-gcm-avx512.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "81d9a39ddc6b1c4e-aesni-gcm-x86_64.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "81d9a39ddc6b1c4e-aesni-x86_64.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "81d9a39ddc6b1c4e-aesni-xts-avx512.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "81d9a39ddc6b1c4e-ghash-ssse3-x86_64.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "81d9a39ddc6b1c4e-ghash-x86_64.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "81d9a39ddc6b1c4e-md5-x86_64.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "81d9a39ddc6b1c4e-p256-x86_64-asm.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "81d9a39ddc6b1c4e-p256_beeu-x86_64-asm.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "81d9a39ddc6b1c4e-rdrand-x86_64.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "81d9a39ddc6b1c4e-rsaz-2k-avx512.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "81d9a39ddc6b1c4e-rsaz-3k-avx512.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "81d9a39ddc6b1c4e-rsaz-4k-avx512.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "81d9a39ddc6b1c4e-rsaz-avx2.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "81d9a39ddc6b1c4e-sha1-x86_64.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "81d9a39ddc6b1c4e-sha256-x86_64.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "81d9a39ddc6b1c4e-sha512-x86_64.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "81d9a39ddc6b1c4e-vpaes-x86_64.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "81d9a39ddc6b1c4e-x86_64-mont.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "81d9a39ddc6b1c4e-x86_64-mont5.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "86cc0a4f50e0e3bd-evp_do_all.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "89981633f66afe17-cipher_extra.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "89981633f66afe17-derive_key.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "89981633f66afe17-e_aes_cbc_hmac_sha1.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "89981633f66afe17-e_aes_cbc_hmac_sha256.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "89981633f66afe17-e_aesctrhmac.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "89981633f66afe17-e_aesgcmsiv.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "89981633f66afe17-e_chacha20poly1305.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "89981633f66afe17-e_des.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "89981633f66afe17-e_null.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "89981633f66afe17-e_rc2.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "89981633f66afe17-e_rc4.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "89981633f66afe17-e_tls.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "89981633f66afe17-tls_cbc.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "904ef411c1476e9d-cipher.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "904ef411c1476e9d-md.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "925ae38753d351a6-pool.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "a3e95cd5f24d649a-err.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "a4677c68e4880270-buf.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "a4a065efb8ac7b35-cast.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "a4a065efb8ac7b35-cast_tables.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "a6455f51a2435c3f-chacha.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "a8d01793eb1214d2-poly_rq_mul.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "ad45968d24b0237e-base64.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "b0fd2550ab09b04e-rsa_asn1.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "b0fd2550ab09b04e-rsa_crypt.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "b0fd2550ab09b04e-rsa_print.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "b0fd2550ab09b04e-rsassa_pss_asn1.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "b129d77c83f8bbf0-trampoline-x86_64.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "bc1b343226bc6a17-a_bitstr.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "bc1b343226bc6a17-a_bool.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "bc1b343226bc6a17-a_d2i_fp.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "bc1b343226bc6a17-a_dup.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "bc1b343226bc6a17-a_gentm.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "bc1b343226bc6a17-a_i2d_fp.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "bc1b343226bc6a17-a_int.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "bc1b343226bc6a17-a_mbstr.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "bc1b343226bc6a17-a_object.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "bc1b343226bc6a17-a_octet.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "bc1b343226bc6a17-a_strex.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "bc1b343226bc6a17-a_strnid.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "bc1b343226bc6a17-a_time.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "bc1b343226bc6a17-a_type.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "bc1b343226bc6a17-a_utctm.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "bc1b343226bc6a17-a_utf8.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "bc1b343226bc6a17-asn1_lib.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "bc1b343226bc6a17-asn1_par.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "bc1b343226bc6a17-asn_pack.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "bc1b343226bc6a17-f_int.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "bc1b343226bc6a17-f_string.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "bc1b343226bc6a17-posix_time.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "bc1b343226bc6a17-tasn_dec.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "bc1b343226bc6a17-tasn_enc.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "bc1b343226bc6a17-tasn_fre.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "bc1b343226bc6a17-tasn_new.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "bc1b343226bc6a17-tasn_typ.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "bc1b343226bc6a17-tasn_utl.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "c1300545a7d60e2b-dh_asn1.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "c1300545a7d60e2b-params.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "c2f744a0f6403e0c-err_data.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "c4fcddba145918af-asn1_compat.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "c4fcddba145918af-ber.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "c4fcddba145918af-cbb.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "c4fcddba145918af-cbs.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "c4fcddba145918af-unicode.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "c7e9326d9b5d7de8-blowfish.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "caa8b30982b4915c-ocsp_asn.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "caa8b30982b4915c-ocsp_client.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "caa8b30982b4915c-ocsp_extension.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "caa8b30982b4915c-ocsp_http.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "caa8b30982b4915c-ocsp_lib.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "caa8b30982b4915c-ocsp_print.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "caa8b30982b4915c-ocsp_server.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "caa8b30982b4915c-ocsp_verify.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "d7fed99e8aa5a9b1-rc4.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "da5030c6f3330e8d-des.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "db3b6bfb95261072-rust_wrapper.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "dbc60140080f57e9-bignum_madd_n25519.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "dbc60140080f57e9-bignum_madd_n25519_alt.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "dbc60140080f57e9-bignum_mod_n25519.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "dbc60140080f57e9-bignum_neg_p25519.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "dbc60140080f57e9-curve25519_x25519.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "dbc60140080f57e9-curve25519_x25519_alt.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "dbc60140080f57e9-curve25519_x25519base.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "dbc60140080f57e9-curve25519_x25519base_alt.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "dbc60140080f57e9-edwards25519_decode.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "dbc60140080f57e9-edwards25519_decode_alt.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "dbc60140080f57e9-edwards25519_encode.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "dbc60140080f57e9-edwards25519_scalarmulbase.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "dbc60140080f57e9-edwards25519_scalarmulbase_alt.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "dbc60140080f57e9-edwards25519_scalarmuldouble.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "dbc60140080f57e9-edwards25519_scalarmuldouble_alt.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "dcb7d53a9be33b0c-engine.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "dfe446faf29f8012-ec_asn1.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "dfe446faf29f8012-ec_derive.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "dfe446faf29f8012-hash_to_curve.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "e3caa0b8b118742c-pkcs7.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "e3caa0b8b118742c-pkcs7_asn1.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "e3caa0b8b118742c-pkcs7_x509.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "e4ecb171c489b811-conf.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "e71c6558e17b1ce7-digest_extra.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "ea2b51a0b6630529-lhash.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "ebcd52e9457b6221-a_digest.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "ebcd52e9457b6221-a_sign.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "ebcd52e9457b6221-a_verify.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "ebcd52e9457b6221-algorithm.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "ebcd52e9457b6221-asn1_gen.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "ebcd52e9457b6221-by_dir.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "ebcd52e9457b6221-by_file.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "ebcd52e9457b6221-i2d_pr.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "ebcd52e9457b6221-name_print.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "ebcd52e9457b6221-policy.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "ebcd52e9457b6221-rsa_pss.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "ebcd52e9457b6221-t_crl.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "ebcd52e9457b6221-t_req.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "ebcd52e9457b6221-t_x509.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "ebcd52e9457b6221-t_x509a.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "ebcd52e9457b6221-v3_akey.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "ebcd52e9457b6221-v3_akeya.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "ebcd52e9457b6221-v3_alt.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "ebcd52e9457b6221-v3_bcons.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "ebcd52e9457b6221-v3_bitst.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "ebcd52e9457b6221-v3_conf.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "ebcd52e9457b6221-v3_cpols.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "ebcd52e9457b6221-v3_crld.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "ebcd52e9457b6221-v3_enum.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "ebcd52e9457b6221-v3_extku.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "ebcd52e9457b6221-v3_genn.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "ebcd52e9457b6221-v3_ia5.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "ebcd52e9457b6221-v3_info.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "ebcd52e9457b6221-v3_int.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "ebcd52e9457b6221-v3_lib.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "ebcd52e9457b6221-v3_ncons.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "ebcd52e9457b6221-v3_ocsp.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "ebcd52e9457b6221-v3_pcons.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "ebcd52e9457b6221-v3_pmaps.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "ebcd52e9457b6221-v3_prn.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "ebcd52e9457b6221-v3_purp.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "ebcd52e9457b6221-v3_skey.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "ebcd52e9457b6221-v3_utl.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "ebcd52e9457b6221-x509.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "ebcd52e9457b6221-x509_att.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "ebcd52e9457b6221-x509_cmp.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "ebcd52e9457b6221-x509_d2.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "ebcd52e9457b6221-x509_def.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "ebcd52e9457b6221-x509_ext.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "ebcd52e9457b6221-x509_lu.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "ebcd52e9457b6221-x509_obj.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "ebcd52e9457b6221-x509_req.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "ebcd52e9457b6221-x509_set.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "ebcd52e9457b6221-x509_trs.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "ebcd52e9457b6221-x509_txt.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "ebcd52e9457b6221-x509_v3.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "ebcd52e9457b6221-x509_vfy.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "ebcd52e9457b6221-x509_vpm.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "ebcd52e9457b6221-x509cset.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "ebcd52e9457b6221-x509name.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "ebcd52e9457b6221-x509rset.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "ebcd52e9457b6221-x509spki.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "ebcd52e9457b6221-x_algor.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "ebcd52e9457b6221-x_all.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "ebcd52e9457b6221-x_attrib.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "ebcd52e9457b6221-x_crl.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "ebcd52e9457b6221-x_exten.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "ebcd52e9457b6221-x_name.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "ebcd52e9457b6221-x_pubkey.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "ebcd52e9457b6221-x_req.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "ebcd52e9457b6221-x_sig.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "ebcd52e9457b6221-x_spki.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "ebcd52e9457b6221-x_val.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "ebcd52e9457b6221-x_x509.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "ebcd52e9457b6221-x_x509a.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "edae2d9e273b891e-bignum_add_p521.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "edae2d9e273b891e-bignum_fromlebytes_p521.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "edae2d9e273b891e-bignum_inv_p521.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "edae2d9e273b891e-bignum_mul_p521.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "edae2d9e273b891e-bignum_mul_p521_alt.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "edae2d9e273b891e-bignum_neg_p521.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "edae2d9e273b891e-bignum_sqr_p521.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "edae2d9e273b891e-bignum_sqr_p521_alt.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "edae2d9e273b891e-bignum_sub_p521.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "edae2d9e273b891e-bignum_tolebytes_p521.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "edae2d9e273b891e-p521_jdouble.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "edae2d9e273b891e-p521_jdouble_alt.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "edae2d9e273b891e-p521_jscalarmul.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "edae2d9e273b891e-p521_jscalarmul_alt.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "f8e4fd781484bd36-bcm.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "f8e4fd781484bd36-fips_shared_support.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "fb1f39df2ea6f08f-dsa.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "fb1f39df2ea6f08f-dsa_asn1.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "fe5b6d61933e4a91-fips202.o"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "flag_check"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "flag_check.c"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "libaws_lc_0_27_1_crypto.a"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "openssl"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "aead.h"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "aes.h"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "arm_arch.h"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "asm_base.h"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "asn1.h"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "asn1_mac.h"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "asn1t.h"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "base.h"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "base64.h"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "bio.h"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "blake2.h"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "blowfish.h"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "bn.h"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "boringssl_prefix_symbols.h"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "boringssl_prefix_symbols_asm.h"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "boringssl_prefix_symbols_nasm.inc"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "buf.h"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "buffer.h"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "bytestring.h"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "chacha.h"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "cipher.h"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "cmac.h"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "conf.h"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "cpu.h"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "crypto.h"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "ctrdrbg.h"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "curve25519.h"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "des.h"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "dh.h"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "digest.h"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "dsa.h"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "dtls1.h"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "e_os2.h"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "ec.h"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "ec_key.h"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "ecdh.h"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "ecdsa.h"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "engine.h"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "err.h"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "evp.h"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "evp_errors.h"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "ex_data.h"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "experimental"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "kem_deterministic_api.h"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "hkdf.h"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "hmac.h"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "hpke.h"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "hrss.h"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "is_awslc.h"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "kdf.h"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "lhash.h"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "md4.h"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "md5.h"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "mem.h"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "nid.h"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "obj.h"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "obj_mac.h"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "objects.h"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "ocsp.h"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "opensslconf.h"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "opensslv.h"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "ossl_typ.h"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "pem.h"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "pkcs12.h"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "pkcs7.h"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "pkcs8.h"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "poly1305.h"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "pool.h"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "posix_time.h"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "rand.h"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "rc4.h"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "ripemd.h"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "rsa.h"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "safestack.h"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "service_indicator.h"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "sha.h"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "siphash.h"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "span.h"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "sshkdf.h"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "ssl.h"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "ssl3.h"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "stack.h"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "target.h"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "thread.h"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "time.h"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "tls1.h"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "trust_token.h"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "type_check.h"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "x509.h"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "x509_vfy.h"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "x509v3.h"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "x509v3_errors.h"
+##
+## [[externs]]
+## from = "out-e68d7f20dd3d392b"
+## xtern = "rust_wrapper.h"
+##
+## [[externs]]
+## from = "out-5253d2060227d8a0"
+## xtern = "libjobserver-5253d2060227d8a0.rlib"
+##
+## [[externs]]
+## from = "out-5253d2060227d8a0"
+## xtern = "libjobserver-5253d2060227d8a0.rmeta"
+##
+## [[externs]]
+## from = "out-d68e352a3cdc3b08"
+## xtern = "liblibc-d68e352a3cdc3b08.rlib"
+##
+## [[externs]]
+## from = "out-d68e352a3cdc3b08"
+## xtern = "liblibc-d68e352a3cdc3b08.rmeta"
+##
+## [[externs]]
+## from = "out-55bd35d1ef212c79"
+## xtern = "build_script_build-55bd35d1ef212c79"
+##
+## [[externs]]
+## from = "out-e58644cb7f510602"
+## xtern = "libshlex-e58644cb7f510602.rlib"
+##
+## [[externs]]
+## from = "out-e58644cb7f510602"
+## xtern = "libshlex-e58644cb7f510602.rmeta"
+##
+## [[externs]]
+## from = "out-947438b818448e5e"
+## xtern = "libcc-947438b818448e5e.rlib"
+##
+## [[externs]]
+## from = "out-947438b818448e5e"
+## xtern = "libcc-947438b818448e5e.rmeta"
+##
+## [[externs]]
+## from = "out-3741a1f4e7374899"
+## xtern = "libcmake-3741a1f4e7374899.rlib"
+##
+## [[externs]]
+## from = "out-3741a1f4e7374899"
+## xtern = "libcmake-3741a1f4e7374899.rmeta"
+##
+## [[externs]]
+## from = "out-4ebb5633c029d02a"
+## xtern = "libdunce-4ebb5633c029d02a.rlib"
+##
+## [[externs]]
+## from = "out-4ebb5633c029d02a"
+## xtern = "libdunce-4ebb5633c029d02a.rmeta"
+##
+## [[externs]]
+## from = "out-e6abd85383eef4c9"
+## xtern = "libfs_extra-e6abd85383eef4c9.rlib"
+##
+## [[externs]]
+## from = "out-e6abd85383eef4c9"
+## xtern = "libfs_extra-e6abd85383eef4c9.rmeta"
+##
+## [[externs]]
+## from = "out-590398941c1af7ae"
+## xtern = "build_script_main-590398941c1af7ae"
+##
+## [[externs]]
+## from = "out-fd6e94371433d6e2"
+## xtern = "libzeroize-fd6e94371433d6e2.rlib"
+##
+## [[externs]]
+## from = "out-fd6e94371433d6e2"
+## xtern = "libzeroize-fd6e94371433d6e2.rmeta"
+##
+## [[mounts]]
+## name = "out-6bf63cc1b640d11a"
+## src = "/"
+## dst = "/tmp/clis-stu_0-7-5/release/build/aws-lc-rs-6bf63cc1b640d11a/out"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
+##
+## [[stages]]
+##
+## [stages.Cratesio]
+## stage = "cratesio-aws-lc-rs-1.12.6"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.12.6"
+## name = "aws-lc-rs"
+## name_dash_version = "aws-lc-rs-1.12.6"
+## hash = "dabb68eb3a7aa08b46fddfd59a3d55c978243557a90ab804769f7e20e67d2b01"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "dep-n-aws-lc-rs-1.12.6-98a89d00042f88c9"
+## script = '''
+## FROM rust-base AS dep-n-aws-lc-rs-1.12.6-98a89d00042f88c9
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-stu_0-7-5/release/deps
+## RUN \
+##   --mount=from=cratesio-aws-lc-rs-1.12.6,source=/aws-lc-rs-1.12.6,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.12.6 \
+##   --mount=from=out-d7d98da815527774,dst=/tmp/clis-stu_0-7-5/release/deps/libaws_lc_sys-d7d98da815527774.rlib,source=/libaws_lc_sys-d7d98da815527774.rlib \
+##   --mount=from=out-d7d98da815527774,dst=/tmp/clis-stu_0-7-5/release/deps/libaws_lc_sys-d7d98da815527774.rmeta,source=/libaws_lc_sys-d7d98da815527774.rmeta \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/001247bc65c2f5e5-cpucap.o,source=/001247bc65c2f5e5-cpucap.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/056c1e7192c7090b-p5_pbev2.o,source=/056c1e7192c7090b-p5_pbev2.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/056c1e7192c7090b-pkcs8.o,source=/056c1e7192c7090b-pkcs8.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/056c1e7192c7090b-pkcs8_x509.o,source=/056c1e7192c7090b-pkcs8_x509.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/0c919c82d61b4518-ecdsa_asn1.o,source=/0c919c82d61b4518-ecdsa_asn1.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/11289f19be935446-rsa_decrepit.o,source=/11289f19be935446-rsa_decrepit.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/175e87304cd4663c-cfb.o,source=/175e87304cd4663c-cfb.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/199386740f3660f1-ripemd.o,source=/199386740f3660f1-ripemd.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/1c7e26962210e9ee-kem_kyber.o,source=/1c7e26962210e9ee-kem_kyber.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/1c7e26962210e9ee-kyber1024r3_ref.o,source=/1c7e26962210e9ee-kyber1024r3_ref.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/1c7e26962210e9ee-kyber512r3_ref.o,source=/1c7e26962210e9ee-kyber512r3_ref.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/1c7e26962210e9ee-kyber768r3_ref.o,source=/1c7e26962210e9ee-kyber768r3_ref.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/1eca0b6fab589d4a-chacha-x86_64.o,source=/1eca0b6fab589d4a-chacha-x86_64.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/258e88680d941df9-bignum_montinv_p256.o,source=/258e88680d941df9-bignum_montinv_p256.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/258e88680d941df9-p256_montjscalarmul.o,source=/258e88680d941df9-p256_montjscalarmul.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/258e88680d941df9-p256_montjscalarmul_alt.o,source=/258e88680d941df9-p256_montjscalarmul_alt.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/27a075eab3d35364-pem_all.o,source=/27a075eab3d35364-pem_all.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/27a075eab3d35364-pem_info.o,source=/27a075eab3d35364-pem_info.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/27a075eab3d35364-pem_lib.o,source=/27a075eab3d35364-pem_lib.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/27a075eab3d35364-pem_oth.o,source=/27a075eab3d35364-pem_oth.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/27a075eab3d35364-pem_pk8.o,source=/27a075eab3d35364-pem_pk8.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/27a075eab3d35364-pem_pkey.o,source=/27a075eab3d35364-pem_pkey.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/27a075eab3d35364-pem_x509.o,source=/27a075eab3d35364-pem_x509.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/27a075eab3d35364-pem_xaux.o,source=/27a075eab3d35364-pem_xaux.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/30a9a10d3f98970e-crypto.o,source=/30a9a10d3f98970e-crypto.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/30a9a10d3f98970e-ex_data.o,source=/30a9a10d3f98970e-ex_data.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/30a9a10d3f98970e-mem.o,source=/30a9a10d3f98970e-mem.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/30a9a10d3f98970e-refcount_c11.o,source=/30a9a10d3f98970e-refcount_c11.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/30a9a10d3f98970e-refcount_lock.o,source=/30a9a10d3f98970e-refcount_lock.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/30a9a10d3f98970e-refcount_win.o,source=/30a9a10d3f98970e-refcount_win.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/30a9a10d3f98970e-thread.o,source=/30a9a10d3f98970e-thread.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/30a9a10d3f98970e-thread_none.o,source=/30a9a10d3f98970e-thread_none.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/30a9a10d3f98970e-thread_pthread.o,source=/30a9a10d3f98970e-thread_pthread.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/30a9a10d3f98970e-thread_win.o,source=/30a9a10d3f98970e-thread_win.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/3f2f442030472042-base64_bio.o,source=/3f2f442030472042-base64_bio.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/4696e3d2cc941c84-pmbtoken.o,source=/4696e3d2cc941c84-pmbtoken.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/4696e3d2cc941c84-trust_token.o,source=/4696e3d2cc941c84-trust_token.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/4696e3d2cc941c84-voprf.o,source=/4696e3d2cc941c84-voprf.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/46ab76b5467ff2b0-obj_decrepit.o,source=/46ab76b5467ff2b0-obj_decrepit.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/48649240ed88c783-siphash.o,source=/48649240ed88c783-siphash.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/4a91b32c84b73ad7-ecdh_extra.o,source=/4a91b32c84b73ad7-ecdh_extra.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/523d3b4857de3c81-bignum_add_p384.o,source=/523d3b4857de3c81-bignum_add_p384.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/523d3b4857de3c81-bignum_deamont_p384.o,source=/523d3b4857de3c81-bignum_deamont_p384.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/523d3b4857de3c81-bignum_deamont_p384_alt.o,source=/523d3b4857de3c81-bignum_deamont_p384_alt.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/523d3b4857de3c81-bignum_littleendian_6.o,source=/523d3b4857de3c81-bignum_littleendian_6.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/523d3b4857de3c81-bignum_montinv_p384.o,source=/523d3b4857de3c81-bignum_montinv_p384.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/523d3b4857de3c81-bignum_montmul_p384.o,source=/523d3b4857de3c81-bignum_montmul_p384.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/523d3b4857de3c81-bignum_montmul_p384_alt.o,source=/523d3b4857de3c81-bignum_montmul_p384_alt.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/523d3b4857de3c81-bignum_montsqr_p384.o,source=/523d3b4857de3c81-bignum_montsqr_p384.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/523d3b4857de3c81-bignum_montsqr_p384_alt.o,source=/523d3b4857de3c81-bignum_montsqr_p384_alt.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/523d3b4857de3c81-bignum_neg_p384.o,source=/523d3b4857de3c81-bignum_neg_p384.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/523d3b4857de3c81-bignum_nonzero_6.o,source=/523d3b4857de3c81-bignum_nonzero_6.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/523d3b4857de3c81-bignum_sub_p384.o,source=/523d3b4857de3c81-bignum_sub_p384.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/523d3b4857de3c81-bignum_tomont_p384.o,source=/523d3b4857de3c81-bignum_tomont_p384.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/523d3b4857de3c81-bignum_tomont_p384_alt.o,source=/523d3b4857de3c81-bignum_tomont_p384_alt.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/523d3b4857de3c81-p384_montjdouble.o,source=/523d3b4857de3c81-p384_montjdouble.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/523d3b4857de3c81-p384_montjdouble_alt.o,source=/523d3b4857de3c81-p384_montjdouble_alt.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/523d3b4857de3c81-p384_montjscalarmul.o,source=/523d3b4857de3c81-p384_montjscalarmul.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/523d3b4857de3c81-p384_montjscalarmul_alt.o,source=/523d3b4857de3c81-p384_montjscalarmul_alt.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/564c5311b313cdb2-aes128gcmsiv-x86_64.o,source=/564c5311b313cdb2-aes128gcmsiv-x86_64.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/564c5311b313cdb2-aesni-sha1-x86_64.o,source=/564c5311b313cdb2-aesni-sha1-x86_64.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/564c5311b313cdb2-aesni-sha256-x86_64.o,source=/564c5311b313cdb2-aesni-sha256-x86_64.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/564c5311b313cdb2-chacha20_poly1305_x86_64.o,source=/564c5311b313cdb2-chacha20_poly1305_x86_64.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/5d4700fda13603f0-poly1305.o,source=/5d4700fda13603f0-poly1305.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/5d4700fda13603f0-poly1305_arm.o,source=/5d4700fda13603f0-poly1305_arm.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/5d4700fda13603f0-poly1305_vec.o,source=/5d4700fda13603f0-poly1305_vec.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/5da2666a73fb65eb-hrss.o,source=/5da2666a73fb65eb-hrss.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/60df219e9fcbc210-stack.o,source=/60df219e9fcbc210-stack.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/62e235b24f99f4ff-blake2.o,source=/62e235b24f99f4ff-blake2.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/65fbbb68d007b209-hpke.o,source=/65fbbb68d007b209-hpke.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/6e6559d38d003e66-spake25519.o,source=/6e6559d38d003e66-spake25519.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/6e8bb48415b74ed4-dh_decrepit.o,source=/6e8bb48415b74ed4-dh_decrepit.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/6f8e1f92835a38cb-x509_decrepit.o,source=/6f8e1f92835a38cb-x509_decrepit.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/7510312e0f5aa0be-evp_asn1.o,source=/7510312e0f5aa0be-evp_asn1.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/7510312e0f5aa0be-p_dh.o,source=/7510312e0f5aa0be-p_dh.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/7510312e0f5aa0be-p_dh_asn1.o,source=/7510312e0f5aa0be-p_dh_asn1.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/7510312e0f5aa0be-p_dsa.o,source=/7510312e0f5aa0be-p_dsa.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/7510312e0f5aa0be-p_dsa_asn1.o,source=/7510312e0f5aa0be-p_dsa_asn1.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/7510312e0f5aa0be-p_ec_asn1.o,source=/7510312e0f5aa0be-p_ec_asn1.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/7510312e0f5aa0be-p_ed25519_asn1.o,source=/7510312e0f5aa0be-p_ed25519_asn1.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/7510312e0f5aa0be-p_hmac_asn1.o,source=/7510312e0f5aa0be-p_hmac_asn1.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/7510312e0f5aa0be-p_kem_asn1.o,source=/7510312e0f5aa0be-p_kem_asn1.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/7510312e0f5aa0be-p_methods.o,source=/7510312e0f5aa0be-p_methods.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/7510312e0f5aa0be-p_pqdsa_asn1.o,source=/7510312e0f5aa0be-p_pqdsa_asn1.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/7510312e0f5aa0be-p_rsa_asn1.o,source=/7510312e0f5aa0be-p_rsa_asn1.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/7510312e0f5aa0be-p_x25519.o,source=/7510312e0f5aa0be-p_x25519.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/7510312e0f5aa0be-p_x25519_asn1.o,source=/7510312e0f5aa0be-p_x25519_asn1.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/7510312e0f5aa0be-print.o,source=/7510312e0f5aa0be-print.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/7510312e0f5aa0be-scrypt.o,source=/7510312e0f5aa0be-scrypt.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/7510312e0f5aa0be-sign.o,source=/7510312e0f5aa0be-sign.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/76322f89f5cc2d96-bio.o,source=/76322f89f5cc2d96-bio.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/76322f89f5cc2d96-bio_mem.o,source=/76322f89f5cc2d96-bio_mem.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/76322f89f5cc2d96-connect.o,source=/76322f89f5cc2d96-connect.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/76322f89f5cc2d96-errno.o,source=/76322f89f5cc2d96-errno.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/76322f89f5cc2d96-fd.o,source=/76322f89f5cc2d96-fd.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/76322f89f5cc2d96-file.o,source=/76322f89f5cc2d96-file.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/76322f89f5cc2d96-hexdump.o,source=/76322f89f5cc2d96-hexdump.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/76322f89f5cc2d96-pair.o,source=/76322f89f5cc2d96-pair.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/76322f89f5cc2d96-printf.o,source=/76322f89f5cc2d96-printf.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/76322f89f5cc2d96-socket.o,source=/76322f89f5cc2d96-socket.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/76322f89f5cc2d96-socket_helper.o,source=/76322f89f5cc2d96-socket_helper.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/7a596fe31a02c0e2-bn_asn1.o,source=/7a596fe31a02c0e2-bn_asn1.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/7a596fe31a02c0e2-convert.o,source=/7a596fe31a02c0e2-convert.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/7ac4c9359514b807-obj.o,source=/7ac4c9359514b807-obj.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/7ac4c9359514b807-obj_xref.o,source=/7ac4c9359514b807-obj_xref.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/7bf3e571b6558a6b-deterministic.o,source=/7bf3e571b6558a6b-deterministic.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/7bf3e571b6558a6b-entropy_passive.o,source=/7bf3e571b6558a6b-entropy_passive.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/7bf3e571b6558a6b-forkunsafe.o,source=/7bf3e571b6558a6b-forkunsafe.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/7bf3e571b6558a6b-rand_extra.o,source=/7bf3e571b6558a6b-rand_extra.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/7bf3e571b6558a6b-windows.o,source=/7bf3e571b6558a6b-windows.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/81d9a39ddc6b1c4e-aesni-gcm-avx512.o,source=/81d9a39ddc6b1c4e-aesni-gcm-avx512.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/81d9a39ddc6b1c4e-aesni-gcm-x86_64.o,source=/81d9a39ddc6b1c4e-aesni-gcm-x86_64.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/81d9a39ddc6b1c4e-aesni-x86_64.o,source=/81d9a39ddc6b1c4e-aesni-x86_64.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/81d9a39ddc6b1c4e-aesni-xts-avx512.o,source=/81d9a39ddc6b1c4e-aesni-xts-avx512.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/81d9a39ddc6b1c4e-ghash-ssse3-x86_64.o,source=/81d9a39ddc6b1c4e-ghash-ssse3-x86_64.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/81d9a39ddc6b1c4e-ghash-x86_64.o,source=/81d9a39ddc6b1c4e-ghash-x86_64.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/81d9a39ddc6b1c4e-md5-x86_64.o,source=/81d9a39ddc6b1c4e-md5-x86_64.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/81d9a39ddc6b1c4e-p256-x86_64-asm.o,source=/81d9a39ddc6b1c4e-p256-x86_64-asm.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/81d9a39ddc6b1c4e-p256_beeu-x86_64-asm.o,source=/81d9a39ddc6b1c4e-p256_beeu-x86_64-asm.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/81d9a39ddc6b1c4e-rdrand-x86_64.o,source=/81d9a39ddc6b1c4e-rdrand-x86_64.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/81d9a39ddc6b1c4e-rsaz-2k-avx512.o,source=/81d9a39ddc6b1c4e-rsaz-2k-avx512.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/81d9a39ddc6b1c4e-rsaz-3k-avx512.o,source=/81d9a39ddc6b1c4e-rsaz-3k-avx512.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/81d9a39ddc6b1c4e-rsaz-4k-avx512.o,source=/81d9a39ddc6b1c4e-rsaz-4k-avx512.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/81d9a39ddc6b1c4e-rsaz-avx2.o,source=/81d9a39ddc6b1c4e-rsaz-avx2.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/81d9a39ddc6b1c4e-sha1-x86_64.o,source=/81d9a39ddc6b1c4e-sha1-x86_64.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/81d9a39ddc6b1c4e-sha256-x86_64.o,source=/81d9a39ddc6b1c4e-sha256-x86_64.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/81d9a39ddc6b1c4e-sha512-x86_64.o,source=/81d9a39ddc6b1c4e-sha512-x86_64.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/81d9a39ddc6b1c4e-vpaes-x86_64.o,source=/81d9a39ddc6b1c4e-vpaes-x86_64.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/81d9a39ddc6b1c4e-x86_64-mont.o,source=/81d9a39ddc6b1c4e-x86_64-mont.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/81d9a39ddc6b1c4e-x86_64-mont5.o,source=/81d9a39ddc6b1c4e-x86_64-mont5.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/86cc0a4f50e0e3bd-evp_do_all.o,source=/86cc0a4f50e0e3bd-evp_do_all.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/89981633f66afe17-cipher_extra.o,source=/89981633f66afe17-cipher_extra.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/89981633f66afe17-derive_key.o,source=/89981633f66afe17-derive_key.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/89981633f66afe17-e_aes_cbc_hmac_sha1.o,source=/89981633f66afe17-e_aes_cbc_hmac_sha1.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/89981633f66afe17-e_aes_cbc_hmac_sha256.o,source=/89981633f66afe17-e_aes_cbc_hmac_sha256.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/89981633f66afe17-e_aesctrhmac.o,source=/89981633f66afe17-e_aesctrhmac.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/89981633f66afe17-e_aesgcmsiv.o,source=/89981633f66afe17-e_aesgcmsiv.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/89981633f66afe17-e_chacha20poly1305.o,source=/89981633f66afe17-e_chacha20poly1305.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/89981633f66afe17-e_des.o,source=/89981633f66afe17-e_des.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/89981633f66afe17-e_null.o,source=/89981633f66afe17-e_null.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/89981633f66afe17-e_rc2.o,source=/89981633f66afe17-e_rc2.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/89981633f66afe17-e_rc4.o,source=/89981633f66afe17-e_rc4.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/89981633f66afe17-e_tls.o,source=/89981633f66afe17-e_tls.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/89981633f66afe17-tls_cbc.o,source=/89981633f66afe17-tls_cbc.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/904ef411c1476e9d-cipher.o,source=/904ef411c1476e9d-cipher.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/904ef411c1476e9d-md.o,source=/904ef411c1476e9d-md.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/925ae38753d351a6-pool.o,source=/925ae38753d351a6-pool.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/a3e95cd5f24d649a-err.o,source=/a3e95cd5f24d649a-err.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/a4677c68e4880270-buf.o,source=/a4677c68e4880270-buf.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/a4a065efb8ac7b35-cast.o,source=/a4a065efb8ac7b35-cast.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/a4a065efb8ac7b35-cast_tables.o,source=/a4a065efb8ac7b35-cast_tables.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/a6455f51a2435c3f-chacha.o,source=/a6455f51a2435c3f-chacha.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/a8d01793eb1214d2-poly_rq_mul.o,source=/a8d01793eb1214d2-poly_rq_mul.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ad45968d24b0237e-base64.o,source=/ad45968d24b0237e-base64.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/b0fd2550ab09b04e-rsa_asn1.o,source=/b0fd2550ab09b04e-rsa_asn1.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/b0fd2550ab09b04e-rsa_crypt.o,source=/b0fd2550ab09b04e-rsa_crypt.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/b0fd2550ab09b04e-rsa_print.o,source=/b0fd2550ab09b04e-rsa_print.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/b0fd2550ab09b04e-rsassa_pss_asn1.o,source=/b0fd2550ab09b04e-rsassa_pss_asn1.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/b129d77c83f8bbf0-trampoline-x86_64.o,source=/b129d77c83f8bbf0-trampoline-x86_64.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/bc1b343226bc6a17-a_bitstr.o,source=/bc1b343226bc6a17-a_bitstr.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/bc1b343226bc6a17-a_bool.o,source=/bc1b343226bc6a17-a_bool.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/bc1b343226bc6a17-a_d2i_fp.o,source=/bc1b343226bc6a17-a_d2i_fp.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/bc1b343226bc6a17-a_dup.o,source=/bc1b343226bc6a17-a_dup.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/bc1b343226bc6a17-a_gentm.o,source=/bc1b343226bc6a17-a_gentm.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/bc1b343226bc6a17-a_i2d_fp.o,source=/bc1b343226bc6a17-a_i2d_fp.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/bc1b343226bc6a17-a_int.o,source=/bc1b343226bc6a17-a_int.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/bc1b343226bc6a17-a_mbstr.o,source=/bc1b343226bc6a17-a_mbstr.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/bc1b343226bc6a17-a_object.o,source=/bc1b343226bc6a17-a_object.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/bc1b343226bc6a17-a_octet.o,source=/bc1b343226bc6a17-a_octet.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/bc1b343226bc6a17-a_strex.o,source=/bc1b343226bc6a17-a_strex.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/bc1b343226bc6a17-a_strnid.o,source=/bc1b343226bc6a17-a_strnid.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/bc1b343226bc6a17-a_time.o,source=/bc1b343226bc6a17-a_time.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/bc1b343226bc6a17-a_type.o,source=/bc1b343226bc6a17-a_type.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/bc1b343226bc6a17-a_utctm.o,source=/bc1b343226bc6a17-a_utctm.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/bc1b343226bc6a17-a_utf8.o,source=/bc1b343226bc6a17-a_utf8.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/bc1b343226bc6a17-asn1_lib.o,source=/bc1b343226bc6a17-asn1_lib.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/bc1b343226bc6a17-asn1_par.o,source=/bc1b343226bc6a17-asn1_par.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/bc1b343226bc6a17-asn_pack.o,source=/bc1b343226bc6a17-asn_pack.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/bc1b343226bc6a17-f_int.o,source=/bc1b343226bc6a17-f_int.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/bc1b343226bc6a17-f_string.o,source=/bc1b343226bc6a17-f_string.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/bc1b343226bc6a17-posix_time.o,source=/bc1b343226bc6a17-posix_time.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/bc1b343226bc6a17-tasn_dec.o,source=/bc1b343226bc6a17-tasn_dec.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/bc1b343226bc6a17-tasn_enc.o,source=/bc1b343226bc6a17-tasn_enc.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/bc1b343226bc6a17-tasn_fre.o,source=/bc1b343226bc6a17-tasn_fre.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/bc1b343226bc6a17-tasn_new.o,source=/bc1b343226bc6a17-tasn_new.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/bc1b343226bc6a17-tasn_typ.o,source=/bc1b343226bc6a17-tasn_typ.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/bc1b343226bc6a17-tasn_utl.o,source=/bc1b343226bc6a17-tasn_utl.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/c1300545a7d60e2b-dh_asn1.o,source=/c1300545a7d60e2b-dh_asn1.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/c1300545a7d60e2b-params.o,source=/c1300545a7d60e2b-params.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/c2f744a0f6403e0c-err_data.o,source=/c2f744a0f6403e0c-err_data.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/c4fcddba145918af-asn1_compat.o,source=/c4fcddba145918af-asn1_compat.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/c4fcddba145918af-ber.o,source=/c4fcddba145918af-ber.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/c4fcddba145918af-cbb.o,source=/c4fcddba145918af-cbb.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/c4fcddba145918af-cbs.o,source=/c4fcddba145918af-cbs.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/c4fcddba145918af-unicode.o,source=/c4fcddba145918af-unicode.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/c7e9326d9b5d7de8-blowfish.o,source=/c7e9326d9b5d7de8-blowfish.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/caa8b30982b4915c-ocsp_asn.o,source=/caa8b30982b4915c-ocsp_asn.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/caa8b30982b4915c-ocsp_client.o,source=/caa8b30982b4915c-ocsp_client.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/caa8b30982b4915c-ocsp_extension.o,source=/caa8b30982b4915c-ocsp_extension.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/caa8b30982b4915c-ocsp_http.o,source=/caa8b30982b4915c-ocsp_http.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/caa8b30982b4915c-ocsp_lib.o,source=/caa8b30982b4915c-ocsp_lib.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/caa8b30982b4915c-ocsp_print.o,source=/caa8b30982b4915c-ocsp_print.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/caa8b30982b4915c-ocsp_server.o,source=/caa8b30982b4915c-ocsp_server.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/caa8b30982b4915c-ocsp_verify.o,source=/caa8b30982b4915c-ocsp_verify.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/d7fed99e8aa5a9b1-rc4.o,source=/d7fed99e8aa5a9b1-rc4.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/da5030c6f3330e8d-des.o,source=/da5030c6f3330e8d-des.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/db3b6bfb95261072-rust_wrapper.o,source=/db3b6bfb95261072-rust_wrapper.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/dbc60140080f57e9-bignum_madd_n25519.o,source=/dbc60140080f57e9-bignum_madd_n25519.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/dbc60140080f57e9-bignum_madd_n25519_alt.o,source=/dbc60140080f57e9-bignum_madd_n25519_alt.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/dbc60140080f57e9-bignum_mod_n25519.o,source=/dbc60140080f57e9-bignum_mod_n25519.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/dbc60140080f57e9-bignum_neg_p25519.o,source=/dbc60140080f57e9-bignum_neg_p25519.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/dbc60140080f57e9-curve25519_x25519.o,source=/dbc60140080f57e9-curve25519_x25519.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/dbc60140080f57e9-curve25519_x25519_alt.o,source=/dbc60140080f57e9-curve25519_x25519_alt.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/dbc60140080f57e9-curve25519_x25519base.o,source=/dbc60140080f57e9-curve25519_x25519base.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/dbc60140080f57e9-curve25519_x25519base_alt.o,source=/dbc60140080f57e9-curve25519_x25519base_alt.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/dbc60140080f57e9-edwards25519_decode.o,source=/dbc60140080f57e9-edwards25519_decode.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/dbc60140080f57e9-edwards25519_decode_alt.o,source=/dbc60140080f57e9-edwards25519_decode_alt.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/dbc60140080f57e9-edwards25519_encode.o,source=/dbc60140080f57e9-edwards25519_encode.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/dbc60140080f57e9-edwards25519_scalarmulbase.o,source=/dbc60140080f57e9-edwards25519_scalarmulbase.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/dbc60140080f57e9-edwards25519_scalarmulbase_alt.o,source=/dbc60140080f57e9-edwards25519_scalarmulbase_alt.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/dbc60140080f57e9-edwards25519_scalarmuldouble.o,source=/dbc60140080f57e9-edwards25519_scalarmuldouble.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/dbc60140080f57e9-edwards25519_scalarmuldouble_alt.o,source=/dbc60140080f57e9-edwards25519_scalarmuldouble_alt.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/dcb7d53a9be33b0c-engine.o,source=/dcb7d53a9be33b0c-engine.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/dfe446faf29f8012-ec_asn1.o,source=/dfe446faf29f8012-ec_asn1.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/dfe446faf29f8012-ec_derive.o,source=/dfe446faf29f8012-ec_derive.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/dfe446faf29f8012-hash_to_curve.o,source=/dfe446faf29f8012-hash_to_curve.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/e3caa0b8b118742c-pkcs7.o,source=/e3caa0b8b118742c-pkcs7.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/e3caa0b8b118742c-pkcs7_asn1.o,source=/e3caa0b8b118742c-pkcs7_asn1.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/e3caa0b8b118742c-pkcs7_x509.o,source=/e3caa0b8b118742c-pkcs7_x509.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/e4ecb171c489b811-conf.o,source=/e4ecb171c489b811-conf.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/e71c6558e17b1ce7-digest_extra.o,source=/e71c6558e17b1ce7-digest_extra.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ea2b51a0b6630529-lhash.o,source=/ea2b51a0b6630529-lhash.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-a_digest.o,source=/ebcd52e9457b6221-a_digest.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-a_sign.o,source=/ebcd52e9457b6221-a_sign.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-a_verify.o,source=/ebcd52e9457b6221-a_verify.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-algorithm.o,source=/ebcd52e9457b6221-algorithm.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-asn1_gen.o,source=/ebcd52e9457b6221-asn1_gen.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-by_dir.o,source=/ebcd52e9457b6221-by_dir.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-by_file.o,source=/ebcd52e9457b6221-by_file.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-i2d_pr.o,source=/ebcd52e9457b6221-i2d_pr.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-name_print.o,source=/ebcd52e9457b6221-name_print.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-policy.o,source=/ebcd52e9457b6221-policy.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-rsa_pss.o,source=/ebcd52e9457b6221-rsa_pss.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-t_crl.o,source=/ebcd52e9457b6221-t_crl.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-t_req.o,source=/ebcd52e9457b6221-t_req.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-t_x509.o,source=/ebcd52e9457b6221-t_x509.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-t_x509a.o,source=/ebcd52e9457b6221-t_x509a.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-v3_akey.o,source=/ebcd52e9457b6221-v3_akey.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-v3_akeya.o,source=/ebcd52e9457b6221-v3_akeya.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-v3_alt.o,source=/ebcd52e9457b6221-v3_alt.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-v3_bcons.o,source=/ebcd52e9457b6221-v3_bcons.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-v3_bitst.o,source=/ebcd52e9457b6221-v3_bitst.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-v3_conf.o,source=/ebcd52e9457b6221-v3_conf.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-v3_cpols.o,source=/ebcd52e9457b6221-v3_cpols.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-v3_crld.o,source=/ebcd52e9457b6221-v3_crld.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-v3_enum.o,source=/ebcd52e9457b6221-v3_enum.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-v3_extku.o,source=/ebcd52e9457b6221-v3_extku.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-v3_genn.o,source=/ebcd52e9457b6221-v3_genn.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-v3_ia5.o,source=/ebcd52e9457b6221-v3_ia5.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-v3_info.o,source=/ebcd52e9457b6221-v3_info.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-v3_int.o,source=/ebcd52e9457b6221-v3_int.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-v3_lib.o,source=/ebcd52e9457b6221-v3_lib.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-v3_ncons.o,source=/ebcd52e9457b6221-v3_ncons.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-v3_ocsp.o,source=/ebcd52e9457b6221-v3_ocsp.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-v3_pcons.o,source=/ebcd52e9457b6221-v3_pcons.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-v3_pmaps.o,source=/ebcd52e9457b6221-v3_pmaps.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-v3_prn.o,source=/ebcd52e9457b6221-v3_prn.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-v3_purp.o,source=/ebcd52e9457b6221-v3_purp.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-v3_skey.o,source=/ebcd52e9457b6221-v3_skey.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-v3_utl.o,source=/ebcd52e9457b6221-v3_utl.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-x509.o,source=/ebcd52e9457b6221-x509.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-x509_att.o,source=/ebcd52e9457b6221-x509_att.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-x509_cmp.o,source=/ebcd52e9457b6221-x509_cmp.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-x509_d2.o,source=/ebcd52e9457b6221-x509_d2.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-x509_def.o,source=/ebcd52e9457b6221-x509_def.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-x509_ext.o,source=/ebcd52e9457b6221-x509_ext.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-x509_lu.o,source=/ebcd52e9457b6221-x509_lu.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-x509_obj.o,source=/ebcd52e9457b6221-x509_obj.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-x509_req.o,source=/ebcd52e9457b6221-x509_req.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-x509_set.o,source=/ebcd52e9457b6221-x509_set.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-x509_trs.o,source=/ebcd52e9457b6221-x509_trs.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-x509_txt.o,source=/ebcd52e9457b6221-x509_txt.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-x509_v3.o,source=/ebcd52e9457b6221-x509_v3.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-x509_vfy.o,source=/ebcd52e9457b6221-x509_vfy.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-x509_vpm.o,source=/ebcd52e9457b6221-x509_vpm.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-x509cset.o,source=/ebcd52e9457b6221-x509cset.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-x509name.o,source=/ebcd52e9457b6221-x509name.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-x509rset.o,source=/ebcd52e9457b6221-x509rset.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-x509spki.o,source=/ebcd52e9457b6221-x509spki.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-x_algor.o,source=/ebcd52e9457b6221-x_algor.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-x_all.o,source=/ebcd52e9457b6221-x_all.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-x_attrib.o,source=/ebcd52e9457b6221-x_attrib.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-x_crl.o,source=/ebcd52e9457b6221-x_crl.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-x_exten.o,source=/ebcd52e9457b6221-x_exten.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-x_name.o,source=/ebcd52e9457b6221-x_name.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-x_pubkey.o,source=/ebcd52e9457b6221-x_pubkey.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-x_req.o,source=/ebcd52e9457b6221-x_req.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-x_sig.o,source=/ebcd52e9457b6221-x_sig.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-x_spki.o,source=/ebcd52e9457b6221-x_spki.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-x_val.o,source=/ebcd52e9457b6221-x_val.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-x_x509.o,source=/ebcd52e9457b6221-x_x509.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ebcd52e9457b6221-x_x509a.o,source=/ebcd52e9457b6221-x_x509a.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/edae2d9e273b891e-bignum_add_p521.o,source=/edae2d9e273b891e-bignum_add_p521.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/edae2d9e273b891e-bignum_fromlebytes_p521.o,source=/edae2d9e273b891e-bignum_fromlebytes_p521.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/edae2d9e273b891e-bignum_inv_p521.o,source=/edae2d9e273b891e-bignum_inv_p521.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/edae2d9e273b891e-bignum_mul_p521.o,source=/edae2d9e273b891e-bignum_mul_p521.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/edae2d9e273b891e-bignum_mul_p521_alt.o,source=/edae2d9e273b891e-bignum_mul_p521_alt.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/edae2d9e273b891e-bignum_neg_p521.o,source=/edae2d9e273b891e-bignum_neg_p521.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/edae2d9e273b891e-bignum_sqr_p521.o,source=/edae2d9e273b891e-bignum_sqr_p521.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/edae2d9e273b891e-bignum_sqr_p521_alt.o,source=/edae2d9e273b891e-bignum_sqr_p521_alt.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/edae2d9e273b891e-bignum_sub_p521.o,source=/edae2d9e273b891e-bignum_sub_p521.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/edae2d9e273b891e-bignum_tolebytes_p521.o,source=/edae2d9e273b891e-bignum_tolebytes_p521.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/edae2d9e273b891e-p521_jdouble.o,source=/edae2d9e273b891e-p521_jdouble.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/edae2d9e273b891e-p521_jdouble_alt.o,source=/edae2d9e273b891e-p521_jdouble_alt.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/edae2d9e273b891e-p521_jscalarmul.o,source=/edae2d9e273b891e-p521_jscalarmul.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/edae2d9e273b891e-p521_jscalarmul_alt.o,source=/edae2d9e273b891e-p521_jscalarmul_alt.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/f8e4fd781484bd36-bcm.o,source=/f8e4fd781484bd36-bcm.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/f8e4fd781484bd36-fips_shared_support.o,source=/f8e4fd781484bd36-fips_shared_support.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/fb1f39df2ea6f08f-dsa.o,source=/fb1f39df2ea6f08f-dsa.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/fb1f39df2ea6f08f-dsa_asn1.o,source=/fb1f39df2ea6f08f-dsa_asn1.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/fe5b6d61933e4a91-fips202.o,source=/fe5b6d61933e4a91-fips202.o \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/flag_check,source=/flag_check \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/flag_check.c,source=/flag_check.c \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/libaws_lc_0_27_1_crypto.a,source=/libaws_lc_0_27_1_crypto.a \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/openssl,source=/openssl \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/aead.h,source=/aead.h \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/aes.h,source=/aes.h \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/arm_arch.h,source=/arm_arch.h \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/asm_base.h,source=/asm_base.h \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/asn1.h,source=/asn1.h \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/asn1_mac.h,source=/asn1_mac.h \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/asn1t.h,source=/asn1t.h \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/base.h,source=/base.h \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/base64.h,source=/base64.h \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/bio.h,source=/bio.h \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/blake2.h,source=/blake2.h \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/blowfish.h,source=/blowfish.h \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/bn.h,source=/bn.h \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/boringssl_prefix_symbols.h,source=/boringssl_prefix_symbols.h \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/boringssl_prefix_symbols_asm.h,source=/boringssl_prefix_symbols_asm.h \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/boringssl_prefix_symbols_nasm.inc,source=/boringssl_prefix_symbols_nasm.inc \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/buf.h,source=/buf.h \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/buffer.h,source=/buffer.h \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/bytestring.h,source=/bytestring.h \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/chacha.h,source=/chacha.h \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/cipher.h,source=/cipher.h \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/cmac.h,source=/cmac.h \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/conf.h,source=/conf.h \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/cpu.h,source=/cpu.h \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/crypto.h,source=/crypto.h \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ctrdrbg.h,source=/ctrdrbg.h \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/curve25519.h,source=/curve25519.h \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/des.h,source=/des.h \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/dh.h,source=/dh.h \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/digest.h,source=/digest.h \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/dsa.h,source=/dsa.h \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/dtls1.h,source=/dtls1.h \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/e_os2.h,source=/e_os2.h \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ec.h,source=/ec.h \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ec_key.h,source=/ec_key.h \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ecdh.h,source=/ecdh.h \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ecdsa.h,source=/ecdsa.h \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/engine.h,source=/engine.h \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/err.h,source=/err.h \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/evp.h,source=/evp.h \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/evp_errors.h,source=/evp_errors.h \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ex_data.h,source=/ex_data.h \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/experimental,source=/experimental \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/kem_deterministic_api.h,source=/kem_deterministic_api.h \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/hkdf.h,source=/hkdf.h \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/hmac.h,source=/hmac.h \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/hpke.h,source=/hpke.h \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/hrss.h,source=/hrss.h \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/is_awslc.h,source=/is_awslc.h \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/kdf.h,source=/kdf.h \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/lhash.h,source=/lhash.h \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/md4.h,source=/md4.h \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/md5.h,source=/md5.h \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/mem.h,source=/mem.h \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/nid.h,source=/nid.h \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/obj.h,source=/obj.h \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/obj_mac.h,source=/obj_mac.h \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/objects.h,source=/objects.h \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ocsp.h,source=/ocsp.h \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/opensslconf.h,source=/opensslconf.h \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/opensslv.h,source=/opensslv.h \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ossl_typ.h,source=/ossl_typ.h \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/pem.h,source=/pem.h \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/pkcs12.h,source=/pkcs12.h \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/pkcs7.h,source=/pkcs7.h \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/pkcs8.h,source=/pkcs8.h \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/poly1305.h,source=/poly1305.h \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/pool.h,source=/pool.h \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/posix_time.h,source=/posix_time.h \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/rand.h,source=/rand.h \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/rc4.h,source=/rc4.h \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ripemd.h,source=/ripemd.h \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/rsa.h,source=/rsa.h \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/safestack.h,source=/safestack.h \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/service_indicator.h,source=/service_indicator.h \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/sha.h,source=/sha.h \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/siphash.h,source=/siphash.h \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/span.h,source=/span.h \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/sshkdf.h,source=/sshkdf.h \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ssl.h,source=/ssl.h \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/ssl3.h,source=/ssl3.h \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/stack.h,source=/stack.h \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/target.h,source=/target.h \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/thread.h,source=/thread.h \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/time.h,source=/time.h \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/tls1.h,source=/tls1.h \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/trust_token.h,source=/trust_token.h \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/type_check.h,source=/type_check.h \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/x509.h,source=/x509.h \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/x509_vfy.h,source=/x509_vfy.h \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/x509v3.h,source=/x509v3.h \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/x509v3_errors.h,source=/x509v3_errors.h \
+##   --mount=from=out-e68d7f20dd3d392b,dst=/tmp/clis-stu_0-7-5/release/deps/rust_wrapper.h,source=/rust_wrapper.h \
+##   --mount=from=out-5253d2060227d8a0,dst=/tmp/clis-stu_0-7-5/release/deps/libjobserver-5253d2060227d8a0.rlib,source=/libjobserver-5253d2060227d8a0.rlib \
+##   --mount=from=out-5253d2060227d8a0,dst=/tmp/clis-stu_0-7-5/release/deps/libjobserver-5253d2060227d8a0.rmeta,source=/libjobserver-5253d2060227d8a0.rmeta \
+##   --mount=from=out-d68e352a3cdc3b08,dst=/tmp/clis-stu_0-7-5/release/deps/liblibc-d68e352a3cdc3b08.rlib,source=/liblibc-d68e352a3cdc3b08.rlib \
+##   --mount=from=out-d68e352a3cdc3b08,dst=/tmp/clis-stu_0-7-5/release/deps/liblibc-d68e352a3cdc3b08.rmeta,source=/liblibc-d68e352a3cdc3b08.rmeta \
+##   --mount=from=out-55bd35d1ef212c79,dst=/tmp/clis-stu_0-7-5/release/deps/build_script_build-55bd35d1ef212c79,source=/build_script_build-55bd35d1ef212c79 \
+##   --mount=from=out-e58644cb7f510602,dst=/tmp/clis-stu_0-7-5/release/deps/libshlex-e58644cb7f510602.rlib,source=/libshlex-e58644cb7f510602.rlib \
+##   --mount=from=out-e58644cb7f510602,dst=/tmp/clis-stu_0-7-5/release/deps/libshlex-e58644cb7f510602.rmeta,source=/libshlex-e58644cb7f510602.rmeta \
+##   --mount=from=out-947438b818448e5e,dst=/tmp/clis-stu_0-7-5/release/deps/libcc-947438b818448e5e.rlib,source=/libcc-947438b818448e5e.rlib \
+##   --mount=from=out-947438b818448e5e,dst=/tmp/clis-stu_0-7-5/release/deps/libcc-947438b818448e5e.rmeta,source=/libcc-947438b818448e5e.rmeta \
+##   --mount=from=out-3741a1f4e7374899,dst=/tmp/clis-stu_0-7-5/release/deps/libcmake-3741a1f4e7374899.rlib,source=/libcmake-3741a1f4e7374899.rlib \
+##   --mount=from=out-3741a1f4e7374899,dst=/tmp/clis-stu_0-7-5/release/deps/libcmake-3741a1f4e7374899.rmeta,source=/libcmake-3741a1f4e7374899.rmeta \
+##   --mount=from=out-4ebb5633c029d02a,dst=/tmp/clis-stu_0-7-5/release/deps/libdunce-4ebb5633c029d02a.rlib,source=/libdunce-4ebb5633c029d02a.rlib \
+##   --mount=from=out-4ebb5633c029d02a,dst=/tmp/clis-stu_0-7-5/release/deps/libdunce-4ebb5633c029d02a.rmeta,source=/libdunce-4ebb5633c029d02a.rmeta \
+##   --mount=from=out-e6abd85383eef4c9,dst=/tmp/clis-stu_0-7-5/release/deps/libfs_extra-e6abd85383eef4c9.rlib,source=/libfs_extra-e6abd85383eef4c9.rlib \
+##   --mount=from=out-e6abd85383eef4c9,dst=/tmp/clis-stu_0-7-5/release/deps/libfs_extra-e6abd85383eef4c9.rmeta,source=/libfs_extra-e6abd85383eef4c9.rmeta \
+##   --mount=from=out-590398941c1af7ae,dst=/tmp/clis-stu_0-7-5/release/deps/build_script_main-590398941c1af7ae,source=/build_script_main-590398941c1af7ae \
+##   --mount=from=out-fd6e94371433d6e2,dst=/tmp/clis-stu_0-7-5/release/deps/libzeroize-fd6e94371433d6e2.rlib,source=/libzeroize-fd6e94371433d6e2.rlib \
+##   --mount=from=out-fd6e94371433d6e2,dst=/tmp/clis-stu_0-7-5/release/deps/libzeroize-fd6e94371433d6e2.rmeta,source=/libzeroize-fd6e94371433d6e2.rmeta \
+##   --mount=from=out-6bf63cc1b640d11a,dst=/tmp/clis-stu_0-7-5/release/build/aws-lc-rs-6bf63cc1b640d11a/out,source=/ \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CRATE_NAME=aws_lc_rs \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.12.6 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.12.6/Cargo.toml \
+##         CARGO_PKG_AUTHORS=AWS-LibCrypto \
+##         CARGO_PKG_DESCRIPTION=aws-lc-rs' is a cryptographic library using AWS-LC for its cryptographic operations. This library strives to be API-compatible with the popular Rust library named ring.' \
+##         CARGO_PKG_HOMEPAGE=https'://github.com/aws/aws-lc-rs' \
+##         CARGO_PKG_LICENSE=ISC' AND (Apache-2.0 OR ISC)' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=aws-lc-rs \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/aws/aws-lc-rs' \
+##         CARGO_PKG_RUST_VERSION=1.63.0 \
+##         CARGO_PKG_VERSION=1.12.6 \
+##         CARGO_PKG_VERSION_MAJOR=1 \
+##         CARGO_PKG_VERSION_MINOR=12 \
+##         CARGO_PKG_VERSION_PATCH=6 \
+##         CARGO_PKG_VERSION_PRE= \
+##         OUT_DIR=/tmp/clis-stu_0-7-5/release/build/aws-lc-rs-6bf63cc1b640d11a/out \
+##         CARGOGREEN=1 \
+##       rustc '--crate-name' 'aws_lc_rs' '--edition' '2021' '--error-format' 'json' '--json' 'diagnostic-rendered-ansi,artifacts,future-incompat' '--crate-type' 'lib' '--emit' 'dep-info,metadata,link' '-C' 'opt-level=3' '-C' 'linker-plugin-lto' '-C' 'codegen-units=1' '--cfg' 'feature="aws-lc-sys"' '--cfg' 'feature="prebuilt-nasm"' '--check-cfg' 'cfg(docsrs,test)' '--check-cfg' 'cfg(feature, values("alloc", "asan", "aws-lc-sys", "bindgen", "default", "fips", "non-fips", "prebuilt-nasm", "ring-io", "ring-sig-verify", "test_logging", "unstable"))' '-C' 'metadata=e73bc9d4da2008a4' '-C' 'extra-filename=-98a89d00042f88c9' '--out-dir' '/tmp/clis-stu_0-7-5/release/deps' '-C' 'strip=debuginfo' '-L' 'dependency=/tmp/clis-stu_0-7-5/release/deps' '--extern' 'aws_lc_sys=/tmp/clis-stu_0-7-5/release/deps/libaws_lc_sys-d7d98da815527774.rmeta' '--extern' 'zeroize=/tmp/clis-stu_0-7-5/release/deps/libzeroize-fd6e94371433d6e2.rmeta' '--cap-lints' 'warn' '-L' 'native=/tmp/clis-stu_0-7-5/release/build/aws-lc-sys-e68d7f20dd3d392b/out' '--check-cfg' 'cfg(disable_slow_tests)' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.12.6/src/lib.rs \
+##         1>          /tmp/clis-stu_0-7-5/release/deps/out-98a89d00042f88c9-stdout \
+##         2>          /tmp/clis-stu_0-7-5/release/deps/out-98a89d00042f88c9-stderr \
+##         || echo $? >/tmp/clis-stu_0-7-5/release/deps/out-98a89d00042f88c9-errcode\
+##   ; find /tmp/clis-stu_0-7-5/release/deps/*-98a89d00042f88c9* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-98a89d00042f88c9"
+## script = """
+## FROM scratch AS out-98a89d00042f88c9
+## COPY --link --from=dep-n-aws-lc-rs-1.12.6-98a89d00042f88c9 /tmp/clis-stu_0-7-5/release/deps/*-98a89d00042f88c9* /"""
 
 FROM scratch
 

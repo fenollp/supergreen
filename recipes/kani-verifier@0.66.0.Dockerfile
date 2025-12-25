@@ -15,7 +15,7 @@ WORKDIR /tmp/clis-kani-verifier_0-66-0/release/build/anyhow-f9fd03f8c3c43dd1
 RUN \
   --mount=from=cratesio-anyhow-1.0.100,source=/anyhow-1.0.100,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.100,rw \
     { \
-        cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.100/build.rs | sed 's/fn main/fn actual_f9fd03f8c3c43dd1_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.100/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.100/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.100/build.rs ; \
+        cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.100/build.rs | sed -E 's/^fn +main/fn actual_f9fd03f8c3c43dd1_main/;s/^async +fn +main/async fn actual_f9fd03f8c3c43dd1_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.100/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.100/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.100/build.rs ; \
         { \
           echo ; \
           echo 'fn main() {' ; \
@@ -97,7 +97,7 @@ COPY --link --from=dep-x-anyhow-1.0.100-f9fd03f8c3c43dd1 /tmp/clis-kani-verifier
 ## RUN \
 ##   --mount=from=cratesio-anyhow-1.0.100,source=/anyhow-1.0.100,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.100,rw \
 ##     { \
-##         cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.100/build.rs | sed 's/fn main/fn actual_f9fd03f8c3c43dd1_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.100/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.100/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.100/build.rs ; \
+##         cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.100/build.rs | sed -E 's/^fn +main/fn actual_f9fd03f8c3c43dd1_main/;s/^async +fn +main/async fn actual_f9fd03f8c3c43dd1_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.100/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.100/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.100/build.rs ; \
 ##         { \
 ##           echo ; \
 ##           echo 'fn main() {' ; \
@@ -923,7 +923,7 @@ WORKDIR /tmp/clis-kani-verifier_0-66-0/release/build/kani-verifier-0875237c4d7f2
 RUN \
   --mount=from=cratesio-kani-verifier-0.66.0,source=/kani-verifier-0.66.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/kani-verifier-0.66.0,rw \
     { \
-        cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/kani-verifier-0.66.0/build.rs | sed 's/fn main/fn actual_0875237c4d7f2d7d_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/kani-verifier-0.66.0/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/kani-verifier-0.66.0/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/kani-verifier-0.66.0/build.rs ; \
+        cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/kani-verifier-0.66.0/build.rs | sed -E 's/^fn +main/fn actual_0875237c4d7f2d7d_main/;s/^async +fn +main/async fn actual_0875237c4d7f2d7d_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/kani-verifier-0.66.0/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/kani-verifier-0.66.0/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/kani-verifier-0.66.0/build.rs ; \
         { \
           echo ; \
           echo 'fn main() {' ; \
@@ -1007,7 +1007,7 @@ COPY --link --from=dep-x-kani-verifier-0.66.0-0875237c4d7f2d7d /tmp/clis-kani-ve
 ## RUN \
 ##   --mount=from=cratesio-kani-verifier-0.66.0,source=/kani-verifier-0.66.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/kani-verifier-0.66.0,rw \
 ##     { \
-##         cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/kani-verifier-0.66.0/build.rs | sed 's/fn main/fn actual_0875237c4d7f2d7d_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/kani-verifier-0.66.0/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/kani-verifier-0.66.0/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/kani-verifier-0.66.0/build.rs ; \
+##         cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/kani-verifier-0.66.0/build.rs | sed -E 's/^fn +main/fn actual_0875237c4d7f2d7d_main/;s/^async +fn +main/async fn actual_0875237c4d7f2d7d_main/' >/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/kani-verifier-0.66.0/build.rs~ && mv /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/kani-verifier-0.66.0/build.rs~ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/kani-verifier-0.66.0/build.rs ; \
 ##         { \
 ##           echo ; \
 ##           echo 'fn main() {' ; \
