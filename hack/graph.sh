@@ -1,6 +1,11 @@
 #!/usr/bin/env -S bash -eu
 set -o pipefail
 
+if ! command -v buildxargs >/dev/null 2>&1; then
+    echo cargo install --locked buildxargs --git https://github.com/fenollp/buildxargs.git
+    exit 1
+fi
+
 dockerfilegraph() {
     local file=$1; shift
     [[ $# -eq 0 ]]
@@ -10,10 +15,7 @@ dockerfilegraph() {
     tmpd=$(mktemp -d)
     cp "$file" $tmpd/
 
-    docker build \
-        --build-context=recipe=$tmpd \
-        --output=recipes/ \
-        -<<EOF
+    cat >$tmpd/Dockerfile <<EOF
 # syntax=docker.io/docker/dockerfile:1@sha256:b6afd42430b15f2d2a4c5a02b919e98a525b785b1aaff16747d2f623364e39b6
 
 FROM --platform=\$BUILDPLATFORM docker.io/library/golang:1-alpine@sha256:26111811bc967321e7b6f852e914d14bede324cd1accb7f81811929a6a57fea9 AS golang
@@ -29,7 +31,7 @@ WORKDIR /app
 RUN apt-get update && apt-get install -y --no-install-recommends fonts-dejavu=2.37-8 graphviz=2.42.2-9ubuntu0.1
 RUN \
   --mount=from=build,source=/app/dockerfilegraph,dst=/bin/dockerfilegraph \
-  --mount=from=recipe,source=/$fname,dst=/app/$fname \
+  --mount=source=$fname,dst=/app/$fname \
   dockerfilegraph \
     --concentrate \
     --nodesep 0.3 \
@@ -43,22 +45,25 @@ FROM scratch
 COPY --link --from=run /app/Dockerfile.raw /"${fname//Dockerfile/dot}"
 EOF
 
-    rm -rf $tmpd
+    echo docker build --output=recipes/ -f $tmpd/Dockerfile $tmpd
+    # rm -rf $tmpd
 }
+
+export BUILDX_BAKE_ENTITLEMENTS_FS=0
 
 if [[ $# -ne 0 ]]; then
     for file in "$@"; do
-        echo $file
-        rm -f "${file//Dockerfile/$format}"
+        rm -f "${file//Dockerfile/dot}"
+        echo $file >&2
         dockerfilegraph "$file"
-    done
+    done | buildxargs
     exit
 fi
 
 files=(recipes/*.Dockerfile)
 for file in "${!files[@]}"; do
     file=${files[$file]}
-    echo $file
     [[ -f "${file//Dockerfile/dot}" ]] && continue
+    echo $file >&2
     dockerfilegraph "$file"
-done
+done | buildxargs
