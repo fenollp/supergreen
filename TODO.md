@@ -545,3 +545,25 @@ index b2312dd..05d1c7e 100644
 ```
 
 ---
+
+```
+1    supergreen.git main 🔗 crun green +1.90 supergreen env
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.23s
+     Running `target/debug/cargo-green green +1.90 supergreen env`
+Overriding RUSTUP_TOOLCHAIN="stable-aarch64-apple-darwin" to "1.90" for `cargo-green +toolchain`
+Using runner /usr/local/bin/docker
+Calling DOCKER_BUILDKIT="1" /usr/local/bin/docker buildx ls --format=json
+Calling BUILDX_BUILDER="supergreen" DOCKER_BUILDKIT="1" /usr/local/bin/docker buildx du --verbose --filter=type=regular --filter=description~=pulled.from
+Calling BUILDX_BUILDER="supergreen" DOCKER_BUILDKIT="1" /usr/local/bin/docker inspect --format={{index .RepoDigests 0}} docker.io/docker/dockerfile:1
+Calling  /Users/pierre/.rustup/toolchains/stable-aarch64-apple-darwin/bin/cargo locate-project
+error: no such command: `supergreen`
+
+help: view all installed commands with `cargo --list`
+help: find a package to install `supergreen` with `cargo search cargo-supergreen`
+```
+
+> RUSTUP_TOOLCHAIN=1.90 crun green supergreen env
+works tho
+
+---
+
