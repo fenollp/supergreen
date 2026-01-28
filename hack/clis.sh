@@ -598,8 +598,14 @@ send \
 tmux select-layout even-vertical
 tmux split-window
 
+# Ad-hoc $PATH otherwise macOS has troubles with string length
+shortPATH=$install_dir/bin
+for cmd in cargo docker; do
+  shortPATH="$shortPATH:"$(dirname "$(which $cmd)")""
+done
+
 envvars=(CARGO_INCREMENTAL=0)
-envvars+=(PATH=$install_dir/bin:"$PATH")
+envvars+=(PATH=$shortPATH)
 envvars+=(CARGOGREEN_LOG=trace)
 envvars+=(CARGOGREEN_LOG_PATH="$tmplogs")
 envvars+=(CARGO_TARGET_DIR="$tmptrgt")
