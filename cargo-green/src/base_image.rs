@@ -81,9 +81,9 @@ impl BaseImage {
             let minored = STABLE_RUST.as_str().replace(":1-", &format!(":{semver}-"));
             return Some(Self::from_image(minored.try_into().unwrap()));
         }
-        commit_hash
-            .zip(commit_date)
-            .map(|(commit, date)| RustcV { version: semver, commit, date, channel,host }.as_base_image())
+        commit_hash.zip(commit_date).map(|(commit, date)| {
+            RustcV { version: semver, commit, date, channel, host }.as_base_image()
+        })
     }
 
     #[must_use]
@@ -98,12 +98,21 @@ impl BaseImage {
 
     #[must_use]
     pub(crate) fn as_block(&self) -> (Network, String) {
+        let mut with_network = self.with_network;
         let block = self.image_inline.clone().unwrap_or_else(|| {
             let base = self.image.noscheme();
             // TODO? ARG RUST_BASE=myorg/myapp:latest \n FROM $RUST_BASE (+ similar for non-stable imgs)
-            format!("FROM --platform=$BUILDPLATFORM {base} AS {RST}\nRUN rustup target add aarch64-apple-darwin\n")
+            let target = "aarch64-apple-darwin";
+            let target_is_host = false;
+            let add = if target_is_host {
+                "".to_owned()
+            } else {
+                with_network = Network::Default;
+                format!("\nRUN rustup target add {target}")
+            };
+            format!("FROM --platform=$BUILDPLATFORM {base} AS {RST}{add}\n")
         });
-        (Network::Default, block)
+        (with_network, block)
     }
 }
 
@@ -115,7 +124,7 @@ struct RustcV {
     commit: String,
     date: String,
     channel: Channel,
-    host:String,
+    host: String,
 }
 
 impl RustcV {
@@ -129,7 +138,7 @@ impl RustcV {
         // FIXME: multiplatformify (using auto ARG.s) (use rustc_version::VersionMeta.host)
         // let host = "x86_64-unknown-linux-gnu";
         // let host = "aarch64-apple-darwin";
-        let host=self.host;
+        let host = self.host;
 
         // have buildkit call rustc with `--target $(adapted $TARGETPLATFORM)`, if not given `--target`
         // `adapted` translates buildkit platform format to rustc's
