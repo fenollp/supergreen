@@ -186,7 +186,8 @@ as_env() {
     mussh@*) envvars+=(CARGOGREEN_ADD_APT='libsqlite3-dev,libssl-dev,zlib1g-dev') ;;
     nanometers@*) envvars+=(CARGOGREEN_ADD_APT='libcairo2-dev,libpango-1.0-0,libpango1.0-dev,libssl-dev,libxcb-render0-dev,libxcb-shape0-dev,libxcb-xfixes0-dev,libxkbcommon-dev') ;;
     privaxy@*) envvars+=(CARGOGREEN_ADD_APT='libssl-dev') ;;
-    sccache@*) envvars+=(CARGOGREEN_ADD_APT='libssl-dev,zlib1g-dev') ;;
+    rublk@*) envvars+=(CARGOGREEN_ADD_APT='libclang-dev') ;;
+    sccache@*) envvars+=(CARGOGREEN_ADD_APT='libssl-dev,pkg-config,zlib1g-dev') ;;
     torrust-index@*) envvars+=(CARGOGREEN_ADD_APT='libssl-dev,zlib1g-dev') ;;
     *) ;;
   esac
