@@ -240,9 +240,10 @@ impl Md {
 
         let mut extern_mds_and_paths = vec![];
 
-        let no_rmetas = externs.iter().all(|xtern| !xtern.ends_with(".rmeta"));
-        let exclude_rmeta_when_not_needed =
-            |xtern: &Utf8Path| if no_rmetas { !xtern.as_str().ends_with(".rmeta") } else { true };
+        let exclude_rmeta_when_not_needed = {
+            let has_rmetas = externs.iter().any(|xtern| xtern.ends_with(".rmeta"));
+            move |xtern: &Utf8Path| has_rmetas || !xtern.as_str().ends_with(".rmeta")
+        };
 
         let mut short_externs = IndexSet::new();
 
@@ -303,7 +304,7 @@ impl Md {
             extern_mds_and_paths.push((dep_md_path, dep_md));
         }
 
-        assert_eq!(self.deps(), Vec::new());
+        assert_eq!(self.deps(), vec![]);
 
         if let Some(out_dir) = out_dir_var {
             assert_eq!(
