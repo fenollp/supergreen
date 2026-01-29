@@ -138,7 +138,7 @@ impl RustcV {
         // FIXME: multiplatformify (using auto ARG.s) (use rustc_version::VersionMeta.host)
         // let host = "x86_64-unknown-linux-gnu";
         // let host = "aarch64-apple-darwin";
-        let host = self.host;
+        let host = &self.host;
 
         // have buildkit call rustc with `--target $(adapted $TARGETPLATFORM)`, if not given `--target`
         // `adapted` translates buildkit platform format to rustc's
@@ -197,7 +197,7 @@ ENV RUSTUP_HOME=/usr/local/rustup \
      CARGO_HOME=/usr/local/cargo \
            PATH=/usr/local/cargo/bin:$PATH
 RUN \
- --mount=from=rustup-{channel}-{date},source=/rustup-init,dst=/rustup-init \
+ --mount=from=rustup-{short_checksum},source=/rustup-init,dst=/rustup-init \
    set -eux \ <<EOR
 && /rustup-init --verbose -y --no-modify-path --profile minimal --default-toolchain {channel}-{date} --default-host {host} --target {host} \
 && chmod -R a+w $RUSTUP_HOME $CARGO_HOME \
@@ -206,6 +206,7 @@ RUN \
 && rustc --version
 "#,
             packages_block = packages_block.trim(),
+            short_checksum = &rustup_checksum[..7],
         );
 
         BaseImage { with_network, image, image_inline: Some(block) }

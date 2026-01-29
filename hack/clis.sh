@@ -548,7 +548,7 @@ set -x
     CARGOGREEN_EXPERIMENT=finalpathnonprimary \
     PATH=$install_dir/bin:"$PATH" \
     CARGO_TARGET_DIR="$tmptrgt" \
-      $CARGO green -v $arg1 $jobs --all-targets --all-features $frozen -p cargo-green --target aarch64-apple-darwin
+      $CARGO green -v $arg1 $jobs --all-targets --all-features $frozen --target=aarch64-apple-darwin -p cargo-green
     exit ;;
 esac
 
