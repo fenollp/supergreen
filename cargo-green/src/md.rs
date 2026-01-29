@@ -196,7 +196,7 @@ impl Md {
             move |xtern: &Utf8Path| has_rmetas || !xtern.as_str().ends_with(".rmeta")
         };
 
-        let mut short_externs = IndexSet::new();
+        let mut extern_mdids = IndexSet::new();
 
         for xtern in externs {
             // E.g. libproc_macro2-e44df32b5d502568.rmeta
@@ -209,23 +209,20 @@ impl Md {
             };
             let xtern: MdId = xtern.into();
 
-            trace!("❯ short extern {xtern}");
-            short_externs.insert(xtern);
+            extern_mdids.insert(xtern);
 
-            let extern_md = xtern.path(target_path);
-            info!("checking (RO) extern's externs {extern_md}");
-            let extern_md = mds.get_or_read(&extern_md)?;
+            let extern_md = mds.get_or_read(&xtern.path(target_path))?;
 
             for transitive in &extern_md.deps {
-                trace!("❯ transitive short extern {transitive}");
-                short_externs.insert(*transitive);
+                trace!("❯ transitive {transitive}");
+                extern_mdids.insert(*transitive);
             }
         }
 
-        for dep in &short_externs {
+        for dep in extern_mdids {
             let dep_md_path = dep.path(target_path);
             let dep_md = mds.get_or_read(&dep_md_path)?;
-            let dep_stage = Stage::output(*dep)?;
+            let dep_stage = Stage::output(dep)?;
             self.externs.extend(
                 dep_md
                     .writes
