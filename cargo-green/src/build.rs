@@ -535,6 +535,7 @@ async fn run_build(
                             0x35 => {
                                 DirBuilder::new()
                                     .mode(mode)
+                                    .recursive(true) //= mkdir "-p"
                                     .create(&fname)
                                     .map_err(|e| anyhow!("Failed `mkdir -p {fname}`: {e}"))?;
                             }
