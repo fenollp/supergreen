@@ -40,6 +40,10 @@ impl std::hash::Hash for NamedMount {
     }
 }
 
+fn path_is_empty(path: &Utf8PathBuf) -> bool {
+    path == ""
+}
+
 #[derive(Debug, Clone, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub(crate) struct Md {
@@ -53,6 +57,8 @@ pub(crate) struct Md {
 
     #[serde(default, skip_serializing_if = "IndexSet::is_empty")]
     pub(crate) buildrs_results: IndexSet<MdId>,
+    #[serde(default, skip_serializing_if = "path_is_empty")]
+    pub(crate) writes_to: Utf8PathBuf,
     #[serde(default, skip_serializing_if = "IndexSet::is_empty")]
     pub(crate) mounts: IndexSet<NamedMount>,
     #[serde(default, skip_serializing_if = "IndexMap::is_empty")]
@@ -84,9 +90,11 @@ impl From<MdId> for Md {
     fn from(this: MdId) -> Self {
         Self {
             this,
+
             externs: IndexSet::default(),
             deps: IndexSet::default(),
             buildrs_results: IndexSet::default(),
+            writes_to: "".into(),
             mounts: IndexSet::default(),
             set_envs: IndexMap::default(),
             contexts: IndexSet::default(),
@@ -263,7 +271,15 @@ impl Md {
 
             for transitive in &extern_md.deps {
                 trace!("❯ transitive {transitive}");
-                extern_mdids.insert(*transitive);
+                let trans_md = mds.get_or_read(&transitive.path(target_path))?;
+
+                let out_dir = trans_md.writes_to.clone();
+                if out_dir != "" {
+                    info!("mounting buildrs out dir {out_dir}");
+                    self.mounts.insert(NamedMount { name: trans_md.last_stage(), mount: out_dir });
+                } else {
+                    extern_mdids.insert(*transitive);
+                }
             }
 
             // for buildrs_result in &extern_md.buildrs_results {
@@ -599,6 +615,7 @@ fn md_ser() {
         externs: [MountExtern { from: RUST.clone(), xtern: "blop".into() }].into(),
         deps: [MdId(0x81529f4c2380d9ec), MdId(0x88a4324b2aff6db9)].into(),
         buildrs_results: [MdId(0xa2ba26818f759606)].into(),
+        writes_to: "".into(),
         mounts: [].into(),
         set_envs: [].into(),
         contexts: [BuildContext {

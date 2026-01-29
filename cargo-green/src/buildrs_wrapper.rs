@@ -121,6 +121,7 @@ async fn do_exec_buildrs(
     mdid: MdId,
 ) -> Result<()> {
     let mut md: Md = mdid.into();
+    md.writes_to = out_dir_var.clone();
     md.push_block(&RUST, green.base.image_inline.clone().unwrap());
 
     fs::create_dir_all(&out_dir_var)
