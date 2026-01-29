@@ -5666,7 +5666,7 @@ jobs:
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
-        env CARGOGREEN_ADD_APT=libssl-dev,pkg-config,zlib1g-dev \
+        env CARGOGREEN_ADD_APT=libcurl4-openssl-dev,pkg-config \
           cargo green -vv install --locked --force cargo-authors@0.5.5  |& tee _
     - name: 🔵 cargo install jobs=1
       if: ${{ job.steps.cargo-install.status == failure() }}
@@ -5675,7 +5675,7 @@ jobs:
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
-        env CARGOGREEN_ADD_APT=libssl-dev,pkg-config,zlib1g-dev \
+        env CARGOGREEN_ADD_APT=libcurl4-openssl-dev,pkg-config \
           cargo green -vv install --jobs=1 --locked --force cargo-authors@0.5.5  |& tee _
     - if: ${{ always() && matrix.toolchain != '1.91.1' }}
       uses: actions/upload-artifact@v6
@@ -5762,7 +5762,7 @@ jobs:
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
-        env CARGOGREEN_ADD_APT=libssl-dev,pkg-config,zlib1g-dev \
+        env CARGOGREEN_ADD_APT=libcurl4-openssl-dev,pkg-config \
           cargo green -vv install --locked --force cargo-authors@0.5.5  |& tee _
     - name: ...doesn't recompile anything
       run: |
