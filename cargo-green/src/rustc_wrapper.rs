@@ -391,7 +391,7 @@ impl Md {
     ) {
         let mut block = format!("FROM scratch AS {stage}\n");
         if flag {
-            block.push_str(&format!("COPY --link --from={prev} {out_dir}/* /\n"));
+            block.push_str(&format!("COPY --link --from={prev} {out_dir} /\n"));
         } else {
             let mdid = self.this();
             block.push_str(&format!("COPY --link --from={prev} {out_dir}/*-{mdid}* /\n"));
