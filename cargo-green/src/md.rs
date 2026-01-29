@@ -275,8 +275,12 @@ impl Md {
 
                 let out_dir = trans_md.writes_to.clone();
                 if out_dir != "" {
-                    info!("mounting buildrs out dir {out_dir}");
-                    self.mounts.insert(NamedMount { name: trans_md.last_stage(), mount: out_dir });
+                    let skip = trans_md.writes.is_empty();
+                    info!("{}mounting buildrs out dir {out_dir}", if skip { "skip " } else { "" });
+                    if !skip {
+                        self.mounts
+                            .insert(NamedMount { name: trans_md.last_stage(), mount: out_dir });
+                    }
                 } else {
                     extern_mdids.insert(*transitive);
                 }
