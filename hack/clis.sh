@@ -179,14 +179,15 @@ as_env() {
   [[ $# -eq 0 ]]
   case "$name_at_version" in
     bottom@*) envvars+=(CARGOGREEN_SET_ENVS='BTM_GENERATE,BTM_BUILD_RELEASE_CALLER,CIRRUS_CHANGE_IN_REPO,GITHUB_SHA'); envvars+=(BTM_GENERATE=); envvars+=(BTM_BUILD_RELEASE_CALLER=); envvars+=(CIRRUS_CHANGE_IN_REPO=); envvars+=(GITHUB_SHA=) ;; # TODO: drop once fully wrapping buildrs execs
-    cargo-authors@*) envvars+=(CARGOGREEN_ADD_APT='libssl-dev,zlib1g-dev') ;;
-    cargo-udeps@*) envvars+=(CARGOGREEN_ADD_APT='libssl-dev,zlib1g-dev') ;;
+    cargo-authors@*) envvars+=(CARGOGREEN_ADD_APT='libcurl4-openssl-dev,pkg-config') ;;
+    cargo-udeps@*) envvars+=(CARGOGREEN_ADD_APT='libssl-dev,pkg-config,zlib1g-dev') ;;
     coccinelleforrust@*) envvars+=(CARGOGREEN_ADD_APT='python3-dev') ;;
     diesel_cli@*) envvars+=(CARGOGREEN_ADD_APT='libpq-dev') ;;
-    mussh@*) envvars+=(CARGOGREEN_ADD_APT='libsqlite3-dev,libssl-dev,zlib1g-dev') ;;
+    mussh@*) envvars+=(CARGOGREEN_ADD_APT='libsqlite3-dev,libssl-dev,pkg-config,zlib1g-dev') ;;
     nanometers@*) envvars+=(CARGOGREEN_ADD_APT='libcairo2-dev,libpango-1.0-0,libpango1.0-dev,libssl-dev,libxcb-render0-dev,libxcb-shape0-dev,libxcb-xfixes0-dev,libxkbcommon-dev') ;;
     privaxy@*) envvars+=(CARGOGREEN_ADD_APT='libssl-dev') ;;
-    sccache@*) envvars+=(CARGOGREEN_ADD_APT='libssl-dev,zlib1g-dev') ;;
+    rublk@*) envvars+=(CARGOGREEN_ADD_APT='libclang-dev') ;;
+    sccache@*) envvars+=(CARGOGREEN_ADD_APT='libssl-dev,pkg-config,zlib1g-dev') ;;
     torrust-index@*) envvars+=(CARGOGREEN_ADD_APT='libssl-dev,zlib1g-dev') ;;
     *) ;;
   esac
