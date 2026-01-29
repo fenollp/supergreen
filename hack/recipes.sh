@@ -1,6 +1,11 @@
 #!/usr/bin/env -S bash -eu
 set -o pipefail
 
+repo_root=$(realpath "$(dirname "$(dirname "$0")")")
+
+[[ $# -ne 0 ]] && echo "Usage: $0" && exit 1
+
+
 branch=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
 runID=$(gh run list --branch "$branch" --limit 1 --workflow CLIs --json databaseId --jq '.[].databaseId')
 gh run download "$runID" --pattern '*.Dockerfile'
@@ -22,6 +27,8 @@ for f in *.Dockerfile/*.Dockerfile; do
 		--ignore-matching-lines='^# syntax=docker.io/docker/dockerfile:1@' \
 		--ignore-matching-lines="^##     '\{" \
 		-- $f; then
-		git checkout -- $f || continue
+		git checkout -- $f
+	else
+		"$repo_root"/hack/graph.sh $f
 	fi
 done

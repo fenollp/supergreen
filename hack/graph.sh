@@ -1,8 +1,6 @@
 #!/usr/bin/env -S bash -eu
 set -o pipefail
 
-format=svg
-
 dockerfilegraph() {
     local file=$1; shift
     [[ $# -eq 0 ]]
@@ -38,24 +36,29 @@ RUN \
     --unflatten 4 \
     --scratch hidden \
     --max-label-length 128 \
-    --output $format \
+    --output raw \
     --filename /app/$fname
 
 FROM scratch
-COPY --link --from=run /app/Dockerfile.$format /"${fname//Dockerfile/$format}"
+COPY --link --from=run /app/Dockerfile.raw /"${fname//Dockerfile/dot}"
 EOF
 
     rm -rf $tmpd
 }
 
-files=(recipes/*.Dockerfile)
 if [[ $# -ne 0 ]]; then
-    files=($@)
+    for file in "$@"; do
+        echo $file
+        rm -f "${file//Dockerfile/$format}"
+        dockerfilegraph "$file"
+    done
+    exit
 fi
 
+files=(recipes/*.Dockerfile)
 for file in "${!files[@]}"; do
     file=${files[$file]}
     echo $file
-    [[ -f "${file//Dockerfile/$format}" ]] && continue
+    [[ -f "${file//Dockerfile/dot}" ]] && continue
     dockerfilegraph "$file"
 done
