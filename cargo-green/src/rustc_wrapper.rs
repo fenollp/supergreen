@@ -259,9 +259,8 @@ async fn do_wrap_rustc(
         let dst = target_path.join("deps").join(xtern);
         rustc_block.push_str(&format!("  --mount=from={from},dst={dst},source=/{xtern} \\\n"));
     }
-    for NamedMount { name, src, dst } in &md.mounts {
-        //FIXME: no need to mount as writeable or to make a stage?
-        rustc_block.push_str(&format!("  --mount=from={name},dst={dst},source={src} \\\n"));
+    for NamedMount { name, mount } in &md.mounts {
+        rustc_block.push_str(&format!("  --mount=from={name},dst={mount},source=/ \\\n"));
     }
 
     if buildrs {

@@ -20,14 +20,13 @@ use crate::{
 #[derive(Debug, Clone, Deserialize, Serialize, Eq)]
 pub(crate) struct NamedMount {
     pub(crate) name: Stage,
-    pub(crate) src: Utf8PathBuf,
-    pub(crate) dst: Utf8PathBuf,
+    pub(crate) mount: Utf8PathBuf,
 }
 
 /// For use by IndexSet
 impl PartialEq for NamedMount {
     fn eq(&self, other: &Self) -> bool {
-        self.dst == other.dst
+        self.mount == other.mount
     }
 }
 
@@ -37,7 +36,7 @@ impl std::hash::Hash for NamedMount {
     where
         H: std::hash::Hasher,
     {
-        self.dst.hash(state);
+        self.mount.hash(state);
     }
 }
 
@@ -245,7 +244,7 @@ impl Md {
             move |xtern: &Utf8Path| has_rmetas || !xtern.as_str().ends_with(".rmeta")
         };
 
-        let mut short_externs = IndexSet::new();
+        let mut extern_mdids = IndexSet::new();
 
         for xtern in externs {
             // E.g. libproc_macro2-e44df32b5d502568.rmeta
@@ -258,16 +257,13 @@ impl Md {
             };
             let xtern: MdId = xtern.into();
 
-            trace!("❯ short extern {xtern}");
-            short_externs.insert(xtern);
+            extern_mdids.insert(xtern);
 
-            let extern_md = xtern.path(target_path);
-            info!("checking (RO) extern's externs {extern_md}");
-            let extern_md = get_or_read(&mut mds, &extern_md)?;
+            let extern_md = get_or_read(&mut mds, &xtern.path(target_path))?;
 
             for transitive in &extern_md.deps {
                 trace!("❯ transitive short extern {transitive}");
-                short_externs.insert(*transitive);
+                extern_mdids.insert(*transitive);
             }
 
             // for buildrs_result in &extern_md.buildrs_results {
@@ -288,10 +284,10 @@ impl Md {
             //FIXME? also add transitive buildrs_results?
         }
 
-        for dep in &short_externs {
+        for dep in extern_mdids {
             let dep_md_path = dep.path(target_path);
             let dep_md = get_or_read(&mut mds, &dep_md_path)?;
-            let dep_stage = Stage::output(*dep)?;
+            let dep_stage = Stage::output(dep)?;
             self.externs.extend(
                 dep_md
                     .writes
@@ -323,15 +319,13 @@ impl Md {
             let z_dep = z_dep.rsplit('-').next().unwrap();
             let z_dep: MdId = z_dep.into();
 
-            // short_externs.insert(z_dep.to_owned());
+            // extern_mdids.insert(z_dep.to_owned());
             self.buildrs_results.insert(z_dep);
 
             let z_dep_md_path = z_dep.path(target_path);
             let z_dep_md = get_or_read(&mut mds, &z_dep_md_path)?;
-            let out_dir_mount =
-                NamedMount { name: z_dep_md.last_stage(), src: "/".into(), dst: out_dir };
-            info!("also mounting buildrs out dir {out_dir_mount:?} from {z_dep_md:?}");
-            self.mounts.insert(out_dir_mount);
+            info!("also mounting {z_dep}'s buildrs out dir {out_dir}");
+            self.mounts.insert(NamedMount { name: z_dep_md.last_stage(), mount: out_dir });
 
             for line in &z_dep_md.stdout {
                 // > MSRV: 1.77 is required for cargo::KEY=VALUE syntax. To support older versions, use the cargo:KEY=VALUE syntax.
@@ -355,7 +349,7 @@ impl Md {
             // info!("and adding that buildrs dep: {x_dep_md:?}");
             // extern_mds_and_paths.push((x_dep_md_path, x_dep_md));
 
-            // short_externs.insert(x_dep);
+            // extern_mdids.insert(x_dep);
 
             extern_mds_and_paths.push((z_dep_md_path, z_dep_md));
         }
