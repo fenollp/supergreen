@@ -381,8 +381,8 @@ impl Md {
         block.push_str(&format!("        || echo $? >{out_dir}/{out_stage}-{ERRCODE}\\\n"));
 
         // TODO: [`COPY --rewrite-timestamp ...` to apply SOURCE_DATE_EPOCH build arg value to the timestamps of the files](https://github.com/moby/buildkit/issues/6348)
-        let mdid = self.this();
-        block.push_str(&format!("  ; find {out_dir}/*-{mdid}* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH\n"));
+        let pattern = if buildrs { "*".to_owned() } else { format!("*-{}*", self.this()) };
+        block.push_str(&format!("  ; find {out_dir}/{pattern} -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH\n"));
 
         self.push_block(stage, block);
         Ok(())
