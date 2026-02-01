@@ -187,7 +187,7 @@ impl Md {
         externs: IndexSet<String>,
         target_path: &Utf8Path,
     ) -> Result<Vec<Self>> {
-        let mut mds = HashMap::<Utf8PathBuf, Self>::new(); // A file cache
+        let mut mds = Mds::default();
 
         let mut extern_mds_and_paths = vec![];
 
@@ -213,7 +213,7 @@ impl Md {
 
             let extern_md = xtern.path(target_path);
             info!("checking (RO) extern's externs {extern_md}");
-            let extern_md = get_or_read(&mut mds, &extern_md)?;
+            let extern_md = mds.get_or_read(&extern_md)?;
 
             for transitive in &extern_md.deps {
                 trace!("❯ transitive short extern {transitive}");
@@ -223,7 +223,7 @@ impl Md {
 
         for dep in &short_externs {
             let dep_md_path = dep.path(target_path);
-            let dep_md = get_or_read(&mut mds, &dep_md_path)?;
+            let dep_md = mds.get_or_read(&dep_md_path)?;
             let dep_stage = Stage::output(*dep)?;
             self.externs.extend(
                 dep_md
@@ -244,7 +244,7 @@ impl Md {
 
         let mds = extern_md_paths
             .into_iter()
-            .map(|extern_md_path| get_or_read(&mut mds, &extern_md_path))
+            .map(|extern_md_path| mds.get_or_read(&extern_md_path))
             .collect::<Result<Vec<_>>>()?;
 
         Ok(mds)
@@ -352,13 +352,19 @@ impl std::hash::Hash for MountExtern {
     }
 }
 
-fn get_or_read(mds: &mut HashMap<Utf8PathBuf, Md>, path: &Utf8Path) -> Result<Md> {
-    if let Some(md) = mds.get(path) {
-        return Ok(md.clone());
+/// A file cache
+#[derive(Debug, Default)]
+struct Mds(HashMap<Utf8PathBuf, Md>);
+
+impl Mds {
+    fn get_or_read(&mut self, path: &Utf8Path) -> Result<Md> {
+        if let Some(md) = self.0.get(path) {
+            return Ok(md.clone());
+        }
+        let md = Md::from_file(path)?;
+        let _ = self.0.insert(path.to_path_buf(), md.clone());
+        Ok(md)
     }
-    let md = Md::from_file(path)?;
-    let _ = mds.insert(path.to_path_buf(), md.clone());
-    Ok(md)
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, Eq, PartialEq, Ord, PartialOrd, Hash)]
