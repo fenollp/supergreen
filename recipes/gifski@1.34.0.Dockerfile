@@ -1536,11 +1536,296 @@ COPY --link --from=dep-n-clap-4.5.41-67f6ec320d9c110f /tmp/clis-gifski_1-34-0/re
 FROM scratch AS cratesio-crossbeam-utils-0.8.21
 ADD --chmod=0664 --unpack --checksum=sha256:d0a5c400df2834b80a4c3327b3aad3a4c4cd4de0629063962b03235697506a28 \
   https://static.crates.io/crates/crossbeam-utils/crossbeam-utils-0.8.21.crate /
+FROM rust-base AS dep-x-crossbeam-utils-0.8.21-43968187a3badc28
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-gifski_1-34-0/release/build/crossbeam-utils-43968187a3badc28
+RUN \
+  --mount=from=cratesio-crossbeam-utils-0.8.21,source=/crossbeam-utils-0.8.21,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.21,rw \
+    { \
+        cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.21/build.rs | sed -E 's/^(pub[()a-z]* +)?(async +)?fn +main/\1\2fn actual_43968187a3badc28_main/' >/_ && mv /_ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.21/build.rs ; \
+        { \
+          echo ; \
+          echo 'fn main() {' ; \
+          echo '    use std::env::{args_os, var_os};' ; \
+          echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+          echo '        use std::process::{Command, Stdio};' ; \
+          echo '        let mut cmd = Command::new("cargo-green");' ; \
+          echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+          echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+          echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+          echo '        assert!(res.success());' ; \
+          echo '    } else {' ; \
+          echo '        actual_43968187a3badc28_main();' ; \
+          echo '    }' ; \
+          echo '}' ; \
+        } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.21/build.rs ; \
+    } && \
+    env CARGO="$(which cargo)" \
+        CARGO_CRATE_NAME=build_script_build \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.21 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.21/Cargo.toml \
+        CARGO_PKG_AUTHORS= \
+        CARGO_PKG_DESCRIPTION=Utilities' for concurrent programming' \
+        CARGO_PKG_HOMEPAGE=https'://github.com/crossbeam-rs/crossbeam/tree/master/crossbeam-utils' \
+        CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=crossbeam-utils \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/crossbeam-rs/crossbeam' \
+        CARGO_PKG_RUST_VERSION=1.60 \
+        CARGO_PKG_VERSION=0.8.21 \
+        CARGO_PKG_VERSION_MAJOR=0 \
+        CARGO_PKG_VERSION_MINOR=8 \
+        CARGO_PKG_VERSION_PATCH=21 \
+        CARGO_PKG_VERSION_PRE= \
+        CARGOGREEN=1 \
+      rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' --warn unexpected_cfgs --allow clippy'::lint_groups_priority' --allow clippy'::declare_interior_mutable_const' --check-cfg cfg'(crossbeam_loom)' --check-cfg cfg'(crossbeam_sanitize)' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "loom", "nightly", "std"))' -C metadata'=6c1a1a5d619e1253' -C extra-filename'=-43968187a3badc28' --out-dir /tmp/clis-gifski_1-34-0/release/build/crossbeam-utils-43968187a3badc28 -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.21/build.rs \
+        1>          /tmp/clis-gifski_1-34-0/release/build/crossbeam-utils-43968187a3badc28/out-43968187a3badc28-stdout \
+        2>          /tmp/clis-gifski_1-34-0/release/build/crossbeam-utils-43968187a3badc28/out-43968187a3badc28-stderr \
+        || echo $? >/tmp/clis-gifski_1-34-0/release/build/crossbeam-utils-43968187a3badc28/out-43968187a3badc28-errcode\
+  ; find /tmp/clis-gifski_1-34-0/release/build/crossbeam-utils-43968187a3badc28/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-43968187a3badc28
+COPY --link --from=dep-x-crossbeam-utils-0.8.21-43968187a3badc28 /tmp/clis-gifski_1-34-0/release/build/crossbeam-utils-43968187a3badc28/*-43968187a3badc28* /
+
+## this = "43968187a3badc28"
+## writes = [
+##     "build_script_build-43968187a3badc28",
+##     "build_script_build-43968187a3badc28.d",
+## ]
+## stderr = [
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/build/crossbeam-utils-43968187a3badc28/build_script_build-43968187a3badc28.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/build/crossbeam-utils-43968187a3badc28/build_script_build-43968187a3badc28","emit":"link"}',
+## ]
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
+##
+## [[stages]]
+##
+## [stages.Cratesio]
+## stage = "cratesio-crossbeam-utils-0.8.21"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.21"
+## name = "crossbeam-utils"
+## name_dash_version = "crossbeam-utils-0.8.21"
+## hash = "d0a5c400df2834b80a4c3327b3aad3a4c4cd4de0629063962b03235697506a28"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "dep-x-crossbeam-utils-0.8.21-43968187a3badc28"
+## script = '''
+## FROM rust-base AS dep-x-crossbeam-utils-0.8.21-43968187a3badc28
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-gifski_1-34-0/release/build/crossbeam-utils-43968187a3badc28
+## RUN \
+##   --mount=from=cratesio-crossbeam-utils-0.8.21,source=/crossbeam-utils-0.8.21,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.21,rw \
+##     { \
+##         cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.21/build.rs | sed -E 's/^(pub[()a-z]* +)?(async +)?fn +main/\1\2fn actual_43968187a3badc28_main/' >/_ && mv /_ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.21/build.rs ; \
+##         { \
+##           echo ; \
+##           echo 'fn main() {' ; \
+##           echo '    use std::env::{args_os, var_os};' ; \
+##           echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+##           echo '        use std::process::{Command, Stdio};' ; \
+##           echo '        let mut cmd = Command::new("cargo-green");' ; \
+##           echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+##           echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+##           echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+##           echo '        assert!(res.success());' ; \
+##           echo '    } else {' ; \
+##           echo '        actual_43968187a3badc28_main();' ; \
+##           echo '    }' ; \
+##           echo '}' ; \
+##         } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.21/build.rs ; \
+##     } && \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CRATE_NAME=build_script_build \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.21 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.21/Cargo.toml \
+##         CARGO_PKG_AUTHORS= \
+##         CARGO_PKG_DESCRIPTION=Utilities' for concurrent programming' \
+##         CARGO_PKG_HOMEPAGE=https'://github.com/crossbeam-rs/crossbeam/tree/master/crossbeam-utils' \
+##         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=crossbeam-utils \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/crossbeam-rs/crossbeam' \
+##         CARGO_PKG_RUST_VERSION=1.60 \
+##         CARGO_PKG_VERSION=0.8.21 \
+##         CARGO_PKG_VERSION_MAJOR=0 \
+##         CARGO_PKG_VERSION_MINOR=8 \
+##         CARGO_PKG_VERSION_PATCH=21 \
+##         CARGO_PKG_VERSION_PRE= \
+##         CARGOGREEN=1 \
+##       rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' --warn unexpected_cfgs --allow clippy'::lint_groups_priority' --allow clippy'::declare_interior_mutable_const' --check-cfg cfg'(crossbeam_loom)' --check-cfg cfg'(crossbeam_sanitize)' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "loom", "nightly", "std"))' -C metadata'=6c1a1a5d619e1253' -C extra-filename'=-43968187a3badc28' --out-dir /tmp/clis-gifski_1-34-0/release/build/crossbeam-utils-43968187a3badc28 -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.21/build.rs \
+##         1>          /tmp/clis-gifski_1-34-0/release/build/crossbeam-utils-43968187a3badc28/out-43968187a3badc28-stdout \
+##         2>          /tmp/clis-gifski_1-34-0/release/build/crossbeam-utils-43968187a3badc28/out-43968187a3badc28-stderr \
+##         || echo $? >/tmp/clis-gifski_1-34-0/release/build/crossbeam-utils-43968187a3badc28/out-43968187a3badc28-errcode\
+##   ; find /tmp/clis-gifski_1-34-0/release/build/crossbeam-utils-43968187a3badc28/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-43968187a3badc28"
+## script = """
+## FROM scratch AS out-43968187a3badc28
+## COPY --link --from=dep-x-crossbeam-utils-0.8.21-43968187a3badc28 /tmp/clis-gifski_1-34-0/release/build/crossbeam-utils-43968187a3badc28/*-43968187a3badc28* /"""
+
+FROM rust-base AS run-z-crossbeam-utils-0.8.21-b948070c08a8f1cf
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-gifski_1-34-0/release/build/crossbeam-utils-b948070c08a8f1cf/out
+WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.21
+RUN \
+  --mount=from=out-43968187a3badc28,source=/build_script_build-43968187a3badc28,dst=/tmp/clis-gifski_1-34-0/release/build/crossbeam-utils-43968187a3badc28/build-script-build \
+  --mount=from=cratesio-crossbeam-utils-0.8.21,source=/crossbeam-utils-0.8.21,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.21 \
+    env CARGO="$(which cargo)" \
+        CARGO_CFG_FEATURE=default,std \
+        CARGO_CFG_PANIC=unwind \
+        CARGO_CFG_TARGET_ABI= \
+        CARGO_CFG_TARGET_ARCH=x86_64 \
+        CARGO_CFG_TARGET_ENDIAN=little \
+        CARGO_CFG_TARGET_ENV=gnu \
+        CARGO_CFG_TARGET_FAMILY=unix \
+        CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
+        CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+        CARGO_CFG_TARGET_OS=linux \
+        CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+        CARGO_CFG_TARGET_VENDOR=unknown \
+        CARGO_CFG_UNIX= \
+        CARGO_ENCODED_RUSTFLAGS= \
+        CARGO_FEATURE_DEFAULT=1 \
+        CARGO_FEATURE_STD=1 \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.21 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.21/Cargo.toml \
+        CARGO_PKG_AUTHORS= \
+        CARGO_PKG_DESCRIPTION=Utilities' for concurrent programming' \
+        CARGO_PKG_HOMEPAGE=https'://github.com/crossbeam-rs/crossbeam/tree/master/crossbeam-utils' \
+        CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=crossbeam-utils \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/crossbeam-rs/crossbeam' \
+        CARGO_PKG_RUST_VERSION=1.60 \
+        CARGO_PKG_VERSION=0.8.21 \
+        CARGO_PKG_VERSION_MAJOR=0 \
+        CARGO_PKG_VERSION_MINOR=8 \
+        CARGO_PKG_VERSION_PATCH=21 \
+        CARGO_PKG_VERSION_PRE= \
+        DEBUG=false \
+        HOST=x86_64-unknown-linux-gnu \
+        NUM_JOBS=4 \
+        OPT_LEVEL=3 \
+        OUT_DIR=/tmp/clis-gifski_1-34-0/release/build/crossbeam-utils-b948070c08a8f1cf/out \
+        PROFILE=release \
+        RUSTC=rustc \
+        RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+        TARGET=x86_64-unknown-linux-gnu \
+        CARGOGREEN=1 \
+      CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-gifski_1-34-0/release/build/crossbeam-utils-43968187a3badc28/build-script-build \
+        1>          /tmp/clis-gifski_1-34-0/release/build/crossbeam-utils-b948070c08a8f1cf/out/out-b948070c08a8f1cf-stdout \
+        2>          /tmp/clis-gifski_1-34-0/release/build/crossbeam-utils-b948070c08a8f1cf/out/out-b948070c08a8f1cf-stderr \
+        || echo $? >/tmp/clis-gifski_1-34-0/release/build/crossbeam-utils-b948070c08a8f1cf/out/out-b948070c08a8f1cf-errcode\
+  ; find /tmp/clis-gifski_1-34-0/release/build/crossbeam-utils-b948070c08a8f1cf/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-b948070c08a8f1cf
+COPY --link --from=run-z-crossbeam-utils-0.8.21-b948070c08a8f1cf /tmp/clis-gifski_1-34-0/release/build/crossbeam-utils-b948070c08a8f1cf/out /
+
+## this = "b948070c08a8f1cf"
+## deps = ["43968187a3badc28"]
+## writes_to = "/tmp/clis-gifski_1-34-0/release/build/crossbeam-utils-b948070c08a8f1cf/out"
+## stdout = [
+##     "cargo:rerun-if-changed=no_atomic.rs",
+##     "cargo:rustc-check-cfg=cfg(crossbeam_no_atomic,crossbeam_sanitize_thread)",
+## ]
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "run-z-crossbeam-utils-0.8.21-b948070c08a8f1cf"
+## script = '''
+## FROM rust-base AS run-z-crossbeam-utils-0.8.21-b948070c08a8f1cf
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-gifski_1-34-0/release/build/crossbeam-utils-b948070c08a8f1cf/out
+## WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.21
+## RUN \
+##   --mount=from=out-43968187a3badc28,source=/build_script_build-43968187a3badc28,dst=/tmp/clis-gifski_1-34-0/release/build/crossbeam-utils-43968187a3badc28/build-script-build \
+##   --mount=from=cratesio-crossbeam-utils-0.8.21,source=/crossbeam-utils-0.8.21,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.21 \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CFG_FEATURE=default,std \
+##         CARGO_CFG_PANIC=unwind \
+##         CARGO_CFG_TARGET_ABI= \
+##         CARGO_CFG_TARGET_ARCH=x86_64 \
+##         CARGO_CFG_TARGET_ENDIAN=little \
+##         CARGO_CFG_TARGET_ENV=gnu \
+##         CARGO_CFG_TARGET_FAMILY=unix \
+##         CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
+##         CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+##         CARGO_CFG_TARGET_OS=linux \
+##         CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+##         CARGO_CFG_TARGET_VENDOR=unknown \
+##         CARGO_CFG_UNIX= \
+##         CARGO_ENCODED_RUSTFLAGS= \
+##         CARGO_FEATURE_DEFAULT=1 \
+##         CARGO_FEATURE_STD=1 \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.21 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.21/Cargo.toml \
+##         CARGO_PKG_AUTHORS= \
+##         CARGO_PKG_DESCRIPTION=Utilities' for concurrent programming' \
+##         CARGO_PKG_HOMEPAGE=https'://github.com/crossbeam-rs/crossbeam/tree/master/crossbeam-utils' \
+##         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=crossbeam-utils \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/crossbeam-rs/crossbeam' \
+##         CARGO_PKG_RUST_VERSION=1.60 \
+##         CARGO_PKG_VERSION=0.8.21 \
+##         CARGO_PKG_VERSION_MAJOR=0 \
+##         CARGO_PKG_VERSION_MINOR=8 \
+##         CARGO_PKG_VERSION_PATCH=21 \
+##         CARGO_PKG_VERSION_PRE= \
+##         DEBUG=false \
+##         HOST=x86_64-unknown-linux-gnu \
+##         NUM_JOBS=4 \
+##         OPT_LEVEL=3 \
+##         OUT_DIR=/tmp/clis-gifski_1-34-0/release/build/crossbeam-utils-b948070c08a8f1cf/out \
+##         PROFILE=release \
+##         RUSTC=rustc \
+##         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+##         TARGET=x86_64-unknown-linux-gnu \
+##         CARGOGREEN=1 \
+##       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-gifski_1-34-0/release/build/crossbeam-utils-43968187a3badc28/build-script-build \
+##         1>          /tmp/clis-gifski_1-34-0/release/build/crossbeam-utils-b948070c08a8f1cf/out/out-b948070c08a8f1cf-stdout \
+##         2>          /tmp/clis-gifski_1-34-0/release/build/crossbeam-utils-b948070c08a8f1cf/out/out-b948070c08a8f1cf-stderr \
+##         || echo $? >/tmp/clis-gifski_1-34-0/release/build/crossbeam-utils-b948070c08a8f1cf/out/out-b948070c08a8f1cf-errcode\
+##   ; find /tmp/clis-gifski_1-34-0/release/build/crossbeam-utils-b948070c08a8f1cf/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-b948070c08a8f1cf"
+## script = """
+## FROM scratch AS out-b948070c08a8f1cf
+## COPY --link --from=run-z-crossbeam-utils-0.8.21-b948070c08a8f1cf /tmp/clis-gifski_1-34-0/release/build/crossbeam-utils-b948070c08a8f1cf/out /"""
+
+
 FROM rust-base AS dep-n-crossbeam-utils-0.8.21-5ac36063ddf29a62
 SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-gifski_1-34-0/release/deps
 RUN \
   --mount=from=cratesio-crossbeam-utils-0.8.21,source=/crossbeam-utils-0.8.21,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.21 \
+  --mount=from=out-b948070c08a8f1cf,dst=/tmp/clis-gifski_1-34-0/release/build/crossbeam-utils-b948070c08a8f1cf/out,source=/ \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=crossbeam_utils \
         CARGO_INCREMENTAL=0 \
@@ -1571,6 +1856,11 @@ FROM scratch AS out-5ac36063ddf29a62
 COPY --link --from=dep-n-crossbeam-utils-0.8.21-5ac36063ddf29a62 /tmp/clis-gifski_1-34-0/release/deps/*-5ac36063ddf29a62* /
 
 ## this = "5ac36063ddf29a62"
+## deps = [
+##     "b948070c08a8f1cf",
+##     "43968187a3badc28",
+## ]
+## buildrs_results = ["b948070c08a8f1cf"]
 ## writes = [
 ##     "crossbeam_utils-5ac36063ddf29a62.d",
 ##     "libcrossbeam_utils-5ac36063ddf29a62.rlib",
@@ -1581,6 +1871,10 @@ COPY --link --from=dep-n-crossbeam-utils-0.8.21-5ac36063ddf29a62 /tmp/clis-gifsk
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rlib","emit":"link"}',
 ## ]
+##
+## [[mounts]]
+## name = "out-b948070c08a8f1cf"
+## mount = "/tmp/clis-gifski_1-34-0/release/build/crossbeam-utils-b948070c08a8f1cf/out"
 ##
 ## [[stages]]
 ##
@@ -1607,6 +1901,7 @@ COPY --link --from=dep-n-crossbeam-utils-0.8.21-5ac36063ddf29a62 /tmp/clis-gifsk
 ## WORKDIR /tmp/clis-gifski_1-34-0/release/deps
 ## RUN \
 ##   --mount=from=cratesio-crossbeam-utils-0.8.21,source=/crossbeam-utils-0.8.21,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.21 \
+##   --mount=from=out-b948070c08a8f1cf,dst=/tmp/clis-gifski_1-34-0/release/build/crossbeam-utils-b948070c08a8f1cf/out,source=/ \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=crossbeam_utils \
 ##         CARGO_INCREMENTAL=0 \
@@ -1681,7 +1976,12 @@ FROM scratch AS out-724af7b5f0e810c4
 COPY --link --from=dep-n-crossbeam-channel-0.5.15-724af7b5f0e810c4 /tmp/clis-gifski_1-34-0/release/deps/*-724af7b5f0e810c4* /
 
 ## this = "724af7b5f0e810c4"
-## deps = ["5ac36063ddf29a62"]
+## deps = [
+##     "5ac36063ddf29a62",
+##     "43968187a3badc28",
+##     "b948070c08a8f1cf",
+## ]
+## buildrs_results = ["b948070c08a8f1cf"]
 ## writes = [
 ##     "crossbeam_channel-724af7b5f0e810c4.d",
 ##     "libcrossbeam_channel-724af7b5f0e810c4.rlib",
@@ -2977,7 +3277,12 @@ FROM scratch AS out-c2e7f2fc3addf6be
 COPY --link --from=dep-n-crossbeam-epoch-0.9.18-c2e7f2fc3addf6be /tmp/clis-gifski_1-34-0/release/deps/*-c2e7f2fc3addf6be* /
 
 ## this = "c2e7f2fc3addf6be"
-## deps = ["5ac36063ddf29a62"]
+## deps = [
+##     "5ac36063ddf29a62",
+##     "43968187a3badc28",
+##     "b948070c08a8f1cf",
+## ]
+## buildrs_results = ["b948070c08a8f1cf"]
 ## writes = [
 ##     "crossbeam_epoch-c2e7f2fc3addf6be.d",
 ##     "libcrossbeam_epoch-c2e7f2fc3addf6be.rlib",
@@ -3123,7 +3428,10 @@ COPY --link --from=dep-n-crossbeam-deque-0.8.6-cc1298b8da143bbe /tmp/clis-gifski
 ## deps = [
 ##     "c2e7f2fc3addf6be",
 ##     "5ac36063ddf29a62",
+##     "43968187a3badc28",
+##     "b948070c08a8f1cf",
 ## ]
+## buildrs_results = ["b948070c08a8f1cf"]
 ## writes = [
 ##     "crossbeam_deque-cc1298b8da143bbe.d",
 ##     "libcrossbeam_deque-cc1298b8da143bbe.rlib",
@@ -3217,6 +3525,285 @@ COPY --link --from=dep-n-crossbeam-deque-0.8.6-cc1298b8da143bbe /tmp/clis-gifski
 FROM scratch AS cratesio-rayon-core-1.12.1
 ADD --chmod=0664 --unpack --checksum=sha256:1465873a3dfdaa8ae7cb14b4383657caab0b3e8a0aa9ae8e04b044854c8dfce2 \
   https://static.crates.io/crates/rayon-core/rayon-core-1.12.1.crate /
+FROM rust-base AS dep-x-rayon-core-1.12.1-8f74c6b4e8a858d1
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-gifski_1-34-0/release/build/rayon-core-8f74c6b4e8a858d1
+RUN \
+  --mount=from=cratesio-rayon-core-1.12.1,source=/rayon-core-1.12.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rayon-core-1.12.1,rw \
+    { \
+        cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rayon-core-1.12.1/build.rs | sed -E 's/^(pub[()a-z]* +)?(async +)?fn +main/\1\2fn actual_8f74c6b4e8a858d1_main/' >/_ && mv /_ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rayon-core-1.12.1/build.rs ; \
+        { \
+          echo ; \
+          echo 'fn main() {' ; \
+          echo '    use std::env::{args_os, var_os};' ; \
+          echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+          echo '        use std::process::{Command, Stdio};' ; \
+          echo '        let mut cmd = Command::new("cargo-green");' ; \
+          echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+          echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+          echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+          echo '        assert!(res.success());' ; \
+          echo '    } else {' ; \
+          echo '        actual_8f74c6b4e8a858d1_main();' ; \
+          echo '    }' ; \
+          echo '}' ; \
+        } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rayon-core-1.12.1/build.rs ; \
+    } && \
+    env CARGO="$(which cargo)" \
+        CARGO_CRATE_NAME=build_script_build \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rayon-core-1.12.1 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rayon-core-1.12.1/Cargo.toml \
+        CARGO_PKG_AUTHORS=Niko' Matsakis <niko@alum.mit.edu>:Josh Stone <cuviper@gmail.com>' \
+        CARGO_PKG_DESCRIPTION=Core' APIs for Rayon' \
+        CARGO_PKG_HOMEPAGE= \
+        CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=rayon-core \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/rayon-rs/rayon' \
+        CARGO_PKG_RUST_VERSION=1.63 \
+        CARGO_PKG_VERSION=1.12.1 \
+        CARGO_PKG_VERSION_MAJOR=1 \
+        CARGO_PKG_VERSION_MINOR=12 \
+        CARGO_PKG_VERSION_PATCH=1 \
+        CARGO_PKG_VERSION_PRE= \
+        CARGOGREEN=1 \
+      rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("web_spin_lock"))' -C metadata'=9f3189b315dcd2f3' -C extra-filename'=-8f74c6b4e8a858d1' --out-dir /tmp/clis-gifski_1-34-0/release/build/rayon-core-8f74c6b4e8a858d1 -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rayon-core-1.12.1/build.rs \
+        1>          /tmp/clis-gifski_1-34-0/release/build/rayon-core-8f74c6b4e8a858d1/out-8f74c6b4e8a858d1-stdout \
+        2>          /tmp/clis-gifski_1-34-0/release/build/rayon-core-8f74c6b4e8a858d1/out-8f74c6b4e8a858d1-stderr \
+        || echo $? >/tmp/clis-gifski_1-34-0/release/build/rayon-core-8f74c6b4e8a858d1/out-8f74c6b4e8a858d1-errcode\
+  ; find /tmp/clis-gifski_1-34-0/release/build/rayon-core-8f74c6b4e8a858d1/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-8f74c6b4e8a858d1
+COPY --link --from=dep-x-rayon-core-1.12.1-8f74c6b4e8a858d1 /tmp/clis-gifski_1-34-0/release/build/rayon-core-8f74c6b4e8a858d1/*-8f74c6b4e8a858d1* /
+
+## this = "8f74c6b4e8a858d1"
+## writes = [
+##     "build_script_build-8f74c6b4e8a858d1",
+##     "build_script_build-8f74c6b4e8a858d1.d",
+## ]
+## stderr = [
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/build/rayon-core-8f74c6b4e8a858d1/build_script_build-8f74c6b4e8a858d1.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/build/rayon-core-8f74c6b4e8a858d1/build_script_build-8f74c6b4e8a858d1","emit":"link"}',
+## ]
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
+##
+## [[stages]]
+##
+## [stages.Cratesio]
+## stage = "cratesio-rayon-core-1.12.1"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rayon-core-1.12.1"
+## name = "rayon-core"
+## name_dash_version = "rayon-core-1.12.1"
+## hash = "1465873a3dfdaa8ae7cb14b4383657caab0b3e8a0aa9ae8e04b044854c8dfce2"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "dep-x-rayon-core-1.12.1-8f74c6b4e8a858d1"
+## script = '''
+## FROM rust-base AS dep-x-rayon-core-1.12.1-8f74c6b4e8a858d1
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-gifski_1-34-0/release/build/rayon-core-8f74c6b4e8a858d1
+## RUN \
+##   --mount=from=cratesio-rayon-core-1.12.1,source=/rayon-core-1.12.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rayon-core-1.12.1,rw \
+##     { \
+##         cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rayon-core-1.12.1/build.rs | sed -E 's/^(pub[()a-z]* +)?(async +)?fn +main/\1\2fn actual_8f74c6b4e8a858d1_main/' >/_ && mv /_ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rayon-core-1.12.1/build.rs ; \
+##         { \
+##           echo ; \
+##           echo 'fn main() {' ; \
+##           echo '    use std::env::{args_os, var_os};' ; \
+##           echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+##           echo '        use std::process::{Command, Stdio};' ; \
+##           echo '        let mut cmd = Command::new("cargo-green");' ; \
+##           echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+##           echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+##           echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+##           echo '        assert!(res.success());' ; \
+##           echo '    } else {' ; \
+##           echo '        actual_8f74c6b4e8a858d1_main();' ; \
+##           echo '    }' ; \
+##           echo '}' ; \
+##         } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rayon-core-1.12.1/build.rs ; \
+##     } && \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CRATE_NAME=build_script_build \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rayon-core-1.12.1 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rayon-core-1.12.1/Cargo.toml \
+##         CARGO_PKG_AUTHORS=Niko' Matsakis <niko@alum.mit.edu>:Josh Stone <cuviper@gmail.com>' \
+##         CARGO_PKG_DESCRIPTION=Core' APIs for Rayon' \
+##         CARGO_PKG_HOMEPAGE= \
+##         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=rayon-core \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/rayon-rs/rayon' \
+##         CARGO_PKG_RUST_VERSION=1.63 \
+##         CARGO_PKG_VERSION=1.12.1 \
+##         CARGO_PKG_VERSION_MAJOR=1 \
+##         CARGO_PKG_VERSION_MINOR=12 \
+##         CARGO_PKG_VERSION_PATCH=1 \
+##         CARGO_PKG_VERSION_PRE= \
+##         CARGOGREEN=1 \
+##       rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("web_spin_lock"))' -C metadata'=9f3189b315dcd2f3' -C extra-filename'=-8f74c6b4e8a858d1' --out-dir /tmp/clis-gifski_1-34-0/release/build/rayon-core-8f74c6b4e8a858d1 -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rayon-core-1.12.1/build.rs \
+##         1>          /tmp/clis-gifski_1-34-0/release/build/rayon-core-8f74c6b4e8a858d1/out-8f74c6b4e8a858d1-stdout \
+##         2>          /tmp/clis-gifski_1-34-0/release/build/rayon-core-8f74c6b4e8a858d1/out-8f74c6b4e8a858d1-stderr \
+##         || echo $? >/tmp/clis-gifski_1-34-0/release/build/rayon-core-8f74c6b4e8a858d1/out-8f74c6b4e8a858d1-errcode\
+##   ; find /tmp/clis-gifski_1-34-0/release/build/rayon-core-8f74c6b4e8a858d1/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-8f74c6b4e8a858d1"
+## script = """
+## FROM scratch AS out-8f74c6b4e8a858d1
+## COPY --link --from=dep-x-rayon-core-1.12.1-8f74c6b4e8a858d1 /tmp/clis-gifski_1-34-0/release/build/rayon-core-8f74c6b4e8a858d1/*-8f74c6b4e8a858d1* /"""
+
+FROM rust-base AS run-z-rayon-core-1.12.1-f1aa93c35dc8b5a4
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-gifski_1-34-0/release/build/rayon-core-f1aa93c35dc8b5a4/out
+WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rayon-core-1.12.1
+RUN \
+  --mount=from=out-8f74c6b4e8a858d1,source=/build_script_build-8f74c6b4e8a858d1,dst=/tmp/clis-gifski_1-34-0/release/build/rayon-core-8f74c6b4e8a858d1/build-script-build \
+  --mount=from=cratesio-rayon-core-1.12.1,source=/rayon-core-1.12.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rayon-core-1.12.1 \
+    env CARGO="$(which cargo)" \
+        CARGO_CFG_FEATURE= \
+        CARGO_CFG_PANIC=unwind \
+        CARGO_CFG_TARGET_ABI= \
+        CARGO_CFG_TARGET_ARCH=x86_64 \
+        CARGO_CFG_TARGET_ENDIAN=little \
+        CARGO_CFG_TARGET_ENV=gnu \
+        CARGO_CFG_TARGET_FAMILY=unix \
+        CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
+        CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+        CARGO_CFG_TARGET_OS=linux \
+        CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+        CARGO_CFG_TARGET_VENDOR=unknown \
+        CARGO_CFG_UNIX= \
+        CARGO_ENCODED_RUSTFLAGS= \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rayon-core-1.12.1 \
+        CARGO_MANIFEST_LINKS=rayon-core \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rayon-core-1.12.1/Cargo.toml \
+        CARGO_PKG_AUTHORS=Niko' Matsakis <niko@alum.mit.edu>:Josh Stone <cuviper@gmail.com>' \
+        CARGO_PKG_DESCRIPTION=Core' APIs for Rayon' \
+        CARGO_PKG_HOMEPAGE= \
+        CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=rayon-core \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/rayon-rs/rayon' \
+        CARGO_PKG_RUST_VERSION=1.63 \
+        CARGO_PKG_VERSION=1.12.1 \
+        CARGO_PKG_VERSION_MAJOR=1 \
+        CARGO_PKG_VERSION_MINOR=12 \
+        CARGO_PKG_VERSION_PATCH=1 \
+        CARGO_PKG_VERSION_PRE= \
+        DEBUG=false \
+        HOST=x86_64-unknown-linux-gnu \
+        NUM_JOBS=4 \
+        OPT_LEVEL=3 \
+        OUT_DIR=/tmp/clis-gifski_1-34-0/release/build/rayon-core-f1aa93c35dc8b5a4/out \
+        PROFILE=release \
+        RUSTC=rustc \
+        RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+        TARGET=x86_64-unknown-linux-gnu \
+        CARGOGREEN=1 \
+      CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-gifski_1-34-0/release/build/rayon-core-8f74c6b4e8a858d1/build-script-build \
+        1>          /tmp/clis-gifski_1-34-0/release/build/rayon-core-f1aa93c35dc8b5a4/out/out-f1aa93c35dc8b5a4-stdout \
+        2>          /tmp/clis-gifski_1-34-0/release/build/rayon-core-f1aa93c35dc8b5a4/out/out-f1aa93c35dc8b5a4-stderr \
+        || echo $? >/tmp/clis-gifski_1-34-0/release/build/rayon-core-f1aa93c35dc8b5a4/out/out-f1aa93c35dc8b5a4-errcode\
+  ; find /tmp/clis-gifski_1-34-0/release/build/rayon-core-f1aa93c35dc8b5a4/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-f1aa93c35dc8b5a4
+COPY --link --from=run-z-rayon-core-1.12.1-f1aa93c35dc8b5a4 /tmp/clis-gifski_1-34-0/release/build/rayon-core-f1aa93c35dc8b5a4/out /
+
+## this = "f1aa93c35dc8b5a4"
+## deps = ["8f74c6b4e8a858d1"]
+## writes_to = "/tmp/clis-gifski_1-34-0/release/build/rayon-core-f1aa93c35dc8b5a4/out"
+## stdout = ["cargo:rerun-if-changed=build.rs"]
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "run-z-rayon-core-1.12.1-f1aa93c35dc8b5a4"
+## script = '''
+## FROM rust-base AS run-z-rayon-core-1.12.1-f1aa93c35dc8b5a4
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-gifski_1-34-0/release/build/rayon-core-f1aa93c35dc8b5a4/out
+## WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rayon-core-1.12.1
+## RUN \
+##   --mount=from=out-8f74c6b4e8a858d1,source=/build_script_build-8f74c6b4e8a858d1,dst=/tmp/clis-gifski_1-34-0/release/build/rayon-core-8f74c6b4e8a858d1/build-script-build \
+##   --mount=from=cratesio-rayon-core-1.12.1,source=/rayon-core-1.12.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rayon-core-1.12.1 \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CFG_FEATURE= \
+##         CARGO_CFG_PANIC=unwind \
+##         CARGO_CFG_TARGET_ABI= \
+##         CARGO_CFG_TARGET_ARCH=x86_64 \
+##         CARGO_CFG_TARGET_ENDIAN=little \
+##         CARGO_CFG_TARGET_ENV=gnu \
+##         CARGO_CFG_TARGET_FAMILY=unix \
+##         CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
+##         CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+##         CARGO_CFG_TARGET_OS=linux \
+##         CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+##         CARGO_CFG_TARGET_VENDOR=unknown \
+##         CARGO_CFG_UNIX= \
+##         CARGO_ENCODED_RUSTFLAGS= \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rayon-core-1.12.1 \
+##         CARGO_MANIFEST_LINKS=rayon-core \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rayon-core-1.12.1/Cargo.toml \
+##         CARGO_PKG_AUTHORS=Niko' Matsakis <niko@alum.mit.edu>:Josh Stone <cuviper@gmail.com>' \
+##         CARGO_PKG_DESCRIPTION=Core' APIs for Rayon' \
+##         CARGO_PKG_HOMEPAGE= \
+##         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=rayon-core \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/rayon-rs/rayon' \
+##         CARGO_PKG_RUST_VERSION=1.63 \
+##         CARGO_PKG_VERSION=1.12.1 \
+##         CARGO_PKG_VERSION_MAJOR=1 \
+##         CARGO_PKG_VERSION_MINOR=12 \
+##         CARGO_PKG_VERSION_PATCH=1 \
+##         CARGO_PKG_VERSION_PRE= \
+##         DEBUG=false \
+##         HOST=x86_64-unknown-linux-gnu \
+##         NUM_JOBS=4 \
+##         OPT_LEVEL=3 \
+##         OUT_DIR=/tmp/clis-gifski_1-34-0/release/build/rayon-core-f1aa93c35dc8b5a4/out \
+##         PROFILE=release \
+##         RUSTC=rustc \
+##         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+##         TARGET=x86_64-unknown-linux-gnu \
+##         CARGOGREEN=1 \
+##       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-gifski_1-34-0/release/build/rayon-core-8f74c6b4e8a858d1/build-script-build \
+##         1>          /tmp/clis-gifski_1-34-0/release/build/rayon-core-f1aa93c35dc8b5a4/out/out-f1aa93c35dc8b5a4-stdout \
+##         2>          /tmp/clis-gifski_1-34-0/release/build/rayon-core-f1aa93c35dc8b5a4/out/out-f1aa93c35dc8b5a4-stderr \
+##         || echo $? >/tmp/clis-gifski_1-34-0/release/build/rayon-core-f1aa93c35dc8b5a4/out/out-f1aa93c35dc8b5a4-errcode\
+##   ; find /tmp/clis-gifski_1-34-0/release/build/rayon-core-f1aa93c35dc8b5a4/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-f1aa93c35dc8b5a4"
+## script = """
+## FROM scratch AS out-f1aa93c35dc8b5a4
+## COPY --link --from=run-z-rayon-core-1.12.1-f1aa93c35dc8b5a4 /tmp/clis-gifski_1-34-0/release/build/rayon-core-f1aa93c35dc8b5a4/out /"""
+
+
 FROM rust-base AS dep-n-rayon-core-1.12.1-efba4db9305abd55
 SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-gifski_1-34-0/release/deps
@@ -3228,6 +3815,7 @@ RUN \
   --mount=from=out-c2e7f2fc3addf6be,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_epoch-c2e7f2fc3addf6be.rmeta,source=/libcrossbeam_epoch-c2e7f2fc3addf6be.rmeta \
   --mount=from=out-5ac36063ddf29a62,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rlib,source=/libcrossbeam_utils-5ac36063ddf29a62.rlib \
   --mount=from=out-5ac36063ddf29a62,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rmeta,source=/libcrossbeam_utils-5ac36063ddf29a62.rmeta \
+  --mount=from=out-f1aa93c35dc8b5a4,dst=/tmp/clis-gifski_1-34-0/release/build/rayon-core-f1aa93c35dc8b5a4/out,source=/ \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=rayon_core \
         CARGO_INCREMENTAL=0 \
@@ -3262,6 +3850,14 @@ COPY --link --from=dep-n-rayon-core-1.12.1-efba4db9305abd55 /tmp/clis-gifski_1-3
 ##     "cc1298b8da143bbe",
 ##     "c2e7f2fc3addf6be",
 ##     "5ac36063ddf29a62",
+##     "43968187a3badc28",
+##     "f1aa93c35dc8b5a4",
+##     "b948070c08a8f1cf",
+##     "8f74c6b4e8a858d1",
+## ]
+## buildrs_results = [
+##     "b948070c08a8f1cf",
+##     "f1aa93c35dc8b5a4",
 ## ]
 ## writes = [
 ##     "librayon_core-efba4db9305abd55.rlib",
@@ -3301,6 +3897,10 @@ COPY --link --from=dep-n-rayon-core-1.12.1-efba4db9305abd55 /tmp/clis-gifski_1-3
 ## from = "out-5ac36063ddf29a62"
 ## xtern = "libcrossbeam_utils-5ac36063ddf29a62.rmeta"
 ##
+## [[mounts]]
+## name = "out-f1aa93c35dc8b5a4"
+## mount = "/tmp/clis-gifski_1-34-0/release/build/rayon-core-f1aa93c35dc8b5a4/out"
+##
 ## [[stages]]
 ##
 ## [stages.Script]
@@ -3332,6 +3932,7 @@ COPY --link --from=dep-n-rayon-core-1.12.1-efba4db9305abd55 /tmp/clis-gifski_1-3
 ##   --mount=from=out-c2e7f2fc3addf6be,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_epoch-c2e7f2fc3addf6be.rmeta,source=/libcrossbeam_epoch-c2e7f2fc3addf6be.rmeta \
 ##   --mount=from=out-5ac36063ddf29a62,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rlib,source=/libcrossbeam_utils-5ac36063ddf29a62.rlib \
 ##   --mount=from=out-5ac36063ddf29a62,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rmeta,source=/libcrossbeam_utils-5ac36063ddf29a62.rmeta \
+##   --mount=from=out-f1aa93c35dc8b5a4,dst=/tmp/clis-gifski_1-34-0/release/build/rayon-core-f1aa93c35dc8b5a4/out,source=/ \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=rayon_core \
 ##         CARGO_INCREMENTAL=0 \
@@ -3420,6 +4021,14 @@ COPY --link --from=dep-n-rayon-1.10.0-53357b7dd9022303 /tmp/clis-gifski_1-34-0/r
 ##     "cc1298b8da143bbe",
 ##     "c2e7f2fc3addf6be",
 ##     "5ac36063ddf29a62",
+##     "43968187a3badc28",
+##     "8f74c6b4e8a858d1",
+##     "b948070c08a8f1cf",
+##     "f1aa93c35dc8b5a4",
+## ]
+## buildrs_results = [
+##     "b948070c08a8f1cf",
+##     "f1aa93c35dc8b5a4",
 ## ]
 ## writes = [
 ##     "librayon-53357b7dd9022303.rlib",
@@ -3851,10 +4460,18 @@ COPY --link --from=dep-n-imagequant-4.4.1-13cdc94a2acbf464 /tmp/clis-gifski_1-34
 ##     "cc1298b8da143bbe",
 ##     "c2e7f2fc3addf6be",
 ##     "5ac36063ddf29a62",
+##     "43968187a3badc28",
+##     "8f74c6b4e8a858d1",
 ##     "b630417cd5f2024a",
 ##     "f0cdacabc0947b7b",
 ##     "6b8c8ab37131cd0c",
 ##     "e1f9b2ca981c3e9f",
+##     "b948070c08a8f1cf",
+##     "f1aa93c35dc8b5a4",
+## ]
+## buildrs_results = [
+##     "b948070c08a8f1cf",
+##     "f1aa93c35dc8b5a4",
 ## ]
 ## writes = [
 ##     "imagequant-13cdc94a2acbf464.d",
@@ -4051,6 +4668,290 @@ COPY --link --from=dep-n-imagequant-4.4.1-13cdc94a2acbf464 /tmp/clis-gifski_1-34
 FROM scratch AS cratesio-crc32fast-1.5.0
 ADD --chmod=0664 --unpack --checksum=sha256:9481c1c90cbf2ac953f07c8d4a58aa3945c425b7185c9154d67a65e4230da511 \
   https://static.crates.io/crates/crc32fast/crc32fast-1.5.0.crate /
+FROM rust-base AS dep-x-crc32fast-1.5.0-f8cc7c73f6f71403
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-gifski_1-34-0/release/build/crc32fast-f8cc7c73f6f71403
+RUN \
+  --mount=from=cratesio-crc32fast-1.5.0,source=/crc32fast-1.5.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crc32fast-1.5.0,rw \
+    { \
+        cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crc32fast-1.5.0/build.rs | sed -E 's/^(pub[()a-z]* +)?(async +)?fn +main/\1\2fn actual_f8cc7c73f6f71403_main/' >/_ && mv /_ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crc32fast-1.5.0/build.rs ; \
+        { \
+          echo ; \
+          echo 'fn main() {' ; \
+          echo '    use std::env::{args_os, var_os};' ; \
+          echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+          echo '        use std::process::{Command, Stdio};' ; \
+          echo '        let mut cmd = Command::new("cargo-green");' ; \
+          echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+          echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+          echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+          echo '        assert!(res.success());' ; \
+          echo '    } else {' ; \
+          echo '        actual_f8cc7c73f6f71403_main();' ; \
+          echo '    }' ; \
+          echo '}' ; \
+        } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crc32fast-1.5.0/build.rs ; \
+    } && \
+    env CARGO="$(which cargo)" \
+        CARGO_CRATE_NAME=build_script_build \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crc32fast-1.5.0 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crc32fast-1.5.0/Cargo.toml \
+        CARGO_PKG_AUTHORS=Sam' Rijs <srijs@airpost.net>:Alex Crichton <alex@alexcrichton.com>' \
+        CARGO_PKG_DESCRIPTION=Fast,' SIMD-accelerated CRC32 (IEEE) checksum computation' \
+        CARGO_PKG_HOMEPAGE= \
+        CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=crc32fast \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/srijs/rust-crc32fast' \
+        CARGO_PKG_RUST_VERSION=1.63 \
+        CARGO_PKG_VERSION=1.5.0 \
+        CARGO_PKG_VERSION_MAJOR=1 \
+        CARGO_PKG_VERSION_MINOR=5 \
+        CARGO_PKG_VERSION_PATCH=0 \
+        CARGO_PKG_VERSION_PRE= \
+        CARGOGREEN=1 \
+      rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "nightly", "std"))' -C metadata'=d74cac6f75576cfa' -C extra-filename'=-f8cc7c73f6f71403' --out-dir /tmp/clis-gifski_1-34-0/release/build/crc32fast-f8cc7c73f6f71403 -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crc32fast-1.5.0/build.rs \
+        1>          /tmp/clis-gifski_1-34-0/release/build/crc32fast-f8cc7c73f6f71403/out-f8cc7c73f6f71403-stdout \
+        2>          /tmp/clis-gifski_1-34-0/release/build/crc32fast-f8cc7c73f6f71403/out-f8cc7c73f6f71403-stderr \
+        || echo $? >/tmp/clis-gifski_1-34-0/release/build/crc32fast-f8cc7c73f6f71403/out-f8cc7c73f6f71403-errcode\
+  ; find /tmp/clis-gifski_1-34-0/release/build/crc32fast-f8cc7c73f6f71403/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-f8cc7c73f6f71403
+COPY --link --from=dep-x-crc32fast-1.5.0-f8cc7c73f6f71403 /tmp/clis-gifski_1-34-0/release/build/crc32fast-f8cc7c73f6f71403/*-f8cc7c73f6f71403* /
+
+## this = "f8cc7c73f6f71403"
+## writes = [
+##     "build_script_build-f8cc7c73f6f71403",
+##     "build_script_build-f8cc7c73f6f71403.d",
+## ]
+## stderr = [
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/build/crc32fast-f8cc7c73f6f71403/build_script_build-f8cc7c73f6f71403.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/build/crc32fast-f8cc7c73f6f71403/build_script_build-f8cc7c73f6f71403","emit":"link"}',
+## ]
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
+##
+## [[stages]]
+##
+## [stages.Cratesio]
+## stage = "cratesio-crc32fast-1.5.0"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crc32fast-1.5.0"
+## name = "crc32fast"
+## name_dash_version = "crc32fast-1.5.0"
+## hash = "9481c1c90cbf2ac953f07c8d4a58aa3945c425b7185c9154d67a65e4230da511"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "dep-x-crc32fast-1.5.0-f8cc7c73f6f71403"
+## script = '''
+## FROM rust-base AS dep-x-crc32fast-1.5.0-f8cc7c73f6f71403
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-gifski_1-34-0/release/build/crc32fast-f8cc7c73f6f71403
+## RUN \
+##   --mount=from=cratesio-crc32fast-1.5.0,source=/crc32fast-1.5.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crc32fast-1.5.0,rw \
+##     { \
+##         cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crc32fast-1.5.0/build.rs | sed -E 's/^(pub[()a-z]* +)?(async +)?fn +main/\1\2fn actual_f8cc7c73f6f71403_main/' >/_ && mv /_ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crc32fast-1.5.0/build.rs ; \
+##         { \
+##           echo ; \
+##           echo 'fn main() {' ; \
+##           echo '    use std::env::{args_os, var_os};' ; \
+##           echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+##           echo '        use std::process::{Command, Stdio};' ; \
+##           echo '        let mut cmd = Command::new("cargo-green");' ; \
+##           echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+##           echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+##           echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+##           echo '        assert!(res.success());' ; \
+##           echo '    } else {' ; \
+##           echo '        actual_f8cc7c73f6f71403_main();' ; \
+##           echo '    }' ; \
+##           echo '}' ; \
+##         } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crc32fast-1.5.0/build.rs ; \
+##     } && \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CRATE_NAME=build_script_build \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crc32fast-1.5.0 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crc32fast-1.5.0/Cargo.toml \
+##         CARGO_PKG_AUTHORS=Sam' Rijs <srijs@airpost.net>:Alex Crichton <alex@alexcrichton.com>' \
+##         CARGO_PKG_DESCRIPTION=Fast,' SIMD-accelerated CRC32 (IEEE) checksum computation' \
+##         CARGO_PKG_HOMEPAGE= \
+##         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=crc32fast \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/srijs/rust-crc32fast' \
+##         CARGO_PKG_RUST_VERSION=1.63 \
+##         CARGO_PKG_VERSION=1.5.0 \
+##         CARGO_PKG_VERSION_MAJOR=1 \
+##         CARGO_PKG_VERSION_MINOR=5 \
+##         CARGO_PKG_VERSION_PATCH=0 \
+##         CARGO_PKG_VERSION_PRE= \
+##         CARGOGREEN=1 \
+##       rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "nightly", "std"))' -C metadata'=d74cac6f75576cfa' -C extra-filename'=-f8cc7c73f6f71403' --out-dir /tmp/clis-gifski_1-34-0/release/build/crc32fast-f8cc7c73f6f71403 -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crc32fast-1.5.0/build.rs \
+##         1>          /tmp/clis-gifski_1-34-0/release/build/crc32fast-f8cc7c73f6f71403/out-f8cc7c73f6f71403-stdout \
+##         2>          /tmp/clis-gifski_1-34-0/release/build/crc32fast-f8cc7c73f6f71403/out-f8cc7c73f6f71403-stderr \
+##         || echo $? >/tmp/clis-gifski_1-34-0/release/build/crc32fast-f8cc7c73f6f71403/out-f8cc7c73f6f71403-errcode\
+##   ; find /tmp/clis-gifski_1-34-0/release/build/crc32fast-f8cc7c73f6f71403/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-f8cc7c73f6f71403"
+## script = """
+## FROM scratch AS out-f8cc7c73f6f71403
+## COPY --link --from=dep-x-crc32fast-1.5.0-f8cc7c73f6f71403 /tmp/clis-gifski_1-34-0/release/build/crc32fast-f8cc7c73f6f71403/*-f8cc7c73f6f71403* /"""
+
+FROM rust-base AS run-z-crc32fast-1.5.0-aca03044d2384264
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-gifski_1-34-0/release/build/crc32fast-aca03044d2384264/out
+WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crc32fast-1.5.0
+RUN \
+  --mount=from=out-f8cc7c73f6f71403,source=/build_script_build-f8cc7c73f6f71403,dst=/tmp/clis-gifski_1-34-0/release/build/crc32fast-f8cc7c73f6f71403/build-script-build \
+  --mount=from=cratesio-crc32fast-1.5.0,source=/crc32fast-1.5.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crc32fast-1.5.0 \
+    env CARGO="$(which cargo)" \
+        CARGO_CFG_FEATURE=default,std \
+        CARGO_CFG_PANIC=unwind \
+        CARGO_CFG_TARGET_ABI= \
+        CARGO_CFG_TARGET_ARCH=x86_64 \
+        CARGO_CFG_TARGET_ENDIAN=little \
+        CARGO_CFG_TARGET_ENV=gnu \
+        CARGO_CFG_TARGET_FAMILY=unix \
+        CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
+        CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+        CARGO_CFG_TARGET_OS=linux \
+        CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+        CARGO_CFG_TARGET_VENDOR=unknown \
+        CARGO_CFG_UNIX= \
+        CARGO_ENCODED_RUSTFLAGS= \
+        CARGO_FEATURE_DEFAULT=1 \
+        CARGO_FEATURE_STD=1 \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crc32fast-1.5.0 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crc32fast-1.5.0/Cargo.toml \
+        CARGO_PKG_AUTHORS=Sam' Rijs <srijs@airpost.net>:Alex Crichton <alex@alexcrichton.com>' \
+        CARGO_PKG_DESCRIPTION=Fast,' SIMD-accelerated CRC32 (IEEE) checksum computation' \
+        CARGO_PKG_HOMEPAGE= \
+        CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=crc32fast \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/srijs/rust-crc32fast' \
+        CARGO_PKG_RUST_VERSION=1.63 \
+        CARGO_PKG_VERSION=1.5.0 \
+        CARGO_PKG_VERSION_MAJOR=1 \
+        CARGO_PKG_VERSION_MINOR=5 \
+        CARGO_PKG_VERSION_PATCH=0 \
+        CARGO_PKG_VERSION_PRE= \
+        DEBUG=false \
+        HOST=x86_64-unknown-linux-gnu \
+        NUM_JOBS=4 \
+        OPT_LEVEL=3 \
+        OUT_DIR=/tmp/clis-gifski_1-34-0/release/build/crc32fast-aca03044d2384264/out \
+        PROFILE=release \
+        RUSTC=rustc \
+        RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+        TARGET=x86_64-unknown-linux-gnu \
+        CARGOGREEN=1 \
+      CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-gifski_1-34-0/release/build/crc32fast-f8cc7c73f6f71403/build-script-build \
+        1>          /tmp/clis-gifski_1-34-0/release/build/crc32fast-aca03044d2384264/out/out-aca03044d2384264-stdout \
+        2>          /tmp/clis-gifski_1-34-0/release/build/crc32fast-aca03044d2384264/out/out-aca03044d2384264-stderr \
+        || echo $? >/tmp/clis-gifski_1-34-0/release/build/crc32fast-aca03044d2384264/out/out-aca03044d2384264-errcode\
+  ; find /tmp/clis-gifski_1-34-0/release/build/crc32fast-aca03044d2384264/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-aca03044d2384264
+COPY --link --from=run-z-crc32fast-1.5.0-aca03044d2384264 /tmp/clis-gifski_1-34-0/release/build/crc32fast-aca03044d2384264/out /
+
+## this = "aca03044d2384264"
+## deps = ["f8cc7c73f6f71403"]
+## writes_to = "/tmp/clis-gifski_1-34-0/release/build/crc32fast-aca03044d2384264/out"
+## stdout = [
+##     "cargo:rustc-cfg=stable_arm_crc32_intrinsics",
+##     "cargo:rustc-check-cfg=cfg(stable_arm_crc32_intrinsics)",
+## ]
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "run-z-crc32fast-1.5.0-aca03044d2384264"
+## script = '''
+## FROM rust-base AS run-z-crc32fast-1.5.0-aca03044d2384264
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-gifski_1-34-0/release/build/crc32fast-aca03044d2384264/out
+## WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crc32fast-1.5.0
+## RUN \
+##   --mount=from=out-f8cc7c73f6f71403,source=/build_script_build-f8cc7c73f6f71403,dst=/tmp/clis-gifski_1-34-0/release/build/crc32fast-f8cc7c73f6f71403/build-script-build \
+##   --mount=from=cratesio-crc32fast-1.5.0,source=/crc32fast-1.5.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crc32fast-1.5.0 \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CFG_FEATURE=default,std \
+##         CARGO_CFG_PANIC=unwind \
+##         CARGO_CFG_TARGET_ABI= \
+##         CARGO_CFG_TARGET_ARCH=x86_64 \
+##         CARGO_CFG_TARGET_ENDIAN=little \
+##         CARGO_CFG_TARGET_ENV=gnu \
+##         CARGO_CFG_TARGET_FAMILY=unix \
+##         CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
+##         CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+##         CARGO_CFG_TARGET_OS=linux \
+##         CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+##         CARGO_CFG_TARGET_VENDOR=unknown \
+##         CARGO_CFG_UNIX= \
+##         CARGO_ENCODED_RUSTFLAGS= \
+##         CARGO_FEATURE_DEFAULT=1 \
+##         CARGO_FEATURE_STD=1 \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crc32fast-1.5.0 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crc32fast-1.5.0/Cargo.toml \
+##         CARGO_PKG_AUTHORS=Sam' Rijs <srijs@airpost.net>:Alex Crichton <alex@alexcrichton.com>' \
+##         CARGO_PKG_DESCRIPTION=Fast,' SIMD-accelerated CRC32 (IEEE) checksum computation' \
+##         CARGO_PKG_HOMEPAGE= \
+##         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=crc32fast \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/srijs/rust-crc32fast' \
+##         CARGO_PKG_RUST_VERSION=1.63 \
+##         CARGO_PKG_VERSION=1.5.0 \
+##         CARGO_PKG_VERSION_MAJOR=1 \
+##         CARGO_PKG_VERSION_MINOR=5 \
+##         CARGO_PKG_VERSION_PATCH=0 \
+##         CARGO_PKG_VERSION_PRE= \
+##         DEBUG=false \
+##         HOST=x86_64-unknown-linux-gnu \
+##         NUM_JOBS=4 \
+##         OPT_LEVEL=3 \
+##         OUT_DIR=/tmp/clis-gifski_1-34-0/release/build/crc32fast-aca03044d2384264/out \
+##         PROFILE=release \
+##         RUSTC=rustc \
+##         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+##         TARGET=x86_64-unknown-linux-gnu \
+##         CARGOGREEN=1 \
+##       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-gifski_1-34-0/release/build/crc32fast-f8cc7c73f6f71403/build-script-build \
+##         1>          /tmp/clis-gifski_1-34-0/release/build/crc32fast-aca03044d2384264/out/out-aca03044d2384264-stdout \
+##         2>          /tmp/clis-gifski_1-34-0/release/build/crc32fast-aca03044d2384264/out/out-aca03044d2384264-stderr \
+##         || echo $? >/tmp/clis-gifski_1-34-0/release/build/crc32fast-aca03044d2384264/out/out-aca03044d2384264-errcode\
+##   ; find /tmp/clis-gifski_1-34-0/release/build/crc32fast-aca03044d2384264/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-aca03044d2384264"
+## script = """
+## FROM scratch AS out-aca03044d2384264
+## COPY --link --from=run-z-crc32fast-1.5.0-aca03044d2384264 /tmp/clis-gifski_1-34-0/release/build/crc32fast-aca03044d2384264/out /"""
+
+
 FROM rust-base AS dep-n-crc32fast-1.5.0-51c01ae8d7468fb2
 SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-gifski_1-34-0/release/deps
@@ -4058,6 +4959,7 @@ RUN \
   --mount=from=cratesio-crc32fast-1.5.0,source=/crc32fast-1.5.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crc32fast-1.5.0 \
   --mount=from=out-e1f9b2ca981c3e9f,dst=/tmp/clis-gifski_1-34-0/release/deps/libcfg_if-e1f9b2ca981c3e9f.rlib,source=/libcfg_if-e1f9b2ca981c3e9f.rlib \
   --mount=from=out-e1f9b2ca981c3e9f,dst=/tmp/clis-gifski_1-34-0/release/deps/libcfg_if-e1f9b2ca981c3e9f.rmeta,source=/libcfg_if-e1f9b2ca981c3e9f.rmeta \
+  --mount=from=out-aca03044d2384264,dst=/tmp/clis-gifski_1-34-0/release/build/crc32fast-aca03044d2384264/out,source=/ \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=crc32fast \
         CARGO_INCREMENTAL=0 \
@@ -4088,7 +4990,12 @@ FROM scratch AS out-51c01ae8d7468fb2
 COPY --link --from=dep-n-crc32fast-1.5.0-51c01ae8d7468fb2 /tmp/clis-gifski_1-34-0/release/deps/*-51c01ae8d7468fb2* /
 
 ## this = "51c01ae8d7468fb2"
-## deps = ["e1f9b2ca981c3e9f"]
+## deps = [
+##     "e1f9b2ca981c3e9f",
+##     "aca03044d2384264",
+##     "f8cc7c73f6f71403",
+## ]
+## buildrs_results = ["aca03044d2384264"]
 ## writes = [
 ##     "crc32fast-51c01ae8d7468fb2.d",
 ##     "libcrc32fast-51c01ae8d7468fb2.rlib",
@@ -4107,6 +5014,10 @@ COPY --link --from=dep-n-crc32fast-1.5.0-51c01ae8d7468fb2 /tmp/clis-gifski_1-34-
 ## [[externs]]
 ## from = "out-e1f9b2ca981c3e9f"
 ## xtern = "libcfg_if-e1f9b2ca981c3e9f.rmeta"
+##
+## [[mounts]]
+## name = "out-aca03044d2384264"
+## mount = "/tmp/clis-gifski_1-34-0/release/build/crc32fast-aca03044d2384264/out"
 ##
 ## [[stages]]
 ##
@@ -4135,6 +5046,7 @@ COPY --link --from=dep-n-crc32fast-1.5.0-51c01ae8d7468fb2 /tmp/clis-gifski_1-34-
 ##   --mount=from=cratesio-crc32fast-1.5.0,source=/crc32fast-1.5.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crc32fast-1.5.0 \
 ##   --mount=from=out-e1f9b2ca981c3e9f,dst=/tmp/clis-gifski_1-34-0/release/deps/libcfg_if-e1f9b2ca981c3e9f.rlib,source=/libcfg_if-e1f9b2ca981c3e9f.rlib \
 ##   --mount=from=out-e1f9b2ca981c3e9f,dst=/tmp/clis-gifski_1-34-0/release/deps/libcfg_if-e1f9b2ca981c3e9f.rmeta,source=/libcfg_if-e1f9b2ca981c3e9f.rmeta \
+##   --mount=from=out-aca03044d2384264,dst=/tmp/clis-gifski_1-34-0/release/build/crc32fast-aca03044d2384264/out,source=/ \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=crc32fast \
 ##         CARGO_INCREMENTAL=0 \
@@ -4459,9 +5371,12 @@ COPY --link --from=dep-n-flate2-1.1.2-92283f56cec7b441 /tmp/clis-gifski_1-34-0/r
 ## deps = [
 ##     "51c01ae8d7468fb2",
 ##     "e1f9b2ca981c3e9f",
+##     "f8cc7c73f6f71403",
 ##     "2a56889f8f4194b3",
 ##     "1ce6de5e74c29a43",
+##     "aca03044d2384264",
 ## ]
+## buildrs_results = ["aca03044d2384264"]
 ## writes = [
 ##     "flate2-92283f56cec7b441.d",
 ##     "libflate2-92283f56cec7b441.rlib",
@@ -4578,11 +5493,321 @@ COPY --link --from=dep-n-flate2-1.1.2-92283f56cec7b441 /tmp/clis-gifski_1-34-0/r
 FROM scratch AS cratesio-libc-0.2.174
 ADD --chmod=0664 --unpack --checksum=sha256:1171693293099992e19cddea4e8b849964e9846f4acee11b3948bcc337be8776 \
   https://static.crates.io/crates/libc/libc-0.2.174.crate /
+FROM rust-base AS dep-x-libc-0.2.174-0123d3968a0ef092
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-gifski_1-34-0/release/build/libc-0123d3968a0ef092
+RUN \
+  --mount=from=cratesio-libc-0.2.174,source=/libc-0.2.174,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.174,rw \
+    { \
+        cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.174/build.rs | sed -E 's/^(pub[()a-z]* +)?(async +)?fn +main/\1\2fn actual_0123d3968a0ef092_main/' >/_ && mv /_ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.174/build.rs ; \
+        { \
+          echo ; \
+          echo 'fn main() {' ; \
+          echo '    use std::env::{args_os, var_os};' ; \
+          echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+          echo '        use std::process::{Command, Stdio};' ; \
+          echo '        let mut cmd = Command::new("cargo-green");' ; \
+          echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+          echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+          echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+          echo '        assert!(res.success());' ; \
+          echo '    } else {' ; \
+          echo '        actual_0123d3968a0ef092_main();' ; \
+          echo '    }' ; \
+          echo '}' ; \
+        } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.174/build.rs ; \
+    } && \
+    env CARGO="$(which cargo)" \
+        CARGO_CRATE_NAME=build_script_build \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.174 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.174/Cargo.toml \
+        CARGO_PKG_AUTHORS=The' Rust Project Developers' \
+        CARGO_PKG_DESCRIPTION=Raw' FFI bindings to platform libraries like libc.' \
+        CARGO_PKG_HOMEPAGE= \
+        CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=libc \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/libc' \
+        CARGO_PKG_RUST_VERSION=1.63 \
+        CARGO_PKG_VERSION=0.2.174 \
+        CARGO_PKG_VERSION_MAJOR=0 \
+        CARGO_PKG_VERSION_MINOR=2 \
+        CARGO_PKG_VERSION_PATCH=174 \
+        CARGO_PKG_VERSION_PRE= \
+        CARGOGREEN=1 \
+      rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' --allow clippy'::used_underscore_binding' --allow unused_qualifications --warn clippy'::unnecessary_semicolon' --allow clippy'::unnecessary_cast' --allow clippy'::uninlined_format_args' --warn clippy'::ptr_as_ptr' --allow clippy'::non_minimal_cfg' --allow clippy'::missing_safety_doc' --warn clippy'::map_unwrap_or' --warn clippy'::manual_assert' --allow clippy'::identity_op' --warn clippy'::explicit_iter_loop' --allow clippy'::expl_impl_clone_on_copy' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("align", "const-extern-fn", "default", "extra_traits", "rustc-dep-of-std", "rustc-std-workspace-core", "std", "use_std"))' -C metadata'=483eb490f6612b85' -C extra-filename'=-0123d3968a0ef092' --out-dir /tmp/clis-gifski_1-34-0/release/build/libc-0123d3968a0ef092 -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.174/build.rs \
+        1>          /tmp/clis-gifski_1-34-0/release/build/libc-0123d3968a0ef092/out-0123d3968a0ef092-stdout \
+        2>          /tmp/clis-gifski_1-34-0/release/build/libc-0123d3968a0ef092/out-0123d3968a0ef092-stderr \
+        || echo $? >/tmp/clis-gifski_1-34-0/release/build/libc-0123d3968a0ef092/out-0123d3968a0ef092-errcode\
+  ; find /tmp/clis-gifski_1-34-0/release/build/libc-0123d3968a0ef092/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-0123d3968a0ef092
+COPY --link --from=dep-x-libc-0.2.174-0123d3968a0ef092 /tmp/clis-gifski_1-34-0/release/build/libc-0123d3968a0ef092/*-0123d3968a0ef092* /
+
+## this = "0123d3968a0ef092"
+## writes = [
+##     "build_script_build-0123d3968a0ef092",
+##     "build_script_build-0123d3968a0ef092.d",
+## ]
+## stderr = [
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/build/libc-0123d3968a0ef092/build_script_build-0123d3968a0ef092.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/build/libc-0123d3968a0ef092/build_script_build-0123d3968a0ef092","emit":"link"}',
+## ]
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
+##
+## [[stages]]
+##
+## [stages.Cratesio]
+## stage = "cratesio-libc-0.2.174"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.174"
+## name = "libc"
+## name_dash_version = "libc-0.2.174"
+## hash = "1171693293099992e19cddea4e8b849964e9846f4acee11b3948bcc337be8776"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "dep-x-libc-0.2.174-0123d3968a0ef092"
+## script = '''
+## FROM rust-base AS dep-x-libc-0.2.174-0123d3968a0ef092
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-gifski_1-34-0/release/build/libc-0123d3968a0ef092
+## RUN \
+##   --mount=from=cratesio-libc-0.2.174,source=/libc-0.2.174,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.174,rw \
+##     { \
+##         cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.174/build.rs | sed -E 's/^(pub[()a-z]* +)?(async +)?fn +main/\1\2fn actual_0123d3968a0ef092_main/' >/_ && mv /_ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.174/build.rs ; \
+##         { \
+##           echo ; \
+##           echo 'fn main() {' ; \
+##           echo '    use std::env::{args_os, var_os};' ; \
+##           echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+##           echo '        use std::process::{Command, Stdio};' ; \
+##           echo '        let mut cmd = Command::new("cargo-green");' ; \
+##           echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+##           echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+##           echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+##           echo '        assert!(res.success());' ; \
+##           echo '    } else {' ; \
+##           echo '        actual_0123d3968a0ef092_main();' ; \
+##           echo '    }' ; \
+##           echo '}' ; \
+##         } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.174/build.rs ; \
+##     } && \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CRATE_NAME=build_script_build \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.174 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.174/Cargo.toml \
+##         CARGO_PKG_AUTHORS=The' Rust Project Developers' \
+##         CARGO_PKG_DESCRIPTION=Raw' FFI bindings to platform libraries like libc.' \
+##         CARGO_PKG_HOMEPAGE= \
+##         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=libc \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/libc' \
+##         CARGO_PKG_RUST_VERSION=1.63 \
+##         CARGO_PKG_VERSION=0.2.174 \
+##         CARGO_PKG_VERSION_MAJOR=0 \
+##         CARGO_PKG_VERSION_MINOR=2 \
+##         CARGO_PKG_VERSION_PATCH=174 \
+##         CARGO_PKG_VERSION_PRE= \
+##         CARGOGREEN=1 \
+##       rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' --allow clippy'::used_underscore_binding' --allow unused_qualifications --warn clippy'::unnecessary_semicolon' --allow clippy'::unnecessary_cast' --allow clippy'::uninlined_format_args' --warn clippy'::ptr_as_ptr' --allow clippy'::non_minimal_cfg' --allow clippy'::missing_safety_doc' --warn clippy'::map_unwrap_or' --warn clippy'::manual_assert' --allow clippy'::identity_op' --warn clippy'::explicit_iter_loop' --allow clippy'::expl_impl_clone_on_copy' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("align", "const-extern-fn", "default", "extra_traits", "rustc-dep-of-std", "rustc-std-workspace-core", "std", "use_std"))' -C metadata'=483eb490f6612b85' -C extra-filename'=-0123d3968a0ef092' --out-dir /tmp/clis-gifski_1-34-0/release/build/libc-0123d3968a0ef092 -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.174/build.rs \
+##         1>          /tmp/clis-gifski_1-34-0/release/build/libc-0123d3968a0ef092/out-0123d3968a0ef092-stdout \
+##         2>          /tmp/clis-gifski_1-34-0/release/build/libc-0123d3968a0ef092/out-0123d3968a0ef092-stderr \
+##         || echo $? >/tmp/clis-gifski_1-34-0/release/build/libc-0123d3968a0ef092/out-0123d3968a0ef092-errcode\
+##   ; find /tmp/clis-gifski_1-34-0/release/build/libc-0123d3968a0ef092/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-0123d3968a0ef092"
+## script = """
+## FROM scratch AS out-0123d3968a0ef092
+## COPY --link --from=dep-x-libc-0.2.174-0123d3968a0ef092 /tmp/clis-gifski_1-34-0/release/build/libc-0123d3968a0ef092/*-0123d3968a0ef092* /"""
+
+FROM rust-base AS run-z-libc-0.2.174-55b2d737f3af23dc
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-gifski_1-34-0/release/build/libc-55b2d737f3af23dc/out
+WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.174
+RUN \
+  --mount=from=out-0123d3968a0ef092,source=/build_script_build-0123d3968a0ef092,dst=/tmp/clis-gifski_1-34-0/release/build/libc-0123d3968a0ef092/build-script-build \
+  --mount=from=cratesio-libc-0.2.174,source=/libc-0.2.174,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.174 \
+    env CARGO="$(which cargo)" \
+        CARGO_CFG_FEATURE=default,std \
+        CARGO_CFG_PANIC=unwind \
+        CARGO_CFG_TARGET_ABI= \
+        CARGO_CFG_TARGET_ARCH=x86_64 \
+        CARGO_CFG_TARGET_ENDIAN=little \
+        CARGO_CFG_TARGET_ENV=gnu \
+        CARGO_CFG_TARGET_FAMILY=unix \
+        CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
+        CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+        CARGO_CFG_TARGET_OS=linux \
+        CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+        CARGO_CFG_TARGET_VENDOR=unknown \
+        CARGO_CFG_UNIX= \
+        CARGO_ENCODED_RUSTFLAGS= \
+        CARGO_FEATURE_DEFAULT=1 \
+        CARGO_FEATURE_STD=1 \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.174 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.174/Cargo.toml \
+        CARGO_PKG_AUTHORS=The' Rust Project Developers' \
+        CARGO_PKG_DESCRIPTION=Raw' FFI bindings to platform libraries like libc.' \
+        CARGO_PKG_HOMEPAGE= \
+        CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=libc \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/libc' \
+        CARGO_PKG_RUST_VERSION=1.63 \
+        CARGO_PKG_VERSION=0.2.174 \
+        CARGO_PKG_VERSION_MAJOR=0 \
+        CARGO_PKG_VERSION_MINOR=2 \
+        CARGO_PKG_VERSION_PATCH=174 \
+        CARGO_PKG_VERSION_PRE= \
+        DEBUG=false \
+        HOST=x86_64-unknown-linux-gnu \
+        NUM_JOBS=4 \
+        OPT_LEVEL=3 \
+        OUT_DIR=/tmp/clis-gifski_1-34-0/release/build/libc-55b2d737f3af23dc/out \
+        PROFILE=release \
+        RUSTC=rustc \
+        RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+        TARGET=x86_64-unknown-linux-gnu \
+        CARGOGREEN=1 \
+      CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-gifski_1-34-0/release/build/libc-0123d3968a0ef092/build-script-build \
+        1>          /tmp/clis-gifski_1-34-0/release/build/libc-55b2d737f3af23dc/out/out-55b2d737f3af23dc-stdout \
+        2>          /tmp/clis-gifski_1-34-0/release/build/libc-55b2d737f3af23dc/out/out-55b2d737f3af23dc-stderr \
+        || echo $? >/tmp/clis-gifski_1-34-0/release/build/libc-55b2d737f3af23dc/out/out-55b2d737f3af23dc-errcode\
+  ; find /tmp/clis-gifski_1-34-0/release/build/libc-55b2d737f3af23dc/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-55b2d737f3af23dc
+COPY --link --from=run-z-libc-0.2.174-55b2d737f3af23dc /tmp/clis-gifski_1-34-0/release/build/libc-55b2d737f3af23dc/out /
+
+## this = "55b2d737f3af23dc"
+## deps = ["0123d3968a0ef092"]
+## writes_to = "/tmp/clis-gifski_1-34-0/release/build/libc-55b2d737f3af23dc/out"
+## stdout = [
+##     "cargo:rerun-if-changed=build.rs",
+##     "cargo:rerun-if-env-changed=RUST_LIBC_UNSTABLE_FREEBSD_VERSION",
+##     "cargo:rustc-cfg=freebsd11",
+##     "cargo:rerun-if-env-changed=RUST_LIBC_UNSTABLE_MUSL_V1_2_3",
+##     "cargo:rerun-if-env-changed=RUST_LIBC_UNSTABLE_LINUX_TIME_BITS64",
+##     "cargo:rerun-if-env-changed=RUST_LIBC_UNSTABLE_GNU_FILE_OFFSET_BITS",
+##     "cargo:rerun-if-env-changed=RUST_LIBC_UNSTABLE_GNU_TIME_BITS",
+##     "cargo:rustc-cfg=libc_const_extern_fn",
+##     "cargo:rustc-check-cfg=cfg(emscripten_old_stat_abi)",
+##     "cargo:rustc-check-cfg=cfg(espidf_time32)",
+##     "cargo:rustc-check-cfg=cfg(freebsd10)",
+##     "cargo:rustc-check-cfg=cfg(freebsd11)",
+##     "cargo:rustc-check-cfg=cfg(freebsd12)",
+##     "cargo:rustc-check-cfg=cfg(freebsd13)",
+##     "cargo:rustc-check-cfg=cfg(freebsd14)",
+##     "cargo:rustc-check-cfg=cfg(freebsd15)",
+##     "cargo:rustc-check-cfg=cfg(gnu_file_offset_bits64)",
+##     "cargo:rustc-check-cfg=cfg(gnu_time_bits64)",
+##     "cargo:rustc-check-cfg=cfg(libc_const_extern_fn)",
+##     "cargo:rustc-check-cfg=cfg(libc_deny_warnings)",
+##     "cargo:rustc-check-cfg=cfg(libc_thread_local)",
+##     "cargo:rustc-check-cfg=cfg(libc_ctest)",
+##     "cargo:rustc-check-cfg=cfg(linux_time_bits64)",
+##     "cargo:rustc-check-cfg=cfg(musl_v1_2_3)",
+##     'cargo:rustc-check-cfg=cfg(target_os,values("switch","aix","ohos","hurd","rtems","visionos","nuttx","cygwin"))',
+##     'cargo:rustc-check-cfg=cfg(target_env,values("illumos","wasi","aix","ohos","nto71_iosock","nto80"))',
+##     'cargo:rustc-check-cfg=cfg(target_arch,values("loongarch64","mips32r6","mips64r6","csky"))',
+## ]
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "run-z-libc-0.2.174-55b2d737f3af23dc"
+## script = '''
+## FROM rust-base AS run-z-libc-0.2.174-55b2d737f3af23dc
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-gifski_1-34-0/release/build/libc-55b2d737f3af23dc/out
+## WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.174
+## RUN \
+##   --mount=from=out-0123d3968a0ef092,source=/build_script_build-0123d3968a0ef092,dst=/tmp/clis-gifski_1-34-0/release/build/libc-0123d3968a0ef092/build-script-build \
+##   --mount=from=cratesio-libc-0.2.174,source=/libc-0.2.174,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.174 \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CFG_FEATURE=default,std \
+##         CARGO_CFG_PANIC=unwind \
+##         CARGO_CFG_TARGET_ABI= \
+##         CARGO_CFG_TARGET_ARCH=x86_64 \
+##         CARGO_CFG_TARGET_ENDIAN=little \
+##         CARGO_CFG_TARGET_ENV=gnu \
+##         CARGO_CFG_TARGET_FAMILY=unix \
+##         CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
+##         CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+##         CARGO_CFG_TARGET_OS=linux \
+##         CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+##         CARGO_CFG_TARGET_VENDOR=unknown \
+##         CARGO_CFG_UNIX= \
+##         CARGO_ENCODED_RUSTFLAGS= \
+##         CARGO_FEATURE_DEFAULT=1 \
+##         CARGO_FEATURE_STD=1 \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.174 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.174/Cargo.toml \
+##         CARGO_PKG_AUTHORS=The' Rust Project Developers' \
+##         CARGO_PKG_DESCRIPTION=Raw' FFI bindings to platform libraries like libc.' \
+##         CARGO_PKG_HOMEPAGE= \
+##         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=libc \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/libc' \
+##         CARGO_PKG_RUST_VERSION=1.63 \
+##         CARGO_PKG_VERSION=0.2.174 \
+##         CARGO_PKG_VERSION_MAJOR=0 \
+##         CARGO_PKG_VERSION_MINOR=2 \
+##         CARGO_PKG_VERSION_PATCH=174 \
+##         CARGO_PKG_VERSION_PRE= \
+##         DEBUG=false \
+##         HOST=x86_64-unknown-linux-gnu \
+##         NUM_JOBS=4 \
+##         OPT_LEVEL=3 \
+##         OUT_DIR=/tmp/clis-gifski_1-34-0/release/build/libc-55b2d737f3af23dc/out \
+##         PROFILE=release \
+##         RUSTC=rustc \
+##         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+##         TARGET=x86_64-unknown-linux-gnu \
+##         CARGOGREEN=1 \
+##       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-gifski_1-34-0/release/build/libc-0123d3968a0ef092/build-script-build \
+##         1>          /tmp/clis-gifski_1-34-0/release/build/libc-55b2d737f3af23dc/out/out-55b2d737f3af23dc-stdout \
+##         2>          /tmp/clis-gifski_1-34-0/release/build/libc-55b2d737f3af23dc/out/out-55b2d737f3af23dc-stderr \
+##         || echo $? >/tmp/clis-gifski_1-34-0/release/build/libc-55b2d737f3af23dc/out/out-55b2d737f3af23dc-errcode\
+##   ; find /tmp/clis-gifski_1-34-0/release/build/libc-55b2d737f3af23dc/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-55b2d737f3af23dc"
+## script = """
+## FROM scratch AS out-55b2d737f3af23dc
+## COPY --link --from=run-z-libc-0.2.174-55b2d737f3af23dc /tmp/clis-gifski_1-34-0/release/build/libc-55b2d737f3af23dc/out /"""
+
+
 FROM rust-base AS dep-n-libc-0.2.174-3afb72ac1310d574
 SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-gifski_1-34-0/release/deps
 RUN \
   --mount=from=cratesio-libc-0.2.174,source=/libc-0.2.174,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.174 \
+  --mount=from=out-55b2d737f3af23dc,dst=/tmp/clis-gifski_1-34-0/release/build/libc-55b2d737f3af23dc/out,source=/ \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=libc \
         CARGO_INCREMENTAL=0 \
@@ -4613,6 +5838,11 @@ FROM scratch AS out-3afb72ac1310d574
 COPY --link --from=dep-n-libc-0.2.174-3afb72ac1310d574 /tmp/clis-gifski_1-34-0/release/deps/*-3afb72ac1310d574* /
 
 ## this = "3afb72ac1310d574"
+## deps = [
+##     "55b2d737f3af23dc",
+##     "0123d3968a0ef092",
+## ]
+## buildrs_results = ["55b2d737f3af23dc"]
 ## writes = [
 ##     "libc-3afb72ac1310d574.d",
 ##     "liblibc-3afb72ac1310d574.rlib",
@@ -4623,6 +5853,10 @@ COPY --link --from=dep-n-libc-0.2.174-3afb72ac1310d574 /tmp/clis-gifski_1-34-0/r
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/liblibc-3afb72ac1310d574.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/liblibc-3afb72ac1310d574.rlib","emit":"link"}',
 ## ]
+##
+## [[mounts]]
+## name = "out-55b2d737f3af23dc"
+## mount = "/tmp/clis-gifski_1-34-0/release/build/libc-55b2d737f3af23dc/out"
 ##
 ## [[stages]]
 ##
@@ -4649,6 +5883,7 @@ COPY --link --from=dep-n-libc-0.2.174-3afb72ac1310d574 /tmp/clis-gifski_1-34-0/r
 ## WORKDIR /tmp/clis-gifski_1-34-0/release/deps
 ## RUN \
 ##   --mount=from=cratesio-libc-0.2.174,source=/libc-0.2.174,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.174 \
+##   --mount=from=out-55b2d737f3af23dc,dst=/tmp/clis-gifski_1-34-0/release/build/libc-55b2d737f3af23dc/out,source=/ \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=libc \
 ##         CARGO_INCREMENTAL=0 \
@@ -4740,12 +5975,20 @@ COPY --link --from=dep-n-lodepng-3.12.1-c1608f7a6e4ba58d /tmp/clis-gifski_1-34-0
 ## deps = [
 ##     "51c01ae8d7468fb2",
 ##     "e1f9b2ca981c3e9f",
+##     "f8cc7c73f6f71403",
 ##     "92283f56cec7b441",
 ##     "2a56889f8f4194b3",
 ##     "1ce6de5e74c29a43",
 ##     "3afb72ac1310d574",
+##     "0123d3968a0ef092",
 ##     "b630417cd5f2024a",
 ##     "f0cdacabc0947b7b",
+##     "aca03044d2384264",
+##     "55b2d737f3af23dc",
+## ]
+## buildrs_results = [
+##     "aca03044d2384264",
+##     "55b2d737f3af23dc",
 ## ]
 ## writes = [
 ##     "liblodepng-c1608f7a6e4ba58d.rlib",
@@ -5124,14 +6367,419 @@ COPY --link --from=dep-n-natord-1.0.9-dbbab79b50c30bb1 /tmp/clis-gifski_1-34-0/r
 ## FROM scratch AS out-dbbab79b50c30bb1
 ## COPY --link --from=dep-n-natord-1.0.9-dbbab79b50c30bb1 /tmp/clis-gifski_1-34-0/release/deps/*-dbbab79b50c30bb1* /"""
 
+FROM scratch AS cratesio-autocfg-1.5.0
+ADD --chmod=0664 --unpack --checksum=sha256:c08606f8c3cbf4ce6ec8e28fb0014a2c086708fe954eaa885384a6165172e7e8 \
+  https://static.crates.io/crates/autocfg/autocfg-1.5.0.crate /
+FROM rust-base AS dep-n-autocfg-1.5.0-54801e684ac31c95
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-gifski_1-34-0/release/deps
+RUN \
+  --mount=from=cratesio-autocfg-1.5.0,source=/autocfg-1.5.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/autocfg-1.5.0 \
+    env CARGO="$(which cargo)" \
+        CARGO_CRATE_NAME=autocfg \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/autocfg-1.5.0 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/autocfg-1.5.0/Cargo.toml \
+        CARGO_PKG_AUTHORS=Josh' Stone <cuviper@gmail.com>' \
+        CARGO_PKG_DESCRIPTION=Automatic' cfg for Rust compiler features' \
+        CARGO_PKG_HOMEPAGE= \
+        CARGO_PKG_LICENSE=Apache-2.0' OR MIT' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=autocfg \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/cuviper/autocfg' \
+        CARGO_PKG_RUST_VERSION=1.0 \
+        CARGO_PKG_VERSION=1.5.0 \
+        CARGO_PKG_VERSION_MAJOR=1 \
+        CARGO_PKG_VERSION_MINOR=5 \
+        CARGO_PKG_VERSION_PATCH=0 \
+        CARGO_PKG_VERSION_PRE= \
+        CARGOGREEN=1 \
+      rustc --crate-name autocfg --edition 2015 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=278d87c4de86bea7' -C extra-filename'=-54801e684ac31c95' --out-dir /tmp/clis-gifski_1-34-0/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/autocfg-1.5.0/src/lib.rs \
+        1>          /tmp/clis-gifski_1-34-0/release/deps/out-54801e684ac31c95-stdout \
+        2>          /tmp/clis-gifski_1-34-0/release/deps/out-54801e684ac31c95-stderr \
+        || echo $? >/tmp/clis-gifski_1-34-0/release/deps/out-54801e684ac31c95-errcode\
+  ; find /tmp/clis-gifski_1-34-0/release/deps/*-54801e684ac31c95* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-54801e684ac31c95
+COPY --link --from=dep-n-autocfg-1.5.0-54801e684ac31c95 /tmp/clis-gifski_1-34-0/release/deps/*-54801e684ac31c95* /
+
+## this = "54801e684ac31c95"
+## writes = [
+##     "autocfg-54801e684ac31c95.d",
+##     "libautocfg-54801e684ac31c95.rlib",
+##     "libautocfg-54801e684ac31c95.rmeta",
+## ]
+## stderr = [
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/autocfg-54801e684ac31c95.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/libautocfg-54801e684ac31c95.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/libautocfg-54801e684ac31c95.rlib","emit":"link"}',
+## ]
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
+##
+## [[stages]]
+##
+## [stages.Cratesio]
+## stage = "cratesio-autocfg-1.5.0"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/autocfg-1.5.0"
+## name = "autocfg"
+## name_dash_version = "autocfg-1.5.0"
+## hash = "c08606f8c3cbf4ce6ec8e28fb0014a2c086708fe954eaa885384a6165172e7e8"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "dep-n-autocfg-1.5.0-54801e684ac31c95"
+## script = '''
+## FROM rust-base AS dep-n-autocfg-1.5.0-54801e684ac31c95
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-gifski_1-34-0/release/deps
+## RUN \
+##   --mount=from=cratesio-autocfg-1.5.0,source=/autocfg-1.5.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/autocfg-1.5.0 \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CRATE_NAME=autocfg \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/autocfg-1.5.0 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/autocfg-1.5.0/Cargo.toml \
+##         CARGO_PKG_AUTHORS=Josh' Stone <cuviper@gmail.com>' \
+##         CARGO_PKG_DESCRIPTION=Automatic' cfg for Rust compiler features' \
+##         CARGO_PKG_HOMEPAGE= \
+##         CARGO_PKG_LICENSE=Apache-2.0' OR MIT' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=autocfg \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/cuviper/autocfg' \
+##         CARGO_PKG_RUST_VERSION=1.0 \
+##         CARGO_PKG_VERSION=1.5.0 \
+##         CARGO_PKG_VERSION_MAJOR=1 \
+##         CARGO_PKG_VERSION_MINOR=5 \
+##         CARGO_PKG_VERSION_PATCH=0 \
+##         CARGO_PKG_VERSION_PRE= \
+##         CARGOGREEN=1 \
+##       rustc --crate-name autocfg --edition 2015 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=278d87c4de86bea7' -C extra-filename'=-54801e684ac31c95' --out-dir /tmp/clis-gifski_1-34-0/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/autocfg-1.5.0/src/lib.rs \
+##         1>          /tmp/clis-gifski_1-34-0/release/deps/out-54801e684ac31c95-stdout \
+##         2>          /tmp/clis-gifski_1-34-0/release/deps/out-54801e684ac31c95-stderr \
+##         || echo $? >/tmp/clis-gifski_1-34-0/release/deps/out-54801e684ac31c95-errcode\
+##   ; find /tmp/clis-gifski_1-34-0/release/deps/*-54801e684ac31c95* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-54801e684ac31c95"
+## script = """
+## FROM scratch AS out-54801e684ac31c95
+## COPY --link --from=dep-n-autocfg-1.5.0-54801e684ac31c95 /tmp/clis-gifski_1-34-0/release/deps/*-54801e684ac31c95* /"""
+
 FROM scratch AS cratesio-num-traits-0.2.19
 ADD --chmod=0664 --unpack --checksum=sha256:071dfc062690e90b734c0b2273ce72ad0ffa95f0c74596bc250dcfd960262841 \
   https://static.crates.io/crates/num-traits/num-traits-0.2.19.crate /
+FROM rust-base AS dep-x-num-traits-0.2.19-fc32176d5a01eb74
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-gifski_1-34-0/release/build/num-traits-fc32176d5a01eb74
+RUN \
+  --mount=from=cratesio-num-traits-0.2.19,source=/num-traits-0.2.19,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-traits-0.2.19,rw \
+  --mount=from=out-54801e684ac31c95,dst=/tmp/clis-gifski_1-34-0/release/deps/libautocfg-54801e684ac31c95.rlib,source=/libautocfg-54801e684ac31c95.rlib \
+    { \
+        cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-traits-0.2.19/build.rs | sed -E 's/^(pub[()a-z]* +)?(async +)?fn +main/\1\2fn actual_fc32176d5a01eb74_main/' >/_ && mv /_ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-traits-0.2.19/build.rs ; \
+        { \
+          echo ; \
+          echo 'fn main() {' ; \
+          echo '    use std::env::{args_os, var_os};' ; \
+          echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+          echo '        use std::process::{Command, Stdio};' ; \
+          echo '        let mut cmd = Command::new("cargo-green");' ; \
+          echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+          echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+          echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+          echo '        assert!(res.success());' ; \
+          echo '    } else {' ; \
+          echo '        actual_fc32176d5a01eb74_main();' ; \
+          echo '    }' ; \
+          echo '}' ; \
+        } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-traits-0.2.19/build.rs ; \
+    } && \
+    env CARGO="$(which cargo)" \
+        CARGO_CRATE_NAME=build_script_build \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-traits-0.2.19 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-traits-0.2.19/Cargo.toml \
+        CARGO_PKG_AUTHORS=The' Rust Project Developers' \
+        CARGO_PKG_DESCRIPTION=Numeric' traits for generic mathematics' \
+        CARGO_PKG_HOMEPAGE=https'://github.com/rust-num/num-traits' \
+        CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=num-traits \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/rust-num/num-traits' \
+        CARGO_PKG_RUST_VERSION=1.60 \
+        CARGO_PKG_VERSION=0.2.19 \
+        CARGO_PKG_VERSION_MAJOR=0 \
+        CARGO_PKG_VERSION_MINOR=2 \
+        CARGO_PKG_VERSION_PATCH=19 \
+        CARGO_PKG_VERSION_PRE= \
+        CARGOGREEN=1 \
+      rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="i128"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "i128", "libm", "std"))' -C metadata'=c7445406caf39858' -C extra-filename'=-fc32176d5a01eb74' --out-dir /tmp/clis-gifski_1-34-0/release/build/num-traits-fc32176d5a01eb74 -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --extern autocfg'=/tmp/clis-gifski_1-34-0/release/deps/libautocfg-54801e684ac31c95.rlib' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-traits-0.2.19/build.rs \
+        1>          /tmp/clis-gifski_1-34-0/release/build/num-traits-fc32176d5a01eb74/out-fc32176d5a01eb74-stdout \
+        2>          /tmp/clis-gifski_1-34-0/release/build/num-traits-fc32176d5a01eb74/out-fc32176d5a01eb74-stderr \
+        || echo $? >/tmp/clis-gifski_1-34-0/release/build/num-traits-fc32176d5a01eb74/out-fc32176d5a01eb74-errcode\
+  ; find /tmp/clis-gifski_1-34-0/release/build/num-traits-fc32176d5a01eb74/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-fc32176d5a01eb74
+COPY --link --from=dep-x-num-traits-0.2.19-fc32176d5a01eb74 /tmp/clis-gifski_1-34-0/release/build/num-traits-fc32176d5a01eb74/*-fc32176d5a01eb74* /
+
+## this = "fc32176d5a01eb74"
+## deps = ["54801e684ac31c95"]
+## writes = [
+##     "build_script_build-fc32176d5a01eb74",
+##     "build_script_build-fc32176d5a01eb74.d",
+## ]
+## stderr = [
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/build/num-traits-fc32176d5a01eb74/build_script_build-fc32176d5a01eb74.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/build/num-traits-fc32176d5a01eb74/build_script_build-fc32176d5a01eb74","emit":"link"}',
+## ]
+##
+## [[externs]]
+## from = "out-54801e684ac31c95"
+## xtern = "libautocfg-54801e684ac31c95.rlib"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
+##
+## [[stages]]
+##
+## [stages.Cratesio]
+## stage = "cratesio-num-traits-0.2.19"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-traits-0.2.19"
+## name = "num-traits"
+## name_dash_version = "num-traits-0.2.19"
+## hash = "071dfc062690e90b734c0b2273ce72ad0ffa95f0c74596bc250dcfd960262841"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "dep-x-num-traits-0.2.19-fc32176d5a01eb74"
+## script = '''
+## FROM rust-base AS dep-x-num-traits-0.2.19-fc32176d5a01eb74
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-gifski_1-34-0/release/build/num-traits-fc32176d5a01eb74
+## RUN \
+##   --mount=from=cratesio-num-traits-0.2.19,source=/num-traits-0.2.19,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-traits-0.2.19,rw \
+##   --mount=from=out-54801e684ac31c95,dst=/tmp/clis-gifski_1-34-0/release/deps/libautocfg-54801e684ac31c95.rlib,source=/libautocfg-54801e684ac31c95.rlib \
+##     { \
+##         cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-traits-0.2.19/build.rs | sed -E 's/^(pub[()a-z]* +)?(async +)?fn +main/\1\2fn actual_fc32176d5a01eb74_main/' >/_ && mv /_ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-traits-0.2.19/build.rs ; \
+##         { \
+##           echo ; \
+##           echo 'fn main() {' ; \
+##           echo '    use std::env::{args_os, var_os};' ; \
+##           echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+##           echo '        use std::process::{Command, Stdio};' ; \
+##           echo '        let mut cmd = Command::new("cargo-green");' ; \
+##           echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+##           echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+##           echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+##           echo '        assert!(res.success());' ; \
+##           echo '    } else {' ; \
+##           echo '        actual_fc32176d5a01eb74_main();' ; \
+##           echo '    }' ; \
+##           echo '}' ; \
+##         } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-traits-0.2.19/build.rs ; \
+##     } && \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CRATE_NAME=build_script_build \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-traits-0.2.19 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-traits-0.2.19/Cargo.toml \
+##         CARGO_PKG_AUTHORS=The' Rust Project Developers' \
+##         CARGO_PKG_DESCRIPTION=Numeric' traits for generic mathematics' \
+##         CARGO_PKG_HOMEPAGE=https'://github.com/rust-num/num-traits' \
+##         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=num-traits \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/rust-num/num-traits' \
+##         CARGO_PKG_RUST_VERSION=1.60 \
+##         CARGO_PKG_VERSION=0.2.19 \
+##         CARGO_PKG_VERSION_MAJOR=0 \
+##         CARGO_PKG_VERSION_MINOR=2 \
+##         CARGO_PKG_VERSION_PATCH=19 \
+##         CARGO_PKG_VERSION_PRE= \
+##         CARGOGREEN=1 \
+##       rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="i128"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "i128", "libm", "std"))' -C metadata'=c7445406caf39858' -C extra-filename'=-fc32176d5a01eb74' --out-dir /tmp/clis-gifski_1-34-0/release/build/num-traits-fc32176d5a01eb74 -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --extern autocfg'=/tmp/clis-gifski_1-34-0/release/deps/libautocfg-54801e684ac31c95.rlib' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-traits-0.2.19/build.rs \
+##         1>          /tmp/clis-gifski_1-34-0/release/build/num-traits-fc32176d5a01eb74/out-fc32176d5a01eb74-stdout \
+##         2>          /tmp/clis-gifski_1-34-0/release/build/num-traits-fc32176d5a01eb74/out-fc32176d5a01eb74-stderr \
+##         || echo $? >/tmp/clis-gifski_1-34-0/release/build/num-traits-fc32176d5a01eb74/out-fc32176d5a01eb74-errcode\
+##   ; find /tmp/clis-gifski_1-34-0/release/build/num-traits-fc32176d5a01eb74/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-fc32176d5a01eb74"
+## script = """
+## FROM scratch AS out-fc32176d5a01eb74
+## COPY --link --from=dep-x-num-traits-0.2.19-fc32176d5a01eb74 /tmp/clis-gifski_1-34-0/release/build/num-traits-fc32176d5a01eb74/*-fc32176d5a01eb74* /"""
+
+FROM rust-base AS run-z-num-traits-0.2.19-591dbe4b4bcdb9a9
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-gifski_1-34-0/release/build/num-traits-591dbe4b4bcdb9a9/out
+WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-traits-0.2.19
+RUN \
+  --mount=from=out-fc32176d5a01eb74,source=/build_script_build-fc32176d5a01eb74,dst=/tmp/clis-gifski_1-34-0/release/build/num-traits-fc32176d5a01eb74/build-script-build \
+  --mount=from=cratesio-num-traits-0.2.19,source=/num-traits-0.2.19,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-traits-0.2.19 \
+    env CARGO="$(which cargo)" \
+        CARGO_CFG_FEATURE=default,i128,std \
+        CARGO_CFG_PANIC=unwind \
+        CARGO_CFG_TARGET_ABI= \
+        CARGO_CFG_TARGET_ARCH=x86_64 \
+        CARGO_CFG_TARGET_ENDIAN=little \
+        CARGO_CFG_TARGET_ENV=gnu \
+        CARGO_CFG_TARGET_FAMILY=unix \
+        CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
+        CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+        CARGO_CFG_TARGET_OS=linux \
+        CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+        CARGO_CFG_TARGET_VENDOR=unknown \
+        CARGO_CFG_UNIX= \
+        CARGO_ENCODED_RUSTFLAGS= \
+        CARGO_FEATURE_DEFAULT=1 \
+        CARGO_FEATURE_I128=1 \
+        CARGO_FEATURE_STD=1 \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-traits-0.2.19 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-traits-0.2.19/Cargo.toml \
+        CARGO_PKG_AUTHORS=The' Rust Project Developers' \
+        CARGO_PKG_DESCRIPTION=Numeric' traits for generic mathematics' \
+        CARGO_PKG_HOMEPAGE=https'://github.com/rust-num/num-traits' \
+        CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=num-traits \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/rust-num/num-traits' \
+        CARGO_PKG_RUST_VERSION=1.60 \
+        CARGO_PKG_VERSION=0.2.19 \
+        CARGO_PKG_VERSION_MAJOR=0 \
+        CARGO_PKG_VERSION_MINOR=2 \
+        CARGO_PKG_VERSION_PATCH=19 \
+        CARGO_PKG_VERSION_PRE= \
+        DEBUG=false \
+        HOST=x86_64-unknown-linux-gnu \
+        NUM_JOBS=4 \
+        OPT_LEVEL=3 \
+        OUT_DIR=/tmp/clis-gifski_1-34-0/release/build/num-traits-591dbe4b4bcdb9a9/out \
+        PROFILE=release \
+        RUSTC=rustc \
+        RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+        TARGET=x86_64-unknown-linux-gnu \
+        CARGOGREEN=1 \
+      CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-gifski_1-34-0/release/build/num-traits-fc32176d5a01eb74/build-script-build \
+        1>          /tmp/clis-gifski_1-34-0/release/build/num-traits-591dbe4b4bcdb9a9/out/out-591dbe4b4bcdb9a9-stdout \
+        2>          /tmp/clis-gifski_1-34-0/release/build/num-traits-591dbe4b4bcdb9a9/out/out-591dbe4b4bcdb9a9-stderr \
+        || echo $? >/tmp/clis-gifski_1-34-0/release/build/num-traits-591dbe4b4bcdb9a9/out/out-591dbe4b4bcdb9a9-errcode\
+  ; find /tmp/clis-gifski_1-34-0/release/build/num-traits-591dbe4b4bcdb9a9/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-591dbe4b4bcdb9a9
+COPY --link --from=run-z-num-traits-0.2.19-591dbe4b4bcdb9a9 /tmp/clis-gifski_1-34-0/release/build/num-traits-591dbe4b4bcdb9a9/out /
+
+## this = "591dbe4b4bcdb9a9"
+## deps = [
+##     "54801e684ac31c95",
+##     "fc32176d5a01eb74",
+## ]
+## writes_to = "/tmp/clis-gifski_1-34-0/release/build/num-traits-591dbe4b4bcdb9a9/out"
+## stdout = [
+##     "cargo:rustc-check-cfg=cfg(has_total_cmp)",
+##     "cargo:rustc-cfg=has_total_cmp",
+##     "cargo:rerun-if-changed=build.rs",
+## ]
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "run-z-num-traits-0.2.19-591dbe4b4bcdb9a9"
+## script = '''
+## FROM rust-base AS run-z-num-traits-0.2.19-591dbe4b4bcdb9a9
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-gifski_1-34-0/release/build/num-traits-591dbe4b4bcdb9a9/out
+## WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-traits-0.2.19
+## RUN \
+##   --mount=from=out-fc32176d5a01eb74,source=/build_script_build-fc32176d5a01eb74,dst=/tmp/clis-gifski_1-34-0/release/build/num-traits-fc32176d5a01eb74/build-script-build \
+##   --mount=from=cratesio-num-traits-0.2.19,source=/num-traits-0.2.19,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-traits-0.2.19 \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CFG_FEATURE=default,i128,std \
+##         CARGO_CFG_PANIC=unwind \
+##         CARGO_CFG_TARGET_ABI= \
+##         CARGO_CFG_TARGET_ARCH=x86_64 \
+##         CARGO_CFG_TARGET_ENDIAN=little \
+##         CARGO_CFG_TARGET_ENV=gnu \
+##         CARGO_CFG_TARGET_FAMILY=unix \
+##         CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
+##         CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+##         CARGO_CFG_TARGET_OS=linux \
+##         CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+##         CARGO_CFG_TARGET_VENDOR=unknown \
+##         CARGO_CFG_UNIX= \
+##         CARGO_ENCODED_RUSTFLAGS= \
+##         CARGO_FEATURE_DEFAULT=1 \
+##         CARGO_FEATURE_I128=1 \
+##         CARGO_FEATURE_STD=1 \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-traits-0.2.19 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-traits-0.2.19/Cargo.toml \
+##         CARGO_PKG_AUTHORS=The' Rust Project Developers' \
+##         CARGO_PKG_DESCRIPTION=Numeric' traits for generic mathematics' \
+##         CARGO_PKG_HOMEPAGE=https'://github.com/rust-num/num-traits' \
+##         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=num-traits \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/rust-num/num-traits' \
+##         CARGO_PKG_RUST_VERSION=1.60 \
+##         CARGO_PKG_VERSION=0.2.19 \
+##         CARGO_PKG_VERSION_MAJOR=0 \
+##         CARGO_PKG_VERSION_MINOR=2 \
+##         CARGO_PKG_VERSION_PATCH=19 \
+##         CARGO_PKG_VERSION_PRE= \
+##         DEBUG=false \
+##         HOST=x86_64-unknown-linux-gnu \
+##         NUM_JOBS=4 \
+##         OPT_LEVEL=3 \
+##         OUT_DIR=/tmp/clis-gifski_1-34-0/release/build/num-traits-591dbe4b4bcdb9a9/out \
+##         PROFILE=release \
+##         RUSTC=rustc \
+##         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+##         TARGET=x86_64-unknown-linux-gnu \
+##         CARGOGREEN=1 \
+##       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-gifski_1-34-0/release/build/num-traits-fc32176d5a01eb74/build-script-build \
+##         1>          /tmp/clis-gifski_1-34-0/release/build/num-traits-591dbe4b4bcdb9a9/out/out-591dbe4b4bcdb9a9-stdout \
+##         2>          /tmp/clis-gifski_1-34-0/release/build/num-traits-591dbe4b4bcdb9a9/out/out-591dbe4b4bcdb9a9-stderr \
+##         || echo $? >/tmp/clis-gifski_1-34-0/release/build/num-traits-591dbe4b4bcdb9a9/out/out-591dbe4b4bcdb9a9-errcode\
+##   ; find /tmp/clis-gifski_1-34-0/release/build/num-traits-591dbe4b4bcdb9a9/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-591dbe4b4bcdb9a9"
+## script = """
+## FROM scratch AS out-591dbe4b4bcdb9a9
+## COPY --link --from=run-z-num-traits-0.2.19-591dbe4b4bcdb9a9 /tmp/clis-gifski_1-34-0/release/build/num-traits-591dbe4b4bcdb9a9/out /"""
+
+
 FROM rust-base AS dep-n-num-traits-0.2.19-53c0c58048ae59b2
 SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-gifski_1-34-0/release/deps
 RUN \
   --mount=from=cratesio-num-traits-0.2.19,source=/num-traits-0.2.19,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-traits-0.2.19 \
+  --mount=from=out-591dbe4b4bcdb9a9,dst=/tmp/clis-gifski_1-34-0/release/build/num-traits-591dbe4b4bcdb9a9/out,source=/ \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=num_traits \
         CARGO_INCREMENTAL=0 \
@@ -5153,7 +6801,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         OUT_DIR=/tmp/clis-gifski_1-34-0/release/build/num-traits-591dbe4b4bcdb9a9/out \
         CARGOGREEN=1 \
-      rustc --crate-name num_traits --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --cfg feature'="default"' --cfg feature'="i128"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "i128", "libm", "std"))' -C metadata'=69192f8850a5b341' -C extra-filename'=-53c0c58048ae59b2' --out-dir /tmp/clis-gifski_1-34-0/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --cap-lints warn --check-cfg cfg'(has_total_cmp)' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-traits-0.2.19/src/lib.rs \
+      rustc --crate-name num_traits --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --cfg feature'="default"' --cfg feature'="i128"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "i128", "libm", "std"))' -C metadata'=69192f8850a5b341' -C extra-filename'=-53c0c58048ae59b2' --out-dir /tmp/clis-gifski_1-34-0/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --cap-lints warn --cfg has_total_cmp --check-cfg cfg'(has_total_cmp)' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-traits-0.2.19/src/lib.rs \
         1>          /tmp/clis-gifski_1-34-0/release/deps/out-53c0c58048ae59b2-stdout \
         2>          /tmp/clis-gifski_1-34-0/release/deps/out-53c0c58048ae59b2-stderr \
         || echo $? >/tmp/clis-gifski_1-34-0/release/deps/out-53c0c58048ae59b2-errcode\
@@ -5162,6 +6810,12 @@ FROM scratch AS out-53c0c58048ae59b2
 COPY --link --from=dep-n-num-traits-0.2.19-53c0c58048ae59b2 /tmp/clis-gifski_1-34-0/release/deps/*-53c0c58048ae59b2* /
 
 ## this = "53c0c58048ae59b2"
+## deps = [
+##     "591dbe4b4bcdb9a9",
+##     "54801e684ac31c95",
+##     "fc32176d5a01eb74",
+## ]
+## buildrs_results = ["591dbe4b4bcdb9a9"]
 ## writes = [
 ##     "libnum_traits-53c0c58048ae59b2.rlib",
 ##     "libnum_traits-53c0c58048ae59b2.rmeta",
@@ -5172,6 +6826,10 @@ COPY --link --from=dep-n-num-traits-0.2.19-53c0c58048ae59b2 /tmp/clis-gifski_1-3
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/libnum_traits-53c0c58048ae59b2.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/libnum_traits-53c0c58048ae59b2.rlib","emit":"link"}',
 ## ]
+##
+## [[mounts]]
+## name = "out-591dbe4b4bcdb9a9"
+## mount = "/tmp/clis-gifski_1-34-0/release/build/num-traits-591dbe4b4bcdb9a9/out"
 ##
 ## [[stages]]
 ##
@@ -5198,6 +6856,7 @@ COPY --link --from=dep-n-num-traits-0.2.19-53c0c58048ae59b2 /tmp/clis-gifski_1-3
 ## WORKDIR /tmp/clis-gifski_1-34-0/release/deps
 ## RUN \
 ##   --mount=from=cratesio-num-traits-0.2.19,source=/num-traits-0.2.19,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-traits-0.2.19 \
+##   --mount=from=out-591dbe4b4bcdb9a9,dst=/tmp/clis-gifski_1-34-0/release/build/num-traits-591dbe4b4bcdb9a9/out,source=/ \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=num_traits \
 ##         CARGO_INCREMENTAL=0 \
@@ -5219,7 +6878,7 @@ COPY --link --from=dep-n-num-traits-0.2.19-53c0c58048ae59b2 /tmp/clis-gifski_1-3
 ##         CARGO_PKG_VERSION_PRE= \
 ##         OUT_DIR=/tmp/clis-gifski_1-34-0/release/build/num-traits-591dbe4b4bcdb9a9/out \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name num_traits --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --cfg feature'="default"' --cfg feature'="i128"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "i128", "libm", "std"))' -C metadata'=69192f8850a5b341' -C extra-filename'=-53c0c58048ae59b2' --out-dir /tmp/clis-gifski_1-34-0/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --cap-lints warn --check-cfg cfg'(has_total_cmp)' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-traits-0.2.19/src/lib.rs \
+##       rustc --crate-name num_traits --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --cfg feature'="default"' --cfg feature'="i128"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "i128", "libm", "std"))' -C metadata'=69192f8850a5b341' -C extra-filename'=-53c0c58048ae59b2' --out-dir /tmp/clis-gifski_1-34-0/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --cap-lints warn --cfg has_total_cmp --check-cfg cfg'(has_total_cmp)' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-traits-0.2.19/src/lib.rs \
 ##         1>          /tmp/clis-gifski_1-34-0/release/deps/out-53c0c58048ae59b2-stdout \
 ##         2>          /tmp/clis-gifski_1-34-0/release/deps/out-53c0c58048ae59b2-stderr \
 ##         || echo $? >/tmp/clis-gifski_1-34-0/release/deps/out-53c0c58048ae59b2-errcode\
@@ -5277,7 +6936,10 @@ COPY --link --from=dep-n-ordered-channel-1.2.0-d1042fb932b56ff4 /tmp/clis-gifski
 ## deps = [
 ##     "724af7b5f0e810c4",
 ##     "5ac36063ddf29a62",
+##     "43968187a3badc28",
+##     "b948070c08a8f1cf",
 ## ]
+## buildrs_results = ["b948070c08a8f1cf"]
 ## writes = [
 ##     "libordered_channel-d1042fb932b56ff4.rlib",
 ##     "libordered_channel-d1042fb932b56ff4.rmeta",
@@ -5414,7 +7076,15 @@ COPY --link --from=dep-n-pbr-1.1.1-791a05c54d467a7f /tmp/clis-gifski_1-34-0/rele
 ## deps = [
 ##     "724af7b5f0e810c4",
 ##     "5ac36063ddf29a62",
+##     "43968187a3badc28",
 ##     "3afb72ac1310d574",
+##     "0123d3968a0ef092",
+##     "b948070c08a8f1cf",
+##     "55b2d737f3af23dc",
+## ]
+## buildrs_results = [
+##     "b948070c08a8f1cf",
+##     "55b2d737f3af23dc",
 ## ]
 ## writes = [
 ##     "libpbr-791a05c54d467a7f.rlib",
@@ -5687,8 +7357,16 @@ COPY --link --from=dep-n-resize-0.8.8-925466e96a5b0042 /tmp/clis-gifski_1-34-0/r
 ##     "cc1298b8da143bbe",
 ##     "c2e7f2fc3addf6be",
 ##     "5ac36063ddf29a62",
+##     "43968187a3badc28",
+##     "8f74c6b4e8a858d1",
 ##     "b630417cd5f2024a",
 ##     "f0cdacabc0947b7b",
+##     "b948070c08a8f1cf",
+##     "f1aa93c35dc8b5a4",
+## ]
+## buildrs_results = [
+##     "b948070c08a8f1cf",
+##     "f1aa93c35dc8b5a4",
 ## ]
 ## writes = [
 ##     "libresize-925466e96a5b0042.rlib",
@@ -6066,6 +7744,8 @@ RUN \
   --mount=from=cratesio-yuv-0.1.9,source=/yuv-0.1.9,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/yuv-0.1.9 \
   --mount=from=out-53c0c58048ae59b2,dst=/tmp/clis-gifski_1-34-0/release/deps/libnum_traits-53c0c58048ae59b2.rlib,source=/libnum_traits-53c0c58048ae59b2.rlib \
   --mount=from=out-53c0c58048ae59b2,dst=/tmp/clis-gifski_1-34-0/release/deps/libnum_traits-53c0c58048ae59b2.rmeta,source=/libnum_traits-53c0c58048ae59b2.rmeta \
+  --mount=from=out-54801e684ac31c95,dst=/tmp/clis-gifski_1-34-0/release/deps/libautocfg-54801e684ac31c95.rlib,source=/libautocfg-54801e684ac31c95.rlib \
+  --mount=from=out-54801e684ac31c95,dst=/tmp/clis-gifski_1-34-0/release/deps/libautocfg-54801e684ac31c95.rmeta,source=/libautocfg-54801e684ac31c95.rmeta \
   --mount=from=out-b630417cd5f2024a,dst=/tmp/clis-gifski_1-34-0/release/deps/librgb-b630417cd5f2024a.rlib,source=/librgb-b630417cd5f2024a.rlib \
   --mount=from=out-b630417cd5f2024a,dst=/tmp/clis-gifski_1-34-0/release/deps/librgb-b630417cd5f2024a.rmeta,source=/librgb-b630417cd5f2024a.rmeta \
   --mount=from=out-f0cdacabc0947b7b,dst=/tmp/clis-gifski_1-34-0/release/deps/libbytemuck-f0cdacabc0947b7b.rlib,source=/libbytemuck-f0cdacabc0947b7b.rlib \
@@ -6101,9 +7781,13 @@ COPY --link --from=dep-n-yuv-0.1.9-9318e068e99f9028 /tmp/clis-gifski_1-34-0/rele
 ## this = "9318e068e99f9028"
 ## deps = [
 ##     "53c0c58048ae59b2",
+##     "54801e684ac31c95",
+##     "fc32176d5a01eb74",
 ##     "b630417cd5f2024a",
 ##     "f0cdacabc0947b7b",
+##     "591dbe4b4bcdb9a9",
 ## ]
+## buildrs_results = ["591dbe4b4bcdb9a9"]
 ## writes = [
 ##     "libyuv-9318e068e99f9028.rlib",
 ##     "libyuv-9318e068e99f9028.rmeta",
@@ -6122,6 +7806,14 @@ COPY --link --from=dep-n-yuv-0.1.9-9318e068e99f9028 /tmp/clis-gifski_1-34-0/rele
 ## [[externs]]
 ## from = "out-53c0c58048ae59b2"
 ## xtern = "libnum_traits-53c0c58048ae59b2.rmeta"
+##
+## [[externs]]
+## from = "out-54801e684ac31c95"
+## xtern = "libautocfg-54801e684ac31c95.rlib"
+##
+## [[externs]]
+## from = "out-54801e684ac31c95"
+## xtern = "libautocfg-54801e684ac31c95.rmeta"
 ##
 ## [[externs]]
 ## from = "out-b630417cd5f2024a"
@@ -6166,6 +7858,8 @@ COPY --link --from=dep-n-yuv-0.1.9-9318e068e99f9028 /tmp/clis-gifski_1-34-0/rele
 ##   --mount=from=cratesio-yuv-0.1.9,source=/yuv-0.1.9,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/yuv-0.1.9 \
 ##   --mount=from=out-53c0c58048ae59b2,dst=/tmp/clis-gifski_1-34-0/release/deps/libnum_traits-53c0c58048ae59b2.rlib,source=/libnum_traits-53c0c58048ae59b2.rlib \
 ##   --mount=from=out-53c0c58048ae59b2,dst=/tmp/clis-gifski_1-34-0/release/deps/libnum_traits-53c0c58048ae59b2.rmeta,source=/libnum_traits-53c0c58048ae59b2.rmeta \
+##   --mount=from=out-54801e684ac31c95,dst=/tmp/clis-gifski_1-34-0/release/deps/libautocfg-54801e684ac31c95.rlib,source=/libautocfg-54801e684ac31c95.rlib \
+##   --mount=from=out-54801e684ac31c95,dst=/tmp/clis-gifski_1-34-0/release/deps/libautocfg-54801e684ac31c95.rmeta,source=/libautocfg-54801e684ac31c95.rmeta \
 ##   --mount=from=out-b630417cd5f2024a,dst=/tmp/clis-gifski_1-34-0/release/deps/librgb-b630417cd5f2024a.rlib,source=/librgb-b630417cd5f2024a.rlib \
 ##   --mount=from=out-b630417cd5f2024a,dst=/tmp/clis-gifski_1-34-0/release/deps/librgb-b630417cd5f2024a.rmeta,source=/librgb-b630417cd5f2024a.rmeta \
 ##   --mount=from=out-f0cdacabc0947b7b,dst=/tmp/clis-gifski_1-34-0/release/deps/libbytemuck-f0cdacabc0947b7b.rlib,source=/libbytemuck-f0cdacabc0947b7b.rlib \
@@ -6251,6 +7945,7 @@ RUN \
   --mount=from=out-4166f710ac396229,dst=/tmp/clis-gifski_1-34-0/release/deps/libloop9-4166f710ac396229.rlib,source=/libloop9-4166f710ac396229.rlib \
   --mount=from=out-dbbab79b50c30bb1,dst=/tmp/clis-gifski_1-34-0/release/deps/libnatord-dbbab79b50c30bb1.rlib,source=/libnatord-dbbab79b50c30bb1.rlib \
   --mount=from=out-53c0c58048ae59b2,dst=/tmp/clis-gifski_1-34-0/release/deps/libnum_traits-53c0c58048ae59b2.rlib,source=/libnum_traits-53c0c58048ae59b2.rlib \
+  --mount=from=out-54801e684ac31c95,dst=/tmp/clis-gifski_1-34-0/release/deps/libautocfg-54801e684ac31c95.rlib,source=/libautocfg-54801e684ac31c95.rlib \
   --mount=from=out-d1042fb932b56ff4,dst=/tmp/clis-gifski_1-34-0/release/deps/libordered_channel-d1042fb932b56ff4.rlib,source=/libordered_channel-d1042fb932b56ff4.rlib \
   --mount=from=out-791a05c54d467a7f,dst=/tmp/clis-gifski_1-34-0/release/deps/libpbr-791a05c54d467a7f.rlib,source=/libpbr-791a05c54d467a7f.rlib \
   --mount=from=out-a6f6d4c5688e7cda,dst=/tmp/clis-gifski_1-34-0/release/deps/libquick_error-a6f6d4c5688e7cda.rlib,source=/libquick_error-a6f6d4c5688e7cda.rlib \
@@ -6303,6 +7998,7 @@ COPY --link --from=dep-n-gifski-1.34.0-b9aa6f1c171c6150 /tmp/clis-gifski_1-34-0/
 ##     "87be0482eaec7565",
 ##     "724af7b5f0e810c4",
 ##     "5ac36063ddf29a62",
+##     "43968187a3badc28",
 ##     "00cc39e2b93187ae",
 ##     "6bb7dc2aa9596226",
 ##     "92ecf42010bb6640",
@@ -6318,17 +8014,22 @@ COPY --link --from=dep-n-gifski-1.34.0-b9aa6f1c171c6150 /tmp/clis-gifski_1-34-0/
 ##     "efba4db9305abd55",
 ##     "cc1298b8da143bbe",
 ##     "c2e7f2fc3addf6be",
+##     "8f74c6b4e8a858d1",
 ##     "6b8c8ab37131cd0c",
 ##     "e1f9b2ca981c3e9f",
 ##     "c1608f7a6e4ba58d",
 ##     "51c01ae8d7468fb2",
+##     "f8cc7c73f6f71403",
 ##     "92283f56cec7b441",
 ##     "2a56889f8f4194b3",
 ##     "1ce6de5e74c29a43",
 ##     "3afb72ac1310d574",
+##     "0123d3968a0ef092",
 ##     "4166f710ac396229",
 ##     "dbbab79b50c30bb1",
 ##     "53c0c58048ae59b2",
+##     "54801e684ac31c95",
+##     "fc32176d5a01eb74",
 ##     "d1042fb932b56ff4",
 ##     "791a05c54d467a7f",
 ##     "a6f6d4c5688e7cda",
@@ -6336,6 +8037,18 @@ COPY --link --from=dep-n-gifski-1.34.0-b9aa6f1c171c6150 /tmp/clis-gifski_1-34-0/
 ##     "3fec38877dfe5eae",
 ##     "88872ac441f60d2c",
 ##     "9318e068e99f9028",
+##     "b948070c08a8f1cf",
+##     "f1aa93c35dc8b5a4",
+##     "aca03044d2384264",
+##     "55b2d737f3af23dc",
+##     "591dbe4b4bcdb9a9",
+## ]
+## buildrs_results = [
+##     "b948070c08a8f1cf",
+##     "f1aa93c35dc8b5a4",
+##     "aca03044d2384264",
+##     "55b2d737f3af23dc",
+##     "591dbe4b4bcdb9a9",
 ## ]
 ## writes = [
 ##     "gifski-b9aa6f1c171c6150.d",
@@ -6507,6 +8220,10 @@ COPY --link --from=dep-n-gifski-1.34.0-b9aa6f1c171c6150 /tmp/clis-gifski_1-34-0/
 ## xtern = "libnum_traits-53c0c58048ae59b2.rlib"
 ##
 ## [[externs]]
+## from = "out-54801e684ac31c95"
+## xtern = "libautocfg-54801e684ac31c95.rlib"
+##
+## [[externs]]
 ## from = "out-d1042fb932b56ff4"
 ## xtern = "libordered_channel-d1042fb932b56ff4.rlib"
 ##
@@ -6598,6 +8315,7 @@ COPY --link --from=dep-n-gifski-1.34.0-b9aa6f1c171c6150 /tmp/clis-gifski_1-34-0/
 ##   --mount=from=out-4166f710ac396229,dst=/tmp/clis-gifski_1-34-0/release/deps/libloop9-4166f710ac396229.rlib,source=/libloop9-4166f710ac396229.rlib \
 ##   --mount=from=out-dbbab79b50c30bb1,dst=/tmp/clis-gifski_1-34-0/release/deps/libnatord-dbbab79b50c30bb1.rlib,source=/libnatord-dbbab79b50c30bb1.rlib \
 ##   --mount=from=out-53c0c58048ae59b2,dst=/tmp/clis-gifski_1-34-0/release/deps/libnum_traits-53c0c58048ae59b2.rlib,source=/libnum_traits-53c0c58048ae59b2.rlib \
+##   --mount=from=out-54801e684ac31c95,dst=/tmp/clis-gifski_1-34-0/release/deps/libautocfg-54801e684ac31c95.rlib,source=/libautocfg-54801e684ac31c95.rlib \
 ##   --mount=from=out-d1042fb932b56ff4,dst=/tmp/clis-gifski_1-34-0/release/deps/libordered_channel-d1042fb932b56ff4.rlib,source=/libordered_channel-d1042fb932b56ff4.rlib \
 ##   --mount=from=out-791a05c54d467a7f,dst=/tmp/clis-gifski_1-34-0/release/deps/libpbr-791a05c54d467a7f.rlib,source=/libpbr-791a05c54d467a7f.rlib \
 ##   --mount=from=out-a6f6d4c5688e7cda,dst=/tmp/clis-gifski_1-34-0/release/deps/libquick_error-a6f6d4c5688e7cda.rlib,source=/libquick_error-a6f6d4c5688e7cda.rlib \
@@ -6689,6 +8407,7 @@ RUN \
   --mount=from=out-4166f710ac396229,dst=/tmp/clis-gifski_1-34-0/release/deps/libloop9-4166f710ac396229.rlib,source=/libloop9-4166f710ac396229.rlib \
   --mount=from=out-dbbab79b50c30bb1,dst=/tmp/clis-gifski_1-34-0/release/deps/libnatord-dbbab79b50c30bb1.rlib,source=/libnatord-dbbab79b50c30bb1.rlib \
   --mount=from=out-53c0c58048ae59b2,dst=/tmp/clis-gifski_1-34-0/release/deps/libnum_traits-53c0c58048ae59b2.rlib,source=/libnum_traits-53c0c58048ae59b2.rlib \
+  --mount=from=out-54801e684ac31c95,dst=/tmp/clis-gifski_1-34-0/release/deps/libautocfg-54801e684ac31c95.rlib,source=/libautocfg-54801e684ac31c95.rlib \
   --mount=from=out-d1042fb932b56ff4,dst=/tmp/clis-gifski_1-34-0/release/deps/libordered_channel-d1042fb932b56ff4.rlib,source=/libordered_channel-d1042fb932b56ff4.rlib \
   --mount=from=out-791a05c54d467a7f,dst=/tmp/clis-gifski_1-34-0/release/deps/libpbr-791a05c54d467a7f.rlib,source=/libpbr-791a05c54d467a7f.rlib \
   --mount=from=out-a6f6d4c5688e7cda,dst=/tmp/clis-gifski_1-34-0/release/deps/libquick_error-a6f6d4c5688e7cda.rlib,source=/libquick_error-a6f6d4c5688e7cda.rlib \
@@ -6746,6 +8465,7 @@ COPY --link --from=dep-n-gifski-1.34.0-2e47a233552ee146 /tmp/clis-gifski_1-34-0/
 ##     "87be0482eaec7565",
 ##     "724af7b5f0e810c4",
 ##     "5ac36063ddf29a62",
+##     "43968187a3badc28",
 ##     "00cc39e2b93187ae",
 ##     "6bb7dc2aa9596226",
 ##     "92ecf42010bb6640",
@@ -6762,17 +8482,22 @@ COPY --link --from=dep-n-gifski-1.34.0-2e47a233552ee146 /tmp/clis-gifski_1-34-0/
 ##     "efba4db9305abd55",
 ##     "cc1298b8da143bbe",
 ##     "c2e7f2fc3addf6be",
+##     "8f74c6b4e8a858d1",
 ##     "6b8c8ab37131cd0c",
 ##     "e1f9b2ca981c3e9f",
 ##     "c1608f7a6e4ba58d",
 ##     "51c01ae8d7468fb2",
+##     "f8cc7c73f6f71403",
 ##     "92283f56cec7b441",
 ##     "2a56889f8f4194b3",
 ##     "1ce6de5e74c29a43",
 ##     "3afb72ac1310d574",
+##     "0123d3968a0ef092",
 ##     "4166f710ac396229",
 ##     "dbbab79b50c30bb1",
 ##     "53c0c58048ae59b2",
+##     "54801e684ac31c95",
+##     "fc32176d5a01eb74",
 ##     "d1042fb932b56ff4",
 ##     "791a05c54d467a7f",
 ##     "a6f6d4c5688e7cda",
@@ -6780,6 +8505,18 @@ COPY --link --from=dep-n-gifski-1.34.0-2e47a233552ee146 /tmp/clis-gifski_1-34-0/
 ##     "3fec38877dfe5eae",
 ##     "88872ac441f60d2c",
 ##     "9318e068e99f9028",
+##     "b948070c08a8f1cf",
+##     "f1aa93c35dc8b5a4",
+##     "aca03044d2384264",
+##     "55b2d737f3af23dc",
+##     "591dbe4b4bcdb9a9",
+## ]
+## buildrs_results = [
+##     "b948070c08a8f1cf",
+##     "f1aa93c35dc8b5a4",
+##     "aca03044d2384264",
+##     "55b2d737f3af23dc",
+##     "591dbe4b4bcdb9a9",
 ## ]
 ## writes = [
 ##     "gifski-2e47a233552ee146",
@@ -6959,6 +8696,10 @@ COPY --link --from=dep-n-gifski-1.34.0-2e47a233552ee146 /tmp/clis-gifski_1-34-0/
 ## xtern = "libnum_traits-53c0c58048ae59b2.rlib"
 ##
 ## [[externs]]
+## from = "out-54801e684ac31c95"
+## xtern = "libautocfg-54801e684ac31c95.rlib"
+##
+## [[externs]]
 ## from = "out-d1042fb932b56ff4"
 ## xtern = "libordered_channel-d1042fb932b56ff4.rlib"
 ##
@@ -7053,6 +8794,7 @@ COPY --link --from=dep-n-gifski-1.34.0-2e47a233552ee146 /tmp/clis-gifski_1-34-0/
 ##   --mount=from=out-4166f710ac396229,dst=/tmp/clis-gifski_1-34-0/release/deps/libloop9-4166f710ac396229.rlib,source=/libloop9-4166f710ac396229.rlib \
 ##   --mount=from=out-dbbab79b50c30bb1,dst=/tmp/clis-gifski_1-34-0/release/deps/libnatord-dbbab79b50c30bb1.rlib,source=/libnatord-dbbab79b50c30bb1.rlib \
 ##   --mount=from=out-53c0c58048ae59b2,dst=/tmp/clis-gifski_1-34-0/release/deps/libnum_traits-53c0c58048ae59b2.rlib,source=/libnum_traits-53c0c58048ae59b2.rlib \
+##   --mount=from=out-54801e684ac31c95,dst=/tmp/clis-gifski_1-34-0/release/deps/libautocfg-54801e684ac31c95.rlib,source=/libautocfg-54801e684ac31c95.rlib \
 ##   --mount=from=out-d1042fb932b56ff4,dst=/tmp/clis-gifski_1-34-0/release/deps/libordered_channel-d1042fb932b56ff4.rlib,source=/libordered_channel-d1042fb932b56ff4.rlib \
 ##   --mount=from=out-791a05c54d467a7f,dst=/tmp/clis-gifski_1-34-0/release/deps/libpbr-791a05c54d467a7f.rlib,source=/libpbr-791a05c54d467a7f.rlib \
 ##   --mount=from=out-a6f6d4c5688e7cda,dst=/tmp/clis-gifski_1-34-0/release/deps/libquick_error-a6f6d4c5688e7cda.rlib,source=/libquick_error-a6f6d4c5688e7cda.rlib \
