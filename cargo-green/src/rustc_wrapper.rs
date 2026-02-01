@@ -1,5 +1,5 @@
 use std::{
-    collections::BTreeMap,
+    collections::{BTreeMap, HashSet},
     env,
     fs::{self},
     future::Future,
@@ -298,54 +298,15 @@ async fn do_wrap_rustc(
         rustc_block.push_str(&format!("  --mount=from={from},dst={dst},source=/{xtern} \\\n"));
     }
 
-    // Log a possible toolchain file contents (TODO: make per-crate base.image out of this)
-    if false {
-        rustc_block.push_str("    { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \\\n");
-    }
-
-    rustc_block.push_str(&format!("    env CARGO={:?} \\\n", "$(which cargo)"));
-
-    for (var, val) in env::vars().filter_map(|kv| fmap_env(kv, buildrs)) {
-        let val = safeify(&val)?;
-        rustc_block.push_str(&format!("        {var}={val} \\\n"));
-    }
-    rustc_block.push_str(&format!("        {}=1 \\\n", ENV!()));
-    // => cargo upstream issue "pass env vars read/wrote by build script on call to rustc"
-    // TODO whence https://github.com/rust-lang/cargo/issues/14444#issuecomment-2305891696
-    for var in &green.set_envs {
-        if let Ok(val) = env::var(var) {
-            warn!("passing ${var}={val:?} env through");
-            let val = safeify(&val)?;
-            rustc_block.push_str(&format!("        {var}={val} \\\n"));
-        }
-    }
-    // TODO: catch these cargo:rustc-env= to add to TOML+Dockerfile in extremis so downstream knows about these envs
-    // 2025-04-05T09:42:41.5322589Z [typenum 1.12.0] cargo:rustc-env=TYPENUM_BUILD_CONSTS=/home/runner/instst/release/build/typenum-3cf9e442dfddd505/out/consts.rs
-    // 2025-04-05T09:42:41.5748814Z [typenum 1.12.0] cargo:rustc-env=TYPENUM_BUILD_OP=/home/runner/instst/release/build/typenum-3cf9e442dfddd505/out/op.rs
-    // https://doc.rust-lang.org/cargo/reference/build-scripts.html#outputs-of-the-build-script
-    // https://github.com/ALinuxPerson/build_script?tab=readme-ov-file#examples
-    // TODO: also maybe same for "rustc wrote"?
-
-    // TODO: keep only paths that we explicitly mount or copy
-    if false {
-        // https://github.com/maelstrom-software/maelstrom/blob/ef90f8a990722352e55ef1a2f219ef0fc77e7c8c/crates/maelstrom-util/src/elf.rs#L4
-        for var in ["PATH", "DYLD_FALLBACK_LIBRARY_PATH", "LD_LIBRARY_PATH", "LIBPATH"] {
-            let Ok(val) = env::var(var) else { continue };
-            debug!("system env set (skipped): ${var}={val:?}");
-            if !val.is_empty() {
-                let val = safeify(&val)?;
-                rustc_block.push_str(&format!("#       {var}={val:?} \\\n"));
-            }
-        }
-    }
-
-    rustc_block.push_str(&format!("      rustc '{}' {input} \\\n", args.join("' '")));
-    rustc_block.push_str(&format!("        1>          {out_dir}/{out_stage}-{STDOUT} \\\n"));
-    rustc_block.push_str(&format!("        2>          {out_dir}/{out_stage}-{STDERR} \\\n"));
-    rustc_block.push_str(&format!("        || echo $? >{out_dir}/{out_stage}-{ERRCODE}\\\n"));
-    // TODO: [`COPY --rewrite-timestamp ...` to apply SOURCE_DATE_EPOCH build arg value to the timestamps of the files](https://github.com/moby/buildkit/issues/6348)
-    rustc_block.push_str(&format!("  ; find {out_dir}/*-{mdid}* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH\n"));
-    md.push_block(&rustc_stage, rustc_block);
+    md.run_block(
+        &rustc_stage,
+        &out_stage,
+        &out_dir,
+        format!("rustc '{}' {input}", args.join("' '")),
+        &green.set_envs,
+        buildrs,
+        rustc_block,
+    )?;
 
     if let Some(ref incremental) = incremental {
         let mut incremental_block = format!("FROM scratch AS {incremental_stage}\n");
@@ -379,6 +340,80 @@ async fn do_wrap_rustc(
 }
 
 impl Md {
+    #[expect(clippy::too_many_arguments)]
+    pub(crate) fn run_block(
+        &mut self,
+        stage: &Stage,
+        out_stage: &Stage,
+        out_dir: &Utf8Path,
+        call: String,
+        green_set_envs: &[String],
+        buildrs: bool,
+        mut block: String,
+    ) -> Result<()> {
+        // Log a possible toolchain file contents (TODO: make per-crate base.image out of this)
+        if false {
+            block.push_str("    { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \\\n");
+        }
+
+        block.push_str(&format!("    env CARGO={:?} \\\n", "$(which cargo)"));
+        let mut set = HashSet::from(["CARGO".to_owned()]);
+        for (var, val) in env::vars().filter_map(|kv| fmap_env(kv, buildrs)) {
+            let val = safeify(&val)?;
+            block.push_str(&format!("        {var}={val} \\\n"));
+            set.insert(var.clone());
+        }
+        block.push_str(&format!("        {}=1 \\\n", ENV!()));
+
+        // => cargo upstream issue "pass env vars read/wrote by build script on call to rustc"
+        // TODO whence https://github.com/rust-lang/cargo/issues/14444#issuecomment-2305891696
+        for var in green_set_envs {
+            if set.contains(var) {
+                continue;
+            }
+            if let Ok(val) = env::var(var) {
+                warn!("passing ${var}={val:?} env through");
+                let val = safeify(&val)?;
+                block.push_str(&format!("        {var}={val} \\\n"));
+                set.insert(var.to_owned());
+            }
+        }
+        // TODO: catch these cargo:rustc-env= to add to TOML+Dockerfile in extremis so downstream knows about these envs
+        // 2025-04-05T09:42:41.5322589Z [typenum 1.12.0] cargo:rustc-env=TYPENUM_BUILD_CONSTS=/home/runner/instst/release/build/typenum-3cf9e442dfddd505/out/consts.rs
+        // 2025-04-05T09:42:41.5748814Z [typenum 1.12.0] cargo:rustc-env=TYPENUM_BUILD_OP=/home/runner/instst/release/build/typenum-3cf9e442dfddd505/out/op.rs
+        // https://doc.rust-lang.org/cargo/reference/build-scripts.html#outputs-of-the-build-script
+        // https://github.com/ALinuxPerson/build_script?tab=readme-ov-file#examples
+        // TODO: also maybe same for "rustc wrote"?
+
+        // TODO: keep only paths that we explicitly mount or copy
+        if false {
+            // https://github.com/maelstrom-software/maelstrom/blob/ef90f8a990722352e55ef1a2f219ef0fc77e7c8c/crates/maelstrom-util/src/elf.rs#L4
+            for var in ["PATH", "DYLD_FALLBACK_LIBRARY_PATH", "LD_LIBRARY_PATH", "LIBPATH"] {
+                let Ok(val) = env::var(var) else { continue };
+                if set.contains(var) {
+                    continue;
+                }
+                debug!("system env set (skipped): ${var}={val:?}");
+                if !val.is_empty() {
+                    let val = safeify(&val)?;
+                    block.push_str(&format!("#       {var}={val:?} \\\n"));
+                }
+            }
+        }
+
+        block.push_str(&format!("      {call} \\\n"));
+        block.push_str(&format!("        1>          {out_dir}/{out_stage}-{STDOUT} \\\n"));
+        block.push_str(&format!("        2>          {out_dir}/{out_stage}-{STDERR} \\\n"));
+        block.push_str(&format!("        || echo $? >{out_dir}/{out_stage}-{ERRCODE}\\\n"));
+
+        // TODO: [`COPY --rewrite-timestamp ...` to apply SOURCE_DATE_EPOCH build arg value to the timestamps of the files](https://github.com/moby/buildkit/issues/6348)
+        let mdid = self.this();
+        block.push_str(&format!("  ; find {out_dir}/*-{mdid}* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH\n"));
+
+        self.push_block(stage, block);
+        Ok(())
+    }
+
     /// TODO? in Dockerfile, when using outputs:
     /// => skip the COPY (--mount=from=out-08c4d63ed4366a99) use the stage directly
     fn out_block(&mut self, stage: &Stage, prev: &Stage, out_dir: &Utf8Path) {
