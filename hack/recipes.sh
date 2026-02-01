@@ -28,7 +28,7 @@ for f in *.Dockerfile/*.Dockerfile; do
 		--ignore-matching-lines="^##     '\{" \
 		-- $f; then
 		git checkout -- $f
-	else
-		"$repo_root"/hack/graph.sh $f
+	# else
+	# 	"$repo_root"/hack/graph.sh $f
 	fi
 done
