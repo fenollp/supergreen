@@ -9,11 +9,318 @@ ARG SOURCE_DATE_EPOCH=42
 FROM scratch AS cratesio-libc-0.2.176
 ADD --chmod=0664 --unpack --checksum=sha256:58f929b4d672ea937a23a1ab494143d968337a5f47e56d0815df1e0890ddf174 \
   https://static.crates.io/crates/libc/libc-0.2.176.crate /
+FROM rust-base AS dep-x-libc-0.2.176-7560e7c5c88ec4c4
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/libc-7560e7c5c88ec4c4
+RUN \
+  --mount=from=cratesio-libc-0.2.176,source=/libc-0.2.176,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.176,rw \
+    { \
+        cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.176/build.rs | sed -E 's/^(pub[()a-z]* +)?(async +)?fn +main/\1\2fn actual_7560e7c5c88ec4c4_main/' >/_ && mv /_ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.176/build.rs ; \
+        { \
+          echo ; \
+          echo 'fn main() {' ; \
+          echo '    use std::env::{args_os, var_os};' ; \
+          echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+          echo '        use std::process::{Command, Stdio};' ; \
+          echo '        let mut cmd = Command::new("cargo-green");' ; \
+          echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+          echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+          echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+          echo '        assert!(res.success());' ; \
+          echo '    } else {' ; \
+          echo '        actual_7560e7c5c88ec4c4_main();' ; \
+          echo '    }' ; \
+          echo '}' ; \
+        } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.176/build.rs ; \
+    } && \
+    env CARGO="$(which cargo)" \
+        CARGO_CRATE_NAME=build_script_build \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.176 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.176/Cargo.toml \
+        CARGO_PKG_AUTHORS=The' Rust Project Developers' \
+        CARGO_PKG_DESCRIPTION=Raw' FFI bindings to platform libraries like libc.' \
+        CARGO_PKG_HOMEPAGE= \
+        CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=libc \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/libc' \
+        CARGO_PKG_RUST_VERSION=1.63 \
+        CARGO_PKG_VERSION=0.2.176 \
+        CARGO_PKG_VERSION_MAJOR=0 \
+        CARGO_PKG_VERSION_MINOR=2 \
+        CARGO_PKG_VERSION_PATCH=176 \
+        CARGO_PKG_VERSION_PRE= \
+        CARGOGREEN=1 \
+      rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' --allow clippy'::used_underscore_binding' --allow unused_qualifications --warn clippy'::unnecessary_semicolon' --allow clippy'::unnecessary_cast' --allow clippy'::uninlined_format_args' --warn clippy'::ptr_as_ptr' --allow clippy'::non_minimal_cfg' --allow clippy'::missing_safety_doc' --warn clippy'::map_unwrap_or' --warn clippy'::manual_assert' --allow clippy'::identity_op' --warn clippy'::explicit_iter_loop' --allow clippy'::expl_impl_clone_on_copy' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("align", "const-extern-fn", "default", "extra_traits", "rustc-dep-of-std", "rustc-std-workspace-core", "std", "use_std"))' -C metadata'=b4dce98917640cfb' -C extra-filename'=-7560e7c5c88ec4c4' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/libc-7560e7c5c88ec4c4 -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.176/build.rs \
+        1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/libc-7560e7c5c88ec4c4/out-7560e7c5c88ec4c4-stdout \
+        2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/libc-7560e7c5c88ec4c4/out-7560e7c5c88ec4c4-stderr \
+        || echo $? >/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/libc-7560e7c5c88ec4c4/out-7560e7c5c88ec4c4-errcode\
+  ; find /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/libc-7560e7c5c88ec4c4/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-7560e7c5c88ec4c4
+COPY --link --from=dep-x-libc-0.2.176-7560e7c5c88ec4c4 /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/libc-7560e7c5c88ec4c4/*-7560e7c5c88ec4c4* /
+
+## this = "7560e7c5c88ec4c4"
+## writes = [
+##     "build_script_build-7560e7c5c88ec4c4",
+##     "build_script_build-7560e7c5c88ec4c4.d",
+## ]
+## stderr = [
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/libc-7560e7c5c88ec4c4/build_script_build-7560e7c5c88ec4c4.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/libc-7560e7c5c88ec4c4/build_script_build-7560e7c5c88ec4c4","emit":"link"}',
+## ]
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
+##
+## [[stages]]
+##
+## [stages.Cratesio]
+## stage = "cratesio-libc-0.2.176"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.176"
+## name = "libc"
+## name_dash_version = "libc-0.2.176"
+## hash = "58f929b4d672ea937a23a1ab494143d968337a5f47e56d0815df1e0890ddf174"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "dep-x-libc-0.2.176-7560e7c5c88ec4c4"
+## script = '''
+## FROM rust-base AS dep-x-libc-0.2.176-7560e7c5c88ec4c4
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/libc-7560e7c5c88ec4c4
+## RUN \
+##   --mount=from=cratesio-libc-0.2.176,source=/libc-0.2.176,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.176,rw \
+##     { \
+##         cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.176/build.rs | sed -E 's/^(pub[()a-z]* +)?(async +)?fn +main/\1\2fn actual_7560e7c5c88ec4c4_main/' >/_ && mv /_ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.176/build.rs ; \
+##         { \
+##           echo ; \
+##           echo 'fn main() {' ; \
+##           echo '    use std::env::{args_os, var_os};' ; \
+##           echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+##           echo '        use std::process::{Command, Stdio};' ; \
+##           echo '        let mut cmd = Command::new("cargo-green");' ; \
+##           echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+##           echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+##           echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+##           echo '        assert!(res.success());' ; \
+##           echo '    } else {' ; \
+##           echo '        actual_7560e7c5c88ec4c4_main();' ; \
+##           echo '    }' ; \
+##           echo '}' ; \
+##         } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.176/build.rs ; \
+##     } && \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CRATE_NAME=build_script_build \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.176 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.176/Cargo.toml \
+##         CARGO_PKG_AUTHORS=The' Rust Project Developers' \
+##         CARGO_PKG_DESCRIPTION=Raw' FFI bindings to platform libraries like libc.' \
+##         CARGO_PKG_HOMEPAGE= \
+##         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=libc \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/libc' \
+##         CARGO_PKG_RUST_VERSION=1.63 \
+##         CARGO_PKG_VERSION=0.2.176 \
+##         CARGO_PKG_VERSION_MAJOR=0 \
+##         CARGO_PKG_VERSION_MINOR=2 \
+##         CARGO_PKG_VERSION_PATCH=176 \
+##         CARGO_PKG_VERSION_PRE= \
+##         CARGOGREEN=1 \
+##       rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' --allow clippy'::used_underscore_binding' --allow unused_qualifications --warn clippy'::unnecessary_semicolon' --allow clippy'::unnecessary_cast' --allow clippy'::uninlined_format_args' --warn clippy'::ptr_as_ptr' --allow clippy'::non_minimal_cfg' --allow clippy'::missing_safety_doc' --warn clippy'::map_unwrap_or' --warn clippy'::manual_assert' --allow clippy'::identity_op' --warn clippy'::explicit_iter_loop' --allow clippy'::expl_impl_clone_on_copy' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("align", "const-extern-fn", "default", "extra_traits", "rustc-dep-of-std", "rustc-std-workspace-core", "std", "use_std"))' -C metadata'=b4dce98917640cfb' -C extra-filename'=-7560e7c5c88ec4c4' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/libc-7560e7c5c88ec4c4 -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.176/build.rs \
+##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/libc-7560e7c5c88ec4c4/out-7560e7c5c88ec4c4-stdout \
+##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/libc-7560e7c5c88ec4c4/out-7560e7c5c88ec4c4-stderr \
+##         || echo $? >/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/libc-7560e7c5c88ec4c4/out-7560e7c5c88ec4c4-errcode\
+##   ; find /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/libc-7560e7c5c88ec4c4/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-7560e7c5c88ec4c4"
+## script = """
+## FROM scratch AS out-7560e7c5c88ec4c4
+## COPY --link --from=dep-x-libc-0.2.176-7560e7c5c88ec4c4 /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/libc-7560e7c5c88ec4c4/*-7560e7c5c88ec4c4* /"""
+
+FROM rust-base AS run-z-libc-0.2.176-d5b44a42806fd90b
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/libc-d5b44a42806fd90b/out
+WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.176
+RUN \
+  --mount=from=out-7560e7c5c88ec4c4,source=/build_script_build-7560e7c5c88ec4c4,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/libc-7560e7c5c88ec4c4/build-script-build \
+  --mount=from=cratesio-libc-0.2.176,source=/libc-0.2.176,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.176 \
+    env CARGO="$(which cargo)" \
+        CARGO_CFG_FEATURE=default,std \
+        CARGO_CFG_PANIC=unwind \
+        CARGO_CFG_TARGET_ABI= \
+        CARGO_CFG_TARGET_ARCH=x86_64 \
+        CARGO_CFG_TARGET_ENDIAN=little \
+        CARGO_CFG_TARGET_ENV=gnu \
+        CARGO_CFG_TARGET_FAMILY=unix \
+        CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
+        CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+        CARGO_CFG_TARGET_OS=linux \
+        CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+        CARGO_CFG_TARGET_VENDOR=unknown \
+        CARGO_CFG_UNIX= \
+        CARGO_ENCODED_RUSTFLAGS= \
+        CARGO_FEATURE_DEFAULT=1 \
+        CARGO_FEATURE_STD=1 \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.176 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.176/Cargo.toml \
+        CARGO_PKG_AUTHORS=The' Rust Project Developers' \
+        CARGO_PKG_DESCRIPTION=Raw' FFI bindings to platform libraries like libc.' \
+        CARGO_PKG_HOMEPAGE= \
+        CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=libc \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/libc' \
+        CARGO_PKG_RUST_VERSION=1.63 \
+        CARGO_PKG_VERSION=0.2.176 \
+        CARGO_PKG_VERSION_MAJOR=0 \
+        CARGO_PKG_VERSION_MINOR=2 \
+        CARGO_PKG_VERSION_PATCH=176 \
+        CARGO_PKG_VERSION_PRE= \
+        DEBUG=false \
+        HOST=x86_64-unknown-linux-gnu \
+        NUM_JOBS=4 \
+        OPT_LEVEL=3 \
+        OUT_DIR=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/libc-d5b44a42806fd90b/out \
+        PROFILE=release \
+        RUSTC=rustc \
+        RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+        TARGET=x86_64-unknown-linux-gnu \
+        CARGOGREEN=1 \
+      CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/libc-7560e7c5c88ec4c4/build-script-build \
+        1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/libc-d5b44a42806fd90b/out/out-d5b44a42806fd90b-stdout \
+        2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/libc-d5b44a42806fd90b/out/out-d5b44a42806fd90b-stderr \
+        || echo $? >/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/libc-d5b44a42806fd90b/out/out-d5b44a42806fd90b-errcode\
+  ; find /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/libc-d5b44a42806fd90b/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-d5b44a42806fd90b
+COPY --link --from=run-z-libc-0.2.176-d5b44a42806fd90b /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/libc-d5b44a42806fd90b/out /
+
+## this = "d5b44a42806fd90b"
+## deps = ["7560e7c5c88ec4c4"]
+## writes_to = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/libc-d5b44a42806fd90b/out"
+## stdout = [
+##     "cargo:rerun-if-changed=build.rs",
+##     "cargo:rerun-if-env-changed=RUST_LIBC_UNSTABLE_FREEBSD_VERSION",
+##     "cargo:rustc-cfg=freebsd12",
+##     "cargo:rerun-if-env-changed=RUST_LIBC_UNSTABLE_MUSL_V1_2_3",
+##     "cargo:rerun-if-env-changed=RUST_LIBC_UNSTABLE_LINUX_TIME_BITS64",
+##     "cargo:rerun-if-env-changed=RUST_LIBC_UNSTABLE_GNU_FILE_OFFSET_BITS",
+##     "cargo:rerun-if-env-changed=RUST_LIBC_UNSTABLE_GNU_TIME_BITS",
+##     "cargo:rustc-check-cfg=cfg(emscripten_old_stat_abi)",
+##     "cargo:rustc-check-cfg=cfg(espidf_time32)",
+##     "cargo:rustc-check-cfg=cfg(freebsd10)",
+##     "cargo:rustc-check-cfg=cfg(freebsd11)",
+##     "cargo:rustc-check-cfg=cfg(freebsd12)",
+##     "cargo:rustc-check-cfg=cfg(freebsd13)",
+##     "cargo:rustc-check-cfg=cfg(freebsd14)",
+##     "cargo:rustc-check-cfg=cfg(freebsd15)",
+##     "cargo:rustc-check-cfg=cfg(gnu_file_offset_bits64)",
+##     "cargo:rustc-check-cfg=cfg(gnu_time_bits64)",
+##     "cargo:rustc-check-cfg=cfg(libc_deny_warnings)",
+##     "cargo:rustc-check-cfg=cfg(libc_thread_local)",
+##     "cargo:rustc-check-cfg=cfg(linux_time_bits64)",
+##     "cargo:rustc-check-cfg=cfg(musl_v1_2_3)",
+##     'cargo:rustc-check-cfg=cfg(target_os,values("switch","aix","ohos","hurd","rtems","visionos","nuttx","cygwin"))',
+##     'cargo:rustc-check-cfg=cfg(target_env,values("illumos","wasi","aix","ohos","nto71_iosock","nto80"))',
+##     'cargo:rustc-check-cfg=cfg(target_arch,values("loongarch64","mips32r6","mips64r6","csky"))',
+## ]
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "run-z-libc-0.2.176-d5b44a42806fd90b"
+## script = '''
+## FROM rust-base AS run-z-libc-0.2.176-d5b44a42806fd90b
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/libc-d5b44a42806fd90b/out
+## WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.176
+## RUN \
+##   --mount=from=out-7560e7c5c88ec4c4,source=/build_script_build-7560e7c5c88ec4c4,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/libc-7560e7c5c88ec4c4/build-script-build \
+##   --mount=from=cratesio-libc-0.2.176,source=/libc-0.2.176,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.176 \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CFG_FEATURE=default,std \
+##         CARGO_CFG_PANIC=unwind \
+##         CARGO_CFG_TARGET_ABI= \
+##         CARGO_CFG_TARGET_ARCH=x86_64 \
+##         CARGO_CFG_TARGET_ENDIAN=little \
+##         CARGO_CFG_TARGET_ENV=gnu \
+##         CARGO_CFG_TARGET_FAMILY=unix \
+##         CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
+##         CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+##         CARGO_CFG_TARGET_OS=linux \
+##         CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+##         CARGO_CFG_TARGET_VENDOR=unknown \
+##         CARGO_CFG_UNIX= \
+##         CARGO_ENCODED_RUSTFLAGS= \
+##         CARGO_FEATURE_DEFAULT=1 \
+##         CARGO_FEATURE_STD=1 \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.176 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.176/Cargo.toml \
+##         CARGO_PKG_AUTHORS=The' Rust Project Developers' \
+##         CARGO_PKG_DESCRIPTION=Raw' FFI bindings to platform libraries like libc.' \
+##         CARGO_PKG_HOMEPAGE= \
+##         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=libc \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/libc' \
+##         CARGO_PKG_RUST_VERSION=1.63 \
+##         CARGO_PKG_VERSION=0.2.176 \
+##         CARGO_PKG_VERSION_MAJOR=0 \
+##         CARGO_PKG_VERSION_MINOR=2 \
+##         CARGO_PKG_VERSION_PATCH=176 \
+##         CARGO_PKG_VERSION_PRE= \
+##         DEBUG=false \
+##         HOST=x86_64-unknown-linux-gnu \
+##         NUM_JOBS=4 \
+##         OPT_LEVEL=3 \
+##         OUT_DIR=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/libc-d5b44a42806fd90b/out \
+##         PROFILE=release \
+##         RUSTC=rustc \
+##         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+##         TARGET=x86_64-unknown-linux-gnu \
+##         CARGOGREEN=1 \
+##       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/libc-7560e7c5c88ec4c4/build-script-build \
+##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/libc-d5b44a42806fd90b/out/out-d5b44a42806fd90b-stdout \
+##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/libc-d5b44a42806fd90b/out/out-d5b44a42806fd90b-stderr \
+##         || echo $? >/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/libc-d5b44a42806fd90b/out/out-d5b44a42806fd90b-errcode\
+##   ; find /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/libc-d5b44a42806fd90b/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-d5b44a42806fd90b"
+## script = """
+## FROM scratch AS out-d5b44a42806fd90b
+## COPY --link --from=run-z-libc-0.2.176-d5b44a42806fd90b /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/libc-d5b44a42806fd90b/out /"""
+
+
 FROM rust-base AS dep-n-libc-0.2.176-93b6478caf319772
 SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps
 RUN \
   --mount=from=cratesio-libc-0.2.176,source=/libc-0.2.176,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.176 \
+  --mount=from=out-d5b44a42806fd90b,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/libc-d5b44a42806fd90b/out,source=/ \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=libc \
         CARGO_INCREMENTAL=0 \
@@ -35,8 +342,6 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         OUT_DIR=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/libc-d5b44a42806fd90b/out \
         CARGOGREEN=1 \
-        NTPD_RS_GIT_DATE=2025-05-09 \
-        NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
       rustc --crate-name libc --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --allow clippy'::used_underscore_binding' --allow unused_qualifications --warn clippy'::unnecessary_semicolon' --allow clippy'::unnecessary_cast' --allow clippy'::uninlined_format_args' --warn clippy'::ptr_as_ptr' --allow clippy'::non_minimal_cfg' --allow clippy'::missing_safety_doc' --warn clippy'::map_unwrap_or' --warn clippy'::manual_assert' --allow clippy'::identity_op' --warn clippy'::explicit_iter_loop' --allow clippy'::expl_impl_clone_on_copy' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("align", "const-extern-fn", "default", "extra_traits", "rustc-dep-of-std", "rustc-std-workspace-core", "std", "use_std"))' -C metadata'=5617d0302ae693e4' -C extra-filename'=-93b6478caf319772' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --cap-lints warn --cfg freebsd12 --check-cfg cfg'(emscripten_old_stat_abi)' --check-cfg cfg'(espidf_time32)' --check-cfg cfg'(freebsd10)' --check-cfg cfg'(freebsd11)' --check-cfg cfg'(freebsd12)' --check-cfg cfg'(freebsd13)' --check-cfg cfg'(freebsd14)' --check-cfg cfg'(freebsd15)' --check-cfg cfg'(gnu_file_offset_bits64)' --check-cfg cfg'(gnu_time_bits64)' --check-cfg cfg'(libc_deny_warnings)' --check-cfg cfg'(libc_thread_local)' --check-cfg cfg'(linux_time_bits64)' --check-cfg cfg'(musl_v1_2_3)' --check-cfg cfg'(target_os,values("switch","aix","ohos","hurd","rtems","visionos","nuttx","cygwin"))' --check-cfg cfg'(target_env,values("illumos","wasi","aix","ohos","nto71_iosock","nto80"))' --check-cfg cfg'(target_arch,values("loongarch64","mips32r6","mips64r6","csky"))' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.176/src/lib.rs \
         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-93b6478caf319772-stdout \
         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-93b6478caf319772-stderr \
@@ -46,6 +351,11 @@ FROM scratch AS out-93b6478caf319772
 COPY --link --from=dep-n-libc-0.2.176-93b6478caf319772 /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/*-93b6478caf319772* /
 
 ## this = "93b6478caf319772"
+## deps = [
+##     "d5b44a42806fd90b",
+##     "7560e7c5c88ec4c4",
+## ]
+## buildrs_results = ["d5b44a42806fd90b"]
 ## writes = [
 ##     "libc-93b6478caf319772.d",
 ##     "liblibc-93b6478caf319772.rlib",
@@ -56,6 +366,10 @@ COPY --link --from=dep-n-libc-0.2.176-93b6478caf319772 /tmp/clis-ntpd_1-7-0-alph
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibc-93b6478caf319772.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibc-93b6478caf319772.rlib","emit":"link"}',
 ## ]
+##
+## [[mounts]]
+## name = "out-d5b44a42806fd90b"
+## mount = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/libc-d5b44a42806fd90b/out"
 ##
 ## [[stages]]
 ##
@@ -82,6 +396,7 @@ COPY --link --from=dep-n-libc-0.2.176-93b6478caf319772 /tmp/clis-ntpd_1-7-0-alph
 ## WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps
 ## RUN \
 ##   --mount=from=cratesio-libc-0.2.176,source=/libc-0.2.176,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.176 \
+##   --mount=from=out-d5b44a42806fd90b,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/libc-d5b44a42806fd90b/out,source=/ \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=libc \
 ##         CARGO_INCREMENTAL=0 \
@@ -103,8 +418,6 @@ COPY --link --from=dep-n-libc-0.2.176-93b6478caf319772 /tmp/clis-ntpd_1-7-0-alph
 ##         CARGO_PKG_VERSION_PRE= \
 ##         OUT_DIR=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/libc-d5b44a42806fd90b/out \
 ##         CARGOGREEN=1 \
-##         NTPD_RS_GIT_DATE=2025-05-09 \
-##         NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
 ##       rustc --crate-name libc --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --allow clippy'::used_underscore_binding' --allow unused_qualifications --warn clippy'::unnecessary_semicolon' --allow clippy'::unnecessary_cast' --allow clippy'::uninlined_format_args' --warn clippy'::ptr_as_ptr' --allow clippy'::non_minimal_cfg' --allow clippy'::missing_safety_doc' --warn clippy'::map_unwrap_or' --warn clippy'::manual_assert' --allow clippy'::identity_op' --warn clippy'::explicit_iter_loop' --allow clippy'::expl_impl_clone_on_copy' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("align", "const-extern-fn", "default", "extra_traits", "rustc-dep-of-std", "rustc-std-workspace-core", "std", "use_std"))' -C metadata'=5617d0302ae693e4' -C extra-filename'=-93b6478caf319772' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --cap-lints warn --cfg freebsd12 --check-cfg cfg'(emscripten_old_stat_abi)' --check-cfg cfg'(espidf_time32)' --check-cfg cfg'(freebsd10)' --check-cfg cfg'(freebsd11)' --check-cfg cfg'(freebsd12)' --check-cfg cfg'(freebsd13)' --check-cfg cfg'(freebsd14)' --check-cfg cfg'(freebsd15)' --check-cfg cfg'(gnu_file_offset_bits64)' --check-cfg cfg'(gnu_time_bits64)' --check-cfg cfg'(libc_deny_warnings)' --check-cfg cfg'(libc_thread_local)' --check-cfg cfg'(linux_time_bits64)' --check-cfg cfg'(musl_v1_2_3)' --check-cfg cfg'(target_os,values("switch","aix","ohos","hurd","rtems","visionos","nuttx","cygwin"))' --check-cfg cfg'(target_env,values("illumos","wasi","aix","ohos","nto71_iosock","nto80"))' --check-cfg cfg'(target_arch,values("loongarch64","mips32r6","mips64r6","csky"))' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.176/src/lib.rs \
 ##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-93b6478caf319772-stdout \
 ##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-93b6478caf319772-stderr \
@@ -149,8 +462,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        NTPD_RS_GIT_DATE=2025-05-09 \
-        NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
       rustc --crate-name clock_steering --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=385e9ace44937e06' -C extra-filename'=-9dd4b48829148398' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern libc'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibc-93b6478caf319772.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/clock-steering-0.2.1/src/lib.rs \
         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-9dd4b48829148398-stdout \
         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-9dd4b48829148398-stderr \
@@ -160,7 +471,12 @@ FROM scratch AS out-9dd4b48829148398
 COPY --link --from=dep-n-clock-steering-0.2.1-9dd4b48829148398 /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/*-9dd4b48829148398* /
 
 ## this = "9dd4b48829148398"
-## deps = ["93b6478caf319772"]
+## deps = [
+##     "93b6478caf319772",
+##     "7560e7c5c88ec4c4",
+##     "d5b44a42806fd90b",
+## ]
+## buildrs_results = ["d5b44a42806fd90b"]
 ## writes = [
 ##     "clock_steering-9dd4b48829148398.d",
 ##     "libclock_steering-9dd4b48829148398.rlib",
@@ -227,8 +543,6 @@ COPY --link --from=dep-n-clock-steering-0.2.1-9dd4b48829148398 /tmp/clis-ntpd_1-
 ##         CARGO_PKG_VERSION_PATCH=1 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         NTPD_RS_GIT_DATE=2025-05-09 \
-##         NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
 ##       rustc --crate-name clock_steering --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=385e9ace44937e06' -C extra-filename'=-9dd4b48829148398' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern libc'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibc-93b6478caf319772.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/clock-steering-0.2.1/src/lib.rs \
 ##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-9dd4b48829148398-stdout \
 ##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-9dd4b48829148398-stderr \
@@ -246,12 +560,302 @@ COPY --link --from=dep-n-clock-steering-0.2.1-9dd4b48829148398 /tmp/clis-ntpd_1-
 FROM scratch AS cratesio-typenum-1.19.0
 ADD --chmod=0664 --unpack --checksum=sha256:562d481066bde0658276a35467c4af00bdc6ee726305698a55b86e61d7ad82bb \
   https://static.crates.io/crates/typenum/typenum-1.19.0.crate /
+FROM rust-base AS dep-x-typenum-1.19.0-a8fbaef0afd87b8e
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-a8fbaef0afd87b8e
+RUN \
+  --mount=from=cratesio-typenum-1.19.0,source=/typenum-1.19.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/typenum-1.19.0,rw \
+    { \
+        cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/typenum-1.19.0/build.rs | sed -E 's/^(pub[()a-z]* +)?(async +)?fn +main/\1\2fn actual_a8fbaef0afd87b8e_main/' >/_ && mv /_ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/typenum-1.19.0/build.rs ; \
+        { \
+          echo ; \
+          echo 'fn main() {' ; \
+          echo '    use std::env::{args_os, var_os};' ; \
+          echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+          echo '        use std::process::{Command, Stdio};' ; \
+          echo '        let mut cmd = Command::new("cargo-green");' ; \
+          echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+          echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+          echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+          echo '        assert!(res.success());' ; \
+          echo '    } else {' ; \
+          echo '        actual_a8fbaef0afd87b8e_main();' ; \
+          echo '    }' ; \
+          echo '}' ; \
+        } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/typenum-1.19.0/build.rs ; \
+    } && \
+    env CARGO="$(which cargo)" \
+        CARGO_CRATE_NAME=build_script_build \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/typenum-1.19.0 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/typenum-1.19.0/Cargo.toml \
+        CARGO_PKG_AUTHORS=Paho' Lurie-Gregg <paho@paholg.com>:Andre Bogus <bogusandre@gmail.com>' \
+        CARGO_PKG_DESCRIPTION=Typenum' is a Rust library for type-level numbers evaluated at\
+    compile time. It currently supports bits, unsigned integers, and signed\
+    integers. It also provides a type-level array of type-level numbers, but its\
+    implementation is incomplete.' \
+        CARGO_PKG_HOMEPAGE= \
+        CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=typenum \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/paholg/typenum' \
+        CARGO_PKG_RUST_VERSION=1.37.0 \
+        CARGO_PKG_VERSION=1.19.0 \
+        CARGO_PKG_VERSION_MAJOR=1 \
+        CARGO_PKG_VERSION_MINOR=19 \
+        CARGO_PKG_VERSION_PATCH=0 \
+        CARGO_PKG_VERSION_PRE= \
+        CARGOGREEN=1 \
+      rustc --crate-name build_script_build --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("const-generics", "force_unix_path_separator", "i128", "no_std", "scale-info", "scale_info", "strict"))' -C metadata'=a007ec0a17f0b1fa' -C extra-filename'=-a8fbaef0afd87b8e' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-a8fbaef0afd87b8e -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/typenum-1.19.0/build.rs \
+        1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-a8fbaef0afd87b8e/out-a8fbaef0afd87b8e-stdout \
+        2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-a8fbaef0afd87b8e/out-a8fbaef0afd87b8e-stderr \
+        || echo $? >/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-a8fbaef0afd87b8e/out-a8fbaef0afd87b8e-errcode\
+  ; find /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-a8fbaef0afd87b8e/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-a8fbaef0afd87b8e
+COPY --link --from=dep-x-typenum-1.19.0-a8fbaef0afd87b8e /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-a8fbaef0afd87b8e/*-a8fbaef0afd87b8e* /
+
+## this = "a8fbaef0afd87b8e"
+## writes = [
+##     "build_script_build-a8fbaef0afd87b8e",
+##     "build_script_build-a8fbaef0afd87b8e.d",
+## ]
+## stderr = [
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-a8fbaef0afd87b8e/build_script_build-a8fbaef0afd87b8e.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-a8fbaef0afd87b8e/build_script_build-a8fbaef0afd87b8e","emit":"link"}',
+## ]
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
+##
+## [[stages]]
+##
+## [stages.Cratesio]
+## stage = "cratesio-typenum-1.19.0"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/typenum-1.19.0"
+## name = "typenum"
+## name_dash_version = "typenum-1.19.0"
+## hash = "562d481066bde0658276a35467c4af00bdc6ee726305698a55b86e61d7ad82bb"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "dep-x-typenum-1.19.0-a8fbaef0afd87b8e"
+## script = '''
+## FROM rust-base AS dep-x-typenum-1.19.0-a8fbaef0afd87b8e
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-a8fbaef0afd87b8e
+## RUN \
+##   --mount=from=cratesio-typenum-1.19.0,source=/typenum-1.19.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/typenum-1.19.0,rw \
+##     { \
+##         cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/typenum-1.19.0/build.rs | sed -E 's/^(pub[()a-z]* +)?(async +)?fn +main/\1\2fn actual_a8fbaef0afd87b8e_main/' >/_ && mv /_ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/typenum-1.19.0/build.rs ; \
+##         { \
+##           echo ; \
+##           echo 'fn main() {' ; \
+##           echo '    use std::env::{args_os, var_os};' ; \
+##           echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+##           echo '        use std::process::{Command, Stdio};' ; \
+##           echo '        let mut cmd = Command::new("cargo-green");' ; \
+##           echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+##           echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+##           echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+##           echo '        assert!(res.success());' ; \
+##           echo '    } else {' ; \
+##           echo '        actual_a8fbaef0afd87b8e_main();' ; \
+##           echo '    }' ; \
+##           echo '}' ; \
+##         } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/typenum-1.19.0/build.rs ; \
+##     } && \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CRATE_NAME=build_script_build \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/typenum-1.19.0 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/typenum-1.19.0/Cargo.toml \
+##         CARGO_PKG_AUTHORS=Paho' Lurie-Gregg <paho@paholg.com>:Andre Bogus <bogusandre@gmail.com>' \
+##         CARGO_PKG_DESCRIPTION=Typenum' is a Rust library for type-level numbers evaluated at\
+##     compile time. It currently supports bits, unsigned integers, and signed\
+##     integers. It also provides a type-level array of type-level numbers, but its\
+##     implementation is incomplete.' \
+##         CARGO_PKG_HOMEPAGE= \
+##         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=typenum \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/paholg/typenum' \
+##         CARGO_PKG_RUST_VERSION=1.37.0 \
+##         CARGO_PKG_VERSION=1.19.0 \
+##         CARGO_PKG_VERSION_MAJOR=1 \
+##         CARGO_PKG_VERSION_MINOR=19 \
+##         CARGO_PKG_VERSION_PATCH=0 \
+##         CARGO_PKG_VERSION_PRE= \
+##         CARGOGREEN=1 \
+##       rustc --crate-name build_script_build --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("const-generics", "force_unix_path_separator", "i128", "no_std", "scale-info", "scale_info", "strict"))' -C metadata'=a007ec0a17f0b1fa' -C extra-filename'=-a8fbaef0afd87b8e' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-a8fbaef0afd87b8e -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/typenum-1.19.0/build.rs \
+##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-a8fbaef0afd87b8e/out-a8fbaef0afd87b8e-stdout \
+##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-a8fbaef0afd87b8e/out-a8fbaef0afd87b8e-stderr \
+##         || echo $? >/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-a8fbaef0afd87b8e/out-a8fbaef0afd87b8e-errcode\
+##   ; find /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-a8fbaef0afd87b8e/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-a8fbaef0afd87b8e"
+## script = """
+## FROM scratch AS out-a8fbaef0afd87b8e
+## COPY --link --from=dep-x-typenum-1.19.0-a8fbaef0afd87b8e /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-a8fbaef0afd87b8e/*-a8fbaef0afd87b8e* /"""
+
+FROM rust-base AS run-z-typenum-1.19.0-c2a85ea3d52ad392
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-c2a85ea3d52ad392/out
+WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/typenum-1.19.0
+RUN \
+  --mount=from=out-a8fbaef0afd87b8e,source=/build_script_build-a8fbaef0afd87b8e,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-a8fbaef0afd87b8e/build-script-build \
+  --mount=from=cratesio-typenum-1.19.0,source=/typenum-1.19.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/typenum-1.19.0 \
+    env CARGO="$(which cargo)" \
+        CARGO_CFG_FEATURE= \
+        CARGO_CFG_PANIC=unwind \
+        CARGO_CFG_TARGET_ABI= \
+        CARGO_CFG_TARGET_ARCH=x86_64 \
+        CARGO_CFG_TARGET_ENDIAN=little \
+        CARGO_CFG_TARGET_ENV=gnu \
+        CARGO_CFG_TARGET_FAMILY=unix \
+        CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
+        CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+        CARGO_CFG_TARGET_OS=linux \
+        CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+        CARGO_CFG_TARGET_VENDOR=unknown \
+        CARGO_CFG_UNIX= \
+        CARGO_ENCODED_RUSTFLAGS= \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/typenum-1.19.0 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/typenum-1.19.0/Cargo.toml \
+        CARGO_PKG_AUTHORS=Paho' Lurie-Gregg <paho@paholg.com>:Andre Bogus <bogusandre@gmail.com>' \
+        CARGO_PKG_DESCRIPTION=Typenum' is a Rust library for type-level numbers evaluated at\
+    compile time. It currently supports bits, unsigned integers, and signed\
+    integers. It also provides a type-level array of type-level numbers, but its\
+    implementation is incomplete.' \
+        CARGO_PKG_HOMEPAGE= \
+        CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=typenum \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/paholg/typenum' \
+        CARGO_PKG_RUST_VERSION=1.37.0 \
+        CARGO_PKG_VERSION=1.19.0 \
+        CARGO_PKG_VERSION_MAJOR=1 \
+        CARGO_PKG_VERSION_MINOR=19 \
+        CARGO_PKG_VERSION_PATCH=0 \
+        CARGO_PKG_VERSION_PRE= \
+        DEBUG=false \
+        HOST=x86_64-unknown-linux-gnu \
+        NUM_JOBS=4 \
+        OPT_LEVEL=3 \
+        OUT_DIR=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-c2a85ea3d52ad392/out \
+        PROFILE=release \
+        RUSTC=rustc \
+        RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+        TARGET=x86_64-unknown-linux-gnu \
+        CARGOGREEN=1 \
+      CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-a8fbaef0afd87b8e/build-script-build \
+        1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-c2a85ea3d52ad392/out/out-c2a85ea3d52ad392-stdout \
+        2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-c2a85ea3d52ad392/out/out-c2a85ea3d52ad392-stderr \
+        || echo $? >/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-c2a85ea3d52ad392/out/out-c2a85ea3d52ad392-errcode\
+  ; find /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-c2a85ea3d52ad392/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-c2a85ea3d52ad392
+COPY --link --from=run-z-typenum-1.19.0-c2a85ea3d52ad392 /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-c2a85ea3d52ad392/out /
+
+## this = "c2a85ea3d52ad392"
+## deps = ["a8fbaef0afd87b8e"]
+## writes_to = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-c2a85ea3d52ad392/out"
+## writes = ["tests.rs"]
+## stdout = ["cargo:rerun-if-changed=tests"]
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "run-z-typenum-1.19.0-c2a85ea3d52ad392"
+## script = '''
+## FROM rust-base AS run-z-typenum-1.19.0-c2a85ea3d52ad392
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-c2a85ea3d52ad392/out
+## WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/typenum-1.19.0
+## RUN \
+##   --mount=from=out-a8fbaef0afd87b8e,source=/build_script_build-a8fbaef0afd87b8e,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-a8fbaef0afd87b8e/build-script-build \
+##   --mount=from=cratesio-typenum-1.19.0,source=/typenum-1.19.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/typenum-1.19.0 \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CFG_FEATURE= \
+##         CARGO_CFG_PANIC=unwind \
+##         CARGO_CFG_TARGET_ABI= \
+##         CARGO_CFG_TARGET_ARCH=x86_64 \
+##         CARGO_CFG_TARGET_ENDIAN=little \
+##         CARGO_CFG_TARGET_ENV=gnu \
+##         CARGO_CFG_TARGET_FAMILY=unix \
+##         CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
+##         CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+##         CARGO_CFG_TARGET_OS=linux \
+##         CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+##         CARGO_CFG_TARGET_VENDOR=unknown \
+##         CARGO_CFG_UNIX= \
+##         CARGO_ENCODED_RUSTFLAGS= \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/typenum-1.19.0 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/typenum-1.19.0/Cargo.toml \
+##         CARGO_PKG_AUTHORS=Paho' Lurie-Gregg <paho@paholg.com>:Andre Bogus <bogusandre@gmail.com>' \
+##         CARGO_PKG_DESCRIPTION=Typenum' is a Rust library for type-level numbers evaluated at\
+##     compile time. It currently supports bits, unsigned integers, and signed\
+##     integers. It also provides a type-level array of type-level numbers, but its\
+##     implementation is incomplete.' \
+##         CARGO_PKG_HOMEPAGE= \
+##         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=typenum \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/paholg/typenum' \
+##         CARGO_PKG_RUST_VERSION=1.37.0 \
+##         CARGO_PKG_VERSION=1.19.0 \
+##         CARGO_PKG_VERSION_MAJOR=1 \
+##         CARGO_PKG_VERSION_MINOR=19 \
+##         CARGO_PKG_VERSION_PATCH=0 \
+##         CARGO_PKG_VERSION_PRE= \
+##         DEBUG=false \
+##         HOST=x86_64-unknown-linux-gnu \
+##         NUM_JOBS=4 \
+##         OPT_LEVEL=3 \
+##         OUT_DIR=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-c2a85ea3d52ad392/out \
+##         PROFILE=release \
+##         RUSTC=rustc \
+##         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+##         TARGET=x86_64-unknown-linux-gnu \
+##         CARGOGREEN=1 \
+##       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-a8fbaef0afd87b8e/build-script-build \
+##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-c2a85ea3d52ad392/out/out-c2a85ea3d52ad392-stdout \
+##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-c2a85ea3d52ad392/out/out-c2a85ea3d52ad392-stderr \
+##         || echo $? >/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-c2a85ea3d52ad392/out/out-c2a85ea3d52ad392-errcode\
+##   ; find /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-c2a85ea3d52ad392/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-c2a85ea3d52ad392"
+## script = """
+## FROM scratch AS out-c2a85ea3d52ad392
+## COPY --link --from=run-z-typenum-1.19.0-c2a85ea3d52ad392 /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-c2a85ea3d52ad392/out /"""
+
+
 FROM rust-base AS dep-n-typenum-1.19.0-7d56f2624f7fb484
 SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps
 RUN \
   --mount=from=cratesio-typenum-1.19.0,source=/typenum-1.19.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/typenum-1.19.0 \
-  --mount=from=crate_out-c2a85ea3d52ad392,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-c2a85ea3d52ad392/out \
+  --mount=from=out-c2a85ea3d52ad392,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-c2a85ea3d52ad392/out,source=/ \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=typenum \
         CARGO_INCREMENTAL=0 \
@@ -276,8 +880,6 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         OUT_DIR=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-c2a85ea3d52ad392/out \
         CARGOGREEN=1 \
-        NTPD_RS_GIT_DATE=2025-05-09 \
-        NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
       rustc --crate-name typenum --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("const-generics", "force_unix_path_separator", "i128", "no_std", "scale-info", "scale_info", "strict"))' -C metadata'=9be63caddbb3e28a' -C extra-filename'=-7d56f2624f7fb484' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/typenum-1.19.0/src/lib.rs \
         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-7d56f2624f7fb484-stdout \
         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-7d56f2624f7fb484-stderr \
@@ -287,6 +889,11 @@ FROM scratch AS out-7d56f2624f7fb484
 COPY --link --from=dep-n-typenum-1.19.0-7d56f2624f7fb484 /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/*-7d56f2624f7fb484* /
 
 ## this = "7d56f2624f7fb484"
+## deps = [
+##     "c2a85ea3d52ad392",
+##     "a8fbaef0afd87b8e",
+## ]
+## buildrs_results = ["c2a85ea3d52ad392"]
 ## writes = [
 ##     "libtypenum-7d56f2624f7fb484.rlib",
 ##     "libtypenum-7d56f2624f7fb484.rmeta",
@@ -298,9 +905,9 @@ COPY --link --from=dep-n-typenum-1.19.0-7d56f2624f7fb484 /tmp/clis-ntpd_1-7-0-al
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtypenum-7d56f2624f7fb484.rlib","emit":"link"}',
 ## ]
 ##
-## [[contexts]]
-## name = "crate_out-c2a85ea3d52ad392"
-## uri = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-c2a85ea3d52ad392/out"
+## [[mounts]]
+## name = "out-c2a85ea3d52ad392"
+## mount = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-c2a85ea3d52ad392/out"
 ##
 ## [[stages]]
 ##
@@ -327,7 +934,7 @@ COPY --link --from=dep-n-typenum-1.19.0-7d56f2624f7fb484 /tmp/clis-ntpd_1-7-0-al
 ## WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps
 ## RUN \
 ##   --mount=from=cratesio-typenum-1.19.0,source=/typenum-1.19.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/typenum-1.19.0 \
-##   --mount=from=crate_out-c2a85ea3d52ad392,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-c2a85ea3d52ad392/out \
+##   --mount=from=out-c2a85ea3d52ad392,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-c2a85ea3d52ad392/out,source=/ \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=typenum \
 ##         CARGO_INCREMENTAL=0 \
@@ -352,8 +959,6 @@ COPY --link --from=dep-n-typenum-1.19.0-7d56f2624f7fb484 /tmp/clis-ntpd_1-7-0-al
 ##         CARGO_PKG_VERSION_PRE= \
 ##         OUT_DIR=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-c2a85ea3d52ad392/out \
 ##         CARGOGREEN=1 \
-##         NTPD_RS_GIT_DATE=2025-05-09 \
-##         NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
 ##       rustc --crate-name typenum --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("const-generics", "force_unix_path_separator", "i128", "no_std", "scale-info", "scale_info", "strict"))' -C metadata'=9be63caddbb3e28a' -C extra-filename'=-7d56f2624f7fb484' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/typenum-1.19.0/src/lib.rs \
 ##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-7d56f2624f7fb484-stdout \
 ##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-7d56f2624f7fb484-stderr \
@@ -368,9 +973,405 @@ COPY --link --from=dep-n-typenum-1.19.0-7d56f2624f7fb484 /tmp/clis-ntpd_1-7-0-al
 ## FROM scratch AS out-7d56f2624f7fb484
 ## COPY --link --from=dep-n-typenum-1.19.0-7d56f2624f7fb484 /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/*-7d56f2624f7fb484* /"""
 
+FROM scratch AS cratesio-version_check-0.9.5
+ADD --chmod=0664 --unpack --checksum=sha256:0b928f33d975fc6ad9f86c8f283853ad26bdd5b10b7f1542aa2fa15e2289105a \
+  https://static.crates.io/crates/version_check/version_check-0.9.5.crate /
+FROM rust-base AS dep-n-version_check-0.9.5-23b425cce0264739
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps
+RUN \
+  --mount=from=cratesio-version_check-0.9.5,source=/version_check-0.9.5,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/version_check-0.9.5 \
+    env CARGO="$(which cargo)" \
+        CARGO_CRATE_NAME=version_check \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/version_check-0.9.5 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/version_check-0.9.5/Cargo.toml \
+        CARGO_PKG_AUTHORS=Sergio' Benitez <sb@sergio.bz>' \
+        CARGO_PKG_DESCRIPTION=Tiny' crate to check the version of the installed/running rustc.' \
+        CARGO_PKG_HOMEPAGE= \
+        CARGO_PKG_LICENSE=MIT/Apache-2.0 \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=version_check \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/SergioBenitez/version_check' \
+        CARGO_PKG_RUST_VERSION= \
+        CARGO_PKG_VERSION=0.9.5 \
+        CARGO_PKG_VERSION_MAJOR=0 \
+        CARGO_PKG_VERSION_MINOR=9 \
+        CARGO_PKG_VERSION_PATCH=5 \
+        CARGO_PKG_VERSION_PRE= \
+        CARGOGREEN=1 \
+      rustc --crate-name version_check --edition 2015 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=93973a915f03e2c2' -C extra-filename'=-23b425cce0264739' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/version_check-0.9.5/src/lib.rs \
+        1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-23b425cce0264739-stdout \
+        2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-23b425cce0264739-stderr \
+        || echo $? >/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-23b425cce0264739-errcode\
+  ; find /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/*-23b425cce0264739* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-23b425cce0264739
+COPY --link --from=dep-n-version_check-0.9.5-23b425cce0264739 /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/*-23b425cce0264739* /
+
+## this = "23b425cce0264739"
+## writes = [
+##     "libversion_check-23b425cce0264739.rlib",
+##     "libversion_check-23b425cce0264739.rmeta",
+##     "version_check-23b425cce0264739.d",
+## ]
+## stderr = [
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/version_check-23b425cce0264739.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libversion_check-23b425cce0264739.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libversion_check-23b425cce0264739.rlib","emit":"link"}',
+## ]
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
+##
+## [[stages]]
+##
+## [stages.Cratesio]
+## stage = "cratesio-version_check-0.9.5"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/version_check-0.9.5"
+## name = "version_check"
+## name_dash_version = "version_check-0.9.5"
+## hash = "0b928f33d975fc6ad9f86c8f283853ad26bdd5b10b7f1542aa2fa15e2289105a"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "dep-n-version_check-0.9.5-23b425cce0264739"
+## script = '''
+## FROM rust-base AS dep-n-version_check-0.9.5-23b425cce0264739
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps
+## RUN \
+##   --mount=from=cratesio-version_check-0.9.5,source=/version_check-0.9.5,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/version_check-0.9.5 \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CRATE_NAME=version_check \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/version_check-0.9.5 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/version_check-0.9.5/Cargo.toml \
+##         CARGO_PKG_AUTHORS=Sergio' Benitez <sb@sergio.bz>' \
+##         CARGO_PKG_DESCRIPTION=Tiny' crate to check the version of the installed/running rustc.' \
+##         CARGO_PKG_HOMEPAGE= \
+##         CARGO_PKG_LICENSE=MIT/Apache-2.0 \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=version_check \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/SergioBenitez/version_check' \
+##         CARGO_PKG_RUST_VERSION= \
+##         CARGO_PKG_VERSION=0.9.5 \
+##         CARGO_PKG_VERSION_MAJOR=0 \
+##         CARGO_PKG_VERSION_MINOR=9 \
+##         CARGO_PKG_VERSION_PATCH=5 \
+##         CARGO_PKG_VERSION_PRE= \
+##         CARGOGREEN=1 \
+##       rustc --crate-name version_check --edition 2015 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=93973a915f03e2c2' -C extra-filename'=-23b425cce0264739' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/version_check-0.9.5/src/lib.rs \
+##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-23b425cce0264739-stdout \
+##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-23b425cce0264739-stderr \
+##         || echo $? >/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-23b425cce0264739-errcode\
+##   ; find /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/*-23b425cce0264739* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-23b425cce0264739"
+## script = """
+## FROM scratch AS out-23b425cce0264739
+## COPY --link --from=dep-n-version_check-0.9.5-23b425cce0264739 /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/*-23b425cce0264739* /"""
+
 FROM scratch AS cratesio-generic-array-0.14.7
 ADD --chmod=0664 --unpack --checksum=sha256:85649ca51fd72272d7821adaf274ad91c288277713d9c18820d8499a7ff69e9a \
   https://static.crates.io/crates/generic-array/generic-array-0.14.7.crate /
+FROM rust-base AS dep-x-generic-array-0.14.7-daae1221734799f2
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/generic-array-daae1221734799f2
+RUN \
+  --mount=from=cratesio-generic-array-0.14.7,source=/generic-array-0.14.7,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/generic-array-0.14.7,rw \
+  --mount=from=out-23b425cce0264739,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libversion_check-23b425cce0264739.rlib,source=/libversion_check-23b425cce0264739.rlib \
+    { \
+        cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/generic-array-0.14.7/build.rs | sed -E 's/^(pub[()a-z]* +)?(async +)?fn +main/\1\2fn actual_daae1221734799f2_main/' >/_ && mv /_ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/generic-array-0.14.7/build.rs ; \
+        { \
+          echo ; \
+          echo 'fn main() {' ; \
+          echo '    use std::env::{args_os, var_os};' ; \
+          echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+          echo '        use std::process::{Command, Stdio};' ; \
+          echo '        let mut cmd = Command::new("cargo-green");' ; \
+          echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+          echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+          echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+          echo '        assert!(res.success());' ; \
+          echo '    } else {' ; \
+          echo '        actual_daae1221734799f2_main();' ; \
+          echo '    }' ; \
+          echo '}' ; \
+        } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/generic-array-0.14.7/build.rs ; \
+    } && \
+    env CARGO="$(which cargo)" \
+        CARGO_CRATE_NAME=build_script_build \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/generic-array-0.14.7 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/generic-array-0.14.7/Cargo.toml \
+        CARGO_PKG_AUTHORS=Bartłomiej' Kamiński <fizyk20@gmail.com>:Aaron Trent <novacrazy@gmail.com>' \
+        CARGO_PKG_DESCRIPTION=Generic' types implementing functionality of arrays' \
+        CARGO_PKG_HOMEPAGE= \
+        CARGO_PKG_LICENSE=MIT \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=generic-array \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/fizyk20/generic-array.git' \
+        CARGO_PKG_RUST_VERSION= \
+        CARGO_PKG_VERSION=0.14.7 \
+        CARGO_PKG_VERSION_MAJOR=0 \
+        CARGO_PKG_VERSION_MINOR=14 \
+        CARGO_PKG_VERSION_PATCH=7 \
+        CARGO_PKG_VERSION_PRE= \
+        CARGOGREEN=1 \
+      rustc --crate-name build_script_build --edition 2015 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="more_lengths"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("more_lengths", "serde", "zeroize"))' -C metadata'=7d9e412a228678ed' -C extra-filename'=-daae1221734799f2' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/generic-array-daae1221734799f2 -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern version_check'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libversion_check-23b425cce0264739.rlib' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/generic-array-0.14.7/build.rs \
+        1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/generic-array-daae1221734799f2/out-daae1221734799f2-stdout \
+        2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/generic-array-daae1221734799f2/out-daae1221734799f2-stderr \
+        || echo $? >/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/generic-array-daae1221734799f2/out-daae1221734799f2-errcode\
+  ; find /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/generic-array-daae1221734799f2/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-daae1221734799f2
+COPY --link --from=dep-x-generic-array-0.14.7-daae1221734799f2 /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/generic-array-daae1221734799f2/*-daae1221734799f2* /
+
+## this = "daae1221734799f2"
+## deps = ["23b425cce0264739"]
+## writes = [
+##     "build_script_build-daae1221734799f2",
+##     "build_script_build-daae1221734799f2.d",
+## ]
+## stderr = [
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/generic-array-daae1221734799f2/build_script_build-daae1221734799f2.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/generic-array-daae1221734799f2/build_script_build-daae1221734799f2","emit":"link"}',
+## ]
+##
+## [[externs]]
+## from = "out-23b425cce0264739"
+## xtern = "libversion_check-23b425cce0264739.rlib"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
+##
+## [[stages]]
+##
+## [stages.Cratesio]
+## stage = "cratesio-generic-array-0.14.7"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/generic-array-0.14.7"
+## name = "generic-array"
+## name_dash_version = "generic-array-0.14.7"
+## hash = "85649ca51fd72272d7821adaf274ad91c288277713d9c18820d8499a7ff69e9a"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "dep-x-generic-array-0.14.7-daae1221734799f2"
+## script = '''
+## FROM rust-base AS dep-x-generic-array-0.14.7-daae1221734799f2
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/generic-array-daae1221734799f2
+## RUN \
+##   --mount=from=cratesio-generic-array-0.14.7,source=/generic-array-0.14.7,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/generic-array-0.14.7,rw \
+##   --mount=from=out-23b425cce0264739,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libversion_check-23b425cce0264739.rlib,source=/libversion_check-23b425cce0264739.rlib \
+##     { \
+##         cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/generic-array-0.14.7/build.rs | sed -E 's/^(pub[()a-z]* +)?(async +)?fn +main/\1\2fn actual_daae1221734799f2_main/' >/_ && mv /_ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/generic-array-0.14.7/build.rs ; \
+##         { \
+##           echo ; \
+##           echo 'fn main() {' ; \
+##           echo '    use std::env::{args_os, var_os};' ; \
+##           echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+##           echo '        use std::process::{Command, Stdio};' ; \
+##           echo '        let mut cmd = Command::new("cargo-green");' ; \
+##           echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+##           echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+##           echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+##           echo '        assert!(res.success());' ; \
+##           echo '    } else {' ; \
+##           echo '        actual_daae1221734799f2_main();' ; \
+##           echo '    }' ; \
+##           echo '}' ; \
+##         } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/generic-array-0.14.7/build.rs ; \
+##     } && \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CRATE_NAME=build_script_build \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/generic-array-0.14.7 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/generic-array-0.14.7/Cargo.toml \
+##         CARGO_PKG_AUTHORS=Bartłomiej' Kamiński <fizyk20@gmail.com>:Aaron Trent <novacrazy@gmail.com>' \
+##         CARGO_PKG_DESCRIPTION=Generic' types implementing functionality of arrays' \
+##         CARGO_PKG_HOMEPAGE= \
+##         CARGO_PKG_LICENSE=MIT \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=generic-array \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/fizyk20/generic-array.git' \
+##         CARGO_PKG_RUST_VERSION= \
+##         CARGO_PKG_VERSION=0.14.7 \
+##         CARGO_PKG_VERSION_MAJOR=0 \
+##         CARGO_PKG_VERSION_MINOR=14 \
+##         CARGO_PKG_VERSION_PATCH=7 \
+##         CARGO_PKG_VERSION_PRE= \
+##         CARGOGREEN=1 \
+##       rustc --crate-name build_script_build --edition 2015 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="more_lengths"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("more_lengths", "serde", "zeroize"))' -C metadata'=7d9e412a228678ed' -C extra-filename'=-daae1221734799f2' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/generic-array-daae1221734799f2 -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern version_check'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libversion_check-23b425cce0264739.rlib' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/generic-array-0.14.7/build.rs \
+##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/generic-array-daae1221734799f2/out-daae1221734799f2-stdout \
+##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/generic-array-daae1221734799f2/out-daae1221734799f2-stderr \
+##         || echo $? >/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/generic-array-daae1221734799f2/out-daae1221734799f2-errcode\
+##   ; find /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/generic-array-daae1221734799f2/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-daae1221734799f2"
+## script = """
+## FROM scratch AS out-daae1221734799f2
+## COPY --link --from=dep-x-generic-array-0.14.7-daae1221734799f2 /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/generic-array-daae1221734799f2/*-daae1221734799f2* /"""
+
+FROM rust-base AS run-z-generic-array-0.14.7-6319738dfa2a85a9
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/generic-array-6319738dfa2a85a9/out
+WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/generic-array-0.14.7
+RUN \
+  --mount=from=out-daae1221734799f2,source=/build_script_build-daae1221734799f2,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/generic-array-daae1221734799f2/build-script-build \
+  --mount=from=cratesio-generic-array-0.14.7,source=/generic-array-0.14.7,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/generic-array-0.14.7 \
+    env CARGO="$(which cargo)" \
+        CARGO_CFG_FEATURE=more_lengths \
+        CARGO_CFG_PANIC=unwind \
+        CARGO_CFG_TARGET_ABI= \
+        CARGO_CFG_TARGET_ARCH=x86_64 \
+        CARGO_CFG_TARGET_ENDIAN=little \
+        CARGO_CFG_TARGET_ENV=gnu \
+        CARGO_CFG_TARGET_FAMILY=unix \
+        CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
+        CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+        CARGO_CFG_TARGET_OS=linux \
+        CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+        CARGO_CFG_TARGET_VENDOR=unknown \
+        CARGO_CFG_UNIX= \
+        CARGO_ENCODED_RUSTFLAGS= \
+        CARGO_FEATURE_MORE_LENGTHS=1 \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/generic-array-0.14.7 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/generic-array-0.14.7/Cargo.toml \
+        CARGO_PKG_AUTHORS=Bartłomiej' Kamiński <fizyk20@gmail.com>:Aaron Trent <novacrazy@gmail.com>' \
+        CARGO_PKG_DESCRIPTION=Generic' types implementing functionality of arrays' \
+        CARGO_PKG_HOMEPAGE= \
+        CARGO_PKG_LICENSE=MIT \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=generic-array \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/fizyk20/generic-array.git' \
+        CARGO_PKG_RUST_VERSION= \
+        CARGO_PKG_VERSION=0.14.7 \
+        CARGO_PKG_VERSION_MAJOR=0 \
+        CARGO_PKG_VERSION_MINOR=14 \
+        CARGO_PKG_VERSION_PATCH=7 \
+        CARGO_PKG_VERSION_PRE= \
+        DEBUG=false \
+        HOST=x86_64-unknown-linux-gnu \
+        NUM_JOBS=4 \
+        OPT_LEVEL=3 \
+        OUT_DIR=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/generic-array-6319738dfa2a85a9/out \
+        PROFILE=release \
+        RUSTC=rustc \
+        RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+        TARGET=x86_64-unknown-linux-gnu \
+        CARGOGREEN=1 \
+      CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/generic-array-daae1221734799f2/build-script-build \
+        1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/generic-array-6319738dfa2a85a9/out/out-6319738dfa2a85a9-stdout \
+        2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/generic-array-6319738dfa2a85a9/out/out-6319738dfa2a85a9-stderr \
+        || echo $? >/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/generic-array-6319738dfa2a85a9/out/out-6319738dfa2a85a9-errcode\
+  ; find /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/generic-array-6319738dfa2a85a9/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-6319738dfa2a85a9
+COPY --link --from=run-z-generic-array-0.14.7-6319738dfa2a85a9 /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/generic-array-6319738dfa2a85a9/out /
+
+## this = "6319738dfa2a85a9"
+## deps = [
+##     "23b425cce0264739",
+##     "daae1221734799f2",
+## ]
+## writes_to = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/generic-array-6319738dfa2a85a9/out"
+## stdout = ["cargo:rustc-cfg=relaxed_coherence"]
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "run-z-generic-array-0.14.7-6319738dfa2a85a9"
+## script = '''
+## FROM rust-base AS run-z-generic-array-0.14.7-6319738dfa2a85a9
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/generic-array-6319738dfa2a85a9/out
+## WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/generic-array-0.14.7
+## RUN \
+##   --mount=from=out-daae1221734799f2,source=/build_script_build-daae1221734799f2,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/generic-array-daae1221734799f2/build-script-build \
+##   --mount=from=cratesio-generic-array-0.14.7,source=/generic-array-0.14.7,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/generic-array-0.14.7 \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CFG_FEATURE=more_lengths \
+##         CARGO_CFG_PANIC=unwind \
+##         CARGO_CFG_TARGET_ABI= \
+##         CARGO_CFG_TARGET_ARCH=x86_64 \
+##         CARGO_CFG_TARGET_ENDIAN=little \
+##         CARGO_CFG_TARGET_ENV=gnu \
+##         CARGO_CFG_TARGET_FAMILY=unix \
+##         CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
+##         CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+##         CARGO_CFG_TARGET_OS=linux \
+##         CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+##         CARGO_CFG_TARGET_VENDOR=unknown \
+##         CARGO_CFG_UNIX= \
+##         CARGO_ENCODED_RUSTFLAGS= \
+##         CARGO_FEATURE_MORE_LENGTHS=1 \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/generic-array-0.14.7 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/generic-array-0.14.7/Cargo.toml \
+##         CARGO_PKG_AUTHORS=Bartłomiej' Kamiński <fizyk20@gmail.com>:Aaron Trent <novacrazy@gmail.com>' \
+##         CARGO_PKG_DESCRIPTION=Generic' types implementing functionality of arrays' \
+##         CARGO_PKG_HOMEPAGE= \
+##         CARGO_PKG_LICENSE=MIT \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=generic-array \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/fizyk20/generic-array.git' \
+##         CARGO_PKG_RUST_VERSION= \
+##         CARGO_PKG_VERSION=0.14.7 \
+##         CARGO_PKG_VERSION_MAJOR=0 \
+##         CARGO_PKG_VERSION_MINOR=14 \
+##         CARGO_PKG_VERSION_PATCH=7 \
+##         CARGO_PKG_VERSION_PRE= \
+##         DEBUG=false \
+##         HOST=x86_64-unknown-linux-gnu \
+##         NUM_JOBS=4 \
+##         OPT_LEVEL=3 \
+##         OUT_DIR=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/generic-array-6319738dfa2a85a9/out \
+##         PROFILE=release \
+##         RUSTC=rustc \
+##         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+##         TARGET=x86_64-unknown-linux-gnu \
+##         CARGOGREEN=1 \
+##       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/generic-array-daae1221734799f2/build-script-build \
+##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/generic-array-6319738dfa2a85a9/out/out-6319738dfa2a85a9-stdout \
+##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/generic-array-6319738dfa2a85a9/out/out-6319738dfa2a85a9-stderr \
+##         || echo $? >/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/generic-array-6319738dfa2a85a9/out/out-6319738dfa2a85a9-errcode\
+##   ; find /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/generic-array-6319738dfa2a85a9/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-6319738dfa2a85a9"
+## script = """
+## FROM scratch AS out-6319738dfa2a85a9
+## COPY --link --from=run-z-generic-array-0.14.7-6319738dfa2a85a9 /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/generic-array-6319738dfa2a85a9/out /"""
+
+
 FROM rust-base AS dep-n-generic-array-0.14.7-523ed8994559e91b
 SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps
@@ -378,6 +1379,8 @@ RUN \
   --mount=from=cratesio-generic-array-0.14.7,source=/generic-array-0.14.7,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/generic-array-0.14.7 \
   --mount=from=out-7d56f2624f7fb484,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtypenum-7d56f2624f7fb484.rlib,source=/libtypenum-7d56f2624f7fb484.rlib \
   --mount=from=out-7d56f2624f7fb484,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtypenum-7d56f2624f7fb484.rmeta,source=/libtypenum-7d56f2624f7fb484.rmeta \
+  --mount=from=out-c2a85ea3d52ad392,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-c2a85ea3d52ad392/out,source=/ \
+  --mount=from=out-6319738dfa2a85a9,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/generic-array-6319738dfa2a85a9/out,source=/ \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=generic_array \
         CARGO_INCREMENTAL=0 \
@@ -399,8 +1402,6 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         OUT_DIR=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/generic-array-6319738dfa2a85a9/out \
         CARGOGREEN=1 \
-        NTPD_RS_GIT_DATE=2025-05-09 \
-        NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
       rustc --crate-name generic_array --edition 2015 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --cfg feature'="more_lengths"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("more_lengths", "serde", "zeroize"))' -C metadata'=6a263f6f59c8df17' -C extra-filename'=-523ed8994559e91b' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern typenum'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtypenum-7d56f2624f7fb484.rmeta' --cap-lints warn --cfg relaxed_coherence /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/generic-array-0.14.7/src/lib.rs \
         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-523ed8994559e91b-stdout \
         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-523ed8994559e91b-stderr \
@@ -410,7 +1411,18 @@ FROM scratch AS out-523ed8994559e91b
 COPY --link --from=dep-n-generic-array-0.14.7-523ed8994559e91b /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/*-523ed8994559e91b* /
 
 ## this = "523ed8994559e91b"
-## deps = ["7d56f2624f7fb484"]
+## deps = [
+##     "7d56f2624f7fb484",
+##     "a8fbaef0afd87b8e",
+##     "6319738dfa2a85a9",
+##     "c2a85ea3d52ad392",
+##     "23b425cce0264739",
+##     "daae1221734799f2",
+## ]
+## buildrs_results = [
+##     "c2a85ea3d52ad392",
+##     "6319738dfa2a85a9",
+## ]
 ## writes = [
 ##     "generic_array-523ed8994559e91b.d",
 ##     "libgeneric_array-523ed8994559e91b.rlib",
@@ -437,9 +1449,13 @@ COPY --link --from=dep-n-generic-array-0.14.7-523ed8994559e91b /tmp/clis-ntpd_1-
 ## from = "out-7d56f2624f7fb484"
 ## xtern = "libtypenum-7d56f2624f7fb484.rmeta"
 ##
-## [[contexts]]
-## name = "crate_out-c2a85ea3d52ad392"
-## uri = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-c2a85ea3d52ad392/out"
+## [[mounts]]
+## name = "out-c2a85ea3d52ad392"
+## mount = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-c2a85ea3d52ad392/out"
+##
+## [[mounts]]
+## name = "out-6319738dfa2a85a9"
+## mount = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/generic-array-6319738dfa2a85a9/out"
 ##
 ## [[stages]]
 ##
@@ -468,6 +1484,8 @@ COPY --link --from=dep-n-generic-array-0.14.7-523ed8994559e91b /tmp/clis-ntpd_1-
 ##   --mount=from=cratesio-generic-array-0.14.7,source=/generic-array-0.14.7,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/generic-array-0.14.7 \
 ##   --mount=from=out-7d56f2624f7fb484,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtypenum-7d56f2624f7fb484.rlib,source=/libtypenum-7d56f2624f7fb484.rlib \
 ##   --mount=from=out-7d56f2624f7fb484,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtypenum-7d56f2624f7fb484.rmeta,source=/libtypenum-7d56f2624f7fb484.rmeta \
+##   --mount=from=out-c2a85ea3d52ad392,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-c2a85ea3d52ad392/out,source=/ \
+##   --mount=from=out-6319738dfa2a85a9,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/generic-array-6319738dfa2a85a9/out,source=/ \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=generic_array \
 ##         CARGO_INCREMENTAL=0 \
@@ -489,8 +1507,6 @@ COPY --link --from=dep-n-generic-array-0.14.7-523ed8994559e91b /tmp/clis-ntpd_1-
 ##         CARGO_PKG_VERSION_PRE= \
 ##         OUT_DIR=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/generic-array-6319738dfa2a85a9/out \
 ##         CARGOGREEN=1 \
-##         NTPD_RS_GIT_DATE=2025-05-09 \
-##         NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
 ##       rustc --crate-name generic_array --edition 2015 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --cfg feature'="more_lengths"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("more_lengths", "serde", "zeroize"))' -C metadata'=6a263f6f59c8df17' -C extra-filename'=-523ed8994559e91b' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern typenum'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtypenum-7d56f2624f7fb484.rmeta' --cap-lints warn --cfg relaxed_coherence /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/generic-array-0.14.7/src/lib.rs \
 ##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-523ed8994559e91b-stdout \
 ##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-523ed8994559e91b-stderr \
@@ -536,8 +1552,6 @@ item that gets emitted.\
         CARGO_PKG_VERSION_PATCH=3 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        NTPD_RS_GIT_DATE=2025-05-09 \
-        NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
       rustc --crate-name cfg_if --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("core", "rustc-dep-of-std"))' -C metadata'=2278f0e6963eebb7' -C extra-filename'=-5a4301c208f24f4c' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/cfg-if-1.0.3/src/lib.rs \
         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-5a4301c208f24f4c-stdout \
         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-5a4301c208f24f4c-stderr \
@@ -606,8 +1620,6 @@ COPY --link --from=dep-n-cfg-if-1.0.3-5a4301c208f24f4c /tmp/clis-ntpd_1-7-0-alph
 ##         CARGO_PKG_VERSION_PATCH=3 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         NTPD_RS_GIT_DATE=2025-05-09 \
-##         NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
 ##       rustc --crate-name cfg_if --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("core", "rustc-dep-of-std"))' -C metadata'=2278f0e6963eebb7' -C extra-filename'=-5a4301c208f24f4c' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/cfg-if-1.0.3/src/lib.rs \
 ##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-5a4301c208f24f4c-stdout \
 ##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-5a4301c208f24f4c-stderr \
@@ -654,8 +1666,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=16 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        NTPD_RS_GIT_DATE=2025-05-09 \
-        NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
       rustc --crate-name getrandom --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("compiler_builtins", "core", "custom", "js", "js-sys", "linux_disable_fallback", "rdrand", "rustc-dep-of-std", "std", "test-in-browser", "wasm-bindgen"))' -C metadata'=dc50ef7a2da81a6f' -C extra-filename'=-2ae0eb9fb2c721bb' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern cfg_if'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcfg_if-5a4301c208f24f4c.rmeta' --extern libc'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibc-93b6478caf319772.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/getrandom-0.2.16/src/lib.rs \
         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-2ae0eb9fb2c721bb-stdout \
         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-2ae0eb9fb2c721bb-stderr \
@@ -668,7 +1678,10 @@ COPY --link --from=dep-n-getrandom-0.2.16-2ae0eb9fb2c721bb /tmp/clis-ntpd_1-7-0-
 ## deps = [
 ##     "5a4301c208f24f4c",
 ##     "93b6478caf319772",
+##     "7560e7c5c88ec4c4",
+##     "d5b44a42806fd90b",
 ## ]
+## buildrs_results = ["d5b44a42806fd90b"]
 ## writes = [
 ##     "getrandom-2ae0eb9fb2c721bb.d",
 ##     "libgetrandom-2ae0eb9fb2c721bb.rlib",
@@ -745,8 +1758,6 @@ COPY --link --from=dep-n-getrandom-0.2.16-2ae0eb9fb2c721bb /tmp/clis-ntpd_1-7-0-
 ##         CARGO_PKG_VERSION_PATCH=16 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         NTPD_RS_GIT_DATE=2025-05-09 \
-##         NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
 ##       rustc --crate-name getrandom --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("compiler_builtins", "core", "custom", "js", "js-sys", "linux_disable_fallback", "rdrand", "rustc-dep-of-std", "std", "test-in-browser", "wasm-bindgen"))' -C metadata'=dc50ef7a2da81a6f' -C extra-filename'=-2ae0eb9fb2c721bb' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern cfg_if'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcfg_if-5a4301c208f24f4c.rmeta' --extern libc'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibc-93b6478caf319772.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/getrandom-0.2.16/src/lib.rs \
 ##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-2ae0eb9fb2c721bb-stdout \
 ##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-2ae0eb9fb2c721bb-stderr \
@@ -796,8 +1807,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=4 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        NTPD_RS_GIT_DATE=2025-05-09 \
-        NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
       rustc --crate-name rand_core --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --cfg feature'="alloc"' --cfg feature'="getrandom"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "getrandom", "serde", "serde1", "std"))' -C metadata'=91967440e59f4fa5' -C extra-filename'=-fd7543c0686511cd' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern getrandom'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libgetrandom-2ae0eb9fb2c721bb.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rand_core-0.6.4/src/lib.rs \
         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-fd7543c0686511cd-stdout \
         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-fd7543c0686511cd-stderr \
@@ -811,7 +1820,10 @@ COPY --link --from=dep-n-rand_core-0.6.4-fd7543c0686511cd /tmp/clis-ntpd_1-7-0-a
 ##     "2ae0eb9fb2c721bb",
 ##     "5a4301c208f24f4c",
 ##     "93b6478caf319772",
+##     "7560e7c5c88ec4c4",
+##     "d5b44a42806fd90b",
 ## ]
+## buildrs_results = ["d5b44a42806fd90b"]
 ## writes = [
 ##     "librand_core-fd7543c0686511cd.rlib",
 ##     "librand_core-fd7543c0686511cd.rmeta",
@@ -906,8 +1918,6 @@ COPY --link --from=dep-n-rand_core-0.6.4-fd7543c0686511cd /tmp/clis-ntpd_1-7-0-a
 ##         CARGO_PKG_VERSION_PATCH=4 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         NTPD_RS_GIT_DATE=2025-05-09 \
-##         NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
 ##       rustc --crate-name rand_core --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --cfg feature'="alloc"' --cfg feature'="getrandom"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "getrandom", "serde", "serde1", "std"))' -C metadata'=91967440e59f4fa5' -C extra-filename'=-fd7543c0686511cd' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern getrandom'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libgetrandom-2ae0eb9fb2c721bb.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rand_core-0.6.4/src/lib.rs \
 ##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-fd7543c0686511cd-stdout \
 ##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-fd7543c0686511cd-stderr \
@@ -934,6 +1944,8 @@ RUN \
   --mount=from=out-523ed8994559e91b,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libgeneric_array-523ed8994559e91b.rmeta,source=/libgeneric_array-523ed8994559e91b.rmeta \
   --mount=from=out-7d56f2624f7fb484,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtypenum-7d56f2624f7fb484.rlib,source=/libtypenum-7d56f2624f7fb484.rlib \
   --mount=from=out-7d56f2624f7fb484,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtypenum-7d56f2624f7fb484.rmeta,source=/libtypenum-7d56f2624f7fb484.rmeta \
+  --mount=from=out-23b425cce0264739,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libversion_check-23b425cce0264739.rlib,source=/libversion_check-23b425cce0264739.rlib \
+  --mount=from=out-23b425cce0264739,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libversion_check-23b425cce0264739.rmeta,source=/libversion_check-23b425cce0264739.rmeta \
   --mount=from=out-fd7543c0686511cd,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/librand_core-fd7543c0686511cd.rlib,source=/librand_core-fd7543c0686511cd.rlib \
   --mount=from=out-fd7543c0686511cd,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/librand_core-fd7543c0686511cd.rmeta,source=/librand_core-fd7543c0686511cd.rmeta \
   --mount=from=out-2ae0eb9fb2c721bb,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libgetrandom-2ae0eb9fb2c721bb.rlib,source=/libgetrandom-2ae0eb9fb2c721bb.rlib \
@@ -942,6 +1954,7 @@ RUN \
   --mount=from=out-5a4301c208f24f4c,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcfg_if-5a4301c208f24f4c.rmeta,source=/libcfg_if-5a4301c208f24f4c.rmeta \
   --mount=from=out-93b6478caf319772,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibc-93b6478caf319772.rlib,source=/liblibc-93b6478caf319772.rlib \
   --mount=from=out-93b6478caf319772,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibc-93b6478caf319772.rmeta,source=/liblibc-93b6478caf319772.rmeta \
+  --mount=from=out-c2a85ea3d52ad392,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-c2a85ea3d52ad392/out,source=/ \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=crypto_common \
         CARGO_INCREMENTAL=0 \
@@ -962,8 +1975,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=6 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        NTPD_RS_GIT_DATE=2025-05-09 \
-        NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
       rustc --crate-name crypto_common --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --cfg feature'="getrandom"' --cfg feature'="rand_core"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("getrandom", "rand_core", "std"))' -C metadata'=7423e6134502c0ca' -C extra-filename'=-cebe1cbff4994413' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern generic_array'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libgeneric_array-523ed8994559e91b.rmeta' --extern rand_core'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/librand_core-fd7543c0686511cd.rmeta' --extern typenum'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtypenum-7d56f2624f7fb484.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crypto-common-0.1.6/src/lib.rs \
         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-cebe1cbff4994413-stdout \
         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-cebe1cbff4994413-stderr \
@@ -976,10 +1987,22 @@ COPY --link --from=dep-n-crypto-common-0.1.6-cebe1cbff4994413 /tmp/clis-ntpd_1-7
 ## deps = [
 ##     "523ed8994559e91b",
 ##     "7d56f2624f7fb484",
+##     "a8fbaef0afd87b8e",
+##     "23b425cce0264739",
+##     "daae1221734799f2",
 ##     "fd7543c0686511cd",
 ##     "2ae0eb9fb2c721bb",
 ##     "5a4301c208f24f4c",
 ##     "93b6478caf319772",
+##     "7560e7c5c88ec4c4",
+##     "c2a85ea3d52ad392",
+##     "6319738dfa2a85a9",
+##     "d5b44a42806fd90b",
+## ]
+## buildrs_results = [
+##     "c2a85ea3d52ad392",
+##     "6319738dfa2a85a9",
+##     "d5b44a42806fd90b",
 ## ]
 ## writes = [
 ##     "crypto_common-cebe1cbff4994413.d",
@@ -1007,6 +2030,14 @@ COPY --link --from=dep-n-crypto-common-0.1.6-cebe1cbff4994413 /tmp/clis-ntpd_1-7
 ## [[externs]]
 ## from = "out-7d56f2624f7fb484"
 ## xtern = "libtypenum-7d56f2624f7fb484.rmeta"
+##
+## [[externs]]
+## from = "out-23b425cce0264739"
+## xtern = "libversion_check-23b425cce0264739.rlib"
+##
+## [[externs]]
+## from = "out-23b425cce0264739"
+## xtern = "libversion_check-23b425cce0264739.rmeta"
 ##
 ## [[externs]]
 ## from = "out-fd7543c0686511cd"
@@ -1040,9 +2071,9 @@ COPY --link --from=dep-n-crypto-common-0.1.6-cebe1cbff4994413 /tmp/clis-ntpd_1-7
 ## from = "out-93b6478caf319772"
 ## xtern = "liblibc-93b6478caf319772.rmeta"
 ##
-## [[contexts]]
-## name = "crate_out-c2a85ea3d52ad392"
-## uri = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-c2a85ea3d52ad392/out"
+## [[mounts]]
+## name = "out-c2a85ea3d52ad392"
+## mount = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-c2a85ea3d52ad392/out"
 ##
 ## [[stages]]
 ##
@@ -1073,6 +2104,8 @@ COPY --link --from=dep-n-crypto-common-0.1.6-cebe1cbff4994413 /tmp/clis-ntpd_1-7
 ##   --mount=from=out-523ed8994559e91b,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libgeneric_array-523ed8994559e91b.rmeta,source=/libgeneric_array-523ed8994559e91b.rmeta \
 ##   --mount=from=out-7d56f2624f7fb484,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtypenum-7d56f2624f7fb484.rlib,source=/libtypenum-7d56f2624f7fb484.rlib \
 ##   --mount=from=out-7d56f2624f7fb484,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtypenum-7d56f2624f7fb484.rmeta,source=/libtypenum-7d56f2624f7fb484.rmeta \
+##   --mount=from=out-23b425cce0264739,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libversion_check-23b425cce0264739.rlib,source=/libversion_check-23b425cce0264739.rlib \
+##   --mount=from=out-23b425cce0264739,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libversion_check-23b425cce0264739.rmeta,source=/libversion_check-23b425cce0264739.rmeta \
 ##   --mount=from=out-fd7543c0686511cd,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/librand_core-fd7543c0686511cd.rlib,source=/librand_core-fd7543c0686511cd.rlib \
 ##   --mount=from=out-fd7543c0686511cd,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/librand_core-fd7543c0686511cd.rmeta,source=/librand_core-fd7543c0686511cd.rmeta \
 ##   --mount=from=out-2ae0eb9fb2c721bb,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libgetrandom-2ae0eb9fb2c721bb.rlib,source=/libgetrandom-2ae0eb9fb2c721bb.rlib \
@@ -1081,6 +2114,7 @@ COPY --link --from=dep-n-crypto-common-0.1.6-cebe1cbff4994413 /tmp/clis-ntpd_1-7
 ##   --mount=from=out-5a4301c208f24f4c,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcfg_if-5a4301c208f24f4c.rmeta,source=/libcfg_if-5a4301c208f24f4c.rmeta \
 ##   --mount=from=out-93b6478caf319772,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibc-93b6478caf319772.rlib,source=/liblibc-93b6478caf319772.rlib \
 ##   --mount=from=out-93b6478caf319772,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibc-93b6478caf319772.rmeta,source=/liblibc-93b6478caf319772.rmeta \
+##   --mount=from=out-c2a85ea3d52ad392,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-c2a85ea3d52ad392/out,source=/ \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=crypto_common \
 ##         CARGO_INCREMENTAL=0 \
@@ -1101,8 +2135,6 @@ COPY --link --from=dep-n-crypto-common-0.1.6-cebe1cbff4994413 /tmp/clis-ntpd_1-7
 ##         CARGO_PKG_VERSION_PATCH=6 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         NTPD_RS_GIT_DATE=2025-05-09 \
-##         NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
 ##       rustc --crate-name crypto_common --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --cfg feature'="getrandom"' --cfg feature'="rand_core"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("getrandom", "rand_core", "std"))' -C metadata'=7423e6134502c0ca' -C extra-filename'=-cebe1cbff4994413' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern generic_array'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libgeneric_array-523ed8994559e91b.rmeta' --extern rand_core'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/librand_core-fd7543c0686511cd.rmeta' --extern typenum'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtypenum-7d56f2624f7fb484.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crypto-common-0.1.6/src/lib.rs \
 ##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-cebe1cbff4994413-stdout \
 ##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-cebe1cbff4994413-stderr \
@@ -1131,6 +2163,8 @@ RUN \
   --mount=from=out-523ed8994559e91b,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libgeneric_array-523ed8994559e91b.rmeta,source=/libgeneric_array-523ed8994559e91b.rmeta \
   --mount=from=out-7d56f2624f7fb484,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtypenum-7d56f2624f7fb484.rlib,source=/libtypenum-7d56f2624f7fb484.rlib \
   --mount=from=out-7d56f2624f7fb484,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtypenum-7d56f2624f7fb484.rmeta,source=/libtypenum-7d56f2624f7fb484.rmeta \
+  --mount=from=out-23b425cce0264739,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libversion_check-23b425cce0264739.rlib,source=/libversion_check-23b425cce0264739.rlib \
+  --mount=from=out-23b425cce0264739,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libversion_check-23b425cce0264739.rmeta,source=/libversion_check-23b425cce0264739.rmeta \
   --mount=from=out-fd7543c0686511cd,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/librand_core-fd7543c0686511cd.rlib,source=/librand_core-fd7543c0686511cd.rlib \
   --mount=from=out-fd7543c0686511cd,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/librand_core-fd7543c0686511cd.rmeta,source=/librand_core-fd7543c0686511cd.rmeta \
   --mount=from=out-2ae0eb9fb2c721bb,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libgetrandom-2ae0eb9fb2c721bb.rlib,source=/libgetrandom-2ae0eb9fb2c721bb.rlib \
@@ -1139,6 +2173,7 @@ RUN \
   --mount=from=out-5a4301c208f24f4c,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcfg_if-5a4301c208f24f4c.rmeta,source=/libcfg_if-5a4301c208f24f4c.rmeta \
   --mount=from=out-93b6478caf319772,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibc-93b6478caf319772.rlib,source=/liblibc-93b6478caf319772.rlib \
   --mount=from=out-93b6478caf319772,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibc-93b6478caf319772.rmeta,source=/liblibc-93b6478caf319772.rmeta \
+  --mount=from=out-c2a85ea3d52ad392,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-c2a85ea3d52ad392/out,source=/ \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=aead \
         CARGO_INCREMENTAL=0 \
@@ -1161,8 +2196,6 @@ such as AES-GCM as ChaCha20Poly1305, which provide a high-level API\
         CARGO_PKG_VERSION_PATCH=2 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        NTPD_RS_GIT_DATE=2025-05-09 \
-        NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
       rustc --crate-name aead --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --cfg feature'="alloc"' --cfg feature'="default"' --cfg feature'="getrandom"' --cfg feature'="rand_core"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "arrayvec", "blobby", "bytes", "default", "dev", "getrandom", "heapless", "rand_core", "std", "stream"))' -C metadata'=7ea790eb572cd1d0' -C extra-filename'=-4b9b0df243e430b1' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern crypto_common'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcrypto_common-cebe1cbff4994413.rmeta' --extern generic_array'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libgeneric_array-523ed8994559e91b.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aead-0.5.2/src/lib.rs \
         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-4b9b0df243e430b1-stdout \
         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-4b9b0df243e430b1-stderr \
@@ -1176,10 +2209,22 @@ COPY --link --from=dep-n-aead-0.5.2-4b9b0df243e430b1 /tmp/clis-ntpd_1-7-0-alpha-
 ##     "cebe1cbff4994413",
 ##     "523ed8994559e91b",
 ##     "7d56f2624f7fb484",
+##     "a8fbaef0afd87b8e",
+##     "23b425cce0264739",
+##     "daae1221734799f2",
 ##     "fd7543c0686511cd",
 ##     "2ae0eb9fb2c721bb",
 ##     "5a4301c208f24f4c",
 ##     "93b6478caf319772",
+##     "7560e7c5c88ec4c4",
+##     "c2a85ea3d52ad392",
+##     "6319738dfa2a85a9",
+##     "d5b44a42806fd90b",
+## ]
+## buildrs_results = [
+##     "c2a85ea3d52ad392",
+##     "6319738dfa2a85a9",
+##     "d5b44a42806fd90b",
 ## ]
 ## writes = [
 ##     "aead-4b9b0df243e430b1.d",
@@ -1217,6 +2262,14 @@ COPY --link --from=dep-n-aead-0.5.2-4b9b0df243e430b1 /tmp/clis-ntpd_1-7-0-alpha-
 ## xtern = "libtypenum-7d56f2624f7fb484.rmeta"
 ##
 ## [[externs]]
+## from = "out-23b425cce0264739"
+## xtern = "libversion_check-23b425cce0264739.rlib"
+##
+## [[externs]]
+## from = "out-23b425cce0264739"
+## xtern = "libversion_check-23b425cce0264739.rmeta"
+##
+## [[externs]]
 ## from = "out-fd7543c0686511cd"
 ## xtern = "librand_core-fd7543c0686511cd.rlib"
 ##
@@ -1248,9 +2301,9 @@ COPY --link --from=dep-n-aead-0.5.2-4b9b0df243e430b1 /tmp/clis-ntpd_1-7-0-alpha-
 ## from = "out-93b6478caf319772"
 ## xtern = "liblibc-93b6478caf319772.rmeta"
 ##
-## [[contexts]]
-## name = "crate_out-c2a85ea3d52ad392"
-## uri = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-c2a85ea3d52ad392/out"
+## [[mounts]]
+## name = "out-c2a85ea3d52ad392"
+## mount = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-c2a85ea3d52ad392/out"
 ##
 ## [[stages]]
 ##
@@ -1283,6 +2336,8 @@ COPY --link --from=dep-n-aead-0.5.2-4b9b0df243e430b1 /tmp/clis-ntpd_1-7-0-alpha-
 ##   --mount=from=out-523ed8994559e91b,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libgeneric_array-523ed8994559e91b.rmeta,source=/libgeneric_array-523ed8994559e91b.rmeta \
 ##   --mount=from=out-7d56f2624f7fb484,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtypenum-7d56f2624f7fb484.rlib,source=/libtypenum-7d56f2624f7fb484.rlib \
 ##   --mount=from=out-7d56f2624f7fb484,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtypenum-7d56f2624f7fb484.rmeta,source=/libtypenum-7d56f2624f7fb484.rmeta \
+##   --mount=from=out-23b425cce0264739,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libversion_check-23b425cce0264739.rlib,source=/libversion_check-23b425cce0264739.rlib \
+##   --mount=from=out-23b425cce0264739,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libversion_check-23b425cce0264739.rmeta,source=/libversion_check-23b425cce0264739.rmeta \
 ##   --mount=from=out-fd7543c0686511cd,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/librand_core-fd7543c0686511cd.rlib,source=/librand_core-fd7543c0686511cd.rlib \
 ##   --mount=from=out-fd7543c0686511cd,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/librand_core-fd7543c0686511cd.rmeta,source=/librand_core-fd7543c0686511cd.rmeta \
 ##   --mount=from=out-2ae0eb9fb2c721bb,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libgetrandom-2ae0eb9fb2c721bb.rlib,source=/libgetrandom-2ae0eb9fb2c721bb.rlib \
@@ -1291,6 +2346,7 @@ COPY --link --from=dep-n-aead-0.5.2-4b9b0df243e430b1 /tmp/clis-ntpd_1-7-0-alpha-
 ##   --mount=from=out-5a4301c208f24f4c,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcfg_if-5a4301c208f24f4c.rmeta,source=/libcfg_if-5a4301c208f24f4c.rmeta \
 ##   --mount=from=out-93b6478caf319772,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibc-93b6478caf319772.rlib,source=/liblibc-93b6478caf319772.rlib \
 ##   --mount=from=out-93b6478caf319772,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibc-93b6478caf319772.rmeta,source=/liblibc-93b6478caf319772.rmeta \
+##   --mount=from=out-c2a85ea3d52ad392,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-c2a85ea3d52ad392/out,source=/ \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=aead \
 ##         CARGO_INCREMENTAL=0 \
@@ -1313,8 +2369,6 @@ COPY --link --from=dep-n-aead-0.5.2-4b9b0df243e430b1 /tmp/clis-ntpd_1-7-0-alpha-
 ##         CARGO_PKG_VERSION_PATCH=2 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         NTPD_RS_GIT_DATE=2025-05-09 \
-##         NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
 ##       rustc --crate-name aead --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --cfg feature'="alloc"' --cfg feature'="default"' --cfg feature'="getrandom"' --cfg feature'="rand_core"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "arrayvec", "blobby", "bytes", "default", "dev", "getrandom", "heapless", "rand_core", "std", "stream"))' -C metadata'=7ea790eb572cd1d0' -C extra-filename'=-4b9b0df243e430b1' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern crypto_common'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcrypto_common-cebe1cbff4994413.rmeta' --extern generic_array'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libgeneric_array-523ed8994559e91b.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aead-0.5.2/src/lib.rs \
 ##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-4b9b0df243e430b1-stdout \
 ##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-4b9b0df243e430b1-stderr \
@@ -1341,6 +2395,9 @@ RUN \
   --mount=from=out-523ed8994559e91b,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libgeneric_array-523ed8994559e91b.rmeta,source=/libgeneric_array-523ed8994559e91b.rmeta \
   --mount=from=out-7d56f2624f7fb484,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtypenum-7d56f2624f7fb484.rlib,source=/libtypenum-7d56f2624f7fb484.rlib \
   --mount=from=out-7d56f2624f7fb484,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtypenum-7d56f2624f7fb484.rmeta,source=/libtypenum-7d56f2624f7fb484.rmeta \
+  --mount=from=out-23b425cce0264739,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libversion_check-23b425cce0264739.rlib,source=/libversion_check-23b425cce0264739.rlib \
+  --mount=from=out-23b425cce0264739,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libversion_check-23b425cce0264739.rmeta,source=/libversion_check-23b425cce0264739.rmeta \
+  --mount=from=out-c2a85ea3d52ad392,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-c2a85ea3d52ad392/out,source=/ \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=inout \
         CARGO_INCREMENTAL=0 \
@@ -1361,8 +2418,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=4 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        NTPD_RS_GIT_DATE=2025-05-09 \
-        NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
       rustc --crate-name inout --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("block-padding", "std"))' -C metadata'=ea10fce9815cde25' -C extra-filename'=-933693afe5da87fd' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern generic_array'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libgeneric_array-523ed8994559e91b.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/inout-0.1.4/src/lib.rs \
         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-933693afe5da87fd-stdout \
         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-933693afe5da87fd-stderr \
@@ -1375,6 +2430,15 @@ COPY --link --from=dep-n-inout-0.1.4-933693afe5da87fd /tmp/clis-ntpd_1-7-0-alpha
 ## deps = [
 ##     "523ed8994559e91b",
 ##     "7d56f2624f7fb484",
+##     "a8fbaef0afd87b8e",
+##     "23b425cce0264739",
+##     "daae1221734799f2",
+##     "c2a85ea3d52ad392",
+##     "6319738dfa2a85a9",
+## ]
+## buildrs_results = [
+##     "c2a85ea3d52ad392",
+##     "6319738dfa2a85a9",
 ## ]
 ## writes = [
 ##     "inout-933693afe5da87fd.d",
@@ -1403,9 +2467,17 @@ COPY --link --from=dep-n-inout-0.1.4-933693afe5da87fd /tmp/clis-ntpd_1-7-0-alpha
 ## from = "out-7d56f2624f7fb484"
 ## xtern = "libtypenum-7d56f2624f7fb484.rmeta"
 ##
-## [[contexts]]
-## name = "crate_out-c2a85ea3d52ad392"
-## uri = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-c2a85ea3d52ad392/out"
+## [[externs]]
+## from = "out-23b425cce0264739"
+## xtern = "libversion_check-23b425cce0264739.rlib"
+##
+## [[externs]]
+## from = "out-23b425cce0264739"
+## xtern = "libversion_check-23b425cce0264739.rmeta"
+##
+## [[mounts]]
+## name = "out-c2a85ea3d52ad392"
+## mount = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-c2a85ea3d52ad392/out"
 ##
 ## [[stages]]
 ##
@@ -1436,6 +2508,9 @@ COPY --link --from=dep-n-inout-0.1.4-933693afe5da87fd /tmp/clis-ntpd_1-7-0-alpha
 ##   --mount=from=out-523ed8994559e91b,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libgeneric_array-523ed8994559e91b.rmeta,source=/libgeneric_array-523ed8994559e91b.rmeta \
 ##   --mount=from=out-7d56f2624f7fb484,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtypenum-7d56f2624f7fb484.rlib,source=/libtypenum-7d56f2624f7fb484.rlib \
 ##   --mount=from=out-7d56f2624f7fb484,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtypenum-7d56f2624f7fb484.rmeta,source=/libtypenum-7d56f2624f7fb484.rmeta \
+##   --mount=from=out-23b425cce0264739,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libversion_check-23b425cce0264739.rlib,source=/libversion_check-23b425cce0264739.rlib \
+##   --mount=from=out-23b425cce0264739,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libversion_check-23b425cce0264739.rmeta,source=/libversion_check-23b425cce0264739.rmeta \
+##   --mount=from=out-c2a85ea3d52ad392,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-c2a85ea3d52ad392/out,source=/ \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=inout \
 ##         CARGO_INCREMENTAL=0 \
@@ -1456,8 +2531,6 @@ COPY --link --from=dep-n-inout-0.1.4-933693afe5da87fd /tmp/clis-ntpd_1-7-0-alpha
 ##         CARGO_PKG_VERSION_PATCH=4 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         NTPD_RS_GIT_DATE=2025-05-09 \
-##         NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
 ##       rustc --crate-name inout --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("block-padding", "std"))' -C metadata'=ea10fce9815cde25' -C extra-filename'=-933693afe5da87fd' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern generic_array'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libgeneric_array-523ed8994559e91b.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/inout-0.1.4/src/lib.rs \
 ##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-933693afe5da87fd-stdout \
 ##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-933693afe5da87fd-stderr \
@@ -1486,6 +2559,8 @@ RUN \
   --mount=from=out-523ed8994559e91b,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libgeneric_array-523ed8994559e91b.rmeta,source=/libgeneric_array-523ed8994559e91b.rmeta \
   --mount=from=out-7d56f2624f7fb484,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtypenum-7d56f2624f7fb484.rlib,source=/libtypenum-7d56f2624f7fb484.rlib \
   --mount=from=out-7d56f2624f7fb484,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtypenum-7d56f2624f7fb484.rmeta,source=/libtypenum-7d56f2624f7fb484.rmeta \
+  --mount=from=out-23b425cce0264739,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libversion_check-23b425cce0264739.rlib,source=/libversion_check-23b425cce0264739.rlib \
+  --mount=from=out-23b425cce0264739,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libversion_check-23b425cce0264739.rmeta,source=/libversion_check-23b425cce0264739.rmeta \
   --mount=from=out-fd7543c0686511cd,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/librand_core-fd7543c0686511cd.rlib,source=/librand_core-fd7543c0686511cd.rlib \
   --mount=from=out-fd7543c0686511cd,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/librand_core-fd7543c0686511cd.rmeta,source=/librand_core-fd7543c0686511cd.rmeta \
   --mount=from=out-2ae0eb9fb2c721bb,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libgetrandom-2ae0eb9fb2c721bb.rlib,source=/libgetrandom-2ae0eb9fb2c721bb.rlib \
@@ -1496,6 +2571,7 @@ RUN \
   --mount=from=out-93b6478caf319772,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibc-93b6478caf319772.rmeta,source=/liblibc-93b6478caf319772.rmeta \
   --mount=from=out-933693afe5da87fd,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libinout-933693afe5da87fd.rlib,source=/libinout-933693afe5da87fd.rlib \
   --mount=from=out-933693afe5da87fd,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libinout-933693afe5da87fd.rmeta,source=/libinout-933693afe5da87fd.rmeta \
+  --mount=from=out-c2a85ea3d52ad392,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-c2a85ea3d52ad392/out,source=/ \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=cipher \
         CARGO_INCREMENTAL=0 \
@@ -1516,8 +2592,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=4 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        NTPD_RS_GIT_DATE=2025-05-09 \
-        NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
       rustc --crate-name cipher --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "blobby", "block-padding", "dev", "rand_core", "std", "zeroize"))' -C metadata'=ca74132844a1fe55' -C extra-filename'=-8863b3b614042642' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern crypto_common'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcrypto_common-cebe1cbff4994413.rmeta' --extern inout'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libinout-933693afe5da87fd.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/cipher-0.4.4/src/lib.rs \
         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-8863b3b614042642-stdout \
         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-8863b3b614042642-stderr \
@@ -1531,11 +2605,23 @@ COPY --link --from=dep-n-cipher-0.4.4-8863b3b614042642 /tmp/clis-ntpd_1-7-0-alph
 ##     "cebe1cbff4994413",
 ##     "523ed8994559e91b",
 ##     "7d56f2624f7fb484",
+##     "a8fbaef0afd87b8e",
+##     "23b425cce0264739",
+##     "daae1221734799f2",
 ##     "fd7543c0686511cd",
 ##     "2ae0eb9fb2c721bb",
 ##     "5a4301c208f24f4c",
 ##     "93b6478caf319772",
+##     "7560e7c5c88ec4c4",
 ##     "933693afe5da87fd",
+##     "c2a85ea3d52ad392",
+##     "6319738dfa2a85a9",
+##     "d5b44a42806fd90b",
+## ]
+## buildrs_results = [
+##     "c2a85ea3d52ad392",
+##     "6319738dfa2a85a9",
+##     "d5b44a42806fd90b",
 ## ]
 ## writes = [
 ##     "cipher-8863b3b614042642.d",
@@ -1571,6 +2657,14 @@ COPY --link --from=dep-n-cipher-0.4.4-8863b3b614042642 /tmp/clis-ntpd_1-7-0-alph
 ## [[externs]]
 ## from = "out-7d56f2624f7fb484"
 ## xtern = "libtypenum-7d56f2624f7fb484.rmeta"
+##
+## [[externs]]
+## from = "out-23b425cce0264739"
+## xtern = "libversion_check-23b425cce0264739.rlib"
+##
+## [[externs]]
+## from = "out-23b425cce0264739"
+## xtern = "libversion_check-23b425cce0264739.rmeta"
 ##
 ## [[externs]]
 ## from = "out-fd7543c0686511cd"
@@ -1612,9 +2706,9 @@ COPY --link --from=dep-n-cipher-0.4.4-8863b3b614042642 /tmp/clis-ntpd_1-7-0-alph
 ## from = "out-933693afe5da87fd"
 ## xtern = "libinout-933693afe5da87fd.rmeta"
 ##
-## [[contexts]]
-## name = "crate_out-c2a85ea3d52ad392"
-## uri = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-c2a85ea3d52ad392/out"
+## [[mounts]]
+## name = "out-c2a85ea3d52ad392"
+## mount = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-c2a85ea3d52ad392/out"
 ##
 ## [[stages]]
 ##
@@ -1647,6 +2741,8 @@ COPY --link --from=dep-n-cipher-0.4.4-8863b3b614042642 /tmp/clis-ntpd_1-7-0-alph
 ##   --mount=from=out-523ed8994559e91b,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libgeneric_array-523ed8994559e91b.rmeta,source=/libgeneric_array-523ed8994559e91b.rmeta \
 ##   --mount=from=out-7d56f2624f7fb484,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtypenum-7d56f2624f7fb484.rlib,source=/libtypenum-7d56f2624f7fb484.rlib \
 ##   --mount=from=out-7d56f2624f7fb484,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtypenum-7d56f2624f7fb484.rmeta,source=/libtypenum-7d56f2624f7fb484.rmeta \
+##   --mount=from=out-23b425cce0264739,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libversion_check-23b425cce0264739.rlib,source=/libversion_check-23b425cce0264739.rlib \
+##   --mount=from=out-23b425cce0264739,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libversion_check-23b425cce0264739.rmeta,source=/libversion_check-23b425cce0264739.rmeta \
 ##   --mount=from=out-fd7543c0686511cd,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/librand_core-fd7543c0686511cd.rlib,source=/librand_core-fd7543c0686511cd.rlib \
 ##   --mount=from=out-fd7543c0686511cd,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/librand_core-fd7543c0686511cd.rmeta,source=/librand_core-fd7543c0686511cd.rmeta \
 ##   --mount=from=out-2ae0eb9fb2c721bb,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libgetrandom-2ae0eb9fb2c721bb.rlib,source=/libgetrandom-2ae0eb9fb2c721bb.rlib \
@@ -1657,6 +2753,7 @@ COPY --link --from=dep-n-cipher-0.4.4-8863b3b614042642 /tmp/clis-ntpd_1-7-0-alph
 ##   --mount=from=out-93b6478caf319772,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibc-93b6478caf319772.rmeta,source=/liblibc-93b6478caf319772.rmeta \
 ##   --mount=from=out-933693afe5da87fd,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libinout-933693afe5da87fd.rlib,source=/libinout-933693afe5da87fd.rlib \
 ##   --mount=from=out-933693afe5da87fd,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libinout-933693afe5da87fd.rmeta,source=/libinout-933693afe5da87fd.rmeta \
+##   --mount=from=out-c2a85ea3d52ad392,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-c2a85ea3d52ad392/out,source=/ \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=cipher \
 ##         CARGO_INCREMENTAL=0 \
@@ -1677,8 +2774,6 @@ COPY --link --from=dep-n-cipher-0.4.4-8863b3b614042642 /tmp/clis-ntpd_1-7-0-alph
 ##         CARGO_PKG_VERSION_PATCH=4 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         NTPD_RS_GIT_DATE=2025-05-09 \
-##         NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
 ##       rustc --crate-name cipher --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "blobby", "block-padding", "dev", "rand_core", "std", "zeroize"))' -C metadata'=ca74132844a1fe55' -C extra-filename'=-8863b3b614042642' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern crypto_common'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcrypto_common-cebe1cbff4994413.rmeta' --extern inout'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libinout-933693afe5da87fd.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/cipher-0.4.4/src/lib.rs \
 ##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-8863b3b614042642-stdout \
 ##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-8863b3b614042642-stderr \
@@ -1723,8 +2818,6 @@ with no_std support and support for mobile targets including Android and iOS\
         CARGO_PKG_VERSION_PATCH=17 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        NTPD_RS_GIT_DATE=2025-05-09 \
-        NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
       rustc --crate-name cpufeatures --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=3cdbea74f322632c' -C extra-filename'=-d0b16ab74f2da8e3' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/cpufeatures-0.2.17/src/lib.rs \
         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-d0b16ab74f2da8e3-stdout \
         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-d0b16ab74f2da8e3-stderr \
@@ -1792,8 +2885,6 @@ COPY --link --from=dep-n-cpufeatures-0.2.17-d0b16ab74f2da8e3 /tmp/clis-ntpd_1-7-
 ##         CARGO_PKG_VERSION_PATCH=17 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         NTPD_RS_GIT_DATE=2025-05-09 \
-##         NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
 ##       rustc --crate-name cpufeatures --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=3cdbea74f322632c' -C extra-filename'=-d0b16ab74f2da8e3' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/cpufeatures-0.2.17/src/lib.rs \
 ##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-d0b16ab74f2da8e3-stdout \
 ##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-d0b16ab74f2da8e3-stderr \
@@ -1826,6 +2917,8 @@ RUN \
   --mount=from=out-523ed8994559e91b,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libgeneric_array-523ed8994559e91b.rmeta,source=/libgeneric_array-523ed8994559e91b.rmeta \
   --mount=from=out-7d56f2624f7fb484,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtypenum-7d56f2624f7fb484.rlib,source=/libtypenum-7d56f2624f7fb484.rlib \
   --mount=from=out-7d56f2624f7fb484,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtypenum-7d56f2624f7fb484.rmeta,source=/libtypenum-7d56f2624f7fb484.rmeta \
+  --mount=from=out-23b425cce0264739,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libversion_check-23b425cce0264739.rlib,source=/libversion_check-23b425cce0264739.rlib \
+  --mount=from=out-23b425cce0264739,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libversion_check-23b425cce0264739.rmeta,source=/libversion_check-23b425cce0264739.rmeta \
   --mount=from=out-fd7543c0686511cd,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/librand_core-fd7543c0686511cd.rlib,source=/librand_core-fd7543c0686511cd.rlib \
   --mount=from=out-fd7543c0686511cd,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/librand_core-fd7543c0686511cd.rmeta,source=/librand_core-fd7543c0686511cd.rmeta \
   --mount=from=out-2ae0eb9fb2c721bb,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libgetrandom-2ae0eb9fb2c721bb.rlib,source=/libgetrandom-2ae0eb9fb2c721bb.rlib \
@@ -1836,6 +2929,7 @@ RUN \
   --mount=from=out-933693afe5da87fd,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libinout-933693afe5da87fd.rmeta,source=/libinout-933693afe5da87fd.rmeta \
   --mount=from=out-d0b16ab74f2da8e3,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcpufeatures-d0b16ab74f2da8e3.rlib,source=/libcpufeatures-d0b16ab74f2da8e3.rlib \
   --mount=from=out-d0b16ab74f2da8e3,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcpufeatures-d0b16ab74f2da8e3.rmeta,source=/libcpufeatures-d0b16ab74f2da8e3.rmeta \
+  --mount=from=out-c2a85ea3d52ad392,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-c2a85ea3d52ad392/out,source=/ \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=aes \
         CARGO_INCREMENTAL=0 \
@@ -1856,8 +2950,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=4 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        NTPD_RS_GIT_DATE=2025-05-09 \
-        NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
       rustc --crate-name aes --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("hazmat", "zeroize"))' -C metadata'=16ed9797c4df7c91' -C extra-filename'=-d09eff787322ac92' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern cfg_if'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcfg_if-5a4301c208f24f4c.rmeta' --extern cipher'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcipher-8863b3b614042642.rmeta' --extern cpufeatures'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcpufeatures-d0b16ab74f2da8e3.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aes-0.8.4/src/lib.rs \
         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-d09eff787322ac92-stdout \
         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-d09eff787322ac92-stderr \
@@ -1873,11 +2965,23 @@ COPY --link --from=dep-n-aes-0.8.4-d09eff787322ac92 /tmp/clis-ntpd_1-7-0-alpha-2
 ##     "cebe1cbff4994413",
 ##     "523ed8994559e91b",
 ##     "7d56f2624f7fb484",
+##     "a8fbaef0afd87b8e",
+##     "23b425cce0264739",
+##     "daae1221734799f2",
 ##     "fd7543c0686511cd",
 ##     "2ae0eb9fb2c721bb",
 ##     "93b6478caf319772",
+##     "7560e7c5c88ec4c4",
 ##     "933693afe5da87fd",
 ##     "d0b16ab74f2da8e3",
+##     "c2a85ea3d52ad392",
+##     "6319738dfa2a85a9",
+##     "d5b44a42806fd90b",
+## ]
+## buildrs_results = [
+##     "c2a85ea3d52ad392",
+##     "6319738dfa2a85a9",
+##     "d5b44a42806fd90b",
 ## ]
 ## writes = [
 ##     "aes-d09eff787322ac92.d",
@@ -1964,6 +3068,14 @@ COPY --link --from=dep-n-aes-0.8.4-d09eff787322ac92 /tmp/clis-ntpd_1-7-0-alpha-2
 ## xtern = "libtypenum-7d56f2624f7fb484.rmeta"
 ##
 ## [[externs]]
+## from = "out-23b425cce0264739"
+## xtern = "libversion_check-23b425cce0264739.rlib"
+##
+## [[externs]]
+## from = "out-23b425cce0264739"
+## xtern = "libversion_check-23b425cce0264739.rmeta"
+##
+## [[externs]]
 ## from = "out-fd7543c0686511cd"
 ## xtern = "librand_core-fd7543c0686511cd.rlib"
 ##
@@ -2003,9 +3115,9 @@ COPY --link --from=dep-n-aes-0.8.4-d09eff787322ac92 /tmp/clis-ntpd_1-7-0-alpha-2
 ## from = "out-d0b16ab74f2da8e3"
 ## xtern = "libcpufeatures-d0b16ab74f2da8e3.rmeta"
 ##
-## [[contexts]]
-## name = "crate_out-c2a85ea3d52ad392"
-## uri = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-c2a85ea3d52ad392/out"
+## [[mounts]]
+## name = "out-c2a85ea3d52ad392"
+## mount = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-c2a85ea3d52ad392/out"
 ##
 ## [[stages]]
 ##
@@ -2042,6 +3154,8 @@ COPY --link --from=dep-n-aes-0.8.4-d09eff787322ac92 /tmp/clis-ntpd_1-7-0-alpha-2
 ##   --mount=from=out-523ed8994559e91b,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libgeneric_array-523ed8994559e91b.rmeta,source=/libgeneric_array-523ed8994559e91b.rmeta \
 ##   --mount=from=out-7d56f2624f7fb484,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtypenum-7d56f2624f7fb484.rlib,source=/libtypenum-7d56f2624f7fb484.rlib \
 ##   --mount=from=out-7d56f2624f7fb484,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtypenum-7d56f2624f7fb484.rmeta,source=/libtypenum-7d56f2624f7fb484.rmeta \
+##   --mount=from=out-23b425cce0264739,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libversion_check-23b425cce0264739.rlib,source=/libversion_check-23b425cce0264739.rlib \
+##   --mount=from=out-23b425cce0264739,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libversion_check-23b425cce0264739.rmeta,source=/libversion_check-23b425cce0264739.rmeta \
 ##   --mount=from=out-fd7543c0686511cd,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/librand_core-fd7543c0686511cd.rlib,source=/librand_core-fd7543c0686511cd.rlib \
 ##   --mount=from=out-fd7543c0686511cd,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/librand_core-fd7543c0686511cd.rmeta,source=/librand_core-fd7543c0686511cd.rmeta \
 ##   --mount=from=out-2ae0eb9fb2c721bb,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libgetrandom-2ae0eb9fb2c721bb.rlib,source=/libgetrandom-2ae0eb9fb2c721bb.rlib \
@@ -2052,6 +3166,7 @@ COPY --link --from=dep-n-aes-0.8.4-d09eff787322ac92 /tmp/clis-ntpd_1-7-0-alpha-2
 ##   --mount=from=out-933693afe5da87fd,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libinout-933693afe5da87fd.rmeta,source=/libinout-933693afe5da87fd.rmeta \
 ##   --mount=from=out-d0b16ab74f2da8e3,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcpufeatures-d0b16ab74f2da8e3.rlib,source=/libcpufeatures-d0b16ab74f2da8e3.rlib \
 ##   --mount=from=out-d0b16ab74f2da8e3,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcpufeatures-d0b16ab74f2da8e3.rmeta,source=/libcpufeatures-d0b16ab74f2da8e3.rmeta \
+##   --mount=from=out-c2a85ea3d52ad392,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-c2a85ea3d52ad392/out,source=/ \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=aes \
 ##         CARGO_INCREMENTAL=0 \
@@ -2072,8 +3187,6 @@ COPY --link --from=dep-n-aes-0.8.4-d09eff787322ac92 /tmp/clis-ntpd_1-7-0-alpha-2
 ##         CARGO_PKG_VERSION_PATCH=4 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         NTPD_RS_GIT_DATE=2025-05-09 \
-##         NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
 ##       rustc --crate-name aes --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("hazmat", "zeroize"))' -C metadata'=16ed9797c4df7c91' -C extra-filename'=-d09eff787322ac92' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern cfg_if'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcfg_if-5a4301c208f24f4c.rmeta' --extern cipher'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcipher-8863b3b614042642.rmeta' --extern cpufeatures'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcpufeatures-d0b16ab74f2da8e3.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aes-0.8.4/src/lib.rs \
 ##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-d09eff787322ac92-stdout \
 ##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-d09eff787322ac92-stderr \
@@ -2100,6 +3213,9 @@ RUN \
   --mount=from=out-523ed8994559e91b,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libgeneric_array-523ed8994559e91b.rmeta,source=/libgeneric_array-523ed8994559e91b.rmeta \
   --mount=from=out-7d56f2624f7fb484,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtypenum-7d56f2624f7fb484.rlib,source=/libtypenum-7d56f2624f7fb484.rlib \
   --mount=from=out-7d56f2624f7fb484,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtypenum-7d56f2624f7fb484.rmeta,source=/libtypenum-7d56f2624f7fb484.rmeta \
+  --mount=from=out-23b425cce0264739,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libversion_check-23b425cce0264739.rlib,source=/libversion_check-23b425cce0264739.rlib \
+  --mount=from=out-23b425cce0264739,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libversion_check-23b425cce0264739.rmeta,source=/libversion_check-23b425cce0264739.rmeta \
+  --mount=from=out-c2a85ea3d52ad392,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-c2a85ea3d52ad392/out,source=/ \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=dbl \
         CARGO_INCREMENTAL=0 \
@@ -2120,8 +3236,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=2 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        NTPD_RS_GIT_DATE=2025-05-09 \
-        NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
       rustc --crate-name dbl --edition 2015 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=412e76e8abeac300' -C extra-filename'=-7d6eda3dd622da8e' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern generic_array'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libgeneric_array-523ed8994559e91b.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/dbl-0.3.2/src/lib.rs \
         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-7d6eda3dd622da8e-stdout \
         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-7d6eda3dd622da8e-stderr \
@@ -2134,6 +3248,15 @@ COPY --link --from=dep-n-dbl-0.3.2-7d6eda3dd622da8e /tmp/clis-ntpd_1-7-0-alpha-2
 ## deps = [
 ##     "523ed8994559e91b",
 ##     "7d56f2624f7fb484",
+##     "a8fbaef0afd87b8e",
+##     "23b425cce0264739",
+##     "daae1221734799f2",
+##     "c2a85ea3d52ad392",
+##     "6319738dfa2a85a9",
+## ]
+## buildrs_results = [
+##     "c2a85ea3d52ad392",
+##     "6319738dfa2a85a9",
 ## ]
 ## writes = [
 ##     "dbl-7d6eda3dd622da8e.d",
@@ -2162,9 +3285,17 @@ COPY --link --from=dep-n-dbl-0.3.2-7d6eda3dd622da8e /tmp/clis-ntpd_1-7-0-alpha-2
 ## from = "out-7d56f2624f7fb484"
 ## xtern = "libtypenum-7d56f2624f7fb484.rmeta"
 ##
-## [[contexts]]
-## name = "crate_out-c2a85ea3d52ad392"
-## uri = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-c2a85ea3d52ad392/out"
+## [[externs]]
+## from = "out-23b425cce0264739"
+## xtern = "libversion_check-23b425cce0264739.rlib"
+##
+## [[externs]]
+## from = "out-23b425cce0264739"
+## xtern = "libversion_check-23b425cce0264739.rmeta"
+##
+## [[mounts]]
+## name = "out-c2a85ea3d52ad392"
+## mount = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-c2a85ea3d52ad392/out"
 ##
 ## [[stages]]
 ##
@@ -2195,6 +3326,9 @@ COPY --link --from=dep-n-dbl-0.3.2-7d6eda3dd622da8e /tmp/clis-ntpd_1-7-0-alpha-2
 ##   --mount=from=out-523ed8994559e91b,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libgeneric_array-523ed8994559e91b.rmeta,source=/libgeneric_array-523ed8994559e91b.rmeta \
 ##   --mount=from=out-7d56f2624f7fb484,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtypenum-7d56f2624f7fb484.rlib,source=/libtypenum-7d56f2624f7fb484.rlib \
 ##   --mount=from=out-7d56f2624f7fb484,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtypenum-7d56f2624f7fb484.rmeta,source=/libtypenum-7d56f2624f7fb484.rmeta \
+##   --mount=from=out-23b425cce0264739,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libversion_check-23b425cce0264739.rlib,source=/libversion_check-23b425cce0264739.rlib \
+##   --mount=from=out-23b425cce0264739,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libversion_check-23b425cce0264739.rmeta,source=/libversion_check-23b425cce0264739.rmeta \
+##   --mount=from=out-c2a85ea3d52ad392,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-c2a85ea3d52ad392/out,source=/ \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=dbl \
 ##         CARGO_INCREMENTAL=0 \
@@ -2215,8 +3349,6 @@ COPY --link --from=dep-n-dbl-0.3.2-7d6eda3dd622da8e /tmp/clis-ntpd_1-7-0-alpha-2
 ##         CARGO_PKG_VERSION_PATCH=2 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         NTPD_RS_GIT_DATE=2025-05-09 \
-##         NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
 ##       rustc --crate-name dbl --edition 2015 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=412e76e8abeac300' -C extra-filename'=-7d6eda3dd622da8e' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern generic_array'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libgeneric_array-523ed8994559e91b.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/dbl-0.3.2/src/lib.rs \
 ##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-7d6eda3dd622da8e-stdout \
 ##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-7d6eda3dd622da8e-stderr \
@@ -2243,6 +3375,9 @@ RUN \
   --mount=from=out-523ed8994559e91b,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libgeneric_array-523ed8994559e91b.rmeta,source=/libgeneric_array-523ed8994559e91b.rmeta \
   --mount=from=out-7d56f2624f7fb484,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtypenum-7d56f2624f7fb484.rlib,source=/libtypenum-7d56f2624f7fb484.rlib \
   --mount=from=out-7d56f2624f7fb484,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtypenum-7d56f2624f7fb484.rmeta,source=/libtypenum-7d56f2624f7fb484.rmeta \
+  --mount=from=out-23b425cce0264739,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libversion_check-23b425cce0264739.rlib,source=/libversion_check-23b425cce0264739.rlib \
+  --mount=from=out-23b425cce0264739,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libversion_check-23b425cce0264739.rmeta,source=/libversion_check-23b425cce0264739.rmeta \
+  --mount=from=out-c2a85ea3d52ad392,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-c2a85ea3d52ad392/out,source=/ \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=block_buffer \
         CARGO_INCREMENTAL=0 \
@@ -2263,8 +3398,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=4 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        NTPD_RS_GIT_DATE=2025-05-09 \
-        NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
       rustc --crate-name block_buffer --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=90d4385739bfcb89' -C extra-filename'=-be39a74c6398de96' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern generic_array'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libgeneric_array-523ed8994559e91b.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/block-buffer-0.10.4/src/lib.rs \
         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-be39a74c6398de96-stdout \
         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-be39a74c6398de96-stderr \
@@ -2277,6 +3410,15 @@ COPY --link --from=dep-n-block-buffer-0.10.4-be39a74c6398de96 /tmp/clis-ntpd_1-7
 ## deps = [
 ##     "523ed8994559e91b",
 ##     "7d56f2624f7fb484",
+##     "a8fbaef0afd87b8e",
+##     "23b425cce0264739",
+##     "daae1221734799f2",
+##     "c2a85ea3d52ad392",
+##     "6319738dfa2a85a9",
+## ]
+## buildrs_results = [
+##     "c2a85ea3d52ad392",
+##     "6319738dfa2a85a9",
 ## ]
 ## writes = [
 ##     "block_buffer-be39a74c6398de96.d",
@@ -2305,9 +3447,17 @@ COPY --link --from=dep-n-block-buffer-0.10.4-be39a74c6398de96 /tmp/clis-ntpd_1-7
 ## from = "out-7d56f2624f7fb484"
 ## xtern = "libtypenum-7d56f2624f7fb484.rmeta"
 ##
-## [[contexts]]
-## name = "crate_out-c2a85ea3d52ad392"
-## uri = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-c2a85ea3d52ad392/out"
+## [[externs]]
+## from = "out-23b425cce0264739"
+## xtern = "libversion_check-23b425cce0264739.rlib"
+##
+## [[externs]]
+## from = "out-23b425cce0264739"
+## xtern = "libversion_check-23b425cce0264739.rmeta"
+##
+## [[mounts]]
+## name = "out-c2a85ea3d52ad392"
+## mount = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-c2a85ea3d52ad392/out"
 ##
 ## [[stages]]
 ##
@@ -2338,6 +3488,9 @@ COPY --link --from=dep-n-block-buffer-0.10.4-be39a74c6398de96 /tmp/clis-ntpd_1-7
 ##   --mount=from=out-523ed8994559e91b,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libgeneric_array-523ed8994559e91b.rmeta,source=/libgeneric_array-523ed8994559e91b.rmeta \
 ##   --mount=from=out-7d56f2624f7fb484,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtypenum-7d56f2624f7fb484.rlib,source=/libtypenum-7d56f2624f7fb484.rlib \
 ##   --mount=from=out-7d56f2624f7fb484,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtypenum-7d56f2624f7fb484.rmeta,source=/libtypenum-7d56f2624f7fb484.rmeta \
+##   --mount=from=out-23b425cce0264739,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libversion_check-23b425cce0264739.rlib,source=/libversion_check-23b425cce0264739.rlib \
+##   --mount=from=out-23b425cce0264739,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libversion_check-23b425cce0264739.rmeta,source=/libversion_check-23b425cce0264739.rmeta \
+##   --mount=from=out-c2a85ea3d52ad392,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-c2a85ea3d52ad392/out,source=/ \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=block_buffer \
 ##         CARGO_INCREMENTAL=0 \
@@ -2358,8 +3511,6 @@ COPY --link --from=dep-n-block-buffer-0.10.4-be39a74c6398de96 /tmp/clis-ntpd_1-7
 ##         CARGO_PKG_VERSION_PATCH=4 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         NTPD_RS_GIT_DATE=2025-05-09 \
-##         NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
 ##       rustc --crate-name block_buffer --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=90d4385739bfcb89' -C extra-filename'=-be39a74c6398de96' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern generic_array'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libgeneric_array-523ed8994559e91b.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/block-buffer-0.10.4/src/lib.rs \
 ##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-be39a74c6398de96-stdout \
 ##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-be39a74c6398de96-stderr \
@@ -2402,8 +3553,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        NTPD_RS_GIT_DATE=2025-05-09 \
-        NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
       rustc --crate-name subtle --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("const-generics", "core_hint_black_box", "default", "i128", "nightly", "std"))' -C metadata'=176ee3069f8d3d77' -C extra-filename'=-f22c7bf8d1e18975' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/subtle-2.6.1/src/lib.rs \
         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-f22c7bf8d1e18975-stdout \
         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-f22c7bf8d1e18975-stderr \
@@ -2469,8 +3618,6 @@ COPY --link --from=dep-n-subtle-2.6.1-f22c7bf8d1e18975 /tmp/clis-ntpd_1-7-0-alph
 ##         CARGO_PKG_VERSION_PATCH=1 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         NTPD_RS_GIT_DATE=2025-05-09 \
-##         NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
 ##       rustc --crate-name subtle --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("const-generics", "core_hint_black_box", "default", "i128", "nightly", "std"))' -C metadata'=176ee3069f8d3d77' -C extra-filename'=-f22c7bf8d1e18975' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/subtle-2.6.1/src/lib.rs \
 ##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-f22c7bf8d1e18975-stdout \
 ##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-f22c7bf8d1e18975-stderr \
@@ -2499,6 +3646,8 @@ RUN \
   --mount=from=out-523ed8994559e91b,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libgeneric_array-523ed8994559e91b.rmeta,source=/libgeneric_array-523ed8994559e91b.rmeta \
   --mount=from=out-7d56f2624f7fb484,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtypenum-7d56f2624f7fb484.rlib,source=/libtypenum-7d56f2624f7fb484.rlib \
   --mount=from=out-7d56f2624f7fb484,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtypenum-7d56f2624f7fb484.rmeta,source=/libtypenum-7d56f2624f7fb484.rmeta \
+  --mount=from=out-23b425cce0264739,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libversion_check-23b425cce0264739.rlib,source=/libversion_check-23b425cce0264739.rlib \
+  --mount=from=out-23b425cce0264739,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libversion_check-23b425cce0264739.rmeta,source=/libversion_check-23b425cce0264739.rmeta \
   --mount=from=out-cebe1cbff4994413,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcrypto_common-cebe1cbff4994413.rlib,source=/libcrypto_common-cebe1cbff4994413.rlib \
   --mount=from=out-cebe1cbff4994413,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcrypto_common-cebe1cbff4994413.rmeta,source=/libcrypto_common-cebe1cbff4994413.rmeta \
   --mount=from=out-fd7543c0686511cd,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/librand_core-fd7543c0686511cd.rlib,source=/librand_core-fd7543c0686511cd.rlib \
@@ -2511,6 +3660,7 @@ RUN \
   --mount=from=out-93b6478caf319772,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibc-93b6478caf319772.rmeta,source=/liblibc-93b6478caf319772.rmeta \
   --mount=from=out-f22c7bf8d1e18975,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libsubtle-f22c7bf8d1e18975.rlib,source=/libsubtle-f22c7bf8d1e18975.rlib \
   --mount=from=out-f22c7bf8d1e18975,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libsubtle-f22c7bf8d1e18975.rmeta,source=/libsubtle-f22c7bf8d1e18975.rmeta \
+  --mount=from=out-c2a85ea3d52ad392,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-c2a85ea3d52ad392/out,source=/ \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=digest \
         CARGO_INCREMENTAL=0 \
@@ -2531,8 +3681,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=7 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        NTPD_RS_GIT_DATE=2025-05-09 \
-        NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
       rustc --crate-name digest --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --cfg feature'="alloc"' --cfg feature'="block-buffer"' --cfg feature'="core-api"' --cfg feature'="default"' --cfg feature'="mac"' --cfg feature'="std"' --cfg feature'="subtle"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "blobby", "block-buffer", "const-oid", "core-api", "default", "dev", "mac", "oid", "rand_core", "std", "subtle"))' -C metadata'=ba842b76774fded4' -C extra-filename'=-aa4812039bdce888' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern block_buffer'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libblock_buffer-be39a74c6398de96.rmeta' --extern crypto_common'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcrypto_common-cebe1cbff4994413.rmeta' --extern subtle'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libsubtle-f22c7bf8d1e18975.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/digest-0.10.7/src/lib.rs \
         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-aa4812039bdce888-stdout \
         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-aa4812039bdce888-stderr \
@@ -2546,12 +3694,24 @@ COPY --link --from=dep-n-digest-0.10.7-aa4812039bdce888 /tmp/clis-ntpd_1-7-0-alp
 ##     "be39a74c6398de96",
 ##     "523ed8994559e91b",
 ##     "7d56f2624f7fb484",
+##     "a8fbaef0afd87b8e",
+##     "23b425cce0264739",
+##     "daae1221734799f2",
 ##     "cebe1cbff4994413",
 ##     "fd7543c0686511cd",
 ##     "2ae0eb9fb2c721bb",
 ##     "5a4301c208f24f4c",
 ##     "93b6478caf319772",
+##     "7560e7c5c88ec4c4",
 ##     "f22c7bf8d1e18975",
+##     "c2a85ea3d52ad392",
+##     "6319738dfa2a85a9",
+##     "d5b44a42806fd90b",
+## ]
+## buildrs_results = [
+##     "c2a85ea3d52ad392",
+##     "6319738dfa2a85a9",
+##     "d5b44a42806fd90b",
 ## ]
 ## writes = [
 ##     "digest-aa4812039bdce888.d",
@@ -2587,6 +3747,14 @@ COPY --link --from=dep-n-digest-0.10.7-aa4812039bdce888 /tmp/clis-ntpd_1-7-0-alp
 ## [[externs]]
 ## from = "out-7d56f2624f7fb484"
 ## xtern = "libtypenum-7d56f2624f7fb484.rmeta"
+##
+## [[externs]]
+## from = "out-23b425cce0264739"
+## xtern = "libversion_check-23b425cce0264739.rlib"
+##
+## [[externs]]
+## from = "out-23b425cce0264739"
+## xtern = "libversion_check-23b425cce0264739.rmeta"
 ##
 ## [[externs]]
 ## from = "out-cebe1cbff4994413"
@@ -2636,9 +3804,9 @@ COPY --link --from=dep-n-digest-0.10.7-aa4812039bdce888 /tmp/clis-ntpd_1-7-0-alp
 ## from = "out-f22c7bf8d1e18975"
 ## xtern = "libsubtle-f22c7bf8d1e18975.rmeta"
 ##
-## [[contexts]]
-## name = "crate_out-c2a85ea3d52ad392"
-## uri = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-c2a85ea3d52ad392/out"
+## [[mounts]]
+## name = "out-c2a85ea3d52ad392"
+## mount = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-c2a85ea3d52ad392/out"
 ##
 ## [[stages]]
 ##
@@ -2671,6 +3839,8 @@ COPY --link --from=dep-n-digest-0.10.7-aa4812039bdce888 /tmp/clis-ntpd_1-7-0-alp
 ##   --mount=from=out-523ed8994559e91b,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libgeneric_array-523ed8994559e91b.rmeta,source=/libgeneric_array-523ed8994559e91b.rmeta \
 ##   --mount=from=out-7d56f2624f7fb484,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtypenum-7d56f2624f7fb484.rlib,source=/libtypenum-7d56f2624f7fb484.rlib \
 ##   --mount=from=out-7d56f2624f7fb484,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtypenum-7d56f2624f7fb484.rmeta,source=/libtypenum-7d56f2624f7fb484.rmeta \
+##   --mount=from=out-23b425cce0264739,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libversion_check-23b425cce0264739.rlib,source=/libversion_check-23b425cce0264739.rlib \
+##   --mount=from=out-23b425cce0264739,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libversion_check-23b425cce0264739.rmeta,source=/libversion_check-23b425cce0264739.rmeta \
 ##   --mount=from=out-cebe1cbff4994413,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcrypto_common-cebe1cbff4994413.rlib,source=/libcrypto_common-cebe1cbff4994413.rlib \
 ##   --mount=from=out-cebe1cbff4994413,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcrypto_common-cebe1cbff4994413.rmeta,source=/libcrypto_common-cebe1cbff4994413.rmeta \
 ##   --mount=from=out-fd7543c0686511cd,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/librand_core-fd7543c0686511cd.rlib,source=/librand_core-fd7543c0686511cd.rlib \
@@ -2683,6 +3853,7 @@ COPY --link --from=dep-n-digest-0.10.7-aa4812039bdce888 /tmp/clis-ntpd_1-7-0-alp
 ##   --mount=from=out-93b6478caf319772,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibc-93b6478caf319772.rmeta,source=/liblibc-93b6478caf319772.rmeta \
 ##   --mount=from=out-f22c7bf8d1e18975,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libsubtle-f22c7bf8d1e18975.rlib,source=/libsubtle-f22c7bf8d1e18975.rlib \
 ##   --mount=from=out-f22c7bf8d1e18975,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libsubtle-f22c7bf8d1e18975.rmeta,source=/libsubtle-f22c7bf8d1e18975.rmeta \
+##   --mount=from=out-c2a85ea3d52ad392,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-c2a85ea3d52ad392/out,source=/ \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=digest \
 ##         CARGO_INCREMENTAL=0 \
@@ -2703,8 +3874,6 @@ COPY --link --from=dep-n-digest-0.10.7-aa4812039bdce888 /tmp/clis-ntpd_1-7-0-alp
 ##         CARGO_PKG_VERSION_PATCH=7 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         NTPD_RS_GIT_DATE=2025-05-09 \
-##         NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
 ##       rustc --crate-name digest --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --cfg feature'="alloc"' --cfg feature'="block-buffer"' --cfg feature'="core-api"' --cfg feature'="default"' --cfg feature'="mac"' --cfg feature'="std"' --cfg feature'="subtle"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "blobby", "block-buffer", "const-oid", "core-api", "default", "dev", "mac", "oid", "rand_core", "std", "subtle"))' -C metadata'=ba842b76774fded4' -C extra-filename'=-aa4812039bdce888' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern block_buffer'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libblock_buffer-be39a74c6398de96.rmeta' --extern crypto_common'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcrypto_common-cebe1cbff4994413.rmeta' --extern subtle'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libsubtle-f22c7bf8d1e18975.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/digest-0.10.7/src/lib.rs \
 ##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-aa4812039bdce888-stdout \
 ##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-aa4812039bdce888-stderr \
@@ -2735,6 +3904,8 @@ RUN \
   --mount=from=out-523ed8994559e91b,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libgeneric_array-523ed8994559e91b.rmeta,source=/libgeneric_array-523ed8994559e91b.rmeta \
   --mount=from=out-7d56f2624f7fb484,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtypenum-7d56f2624f7fb484.rlib,source=/libtypenum-7d56f2624f7fb484.rlib \
   --mount=from=out-7d56f2624f7fb484,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtypenum-7d56f2624f7fb484.rmeta,source=/libtypenum-7d56f2624f7fb484.rmeta \
+  --mount=from=out-23b425cce0264739,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libversion_check-23b425cce0264739.rlib,source=/libversion_check-23b425cce0264739.rlib \
+  --mount=from=out-23b425cce0264739,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libversion_check-23b425cce0264739.rmeta,source=/libversion_check-23b425cce0264739.rmeta \
   --mount=from=out-fd7543c0686511cd,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/librand_core-fd7543c0686511cd.rlib,source=/librand_core-fd7543c0686511cd.rlib \
   --mount=from=out-fd7543c0686511cd,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/librand_core-fd7543c0686511cd.rmeta,source=/librand_core-fd7543c0686511cd.rmeta \
   --mount=from=out-2ae0eb9fb2c721bb,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libgetrandom-2ae0eb9fb2c721bb.rlib,source=/libgetrandom-2ae0eb9fb2c721bb.rlib \
@@ -2753,6 +3924,7 @@ RUN \
   --mount=from=out-be39a74c6398de96,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libblock_buffer-be39a74c6398de96.rmeta,source=/libblock_buffer-be39a74c6398de96.rmeta \
   --mount=from=out-f22c7bf8d1e18975,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libsubtle-f22c7bf8d1e18975.rlib,source=/libsubtle-f22c7bf8d1e18975.rlib \
   --mount=from=out-f22c7bf8d1e18975,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libsubtle-f22c7bf8d1e18975.rmeta,source=/libsubtle-f22c7bf8d1e18975.rmeta \
+  --mount=from=out-c2a85ea3d52ad392,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-c2a85ea3d52ad392/out,source=/ \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=cmac \
         CARGO_INCREMENTAL=0 \
@@ -2773,8 +3945,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=2 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        NTPD_RS_GIT_DATE=2025-05-09 \
-        NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
       rustc --crate-name cmac --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("std", "zeroize"))' -C metadata'=fcf8a5fd6724ad88' -C extra-filename'=-6ac8d0251eb66447' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern cipher'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcipher-8863b3b614042642.rmeta' --extern dbl'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libdbl-7d6eda3dd622da8e.rmeta' --extern digest'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libdigest-aa4812039bdce888.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/cmac-0.7.2/src/lib.rs \
         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-6ac8d0251eb66447-stdout \
         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-6ac8d0251eb66447-stderr \
@@ -2789,15 +3959,27 @@ COPY --link --from=dep-n-cmac-0.7.2-6ac8d0251eb66447 /tmp/clis-ntpd_1-7-0-alpha-
 ##     "cebe1cbff4994413",
 ##     "523ed8994559e91b",
 ##     "7d56f2624f7fb484",
+##     "a8fbaef0afd87b8e",
+##     "23b425cce0264739",
+##     "daae1221734799f2",
 ##     "fd7543c0686511cd",
 ##     "2ae0eb9fb2c721bb",
 ##     "5a4301c208f24f4c",
 ##     "93b6478caf319772",
+##     "7560e7c5c88ec4c4",
 ##     "933693afe5da87fd",
 ##     "7d6eda3dd622da8e",
 ##     "aa4812039bdce888",
 ##     "be39a74c6398de96",
 ##     "f22c7bf8d1e18975",
+##     "c2a85ea3d52ad392",
+##     "6319738dfa2a85a9",
+##     "d5b44a42806fd90b",
+## ]
+## buildrs_results = [
+##     "c2a85ea3d52ad392",
+##     "6319738dfa2a85a9",
+##     "d5b44a42806fd90b",
 ## ]
 ## writes = [
 ##     "cmac-6ac8d0251eb66447.d",
@@ -2841,6 +4023,14 @@ COPY --link --from=dep-n-cmac-0.7.2-6ac8d0251eb66447 /tmp/clis-ntpd_1-7-0-alpha-
 ## [[externs]]
 ## from = "out-7d56f2624f7fb484"
 ## xtern = "libtypenum-7d56f2624f7fb484.rmeta"
+##
+## [[externs]]
+## from = "out-23b425cce0264739"
+## xtern = "libversion_check-23b425cce0264739.rlib"
+##
+## [[externs]]
+## from = "out-23b425cce0264739"
+## xtern = "libversion_check-23b425cce0264739.rmeta"
 ##
 ## [[externs]]
 ## from = "out-fd7543c0686511cd"
@@ -2914,9 +4104,9 @@ COPY --link --from=dep-n-cmac-0.7.2-6ac8d0251eb66447 /tmp/clis-ntpd_1-7-0-alpha-
 ## from = "out-f22c7bf8d1e18975"
 ## xtern = "libsubtle-f22c7bf8d1e18975.rmeta"
 ##
-## [[contexts]]
-## name = "crate_out-c2a85ea3d52ad392"
-## uri = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-c2a85ea3d52ad392/out"
+## [[mounts]]
+## name = "out-c2a85ea3d52ad392"
+## mount = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-c2a85ea3d52ad392/out"
 ##
 ## [[stages]]
 ##
@@ -2951,6 +4141,8 @@ COPY --link --from=dep-n-cmac-0.7.2-6ac8d0251eb66447 /tmp/clis-ntpd_1-7-0-alpha-
 ##   --mount=from=out-523ed8994559e91b,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libgeneric_array-523ed8994559e91b.rmeta,source=/libgeneric_array-523ed8994559e91b.rmeta \
 ##   --mount=from=out-7d56f2624f7fb484,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtypenum-7d56f2624f7fb484.rlib,source=/libtypenum-7d56f2624f7fb484.rlib \
 ##   --mount=from=out-7d56f2624f7fb484,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtypenum-7d56f2624f7fb484.rmeta,source=/libtypenum-7d56f2624f7fb484.rmeta \
+##   --mount=from=out-23b425cce0264739,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libversion_check-23b425cce0264739.rlib,source=/libversion_check-23b425cce0264739.rlib \
+##   --mount=from=out-23b425cce0264739,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libversion_check-23b425cce0264739.rmeta,source=/libversion_check-23b425cce0264739.rmeta \
 ##   --mount=from=out-fd7543c0686511cd,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/librand_core-fd7543c0686511cd.rlib,source=/librand_core-fd7543c0686511cd.rlib \
 ##   --mount=from=out-fd7543c0686511cd,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/librand_core-fd7543c0686511cd.rmeta,source=/librand_core-fd7543c0686511cd.rmeta \
 ##   --mount=from=out-2ae0eb9fb2c721bb,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libgetrandom-2ae0eb9fb2c721bb.rlib,source=/libgetrandom-2ae0eb9fb2c721bb.rlib \
@@ -2969,6 +4161,7 @@ COPY --link --from=dep-n-cmac-0.7.2-6ac8d0251eb66447 /tmp/clis-ntpd_1-7-0-alpha-
 ##   --mount=from=out-be39a74c6398de96,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libblock_buffer-be39a74c6398de96.rmeta,source=/libblock_buffer-be39a74c6398de96.rmeta \
 ##   --mount=from=out-f22c7bf8d1e18975,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libsubtle-f22c7bf8d1e18975.rlib,source=/libsubtle-f22c7bf8d1e18975.rlib \
 ##   --mount=from=out-f22c7bf8d1e18975,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libsubtle-f22c7bf8d1e18975.rmeta,source=/libsubtle-f22c7bf8d1e18975.rmeta \
+##   --mount=from=out-c2a85ea3d52ad392,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-c2a85ea3d52ad392/out,source=/ \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=cmac \
 ##         CARGO_INCREMENTAL=0 \
@@ -2989,8 +4182,6 @@ COPY --link --from=dep-n-cmac-0.7.2-6ac8d0251eb66447 /tmp/clis-ntpd_1-7-0-alpha-
 ##         CARGO_PKG_VERSION_PATCH=2 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         NTPD_RS_GIT_DATE=2025-05-09 \
-##         NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
 ##       rustc --crate-name cmac --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("std", "zeroize"))' -C metadata'=fcf8a5fd6724ad88' -C extra-filename'=-6ac8d0251eb66447' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern cipher'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcipher-8863b3b614042642.rmeta' --extern dbl'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libdbl-7d6eda3dd622da8e.rmeta' --extern digest'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libdigest-aa4812039bdce888.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/cmac-0.7.2/src/lib.rs \
 ##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-6ac8d0251eb66447-stdout \
 ##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-6ac8d0251eb66447-stderr \
@@ -3021,6 +4212,8 @@ RUN \
   --mount=from=out-523ed8994559e91b,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libgeneric_array-523ed8994559e91b.rmeta,source=/libgeneric_array-523ed8994559e91b.rmeta \
   --mount=from=out-7d56f2624f7fb484,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtypenum-7d56f2624f7fb484.rlib,source=/libtypenum-7d56f2624f7fb484.rlib \
   --mount=from=out-7d56f2624f7fb484,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtypenum-7d56f2624f7fb484.rmeta,source=/libtypenum-7d56f2624f7fb484.rmeta \
+  --mount=from=out-23b425cce0264739,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libversion_check-23b425cce0264739.rlib,source=/libversion_check-23b425cce0264739.rlib \
+  --mount=from=out-23b425cce0264739,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libversion_check-23b425cce0264739.rmeta,source=/libversion_check-23b425cce0264739.rmeta \
   --mount=from=out-fd7543c0686511cd,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/librand_core-fd7543c0686511cd.rlib,source=/librand_core-fd7543c0686511cd.rlib \
   --mount=from=out-fd7543c0686511cd,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/librand_core-fd7543c0686511cd.rmeta,source=/librand_core-fd7543c0686511cd.rmeta \
   --mount=from=out-2ae0eb9fb2c721bb,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libgetrandom-2ae0eb9fb2c721bb.rlib,source=/libgetrandom-2ae0eb9fb2c721bb.rlib \
@@ -3031,6 +4224,7 @@ RUN \
   --mount=from=out-93b6478caf319772,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibc-93b6478caf319772.rmeta,source=/liblibc-93b6478caf319772.rmeta \
   --mount=from=out-933693afe5da87fd,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libinout-933693afe5da87fd.rlib,source=/libinout-933693afe5da87fd.rlib \
   --mount=from=out-933693afe5da87fd,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libinout-933693afe5da87fd.rmeta,source=/libinout-933693afe5da87fd.rmeta \
+  --mount=from=out-c2a85ea3d52ad392,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-c2a85ea3d52ad392/out,source=/ \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=ctr \
         CARGO_INCREMENTAL=0 \
@@ -3051,8 +4245,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=2 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        NTPD_RS_GIT_DATE=2025-05-09 \
-        NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
       rustc --crate-name ctr --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "block-padding", "std", "zeroize"))' -C metadata'=02d6de970bc246a8' -C extra-filename'=-b05e247bd900343a' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern cipher'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcipher-8863b3b614042642.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ctr-0.9.2/src/lib.rs \
         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-b05e247bd900343a-stdout \
         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-b05e247bd900343a-stderr \
@@ -3067,11 +4259,23 @@ COPY --link --from=dep-n-ctr-0.9.2-b05e247bd900343a /tmp/clis-ntpd_1-7-0-alpha-2
 ##     "cebe1cbff4994413",
 ##     "523ed8994559e91b",
 ##     "7d56f2624f7fb484",
+##     "a8fbaef0afd87b8e",
+##     "23b425cce0264739",
+##     "daae1221734799f2",
 ##     "fd7543c0686511cd",
 ##     "2ae0eb9fb2c721bb",
 ##     "5a4301c208f24f4c",
 ##     "93b6478caf319772",
+##     "7560e7c5c88ec4c4",
 ##     "933693afe5da87fd",
+##     "c2a85ea3d52ad392",
+##     "6319738dfa2a85a9",
+##     "d5b44a42806fd90b",
+## ]
+## buildrs_results = [
+##     "c2a85ea3d52ad392",
+##     "6319738dfa2a85a9",
+##     "d5b44a42806fd90b",
 ## ]
 ## writes = [
 ##     "ctr-b05e247bd900343a.d",
@@ -3117,6 +4321,14 @@ COPY --link --from=dep-n-ctr-0.9.2-b05e247bd900343a /tmp/clis-ntpd_1-7-0-alpha-2
 ## xtern = "libtypenum-7d56f2624f7fb484.rmeta"
 ##
 ## [[externs]]
+## from = "out-23b425cce0264739"
+## xtern = "libversion_check-23b425cce0264739.rlib"
+##
+## [[externs]]
+## from = "out-23b425cce0264739"
+## xtern = "libversion_check-23b425cce0264739.rmeta"
+##
+## [[externs]]
 ## from = "out-fd7543c0686511cd"
 ## xtern = "librand_core-fd7543c0686511cd.rlib"
 ##
@@ -3156,9 +4368,9 @@ COPY --link --from=dep-n-ctr-0.9.2-b05e247bd900343a /tmp/clis-ntpd_1-7-0-alpha-2
 ## from = "out-933693afe5da87fd"
 ## xtern = "libinout-933693afe5da87fd.rmeta"
 ##
-## [[contexts]]
-## name = "crate_out-c2a85ea3d52ad392"
-## uri = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-c2a85ea3d52ad392/out"
+## [[mounts]]
+## name = "out-c2a85ea3d52ad392"
+## mount = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-c2a85ea3d52ad392/out"
 ##
 ## [[stages]]
 ##
@@ -3193,6 +4405,8 @@ COPY --link --from=dep-n-ctr-0.9.2-b05e247bd900343a /tmp/clis-ntpd_1-7-0-alpha-2
 ##   --mount=from=out-523ed8994559e91b,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libgeneric_array-523ed8994559e91b.rmeta,source=/libgeneric_array-523ed8994559e91b.rmeta \
 ##   --mount=from=out-7d56f2624f7fb484,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtypenum-7d56f2624f7fb484.rlib,source=/libtypenum-7d56f2624f7fb484.rlib \
 ##   --mount=from=out-7d56f2624f7fb484,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtypenum-7d56f2624f7fb484.rmeta,source=/libtypenum-7d56f2624f7fb484.rmeta \
+##   --mount=from=out-23b425cce0264739,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libversion_check-23b425cce0264739.rlib,source=/libversion_check-23b425cce0264739.rlib \
+##   --mount=from=out-23b425cce0264739,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libversion_check-23b425cce0264739.rmeta,source=/libversion_check-23b425cce0264739.rmeta \
 ##   --mount=from=out-fd7543c0686511cd,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/librand_core-fd7543c0686511cd.rlib,source=/librand_core-fd7543c0686511cd.rlib \
 ##   --mount=from=out-fd7543c0686511cd,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/librand_core-fd7543c0686511cd.rmeta,source=/librand_core-fd7543c0686511cd.rmeta \
 ##   --mount=from=out-2ae0eb9fb2c721bb,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libgetrandom-2ae0eb9fb2c721bb.rlib,source=/libgetrandom-2ae0eb9fb2c721bb.rlib \
@@ -3203,6 +4417,7 @@ COPY --link --from=dep-n-ctr-0.9.2-b05e247bd900343a /tmp/clis-ntpd_1-7-0-alpha-2
 ##   --mount=from=out-93b6478caf319772,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibc-93b6478caf319772.rmeta,source=/liblibc-93b6478caf319772.rmeta \
 ##   --mount=from=out-933693afe5da87fd,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libinout-933693afe5da87fd.rlib,source=/libinout-933693afe5da87fd.rlib \
 ##   --mount=from=out-933693afe5da87fd,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libinout-933693afe5da87fd.rmeta,source=/libinout-933693afe5da87fd.rmeta \
+##   --mount=from=out-c2a85ea3d52ad392,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-c2a85ea3d52ad392/out,source=/ \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=ctr \
 ##         CARGO_INCREMENTAL=0 \
@@ -3223,8 +4438,6 @@ COPY --link --from=dep-n-ctr-0.9.2-b05e247bd900343a /tmp/clis-ntpd_1-7-0-alpha-2
 ##         CARGO_PKG_VERSION_PATCH=2 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         NTPD_RS_GIT_DATE=2025-05-09 \
-##         NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
 ##       rustc --crate-name ctr --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "block-padding", "std", "zeroize"))' -C metadata'=02d6de970bc246a8' -C extra-filename'=-b05e247bd900343a' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern cipher'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcipher-8863b3b614042642.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ctr-0.9.2/src/lib.rs \
 ##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-b05e247bd900343a-stdout \
 ##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-b05e247bd900343a-stderr \
@@ -3272,8 +4485,6 @@ even WASM!\
         CARGO_PKG_VERSION_PATCH=2 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        NTPD_RS_GIT_DATE=2025-05-09 \
-        NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
       rustc --crate-name zeroize --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --cfg feature'="alloc"' --cfg feature'="default"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("aarch64", "alloc", "default", "derive", "serde", "simd", "std", "zeroize_derive"))' -C metadata'=5daff4024ec909c2' -C extra-filename'=-fd233fb45e407496' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zeroize-1.8.2/src/lib.rs \
         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-fd233fb45e407496-stdout \
         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-fd233fb45e407496-stderr \
@@ -3344,8 +4555,6 @@ COPY --link --from=dep-n-zeroize-1.8.2-fd233fb45e407496 /tmp/clis-ntpd_1-7-0-alp
 ##         CARGO_PKG_VERSION_PATCH=2 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         NTPD_RS_GIT_DATE=2025-05-09 \
-##         NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
 ##       rustc --crate-name zeroize --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --cfg feature'="alloc"' --cfg feature'="default"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("aarch64", "alloc", "default", "derive", "serde", "simd", "std", "zeroize_derive"))' -C metadata'=5daff4024ec909c2' -C extra-filename'=-fd233fb45e407496' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zeroize-1.8.2/src/lib.rs \
 ##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-fd233fb45e407496-stdout \
 ##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-fd233fb45e407496-stderr \
@@ -3376,6 +4585,8 @@ RUN \
   --mount=from=out-523ed8994559e91b,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libgeneric_array-523ed8994559e91b.rmeta,source=/libgeneric_array-523ed8994559e91b.rmeta \
   --mount=from=out-7d56f2624f7fb484,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtypenum-7d56f2624f7fb484.rlib,source=/libtypenum-7d56f2624f7fb484.rlib \
   --mount=from=out-7d56f2624f7fb484,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtypenum-7d56f2624f7fb484.rmeta,source=/libtypenum-7d56f2624f7fb484.rmeta \
+  --mount=from=out-23b425cce0264739,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libversion_check-23b425cce0264739.rlib,source=/libversion_check-23b425cce0264739.rlib \
+  --mount=from=out-23b425cce0264739,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libversion_check-23b425cce0264739.rmeta,source=/libversion_check-23b425cce0264739.rmeta \
   --mount=from=out-fd7543c0686511cd,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/librand_core-fd7543c0686511cd.rlib,source=/librand_core-fd7543c0686511cd.rlib \
   --mount=from=out-fd7543c0686511cd,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/librand_core-fd7543c0686511cd.rmeta,source=/librand_core-fd7543c0686511cd.rmeta \
   --mount=from=out-2ae0eb9fb2c721bb,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libgetrandom-2ae0eb9fb2c721bb.rlib,source=/libgetrandom-2ae0eb9fb2c721bb.rlib \
@@ -3406,6 +4617,7 @@ RUN \
   --mount=from=out-b05e247bd900343a,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libctr-b05e247bd900343a.rmeta,source=/libctr-b05e247bd900343a.rmeta \
   --mount=from=out-fd233fb45e407496,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libzeroize-fd233fb45e407496.rlib,source=/libzeroize-fd233fb45e407496.rlib \
   --mount=from=out-fd233fb45e407496,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libzeroize-fd233fb45e407496.rmeta,source=/libzeroize-fd233fb45e407496.rmeta \
+  --mount=from=out-c2a85ea3d52ad392,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-c2a85ea3d52ad392/out,source=/ \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=aes_siv \
         CARGO_INCREMENTAL=0 \
@@ -3429,8 +4641,6 @@ hardware acceleration\
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        NTPD_RS_GIT_DATE=2025-05-09 \
-        NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
       rustc --crate-name aes_siv --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --cfg feature'="alloc"' --cfg feature'="default"' --cfg feature'="getrandom"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "getrandom", "heapless", "pmac", "std", "stream"))' -C metadata'=36d11d80901cb784' -C extra-filename'=-52d5490f955beadb' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern aead'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libaead-4b9b0df243e430b1.rmeta' --extern aes'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libaes-d09eff787322ac92.rmeta' --extern cipher'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcipher-8863b3b614042642.rmeta' --extern cmac'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcmac-6ac8d0251eb66447.rmeta' --extern ctr'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libctr-b05e247bd900343a.rmeta' --extern dbl'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libdbl-7d6eda3dd622da8e.rmeta' --extern digest'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libdigest-aa4812039bdce888.rmeta' --extern zeroize'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libzeroize-fd233fb45e407496.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aes-siv-0.7.0/src/lib.rs \
         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-52d5490f955beadb-stdout \
         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-52d5490f955beadb-stderr \
@@ -3445,10 +4655,14 @@ COPY --link --from=dep-n-aes-siv-0.7.0-52d5490f955beadb /tmp/clis-ntpd_1-7-0-alp
 ##     "cebe1cbff4994413",
 ##     "523ed8994559e91b",
 ##     "7d56f2624f7fb484",
+##     "a8fbaef0afd87b8e",
+##     "23b425cce0264739",
+##     "daae1221734799f2",
 ##     "fd7543c0686511cd",
 ##     "2ae0eb9fb2c721bb",
 ##     "5a4301c208f24f4c",
 ##     "93b6478caf319772",
+##     "7560e7c5c88ec4c4",
 ##     "d09eff787322ac92",
 ##     "8863b3b614042642",
 ##     "933693afe5da87fd",
@@ -3460,6 +4674,14 @@ COPY --link --from=dep-n-aes-siv-0.7.0-52d5490f955beadb /tmp/clis-ntpd_1-7-0-alp
 ##     "f22c7bf8d1e18975",
 ##     "b05e247bd900343a",
 ##     "fd233fb45e407496",
+##     "c2a85ea3d52ad392",
+##     "6319738dfa2a85a9",
+##     "d5b44a42806fd90b",
+## ]
+## buildrs_results = [
+##     "c2a85ea3d52ad392",
+##     "6319738dfa2a85a9",
+##     "d5b44a42806fd90b",
 ## ]
 ## writes = [
 ##     "aes_siv-52d5490f955beadb.d",
@@ -3503,6 +4725,14 @@ COPY --link --from=dep-n-aes-siv-0.7.0-52d5490f955beadb /tmp/clis-ntpd_1-7-0-alp
 ## [[externs]]
 ## from = "out-7d56f2624f7fb484"
 ## xtern = "libtypenum-7d56f2624f7fb484.rmeta"
+##
+## [[externs]]
+## from = "out-23b425cce0264739"
+## xtern = "libversion_check-23b425cce0264739.rlib"
+##
+## [[externs]]
+## from = "out-23b425cce0264739"
+## xtern = "libversion_check-23b425cce0264739.rmeta"
 ##
 ## [[externs]]
 ## from = "out-fd7543c0686511cd"
@@ -3624,9 +4854,9 @@ COPY --link --from=dep-n-aes-siv-0.7.0-52d5490f955beadb /tmp/clis-ntpd_1-7-0-alp
 ## from = "out-fd233fb45e407496"
 ## xtern = "libzeroize-fd233fb45e407496.rmeta"
 ##
-## [[contexts]]
-## name = "crate_out-c2a85ea3d52ad392"
-## uri = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-c2a85ea3d52ad392/out"
+## [[mounts]]
+## name = "out-c2a85ea3d52ad392"
+## mount = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-c2a85ea3d52ad392/out"
 ##
 ## [[stages]]
 ##
@@ -3661,6 +4891,8 @@ COPY --link --from=dep-n-aes-siv-0.7.0-52d5490f955beadb /tmp/clis-ntpd_1-7-0-alp
 ##   --mount=from=out-523ed8994559e91b,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libgeneric_array-523ed8994559e91b.rmeta,source=/libgeneric_array-523ed8994559e91b.rmeta \
 ##   --mount=from=out-7d56f2624f7fb484,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtypenum-7d56f2624f7fb484.rlib,source=/libtypenum-7d56f2624f7fb484.rlib \
 ##   --mount=from=out-7d56f2624f7fb484,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtypenum-7d56f2624f7fb484.rmeta,source=/libtypenum-7d56f2624f7fb484.rmeta \
+##   --mount=from=out-23b425cce0264739,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libversion_check-23b425cce0264739.rlib,source=/libversion_check-23b425cce0264739.rlib \
+##   --mount=from=out-23b425cce0264739,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libversion_check-23b425cce0264739.rmeta,source=/libversion_check-23b425cce0264739.rmeta \
 ##   --mount=from=out-fd7543c0686511cd,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/librand_core-fd7543c0686511cd.rlib,source=/librand_core-fd7543c0686511cd.rlib \
 ##   --mount=from=out-fd7543c0686511cd,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/librand_core-fd7543c0686511cd.rmeta,source=/librand_core-fd7543c0686511cd.rmeta \
 ##   --mount=from=out-2ae0eb9fb2c721bb,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libgetrandom-2ae0eb9fb2c721bb.rlib,source=/libgetrandom-2ae0eb9fb2c721bb.rlib \
@@ -3691,6 +4923,7 @@ COPY --link --from=dep-n-aes-siv-0.7.0-52d5490f955beadb /tmp/clis-ntpd_1-7-0-alp
 ##   --mount=from=out-b05e247bd900343a,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libctr-b05e247bd900343a.rmeta,source=/libctr-b05e247bd900343a.rmeta \
 ##   --mount=from=out-fd233fb45e407496,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libzeroize-fd233fb45e407496.rlib,source=/libzeroize-fd233fb45e407496.rlib \
 ##   --mount=from=out-fd233fb45e407496,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libzeroize-fd233fb45e407496.rmeta,source=/libzeroize-fd233fb45e407496.rmeta \
+##   --mount=from=out-c2a85ea3d52ad392,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-c2a85ea3d52ad392/out,source=/ \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=aes_siv \
 ##         CARGO_INCREMENTAL=0 \
@@ -3714,8 +4947,6 @@ COPY --link --from=dep-n-aes-siv-0.7.0-52d5490f955beadb /tmp/clis-ntpd_1-7-0-alp
 ##         CARGO_PKG_VERSION_PATCH=0 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         NTPD_RS_GIT_DATE=2025-05-09 \
-##         NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
 ##       rustc --crate-name aes_siv --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --cfg feature'="alloc"' --cfg feature'="default"' --cfg feature'="getrandom"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "getrandom", "heapless", "pmac", "std", "stream"))' -C metadata'=36d11d80901cb784' -C extra-filename'=-52d5490f955beadb' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern aead'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libaead-4b9b0df243e430b1.rmeta' --extern aes'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libaes-d09eff787322ac92.rmeta' --extern cipher'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcipher-8863b3b614042642.rmeta' --extern cmac'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcmac-6ac8d0251eb66447.rmeta' --extern ctr'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libctr-b05e247bd900343a.rmeta' --extern dbl'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libdbl-7d6eda3dd622da8e.rmeta' --extern digest'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libdigest-aa4812039bdce888.rmeta' --extern zeroize'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libzeroize-fd233fb45e407496.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aes-siv-0.7.0/src/lib.rs \
 ##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-52d5490f955beadb-stdout \
 ##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-52d5490f955beadb-stderr \
@@ -3748,6 +4979,8 @@ RUN \
   --mount=from=out-523ed8994559e91b,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libgeneric_array-523ed8994559e91b.rmeta,source=/libgeneric_array-523ed8994559e91b.rmeta \
   --mount=from=out-7d56f2624f7fb484,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtypenum-7d56f2624f7fb484.rlib,source=/libtypenum-7d56f2624f7fb484.rlib \
   --mount=from=out-7d56f2624f7fb484,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtypenum-7d56f2624f7fb484.rmeta,source=/libtypenum-7d56f2624f7fb484.rmeta \
+  --mount=from=out-23b425cce0264739,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libversion_check-23b425cce0264739.rlib,source=/libversion_check-23b425cce0264739.rlib \
+  --mount=from=out-23b425cce0264739,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libversion_check-23b425cce0264739.rmeta,source=/libversion_check-23b425cce0264739.rmeta \
   --mount=from=out-cebe1cbff4994413,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcrypto_common-cebe1cbff4994413.rlib,source=/libcrypto_common-cebe1cbff4994413.rlib \
   --mount=from=out-cebe1cbff4994413,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcrypto_common-cebe1cbff4994413.rmeta,source=/libcrypto_common-cebe1cbff4994413.rmeta \
   --mount=from=out-fd7543c0686511cd,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/librand_core-fd7543c0686511cd.rlib,source=/librand_core-fd7543c0686511cd.rlib \
@@ -3758,6 +4991,7 @@ RUN \
   --mount=from=out-93b6478caf319772,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibc-93b6478caf319772.rmeta,source=/liblibc-93b6478caf319772.rmeta \
   --mount=from=out-f22c7bf8d1e18975,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libsubtle-f22c7bf8d1e18975.rlib,source=/libsubtle-f22c7bf8d1e18975.rlib \
   --mount=from=out-f22c7bf8d1e18975,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libsubtle-f22c7bf8d1e18975.rmeta,source=/libsubtle-f22c7bf8d1e18975.rmeta \
+  --mount=from=out-c2a85ea3d52ad392,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-c2a85ea3d52ad392/out,source=/ \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=md5 \
         CARGO_INCREMENTAL=0 \
@@ -3778,8 +5012,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=6 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        NTPD_RS_GIT_DATE=2025-05-09 \
-        NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
       rustc --crate-name md5 --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("asm", "default", "force-soft", "loongarch64_asm", "md5-asm", "oid", "std"))' -C metadata'=4840c81a4ca51c4e' -C extra-filename'=-5c47893368a03a5c' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern cfg_if'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcfg_if-5a4301c208f24f4c.rmeta' --extern digest'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libdigest-aa4812039bdce888.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/md-5-0.10.6/src/lib.rs \
         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-5c47893368a03a5c-stdout \
         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-5c47893368a03a5c-stderr \
@@ -3795,11 +5027,23 @@ COPY --link --from=dep-n-md-5-0.10.6-5c47893368a03a5c /tmp/clis-ntpd_1-7-0-alpha
 ##     "be39a74c6398de96",
 ##     "523ed8994559e91b",
 ##     "7d56f2624f7fb484",
+##     "a8fbaef0afd87b8e",
+##     "23b425cce0264739",
+##     "daae1221734799f2",
 ##     "cebe1cbff4994413",
 ##     "fd7543c0686511cd",
 ##     "2ae0eb9fb2c721bb",
 ##     "93b6478caf319772",
+##     "7560e7c5c88ec4c4",
 ##     "f22c7bf8d1e18975",
+##     "c2a85ea3d52ad392",
+##     "6319738dfa2a85a9",
+##     "d5b44a42806fd90b",
+## ]
+## buildrs_results = [
+##     "c2a85ea3d52ad392",
+##     "6319738dfa2a85a9",
+##     "d5b44a42806fd90b",
 ## ]
 ## writes = [
 ##     "libmd5-5c47893368a03a5c.rlib",
@@ -3853,6 +5097,14 @@ COPY --link --from=dep-n-md-5-0.10.6-5c47893368a03a5c /tmp/clis-ntpd_1-7-0-alpha
 ## xtern = "libtypenum-7d56f2624f7fb484.rmeta"
 ##
 ## [[externs]]
+## from = "out-23b425cce0264739"
+## xtern = "libversion_check-23b425cce0264739.rlib"
+##
+## [[externs]]
+## from = "out-23b425cce0264739"
+## xtern = "libversion_check-23b425cce0264739.rmeta"
+##
+## [[externs]]
 ## from = "out-cebe1cbff4994413"
 ## xtern = "libcrypto_common-cebe1cbff4994413.rlib"
 ##
@@ -3892,9 +5144,9 @@ COPY --link --from=dep-n-md-5-0.10.6-5c47893368a03a5c /tmp/clis-ntpd_1-7-0-alpha
 ## from = "out-f22c7bf8d1e18975"
 ## xtern = "libsubtle-f22c7bf8d1e18975.rmeta"
 ##
-## [[contexts]]
-## name = "crate_out-c2a85ea3d52ad392"
-## uri = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-c2a85ea3d52ad392/out"
+## [[mounts]]
+## name = "out-c2a85ea3d52ad392"
+## mount = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-c2a85ea3d52ad392/out"
 ##
 ## [[stages]]
 ##
@@ -3931,6 +5183,8 @@ COPY --link --from=dep-n-md-5-0.10.6-5c47893368a03a5c /tmp/clis-ntpd_1-7-0-alpha
 ##   --mount=from=out-523ed8994559e91b,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libgeneric_array-523ed8994559e91b.rmeta,source=/libgeneric_array-523ed8994559e91b.rmeta \
 ##   --mount=from=out-7d56f2624f7fb484,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtypenum-7d56f2624f7fb484.rlib,source=/libtypenum-7d56f2624f7fb484.rlib \
 ##   --mount=from=out-7d56f2624f7fb484,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtypenum-7d56f2624f7fb484.rmeta,source=/libtypenum-7d56f2624f7fb484.rmeta \
+##   --mount=from=out-23b425cce0264739,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libversion_check-23b425cce0264739.rlib,source=/libversion_check-23b425cce0264739.rlib \
+##   --mount=from=out-23b425cce0264739,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libversion_check-23b425cce0264739.rmeta,source=/libversion_check-23b425cce0264739.rmeta \
 ##   --mount=from=out-cebe1cbff4994413,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcrypto_common-cebe1cbff4994413.rlib,source=/libcrypto_common-cebe1cbff4994413.rlib \
 ##   --mount=from=out-cebe1cbff4994413,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcrypto_common-cebe1cbff4994413.rmeta,source=/libcrypto_common-cebe1cbff4994413.rmeta \
 ##   --mount=from=out-fd7543c0686511cd,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/librand_core-fd7543c0686511cd.rlib,source=/librand_core-fd7543c0686511cd.rlib \
@@ -3941,6 +5195,7 @@ COPY --link --from=dep-n-md-5-0.10.6-5c47893368a03a5c /tmp/clis-ntpd_1-7-0-alpha
 ##   --mount=from=out-93b6478caf319772,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibc-93b6478caf319772.rmeta,source=/liblibc-93b6478caf319772.rmeta \
 ##   --mount=from=out-f22c7bf8d1e18975,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libsubtle-f22c7bf8d1e18975.rlib,source=/libsubtle-f22c7bf8d1e18975.rlib \
 ##   --mount=from=out-f22c7bf8d1e18975,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libsubtle-f22c7bf8d1e18975.rmeta,source=/libsubtle-f22c7bf8d1e18975.rmeta \
+##   --mount=from=out-c2a85ea3d52ad392,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-c2a85ea3d52ad392/out,source=/ \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=md5 \
 ##         CARGO_INCREMENTAL=0 \
@@ -3961,8 +5216,6 @@ COPY --link --from=dep-n-md-5-0.10.6-5c47893368a03a5c /tmp/clis-ntpd_1-7-0-alpha
 ##         CARGO_PKG_VERSION_PATCH=6 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         NTPD_RS_GIT_DATE=2025-05-09 \
-##         NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
 ##       rustc --crate-name md5 --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("asm", "default", "force-soft", "loongarch64_asm", "md5-asm", "oid", "std"))' -C metadata'=4840c81a4ca51c4e' -C extra-filename'=-5c47893368a03a5c' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern cfg_if'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcfg_if-5a4301c208f24f4c.rmeta' --extern digest'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libdigest-aa4812039bdce888.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/md-5-0.10.6/src/lib.rs \
 ##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-5c47893368a03a5c-stdout \
 ##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-5c47893368a03a5c-stderr \
@@ -3980,11 +5233,316 @@ COPY --link --from=dep-n-md-5-0.10.6-5c47893368a03a5c /tmp/clis-ntpd_1-7-0-alpha
 FROM scratch AS cratesio-zerocopy-0.8.27
 ADD --chmod=0664 --unpack --checksum=sha256:0894878a5fa3edfd6da3f88c4805f4c8558e2b996227a3d864f47fe11e38282c \
   https://static.crates.io/crates/zerocopy/zerocopy-0.8.27.crate /
+FROM rust-base AS dep-x-zerocopy-0.8.27-5d3dfb9ebf1ffdb4
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/zerocopy-5d3dfb9ebf1ffdb4
+RUN \
+  --mount=from=cratesio-zerocopy-0.8.27,source=/zerocopy-0.8.27,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zerocopy-0.8.27,rw \
+    { \
+        cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zerocopy-0.8.27/build.rs | sed -E 's/^(pub[()a-z]* +)?(async +)?fn +main/\1\2fn actual_5d3dfb9ebf1ffdb4_main/' >/_ && mv /_ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zerocopy-0.8.27/build.rs ; \
+        { \
+          echo ; \
+          echo 'fn main() {' ; \
+          echo '    use std::env::{args_os, var_os};' ; \
+          echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+          echo '        use std::process::{Command, Stdio};' ; \
+          echo '        let mut cmd = Command::new("cargo-green");' ; \
+          echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+          echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+          echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+          echo '        assert!(res.success());' ; \
+          echo '    } else {' ; \
+          echo '        actual_5d3dfb9ebf1ffdb4_main();' ; \
+          echo '    }' ; \
+          echo '}' ; \
+        } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zerocopy-0.8.27/build.rs ; \
+    } && \
+    env CARGO="$(which cargo)" \
+        CARGO_CRATE_NAME=build_script_build \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zerocopy-0.8.27 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zerocopy-0.8.27/Cargo.toml \
+        CARGO_PKG_AUTHORS=Joshua' Liebow-Feeser <joshlf@google.com>:Jack Wrenn <jswrenn@amazon.com>' \
+        CARGO_PKG_DESCRIPTION=Zerocopy' makes zero-cost memory manipulation effortless. We write "unsafe" so you don'\'t' have to.' \
+        CARGO_PKG_HOMEPAGE= \
+        CARGO_PKG_LICENSE=BSD-2-Clause' OR Apache-2.0 OR MIT' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=zerocopy \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/google/zerocopy' \
+        CARGO_PKG_RUST_VERSION=1.56.0 \
+        CARGO_PKG_VERSION=0.8.27 \
+        CARGO_PKG_VERSION_MAJOR=0 \
+        CARGO_PKG_VERSION_MINOR=8 \
+        CARGO_PKG_VERSION_PATCH=27 \
+        CARGO_PKG_VERSION_PRE= \
+        CARGOGREEN=1 \
+      rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="simd"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("__internal_use_only_features_that_work_on_stable", "alloc", "derive", "float-nightly", "simd", "simd-nightly", "std", "zerocopy-derive"))' -C metadata'=310f25332546f775' -C extra-filename'=-5d3dfb9ebf1ffdb4' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/zerocopy-5d3dfb9ebf1ffdb4 -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zerocopy-0.8.27/build.rs \
+        1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/zerocopy-5d3dfb9ebf1ffdb4/out-5d3dfb9ebf1ffdb4-stdout \
+        2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/zerocopy-5d3dfb9ebf1ffdb4/out-5d3dfb9ebf1ffdb4-stderr \
+        || echo $? >/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/zerocopy-5d3dfb9ebf1ffdb4/out-5d3dfb9ebf1ffdb4-errcode\
+  ; find /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/zerocopy-5d3dfb9ebf1ffdb4/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-5d3dfb9ebf1ffdb4
+COPY --link --from=dep-x-zerocopy-0.8.27-5d3dfb9ebf1ffdb4 /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/zerocopy-5d3dfb9ebf1ffdb4/*-5d3dfb9ebf1ffdb4* /
+
+## this = "5d3dfb9ebf1ffdb4"
+## writes = [
+##     "build_script_build-5d3dfb9ebf1ffdb4",
+##     "build_script_build-5d3dfb9ebf1ffdb4.d",
+## ]
+## stderr = [
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/zerocopy-5d3dfb9ebf1ffdb4/build_script_build-5d3dfb9ebf1ffdb4.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/zerocopy-5d3dfb9ebf1ffdb4/build_script_build-5d3dfb9ebf1ffdb4","emit":"link"}',
+## ]
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
+##
+## [[stages]]
+##
+## [stages.Cratesio]
+## stage = "cratesio-zerocopy-0.8.27"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zerocopy-0.8.27"
+## name = "zerocopy"
+## name_dash_version = "zerocopy-0.8.27"
+## hash = "0894878a5fa3edfd6da3f88c4805f4c8558e2b996227a3d864f47fe11e38282c"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "dep-x-zerocopy-0.8.27-5d3dfb9ebf1ffdb4"
+## script = '''
+## FROM rust-base AS dep-x-zerocopy-0.8.27-5d3dfb9ebf1ffdb4
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/zerocopy-5d3dfb9ebf1ffdb4
+## RUN \
+##   --mount=from=cratesio-zerocopy-0.8.27,source=/zerocopy-0.8.27,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zerocopy-0.8.27,rw \
+##     { \
+##         cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zerocopy-0.8.27/build.rs | sed -E 's/^(pub[()a-z]* +)?(async +)?fn +main/\1\2fn actual_5d3dfb9ebf1ffdb4_main/' >/_ && mv /_ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zerocopy-0.8.27/build.rs ; \
+##         { \
+##           echo ; \
+##           echo 'fn main() {' ; \
+##           echo '    use std::env::{args_os, var_os};' ; \
+##           echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+##           echo '        use std::process::{Command, Stdio};' ; \
+##           echo '        let mut cmd = Command::new("cargo-green");' ; \
+##           echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+##           echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+##           echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+##           echo '        assert!(res.success());' ; \
+##           echo '    } else {' ; \
+##           echo '        actual_5d3dfb9ebf1ffdb4_main();' ; \
+##           echo '    }' ; \
+##           echo '}' ; \
+##         } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zerocopy-0.8.27/build.rs ; \
+##     } && \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CRATE_NAME=build_script_build \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zerocopy-0.8.27 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zerocopy-0.8.27/Cargo.toml \
+##         CARGO_PKG_AUTHORS=Joshua' Liebow-Feeser <joshlf@google.com>:Jack Wrenn <jswrenn@amazon.com>' \
+##         CARGO_PKG_DESCRIPTION=Zerocopy' makes zero-cost memory manipulation effortless. We write "unsafe" so you don'\'t' have to.' \
+##         CARGO_PKG_HOMEPAGE= \
+##         CARGO_PKG_LICENSE=BSD-2-Clause' OR Apache-2.0 OR MIT' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=zerocopy \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/google/zerocopy' \
+##         CARGO_PKG_RUST_VERSION=1.56.0 \
+##         CARGO_PKG_VERSION=0.8.27 \
+##         CARGO_PKG_VERSION_MAJOR=0 \
+##         CARGO_PKG_VERSION_MINOR=8 \
+##         CARGO_PKG_VERSION_PATCH=27 \
+##         CARGO_PKG_VERSION_PRE= \
+##         CARGOGREEN=1 \
+##       rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="simd"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("__internal_use_only_features_that_work_on_stable", "alloc", "derive", "float-nightly", "simd", "simd-nightly", "std", "zerocopy-derive"))' -C metadata'=310f25332546f775' -C extra-filename'=-5d3dfb9ebf1ffdb4' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/zerocopy-5d3dfb9ebf1ffdb4 -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zerocopy-0.8.27/build.rs \
+##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/zerocopy-5d3dfb9ebf1ffdb4/out-5d3dfb9ebf1ffdb4-stdout \
+##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/zerocopy-5d3dfb9ebf1ffdb4/out-5d3dfb9ebf1ffdb4-stderr \
+##         || echo $? >/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/zerocopy-5d3dfb9ebf1ffdb4/out-5d3dfb9ebf1ffdb4-errcode\
+##   ; find /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/zerocopy-5d3dfb9ebf1ffdb4/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-5d3dfb9ebf1ffdb4"
+## script = """
+## FROM scratch AS out-5d3dfb9ebf1ffdb4
+## COPY --link --from=dep-x-zerocopy-0.8.27-5d3dfb9ebf1ffdb4 /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/zerocopy-5d3dfb9ebf1ffdb4/*-5d3dfb9ebf1ffdb4* /"""
+
+FROM rust-base AS run-z-zerocopy-0.8.27-d1d84d8a1ca91c51
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/zerocopy-d1d84d8a1ca91c51/out
+WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zerocopy-0.8.27
+RUN \
+  --mount=from=out-5d3dfb9ebf1ffdb4,source=/build_script_build-5d3dfb9ebf1ffdb4,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/zerocopy-5d3dfb9ebf1ffdb4/build-script-build \
+  --mount=from=cratesio-zerocopy-0.8.27,source=/zerocopy-0.8.27,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zerocopy-0.8.27 \
+    env CARGO="$(which cargo)" \
+        CARGO_CFG_FEATURE=simd \
+        CARGO_CFG_PANIC=unwind \
+        CARGO_CFG_TARGET_ABI= \
+        CARGO_CFG_TARGET_ARCH=x86_64 \
+        CARGO_CFG_TARGET_ENDIAN=little \
+        CARGO_CFG_TARGET_ENV=gnu \
+        CARGO_CFG_TARGET_FAMILY=unix \
+        CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
+        CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+        CARGO_CFG_TARGET_OS=linux \
+        CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+        CARGO_CFG_TARGET_VENDOR=unknown \
+        CARGO_CFG_UNIX= \
+        CARGO_ENCODED_RUSTFLAGS= \
+        CARGO_FEATURE_SIMD=1 \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zerocopy-0.8.27 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zerocopy-0.8.27/Cargo.toml \
+        CARGO_PKG_AUTHORS=Joshua' Liebow-Feeser <joshlf@google.com>:Jack Wrenn <jswrenn@amazon.com>' \
+        CARGO_PKG_DESCRIPTION=Zerocopy' makes zero-cost memory manipulation effortless. We write "unsafe" so you don'\'t' have to.' \
+        CARGO_PKG_HOMEPAGE= \
+        CARGO_PKG_LICENSE=BSD-2-Clause' OR Apache-2.0 OR MIT' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=zerocopy \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/google/zerocopy' \
+        CARGO_PKG_RUST_VERSION=1.56.0 \
+        CARGO_PKG_VERSION=0.8.27 \
+        CARGO_PKG_VERSION_MAJOR=0 \
+        CARGO_PKG_VERSION_MINOR=8 \
+        CARGO_PKG_VERSION_PATCH=27 \
+        CARGO_PKG_VERSION_PRE= \
+        DEBUG=false \
+        HOST=x86_64-unknown-linux-gnu \
+        NUM_JOBS=4 \
+        OPT_LEVEL=3 \
+        OUT_DIR=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/zerocopy-d1d84d8a1ca91c51/out \
+        PROFILE=release \
+        RUSTC=rustc \
+        RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+        TARGET=x86_64-unknown-linux-gnu \
+        CARGOGREEN=1 \
+      CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/zerocopy-5d3dfb9ebf1ffdb4/build-script-build \
+        1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/zerocopy-d1d84d8a1ca91c51/out/out-d1d84d8a1ca91c51-stdout \
+        2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/zerocopy-d1d84d8a1ca91c51/out/out-d1d84d8a1ca91c51-stderr \
+        || echo $? >/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/zerocopy-d1d84d8a1ca91c51/out/out-d1d84d8a1ca91c51-errcode\
+  ; find /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/zerocopy-d1d84d8a1ca91c51/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-d1d84d8a1ca91c51
+COPY --link --from=run-z-zerocopy-0.8.27-d1d84d8a1ca91c51 /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/zerocopy-d1d84d8a1ca91c51/out /
+
+## this = "d1d84d8a1ca91c51"
+## deps = ["5d3dfb9ebf1ffdb4"]
+## writes_to = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/zerocopy-d1d84d8a1ca91c51/out"
+## stdout = [
+##     "cargo:rerun-if-changed=build.rs",
+##     "cargo:rerun-if-changed=Cargo.toml",
+##     "cargo:rustc-check-cfg=cfg(zerocopy_core_error_1_81_0)",
+##     'cargo:rustc-check-cfg=cfg(rust, values("1.81.0"))',
+##     "cargo:rustc-check-cfg=cfg(zerocopy_diagnostic_on_unimplemented_1_78_0)",
+##     'cargo:rustc-check-cfg=cfg(rust, values("1.78.0"))',
+##     "cargo:rustc-check-cfg=cfg(zerocopy_generic_bounds_in_const_fn_1_61_0)",
+##     'cargo:rustc-check-cfg=cfg(rust, values("1.61.0"))',
+##     "cargo:rustc-check-cfg=cfg(zerocopy_target_has_atomics_1_60_0)",
+##     'cargo:rustc-check-cfg=cfg(rust, values("1.60.0"))',
+##     "cargo:rustc-check-cfg=cfg(zerocopy_aarch64_simd_1_59_0)",
+##     'cargo:rustc-check-cfg=cfg(rust, values("1.59.0"))',
+##     "cargo:rustc-check-cfg=cfg(zerocopy_panic_in_const_and_vec_try_reserve_1_57_0)",
+##     'cargo:rustc-check-cfg=cfg(rust, values("1.57.0"))',
+##     "cargo:rustc-check-cfg=cfg(doc_cfg)",
+##     "cargo:rustc-check-cfg=cfg(kani)",
+##     "cargo:rustc-check-cfg=cfg(__ZEROCOPY_INTERNAL_USE_ONLY_NIGHTLY_FEATURES_IN_TESTS)",
+##     "cargo:rustc-check-cfg=cfg(coverage_nightly)",
+##     "cargo:rustc-cfg=zerocopy_core_error_1_81_0",
+##     "cargo:rustc-cfg=zerocopy_diagnostic_on_unimplemented_1_78_0",
+##     "cargo:rustc-cfg=zerocopy_generic_bounds_in_const_fn_1_61_0",
+##     "cargo:rustc-cfg=zerocopy_target_has_atomics_1_60_0",
+##     "cargo:rustc-cfg=zerocopy_aarch64_simd_1_59_0",
+##     "cargo:rustc-cfg=zerocopy_panic_in_const_and_vec_try_reserve_1_57_0",
+## ]
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "run-z-zerocopy-0.8.27-d1d84d8a1ca91c51"
+## script = '''
+## FROM rust-base AS run-z-zerocopy-0.8.27-d1d84d8a1ca91c51
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/zerocopy-d1d84d8a1ca91c51/out
+## WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zerocopy-0.8.27
+## RUN \
+##   --mount=from=out-5d3dfb9ebf1ffdb4,source=/build_script_build-5d3dfb9ebf1ffdb4,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/zerocopy-5d3dfb9ebf1ffdb4/build-script-build \
+##   --mount=from=cratesio-zerocopy-0.8.27,source=/zerocopy-0.8.27,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zerocopy-0.8.27 \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CFG_FEATURE=simd \
+##         CARGO_CFG_PANIC=unwind \
+##         CARGO_CFG_TARGET_ABI= \
+##         CARGO_CFG_TARGET_ARCH=x86_64 \
+##         CARGO_CFG_TARGET_ENDIAN=little \
+##         CARGO_CFG_TARGET_ENV=gnu \
+##         CARGO_CFG_TARGET_FAMILY=unix \
+##         CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
+##         CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+##         CARGO_CFG_TARGET_OS=linux \
+##         CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+##         CARGO_CFG_TARGET_VENDOR=unknown \
+##         CARGO_CFG_UNIX= \
+##         CARGO_ENCODED_RUSTFLAGS= \
+##         CARGO_FEATURE_SIMD=1 \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zerocopy-0.8.27 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zerocopy-0.8.27/Cargo.toml \
+##         CARGO_PKG_AUTHORS=Joshua' Liebow-Feeser <joshlf@google.com>:Jack Wrenn <jswrenn@amazon.com>' \
+##         CARGO_PKG_DESCRIPTION=Zerocopy' makes zero-cost memory manipulation effortless. We write "unsafe" so you don'\'t' have to.' \
+##         CARGO_PKG_HOMEPAGE= \
+##         CARGO_PKG_LICENSE=BSD-2-Clause' OR Apache-2.0 OR MIT' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=zerocopy \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/google/zerocopy' \
+##         CARGO_PKG_RUST_VERSION=1.56.0 \
+##         CARGO_PKG_VERSION=0.8.27 \
+##         CARGO_PKG_VERSION_MAJOR=0 \
+##         CARGO_PKG_VERSION_MINOR=8 \
+##         CARGO_PKG_VERSION_PATCH=27 \
+##         CARGO_PKG_VERSION_PRE= \
+##         DEBUG=false \
+##         HOST=x86_64-unknown-linux-gnu \
+##         NUM_JOBS=4 \
+##         OPT_LEVEL=3 \
+##         OUT_DIR=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/zerocopy-d1d84d8a1ca91c51/out \
+##         PROFILE=release \
+##         RUSTC=rustc \
+##         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+##         TARGET=x86_64-unknown-linux-gnu \
+##         CARGOGREEN=1 \
+##       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/zerocopy-5d3dfb9ebf1ffdb4/build-script-build \
+##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/zerocopy-d1d84d8a1ca91c51/out/out-d1d84d8a1ca91c51-stdout \
+##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/zerocopy-d1d84d8a1ca91c51/out/out-d1d84d8a1ca91c51-stderr \
+##         || echo $? >/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/zerocopy-d1d84d8a1ca91c51/out/out-d1d84d8a1ca91c51-errcode\
+##   ; find /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/zerocopy-d1d84d8a1ca91c51/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-d1d84d8a1ca91c51"
+## script = """
+## FROM scratch AS out-d1d84d8a1ca91c51
+## COPY --link --from=run-z-zerocopy-0.8.27-d1d84d8a1ca91c51 /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/zerocopy-d1d84d8a1ca91c51/out /"""
+
+
 FROM rust-base AS dep-n-zerocopy-0.8.27-3c4f5c2990477ff1
 SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps
 RUN \
   --mount=from=cratesio-zerocopy-0.8.27,source=/zerocopy-0.8.27,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zerocopy-0.8.27 \
+  --mount=from=out-d1d84d8a1ca91c51,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/zerocopy-d1d84d8a1ca91c51/out,source=/ \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=zerocopy \
         CARGO_INCREMENTAL=0 \
@@ -4006,8 +5564,6 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         OUT_DIR=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/zerocopy-d1d84d8a1ca91c51/out \
         CARGOGREEN=1 \
-        NTPD_RS_GIT_DATE=2025-05-09 \
-        NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
       rustc --crate-name zerocopy --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --cfg feature'="simd"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("__internal_use_only_features_that_work_on_stable", "alloc", "derive", "float-nightly", "simd", "simd-nightly", "std", "zerocopy-derive"))' -C metadata'=639ce7e64f3ada77' -C extra-filename'=-3c4f5c2990477ff1' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --cap-lints warn --cfg zerocopy_core_error_1_81_0 --cfg zerocopy_diagnostic_on_unimplemented_1_78_0 --cfg zerocopy_generic_bounds_in_const_fn_1_61_0 --cfg zerocopy_target_has_atomics_1_60_0 --cfg zerocopy_aarch64_simd_1_59_0 --cfg zerocopy_panic_in_const_and_vec_try_reserve_1_57_0 --check-cfg cfg'(zerocopy_core_error_1_81_0)' --check-cfg cfg'(rust, values("1.81.0"))' --check-cfg cfg'(zerocopy_diagnostic_on_unimplemented_1_78_0)' --check-cfg cfg'(rust, values("1.78.0"))' --check-cfg cfg'(zerocopy_generic_bounds_in_const_fn_1_61_0)' --check-cfg cfg'(rust, values("1.61.0"))' --check-cfg cfg'(zerocopy_target_has_atomics_1_60_0)' --check-cfg cfg'(rust, values("1.60.0"))' --check-cfg cfg'(zerocopy_aarch64_simd_1_59_0)' --check-cfg cfg'(rust, values("1.59.0"))' --check-cfg cfg'(zerocopy_panic_in_const_and_vec_try_reserve_1_57_0)' --check-cfg cfg'(rust, values("1.57.0"))' --check-cfg cfg'(doc_cfg)' --check-cfg cfg'(kani)' --check-cfg cfg'(__ZEROCOPY_INTERNAL_USE_ONLY_NIGHTLY_FEATURES_IN_TESTS)' --check-cfg cfg'(coverage_nightly)' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zerocopy-0.8.27/src/lib.rs \
         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-3c4f5c2990477ff1-stdout \
         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-3c4f5c2990477ff1-stderr \
@@ -4017,6 +5573,11 @@ FROM scratch AS out-3c4f5c2990477ff1
 COPY --link --from=dep-n-zerocopy-0.8.27-3c4f5c2990477ff1 /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/*-3c4f5c2990477ff1* /
 
 ## this = "3c4f5c2990477ff1"
+## deps = [
+##     "d1d84d8a1ca91c51",
+##     "5d3dfb9ebf1ffdb4",
+## ]
+## buildrs_results = ["d1d84d8a1ca91c51"]
 ## writes = [
 ##     "libzerocopy-3c4f5c2990477ff1.rlib",
 ##     "libzerocopy-3c4f5c2990477ff1.rmeta",
@@ -4027,6 +5588,10 @@ COPY --link --from=dep-n-zerocopy-0.8.27-3c4f5c2990477ff1 /tmp/clis-ntpd_1-7-0-a
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libzerocopy-3c4f5c2990477ff1.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libzerocopy-3c4f5c2990477ff1.rlib","emit":"link"}',
 ## ]
+##
+## [[mounts]]
+## name = "out-d1d84d8a1ca91c51"
+## mount = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/zerocopy-d1d84d8a1ca91c51/out"
 ##
 ## [[stages]]
 ##
@@ -4053,6 +5618,7 @@ COPY --link --from=dep-n-zerocopy-0.8.27-3c4f5c2990477ff1 /tmp/clis-ntpd_1-7-0-a
 ## WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps
 ## RUN \
 ##   --mount=from=cratesio-zerocopy-0.8.27,source=/zerocopy-0.8.27,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zerocopy-0.8.27 \
+##   --mount=from=out-d1d84d8a1ca91c51,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/zerocopy-d1d84d8a1ca91c51/out,source=/ \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=zerocopy \
 ##         CARGO_INCREMENTAL=0 \
@@ -4074,8 +5640,6 @@ COPY --link --from=dep-n-zerocopy-0.8.27-3c4f5c2990477ff1 /tmp/clis-ntpd_1-7-0-a
 ##         CARGO_PKG_VERSION_PRE= \
 ##         OUT_DIR=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/zerocopy-d1d84d8a1ca91c51/out \
 ##         CARGOGREEN=1 \
-##         NTPD_RS_GIT_DATE=2025-05-09 \
-##         NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
 ##       rustc --crate-name zerocopy --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --cfg feature'="simd"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("__internal_use_only_features_that_work_on_stable", "alloc", "derive", "float-nightly", "simd", "simd-nightly", "std", "zerocopy-derive"))' -C metadata'=639ce7e64f3ada77' -C extra-filename'=-3c4f5c2990477ff1' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --cap-lints warn --cfg zerocopy_core_error_1_81_0 --cfg zerocopy_diagnostic_on_unimplemented_1_78_0 --cfg zerocopy_generic_bounds_in_const_fn_1_61_0 --cfg zerocopy_target_has_atomics_1_60_0 --cfg zerocopy_aarch64_simd_1_59_0 --cfg zerocopy_panic_in_const_and_vec_try_reserve_1_57_0 --check-cfg cfg'(zerocopy_core_error_1_81_0)' --check-cfg cfg'(rust, values("1.81.0"))' --check-cfg cfg'(zerocopy_diagnostic_on_unimplemented_1_78_0)' --check-cfg cfg'(rust, values("1.78.0"))' --check-cfg cfg'(zerocopy_generic_bounds_in_const_fn_1_61_0)' --check-cfg cfg'(rust, values("1.61.0"))' --check-cfg cfg'(zerocopy_target_has_atomics_1_60_0)' --check-cfg cfg'(rust, values("1.60.0"))' --check-cfg cfg'(zerocopy_aarch64_simd_1_59_0)' --check-cfg cfg'(rust, values("1.59.0"))' --check-cfg cfg'(zerocopy_panic_in_const_and_vec_try_reserve_1_57_0)' --check-cfg cfg'(rust, values("1.57.0"))' --check-cfg cfg'(doc_cfg)' --check-cfg cfg'(kani)' --check-cfg cfg'(__ZEROCOPY_INTERNAL_USE_ONLY_NIGHTLY_FEATURES_IN_TESTS)' --check-cfg cfg'(coverage_nightly)' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zerocopy-0.8.27/src/lib.rs \
 ##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-3c4f5c2990477ff1-stdout \
 ##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-3c4f5c2990477ff1-stderr \
@@ -4120,8 +5684,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=21 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        NTPD_RS_GIT_DATE=2025-05-09 \
-        NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
       rustc --crate-name ppv_lite86 --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --cfg feature'="simd"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "no_simd", "simd", "std"))' -C metadata'=185dab286545c23e' -C extra-filename'=-6e69d7ce14b873ac' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern zerocopy'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libzerocopy-3c4f5c2990477ff1.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ppv-lite86-0.2.21/src/lib.rs \
         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-6e69d7ce14b873ac-stdout \
         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-6e69d7ce14b873ac-stderr \
@@ -4131,7 +5693,12 @@ FROM scratch AS out-6e69d7ce14b873ac
 COPY --link --from=dep-n-ppv-lite86-0.2.21-6e69d7ce14b873ac /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/*-6e69d7ce14b873ac* /
 
 ## this = "6e69d7ce14b873ac"
-## deps = ["3c4f5c2990477ff1"]
+## deps = [
+##     "3c4f5c2990477ff1",
+##     "5d3dfb9ebf1ffdb4",
+##     "d1d84d8a1ca91c51",
+## ]
+## buildrs_results = ["d1d84d8a1ca91c51"]
 ## writes = [
 ##     "libppv_lite86-6e69d7ce14b873ac.rlib",
 ##     "libppv_lite86-6e69d7ce14b873ac.rmeta",
@@ -4198,8 +5765,6 @@ COPY --link --from=dep-n-ppv-lite86-0.2.21-6e69d7ce14b873ac /tmp/clis-ntpd_1-7-0
 ##         CARGO_PKG_VERSION_PATCH=21 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         NTPD_RS_GIT_DATE=2025-05-09 \
-##         NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
 ##       rustc --crate-name ppv_lite86 --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --cfg feature'="simd"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "no_simd", "simd", "std"))' -C metadata'=185dab286545c23e' -C extra-filename'=-6e69d7ce14b873ac' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern zerocopy'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libzerocopy-3c4f5c2990477ff1.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ppv-lite86-0.2.21/src/lib.rs \
 ##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-6e69d7ce14b873ac-stdout \
 ##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-6e69d7ce14b873ac-stderr \
@@ -4255,8 +5820,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        NTPD_RS_GIT_DATE=2025-05-09 \
-        NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
       rustc --crate-name rand_chacha --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "serde", "serde1", "simd", "std"))' -C metadata'=6f41bba69b3a89bc' -C extra-filename'=-28f07c8df04e8bde' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern ppv_lite86'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libppv_lite86-6e69d7ce14b873ac.rmeta' --extern rand_core'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/librand_core-fd7543c0686511cd.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rand_chacha-0.3.1/src/lib.rs \
         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-28f07c8df04e8bde-stdout \
         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-28f07c8df04e8bde-stderr \
@@ -4269,10 +5832,18 @@ COPY --link --from=dep-n-rand_chacha-0.3.1-28f07c8df04e8bde /tmp/clis-ntpd_1-7-0
 ## deps = [
 ##     "6e69d7ce14b873ac",
 ##     "3c4f5c2990477ff1",
+##     "5d3dfb9ebf1ffdb4",
 ##     "fd7543c0686511cd",
 ##     "2ae0eb9fb2c721bb",
 ##     "5a4301c208f24f4c",
 ##     "93b6478caf319772",
+##     "7560e7c5c88ec4c4",
+##     "d1d84d8a1ca91c51",
+##     "d5b44a42806fd90b",
+## ]
+## buildrs_results = [
+##     "d1d84d8a1ca91c51",
+##     "d5b44a42806fd90b",
 ## ]
 ## writes = [
 ##     "librand_chacha-28f07c8df04e8bde.rlib",
@@ -4391,8 +5962,6 @@ COPY --link --from=dep-n-rand_chacha-0.3.1-28f07c8df04e8bde /tmp/clis-ntpd_1-7-0
 ##         CARGO_PKG_VERSION_PATCH=1 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         NTPD_RS_GIT_DATE=2025-05-09 \
-##         NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
 ##       rustc --crate-name rand_chacha --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "serde", "serde1", "simd", "std"))' -C metadata'=6f41bba69b3a89bc' -C extra-filename'=-28f07c8df04e8bde' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern ppv_lite86'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libppv_lite86-6e69d7ce14b873ac.rmeta' --extern rand_core'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/librand_core-fd7543c0686511cd.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rand_chacha-0.3.1/src/lib.rs \
 ##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-28f07c8df04e8bde-stdout \
 ##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-28f07c8df04e8bde-stderr \
@@ -4450,8 +6019,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=5 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        NTPD_RS_GIT_DATE=2025-05-09 \
-        NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
       rustc --crate-name rand --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --cfg feature'="alloc"' --cfg feature'="default"' --cfg feature'="getrandom"' --cfg feature'="libc"' --cfg feature'="rand_chacha"' --cfg feature'="std"' --cfg feature'="std_rng"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "getrandom", "libc", "log", "min_const_gen", "nightly", "packed_simd", "rand_chacha", "serde", "serde1", "simd_support", "small_rng", "std", "std_rng"))' -C metadata'=0eb2f2357ce71120' -C extra-filename'=-b2b2029003f4f41b' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern libc'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibc-93b6478caf319772.rmeta' --extern rand_chacha'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/librand_chacha-28f07c8df04e8bde.rmeta' --extern rand_core'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/librand_core-fd7543c0686511cd.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rand-0.8.5/src/lib.rs \
         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-b2b2029003f4f41b-stdout \
         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-b2b2029003f4f41b-stderr \
@@ -4463,12 +6030,20 @@ COPY --link --from=dep-n-rand-0.8.5-b2b2029003f4f41b /tmp/clis-ntpd_1-7-0-alpha-
 ## this = "b2b2029003f4f41b"
 ## deps = [
 ##     "93b6478caf319772",
+##     "7560e7c5c88ec4c4",
 ##     "28f07c8df04e8bde",
 ##     "6e69d7ce14b873ac",
 ##     "3c4f5c2990477ff1",
+##     "5d3dfb9ebf1ffdb4",
 ##     "fd7543c0686511cd",
 ##     "2ae0eb9fb2c721bb",
 ##     "5a4301c208f24f4c",
+##     "d5b44a42806fd90b",
+##     "d1d84d8a1ca91c51",
+## ]
+## buildrs_results = [
+##     "d5b44a42806fd90b",
+##     "d1d84d8a1ca91c51",
 ## ]
 ## writes = [
 ##     "librand-b2b2029003f4f41b.rlib",
@@ -4628,8 +6203,6 @@ COPY --link --from=dep-n-rand-0.8.5-b2b2029003f4f41b /tmp/clis-ntpd_1-7-0-alpha-
 ##         CARGO_PKG_VERSION_PATCH=5 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         NTPD_RS_GIT_DATE=2025-05-09 \
-##         NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
 ##       rustc --crate-name rand --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --cfg feature'="alloc"' --cfg feature'="default"' --cfg feature'="getrandom"' --cfg feature'="libc"' --cfg feature'="rand_chacha"' --cfg feature'="std"' --cfg feature'="std_rng"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "getrandom", "libc", "log", "min_const_gen", "nightly", "packed_simd", "rand_chacha", "serde", "serde1", "simd_support", "small_rng", "std", "std_rng"))' -C metadata'=0eb2f2357ce71120' -C extra-filename'=-b2b2029003f4f41b' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern libc'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibc-93b6478caf319772.rmeta' --extern rand_chacha'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/librand_chacha-28f07c8df04e8bde.rmeta' --extern rand_core'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/librand_core-fd7543c0686511cd.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rand-0.8.5/src/lib.rs \
 ##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-b2b2029003f4f41b-stdout \
 ##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-b2b2029003f4f41b-stderr \
@@ -4644,15 +6217,2884 @@ COPY --link --from=dep-n-rand-0.8.5-b2b2029003f4f41b /tmp/clis-ntpd_1-7-0-alpha-
 ## FROM scratch AS out-b2b2029003f4f41b
 ## COPY --link --from=dep-n-rand-0.8.5-b2b2029003f4f41b /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/*-b2b2029003f4f41b* /"""
 
+FROM scratch AS cratesio-find-msvc-tools-0.1.2
+ADD --chmod=0664 --unpack --checksum=sha256:1ced73b1dacfc750a6db6c0a0c3a3853c8b41997e2e2c563dc90804ae6867959 \
+  https://static.crates.io/crates/find-msvc-tools/find-msvc-tools-0.1.2.crate /
+FROM rust-base AS dep-n-find-msvc-tools-0.1.2-d2948f7c0c8497b1
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps
+RUN \
+  --mount=from=cratesio-find-msvc-tools-0.1.2,source=/find-msvc-tools-0.1.2,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/find-msvc-tools-0.1.2 \
+    env CARGO="$(which cargo)" \
+        CARGO_CRATE_NAME=find_msvc_tools \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/find-msvc-tools-0.1.2 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/find-msvc-tools-0.1.2/Cargo.toml \
+        CARGO_PKG_AUTHORS= \
+        CARGO_PKG_DESCRIPTION=Find' windows-specific tools, read MSVC versions from the registry and from COM interfaces' \
+        CARGO_PKG_HOMEPAGE= \
+        CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=find-msvc-tools \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/cc-rs' \
+        CARGO_PKG_RUST_VERSION=1.63 \
+        CARGO_PKG_VERSION=0.1.2 \
+        CARGO_PKG_VERSION_MAJOR=0 \
+        CARGO_PKG_VERSION_MINOR=1 \
+        CARGO_PKG_VERSION_PATCH=2 \
+        CARGO_PKG_VERSION_PRE= \
+        CARGOGREEN=1 \
+      rustc --crate-name find_msvc_tools --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' --allow unexpected_cfgs --check-cfg cfg'(disable_clang_cl_tests)' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=9848bbadd3da97bb' -C extra-filename'=-d2948f7c0c8497b1' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/find-msvc-tools-0.1.2/src/lib.rs \
+        1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-d2948f7c0c8497b1-stdout \
+        2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-d2948f7c0c8497b1-stderr \
+        || echo $? >/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-d2948f7c0c8497b1-errcode\
+  ; find /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/*-d2948f7c0c8497b1* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-d2948f7c0c8497b1
+COPY --link --from=dep-n-find-msvc-tools-0.1.2-d2948f7c0c8497b1 /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/*-d2948f7c0c8497b1* /
+
+## this = "d2948f7c0c8497b1"
+## writes = [
+##     "find_msvc_tools-d2948f7c0c8497b1.d",
+##     "libfind_msvc_tools-d2948f7c0c8497b1.rlib",
+##     "libfind_msvc_tools-d2948f7c0c8497b1.rmeta",
+## ]
+## stderr = [
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/find_msvc_tools-d2948f7c0c8497b1.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libfind_msvc_tools-d2948f7c0c8497b1.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libfind_msvc_tools-d2948f7c0c8497b1.rlib","emit":"link"}',
+## ]
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
+##
+## [[stages]]
+##
+## [stages.Cratesio]
+## stage = "cratesio-find-msvc-tools-0.1.2"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/find-msvc-tools-0.1.2"
+## name = "find-msvc-tools"
+## name_dash_version = "find-msvc-tools-0.1.2"
+## hash = "1ced73b1dacfc750a6db6c0a0c3a3853c8b41997e2e2c563dc90804ae6867959"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "dep-n-find-msvc-tools-0.1.2-d2948f7c0c8497b1"
+## script = '''
+## FROM rust-base AS dep-n-find-msvc-tools-0.1.2-d2948f7c0c8497b1
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps
+## RUN \
+##   --mount=from=cratesio-find-msvc-tools-0.1.2,source=/find-msvc-tools-0.1.2,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/find-msvc-tools-0.1.2 \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CRATE_NAME=find_msvc_tools \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/find-msvc-tools-0.1.2 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/find-msvc-tools-0.1.2/Cargo.toml \
+##         CARGO_PKG_AUTHORS= \
+##         CARGO_PKG_DESCRIPTION=Find' windows-specific tools, read MSVC versions from the registry and from COM interfaces' \
+##         CARGO_PKG_HOMEPAGE= \
+##         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=find-msvc-tools \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/cc-rs' \
+##         CARGO_PKG_RUST_VERSION=1.63 \
+##         CARGO_PKG_VERSION=0.1.2 \
+##         CARGO_PKG_VERSION_MAJOR=0 \
+##         CARGO_PKG_VERSION_MINOR=1 \
+##         CARGO_PKG_VERSION_PATCH=2 \
+##         CARGO_PKG_VERSION_PRE= \
+##         CARGOGREEN=1 \
+##       rustc --crate-name find_msvc_tools --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' --allow unexpected_cfgs --check-cfg cfg'(disable_clang_cl_tests)' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=9848bbadd3da97bb' -C extra-filename'=-d2948f7c0c8497b1' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/find-msvc-tools-0.1.2/src/lib.rs \
+##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-d2948f7c0c8497b1-stdout \
+##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-d2948f7c0c8497b1-stderr \
+##         || echo $? >/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-d2948f7c0c8497b1-errcode\
+##   ; find /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/*-d2948f7c0c8497b1* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-d2948f7c0c8497b1"
+## script = """
+## FROM scratch AS out-d2948f7c0c8497b1
+## COPY --link --from=dep-n-find-msvc-tools-0.1.2-d2948f7c0c8497b1 /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/*-d2948f7c0c8497b1* /"""
+
+FROM rust-base AS run-z-libc-0.2.176-99856d878c8e44ce
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/libc-99856d878c8e44ce/out
+WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.176
+RUN \
+  --mount=from=out-7560e7c5c88ec4c4,source=/build_script_build-7560e7c5c88ec4c4,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/libc-7560e7c5c88ec4c4/build-script-build \
+  --mount=from=cratesio-libc-0.2.176,source=/libc-0.2.176,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.176 \
+    env CARGO="$(which cargo)" \
+        CARGO_CFG_FEATURE=default,std \
+        CARGO_CFG_PANIC=unwind \
+        CARGO_CFG_TARGET_ABI= \
+        CARGO_CFG_TARGET_ARCH=x86_64 \
+        CARGO_CFG_TARGET_ENDIAN=little \
+        CARGO_CFG_TARGET_ENV=gnu \
+        CARGO_CFG_TARGET_FAMILY=unix \
+        CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
+        CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+        CARGO_CFG_TARGET_OS=linux \
+        CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+        CARGO_CFG_TARGET_VENDOR=unknown \
+        CARGO_CFG_UNIX= \
+        CARGO_ENCODED_RUSTFLAGS= \
+        CARGO_FEATURE_DEFAULT=1 \
+        CARGO_FEATURE_STD=1 \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.176 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.176/Cargo.toml \
+        CARGO_PKG_AUTHORS=The' Rust Project Developers' \
+        CARGO_PKG_DESCRIPTION=Raw' FFI bindings to platform libraries like libc.' \
+        CARGO_PKG_HOMEPAGE= \
+        CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=libc \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/libc' \
+        CARGO_PKG_RUST_VERSION=1.63 \
+        CARGO_PKG_VERSION=0.2.176 \
+        CARGO_PKG_VERSION_MAJOR=0 \
+        CARGO_PKG_VERSION_MINOR=2 \
+        CARGO_PKG_VERSION_PATCH=176 \
+        CARGO_PKG_VERSION_PRE= \
+        DEBUG=false \
+        HOST=x86_64-unknown-linux-gnu \
+        NUM_JOBS=4 \
+        OPT_LEVEL=0 \
+        OUT_DIR=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/libc-99856d878c8e44ce/out \
+        PROFILE=release \
+        RUSTC=rustc \
+        RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+        TARGET=x86_64-unknown-linux-gnu \
+        CARGOGREEN=1 \
+      CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/libc-7560e7c5c88ec4c4/build-script-build \
+        1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/libc-99856d878c8e44ce/out/out-99856d878c8e44ce-stdout \
+        2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/libc-99856d878c8e44ce/out/out-99856d878c8e44ce-stderr \
+        || echo $? >/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/libc-99856d878c8e44ce/out/out-99856d878c8e44ce-errcode\
+  ; find /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/libc-99856d878c8e44ce/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-99856d878c8e44ce
+COPY --link --from=run-z-libc-0.2.176-99856d878c8e44ce /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/libc-99856d878c8e44ce/out /
+
+## this = "99856d878c8e44ce"
+## deps = ["7560e7c5c88ec4c4"]
+## writes_to = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/libc-99856d878c8e44ce/out"
+## stdout = [
+##     "cargo:rerun-if-changed=build.rs",
+##     "cargo:rerun-if-env-changed=RUST_LIBC_UNSTABLE_FREEBSD_VERSION",
+##     "cargo:rustc-cfg=freebsd12",
+##     "cargo:rerun-if-env-changed=RUST_LIBC_UNSTABLE_MUSL_V1_2_3",
+##     "cargo:rerun-if-env-changed=RUST_LIBC_UNSTABLE_LINUX_TIME_BITS64",
+##     "cargo:rerun-if-env-changed=RUST_LIBC_UNSTABLE_GNU_FILE_OFFSET_BITS",
+##     "cargo:rerun-if-env-changed=RUST_LIBC_UNSTABLE_GNU_TIME_BITS",
+##     "cargo:rustc-check-cfg=cfg(emscripten_old_stat_abi)",
+##     "cargo:rustc-check-cfg=cfg(espidf_time32)",
+##     "cargo:rustc-check-cfg=cfg(freebsd10)",
+##     "cargo:rustc-check-cfg=cfg(freebsd11)",
+##     "cargo:rustc-check-cfg=cfg(freebsd12)",
+##     "cargo:rustc-check-cfg=cfg(freebsd13)",
+##     "cargo:rustc-check-cfg=cfg(freebsd14)",
+##     "cargo:rustc-check-cfg=cfg(freebsd15)",
+##     "cargo:rustc-check-cfg=cfg(gnu_file_offset_bits64)",
+##     "cargo:rustc-check-cfg=cfg(gnu_time_bits64)",
+##     "cargo:rustc-check-cfg=cfg(libc_deny_warnings)",
+##     "cargo:rustc-check-cfg=cfg(libc_thread_local)",
+##     "cargo:rustc-check-cfg=cfg(linux_time_bits64)",
+##     "cargo:rustc-check-cfg=cfg(musl_v1_2_3)",
+##     'cargo:rustc-check-cfg=cfg(target_os,values("switch","aix","ohos","hurd","rtems","visionos","nuttx","cygwin"))',
+##     'cargo:rustc-check-cfg=cfg(target_env,values("illumos","wasi","aix","ohos","nto71_iosock","nto80"))',
+##     'cargo:rustc-check-cfg=cfg(target_arch,values("loongarch64","mips32r6","mips64r6","csky"))',
+## ]
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "run-z-libc-0.2.176-99856d878c8e44ce"
+## script = '''
+## FROM rust-base AS run-z-libc-0.2.176-99856d878c8e44ce
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/libc-99856d878c8e44ce/out
+## WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.176
+## RUN \
+##   --mount=from=out-7560e7c5c88ec4c4,source=/build_script_build-7560e7c5c88ec4c4,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/libc-7560e7c5c88ec4c4/build-script-build \
+##   --mount=from=cratesio-libc-0.2.176,source=/libc-0.2.176,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.176 \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CFG_FEATURE=default,std \
+##         CARGO_CFG_PANIC=unwind \
+##         CARGO_CFG_TARGET_ABI= \
+##         CARGO_CFG_TARGET_ARCH=x86_64 \
+##         CARGO_CFG_TARGET_ENDIAN=little \
+##         CARGO_CFG_TARGET_ENV=gnu \
+##         CARGO_CFG_TARGET_FAMILY=unix \
+##         CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
+##         CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+##         CARGO_CFG_TARGET_OS=linux \
+##         CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+##         CARGO_CFG_TARGET_VENDOR=unknown \
+##         CARGO_CFG_UNIX= \
+##         CARGO_ENCODED_RUSTFLAGS= \
+##         CARGO_FEATURE_DEFAULT=1 \
+##         CARGO_FEATURE_STD=1 \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.176 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.176/Cargo.toml \
+##         CARGO_PKG_AUTHORS=The' Rust Project Developers' \
+##         CARGO_PKG_DESCRIPTION=Raw' FFI bindings to platform libraries like libc.' \
+##         CARGO_PKG_HOMEPAGE= \
+##         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=libc \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/libc' \
+##         CARGO_PKG_RUST_VERSION=1.63 \
+##         CARGO_PKG_VERSION=0.2.176 \
+##         CARGO_PKG_VERSION_MAJOR=0 \
+##         CARGO_PKG_VERSION_MINOR=2 \
+##         CARGO_PKG_VERSION_PATCH=176 \
+##         CARGO_PKG_VERSION_PRE= \
+##         DEBUG=false \
+##         HOST=x86_64-unknown-linux-gnu \
+##         NUM_JOBS=4 \
+##         OPT_LEVEL=0 \
+##         OUT_DIR=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/libc-99856d878c8e44ce/out \
+##         PROFILE=release \
+##         RUSTC=rustc \
+##         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+##         TARGET=x86_64-unknown-linux-gnu \
+##         CARGOGREEN=1 \
+##       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/libc-7560e7c5c88ec4c4/build-script-build \
+##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/libc-99856d878c8e44ce/out/out-99856d878c8e44ce-stdout \
+##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/libc-99856d878c8e44ce/out/out-99856d878c8e44ce-stderr \
+##         || echo $? >/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/libc-99856d878c8e44ce/out/out-99856d878c8e44ce-errcode\
+##   ; find /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/libc-99856d878c8e44ce/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-99856d878c8e44ce"
+## script = """
+## FROM scratch AS out-99856d878c8e44ce
+## COPY --link --from=run-z-libc-0.2.176-99856d878c8e44ce /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/libc-99856d878c8e44ce/out /"""
+
+
+FROM rust-base AS dep-n-libc-0.2.176-60426161aa87c673
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps
+RUN \
+  --mount=from=cratesio-libc-0.2.176,source=/libc-0.2.176,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.176 \
+  --mount=from=out-99856d878c8e44ce,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/libc-99856d878c8e44ce/out,source=/ \
+    env CARGO="$(which cargo)" \
+        CARGO_CRATE_NAME=libc \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.176 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.176/Cargo.toml \
+        CARGO_PKG_AUTHORS=The' Rust Project Developers' \
+        CARGO_PKG_DESCRIPTION=Raw' FFI bindings to platform libraries like libc.' \
+        CARGO_PKG_HOMEPAGE= \
+        CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=libc \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/libc' \
+        CARGO_PKG_RUST_VERSION=1.63 \
+        CARGO_PKG_VERSION=0.2.176 \
+        CARGO_PKG_VERSION_MAJOR=0 \
+        CARGO_PKG_VERSION_MINOR=2 \
+        CARGO_PKG_VERSION_PATCH=176 \
+        CARGO_PKG_VERSION_PRE= \
+        OUT_DIR=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/libc-99856d878c8e44ce/out \
+        CARGOGREEN=1 \
+      rustc --crate-name libc --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' --allow clippy'::used_underscore_binding' --allow unused_qualifications --warn clippy'::unnecessary_semicolon' --allow clippy'::unnecessary_cast' --allow clippy'::uninlined_format_args' --warn clippy'::ptr_as_ptr' --allow clippy'::non_minimal_cfg' --allow clippy'::missing_safety_doc' --warn clippy'::map_unwrap_or' --warn clippy'::manual_assert' --allow clippy'::identity_op' --warn clippy'::explicit_iter_loop' --allow clippy'::expl_impl_clone_on_copy' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("align", "const-extern-fn", "default", "extra_traits", "rustc-dep-of-std", "rustc-std-workspace-core", "std", "use_std"))' -C metadata'=c92fd8c6fccc146a' -C extra-filename'=-60426161aa87c673' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --cap-lints warn --cfg freebsd12 --check-cfg cfg'(emscripten_old_stat_abi)' --check-cfg cfg'(espidf_time32)' --check-cfg cfg'(freebsd10)' --check-cfg cfg'(freebsd11)' --check-cfg cfg'(freebsd12)' --check-cfg cfg'(freebsd13)' --check-cfg cfg'(freebsd14)' --check-cfg cfg'(freebsd15)' --check-cfg cfg'(gnu_file_offset_bits64)' --check-cfg cfg'(gnu_time_bits64)' --check-cfg cfg'(libc_deny_warnings)' --check-cfg cfg'(libc_thread_local)' --check-cfg cfg'(linux_time_bits64)' --check-cfg cfg'(musl_v1_2_3)' --check-cfg cfg'(target_os,values("switch","aix","ohos","hurd","rtems","visionos","nuttx","cygwin"))' --check-cfg cfg'(target_env,values("illumos","wasi","aix","ohos","nto71_iosock","nto80"))' --check-cfg cfg'(target_arch,values("loongarch64","mips32r6","mips64r6","csky"))' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.176/src/lib.rs \
+        1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-60426161aa87c673-stdout \
+        2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-60426161aa87c673-stderr \
+        || echo $? >/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-60426161aa87c673-errcode\
+  ; find /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/*-60426161aa87c673* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-60426161aa87c673
+COPY --link --from=dep-n-libc-0.2.176-60426161aa87c673 /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/*-60426161aa87c673* /
+
+## this = "60426161aa87c673"
+## deps = [
+##     "99856d878c8e44ce",
+##     "7560e7c5c88ec4c4",
+## ]
+## buildrs_results = ["99856d878c8e44ce"]
+## writes = [
+##     "libc-60426161aa87c673.d",
+##     "liblibc-60426161aa87c673.rlib",
+##     "liblibc-60426161aa87c673.rmeta",
+## ]
+## stderr = [
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libc-60426161aa87c673.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibc-60426161aa87c673.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibc-60426161aa87c673.rlib","emit":"link"}',
+## ]
+##
+## [[mounts]]
+## name = "out-99856d878c8e44ce"
+## mount = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/libc-99856d878c8e44ce/out"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
+##
+## [[stages]]
+##
+## [stages.Cratesio]
+## stage = "cratesio-libc-0.2.176"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.176"
+## name = "libc"
+## name_dash_version = "libc-0.2.176"
+## hash = "58f929b4d672ea937a23a1ab494143d968337a5f47e56d0815df1e0890ddf174"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "dep-n-libc-0.2.176-60426161aa87c673"
+## script = '''
+## FROM rust-base AS dep-n-libc-0.2.176-60426161aa87c673
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps
+## RUN \
+##   --mount=from=cratesio-libc-0.2.176,source=/libc-0.2.176,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.176 \
+##   --mount=from=out-99856d878c8e44ce,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/libc-99856d878c8e44ce/out,source=/ \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CRATE_NAME=libc \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.176 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.176/Cargo.toml \
+##         CARGO_PKG_AUTHORS=The' Rust Project Developers' \
+##         CARGO_PKG_DESCRIPTION=Raw' FFI bindings to platform libraries like libc.' \
+##         CARGO_PKG_HOMEPAGE= \
+##         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=libc \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/libc' \
+##         CARGO_PKG_RUST_VERSION=1.63 \
+##         CARGO_PKG_VERSION=0.2.176 \
+##         CARGO_PKG_VERSION_MAJOR=0 \
+##         CARGO_PKG_VERSION_MINOR=2 \
+##         CARGO_PKG_VERSION_PATCH=176 \
+##         CARGO_PKG_VERSION_PRE= \
+##         OUT_DIR=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/libc-99856d878c8e44ce/out \
+##         CARGOGREEN=1 \
+##       rustc --crate-name libc --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' --allow clippy'::used_underscore_binding' --allow unused_qualifications --warn clippy'::unnecessary_semicolon' --allow clippy'::unnecessary_cast' --allow clippy'::uninlined_format_args' --warn clippy'::ptr_as_ptr' --allow clippy'::non_minimal_cfg' --allow clippy'::missing_safety_doc' --warn clippy'::map_unwrap_or' --warn clippy'::manual_assert' --allow clippy'::identity_op' --warn clippy'::explicit_iter_loop' --allow clippy'::expl_impl_clone_on_copy' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("align", "const-extern-fn", "default", "extra_traits", "rustc-dep-of-std", "rustc-std-workspace-core", "std", "use_std"))' -C metadata'=c92fd8c6fccc146a' -C extra-filename'=-60426161aa87c673' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --cap-lints warn --cfg freebsd12 --check-cfg cfg'(emscripten_old_stat_abi)' --check-cfg cfg'(espidf_time32)' --check-cfg cfg'(freebsd10)' --check-cfg cfg'(freebsd11)' --check-cfg cfg'(freebsd12)' --check-cfg cfg'(freebsd13)' --check-cfg cfg'(freebsd14)' --check-cfg cfg'(freebsd15)' --check-cfg cfg'(gnu_file_offset_bits64)' --check-cfg cfg'(gnu_time_bits64)' --check-cfg cfg'(libc_deny_warnings)' --check-cfg cfg'(libc_thread_local)' --check-cfg cfg'(linux_time_bits64)' --check-cfg cfg'(musl_v1_2_3)' --check-cfg cfg'(target_os,values("switch","aix","ohos","hurd","rtems","visionos","nuttx","cygwin"))' --check-cfg cfg'(target_env,values("illumos","wasi","aix","ohos","nto71_iosock","nto80"))' --check-cfg cfg'(target_arch,values("loongarch64","mips32r6","mips64r6","csky"))' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.176/src/lib.rs \
+##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-60426161aa87c673-stdout \
+##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-60426161aa87c673-stderr \
+##         || echo $? >/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-60426161aa87c673-errcode\
+##   ; find /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/*-60426161aa87c673* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-60426161aa87c673"
+## script = """
+## FROM scratch AS out-60426161aa87c673
+## COPY --link --from=dep-n-libc-0.2.176-60426161aa87c673 /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/*-60426161aa87c673* /"""
+
+FROM scratch AS cratesio-jobserver-0.1.34
+ADD --chmod=0664 --unpack --checksum=sha256:9afb3de4395d6b3e67a780b6de64b51c978ecf11cb9a462c66be7d4ca9039d33 \
+  https://static.crates.io/crates/jobserver/jobserver-0.1.34.crate /
+FROM rust-base AS dep-n-jobserver-0.1.34-4dc141be22bbffce
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps
+RUN \
+  --mount=from=cratesio-jobserver-0.1.34,source=/jobserver-0.1.34,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/jobserver-0.1.34 \
+  --mount=from=out-60426161aa87c673,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibc-60426161aa87c673.rlib,source=/liblibc-60426161aa87c673.rlib \
+  --mount=from=out-60426161aa87c673,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibc-60426161aa87c673.rmeta,source=/liblibc-60426161aa87c673.rmeta \
+    env CARGO="$(which cargo)" \
+        CARGO_CRATE_NAME=jobserver \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/jobserver-0.1.34 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/jobserver-0.1.34/Cargo.toml \
+        CARGO_PKG_AUTHORS=Alex' Crichton <alex@alexcrichton.com>' \
+        CARGO_PKG_DESCRIPTION=An' implementation of the GNU Make jobserver for Rust.\
+' \
+        CARGO_PKG_HOMEPAGE=https'://github.com/rust-lang/jobserver-rs' \
+        CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=jobserver \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/jobserver-rs' \
+        CARGO_PKG_RUST_VERSION=1.63 \
+        CARGO_PKG_VERSION=0.1.34 \
+        CARGO_PKG_VERSION_MAJOR=0 \
+        CARGO_PKG_VERSION_MINOR=1 \
+        CARGO_PKG_VERSION_PATCH=34 \
+        CARGO_PKG_VERSION_PRE= \
+        CARGOGREEN=1 \
+      rustc --crate-name jobserver --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=7720ec5db9788d79' -C extra-filename'=-4dc141be22bbffce' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern libc'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibc-60426161aa87c673.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/jobserver-0.1.34/src/lib.rs \
+        1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-4dc141be22bbffce-stdout \
+        2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-4dc141be22bbffce-stderr \
+        || echo $? >/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-4dc141be22bbffce-errcode\
+  ; find /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/*-4dc141be22bbffce* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-4dc141be22bbffce
+COPY --link --from=dep-n-jobserver-0.1.34-4dc141be22bbffce /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/*-4dc141be22bbffce* /
+
+## this = "4dc141be22bbffce"
+## deps = [
+##     "60426161aa87c673",
+##     "7560e7c5c88ec4c4",
+##     "99856d878c8e44ce",
+## ]
+## buildrs_results = ["99856d878c8e44ce"]
+## writes = [
+##     "jobserver-4dc141be22bbffce.d",
+##     "libjobserver-4dc141be22bbffce.rlib",
+##     "libjobserver-4dc141be22bbffce.rmeta",
+## ]
+## stderr = [
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/jobserver-4dc141be22bbffce.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libjobserver-4dc141be22bbffce.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libjobserver-4dc141be22bbffce.rlib","emit":"link"}',
+## ]
+##
+## [[externs]]
+## from = "out-60426161aa87c673"
+## xtern = "liblibc-60426161aa87c673.rlib"
+##
+## [[externs]]
+## from = "out-60426161aa87c673"
+## xtern = "liblibc-60426161aa87c673.rmeta"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
+##
+## [[stages]]
+##
+## [stages.Cratesio]
+## stage = "cratesio-jobserver-0.1.34"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/jobserver-0.1.34"
+## name = "jobserver"
+## name_dash_version = "jobserver-0.1.34"
+## hash = "9afb3de4395d6b3e67a780b6de64b51c978ecf11cb9a462c66be7d4ca9039d33"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "dep-n-jobserver-0.1.34-4dc141be22bbffce"
+## script = '''
+## FROM rust-base AS dep-n-jobserver-0.1.34-4dc141be22bbffce
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps
+## RUN \
+##   --mount=from=cratesio-jobserver-0.1.34,source=/jobserver-0.1.34,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/jobserver-0.1.34 \
+##   --mount=from=out-60426161aa87c673,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibc-60426161aa87c673.rlib,source=/liblibc-60426161aa87c673.rlib \
+##   --mount=from=out-60426161aa87c673,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibc-60426161aa87c673.rmeta,source=/liblibc-60426161aa87c673.rmeta \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CRATE_NAME=jobserver \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/jobserver-0.1.34 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/jobserver-0.1.34/Cargo.toml \
+##         CARGO_PKG_AUTHORS=Alex' Crichton <alex@alexcrichton.com>' \
+##         CARGO_PKG_DESCRIPTION=An' implementation of the GNU Make jobserver for Rust.\
+## ' \
+##         CARGO_PKG_HOMEPAGE=https'://github.com/rust-lang/jobserver-rs' \
+##         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=jobserver \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/jobserver-rs' \
+##         CARGO_PKG_RUST_VERSION=1.63 \
+##         CARGO_PKG_VERSION=0.1.34 \
+##         CARGO_PKG_VERSION_MAJOR=0 \
+##         CARGO_PKG_VERSION_MINOR=1 \
+##         CARGO_PKG_VERSION_PATCH=34 \
+##         CARGO_PKG_VERSION_PRE= \
+##         CARGOGREEN=1 \
+##       rustc --crate-name jobserver --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=7720ec5db9788d79' -C extra-filename'=-4dc141be22bbffce' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern libc'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibc-60426161aa87c673.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/jobserver-0.1.34/src/lib.rs \
+##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-4dc141be22bbffce-stdout \
+##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-4dc141be22bbffce-stderr \
+##         || echo $? >/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-4dc141be22bbffce-errcode\
+##   ; find /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/*-4dc141be22bbffce* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-4dc141be22bbffce"
+## script = """
+## FROM scratch AS out-4dc141be22bbffce
+## COPY --link --from=dep-n-jobserver-0.1.34-4dc141be22bbffce /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/*-4dc141be22bbffce* /"""
+
+FROM scratch AS cratesio-shlex-1.3.0
+ADD --chmod=0664 --unpack --checksum=sha256:0fda2ff0d084019ba4d7c6f371c95d8fd75ce3524c3cb8fb653a3023f6323e64 \
+  https://static.crates.io/crates/shlex/shlex-1.3.0.crate /
+FROM rust-base AS dep-n-shlex-1.3.0-b166d1c75d83103c
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps
+RUN \
+  --mount=from=cratesio-shlex-1.3.0,source=/shlex-1.3.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0 \
+    env CARGO="$(which cargo)" \
+        CARGO_CRATE_NAME=shlex \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0/Cargo.toml \
+        CARGO_PKG_AUTHORS=comex' <comexk@gmail.com>:Fenhl <fenhl@fenhl.net>:Adrian Taylor <adetaylor@chromium.org>:Alex Touchet <alextouchet@outlook.com>:Daniel Parks <dp+git@oxidized.org>:Garrett Berg <googberg@gmail.com>' \
+        CARGO_PKG_DESCRIPTION=Split' a string into shell words, like Python'\'s' shlex.' \
+        CARGO_PKG_HOMEPAGE= \
+        CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=shlex \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/comex/rust-shlex' \
+        CARGO_PKG_RUST_VERSION=1.46.0 \
+        CARGO_PKG_VERSION=1.3.0 \
+        CARGO_PKG_VERSION_MAJOR=1 \
+        CARGO_PKG_VERSION_MINOR=3 \
+        CARGO_PKG_VERSION_PATCH=0 \
+        CARGO_PKG_VERSION_PRE= \
+        CARGOGREEN=1 \
+      rustc --crate-name shlex --edition 2015 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "std"))' -C metadata'=251d56da40bf7d9d' -C extra-filename'=-b166d1c75d83103c' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0/src/lib.rs \
+        1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-b166d1c75d83103c-stdout \
+        2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-b166d1c75d83103c-stderr \
+        || echo $? >/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-b166d1c75d83103c-errcode\
+  ; find /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/*-b166d1c75d83103c* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-b166d1c75d83103c
+COPY --link --from=dep-n-shlex-1.3.0-b166d1c75d83103c /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/*-b166d1c75d83103c* /
+
+## this = "b166d1c75d83103c"
+## writes = [
+##     "libshlex-b166d1c75d83103c.rlib",
+##     "libshlex-b166d1c75d83103c.rmeta",
+##     "shlex-b166d1c75d83103c.d",
+## ]
+## stderr = [
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/shlex-b166d1c75d83103c.d","emit":"dep-info"}',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `manual_codegen_check`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0/src/bytes.rs","byte_start":13988,"byte_end":14008,"line_start":353,"line_end":353,"column_start":12,"column_end":32,"is_primary":true,"text":[{"text":"#[cfg_attr(manual_codegen_check, inline(never))]","highlight_start":12,"highlight_end":32}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"expected names are: `docsrs`, `feature`, and `test` and 31 more","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(manual_codegen_check)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(manual_codegen_check)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"`#[warn(unexpected_cfgs)]` on by default","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `manual_codegen_check`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0/src/bytes.rs:353:12\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m353\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m#[cfg_attr(manual_codegen_check, inline(never))]\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m            \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: expected names are: `docsrs`, `feature`, and `test` and 31 more\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(manual_codegen_check)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(manual_codegen_check)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: `#[warn(unexpected_cfgs)]` on by default\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"hiding a lifetime that's elided elsewhere is confusing","code":{"code":"mismatched_lifetime_syntaxes","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0/src/lib.rs","byte_start":8833,"byte_end":8837,"line_start":228,"line_end":228,"column_start":22,"column_end":26,"is_primary":true,"text":[{"text":"pub fn quote(in_str: &str) -> Cow<str> {","highlight_start":22,"highlight_end":26}],"label":"the lifetime is elided here","suggested_replacement":null,"suggestion_applicability":null,"expansion":null},{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0/src/lib.rs","byte_start":8842,"byte_end":8850,"line_start":228,"line_end":228,"column_start":31,"column_end":39,"is_primary":false,"text":[{"text":"pub fn quote(in_str: &str) -> Cow<str> {","highlight_start":31,"highlight_end":39}],"label":"the same lifetime is hidden here","suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"the same lifetime is referred to in inconsistent ways, making the signature confusing","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"`#[warn(mismatched_lifetime_syntaxes)]` on by default","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"use `'_` for type paths","code":null,"level":"help","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0/src/lib.rs","byte_start":8846,"byte_end":8846,"line_start":228,"line_end":228,"column_start":35,"column_end":35,"is_primary":true,"text":[{"text":"pub fn quote(in_str: &str) -> Cow<str> {","highlight_start":35,"highlight_end":35}],"label":null,"suggested_replacement":"'_, ","suggestion_applicability":"MaybeIncorrect","expansion":null}],"children":[],"rendered":null},{"message":"consistently use `'_`","code":null,"level":"help","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0/src/lib.rs","byte_start":8834,"byte_end":8834,"line_start":228,"line_end":228,"column_start":23,"column_end":23,"is_primary":true,"text":[{"text":"pub fn quote(in_str: &str) -> Cow<str> {","highlight_start":23,"highlight_end":23}],"label":null,"suggested_replacement":"'_ ","suggestion_applicability":"MaybeIncorrect","expansion":null},{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0/src/lib.rs","byte_start":8846,"byte_end":8846,"line_start":228,"line_end":228,"column_start":35,"column_end":35,"is_primary":true,"text":[{"text":"pub fn quote(in_str: &str) -> Cow<str> {","highlight_start":35,"highlight_end":35}],"label":null,"suggested_replacement":"'_, ","suggestion_applicability":"MaybeIncorrect","expansion":null}],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: hiding a lifetime that's elided elsewhere is confusing\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0/src/lib.rs:228:22\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m228\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0mpub fn quote(in_str: &str) -> Cow<str> {\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                      \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^\u001b[0m\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--------\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12mthe same lifetime is hidden here\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                      \u001b[0m\u001b[0m\u001b[1m\u001b[33m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                      \u001b[0m\u001b[0m\u001b[1m\u001b[33mthe lifetime is elided here\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: the same lifetime is referred to in inconsistent ways, making the signature confusing\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: `#[warn(mismatched_lifetime_syntaxes)]` on by default\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;14mhelp\u001b[0m\u001b[0m: use `'_` for type paths\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m228\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m| \u001b[0m\u001b[0mpub fn quote(in_str: &str) -> Cow<\u001b[0m\u001b[0m\u001b[38;5;10m'_, \u001b[0m\u001b[0mstr> {\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                   \u001b[0m\u001b[0m\u001b[38;5;10m+++\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"hiding a lifetime that's elided elsewhere is confusing","code":{"code":"mismatched_lifetime_syntaxes","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0/src/lib.rs","byte_start":9312,"byte_end":9316,"line_start":241,"line_end":241,"column_start":26,"column_end":30,"is_primary":true,"text":[{"text":"pub fn try_quote(in_str: &str) -> Result<Cow<str>, QuoteError> {","highlight_start":26,"highlight_end":30}],"label":"the lifetime is elided here","suggested_replacement":null,"suggestion_applicability":null,"expansion":null},{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0/src/lib.rs","byte_start":9328,"byte_end":9336,"line_start":241,"line_end":241,"column_start":42,"column_end":50,"is_primary":false,"text":[{"text":"pub fn try_quote(in_str: &str) -> Result<Cow<str>, QuoteError> {","highlight_start":42,"highlight_end":50}],"label":"the same lifetime is hidden here","suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"the same lifetime is referred to in inconsistent ways, making the signature confusing","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"use `'_` for type paths","code":null,"level":"help","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0/src/lib.rs","byte_start":9332,"byte_end":9332,"line_start":241,"line_end":241,"column_start":46,"column_end":46,"is_primary":true,"text":[{"text":"pub fn try_quote(in_str: &str) -> Result<Cow<str>, QuoteError> {","highlight_start":46,"highlight_end":46}],"label":null,"suggested_replacement":"'_, ","suggestion_applicability":"MaybeIncorrect","expansion":null}],"children":[],"rendered":null},{"message":"consistently use `'_`","code":null,"level":"help","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0/src/lib.rs","byte_start":9313,"byte_end":9313,"line_start":241,"line_end":241,"column_start":27,"column_end":27,"is_primary":true,"text":[{"text":"pub fn try_quote(in_str: &str) -> Result<Cow<str>, QuoteError> {","highlight_start":27,"highlight_end":27}],"label":null,"suggested_replacement":"'_ ","suggestion_applicability":"MaybeIncorrect","expansion":null},{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0/src/lib.rs","byte_start":9332,"byte_end":9332,"line_start":241,"line_end":241,"column_start":46,"column_end":46,"is_primary":true,"text":[{"text":"pub fn try_quote(in_str: &str) -> Result<Cow<str>, QuoteError> {","highlight_start":46,"highlight_end":46}],"label":null,"suggested_replacement":"'_, ","suggestion_applicability":"MaybeIncorrect","expansion":null}],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: hiding a lifetime that's elided elsewhere is confusing\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0/src/lib.rs:241:26\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m241\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0mpub fn try_quote(in_str: &str) -> Result<Cow<str>, QuoteError> {\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                          \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^\u001b[0m\u001b[0m            \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--------\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12mthe same lifetime is hidden here\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                          \u001b[0m\u001b[0m\u001b[1m\u001b[33m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                          \u001b[0m\u001b[0m\u001b[1m\u001b[33mthe lifetime is elided here\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: the same lifetime is referred to in inconsistent ways, making the signature confusing\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;14mhelp\u001b[0m\u001b[0m: use `'_` for type paths\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m241\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m| \u001b[0m\u001b[0mpub fn try_quote(in_str: &str) -> Result<Cow<\u001b[0m\u001b[0m\u001b[38;5;10m'_, \u001b[0m\u001b[0mstr>, QuoteError> {\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                              \u001b[0m\u001b[0m\u001b[38;5;10m+++\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"hiding a lifetime that's elided elsewhere is confusing","code":{"code":"mismatched_lifetime_syntaxes","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0/src/bytes.rs","byte_start":19037,"byte_end":19042,"line_start":484,"line_end":484,"column_start":24,"column_end":29,"is_primary":true,"text":[{"text":"pub fn quote(in_bytes: &[u8]) -> Cow<[u8]> {","highlight_start":24,"highlight_end":29}],"label":"the lifetime is elided here","suggested_replacement":null,"suggestion_applicability":null,"expansion":null},{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0/src/bytes.rs","byte_start":19047,"byte_end":19056,"line_start":484,"line_end":484,"column_start":34,"column_end":43,"is_primary":false,"text":[{"text":"pub fn quote(in_bytes: &[u8]) -> Cow<[u8]> {","highlight_start":34,"highlight_end":43}],"label":"the same lifetime is hidden here","suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"the same lifetime is referred to in inconsistent ways, making the signature confusing","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"use `'_` for type paths","code":null,"level":"help","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0/src/bytes.rs","byte_start":19051,"byte_end":19051,"line_start":484,"line_end":484,"column_start":38,"column_end":38,"is_primary":true,"text":[{"text":"pub fn quote(in_bytes: &[u8]) -> Cow<[u8]> {","highlight_start":38,"highlight_end":38}],"label":null,"suggested_replacement":"'_, ","suggestion_applicability":"MaybeIncorrect","expansion":null}],"children":[],"rendered":null},{"message":"consistently use `'_`","code":null,"level":"help","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0/src/bytes.rs","byte_start":19038,"byte_end":19038,"line_start":484,"line_end":484,"column_start":25,"column_end":25,"is_primary":true,"text":[{"text":"pub fn quote(in_bytes: &[u8]) -> Cow<[u8]> {","highlight_start":25,"highlight_end":25}],"label":null,"suggested_replacement":"'_ ","suggestion_applicability":"MaybeIncorrect","expansion":null},{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0/src/bytes.rs","byte_start":19051,"byte_end":19051,"line_start":484,"line_end":484,"column_start":38,"column_end":38,"is_primary":true,"text":[{"text":"pub fn quote(in_bytes: &[u8]) -> Cow<[u8]> {","highlight_start":38,"highlight_end":38}],"label":null,"suggested_replacement":"'_, ","suggestion_applicability":"MaybeIncorrect","expansion":null}],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: hiding a lifetime that's elided elsewhere is confusing\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0/src/bytes.rs:484:24\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m484\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0mpub fn quote(in_bytes: &[u8]) -> Cow<[u8]> {\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                        \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^\u001b[0m\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m---------\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12mthe same lifetime is hidden here\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                        \u001b[0m\u001b[0m\u001b[1m\u001b[33m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                        \u001b[0m\u001b[0m\u001b[1m\u001b[33mthe lifetime is elided here\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: the same lifetime is referred to in inconsistent ways, making the signature confusing\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;14mhelp\u001b[0m\u001b[0m: use `'_` for type paths\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m484\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m| \u001b[0m\u001b[0mpub fn quote(in_bytes: &[u8]) -> Cow<\u001b[0m\u001b[0m\u001b[38;5;10m'_, \u001b[0m\u001b[0m[u8]> {\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                      \u001b[0m\u001b[0m\u001b[38;5;10m+++\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"hiding a lifetime that's elided elsewhere is confusing","code":{"code":"mismatched_lifetime_syntaxes","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0/src/bytes.rs","byte_start":19525,"byte_end":19530,"line_start":497,"line_end":497,"column_start":28,"column_end":33,"is_primary":true,"text":[{"text":"pub fn try_quote(in_bytes: &[u8]) -> Result<Cow<[u8]>, QuoteError> {","highlight_start":28,"highlight_end":33}],"label":"the lifetime is elided here","suggested_replacement":null,"suggestion_applicability":null,"expansion":null},{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0/src/bytes.rs","byte_start":19542,"byte_end":19551,"line_start":497,"line_end":497,"column_start":45,"column_end":54,"is_primary":false,"text":[{"text":"pub fn try_quote(in_bytes: &[u8]) -> Result<Cow<[u8]>, QuoteError> {","highlight_start":45,"highlight_end":54}],"label":"the same lifetime is hidden here","suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"the same lifetime is referred to in inconsistent ways, making the signature confusing","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"use `'_` for type paths","code":null,"level":"help","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0/src/bytes.rs","byte_start":19546,"byte_end":19546,"line_start":497,"line_end":497,"column_start":49,"column_end":49,"is_primary":true,"text":[{"text":"pub fn try_quote(in_bytes: &[u8]) -> Result<Cow<[u8]>, QuoteError> {","highlight_start":49,"highlight_end":49}],"label":null,"suggested_replacement":"'_, ","suggestion_applicability":"MaybeIncorrect","expansion":null}],"children":[],"rendered":null},{"message":"consistently use `'_`","code":null,"level":"help","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0/src/bytes.rs","byte_start":19526,"byte_end":19526,"line_start":497,"line_end":497,"column_start":29,"column_end":29,"is_primary":true,"text":[{"text":"pub fn try_quote(in_bytes: &[u8]) -> Result<Cow<[u8]>, QuoteError> {","highlight_start":29,"highlight_end":29}],"label":null,"suggested_replacement":"'_ ","suggestion_applicability":"MaybeIncorrect","expansion":null},{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0/src/bytes.rs","byte_start":19546,"byte_end":19546,"line_start":497,"line_end":497,"column_start":49,"column_end":49,"is_primary":true,"text":[{"text":"pub fn try_quote(in_bytes: &[u8]) -> Result<Cow<[u8]>, QuoteError> {","highlight_start":49,"highlight_end":49}],"label":null,"suggested_replacement":"'_, ","suggestion_applicability":"MaybeIncorrect","expansion":null}],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: hiding a lifetime that's elided elsewhere is confusing\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0/src/bytes.rs:497:28\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m497\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0mpub fn try_quote(in_bytes: &[u8]) -> Result<Cow<[u8]>, QuoteError> {\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                            \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^\u001b[0m\u001b[0m            \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m---------\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12mthe same lifetime is hidden here\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                            \u001b[0m\u001b[0m\u001b[1m\u001b[33m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                            \u001b[0m\u001b[0m\u001b[1m\u001b[33mthe lifetime is elided here\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: the same lifetime is referred to in inconsistent ways, making the signature confusing\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;14mhelp\u001b[0m\u001b[0m: use `'_` for type paths\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m497\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m| \u001b[0m\u001b[0mpub fn try_quote(in_bytes: &[u8]) -> Result<Cow<\u001b[0m\u001b[0m\u001b[38;5;10m'_, \u001b[0m\u001b[0m[u8]>, QuoteError> {\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                                 \u001b[0m\u001b[0m\u001b[38;5;10m+++\u001b[0m\n\n"}''',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libshlex-b166d1c75d83103c.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libshlex-b166d1c75d83103c.rlib","emit":"link"}',
+##     '{"$message_type":"diagnostic","message":"5 warnings emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 5 warnings emitted\u001b[0m\n\n"}',
+## ]
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
+##
+## [[stages]]
+##
+## [stages.Cratesio]
+## stage = "cratesio-shlex-1.3.0"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0"
+## name = "shlex"
+## name_dash_version = "shlex-1.3.0"
+## hash = "0fda2ff0d084019ba4d7c6f371c95d8fd75ce3524c3cb8fb653a3023f6323e64"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "dep-n-shlex-1.3.0-b166d1c75d83103c"
+## script = '''
+## FROM rust-base AS dep-n-shlex-1.3.0-b166d1c75d83103c
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps
+## RUN \
+##   --mount=from=cratesio-shlex-1.3.0,source=/shlex-1.3.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0 \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CRATE_NAME=shlex \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0/Cargo.toml \
+##         CARGO_PKG_AUTHORS=comex' <comexk@gmail.com>:Fenhl <fenhl@fenhl.net>:Adrian Taylor <adetaylor@chromium.org>:Alex Touchet <alextouchet@outlook.com>:Daniel Parks <dp+git@oxidized.org>:Garrett Berg <googberg@gmail.com>' \
+##         CARGO_PKG_DESCRIPTION=Split' a string into shell words, like Python'\'s' shlex.' \
+##         CARGO_PKG_HOMEPAGE= \
+##         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=shlex \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/comex/rust-shlex' \
+##         CARGO_PKG_RUST_VERSION=1.46.0 \
+##         CARGO_PKG_VERSION=1.3.0 \
+##         CARGO_PKG_VERSION_MAJOR=1 \
+##         CARGO_PKG_VERSION_MINOR=3 \
+##         CARGO_PKG_VERSION_PATCH=0 \
+##         CARGO_PKG_VERSION_PRE= \
+##         CARGOGREEN=1 \
+##       rustc --crate-name shlex --edition 2015 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "std"))' -C metadata'=251d56da40bf7d9d' -C extra-filename'=-b166d1c75d83103c' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0/src/lib.rs \
+##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-b166d1c75d83103c-stdout \
+##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-b166d1c75d83103c-stderr \
+##         || echo $? >/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-b166d1c75d83103c-errcode\
+##   ; find /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/*-b166d1c75d83103c* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-b166d1c75d83103c"
+## script = """
+## FROM scratch AS out-b166d1c75d83103c
+## COPY --link --from=dep-n-shlex-1.3.0-b166d1c75d83103c /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/*-b166d1c75d83103c* /"""
+
+FROM scratch AS cratesio-cc-1.2.39
+ADD --chmod=0664 --unpack --checksum=sha256:e1354349954c6fc9cb0deab020f27f783cf0b604e8bb754dc4658ecf0d29c35f \
+  https://static.crates.io/crates/cc/cc-1.2.39.crate /
+FROM rust-base AS dep-n-cc-1.2.39-336c2d9100ab92f8
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps
+RUN \
+  --mount=from=cratesio-cc-1.2.39,source=/cc-1.2.39,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/cc-1.2.39 \
+  --mount=from=out-d2948f7c0c8497b1,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libfind_msvc_tools-d2948f7c0c8497b1.rlib,source=/libfind_msvc_tools-d2948f7c0c8497b1.rlib \
+  --mount=from=out-d2948f7c0c8497b1,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libfind_msvc_tools-d2948f7c0c8497b1.rmeta,source=/libfind_msvc_tools-d2948f7c0c8497b1.rmeta \
+  --mount=from=out-4dc141be22bbffce,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libjobserver-4dc141be22bbffce.rlib,source=/libjobserver-4dc141be22bbffce.rlib \
+  --mount=from=out-4dc141be22bbffce,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libjobserver-4dc141be22bbffce.rmeta,source=/libjobserver-4dc141be22bbffce.rmeta \
+  --mount=from=out-60426161aa87c673,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibc-60426161aa87c673.rlib,source=/liblibc-60426161aa87c673.rlib \
+  --mount=from=out-60426161aa87c673,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibc-60426161aa87c673.rmeta,source=/liblibc-60426161aa87c673.rmeta \
+  --mount=from=out-b166d1c75d83103c,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libshlex-b166d1c75d83103c.rlib,source=/libshlex-b166d1c75d83103c.rlib \
+  --mount=from=out-b166d1c75d83103c,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libshlex-b166d1c75d83103c.rmeta,source=/libshlex-b166d1c75d83103c.rmeta \
+    env CARGO="$(which cargo)" \
+        CARGO_CRATE_NAME=cc \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/cc-1.2.39 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/cc-1.2.39/Cargo.toml \
+        CARGO_PKG_AUTHORS=Alex' Crichton <alex@alexcrichton.com>' \
+        CARGO_PKG_DESCRIPTION=A' build-time dependency for Cargo build scripts to assist in invoking the native\
+C compiler to compile native C code into a static archive to be linked into Rust\
+code.\
+' \
+        CARGO_PKG_HOMEPAGE=https'://github.com/rust-lang/cc-rs' \
+        CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=cc \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/cc-rs' \
+        CARGO_PKG_RUST_VERSION=1.63 \
+        CARGO_PKG_VERSION=1.2.39 \
+        CARGO_PKG_VERSION_MAJOR=1 \
+        CARGO_PKG_VERSION_MINOR=2 \
+        CARGO_PKG_VERSION_PATCH=39 \
+        CARGO_PKG_VERSION_PRE= \
+        CARGOGREEN=1 \
+      rustc --crate-name cc --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' --allow unexpected_cfgs --check-cfg cfg'(disable_clang_cl_tests)' -C debug-assertions'=off' --cfg feature'="parallel"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("jobserver", "parallel"))' -C metadata'=c965696a64dc6c05' -C extra-filename'=-336c2d9100ab92f8' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern find_msvc_tools'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libfind_msvc_tools-d2948f7c0c8497b1.rmeta' --extern jobserver'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libjobserver-4dc141be22bbffce.rmeta' --extern libc'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibc-60426161aa87c673.rmeta' --extern shlex'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libshlex-b166d1c75d83103c.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/cc-1.2.39/src/lib.rs \
+        1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-336c2d9100ab92f8-stdout \
+        2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-336c2d9100ab92f8-stderr \
+        || echo $? >/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-336c2d9100ab92f8-errcode\
+  ; find /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/*-336c2d9100ab92f8* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-336c2d9100ab92f8
+COPY --link --from=dep-n-cc-1.2.39-336c2d9100ab92f8 /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/*-336c2d9100ab92f8* /
+
+## this = "336c2d9100ab92f8"
+## deps = [
+##     "d2948f7c0c8497b1",
+##     "4dc141be22bbffce",
+##     "60426161aa87c673",
+##     "7560e7c5c88ec4c4",
+##     "b166d1c75d83103c",
+##     "99856d878c8e44ce",
+## ]
+## buildrs_results = ["99856d878c8e44ce"]
+## writes = [
+##     "cc-336c2d9100ab92f8.d",
+##     "libcc-336c2d9100ab92f8.rlib",
+##     "libcc-336c2d9100ab92f8.rmeta",
+## ]
+## stderr = [
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/cc-336c2d9100ab92f8.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcc-336c2d9100ab92f8.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcc-336c2d9100ab92f8.rlib","emit":"link"}',
+## ]
+##
+## [[externs]]
+## from = "out-d2948f7c0c8497b1"
+## xtern = "libfind_msvc_tools-d2948f7c0c8497b1.rlib"
+##
+## [[externs]]
+## from = "out-d2948f7c0c8497b1"
+## xtern = "libfind_msvc_tools-d2948f7c0c8497b1.rmeta"
+##
+## [[externs]]
+## from = "out-4dc141be22bbffce"
+## xtern = "libjobserver-4dc141be22bbffce.rlib"
+##
+## [[externs]]
+## from = "out-4dc141be22bbffce"
+## xtern = "libjobserver-4dc141be22bbffce.rmeta"
+##
+## [[externs]]
+## from = "out-60426161aa87c673"
+## xtern = "liblibc-60426161aa87c673.rlib"
+##
+## [[externs]]
+## from = "out-60426161aa87c673"
+## xtern = "liblibc-60426161aa87c673.rmeta"
+##
+## [[externs]]
+## from = "out-b166d1c75d83103c"
+## xtern = "libshlex-b166d1c75d83103c.rlib"
+##
+## [[externs]]
+## from = "out-b166d1c75d83103c"
+## xtern = "libshlex-b166d1c75d83103c.rmeta"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
+##
+## [[stages]]
+##
+## [stages.Cratesio]
+## stage = "cratesio-cc-1.2.39"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/cc-1.2.39"
+## name = "cc"
+## name_dash_version = "cc-1.2.39"
+## hash = "e1354349954c6fc9cb0deab020f27f783cf0b604e8bb754dc4658ecf0d29c35f"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "dep-n-cc-1.2.39-336c2d9100ab92f8"
+## script = '''
+## FROM rust-base AS dep-n-cc-1.2.39-336c2d9100ab92f8
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps
+## RUN \
+##   --mount=from=cratesio-cc-1.2.39,source=/cc-1.2.39,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/cc-1.2.39 \
+##   --mount=from=out-d2948f7c0c8497b1,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libfind_msvc_tools-d2948f7c0c8497b1.rlib,source=/libfind_msvc_tools-d2948f7c0c8497b1.rlib \
+##   --mount=from=out-d2948f7c0c8497b1,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libfind_msvc_tools-d2948f7c0c8497b1.rmeta,source=/libfind_msvc_tools-d2948f7c0c8497b1.rmeta \
+##   --mount=from=out-4dc141be22bbffce,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libjobserver-4dc141be22bbffce.rlib,source=/libjobserver-4dc141be22bbffce.rlib \
+##   --mount=from=out-4dc141be22bbffce,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libjobserver-4dc141be22bbffce.rmeta,source=/libjobserver-4dc141be22bbffce.rmeta \
+##   --mount=from=out-60426161aa87c673,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibc-60426161aa87c673.rlib,source=/liblibc-60426161aa87c673.rlib \
+##   --mount=from=out-60426161aa87c673,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibc-60426161aa87c673.rmeta,source=/liblibc-60426161aa87c673.rmeta \
+##   --mount=from=out-b166d1c75d83103c,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libshlex-b166d1c75d83103c.rlib,source=/libshlex-b166d1c75d83103c.rlib \
+##   --mount=from=out-b166d1c75d83103c,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libshlex-b166d1c75d83103c.rmeta,source=/libshlex-b166d1c75d83103c.rmeta \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CRATE_NAME=cc \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/cc-1.2.39 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/cc-1.2.39/Cargo.toml \
+##         CARGO_PKG_AUTHORS=Alex' Crichton <alex@alexcrichton.com>' \
+##         CARGO_PKG_DESCRIPTION=A' build-time dependency for Cargo build scripts to assist in invoking the native\
+## C compiler to compile native C code into a static archive to be linked into Rust\
+## code.\
+## ' \
+##         CARGO_PKG_HOMEPAGE=https'://github.com/rust-lang/cc-rs' \
+##         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=cc \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/cc-rs' \
+##         CARGO_PKG_RUST_VERSION=1.63 \
+##         CARGO_PKG_VERSION=1.2.39 \
+##         CARGO_PKG_VERSION_MAJOR=1 \
+##         CARGO_PKG_VERSION_MINOR=2 \
+##         CARGO_PKG_VERSION_PATCH=39 \
+##         CARGO_PKG_VERSION_PRE= \
+##         CARGOGREEN=1 \
+##       rustc --crate-name cc --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' --allow unexpected_cfgs --check-cfg cfg'(disable_clang_cl_tests)' -C debug-assertions'=off' --cfg feature'="parallel"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("jobserver", "parallel"))' -C metadata'=c965696a64dc6c05' -C extra-filename'=-336c2d9100ab92f8' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern find_msvc_tools'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libfind_msvc_tools-d2948f7c0c8497b1.rmeta' --extern jobserver'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libjobserver-4dc141be22bbffce.rmeta' --extern libc'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibc-60426161aa87c673.rmeta' --extern shlex'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libshlex-b166d1c75d83103c.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/cc-1.2.39/src/lib.rs \
+##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-336c2d9100ab92f8-stdout \
+##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-336c2d9100ab92f8-stderr \
+##         || echo $? >/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-336c2d9100ab92f8-errcode\
+##   ; find /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/*-336c2d9100ab92f8* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-336c2d9100ab92f8"
+## script = """
+## FROM scratch AS out-336c2d9100ab92f8
+## COPY --link --from=dep-n-cc-1.2.39-336c2d9100ab92f8 /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/*-336c2d9100ab92f8* /"""
+
+FROM scratch AS cratesio-cmake-0.1.54
+ADD --chmod=0664 --unpack --checksum=sha256:e7caa3f9de89ddbe2c607f4101924c5abec803763ae9534e4f4d7d8f84aa81f0 \
+  https://static.crates.io/crates/cmake/cmake-0.1.54.crate /
+FROM rust-base AS dep-n-cmake-0.1.54-3ff4fdb389eab124
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps
+RUN \
+  --mount=from=cratesio-cmake-0.1.54,source=/cmake-0.1.54,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/cmake-0.1.54 \
+  --mount=from=out-336c2d9100ab92f8,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcc-336c2d9100ab92f8.rlib,source=/libcc-336c2d9100ab92f8.rlib \
+  --mount=from=out-336c2d9100ab92f8,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcc-336c2d9100ab92f8.rmeta,source=/libcc-336c2d9100ab92f8.rmeta \
+  --mount=from=out-d2948f7c0c8497b1,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libfind_msvc_tools-d2948f7c0c8497b1.rlib,source=/libfind_msvc_tools-d2948f7c0c8497b1.rlib \
+  --mount=from=out-d2948f7c0c8497b1,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libfind_msvc_tools-d2948f7c0c8497b1.rmeta,source=/libfind_msvc_tools-d2948f7c0c8497b1.rmeta \
+  --mount=from=out-4dc141be22bbffce,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libjobserver-4dc141be22bbffce.rlib,source=/libjobserver-4dc141be22bbffce.rlib \
+  --mount=from=out-4dc141be22bbffce,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libjobserver-4dc141be22bbffce.rmeta,source=/libjobserver-4dc141be22bbffce.rmeta \
+  --mount=from=out-60426161aa87c673,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibc-60426161aa87c673.rlib,source=/liblibc-60426161aa87c673.rlib \
+  --mount=from=out-60426161aa87c673,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibc-60426161aa87c673.rmeta,source=/liblibc-60426161aa87c673.rmeta \
+  --mount=from=out-b166d1c75d83103c,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libshlex-b166d1c75d83103c.rlib,source=/libshlex-b166d1c75d83103c.rlib \
+  --mount=from=out-b166d1c75d83103c,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libshlex-b166d1c75d83103c.rmeta,source=/libshlex-b166d1c75d83103c.rmeta \
+    env CARGO="$(which cargo)" \
+        CARGO_CRATE_NAME=cmake \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/cmake-0.1.54 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/cmake-0.1.54/Cargo.toml \
+        CARGO_PKG_AUTHORS=Alex' Crichton <alex@alexcrichton.com>' \
+        CARGO_PKG_DESCRIPTION=A' build dependency for running `cmake` to build a native library\
+' \
+        CARGO_PKG_HOMEPAGE=https'://github.com/rust-lang/cmake-rs' \
+        CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=cmake \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/cmake-rs' \
+        CARGO_PKG_RUST_VERSION= \
+        CARGO_PKG_VERSION=0.1.54 \
+        CARGO_PKG_VERSION_MAJOR=0 \
+        CARGO_PKG_VERSION_MINOR=1 \
+        CARGO_PKG_VERSION_PATCH=54 \
+        CARGO_PKG_VERSION_PRE= \
+        CARGOGREEN=1 \
+      rustc --crate-name cmake --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=169e113d9337afd3' -C extra-filename'=-3ff4fdb389eab124' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern cc'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcc-336c2d9100ab92f8.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/cmake-0.1.54/src/lib.rs \
+        1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-3ff4fdb389eab124-stdout \
+        2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-3ff4fdb389eab124-stderr \
+        || echo $? >/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-3ff4fdb389eab124-errcode\
+  ; find /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/*-3ff4fdb389eab124* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-3ff4fdb389eab124
+COPY --link --from=dep-n-cmake-0.1.54-3ff4fdb389eab124 /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/*-3ff4fdb389eab124* /
+
+## this = "3ff4fdb389eab124"
+## deps = [
+##     "336c2d9100ab92f8",
+##     "d2948f7c0c8497b1",
+##     "4dc141be22bbffce",
+##     "60426161aa87c673",
+##     "7560e7c5c88ec4c4",
+##     "b166d1c75d83103c",
+##     "99856d878c8e44ce",
+## ]
+## buildrs_results = ["99856d878c8e44ce"]
+## writes = [
+##     "cmake-3ff4fdb389eab124.d",
+##     "libcmake-3ff4fdb389eab124.rlib",
+##     "libcmake-3ff4fdb389eab124.rmeta",
+## ]
+## stderr = [
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/cmake-3ff4fdb389eab124.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcmake-3ff4fdb389eab124.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcmake-3ff4fdb389eab124.rlib","emit":"link"}',
+## ]
+##
+## [[externs]]
+## from = "out-336c2d9100ab92f8"
+## xtern = "libcc-336c2d9100ab92f8.rlib"
+##
+## [[externs]]
+## from = "out-336c2d9100ab92f8"
+## xtern = "libcc-336c2d9100ab92f8.rmeta"
+##
+## [[externs]]
+## from = "out-d2948f7c0c8497b1"
+## xtern = "libfind_msvc_tools-d2948f7c0c8497b1.rlib"
+##
+## [[externs]]
+## from = "out-d2948f7c0c8497b1"
+## xtern = "libfind_msvc_tools-d2948f7c0c8497b1.rmeta"
+##
+## [[externs]]
+## from = "out-4dc141be22bbffce"
+## xtern = "libjobserver-4dc141be22bbffce.rlib"
+##
+## [[externs]]
+## from = "out-4dc141be22bbffce"
+## xtern = "libjobserver-4dc141be22bbffce.rmeta"
+##
+## [[externs]]
+## from = "out-60426161aa87c673"
+## xtern = "liblibc-60426161aa87c673.rlib"
+##
+## [[externs]]
+## from = "out-60426161aa87c673"
+## xtern = "liblibc-60426161aa87c673.rmeta"
+##
+## [[externs]]
+## from = "out-b166d1c75d83103c"
+## xtern = "libshlex-b166d1c75d83103c.rlib"
+##
+## [[externs]]
+## from = "out-b166d1c75d83103c"
+## xtern = "libshlex-b166d1c75d83103c.rmeta"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
+##
+## [[stages]]
+##
+## [stages.Cratesio]
+## stage = "cratesio-cmake-0.1.54"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/cmake-0.1.54"
+## name = "cmake"
+## name_dash_version = "cmake-0.1.54"
+## hash = "e7caa3f9de89ddbe2c607f4101924c5abec803763ae9534e4f4d7d8f84aa81f0"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "dep-n-cmake-0.1.54-3ff4fdb389eab124"
+## script = '''
+## FROM rust-base AS dep-n-cmake-0.1.54-3ff4fdb389eab124
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps
+## RUN \
+##   --mount=from=cratesio-cmake-0.1.54,source=/cmake-0.1.54,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/cmake-0.1.54 \
+##   --mount=from=out-336c2d9100ab92f8,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcc-336c2d9100ab92f8.rlib,source=/libcc-336c2d9100ab92f8.rlib \
+##   --mount=from=out-336c2d9100ab92f8,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcc-336c2d9100ab92f8.rmeta,source=/libcc-336c2d9100ab92f8.rmeta \
+##   --mount=from=out-d2948f7c0c8497b1,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libfind_msvc_tools-d2948f7c0c8497b1.rlib,source=/libfind_msvc_tools-d2948f7c0c8497b1.rlib \
+##   --mount=from=out-d2948f7c0c8497b1,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libfind_msvc_tools-d2948f7c0c8497b1.rmeta,source=/libfind_msvc_tools-d2948f7c0c8497b1.rmeta \
+##   --mount=from=out-4dc141be22bbffce,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libjobserver-4dc141be22bbffce.rlib,source=/libjobserver-4dc141be22bbffce.rlib \
+##   --mount=from=out-4dc141be22bbffce,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libjobserver-4dc141be22bbffce.rmeta,source=/libjobserver-4dc141be22bbffce.rmeta \
+##   --mount=from=out-60426161aa87c673,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibc-60426161aa87c673.rlib,source=/liblibc-60426161aa87c673.rlib \
+##   --mount=from=out-60426161aa87c673,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibc-60426161aa87c673.rmeta,source=/liblibc-60426161aa87c673.rmeta \
+##   --mount=from=out-b166d1c75d83103c,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libshlex-b166d1c75d83103c.rlib,source=/libshlex-b166d1c75d83103c.rlib \
+##   --mount=from=out-b166d1c75d83103c,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libshlex-b166d1c75d83103c.rmeta,source=/libshlex-b166d1c75d83103c.rmeta \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CRATE_NAME=cmake \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/cmake-0.1.54 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/cmake-0.1.54/Cargo.toml \
+##         CARGO_PKG_AUTHORS=Alex' Crichton <alex@alexcrichton.com>' \
+##         CARGO_PKG_DESCRIPTION=A' build dependency for running `cmake` to build a native library\
+## ' \
+##         CARGO_PKG_HOMEPAGE=https'://github.com/rust-lang/cmake-rs' \
+##         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=cmake \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/cmake-rs' \
+##         CARGO_PKG_RUST_VERSION= \
+##         CARGO_PKG_VERSION=0.1.54 \
+##         CARGO_PKG_VERSION_MAJOR=0 \
+##         CARGO_PKG_VERSION_MINOR=1 \
+##         CARGO_PKG_VERSION_PATCH=54 \
+##         CARGO_PKG_VERSION_PRE= \
+##         CARGOGREEN=1 \
+##       rustc --crate-name cmake --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=169e113d9337afd3' -C extra-filename'=-3ff4fdb389eab124' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern cc'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcc-336c2d9100ab92f8.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/cmake-0.1.54/src/lib.rs \
+##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-3ff4fdb389eab124-stdout \
+##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-3ff4fdb389eab124-stderr \
+##         || echo $? >/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-3ff4fdb389eab124-errcode\
+##   ; find /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/*-3ff4fdb389eab124* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-3ff4fdb389eab124"
+## script = """
+## FROM scratch AS out-3ff4fdb389eab124
+## COPY --link --from=dep-n-cmake-0.1.54-3ff4fdb389eab124 /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/*-3ff4fdb389eab124* /"""
+
+FROM scratch AS cratesio-dunce-1.0.5
+ADD --chmod=0664 --unpack --checksum=sha256:92773504d58c093f6de2459af4af33faa518c13451eb8f2b5698ed3d36e7c813 \
+  https://static.crates.io/crates/dunce/dunce-1.0.5.crate /
+FROM rust-base AS dep-n-dunce-1.0.5-25a6bb4144c31f83
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps
+RUN \
+  --mount=from=cratesio-dunce-1.0.5,source=/dunce-1.0.5,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/dunce-1.0.5 \
+    env CARGO="$(which cargo)" \
+        CARGO_CRATE_NAME=dunce \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/dunce-1.0.5 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/dunce-1.0.5/Cargo.toml \
+        CARGO_PKG_AUTHORS=Kornel' <kornel@geekhood.net>' \
+        CARGO_PKG_DESCRIPTION=Normalize' Windows paths to the most compatible format, avoiding UNC where possible' \
+        CARGO_PKG_HOMEPAGE=https'://lib.rs/crates/dunce' \
+        CARGO_PKG_LICENSE=CC0-1.0' OR MIT-0 OR Apache-2.0' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=dunce \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://gitlab.com/kornelski/dunce' \
+        CARGO_PKG_RUST_VERSION= \
+        CARGO_PKG_VERSION=1.0.5 \
+        CARGO_PKG_VERSION_MAJOR=1 \
+        CARGO_PKG_VERSION_MINOR=0 \
+        CARGO_PKG_VERSION_PATCH=5 \
+        CARGO_PKG_VERSION_PRE= \
+        CARGOGREEN=1 \
+      rustc --crate-name dunce --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=8e0296f3fe0cfd75' -C extra-filename'=-25a6bb4144c31f83' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/dunce-1.0.5/src/lib.rs \
+        1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-25a6bb4144c31f83-stdout \
+        2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-25a6bb4144c31f83-stderr \
+        || echo $? >/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-25a6bb4144c31f83-errcode\
+  ; find /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/*-25a6bb4144c31f83* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-25a6bb4144c31f83
+COPY --link --from=dep-n-dunce-1.0.5-25a6bb4144c31f83 /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/*-25a6bb4144c31f83* /
+
+## this = "25a6bb4144c31f83"
+## writes = [
+##     "dunce-25a6bb4144c31f83.d",
+##     "libdunce-25a6bb4144c31f83.rlib",
+##     "libdunce-25a6bb4144c31f83.rmeta",
+## ]
+## stderr = [
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/dunce-25a6bb4144c31f83.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libdunce-25a6bb4144c31f83.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libdunce-25a6bb4144c31f83.rlib","emit":"link"}',
+## ]
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
+##
+## [[stages]]
+##
+## [stages.Cratesio]
+## stage = "cratesio-dunce-1.0.5"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/dunce-1.0.5"
+## name = "dunce"
+## name_dash_version = "dunce-1.0.5"
+## hash = "92773504d58c093f6de2459af4af33faa518c13451eb8f2b5698ed3d36e7c813"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "dep-n-dunce-1.0.5-25a6bb4144c31f83"
+## script = '''
+## FROM rust-base AS dep-n-dunce-1.0.5-25a6bb4144c31f83
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps
+## RUN \
+##   --mount=from=cratesio-dunce-1.0.5,source=/dunce-1.0.5,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/dunce-1.0.5 \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CRATE_NAME=dunce \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/dunce-1.0.5 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/dunce-1.0.5/Cargo.toml \
+##         CARGO_PKG_AUTHORS=Kornel' <kornel@geekhood.net>' \
+##         CARGO_PKG_DESCRIPTION=Normalize' Windows paths to the most compatible format, avoiding UNC where possible' \
+##         CARGO_PKG_HOMEPAGE=https'://lib.rs/crates/dunce' \
+##         CARGO_PKG_LICENSE=CC0-1.0' OR MIT-0 OR Apache-2.0' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=dunce \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://gitlab.com/kornelski/dunce' \
+##         CARGO_PKG_RUST_VERSION= \
+##         CARGO_PKG_VERSION=1.0.5 \
+##         CARGO_PKG_VERSION_MAJOR=1 \
+##         CARGO_PKG_VERSION_MINOR=0 \
+##         CARGO_PKG_VERSION_PATCH=5 \
+##         CARGO_PKG_VERSION_PRE= \
+##         CARGOGREEN=1 \
+##       rustc --crate-name dunce --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=8e0296f3fe0cfd75' -C extra-filename'=-25a6bb4144c31f83' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/dunce-1.0.5/src/lib.rs \
+##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-25a6bb4144c31f83-stdout \
+##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-25a6bb4144c31f83-stderr \
+##         || echo $? >/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-25a6bb4144c31f83-errcode\
+##   ; find /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/*-25a6bb4144c31f83* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-25a6bb4144c31f83"
+## script = """
+## FROM scratch AS out-25a6bb4144c31f83
+## COPY --link --from=dep-n-dunce-1.0.5-25a6bb4144c31f83 /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/*-25a6bb4144c31f83* /"""
+
+FROM scratch AS cratesio-fs_extra-1.3.0
+ADD --chmod=0664 --unpack --checksum=sha256:42703706b716c37f96a77aea830392ad231f44c9e9a67872fa5548707e11b11c \
+  https://static.crates.io/crates/fs_extra/fs_extra-1.3.0.crate /
+FROM rust-base AS dep-n-fs_extra-1.3.0-19400729ba85cd55
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps
+RUN \
+  --mount=from=cratesio-fs_extra-1.3.0,source=/fs_extra-1.3.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/fs_extra-1.3.0 \
+    env CARGO="$(which cargo)" \
+        CARGO_CRATE_NAME=fs_extra \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/fs_extra-1.3.0 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/fs_extra-1.3.0/Cargo.toml \
+        CARGO_PKG_AUTHORS=Denis' Kurilenko <webdesus@gmail.com>' \
+        CARGO_PKG_DESCRIPTION=Expanding' std::fs and std::io. Recursively copy folders with information about process and much more.' \
+        CARGO_PKG_HOMEPAGE=https'://github.com/webdesus/fs_extra' \
+        CARGO_PKG_LICENSE=MIT \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=fs_extra \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/webdesus/fs_extra' \
+        CARGO_PKG_RUST_VERSION= \
+        CARGO_PKG_VERSION=1.3.0 \
+        CARGO_PKG_VERSION_MAJOR=1 \
+        CARGO_PKG_VERSION_MINOR=3 \
+        CARGO_PKG_VERSION_PATCH=0 \
+        CARGO_PKG_VERSION_PRE= \
+        CARGOGREEN=1 \
+      rustc --crate-name fs_extra --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=3ca665d2923ae361' -C extra-filename'=-19400729ba85cd55' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/fs_extra-1.3.0/src/lib.rs \
+        1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-19400729ba85cd55-stdout \
+        2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-19400729ba85cd55-stderr \
+        || echo $? >/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-19400729ba85cd55-errcode\
+  ; find /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/*-19400729ba85cd55* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-19400729ba85cd55
+COPY --link --from=dep-n-fs_extra-1.3.0-19400729ba85cd55 /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/*-19400729ba85cd55* /
+
+## this = "19400729ba85cd55"
+## writes = [
+##     "fs_extra-19400729ba85cd55.d",
+##     "libfs_extra-19400729ba85cd55.rlib",
+##     "libfs_extra-19400729ba85cd55.rmeta",
+## ]
+## stderr = [
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/fs_extra-19400729ba85cd55.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libfs_extra-19400729ba85cd55.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libfs_extra-19400729ba85cd55.rlib","emit":"link"}',
+## ]
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
+##
+## [[stages]]
+##
+## [stages.Cratesio]
+## stage = "cratesio-fs_extra-1.3.0"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/fs_extra-1.3.0"
+## name = "fs_extra"
+## name_dash_version = "fs_extra-1.3.0"
+## hash = "42703706b716c37f96a77aea830392ad231f44c9e9a67872fa5548707e11b11c"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "dep-n-fs_extra-1.3.0-19400729ba85cd55"
+## script = '''
+## FROM rust-base AS dep-n-fs_extra-1.3.0-19400729ba85cd55
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps
+## RUN \
+##   --mount=from=cratesio-fs_extra-1.3.0,source=/fs_extra-1.3.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/fs_extra-1.3.0 \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CRATE_NAME=fs_extra \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/fs_extra-1.3.0 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/fs_extra-1.3.0/Cargo.toml \
+##         CARGO_PKG_AUTHORS=Denis' Kurilenko <webdesus@gmail.com>' \
+##         CARGO_PKG_DESCRIPTION=Expanding' std::fs and std::io. Recursively copy folders with information about process and much more.' \
+##         CARGO_PKG_HOMEPAGE=https'://github.com/webdesus/fs_extra' \
+##         CARGO_PKG_LICENSE=MIT \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=fs_extra \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/webdesus/fs_extra' \
+##         CARGO_PKG_RUST_VERSION= \
+##         CARGO_PKG_VERSION=1.3.0 \
+##         CARGO_PKG_VERSION_MAJOR=1 \
+##         CARGO_PKG_VERSION_MINOR=3 \
+##         CARGO_PKG_VERSION_PATCH=0 \
+##         CARGO_PKG_VERSION_PRE= \
+##         CARGOGREEN=1 \
+##       rustc --crate-name fs_extra --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=3ca665d2923ae361' -C extra-filename'=-19400729ba85cd55' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/fs_extra-1.3.0/src/lib.rs \
+##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-19400729ba85cd55-stdout \
+##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-19400729ba85cd55-stderr \
+##         || echo $? >/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-19400729ba85cd55-errcode\
+##   ; find /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/*-19400729ba85cd55* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-19400729ba85cd55"
+## script = """
+## FROM scratch AS out-19400729ba85cd55
+## COPY --link --from=dep-n-fs_extra-1.3.0-19400729ba85cd55 /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/*-19400729ba85cd55* /"""
+
+
+FROM rust-base AS dep-n-cfg-if-1.0.3-d905bd04d466c2b4
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps
+RUN \
+  --mount=from=cratesio-cfg-if-1.0.3,source=/cfg-if-1.0.3,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/cfg-if-1.0.3 \
+    env CARGO="$(which cargo)" \
+        CARGO_CRATE_NAME=cfg_if \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/cfg-if-1.0.3 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/cfg-if-1.0.3/Cargo.toml \
+        CARGO_PKG_AUTHORS=Alex' Crichton <alex@alexcrichton.com>' \
+        CARGO_PKG_DESCRIPTION=A' macro to ergonomically define an item depending on a large number of #[cfg]\
+parameters. Structured like an if-else chain, the first matching branch is the\
+item that gets emitted.\
+' \
+        CARGO_PKG_HOMEPAGE= \
+        CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=cfg-if \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/cfg-if' \
+        CARGO_PKG_RUST_VERSION= \
+        CARGO_PKG_VERSION=1.0.3 \
+        CARGO_PKG_VERSION_MAJOR=1 \
+        CARGO_PKG_VERSION_MINOR=0 \
+        CARGO_PKG_VERSION_PATCH=3 \
+        CARGO_PKG_VERSION_PRE= \
+        CARGOGREEN=1 \
+      rustc --crate-name cfg_if --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("core", "rustc-dep-of-std"))' -C metadata'=4d505cfe9c54e5c4' -C extra-filename'=-d905bd04d466c2b4' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/cfg-if-1.0.3/src/lib.rs \
+        1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-d905bd04d466c2b4-stdout \
+        2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-d905bd04d466c2b4-stderr \
+        || echo $? >/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-d905bd04d466c2b4-errcode\
+  ; find /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/*-d905bd04d466c2b4* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-d905bd04d466c2b4
+COPY --link --from=dep-n-cfg-if-1.0.3-d905bd04d466c2b4 /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/*-d905bd04d466c2b4* /
+
+## this = "d905bd04d466c2b4"
+## writes = [
+##     "cfg_if-d905bd04d466c2b4.d",
+##     "libcfg_if-d905bd04d466c2b4.rlib",
+##     "libcfg_if-d905bd04d466c2b4.rmeta",
+## ]
+## stderr = [
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/cfg_if-d905bd04d466c2b4.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcfg_if-d905bd04d466c2b4.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcfg_if-d905bd04d466c2b4.rlib","emit":"link"}',
+## ]
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
+##
+## [[stages]]
+##
+## [stages.Cratesio]
+## stage = "cratesio-cfg-if-1.0.3"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/cfg-if-1.0.3"
+## name = "cfg-if"
+## name_dash_version = "cfg-if-1.0.3"
+## hash = "2fd1289c04a9ea8cb22300a459a72a385d7c73d3259e2ed7dcb2af674838cfa9"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "dep-n-cfg-if-1.0.3-d905bd04d466c2b4"
+## script = '''
+## FROM rust-base AS dep-n-cfg-if-1.0.3-d905bd04d466c2b4
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps
+## RUN \
+##   --mount=from=cratesio-cfg-if-1.0.3,source=/cfg-if-1.0.3,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/cfg-if-1.0.3 \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CRATE_NAME=cfg_if \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/cfg-if-1.0.3 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/cfg-if-1.0.3/Cargo.toml \
+##         CARGO_PKG_AUTHORS=Alex' Crichton <alex@alexcrichton.com>' \
+##         CARGO_PKG_DESCRIPTION=A' macro to ergonomically define an item depending on a large number of #[cfg]\
+## parameters. Structured like an if-else chain, the first matching branch is the\
+## item that gets emitted.\
+## ' \
+##         CARGO_PKG_HOMEPAGE= \
+##         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=cfg-if \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/cfg-if' \
+##         CARGO_PKG_RUST_VERSION= \
+##         CARGO_PKG_VERSION=1.0.3 \
+##         CARGO_PKG_VERSION_MAJOR=1 \
+##         CARGO_PKG_VERSION_MINOR=0 \
+##         CARGO_PKG_VERSION_PATCH=3 \
+##         CARGO_PKG_VERSION_PRE= \
+##         CARGOGREEN=1 \
+##       rustc --crate-name cfg_if --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("core", "rustc-dep-of-std"))' -C metadata'=4d505cfe9c54e5c4' -C extra-filename'=-d905bd04d466c2b4' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/cfg-if-1.0.3/src/lib.rs \
+##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-d905bd04d466c2b4-stdout \
+##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-d905bd04d466c2b4-stderr \
+##         || echo $? >/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-d905bd04d466c2b4-errcode\
+##   ; find /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/*-d905bd04d466c2b4* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-d905bd04d466c2b4"
+## script = """
+## FROM scratch AS out-d905bd04d466c2b4
+## COPY --link --from=dep-n-cfg-if-1.0.3-d905bd04d466c2b4 /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/*-d905bd04d466c2b4* /"""
+
+FROM scratch AS cratesio-libloading-0.8.8
+ADD --chmod=0664 --unpack --checksum=sha256:07033963ba89ebaf1584d767badaa2e8fcec21aedea6b8c0346d487d49c28667 \
+  https://static.crates.io/crates/libloading/libloading-0.8.8.crate /
+FROM rust-base AS dep-n-libloading-0.8.8-bcbfd880a9747f76
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps
+RUN \
+  --mount=from=cratesio-libloading-0.8.8,source=/libloading-0.8.8,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libloading-0.8.8 \
+  --mount=from=out-d905bd04d466c2b4,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcfg_if-d905bd04d466c2b4.rlib,source=/libcfg_if-d905bd04d466c2b4.rlib \
+  --mount=from=out-d905bd04d466c2b4,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcfg_if-d905bd04d466c2b4.rmeta,source=/libcfg_if-d905bd04d466c2b4.rmeta \
+    env CARGO="$(which cargo)" \
+        CARGO_CRATE_NAME=libloading \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libloading-0.8.8 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libloading-0.8.8/Cargo.toml \
+        CARGO_PKG_AUTHORS=Simonas' Kazlauskas <libloading@kazlauskas.me>' \
+        CARGO_PKG_DESCRIPTION=Bindings' around the platform'\'s' dynamic library loading primitives with greatly improved memory safety.' \
+        CARGO_PKG_HOMEPAGE= \
+        CARGO_PKG_LICENSE=ISC \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=libloading \
+        CARGO_PKG_README=README.mkd \
+        CARGO_PKG_REPOSITORY=https'://github.com/nagisa/rust_libloading/' \
+        CARGO_PKG_RUST_VERSION=1.56.0 \
+        CARGO_PKG_VERSION=0.8.8 \
+        CARGO_PKG_VERSION_MAJOR=0 \
+        CARGO_PKG_VERSION_MINOR=8 \
+        CARGO_PKG_VERSION_PATCH=8 \
+        CARGO_PKG_VERSION_PRE= \
+        CARGOGREEN=1 \
+      rustc --crate-name libloading --edition 2015 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' --warn unexpected_cfgs --check-cfg cfg'(libloading_docs)' --check-cfg cfg'(target_os, values("cygwin"))' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=8f420d6015141b81' -C extra-filename'=-bcbfd880a9747f76' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern cfg_if'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcfg_if-d905bd04d466c2b4.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libloading-0.8.8/src/lib.rs \
+        1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-bcbfd880a9747f76-stdout \
+        2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-bcbfd880a9747f76-stderr \
+        || echo $? >/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-bcbfd880a9747f76-errcode\
+  ; find /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/*-bcbfd880a9747f76* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-bcbfd880a9747f76
+COPY --link --from=dep-n-libloading-0.8.8-bcbfd880a9747f76 /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/*-bcbfd880a9747f76* /
+
+## this = "bcbfd880a9747f76"
+## deps = ["d905bd04d466c2b4"]
+## writes = [
+##     "liblibloading-bcbfd880a9747f76.rlib",
+##     "liblibloading-bcbfd880a9747f76.rmeta",
+##     "libloading-bcbfd880a9747f76.d",
+## ]
+## stderr = [
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libloading-bcbfd880a9747f76.d","emit":"dep-info"}',
+##     '''{"$message_type":"diagnostic","message":"hiding a lifetime that's elided elsewhere is confusing","code":{"code":"mismatched_lifetime_syntaxes","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libloading-0.8.8/src/safe.rs","byte_start":6265,"byte_end":6270,"line_start":148,"line_end":148,"column_start":26,"column_end":31,"is_primary":true,"text":[{"text":"    pub unsafe fn get<T>(&self, symbol: &[u8]) -> Result<Symbol<T>, Error> {","highlight_start":26,"highlight_end":31}],"label":"the lifetime is elided here","suggested_replacement":null,"suggestion_applicability":null,"expansion":null},{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libloading-0.8.8/src/safe.rs","byte_start":6297,"byte_end":6306,"line_start":148,"line_end":148,"column_start":58,"column_end":67,"is_primary":false,"text":[{"text":"    pub unsafe fn get<T>(&self, symbol: &[u8]) -> Result<Symbol<T>, Error> {","highlight_start":58,"highlight_end":67}],"label":"the same lifetime is hidden here","suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"the same lifetime is referred to in inconsistent ways, making the signature confusing","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"`#[warn(mismatched_lifetime_syntaxes)]` on by default","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"use `'_` for type paths","code":null,"level":"help","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libloading-0.8.8/src/safe.rs","byte_start":6304,"byte_end":6304,"line_start":148,"line_end":148,"column_start":65,"column_end":65,"is_primary":true,"text":[{"text":"    pub unsafe fn get<T>(&self, symbol: &[u8]) -> Result<Symbol<T>, Error> {","highlight_start":65,"highlight_end":65}],"label":null,"suggested_replacement":"'_, ","suggestion_applicability":"MaybeIncorrect","expansion":null}],"children":[],"rendered":null},{"message":"consistently use `'_`","code":null,"level":"help","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libloading-0.8.8/src/safe.rs","byte_start":6266,"byte_end":6266,"line_start":148,"line_end":148,"column_start":27,"column_end":27,"is_primary":true,"text":[{"text":"    pub unsafe fn get<T>(&self, symbol: &[u8]) -> Result<Symbol<T>, Error> {","highlight_start":27,"highlight_end":27}],"label":null,"suggested_replacement":"'_ ","suggestion_applicability":"MaybeIncorrect","expansion":null},{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libloading-0.8.8/src/safe.rs","byte_start":6304,"byte_end":6304,"line_start":148,"line_end":148,"column_start":65,"column_end":65,"is_primary":true,"text":[{"text":"    pub unsafe fn get<T>(&self, symbol: &[u8]) -> Result<Symbol<T>, Error> {","highlight_start":65,"highlight_end":65}],"label":null,"suggested_replacement":"'_, ","suggestion_applicability":"MaybeIncorrect","expansion":null}],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: hiding a lifetime that's elided elsewhere is confusing\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libloading-0.8.8/src/safe.rs:148:26\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m148\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    pub unsafe fn get<T>(&self, symbol: &[u8]) -> Result<Symbol<T>, Error> {\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                          \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^\u001b[0m\u001b[0m                           \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m---------\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12mthe same lifetime is hidden here\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                          \u001b[0m\u001b[0m\u001b[1m\u001b[33m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                          \u001b[0m\u001b[0m\u001b[1m\u001b[33mthe lifetime is elided here\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: the same lifetime is referred to in inconsistent ways, making the signature confusing\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: `#[warn(mismatched_lifetime_syntaxes)]` on by default\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;14mhelp\u001b[0m\u001b[0m: use `'_` for type paths\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m148\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m| \u001b[0m\u001b[0m    pub unsafe fn get<T>(&self, symbol: &[u8]) -> Result<Symbol<\u001b[0m\u001b[0m\u001b[38;5;10m'_, \u001b[0m\u001b[0mT>, Error> {\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                                                 \u001b[0m\u001b[0m\u001b[38;5;10m+++\u001b[0m\n\n"}''',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibloading-bcbfd880a9747f76.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibloading-bcbfd880a9747f76.rlib","emit":"link"}',
+##     '{"$message_type":"diagnostic","message":"1 warning emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 1 warning emitted\u001b[0m\n\n"}',
+## ]
+##
+## [[externs]]
+## from = "out-d905bd04d466c2b4"
+## xtern = "libcfg_if-d905bd04d466c2b4.rlib"
+##
+## [[externs]]
+## from = "out-d905bd04d466c2b4"
+## xtern = "libcfg_if-d905bd04d466c2b4.rmeta"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
+##
+## [[stages]]
+##
+## [stages.Cratesio]
+## stage = "cratesio-libloading-0.8.8"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libloading-0.8.8"
+## name = "libloading"
+## name_dash_version = "libloading-0.8.8"
+## hash = "07033963ba89ebaf1584d767badaa2e8fcec21aedea6b8c0346d487d49c28667"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "dep-n-libloading-0.8.8-bcbfd880a9747f76"
+## script = '''
+## FROM rust-base AS dep-n-libloading-0.8.8-bcbfd880a9747f76
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps
+## RUN \
+##   --mount=from=cratesio-libloading-0.8.8,source=/libloading-0.8.8,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libloading-0.8.8 \
+##   --mount=from=out-d905bd04d466c2b4,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcfg_if-d905bd04d466c2b4.rlib,source=/libcfg_if-d905bd04d466c2b4.rlib \
+##   --mount=from=out-d905bd04d466c2b4,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcfg_if-d905bd04d466c2b4.rmeta,source=/libcfg_if-d905bd04d466c2b4.rmeta \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CRATE_NAME=libloading \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libloading-0.8.8 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libloading-0.8.8/Cargo.toml \
+##         CARGO_PKG_AUTHORS=Simonas' Kazlauskas <libloading@kazlauskas.me>' \
+##         CARGO_PKG_DESCRIPTION=Bindings' around the platform'\'s' dynamic library loading primitives with greatly improved memory safety.' \
+##         CARGO_PKG_HOMEPAGE= \
+##         CARGO_PKG_LICENSE=ISC \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=libloading \
+##         CARGO_PKG_README=README.mkd \
+##         CARGO_PKG_REPOSITORY=https'://github.com/nagisa/rust_libloading/' \
+##         CARGO_PKG_RUST_VERSION=1.56.0 \
+##         CARGO_PKG_VERSION=0.8.8 \
+##         CARGO_PKG_VERSION_MAJOR=0 \
+##         CARGO_PKG_VERSION_MINOR=8 \
+##         CARGO_PKG_VERSION_PATCH=8 \
+##         CARGO_PKG_VERSION_PRE= \
+##         CARGOGREEN=1 \
+##       rustc --crate-name libloading --edition 2015 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' --warn unexpected_cfgs --check-cfg cfg'(libloading_docs)' --check-cfg cfg'(target_os, values("cygwin"))' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=8f420d6015141b81' -C extra-filename'=-bcbfd880a9747f76' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern cfg_if'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcfg_if-d905bd04d466c2b4.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libloading-0.8.8/src/lib.rs \
+##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-bcbfd880a9747f76-stdout \
+##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-bcbfd880a9747f76-stderr \
+##         || echo $? >/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-bcbfd880a9747f76-errcode\
+##   ; find /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/*-bcbfd880a9747f76* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-bcbfd880a9747f76"
+## script = """
+## FROM scratch AS out-bcbfd880a9747f76
+## COPY --link --from=dep-n-libloading-0.8.8-bcbfd880a9747f76 /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/*-bcbfd880a9747f76* /"""
+
 FROM scratch AS cratesio-aws-lc-sys-0.32.2
 ADD --chmod=0664 --unpack --checksum=sha256:a2b715a6010afb9e457ca2b7c9d2b9c344baa8baed7b38dc476034c171b32575 \
   https://static.crates.io/crates/aws-lc-sys/aws-lc-sys-0.32.2.crate /
+FROM rust-base AS dep-x-aws-lc-sys-0.32.2-b91f62695d1e67bd
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-b91f62695d1e67bd
+RUN \
+  --mount=from=cratesio-aws-lc-sys-0.32.2,source=/aws-lc-sys-0.32.2,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.32.2,rw \
+  --mount=from=out-336c2d9100ab92f8,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcc-336c2d9100ab92f8.rlib,source=/libcc-336c2d9100ab92f8.rlib \
+  --mount=from=out-d2948f7c0c8497b1,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libfind_msvc_tools-d2948f7c0c8497b1.rlib,source=/libfind_msvc_tools-d2948f7c0c8497b1.rlib \
+  --mount=from=out-4dc141be22bbffce,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libjobserver-4dc141be22bbffce.rlib,source=/libjobserver-4dc141be22bbffce.rlib \
+  --mount=from=out-60426161aa87c673,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibc-60426161aa87c673.rlib,source=/liblibc-60426161aa87c673.rlib \
+  --mount=from=out-b166d1c75d83103c,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libshlex-b166d1c75d83103c.rlib,source=/libshlex-b166d1c75d83103c.rlib \
+  --mount=from=out-3ff4fdb389eab124,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcmake-3ff4fdb389eab124.rlib,source=/libcmake-3ff4fdb389eab124.rlib \
+  --mount=from=out-25a6bb4144c31f83,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libdunce-25a6bb4144c31f83.rlib,source=/libdunce-25a6bb4144c31f83.rlib \
+  --mount=from=out-19400729ba85cd55,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libfs_extra-19400729ba85cd55.rlib,source=/libfs_extra-19400729ba85cd55.rlib \
+  --mount=from=out-bcbfd880a9747f76,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibloading-bcbfd880a9747f76.rlib,source=/liblibloading-bcbfd880a9747f76.rlib \
+  --mount=from=out-d905bd04d466c2b4,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcfg_if-d905bd04d466c2b4.rlib,source=/libcfg_if-d905bd04d466c2b4.rlib \
+    { \
+        cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.32.2/builder/main.rs | sed -E 's/^(pub[()a-z]* +)?(async +)?fn +main/\1\2fn actual_b91f62695d1e67bd_main/' >/_ && mv /_ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.32.2/builder/main.rs ; \
+        { \
+          echo ; \
+          echo 'fn main() {' ; \
+          echo '    use std::env::{args_os, var_os};' ; \
+          echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+          echo '        use std::process::{Command, Stdio};' ; \
+          echo '        let mut cmd = Command::new("cargo-green");' ; \
+          echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+          echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+          echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+          echo '        assert!(res.success());' ; \
+          echo '    } else {' ; \
+          echo '        actual_b91f62695d1e67bd_main();' ; \
+          echo '    }' ; \
+          echo '}' ; \
+        } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.32.2/builder/main.rs ; \
+    } && \
+    env CARGO="$(which cargo)" \
+        CARGO_CRATE_NAME=build_script_main \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.32.2 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.32.2/Cargo.toml \
+        CARGO_PKG_AUTHORS=AWS-LC \
+        CARGO_PKG_DESCRIPTION=AWS-LC' is a general-purpose cryptographic library maintained by the AWS Cryptography team for AWS and their customers. It іs based on code from the Google BoringSSL project and the OpenSSL project.' \
+        CARGO_PKG_HOMEPAGE= \
+        CARGO_PKG_LICENSE=ISC' AND (Apache-2.0 OR ISC) AND OpenSSL' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=aws-lc-sys \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/aws/aws-lc-rs' \
+        CARGO_PKG_RUST_VERSION=1.70.0 \
+        CARGO_PKG_VERSION=0.32.2 \
+        CARGO_PKG_VERSION_MAJOR=0 \
+        CARGO_PKG_VERSION_MINOR=32 \
+        CARGO_PKG_VERSION_PATCH=2 \
+        CARGO_PKG_VERSION_PRE= \
+        CARGOGREEN=1 \
+      rustc --crate-name build_script_main --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="prebuilt-nasm"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("asan", "bindgen", "prebuilt-nasm", "ssl"))' -C metadata'=5f5e98c341fafc17' -C extra-filename'=-b91f62695d1e67bd' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-b91f62695d1e67bd -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern cc'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcc-336c2d9100ab92f8.rlib' --extern cmake'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcmake-3ff4fdb389eab124.rlib' --extern dunce'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libdunce-25a6bb4144c31f83.rlib' --extern fs_extra'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libfs_extra-19400729ba85cd55.rlib' --extern libloading'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibloading-bcbfd880a9747f76.rlib' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.32.2/builder/main.rs \
+        1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-b91f62695d1e67bd/out-b91f62695d1e67bd-stdout \
+        2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-b91f62695d1e67bd/out-b91f62695d1e67bd-stderr \
+        || echo $? >/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-b91f62695d1e67bd/out-b91f62695d1e67bd-errcode\
+  ; find /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-b91f62695d1e67bd/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-b91f62695d1e67bd
+COPY --link --from=dep-x-aws-lc-sys-0.32.2-b91f62695d1e67bd /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-b91f62695d1e67bd/*-b91f62695d1e67bd* /
+
+## this = "b91f62695d1e67bd"
+## deps = [
+##     "336c2d9100ab92f8",
+##     "d2948f7c0c8497b1",
+##     "4dc141be22bbffce",
+##     "60426161aa87c673",
+##     "7560e7c5c88ec4c4",
+##     "b166d1c75d83103c",
+##     "3ff4fdb389eab124",
+##     "25a6bb4144c31f83",
+##     "19400729ba85cd55",
+##     "bcbfd880a9747f76",
+##     "d905bd04d466c2b4",
+##     "99856d878c8e44ce",
+## ]
+## buildrs_results = ["99856d878c8e44ce"]
+## writes = [
+##     "build_script_main-b91f62695d1e67bd",
+##     "build_script_main-b91f62695d1e67bd.d",
+## ]
+## stderr = [
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-b91f62695d1e67bd/build_script_main-b91f62695d1e67bd.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-b91f62695d1e67bd/build_script_main-b91f62695d1e67bd","emit":"link"}',
+## ]
+##
+## [[externs]]
+## from = "out-336c2d9100ab92f8"
+## xtern = "libcc-336c2d9100ab92f8.rlib"
+##
+## [[externs]]
+## from = "out-d2948f7c0c8497b1"
+## xtern = "libfind_msvc_tools-d2948f7c0c8497b1.rlib"
+##
+## [[externs]]
+## from = "out-4dc141be22bbffce"
+## xtern = "libjobserver-4dc141be22bbffce.rlib"
+##
+## [[externs]]
+## from = "out-60426161aa87c673"
+## xtern = "liblibc-60426161aa87c673.rlib"
+##
+## [[externs]]
+## from = "out-b166d1c75d83103c"
+## xtern = "libshlex-b166d1c75d83103c.rlib"
+##
+## [[externs]]
+## from = "out-3ff4fdb389eab124"
+## xtern = "libcmake-3ff4fdb389eab124.rlib"
+##
+## [[externs]]
+## from = "out-25a6bb4144c31f83"
+## xtern = "libdunce-25a6bb4144c31f83.rlib"
+##
+## [[externs]]
+## from = "out-19400729ba85cd55"
+## xtern = "libfs_extra-19400729ba85cd55.rlib"
+##
+## [[externs]]
+## from = "out-bcbfd880a9747f76"
+## xtern = "liblibloading-bcbfd880a9747f76.rlib"
+##
+## [[externs]]
+## from = "out-d905bd04d466c2b4"
+## xtern = "libcfg_if-d905bd04d466c2b4.rlib"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
+##
+## [[stages]]
+##
+## [stages.Cratesio]
+## stage = "cratesio-aws-lc-sys-0.32.2"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.32.2"
+## name = "aws-lc-sys"
+## name_dash_version = "aws-lc-sys-0.32.2"
+## hash = "a2b715a6010afb9e457ca2b7c9d2b9c344baa8baed7b38dc476034c171b32575"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "dep-x-aws-lc-sys-0.32.2-b91f62695d1e67bd"
+## script = '''
+## FROM rust-base AS dep-x-aws-lc-sys-0.32.2-b91f62695d1e67bd
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-b91f62695d1e67bd
+## RUN \
+##   --mount=from=cratesio-aws-lc-sys-0.32.2,source=/aws-lc-sys-0.32.2,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.32.2,rw \
+##   --mount=from=out-336c2d9100ab92f8,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcc-336c2d9100ab92f8.rlib,source=/libcc-336c2d9100ab92f8.rlib \
+##   --mount=from=out-d2948f7c0c8497b1,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libfind_msvc_tools-d2948f7c0c8497b1.rlib,source=/libfind_msvc_tools-d2948f7c0c8497b1.rlib \
+##   --mount=from=out-4dc141be22bbffce,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libjobserver-4dc141be22bbffce.rlib,source=/libjobserver-4dc141be22bbffce.rlib \
+##   --mount=from=out-60426161aa87c673,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibc-60426161aa87c673.rlib,source=/liblibc-60426161aa87c673.rlib \
+##   --mount=from=out-b166d1c75d83103c,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libshlex-b166d1c75d83103c.rlib,source=/libshlex-b166d1c75d83103c.rlib \
+##   --mount=from=out-3ff4fdb389eab124,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcmake-3ff4fdb389eab124.rlib,source=/libcmake-3ff4fdb389eab124.rlib \
+##   --mount=from=out-25a6bb4144c31f83,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libdunce-25a6bb4144c31f83.rlib,source=/libdunce-25a6bb4144c31f83.rlib \
+##   --mount=from=out-19400729ba85cd55,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libfs_extra-19400729ba85cd55.rlib,source=/libfs_extra-19400729ba85cd55.rlib \
+##   --mount=from=out-bcbfd880a9747f76,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibloading-bcbfd880a9747f76.rlib,source=/liblibloading-bcbfd880a9747f76.rlib \
+##   --mount=from=out-d905bd04d466c2b4,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcfg_if-d905bd04d466c2b4.rlib,source=/libcfg_if-d905bd04d466c2b4.rlib \
+##     { \
+##         cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.32.2/builder/main.rs | sed -E 's/^(pub[()a-z]* +)?(async +)?fn +main/\1\2fn actual_b91f62695d1e67bd_main/' >/_ && mv /_ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.32.2/builder/main.rs ; \
+##         { \
+##           echo ; \
+##           echo 'fn main() {' ; \
+##           echo '    use std::env::{args_os, var_os};' ; \
+##           echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+##           echo '        use std::process::{Command, Stdio};' ; \
+##           echo '        let mut cmd = Command::new("cargo-green");' ; \
+##           echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+##           echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+##           echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+##           echo '        assert!(res.success());' ; \
+##           echo '    } else {' ; \
+##           echo '        actual_b91f62695d1e67bd_main();' ; \
+##           echo '    }' ; \
+##           echo '}' ; \
+##         } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.32.2/builder/main.rs ; \
+##     } && \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CRATE_NAME=build_script_main \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.32.2 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.32.2/Cargo.toml \
+##         CARGO_PKG_AUTHORS=AWS-LC \
+##         CARGO_PKG_DESCRIPTION=AWS-LC' is a general-purpose cryptographic library maintained by the AWS Cryptography team for AWS and their customers. It іs based on code from the Google BoringSSL project and the OpenSSL project.' \
+##         CARGO_PKG_HOMEPAGE= \
+##         CARGO_PKG_LICENSE=ISC' AND (Apache-2.0 OR ISC) AND OpenSSL' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=aws-lc-sys \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/aws/aws-lc-rs' \
+##         CARGO_PKG_RUST_VERSION=1.70.0 \
+##         CARGO_PKG_VERSION=0.32.2 \
+##         CARGO_PKG_VERSION_MAJOR=0 \
+##         CARGO_PKG_VERSION_MINOR=32 \
+##         CARGO_PKG_VERSION_PATCH=2 \
+##         CARGO_PKG_VERSION_PRE= \
+##         CARGOGREEN=1 \
+##       rustc --crate-name build_script_main --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="prebuilt-nasm"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("asan", "bindgen", "prebuilt-nasm", "ssl"))' -C metadata'=5f5e98c341fafc17' -C extra-filename'=-b91f62695d1e67bd' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-b91f62695d1e67bd -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern cc'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcc-336c2d9100ab92f8.rlib' --extern cmake'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcmake-3ff4fdb389eab124.rlib' --extern dunce'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libdunce-25a6bb4144c31f83.rlib' --extern fs_extra'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libfs_extra-19400729ba85cd55.rlib' --extern libloading'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibloading-bcbfd880a9747f76.rlib' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.32.2/builder/main.rs \
+##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-b91f62695d1e67bd/out-b91f62695d1e67bd-stdout \
+##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-b91f62695d1e67bd/out-b91f62695d1e67bd-stderr \
+##         || echo $? >/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-b91f62695d1e67bd/out-b91f62695d1e67bd-errcode\
+##   ; find /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-b91f62695d1e67bd/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-b91f62695d1e67bd"
+## script = """
+## FROM scratch AS out-b91f62695d1e67bd
+## COPY --link --from=dep-x-aws-lc-sys-0.32.2-b91f62695d1e67bd /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-b91f62695d1e67bd/*-b91f62695d1e67bd* /"""
+
+FROM rust-base AS run-z-aws-lc-sys-0.32.2-2d875791ad1d3d18
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out
+WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.32.2
+RUN \
+  --mount=from=out-b91f62695d1e67bd,source=/build_script_main-b91f62695d1e67bd,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-b91f62695d1e67bd/build-script-main \
+  --mount=from=cratesio-aws-lc-sys-0.32.2,source=/aws-lc-sys-0.32.2,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.32.2 \
+    env CARGO="$(which cargo)" \
+        CARGO_CFG_FEATURE=prebuilt-nasm \
+        CARGO_CFG_PANIC=unwind \
+        CARGO_CFG_TARGET_ABI= \
+        CARGO_CFG_TARGET_ARCH=x86_64 \
+        CARGO_CFG_TARGET_ENDIAN=little \
+        CARGO_CFG_TARGET_ENV=gnu \
+        CARGO_CFG_TARGET_FAMILY=unix \
+        CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
+        CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+        CARGO_CFG_TARGET_OS=linux \
+        CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+        CARGO_CFG_TARGET_VENDOR=unknown \
+        CARGO_CFG_UNIX= \
+        CARGO_ENCODED_RUSTFLAGS= \
+        CARGO_FEATURE_PREBUILT_NASM=1 \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.32.2 \
+        CARGO_MANIFEST_LINKS=aws_lc_0_32_2 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.32.2/Cargo.toml \
+        CARGO_PKG_AUTHORS=AWS-LC \
+        CARGO_PKG_DESCRIPTION=AWS-LC' is a general-purpose cryptographic library maintained by the AWS Cryptography team for AWS and their customers. It іs based on code from the Google BoringSSL project and the OpenSSL project.' \
+        CARGO_PKG_HOMEPAGE= \
+        CARGO_PKG_LICENSE=ISC' AND (Apache-2.0 OR ISC) AND OpenSSL' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=aws-lc-sys \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/aws/aws-lc-rs' \
+        CARGO_PKG_RUST_VERSION=1.70.0 \
+        CARGO_PKG_VERSION=0.32.2 \
+        CARGO_PKG_VERSION_MAJOR=0 \
+        CARGO_PKG_VERSION_MINOR=32 \
+        CARGO_PKG_VERSION_PATCH=2 \
+        CARGO_PKG_VERSION_PRE= \
+        DEBUG=false \
+        HOST=x86_64-unknown-linux-gnu \
+        NUM_JOBS=4 \
+        OPT_LEVEL=3 \
+        OUT_DIR=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out \
+        PROFILE=release \
+        RUSTC=rustc \
+        RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+        TARGET=x86_64-unknown-linux-gnu \
+        CARGOGREEN=1 \
+      CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-b91f62695d1e67bd/build-script-main \
+        1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out/out-2d875791ad1d3d18-stdout \
+        2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out/out-2d875791ad1d3d18-stderr \
+        || echo $? >/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out/out-2d875791ad1d3d18-errcode\
+  ; find /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-2d875791ad1d3d18
+COPY --link --from=run-z-aws-lc-sys-0.32.2-2d875791ad1d3d18 /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out /
+
+## this = "2d875791ad1d3d18"
+## deps = [
+##     "336c2d9100ab92f8",
+##     "d2948f7c0c8497b1",
+##     "4dc141be22bbffce",
+##     "60426161aa87c673",
+##     "7560e7c5c88ec4c4",
+##     "b166d1c75d83103c",
+##     "3ff4fdb389eab124",
+##     "25a6bb4144c31f83",
+##     "19400729ba85cd55",
+##     "bcbfd880a9747f76",
+##     "d905bd04d466c2b4",
+##     "99856d878c8e44ce",
+##     "b91f62695d1e67bd",
+## ]
+## writes_to = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out"
+## writes = [
+##     "001247bc65c2f5e5-cpucap.o",
+##     "020bc241f4dae036-bignum_madd_n25519.o",
+##     "020bc241f4dae036-bignum_madd_n25519_alt.o",
+##     "020bc241f4dae036-bignum_mod_n25519.o",
+##     "020bc241f4dae036-bignum_neg_p25519.o",
+##     "020bc241f4dae036-curve25519_x25519.o",
+##     "020bc241f4dae036-curve25519_x25519_alt.o",
+##     "020bc241f4dae036-curve25519_x25519base.o",
+##     "020bc241f4dae036-curve25519_x25519base_alt.o",
+##     "020bc241f4dae036-edwards25519_decode.o",
+##     "020bc241f4dae036-edwards25519_decode_alt.o",
+##     "020bc241f4dae036-edwards25519_encode.o",
+##     "020bc241f4dae036-edwards25519_scalarmulbase.o",
+##     "020bc241f4dae036-edwards25519_scalarmulbase_alt.o",
+##     "020bc241f4dae036-edwards25519_scalarmuldouble.o",
+##     "020bc241f4dae036-edwards25519_scalarmuldouble_alt.o",
+##     "056c1e7192c7090b-p5_pbev2.o",
+##     "056c1e7192c7090b-pkcs8.o",
+##     "056c1e7192c7090b-pkcs8_x509.o",
+##     "0c919c82d61b4518-ecdsa_asn1.o",
+##     "11289f19be935446-rsa_decrepit.o",
+##     "175e87304cd4663c-cfb.o",
+##     "199386740f3660f1-ripemd.o",
+##     "1c7e26962210e9ee-kem_kyber.o",
+##     "1c7e26962210e9ee-kyber1024r3_ref.o",
+##     "1c7e26962210e9ee-kyber512r3_ref.o",
+##     "1c7e26962210e9ee-kyber768r3_ref.o",
+##     "1eca0b6fab589d4a-chacha-x86_64.o",
+##     "27a075eab3d35364-pem_all.o",
+##     "27a075eab3d35364-pem_info.o",
+##     "27a075eab3d35364-pem_lib.o",
+##     "27a075eab3d35364-pem_oth.o",
+##     "27a075eab3d35364-pem_pk8.o",
+##     "27a075eab3d35364-pem_pkey.o",
+##     "27a075eab3d35364-pem_x509.o",
+##     "27a075eab3d35364-pem_xaux.o",
+##     "2d40dbbd793ef942-jitterentropy-base.o",
+##     "2d40dbbd793ef942-jitterentropy-gcd.o",
+##     "2d40dbbd793ef942-jitterentropy-health.o",
+##     "2d40dbbd793ef942-jitterentropy-noise.o",
+##     "2d40dbbd793ef942-jitterentropy-sha3.o",
+##     "2d40dbbd793ef942-jitterentropy-timer.o",
+##     "30a9a10d3f98970e-crypto.o",
+##     "30a9a10d3f98970e-ex_data.o",
+##     "30a9a10d3f98970e-mem.o",
+##     "30a9a10d3f98970e-refcount_c11.o",
+##     "30a9a10d3f98970e-refcount_lock.o",
+##     "30a9a10d3f98970e-refcount_win.o",
+##     "30a9a10d3f98970e-thread.o",
+##     "30a9a10d3f98970e-thread_none.o",
+##     "30a9a10d3f98970e-thread_pthread.o",
+##     "30a9a10d3f98970e-thread_win.o",
+##     "3f2f442030472042-base64_bio.o",
+##     "4433246e317b5e42-bignum_add_p384.o",
+##     "4433246e317b5e42-bignum_deamont_p384.o",
+##     "4433246e317b5e42-bignum_deamont_p384_alt.o",
+##     "4433246e317b5e42-bignum_littleendian_6.o",
+##     "4433246e317b5e42-bignum_montinv_p384.o",
+##     "4433246e317b5e42-bignum_montmul_p384.o",
+##     "4433246e317b5e42-bignum_montmul_p384_alt.o",
+##     "4433246e317b5e42-bignum_montsqr_p384.o",
+##     "4433246e317b5e42-bignum_montsqr_p384_alt.o",
+##     "4433246e317b5e42-bignum_neg_p384.o",
+##     "4433246e317b5e42-bignum_nonzero_6.o",
+##     "4433246e317b5e42-bignum_sub_p384.o",
+##     "4433246e317b5e42-bignum_tomont_p384.o",
+##     "4433246e317b5e42-bignum_tomont_p384_alt.o",
+##     "4433246e317b5e42-p384_montjdouble.o",
+##     "4433246e317b5e42-p384_montjdouble_alt.o",
+##     "4433246e317b5e42-p384_montjscalarmul.o",
+##     "4433246e317b5e42-p384_montjscalarmul_alt.o",
+##     "45070f5a112d041b-fork_detect.o",
+##     "45070f5a112d041b-snapsafe_detect.o",
+##     "45070f5a112d041b-ube.o",
+##     "4696e3d2cc941c84-pmbtoken.o",
+##     "4696e3d2cc941c84-trust_token.o",
+##     "4696e3d2cc941c84-voprf.o",
+##     "46ab76b5467ff2b0-obj_decrepit.o",
+##     "48649240ed88c783-siphash.o",
+##     "4a91b32c84b73ad7-ecdh_extra.o",
+##     "564c5311b313cdb2-aes128gcmsiv-x86_64.o",
+##     "564c5311b313cdb2-aesni-sha1-x86_64.o",
+##     "564c5311b313cdb2-aesni-sha256-x86_64.o",
+##     "564c5311b313cdb2-chacha20_poly1305_x86_64.o",
+##     "57454e98e6b3bf86-sha3_keccak_f1600.o",
+##     "5d4700fda13603f0-poly1305.o",
+##     "5d4700fda13603f0-poly1305_arm.o",
+##     "5d4700fda13603f0-poly1305_vec.o",
+##     "5da2666a73fb65eb-hrss.o",
+##     "60df219e9fcbc210-stack.o",
+##     "62e235b24f99f4ff-blake2.o",
+##     "65fbbb68d007b209-hpke.o",
+##     "6e6559d38d003e66-spake25519.o",
+##     "6e8bb48415b74ed4-dh_decrepit.o",
+##     "6f8e1f92835a38cb-x509_decrepit.o",
+##     "7510312e0f5aa0be-evp_asn1.o",
+##     "7510312e0f5aa0be-p_dh.o",
+##     "7510312e0f5aa0be-p_dh_asn1.o",
+##     "7510312e0f5aa0be-p_dsa.o",
+##     "7510312e0f5aa0be-p_dsa_asn1.o",
+##     "7510312e0f5aa0be-p_ec_asn1.o",
+##     "7510312e0f5aa0be-p_ed25519_asn1.o",
+##     "7510312e0f5aa0be-p_hmac_asn1.o",
+##     "7510312e0f5aa0be-p_kem_asn1.o",
+##     "7510312e0f5aa0be-p_methods.o",
+##     "7510312e0f5aa0be-p_pqdsa_asn1.o",
+##     "7510312e0f5aa0be-p_rsa_asn1.o",
+##     "7510312e0f5aa0be-p_x25519.o",
+##     "7510312e0f5aa0be-p_x25519_asn1.o",
+##     "7510312e0f5aa0be-print.o",
+##     "7510312e0f5aa0be-scrypt.o",
+##     "7510312e0f5aa0be-sign.o",
+##     "76322f89f5cc2d96-bio.o",
+##     "76322f89f5cc2d96-bio_addr.o",
+##     "76322f89f5cc2d96-bio_mem.o",
+##     "76322f89f5cc2d96-connect.o",
+##     "76322f89f5cc2d96-dgram.o",
+##     "76322f89f5cc2d96-errno.o",
+##     "76322f89f5cc2d96-fd.o",
+##     "76322f89f5cc2d96-file.o",
+##     "76322f89f5cc2d96-hexdump.o",
+##     "76322f89f5cc2d96-md.o",
+##     "76322f89f5cc2d96-pair.o",
+##     "76322f89f5cc2d96-printf.o",
+##     "76322f89f5cc2d96-socket.o",
+##     "76322f89f5cc2d96-socket_helper.o",
+##     "763c374fde874a6d-console.o",
+##     "7a596fe31a02c0e2-bn_asn1.o",
+##     "7a596fe31a02c0e2-convert.o",
+##     "7ac4c9359514b807-obj.o",
+##     "7ac4c9359514b807-obj_xref.o",
+##     "7bf3e571b6558a6b-ccrandomgeneratebytes.o",
+##     "7bf3e571b6558a6b-deterministic.o",
+##     "7bf3e571b6558a6b-getentropy.o",
+##     "7bf3e571b6558a6b-rand_extra.o",
+##     "7bf3e571b6558a6b-snapsafe_fallback.o",
+##     "7bf3e571b6558a6b-urandom.o",
+##     "7bf3e571b6558a6b-windows.o",
+##     "81d9a39ddc6b1c4e-aesni-gcm-avx512.o",
+##     "81d9a39ddc6b1c4e-aesni-gcm-x86_64.o",
+##     "81d9a39ddc6b1c4e-aesni-x86_64.o",
+##     "81d9a39ddc6b1c4e-aesni-xts-avx512.o",
+##     "81d9a39ddc6b1c4e-ghash-ssse3-x86_64.o",
+##     "81d9a39ddc6b1c4e-ghash-x86_64.o",
+##     "81d9a39ddc6b1c4e-md5-x86_64.o",
+##     "81d9a39ddc6b1c4e-p256-x86_64-asm.o",
+##     "81d9a39ddc6b1c4e-p256_beeu-x86_64-asm.o",
+##     "81d9a39ddc6b1c4e-rdrand-x86_64.o",
+##     "81d9a39ddc6b1c4e-rsaz-2k-avx512.o",
+##     "81d9a39ddc6b1c4e-rsaz-3k-avx512.o",
+##     "81d9a39ddc6b1c4e-rsaz-4k-avx512.o",
+##     "81d9a39ddc6b1c4e-rsaz-avx2.o",
+##     "81d9a39ddc6b1c4e-sha1-x86_64.o",
+##     "81d9a39ddc6b1c4e-sha256-x86_64.o",
+##     "81d9a39ddc6b1c4e-sha512-x86_64.o",
+##     "81d9a39ddc6b1c4e-vpaes-x86_64.o",
+##     "81d9a39ddc6b1c4e-x86_64-mont.o",
+##     "81d9a39ddc6b1c4e-x86_64-mont5.o",
+##     "86cc0a4f50e0e3bd-evp_do_all.o",
+##     "88572c8521602bd1-bignum_add_p521.o",
+##     "88572c8521602bd1-bignum_fromlebytes_p521.o",
+##     "88572c8521602bd1-bignum_inv_p521.o",
+##     "88572c8521602bd1-bignum_mul_p521.o",
+##     "88572c8521602bd1-bignum_mul_p521_alt.o",
+##     "88572c8521602bd1-bignum_neg_p521.o",
+##     "88572c8521602bd1-bignum_sqr_p521.o",
+##     "88572c8521602bd1-bignum_sqr_p521_alt.o",
+##     "88572c8521602bd1-bignum_sub_p521.o",
+##     "88572c8521602bd1-bignum_tolebytes_p521.o",
+##     "88572c8521602bd1-p521_jdouble.o",
+##     "88572c8521602bd1-p521_jdouble_alt.o",
+##     "88572c8521602bd1-p521_jscalarmul.o",
+##     "88572c8521602bd1-p521_jscalarmul_alt.o",
+##     "89981633f66afe17-cipher_extra.o",
+##     "89981633f66afe17-derive_key.o",
+##     "89981633f66afe17-e_aes_cbc_hmac_sha1.o",
+##     "89981633f66afe17-e_aes_cbc_hmac_sha256.o",
+##     "89981633f66afe17-e_aesctrhmac.o",
+##     "89981633f66afe17-e_aesgcmsiv.o",
+##     "89981633f66afe17-e_chacha20poly1305.o",
+##     "89981633f66afe17-e_des.o",
+##     "89981633f66afe17-e_null.o",
+##     "89981633f66afe17-e_rc2.o",
+##     "89981633f66afe17-e_rc4.o",
+##     "89981633f66afe17-e_tls.o",
+##     "89981633f66afe17-tls_cbc.o",
+##     "8f1694c3e3041570-bignum_montinv_p256.o",
+##     "8f1694c3e3041570-p256_montjscalarmul.o",
+##     "8f1694c3e3041570-p256_montjscalarmul_alt.o",
+##     "904ef411c1476e9d-cipher.o",
+##     "925ae38753d351a6-pool.o",
+##     "a3e95cd5f24d649a-err.o",
+##     "a4677c68e4880270-buf.o",
+##     "a4a065efb8ac7b35-cast.o",
+##     "a4a065efb8ac7b35-cast_tables.o",
+##     "a6455f51a2435c3f-chacha.o",
+##     "a8d01793eb1214d2-poly_rq_mul.o",
+##     "ad45968d24b0237e-base64.o",
+##     "b0fd2550ab09b04e-rsa_asn1.o",
+##     "b0fd2550ab09b04e-rsa_crypt.o",
+##     "b0fd2550ab09b04e-rsa_print.o",
+##     "b0fd2550ab09b04e-rsassa_pss_asn1.o",
+##     "b129d77c83f8bbf0-trampoline-x86_64.o",
+##     "bc1b343226bc6a17-a_bitstr.o",
+##     "bc1b343226bc6a17-a_bool.o",
+##     "bc1b343226bc6a17-a_d2i_fp.o",
+##     "bc1b343226bc6a17-a_dup.o",
+##     "bc1b343226bc6a17-a_gentm.o",
+##     "bc1b343226bc6a17-a_i2d_fp.o",
+##     "bc1b343226bc6a17-a_int.o",
+##     "bc1b343226bc6a17-a_mbstr.o",
+##     "bc1b343226bc6a17-a_object.o",
+##     "bc1b343226bc6a17-a_octet.o",
+##     "bc1b343226bc6a17-a_strex.o",
+##     "bc1b343226bc6a17-a_strnid.o",
+##     "bc1b343226bc6a17-a_time.o",
+##     "bc1b343226bc6a17-a_type.o",
+##     "bc1b343226bc6a17-a_utctm.o",
+##     "bc1b343226bc6a17-a_utf8.o",
+##     "bc1b343226bc6a17-asn1_lib.o",
+##     "bc1b343226bc6a17-asn1_par.o",
+##     "bc1b343226bc6a17-asn_pack.o",
+##     "bc1b343226bc6a17-f_int.o",
+##     "bc1b343226bc6a17-f_string.o",
+##     "bc1b343226bc6a17-posix_time.o",
+##     "bc1b343226bc6a17-tasn_dec.o",
+##     "bc1b343226bc6a17-tasn_enc.o",
+##     "bc1b343226bc6a17-tasn_fre.o",
+##     "bc1b343226bc6a17-tasn_new.o",
+##     "bc1b343226bc6a17-tasn_typ.o",
+##     "bc1b343226bc6a17-tasn_utl.o",
+##     "c1300545a7d60e2b-dh_asn1.o",
+##     "c1300545a7d60e2b-params.o",
+##     "c2f744a0f6403e0c-err_data.o",
+##     "c4fcddba145918af-asn1_compat.o",
+##     "c4fcddba145918af-ber.o",
+##     "c4fcddba145918af-cbb.o",
+##     "c4fcddba145918af-cbs.o",
+##     "c4fcddba145918af-unicode.o",
+##     "c7e9326d9b5d7de8-blowfish.o",
+##     "caa8b30982b4915c-ocsp_asn.o",
+##     "caa8b30982b4915c-ocsp_client.o",
+##     "caa8b30982b4915c-ocsp_extension.o",
+##     "caa8b30982b4915c-ocsp_http.o",
+##     "caa8b30982b4915c-ocsp_lib.o",
+##     "caa8b30982b4915c-ocsp_print.o",
+##     "caa8b30982b4915c-ocsp_server.o",
+##     "caa8b30982b4915c-ocsp_verify.o",
+##     "d7fed99e8aa5a9b1-rc4.o",
+##     "da5030c6f3330e8d-des.o",
+##     "db3b6bfb95261072-rust_wrapper.o",
+##     "dcb7d53a9be33b0c-engine.o",
+##     "dfe446faf29f8012-ec_asn1.o",
+##     "dfe446faf29f8012-ec_derive.o",
+##     "dfe446faf29f8012-hash_to_curve.o",
+##     "e3caa0b8b118742c-pkcs7.o",
+##     "e3caa0b8b118742c-pkcs7_asn1.o",
+##     "e3caa0b8b118742c-pkcs7_x509.o",
+##     "e4ecb171c489b811-conf.o",
+##     "e616dc00b7af72b9-intt.o",
+##     "e616dc00b7af72b9-mulcache_compute.o",
+##     "e616dc00b7af72b9-ntt.o",
+##     "e616dc00b7af72b9-nttfrombytes.o",
+##     "e616dc00b7af72b9-ntttobytes.o",
+##     "e616dc00b7af72b9-nttunpack.o",
+##     "e616dc00b7af72b9-polyvec_basemul_acc_montgomery_cached_asm_k2.o",
+##     "e616dc00b7af72b9-polyvec_basemul_acc_montgomery_cached_asm_k3.o",
+##     "e616dc00b7af72b9-polyvec_basemul_acc_montgomery_cached_asm_k4.o",
+##     "e616dc00b7af72b9-reduce.o",
+##     "e616dc00b7af72b9-rej_uniform_asm.o",
+##     "e616dc00b7af72b9-tomont.o",
+##     "e71c6558e17b1ce7-digest_extra.o",
+##     "ea2b51a0b6630529-lhash.o",
+##     "ebcd52e9457b6221-a_digest.o",
+##     "ebcd52e9457b6221-a_sign.o",
+##     "ebcd52e9457b6221-a_verify.o",
+##     "ebcd52e9457b6221-algorithm.o",
+##     "ebcd52e9457b6221-asn1_gen.o",
+##     "ebcd52e9457b6221-by_dir.o",
+##     "ebcd52e9457b6221-by_file.o",
+##     "ebcd52e9457b6221-i2d_pr.o",
+##     "ebcd52e9457b6221-name_print.o",
+##     "ebcd52e9457b6221-policy.o",
+##     "ebcd52e9457b6221-rsa_pss.o",
+##     "ebcd52e9457b6221-t_crl.o",
+##     "ebcd52e9457b6221-t_req.o",
+##     "ebcd52e9457b6221-t_x509.o",
+##     "ebcd52e9457b6221-t_x509a.o",
+##     "ebcd52e9457b6221-v3_akey.o",
+##     "ebcd52e9457b6221-v3_akeya.o",
+##     "ebcd52e9457b6221-v3_alt.o",
+##     "ebcd52e9457b6221-v3_bcons.o",
+##     "ebcd52e9457b6221-v3_bitst.o",
+##     "ebcd52e9457b6221-v3_conf.o",
+##     "ebcd52e9457b6221-v3_cpols.o",
+##     "ebcd52e9457b6221-v3_crld.o",
+##     "ebcd52e9457b6221-v3_enum.o",
+##     "ebcd52e9457b6221-v3_extku.o",
+##     "ebcd52e9457b6221-v3_genn.o",
+##     "ebcd52e9457b6221-v3_ia5.o",
+##     "ebcd52e9457b6221-v3_info.o",
+##     "ebcd52e9457b6221-v3_int.o",
+##     "ebcd52e9457b6221-v3_lib.o",
+##     "ebcd52e9457b6221-v3_ncons.o",
+##     "ebcd52e9457b6221-v3_ocsp.o",
+##     "ebcd52e9457b6221-v3_pcons.o",
+##     "ebcd52e9457b6221-v3_pmaps.o",
+##     "ebcd52e9457b6221-v3_prn.o",
+##     "ebcd52e9457b6221-v3_purp.o",
+##     "ebcd52e9457b6221-v3_skey.o",
+##     "ebcd52e9457b6221-v3_utl.o",
+##     "ebcd52e9457b6221-x509.o",
+##     "ebcd52e9457b6221-x509_att.o",
+##     "ebcd52e9457b6221-x509_cmp.o",
+##     "ebcd52e9457b6221-x509_d2.o",
+##     "ebcd52e9457b6221-x509_def.o",
+##     "ebcd52e9457b6221-x509_ext.o",
+##     "ebcd52e9457b6221-x509_lu.o",
+##     "ebcd52e9457b6221-x509_obj.o",
+##     "ebcd52e9457b6221-x509_req.o",
+##     "ebcd52e9457b6221-x509_set.o",
+##     "ebcd52e9457b6221-x509_trs.o",
+##     "ebcd52e9457b6221-x509_txt.o",
+##     "ebcd52e9457b6221-x509_v3.o",
+##     "ebcd52e9457b6221-x509_vfy.o",
+##     "ebcd52e9457b6221-x509_vpm.o",
+##     "ebcd52e9457b6221-x509cset.o",
+##     "ebcd52e9457b6221-x509name.o",
+##     "ebcd52e9457b6221-x509rset.o",
+##     "ebcd52e9457b6221-x509spki.o",
+##     "ebcd52e9457b6221-x_algor.o",
+##     "ebcd52e9457b6221-x_all.o",
+##     "ebcd52e9457b6221-x_attrib.o",
+##     "ebcd52e9457b6221-x_crl.o",
+##     "ebcd52e9457b6221-x_exten.o",
+##     "ebcd52e9457b6221-x_name.o",
+##     "ebcd52e9457b6221-x_pubkey.o",
+##     "ebcd52e9457b6221-x_req.o",
+##     "ebcd52e9457b6221-x_sig.o",
+##     "ebcd52e9457b6221-x_spki.o",
+##     "ebcd52e9457b6221-x_val.o",
+##     "ebcd52e9457b6221-x_x509.o",
+##     "ebcd52e9457b6221-x_x509a.o",
+##     "f8e4fd781484bd36-bcm.o",
+##     "f8e4fd781484bd36-fips_shared_support.o",
+##     "fb1f39df2ea6f08f-dsa.o",
+##     "fb1f39df2ea6f08f-dsa_asn1.o",
+##     "fe5b6d61933e4a91-fips202.o",
+##     "flag_check",
+##     "flag_check.c",
+##     "include/",
+##     "include/openssl/",
+##     "include/openssl/aead.h",
+##     "include/openssl/aes.h",
+##     "include/openssl/arm_arch.h",
+##     "include/openssl/asm_base.h",
+##     "include/openssl/asn1.h",
+##     "include/openssl/asn1_mac.h",
+##     "include/openssl/asn1t.h",
+##     "include/openssl/base.h",
+##     "include/openssl/base.h.in",
+##     "include/openssl/base64.h",
+##     "include/openssl/bio.h",
+##     "include/openssl/blake2.h",
+##     "include/openssl/blowfish.h",
+##     "include/openssl/bn.h",
+##     "include/openssl/boringssl_prefix_symbols.h",
+##     "include/openssl/boringssl_prefix_symbols_asm.h",
+##     "include/openssl/boringssl_prefix_symbols_nasm.inc",
+##     "include/openssl/buf.h",
+##     "include/openssl/buffer.h",
+##     "include/openssl/bytestring.h",
+##     "include/openssl/chacha.h",
+##     "include/openssl/cipher.h",
+##     "include/openssl/cmac.h",
+##     "include/openssl/conf.h",
+##     "include/openssl/cpu.h",
+##     "include/openssl/crypto.h",
+##     "include/openssl/ctrdrbg.h",
+##     "include/openssl/curve25519.h",
+##     "include/openssl/des.h",
+##     "include/openssl/dh.h",
+##     "include/openssl/digest.h",
+##     "include/openssl/dsa.h",
+##     "include/openssl/dtls1.h",
+##     "include/openssl/e_os2.h",
+##     "include/openssl/ec.h",
+##     "include/openssl/ec_key.h",
+##     "include/openssl/ecdh.h",
+##     "include/openssl/ecdsa.h",
+##     "include/openssl/engine.h",
+##     "include/openssl/err.h",
+##     "include/openssl/evp.h",
+##     "include/openssl/evp_errors.h",
+##     "include/openssl/ex_data.h",
+##     "include/openssl/experimental/",
+##     "include/openssl/experimental/kem_deterministic_api.h",
+##     "include/openssl/hkdf.h",
+##     "include/openssl/hmac.h",
+##     "include/openssl/hpke.h",
+##     "include/openssl/hrss.h",
+##     "include/openssl/is_awslc.h",
+##     "include/openssl/kdf.h",
+##     "include/openssl/lhash.h",
+##     "include/openssl/md4.h",
+##     "include/openssl/md5.h",
+##     "include/openssl/mem.h",
+##     "include/openssl/nid.h",
+##     "include/openssl/obj.h",
+##     "include/openssl/obj_mac.h",
+##     "include/openssl/objects.h",
+##     "include/openssl/ocsp.h",
+##     "include/openssl/opensslconf.h",
+##     "include/openssl/opensslv.h",
+##     "include/openssl/opensslv.h.in",
+##     "include/openssl/ossl_typ.h",
+##     "include/openssl/pem.h",
+##     "include/openssl/pkcs12.h",
+##     "include/openssl/pkcs7.h",
+##     "include/openssl/pkcs8.h",
+##     "include/openssl/poly1305.h",
+##     "include/openssl/pool.h",
+##     "include/openssl/posix_time.h",
+##     "include/openssl/rand.h",
+##     "include/openssl/rc4.h",
+##     "include/openssl/ripemd.h",
+##     "include/openssl/rsa.h",
+##     "include/openssl/safestack.h",
+##     "include/openssl/service_indicator.h",
+##     "include/openssl/sha.h",
+##     "include/openssl/siphash.h",
+##     "include/openssl/span.h",
+##     "include/openssl/sshkdf.h",
+##     "include/openssl/ssl.h",
+##     "include/openssl/ssl3.h",
+##     "include/openssl/stack.h",
+##     "include/openssl/target.h",
+##     "include/openssl/thread.h",
+##     "include/openssl/time.h",
+##     "include/openssl/tls1.h",
+##     "include/openssl/trust_token.h",
+##     "include/openssl/type_check.h",
+##     "include/openssl/ui.h",
+##     "include/openssl/x509.h",
+##     "include/openssl/x509_vfy.h",
+##     "include/openssl/x509v3.h",
+##     "include/openssl/x509v3_errors.h",
+##     "include/rust_wrapper.h",
+##     "libaws_lc_0_32_2_crypto.a",
+## ]
+## stdout = [
+##     "cargo:rerun-if-env-changed=AWS_LC_SYS_NO_PREFIX_x86_64_unknown_linux_gnu",
+##     "cargo:rerun-if-env-changed=AWS_LC_SYS_NO_PREFIX",
+##     "cargo:rerun-if-env-changed=AWS_LC_SYS_PREGENERATING_BINDINGS_x86_64_unknown_linux_gnu",
+##     "cargo:rerun-if-env-changed=AWS_LC_SYS_PREGENERATING_BINDINGS",
+##     "cargo:rerun-if-env-changed=AWS_LC_SYS_EXTERNAL_BINDGEN_x86_64_unknown_linux_gnu",
+##     "cargo:rerun-if-env-changed=AWS_LC_SYS_EXTERNAL_BINDGEN",
+##     "cargo:rerun-if-env-changed=AWS_LC_SYS_NO_ASM_x86_64_unknown_linux_gnu",
+##     "cargo:rerun-if-env-changed=AWS_LC_SYS_NO_ASM",
+##     "cargo:rerun-if-env-changed=AWS_LC_SYS_CFLAGS_x86_64_unknown_linux_gnu",
+##     "cargo:rerun-if-env-changed=AWS_LC_SYS_CFLAGS",
+##     "cargo:rerun-if-env-changed=CFLAGS_x86_64_unknown_linux_gnu",
+##     "cargo:rerun-if-env-changed=CFLAGS",
+##     "cargo:rerun-if-env-changed=AWS_LC_SYS_PREBUILT_NASM_x86_64_unknown_linux_gnu",
+##     "cargo:rerun-if-env-changed=AWS_LC_SYS_PREBUILT_NASM",
+##     "cargo:rerun-if-env-changed=AWS_LC_SYS_C_STD_x86_64_unknown_linux_gnu",
+##     "cargo:rerun-if-env-changed=AWS_LC_SYS_C_STD",
+##     "cargo:rerun-if-env-changed=AWS_LC_SYS_CMAKE_BUILDER_x86_64_unknown_linux_gnu",
+##     "cargo:rerun-if-env-changed=AWS_LC_SYS_CMAKE_BUILDER",
+##     "cargo:rerun-if-env-changed=AWS_LC_SYS_NO_PREGENERATED_SRC_x86_64_unknown_linux_gnu",
+##     "cargo:rerun-if-env-changed=AWS_LC_SYS_NO_PREGENERATED_SRC",
+##     "cargo:rerun-if-env-changed=AWS_LC_SYS_EFFECTIVE_TARGET_x86_64_unknown_linux_gnu",
+##     "cargo:rerun-if-env-changed=AWS_LC_SYS_EFFECTIVE_TARGET",
+##     "cargo:rustc-cfg=x86_64_unknown_linux_gnu",
+##     "cargo:rerun-if-env-changed=AWS_LC_SYS_STATIC_x86_64_unknown_linux_gnu",
+##     "cargo:rerun-if-env-changed=AWS_LC_SYS_STATIC",
+##     "default_for Target: 'x86_64-unknown-linux-gnu'",
+##     "cargo:rerun-if-env-changed=CARGO_FEATURE_SSL",
+##     "cargo:warning=Building with: CC",
+##     'cargo:warning=Symbol Prefix: Some("aws_lc_0_32_2")',
+##     "default_for Target: 'x86_64-unknown-linux-gnu'",
+##     "cargo:rerun-if-env-changed=CARGO_FEATURE_SSL",
+##     "cargo:root=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out",
+##     "default_for Target: 'x86_64-unknown-linux-gnu'",
+##     "OPT_LEVEL = Some(3)",
+##     "OUT_DIR = Some(/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out)",
+##     "TARGET = Some(x86_64-unknown-linux-gnu)",
+##     "HOST = Some(x86_64-unknown-linux-gnu)",
+##     "cargo:rerun-if-env-changed=CC_x86_64-unknown-linux-gnu",
+##     "CC_x86_64-unknown-linux-gnu = None",
+##     "cargo:rerun-if-env-changed=CC_x86_64_unknown_linux_gnu",
+##     "CC_x86_64_unknown_linux_gnu = None",
+##     "cargo:rerun-if-env-changed=HOST_CC",
+##     "HOST_CC = None",
+##     "cargo:rerun-if-env-changed=CC",
+##     "CC = None",
+##     "cargo:rerun-if-env-changed=CC_ENABLE_DEBUG_OUTPUT",
+##     "RUSTC_WRAPPER = None",
+##     "cargo:rerun-if-env-changed=CRATE_CC_NO_DEFAULTS",
+##     "CRATE_CC_NO_DEFAULTS = None",
+##     "DEBUG = Some(false)",
+##     "CARGO_CFG_TARGET_FEATURE = Some(fxsr,sse,sse2)",
+##     "cargo:rerun-if-env-changed=CFLAGS",
+##     "CFLAGS = None",
+##     "cargo:rerun-if-env-changed=HOST_CFLAGS",
+##     "HOST_CFLAGS = None",
+##     "cargo:rerun-if-env-changed=CFLAGS_x86_64_unknown_linux_gnu",
+##     "CFLAGS_x86_64_unknown_linux_gnu = None",
+##     "cargo:rerun-if-env-changed=CFLAGS_x86_64-unknown-linux-gnu",
+##     "CFLAGS_x86_64-unknown-linux-gnu = None",
+##     "CARGO_ENCODED_RUSTFLAGS = Some()",
+##     "OPT_LEVEL = Some(3)",
+##     "TARGET = Some(x86_64-unknown-linux-gnu)",
+##     "HOST = Some(x86_64-unknown-linux-gnu)",
+##     "cargo:rerun-if-env-changed=CC_x86_64-unknown-linux-gnu",
+##     "CC_x86_64-unknown-linux-gnu = None",
+##     "cargo:rerun-if-env-changed=CC_x86_64_unknown_linux_gnu",
+##     "CC_x86_64_unknown_linux_gnu = None",
+##     "cargo:rerun-if-env-changed=HOST_CC",
+##     "HOST_CC = None",
+##     "cargo:rerun-if-env-changed=CC",
+##     "CC = None",
+##     "cargo:rerun-if-env-changed=CC_ENABLE_DEBUG_OUTPUT",
+##     "RUSTC_WRAPPER = None",
+##     "cargo:rerun-if-env-changed=CRATE_CC_NO_DEFAULTS",
+##     "CRATE_CC_NO_DEFAULTS = None",
+##     "DEBUG = Some(false)",
+##     "CARGO_CFG_TARGET_FEATURE = Some(fxsr,sse,sse2)",
+##     "cargo:rerun-if-env-changed=CFLAGS",
+##     "CFLAGS = None",
+##     "cargo:rerun-if-env-changed=HOST_CFLAGS",
+##     "HOST_CFLAGS = None",
+##     "cargo:rerun-if-env-changed=CFLAGS_x86_64_unknown_linux_gnu",
+##     "CFLAGS_x86_64_unknown_linux_gnu = None",
+##     "cargo:rerun-if-env-changed=CFLAGS_x86_64-unknown-linux-gnu",
+##     "CFLAGS_x86_64-unknown-linux-gnu = None",
+##     "CARGO_ENCODED_RUSTFLAGS = Some()",
+##     """cargo:warning=Compilation of 'c11.c' succeeded - Ok(["/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out/out-c11/7dfda64fdf5a526c-c11.o"]).""",
+##     "cargo:rerun-if-env-changed=AWS_LC_SYS_CC_x86_64_unknown_linux_gnu",
+##     "cargo:rerun-if-env-changed=AWS_LC_SYS_CC",
+##     "cargo:rerun-if-env-changed=CC_x86_64_unknown_linux_gnu",
+##     "cargo:rerun-if-env-changed=CC",
+##     "cargo:rerun-if-env-changed=AWS_LC_SYS_CXX_x86_64_unknown_linux_gnu",
+##     "cargo:rerun-if-env-changed=AWS_LC_SYS_CXX",
+##     "cargo:rerun-if-env-changed=CXX_x86_64_unknown_linux_gnu",
+##     "cargo:rerun-if-env-changed=CXX",
+##     "OUT_DIR = Some(/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out)",
+##     "cargo:rerun-if-env-changed=CC_ENABLE_DEBUG_OUTPUT",
+##     "cargo:rerun-if-env-changed=CRATE_CC_NO_DEFAULTS",
+##     "CRATE_CC_NO_DEFAULTS = None",
+##     "TARGET = Some(x86_64-unknown-linux-gnu)",
+##     "CARGO_CFG_TARGET_FEATURE = Some(fxsr,sse,sse2)",
+##     "HOST = Some(x86_64-unknown-linux-gnu)",
+##     "cargo:rerun-if-env-changed=CFLAGS",
+##     "CFLAGS = None",
+##     "cargo:rerun-if-env-changed=HOST_CFLAGS",
+##     "HOST_CFLAGS = None",
+##     "cargo:rerun-if-env-changed=CFLAGS_x86_64_unknown_linux_gnu",
+##     "CFLAGS_x86_64_unknown_linux_gnu = None",
+##     "cargo:rerun-if-env-changed=CFLAGS_x86_64-unknown-linux-gnu",
+##     "CFLAGS_x86_64-unknown-linux-gnu = None",
+##     "cargo:warning=Using flag: -ffile-prefix-map=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.32.2=",
+##     "OPT_LEVEL = Some(3)",
+##     "TARGET = Some(x86_64-unknown-linux-gnu)",
+##     "HOST = Some(x86_64-unknown-linux-gnu)",
+##     "cargo:rerun-if-env-changed=CC_x86_64-unknown-linux-gnu",
+##     "CC_x86_64-unknown-linux-gnu = None",
+##     "cargo:rerun-if-env-changed=CC_x86_64_unknown_linux_gnu",
+##     "CC_x86_64_unknown_linux_gnu = None",
+##     "cargo:rerun-if-env-changed=HOST_CC",
+##     "HOST_CC = None",
+##     "cargo:rerun-if-env-changed=CC",
+##     "CC = None",
+##     "cargo:rerun-if-env-changed=CC_ENABLE_DEBUG_OUTPUT",
+##     "RUSTC_WRAPPER = None",
+##     "cargo:rerun-if-env-changed=CRATE_CC_NO_DEFAULTS",
+##     "CRATE_CC_NO_DEFAULTS = None",
+##     "DEBUG = Some(false)",
+##     "CARGO_CFG_TARGET_FEATURE = Some(fxsr,sse,sse2)",
+##     "cargo:rerun-if-env-changed=CFLAGS",
+##     "CFLAGS = None",
+##     "cargo:rerun-if-env-changed=HOST_CFLAGS",
+##     "HOST_CFLAGS = None",
+##     "cargo:rerun-if-env-changed=CFLAGS_x86_64_unknown_linux_gnu",
+##     "CFLAGS_x86_64_unknown_linux_gnu = None",
+##     "cargo:rerun-if-env-changed=CFLAGS_x86_64-unknown-linux-gnu",
+##     "CFLAGS_x86_64-unknown-linux-gnu = None",
+##     "CARGO_ENCODED_RUSTFLAGS = Some()",
+##     """cargo:warning=Compilation of 'stdalign_check.c' succeeded - Ok(["/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out/out-stdalign_check/7dfda64fdf5a526c-stdalign_check.o"]).""",
+##     "OPT_LEVEL = Some(3)",
+##     "TARGET = Some(x86_64-unknown-linux-gnu)",
+##     "HOST = Some(x86_64-unknown-linux-gnu)",
+##     "cargo:rerun-if-env-changed=CC_x86_64-unknown-linux-gnu",
+##     "CC_x86_64-unknown-linux-gnu = None",
+##     "cargo:rerun-if-env-changed=CC_x86_64_unknown_linux_gnu",
+##     "CC_x86_64_unknown_linux_gnu = None",
+##     "cargo:rerun-if-env-changed=HOST_CC",
+##     "HOST_CC = None",
+##     "cargo:rerun-if-env-changed=CC",
+##     "CC = None",
+##     "cargo:rerun-if-env-changed=CC_ENABLE_DEBUG_OUTPUT",
+##     "RUSTC_WRAPPER = None",
+##     "cargo:rerun-if-env-changed=CRATE_CC_NO_DEFAULTS",
+##     "CRATE_CC_NO_DEFAULTS = None",
+##     "DEBUG = Some(false)",
+##     "CARGO_CFG_TARGET_FEATURE = Some(fxsr,sse,sse2)",
+##     "cargo:rerun-if-env-changed=CFLAGS",
+##     "CFLAGS = None",
+##     "cargo:rerun-if-env-changed=HOST_CFLAGS",
+##     "HOST_CFLAGS = None",
+##     "cargo:rerun-if-env-changed=CFLAGS_x86_64_unknown_linux_gnu",
+##     "CFLAGS_x86_64_unknown_linux_gnu = None",
+##     "cargo:rerun-if-env-changed=CFLAGS_x86_64-unknown-linux-gnu",
+##     "CFLAGS_x86_64-unknown-linux-gnu = None",
+##     "CARGO_ENCODED_RUSTFLAGS = Some()",
+##     """cargo:warning=Compilation of 'builtin_swap_check.c' succeeded - Ok(["/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out/out-builtin_swap_check/7dfda64fdf5a526c-builtin_swap_check.o"]).""",
+##     "OPT_LEVEL = Some(3)",
+##     "TARGET = Some(x86_64-unknown-linux-gnu)",
+##     "HOST = Some(x86_64-unknown-linux-gnu)",
+##     "cargo:rerun-if-env-changed=CC_x86_64-unknown-linux-gnu",
+##     "CC_x86_64-unknown-linux-gnu = None",
+##     "cargo:rerun-if-env-changed=CC_x86_64_unknown_linux_gnu",
+##     "CC_x86_64_unknown_linux_gnu = None",
+##     "cargo:rerun-if-env-changed=HOST_CC",
+##     "HOST_CC = None",
+##     "cargo:rerun-if-env-changed=CC",
+##     "CC = None",
+##     "cargo:rerun-if-env-changed=CC_ENABLE_DEBUG_OUTPUT",
+##     "RUSTC_WRAPPER = None",
+##     "cargo:rerun-if-env-changed=CRATE_CC_NO_DEFAULTS",
+##     "CRATE_CC_NO_DEFAULTS = None",
+##     "DEBUG = Some(false)",
+##     "CARGO_CFG_TARGET_FEATURE = Some(fxsr,sse,sse2)",
+##     "cargo:rerun-if-env-changed=CFLAGS",
+##     "CFLAGS = None",
+##     "cargo:rerun-if-env-changed=HOST_CFLAGS",
+##     "HOST_CFLAGS = None",
+##     "cargo:rerun-if-env-changed=CFLAGS_x86_64_unknown_linux_gnu",
+##     "CFLAGS_x86_64_unknown_linux_gnu = None",
+##     "cargo:rerun-if-env-changed=CFLAGS_x86_64-unknown-linux-gnu",
+##     "CFLAGS_x86_64-unknown-linux-gnu = None",
+##     "CARGO_ENCODED_RUSTFLAGS = Some()",
+##     """cargo:warning=Compilation of 'linux_random_h.c' succeeded - Ok(["/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out/out-linux_random_h/7dfda64fdf5a526c-linux_random_h.o"]).""",
+##     "OPT_LEVEL = Some(3)",
+##     "OUT_DIR = Some(/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out)",
+##     "TARGET = Some(x86_64-unknown-linux-gnu)",
+##     "HOST = Some(x86_64-unknown-linux-gnu)",
+##     "cargo:rerun-if-env-changed=CC_x86_64-unknown-linux-gnu",
+##     "CC_x86_64-unknown-linux-gnu = None",
+##     "cargo:rerun-if-env-changed=CC_x86_64_unknown_linux_gnu",
+##     "CC_x86_64_unknown_linux_gnu = None",
+##     "cargo:rerun-if-env-changed=HOST_CC",
+##     "HOST_CC = None",
+##     "cargo:rerun-if-env-changed=CC",
+##     "CC = None",
+##     "cargo:rerun-if-env-changed=CC_ENABLE_DEBUG_OUTPUT",
+##     "RUSTC_WRAPPER = None",
+##     "cargo:rerun-if-env-changed=CRATE_CC_NO_DEFAULTS",
+##     "CRATE_CC_NO_DEFAULTS = None",
+##     "DEBUG = Some(false)",
+##     "CARGO_CFG_TARGET_FEATURE = Some(fxsr,sse,sse2)",
+##     "cargo:rerun-if-env-changed=CFLAGS",
+##     "CFLAGS = None",
+##     "cargo:rerun-if-env-changed=HOST_CFLAGS",
+##     "HOST_CFLAGS = None",
+##     "cargo:rerun-if-env-changed=CFLAGS_x86_64_unknown_linux_gnu",
+##     "CFLAGS_x86_64_unknown_linux_gnu = None",
+##     "cargo:rerun-if-env-changed=CFLAGS_x86_64-unknown-linux-gnu",
+##     "CFLAGS_x86_64-unknown-linux-gnu = None",
+##     "CARGO_ENCODED_RUSTFLAGS = Some()",
+##     "cargo:rerun-if-env-changed=CFLAGS_x86_64_unknown_linux_gnu",
+##     "cargo:rerun-if-env-changed=CFLAGS",
+##     "OPT_LEVEL = Some(3)",
+##     "OUT_DIR = Some(/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out)",
+##     "TARGET = Some(x86_64-unknown-linux-gnu)",
+##     "HOST = Some(x86_64-unknown-linux-gnu)",
+##     "cargo:rerun-if-env-changed=CC_x86_64-unknown-linux-gnu",
+##     "CC_x86_64-unknown-linux-gnu = None",
+##     "cargo:rerun-if-env-changed=CC_x86_64_unknown_linux_gnu",
+##     "CC_x86_64_unknown_linux_gnu = None",
+##     "cargo:rerun-if-env-changed=HOST_CC",
+##     "HOST_CC = None",
+##     "cargo:rerun-if-env-changed=CC",
+##     "CC = None",
+##     "cargo:rerun-if-env-changed=CC_ENABLE_DEBUG_OUTPUT",
+##     "RUSTC_WRAPPER = None",
+##     "cargo:rerun-if-env-changed=CRATE_CC_NO_DEFAULTS",
+##     "CRATE_CC_NO_DEFAULTS = None",
+##     "DEBUG = Some(false)",
+##     "CARGO_CFG_TARGET_FEATURE = Some(fxsr,sse,sse2)",
+##     "cargo:rerun-if-env-changed=CFLAGS",
+##     "CFLAGS = None",
+##     "cargo:rerun-if-env-changed=HOST_CFLAGS",
+##     "HOST_CFLAGS = None",
+##     "cargo:rerun-if-env-changed=CFLAGS_x86_64_unknown_linux_gnu",
+##     "CFLAGS_x86_64_unknown_linux_gnu = None",
+##     "cargo:rerun-if-env-changed=CFLAGS_x86_64-unknown-linux-gnu",
+##     "CFLAGS_x86_64-unknown-linux-gnu = None",
+##     "CARGO_ENCODED_RUSTFLAGS = Some()",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "exit status: 0",
+##     "cargo:rerun-if-env-changed=AR_x86_64-unknown-linux-gnu",
+##     "AR_x86_64-unknown-linux-gnu = None",
+##     "cargo:rerun-if-env-changed=AR_x86_64_unknown_linux_gnu",
+##     "AR_x86_64_unknown_linux_gnu = None",
+##     "cargo:rerun-if-env-changed=HOST_AR",
+##     "HOST_AR = None",
+##     "cargo:rerun-if-env-changed=AR",
+##     "AR = None",
+##     "cargo:rerun-if-env-changed=ARFLAGS",
+##     "ARFLAGS = None",
+##     "cargo:rerun-if-env-changed=HOST_ARFLAGS",
+##     "HOST_ARFLAGS = None",
+##     "cargo:rerun-if-env-changed=ARFLAGS_x86_64_unknown_linux_gnu",
+##     "ARFLAGS_x86_64_unknown_linux_gnu = None",
+##     "cargo:rerun-if-env-changed=ARFLAGS_x86_64-unknown-linux-gnu",
+##     "ARFLAGS_x86_64-unknown-linux-gnu = None",
+##     "cargo:rustc-link-lib=static=aws_lc_0_32_2_crypto",
+##     "cargo:rustc-link-search=native=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out",
+##     "cargo:rerun-if-env-changed=AWS_LC_SYS_INCLUDES_x86_64_unknown_linux_gnu",
+##     "cargo:rerun-if-env-changed=AWS_LC_SYS_INCLUDES",
+##     "cargo:include=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out/include",
+##     "cargo:libcrypto=aws_lc_0_32_2_crypto",
+##     "cargo:conf=OPENSSL_NO_ASYNC,OPENSSL_NO_BF,OPENSSL_NO_BLAKE2,OPENSSL_NO_BUF_FREELISTS,OPENSSL_NO_CAMELLIA,OPENSSL_NO_CAPIENG,OPENSSL_NO_CAST,OPENSSL_NO_CMS,OPENSSL_NO_COMP,OPENSSL_NO_CRYPTO_MDEBUG,OPENSSL_NO_CT,OPENSSL_NO_DANE,OPENSSL_NO_DEPRECATED,OPENSSL_NO_DGRAM,OPENSSL_NO_DYNAMIC_ENGINE,OPENSSL_NO_EC_NISTP_64_GCC_128,OPENSSL_NO_EC2M,OPENSSL_NO_EGD,OPENSSL_NO_ENGINE,OPENSSL_NO_GMP,OPENSSL_NO_GOST,OPENSSL_NO_HEARTBEATS,OPENSSL_NO_HW,OPENSSL_NO_IDEA,OPENSSL_NO_JPAKE,OPENSSL_NO_KRB5,OPENSSL_NO_MD2,OPENSSL_NO_MDC2,OPENSSL_NO_OCB,OPENSSL_NO_RC2,OPENSSL_NO_RC5,OPENSSL_NO_RFC3779,OPENSSL_NO_RIPEMD,OPENSSL_NO_RMD160,OPENSSL_NO_SCTP,OPENSSL_NO_SEED,OPENSSL_NO_SM2,OPENSSL_NO_SM3,OPENSSL_NO_SM4,OPENSSL_NO_SRP,OPENSSL_NO_SSL_TRACE,OPENSSL_NO_SSL2,OPENSSL_NO_SSL3,OPENSSL_NO_SSL3_METHOD,OPENSSL_NO_STATIC_ENGINE,OPENSSL_NO_STORE,OPENSSL_NO_TS,OPENSSL_NO_WHIRLPOOL",
+##     "cargo:rerun-if-changed=builder/",
+##     "cargo:rerun-if-changed=aws-lc/",
+## ]
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "run-z-aws-lc-sys-0.32.2-2d875791ad1d3d18"
+## script = '''
+## FROM rust-base AS run-z-aws-lc-sys-0.32.2-2d875791ad1d3d18
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out
+## WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.32.2
+## RUN \
+##   --mount=from=out-b91f62695d1e67bd,source=/build_script_main-b91f62695d1e67bd,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-b91f62695d1e67bd/build-script-main \
+##   --mount=from=cratesio-aws-lc-sys-0.32.2,source=/aws-lc-sys-0.32.2,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.32.2 \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CFG_FEATURE=prebuilt-nasm \
+##         CARGO_CFG_PANIC=unwind \
+##         CARGO_CFG_TARGET_ABI= \
+##         CARGO_CFG_TARGET_ARCH=x86_64 \
+##         CARGO_CFG_TARGET_ENDIAN=little \
+##         CARGO_CFG_TARGET_ENV=gnu \
+##         CARGO_CFG_TARGET_FAMILY=unix \
+##         CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
+##         CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+##         CARGO_CFG_TARGET_OS=linux \
+##         CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+##         CARGO_CFG_TARGET_VENDOR=unknown \
+##         CARGO_CFG_UNIX= \
+##         CARGO_ENCODED_RUSTFLAGS= \
+##         CARGO_FEATURE_PREBUILT_NASM=1 \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.32.2 \
+##         CARGO_MANIFEST_LINKS=aws_lc_0_32_2 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.32.2/Cargo.toml \
+##         CARGO_PKG_AUTHORS=AWS-LC \
+##         CARGO_PKG_DESCRIPTION=AWS-LC' is a general-purpose cryptographic library maintained by the AWS Cryptography team for AWS and their customers. It іs based on code from the Google BoringSSL project and the OpenSSL project.' \
+##         CARGO_PKG_HOMEPAGE= \
+##         CARGO_PKG_LICENSE=ISC' AND (Apache-2.0 OR ISC) AND OpenSSL' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=aws-lc-sys \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/aws/aws-lc-rs' \
+##         CARGO_PKG_RUST_VERSION=1.70.0 \
+##         CARGO_PKG_VERSION=0.32.2 \
+##         CARGO_PKG_VERSION_MAJOR=0 \
+##         CARGO_PKG_VERSION_MINOR=32 \
+##         CARGO_PKG_VERSION_PATCH=2 \
+##         CARGO_PKG_VERSION_PRE= \
+##         DEBUG=false \
+##         HOST=x86_64-unknown-linux-gnu \
+##         NUM_JOBS=4 \
+##         OPT_LEVEL=3 \
+##         OUT_DIR=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out \
+##         PROFILE=release \
+##         RUSTC=rustc \
+##         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+##         TARGET=x86_64-unknown-linux-gnu \
+##         CARGOGREEN=1 \
+##       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-b91f62695d1e67bd/build-script-main \
+##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out/out-2d875791ad1d3d18-stdout \
+##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out/out-2d875791ad1d3d18-stderr \
+##         || echo $? >/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out/out-2d875791ad1d3d18-errcode\
+##   ; find /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-2d875791ad1d3d18"
+## script = """
+## FROM scratch AS out-2d875791ad1d3d18
+## COPY --link --from=run-z-aws-lc-sys-0.32.2-2d875791ad1d3d18 /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out /"""
+
+
 FROM rust-base AS dep-n-aws-lc-sys-0.32.2-135dbb753da3a4f4
 SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps
 RUN \
   --mount=from=cratesio-aws-lc-sys-0.32.2,source=/aws-lc-sys-0.32.2,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.32.2 \
-  --mount=from=crate_out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out,source=/ \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=aws_lc_sys \
         CARGO_INCREMENTAL=0 \
@@ -4674,8 +9116,6 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         OUT_DIR=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out \
         CARGOGREEN=1 \
-        NTPD_RS_GIT_DATE=2025-05-09 \
-        NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
       rustc --crate-name aws_lc_sys --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --cfg feature'="prebuilt-nasm"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("asan", "bindgen", "prebuilt-nasm", "ssl"))' -C metadata'=cdb74aa0cb1849cf' -C extra-filename'=-135dbb753da3a4f4' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --cap-lints warn -L native'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out' -l static'=aws_lc_0_32_2_crypto' --cfg x86_64_unknown_linux_gnu /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.32.2/src/lib.rs \
         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-135dbb753da3a4f4-stdout \
         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-135dbb753da3a4f4-stderr \
@@ -4685,6 +9125,23 @@ FROM scratch AS out-135dbb753da3a4f4
 COPY --link --from=dep-n-aws-lc-sys-0.32.2-135dbb753da3a4f4 /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/*-135dbb753da3a4f4* /
 
 ## this = "135dbb753da3a4f4"
+## deps = [
+##     "2d875791ad1d3d18",
+##     "d2948f7c0c8497b1",
+##     "4dc141be22bbffce",
+##     "60426161aa87c673",
+##     "7560e7c5c88ec4c4",
+##     "b166d1c75d83103c",
+##     "99856d878c8e44ce",
+##     "336c2d9100ab92f8",
+##     "3ff4fdb389eab124",
+##     "25a6bb4144c31f83",
+##     "19400729ba85cd55",
+##     "d905bd04d466c2b4",
+##     "bcbfd880a9747f76",
+##     "b91f62695d1e67bd",
+## ]
+## buildrs_results = ["2d875791ad1d3d18"]
 ## writes = [
 ##     "aws_lc_sys-135dbb753da3a4f4.d",
 ##     "libaws_lc_sys-135dbb753da3a4f4.rlib",
@@ -4696,9 +9153,9 @@ COPY --link --from=dep-n-aws-lc-sys-0.32.2-135dbb753da3a4f4 /tmp/clis-ntpd_1-7-0
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libaws_lc_sys-135dbb753da3a4f4.rlib","emit":"link"}',
 ## ]
 ##
-## [[contexts]]
-## name = "crate_out-2d875791ad1d3d18"
-## uri = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out"
+## [[mounts]]
+## name = "out-2d875791ad1d3d18"
+## mount = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out"
 ##
 ## [[stages]]
 ##
@@ -4725,7 +9182,7 @@ COPY --link --from=dep-n-aws-lc-sys-0.32.2-135dbb753da3a4f4 /tmp/clis-ntpd_1-7-0
 ## WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps
 ## RUN \
 ##   --mount=from=cratesio-aws-lc-sys-0.32.2,source=/aws-lc-sys-0.32.2,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.32.2 \
-##   --mount=from=crate_out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out,source=/ \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=aws_lc_sys \
 ##         CARGO_INCREMENTAL=0 \
@@ -4747,8 +9204,6 @@ COPY --link --from=dep-n-aws-lc-sys-0.32.2-135dbb753da3a4f4 /tmp/clis-ntpd_1-7-0
 ##         CARGO_PKG_VERSION_PRE= \
 ##         OUT_DIR=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out \
 ##         CARGOGREEN=1 \
-##         NTPD_RS_GIT_DATE=2025-05-09 \
-##         NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
 ##       rustc --crate-name aws_lc_sys --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --cfg feature'="prebuilt-nasm"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("asan", "bindgen", "prebuilt-nasm", "ssl"))' -C metadata'=cdb74aa0cb1849cf' -C extra-filename'=-135dbb753da3a4f4' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --cap-lints warn -L native'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out' -l static'=aws_lc_0_32_2_crypto' --cfg x86_64_unknown_linux_gnu /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-sys-0.32.2/src/lib.rs \
 ##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-135dbb753da3a4f4-stdout \
 ##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-135dbb753da3a4f4-stderr \
@@ -4766,6 +9221,310 @@ COPY --link --from=dep-n-aws-lc-sys-0.32.2-135dbb753da3a4f4 /tmp/clis-ntpd_1-7-0
 FROM scratch AS cratesio-aws-lc-rs-1.14.1
 ADD --chmod=0664 --unpack --checksum=sha256:879b6c89592deb404ba4dc0ae6b58ffd1795c78991cbb5b8bc441c48a070440d \
   https://static.crates.io/crates/aws-lc-rs/aws-lc-rs-1.14.1.crate /
+FROM rust-base AS dep-x-aws-lc-rs-1.14.1-6215be1cd523c855
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-rs-6215be1cd523c855
+RUN \
+  --mount=from=cratesio-aws-lc-rs-1.14.1,source=/aws-lc-rs-1.14.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.14.1,rw \
+    { \
+        cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.14.1/build.rs | sed -E 's/^(pub[()a-z]* +)?(async +)?fn +main/\1\2fn actual_6215be1cd523c855_main/' >/_ && mv /_ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.14.1/build.rs ; \
+        { \
+          echo ; \
+          echo 'fn main() {' ; \
+          echo '    use std::env::{args_os, var_os};' ; \
+          echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+          echo '        use std::process::{Command, Stdio};' ; \
+          echo '        let mut cmd = Command::new("cargo-green");' ; \
+          echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+          echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+          echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+          echo '        assert!(res.success());' ; \
+          echo '    } else {' ; \
+          echo '        actual_6215be1cd523c855_main();' ; \
+          echo '    }' ; \
+          echo '}' ; \
+        } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.14.1/build.rs ; \
+    } && \
+    env CARGO="$(which cargo)" \
+        CARGO_CRATE_NAME=build_script_build \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.14.1 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.14.1/Cargo.toml \
+        CARGO_PKG_AUTHORS=AWS-LibCrypto \
+        CARGO_PKG_DESCRIPTION=aws-lc-rs' is a cryptographic library using AWS-LC for its cryptographic operations. This library strives to be API-compatible with the popular Rust library named ring.' \
+        CARGO_PKG_HOMEPAGE=https'://github.com/aws/aws-lc-rs' \
+        CARGO_PKG_LICENSE=ISC' AND (Apache-2.0 OR ISC)' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=aws-lc-rs \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/aws/aws-lc-rs' \
+        CARGO_PKG_RUST_VERSION=1.70.0 \
+        CARGO_PKG_VERSION=1.14.1 \
+        CARGO_PKG_VERSION_MAJOR=1 \
+        CARGO_PKG_VERSION_MINOR=14 \
+        CARGO_PKG_VERSION_PATCH=1 \
+        CARGO_PKG_VERSION_PRE= \
+        CARGOGREEN=1 \
+      rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="aws-lc-sys"' --cfg feature'="prebuilt-nasm"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "asan", "aws-lc-sys", "bindgen", "default", "fips", "non-fips", "prebuilt-nasm", "ring-io", "ring-sig-verify", "test_logging", "unstable"))' -C metadata'=6dd67a5001d657c2' -C extra-filename'=-6215be1cd523c855' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-rs-6215be1cd523c855 -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.14.1/build.rs \
+        1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-rs-6215be1cd523c855/out-6215be1cd523c855-stdout \
+        2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-rs-6215be1cd523c855/out-6215be1cd523c855-stderr \
+        || echo $? >/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-rs-6215be1cd523c855/out-6215be1cd523c855-errcode\
+  ; find /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-rs-6215be1cd523c855/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-6215be1cd523c855
+COPY --link --from=dep-x-aws-lc-rs-1.14.1-6215be1cd523c855 /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-rs-6215be1cd523c855/*-6215be1cd523c855* /
+
+## this = "6215be1cd523c855"
+## writes = [
+##     "build_script_build-6215be1cd523c855",
+##     "build_script_build-6215be1cd523c855.d",
+## ]
+## stderr = [
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-rs-6215be1cd523c855/build_script_build-6215be1cd523c855.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-rs-6215be1cd523c855/build_script_build-6215be1cd523c855","emit":"link"}',
+## ]
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
+##
+## [[stages]]
+##
+## [stages.Cratesio]
+## stage = "cratesio-aws-lc-rs-1.14.1"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.14.1"
+## name = "aws-lc-rs"
+## name_dash_version = "aws-lc-rs-1.14.1"
+## hash = "879b6c89592deb404ba4dc0ae6b58ffd1795c78991cbb5b8bc441c48a070440d"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "dep-x-aws-lc-rs-1.14.1-6215be1cd523c855"
+## script = '''
+## FROM rust-base AS dep-x-aws-lc-rs-1.14.1-6215be1cd523c855
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-rs-6215be1cd523c855
+## RUN \
+##   --mount=from=cratesio-aws-lc-rs-1.14.1,source=/aws-lc-rs-1.14.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.14.1,rw \
+##     { \
+##         cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.14.1/build.rs | sed -E 's/^(pub[()a-z]* +)?(async +)?fn +main/\1\2fn actual_6215be1cd523c855_main/' >/_ && mv /_ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.14.1/build.rs ; \
+##         { \
+##           echo ; \
+##           echo 'fn main() {' ; \
+##           echo '    use std::env::{args_os, var_os};' ; \
+##           echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+##           echo '        use std::process::{Command, Stdio};' ; \
+##           echo '        let mut cmd = Command::new("cargo-green");' ; \
+##           echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+##           echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+##           echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+##           echo '        assert!(res.success());' ; \
+##           echo '    } else {' ; \
+##           echo '        actual_6215be1cd523c855_main();' ; \
+##           echo '    }' ; \
+##           echo '}' ; \
+##         } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.14.1/build.rs ; \
+##     } && \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CRATE_NAME=build_script_build \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.14.1 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.14.1/Cargo.toml \
+##         CARGO_PKG_AUTHORS=AWS-LibCrypto \
+##         CARGO_PKG_DESCRIPTION=aws-lc-rs' is a cryptographic library using AWS-LC for its cryptographic operations. This library strives to be API-compatible with the popular Rust library named ring.' \
+##         CARGO_PKG_HOMEPAGE=https'://github.com/aws/aws-lc-rs' \
+##         CARGO_PKG_LICENSE=ISC' AND (Apache-2.0 OR ISC)' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=aws-lc-rs \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/aws/aws-lc-rs' \
+##         CARGO_PKG_RUST_VERSION=1.70.0 \
+##         CARGO_PKG_VERSION=1.14.1 \
+##         CARGO_PKG_VERSION_MAJOR=1 \
+##         CARGO_PKG_VERSION_MINOR=14 \
+##         CARGO_PKG_VERSION_PATCH=1 \
+##         CARGO_PKG_VERSION_PRE= \
+##         CARGOGREEN=1 \
+##       rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="aws-lc-sys"' --cfg feature'="prebuilt-nasm"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "asan", "aws-lc-sys", "bindgen", "default", "fips", "non-fips", "prebuilt-nasm", "ring-io", "ring-sig-verify", "test_logging", "unstable"))' -C metadata'=6dd67a5001d657c2' -C extra-filename'=-6215be1cd523c855' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-rs-6215be1cd523c855 -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.14.1/build.rs \
+##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-rs-6215be1cd523c855/out-6215be1cd523c855-stdout \
+##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-rs-6215be1cd523c855/out-6215be1cd523c855-stderr \
+##         || echo $? >/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-rs-6215be1cd523c855/out-6215be1cd523c855-errcode\
+##   ; find /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-rs-6215be1cd523c855/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-6215be1cd523c855"
+## script = """
+## FROM scratch AS out-6215be1cd523c855
+## COPY --link --from=dep-x-aws-lc-rs-1.14.1-6215be1cd523c855 /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-rs-6215be1cd523c855/*-6215be1cd523c855* /"""
+
+FROM rust-base AS run-z-aws-lc-rs-1.14.1-7ef21a73dd92a44b
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-rs-7ef21a73dd92a44b/out
+WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.14.1
+RUN \
+  --mount=from=out-6215be1cd523c855,source=/build_script_build-6215be1cd523c855,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-rs-6215be1cd523c855/build-script-build \
+  --mount=from=cratesio-aws-lc-rs-1.14.1,source=/aws-lc-rs-1.14.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.14.1 \
+    env CARGO="$(which cargo)" \
+        CARGO_CFG_FEATURE=aws-lc-sys,prebuilt-nasm \
+        CARGO_CFG_PANIC=unwind \
+        CARGO_CFG_TARGET_ABI= \
+        CARGO_CFG_TARGET_ARCH=x86_64 \
+        CARGO_CFG_TARGET_ENDIAN=little \
+        CARGO_CFG_TARGET_ENV=gnu \
+        CARGO_CFG_TARGET_FAMILY=unix \
+        CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
+        CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+        CARGO_CFG_TARGET_OS=linux \
+        CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+        CARGO_CFG_TARGET_VENDOR=unknown \
+        CARGO_CFG_UNIX= \
+        CARGO_ENCODED_RUSTFLAGS= \
+        CARGO_FEATURE_AWS_LC_SYS=1 \
+        CARGO_FEATURE_PREBUILT_NASM=1 \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.14.1 \
+        CARGO_MANIFEST_LINKS=aws_lc_rs_1_14_1_sys \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.14.1/Cargo.toml \
+        CARGO_PKG_AUTHORS=AWS-LibCrypto \
+        CARGO_PKG_DESCRIPTION=aws-lc-rs' is a cryptographic library using AWS-LC for its cryptographic operations. This library strives to be API-compatible with the popular Rust library named ring.' \
+        CARGO_PKG_HOMEPAGE=https'://github.com/aws/aws-lc-rs' \
+        CARGO_PKG_LICENSE=ISC' AND (Apache-2.0 OR ISC)' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=aws-lc-rs \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/aws/aws-lc-rs' \
+        CARGO_PKG_RUST_VERSION=1.70.0 \
+        CARGO_PKG_VERSION=1.14.1 \
+        CARGO_PKG_VERSION_MAJOR=1 \
+        CARGO_PKG_VERSION_MINOR=14 \
+        CARGO_PKG_VERSION_PATCH=1 \
+        CARGO_PKG_VERSION_PRE= \
+        DEBUG=false \
+        DEP_AWS_LC_0_32_2_CONF=OPENSSL_NO_ASYNC,OPENSSL_NO_BF,OPENSSL_NO_BLAKE2,OPENSSL_NO_BUF_FREELISTS,OPENSSL_NO_CAMELLIA,OPENSSL_NO_CAPIENG,OPENSSL_NO_CAST,OPENSSL_NO_CMS,OPENSSL_NO_COMP,OPENSSL_NO_CRYPTO_MDEBUG,OPENSSL_NO_CT,OPENSSL_NO_DANE,OPENSSL_NO_DEPRECATED,OPENSSL_NO_DGRAM,OPENSSL_NO_DYNAMIC_ENGINE,OPENSSL_NO_EC_NISTP_64_GCC_128,OPENSSL_NO_EC2M,OPENSSL_NO_EGD,OPENSSL_NO_ENGINE,OPENSSL_NO_GMP,OPENSSL_NO_GOST,OPENSSL_NO_HEARTBEATS,OPENSSL_NO_HW,OPENSSL_NO_IDEA,OPENSSL_NO_JPAKE,OPENSSL_NO_KRB5,OPENSSL_NO_MD2,OPENSSL_NO_MDC2,OPENSSL_NO_OCB,OPENSSL_NO_RC2,OPENSSL_NO_RC5,OPENSSL_NO_RFC3779,OPENSSL_NO_RIPEMD,OPENSSL_NO_RMD160,OPENSSL_NO_SCTP,OPENSSL_NO_SEED,OPENSSL_NO_SM2,OPENSSL_NO_SM3,OPENSSL_NO_SM4,OPENSSL_NO_SRP,OPENSSL_NO_SSL_TRACE,OPENSSL_NO_SSL2,OPENSSL_NO_SSL3,OPENSSL_NO_SSL3_METHOD,OPENSSL_NO_STATIC_ENGINE,OPENSSL_NO_STORE,OPENSSL_NO_TS,OPENSSL_NO_WHIRLPOOL \
+        DEP_AWS_LC_0_32_2_INCLUDE=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out/include \
+        DEP_AWS_LC_0_32_2_LIBCRYPTO=aws_lc_0_32_2_crypto \
+        DEP_AWS_LC_0_32_2_ROOT=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out \
+        HOST=x86_64-unknown-linux-gnu \
+        NUM_JOBS=4 \
+        OPT_LEVEL=3 \
+        OUT_DIR=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-rs-7ef21a73dd92a44b/out \
+        PROFILE=release \
+        RUSTC=rustc \
+        RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+        TARGET=x86_64-unknown-linux-gnu \
+        CARGOGREEN=1 \
+      CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-rs-6215be1cd523c855/build-script-build \
+        1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-rs-7ef21a73dd92a44b/out/out-7ef21a73dd92a44b-stdout \
+        2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-rs-7ef21a73dd92a44b/out/out-7ef21a73dd92a44b-stderr \
+        || echo $? >/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-rs-7ef21a73dd92a44b/out/out-7ef21a73dd92a44b-errcode\
+  ; find /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-rs-7ef21a73dd92a44b/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-7ef21a73dd92a44b
+COPY --link --from=run-z-aws-lc-rs-1.14.1-7ef21a73dd92a44b /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-rs-7ef21a73dd92a44b/out /
+
+## this = "7ef21a73dd92a44b"
+## deps = ["6215be1cd523c855"]
+## writes_to = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-rs-7ef21a73dd92a44b/out"
+## stdout = [
+##     "cargo:rustc-check-cfg=cfg(disable_slow_tests)",
+##     "cargo:rerun-if-env-changed=AWS_LC_RS_DISABLE_SLOW_TESTS",
+##     "cargo:include=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out/include",
+##     "cargo:libcrypto=aws_lc_0_32_2_crypto",
+##     "cargo:root=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out",
+##     "cargo:conf=OPENSSL_NO_ASYNC,OPENSSL_NO_BF,OPENSSL_NO_BLAKE2,OPENSSL_NO_BUF_FREELISTS,OPENSSL_NO_CAMELLIA,OPENSSL_NO_CAPIENG,OPENSSL_NO_CAST,OPENSSL_NO_CMS,OPENSSL_NO_COMP,OPENSSL_NO_CRYPTO_MDEBUG,OPENSSL_NO_CT,OPENSSL_NO_DANE,OPENSSL_NO_DEPRECATED,OPENSSL_NO_DGRAM,OPENSSL_NO_DYNAMIC_ENGINE,OPENSSL_NO_EC_NISTP_64_GCC_128,OPENSSL_NO_EC2M,OPENSSL_NO_EGD,OPENSSL_NO_ENGINE,OPENSSL_NO_GMP,OPENSSL_NO_GOST,OPENSSL_NO_HEARTBEATS,OPENSSL_NO_HW,OPENSSL_NO_IDEA,OPENSSL_NO_JPAKE,OPENSSL_NO_KRB5,OPENSSL_NO_MD2,OPENSSL_NO_MDC2,OPENSSL_NO_OCB,OPENSSL_NO_RC2,OPENSSL_NO_RC5,OPENSSL_NO_RFC3779,OPENSSL_NO_RIPEMD,OPENSSL_NO_RMD160,OPENSSL_NO_SCTP,OPENSSL_NO_SEED,OPENSSL_NO_SM2,OPENSSL_NO_SM3,OPENSSL_NO_SM4,OPENSSL_NO_SRP,OPENSSL_NO_SSL_TRACE,OPENSSL_NO_SSL2,OPENSSL_NO_SSL3,OPENSSL_NO_SSL3_METHOD,OPENSSL_NO_STATIC_ENGINE,OPENSSL_NO_STORE,OPENSSL_NO_TS,OPENSSL_NO_WHIRLPOOL",
+## ]
+## stderr = [
+##     "cargo:rerun-if-env-changed=DEP_AWS_LC_0_32_2_INCLUDE",
+##     "cargo:rerun-if-env-changed=DEP_AWS_LC_0_32_2_LIBCRYPTO",
+##     "cargo:rerun-if-env-changed=DEP_AWS_LC_0_32_2_ROOT",
+##     "cargo:rerun-if-env-changed=DEP_AWS_LC_0_32_2_CONF",
+## ]
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "run-z-aws-lc-rs-1.14.1-7ef21a73dd92a44b"
+## script = '''
+## FROM rust-base AS run-z-aws-lc-rs-1.14.1-7ef21a73dd92a44b
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-rs-7ef21a73dd92a44b/out
+## WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.14.1
+## RUN \
+##   --mount=from=out-6215be1cd523c855,source=/build_script_build-6215be1cd523c855,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-rs-6215be1cd523c855/build-script-build \
+##   --mount=from=cratesio-aws-lc-rs-1.14.1,source=/aws-lc-rs-1.14.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.14.1 \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CFG_FEATURE=aws-lc-sys,prebuilt-nasm \
+##         CARGO_CFG_PANIC=unwind \
+##         CARGO_CFG_TARGET_ABI= \
+##         CARGO_CFG_TARGET_ARCH=x86_64 \
+##         CARGO_CFG_TARGET_ENDIAN=little \
+##         CARGO_CFG_TARGET_ENV=gnu \
+##         CARGO_CFG_TARGET_FAMILY=unix \
+##         CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
+##         CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+##         CARGO_CFG_TARGET_OS=linux \
+##         CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+##         CARGO_CFG_TARGET_VENDOR=unknown \
+##         CARGO_CFG_UNIX= \
+##         CARGO_ENCODED_RUSTFLAGS= \
+##         CARGO_FEATURE_AWS_LC_SYS=1 \
+##         CARGO_FEATURE_PREBUILT_NASM=1 \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.14.1 \
+##         CARGO_MANIFEST_LINKS=aws_lc_rs_1_14_1_sys \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.14.1/Cargo.toml \
+##         CARGO_PKG_AUTHORS=AWS-LibCrypto \
+##         CARGO_PKG_DESCRIPTION=aws-lc-rs' is a cryptographic library using AWS-LC for its cryptographic operations. This library strives to be API-compatible with the popular Rust library named ring.' \
+##         CARGO_PKG_HOMEPAGE=https'://github.com/aws/aws-lc-rs' \
+##         CARGO_PKG_LICENSE=ISC' AND (Apache-2.0 OR ISC)' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=aws-lc-rs \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/aws/aws-lc-rs' \
+##         CARGO_PKG_RUST_VERSION=1.70.0 \
+##         CARGO_PKG_VERSION=1.14.1 \
+##         CARGO_PKG_VERSION_MAJOR=1 \
+##         CARGO_PKG_VERSION_MINOR=14 \
+##         CARGO_PKG_VERSION_PATCH=1 \
+##         CARGO_PKG_VERSION_PRE= \
+##         DEBUG=false \
+##         DEP_AWS_LC_0_32_2_CONF=OPENSSL_NO_ASYNC,OPENSSL_NO_BF,OPENSSL_NO_BLAKE2,OPENSSL_NO_BUF_FREELISTS,OPENSSL_NO_CAMELLIA,OPENSSL_NO_CAPIENG,OPENSSL_NO_CAST,OPENSSL_NO_CMS,OPENSSL_NO_COMP,OPENSSL_NO_CRYPTO_MDEBUG,OPENSSL_NO_CT,OPENSSL_NO_DANE,OPENSSL_NO_DEPRECATED,OPENSSL_NO_DGRAM,OPENSSL_NO_DYNAMIC_ENGINE,OPENSSL_NO_EC_NISTP_64_GCC_128,OPENSSL_NO_EC2M,OPENSSL_NO_EGD,OPENSSL_NO_ENGINE,OPENSSL_NO_GMP,OPENSSL_NO_GOST,OPENSSL_NO_HEARTBEATS,OPENSSL_NO_HW,OPENSSL_NO_IDEA,OPENSSL_NO_JPAKE,OPENSSL_NO_KRB5,OPENSSL_NO_MD2,OPENSSL_NO_MDC2,OPENSSL_NO_OCB,OPENSSL_NO_RC2,OPENSSL_NO_RC5,OPENSSL_NO_RFC3779,OPENSSL_NO_RIPEMD,OPENSSL_NO_RMD160,OPENSSL_NO_SCTP,OPENSSL_NO_SEED,OPENSSL_NO_SM2,OPENSSL_NO_SM3,OPENSSL_NO_SM4,OPENSSL_NO_SRP,OPENSSL_NO_SSL_TRACE,OPENSSL_NO_SSL2,OPENSSL_NO_SSL3,OPENSSL_NO_SSL3_METHOD,OPENSSL_NO_STATIC_ENGINE,OPENSSL_NO_STORE,OPENSSL_NO_TS,OPENSSL_NO_WHIRLPOOL \
+##         DEP_AWS_LC_0_32_2_INCLUDE=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out/include \
+##         DEP_AWS_LC_0_32_2_LIBCRYPTO=aws_lc_0_32_2_crypto \
+##         DEP_AWS_LC_0_32_2_ROOT=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out \
+##         HOST=x86_64-unknown-linux-gnu \
+##         NUM_JOBS=4 \
+##         OPT_LEVEL=3 \
+##         OUT_DIR=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-rs-7ef21a73dd92a44b/out \
+##         PROFILE=release \
+##         RUSTC=rustc \
+##         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+##         TARGET=x86_64-unknown-linux-gnu \
+##         CARGOGREEN=1 \
+##       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-rs-6215be1cd523c855/build-script-build \
+##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-rs-7ef21a73dd92a44b/out/out-7ef21a73dd92a44b-stdout \
+##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-rs-7ef21a73dd92a44b/out/out-7ef21a73dd92a44b-stderr \
+##         || echo $? >/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-rs-7ef21a73dd92a44b/out/out-7ef21a73dd92a44b-errcode\
+##   ; find /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-rs-7ef21a73dd92a44b/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-7ef21a73dd92a44b"
+## script = """
+## FROM scratch AS out-7ef21a73dd92a44b
+## COPY --link --from=run-z-aws-lc-rs-1.14.1-7ef21a73dd92a44b /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-rs-7ef21a73dd92a44b/out /"""
+
+
 FROM rust-base AS dep-n-aws-lc-rs-1.14.1-90227bfec647f88b
 SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps
@@ -4773,8 +9532,30 @@ RUN \
   --mount=from=cratesio-aws-lc-rs-1.14.1,source=/aws-lc-rs-1.14.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.14.1 \
   --mount=from=out-135dbb753da3a4f4,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libaws_lc_sys-135dbb753da3a4f4.rlib,source=/libaws_lc_sys-135dbb753da3a4f4.rlib \
   --mount=from=out-135dbb753da3a4f4,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libaws_lc_sys-135dbb753da3a4f4.rmeta,source=/libaws_lc_sys-135dbb753da3a4f4.rmeta \
+  --mount=from=out-d2948f7c0c8497b1,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libfind_msvc_tools-d2948f7c0c8497b1.rlib,source=/libfind_msvc_tools-d2948f7c0c8497b1.rlib \
+  --mount=from=out-d2948f7c0c8497b1,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libfind_msvc_tools-d2948f7c0c8497b1.rmeta,source=/libfind_msvc_tools-d2948f7c0c8497b1.rmeta \
+  --mount=from=out-4dc141be22bbffce,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libjobserver-4dc141be22bbffce.rlib,source=/libjobserver-4dc141be22bbffce.rlib \
+  --mount=from=out-4dc141be22bbffce,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libjobserver-4dc141be22bbffce.rmeta,source=/libjobserver-4dc141be22bbffce.rmeta \
+  --mount=from=out-60426161aa87c673,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibc-60426161aa87c673.rlib,source=/liblibc-60426161aa87c673.rlib \
+  --mount=from=out-60426161aa87c673,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibc-60426161aa87c673.rmeta,source=/liblibc-60426161aa87c673.rmeta \
+  --mount=from=out-b166d1c75d83103c,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libshlex-b166d1c75d83103c.rlib,source=/libshlex-b166d1c75d83103c.rlib \
+  --mount=from=out-b166d1c75d83103c,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libshlex-b166d1c75d83103c.rmeta,source=/libshlex-b166d1c75d83103c.rmeta \
+  --mount=from=out-336c2d9100ab92f8,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcc-336c2d9100ab92f8.rlib,source=/libcc-336c2d9100ab92f8.rlib \
+  --mount=from=out-336c2d9100ab92f8,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcc-336c2d9100ab92f8.rmeta,source=/libcc-336c2d9100ab92f8.rmeta \
+  --mount=from=out-3ff4fdb389eab124,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcmake-3ff4fdb389eab124.rlib,source=/libcmake-3ff4fdb389eab124.rlib \
+  --mount=from=out-3ff4fdb389eab124,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcmake-3ff4fdb389eab124.rmeta,source=/libcmake-3ff4fdb389eab124.rmeta \
+  --mount=from=out-25a6bb4144c31f83,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libdunce-25a6bb4144c31f83.rlib,source=/libdunce-25a6bb4144c31f83.rlib \
+  --mount=from=out-25a6bb4144c31f83,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libdunce-25a6bb4144c31f83.rmeta,source=/libdunce-25a6bb4144c31f83.rmeta \
+  --mount=from=out-19400729ba85cd55,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libfs_extra-19400729ba85cd55.rlib,source=/libfs_extra-19400729ba85cd55.rlib \
+  --mount=from=out-19400729ba85cd55,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libfs_extra-19400729ba85cd55.rmeta,source=/libfs_extra-19400729ba85cd55.rmeta \
+  --mount=from=out-d905bd04d466c2b4,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcfg_if-d905bd04d466c2b4.rlib,source=/libcfg_if-d905bd04d466c2b4.rlib \
+  --mount=from=out-d905bd04d466c2b4,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcfg_if-d905bd04d466c2b4.rmeta,source=/libcfg_if-d905bd04d466c2b4.rmeta \
+  --mount=from=out-bcbfd880a9747f76,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibloading-bcbfd880a9747f76.rlib,source=/liblibloading-bcbfd880a9747f76.rlib \
+  --mount=from=out-bcbfd880a9747f76,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibloading-bcbfd880a9747f76.rmeta,source=/liblibloading-bcbfd880a9747f76.rmeta \
   --mount=from=out-fd233fb45e407496,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libzeroize-fd233fb45e407496.rlib,source=/libzeroize-fd233fb45e407496.rlib \
   --mount=from=out-fd233fb45e407496,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libzeroize-fd233fb45e407496.rmeta,source=/libzeroize-fd233fb45e407496.rmeta \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out,source=/ \
+  --mount=from=out-7ef21a73dd92a44b,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-rs-7ef21a73dd92a44b/out,source=/ \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=aws_lc_rs \
         CARGO_INCREMENTAL=0 \
@@ -4796,8 +9577,6 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         OUT_DIR=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-rs-7ef21a73dd92a44b/out \
         CARGOGREEN=1 \
-        NTPD_RS_GIT_DATE=2025-05-09 \
-        NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
       rustc --crate-name aws_lc_rs --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --cfg feature'="aws-lc-sys"' --cfg feature'="prebuilt-nasm"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "asan", "aws-lc-sys", "bindgen", "default", "fips", "non-fips", "prebuilt-nasm", "ring-io", "ring-sig-verify", "test_logging", "unstable"))' -C metadata'=a340ec5982025e66' -C extra-filename'=-90227bfec647f88b' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern aws_lc_sys'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libaws_lc_sys-135dbb753da3a4f4.rmeta' --extern zeroize'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libzeroize-fd233fb45e407496.rmeta' --cap-lints warn -L native'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out' --check-cfg cfg'(disable_slow_tests)' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.14.1/src/lib.rs \
         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-90227bfec647f88b-stdout \
         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-90227bfec647f88b-stderr \
@@ -4809,7 +9588,27 @@ COPY --link --from=dep-n-aws-lc-rs-1.14.1-90227bfec647f88b /tmp/clis-ntpd_1-7-0-
 ## this = "90227bfec647f88b"
 ## deps = [
 ##     "135dbb753da3a4f4",
+##     "d2948f7c0c8497b1",
+##     "4dc141be22bbffce",
+##     "60426161aa87c673",
+##     "7560e7c5c88ec4c4",
+##     "b166d1c75d83103c",
+##     "336c2d9100ab92f8",
+##     "3ff4fdb389eab124",
+##     "25a6bb4144c31f83",
+##     "19400729ba85cd55",
+##     "d905bd04d466c2b4",
+##     "bcbfd880a9747f76",
+##     "b91f62695d1e67bd",
 ##     "fd233fb45e407496",
+##     "7ef21a73dd92a44b",
+##     "99856d878c8e44ce",
+##     "2d875791ad1d3d18",
+##     "6215be1cd523c855",
+## ]
+## buildrs_results = [
+##     "2d875791ad1d3d18",
+##     "7ef21a73dd92a44b",
 ## ]
 ## writes = [
 ##     "aws_lc_rs-90227bfec647f88b.d",
@@ -4831,6 +9630,86 @@ COPY --link --from=dep-n-aws-lc-rs-1.14.1-90227bfec647f88b /tmp/clis-ntpd_1-7-0-
 ## xtern = "libaws_lc_sys-135dbb753da3a4f4.rmeta"
 ##
 ## [[externs]]
+## from = "out-d2948f7c0c8497b1"
+## xtern = "libfind_msvc_tools-d2948f7c0c8497b1.rlib"
+##
+## [[externs]]
+## from = "out-d2948f7c0c8497b1"
+## xtern = "libfind_msvc_tools-d2948f7c0c8497b1.rmeta"
+##
+## [[externs]]
+## from = "out-4dc141be22bbffce"
+## xtern = "libjobserver-4dc141be22bbffce.rlib"
+##
+## [[externs]]
+## from = "out-4dc141be22bbffce"
+## xtern = "libjobserver-4dc141be22bbffce.rmeta"
+##
+## [[externs]]
+## from = "out-60426161aa87c673"
+## xtern = "liblibc-60426161aa87c673.rlib"
+##
+## [[externs]]
+## from = "out-60426161aa87c673"
+## xtern = "liblibc-60426161aa87c673.rmeta"
+##
+## [[externs]]
+## from = "out-b166d1c75d83103c"
+## xtern = "libshlex-b166d1c75d83103c.rlib"
+##
+## [[externs]]
+## from = "out-b166d1c75d83103c"
+## xtern = "libshlex-b166d1c75d83103c.rmeta"
+##
+## [[externs]]
+## from = "out-336c2d9100ab92f8"
+## xtern = "libcc-336c2d9100ab92f8.rlib"
+##
+## [[externs]]
+## from = "out-336c2d9100ab92f8"
+## xtern = "libcc-336c2d9100ab92f8.rmeta"
+##
+## [[externs]]
+## from = "out-3ff4fdb389eab124"
+## xtern = "libcmake-3ff4fdb389eab124.rlib"
+##
+## [[externs]]
+## from = "out-3ff4fdb389eab124"
+## xtern = "libcmake-3ff4fdb389eab124.rmeta"
+##
+## [[externs]]
+## from = "out-25a6bb4144c31f83"
+## xtern = "libdunce-25a6bb4144c31f83.rlib"
+##
+## [[externs]]
+## from = "out-25a6bb4144c31f83"
+## xtern = "libdunce-25a6bb4144c31f83.rmeta"
+##
+## [[externs]]
+## from = "out-19400729ba85cd55"
+## xtern = "libfs_extra-19400729ba85cd55.rlib"
+##
+## [[externs]]
+## from = "out-19400729ba85cd55"
+## xtern = "libfs_extra-19400729ba85cd55.rmeta"
+##
+## [[externs]]
+## from = "out-d905bd04d466c2b4"
+## xtern = "libcfg_if-d905bd04d466c2b4.rlib"
+##
+## [[externs]]
+## from = "out-d905bd04d466c2b4"
+## xtern = "libcfg_if-d905bd04d466c2b4.rmeta"
+##
+## [[externs]]
+## from = "out-bcbfd880a9747f76"
+## xtern = "liblibloading-bcbfd880a9747f76.rlib"
+##
+## [[externs]]
+## from = "out-bcbfd880a9747f76"
+## xtern = "liblibloading-bcbfd880a9747f76.rmeta"
+##
+## [[externs]]
 ## from = "out-fd233fb45e407496"
 ## xtern = "libzeroize-fd233fb45e407496.rlib"
 ##
@@ -4838,9 +9717,13 @@ COPY --link --from=dep-n-aws-lc-rs-1.14.1-90227bfec647f88b /tmp/clis-ntpd_1-7-0-
 ## from = "out-fd233fb45e407496"
 ## xtern = "libzeroize-fd233fb45e407496.rmeta"
 ##
-## [[contexts]]
-## name = "crate_out-2d875791ad1d3d18"
-## uri = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out"
+## [[mounts]]
+## name = "out-2d875791ad1d3d18"
+## mount = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out"
+##
+## [[mounts]]
+## name = "out-7ef21a73dd92a44b"
+## mount = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-rs-7ef21a73dd92a44b/out"
 ##
 ## [[stages]]
 ##
@@ -4869,8 +9752,30 @@ COPY --link --from=dep-n-aws-lc-rs-1.14.1-90227bfec647f88b /tmp/clis-ntpd_1-7-0-
 ##   --mount=from=cratesio-aws-lc-rs-1.14.1,source=/aws-lc-rs-1.14.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.14.1 \
 ##   --mount=from=out-135dbb753da3a4f4,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libaws_lc_sys-135dbb753da3a4f4.rlib,source=/libaws_lc_sys-135dbb753da3a4f4.rlib \
 ##   --mount=from=out-135dbb753da3a4f4,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libaws_lc_sys-135dbb753da3a4f4.rmeta,source=/libaws_lc_sys-135dbb753da3a4f4.rmeta \
+##   --mount=from=out-d2948f7c0c8497b1,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libfind_msvc_tools-d2948f7c0c8497b1.rlib,source=/libfind_msvc_tools-d2948f7c0c8497b1.rlib \
+##   --mount=from=out-d2948f7c0c8497b1,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libfind_msvc_tools-d2948f7c0c8497b1.rmeta,source=/libfind_msvc_tools-d2948f7c0c8497b1.rmeta \
+##   --mount=from=out-4dc141be22bbffce,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libjobserver-4dc141be22bbffce.rlib,source=/libjobserver-4dc141be22bbffce.rlib \
+##   --mount=from=out-4dc141be22bbffce,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libjobserver-4dc141be22bbffce.rmeta,source=/libjobserver-4dc141be22bbffce.rmeta \
+##   --mount=from=out-60426161aa87c673,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibc-60426161aa87c673.rlib,source=/liblibc-60426161aa87c673.rlib \
+##   --mount=from=out-60426161aa87c673,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibc-60426161aa87c673.rmeta,source=/liblibc-60426161aa87c673.rmeta \
+##   --mount=from=out-b166d1c75d83103c,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libshlex-b166d1c75d83103c.rlib,source=/libshlex-b166d1c75d83103c.rlib \
+##   --mount=from=out-b166d1c75d83103c,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libshlex-b166d1c75d83103c.rmeta,source=/libshlex-b166d1c75d83103c.rmeta \
+##   --mount=from=out-336c2d9100ab92f8,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcc-336c2d9100ab92f8.rlib,source=/libcc-336c2d9100ab92f8.rlib \
+##   --mount=from=out-336c2d9100ab92f8,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcc-336c2d9100ab92f8.rmeta,source=/libcc-336c2d9100ab92f8.rmeta \
+##   --mount=from=out-3ff4fdb389eab124,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcmake-3ff4fdb389eab124.rlib,source=/libcmake-3ff4fdb389eab124.rlib \
+##   --mount=from=out-3ff4fdb389eab124,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcmake-3ff4fdb389eab124.rmeta,source=/libcmake-3ff4fdb389eab124.rmeta \
+##   --mount=from=out-25a6bb4144c31f83,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libdunce-25a6bb4144c31f83.rlib,source=/libdunce-25a6bb4144c31f83.rlib \
+##   --mount=from=out-25a6bb4144c31f83,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libdunce-25a6bb4144c31f83.rmeta,source=/libdunce-25a6bb4144c31f83.rmeta \
+##   --mount=from=out-19400729ba85cd55,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libfs_extra-19400729ba85cd55.rlib,source=/libfs_extra-19400729ba85cd55.rlib \
+##   --mount=from=out-19400729ba85cd55,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libfs_extra-19400729ba85cd55.rmeta,source=/libfs_extra-19400729ba85cd55.rmeta \
+##   --mount=from=out-d905bd04d466c2b4,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcfg_if-d905bd04d466c2b4.rlib,source=/libcfg_if-d905bd04d466c2b4.rlib \
+##   --mount=from=out-d905bd04d466c2b4,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcfg_if-d905bd04d466c2b4.rmeta,source=/libcfg_if-d905bd04d466c2b4.rmeta \
+##   --mount=from=out-bcbfd880a9747f76,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibloading-bcbfd880a9747f76.rlib,source=/liblibloading-bcbfd880a9747f76.rlib \
+##   --mount=from=out-bcbfd880a9747f76,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibloading-bcbfd880a9747f76.rmeta,source=/liblibloading-bcbfd880a9747f76.rmeta \
 ##   --mount=from=out-fd233fb45e407496,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libzeroize-fd233fb45e407496.rlib,source=/libzeroize-fd233fb45e407496.rlib \
 ##   --mount=from=out-fd233fb45e407496,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libzeroize-fd233fb45e407496.rmeta,source=/libzeroize-fd233fb45e407496.rmeta \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out,source=/ \
+##   --mount=from=out-7ef21a73dd92a44b,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-rs-7ef21a73dd92a44b/out,source=/ \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=aws_lc_rs \
 ##         CARGO_INCREMENTAL=0 \
@@ -4892,8 +9797,6 @@ COPY --link --from=dep-n-aws-lc-rs-1.14.1-90227bfec647f88b /tmp/clis-ntpd_1-7-0-
 ##         CARGO_PKG_VERSION_PRE= \
 ##         OUT_DIR=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-rs-7ef21a73dd92a44b/out \
 ##         CARGOGREEN=1 \
-##         NTPD_RS_GIT_DATE=2025-05-09 \
-##         NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
 ##       rustc --crate-name aws_lc_rs --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --cfg feature'="aws-lc-sys"' --cfg feature'="prebuilt-nasm"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "asan", "aws-lc-sys", "bindgen", "default", "fips", "non-fips", "prebuilt-nasm", "ring-io", "ring-sig-verify", "test_logging", "unstable"))' -C metadata'=a340ec5982025e66' -C extra-filename'=-90227bfec647f88b' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern aws_lc_sys'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libaws_lc_sys-135dbb753da3a4f4.rmeta' --extern zeroize'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libzeroize-fd233fb45e407496.rmeta' --cap-lints warn -L native'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out' --check-cfg cfg'(disable_slow_tests)' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aws-lc-rs-1.14.1/src/lib.rs \
 ##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-90227bfec647f88b-stdout \
 ##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-90227bfec647f88b-stderr \
@@ -4937,8 +9840,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=28 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        NTPD_RS_GIT_DATE=2025-05-09 \
-        NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
       rustc --crate-name log --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("kv", "kv_serde", "kv_std", "kv_sval", "kv_unstable", "kv_unstable_serde", "kv_unstable_std", "kv_unstable_sval", "max_level_debug", "max_level_error", "max_level_info", "max_level_off", "max_level_trace", "max_level_warn", "release_max_level_debug", "release_max_level_error", "release_max_level_info", "release_max_level_off", "release_max_level_trace", "release_max_level_warn", "serde", "std", "sval", "sval_ref", "value-bag"))' -C metadata'=211f9c4931a0fe9a' -C extra-filename'=-64be2e589e1b58c5' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/log-0.4.28/src/lib.rs \
         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-64be2e589e1b58c5-stdout \
         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-64be2e589e1b58c5-stderr \
@@ -5005,8 +9906,6 @@ COPY --link --from=dep-n-log-0.4.28-64be2e589e1b58c5 /tmp/clis-ntpd_1-7-0-alpha-
 ##         CARGO_PKG_VERSION_PATCH=28 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         NTPD_RS_GIT_DATE=2025-05-09 \
-##         NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
 ##       rustc --crate-name log --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("kv", "kv_serde", "kv_std", "kv_sval", "kv_unstable", "kv_unstable_serde", "kv_unstable_std", "kv_unstable_sval", "max_level_debug", "max_level_error", "max_level_info", "max_level_off", "max_level_trace", "max_level_warn", "release_max_level_debug", "release_max_level_error", "release_max_level_info", "release_max_level_off", "release_max_level_trace", "release_max_level_warn", "serde", "std", "sval", "sval_ref", "value-bag"))' -C metadata'=211f9c4931a0fe9a' -C extra-filename'=-64be2e589e1b58c5' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/log-0.4.28/src/lib.rs \
 ##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-64be2e589e1b58c5-stdout \
 ##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-64be2e589e1b58c5-stderr \
@@ -5049,8 +9948,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=3 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        NTPD_RS_GIT_DATE=2025-05-09 \
-        NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
       rustc --crate-name once_cell --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --cfg feature'="alloc"' --cfg feature'="default"' --cfg feature'="race"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "atomic-polyfill", "critical-section", "default", "parking_lot", "portable-atomic", "race", "std", "unstable"))' -C metadata'=58e7bdf0ba9102f2' -C extra-filename'=-d2455ec75a446def' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/once_cell-1.21.3/src/lib.rs \
         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-d2455ec75a446def-stdout \
         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-d2455ec75a446def-stderr \
@@ -5116,8 +10013,6 @@ COPY --link --from=dep-n-once_cell-1.21.3-d2455ec75a446def /tmp/clis-ntpd_1-7-0-
 ##         CARGO_PKG_VERSION_PATCH=3 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         NTPD_RS_GIT_DATE=2025-05-09 \
-##         NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
 ##       rustc --crate-name once_cell --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --cfg feature'="alloc"' --cfg feature'="default"' --cfg feature'="race"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "atomic-polyfill", "critical-section", "default", "parking_lot", "portable-atomic", "race", "std", "unstable"))' -C metadata'=58e7bdf0ba9102f2' -C extra-filename'=-d2455ec75a446def' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/once_cell-1.21.3/src/lib.rs \
 ##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-d2455ec75a446def-stdout \
 ##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-d2455ec75a446def-stderr \
@@ -5162,8 +10057,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        NTPD_RS_GIT_DATE=2025-05-09 \
-        NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
       rustc --crate-name rustls_pki_types --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --cfg feature'="alloc"' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "std", "web", "web-time"))' -C metadata'=39a226ea12de040b' -C extra-filename'=-88022d560b8b0ce0' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern zeroize'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libzeroize-fd233fb45e407496.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustls-pki-types-1.12.0/src/lib.rs \
         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-88022d560b8b0ce0-stdout \
         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-88022d560b8b0ce0-stderr \
@@ -5240,8 +10133,6 @@ COPY --link --from=dep-n-rustls-pki-types-1.12.0-88022d560b8b0ce0 /tmp/clis-ntpd
 ##         CARGO_PKG_VERSION_PATCH=0 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         NTPD_RS_GIT_DATE=2025-05-09 \
-##         NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
 ##       rustc --crate-name rustls_pki_types --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --cfg feature'="alloc"' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "std", "web", "web-time"))' -C metadata'=39a226ea12de040b' -C extra-filename'=-88022d560b8b0ce0' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern zeroize'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libzeroize-fd233fb45e407496.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustls-pki-types-1.12.0/src/lib.rs \
 ##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-88022d560b8b0ce0-stdout \
 ##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-88022d560b8b0ce0-stderr \
@@ -5284,8 +10175,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        NTPD_RS_GIT_DATE=2025-05-09 \
-        NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
       rustc --crate-name untrusted --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=3296e2bb353965a3' -C extra-filename'=-2d8d07531d218763' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/untrusted-0.9.0/src/lib.rs \
         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-2d8d07531d218763-stdout \
         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-2d8d07531d218763-stderr \
@@ -5351,8 +10240,6 @@ COPY --link --from=dep-n-untrusted-0.9.0-2d8d07531d218763 /tmp/clis-ntpd_1-7-0-a
 ##         CARGO_PKG_VERSION_PATCH=0 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         NTPD_RS_GIT_DATE=2025-05-09 \
-##         NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
 ##       rustc --crate-name untrusted --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=3296e2bb353965a3' -C extra-filename'=-2d8d07531d218763' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/untrusted-0.9.0/src/lib.rs \
 ##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-2d8d07531d218763-stdout \
 ##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-2d8d07531d218763-stderr \
@@ -5379,12 +10266,33 @@ RUN \
   --mount=from=out-90227bfec647f88b,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libaws_lc_rs-90227bfec647f88b.rmeta,source=/libaws_lc_rs-90227bfec647f88b.rmeta \
   --mount=from=out-135dbb753da3a4f4,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libaws_lc_sys-135dbb753da3a4f4.rlib,source=/libaws_lc_sys-135dbb753da3a4f4.rlib \
   --mount=from=out-135dbb753da3a4f4,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libaws_lc_sys-135dbb753da3a4f4.rmeta,source=/libaws_lc_sys-135dbb753da3a4f4.rmeta \
+  --mount=from=out-d2948f7c0c8497b1,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libfind_msvc_tools-d2948f7c0c8497b1.rlib,source=/libfind_msvc_tools-d2948f7c0c8497b1.rlib \
+  --mount=from=out-d2948f7c0c8497b1,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libfind_msvc_tools-d2948f7c0c8497b1.rmeta,source=/libfind_msvc_tools-d2948f7c0c8497b1.rmeta \
+  --mount=from=out-4dc141be22bbffce,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libjobserver-4dc141be22bbffce.rlib,source=/libjobserver-4dc141be22bbffce.rlib \
+  --mount=from=out-4dc141be22bbffce,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libjobserver-4dc141be22bbffce.rmeta,source=/libjobserver-4dc141be22bbffce.rmeta \
+  --mount=from=out-60426161aa87c673,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibc-60426161aa87c673.rlib,source=/liblibc-60426161aa87c673.rlib \
+  --mount=from=out-60426161aa87c673,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibc-60426161aa87c673.rmeta,source=/liblibc-60426161aa87c673.rmeta \
+  --mount=from=out-b166d1c75d83103c,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libshlex-b166d1c75d83103c.rlib,source=/libshlex-b166d1c75d83103c.rlib \
+  --mount=from=out-b166d1c75d83103c,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libshlex-b166d1c75d83103c.rmeta,source=/libshlex-b166d1c75d83103c.rmeta \
+  --mount=from=out-336c2d9100ab92f8,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcc-336c2d9100ab92f8.rlib,source=/libcc-336c2d9100ab92f8.rlib \
+  --mount=from=out-336c2d9100ab92f8,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcc-336c2d9100ab92f8.rmeta,source=/libcc-336c2d9100ab92f8.rmeta \
+  --mount=from=out-3ff4fdb389eab124,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcmake-3ff4fdb389eab124.rlib,source=/libcmake-3ff4fdb389eab124.rlib \
+  --mount=from=out-3ff4fdb389eab124,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcmake-3ff4fdb389eab124.rmeta,source=/libcmake-3ff4fdb389eab124.rmeta \
+  --mount=from=out-25a6bb4144c31f83,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libdunce-25a6bb4144c31f83.rlib,source=/libdunce-25a6bb4144c31f83.rlib \
+  --mount=from=out-25a6bb4144c31f83,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libdunce-25a6bb4144c31f83.rmeta,source=/libdunce-25a6bb4144c31f83.rmeta \
+  --mount=from=out-19400729ba85cd55,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libfs_extra-19400729ba85cd55.rlib,source=/libfs_extra-19400729ba85cd55.rlib \
+  --mount=from=out-19400729ba85cd55,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libfs_extra-19400729ba85cd55.rmeta,source=/libfs_extra-19400729ba85cd55.rmeta \
+  --mount=from=out-d905bd04d466c2b4,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcfg_if-d905bd04d466c2b4.rlib,source=/libcfg_if-d905bd04d466c2b4.rlib \
+  --mount=from=out-d905bd04d466c2b4,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcfg_if-d905bd04d466c2b4.rmeta,source=/libcfg_if-d905bd04d466c2b4.rmeta \
+  --mount=from=out-bcbfd880a9747f76,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibloading-bcbfd880a9747f76.rlib,source=/liblibloading-bcbfd880a9747f76.rlib \
+  --mount=from=out-bcbfd880a9747f76,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibloading-bcbfd880a9747f76.rmeta,source=/liblibloading-bcbfd880a9747f76.rmeta \
   --mount=from=out-fd233fb45e407496,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libzeroize-fd233fb45e407496.rlib,source=/libzeroize-fd233fb45e407496.rlib \
   --mount=from=out-fd233fb45e407496,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libzeroize-fd233fb45e407496.rmeta,source=/libzeroize-fd233fb45e407496.rmeta \
   --mount=from=out-88022d560b8b0ce0,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/librustls_pki_types-88022d560b8b0ce0.rlib,source=/librustls_pki_types-88022d560b8b0ce0.rlib \
   --mount=from=out-88022d560b8b0ce0,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/librustls_pki_types-88022d560b8b0ce0.rmeta,source=/librustls_pki_types-88022d560b8b0ce0.rmeta \
   --mount=from=out-2d8d07531d218763,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libuntrusted-2d8d07531d218763.rlib,source=/libuntrusted-2d8d07531d218763.rlib \
   --mount=from=out-2d8d07531d218763,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libuntrusted-2d8d07531d218763.rmeta,source=/libuntrusted-2d8d07531d218763.rmeta \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out,source=/ \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=webpki \
         CARGO_INCREMENTAL=0 \
@@ -5405,8 +10313,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=7 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        NTPD_RS_GIT_DATE=2025-05-09 \
-        NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
       rustc --crate-name webpki --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --warn unexpected_cfgs --check-cfg cfg'(webpki_docsrs)' --cfg feature'="alloc"' --cfg feature'="aws-lc-rs"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "aws-lc-rs", "aws-lc-rs-fips", "aws-lc-rs-unstable", "default", "ring", "std"))' -C metadata'=c7045da46f4856ce' -C extra-filename'=-6da74749e9752714' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern aws_lc_rs'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libaws_lc_rs-90227bfec647f88b.rmeta' --extern pki_types'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/librustls_pki_types-88022d560b8b0ce0.rmeta' --extern untrusted'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libuntrusted-2d8d07531d218763.rmeta' --cap-lints warn -L native'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustls-webpki-0.103.7/src/lib.rs \
         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-6da74749e9752714-stdout \
         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-6da74749e9752714-stderr \
@@ -5419,9 +10325,29 @@ COPY --link --from=dep-n-rustls-webpki-0.103.7-6da74749e9752714 /tmp/clis-ntpd_1
 ## deps = [
 ##     "90227bfec647f88b",
 ##     "135dbb753da3a4f4",
+##     "d2948f7c0c8497b1",
+##     "4dc141be22bbffce",
+##     "60426161aa87c673",
+##     "7560e7c5c88ec4c4",
+##     "b166d1c75d83103c",
+##     "336c2d9100ab92f8",
+##     "3ff4fdb389eab124",
+##     "25a6bb4144c31f83",
+##     "19400729ba85cd55",
+##     "d905bd04d466c2b4",
+##     "bcbfd880a9747f76",
+##     "b91f62695d1e67bd",
 ##     "fd233fb45e407496",
+##     "6215be1cd523c855",
 ##     "88022d560b8b0ce0",
 ##     "2d8d07531d218763",
+##     "99856d878c8e44ce",
+##     "2d875791ad1d3d18",
+##     "7ef21a73dd92a44b",
+## ]
+## buildrs_results = [
+##     "2d875791ad1d3d18",
+##     "7ef21a73dd92a44b",
 ## ]
 ## writes = [
 ##     "libwebpki-6da74749e9752714.rlib",
@@ -5451,6 +10377,86 @@ COPY --link --from=dep-n-rustls-webpki-0.103.7-6da74749e9752714 /tmp/clis-ntpd_1
 ## xtern = "libaws_lc_sys-135dbb753da3a4f4.rmeta"
 ##
 ## [[externs]]
+## from = "out-d2948f7c0c8497b1"
+## xtern = "libfind_msvc_tools-d2948f7c0c8497b1.rlib"
+##
+## [[externs]]
+## from = "out-d2948f7c0c8497b1"
+## xtern = "libfind_msvc_tools-d2948f7c0c8497b1.rmeta"
+##
+## [[externs]]
+## from = "out-4dc141be22bbffce"
+## xtern = "libjobserver-4dc141be22bbffce.rlib"
+##
+## [[externs]]
+## from = "out-4dc141be22bbffce"
+## xtern = "libjobserver-4dc141be22bbffce.rmeta"
+##
+## [[externs]]
+## from = "out-60426161aa87c673"
+## xtern = "liblibc-60426161aa87c673.rlib"
+##
+## [[externs]]
+## from = "out-60426161aa87c673"
+## xtern = "liblibc-60426161aa87c673.rmeta"
+##
+## [[externs]]
+## from = "out-b166d1c75d83103c"
+## xtern = "libshlex-b166d1c75d83103c.rlib"
+##
+## [[externs]]
+## from = "out-b166d1c75d83103c"
+## xtern = "libshlex-b166d1c75d83103c.rmeta"
+##
+## [[externs]]
+## from = "out-336c2d9100ab92f8"
+## xtern = "libcc-336c2d9100ab92f8.rlib"
+##
+## [[externs]]
+## from = "out-336c2d9100ab92f8"
+## xtern = "libcc-336c2d9100ab92f8.rmeta"
+##
+## [[externs]]
+## from = "out-3ff4fdb389eab124"
+## xtern = "libcmake-3ff4fdb389eab124.rlib"
+##
+## [[externs]]
+## from = "out-3ff4fdb389eab124"
+## xtern = "libcmake-3ff4fdb389eab124.rmeta"
+##
+## [[externs]]
+## from = "out-25a6bb4144c31f83"
+## xtern = "libdunce-25a6bb4144c31f83.rlib"
+##
+## [[externs]]
+## from = "out-25a6bb4144c31f83"
+## xtern = "libdunce-25a6bb4144c31f83.rmeta"
+##
+## [[externs]]
+## from = "out-19400729ba85cd55"
+## xtern = "libfs_extra-19400729ba85cd55.rlib"
+##
+## [[externs]]
+## from = "out-19400729ba85cd55"
+## xtern = "libfs_extra-19400729ba85cd55.rmeta"
+##
+## [[externs]]
+## from = "out-d905bd04d466c2b4"
+## xtern = "libcfg_if-d905bd04d466c2b4.rlib"
+##
+## [[externs]]
+## from = "out-d905bd04d466c2b4"
+## xtern = "libcfg_if-d905bd04d466c2b4.rmeta"
+##
+## [[externs]]
+## from = "out-bcbfd880a9747f76"
+## xtern = "liblibloading-bcbfd880a9747f76.rlib"
+##
+## [[externs]]
+## from = "out-bcbfd880a9747f76"
+## xtern = "liblibloading-bcbfd880a9747f76.rmeta"
+##
+## [[externs]]
 ## from = "out-fd233fb45e407496"
 ## xtern = "libzeroize-fd233fb45e407496.rlib"
 ##
@@ -5474,9 +10480,9 @@ COPY --link --from=dep-n-rustls-webpki-0.103.7-6da74749e9752714 /tmp/clis-ntpd_1
 ## from = "out-2d8d07531d218763"
 ## xtern = "libuntrusted-2d8d07531d218763.rmeta"
 ##
-## [[contexts]]
-## name = "crate_out-2d875791ad1d3d18"
-## uri = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out"
+## [[mounts]]
+## name = "out-2d875791ad1d3d18"
+## mount = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out"
 ##
 ## [[stages]]
 ##
@@ -5507,12 +10513,33 @@ COPY --link --from=dep-n-rustls-webpki-0.103.7-6da74749e9752714 /tmp/clis-ntpd_1
 ##   --mount=from=out-90227bfec647f88b,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libaws_lc_rs-90227bfec647f88b.rmeta,source=/libaws_lc_rs-90227bfec647f88b.rmeta \
 ##   --mount=from=out-135dbb753da3a4f4,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libaws_lc_sys-135dbb753da3a4f4.rlib,source=/libaws_lc_sys-135dbb753da3a4f4.rlib \
 ##   --mount=from=out-135dbb753da3a4f4,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libaws_lc_sys-135dbb753da3a4f4.rmeta,source=/libaws_lc_sys-135dbb753da3a4f4.rmeta \
+##   --mount=from=out-d2948f7c0c8497b1,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libfind_msvc_tools-d2948f7c0c8497b1.rlib,source=/libfind_msvc_tools-d2948f7c0c8497b1.rlib \
+##   --mount=from=out-d2948f7c0c8497b1,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libfind_msvc_tools-d2948f7c0c8497b1.rmeta,source=/libfind_msvc_tools-d2948f7c0c8497b1.rmeta \
+##   --mount=from=out-4dc141be22bbffce,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libjobserver-4dc141be22bbffce.rlib,source=/libjobserver-4dc141be22bbffce.rlib \
+##   --mount=from=out-4dc141be22bbffce,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libjobserver-4dc141be22bbffce.rmeta,source=/libjobserver-4dc141be22bbffce.rmeta \
+##   --mount=from=out-60426161aa87c673,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibc-60426161aa87c673.rlib,source=/liblibc-60426161aa87c673.rlib \
+##   --mount=from=out-60426161aa87c673,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibc-60426161aa87c673.rmeta,source=/liblibc-60426161aa87c673.rmeta \
+##   --mount=from=out-b166d1c75d83103c,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libshlex-b166d1c75d83103c.rlib,source=/libshlex-b166d1c75d83103c.rlib \
+##   --mount=from=out-b166d1c75d83103c,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libshlex-b166d1c75d83103c.rmeta,source=/libshlex-b166d1c75d83103c.rmeta \
+##   --mount=from=out-336c2d9100ab92f8,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcc-336c2d9100ab92f8.rlib,source=/libcc-336c2d9100ab92f8.rlib \
+##   --mount=from=out-336c2d9100ab92f8,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcc-336c2d9100ab92f8.rmeta,source=/libcc-336c2d9100ab92f8.rmeta \
+##   --mount=from=out-3ff4fdb389eab124,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcmake-3ff4fdb389eab124.rlib,source=/libcmake-3ff4fdb389eab124.rlib \
+##   --mount=from=out-3ff4fdb389eab124,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcmake-3ff4fdb389eab124.rmeta,source=/libcmake-3ff4fdb389eab124.rmeta \
+##   --mount=from=out-25a6bb4144c31f83,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libdunce-25a6bb4144c31f83.rlib,source=/libdunce-25a6bb4144c31f83.rlib \
+##   --mount=from=out-25a6bb4144c31f83,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libdunce-25a6bb4144c31f83.rmeta,source=/libdunce-25a6bb4144c31f83.rmeta \
+##   --mount=from=out-19400729ba85cd55,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libfs_extra-19400729ba85cd55.rlib,source=/libfs_extra-19400729ba85cd55.rlib \
+##   --mount=from=out-19400729ba85cd55,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libfs_extra-19400729ba85cd55.rmeta,source=/libfs_extra-19400729ba85cd55.rmeta \
+##   --mount=from=out-d905bd04d466c2b4,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcfg_if-d905bd04d466c2b4.rlib,source=/libcfg_if-d905bd04d466c2b4.rlib \
+##   --mount=from=out-d905bd04d466c2b4,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcfg_if-d905bd04d466c2b4.rmeta,source=/libcfg_if-d905bd04d466c2b4.rmeta \
+##   --mount=from=out-bcbfd880a9747f76,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibloading-bcbfd880a9747f76.rlib,source=/liblibloading-bcbfd880a9747f76.rlib \
+##   --mount=from=out-bcbfd880a9747f76,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibloading-bcbfd880a9747f76.rmeta,source=/liblibloading-bcbfd880a9747f76.rmeta \
 ##   --mount=from=out-fd233fb45e407496,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libzeroize-fd233fb45e407496.rlib,source=/libzeroize-fd233fb45e407496.rlib \
 ##   --mount=from=out-fd233fb45e407496,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libzeroize-fd233fb45e407496.rmeta,source=/libzeroize-fd233fb45e407496.rmeta \
 ##   --mount=from=out-88022d560b8b0ce0,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/librustls_pki_types-88022d560b8b0ce0.rlib,source=/librustls_pki_types-88022d560b8b0ce0.rlib \
 ##   --mount=from=out-88022d560b8b0ce0,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/librustls_pki_types-88022d560b8b0ce0.rmeta,source=/librustls_pki_types-88022d560b8b0ce0.rmeta \
 ##   --mount=from=out-2d8d07531d218763,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libuntrusted-2d8d07531d218763.rlib,source=/libuntrusted-2d8d07531d218763.rlib \
 ##   --mount=from=out-2d8d07531d218763,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libuntrusted-2d8d07531d218763.rmeta,source=/libuntrusted-2d8d07531d218763.rmeta \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out,source=/ \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=webpki \
 ##         CARGO_INCREMENTAL=0 \
@@ -5533,8 +10560,6 @@ COPY --link --from=dep-n-rustls-webpki-0.103.7-6da74749e9752714 /tmp/clis-ntpd_1
 ##         CARGO_PKG_VERSION_PATCH=7 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         NTPD_RS_GIT_DATE=2025-05-09 \
-##         NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
 ##       rustc --crate-name webpki --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --warn unexpected_cfgs --check-cfg cfg'(webpki_docsrs)' --cfg feature'="alloc"' --cfg feature'="aws-lc-rs"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "aws-lc-rs", "aws-lc-rs-fips", "aws-lc-rs-unstable", "default", "ring", "std"))' -C metadata'=c7045da46f4856ce' -C extra-filename'=-6da74749e9752714' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern aws_lc_rs'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libaws_lc_rs-90227bfec647f88b.rmeta' --extern pki_types'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/librustls_pki_types-88022d560b8b0ce0.rmeta' --extern untrusted'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libuntrusted-2d8d07531d218763.rmeta' --cap-lints warn -L native'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustls-webpki-0.103.7/src/lib.rs \
 ##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-6da74749e9752714-stdout \
 ##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-6da74749e9752714-stderr \
@@ -5552,6 +10577,304 @@ COPY --link --from=dep-n-rustls-webpki-0.103.7-6da74749e9752714 /tmp/clis-ntpd_1
 FROM scratch AS cratesio-rustls-0.23.32
 ADD --chmod=0664 --unpack --checksum=sha256:cd3c25631629d034ce7cd9940adc9d45762d46de2b0f57193c4443b92c6d4d40 \
   https://static.crates.io/crates/rustls/rustls-0.23.32.crate /
+FROM rust-base AS dep-x-rustls-0.23.32-8ec054074e55cb28
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/rustls-8ec054074e55cb28
+RUN \
+  --mount=from=cratesio-rustls-0.23.32,source=/rustls-0.23.32,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustls-0.23.32,rw \
+    { \
+        cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustls-0.23.32/build.rs | sed -E 's/^(pub[()a-z]* +)?(async +)?fn +main/\1\2fn actual_8ec054074e55cb28_main/' >/_ && mv /_ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustls-0.23.32/build.rs ; \
+        { \
+          echo ; \
+          echo 'fn main() {' ; \
+          echo '    use std::env::{args_os, var_os};' ; \
+          echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+          echo '        use std::process::{Command, Stdio};' ; \
+          echo '        let mut cmd = Command::new("cargo-green");' ; \
+          echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+          echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+          echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+          echo '        assert!(res.success());' ; \
+          echo '    } else {' ; \
+          echo '        actual_8ec054074e55cb28_main();' ; \
+          echo '    }' ; \
+          echo '}' ; \
+        } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustls-0.23.32/build.rs ; \
+    } && \
+    env CARGO="$(which cargo)" \
+        CARGO_CRATE_NAME=build_script_build \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustls-0.23.32 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustls-0.23.32/Cargo.toml \
+        CARGO_PKG_AUTHORS= \
+        CARGO_PKG_DESCRIPTION=Rustls' is a modern TLS library written in Rust.' \
+        CARGO_PKG_HOMEPAGE=https'://github.com/rustls/rustls' \
+        CARGO_PKG_LICENSE=Apache-2.0' OR ISC OR MIT' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=rustls \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/rustls/rustls' \
+        CARGO_PKG_RUST_VERSION=1.71 \
+        CARGO_PKG_VERSION=0.23.32 \
+        CARGO_PKG_VERSION_MAJOR=0 \
+        CARGO_PKG_VERSION_MINOR=23 \
+        CARGO_PKG_VERSION_PATCH=32 \
+        CARGO_PKG_VERSION_PRE= \
+        CARGOGREEN=1 \
+      rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' --warn unexpected_cfgs --check-cfg cfg'(bench)' --check-cfg cfg'(coverage_nightly)' --check-cfg cfg'(read_buf)' -C debug-assertions'=off' --cfg feature'="aws-lc-rs"' --cfg feature'="aws_lc_rs"' --cfg feature'="default"' --cfg feature'="log"' --cfg feature'="logging"' --cfg feature'="prefer-post-quantum"' --cfg feature'="std"' --cfg feature'="tls12"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("aws-lc-rs", "aws_lc_rs", "brotli", "custom-provider", "default", "fips", "hashbrown", "log", "logging", "prefer-post-quantum", "read_buf", "ring", "rustversion", "std", "tls12", "zlib"))' -C metadata'=7e0ca1d6db76c9ee' -C extra-filename'=-8ec054074e55cb28' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/rustls-8ec054074e55cb28 -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustls-0.23.32/build.rs \
+        1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/rustls-8ec054074e55cb28/out-8ec054074e55cb28-stdout \
+        2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/rustls-8ec054074e55cb28/out-8ec054074e55cb28-stderr \
+        || echo $? >/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/rustls-8ec054074e55cb28/out-8ec054074e55cb28-errcode\
+  ; find /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/rustls-8ec054074e55cb28/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-8ec054074e55cb28
+COPY --link --from=dep-x-rustls-0.23.32-8ec054074e55cb28 /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/rustls-8ec054074e55cb28/*-8ec054074e55cb28* /
+
+## this = "8ec054074e55cb28"
+## writes = [
+##     "build_script_build-8ec054074e55cb28",
+##     "build_script_build-8ec054074e55cb28.d",
+## ]
+## stderr = [
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/rustls-8ec054074e55cb28/build_script_build-8ec054074e55cb28.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/rustls-8ec054074e55cb28/build_script_build-8ec054074e55cb28","emit":"link"}',
+## ]
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
+##
+## [[stages]]
+##
+## [stages.Cratesio]
+## stage = "cratesio-rustls-0.23.32"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustls-0.23.32"
+## name = "rustls"
+## name_dash_version = "rustls-0.23.32"
+## hash = "cd3c25631629d034ce7cd9940adc9d45762d46de2b0f57193c4443b92c6d4d40"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "dep-x-rustls-0.23.32-8ec054074e55cb28"
+## script = '''
+## FROM rust-base AS dep-x-rustls-0.23.32-8ec054074e55cb28
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/rustls-8ec054074e55cb28
+## RUN \
+##   --mount=from=cratesio-rustls-0.23.32,source=/rustls-0.23.32,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustls-0.23.32,rw \
+##     { \
+##         cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustls-0.23.32/build.rs | sed -E 's/^(pub[()a-z]* +)?(async +)?fn +main/\1\2fn actual_8ec054074e55cb28_main/' >/_ && mv /_ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustls-0.23.32/build.rs ; \
+##         { \
+##           echo ; \
+##           echo 'fn main() {' ; \
+##           echo '    use std::env::{args_os, var_os};' ; \
+##           echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+##           echo '        use std::process::{Command, Stdio};' ; \
+##           echo '        let mut cmd = Command::new("cargo-green");' ; \
+##           echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+##           echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+##           echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+##           echo '        assert!(res.success());' ; \
+##           echo '    } else {' ; \
+##           echo '        actual_8ec054074e55cb28_main();' ; \
+##           echo '    }' ; \
+##           echo '}' ; \
+##         } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustls-0.23.32/build.rs ; \
+##     } && \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CRATE_NAME=build_script_build \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustls-0.23.32 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustls-0.23.32/Cargo.toml \
+##         CARGO_PKG_AUTHORS= \
+##         CARGO_PKG_DESCRIPTION=Rustls' is a modern TLS library written in Rust.' \
+##         CARGO_PKG_HOMEPAGE=https'://github.com/rustls/rustls' \
+##         CARGO_PKG_LICENSE=Apache-2.0' OR ISC OR MIT' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=rustls \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/rustls/rustls' \
+##         CARGO_PKG_RUST_VERSION=1.71 \
+##         CARGO_PKG_VERSION=0.23.32 \
+##         CARGO_PKG_VERSION_MAJOR=0 \
+##         CARGO_PKG_VERSION_MINOR=23 \
+##         CARGO_PKG_VERSION_PATCH=32 \
+##         CARGO_PKG_VERSION_PRE= \
+##         CARGOGREEN=1 \
+##       rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' --warn unexpected_cfgs --check-cfg cfg'(bench)' --check-cfg cfg'(coverage_nightly)' --check-cfg cfg'(read_buf)' -C debug-assertions'=off' --cfg feature'="aws-lc-rs"' --cfg feature'="aws_lc_rs"' --cfg feature'="default"' --cfg feature'="log"' --cfg feature'="logging"' --cfg feature'="prefer-post-quantum"' --cfg feature'="std"' --cfg feature'="tls12"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("aws-lc-rs", "aws_lc_rs", "brotli", "custom-provider", "default", "fips", "hashbrown", "log", "logging", "prefer-post-quantum", "read_buf", "ring", "rustversion", "std", "tls12", "zlib"))' -C metadata'=7e0ca1d6db76c9ee' -C extra-filename'=-8ec054074e55cb28' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/rustls-8ec054074e55cb28 -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustls-0.23.32/build.rs \
+##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/rustls-8ec054074e55cb28/out-8ec054074e55cb28-stdout \
+##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/rustls-8ec054074e55cb28/out-8ec054074e55cb28-stderr \
+##         || echo $? >/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/rustls-8ec054074e55cb28/out-8ec054074e55cb28-errcode\
+##   ; find /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/rustls-8ec054074e55cb28/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-8ec054074e55cb28"
+## script = """
+## FROM scratch AS out-8ec054074e55cb28
+## COPY --link --from=dep-x-rustls-0.23.32-8ec054074e55cb28 /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/rustls-8ec054074e55cb28/*-8ec054074e55cb28* /"""
+
+FROM rust-base AS run-z-rustls-0.23.32-8b3d3020feb33fc9
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/rustls-8b3d3020feb33fc9/out
+WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustls-0.23.32
+RUN \
+  --mount=from=out-8ec054074e55cb28,source=/build_script_build-8ec054074e55cb28,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/rustls-8ec054074e55cb28/build-script-build \
+  --mount=from=cratesio-rustls-0.23.32,source=/rustls-0.23.32,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustls-0.23.32 \
+    env CARGO="$(which cargo)" \
+        CARGO_CFG_FEATURE=aws-lc-rs,aws_lc_rs,default,log,logging,prefer-post-quantum,std,tls12 \
+        CARGO_CFG_PANIC=unwind \
+        CARGO_CFG_TARGET_ABI= \
+        CARGO_CFG_TARGET_ARCH=x86_64 \
+        CARGO_CFG_TARGET_ENDIAN=little \
+        CARGO_CFG_TARGET_ENV=gnu \
+        CARGO_CFG_TARGET_FAMILY=unix \
+        CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
+        CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+        CARGO_CFG_TARGET_OS=linux \
+        CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+        CARGO_CFG_TARGET_VENDOR=unknown \
+        CARGO_CFG_UNIX= \
+        CARGO_ENCODED_RUSTFLAGS= \
+        CARGO_FEATURE_AWS_LC_RS=1 \
+        CARGO_FEATURE_DEFAULT=1 \
+        CARGO_FEATURE_LOG=1 \
+        CARGO_FEATURE_LOGGING=1 \
+        CARGO_FEATURE_PREFER_POST_QUANTUM=1 \
+        CARGO_FEATURE_STD=1 \
+        CARGO_FEATURE_TLS12=1 \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustls-0.23.32 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustls-0.23.32/Cargo.toml \
+        CARGO_PKG_AUTHORS= \
+        CARGO_PKG_DESCRIPTION=Rustls' is a modern TLS library written in Rust.' \
+        CARGO_PKG_HOMEPAGE=https'://github.com/rustls/rustls' \
+        CARGO_PKG_LICENSE=Apache-2.0' OR ISC OR MIT' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=rustls \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/rustls/rustls' \
+        CARGO_PKG_RUST_VERSION=1.71 \
+        CARGO_PKG_VERSION=0.23.32 \
+        CARGO_PKG_VERSION_MAJOR=0 \
+        CARGO_PKG_VERSION_MINOR=23 \
+        CARGO_PKG_VERSION_PATCH=32 \
+        CARGO_PKG_VERSION_PRE= \
+        DEBUG=false \
+        DEP_AWS_LC_RS_1_14_1_SYS_CONF=OPENSSL_NO_ASYNC,OPENSSL_NO_BF,OPENSSL_NO_BLAKE2,OPENSSL_NO_BUF_FREELISTS,OPENSSL_NO_CAMELLIA,OPENSSL_NO_CAPIENG,OPENSSL_NO_CAST,OPENSSL_NO_CMS,OPENSSL_NO_COMP,OPENSSL_NO_CRYPTO_MDEBUG,OPENSSL_NO_CT,OPENSSL_NO_DANE,OPENSSL_NO_DEPRECATED,OPENSSL_NO_DGRAM,OPENSSL_NO_DYNAMIC_ENGINE,OPENSSL_NO_EC_NISTP_64_GCC_128,OPENSSL_NO_EC2M,OPENSSL_NO_EGD,OPENSSL_NO_ENGINE,OPENSSL_NO_GMP,OPENSSL_NO_GOST,OPENSSL_NO_HEARTBEATS,OPENSSL_NO_HW,OPENSSL_NO_IDEA,OPENSSL_NO_JPAKE,OPENSSL_NO_KRB5,OPENSSL_NO_MD2,OPENSSL_NO_MDC2,OPENSSL_NO_OCB,OPENSSL_NO_RC2,OPENSSL_NO_RC5,OPENSSL_NO_RFC3779,OPENSSL_NO_RIPEMD,OPENSSL_NO_RMD160,OPENSSL_NO_SCTP,OPENSSL_NO_SEED,OPENSSL_NO_SM2,OPENSSL_NO_SM3,OPENSSL_NO_SM4,OPENSSL_NO_SRP,OPENSSL_NO_SSL_TRACE,OPENSSL_NO_SSL2,OPENSSL_NO_SSL3,OPENSSL_NO_SSL3_METHOD,OPENSSL_NO_STATIC_ENGINE,OPENSSL_NO_STORE,OPENSSL_NO_TS,OPENSSL_NO_WHIRLPOOL \
+        DEP_AWS_LC_RS_1_14_1_SYS_INCLUDE=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out/include \
+        DEP_AWS_LC_RS_1_14_1_SYS_LIBCRYPTO=aws_lc_0_32_2_crypto \
+        DEP_AWS_LC_RS_1_14_1_SYS_ROOT=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out \
+        HOST=x86_64-unknown-linux-gnu \
+        NUM_JOBS=4 \
+        OPT_LEVEL=3 \
+        OUT_DIR=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/rustls-8b3d3020feb33fc9/out \
+        PROFILE=release \
+        RUSTC=rustc \
+        RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+        TARGET=x86_64-unknown-linux-gnu \
+        CARGOGREEN=1 \
+      CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/rustls-8ec054074e55cb28/build-script-build \
+        1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/rustls-8b3d3020feb33fc9/out/out-8b3d3020feb33fc9-stdout \
+        2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/rustls-8b3d3020feb33fc9/out/out-8b3d3020feb33fc9-stderr \
+        || echo $? >/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/rustls-8b3d3020feb33fc9/out/out-8b3d3020feb33fc9-errcode\
+  ; find /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/rustls-8b3d3020feb33fc9/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-8b3d3020feb33fc9
+COPY --link --from=run-z-rustls-0.23.32-8b3d3020feb33fc9 /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/rustls-8b3d3020feb33fc9/out /
+
+## this = "8b3d3020feb33fc9"
+## deps = ["8ec054074e55cb28"]
+## writes_to = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/rustls-8b3d3020feb33fc9/out"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "run-z-rustls-0.23.32-8b3d3020feb33fc9"
+## script = '''
+## FROM rust-base AS run-z-rustls-0.23.32-8b3d3020feb33fc9
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/rustls-8b3d3020feb33fc9/out
+## WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustls-0.23.32
+## RUN \
+##   --mount=from=out-8ec054074e55cb28,source=/build_script_build-8ec054074e55cb28,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/rustls-8ec054074e55cb28/build-script-build \
+##   --mount=from=cratesio-rustls-0.23.32,source=/rustls-0.23.32,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustls-0.23.32 \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CFG_FEATURE=aws-lc-rs,aws_lc_rs,default,log,logging,prefer-post-quantum,std,tls12 \
+##         CARGO_CFG_PANIC=unwind \
+##         CARGO_CFG_TARGET_ABI= \
+##         CARGO_CFG_TARGET_ARCH=x86_64 \
+##         CARGO_CFG_TARGET_ENDIAN=little \
+##         CARGO_CFG_TARGET_ENV=gnu \
+##         CARGO_CFG_TARGET_FAMILY=unix \
+##         CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
+##         CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+##         CARGO_CFG_TARGET_OS=linux \
+##         CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+##         CARGO_CFG_TARGET_VENDOR=unknown \
+##         CARGO_CFG_UNIX= \
+##         CARGO_ENCODED_RUSTFLAGS= \
+##         CARGO_FEATURE_AWS_LC_RS=1 \
+##         CARGO_FEATURE_DEFAULT=1 \
+##         CARGO_FEATURE_LOG=1 \
+##         CARGO_FEATURE_LOGGING=1 \
+##         CARGO_FEATURE_PREFER_POST_QUANTUM=1 \
+##         CARGO_FEATURE_STD=1 \
+##         CARGO_FEATURE_TLS12=1 \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustls-0.23.32 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustls-0.23.32/Cargo.toml \
+##         CARGO_PKG_AUTHORS= \
+##         CARGO_PKG_DESCRIPTION=Rustls' is a modern TLS library written in Rust.' \
+##         CARGO_PKG_HOMEPAGE=https'://github.com/rustls/rustls' \
+##         CARGO_PKG_LICENSE=Apache-2.0' OR ISC OR MIT' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=rustls \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/rustls/rustls' \
+##         CARGO_PKG_RUST_VERSION=1.71 \
+##         CARGO_PKG_VERSION=0.23.32 \
+##         CARGO_PKG_VERSION_MAJOR=0 \
+##         CARGO_PKG_VERSION_MINOR=23 \
+##         CARGO_PKG_VERSION_PATCH=32 \
+##         CARGO_PKG_VERSION_PRE= \
+##         DEBUG=false \
+##         DEP_AWS_LC_RS_1_14_1_SYS_CONF=OPENSSL_NO_ASYNC,OPENSSL_NO_BF,OPENSSL_NO_BLAKE2,OPENSSL_NO_BUF_FREELISTS,OPENSSL_NO_CAMELLIA,OPENSSL_NO_CAPIENG,OPENSSL_NO_CAST,OPENSSL_NO_CMS,OPENSSL_NO_COMP,OPENSSL_NO_CRYPTO_MDEBUG,OPENSSL_NO_CT,OPENSSL_NO_DANE,OPENSSL_NO_DEPRECATED,OPENSSL_NO_DGRAM,OPENSSL_NO_DYNAMIC_ENGINE,OPENSSL_NO_EC_NISTP_64_GCC_128,OPENSSL_NO_EC2M,OPENSSL_NO_EGD,OPENSSL_NO_ENGINE,OPENSSL_NO_GMP,OPENSSL_NO_GOST,OPENSSL_NO_HEARTBEATS,OPENSSL_NO_HW,OPENSSL_NO_IDEA,OPENSSL_NO_JPAKE,OPENSSL_NO_KRB5,OPENSSL_NO_MD2,OPENSSL_NO_MDC2,OPENSSL_NO_OCB,OPENSSL_NO_RC2,OPENSSL_NO_RC5,OPENSSL_NO_RFC3779,OPENSSL_NO_RIPEMD,OPENSSL_NO_RMD160,OPENSSL_NO_SCTP,OPENSSL_NO_SEED,OPENSSL_NO_SM2,OPENSSL_NO_SM3,OPENSSL_NO_SM4,OPENSSL_NO_SRP,OPENSSL_NO_SSL_TRACE,OPENSSL_NO_SSL2,OPENSSL_NO_SSL3,OPENSSL_NO_SSL3_METHOD,OPENSSL_NO_STATIC_ENGINE,OPENSSL_NO_STORE,OPENSSL_NO_TS,OPENSSL_NO_WHIRLPOOL \
+##         DEP_AWS_LC_RS_1_14_1_SYS_INCLUDE=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out/include \
+##         DEP_AWS_LC_RS_1_14_1_SYS_LIBCRYPTO=aws_lc_0_32_2_crypto \
+##         DEP_AWS_LC_RS_1_14_1_SYS_ROOT=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out \
+##         HOST=x86_64-unknown-linux-gnu \
+##         NUM_JOBS=4 \
+##         OPT_LEVEL=3 \
+##         OUT_DIR=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/rustls-8b3d3020feb33fc9/out \
+##         PROFILE=release \
+##         RUSTC=rustc \
+##         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+##         TARGET=x86_64-unknown-linux-gnu \
+##         CARGOGREEN=1 \
+##       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/rustls-8ec054074e55cb28/build-script-build \
+##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/rustls-8b3d3020feb33fc9/out/out-8b3d3020feb33fc9-stdout \
+##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/rustls-8b3d3020feb33fc9/out/out-8b3d3020feb33fc9-stderr \
+##         || echo $? >/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/rustls-8b3d3020feb33fc9/out/out-8b3d3020feb33fc9-errcode\
+##   ; find /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/rustls-8b3d3020feb33fc9/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-8b3d3020feb33fc9"
+## script = """
+## FROM scratch AS out-8b3d3020feb33fc9
+## COPY --link --from=run-z-rustls-0.23.32-8b3d3020feb33fc9 /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/rustls-8b3d3020feb33fc9/out /"""
+
+
 FROM rust-base AS dep-n-rustls-0.23.32-79af5f0cc8b8fe11
 SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps
@@ -5561,6 +10884,26 @@ RUN \
   --mount=from=out-90227bfec647f88b,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libaws_lc_rs-90227bfec647f88b.rmeta,source=/libaws_lc_rs-90227bfec647f88b.rmeta \
   --mount=from=out-135dbb753da3a4f4,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libaws_lc_sys-135dbb753da3a4f4.rlib,source=/libaws_lc_sys-135dbb753da3a4f4.rlib \
   --mount=from=out-135dbb753da3a4f4,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libaws_lc_sys-135dbb753da3a4f4.rmeta,source=/libaws_lc_sys-135dbb753da3a4f4.rmeta \
+  --mount=from=out-d2948f7c0c8497b1,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libfind_msvc_tools-d2948f7c0c8497b1.rlib,source=/libfind_msvc_tools-d2948f7c0c8497b1.rlib \
+  --mount=from=out-d2948f7c0c8497b1,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libfind_msvc_tools-d2948f7c0c8497b1.rmeta,source=/libfind_msvc_tools-d2948f7c0c8497b1.rmeta \
+  --mount=from=out-4dc141be22bbffce,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libjobserver-4dc141be22bbffce.rlib,source=/libjobserver-4dc141be22bbffce.rlib \
+  --mount=from=out-4dc141be22bbffce,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libjobserver-4dc141be22bbffce.rmeta,source=/libjobserver-4dc141be22bbffce.rmeta \
+  --mount=from=out-60426161aa87c673,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibc-60426161aa87c673.rlib,source=/liblibc-60426161aa87c673.rlib \
+  --mount=from=out-60426161aa87c673,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibc-60426161aa87c673.rmeta,source=/liblibc-60426161aa87c673.rmeta \
+  --mount=from=out-b166d1c75d83103c,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libshlex-b166d1c75d83103c.rlib,source=/libshlex-b166d1c75d83103c.rlib \
+  --mount=from=out-b166d1c75d83103c,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libshlex-b166d1c75d83103c.rmeta,source=/libshlex-b166d1c75d83103c.rmeta \
+  --mount=from=out-336c2d9100ab92f8,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcc-336c2d9100ab92f8.rlib,source=/libcc-336c2d9100ab92f8.rlib \
+  --mount=from=out-336c2d9100ab92f8,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcc-336c2d9100ab92f8.rmeta,source=/libcc-336c2d9100ab92f8.rmeta \
+  --mount=from=out-3ff4fdb389eab124,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcmake-3ff4fdb389eab124.rlib,source=/libcmake-3ff4fdb389eab124.rlib \
+  --mount=from=out-3ff4fdb389eab124,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcmake-3ff4fdb389eab124.rmeta,source=/libcmake-3ff4fdb389eab124.rmeta \
+  --mount=from=out-25a6bb4144c31f83,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libdunce-25a6bb4144c31f83.rlib,source=/libdunce-25a6bb4144c31f83.rlib \
+  --mount=from=out-25a6bb4144c31f83,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libdunce-25a6bb4144c31f83.rmeta,source=/libdunce-25a6bb4144c31f83.rmeta \
+  --mount=from=out-19400729ba85cd55,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libfs_extra-19400729ba85cd55.rlib,source=/libfs_extra-19400729ba85cd55.rlib \
+  --mount=from=out-19400729ba85cd55,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libfs_extra-19400729ba85cd55.rmeta,source=/libfs_extra-19400729ba85cd55.rmeta \
+  --mount=from=out-d905bd04d466c2b4,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcfg_if-d905bd04d466c2b4.rlib,source=/libcfg_if-d905bd04d466c2b4.rlib \
+  --mount=from=out-d905bd04d466c2b4,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcfg_if-d905bd04d466c2b4.rmeta,source=/libcfg_if-d905bd04d466c2b4.rmeta \
+  --mount=from=out-bcbfd880a9747f76,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibloading-bcbfd880a9747f76.rlib,source=/liblibloading-bcbfd880a9747f76.rlib \
+  --mount=from=out-bcbfd880a9747f76,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibloading-bcbfd880a9747f76.rmeta,source=/liblibloading-bcbfd880a9747f76.rmeta \
   --mount=from=out-fd233fb45e407496,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libzeroize-fd233fb45e407496.rlib,source=/libzeroize-fd233fb45e407496.rlib \
   --mount=from=out-fd233fb45e407496,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libzeroize-fd233fb45e407496.rmeta,source=/libzeroize-fd233fb45e407496.rmeta \
   --mount=from=out-64be2e589e1b58c5,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblog-64be2e589e1b58c5.rlib,source=/liblog-64be2e589e1b58c5.rlib \
@@ -5575,6 +10918,8 @@ RUN \
   --mount=from=out-2d8d07531d218763,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libuntrusted-2d8d07531d218763.rmeta,source=/libuntrusted-2d8d07531d218763.rmeta \
   --mount=from=out-f22c7bf8d1e18975,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libsubtle-f22c7bf8d1e18975.rlib,source=/libsubtle-f22c7bf8d1e18975.rlib \
   --mount=from=out-f22c7bf8d1e18975,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libsubtle-f22c7bf8d1e18975.rmeta,source=/libsubtle-f22c7bf8d1e18975.rmeta \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out,source=/ \
+  --mount=from=out-8b3d3020feb33fc9,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/rustls-8b3d3020feb33fc9/out,source=/ \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=rustls \
         CARGO_INCREMENTAL=0 \
@@ -5596,8 +10941,6 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         OUT_DIR=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/rustls-8b3d3020feb33fc9/out \
         CARGOGREEN=1 \
-        NTPD_RS_GIT_DATE=2025-05-09 \
-        NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
       rustc --crate-name rustls --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --warn unexpected_cfgs --check-cfg cfg'(bench)' --check-cfg cfg'(coverage_nightly)' --check-cfg cfg'(read_buf)' --cfg feature'="aws-lc-rs"' --cfg feature'="aws_lc_rs"' --cfg feature'="default"' --cfg feature'="log"' --cfg feature'="logging"' --cfg feature'="prefer-post-quantum"' --cfg feature'="std"' --cfg feature'="tls12"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("aws-lc-rs", "aws_lc_rs", "brotli", "custom-provider", "default", "fips", "hashbrown", "log", "logging", "prefer-post-quantum", "read_buf", "ring", "rustversion", "std", "tls12", "zlib"))' -C metadata'=ab902e6a94182223' -C extra-filename'=-79af5f0cc8b8fe11' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern aws_lc_rs'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libaws_lc_rs-90227bfec647f88b.rmeta' --extern log'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblog-64be2e589e1b58c5.rmeta' --extern once_cell'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libonce_cell-d2455ec75a446def.rmeta' --extern pki_types'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/librustls_pki_types-88022d560b8b0ce0.rmeta' --extern webpki'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libwebpki-6da74749e9752714.rmeta' --extern subtle'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libsubtle-f22c7bf8d1e18975.rmeta' --extern zeroize'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libzeroize-fd233fb45e407496.rmeta' --cap-lints warn -L native'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustls-0.23.32/src/lib.rs \
         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-79af5f0cc8b8fe11-stdout \
         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-79af5f0cc8b8fe11-stderr \
@@ -5610,13 +10953,36 @@ COPY --link --from=dep-n-rustls-0.23.32-79af5f0cc8b8fe11 /tmp/clis-ntpd_1-7-0-al
 ## deps = [
 ##     "90227bfec647f88b",
 ##     "135dbb753da3a4f4",
+##     "d2948f7c0c8497b1",
+##     "4dc141be22bbffce",
+##     "60426161aa87c673",
+##     "7560e7c5c88ec4c4",
+##     "b166d1c75d83103c",
+##     "336c2d9100ab92f8",
+##     "3ff4fdb389eab124",
+##     "25a6bb4144c31f83",
+##     "19400729ba85cd55",
+##     "d905bd04d466c2b4",
+##     "bcbfd880a9747f76",
+##     "b91f62695d1e67bd",
 ##     "fd233fb45e407496",
+##     "6215be1cd523c855",
 ##     "64be2e589e1b58c5",
 ##     "d2455ec75a446def",
 ##     "88022d560b8b0ce0",
 ##     "6da74749e9752714",
 ##     "2d8d07531d218763",
 ##     "f22c7bf8d1e18975",
+##     "8b3d3020feb33fc9",
+##     "99856d878c8e44ce",
+##     "2d875791ad1d3d18",
+##     "7ef21a73dd92a44b",
+##     "8ec054074e55cb28",
+## ]
+## buildrs_results = [
+##     "2d875791ad1d3d18",
+##     "7ef21a73dd92a44b",
+##     "8b3d3020feb33fc9",
 ## ]
 ## writes = [
 ##     "librustls-79af5f0cc8b8fe11.rlib",
@@ -5644,6 +11010,86 @@ COPY --link --from=dep-n-rustls-0.23.32-79af5f0cc8b8fe11 /tmp/clis-ntpd_1-7-0-al
 ## [[externs]]
 ## from = "out-135dbb753da3a4f4"
 ## xtern = "libaws_lc_sys-135dbb753da3a4f4.rmeta"
+##
+## [[externs]]
+## from = "out-d2948f7c0c8497b1"
+## xtern = "libfind_msvc_tools-d2948f7c0c8497b1.rlib"
+##
+## [[externs]]
+## from = "out-d2948f7c0c8497b1"
+## xtern = "libfind_msvc_tools-d2948f7c0c8497b1.rmeta"
+##
+## [[externs]]
+## from = "out-4dc141be22bbffce"
+## xtern = "libjobserver-4dc141be22bbffce.rlib"
+##
+## [[externs]]
+## from = "out-4dc141be22bbffce"
+## xtern = "libjobserver-4dc141be22bbffce.rmeta"
+##
+## [[externs]]
+## from = "out-60426161aa87c673"
+## xtern = "liblibc-60426161aa87c673.rlib"
+##
+## [[externs]]
+## from = "out-60426161aa87c673"
+## xtern = "liblibc-60426161aa87c673.rmeta"
+##
+## [[externs]]
+## from = "out-b166d1c75d83103c"
+## xtern = "libshlex-b166d1c75d83103c.rlib"
+##
+## [[externs]]
+## from = "out-b166d1c75d83103c"
+## xtern = "libshlex-b166d1c75d83103c.rmeta"
+##
+## [[externs]]
+## from = "out-336c2d9100ab92f8"
+## xtern = "libcc-336c2d9100ab92f8.rlib"
+##
+## [[externs]]
+## from = "out-336c2d9100ab92f8"
+## xtern = "libcc-336c2d9100ab92f8.rmeta"
+##
+## [[externs]]
+## from = "out-3ff4fdb389eab124"
+## xtern = "libcmake-3ff4fdb389eab124.rlib"
+##
+## [[externs]]
+## from = "out-3ff4fdb389eab124"
+## xtern = "libcmake-3ff4fdb389eab124.rmeta"
+##
+## [[externs]]
+## from = "out-25a6bb4144c31f83"
+## xtern = "libdunce-25a6bb4144c31f83.rlib"
+##
+## [[externs]]
+## from = "out-25a6bb4144c31f83"
+## xtern = "libdunce-25a6bb4144c31f83.rmeta"
+##
+## [[externs]]
+## from = "out-19400729ba85cd55"
+## xtern = "libfs_extra-19400729ba85cd55.rlib"
+##
+## [[externs]]
+## from = "out-19400729ba85cd55"
+## xtern = "libfs_extra-19400729ba85cd55.rmeta"
+##
+## [[externs]]
+## from = "out-d905bd04d466c2b4"
+## xtern = "libcfg_if-d905bd04d466c2b4.rlib"
+##
+## [[externs]]
+## from = "out-d905bd04d466c2b4"
+## xtern = "libcfg_if-d905bd04d466c2b4.rmeta"
+##
+## [[externs]]
+## from = "out-bcbfd880a9747f76"
+## xtern = "liblibloading-bcbfd880a9747f76.rlib"
+##
+## [[externs]]
+## from = "out-bcbfd880a9747f76"
+## xtern = "liblibloading-bcbfd880a9747f76.rmeta"
 ##
 ## [[externs]]
 ## from = "out-fd233fb45e407496"
@@ -5701,9 +11147,13 @@ COPY --link --from=dep-n-rustls-0.23.32-79af5f0cc8b8fe11 /tmp/clis-ntpd_1-7-0-al
 ## from = "out-f22c7bf8d1e18975"
 ## xtern = "libsubtle-f22c7bf8d1e18975.rmeta"
 ##
-## [[contexts]]
-## name = "crate_out-2d875791ad1d3d18"
-## uri = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out"
+## [[mounts]]
+## name = "out-2d875791ad1d3d18"
+## mount = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out"
+##
+## [[mounts]]
+## name = "out-8b3d3020feb33fc9"
+## mount = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/rustls-8b3d3020feb33fc9/out"
 ##
 ## [[stages]]
 ##
@@ -5734,6 +11184,26 @@ COPY --link --from=dep-n-rustls-0.23.32-79af5f0cc8b8fe11 /tmp/clis-ntpd_1-7-0-al
 ##   --mount=from=out-90227bfec647f88b,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libaws_lc_rs-90227bfec647f88b.rmeta,source=/libaws_lc_rs-90227bfec647f88b.rmeta \
 ##   --mount=from=out-135dbb753da3a4f4,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libaws_lc_sys-135dbb753da3a4f4.rlib,source=/libaws_lc_sys-135dbb753da3a4f4.rlib \
 ##   --mount=from=out-135dbb753da3a4f4,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libaws_lc_sys-135dbb753da3a4f4.rmeta,source=/libaws_lc_sys-135dbb753da3a4f4.rmeta \
+##   --mount=from=out-d2948f7c0c8497b1,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libfind_msvc_tools-d2948f7c0c8497b1.rlib,source=/libfind_msvc_tools-d2948f7c0c8497b1.rlib \
+##   --mount=from=out-d2948f7c0c8497b1,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libfind_msvc_tools-d2948f7c0c8497b1.rmeta,source=/libfind_msvc_tools-d2948f7c0c8497b1.rmeta \
+##   --mount=from=out-4dc141be22bbffce,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libjobserver-4dc141be22bbffce.rlib,source=/libjobserver-4dc141be22bbffce.rlib \
+##   --mount=from=out-4dc141be22bbffce,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libjobserver-4dc141be22bbffce.rmeta,source=/libjobserver-4dc141be22bbffce.rmeta \
+##   --mount=from=out-60426161aa87c673,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibc-60426161aa87c673.rlib,source=/liblibc-60426161aa87c673.rlib \
+##   --mount=from=out-60426161aa87c673,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibc-60426161aa87c673.rmeta,source=/liblibc-60426161aa87c673.rmeta \
+##   --mount=from=out-b166d1c75d83103c,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libshlex-b166d1c75d83103c.rlib,source=/libshlex-b166d1c75d83103c.rlib \
+##   --mount=from=out-b166d1c75d83103c,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libshlex-b166d1c75d83103c.rmeta,source=/libshlex-b166d1c75d83103c.rmeta \
+##   --mount=from=out-336c2d9100ab92f8,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcc-336c2d9100ab92f8.rlib,source=/libcc-336c2d9100ab92f8.rlib \
+##   --mount=from=out-336c2d9100ab92f8,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcc-336c2d9100ab92f8.rmeta,source=/libcc-336c2d9100ab92f8.rmeta \
+##   --mount=from=out-3ff4fdb389eab124,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcmake-3ff4fdb389eab124.rlib,source=/libcmake-3ff4fdb389eab124.rlib \
+##   --mount=from=out-3ff4fdb389eab124,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcmake-3ff4fdb389eab124.rmeta,source=/libcmake-3ff4fdb389eab124.rmeta \
+##   --mount=from=out-25a6bb4144c31f83,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libdunce-25a6bb4144c31f83.rlib,source=/libdunce-25a6bb4144c31f83.rlib \
+##   --mount=from=out-25a6bb4144c31f83,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libdunce-25a6bb4144c31f83.rmeta,source=/libdunce-25a6bb4144c31f83.rmeta \
+##   --mount=from=out-19400729ba85cd55,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libfs_extra-19400729ba85cd55.rlib,source=/libfs_extra-19400729ba85cd55.rlib \
+##   --mount=from=out-19400729ba85cd55,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libfs_extra-19400729ba85cd55.rmeta,source=/libfs_extra-19400729ba85cd55.rmeta \
+##   --mount=from=out-d905bd04d466c2b4,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcfg_if-d905bd04d466c2b4.rlib,source=/libcfg_if-d905bd04d466c2b4.rlib \
+##   --mount=from=out-d905bd04d466c2b4,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcfg_if-d905bd04d466c2b4.rmeta,source=/libcfg_if-d905bd04d466c2b4.rmeta \
+##   --mount=from=out-bcbfd880a9747f76,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibloading-bcbfd880a9747f76.rlib,source=/liblibloading-bcbfd880a9747f76.rlib \
+##   --mount=from=out-bcbfd880a9747f76,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibloading-bcbfd880a9747f76.rmeta,source=/liblibloading-bcbfd880a9747f76.rmeta \
 ##   --mount=from=out-fd233fb45e407496,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libzeroize-fd233fb45e407496.rlib,source=/libzeroize-fd233fb45e407496.rlib \
 ##   --mount=from=out-fd233fb45e407496,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libzeroize-fd233fb45e407496.rmeta,source=/libzeroize-fd233fb45e407496.rmeta \
 ##   --mount=from=out-64be2e589e1b58c5,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblog-64be2e589e1b58c5.rlib,source=/liblog-64be2e589e1b58c5.rlib \
@@ -5748,6 +11218,8 @@ COPY --link --from=dep-n-rustls-0.23.32-79af5f0cc8b8fe11 /tmp/clis-ntpd_1-7-0-al
 ##   --mount=from=out-2d8d07531d218763,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libuntrusted-2d8d07531d218763.rmeta,source=/libuntrusted-2d8d07531d218763.rmeta \
 ##   --mount=from=out-f22c7bf8d1e18975,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libsubtle-f22c7bf8d1e18975.rlib,source=/libsubtle-f22c7bf8d1e18975.rlib \
 ##   --mount=from=out-f22c7bf8d1e18975,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libsubtle-f22c7bf8d1e18975.rmeta,source=/libsubtle-f22c7bf8d1e18975.rmeta \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out,source=/ \
+##   --mount=from=out-8b3d3020feb33fc9,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/rustls-8b3d3020feb33fc9/out,source=/ \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=rustls \
 ##         CARGO_INCREMENTAL=0 \
@@ -5769,8 +11241,6 @@ COPY --link --from=dep-n-rustls-0.23.32-79af5f0cc8b8fe11 /tmp/clis-ntpd_1-7-0-al
 ##         CARGO_PKG_VERSION_PRE= \
 ##         OUT_DIR=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/rustls-8b3d3020feb33fc9/out \
 ##         CARGOGREEN=1 \
-##         NTPD_RS_GIT_DATE=2025-05-09 \
-##         NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
 ##       rustc --crate-name rustls --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --warn unexpected_cfgs --check-cfg cfg'(bench)' --check-cfg cfg'(coverage_nightly)' --check-cfg cfg'(read_buf)' --cfg feature'="aws-lc-rs"' --cfg feature'="aws_lc_rs"' --cfg feature'="default"' --cfg feature'="log"' --cfg feature'="logging"' --cfg feature'="prefer-post-quantum"' --cfg feature'="std"' --cfg feature'="tls12"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("aws-lc-rs", "aws_lc_rs", "brotli", "custom-provider", "default", "fips", "hashbrown", "log", "logging", "prefer-post-quantum", "read_buf", "ring", "rustversion", "std", "tls12", "zlib"))' -C metadata'=ab902e6a94182223' -C extra-filename'=-79af5f0cc8b8fe11' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern aws_lc_rs'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libaws_lc_rs-90227bfec647f88b.rmeta' --extern log'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblog-64be2e589e1b58c5.rmeta' --extern once_cell'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libonce_cell-d2455ec75a446def.rmeta' --extern pki_types'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/librustls_pki_types-88022d560b8b0ce0.rmeta' --extern webpki'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libwebpki-6da74749e9752714.rmeta' --extern subtle'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libsubtle-f22c7bf8d1e18975.rmeta' --extern zeroize'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libzeroize-fd233fb45e407496.rmeta' --cap-lints warn -L native'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustls-0.23.32/src/lib.rs \
 ##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-79af5f0cc8b8fe11-stdout \
 ##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-79af5f0cc8b8fe11-stderr \
@@ -5814,8 +11284,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=6 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        NTPD_RS_GIT_DATE=2025-05-09 \
-        NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
       rustc --crate-name openssl_probe --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=73282dd1bf3acd08' -C extra-filename'=-2ff594c6e039dec5' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/openssl-probe-0.1.6/src/lib.rs \
         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-2ff594c6e039dec5-stdout \
         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-2ff594c6e039dec5-stderr \
@@ -5882,8 +11350,6 @@ COPY --link --from=dep-n-openssl-probe-0.1.6-2ff594c6e039dec5 /tmp/clis-ntpd_1-7
 ##         CARGO_PKG_VERSION_PATCH=6 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         NTPD_RS_GIT_DATE=2025-05-09 \
-##         NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
 ##       rustc --crate-name openssl_probe --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=73282dd1bf3acd08' -C extra-filename'=-2ff594c6e039dec5' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/openssl-probe-0.1.6/src/lib.rs \
 ##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-2ff594c6e039dec5-stdout \
 ##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-2ff594c6e039dec5-stderr \
@@ -5932,8 +11398,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        NTPD_RS_GIT_DATE=2025-05-09 \
-        NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
       rustc --crate-name rustls_native_certs --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=fdcc1b8ea7e38357' -C extra-filename'=-9227835a4d59a1b8' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern openssl_probe'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libopenssl_probe-2ff594c6e039dec5.rmeta' --extern pki_types'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/librustls_pki_types-88022d560b8b0ce0.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustls-native-certs-0.8.1/src/lib.rs \
         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-9227835a4d59a1b8-stdout \
         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-9227835a4d59a1b8-stderr \
@@ -6034,8 +11498,6 @@ COPY --link --from=dep-n-rustls-native-certs-0.8.1-9227835a4d59a1b8 /tmp/clis-nt
 ##         CARGO_PKG_VERSION_PATCH=1 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         NTPD_RS_GIT_DATE=2025-05-09 \
-##         NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
 ##       rustc --crate-name rustls_native_certs --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=fdcc1b8ea7e38357' -C extra-filename'=-9227835a4d59a1b8' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern openssl_probe'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libopenssl_probe-2ff594c6e039dec5.rmeta' --extern pki_types'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/librustls_pki_types-88022d560b8b0ce0.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustls-native-certs-0.8.1/src/lib.rs \
 ##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-9227835a4d59a1b8-stdout \
 ##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-9227835a4d59a1b8-stderr \
@@ -6063,6 +11525,16 @@ RUN \
   --mount=from=out-79af5f0cc8b8fe11,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/librustls-79af5f0cc8b8fe11.rlib,source=/librustls-79af5f0cc8b8fe11.rlib \
   --mount=from=out-90227bfec647f88b,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libaws_lc_rs-90227bfec647f88b.rlib,source=/libaws_lc_rs-90227bfec647f88b.rlib \
   --mount=from=out-135dbb753da3a4f4,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libaws_lc_sys-135dbb753da3a4f4.rlib,source=/libaws_lc_sys-135dbb753da3a4f4.rlib \
+  --mount=from=out-d2948f7c0c8497b1,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libfind_msvc_tools-d2948f7c0c8497b1.rlib,source=/libfind_msvc_tools-d2948f7c0c8497b1.rlib \
+  --mount=from=out-4dc141be22bbffce,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libjobserver-4dc141be22bbffce.rlib,source=/libjobserver-4dc141be22bbffce.rlib \
+  --mount=from=out-60426161aa87c673,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibc-60426161aa87c673.rlib,source=/liblibc-60426161aa87c673.rlib \
+  --mount=from=out-b166d1c75d83103c,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libshlex-b166d1c75d83103c.rlib,source=/libshlex-b166d1c75d83103c.rlib \
+  --mount=from=out-336c2d9100ab92f8,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcc-336c2d9100ab92f8.rlib,source=/libcc-336c2d9100ab92f8.rlib \
+  --mount=from=out-3ff4fdb389eab124,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcmake-3ff4fdb389eab124.rlib,source=/libcmake-3ff4fdb389eab124.rlib \
+  --mount=from=out-25a6bb4144c31f83,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libdunce-25a6bb4144c31f83.rlib,source=/libdunce-25a6bb4144c31f83.rlib \
+  --mount=from=out-19400729ba85cd55,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libfs_extra-19400729ba85cd55.rlib,source=/libfs_extra-19400729ba85cd55.rlib \
+  --mount=from=out-d905bd04d466c2b4,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcfg_if-d905bd04d466c2b4.rlib,source=/libcfg_if-d905bd04d466c2b4.rlib \
+  --mount=from=out-bcbfd880a9747f76,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibloading-bcbfd880a9747f76.rlib,source=/liblibloading-bcbfd880a9747f76.rlib \
   --mount=from=out-fd233fb45e407496,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libzeroize-fd233fb45e407496.rlib,source=/libzeroize-fd233fb45e407496.rlib \
   --mount=from=out-88022d560b8b0ce0,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/librustls_pki_types-88022d560b8b0ce0.rlib,source=/librustls_pki_types-88022d560b8b0ce0.rlib \
   --mount=from=out-6da74749e9752714,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libwebpki-6da74749e9752714.rlib,source=/libwebpki-6da74749e9752714.rlib \
@@ -6070,6 +11542,7 @@ RUN \
   --mount=from=out-f22c7bf8d1e18975,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libsubtle-f22c7bf8d1e18975.rlib,source=/libsubtle-f22c7bf8d1e18975.rlib \
   --mount=from=out-9227835a4d59a1b8,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/librustls_native_certs-9227835a4d59a1b8.rlib,source=/librustls_native_certs-9227835a4d59a1b8.rlib \
   --mount=from=out-2ff594c6e039dec5,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libopenssl_probe-2ff594c6e039dec5.rlib,source=/libopenssl_probe-2ff594c6e039dec5.rlib \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out,source=/ \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=rustls_platform_verifier \
         CARGO_INCREMENTAL=0 \
@@ -6090,8 +11563,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=3 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        NTPD_RS_GIT_DATE=2025-05-09 \
-        NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
       rustc --crate-name rustls_platform_verifier --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type cdylib --crate-type rlib --emit dep-info,link -C opt-level'=3' -C embed-bitcode'=no' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("android_logger", "base64", "cert-logging", "dbg", "docsrs", "ffi-testing", "jni"))' -C metadata'=ed80d5fe2c78a863' -C extra-filename'=-db666fad349f8ca6' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern log'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblog-64be2e589e1b58c5.rlib' --extern once_cell'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libonce_cell-d2455ec75a446def.rlib' --extern rustls'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/librustls-79af5f0cc8b8fe11.rlib' --extern rustls_native_certs'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/librustls_native_certs-9227835a4d59a1b8.rlib' --extern webpki'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libwebpki-6da74749e9752714.rlib' --cap-lints warn -L native'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustls-platform-verifier-0.5.3/src/lib.rs \
         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-db666fad349f8ca6-stdout \
         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-db666fad349f8ca6-stderr \
@@ -6107,13 +11578,36 @@ COPY --link --from=dep-n-rustls-platform-verifier-0.5.3-db666fad349f8ca6 /tmp/cl
 ##     "79af5f0cc8b8fe11",
 ##     "90227bfec647f88b",
 ##     "135dbb753da3a4f4",
+##     "d2948f7c0c8497b1",
+##     "4dc141be22bbffce",
+##     "60426161aa87c673",
+##     "7560e7c5c88ec4c4",
+##     "b166d1c75d83103c",
+##     "336c2d9100ab92f8",
+##     "3ff4fdb389eab124",
+##     "25a6bb4144c31f83",
+##     "19400729ba85cd55",
+##     "d905bd04d466c2b4",
+##     "bcbfd880a9747f76",
+##     "b91f62695d1e67bd",
 ##     "fd233fb45e407496",
+##     "6215be1cd523c855",
 ##     "88022d560b8b0ce0",
 ##     "6da74749e9752714",
 ##     "2d8d07531d218763",
 ##     "f22c7bf8d1e18975",
+##     "8ec054074e55cb28",
 ##     "9227835a4d59a1b8",
 ##     "2ff594c6e039dec5",
+##     "99856d878c8e44ce",
+##     "2d875791ad1d3d18",
+##     "7ef21a73dd92a44b",
+##     "8b3d3020feb33fc9",
+## ]
+## buildrs_results = [
+##     "2d875791ad1d3d18",
+##     "7ef21a73dd92a44b",
+##     "8b3d3020feb33fc9",
 ## ]
 ## writes = [
 ##     "librustls_platform_verifier-db666fad349f8ca6.rlib",
@@ -6147,6 +11641,46 @@ COPY --link --from=dep-n-rustls-platform-verifier-0.5.3-db666fad349f8ca6 /tmp/cl
 ## xtern = "libaws_lc_sys-135dbb753da3a4f4.rlib"
 ##
 ## [[externs]]
+## from = "out-d2948f7c0c8497b1"
+## xtern = "libfind_msvc_tools-d2948f7c0c8497b1.rlib"
+##
+## [[externs]]
+## from = "out-4dc141be22bbffce"
+## xtern = "libjobserver-4dc141be22bbffce.rlib"
+##
+## [[externs]]
+## from = "out-60426161aa87c673"
+## xtern = "liblibc-60426161aa87c673.rlib"
+##
+## [[externs]]
+## from = "out-b166d1c75d83103c"
+## xtern = "libshlex-b166d1c75d83103c.rlib"
+##
+## [[externs]]
+## from = "out-336c2d9100ab92f8"
+## xtern = "libcc-336c2d9100ab92f8.rlib"
+##
+## [[externs]]
+## from = "out-3ff4fdb389eab124"
+## xtern = "libcmake-3ff4fdb389eab124.rlib"
+##
+## [[externs]]
+## from = "out-25a6bb4144c31f83"
+## xtern = "libdunce-25a6bb4144c31f83.rlib"
+##
+## [[externs]]
+## from = "out-19400729ba85cd55"
+## xtern = "libfs_extra-19400729ba85cd55.rlib"
+##
+## [[externs]]
+## from = "out-d905bd04d466c2b4"
+## xtern = "libcfg_if-d905bd04d466c2b4.rlib"
+##
+## [[externs]]
+## from = "out-bcbfd880a9747f76"
+## xtern = "liblibloading-bcbfd880a9747f76.rlib"
+##
+## [[externs]]
 ## from = "out-fd233fb45e407496"
 ## xtern = "libzeroize-fd233fb45e407496.rlib"
 ##
@@ -6174,9 +11708,9 @@ COPY --link --from=dep-n-rustls-platform-verifier-0.5.3-db666fad349f8ca6 /tmp/cl
 ## from = "out-2ff594c6e039dec5"
 ## xtern = "libopenssl_probe-2ff594c6e039dec5.rlib"
 ##
-## [[contexts]]
-## name = "crate_out-2d875791ad1d3d18"
-## uri = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out"
+## [[mounts]]
+## name = "out-2d875791ad1d3d18"
+## mount = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out"
 ##
 ## [[stages]]
 ##
@@ -6208,6 +11742,16 @@ COPY --link --from=dep-n-rustls-platform-verifier-0.5.3-db666fad349f8ca6 /tmp/cl
 ##   --mount=from=out-79af5f0cc8b8fe11,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/librustls-79af5f0cc8b8fe11.rlib,source=/librustls-79af5f0cc8b8fe11.rlib \
 ##   --mount=from=out-90227bfec647f88b,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libaws_lc_rs-90227bfec647f88b.rlib,source=/libaws_lc_rs-90227bfec647f88b.rlib \
 ##   --mount=from=out-135dbb753da3a4f4,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libaws_lc_sys-135dbb753da3a4f4.rlib,source=/libaws_lc_sys-135dbb753da3a4f4.rlib \
+##   --mount=from=out-d2948f7c0c8497b1,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libfind_msvc_tools-d2948f7c0c8497b1.rlib,source=/libfind_msvc_tools-d2948f7c0c8497b1.rlib \
+##   --mount=from=out-4dc141be22bbffce,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libjobserver-4dc141be22bbffce.rlib,source=/libjobserver-4dc141be22bbffce.rlib \
+##   --mount=from=out-60426161aa87c673,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibc-60426161aa87c673.rlib,source=/liblibc-60426161aa87c673.rlib \
+##   --mount=from=out-b166d1c75d83103c,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libshlex-b166d1c75d83103c.rlib,source=/libshlex-b166d1c75d83103c.rlib \
+##   --mount=from=out-336c2d9100ab92f8,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcc-336c2d9100ab92f8.rlib,source=/libcc-336c2d9100ab92f8.rlib \
+##   --mount=from=out-3ff4fdb389eab124,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcmake-3ff4fdb389eab124.rlib,source=/libcmake-3ff4fdb389eab124.rlib \
+##   --mount=from=out-25a6bb4144c31f83,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libdunce-25a6bb4144c31f83.rlib,source=/libdunce-25a6bb4144c31f83.rlib \
+##   --mount=from=out-19400729ba85cd55,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libfs_extra-19400729ba85cd55.rlib,source=/libfs_extra-19400729ba85cd55.rlib \
+##   --mount=from=out-d905bd04d466c2b4,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcfg_if-d905bd04d466c2b4.rlib,source=/libcfg_if-d905bd04d466c2b4.rlib \
+##   --mount=from=out-bcbfd880a9747f76,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibloading-bcbfd880a9747f76.rlib,source=/liblibloading-bcbfd880a9747f76.rlib \
 ##   --mount=from=out-fd233fb45e407496,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libzeroize-fd233fb45e407496.rlib,source=/libzeroize-fd233fb45e407496.rlib \
 ##   --mount=from=out-88022d560b8b0ce0,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/librustls_pki_types-88022d560b8b0ce0.rlib,source=/librustls_pki_types-88022d560b8b0ce0.rlib \
 ##   --mount=from=out-6da74749e9752714,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libwebpki-6da74749e9752714.rlib,source=/libwebpki-6da74749e9752714.rlib \
@@ -6215,6 +11759,7 @@ COPY --link --from=dep-n-rustls-platform-verifier-0.5.3-db666fad349f8ca6 /tmp/cl
 ##   --mount=from=out-f22c7bf8d1e18975,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libsubtle-f22c7bf8d1e18975.rlib,source=/libsubtle-f22c7bf8d1e18975.rlib \
 ##   --mount=from=out-9227835a4d59a1b8,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/librustls_native_certs-9227835a4d59a1b8.rlib,source=/librustls_native_certs-9227835a4d59a1b8.rlib \
 ##   --mount=from=out-2ff594c6e039dec5,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libopenssl_probe-2ff594c6e039dec5.rlib,source=/libopenssl_probe-2ff594c6e039dec5.rlib \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out,source=/ \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=rustls_platform_verifier \
 ##         CARGO_INCREMENTAL=0 \
@@ -6235,8 +11780,6 @@ COPY --link --from=dep-n-rustls-platform-verifier-0.5.3-db666fad349f8ca6 /tmp/cl
 ##         CARGO_PKG_VERSION_PATCH=3 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         NTPD_RS_GIT_DATE=2025-05-09 \
-##         NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
 ##       rustc --crate-name rustls_platform_verifier --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type cdylib --crate-type rlib --emit dep-info,link -C opt-level'=3' -C embed-bitcode'=no' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("android_logger", "base64", "cert-logging", "dbg", "docsrs", "ffi-testing", "jni"))' -C metadata'=ed80d5fe2c78a863' -C extra-filename'=-db666fad349f8ca6' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern log'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblog-64be2e589e1b58c5.rlib' --extern once_cell'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libonce_cell-d2455ec75a446def.rlib' --extern rustls'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/librustls-79af5f0cc8b8fe11.rlib' --extern rustls_native_certs'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/librustls_native_certs-9227835a4d59a1b8.rlib' --extern webpki'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libwebpki-6da74749e9752714.rlib' --cap-lints warn -L native'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustls-platform-verifier-0.5.3/src/lib.rs \
 ##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-db666fad349f8ca6-stdout \
 ##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-db666fad349f8ca6-stderr \
@@ -6254,12 +11797,306 @@ COPY --link --from=dep-n-rustls-platform-verifier-0.5.3-db666fad349f8ca6 /tmp/cl
 FROM scratch AS cratesio-serde_core-1.0.228
 ADD --chmod=0664 --unpack --checksum=sha256:41d385c7d4ca58e59fc732af25c3983b67ac852c1a25000afe1175de458b67ad \
   https://static.crates.io/crates/serde_core/serde_core-1.0.228.crate /
+FROM rust-base AS dep-x-serde_core-1.0.228-51979789556dbb03
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_core-51979789556dbb03
+RUN \
+  --mount=from=cratesio-serde_core-1.0.228,source=/serde_core-1.0.228,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_core-1.0.228,rw \
+    { \
+        cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_core-1.0.228/build.rs | sed -E 's/^(pub[()a-z]* +)?(async +)?fn +main/\1\2fn actual_51979789556dbb03_main/' >/_ && mv /_ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_core-1.0.228/build.rs ; \
+        { \
+          echo ; \
+          echo 'fn main() {' ; \
+          echo '    use std::env::{args_os, var_os};' ; \
+          echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+          echo '        use std::process::{Command, Stdio};' ; \
+          echo '        let mut cmd = Command::new("cargo-green");' ; \
+          echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+          echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+          echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+          echo '        assert!(res.success());' ; \
+          echo '    } else {' ; \
+          echo '        actual_51979789556dbb03_main();' ; \
+          echo '    }' ; \
+          echo '}' ; \
+        } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_core-1.0.228/build.rs ; \
+    } && \
+    env CARGO="$(which cargo)" \
+        CARGO_CRATE_NAME=build_script_build \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_core-1.0.228 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_core-1.0.228/Cargo.toml \
+        CARGO_PKG_AUTHORS=Erick' Tryzelaar <erick.tryzelaar@gmail.com>:David Tolnay <dtolnay@gmail.com>' \
+        CARGO_PKG_DESCRIPTION=Serde' traits only, with no support for derive -- use the `serde` crate instead' \
+        CARGO_PKG_HOMEPAGE=https'://serde.rs' \
+        CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=serde_core \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/serde-rs/serde' \
+        CARGO_PKG_RUST_VERSION=1.56 \
+        CARGO_PKG_VERSION=1.0.228 \
+        CARGO_PKG_VERSION_MAJOR=1 \
+        CARGO_PKG_VERSION_MINOR=0 \
+        CARGO_PKG_VERSION_PATCH=228 \
+        CARGO_PKG_VERSION_PRE= \
+        CARGOGREEN=1 \
+      rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="result"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "rc", "result", "std", "unstable"))' -C metadata'=a75da22f28074116' -C extra-filename'=-51979789556dbb03' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_core-51979789556dbb03 -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_core-1.0.228/build.rs \
+        1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_core-51979789556dbb03/out-51979789556dbb03-stdout \
+        2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_core-51979789556dbb03/out-51979789556dbb03-stderr \
+        || echo $? >/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_core-51979789556dbb03/out-51979789556dbb03-errcode\
+  ; find /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_core-51979789556dbb03/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-51979789556dbb03
+COPY --link --from=dep-x-serde_core-1.0.228-51979789556dbb03 /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_core-51979789556dbb03/*-51979789556dbb03* /
+
+## this = "51979789556dbb03"
+## writes = [
+##     "build_script_build-51979789556dbb03",
+##     "build_script_build-51979789556dbb03.d",
+## ]
+## stderr = [
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_core-51979789556dbb03/build_script_build-51979789556dbb03.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_core-51979789556dbb03/build_script_build-51979789556dbb03","emit":"link"}',
+## ]
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
+##
+## [[stages]]
+##
+## [stages.Cratesio]
+## stage = "cratesio-serde_core-1.0.228"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_core-1.0.228"
+## name = "serde_core"
+## name_dash_version = "serde_core-1.0.228"
+## hash = "41d385c7d4ca58e59fc732af25c3983b67ac852c1a25000afe1175de458b67ad"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "dep-x-serde_core-1.0.228-51979789556dbb03"
+## script = '''
+## FROM rust-base AS dep-x-serde_core-1.0.228-51979789556dbb03
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_core-51979789556dbb03
+## RUN \
+##   --mount=from=cratesio-serde_core-1.0.228,source=/serde_core-1.0.228,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_core-1.0.228,rw \
+##     { \
+##         cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_core-1.0.228/build.rs | sed -E 's/^(pub[()a-z]* +)?(async +)?fn +main/\1\2fn actual_51979789556dbb03_main/' >/_ && mv /_ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_core-1.0.228/build.rs ; \
+##         { \
+##           echo ; \
+##           echo 'fn main() {' ; \
+##           echo '    use std::env::{args_os, var_os};' ; \
+##           echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+##           echo '        use std::process::{Command, Stdio};' ; \
+##           echo '        let mut cmd = Command::new("cargo-green");' ; \
+##           echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+##           echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+##           echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+##           echo '        assert!(res.success());' ; \
+##           echo '    } else {' ; \
+##           echo '        actual_51979789556dbb03_main();' ; \
+##           echo '    }' ; \
+##           echo '}' ; \
+##         } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_core-1.0.228/build.rs ; \
+##     } && \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CRATE_NAME=build_script_build \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_core-1.0.228 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_core-1.0.228/Cargo.toml \
+##         CARGO_PKG_AUTHORS=Erick' Tryzelaar <erick.tryzelaar@gmail.com>:David Tolnay <dtolnay@gmail.com>' \
+##         CARGO_PKG_DESCRIPTION=Serde' traits only, with no support for derive -- use the `serde` crate instead' \
+##         CARGO_PKG_HOMEPAGE=https'://serde.rs' \
+##         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=serde_core \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/serde-rs/serde' \
+##         CARGO_PKG_RUST_VERSION=1.56 \
+##         CARGO_PKG_VERSION=1.0.228 \
+##         CARGO_PKG_VERSION_MAJOR=1 \
+##         CARGO_PKG_VERSION_MINOR=0 \
+##         CARGO_PKG_VERSION_PATCH=228 \
+##         CARGO_PKG_VERSION_PRE= \
+##         CARGOGREEN=1 \
+##       rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="result"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "rc", "result", "std", "unstable"))' -C metadata'=a75da22f28074116' -C extra-filename'=-51979789556dbb03' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_core-51979789556dbb03 -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_core-1.0.228/build.rs \
+##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_core-51979789556dbb03/out-51979789556dbb03-stdout \
+##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_core-51979789556dbb03/out-51979789556dbb03-stderr \
+##         || echo $? >/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_core-51979789556dbb03/out-51979789556dbb03-errcode\
+##   ; find /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_core-51979789556dbb03/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-51979789556dbb03"
+## script = """
+## FROM scratch AS out-51979789556dbb03
+## COPY --link --from=dep-x-serde_core-1.0.228-51979789556dbb03 /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_core-51979789556dbb03/*-51979789556dbb03* /"""
+
+FROM rust-base AS run-z-serde_core-1.0.228-badeea6458a799e8
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_core-badeea6458a799e8/out
+WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_core-1.0.228
+RUN \
+  --mount=from=out-51979789556dbb03,source=/build_script_build-51979789556dbb03,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_core-51979789556dbb03/build-script-build \
+  --mount=from=cratesio-serde_core-1.0.228,source=/serde_core-1.0.228,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_core-1.0.228 \
+    env CARGO="$(which cargo)" \
+        CARGO_CFG_FEATURE=result,std \
+        CARGO_CFG_PANIC=unwind \
+        CARGO_CFG_TARGET_ABI= \
+        CARGO_CFG_TARGET_ARCH=x86_64 \
+        CARGO_CFG_TARGET_ENDIAN=little \
+        CARGO_CFG_TARGET_ENV=gnu \
+        CARGO_CFG_TARGET_FAMILY=unix \
+        CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
+        CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+        CARGO_CFG_TARGET_OS=linux \
+        CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+        CARGO_CFG_TARGET_VENDOR=unknown \
+        CARGO_CFG_UNIX= \
+        CARGO_ENCODED_RUSTFLAGS= \
+        CARGO_FEATURE_RESULT=1 \
+        CARGO_FEATURE_STD=1 \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_core-1.0.228 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_core-1.0.228/Cargo.toml \
+        CARGO_PKG_AUTHORS=Erick' Tryzelaar <erick.tryzelaar@gmail.com>:David Tolnay <dtolnay@gmail.com>' \
+        CARGO_PKG_DESCRIPTION=Serde' traits only, with no support for derive -- use the `serde` crate instead' \
+        CARGO_PKG_HOMEPAGE=https'://serde.rs' \
+        CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=serde_core \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/serde-rs/serde' \
+        CARGO_PKG_RUST_VERSION=1.56 \
+        CARGO_PKG_VERSION=1.0.228 \
+        CARGO_PKG_VERSION_MAJOR=1 \
+        CARGO_PKG_VERSION_MINOR=0 \
+        CARGO_PKG_VERSION_PATCH=228 \
+        CARGO_PKG_VERSION_PRE= \
+        DEBUG=false \
+        HOST=x86_64-unknown-linux-gnu \
+        NUM_JOBS=4 \
+        OPT_LEVEL=3 \
+        OUT_DIR=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_core-badeea6458a799e8/out \
+        PROFILE=release \
+        RUSTC=rustc \
+        RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+        TARGET=x86_64-unknown-linux-gnu \
+        CARGOGREEN=1 \
+      CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_core-51979789556dbb03/build-script-build \
+        1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_core-badeea6458a799e8/out/out-badeea6458a799e8-stdout \
+        2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_core-badeea6458a799e8/out/out-badeea6458a799e8-stderr \
+        || echo $? >/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_core-badeea6458a799e8/out/out-badeea6458a799e8-errcode\
+  ; find /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_core-badeea6458a799e8/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-badeea6458a799e8
+COPY --link --from=run-z-serde_core-1.0.228-badeea6458a799e8 /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_core-badeea6458a799e8/out /
+
+## this = "badeea6458a799e8"
+## deps = ["51979789556dbb03"]
+## writes_to = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_core-badeea6458a799e8/out"
+## writes = ["private.rs"]
+## stdout = [
+##     "cargo:rerun-if-changed=build.rs",
+##     "cargo:rustc-check-cfg=cfg(if_docsrs_then_no_serde_core)",
+##     "cargo:rustc-check-cfg=cfg(no_core_cstr)",
+##     "cargo:rustc-check-cfg=cfg(no_core_error)",
+##     "cargo:rustc-check-cfg=cfg(no_core_net)",
+##     "cargo:rustc-check-cfg=cfg(no_core_num_saturating)",
+##     "cargo:rustc-check-cfg=cfg(no_diagnostic_namespace)",
+##     "cargo:rustc-check-cfg=cfg(no_serde_derive)",
+##     "cargo:rustc-check-cfg=cfg(no_std_atomic)",
+##     "cargo:rustc-check-cfg=cfg(no_std_atomic64)",
+##     "cargo:rustc-check-cfg=cfg(no_target_has_atomic)",
+## ]
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "run-z-serde_core-1.0.228-badeea6458a799e8"
+## script = '''
+## FROM rust-base AS run-z-serde_core-1.0.228-badeea6458a799e8
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_core-badeea6458a799e8/out
+## WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_core-1.0.228
+## RUN \
+##   --mount=from=out-51979789556dbb03,source=/build_script_build-51979789556dbb03,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_core-51979789556dbb03/build-script-build \
+##   --mount=from=cratesio-serde_core-1.0.228,source=/serde_core-1.0.228,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_core-1.0.228 \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CFG_FEATURE=result,std \
+##         CARGO_CFG_PANIC=unwind \
+##         CARGO_CFG_TARGET_ABI= \
+##         CARGO_CFG_TARGET_ARCH=x86_64 \
+##         CARGO_CFG_TARGET_ENDIAN=little \
+##         CARGO_CFG_TARGET_ENV=gnu \
+##         CARGO_CFG_TARGET_FAMILY=unix \
+##         CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
+##         CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+##         CARGO_CFG_TARGET_OS=linux \
+##         CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+##         CARGO_CFG_TARGET_VENDOR=unknown \
+##         CARGO_CFG_UNIX= \
+##         CARGO_ENCODED_RUSTFLAGS= \
+##         CARGO_FEATURE_RESULT=1 \
+##         CARGO_FEATURE_STD=1 \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_core-1.0.228 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_core-1.0.228/Cargo.toml \
+##         CARGO_PKG_AUTHORS=Erick' Tryzelaar <erick.tryzelaar@gmail.com>:David Tolnay <dtolnay@gmail.com>' \
+##         CARGO_PKG_DESCRIPTION=Serde' traits only, with no support for derive -- use the `serde` crate instead' \
+##         CARGO_PKG_HOMEPAGE=https'://serde.rs' \
+##         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=serde_core \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/serde-rs/serde' \
+##         CARGO_PKG_RUST_VERSION=1.56 \
+##         CARGO_PKG_VERSION=1.0.228 \
+##         CARGO_PKG_VERSION_MAJOR=1 \
+##         CARGO_PKG_VERSION_MINOR=0 \
+##         CARGO_PKG_VERSION_PATCH=228 \
+##         CARGO_PKG_VERSION_PRE= \
+##         DEBUG=false \
+##         HOST=x86_64-unknown-linux-gnu \
+##         NUM_JOBS=4 \
+##         OPT_LEVEL=3 \
+##         OUT_DIR=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_core-badeea6458a799e8/out \
+##         PROFILE=release \
+##         RUSTC=rustc \
+##         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+##         TARGET=x86_64-unknown-linux-gnu \
+##         CARGOGREEN=1 \
+##       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_core-51979789556dbb03/build-script-build \
+##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_core-badeea6458a799e8/out/out-badeea6458a799e8-stdout \
+##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_core-badeea6458a799e8/out/out-badeea6458a799e8-stderr \
+##         || echo $? >/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_core-badeea6458a799e8/out/out-badeea6458a799e8-errcode\
+##   ; find /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_core-badeea6458a799e8/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-badeea6458a799e8"
+## script = """
+## FROM scratch AS out-badeea6458a799e8
+## COPY --link --from=run-z-serde_core-1.0.228-badeea6458a799e8 /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_core-badeea6458a799e8/out /"""
+
+
 FROM rust-base AS dep-n-serde_core-1.0.228-1bc4bef1fdca14c4
 SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps
 RUN \
   --mount=from=cratesio-serde_core-1.0.228,source=/serde_core-1.0.228,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_core-1.0.228 \
-  --mount=from=crate_out-badeea6458a799e8,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_core-badeea6458a799e8/out \
+  --mount=from=out-badeea6458a799e8,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_core-badeea6458a799e8/out,source=/ \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=serde_core \
         CARGO_INCREMENTAL=0 \
@@ -6281,8 +12118,6 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         OUT_DIR=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_core-badeea6458a799e8/out \
         CARGOGREEN=1 \
-        NTPD_RS_GIT_DATE=2025-05-09 \
-        NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
       rustc --crate-name serde_core --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --cfg feature'="result"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "rc", "result", "std", "unstable"))' -C metadata'=6a0ef95ffbf2e974' -C extra-filename'=-1bc4bef1fdca14c4' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --cap-lints warn --check-cfg cfg'(if_docsrs_then_no_serde_core)' --check-cfg cfg'(no_core_cstr)' --check-cfg cfg'(no_core_error)' --check-cfg cfg'(no_core_net)' --check-cfg cfg'(no_core_num_saturating)' --check-cfg cfg'(no_diagnostic_namespace)' --check-cfg cfg'(no_serde_derive)' --check-cfg cfg'(no_std_atomic)' --check-cfg cfg'(no_std_atomic64)' --check-cfg cfg'(no_target_has_atomic)' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_core-1.0.228/src/lib.rs \
         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-1bc4bef1fdca14c4-stdout \
         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-1bc4bef1fdca14c4-stderr \
@@ -6292,6 +12127,11 @@ FROM scratch AS out-1bc4bef1fdca14c4
 COPY --link --from=dep-n-serde_core-1.0.228-1bc4bef1fdca14c4 /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/*-1bc4bef1fdca14c4* /
 
 ## this = "1bc4bef1fdca14c4"
+## deps = [
+##     "badeea6458a799e8",
+##     "51979789556dbb03",
+## ]
+## buildrs_results = ["badeea6458a799e8"]
 ## writes = [
 ##     "libserde_core-1bc4bef1fdca14c4.rlib",
 ##     "libserde_core-1bc4bef1fdca14c4.rmeta",
@@ -6303,9 +12143,9 @@ COPY --link --from=dep-n-serde_core-1.0.228-1bc4bef1fdca14c4 /tmp/clis-ntpd_1-7-
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libserde_core-1bc4bef1fdca14c4.rlib","emit":"link"}',
 ## ]
 ##
-## [[contexts]]
-## name = "crate_out-badeea6458a799e8"
-## uri = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_core-badeea6458a799e8/out"
+## [[mounts]]
+## name = "out-badeea6458a799e8"
+## mount = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_core-badeea6458a799e8/out"
 ##
 ## [[stages]]
 ##
@@ -6332,7 +12172,7 @@ COPY --link --from=dep-n-serde_core-1.0.228-1bc4bef1fdca14c4 /tmp/clis-ntpd_1-7-
 ## WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps
 ## RUN \
 ##   --mount=from=cratesio-serde_core-1.0.228,source=/serde_core-1.0.228,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_core-1.0.228 \
-##   --mount=from=crate_out-badeea6458a799e8,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_core-badeea6458a799e8/out \
+##   --mount=from=out-badeea6458a799e8,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_core-badeea6458a799e8/out,source=/ \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=serde_core \
 ##         CARGO_INCREMENTAL=0 \
@@ -6354,8 +12194,6 @@ COPY --link --from=dep-n-serde_core-1.0.228-1bc4bef1fdca14c4 /tmp/clis-ntpd_1-7-
 ##         CARGO_PKG_VERSION_PRE= \
 ##         OUT_DIR=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_core-badeea6458a799e8/out \
 ##         CARGOGREEN=1 \
-##         NTPD_RS_GIT_DATE=2025-05-09 \
-##         NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
 ##       rustc --crate-name serde_core --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --cfg feature'="result"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "rc", "result", "std", "unstable"))' -C metadata'=6a0ef95ffbf2e974' -C extra-filename'=-1bc4bef1fdca14c4' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --cap-lints warn --check-cfg cfg'(if_docsrs_then_no_serde_core)' --check-cfg cfg'(no_core_cstr)' --check-cfg cfg'(no_core_error)' --check-cfg cfg'(no_core_net)' --check-cfg cfg'(no_core_num_saturating)' --check-cfg cfg'(no_diagnostic_namespace)' --check-cfg cfg'(no_serde_derive)' --check-cfg cfg'(no_std_atomic)' --check-cfg cfg'(no_std_atomic64)' --check-cfg cfg'(no_target_has_atomic)' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_core-1.0.228/src/lib.rs \
 ##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-1bc4bef1fdca14c4-stdout \
 ##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-1bc4bef1fdca14c4-stderr \
@@ -6398,8 +12236,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=19 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        NTPD_RS_GIT_DATE=2025-05-09 \
-        NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
       rustc --crate-name unicode_ident --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=0dbb338e805b2db7' -C extra-filename'=-d90ab847601a2565' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/unicode-ident-1.0.19/src/lib.rs \
         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-d90ab847601a2565-stdout \
         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-d90ab847601a2565-stderr \
@@ -6465,8 +12301,6 @@ COPY --link --from=dep-n-unicode-ident-1.0.19-d90ab847601a2565 /tmp/clis-ntpd_1-
 ##         CARGO_PKG_VERSION_PATCH=19 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         NTPD_RS_GIT_DATE=2025-05-09 \
-##         NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
 ##       rustc --crate-name unicode_ident --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=0dbb338e805b2db7' -C extra-filename'=-d90ab847601a2565' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/unicode-ident-1.0.19/src/lib.rs \
 ##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-d90ab847601a2565-stdout \
 ##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-d90ab847601a2565-stderr \
@@ -6484,6 +12318,309 @@ COPY --link --from=dep-n-unicode-ident-1.0.19-d90ab847601a2565 /tmp/clis-ntpd_1-
 FROM scratch AS cratesio-proc-macro2-1.0.101
 ADD --chmod=0664 --unpack --checksum=sha256:89ae43fd86e4158d6db51ad8e2b80f313af9cc74f5c0e03ccb87de09998732de \
   https://static.crates.io/crates/proc-macro2/proc-macro2-1.0.101.crate /
+FROM rust-base AS dep-x-proc-macro2-1.0.101-ab9829a4a8b7788d
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/proc-macro2-ab9829a4a8b7788d
+RUN \
+  --mount=from=cratesio-proc-macro2-1.0.101,source=/proc-macro2-1.0.101,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.101,rw \
+    { \
+        cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.101/build.rs | sed -E 's/^(pub[()a-z]* +)?(async +)?fn +main/\1\2fn actual_ab9829a4a8b7788d_main/' >/_ && mv /_ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.101/build.rs ; \
+        { \
+          echo ; \
+          echo 'fn main() {' ; \
+          echo '    use std::env::{args_os, var_os};' ; \
+          echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+          echo '        use std::process::{Command, Stdio};' ; \
+          echo '        let mut cmd = Command::new("cargo-green");' ; \
+          echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+          echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+          echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+          echo '        assert!(res.success());' ; \
+          echo '    } else {' ; \
+          echo '        actual_ab9829a4a8b7788d_main();' ; \
+          echo '    }' ; \
+          echo '}' ; \
+        } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.101/build.rs ; \
+    } && \
+    env CARGO="$(which cargo)" \
+        CARGO_CRATE_NAME=build_script_build \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.101 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.101/Cargo.toml \
+        CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>:Alex Crichton <alex@alexcrichton.com>' \
+        CARGO_PKG_DESCRIPTION=A' substitute implementation of the compiler'\'s' `proc_macro` API to decouple token-based libraries from the procedural macro use case.' \
+        CARGO_PKG_HOMEPAGE= \
+        CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=proc-macro2 \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/dtolnay/proc-macro2' \
+        CARGO_PKG_RUST_VERSION=1.56 \
+        CARGO_PKG_VERSION=1.0.101 \
+        CARGO_PKG_VERSION_MAJOR=1 \
+        CARGO_PKG_VERSION_MINOR=0 \
+        CARGO_PKG_VERSION_PATCH=101 \
+        CARGO_PKG_VERSION_PRE= \
+        CARGOGREEN=1 \
+      rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="proc-macro"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "nightly", "proc-macro", "span-locations"))' -C metadata'=1352cf34a8a766a0' -C extra-filename'=-ab9829a4a8b7788d' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/proc-macro2-ab9829a4a8b7788d -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.101/build.rs \
+        1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/proc-macro2-ab9829a4a8b7788d/out-ab9829a4a8b7788d-stdout \
+        2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/proc-macro2-ab9829a4a8b7788d/out-ab9829a4a8b7788d-stderr \
+        || echo $? >/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/proc-macro2-ab9829a4a8b7788d/out-ab9829a4a8b7788d-errcode\
+  ; find /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/proc-macro2-ab9829a4a8b7788d/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-ab9829a4a8b7788d
+COPY --link --from=dep-x-proc-macro2-1.0.101-ab9829a4a8b7788d /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/proc-macro2-ab9829a4a8b7788d/*-ab9829a4a8b7788d* /
+
+## this = "ab9829a4a8b7788d"
+## writes = [
+##     "build_script_build-ab9829a4a8b7788d",
+##     "build_script_build-ab9829a4a8b7788d.d",
+## ]
+## stderr = [
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/proc-macro2-ab9829a4a8b7788d/build_script_build-ab9829a4a8b7788d.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/proc-macro2-ab9829a4a8b7788d/build_script_build-ab9829a4a8b7788d","emit":"link"}',
+## ]
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
+##
+## [[stages]]
+##
+## [stages.Cratesio]
+## stage = "cratesio-proc-macro2-1.0.101"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.101"
+## name = "proc-macro2"
+## name_dash_version = "proc-macro2-1.0.101"
+## hash = "89ae43fd86e4158d6db51ad8e2b80f313af9cc74f5c0e03ccb87de09998732de"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "dep-x-proc-macro2-1.0.101-ab9829a4a8b7788d"
+## script = '''
+## FROM rust-base AS dep-x-proc-macro2-1.0.101-ab9829a4a8b7788d
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/proc-macro2-ab9829a4a8b7788d
+## RUN \
+##   --mount=from=cratesio-proc-macro2-1.0.101,source=/proc-macro2-1.0.101,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.101,rw \
+##     { \
+##         cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.101/build.rs | sed -E 's/^(pub[()a-z]* +)?(async +)?fn +main/\1\2fn actual_ab9829a4a8b7788d_main/' >/_ && mv /_ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.101/build.rs ; \
+##         { \
+##           echo ; \
+##           echo 'fn main() {' ; \
+##           echo '    use std::env::{args_os, var_os};' ; \
+##           echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+##           echo '        use std::process::{Command, Stdio};' ; \
+##           echo '        let mut cmd = Command::new("cargo-green");' ; \
+##           echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+##           echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+##           echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+##           echo '        assert!(res.success());' ; \
+##           echo '    } else {' ; \
+##           echo '        actual_ab9829a4a8b7788d_main();' ; \
+##           echo '    }' ; \
+##           echo '}' ; \
+##         } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.101/build.rs ; \
+##     } && \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CRATE_NAME=build_script_build \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.101 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.101/Cargo.toml \
+##         CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>:Alex Crichton <alex@alexcrichton.com>' \
+##         CARGO_PKG_DESCRIPTION=A' substitute implementation of the compiler'\'s' `proc_macro` API to decouple token-based libraries from the procedural macro use case.' \
+##         CARGO_PKG_HOMEPAGE= \
+##         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=proc-macro2 \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/dtolnay/proc-macro2' \
+##         CARGO_PKG_RUST_VERSION=1.56 \
+##         CARGO_PKG_VERSION=1.0.101 \
+##         CARGO_PKG_VERSION_MAJOR=1 \
+##         CARGO_PKG_VERSION_MINOR=0 \
+##         CARGO_PKG_VERSION_PATCH=101 \
+##         CARGO_PKG_VERSION_PRE= \
+##         CARGOGREEN=1 \
+##       rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="proc-macro"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "nightly", "proc-macro", "span-locations"))' -C metadata'=1352cf34a8a766a0' -C extra-filename'=-ab9829a4a8b7788d' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/proc-macro2-ab9829a4a8b7788d -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.101/build.rs \
+##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/proc-macro2-ab9829a4a8b7788d/out-ab9829a4a8b7788d-stdout \
+##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/proc-macro2-ab9829a4a8b7788d/out-ab9829a4a8b7788d-stderr \
+##         || echo $? >/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/proc-macro2-ab9829a4a8b7788d/out-ab9829a4a8b7788d-errcode\
+##   ; find /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/proc-macro2-ab9829a4a8b7788d/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-ab9829a4a8b7788d"
+## script = """
+## FROM scratch AS out-ab9829a4a8b7788d
+## COPY --link --from=dep-x-proc-macro2-1.0.101-ab9829a4a8b7788d /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/proc-macro2-ab9829a4a8b7788d/*-ab9829a4a8b7788d* /"""
+
+FROM rust-base AS run-z-proc-macro2-1.0.101-9a025c1b756d91f9
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/proc-macro2-9a025c1b756d91f9/out
+WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.101
+RUN \
+  --mount=from=out-ab9829a4a8b7788d,source=/build_script_build-ab9829a4a8b7788d,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/proc-macro2-ab9829a4a8b7788d/build-script-build \
+  --mount=from=cratesio-proc-macro2-1.0.101,source=/proc-macro2-1.0.101,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.101 \
+    env CARGO="$(which cargo)" \
+        CARGO_CFG_FEATURE=default,proc-macro \
+        CARGO_CFG_PANIC=unwind \
+        CARGO_CFG_TARGET_ABI= \
+        CARGO_CFG_TARGET_ARCH=x86_64 \
+        CARGO_CFG_TARGET_ENDIAN=little \
+        CARGO_CFG_TARGET_ENV=gnu \
+        CARGO_CFG_TARGET_FAMILY=unix \
+        CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
+        CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+        CARGO_CFG_TARGET_OS=linux \
+        CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+        CARGO_CFG_TARGET_VENDOR=unknown \
+        CARGO_CFG_UNIX= \
+        CARGO_ENCODED_RUSTFLAGS= \
+        CARGO_FEATURE_DEFAULT=1 \
+        CARGO_FEATURE_PROC_MACRO=1 \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.101 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.101/Cargo.toml \
+        CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>:Alex Crichton <alex@alexcrichton.com>' \
+        CARGO_PKG_DESCRIPTION=A' substitute implementation of the compiler'\'s' `proc_macro` API to decouple token-based libraries from the procedural macro use case.' \
+        CARGO_PKG_HOMEPAGE= \
+        CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=proc-macro2 \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/dtolnay/proc-macro2' \
+        CARGO_PKG_RUST_VERSION=1.56 \
+        CARGO_PKG_VERSION=1.0.101 \
+        CARGO_PKG_VERSION_MAJOR=1 \
+        CARGO_PKG_VERSION_MINOR=0 \
+        CARGO_PKG_VERSION_PATCH=101 \
+        CARGO_PKG_VERSION_PRE= \
+        DEBUG=false \
+        HOST=x86_64-unknown-linux-gnu \
+        NUM_JOBS=4 \
+        OPT_LEVEL=0 \
+        OUT_DIR=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/proc-macro2-9a025c1b756d91f9/out \
+        PROFILE=release \
+        RUSTC=rustc \
+        RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+        TARGET=x86_64-unknown-linux-gnu \
+        CARGOGREEN=1 \
+      CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/proc-macro2-ab9829a4a8b7788d/build-script-build \
+        1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/proc-macro2-9a025c1b756d91f9/out/out-9a025c1b756d91f9-stdout \
+        2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/proc-macro2-9a025c1b756d91f9/out/out-9a025c1b756d91f9-stderr \
+        || echo $? >/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/proc-macro2-9a025c1b756d91f9/out/out-9a025c1b756d91f9-errcode\
+  ; find /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/proc-macro2-9a025c1b756d91f9/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-9a025c1b756d91f9
+COPY --link --from=run-z-proc-macro2-1.0.101-9a025c1b756d91f9 /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/proc-macro2-9a025c1b756d91f9/out /
+
+## this = "9a025c1b756d91f9"
+## deps = ["ab9829a4a8b7788d"]
+## writes_to = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/proc-macro2-9a025c1b756d91f9/out"
+## stdout = [
+##     "cargo:rustc-check-cfg=cfg(fuzzing)",
+##     "cargo:rustc-check-cfg=cfg(no_is_available)",
+##     "cargo:rustc-check-cfg=cfg(no_literal_byte_character)",
+##     "cargo:rustc-check-cfg=cfg(no_literal_c_string)",
+##     "cargo:rustc-check-cfg=cfg(no_source_text)",
+##     "cargo:rustc-check-cfg=cfg(proc_macro_span)",
+##     "cargo:rustc-check-cfg=cfg(proc_macro_span_file)",
+##     "cargo:rustc-check-cfg=cfg(proc_macro_span_location)",
+##     "cargo:rustc-check-cfg=cfg(procmacro2_backtrace)",
+##     "cargo:rustc-check-cfg=cfg(procmacro2_build_probe)",
+##     "cargo:rustc-check-cfg=cfg(procmacro2_nightly_testing)",
+##     "cargo:rustc-check-cfg=cfg(procmacro2_semver_exempt)",
+##     "cargo:rustc-check-cfg=cfg(randomize_layout)",
+##     "cargo:rustc-check-cfg=cfg(span_locations)",
+##     "cargo:rustc-check-cfg=cfg(super_unstable)",
+##     "cargo:rustc-check-cfg=cfg(wrap_proc_macro)",
+##     "cargo:rerun-if-changed=src/probe/proc_macro_span.rs",
+##     "cargo:rustc-cfg=wrap_proc_macro",
+##     "cargo:rerun-if-changed=src/probe/proc_macro_span_location.rs",
+##     "cargo:rerun-if-changed=src/probe/proc_macro_span_file.rs",
+##     "cargo:rerun-if-env-changed=RUSTC_BOOTSTRAP",
+## ]
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "run-z-proc-macro2-1.0.101-9a025c1b756d91f9"
+## script = '''
+## FROM rust-base AS run-z-proc-macro2-1.0.101-9a025c1b756d91f9
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/proc-macro2-9a025c1b756d91f9/out
+## WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.101
+## RUN \
+##   --mount=from=out-ab9829a4a8b7788d,source=/build_script_build-ab9829a4a8b7788d,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/proc-macro2-ab9829a4a8b7788d/build-script-build \
+##   --mount=from=cratesio-proc-macro2-1.0.101,source=/proc-macro2-1.0.101,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.101 \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CFG_FEATURE=default,proc-macro \
+##         CARGO_CFG_PANIC=unwind \
+##         CARGO_CFG_TARGET_ABI= \
+##         CARGO_CFG_TARGET_ARCH=x86_64 \
+##         CARGO_CFG_TARGET_ENDIAN=little \
+##         CARGO_CFG_TARGET_ENV=gnu \
+##         CARGO_CFG_TARGET_FAMILY=unix \
+##         CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
+##         CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+##         CARGO_CFG_TARGET_OS=linux \
+##         CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+##         CARGO_CFG_TARGET_VENDOR=unknown \
+##         CARGO_CFG_UNIX= \
+##         CARGO_ENCODED_RUSTFLAGS= \
+##         CARGO_FEATURE_DEFAULT=1 \
+##         CARGO_FEATURE_PROC_MACRO=1 \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.101 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.101/Cargo.toml \
+##         CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>:Alex Crichton <alex@alexcrichton.com>' \
+##         CARGO_PKG_DESCRIPTION=A' substitute implementation of the compiler'\'s' `proc_macro` API to decouple token-based libraries from the procedural macro use case.' \
+##         CARGO_PKG_HOMEPAGE= \
+##         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=proc-macro2 \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/dtolnay/proc-macro2' \
+##         CARGO_PKG_RUST_VERSION=1.56 \
+##         CARGO_PKG_VERSION=1.0.101 \
+##         CARGO_PKG_VERSION_MAJOR=1 \
+##         CARGO_PKG_VERSION_MINOR=0 \
+##         CARGO_PKG_VERSION_PATCH=101 \
+##         CARGO_PKG_VERSION_PRE= \
+##         DEBUG=false \
+##         HOST=x86_64-unknown-linux-gnu \
+##         NUM_JOBS=4 \
+##         OPT_LEVEL=0 \
+##         OUT_DIR=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/proc-macro2-9a025c1b756d91f9/out \
+##         PROFILE=release \
+##         RUSTC=rustc \
+##         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+##         TARGET=x86_64-unknown-linux-gnu \
+##         CARGOGREEN=1 \
+##       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/proc-macro2-ab9829a4a8b7788d/build-script-build \
+##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/proc-macro2-9a025c1b756d91f9/out/out-9a025c1b756d91f9-stdout \
+##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/proc-macro2-9a025c1b756d91f9/out/out-9a025c1b756d91f9-stderr \
+##         || echo $? >/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/proc-macro2-9a025c1b756d91f9/out/out-9a025c1b756d91f9-errcode\
+##   ; find /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/proc-macro2-9a025c1b756d91f9/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-9a025c1b756d91f9"
+## script = """
+## FROM scratch AS out-9a025c1b756d91f9
+## COPY --link --from=run-z-proc-macro2-1.0.101-9a025c1b756d91f9 /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/proc-macro2-9a025c1b756d91f9/out /"""
+
+
 FROM rust-base AS dep-n-proc-macro2-1.0.101-30dd1c0184916507
 SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps
@@ -6491,6 +12628,7 @@ RUN \
   --mount=from=cratesio-proc-macro2-1.0.101,source=/proc-macro2-1.0.101,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.101 \
   --mount=from=out-d90ab847601a2565,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libunicode_ident-d90ab847601a2565.rlib,source=/libunicode_ident-d90ab847601a2565.rlib \
   --mount=from=out-d90ab847601a2565,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libunicode_ident-d90ab847601a2565.rmeta,source=/libunicode_ident-d90ab847601a2565.rmeta \
+  --mount=from=out-9a025c1b756d91f9,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/proc-macro2-9a025c1b756d91f9/out,source=/ \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=proc_macro2 \
         CARGO_INCREMENTAL=0 \
@@ -6512,9 +12650,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         OUT_DIR=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/proc-macro2-9a025c1b756d91f9/out \
         CARGOGREEN=1 \
-        NTPD_RS_GIT_DATE=2025-05-09 \
-        NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
-      rustc --crate-name proc_macro2 --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="proc-macro"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "nightly", "proc-macro", "span-locations"))' -C metadata'=9cd76c3906251e77' -C extra-filename'=-30dd1c0184916507' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern unicode_ident'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libunicode_ident-d90ab847601a2565.rmeta' --cap-lints warn --cfg wrap_proc_macro --cfg proc_macro_span_location --cfg proc_macro_span_file --check-cfg cfg'(fuzzing)' --check-cfg cfg'(no_is_available)' --check-cfg cfg'(no_literal_byte_character)' --check-cfg cfg'(no_literal_c_string)' --check-cfg cfg'(no_source_text)' --check-cfg cfg'(proc_macro_span)' --check-cfg cfg'(proc_macro_span_file)' --check-cfg cfg'(proc_macro_span_location)' --check-cfg cfg'(procmacro2_backtrace)' --check-cfg cfg'(procmacro2_build_probe)' --check-cfg cfg'(procmacro2_nightly_testing)' --check-cfg cfg'(procmacro2_semver_exempt)' --check-cfg cfg'(randomize_layout)' --check-cfg cfg'(span_locations)' --check-cfg cfg'(super_unstable)' --check-cfg cfg'(wrap_proc_macro)' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.101/src/lib.rs \
+      rustc --crate-name proc_macro2 --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="proc-macro"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "nightly", "proc-macro", "span-locations"))' -C metadata'=9cd76c3906251e77' -C extra-filename'=-30dd1c0184916507' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern unicode_ident'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libunicode_ident-d90ab847601a2565.rmeta' --cap-lints warn --cfg wrap_proc_macro --check-cfg cfg'(fuzzing)' --check-cfg cfg'(no_is_available)' --check-cfg cfg'(no_literal_byte_character)' --check-cfg cfg'(no_literal_c_string)' --check-cfg cfg'(no_source_text)' --check-cfg cfg'(proc_macro_span)' --check-cfg cfg'(proc_macro_span_file)' --check-cfg cfg'(proc_macro_span_location)' --check-cfg cfg'(procmacro2_backtrace)' --check-cfg cfg'(procmacro2_build_probe)' --check-cfg cfg'(procmacro2_nightly_testing)' --check-cfg cfg'(procmacro2_semver_exempt)' --check-cfg cfg'(randomize_layout)' --check-cfg cfg'(span_locations)' --check-cfg cfg'(super_unstable)' --check-cfg cfg'(wrap_proc_macro)' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.101/src/lib.rs \
         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-30dd1c0184916507-stdout \
         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-30dd1c0184916507-stderr \
         || echo $? >/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-30dd1c0184916507-errcode\
@@ -6523,7 +12659,12 @@ FROM scratch AS out-30dd1c0184916507
 COPY --link --from=dep-n-proc-macro2-1.0.101-30dd1c0184916507 /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/*-30dd1c0184916507* /
 
 ## this = "30dd1c0184916507"
-## deps = ["d90ab847601a2565"]
+## deps = [
+##     "d90ab847601a2565",
+##     "9a025c1b756d91f9",
+##     "ab9829a4a8b7788d",
+## ]
+## buildrs_results = ["9a025c1b756d91f9"]
 ## writes = [
 ##     "libproc_macro2-30dd1c0184916507.rlib",
 ##     "libproc_macro2-30dd1c0184916507.rmeta",
@@ -6542,6 +12683,10 @@ COPY --link --from=dep-n-proc-macro2-1.0.101-30dd1c0184916507 /tmp/clis-ntpd_1-7
 ## [[externs]]
 ## from = "out-d90ab847601a2565"
 ## xtern = "libunicode_ident-d90ab847601a2565.rmeta"
+##
+## [[mounts]]
+## name = "out-9a025c1b756d91f9"
+## mount = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/proc-macro2-9a025c1b756d91f9/out"
 ##
 ## [[stages]]
 ##
@@ -6570,6 +12715,7 @@ COPY --link --from=dep-n-proc-macro2-1.0.101-30dd1c0184916507 /tmp/clis-ntpd_1-7
 ##   --mount=from=cratesio-proc-macro2-1.0.101,source=/proc-macro2-1.0.101,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.101 \
 ##   --mount=from=out-d90ab847601a2565,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libunicode_ident-d90ab847601a2565.rlib,source=/libunicode_ident-d90ab847601a2565.rlib \
 ##   --mount=from=out-d90ab847601a2565,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libunicode_ident-d90ab847601a2565.rmeta,source=/libunicode_ident-d90ab847601a2565.rmeta \
+##   --mount=from=out-9a025c1b756d91f9,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/proc-macro2-9a025c1b756d91f9/out,source=/ \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=proc_macro2 \
 ##         CARGO_INCREMENTAL=0 \
@@ -6591,9 +12737,7 @@ COPY --link --from=dep-n-proc-macro2-1.0.101-30dd1c0184916507 /tmp/clis-ntpd_1-7
 ##         CARGO_PKG_VERSION_PRE= \
 ##         OUT_DIR=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/proc-macro2-9a025c1b756d91f9/out \
 ##         CARGOGREEN=1 \
-##         NTPD_RS_GIT_DATE=2025-05-09 \
-##         NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
-##       rustc --crate-name proc_macro2 --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="proc-macro"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "nightly", "proc-macro", "span-locations"))' -C metadata'=9cd76c3906251e77' -C extra-filename'=-30dd1c0184916507' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern unicode_ident'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libunicode_ident-d90ab847601a2565.rmeta' --cap-lints warn --cfg wrap_proc_macro --cfg proc_macro_span_location --cfg proc_macro_span_file --check-cfg cfg'(fuzzing)' --check-cfg cfg'(no_is_available)' --check-cfg cfg'(no_literal_byte_character)' --check-cfg cfg'(no_literal_c_string)' --check-cfg cfg'(no_source_text)' --check-cfg cfg'(proc_macro_span)' --check-cfg cfg'(proc_macro_span_file)' --check-cfg cfg'(proc_macro_span_location)' --check-cfg cfg'(procmacro2_backtrace)' --check-cfg cfg'(procmacro2_build_probe)' --check-cfg cfg'(procmacro2_nightly_testing)' --check-cfg cfg'(procmacro2_semver_exempt)' --check-cfg cfg'(randomize_layout)' --check-cfg cfg'(span_locations)' --check-cfg cfg'(super_unstable)' --check-cfg cfg'(wrap_proc_macro)' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.101/src/lib.rs \
+##       rustc --crate-name proc_macro2 --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="proc-macro"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "nightly", "proc-macro", "span-locations"))' -C metadata'=9cd76c3906251e77' -C extra-filename'=-30dd1c0184916507' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern unicode_ident'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libunicode_ident-d90ab847601a2565.rmeta' --cap-lints warn --cfg wrap_proc_macro --check-cfg cfg'(fuzzing)' --check-cfg cfg'(no_is_available)' --check-cfg cfg'(no_literal_byte_character)' --check-cfg cfg'(no_literal_c_string)' --check-cfg cfg'(no_source_text)' --check-cfg cfg'(proc_macro_span)' --check-cfg cfg'(proc_macro_span_file)' --check-cfg cfg'(proc_macro_span_location)' --check-cfg cfg'(procmacro2_backtrace)' --check-cfg cfg'(procmacro2_build_probe)' --check-cfg cfg'(procmacro2_nightly_testing)' --check-cfg cfg'(procmacro2_semver_exempt)' --check-cfg cfg'(randomize_layout)' --check-cfg cfg'(span_locations)' --check-cfg cfg'(super_unstable)' --check-cfg cfg'(wrap_proc_macro)' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.101/src/lib.rs \
 ##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-30dd1c0184916507-stdout \
 ##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-30dd1c0184916507-stderr \
 ##         || echo $? >/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-30dd1c0184916507-errcode\
@@ -6610,6 +12754,287 @@ COPY --link --from=dep-n-proc-macro2-1.0.101-30dd1c0184916507 /tmp/clis-ntpd_1-7
 FROM scratch AS cratesio-quote-1.0.41
 ADD --chmod=0664 --unpack --checksum=sha256:ce25767e7b499d1b604768e7cde645d14cc8584231ea6b295e9c9eb22c02e1d1 \
   https://static.crates.io/crates/quote/quote-1.0.41.crate /
+FROM rust-base AS dep-x-quote-1.0.41-c63aae50eb6f480a
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/quote-c63aae50eb6f480a
+RUN \
+  --mount=from=cratesio-quote-1.0.41,source=/quote-1.0.41,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.41,rw \
+    { \
+        cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.41/build.rs | sed -E 's/^(pub[()a-z]* +)?(async +)?fn +main/\1\2fn actual_c63aae50eb6f480a_main/' >/_ && mv /_ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.41/build.rs ; \
+        { \
+          echo ; \
+          echo 'fn main() {' ; \
+          echo '    use std::env::{args_os, var_os};' ; \
+          echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+          echo '        use std::process::{Command, Stdio};' ; \
+          echo '        let mut cmd = Command::new("cargo-green");' ; \
+          echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+          echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+          echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+          echo '        assert!(res.success());' ; \
+          echo '    } else {' ; \
+          echo '        actual_c63aae50eb6f480a_main();' ; \
+          echo '    }' ; \
+          echo '}' ; \
+        } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.41/build.rs ; \
+    } && \
+    env CARGO="$(which cargo)" \
+        CARGO_CRATE_NAME=build_script_build \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.41 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.41/Cargo.toml \
+        CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>' \
+        CARGO_PKG_DESCRIPTION=Quasi-quoting' macro quote!(...)' \
+        CARGO_PKG_HOMEPAGE= \
+        CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=quote \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/dtolnay/quote' \
+        CARGO_PKG_RUST_VERSION=1.60 \
+        CARGO_PKG_VERSION=1.0.41 \
+        CARGO_PKG_VERSION_MAJOR=1 \
+        CARGO_PKG_VERSION_MINOR=0 \
+        CARGO_PKG_VERSION_PATCH=41 \
+        CARGO_PKG_VERSION_PRE= \
+        CARGOGREEN=1 \
+      rustc --crate-name build_script_build --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="proc-macro"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "proc-macro"))' -C metadata'=92f410c059164c72' -C extra-filename'=-c63aae50eb6f480a' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/quote-c63aae50eb6f480a -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.41/build.rs \
+        1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/quote-c63aae50eb6f480a/out-c63aae50eb6f480a-stdout \
+        2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/quote-c63aae50eb6f480a/out-c63aae50eb6f480a-stderr \
+        || echo $? >/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/quote-c63aae50eb6f480a/out-c63aae50eb6f480a-errcode\
+  ; find /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/quote-c63aae50eb6f480a/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-c63aae50eb6f480a
+COPY --link --from=dep-x-quote-1.0.41-c63aae50eb6f480a /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/quote-c63aae50eb6f480a/*-c63aae50eb6f480a* /
+
+## this = "c63aae50eb6f480a"
+## writes = [
+##     "build_script_build-c63aae50eb6f480a",
+##     "build_script_build-c63aae50eb6f480a.d",
+## ]
+## stderr = [
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/quote-c63aae50eb6f480a/build_script_build-c63aae50eb6f480a.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/quote-c63aae50eb6f480a/build_script_build-c63aae50eb6f480a","emit":"link"}',
+## ]
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
+##
+## [[stages]]
+##
+## [stages.Cratesio]
+## stage = "cratesio-quote-1.0.41"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.41"
+## name = "quote"
+## name_dash_version = "quote-1.0.41"
+## hash = "ce25767e7b499d1b604768e7cde645d14cc8584231ea6b295e9c9eb22c02e1d1"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "dep-x-quote-1.0.41-c63aae50eb6f480a"
+## script = '''
+## FROM rust-base AS dep-x-quote-1.0.41-c63aae50eb6f480a
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/quote-c63aae50eb6f480a
+## RUN \
+##   --mount=from=cratesio-quote-1.0.41,source=/quote-1.0.41,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.41,rw \
+##     { \
+##         cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.41/build.rs | sed -E 's/^(pub[()a-z]* +)?(async +)?fn +main/\1\2fn actual_c63aae50eb6f480a_main/' >/_ && mv /_ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.41/build.rs ; \
+##         { \
+##           echo ; \
+##           echo 'fn main() {' ; \
+##           echo '    use std::env::{args_os, var_os};' ; \
+##           echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+##           echo '        use std::process::{Command, Stdio};' ; \
+##           echo '        let mut cmd = Command::new("cargo-green");' ; \
+##           echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+##           echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+##           echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+##           echo '        assert!(res.success());' ; \
+##           echo '    } else {' ; \
+##           echo '        actual_c63aae50eb6f480a_main();' ; \
+##           echo '    }' ; \
+##           echo '}' ; \
+##         } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.41/build.rs ; \
+##     } && \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CRATE_NAME=build_script_build \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.41 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.41/Cargo.toml \
+##         CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>' \
+##         CARGO_PKG_DESCRIPTION=Quasi-quoting' macro quote!(...)' \
+##         CARGO_PKG_HOMEPAGE= \
+##         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=quote \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/dtolnay/quote' \
+##         CARGO_PKG_RUST_VERSION=1.60 \
+##         CARGO_PKG_VERSION=1.0.41 \
+##         CARGO_PKG_VERSION_MAJOR=1 \
+##         CARGO_PKG_VERSION_MINOR=0 \
+##         CARGO_PKG_VERSION_PATCH=41 \
+##         CARGO_PKG_VERSION_PRE= \
+##         CARGOGREEN=1 \
+##       rustc --crate-name build_script_build --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="proc-macro"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "proc-macro"))' -C metadata'=92f410c059164c72' -C extra-filename'=-c63aae50eb6f480a' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/quote-c63aae50eb6f480a -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.41/build.rs \
+##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/quote-c63aae50eb6f480a/out-c63aae50eb6f480a-stdout \
+##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/quote-c63aae50eb6f480a/out-c63aae50eb6f480a-stderr \
+##         || echo $? >/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/quote-c63aae50eb6f480a/out-c63aae50eb6f480a-errcode\
+##   ; find /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/quote-c63aae50eb6f480a/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-c63aae50eb6f480a"
+## script = """
+## FROM scratch AS out-c63aae50eb6f480a
+## COPY --link --from=dep-x-quote-1.0.41-c63aae50eb6f480a /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/quote-c63aae50eb6f480a/*-c63aae50eb6f480a* /"""
+
+FROM rust-base AS run-z-quote-1.0.41-edf8f660a3d601cc
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/quote-edf8f660a3d601cc/out
+WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.41
+RUN \
+  --mount=from=out-c63aae50eb6f480a,source=/build_script_build-c63aae50eb6f480a,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/quote-c63aae50eb6f480a/build-script-build \
+  --mount=from=cratesio-quote-1.0.41,source=/quote-1.0.41,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.41 \
+    env CARGO="$(which cargo)" \
+        CARGO_CFG_FEATURE=default,proc-macro \
+        CARGO_CFG_PANIC=unwind \
+        CARGO_CFG_TARGET_ABI= \
+        CARGO_CFG_TARGET_ARCH=x86_64 \
+        CARGO_CFG_TARGET_ENDIAN=little \
+        CARGO_CFG_TARGET_ENV=gnu \
+        CARGO_CFG_TARGET_FAMILY=unix \
+        CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
+        CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+        CARGO_CFG_TARGET_OS=linux \
+        CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+        CARGO_CFG_TARGET_VENDOR=unknown \
+        CARGO_CFG_UNIX= \
+        CARGO_ENCODED_RUSTFLAGS= \
+        CARGO_FEATURE_DEFAULT=1 \
+        CARGO_FEATURE_PROC_MACRO=1 \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.41 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.41/Cargo.toml \
+        CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>' \
+        CARGO_PKG_DESCRIPTION=Quasi-quoting' macro quote!(...)' \
+        CARGO_PKG_HOMEPAGE= \
+        CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=quote \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/dtolnay/quote' \
+        CARGO_PKG_RUST_VERSION=1.60 \
+        CARGO_PKG_VERSION=1.0.41 \
+        CARGO_PKG_VERSION_MAJOR=1 \
+        CARGO_PKG_VERSION_MINOR=0 \
+        CARGO_PKG_VERSION_PATCH=41 \
+        CARGO_PKG_VERSION_PRE= \
+        DEBUG=false \
+        HOST=x86_64-unknown-linux-gnu \
+        NUM_JOBS=4 \
+        OPT_LEVEL=0 \
+        OUT_DIR=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/quote-edf8f660a3d601cc/out \
+        PROFILE=release \
+        RUSTC=rustc \
+        RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+        TARGET=x86_64-unknown-linux-gnu \
+        CARGOGREEN=1 \
+      CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/quote-c63aae50eb6f480a/build-script-build \
+        1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/quote-edf8f660a3d601cc/out/out-edf8f660a3d601cc-stdout \
+        2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/quote-edf8f660a3d601cc/out/out-edf8f660a3d601cc-stderr \
+        || echo $? >/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/quote-edf8f660a3d601cc/out/out-edf8f660a3d601cc-errcode\
+  ; find /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/quote-edf8f660a3d601cc/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-edf8f660a3d601cc
+COPY --link --from=run-z-quote-1.0.41-edf8f660a3d601cc /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/quote-edf8f660a3d601cc/out /
+
+## this = "edf8f660a3d601cc"
+## deps = ["c63aae50eb6f480a"]
+## writes_to = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/quote-edf8f660a3d601cc/out"
+## stdout = ["cargo:rerun-if-changed=build.rs"]
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "run-z-quote-1.0.41-edf8f660a3d601cc"
+## script = '''
+## FROM rust-base AS run-z-quote-1.0.41-edf8f660a3d601cc
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/quote-edf8f660a3d601cc/out
+## WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.41
+## RUN \
+##   --mount=from=out-c63aae50eb6f480a,source=/build_script_build-c63aae50eb6f480a,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/quote-c63aae50eb6f480a/build-script-build \
+##   --mount=from=cratesio-quote-1.0.41,source=/quote-1.0.41,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.41 \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CFG_FEATURE=default,proc-macro \
+##         CARGO_CFG_PANIC=unwind \
+##         CARGO_CFG_TARGET_ABI= \
+##         CARGO_CFG_TARGET_ARCH=x86_64 \
+##         CARGO_CFG_TARGET_ENDIAN=little \
+##         CARGO_CFG_TARGET_ENV=gnu \
+##         CARGO_CFG_TARGET_FAMILY=unix \
+##         CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
+##         CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+##         CARGO_CFG_TARGET_OS=linux \
+##         CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+##         CARGO_CFG_TARGET_VENDOR=unknown \
+##         CARGO_CFG_UNIX= \
+##         CARGO_ENCODED_RUSTFLAGS= \
+##         CARGO_FEATURE_DEFAULT=1 \
+##         CARGO_FEATURE_PROC_MACRO=1 \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.41 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.41/Cargo.toml \
+##         CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>' \
+##         CARGO_PKG_DESCRIPTION=Quasi-quoting' macro quote!(...)' \
+##         CARGO_PKG_HOMEPAGE= \
+##         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=quote \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/dtolnay/quote' \
+##         CARGO_PKG_RUST_VERSION=1.60 \
+##         CARGO_PKG_VERSION=1.0.41 \
+##         CARGO_PKG_VERSION_MAJOR=1 \
+##         CARGO_PKG_VERSION_MINOR=0 \
+##         CARGO_PKG_VERSION_PATCH=41 \
+##         CARGO_PKG_VERSION_PRE= \
+##         DEBUG=false \
+##         HOST=x86_64-unknown-linux-gnu \
+##         NUM_JOBS=4 \
+##         OPT_LEVEL=0 \
+##         OUT_DIR=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/quote-edf8f660a3d601cc/out \
+##         PROFILE=release \
+##         RUSTC=rustc \
+##         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+##         TARGET=x86_64-unknown-linux-gnu \
+##         CARGOGREEN=1 \
+##       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/quote-c63aae50eb6f480a/build-script-build \
+##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/quote-edf8f660a3d601cc/out/out-edf8f660a3d601cc-stdout \
+##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/quote-edf8f660a3d601cc/out/out-edf8f660a3d601cc-stderr \
+##         || echo $? >/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/quote-edf8f660a3d601cc/out/out-edf8f660a3d601cc-errcode\
+##   ; find /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/quote-edf8f660a3d601cc/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-edf8f660a3d601cc"
+## script = """
+## FROM scratch AS out-edf8f660a3d601cc
+## COPY --link --from=run-z-quote-1.0.41-edf8f660a3d601cc /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/quote-edf8f660a3d601cc/out /"""
+
+
 FROM rust-base AS dep-n-quote-1.0.41-41756a17d2ad9431
 SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps
@@ -6619,6 +13044,7 @@ RUN \
   --mount=from=out-30dd1c0184916507,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libproc_macro2-30dd1c0184916507.rmeta,source=/libproc_macro2-30dd1c0184916507.rmeta \
   --mount=from=out-d90ab847601a2565,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libunicode_ident-d90ab847601a2565.rlib,source=/libunicode_ident-d90ab847601a2565.rlib \
   --mount=from=out-d90ab847601a2565,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libunicode_ident-d90ab847601a2565.rmeta,source=/libunicode_ident-d90ab847601a2565.rmeta \
+  --mount=from=out-edf8f660a3d601cc,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/quote-edf8f660a3d601cc/out,source=/ \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=quote \
         CARGO_INCREMENTAL=0 \
@@ -6640,9 +13066,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         OUT_DIR=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/quote-edf8f660a3d601cc/out \
         CARGOGREEN=1 \
-        NTPD_RS_GIT_DATE=2025-05-09 \
-        NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
-      rustc --crate-name quote --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="proc-macro"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "proc-macro"))' -C metadata'=67e9ec287a3930e8' -C extra-filename'=-41756a17d2ad9431' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern proc_macro2'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libproc_macro2-30dd1c0184916507.rmeta' --cap-lints warn --check-cfg cfg'(no_diagnostic_namespace)' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.41/src/lib.rs \
+      rustc --crate-name quote --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="proc-macro"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "proc-macro"))' -C metadata'=67e9ec287a3930e8' -C extra-filename'=-41756a17d2ad9431' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern proc_macro2'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libproc_macro2-30dd1c0184916507.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.41/src/lib.rs \
         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-41756a17d2ad9431-stdout \
         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-41756a17d2ad9431-stderr \
         || echo $? >/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-41756a17d2ad9431-errcode\
@@ -6654,6 +13078,14 @@ COPY --link --from=dep-n-quote-1.0.41-41756a17d2ad9431 /tmp/clis-ntpd_1-7-0-alph
 ## deps = [
 ##     "30dd1c0184916507",
 ##     "d90ab847601a2565",
+##     "ab9829a4a8b7788d",
+##     "edf8f660a3d601cc",
+##     "9a025c1b756d91f9",
+##     "c63aae50eb6f480a",
+## ]
+## buildrs_results = [
+##     "9a025c1b756d91f9",
+##     "edf8f660a3d601cc",
 ## ]
 ## writes = [
 ##     "libquote-41756a17d2ad9431.rlib",
@@ -6662,8 +13094,10 @@ COPY --link --from=dep-n-quote-1.0.41-41756a17d2ad9431 /tmp/clis-ntpd_1-7-0-alph
 ## ]
 ## stderr = [
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/quote-41756a17d2ad9431.d","emit":"dep-info"}',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `no_diagnostic_namespace`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.41/src/runtime.rs","byte_start":1364,"byte_end":1387,"line_start":53,"line_end":53,"column_start":9,"column_end":32,"is_primary":true,"text":[{"text":"    not(no_diagnostic_namespace),","highlight_start":9,"highlight_end":32}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"expected names are: `docsrs`, `feature`, and `test` and 31 more","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(no_diagnostic_namespace)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(no_diagnostic_namespace)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"`#[warn(unexpected_cfgs)]` on by default","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `no_diagnostic_namespace`\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.41/src/runtime.rs:53:9\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m53\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    not(no_diagnostic_namespace),\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m         \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: expected names are: `docsrs`, `feature`, and `test` and 31 more\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m            [lints.rust]\u001b[0m\n\u001b[0m            unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(no_diagnostic_namespace)'] }\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(no_diagnostic_namespace)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: `#[warn(unexpected_cfgs)]` on by default\u001b[0m\n\n"}''',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libquote-41756a17d2ad9431.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libquote-41756a17d2ad9431.rlib","emit":"link"}',
+##     '{"$message_type":"diagnostic","message":"1 warning emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 1 warning emitted\u001b[0m\n\n"}',
 ## ]
 ##
 ## [[externs]]
@@ -6681,6 +13115,10 @@ COPY --link --from=dep-n-quote-1.0.41-41756a17d2ad9431 /tmp/clis-ntpd_1-7-0-alph
 ## [[externs]]
 ## from = "out-d90ab847601a2565"
 ## xtern = "libunicode_ident-d90ab847601a2565.rmeta"
+##
+## [[mounts]]
+## name = "out-edf8f660a3d601cc"
+## mount = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/quote-edf8f660a3d601cc/out"
 ##
 ## [[stages]]
 ##
@@ -6711,6 +13149,7 @@ COPY --link --from=dep-n-quote-1.0.41-41756a17d2ad9431 /tmp/clis-ntpd_1-7-0-alph
 ##   --mount=from=out-30dd1c0184916507,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libproc_macro2-30dd1c0184916507.rmeta,source=/libproc_macro2-30dd1c0184916507.rmeta \
 ##   --mount=from=out-d90ab847601a2565,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libunicode_ident-d90ab847601a2565.rlib,source=/libunicode_ident-d90ab847601a2565.rlib \
 ##   --mount=from=out-d90ab847601a2565,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libunicode_ident-d90ab847601a2565.rmeta,source=/libunicode_ident-d90ab847601a2565.rmeta \
+##   --mount=from=out-edf8f660a3d601cc,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/quote-edf8f660a3d601cc/out,source=/ \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=quote \
 ##         CARGO_INCREMENTAL=0 \
@@ -6732,9 +13171,7 @@ COPY --link --from=dep-n-quote-1.0.41-41756a17d2ad9431 /tmp/clis-ntpd_1-7-0-alph
 ##         CARGO_PKG_VERSION_PRE= \
 ##         OUT_DIR=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/quote-edf8f660a3d601cc/out \
 ##         CARGOGREEN=1 \
-##         NTPD_RS_GIT_DATE=2025-05-09 \
-##         NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
-##       rustc --crate-name quote --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="proc-macro"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "proc-macro"))' -C metadata'=67e9ec287a3930e8' -C extra-filename'=-41756a17d2ad9431' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern proc_macro2'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libproc_macro2-30dd1c0184916507.rmeta' --cap-lints warn --check-cfg cfg'(no_diagnostic_namespace)' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.41/src/lib.rs \
+##       rustc --crate-name quote --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="proc-macro"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "proc-macro"))' -C metadata'=67e9ec287a3930e8' -C extra-filename'=-41756a17d2ad9431' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern proc_macro2'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libproc_macro2-30dd1c0184916507.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.41/src/lib.rs \
 ##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-41756a17d2ad9431-stdout \
 ##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-41756a17d2ad9431-stderr \
 ##         || echo $? >/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-41756a17d2ad9431-errcode\
@@ -6782,8 +13219,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=106 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        NTPD_RS_GIT_DATE=2025-05-09 \
-        NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
       rustc --crate-name syn --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="clone-impls"' --cfg feature'="default"' --cfg feature'="derive"' --cfg feature'="extra-traits"' --cfg feature'="full"' --cfg feature'="parsing"' --cfg feature'="printing"' --cfg feature'="proc-macro"' --cfg feature'="visit-mut"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("clone-impls", "default", "derive", "extra-traits", "fold", "full", "parsing", "printing", "proc-macro", "test", "visit", "visit-mut"))' -C metadata'=8ff2bb6eb210a9d8' -C extra-filename'=-8f37513da063fb69' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern proc_macro2'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libproc_macro2-30dd1c0184916507.rmeta' --extern quote'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libquote-41756a17d2ad9431.rmeta' --extern unicode_ident'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libunicode_ident-d90ab847601a2565.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/syn-2.0.106/src/lib.rs \
         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-8f37513da063fb69-stdout \
         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-8f37513da063fb69-stderr \
@@ -6796,7 +13231,15 @@ COPY --link --from=dep-n-syn-2.0.106-8f37513da063fb69 /tmp/clis-ntpd_1-7-0-alpha
 ## deps = [
 ##     "30dd1c0184916507",
 ##     "d90ab847601a2565",
+##     "ab9829a4a8b7788d",
 ##     "41756a17d2ad9431",
+##     "c63aae50eb6f480a",
+##     "9a025c1b756d91f9",
+##     "edf8f660a3d601cc",
+## ]
+## buildrs_results = [
+##     "9a025c1b756d91f9",
+##     "edf8f660a3d601cc",
 ## ]
 ## writes = [
 ##     "libsyn-8f37513da063fb69.rlib",
@@ -6884,8 +13327,6 @@ COPY --link --from=dep-n-syn-2.0.106-8f37513da063fb69 /tmp/clis-ntpd_1-7-0-alpha
 ##         CARGO_PKG_VERSION_PATCH=106 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         NTPD_RS_GIT_DATE=2025-05-09 \
-##         NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
 ##       rustc --crate-name syn --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="clone-impls"' --cfg feature'="default"' --cfg feature'="derive"' --cfg feature'="extra-traits"' --cfg feature'="full"' --cfg feature'="parsing"' --cfg feature'="printing"' --cfg feature'="proc-macro"' --cfg feature'="visit-mut"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("clone-impls", "default", "derive", "extra-traits", "fold", "full", "parsing", "printing", "proc-macro", "test", "visit", "visit-mut"))' -C metadata'=8ff2bb6eb210a9d8' -C extra-filename'=-8f37513da063fb69' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern proc_macro2'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libproc_macro2-30dd1c0184916507.rmeta' --extern quote'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libquote-41756a17d2ad9431.rmeta' --extern unicode_ident'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libunicode_ident-d90ab847601a2565.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/syn-2.0.106/src/lib.rs \
 ##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-8f37513da063fb69-stdout \
 ##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-8f37513da063fb69-stderr \
@@ -6932,8 +13373,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=228 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        NTPD_RS_GIT_DATE=2025-05-09 \
-        NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
       rustc --crate-name serde_derive --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type proc-macro --emit dep-info,link -C prefer-dynamic -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="default"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "deserialize_in_place"))' -C metadata'=a05185ce6c879e7c' -C extra-filename'=-b925936788ba7057' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern proc_macro2'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libproc_macro2-30dd1c0184916507.rlib' --extern quote'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libquote-41756a17d2ad9431.rlib' --extern syn'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libsyn-8f37513da063fb69.rlib' --extern proc_macro --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_derive-1.0.228/src/lib.rs \
         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-b925936788ba7057-stdout \
         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-b925936788ba7057-stderr \
@@ -6946,8 +13385,16 @@ COPY --link --from=dep-n-serde_derive-1.0.228-b925936788ba7057 /tmp/clis-ntpd_1-
 ## deps = [
 ##     "30dd1c0184916507",
 ##     "d90ab847601a2565",
+##     "ab9829a4a8b7788d",
 ##     "41756a17d2ad9431",
+##     "c63aae50eb6f480a",
 ##     "8f37513da063fb69",
+##     "9a025c1b756d91f9",
+##     "edf8f660a3d601cc",
+## ]
+## buildrs_results = [
+##     "9a025c1b756d91f9",
+##     "edf8f660a3d601cc",
 ## ]
 ## writes = [
 ##     "libserde_derive-b925936788ba7057.so",
@@ -7023,8 +13470,6 @@ COPY --link --from=dep-n-serde_derive-1.0.228-b925936788ba7057 /tmp/clis-ntpd_1-
 ##         CARGO_PKG_VERSION_PATCH=228 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         NTPD_RS_GIT_DATE=2025-05-09 \
-##         NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
 ##       rustc --crate-name serde_derive --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type proc-macro --emit dep-info,link -C prefer-dynamic -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="default"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "deserialize_in_place"))' -C metadata'=a05185ce6c879e7c' -C extra-filename'=-b925936788ba7057' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern proc_macro2'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libproc_macro2-30dd1c0184916507.rlib' --extern quote'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libquote-41756a17d2ad9431.rlib' --extern syn'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libsyn-8f37513da063fb69.rlib' --extern proc_macro --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_derive-1.0.228/src/lib.rs \
 ##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-b925936788ba7057-stdout \
 ##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-b925936788ba7057-stderr \
@@ -7042,12 +13487,311 @@ COPY --link --from=dep-n-serde_derive-1.0.228-b925936788ba7057 /tmp/clis-ntpd_1-
 FROM scratch AS cratesio-serde-1.0.228
 ADD --chmod=0664 --unpack --checksum=sha256:9a8e94ea7f378bd32cbbd37198a4a91436180c5bb472411e48b5ec2e2124ae9e \
   https://static.crates.io/crates/serde/serde-1.0.228.crate /
+FROM rust-base AS dep-x-serde-1.0.228-9e59eb4de4feaddb
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde-9e59eb4de4feaddb
+RUN \
+  --mount=from=cratesio-serde-1.0.228,source=/serde-1.0.228,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.228,rw \
+    { \
+        cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.228/build.rs | sed -E 's/^(pub[()a-z]* +)?(async +)?fn +main/\1\2fn actual_9e59eb4de4feaddb_main/' >/_ && mv /_ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.228/build.rs ; \
+        { \
+          echo ; \
+          echo 'fn main() {' ; \
+          echo '    use std::env::{args_os, var_os};' ; \
+          echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+          echo '        use std::process::{Command, Stdio};' ; \
+          echo '        let mut cmd = Command::new("cargo-green");' ; \
+          echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+          echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+          echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+          echo '        assert!(res.success());' ; \
+          echo '    } else {' ; \
+          echo '        actual_9e59eb4de4feaddb_main();' ; \
+          echo '    }' ; \
+          echo '}' ; \
+        } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.228/build.rs ; \
+    } && \
+    env CARGO="$(which cargo)" \
+        CARGO_CRATE_NAME=build_script_build \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.228 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.228/Cargo.toml \
+        CARGO_PKG_AUTHORS=Erick' Tryzelaar <erick.tryzelaar@gmail.com>:David Tolnay <dtolnay@gmail.com>' \
+        CARGO_PKG_DESCRIPTION=A' generic serialization/deserialization framework' \
+        CARGO_PKG_HOMEPAGE=https'://serde.rs' \
+        CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=serde \
+        CARGO_PKG_README=crates-io.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/serde-rs/serde' \
+        CARGO_PKG_RUST_VERSION=1.56 \
+        CARGO_PKG_VERSION=1.0.228 \
+        CARGO_PKG_VERSION_MAJOR=1 \
+        CARGO_PKG_VERSION_MINOR=0 \
+        CARGO_PKG_VERSION_PATCH=228 \
+        CARGO_PKG_VERSION_PRE= \
+        CARGOGREEN=1 \
+      rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="derive"' --cfg feature'="serde_derive"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "derive", "rc", "serde_derive", "std", "unstable"))' -C metadata'=5f0742752ccd5b47' -C extra-filename'=-9e59eb4de4feaddb' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde-9e59eb4de4feaddb -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.228/build.rs \
+        1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde-9e59eb4de4feaddb/out-9e59eb4de4feaddb-stdout \
+        2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde-9e59eb4de4feaddb/out-9e59eb4de4feaddb-stderr \
+        || echo $? >/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde-9e59eb4de4feaddb/out-9e59eb4de4feaddb-errcode\
+  ; find /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde-9e59eb4de4feaddb/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-9e59eb4de4feaddb
+COPY --link --from=dep-x-serde-1.0.228-9e59eb4de4feaddb /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde-9e59eb4de4feaddb/*-9e59eb4de4feaddb* /
+
+## this = "9e59eb4de4feaddb"
+## writes = [
+##     "build_script_build-9e59eb4de4feaddb",
+##     "build_script_build-9e59eb4de4feaddb.d",
+## ]
+## stderr = [
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde-9e59eb4de4feaddb/build_script_build-9e59eb4de4feaddb.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde-9e59eb4de4feaddb/build_script_build-9e59eb4de4feaddb","emit":"link"}',
+## ]
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
+##
+## [[stages]]
+##
+## [stages.Cratesio]
+## stage = "cratesio-serde-1.0.228"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.228"
+## name = "serde"
+## name_dash_version = "serde-1.0.228"
+## hash = "9a8e94ea7f378bd32cbbd37198a4a91436180c5bb472411e48b5ec2e2124ae9e"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "dep-x-serde-1.0.228-9e59eb4de4feaddb"
+## script = '''
+## FROM rust-base AS dep-x-serde-1.0.228-9e59eb4de4feaddb
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde-9e59eb4de4feaddb
+## RUN \
+##   --mount=from=cratesio-serde-1.0.228,source=/serde-1.0.228,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.228,rw \
+##     { \
+##         cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.228/build.rs | sed -E 's/^(pub[()a-z]* +)?(async +)?fn +main/\1\2fn actual_9e59eb4de4feaddb_main/' >/_ && mv /_ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.228/build.rs ; \
+##         { \
+##           echo ; \
+##           echo 'fn main() {' ; \
+##           echo '    use std::env::{args_os, var_os};' ; \
+##           echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+##           echo '        use std::process::{Command, Stdio};' ; \
+##           echo '        let mut cmd = Command::new("cargo-green");' ; \
+##           echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+##           echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+##           echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+##           echo '        assert!(res.success());' ; \
+##           echo '    } else {' ; \
+##           echo '        actual_9e59eb4de4feaddb_main();' ; \
+##           echo '    }' ; \
+##           echo '}' ; \
+##         } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.228/build.rs ; \
+##     } && \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CRATE_NAME=build_script_build \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.228 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.228/Cargo.toml \
+##         CARGO_PKG_AUTHORS=Erick' Tryzelaar <erick.tryzelaar@gmail.com>:David Tolnay <dtolnay@gmail.com>' \
+##         CARGO_PKG_DESCRIPTION=A' generic serialization/deserialization framework' \
+##         CARGO_PKG_HOMEPAGE=https'://serde.rs' \
+##         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=serde \
+##         CARGO_PKG_README=crates-io.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/serde-rs/serde' \
+##         CARGO_PKG_RUST_VERSION=1.56 \
+##         CARGO_PKG_VERSION=1.0.228 \
+##         CARGO_PKG_VERSION_MAJOR=1 \
+##         CARGO_PKG_VERSION_MINOR=0 \
+##         CARGO_PKG_VERSION_PATCH=228 \
+##         CARGO_PKG_VERSION_PRE= \
+##         CARGOGREEN=1 \
+##       rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="derive"' --cfg feature'="serde_derive"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "derive", "rc", "serde_derive", "std", "unstable"))' -C metadata'=5f0742752ccd5b47' -C extra-filename'=-9e59eb4de4feaddb' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde-9e59eb4de4feaddb -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.228/build.rs \
+##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde-9e59eb4de4feaddb/out-9e59eb4de4feaddb-stdout \
+##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde-9e59eb4de4feaddb/out-9e59eb4de4feaddb-stderr \
+##         || echo $? >/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde-9e59eb4de4feaddb/out-9e59eb4de4feaddb-errcode\
+##   ; find /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde-9e59eb4de4feaddb/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-9e59eb4de4feaddb"
+## script = """
+## FROM scratch AS out-9e59eb4de4feaddb
+## COPY --link --from=dep-x-serde-1.0.228-9e59eb4de4feaddb /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde-9e59eb4de4feaddb/*-9e59eb4de4feaddb* /"""
+
+FROM rust-base AS run-z-serde-1.0.228-cfe125327cacaf16
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde-cfe125327cacaf16/out
+WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.228
+RUN \
+  --mount=from=out-9e59eb4de4feaddb,source=/build_script_build-9e59eb4de4feaddb,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde-9e59eb4de4feaddb/build-script-build \
+  --mount=from=cratesio-serde-1.0.228,source=/serde-1.0.228,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.228 \
+    env CARGO="$(which cargo)" \
+        CARGO_CFG_FEATURE=default,derive,serde_derive,std \
+        CARGO_CFG_PANIC=unwind \
+        CARGO_CFG_TARGET_ABI= \
+        CARGO_CFG_TARGET_ARCH=x86_64 \
+        CARGO_CFG_TARGET_ENDIAN=little \
+        CARGO_CFG_TARGET_ENV=gnu \
+        CARGO_CFG_TARGET_FAMILY=unix \
+        CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
+        CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+        CARGO_CFG_TARGET_OS=linux \
+        CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+        CARGO_CFG_TARGET_VENDOR=unknown \
+        CARGO_CFG_UNIX= \
+        CARGO_ENCODED_RUSTFLAGS= \
+        CARGO_FEATURE_DEFAULT=1 \
+        CARGO_FEATURE_DERIVE=1 \
+        CARGO_FEATURE_SERDE_DERIVE=1 \
+        CARGO_FEATURE_STD=1 \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.228 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.228/Cargo.toml \
+        CARGO_PKG_AUTHORS=Erick' Tryzelaar <erick.tryzelaar@gmail.com>:David Tolnay <dtolnay@gmail.com>' \
+        CARGO_PKG_DESCRIPTION=A' generic serialization/deserialization framework' \
+        CARGO_PKG_HOMEPAGE=https'://serde.rs' \
+        CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=serde \
+        CARGO_PKG_README=crates-io.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/serde-rs/serde' \
+        CARGO_PKG_RUST_VERSION=1.56 \
+        CARGO_PKG_VERSION=1.0.228 \
+        CARGO_PKG_VERSION_MAJOR=1 \
+        CARGO_PKG_VERSION_MINOR=0 \
+        CARGO_PKG_VERSION_PATCH=228 \
+        CARGO_PKG_VERSION_PRE= \
+        DEBUG=false \
+        HOST=x86_64-unknown-linux-gnu \
+        NUM_JOBS=4 \
+        OPT_LEVEL=3 \
+        OUT_DIR=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde-cfe125327cacaf16/out \
+        PROFILE=release \
+        RUSTC=rustc \
+        RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+        TARGET=x86_64-unknown-linux-gnu \
+        CARGOGREEN=1 \
+      CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde-9e59eb4de4feaddb/build-script-build \
+        1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde-cfe125327cacaf16/out/out-cfe125327cacaf16-stdout \
+        2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde-cfe125327cacaf16/out/out-cfe125327cacaf16-stderr \
+        || echo $? >/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde-cfe125327cacaf16/out/out-cfe125327cacaf16-errcode\
+  ; find /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde-cfe125327cacaf16/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-cfe125327cacaf16
+COPY --link --from=run-z-serde-1.0.228-cfe125327cacaf16 /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde-cfe125327cacaf16/out /
+
+## this = "cfe125327cacaf16"
+## deps = ["9e59eb4de4feaddb"]
+## writes_to = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde-cfe125327cacaf16/out"
+## writes = ["private.rs"]
+## stdout = [
+##     "cargo:rerun-if-changed=build.rs",
+##     "cargo:rustc-cfg=if_docsrs_then_no_serde_core",
+##     'cargo:rustc-check-cfg=cfg(feature, values("result"))',
+##     "cargo:rustc-check-cfg=cfg(if_docsrs_then_no_serde_core)",
+##     "cargo:rustc-check-cfg=cfg(no_core_cstr)",
+##     "cargo:rustc-check-cfg=cfg(no_core_error)",
+##     "cargo:rustc-check-cfg=cfg(no_core_net)",
+##     "cargo:rustc-check-cfg=cfg(no_core_num_saturating)",
+##     "cargo:rustc-check-cfg=cfg(no_diagnostic_namespace)",
+##     "cargo:rustc-check-cfg=cfg(no_serde_derive)",
+##     "cargo:rustc-check-cfg=cfg(no_std_atomic)",
+##     "cargo:rustc-check-cfg=cfg(no_std_atomic64)",
+##     "cargo:rustc-check-cfg=cfg(no_target_has_atomic)",
+## ]
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "run-z-serde-1.0.228-cfe125327cacaf16"
+## script = '''
+## FROM rust-base AS run-z-serde-1.0.228-cfe125327cacaf16
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde-cfe125327cacaf16/out
+## WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.228
+## RUN \
+##   --mount=from=out-9e59eb4de4feaddb,source=/build_script_build-9e59eb4de4feaddb,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde-9e59eb4de4feaddb/build-script-build \
+##   --mount=from=cratesio-serde-1.0.228,source=/serde-1.0.228,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.228 \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CFG_FEATURE=default,derive,serde_derive,std \
+##         CARGO_CFG_PANIC=unwind \
+##         CARGO_CFG_TARGET_ABI= \
+##         CARGO_CFG_TARGET_ARCH=x86_64 \
+##         CARGO_CFG_TARGET_ENDIAN=little \
+##         CARGO_CFG_TARGET_ENV=gnu \
+##         CARGO_CFG_TARGET_FAMILY=unix \
+##         CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
+##         CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+##         CARGO_CFG_TARGET_OS=linux \
+##         CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+##         CARGO_CFG_TARGET_VENDOR=unknown \
+##         CARGO_CFG_UNIX= \
+##         CARGO_ENCODED_RUSTFLAGS= \
+##         CARGO_FEATURE_DEFAULT=1 \
+##         CARGO_FEATURE_DERIVE=1 \
+##         CARGO_FEATURE_SERDE_DERIVE=1 \
+##         CARGO_FEATURE_STD=1 \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.228 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.228/Cargo.toml \
+##         CARGO_PKG_AUTHORS=Erick' Tryzelaar <erick.tryzelaar@gmail.com>:David Tolnay <dtolnay@gmail.com>' \
+##         CARGO_PKG_DESCRIPTION=A' generic serialization/deserialization framework' \
+##         CARGO_PKG_HOMEPAGE=https'://serde.rs' \
+##         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=serde \
+##         CARGO_PKG_README=crates-io.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/serde-rs/serde' \
+##         CARGO_PKG_RUST_VERSION=1.56 \
+##         CARGO_PKG_VERSION=1.0.228 \
+##         CARGO_PKG_VERSION_MAJOR=1 \
+##         CARGO_PKG_VERSION_MINOR=0 \
+##         CARGO_PKG_VERSION_PATCH=228 \
+##         CARGO_PKG_VERSION_PRE= \
+##         DEBUG=false \
+##         HOST=x86_64-unknown-linux-gnu \
+##         NUM_JOBS=4 \
+##         OPT_LEVEL=3 \
+##         OUT_DIR=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde-cfe125327cacaf16/out \
+##         PROFILE=release \
+##         RUSTC=rustc \
+##         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+##         TARGET=x86_64-unknown-linux-gnu \
+##         CARGOGREEN=1 \
+##       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde-9e59eb4de4feaddb/build-script-build \
+##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde-cfe125327cacaf16/out/out-cfe125327cacaf16-stdout \
+##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde-cfe125327cacaf16/out/out-cfe125327cacaf16-stderr \
+##         || echo $? >/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde-cfe125327cacaf16/out/out-cfe125327cacaf16-errcode\
+##   ; find /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde-cfe125327cacaf16/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-cfe125327cacaf16"
+## script = """
+## FROM scratch AS out-cfe125327cacaf16
+## COPY --link --from=run-z-serde-1.0.228-cfe125327cacaf16 /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde-cfe125327cacaf16/out /"""
+
+
 FROM rust-base AS dep-n-serde-1.0.228-d9535ff1afbc9e07
 SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps
 RUN \
   --mount=from=cratesio-serde-1.0.228,source=/serde-1.0.228,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.228 \
-  --mount=from=crate_out-cfe125327cacaf16,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde-cfe125327cacaf16/out \
   --mount=from=out-1bc4bef1fdca14c4,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libserde_core-1bc4bef1fdca14c4.rlib,source=/libserde_core-1bc4bef1fdca14c4.rlib \
   --mount=from=out-1bc4bef1fdca14c4,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libserde_core-1bc4bef1fdca14c4.rmeta,source=/libserde_core-1bc4bef1fdca14c4.rmeta \
   --mount=from=out-b925936788ba7057,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libserde_derive-b925936788ba7057.so,source=/libserde_derive-b925936788ba7057.so \
@@ -7059,6 +13803,8 @@ RUN \
   --mount=from=out-41756a17d2ad9431,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libquote-41756a17d2ad9431.rmeta,source=/libquote-41756a17d2ad9431.rmeta \
   --mount=from=out-8f37513da063fb69,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libsyn-8f37513da063fb69.rlib,source=/libsyn-8f37513da063fb69.rlib \
   --mount=from=out-8f37513da063fb69,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libsyn-8f37513da063fb69.rmeta,source=/libsyn-8f37513da063fb69.rmeta \
+  --mount=from=out-badeea6458a799e8,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_core-badeea6458a799e8/out,source=/ \
+  --mount=from=out-cfe125327cacaf16,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde-cfe125327cacaf16/out,source=/ \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=serde \
         CARGO_INCREMENTAL=0 \
@@ -7080,8 +13826,6 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         OUT_DIR=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde-cfe125327cacaf16/out \
         CARGOGREEN=1 \
-        NTPD_RS_GIT_DATE=2025-05-09 \
-        NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
       rustc --crate-name serde --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --cfg feature'="default"' --cfg feature'="derive"' --cfg feature'="serde_derive"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "derive", "rc", "serde_derive", "std", "unstable"))' -C metadata'=a664c88df3079fde' -C extra-filename'=-d9535ff1afbc9e07' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern serde_core'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libserde_core-1bc4bef1fdca14c4.rmeta' --extern serde_derive'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libserde_derive-b925936788ba7057.so' --cap-lints warn --cfg if_docsrs_then_no_serde_core --check-cfg cfg'(feature, values("result"))' --check-cfg cfg'(if_docsrs_then_no_serde_core)' --check-cfg cfg'(no_core_cstr)' --check-cfg cfg'(no_core_error)' --check-cfg cfg'(no_core_net)' --check-cfg cfg'(no_core_num_saturating)' --check-cfg cfg'(no_diagnostic_namespace)' --check-cfg cfg'(no_serde_derive)' --check-cfg cfg'(no_std_atomic)' --check-cfg cfg'(no_std_atomic64)' --check-cfg cfg'(no_target_has_atomic)' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.228/src/lib.rs \
         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-d9535ff1afbc9e07-stdout \
         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-d9535ff1afbc9e07-stderr \
@@ -7093,11 +13837,25 @@ COPY --link --from=dep-n-serde-1.0.228-d9535ff1afbc9e07 /tmp/clis-ntpd_1-7-0-alp
 ## this = "d9535ff1afbc9e07"
 ## deps = [
 ##     "1bc4bef1fdca14c4",
+##     "51979789556dbb03",
 ##     "b925936788ba7057",
 ##     "30dd1c0184916507",
 ##     "d90ab847601a2565",
+##     "ab9829a4a8b7788d",
 ##     "41756a17d2ad9431",
+##     "c63aae50eb6f480a",
 ##     "8f37513da063fb69",
+##     "cfe125327cacaf16",
+##     "badeea6458a799e8",
+##     "9a025c1b756d91f9",
+##     "edf8f660a3d601cc",
+##     "9e59eb4de4feaddb",
+## ]
+## buildrs_results = [
+##     "badeea6458a799e8",
+##     "9a025c1b756d91f9",
+##     "edf8f660a3d601cc",
+##     "cfe125327cacaf16",
 ## ]
 ## writes = [
 ##     "libserde-d9535ff1afbc9e07.rlib",
@@ -7154,13 +13912,13 @@ COPY --link --from=dep-n-serde-1.0.228-d9535ff1afbc9e07 /tmp/clis-ntpd_1-7-0-alp
 ## from = "out-8f37513da063fb69"
 ## xtern = "libsyn-8f37513da063fb69.rmeta"
 ##
-## [[contexts]]
-## name = "crate_out-cfe125327cacaf16"
-## uri = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde-cfe125327cacaf16/out"
+## [[mounts]]
+## name = "out-badeea6458a799e8"
+## mount = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_core-badeea6458a799e8/out"
 ##
-## [[contexts]]
-## name = "crate_out-badeea6458a799e8"
-## uri = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_core-badeea6458a799e8/out"
+## [[mounts]]
+## name = "out-cfe125327cacaf16"
+## mount = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde-cfe125327cacaf16/out"
 ##
 ## [[stages]]
 ##
@@ -7187,7 +13945,6 @@ COPY --link --from=dep-n-serde-1.0.228-d9535ff1afbc9e07 /tmp/clis-ntpd_1-7-0-alp
 ## WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps
 ## RUN \
 ##   --mount=from=cratesio-serde-1.0.228,source=/serde-1.0.228,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.228 \
-##   --mount=from=crate_out-cfe125327cacaf16,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde-cfe125327cacaf16/out \
 ##   --mount=from=out-1bc4bef1fdca14c4,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libserde_core-1bc4bef1fdca14c4.rlib,source=/libserde_core-1bc4bef1fdca14c4.rlib \
 ##   --mount=from=out-1bc4bef1fdca14c4,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libserde_core-1bc4bef1fdca14c4.rmeta,source=/libserde_core-1bc4bef1fdca14c4.rmeta \
 ##   --mount=from=out-b925936788ba7057,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libserde_derive-b925936788ba7057.so,source=/libserde_derive-b925936788ba7057.so \
@@ -7199,6 +13956,8 @@ COPY --link --from=dep-n-serde-1.0.228-d9535ff1afbc9e07 /tmp/clis-ntpd_1-7-0-alp
 ##   --mount=from=out-41756a17d2ad9431,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libquote-41756a17d2ad9431.rmeta,source=/libquote-41756a17d2ad9431.rmeta \
 ##   --mount=from=out-8f37513da063fb69,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libsyn-8f37513da063fb69.rlib,source=/libsyn-8f37513da063fb69.rlib \
 ##   --mount=from=out-8f37513da063fb69,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libsyn-8f37513da063fb69.rmeta,source=/libsyn-8f37513da063fb69.rmeta \
+##   --mount=from=out-badeea6458a799e8,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_core-badeea6458a799e8/out,source=/ \
+##   --mount=from=out-cfe125327cacaf16,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde-cfe125327cacaf16/out,source=/ \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=serde \
 ##         CARGO_INCREMENTAL=0 \
@@ -7220,8 +13979,6 @@ COPY --link --from=dep-n-serde-1.0.228-d9535ff1afbc9e07 /tmp/clis-ntpd_1-7-0-alp
 ##         CARGO_PKG_VERSION_PRE= \
 ##         OUT_DIR=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde-cfe125327cacaf16/out \
 ##         CARGOGREEN=1 \
-##         NTPD_RS_GIT_DATE=2025-05-09 \
-##         NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
 ##       rustc --crate-name serde --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --cfg feature'="default"' --cfg feature'="derive"' --cfg feature'="serde_derive"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "derive", "rc", "serde_derive", "std", "unstable"))' -C metadata'=a664c88df3079fde' -C extra-filename'=-d9535ff1afbc9e07' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern serde_core'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libserde_core-1bc4bef1fdca14c4.rmeta' --extern serde_derive'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libserde_derive-b925936788ba7057.so' --cap-lints warn --cfg if_docsrs_then_no_serde_core --check-cfg cfg'(feature, values("result"))' --check-cfg cfg'(if_docsrs_then_no_serde_core)' --check-cfg cfg'(no_core_cstr)' --check-cfg cfg'(no_core_error)' --check-cfg cfg'(no_core_net)' --check-cfg cfg'(no_core_num_saturating)' --check-cfg cfg'(no_diagnostic_namespace)' --check-cfg cfg'(no_serde_derive)' --check-cfg cfg'(no_std_atomic)' --check-cfg cfg'(no_std_atomic64)' --check-cfg cfg'(no_target_has_atomic)' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.228/src/lib.rs \
 ##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-d9535ff1afbc9e07-stdout \
 ##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-d9535ff1afbc9e07-stderr \
@@ -7264,8 +14021,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        NTPD_RS_GIT_DATE=2025-05-09 \
-        NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
       rustc --crate-name bytes --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --warn unexpected_cfgs --check-cfg cfg'(loom)' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "extra-platforms", "serde", "std"))' -C metadata'=0b3fca7c36b7a4ca' -C extra-filename'=-bf097c132b6f21a4' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bytes-1.10.1/src/lib.rs \
         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-bf097c132b6f21a4-stdout \
         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-bf097c132b6f21a4-stderr \
@@ -7331,8 +14086,6 @@ COPY --link --from=dep-n-bytes-1.10.1-bf097c132b6f21a4 /tmp/clis-ntpd_1-7-0-alph
 ##         CARGO_PKG_VERSION_PATCH=1 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         NTPD_RS_GIT_DATE=2025-05-09 \
-##         NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
 ##       rustc --crate-name bytes --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --warn unexpected_cfgs --check-cfg cfg'(loom)' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "extra-platforms", "serde", "std"))' -C metadata'=0b3fca7c36b7a4ca' -C extra-filename'=-bf097c132b6f21a4' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bytes-1.10.1/src/lib.rs \
 ##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-bf097c132b6f21a4-stdout \
 ##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-bf097c132b6f21a4-stderr \
@@ -7377,8 +14130,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=4 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        NTPD_RS_GIT_DATE=2025-05-09 \
-        NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
       rustc --crate-name mio --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --warn unexpected_cfgs --check-cfg cfg'(mio_unsupported_force_poll_poll)' --check-cfg cfg'(mio_unsupported_force_waker_pipe)' --cfg feature'="net"' --cfg feature'="os-ext"' --cfg feature'="os-poll"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "log", "net", "os-ext", "os-poll"))' -C metadata'=7959c55297a21d8d' -C extra-filename'=-8a04991c75463c17' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern libc'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibc-93b6478caf319772.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/mio-1.0.4/src/lib.rs \
         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-8a04991c75463c17-stdout \
         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-8a04991c75463c17-stderr \
@@ -7388,7 +14139,12 @@ FROM scratch AS out-8a04991c75463c17
 COPY --link --from=dep-n-mio-1.0.4-8a04991c75463c17 /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/*-8a04991c75463c17* /
 
 ## this = "8a04991c75463c17"
-## deps = ["93b6478caf319772"]
+## deps = [
+##     "93b6478caf319772",
+##     "7560e7c5c88ec4c4",
+##     "d5b44a42806fd90b",
+## ]
+## buildrs_results = ["d5b44a42806fd90b"]
 ## writes = [
 ##     "libmio-8a04991c75463c17.rlib",
 ##     "libmio-8a04991c75463c17.rmeta",
@@ -7455,8 +14211,6 @@ COPY --link --from=dep-n-mio-1.0.4-8a04991c75463c17 /tmp/clis-ntpd_1-7-0-alpha-2
 ##         CARGO_PKG_VERSION_PATCH=4 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         NTPD_RS_GIT_DATE=2025-05-09 \
-##         NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
 ##       rustc --crate-name mio --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --warn unexpected_cfgs --check-cfg cfg'(mio_unsupported_force_poll_poll)' --check-cfg cfg'(mio_unsupported_force_waker_pipe)' --cfg feature'="net"' --cfg feature'="os-ext"' --cfg feature'="os-poll"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "log", "net", "os-ext", "os-poll"))' -C metadata'=7959c55297a21d8d' -C extra-filename'=-8a04991c75463c17' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern libc'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibc-93b6478caf319772.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/mio-1.0.4/src/lib.rs \
 ##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-8a04991c75463c17-stdout \
 ##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-8a04991c75463c17-stderr \
@@ -7500,8 +14254,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=16 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        NTPD_RS_GIT_DATE=2025-05-09 \
-        NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
       rustc --crate-name pin_project_lite --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --warn unreachable_pub --warn unexpected_cfgs --warn clippy'::undocumented_unsafe_blocks' --warn clippy'::transmute_undefined_repr' --warn clippy'::trailing_empty_array' --warn single_use_lifetimes --warn rust_2018_idioms --warn clippy'::pedantic' --warn non_ascii_idents --warn clippy'::inline_asm_x86_att_syntax' --warn improper_ctypes_definitions --warn improper_ctypes --warn deprecated_safe --warn clippy'::default_union_representation' --warn clippy'::as_underscore' --warn clippy'::as_ptr_cast_mut' --warn clippy'::all' --allow clippy'::unreadable_literal' --allow clippy'::type_complexity' --allow clippy'::too_many_lines' --allow clippy'::too_many_arguments' --allow clippy'::struct_field_names' --allow clippy'::struct_excessive_bools' --allow clippy'::single_match_else' --allow clippy'::single_match' --allow clippy'::similar_names' --allow clippy'::range_plus_one' --allow clippy'::nonminimal_bool' --allow clippy'::naive_bytecount' --allow clippy'::module_name_repetitions' --allow clippy'::missing_errors_doc' --allow clippy'::manual_range_contains' --allow clippy'::manual_assert' --allow clippy'::lint_groups_priority' --allow clippy'::incompatible_msrv' --allow clippy'::float_cmp' --allow clippy'::doc_markdown' --allow clippy'::declare_interior_mutable_const' --allow clippy'::cast_lossless' --allow clippy'::borrow_as_ptr' --allow clippy'::bool_assert_comparison' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=5e1d474e315bc018' -C extra-filename'=-a22006e28be69faf' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/pin-project-lite-0.2.16/src/lib.rs \
         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-a22006e28be69faf-stdout \
         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-a22006e28be69faf-stderr \
@@ -7568,8 +14320,6 @@ COPY --link --from=dep-n-pin-project-lite-0.2.16-a22006e28be69faf /tmp/clis-ntpd
 ##         CARGO_PKG_VERSION_PATCH=16 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         NTPD_RS_GIT_DATE=2025-05-09 \
-##         NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
 ##       rustc --crate-name pin_project_lite --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --warn unreachable_pub --warn unexpected_cfgs --warn clippy'::undocumented_unsafe_blocks' --warn clippy'::transmute_undefined_repr' --warn clippy'::trailing_empty_array' --warn single_use_lifetimes --warn rust_2018_idioms --warn clippy'::pedantic' --warn non_ascii_idents --warn clippy'::inline_asm_x86_att_syntax' --warn improper_ctypes_definitions --warn improper_ctypes --warn deprecated_safe --warn clippy'::default_union_representation' --warn clippy'::as_underscore' --warn clippy'::as_ptr_cast_mut' --warn clippy'::all' --allow clippy'::unreadable_literal' --allow clippy'::type_complexity' --allow clippy'::too_many_lines' --allow clippy'::too_many_arguments' --allow clippy'::struct_field_names' --allow clippy'::struct_excessive_bools' --allow clippy'::single_match_else' --allow clippy'::single_match' --allow clippy'::similar_names' --allow clippy'::range_plus_one' --allow clippy'::nonminimal_bool' --allow clippy'::naive_bytecount' --allow clippy'::module_name_repetitions' --allow clippy'::missing_errors_doc' --allow clippy'::manual_range_contains' --allow clippy'::manual_assert' --allow clippy'::lint_groups_priority' --allow clippy'::incompatible_msrv' --allow clippy'::float_cmp' --allow clippy'::doc_markdown' --allow clippy'::declare_interior_mutable_const' --allow clippy'::cast_lossless' --allow clippy'::borrow_as_ptr' --allow clippy'::bool_assert_comparison' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=5e1d474e315bc018' -C extra-filename'=-a22006e28be69faf' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/pin-project-lite-0.2.16/src/lib.rs \
 ##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-a22006e28be69faf-stdout \
 ##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-a22006e28be69faf-stderr \
@@ -7616,8 +14366,6 @@ possible intended.\
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        NTPD_RS_GIT_DATE=2025-05-09 \
-        NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
       rustc --crate-name socket2 --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --cfg feature'="all"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("all"))' -C metadata'=76c96e2d3eaa992d' -C extra-filename'=-332f7f94bdc8a158' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern libc'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibc-93b6478caf319772.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/socket2-0.6.0/src/lib.rs \
         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-332f7f94bdc8a158-stdout \
         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-332f7f94bdc8a158-stderr \
@@ -7627,7 +14375,12 @@ FROM scratch AS out-332f7f94bdc8a158
 COPY --link --from=dep-n-socket2-0.6.0-332f7f94bdc8a158 /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/*-332f7f94bdc8a158* /
 
 ## this = "332f7f94bdc8a158"
-## deps = ["93b6478caf319772"]
+## deps = [
+##     "93b6478caf319772",
+##     "7560e7c5c88ec4c4",
+##     "d5b44a42806fd90b",
+## ]
+## buildrs_results = ["d5b44a42806fd90b"]
 ## writes = [
 ##     "libsocket2-332f7f94bdc8a158.rlib",
 ##     "libsocket2-332f7f94bdc8a158.rmeta",
@@ -7696,8 +14449,6 @@ COPY --link --from=dep-n-socket2-0.6.0-332f7f94bdc8a158 /tmp/clis-ntpd_1-7-0-alp
 ##         CARGO_PKG_VERSION_PATCH=0 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         NTPD_RS_GIT_DATE=2025-05-09 \
-##         NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
 ##       rustc --crate-name socket2 --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --cfg feature'="all"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("all"))' -C metadata'=76c96e2d3eaa992d' -C extra-filename'=-332f7f94bdc8a158' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern libc'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibc-93b6478caf319772.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/socket2-0.6.0/src/lib.rs \
 ##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-332f7f94bdc8a158-stdout \
 ##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-332f7f94bdc8a158-stderr \
@@ -7745,8 +14496,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        NTPD_RS_GIT_DATE=2025-05-09 \
-        NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
       rustc --crate-name tokio_macros --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type proc-macro --emit dep-info,link -C prefer-dynamic -C embed-bitcode'=no' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=6ff9b743b089fac2' -C extra-filename'=-a43fab541260b57a' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern proc_macro2'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libproc_macro2-30dd1c0184916507.rlib' --extern quote'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libquote-41756a17d2ad9431.rlib' --extern syn'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libsyn-8f37513da063fb69.rlib' --extern proc_macro --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/tokio-macros-2.5.0/src/lib.rs \
         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-a43fab541260b57a-stdout \
         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-a43fab541260b57a-stderr \
@@ -7759,8 +14508,16 @@ COPY --link --from=dep-n-tokio-macros-2.5.0-a43fab541260b57a /tmp/clis-ntpd_1-7-
 ## deps = [
 ##     "30dd1c0184916507",
 ##     "d90ab847601a2565",
+##     "ab9829a4a8b7788d",
 ##     "41756a17d2ad9431",
+##     "c63aae50eb6f480a",
 ##     "8f37513da063fb69",
+##     "9a025c1b756d91f9",
+##     "edf8f660a3d601cc",
+## ]
+## buildrs_results = [
+##     "9a025c1b756d91f9",
+##     "edf8f660a3d601cc",
 ## ]
 ## writes = [
 ##     "libtokio_macros-a43fab541260b57a.so",
@@ -7837,8 +14594,6 @@ COPY --link --from=dep-n-tokio-macros-2.5.0-a43fab541260b57a /tmp/clis-ntpd_1-7-
 ##         CARGO_PKG_VERSION_PATCH=0 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         NTPD_RS_GIT_DATE=2025-05-09 \
-##         NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
 ##       rustc --crate-name tokio_macros --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type proc-macro --emit dep-info,link -C prefer-dynamic -C embed-bitcode'=no' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=6ff9b743b089fac2' -C extra-filename'=-a43fab541260b57a' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern proc_macro2'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libproc_macro2-30dd1c0184916507.rlib' --extern quote'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libquote-41756a17d2ad9431.rlib' --extern syn'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libsyn-8f37513da063fb69.rlib' --extern proc_macro --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/tokio-macros-2.5.0/src/lib.rs \
 ##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-a43fab541260b57a-stdout \
 ##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-a43fab541260b57a-stderr \
@@ -7902,8 +14657,6 @@ backed applications.\
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        NTPD_RS_GIT_DATE=2025-05-09 \
-        NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
       rustc --crate-name tokio --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --warn unexpected_cfgs --check-cfg cfg'(fuzzing)' --check-cfg cfg'(loom)' --check-cfg cfg'(mio_unsupported_force_poll_poll)' --check-cfg cfg'(tokio_allow_from_blocking_fd)' --check-cfg cfg'(tokio_internal_mt_counters)' --check-cfg cfg'(tokio_no_parking_lot)' --check-cfg cfg'(tokio_no_tuning_tests)' --check-cfg cfg'(tokio_taskdump)' --check-cfg cfg'(tokio_unstable)' --check-cfg cfg'(tokio_uring)' --check-cfg cfg'(target_os, values("cygwin"))' --cfg feature'="bytes"' --cfg feature'="default"' --cfg feature'="fs"' --cfg feature'="io-std"' --cfg feature'="io-util"' --cfg feature'="libc"' --cfg feature'="macros"' --cfg feature'="mio"' --cfg feature'="net"' --cfg feature'="rt"' --cfg feature'="rt-multi-thread"' --cfg feature'="socket2"' --cfg feature'="sync"' --cfg feature'="time"' --cfg feature'="tokio-macros"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("bytes", "default", "fs", "full", "io-std", "io-util", "libc", "macros", "mio", "net", "parking_lot", "process", "rt", "rt-multi-thread", "signal", "signal-hook-registry", "socket2", "sync", "test-util", "time", "tokio-macros", "tracing", "windows-sys"))' -C metadata'=7f96407d0ddc44be' -C extra-filename'=-c395c10495b0b3f9' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern bytes'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libbytes-bf097c132b6f21a4.rmeta' --extern libc'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibc-93b6478caf319772.rmeta' --extern mio'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libmio-8a04991c75463c17.rmeta' --extern pin_project_lite'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libpin_project_lite-a22006e28be69faf.rmeta' --extern socket2'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libsocket2-332f7f94bdc8a158.rmeta' --extern tokio_macros'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtokio_macros-a43fab541260b57a.so' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/tokio-1.47.1/src/lib.rs \
         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-c395c10495b0b3f9-stdout \
         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-c395c10495b0b3f9-stderr \
@@ -7916,14 +14669,25 @@ COPY --link --from=dep-n-tokio-1.47.1-c395c10495b0b3f9 /tmp/clis-ntpd_1-7-0-alph
 ## deps = [
 ##     "bf097c132b6f21a4",
 ##     "93b6478caf319772",
+##     "7560e7c5c88ec4c4",
 ##     "8a04991c75463c17",
 ##     "a22006e28be69faf",
 ##     "332f7f94bdc8a158",
 ##     "a43fab541260b57a",
 ##     "30dd1c0184916507",
 ##     "d90ab847601a2565",
+##     "ab9829a4a8b7788d",
 ##     "41756a17d2ad9431",
+##     "c63aae50eb6f480a",
 ##     "8f37513da063fb69",
+##     "d5b44a42806fd90b",
+##     "9a025c1b756d91f9",
+##     "edf8f660a3d601cc",
+## ]
+## buildrs_results = [
+##     "d5b44a42806fd90b",
+##     "9a025c1b756d91f9",
+##     "edf8f660a3d601cc",
 ## ]
 ## writes = [
 ##     "libtokio-c395c10495b0b3f9.rlib",
@@ -8078,8 +14842,6 @@ COPY --link --from=dep-n-tokio-1.47.1-c395c10495b0b3f9 /tmp/clis-ntpd_1-7-0-alph
 ##         CARGO_PKG_VERSION_PATCH=1 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         NTPD_RS_GIT_DATE=2025-05-09 \
-##         NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
 ##       rustc --crate-name tokio --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --warn unexpected_cfgs --check-cfg cfg'(fuzzing)' --check-cfg cfg'(loom)' --check-cfg cfg'(mio_unsupported_force_poll_poll)' --check-cfg cfg'(tokio_allow_from_blocking_fd)' --check-cfg cfg'(tokio_internal_mt_counters)' --check-cfg cfg'(tokio_no_parking_lot)' --check-cfg cfg'(tokio_no_tuning_tests)' --check-cfg cfg'(tokio_taskdump)' --check-cfg cfg'(tokio_unstable)' --check-cfg cfg'(tokio_uring)' --check-cfg cfg'(target_os, values("cygwin"))' --cfg feature'="bytes"' --cfg feature'="default"' --cfg feature'="fs"' --cfg feature'="io-std"' --cfg feature'="io-util"' --cfg feature'="libc"' --cfg feature'="macros"' --cfg feature'="mio"' --cfg feature'="net"' --cfg feature'="rt"' --cfg feature'="rt-multi-thread"' --cfg feature'="socket2"' --cfg feature'="sync"' --cfg feature'="time"' --cfg feature'="tokio-macros"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("bytes", "default", "fs", "full", "io-std", "io-util", "libc", "macros", "mio", "net", "parking_lot", "process", "rt", "rt-multi-thread", "signal", "signal-hook-registry", "socket2", "sync", "test-util", "time", "tokio-macros", "tracing", "windows-sys"))' -C metadata'=7f96407d0ddc44be' -C extra-filename'=-c395c10495b0b3f9' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern bytes'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libbytes-bf097c132b6f21a4.rmeta' --extern libc'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibc-93b6478caf319772.rmeta' --extern mio'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libmio-8a04991c75463c17.rmeta' --extern pin_project_lite'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libpin_project_lite-a22006e28be69faf.rmeta' --extern socket2'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libsocket2-332f7f94bdc8a158.rmeta' --extern tokio_macros'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtokio_macros-a43fab541260b57a.so' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/tokio-1.47.1/src/lib.rs \
 ##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-c395c10495b0b3f9-stdout \
 ##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-c395c10495b0b3f9-stderr \
@@ -8108,6 +14870,26 @@ RUN \
   --mount=from=out-90227bfec647f88b,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libaws_lc_rs-90227bfec647f88b.rmeta,source=/libaws_lc_rs-90227bfec647f88b.rmeta \
   --mount=from=out-135dbb753da3a4f4,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libaws_lc_sys-135dbb753da3a4f4.rlib,source=/libaws_lc_sys-135dbb753da3a4f4.rlib \
   --mount=from=out-135dbb753da3a4f4,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libaws_lc_sys-135dbb753da3a4f4.rmeta,source=/libaws_lc_sys-135dbb753da3a4f4.rmeta \
+  --mount=from=out-d2948f7c0c8497b1,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libfind_msvc_tools-d2948f7c0c8497b1.rlib,source=/libfind_msvc_tools-d2948f7c0c8497b1.rlib \
+  --mount=from=out-d2948f7c0c8497b1,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libfind_msvc_tools-d2948f7c0c8497b1.rmeta,source=/libfind_msvc_tools-d2948f7c0c8497b1.rmeta \
+  --mount=from=out-4dc141be22bbffce,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libjobserver-4dc141be22bbffce.rlib,source=/libjobserver-4dc141be22bbffce.rlib \
+  --mount=from=out-4dc141be22bbffce,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libjobserver-4dc141be22bbffce.rmeta,source=/libjobserver-4dc141be22bbffce.rmeta \
+  --mount=from=out-60426161aa87c673,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibc-60426161aa87c673.rlib,source=/liblibc-60426161aa87c673.rlib \
+  --mount=from=out-60426161aa87c673,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibc-60426161aa87c673.rmeta,source=/liblibc-60426161aa87c673.rmeta \
+  --mount=from=out-b166d1c75d83103c,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libshlex-b166d1c75d83103c.rlib,source=/libshlex-b166d1c75d83103c.rlib \
+  --mount=from=out-b166d1c75d83103c,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libshlex-b166d1c75d83103c.rmeta,source=/libshlex-b166d1c75d83103c.rmeta \
+  --mount=from=out-336c2d9100ab92f8,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcc-336c2d9100ab92f8.rlib,source=/libcc-336c2d9100ab92f8.rlib \
+  --mount=from=out-336c2d9100ab92f8,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcc-336c2d9100ab92f8.rmeta,source=/libcc-336c2d9100ab92f8.rmeta \
+  --mount=from=out-3ff4fdb389eab124,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcmake-3ff4fdb389eab124.rlib,source=/libcmake-3ff4fdb389eab124.rlib \
+  --mount=from=out-3ff4fdb389eab124,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcmake-3ff4fdb389eab124.rmeta,source=/libcmake-3ff4fdb389eab124.rmeta \
+  --mount=from=out-25a6bb4144c31f83,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libdunce-25a6bb4144c31f83.rlib,source=/libdunce-25a6bb4144c31f83.rlib \
+  --mount=from=out-25a6bb4144c31f83,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libdunce-25a6bb4144c31f83.rmeta,source=/libdunce-25a6bb4144c31f83.rmeta \
+  --mount=from=out-19400729ba85cd55,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libfs_extra-19400729ba85cd55.rlib,source=/libfs_extra-19400729ba85cd55.rlib \
+  --mount=from=out-19400729ba85cd55,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libfs_extra-19400729ba85cd55.rmeta,source=/libfs_extra-19400729ba85cd55.rmeta \
+  --mount=from=out-d905bd04d466c2b4,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcfg_if-d905bd04d466c2b4.rlib,source=/libcfg_if-d905bd04d466c2b4.rlib \
+  --mount=from=out-d905bd04d466c2b4,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcfg_if-d905bd04d466c2b4.rmeta,source=/libcfg_if-d905bd04d466c2b4.rmeta \
+  --mount=from=out-bcbfd880a9747f76,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibloading-bcbfd880a9747f76.rlib,source=/liblibloading-bcbfd880a9747f76.rlib \
+  --mount=from=out-bcbfd880a9747f76,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibloading-bcbfd880a9747f76.rmeta,source=/liblibloading-bcbfd880a9747f76.rmeta \
   --mount=from=out-fd233fb45e407496,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libzeroize-fd233fb45e407496.rlib,source=/libzeroize-fd233fb45e407496.rlib \
   --mount=from=out-fd233fb45e407496,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libzeroize-fd233fb45e407496.rmeta,source=/libzeroize-fd233fb45e407496.rmeta \
   --mount=from=out-64be2e589e1b58c5,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblog-64be2e589e1b58c5.rlib,source=/liblog-64be2e589e1b58c5.rlib \
@@ -8143,6 +14925,7 @@ RUN \
   --mount=from=out-41756a17d2ad9431,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libquote-41756a17d2ad9431.rmeta,source=/libquote-41756a17d2ad9431.rmeta \
   --mount=from=out-8f37513da063fb69,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libsyn-8f37513da063fb69.rlib,source=/libsyn-8f37513da063fb69.rlib \
   --mount=from=out-8f37513da063fb69,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libsyn-8f37513da063fb69.rmeta,source=/libsyn-8f37513da063fb69.rmeta \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out,source=/ \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=tokio_rustls \
         CARGO_INCREMENTAL=0 \
@@ -8163,8 +14946,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=4 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        NTPD_RS_GIT_DATE=2025-05-09 \
-        NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
       rustc --crate-name tokio_rustls --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --cfg feature'="aws_lc_rs"' --cfg feature'="default"' --cfg feature'="logging"' --cfg feature'="tls12"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("aws-lc-rs", "aws_lc_rs", "brotli", "default", "early-data", "fips", "logging", "ring", "tls12", "zlib"))' -C metadata'=0c94c87bf2870bd5' -C extra-filename'=-1d9512fc7c74ae08' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern rustls'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/librustls-79af5f0cc8b8fe11.rmeta' --extern tokio'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtokio-c395c10495b0b3f9.rmeta' --cap-lints warn -L native'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/tokio-rustls-0.26.4/src/lib.rs \
         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-1d9512fc7c74ae08-stdout \
         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-1d9512fc7c74ae08-stderr \
@@ -8178,13 +14959,27 @@ COPY --link --from=dep-n-tokio-rustls-0.26.4-1d9512fc7c74ae08 /tmp/clis-ntpd_1-7
 ##     "79af5f0cc8b8fe11",
 ##     "90227bfec647f88b",
 ##     "135dbb753da3a4f4",
+##     "d2948f7c0c8497b1",
+##     "4dc141be22bbffce",
+##     "60426161aa87c673",
+##     "7560e7c5c88ec4c4",
+##     "b166d1c75d83103c",
+##     "336c2d9100ab92f8",
+##     "3ff4fdb389eab124",
+##     "25a6bb4144c31f83",
+##     "19400729ba85cd55",
+##     "d905bd04d466c2b4",
+##     "bcbfd880a9747f76",
+##     "b91f62695d1e67bd",
 ##     "fd233fb45e407496",
+##     "6215be1cd523c855",
 ##     "64be2e589e1b58c5",
 ##     "d2455ec75a446def",
 ##     "88022d560b8b0ce0",
 ##     "6da74749e9752714",
 ##     "2d8d07531d218763",
 ##     "f22c7bf8d1e18975",
+##     "8ec054074e55cb28",
 ##     "c395c10495b0b3f9",
 ##     "bf097c132b6f21a4",
 ##     "93b6478caf319772",
@@ -8194,8 +14989,25 @@ COPY --link --from=dep-n-tokio-rustls-0.26.4-1d9512fc7c74ae08 /tmp/clis-ntpd_1-7
 ##     "a43fab541260b57a",
 ##     "30dd1c0184916507",
 ##     "d90ab847601a2565",
+##     "ab9829a4a8b7788d",
 ##     "41756a17d2ad9431",
+##     "c63aae50eb6f480a",
 ##     "8f37513da063fb69",
+##     "99856d878c8e44ce",
+##     "2d875791ad1d3d18",
+##     "7ef21a73dd92a44b",
+##     "8b3d3020feb33fc9",
+##     "d5b44a42806fd90b",
+##     "9a025c1b756d91f9",
+##     "edf8f660a3d601cc",
+## ]
+## buildrs_results = [
+##     "2d875791ad1d3d18",
+##     "7ef21a73dd92a44b",
+##     "8b3d3020feb33fc9",
+##     "d5b44a42806fd90b",
+##     "9a025c1b756d91f9",
+##     "edf8f660a3d601cc",
 ## ]
 ## writes = [
 ##     "libtokio_rustls-1d9512fc7c74ae08.rlib",
@@ -8231,6 +15043,86 @@ COPY --link --from=dep-n-tokio-rustls-0.26.4-1d9512fc7c74ae08 /tmp/clis-ntpd_1-7
 ## [[externs]]
 ## from = "out-135dbb753da3a4f4"
 ## xtern = "libaws_lc_sys-135dbb753da3a4f4.rmeta"
+##
+## [[externs]]
+## from = "out-d2948f7c0c8497b1"
+## xtern = "libfind_msvc_tools-d2948f7c0c8497b1.rlib"
+##
+## [[externs]]
+## from = "out-d2948f7c0c8497b1"
+## xtern = "libfind_msvc_tools-d2948f7c0c8497b1.rmeta"
+##
+## [[externs]]
+## from = "out-4dc141be22bbffce"
+## xtern = "libjobserver-4dc141be22bbffce.rlib"
+##
+## [[externs]]
+## from = "out-4dc141be22bbffce"
+## xtern = "libjobserver-4dc141be22bbffce.rmeta"
+##
+## [[externs]]
+## from = "out-60426161aa87c673"
+## xtern = "liblibc-60426161aa87c673.rlib"
+##
+## [[externs]]
+## from = "out-60426161aa87c673"
+## xtern = "liblibc-60426161aa87c673.rmeta"
+##
+## [[externs]]
+## from = "out-b166d1c75d83103c"
+## xtern = "libshlex-b166d1c75d83103c.rlib"
+##
+## [[externs]]
+## from = "out-b166d1c75d83103c"
+## xtern = "libshlex-b166d1c75d83103c.rmeta"
+##
+## [[externs]]
+## from = "out-336c2d9100ab92f8"
+## xtern = "libcc-336c2d9100ab92f8.rlib"
+##
+## [[externs]]
+## from = "out-336c2d9100ab92f8"
+## xtern = "libcc-336c2d9100ab92f8.rmeta"
+##
+## [[externs]]
+## from = "out-3ff4fdb389eab124"
+## xtern = "libcmake-3ff4fdb389eab124.rlib"
+##
+## [[externs]]
+## from = "out-3ff4fdb389eab124"
+## xtern = "libcmake-3ff4fdb389eab124.rmeta"
+##
+## [[externs]]
+## from = "out-25a6bb4144c31f83"
+## xtern = "libdunce-25a6bb4144c31f83.rlib"
+##
+## [[externs]]
+## from = "out-25a6bb4144c31f83"
+## xtern = "libdunce-25a6bb4144c31f83.rmeta"
+##
+## [[externs]]
+## from = "out-19400729ba85cd55"
+## xtern = "libfs_extra-19400729ba85cd55.rlib"
+##
+## [[externs]]
+## from = "out-19400729ba85cd55"
+## xtern = "libfs_extra-19400729ba85cd55.rmeta"
+##
+## [[externs]]
+## from = "out-d905bd04d466c2b4"
+## xtern = "libcfg_if-d905bd04d466c2b4.rlib"
+##
+## [[externs]]
+## from = "out-d905bd04d466c2b4"
+## xtern = "libcfg_if-d905bd04d466c2b4.rmeta"
+##
+## [[externs]]
+## from = "out-bcbfd880a9747f76"
+## xtern = "liblibloading-bcbfd880a9747f76.rlib"
+##
+## [[externs]]
+## from = "out-bcbfd880a9747f76"
+## xtern = "liblibloading-bcbfd880a9747f76.rmeta"
 ##
 ## [[externs]]
 ## from = "out-fd233fb45e407496"
@@ -8372,9 +15264,9 @@ COPY --link --from=dep-n-tokio-rustls-0.26.4-1d9512fc7c74ae08 /tmp/clis-ntpd_1-7
 ## from = "out-8f37513da063fb69"
 ## xtern = "libsyn-8f37513da063fb69.rmeta"
 ##
-## [[contexts]]
-## name = "crate_out-2d875791ad1d3d18"
-## uri = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out"
+## [[mounts]]
+## name = "out-2d875791ad1d3d18"
+## mount = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out"
 ##
 ## [[stages]]
 ##
@@ -8407,6 +15299,26 @@ COPY --link --from=dep-n-tokio-rustls-0.26.4-1d9512fc7c74ae08 /tmp/clis-ntpd_1-7
 ##   --mount=from=out-90227bfec647f88b,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libaws_lc_rs-90227bfec647f88b.rmeta,source=/libaws_lc_rs-90227bfec647f88b.rmeta \
 ##   --mount=from=out-135dbb753da3a4f4,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libaws_lc_sys-135dbb753da3a4f4.rlib,source=/libaws_lc_sys-135dbb753da3a4f4.rlib \
 ##   --mount=from=out-135dbb753da3a4f4,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libaws_lc_sys-135dbb753da3a4f4.rmeta,source=/libaws_lc_sys-135dbb753da3a4f4.rmeta \
+##   --mount=from=out-d2948f7c0c8497b1,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libfind_msvc_tools-d2948f7c0c8497b1.rlib,source=/libfind_msvc_tools-d2948f7c0c8497b1.rlib \
+##   --mount=from=out-d2948f7c0c8497b1,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libfind_msvc_tools-d2948f7c0c8497b1.rmeta,source=/libfind_msvc_tools-d2948f7c0c8497b1.rmeta \
+##   --mount=from=out-4dc141be22bbffce,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libjobserver-4dc141be22bbffce.rlib,source=/libjobserver-4dc141be22bbffce.rlib \
+##   --mount=from=out-4dc141be22bbffce,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libjobserver-4dc141be22bbffce.rmeta,source=/libjobserver-4dc141be22bbffce.rmeta \
+##   --mount=from=out-60426161aa87c673,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibc-60426161aa87c673.rlib,source=/liblibc-60426161aa87c673.rlib \
+##   --mount=from=out-60426161aa87c673,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibc-60426161aa87c673.rmeta,source=/liblibc-60426161aa87c673.rmeta \
+##   --mount=from=out-b166d1c75d83103c,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libshlex-b166d1c75d83103c.rlib,source=/libshlex-b166d1c75d83103c.rlib \
+##   --mount=from=out-b166d1c75d83103c,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libshlex-b166d1c75d83103c.rmeta,source=/libshlex-b166d1c75d83103c.rmeta \
+##   --mount=from=out-336c2d9100ab92f8,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcc-336c2d9100ab92f8.rlib,source=/libcc-336c2d9100ab92f8.rlib \
+##   --mount=from=out-336c2d9100ab92f8,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcc-336c2d9100ab92f8.rmeta,source=/libcc-336c2d9100ab92f8.rmeta \
+##   --mount=from=out-3ff4fdb389eab124,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcmake-3ff4fdb389eab124.rlib,source=/libcmake-3ff4fdb389eab124.rlib \
+##   --mount=from=out-3ff4fdb389eab124,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcmake-3ff4fdb389eab124.rmeta,source=/libcmake-3ff4fdb389eab124.rmeta \
+##   --mount=from=out-25a6bb4144c31f83,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libdunce-25a6bb4144c31f83.rlib,source=/libdunce-25a6bb4144c31f83.rlib \
+##   --mount=from=out-25a6bb4144c31f83,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libdunce-25a6bb4144c31f83.rmeta,source=/libdunce-25a6bb4144c31f83.rmeta \
+##   --mount=from=out-19400729ba85cd55,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libfs_extra-19400729ba85cd55.rlib,source=/libfs_extra-19400729ba85cd55.rlib \
+##   --mount=from=out-19400729ba85cd55,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libfs_extra-19400729ba85cd55.rmeta,source=/libfs_extra-19400729ba85cd55.rmeta \
+##   --mount=from=out-d905bd04d466c2b4,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcfg_if-d905bd04d466c2b4.rlib,source=/libcfg_if-d905bd04d466c2b4.rlib \
+##   --mount=from=out-d905bd04d466c2b4,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcfg_if-d905bd04d466c2b4.rmeta,source=/libcfg_if-d905bd04d466c2b4.rmeta \
+##   --mount=from=out-bcbfd880a9747f76,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibloading-bcbfd880a9747f76.rlib,source=/liblibloading-bcbfd880a9747f76.rlib \
+##   --mount=from=out-bcbfd880a9747f76,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibloading-bcbfd880a9747f76.rmeta,source=/liblibloading-bcbfd880a9747f76.rmeta \
 ##   --mount=from=out-fd233fb45e407496,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libzeroize-fd233fb45e407496.rlib,source=/libzeroize-fd233fb45e407496.rlib \
 ##   --mount=from=out-fd233fb45e407496,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libzeroize-fd233fb45e407496.rmeta,source=/libzeroize-fd233fb45e407496.rmeta \
 ##   --mount=from=out-64be2e589e1b58c5,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblog-64be2e589e1b58c5.rlib,source=/liblog-64be2e589e1b58c5.rlib \
@@ -8442,6 +15354,7 @@ COPY --link --from=dep-n-tokio-rustls-0.26.4-1d9512fc7c74ae08 /tmp/clis-ntpd_1-7
 ##   --mount=from=out-41756a17d2ad9431,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libquote-41756a17d2ad9431.rmeta,source=/libquote-41756a17d2ad9431.rmeta \
 ##   --mount=from=out-8f37513da063fb69,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libsyn-8f37513da063fb69.rlib,source=/libsyn-8f37513da063fb69.rlib \
 ##   --mount=from=out-8f37513da063fb69,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libsyn-8f37513da063fb69.rmeta,source=/libsyn-8f37513da063fb69.rmeta \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out,source=/ \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=tokio_rustls \
 ##         CARGO_INCREMENTAL=0 \
@@ -8462,8 +15375,6 @@ COPY --link --from=dep-n-tokio-rustls-0.26.4-1d9512fc7c74ae08 /tmp/clis-ntpd_1-7
 ##         CARGO_PKG_VERSION_PATCH=4 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         NTPD_RS_GIT_DATE=2025-05-09 \
-##         NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
 ##       rustc --crate-name tokio_rustls --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --cfg feature'="aws_lc_rs"' --cfg feature'="default"' --cfg feature'="logging"' --cfg feature'="tls12"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("aws-lc-rs", "aws_lc_rs", "brotli", "default", "early-data", "fips", "logging", "ring", "tls12", "zlib"))' -C metadata'=0c94c87bf2870bd5' -C extra-filename'=-1d9512fc7c74ae08' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern rustls'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/librustls-79af5f0cc8b8fe11.rmeta' --extern tokio'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtokio-c395c10495b0b3f9.rmeta' --cap-lints warn -L native'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/tokio-rustls-0.26.4/src/lib.rs \
 ##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-1d9512fc7c74ae08-stdout \
 ##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-1d9512fc7c74ae08-stderr \
@@ -8511,8 +15422,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=30 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        NTPD_RS_GIT_DATE=2025-05-09 \
-        NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
       rustc --crate-name tracing_attributes --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type proc-macro --emit dep-info,link -C prefer-dynamic -C embed-bitcode'=no' --warn unexpected_cfgs --check-cfg cfg'(flaky_tests)' --check-cfg cfg'(tracing_unstable)' --check-cfg cfg'(unsound_local_offset)' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("async-await"))' -C metadata'=dd4240fcac1478bc' -C extra-filename'=-503f6bcf688b11a3' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern proc_macro2'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libproc_macro2-30dd1c0184916507.rlib' --extern quote'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libquote-41756a17d2ad9431.rlib' --extern syn'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libsyn-8f37513da063fb69.rlib' --extern proc_macro --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/tracing-attributes-0.1.30/src/lib.rs \
         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-503f6bcf688b11a3-stdout \
         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-503f6bcf688b11a3-stderr \
@@ -8525,8 +15434,16 @@ COPY --link --from=dep-n-tracing-attributes-0.1.30-503f6bcf688b11a3 /tmp/clis-nt
 ## deps = [
 ##     "30dd1c0184916507",
 ##     "d90ab847601a2565",
+##     "ab9829a4a8b7788d",
 ##     "41756a17d2ad9431",
+##     "c63aae50eb6f480a",
 ##     "8f37513da063fb69",
+##     "9a025c1b756d91f9",
+##     "edf8f660a3d601cc",
+## ]
+## buildrs_results = [
+##     "9a025c1b756d91f9",
+##     "edf8f660a3d601cc",
 ## ]
 ## writes = [
 ##     "libtracing_attributes-503f6bcf688b11a3.so",
@@ -8603,8 +15520,6 @@ COPY --link --from=dep-n-tracing-attributes-0.1.30-503f6bcf688b11a3 /tmp/clis-nt
 ##         CARGO_PKG_VERSION_PATCH=30 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         NTPD_RS_GIT_DATE=2025-05-09 \
-##         NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
 ##       rustc --crate-name tracing_attributes --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type proc-macro --emit dep-info,link -C prefer-dynamic -C embed-bitcode'=no' --warn unexpected_cfgs --check-cfg cfg'(flaky_tests)' --check-cfg cfg'(tracing_unstable)' --check-cfg cfg'(unsound_local_offset)' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("async-await"))' -C metadata'=dd4240fcac1478bc' -C extra-filename'=-503f6bcf688b11a3' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern proc_macro2'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libproc_macro2-30dd1c0184916507.rlib' --extern quote'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libquote-41756a17d2ad9431.rlib' --extern syn'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libsyn-8f37513da063fb69.rlib' --extern proc_macro --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/tracing-attributes-0.1.30/src/lib.rs \
 ##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-503f6bcf688b11a3-stdout \
 ##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-503f6bcf688b11a3-stderr \
@@ -8650,8 +15565,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=34 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        NTPD_RS_GIT_DATE=2025-05-09 \
-        NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
       rustc --crate-name tracing_core --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --warn unexpected_cfgs --check-cfg cfg'(flaky_tests)' --check-cfg cfg'(tracing_unstable)' --check-cfg cfg'(unsound_local_offset)' --cfg feature'="once_cell"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "once_cell", "std", "valuable"))' -C metadata'=39647297016698b7' -C extra-filename'=-2bf32bfc77d4a425' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern once_cell'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libonce_cell-d2455ec75a446def.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/tracing-core-0.1.34/src/lib.rs \
         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-2bf32bfc77d4a425-stdout \
         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-2bf32bfc77d4a425-stderr \
@@ -8729,8 +15642,6 @@ COPY --link --from=dep-n-tracing-core-0.1.34-2bf32bfc77d4a425 /tmp/clis-ntpd_1-7
 ##         CARGO_PKG_VERSION_PATCH=34 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         NTPD_RS_GIT_DATE=2025-05-09 \
-##         NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
 ##       rustc --crate-name tracing_core --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --warn unexpected_cfgs --check-cfg cfg'(flaky_tests)' --check-cfg cfg'(tracing_unstable)' --check-cfg cfg'(unsound_local_offset)' --cfg feature'="once_cell"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "once_cell", "std", "valuable"))' -C metadata'=39647297016698b7' -C extra-filename'=-2bf32bfc77d4a425' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern once_cell'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libonce_cell-d2455ec75a446def.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/tracing-core-0.1.34/src/lib.rs \
 ##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-2bf32bfc77d4a425-stdout \
 ##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-2bf32bfc77d4a425-stderr \
@@ -8791,8 +15702,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=41 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        NTPD_RS_GIT_DATE=2025-05-09 \
-        NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
       rustc --crate-name tracing --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --warn unexpected_cfgs --check-cfg cfg'(flaky_tests)' --check-cfg cfg'(tracing_unstable)' --cfg feature'="attributes"' --cfg feature'="default"' --cfg feature'="log"' --cfg feature'="std"' --cfg feature'="tracing-attributes"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("async-await", "attributes", "default", "log", "log-always", "max_level_debug", "max_level_error", "max_level_info", "max_level_off", "max_level_trace", "max_level_warn", "release_max_level_debug", "release_max_level_error", "release_max_level_info", "release_max_level_off", "release_max_level_trace", "release_max_level_warn", "std", "tracing-attributes", "valuable"))' -C metadata'=1133627f5d19937d' -C extra-filename'=-075e13f932ee5314' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern log'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblog-64be2e589e1b58c5.rmeta' --extern pin_project_lite'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libpin_project_lite-a22006e28be69faf.rmeta' --extern tracing_attributes'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtracing_attributes-503f6bcf688b11a3.so' --extern tracing_core'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtracing_core-2bf32bfc77d4a425.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/tracing-0.1.41/src/lib.rs \
         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-075e13f932ee5314-stdout \
         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-075e13f932ee5314-stderr \
@@ -8808,10 +15717,18 @@ COPY --link --from=dep-n-tracing-0.1.41-075e13f932ee5314 /tmp/clis-ntpd_1-7-0-al
 ##     "503f6bcf688b11a3",
 ##     "30dd1c0184916507",
 ##     "d90ab847601a2565",
+##     "ab9829a4a8b7788d",
 ##     "41756a17d2ad9431",
+##     "c63aae50eb6f480a",
 ##     "8f37513da063fb69",
 ##     "2bf32bfc77d4a425",
 ##     "d2455ec75a446def",
+##     "9a025c1b756d91f9",
+##     "edf8f660a3d601cc",
+## ]
+## buildrs_results = [
+##     "9a025c1b756d91f9",
+##     "edf8f660a3d601cc",
 ## ]
 ## writes = [
 ##     "libtracing-075e13f932ee5314.rlib",
@@ -8955,8 +15872,6 @@ COPY --link --from=dep-n-tracing-0.1.41-075e13f932ee5314 /tmp/clis-ntpd_1-7-0-al
 ##         CARGO_PKG_VERSION_PATCH=41 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         NTPD_RS_GIT_DATE=2025-05-09 \
-##         NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
 ##       rustc --crate-name tracing --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --warn unexpected_cfgs --check-cfg cfg'(flaky_tests)' --check-cfg cfg'(tracing_unstable)' --cfg feature'="attributes"' --cfg feature'="default"' --cfg feature'="log"' --cfg feature'="std"' --cfg feature'="tracing-attributes"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("async-await", "attributes", "default", "log", "log-always", "max_level_debug", "max_level_error", "max_level_info", "max_level_off", "max_level_trace", "max_level_warn", "release_max_level_debug", "release_max_level_error", "release_max_level_info", "release_max_level_off", "release_max_level_trace", "release_max_level_warn", "std", "tracing-attributes", "valuable"))' -C metadata'=1133627f5d19937d' -C extra-filename'=-075e13f932ee5314' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern log'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblog-64be2e589e1b58c5.rmeta' --extern pin_project_lite'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libpin_project_lite-a22006e28be69faf.rmeta' --extern tracing_attributes'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtracing_attributes-503f6bcf688b11a3.so' --extern tracing_core'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtracing_core-2bf32bfc77d4a425.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/tracing-0.1.41/src/lib.rs \
 ##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-075e13f932ee5314-stdout \
 ##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-075e13f932ee5314-stderr \
@@ -8987,6 +15902,8 @@ RUN \
   --mount=from=out-523ed8994559e91b,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libgeneric_array-523ed8994559e91b.rmeta,source=/libgeneric_array-523ed8994559e91b.rmeta \
   --mount=from=out-7d56f2624f7fb484,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtypenum-7d56f2624f7fb484.rlib,source=/libtypenum-7d56f2624f7fb484.rlib \
   --mount=from=out-7d56f2624f7fb484,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtypenum-7d56f2624f7fb484.rmeta,source=/libtypenum-7d56f2624f7fb484.rmeta \
+  --mount=from=out-23b425cce0264739,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libversion_check-23b425cce0264739.rlib,source=/libversion_check-23b425cce0264739.rlib \
+  --mount=from=out-23b425cce0264739,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libversion_check-23b425cce0264739.rmeta,source=/libversion_check-23b425cce0264739.rmeta \
   --mount=from=out-fd7543c0686511cd,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/librand_core-fd7543c0686511cd.rlib,source=/librand_core-fd7543c0686511cd.rlib \
   --mount=from=out-fd7543c0686511cd,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/librand_core-fd7543c0686511cd.rmeta,source=/librand_core-fd7543c0686511cd.rmeta \
   --mount=from=out-2ae0eb9fb2c721bb,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libgetrandom-2ae0eb9fb2c721bb.rlib,source=/libgetrandom-2ae0eb9fb2c721bb.rlib \
@@ -9035,6 +15952,26 @@ RUN \
   --mount=from=out-90227bfec647f88b,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libaws_lc_rs-90227bfec647f88b.rmeta,source=/libaws_lc_rs-90227bfec647f88b.rmeta \
   --mount=from=out-135dbb753da3a4f4,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libaws_lc_sys-135dbb753da3a4f4.rlib,source=/libaws_lc_sys-135dbb753da3a4f4.rlib \
   --mount=from=out-135dbb753da3a4f4,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libaws_lc_sys-135dbb753da3a4f4.rmeta,source=/libaws_lc_sys-135dbb753da3a4f4.rmeta \
+  --mount=from=out-d2948f7c0c8497b1,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libfind_msvc_tools-d2948f7c0c8497b1.rlib,source=/libfind_msvc_tools-d2948f7c0c8497b1.rlib \
+  --mount=from=out-d2948f7c0c8497b1,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libfind_msvc_tools-d2948f7c0c8497b1.rmeta,source=/libfind_msvc_tools-d2948f7c0c8497b1.rmeta \
+  --mount=from=out-4dc141be22bbffce,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libjobserver-4dc141be22bbffce.rlib,source=/libjobserver-4dc141be22bbffce.rlib \
+  --mount=from=out-4dc141be22bbffce,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libjobserver-4dc141be22bbffce.rmeta,source=/libjobserver-4dc141be22bbffce.rmeta \
+  --mount=from=out-60426161aa87c673,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibc-60426161aa87c673.rlib,source=/liblibc-60426161aa87c673.rlib \
+  --mount=from=out-60426161aa87c673,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibc-60426161aa87c673.rmeta,source=/liblibc-60426161aa87c673.rmeta \
+  --mount=from=out-b166d1c75d83103c,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libshlex-b166d1c75d83103c.rlib,source=/libshlex-b166d1c75d83103c.rlib \
+  --mount=from=out-b166d1c75d83103c,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libshlex-b166d1c75d83103c.rmeta,source=/libshlex-b166d1c75d83103c.rmeta \
+  --mount=from=out-336c2d9100ab92f8,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcc-336c2d9100ab92f8.rlib,source=/libcc-336c2d9100ab92f8.rlib \
+  --mount=from=out-336c2d9100ab92f8,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcc-336c2d9100ab92f8.rmeta,source=/libcc-336c2d9100ab92f8.rmeta \
+  --mount=from=out-3ff4fdb389eab124,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcmake-3ff4fdb389eab124.rlib,source=/libcmake-3ff4fdb389eab124.rlib \
+  --mount=from=out-3ff4fdb389eab124,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcmake-3ff4fdb389eab124.rmeta,source=/libcmake-3ff4fdb389eab124.rmeta \
+  --mount=from=out-25a6bb4144c31f83,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libdunce-25a6bb4144c31f83.rlib,source=/libdunce-25a6bb4144c31f83.rlib \
+  --mount=from=out-25a6bb4144c31f83,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libdunce-25a6bb4144c31f83.rmeta,source=/libdunce-25a6bb4144c31f83.rmeta \
+  --mount=from=out-19400729ba85cd55,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libfs_extra-19400729ba85cd55.rlib,source=/libfs_extra-19400729ba85cd55.rlib \
+  --mount=from=out-19400729ba85cd55,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libfs_extra-19400729ba85cd55.rmeta,source=/libfs_extra-19400729ba85cd55.rmeta \
+  --mount=from=out-d905bd04d466c2b4,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcfg_if-d905bd04d466c2b4.rlib,source=/libcfg_if-d905bd04d466c2b4.rlib \
+  --mount=from=out-d905bd04d466c2b4,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcfg_if-d905bd04d466c2b4.rmeta,source=/libcfg_if-d905bd04d466c2b4.rmeta \
+  --mount=from=out-bcbfd880a9747f76,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibloading-bcbfd880a9747f76.rlib,source=/liblibloading-bcbfd880a9747f76.rlib \
+  --mount=from=out-bcbfd880a9747f76,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibloading-bcbfd880a9747f76.rmeta,source=/liblibloading-bcbfd880a9747f76.rmeta \
   --mount=from=out-64be2e589e1b58c5,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblog-64be2e589e1b58c5.rlib,source=/liblog-64be2e589e1b58c5.rlib \
   --mount=from=out-64be2e589e1b58c5,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblog-64be2e589e1b58c5.rmeta,source=/liblog-64be2e589e1b58c5.rmeta \
   --mount=from=out-d2455ec75a446def,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libonce_cell-d2455ec75a446def.rlib,source=/libonce_cell-d2455ec75a446def.rlib \
@@ -9082,6 +16019,10 @@ RUN \
   --mount=from=out-503f6bcf688b11a3,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtracing_attributes-503f6bcf688b11a3.so,source=/libtracing_attributes-503f6bcf688b11a3.so \
   --mount=from=out-2bf32bfc77d4a425,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtracing_core-2bf32bfc77d4a425.rlib,source=/libtracing_core-2bf32bfc77d4a425.rlib \
   --mount=from=out-2bf32bfc77d4a425,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtracing_core-2bf32bfc77d4a425.rmeta,source=/libtracing_core-2bf32bfc77d4a425.rmeta \
+  --mount=from=out-c2a85ea3d52ad392,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-c2a85ea3d52ad392/out,source=/ \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out,source=/ \
+  --mount=from=out-cfe125327cacaf16,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde-cfe125327cacaf16/out,source=/ \
+  --mount=from=out-badeea6458a799e8,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_core-badeea6458a799e8/out,source=/ \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=ntp_proto \
         CARGO_INCREMENTAL=0 \
@@ -9102,8 +16043,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE=alpha.20251003 \
         CARGOGREEN=1 \
-        NTPD_RS_GIT_DATE=2025-05-09 \
-        NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
       rustc --crate-name ntp_proto --edition 2024 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --cfg feature'="__internal-api"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("__internal-api", "__internal-fuzz", "__internal-test", "arbitrary", "default"))' -C metadata'=383e200cf89ea015' -C extra-filename'=-b5f6bfad0d8f8471' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern aead'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libaead-4b9b0df243e430b1.rmeta' --extern aes_siv'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libaes_siv-52d5490f955beadb.rmeta' --extern md5'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libmd5-5c47893368a03a5c.rmeta' --extern rand'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/librand-b2b2029003f4f41b.rmeta' --extern rustls23'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/librustls-79af5f0cc8b8fe11.rmeta' --extern rustls_platform_verifier'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/librustls_platform_verifier-db666fad349f8ca6.rlib' --extern serde'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libserde-d9535ff1afbc9e07.rmeta' --extern tokio'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtokio-c395c10495b0b3f9.rmeta' --extern tokio_rustls'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtokio_rustls-1d9512fc7c74ae08.rmeta' --extern tracing'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtracing-075e13f932ee5314.rmeta' --extern zeroize'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libzeroize-fd233fb45e407496.rmeta' --cap-lints warn -L native'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ntp-proto-1.7.0-alpha.20251003/src/lib.rs \
         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-b5f6bfad0d8f8471-stdout \
         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-b5f6bfad0d8f8471-stderr \
@@ -9118,10 +16057,14 @@ COPY --link --from=dep-n-ntp-proto-1.7.0-alpha.20251003-b5f6bfad0d8f8471 /tmp/cl
 ##     "cebe1cbff4994413",
 ##     "523ed8994559e91b",
 ##     "7d56f2624f7fb484",
+##     "a8fbaef0afd87b8e",
+##     "23b425cce0264739",
+##     "daae1221734799f2",
 ##     "fd7543c0686511cd",
 ##     "2ae0eb9fb2c721bb",
 ##     "5a4301c208f24f4c",
 ##     "93b6478caf319772",
+##     "7560e7c5c88ec4c4",
 ##     "52d5490f955beadb",
 ##     "d09eff787322ac92",
 ##     "8863b3b614042642",
@@ -9139,24 +16082,42 @@ COPY --link --from=dep-n-ntp-proto-1.7.0-alpha.20251003-b5f6bfad0d8f8471 /tmp/cl
 ##     "28f07c8df04e8bde",
 ##     "6e69d7ce14b873ac",
 ##     "3c4f5c2990477ff1",
+##     "5d3dfb9ebf1ffdb4",
 ##     "79af5f0cc8b8fe11",
 ##     "90227bfec647f88b",
 ##     "135dbb753da3a4f4",
+##     "d2948f7c0c8497b1",
+##     "4dc141be22bbffce",
+##     "60426161aa87c673",
+##     "b166d1c75d83103c",
+##     "336c2d9100ab92f8",
+##     "3ff4fdb389eab124",
+##     "25a6bb4144c31f83",
+##     "19400729ba85cd55",
+##     "d905bd04d466c2b4",
+##     "bcbfd880a9747f76",
+##     "b91f62695d1e67bd",
+##     "6215be1cd523c855",
 ##     "64be2e589e1b58c5",
 ##     "d2455ec75a446def",
 ##     "88022d560b8b0ce0",
 ##     "6da74749e9752714",
 ##     "2d8d07531d218763",
+##     "8ec054074e55cb28",
 ##     "db666fad349f8ca6",
 ##     "9227835a4d59a1b8",
 ##     "2ff594c6e039dec5",
 ##     "d9535ff1afbc9e07",
 ##     "1bc4bef1fdca14c4",
+##     "51979789556dbb03",
 ##     "b925936788ba7057",
 ##     "30dd1c0184916507",
 ##     "d90ab847601a2565",
+##     "ab9829a4a8b7788d",
 ##     "41756a17d2ad9431",
+##     "c63aae50eb6f480a",
 ##     "8f37513da063fb69",
+##     "9e59eb4de4feaddb",
 ##     "c395c10495b0b3f9",
 ##     "bf097c132b6f21a4",
 ##     "8a04991c75463c17",
@@ -9167,6 +16128,31 @@ COPY --link --from=dep-n-ntp-proto-1.7.0-alpha.20251003-b5f6bfad0d8f8471 /tmp/cl
 ##     "075e13f932ee5314",
 ##     "503f6bcf688b11a3",
 ##     "2bf32bfc77d4a425",
+##     "c2a85ea3d52ad392",
+##     "6319738dfa2a85a9",
+##     "d5b44a42806fd90b",
+##     "d1d84d8a1ca91c51",
+##     "99856d878c8e44ce",
+##     "2d875791ad1d3d18",
+##     "7ef21a73dd92a44b",
+##     "8b3d3020feb33fc9",
+##     "badeea6458a799e8",
+##     "9a025c1b756d91f9",
+##     "edf8f660a3d601cc",
+##     "cfe125327cacaf16",
+## ]
+## buildrs_results = [
+##     "c2a85ea3d52ad392",
+##     "6319738dfa2a85a9",
+##     "d5b44a42806fd90b",
+##     "d1d84d8a1ca91c51",
+##     "2d875791ad1d3d18",
+##     "7ef21a73dd92a44b",
+##     "8b3d3020feb33fc9",
+##     "badeea6458a799e8",
+##     "9a025c1b756d91f9",
+##     "edf8f660a3d601cc",
+##     "cfe125327cacaf16",
 ## ]
 ## writes = [
 ##     "libntp_proto-b5f6bfad0d8f8471.rlib",
@@ -9210,6 +16196,14 @@ COPY --link --from=dep-n-ntp-proto-1.7.0-alpha.20251003-b5f6bfad0d8f8471 /tmp/cl
 ## [[externs]]
 ## from = "out-7d56f2624f7fb484"
 ## xtern = "libtypenum-7d56f2624f7fb484.rmeta"
+##
+## [[externs]]
+## from = "out-23b425cce0264739"
+## xtern = "libversion_check-23b425cce0264739.rlib"
+##
+## [[externs]]
+## from = "out-23b425cce0264739"
+## xtern = "libversion_check-23b425cce0264739.rmeta"
 ##
 ## [[externs]]
 ## from = "out-fd7543c0686511cd"
@@ -9402,6 +16396,86 @@ COPY --link --from=dep-n-ntp-proto-1.7.0-alpha.20251003-b5f6bfad0d8f8471 /tmp/cl
 ## [[externs]]
 ## from = "out-135dbb753da3a4f4"
 ## xtern = "libaws_lc_sys-135dbb753da3a4f4.rmeta"
+##
+## [[externs]]
+## from = "out-d2948f7c0c8497b1"
+## xtern = "libfind_msvc_tools-d2948f7c0c8497b1.rlib"
+##
+## [[externs]]
+## from = "out-d2948f7c0c8497b1"
+## xtern = "libfind_msvc_tools-d2948f7c0c8497b1.rmeta"
+##
+## [[externs]]
+## from = "out-4dc141be22bbffce"
+## xtern = "libjobserver-4dc141be22bbffce.rlib"
+##
+## [[externs]]
+## from = "out-4dc141be22bbffce"
+## xtern = "libjobserver-4dc141be22bbffce.rmeta"
+##
+## [[externs]]
+## from = "out-60426161aa87c673"
+## xtern = "liblibc-60426161aa87c673.rlib"
+##
+## [[externs]]
+## from = "out-60426161aa87c673"
+## xtern = "liblibc-60426161aa87c673.rmeta"
+##
+## [[externs]]
+## from = "out-b166d1c75d83103c"
+## xtern = "libshlex-b166d1c75d83103c.rlib"
+##
+## [[externs]]
+## from = "out-b166d1c75d83103c"
+## xtern = "libshlex-b166d1c75d83103c.rmeta"
+##
+## [[externs]]
+## from = "out-336c2d9100ab92f8"
+## xtern = "libcc-336c2d9100ab92f8.rlib"
+##
+## [[externs]]
+## from = "out-336c2d9100ab92f8"
+## xtern = "libcc-336c2d9100ab92f8.rmeta"
+##
+## [[externs]]
+## from = "out-3ff4fdb389eab124"
+## xtern = "libcmake-3ff4fdb389eab124.rlib"
+##
+## [[externs]]
+## from = "out-3ff4fdb389eab124"
+## xtern = "libcmake-3ff4fdb389eab124.rmeta"
+##
+## [[externs]]
+## from = "out-25a6bb4144c31f83"
+## xtern = "libdunce-25a6bb4144c31f83.rlib"
+##
+## [[externs]]
+## from = "out-25a6bb4144c31f83"
+## xtern = "libdunce-25a6bb4144c31f83.rmeta"
+##
+## [[externs]]
+## from = "out-19400729ba85cd55"
+## xtern = "libfs_extra-19400729ba85cd55.rlib"
+##
+## [[externs]]
+## from = "out-19400729ba85cd55"
+## xtern = "libfs_extra-19400729ba85cd55.rmeta"
+##
+## [[externs]]
+## from = "out-d905bd04d466c2b4"
+## xtern = "libcfg_if-d905bd04d466c2b4.rlib"
+##
+## [[externs]]
+## from = "out-d905bd04d466c2b4"
+## xtern = "libcfg_if-d905bd04d466c2b4.rmeta"
+##
+## [[externs]]
+## from = "out-bcbfd880a9747f76"
+## xtern = "liblibloading-bcbfd880a9747f76.rlib"
+##
+## [[externs]]
+## from = "out-bcbfd880a9747f76"
+## xtern = "liblibloading-bcbfd880a9747f76.rmeta"
 ##
 ## [[externs]]
 ## from = "out-64be2e589e1b58c5"
@@ -9591,21 +16665,21 @@ COPY --link --from=dep-n-ntp-proto-1.7.0-alpha.20251003-b5f6bfad0d8f8471 /tmp/cl
 ## from = "out-2bf32bfc77d4a425"
 ## xtern = "libtracing_core-2bf32bfc77d4a425.rmeta"
 ##
-## [[contexts]]
-## name = "crate_out-c2a85ea3d52ad392"
-## uri = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-c2a85ea3d52ad392/out"
+## [[mounts]]
+## name = "out-c2a85ea3d52ad392"
+## mount = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-c2a85ea3d52ad392/out"
 ##
-## [[contexts]]
-## name = "crate_out-2d875791ad1d3d18"
-## uri = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out"
+## [[mounts]]
+## name = "out-2d875791ad1d3d18"
+## mount = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out"
 ##
-## [[contexts]]
-## name = "crate_out-cfe125327cacaf16"
-## uri = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde-cfe125327cacaf16/out"
+## [[mounts]]
+## name = "out-cfe125327cacaf16"
+## mount = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde-cfe125327cacaf16/out"
 ##
-## [[contexts]]
-## name = "crate_out-badeea6458a799e8"
-## uri = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_core-badeea6458a799e8/out"
+## [[mounts]]
+## name = "out-badeea6458a799e8"
+## mount = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_core-badeea6458a799e8/out"
 ##
 ## [[stages]]
 ##
@@ -9640,6 +16714,8 @@ COPY --link --from=dep-n-ntp-proto-1.7.0-alpha.20251003-b5f6bfad0d8f8471 /tmp/cl
 ##   --mount=from=out-523ed8994559e91b,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libgeneric_array-523ed8994559e91b.rmeta,source=/libgeneric_array-523ed8994559e91b.rmeta \
 ##   --mount=from=out-7d56f2624f7fb484,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtypenum-7d56f2624f7fb484.rlib,source=/libtypenum-7d56f2624f7fb484.rlib \
 ##   --mount=from=out-7d56f2624f7fb484,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtypenum-7d56f2624f7fb484.rmeta,source=/libtypenum-7d56f2624f7fb484.rmeta \
+##   --mount=from=out-23b425cce0264739,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libversion_check-23b425cce0264739.rlib,source=/libversion_check-23b425cce0264739.rlib \
+##   --mount=from=out-23b425cce0264739,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libversion_check-23b425cce0264739.rmeta,source=/libversion_check-23b425cce0264739.rmeta \
 ##   --mount=from=out-fd7543c0686511cd,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/librand_core-fd7543c0686511cd.rlib,source=/librand_core-fd7543c0686511cd.rlib \
 ##   --mount=from=out-fd7543c0686511cd,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/librand_core-fd7543c0686511cd.rmeta,source=/librand_core-fd7543c0686511cd.rmeta \
 ##   --mount=from=out-2ae0eb9fb2c721bb,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libgetrandom-2ae0eb9fb2c721bb.rlib,source=/libgetrandom-2ae0eb9fb2c721bb.rlib \
@@ -9688,6 +16764,26 @@ COPY --link --from=dep-n-ntp-proto-1.7.0-alpha.20251003-b5f6bfad0d8f8471 /tmp/cl
 ##   --mount=from=out-90227bfec647f88b,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libaws_lc_rs-90227bfec647f88b.rmeta,source=/libaws_lc_rs-90227bfec647f88b.rmeta \
 ##   --mount=from=out-135dbb753da3a4f4,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libaws_lc_sys-135dbb753da3a4f4.rlib,source=/libaws_lc_sys-135dbb753da3a4f4.rlib \
 ##   --mount=from=out-135dbb753da3a4f4,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libaws_lc_sys-135dbb753da3a4f4.rmeta,source=/libaws_lc_sys-135dbb753da3a4f4.rmeta \
+##   --mount=from=out-d2948f7c0c8497b1,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libfind_msvc_tools-d2948f7c0c8497b1.rlib,source=/libfind_msvc_tools-d2948f7c0c8497b1.rlib \
+##   --mount=from=out-d2948f7c0c8497b1,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libfind_msvc_tools-d2948f7c0c8497b1.rmeta,source=/libfind_msvc_tools-d2948f7c0c8497b1.rmeta \
+##   --mount=from=out-4dc141be22bbffce,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libjobserver-4dc141be22bbffce.rlib,source=/libjobserver-4dc141be22bbffce.rlib \
+##   --mount=from=out-4dc141be22bbffce,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libjobserver-4dc141be22bbffce.rmeta,source=/libjobserver-4dc141be22bbffce.rmeta \
+##   --mount=from=out-60426161aa87c673,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibc-60426161aa87c673.rlib,source=/liblibc-60426161aa87c673.rlib \
+##   --mount=from=out-60426161aa87c673,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibc-60426161aa87c673.rmeta,source=/liblibc-60426161aa87c673.rmeta \
+##   --mount=from=out-b166d1c75d83103c,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libshlex-b166d1c75d83103c.rlib,source=/libshlex-b166d1c75d83103c.rlib \
+##   --mount=from=out-b166d1c75d83103c,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libshlex-b166d1c75d83103c.rmeta,source=/libshlex-b166d1c75d83103c.rmeta \
+##   --mount=from=out-336c2d9100ab92f8,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcc-336c2d9100ab92f8.rlib,source=/libcc-336c2d9100ab92f8.rlib \
+##   --mount=from=out-336c2d9100ab92f8,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcc-336c2d9100ab92f8.rmeta,source=/libcc-336c2d9100ab92f8.rmeta \
+##   --mount=from=out-3ff4fdb389eab124,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcmake-3ff4fdb389eab124.rlib,source=/libcmake-3ff4fdb389eab124.rlib \
+##   --mount=from=out-3ff4fdb389eab124,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcmake-3ff4fdb389eab124.rmeta,source=/libcmake-3ff4fdb389eab124.rmeta \
+##   --mount=from=out-25a6bb4144c31f83,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libdunce-25a6bb4144c31f83.rlib,source=/libdunce-25a6bb4144c31f83.rlib \
+##   --mount=from=out-25a6bb4144c31f83,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libdunce-25a6bb4144c31f83.rmeta,source=/libdunce-25a6bb4144c31f83.rmeta \
+##   --mount=from=out-19400729ba85cd55,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libfs_extra-19400729ba85cd55.rlib,source=/libfs_extra-19400729ba85cd55.rlib \
+##   --mount=from=out-19400729ba85cd55,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libfs_extra-19400729ba85cd55.rmeta,source=/libfs_extra-19400729ba85cd55.rmeta \
+##   --mount=from=out-d905bd04d466c2b4,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcfg_if-d905bd04d466c2b4.rlib,source=/libcfg_if-d905bd04d466c2b4.rlib \
+##   --mount=from=out-d905bd04d466c2b4,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcfg_if-d905bd04d466c2b4.rmeta,source=/libcfg_if-d905bd04d466c2b4.rmeta \
+##   --mount=from=out-bcbfd880a9747f76,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibloading-bcbfd880a9747f76.rlib,source=/liblibloading-bcbfd880a9747f76.rlib \
+##   --mount=from=out-bcbfd880a9747f76,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibloading-bcbfd880a9747f76.rmeta,source=/liblibloading-bcbfd880a9747f76.rmeta \
 ##   --mount=from=out-64be2e589e1b58c5,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblog-64be2e589e1b58c5.rlib,source=/liblog-64be2e589e1b58c5.rlib \
 ##   --mount=from=out-64be2e589e1b58c5,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblog-64be2e589e1b58c5.rmeta,source=/liblog-64be2e589e1b58c5.rmeta \
 ##   --mount=from=out-d2455ec75a446def,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libonce_cell-d2455ec75a446def.rlib,source=/libonce_cell-d2455ec75a446def.rlib \
@@ -9735,6 +16831,10 @@ COPY --link --from=dep-n-ntp-proto-1.7.0-alpha.20251003-b5f6bfad0d8f8471 /tmp/cl
 ##   --mount=from=out-503f6bcf688b11a3,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtracing_attributes-503f6bcf688b11a3.so,source=/libtracing_attributes-503f6bcf688b11a3.so \
 ##   --mount=from=out-2bf32bfc77d4a425,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtracing_core-2bf32bfc77d4a425.rlib,source=/libtracing_core-2bf32bfc77d4a425.rlib \
 ##   --mount=from=out-2bf32bfc77d4a425,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtracing_core-2bf32bfc77d4a425.rmeta,source=/libtracing_core-2bf32bfc77d4a425.rmeta \
+##   --mount=from=out-c2a85ea3d52ad392,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-c2a85ea3d52ad392/out,source=/ \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out,source=/ \
+##   --mount=from=out-cfe125327cacaf16,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde-cfe125327cacaf16/out,source=/ \
+##   --mount=from=out-badeea6458a799e8,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_core-badeea6458a799e8/out,source=/ \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=ntp_proto \
 ##         CARGO_INCREMENTAL=0 \
@@ -9755,8 +16855,6 @@ COPY --link --from=dep-n-ntp-proto-1.7.0-alpha.20251003-b5f6bfad0d8f8471 /tmp/cl
 ##         CARGO_PKG_VERSION_PATCH=0 \
 ##         CARGO_PKG_VERSION_PRE=alpha.20251003 \
 ##         CARGOGREEN=1 \
-##         NTPD_RS_GIT_DATE=2025-05-09 \
-##         NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
 ##       rustc --crate-name ntp_proto --edition 2024 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --cfg feature'="__internal-api"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("__internal-api", "__internal-fuzz", "__internal-test", "arbitrary", "default"))' -C metadata'=383e200cf89ea015' -C extra-filename'=-b5f6bfad0d8f8471' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern aead'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libaead-4b9b0df243e430b1.rmeta' --extern aes_siv'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libaes_siv-52d5490f955beadb.rmeta' --extern md5'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libmd5-5c47893368a03a5c.rmeta' --extern rand'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/librand-b2b2029003f4f41b.rmeta' --extern rustls23'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/librustls-79af5f0cc8b8fe11.rmeta' --extern rustls_platform_verifier'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/librustls_platform_verifier-db666fad349f8ca6.rlib' --extern serde'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libserde-d9535ff1afbc9e07.rmeta' --extern tokio'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtokio-c395c10495b0b3f9.rmeta' --extern tokio_rustls'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtokio_rustls-1d9512fc7c74ae08.rmeta' --extern tracing'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtracing-075e13f932ee5314.rmeta' --extern zeroize'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libzeroize-fd233fb45e407496.rmeta' --cap-lints warn -L native'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ntp-proto-1.7.0-alpha.20251003/src/lib.rs \
 ##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-b5f6bfad0d8f8471-stdout \
 ##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-b5f6bfad0d8f8471-stderr \
@@ -9801,8 +16899,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=3 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        NTPD_RS_GIT_DATE=2025-05-09 \
-        NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
       rustc --crate-name pps_time --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=72363184b1e9ed69' -C extra-filename'=-eb10259898586549' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern libc'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibc-93b6478caf319772.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/pps-time-0.2.3/src/lib.rs \
         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-eb10259898586549-stdout \
         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-eb10259898586549-stderr \
@@ -9812,7 +16908,12 @@ FROM scratch AS out-eb10259898586549
 COPY --link --from=dep-n-pps-time-0.2.3-eb10259898586549 /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/*-eb10259898586549* /
 
 ## this = "eb10259898586549"
-## deps = ["93b6478caf319772"]
+## deps = [
+##     "93b6478caf319772",
+##     "7560e7c5c88ec4c4",
+##     "d5b44a42806fd90b",
+## ]
+## buildrs_results = ["d5b44a42806fd90b"]
 ## writes = [
 ##     "libpps_time-eb10259898586549.rlib",
 ##     "libpps_time-eb10259898586549.rmeta",
@@ -9879,8 +16980,6 @@ COPY --link --from=dep-n-pps-time-0.2.3-eb10259898586549 /tmp/clis-ntpd_1-7-0-al
 ##         CARGO_PKG_VERSION_PATCH=3 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         NTPD_RS_GIT_DATE=2025-05-09 \
-##         NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
 ##       rustc --crate-name pps_time --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=72363184b1e9ed69' -C extra-filename'=-eb10259898586549' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern libc'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibc-93b6478caf319772.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/pps-time-0.2.3/src/lib.rs \
 ##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-eb10259898586549-stdout \
 ##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-eb10259898586549-stderr \
@@ -9923,8 +17022,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=15 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        NTPD_RS_GIT_DATE=2025-05-09 \
-        NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
       rustc --crate-name itoa --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("no-panic"))' -C metadata'=e5c7ba55dded8c84' -C extra-filename'=-810c45601233a792' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/itoa-1.0.15/src/lib.rs \
         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-810c45601233a792-stdout \
         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-810c45601233a792-stderr \
@@ -9990,8 +17087,6 @@ COPY --link --from=dep-n-itoa-1.0.15-810c45601233a792 /tmp/clis-ntpd_1-7-0-alpha
 ##         CARGO_PKG_VERSION_PATCH=15 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         NTPD_RS_GIT_DATE=2025-05-09 \
-##         NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
 ##       rustc --crate-name itoa --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("no-panic"))' -C metadata'=e5c7ba55dded8c84' -C extra-filename'=-810c45601233a792' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/itoa-1.0.15/src/lib.rs \
 ##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-810c45601233a792-stdout \
 ##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-810c45601233a792-stderr \
@@ -10036,8 +17131,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=6 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        NTPD_RS_GIT_DATE=2025-05-09 \
-        NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
       rustc --crate-name memchr --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --cfg feature'="alloc"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "core", "default", "libc", "logging", "rustc-dep-of-std", "std", "use_std"))' -C metadata'=2635d77e3d99bdb5' -C extra-filename'=-1bf2d419b0e312f0' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/memchr-2.7.6/src/lib.rs \
         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-1bf2d419b0e312f0-stdout \
         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-1bf2d419b0e312f0-stderr \
@@ -10105,8 +17198,6 @@ COPY --link --from=dep-n-memchr-2.7.6-1bf2d419b0e312f0 /tmp/clis-ntpd_1-7-0-alph
 ##         CARGO_PKG_VERSION_PATCH=6 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         NTPD_RS_GIT_DATE=2025-05-09 \
-##         NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
 ##       rustc --crate-name memchr --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --cfg feature'="alloc"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "core", "default", "libc", "logging", "rustc-dep-of-std", "std", "use_std"))' -C metadata'=2635d77e3d99bdb5' -C extra-filename'=-1bf2d419b0e312f0' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/memchr-2.7.6/src/lib.rs \
 ##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-1bf2d419b0e312f0-stdout \
 ##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-1bf2d419b0e312f0-stderr \
@@ -10149,8 +17240,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=20 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        NTPD_RS_GIT_DATE=2025-05-09 \
-        NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
       rustc --crate-name ryu --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("no-panic", "small"))' -C metadata'=7bb63d6bac5e35b2' -C extra-filename'=-89e84ce63cef1c32' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ryu-1.0.20/src/lib.rs \
         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-89e84ce63cef1c32-stdout \
         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-89e84ce63cef1c32-stderr \
@@ -10216,8 +17305,6 @@ COPY --link --from=dep-n-ryu-1.0.20-89e84ce63cef1c32 /tmp/clis-ntpd_1-7-0-alpha-
 ##         CARGO_PKG_VERSION_PATCH=20 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         NTPD_RS_GIT_DATE=2025-05-09 \
-##         NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
 ##       rustc --crate-name ryu --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("no-panic", "small"))' -C metadata'=7bb63d6bac5e35b2' -C extra-filename'=-89e84ce63cef1c32' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ryu-1.0.20/src/lib.rs \
 ##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-89e84ce63cef1c32-stdout \
 ##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-89e84ce63cef1c32-stderr \
@@ -10235,6 +17322,291 @@ COPY --link --from=dep-n-ryu-1.0.20-89e84ce63cef1c32 /tmp/clis-ntpd_1-7-0-alpha-
 FROM scratch AS cratesio-serde_json-1.0.145
 ADD --chmod=0664 --unpack --checksum=sha256:402a6f66d8c709116cf22f558eab210f5a50187f702eb4d7e5ef38d9a7f1c79c \
   https://static.crates.io/crates/serde_json/serde_json-1.0.145.crate /
+FROM rust-base AS dep-x-serde_json-1.0.145-8b3de377bc751c67
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_json-8b3de377bc751c67
+RUN \
+  --mount=from=cratesio-serde_json-1.0.145,source=/serde_json-1.0.145,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.145,rw \
+    { \
+        cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.145/build.rs | sed -E 's/^(pub[()a-z]* +)?(async +)?fn +main/\1\2fn actual_8b3de377bc751c67_main/' >/_ && mv /_ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.145/build.rs ; \
+        { \
+          echo ; \
+          echo 'fn main() {' ; \
+          echo '    use std::env::{args_os, var_os};' ; \
+          echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+          echo '        use std::process::{Command, Stdio};' ; \
+          echo '        let mut cmd = Command::new("cargo-green");' ; \
+          echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+          echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+          echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+          echo '        assert!(res.success());' ; \
+          echo '    } else {' ; \
+          echo '        actual_8b3de377bc751c67_main();' ; \
+          echo '    }' ; \
+          echo '}' ; \
+        } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.145/build.rs ; \
+    } && \
+    env CARGO="$(which cargo)" \
+        CARGO_CRATE_NAME=build_script_build \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.145 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.145/Cargo.toml \
+        CARGO_PKG_AUTHORS=Erick' Tryzelaar <erick.tryzelaar@gmail.com>:David Tolnay <dtolnay@gmail.com>' \
+        CARGO_PKG_DESCRIPTION=A' JSON serialization file format' \
+        CARGO_PKG_HOMEPAGE= \
+        CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=serde_json \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/serde-rs/json' \
+        CARGO_PKG_RUST_VERSION=1.61 \
+        CARGO_PKG_VERSION=1.0.145 \
+        CARGO_PKG_VERSION_MAJOR=1 \
+        CARGO_PKG_VERSION_MINOR=0 \
+        CARGO_PKG_VERSION_PATCH=145 \
+        CARGO_PKG_VERSION_PRE= \
+        CARGOGREEN=1 \
+      rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "arbitrary_precision", "default", "float_roundtrip", "indexmap", "preserve_order", "raw_value", "std", "unbounded_depth"))' -C metadata'=ea86e320410c44c2' -C extra-filename'=-8b3de377bc751c67' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_json-8b3de377bc751c67 -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.145/build.rs \
+        1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_json-8b3de377bc751c67/out-8b3de377bc751c67-stdout \
+        2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_json-8b3de377bc751c67/out-8b3de377bc751c67-stderr \
+        || echo $? >/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_json-8b3de377bc751c67/out-8b3de377bc751c67-errcode\
+  ; find /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_json-8b3de377bc751c67/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-8b3de377bc751c67
+COPY --link --from=dep-x-serde_json-1.0.145-8b3de377bc751c67 /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_json-8b3de377bc751c67/*-8b3de377bc751c67* /
+
+## this = "8b3de377bc751c67"
+## writes = [
+##     "build_script_build-8b3de377bc751c67",
+##     "build_script_build-8b3de377bc751c67.d",
+## ]
+## stderr = [
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_json-8b3de377bc751c67/build_script_build-8b3de377bc751c67.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_json-8b3de377bc751c67/build_script_build-8b3de377bc751c67","emit":"link"}',
+## ]
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
+##
+## [[stages]]
+##
+## [stages.Cratesio]
+## stage = "cratesio-serde_json-1.0.145"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.145"
+## name = "serde_json"
+## name_dash_version = "serde_json-1.0.145"
+## hash = "402a6f66d8c709116cf22f558eab210f5a50187f702eb4d7e5ef38d9a7f1c79c"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "dep-x-serde_json-1.0.145-8b3de377bc751c67"
+## script = '''
+## FROM rust-base AS dep-x-serde_json-1.0.145-8b3de377bc751c67
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_json-8b3de377bc751c67
+## RUN \
+##   --mount=from=cratesio-serde_json-1.0.145,source=/serde_json-1.0.145,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.145,rw \
+##     { \
+##         cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.145/build.rs | sed -E 's/^(pub[()a-z]* +)?(async +)?fn +main/\1\2fn actual_8b3de377bc751c67_main/' >/_ && mv /_ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.145/build.rs ; \
+##         { \
+##           echo ; \
+##           echo 'fn main() {' ; \
+##           echo '    use std::env::{args_os, var_os};' ; \
+##           echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+##           echo '        use std::process::{Command, Stdio};' ; \
+##           echo '        let mut cmd = Command::new("cargo-green");' ; \
+##           echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+##           echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+##           echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+##           echo '        assert!(res.success());' ; \
+##           echo '    } else {' ; \
+##           echo '        actual_8b3de377bc751c67_main();' ; \
+##           echo '    }' ; \
+##           echo '}' ; \
+##         } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.145/build.rs ; \
+##     } && \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CRATE_NAME=build_script_build \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.145 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.145/Cargo.toml \
+##         CARGO_PKG_AUTHORS=Erick' Tryzelaar <erick.tryzelaar@gmail.com>:David Tolnay <dtolnay@gmail.com>' \
+##         CARGO_PKG_DESCRIPTION=A' JSON serialization file format' \
+##         CARGO_PKG_HOMEPAGE= \
+##         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=serde_json \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/serde-rs/json' \
+##         CARGO_PKG_RUST_VERSION=1.61 \
+##         CARGO_PKG_VERSION=1.0.145 \
+##         CARGO_PKG_VERSION_MAJOR=1 \
+##         CARGO_PKG_VERSION_MINOR=0 \
+##         CARGO_PKG_VERSION_PATCH=145 \
+##         CARGO_PKG_VERSION_PRE= \
+##         CARGOGREEN=1 \
+##       rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "arbitrary_precision", "default", "float_roundtrip", "indexmap", "preserve_order", "raw_value", "std", "unbounded_depth"))' -C metadata'=ea86e320410c44c2' -C extra-filename'=-8b3de377bc751c67' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_json-8b3de377bc751c67 -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.145/build.rs \
+##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_json-8b3de377bc751c67/out-8b3de377bc751c67-stdout \
+##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_json-8b3de377bc751c67/out-8b3de377bc751c67-stderr \
+##         || echo $? >/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_json-8b3de377bc751c67/out-8b3de377bc751c67-errcode\
+##   ; find /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_json-8b3de377bc751c67/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-8b3de377bc751c67"
+## script = """
+## FROM scratch AS out-8b3de377bc751c67
+## COPY --link --from=dep-x-serde_json-1.0.145-8b3de377bc751c67 /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_json-8b3de377bc751c67/*-8b3de377bc751c67* /"""
+
+FROM rust-base AS run-z-serde_json-1.0.145-3d3221a83b9a3fdf
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_json-3d3221a83b9a3fdf/out
+WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.145
+RUN \
+  --mount=from=out-8b3de377bc751c67,source=/build_script_build-8b3de377bc751c67,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_json-8b3de377bc751c67/build-script-build \
+  --mount=from=cratesio-serde_json-1.0.145,source=/serde_json-1.0.145,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.145 \
+    env CARGO="$(which cargo)" \
+        CARGO_CFG_FEATURE=default,std \
+        CARGO_CFG_PANIC=unwind \
+        CARGO_CFG_TARGET_ABI= \
+        CARGO_CFG_TARGET_ARCH=x86_64 \
+        CARGO_CFG_TARGET_ENDIAN=little \
+        CARGO_CFG_TARGET_ENV=gnu \
+        CARGO_CFG_TARGET_FAMILY=unix \
+        CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
+        CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+        CARGO_CFG_TARGET_OS=linux \
+        CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+        CARGO_CFG_TARGET_VENDOR=unknown \
+        CARGO_CFG_UNIX= \
+        CARGO_ENCODED_RUSTFLAGS= \
+        CARGO_FEATURE_DEFAULT=1 \
+        CARGO_FEATURE_STD=1 \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.145 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.145/Cargo.toml \
+        CARGO_PKG_AUTHORS=Erick' Tryzelaar <erick.tryzelaar@gmail.com>:David Tolnay <dtolnay@gmail.com>' \
+        CARGO_PKG_DESCRIPTION=A' JSON serialization file format' \
+        CARGO_PKG_HOMEPAGE= \
+        CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=serde_json \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/serde-rs/json' \
+        CARGO_PKG_RUST_VERSION=1.61 \
+        CARGO_PKG_VERSION=1.0.145 \
+        CARGO_PKG_VERSION_MAJOR=1 \
+        CARGO_PKG_VERSION_MINOR=0 \
+        CARGO_PKG_VERSION_PATCH=145 \
+        CARGO_PKG_VERSION_PRE= \
+        DEBUG=false \
+        HOST=x86_64-unknown-linux-gnu \
+        NUM_JOBS=4 \
+        OPT_LEVEL=3 \
+        OUT_DIR=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_json-3d3221a83b9a3fdf/out \
+        PROFILE=release \
+        RUSTC=rustc \
+        RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+        TARGET=x86_64-unknown-linux-gnu \
+        CARGOGREEN=1 \
+      CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_json-8b3de377bc751c67/build-script-build \
+        1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_json-3d3221a83b9a3fdf/out/out-3d3221a83b9a3fdf-stdout \
+        2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_json-3d3221a83b9a3fdf/out/out-3d3221a83b9a3fdf-stderr \
+        || echo $? >/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_json-3d3221a83b9a3fdf/out/out-3d3221a83b9a3fdf-errcode\
+  ; find /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_json-3d3221a83b9a3fdf/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-3d3221a83b9a3fdf
+COPY --link --from=run-z-serde_json-1.0.145-3d3221a83b9a3fdf /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_json-3d3221a83b9a3fdf/out /
+
+## this = "3d3221a83b9a3fdf"
+## deps = ["8b3de377bc751c67"]
+## writes_to = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_json-3d3221a83b9a3fdf/out"
+## stdout = [
+##     "cargo:rerun-if-changed=build.rs",
+##     'cargo:rustc-check-cfg=cfg(fast_arithmetic, values("32", "64"))',
+##     'cargo:rustc-cfg=fast_arithmetic="64"',
+## ]
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "run-z-serde_json-1.0.145-3d3221a83b9a3fdf"
+## script = '''
+## FROM rust-base AS run-z-serde_json-1.0.145-3d3221a83b9a3fdf
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_json-3d3221a83b9a3fdf/out
+## WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.145
+## RUN \
+##   --mount=from=out-8b3de377bc751c67,source=/build_script_build-8b3de377bc751c67,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_json-8b3de377bc751c67/build-script-build \
+##   --mount=from=cratesio-serde_json-1.0.145,source=/serde_json-1.0.145,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.145 \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CFG_FEATURE=default,std \
+##         CARGO_CFG_PANIC=unwind \
+##         CARGO_CFG_TARGET_ABI= \
+##         CARGO_CFG_TARGET_ARCH=x86_64 \
+##         CARGO_CFG_TARGET_ENDIAN=little \
+##         CARGO_CFG_TARGET_ENV=gnu \
+##         CARGO_CFG_TARGET_FAMILY=unix \
+##         CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
+##         CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+##         CARGO_CFG_TARGET_OS=linux \
+##         CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+##         CARGO_CFG_TARGET_VENDOR=unknown \
+##         CARGO_CFG_UNIX= \
+##         CARGO_ENCODED_RUSTFLAGS= \
+##         CARGO_FEATURE_DEFAULT=1 \
+##         CARGO_FEATURE_STD=1 \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.145 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.145/Cargo.toml \
+##         CARGO_PKG_AUTHORS=Erick' Tryzelaar <erick.tryzelaar@gmail.com>:David Tolnay <dtolnay@gmail.com>' \
+##         CARGO_PKG_DESCRIPTION=A' JSON serialization file format' \
+##         CARGO_PKG_HOMEPAGE= \
+##         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=serde_json \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/serde-rs/json' \
+##         CARGO_PKG_RUST_VERSION=1.61 \
+##         CARGO_PKG_VERSION=1.0.145 \
+##         CARGO_PKG_VERSION_MAJOR=1 \
+##         CARGO_PKG_VERSION_MINOR=0 \
+##         CARGO_PKG_VERSION_PATCH=145 \
+##         CARGO_PKG_VERSION_PRE= \
+##         DEBUG=false \
+##         HOST=x86_64-unknown-linux-gnu \
+##         NUM_JOBS=4 \
+##         OPT_LEVEL=3 \
+##         OUT_DIR=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_json-3d3221a83b9a3fdf/out \
+##         PROFILE=release \
+##         RUSTC=rustc \
+##         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+##         TARGET=x86_64-unknown-linux-gnu \
+##         CARGOGREEN=1 \
+##       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_json-8b3de377bc751c67/build-script-build \
+##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_json-3d3221a83b9a3fdf/out/out-3d3221a83b9a3fdf-stdout \
+##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_json-3d3221a83b9a3fdf/out/out-3d3221a83b9a3fdf-stderr \
+##         || echo $? >/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_json-3d3221a83b9a3fdf/out/out-3d3221a83b9a3fdf-errcode\
+##   ; find /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_json-3d3221a83b9a3fdf/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-3d3221a83b9a3fdf"
+## script = """
+## FROM scratch AS out-3d3221a83b9a3fdf
+## COPY --link --from=run-z-serde_json-1.0.145-3d3221a83b9a3fdf /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_json-3d3221a83b9a3fdf/out /"""
+
+
 FROM rust-base AS dep-n-serde_json-1.0.145-3956e8613ae2191d
 SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps
@@ -10248,6 +17620,8 @@ RUN \
   --mount=from=out-89e84ce63cef1c32,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libryu-89e84ce63cef1c32.rmeta,source=/libryu-89e84ce63cef1c32.rmeta \
   --mount=from=out-1bc4bef1fdca14c4,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libserde_core-1bc4bef1fdca14c4.rlib,source=/libserde_core-1bc4bef1fdca14c4.rlib \
   --mount=from=out-1bc4bef1fdca14c4,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libserde_core-1bc4bef1fdca14c4.rmeta,source=/libserde_core-1bc4bef1fdca14c4.rmeta \
+  --mount=from=out-badeea6458a799e8,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_core-badeea6458a799e8/out,source=/ \
+  --mount=from=out-3d3221a83b9a3fdf,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_json-3d3221a83b9a3fdf/out,source=/ \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=serde_json \
         CARGO_INCREMENTAL=0 \
@@ -10269,8 +17643,6 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         OUT_DIR=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_json-3d3221a83b9a3fdf/out \
         CARGOGREEN=1 \
-        NTPD_RS_GIT_DATE=2025-05-09 \
-        NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
       rustc --crate-name serde_json --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "arbitrary_precision", "default", "float_roundtrip", "indexmap", "preserve_order", "raw_value", "std", "unbounded_depth"))' -C metadata'=583acfab5a5b4be2' -C extra-filename'=-3956e8613ae2191d' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern itoa'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libitoa-810c45601233a792.rmeta' --extern memchr'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libmemchr-1bf2d419b0e312f0.rmeta' --extern ryu'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libryu-89e84ce63cef1c32.rmeta' --extern serde_core'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libserde_core-1bc4bef1fdca14c4.rmeta' --cap-lints warn --cfg fast_arithmetic'="64"' --check-cfg cfg'(fast_arithmetic, values("32", "64"))' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.145/src/lib.rs \
         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-3956e8613ae2191d-stdout \
         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-3956e8613ae2191d-stderr \
@@ -10285,6 +17657,14 @@ COPY --link --from=dep-n-serde_json-1.0.145-3956e8613ae2191d /tmp/clis-ntpd_1-7-
 ##     "1bf2d419b0e312f0",
 ##     "89e84ce63cef1c32",
 ##     "1bc4bef1fdca14c4",
+##     "51979789556dbb03",
+##     "3d3221a83b9a3fdf",
+##     "badeea6458a799e8",
+##     "8b3de377bc751c67",
+## ]
+## buildrs_results = [
+##     "badeea6458a799e8",
+##     "3d3221a83b9a3fdf",
 ## ]
 ## writes = [
 ##     "libserde_json-3956e8613ae2191d.rlib",
@@ -10329,9 +17709,13 @@ COPY --link --from=dep-n-serde_json-1.0.145-3956e8613ae2191d /tmp/clis-ntpd_1-7-
 ## from = "out-1bc4bef1fdca14c4"
 ## xtern = "libserde_core-1bc4bef1fdca14c4.rmeta"
 ##
-## [[contexts]]
-## name = "crate_out-badeea6458a799e8"
-## uri = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_core-badeea6458a799e8/out"
+## [[mounts]]
+## name = "out-badeea6458a799e8"
+## mount = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_core-badeea6458a799e8/out"
+##
+## [[mounts]]
+## name = "out-3d3221a83b9a3fdf"
+## mount = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_json-3d3221a83b9a3fdf/out"
 ##
 ## [[stages]]
 ##
@@ -10366,6 +17750,8 @@ COPY --link --from=dep-n-serde_json-1.0.145-3956e8613ae2191d /tmp/clis-ntpd_1-7-
 ##   --mount=from=out-89e84ce63cef1c32,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libryu-89e84ce63cef1c32.rmeta,source=/libryu-89e84ce63cef1c32.rmeta \
 ##   --mount=from=out-1bc4bef1fdca14c4,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libserde_core-1bc4bef1fdca14c4.rlib,source=/libserde_core-1bc4bef1fdca14c4.rlib \
 ##   --mount=from=out-1bc4bef1fdca14c4,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libserde_core-1bc4bef1fdca14c4.rmeta,source=/libserde_core-1bc4bef1fdca14c4.rmeta \
+##   --mount=from=out-badeea6458a799e8,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_core-badeea6458a799e8/out,source=/ \
+##   --mount=from=out-3d3221a83b9a3fdf,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_json-3d3221a83b9a3fdf/out,source=/ \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=serde_json \
 ##         CARGO_INCREMENTAL=0 \
@@ -10387,8 +17773,6 @@ COPY --link --from=dep-n-serde_json-1.0.145-3956e8613ae2191d /tmp/clis-ntpd_1-7-
 ##         CARGO_PKG_VERSION_PRE= \
 ##         OUT_DIR=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_json-3d3221a83b9a3fdf/out \
 ##         CARGOGREEN=1 \
-##         NTPD_RS_GIT_DATE=2025-05-09 \
-##         NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
 ##       rustc --crate-name serde_json --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "arbitrary_precision", "default", "float_roundtrip", "indexmap", "preserve_order", "raw_value", "std", "unbounded_depth"))' -C metadata'=583acfab5a5b4be2' -C extra-filename'=-3956e8613ae2191d' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern itoa'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libitoa-810c45601233a792.rmeta' --extern memchr'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libmemchr-1bf2d419b0e312f0.rmeta' --extern ryu'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libryu-89e84ce63cef1c32.rmeta' --extern serde_core'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libserde_core-1bc4bef1fdca14c4.rmeta' --cap-lints warn --cfg fast_arithmetic'="64"' --check-cfg cfg'(fast_arithmetic, values("32", "64"))' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.145/src/lib.rs \
 ##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-3956e8613ae2191d-stdout \
 ##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-3956e8613ae2191d-stderr \
@@ -10446,6 +17830,8 @@ RUN \
   --mount=from=out-2bf32bfc77d4a425,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtracing_core-2bf32bfc77d4a425.rmeta,source=/libtracing_core-2bf32bfc77d4a425.rmeta \
   --mount=from=out-d2455ec75a446def,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libonce_cell-d2455ec75a446def.rlib,source=/libonce_cell-d2455ec75a446def.rlib \
   --mount=from=out-d2455ec75a446def,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libonce_cell-d2455ec75a446def.rmeta,source=/libonce_cell-d2455ec75a446def.rmeta \
+  --mount=from=out-cfe125327cacaf16,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde-cfe125327cacaf16/out,source=/ \
+  --mount=from=out-badeea6458a799e8,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_core-badeea6458a799e8/out,source=/ \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=timestamped_socket \
         CARGO_INCREMENTAL=0 \
@@ -10466,8 +17852,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=7 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        NTPD_RS_GIT_DATE=2025-05-09 \
-        NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
       rustc --crate-name timestamped_socket --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --cfg feature'="default"' --cfg feature'="serde"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "serde"))' -C metadata'=2eb8eceb3a4f3217' -C extra-filename'=-e18c08f3473fbbaf' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern libc'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibc-93b6478caf319772.rmeta' --extern serde'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libserde-d9535ff1afbc9e07.rmeta' --extern tokio'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtokio-c395c10495b0b3f9.rmeta' --extern tracing'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtracing-075e13f932ee5314.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/timestamped-socket-0.2.7/src/lib.rs \
         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-e18c08f3473fbbaf-stdout \
         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-e18c08f3473fbbaf-stderr \
@@ -10479,13 +17863,18 @@ COPY --link --from=dep-n-timestamped-socket-0.2.7-e18c08f3473fbbaf /tmp/clis-ntp
 ## this = "e18c08f3473fbbaf"
 ## deps = [
 ##     "93b6478caf319772",
+##     "7560e7c5c88ec4c4",
 ##     "d9535ff1afbc9e07",
 ##     "1bc4bef1fdca14c4",
+##     "51979789556dbb03",
 ##     "b925936788ba7057",
 ##     "30dd1c0184916507",
 ##     "d90ab847601a2565",
+##     "ab9829a4a8b7788d",
 ##     "41756a17d2ad9431",
+##     "c63aae50eb6f480a",
 ##     "8f37513da063fb69",
+##     "9e59eb4de4feaddb",
 ##     "c395c10495b0b3f9",
 ##     "bf097c132b6f21a4",
 ##     "8a04991c75463c17",
@@ -10497,6 +17886,18 @@ COPY --link --from=dep-n-timestamped-socket-0.2.7-e18c08f3473fbbaf /tmp/clis-ntp
 ##     "503f6bcf688b11a3",
 ##     "2bf32bfc77d4a425",
 ##     "d2455ec75a446def",
+##     "d5b44a42806fd90b",
+##     "badeea6458a799e8",
+##     "9a025c1b756d91f9",
+##     "edf8f660a3d601cc",
+##     "cfe125327cacaf16",
+## ]
+## buildrs_results = [
+##     "d5b44a42806fd90b",
+##     "badeea6458a799e8",
+##     "9a025c1b756d91f9",
+##     "edf8f660a3d601cc",
+##     "cfe125327cacaf16",
 ## ]
 ## writes = [
 ##     "libtimestamped_socket-e18c08f3473fbbaf.rlib",
@@ -10649,13 +18050,13 @@ COPY --link --from=dep-n-timestamped-socket-0.2.7-e18c08f3473fbbaf /tmp/clis-ntp
 ## from = "out-d2455ec75a446def"
 ## xtern = "libonce_cell-d2455ec75a446def.rmeta"
 ##
-## [[contexts]]
-## name = "crate_out-cfe125327cacaf16"
-## uri = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde-cfe125327cacaf16/out"
+## [[mounts]]
+## name = "out-cfe125327cacaf16"
+## mount = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde-cfe125327cacaf16/out"
 ##
-## [[contexts]]
-## name = "crate_out-badeea6458a799e8"
-## uri = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_core-badeea6458a799e8/out"
+## [[mounts]]
+## name = "out-badeea6458a799e8"
+## mount = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_core-badeea6458a799e8/out"
 ##
 ## [[stages]]
 ##
@@ -10717,6 +18118,8 @@ COPY --link --from=dep-n-timestamped-socket-0.2.7-e18c08f3473fbbaf /tmp/clis-ntp
 ##   --mount=from=out-2bf32bfc77d4a425,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtracing_core-2bf32bfc77d4a425.rmeta,source=/libtracing_core-2bf32bfc77d4a425.rmeta \
 ##   --mount=from=out-d2455ec75a446def,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libonce_cell-d2455ec75a446def.rlib,source=/libonce_cell-d2455ec75a446def.rlib \
 ##   --mount=from=out-d2455ec75a446def,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libonce_cell-d2455ec75a446def.rmeta,source=/libonce_cell-d2455ec75a446def.rmeta \
+##   --mount=from=out-cfe125327cacaf16,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde-cfe125327cacaf16/out,source=/ \
+##   --mount=from=out-badeea6458a799e8,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_core-badeea6458a799e8/out,source=/ \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=timestamped_socket \
 ##         CARGO_INCREMENTAL=0 \
@@ -10737,8 +18140,6 @@ COPY --link --from=dep-n-timestamped-socket-0.2.7-e18c08f3473fbbaf /tmp/clis-ntp
 ##         CARGO_PKG_VERSION_PATCH=7 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         NTPD_RS_GIT_DATE=2025-05-09 \
-##         NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
 ##       rustc --crate-name timestamped_socket --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --cfg feature'="default"' --cfg feature'="serde"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "serde"))' -C metadata'=2eb8eceb3a4f3217' -C extra-filename'=-e18c08f3473fbbaf' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern libc'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibc-93b6478caf319772.rmeta' --extern serde'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libserde-d9535ff1afbc9e07.rmeta' --extern tokio'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtokio-c395c10495b0b3f9.rmeta' --extern tracing'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtracing-075e13f932ee5314.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/timestamped-socket-0.2.7/src/lib.rs \
 ##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-e18c08f3473fbbaf-stdout \
 ##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-e18c08f3473fbbaf-stderr \
@@ -10774,6 +18175,8 @@ RUN \
   --mount=from=out-41756a17d2ad9431,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libquote-41756a17d2ad9431.rmeta,source=/libquote-41756a17d2ad9431.rmeta \
   --mount=from=out-8f37513da063fb69,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libsyn-8f37513da063fb69.rlib,source=/libsyn-8f37513da063fb69.rlib \
   --mount=from=out-8f37513da063fb69,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libsyn-8f37513da063fb69.rmeta,source=/libsyn-8f37513da063fb69.rmeta \
+  --mount=from=out-cfe125327cacaf16,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde-cfe125327cacaf16/out,source=/ \
+  --mount=from=out-badeea6458a799e8,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_core-badeea6458a799e8/out,source=/ \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=serde_spanned \
         CARGO_INCREMENTAL=0 \
@@ -10794,8 +18197,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=9 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        NTPD_RS_GIT_DATE=2025-05-09 \
-        NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
       rustc --crate-name serde_spanned --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --warn rust_2018_idioms --warn clippy'::zero_sized_map_values' --warn clippy'::wildcard_imports' --warn clippy'::verbose_file_reads' --warn unused_qualifications --warn unused_macro_rules --warn unused_lifetimes --warn unsafe_op_in_unsafe_fn --warn unreachable_pub --allow unnameable_types --warn clippy'::uninlined_format_args' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::todo' --warn clippy'::string_to_string' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_add_assign' --warn clippy'::string_add' --warn clippy'::str_to_string' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::self_named_module_files' --warn clippy'::same_functions_in_if_condition' --allow clippy'::result_large_err' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::ref_option_ref' --warn clippy'::redundant_feature_names' --warn clippy'::rc_mutex' --warn clippy'::ptr_as_ptr' --warn clippy'::path_buf_push_overwrite' --warn clippy'::negative_feature_names' --warn clippy'::needless_for_each' --allow clippy'::needless_continue' --warn clippy'::mutex_integer' --warn clippy'::mem_forget' --warn clippy'::macro_use_imports' --warn clippy'::lossy_float_literal' --warn clippy'::linkedlist' --allow clippy'::let_and_return' --warn clippy'::large_types_passed_by_value' --warn clippy'::large_stack_arrays' --warn clippy'::large_digit_groups' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::infinite_loop' --warn clippy'::inefficient_to_string' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::imprecise_flops' --warn clippy'::implicit_clone' --allow clippy'::if_same_then_else' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::fn_params_excessive_bools' --warn clippy'::float_cmp_const' --warn clippy'::flat_map_option' --warn clippy'::filter_map_next' --warn clippy'::fallible_impl_from' --warn clippy'::explicit_into_iter_loop' --warn clippy'::explicit_deref_methods' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::enum_glob_use' --warn clippy'::empty_enum' --warn clippy'::doc_markdown' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::dbg_macro' --warn clippy'::create_dir' --allow clippy'::collapsible_else_if' --warn clippy'::checked_conversions' --allow clippy'::branches_sharing_code' --allow clippy'::bool_assert_comparison' --cfg feature'="serde"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("serde"))' -C metadata'=45c8008c6e0023e6' -C extra-filename'=-9efeb8ba5429dc73' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern serde'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libserde-d9535ff1afbc9e07.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_spanned-0.6.9/src/lib.rs \
         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-9efeb8ba5429dc73-stdout \
         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-9efeb8ba5429dc73-stderr \
@@ -10808,11 +18209,25 @@ COPY --link --from=dep-n-serde_spanned-0.6.9-9efeb8ba5429dc73 /tmp/clis-ntpd_1-7
 ## deps = [
 ##     "d9535ff1afbc9e07",
 ##     "1bc4bef1fdca14c4",
+##     "51979789556dbb03",
 ##     "b925936788ba7057",
 ##     "30dd1c0184916507",
 ##     "d90ab847601a2565",
+##     "ab9829a4a8b7788d",
 ##     "41756a17d2ad9431",
+##     "c63aae50eb6f480a",
 ##     "8f37513da063fb69",
+##     "9e59eb4de4feaddb",
+##     "badeea6458a799e8",
+##     "9a025c1b756d91f9",
+##     "edf8f660a3d601cc",
+##     "cfe125327cacaf16",
+## ]
+## buildrs_results = [
+##     "badeea6458a799e8",
+##     "9a025c1b756d91f9",
+##     "edf8f660a3d601cc",
+##     "cfe125327cacaf16",
 ## ]
 ## writes = [
 ##     "libserde_spanned-9efeb8ba5429dc73.rlib",
@@ -10877,13 +18292,13 @@ COPY --link --from=dep-n-serde_spanned-0.6.9-9efeb8ba5429dc73 /tmp/clis-ntpd_1-7
 ## from = "out-8f37513da063fb69"
 ## xtern = "libsyn-8f37513da063fb69.rmeta"
 ##
-## [[contexts]]
-## name = "crate_out-cfe125327cacaf16"
-## uri = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde-cfe125327cacaf16/out"
+## [[mounts]]
+## name = "out-cfe125327cacaf16"
+## mount = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde-cfe125327cacaf16/out"
 ##
-## [[contexts]]
-## name = "crate_out-badeea6458a799e8"
-## uri = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_core-badeea6458a799e8/out"
+## [[mounts]]
+## name = "out-badeea6458a799e8"
+## mount = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_core-badeea6458a799e8/out"
 ##
 ## [[stages]]
 ##
@@ -10923,6 +18338,8 @@ COPY --link --from=dep-n-serde_spanned-0.6.9-9efeb8ba5429dc73 /tmp/clis-ntpd_1-7
 ##   --mount=from=out-41756a17d2ad9431,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libquote-41756a17d2ad9431.rmeta,source=/libquote-41756a17d2ad9431.rmeta \
 ##   --mount=from=out-8f37513da063fb69,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libsyn-8f37513da063fb69.rlib,source=/libsyn-8f37513da063fb69.rlib \
 ##   --mount=from=out-8f37513da063fb69,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libsyn-8f37513da063fb69.rmeta,source=/libsyn-8f37513da063fb69.rmeta \
+##   --mount=from=out-cfe125327cacaf16,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde-cfe125327cacaf16/out,source=/ \
+##   --mount=from=out-badeea6458a799e8,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_core-badeea6458a799e8/out,source=/ \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=serde_spanned \
 ##         CARGO_INCREMENTAL=0 \
@@ -10943,8 +18360,6 @@ COPY --link --from=dep-n-serde_spanned-0.6.9-9efeb8ba5429dc73 /tmp/clis-ntpd_1-7
 ##         CARGO_PKG_VERSION_PATCH=9 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         NTPD_RS_GIT_DATE=2025-05-09 \
-##         NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
 ##       rustc --crate-name serde_spanned --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --warn rust_2018_idioms --warn clippy'::zero_sized_map_values' --warn clippy'::wildcard_imports' --warn clippy'::verbose_file_reads' --warn unused_qualifications --warn unused_macro_rules --warn unused_lifetimes --warn unsafe_op_in_unsafe_fn --warn unreachable_pub --allow unnameable_types --warn clippy'::uninlined_format_args' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::todo' --warn clippy'::string_to_string' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_add_assign' --warn clippy'::string_add' --warn clippy'::str_to_string' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::self_named_module_files' --warn clippy'::same_functions_in_if_condition' --allow clippy'::result_large_err' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::ref_option_ref' --warn clippy'::redundant_feature_names' --warn clippy'::rc_mutex' --warn clippy'::ptr_as_ptr' --warn clippy'::path_buf_push_overwrite' --warn clippy'::negative_feature_names' --warn clippy'::needless_for_each' --allow clippy'::needless_continue' --warn clippy'::mutex_integer' --warn clippy'::mem_forget' --warn clippy'::macro_use_imports' --warn clippy'::lossy_float_literal' --warn clippy'::linkedlist' --allow clippy'::let_and_return' --warn clippy'::large_types_passed_by_value' --warn clippy'::large_stack_arrays' --warn clippy'::large_digit_groups' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::infinite_loop' --warn clippy'::inefficient_to_string' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::imprecise_flops' --warn clippy'::implicit_clone' --allow clippy'::if_same_then_else' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::fn_params_excessive_bools' --warn clippy'::float_cmp_const' --warn clippy'::flat_map_option' --warn clippy'::filter_map_next' --warn clippy'::fallible_impl_from' --warn clippy'::explicit_into_iter_loop' --warn clippy'::explicit_deref_methods' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::enum_glob_use' --warn clippy'::empty_enum' --warn clippy'::doc_markdown' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::dbg_macro' --warn clippy'::create_dir' --allow clippy'::collapsible_else_if' --warn clippy'::checked_conversions' --allow clippy'::branches_sharing_code' --allow clippy'::bool_assert_comparison' --cfg feature'="serde"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("serde"))' -C metadata'=45c8008c6e0023e6' -C extra-filename'=-9efeb8ba5429dc73' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern serde'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libserde-d9535ff1afbc9e07.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_spanned-0.6.9/src/lib.rs \
 ##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-9efeb8ba5429dc73-stdout \
 ##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-9efeb8ba5429dc73-stderr \
@@ -10980,6 +18395,8 @@ RUN \
   --mount=from=out-41756a17d2ad9431,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libquote-41756a17d2ad9431.rmeta,source=/libquote-41756a17d2ad9431.rmeta \
   --mount=from=out-8f37513da063fb69,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libsyn-8f37513da063fb69.rlib,source=/libsyn-8f37513da063fb69.rlib \
   --mount=from=out-8f37513da063fb69,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libsyn-8f37513da063fb69.rmeta,source=/libsyn-8f37513da063fb69.rmeta \
+  --mount=from=out-cfe125327cacaf16,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde-cfe125327cacaf16/out,source=/ \
+  --mount=from=out-badeea6458a799e8,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_core-badeea6458a799e8/out,source=/ \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=toml_datetime \
         CARGO_INCREMENTAL=0 \
@@ -11000,8 +18417,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=11 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        NTPD_RS_GIT_DATE=2025-05-09 \
-        NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
       rustc --crate-name toml_datetime --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --warn rust_2018_idioms --warn clippy'::zero_sized_map_values' --warn clippy'::wildcard_imports' --warn clippy'::verbose_file_reads' --warn unused_qualifications --warn unused_macro_rules --warn unused_lifetimes --warn unsafe_op_in_unsafe_fn --warn unreachable_pub --allow unnameable_types --warn clippy'::uninlined_format_args' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::todo' --warn clippy'::string_to_string' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_add_assign' --warn clippy'::string_add' --warn clippy'::str_to_string' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::self_named_module_files' --warn clippy'::same_functions_in_if_condition' --allow clippy'::result_large_err' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::ref_option_ref' --warn clippy'::redundant_feature_names' --warn clippy'::rc_mutex' --warn clippy'::ptr_as_ptr' --warn clippy'::path_buf_push_overwrite' --warn clippy'::negative_feature_names' --warn clippy'::needless_for_each' --allow clippy'::needless_continue' --warn clippy'::mutex_integer' --warn clippy'::mem_forget' --warn clippy'::macro_use_imports' --warn clippy'::lossy_float_literal' --warn clippy'::linkedlist' --allow clippy'::let_and_return' --warn clippy'::large_types_passed_by_value' --warn clippy'::large_stack_arrays' --warn clippy'::large_digit_groups' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::infinite_loop' --warn clippy'::inefficient_to_string' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::imprecise_flops' --warn clippy'::implicit_clone' --allow clippy'::if_same_then_else' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::fn_params_excessive_bools' --warn clippy'::float_cmp_const' --warn clippy'::flat_map_option' --warn clippy'::filter_map_next' --warn clippy'::fallible_impl_from' --warn clippy'::explicit_into_iter_loop' --warn clippy'::explicit_deref_methods' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::enum_glob_use' --warn clippy'::empty_enum' --warn clippy'::doc_markdown' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::dbg_macro' --warn clippy'::create_dir' --allow clippy'::collapsible_else_if' --warn clippy'::checked_conversions' --allow clippy'::branches_sharing_code' --allow clippy'::bool_assert_comparison' --cfg feature'="serde"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("serde"))' -C metadata'=d2ab36b2e5db8f69' -C extra-filename'=-ba469190e2df5ae2' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern serde'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libserde-d9535ff1afbc9e07.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/toml_datetime-0.6.11/src/lib.rs \
         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-ba469190e2df5ae2-stdout \
         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-ba469190e2df5ae2-stderr \
@@ -11014,11 +18429,25 @@ COPY --link --from=dep-n-toml_datetime-0.6.11-ba469190e2df5ae2 /tmp/clis-ntpd_1-
 ## deps = [
 ##     "d9535ff1afbc9e07",
 ##     "1bc4bef1fdca14c4",
+##     "51979789556dbb03",
 ##     "b925936788ba7057",
 ##     "30dd1c0184916507",
 ##     "d90ab847601a2565",
+##     "ab9829a4a8b7788d",
 ##     "41756a17d2ad9431",
+##     "c63aae50eb6f480a",
 ##     "8f37513da063fb69",
+##     "9e59eb4de4feaddb",
+##     "badeea6458a799e8",
+##     "9a025c1b756d91f9",
+##     "edf8f660a3d601cc",
+##     "cfe125327cacaf16",
+## ]
+## buildrs_results = [
+##     "badeea6458a799e8",
+##     "9a025c1b756d91f9",
+##     "edf8f660a3d601cc",
+##     "cfe125327cacaf16",
 ## ]
 ## writes = [
 ##     "libtoml_datetime-ba469190e2df5ae2.rlib",
@@ -11083,13 +18512,13 @@ COPY --link --from=dep-n-toml_datetime-0.6.11-ba469190e2df5ae2 /tmp/clis-ntpd_1-
 ## from = "out-8f37513da063fb69"
 ## xtern = "libsyn-8f37513da063fb69.rmeta"
 ##
-## [[contexts]]
-## name = "crate_out-cfe125327cacaf16"
-## uri = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde-cfe125327cacaf16/out"
+## [[mounts]]
+## name = "out-cfe125327cacaf16"
+## mount = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde-cfe125327cacaf16/out"
 ##
-## [[contexts]]
-## name = "crate_out-badeea6458a799e8"
-## uri = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_core-badeea6458a799e8/out"
+## [[mounts]]
+## name = "out-badeea6458a799e8"
+## mount = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_core-badeea6458a799e8/out"
 ##
 ## [[stages]]
 ##
@@ -11129,6 +18558,8 @@ COPY --link --from=dep-n-toml_datetime-0.6.11-ba469190e2df5ae2 /tmp/clis-ntpd_1-
 ##   --mount=from=out-41756a17d2ad9431,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libquote-41756a17d2ad9431.rmeta,source=/libquote-41756a17d2ad9431.rmeta \
 ##   --mount=from=out-8f37513da063fb69,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libsyn-8f37513da063fb69.rlib,source=/libsyn-8f37513da063fb69.rlib \
 ##   --mount=from=out-8f37513da063fb69,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libsyn-8f37513da063fb69.rmeta,source=/libsyn-8f37513da063fb69.rmeta \
+##   --mount=from=out-cfe125327cacaf16,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde-cfe125327cacaf16/out,source=/ \
+##   --mount=from=out-badeea6458a799e8,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_core-badeea6458a799e8/out,source=/ \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=toml_datetime \
 ##         CARGO_INCREMENTAL=0 \
@@ -11149,8 +18580,6 @@ COPY --link --from=dep-n-toml_datetime-0.6.11-ba469190e2df5ae2 /tmp/clis-ntpd_1-
 ##         CARGO_PKG_VERSION_PATCH=11 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         NTPD_RS_GIT_DATE=2025-05-09 \
-##         NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
 ##       rustc --crate-name toml_datetime --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --warn rust_2018_idioms --warn clippy'::zero_sized_map_values' --warn clippy'::wildcard_imports' --warn clippy'::verbose_file_reads' --warn unused_qualifications --warn unused_macro_rules --warn unused_lifetimes --warn unsafe_op_in_unsafe_fn --warn unreachable_pub --allow unnameable_types --warn clippy'::uninlined_format_args' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::todo' --warn clippy'::string_to_string' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_add_assign' --warn clippy'::string_add' --warn clippy'::str_to_string' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::self_named_module_files' --warn clippy'::same_functions_in_if_condition' --allow clippy'::result_large_err' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::ref_option_ref' --warn clippy'::redundant_feature_names' --warn clippy'::rc_mutex' --warn clippy'::ptr_as_ptr' --warn clippy'::path_buf_push_overwrite' --warn clippy'::negative_feature_names' --warn clippy'::needless_for_each' --allow clippy'::needless_continue' --warn clippy'::mutex_integer' --warn clippy'::mem_forget' --warn clippy'::macro_use_imports' --warn clippy'::lossy_float_literal' --warn clippy'::linkedlist' --allow clippy'::let_and_return' --warn clippy'::large_types_passed_by_value' --warn clippy'::large_stack_arrays' --warn clippy'::large_digit_groups' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::infinite_loop' --warn clippy'::inefficient_to_string' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::imprecise_flops' --warn clippy'::implicit_clone' --allow clippy'::if_same_then_else' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::fn_params_excessive_bools' --warn clippy'::float_cmp_const' --warn clippy'::flat_map_option' --warn clippy'::filter_map_next' --warn clippy'::fallible_impl_from' --warn clippy'::explicit_into_iter_loop' --warn clippy'::explicit_deref_methods' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::enum_glob_use' --warn clippy'::empty_enum' --warn clippy'::doc_markdown' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::dbg_macro' --warn clippy'::create_dir' --allow clippy'::collapsible_else_if' --warn clippy'::checked_conversions' --allow clippy'::branches_sharing_code' --allow clippy'::bool_assert_comparison' --cfg feature'="serde"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("serde"))' -C metadata'=d2ab36b2e5db8f69' -C extra-filename'=-ba469190e2df5ae2' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern serde'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libserde-d9535ff1afbc9e07.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/toml_datetime-0.6.11/src/lib.rs \
 ##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-ba469190e2df5ae2-stdout \
 ##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-ba469190e2df5ae2-stderr \
@@ -11193,8 +18622,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=2 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        NTPD_RS_GIT_DATE=2025-05-09 \
-        NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
       rustc --crate-name equivalent --edition 2015 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=d1f9e03f5d4d45a1' -C extra-filename'=-4ab91e794913659c' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/equivalent-1.0.2/src/lib.rs \
         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-4ab91e794913659c-stdout \
         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-4ab91e794913659c-stderr \
@@ -11260,8 +18687,6 @@ COPY --link --from=dep-n-equivalent-1.0.2-4ab91e794913659c /tmp/clis-ntpd_1-7-0-
 ##         CARGO_PKG_VERSION_PATCH=2 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         NTPD_RS_GIT_DATE=2025-05-09 \
-##         NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
 ##       rustc --crate-name equivalent --edition 2015 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=d1f9e03f5d4d45a1' -C extra-filename'=-4ab91e794913659c' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/equivalent-1.0.2/src/lib.rs \
 ##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-4ab91e794913659c-stdout \
 ##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-4ab91e794913659c-stderr \
@@ -11304,8 +18729,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        NTPD_RS_GIT_DATE=2025-05-09 \
-        NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
       rustc --crate-name hashbrown --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "allocator-api2", "core", "default", "default-hasher", "equivalent", "inline-more", "nightly", "raw-entry", "rayon", "rustc-dep-of-std", "rustc-internal-api", "serde"))' -C metadata'=25d4e2edd6f47b88' -C extra-filename'=-f3886a4b366ef278' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/hashbrown-0.16.0/src/lib.rs \
         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-f3886a4b366ef278-stdout \
         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-f3886a4b366ef278-stderr \
@@ -11371,8 +18794,6 @@ COPY --link --from=dep-n-hashbrown-0.16.0-f3886a4b366ef278 /tmp/clis-ntpd_1-7-0-
 ##         CARGO_PKG_VERSION_PATCH=0 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         NTPD_RS_GIT_DATE=2025-05-09 \
-##         NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
 ##       rustc --crate-name hashbrown --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "allocator-api2", "core", "default", "default-hasher", "equivalent", "inline-more", "nightly", "raw-entry", "rayon", "rustc-dep-of-std", "rustc-internal-api", "serde"))' -C metadata'=25d4e2edd6f47b88' -C extra-filename'=-f3886a4b366ef278' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/hashbrown-0.16.0/src/lib.rs \
 ##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-f3886a4b366ef278-stdout \
 ##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-f3886a4b366ef278-stderr \
@@ -11419,8 +18840,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=4 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        NTPD_RS_GIT_DATE=2025-05-09 \
-        NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
       rustc --crate-name indexmap --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --allow clippy'::style' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("arbitrary", "borsh", "default", "quickcheck", "rayon", "serde", "std", "sval", "test_debug"))' -C metadata'=2e5b3806010a545f' -C extra-filename'=-a726055e510b5710' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern equivalent'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libequivalent-4ab91e794913659c.rmeta' --extern hashbrown'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libhashbrown-f3886a4b366ef278.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/indexmap-2.11.4/src/lib.rs \
         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-a726055e510b5710-stdout \
         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-a726055e510b5710-stderr \
@@ -11510,8 +18929,6 @@ COPY --link --from=dep-n-indexmap-2.11.4-a726055e510b5710 /tmp/clis-ntpd_1-7-0-a
 ##         CARGO_PKG_VERSION_PATCH=4 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         NTPD_RS_GIT_DATE=2025-05-09 \
-##         NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
 ##       rustc --crate-name indexmap --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --allow clippy'::style' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("arbitrary", "borsh", "default", "quickcheck", "rayon", "serde", "std", "sval", "test_debug"))' -C metadata'=2e5b3806010a545f' -C extra-filename'=-a726055e510b5710' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern equivalent'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libequivalent-4ab91e794913659c.rmeta' --extern hashbrown'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libhashbrown-f3886a4b366ef278.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/indexmap-2.11.4/src/lib.rs \
 ##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-a726055e510b5710-stdout \
 ##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-a726055e510b5710-stderr \
@@ -11554,8 +18971,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=13 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        NTPD_RS_GIT_DATE=2025-05-09 \
-        NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
       rustc --crate-name winnow --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --warn rust_2018_idioms --warn clippy'::zero_sized_map_values' --allow clippy'::wildcard_imports' --warn clippy'::verbose_file_reads' --warn unused_macro_rules --warn unused_lifetimes --warn unsafe_op_in_unsafe_fn --warn unreachable_pub --warn unnameable_types --warn clippy'::uninlined_format_args' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::todo' --warn clippy'::string_to_string' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_add_assign' --warn clippy'::string_add' --warn clippy'::str_to_string' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::same_functions_in_if_condition' --allow clippy'::result_large_err' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::ref_option_ref' --warn clippy'::redundant_feature_names' --warn clippy'::rc_mutex' --warn clippy'::ptr_as_ptr' --warn clippy'::path_buf_push_overwrite' --warn clippy'::negative_feature_names' --warn clippy'::needless_for_each' --allow clippy'::needless_continue' --warn clippy'::mutex_integer' --warn clippy'::mem_forget' --warn clippy'::macro_use_imports' --warn clippy'::lossy_float_literal' --warn clippy'::linkedlist' --allow clippy'::let_and_return' --warn clippy'::large_types_passed_by_value' --warn clippy'::large_stack_arrays' --warn clippy'::large_digit_groups' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::infinite_loop' --warn clippy'::inefficient_to_string' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::imprecise_flops' --warn clippy'::implicit_clone' --allow clippy'::if_same_then_else' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::fn_params_excessive_bools' --warn clippy'::float_cmp_const' --warn clippy'::flat_map_option' --warn clippy'::filter_map_next' --warn clippy'::fallible_impl_from' --warn clippy'::explicit_into_iter_loop' --warn clippy'::explicit_deref_methods' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::enum_glob_use' --warn clippy'::empty_enum' --warn clippy'::doc_markdown' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::dbg_macro' --warn clippy'::create_dir' --allow clippy'::collapsible_else_if' --warn clippy'::checked_conversions' --allow clippy'::branches_sharing_code' --allow clippy'::bool_assert_comparison' --cfg feature'="alloc"' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "debug", "default", "simd", "std", "unstable-doc", "unstable-recover"))' -C metadata'=37e1f10be761bdfc' -C extra-filename'=-876f7323b6273c7b' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/winnow-0.7.13/src/lib.rs \
         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-876f7323b6273c7b-stdout \
         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-876f7323b6273c7b-stderr \
@@ -11621,8 +19036,6 @@ COPY --link --from=dep-n-winnow-0.7.13-876f7323b6273c7b /tmp/clis-ntpd_1-7-0-alp
 ##         CARGO_PKG_VERSION_PATCH=13 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         NTPD_RS_GIT_DATE=2025-05-09 \
-##         NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
 ##       rustc --crate-name winnow --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --warn rust_2018_idioms --warn clippy'::zero_sized_map_values' --allow clippy'::wildcard_imports' --warn clippy'::verbose_file_reads' --warn unused_macro_rules --warn unused_lifetimes --warn unsafe_op_in_unsafe_fn --warn unreachable_pub --warn unnameable_types --warn clippy'::uninlined_format_args' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::todo' --warn clippy'::string_to_string' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_add_assign' --warn clippy'::string_add' --warn clippy'::str_to_string' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::same_functions_in_if_condition' --allow clippy'::result_large_err' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::ref_option_ref' --warn clippy'::redundant_feature_names' --warn clippy'::rc_mutex' --warn clippy'::ptr_as_ptr' --warn clippy'::path_buf_push_overwrite' --warn clippy'::negative_feature_names' --warn clippy'::needless_for_each' --allow clippy'::needless_continue' --warn clippy'::mutex_integer' --warn clippy'::mem_forget' --warn clippy'::macro_use_imports' --warn clippy'::lossy_float_literal' --warn clippy'::linkedlist' --allow clippy'::let_and_return' --warn clippy'::large_types_passed_by_value' --warn clippy'::large_stack_arrays' --warn clippy'::large_digit_groups' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::infinite_loop' --warn clippy'::inefficient_to_string' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::imprecise_flops' --warn clippy'::implicit_clone' --allow clippy'::if_same_then_else' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::fn_params_excessive_bools' --warn clippy'::float_cmp_const' --warn clippy'::flat_map_option' --warn clippy'::filter_map_next' --warn clippy'::fallible_impl_from' --warn clippy'::explicit_into_iter_loop' --warn clippy'::explicit_deref_methods' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::enum_glob_use' --warn clippy'::empty_enum' --warn clippy'::doc_markdown' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::dbg_macro' --warn clippy'::create_dir' --allow clippy'::collapsible_else_if' --warn clippy'::checked_conversions' --allow clippy'::branches_sharing_code' --allow clippy'::bool_assert_comparison' --cfg feature'="alloc"' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "debug", "default", "simd", "std", "unstable-doc", "unstable-recover"))' -C metadata'=37e1f10be761bdfc' -C extra-filename'=-876f7323b6273c7b' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/winnow-0.7.13/src/lib.rs \
 ##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-876f7323b6273c7b-stdout \
 ##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-876f7323b6273c7b-stderr \
@@ -11670,6 +19083,8 @@ RUN \
   --mount=from=out-ba469190e2df5ae2,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtoml_datetime-ba469190e2df5ae2.rmeta,source=/libtoml_datetime-ba469190e2df5ae2.rmeta \
   --mount=from=out-876f7323b6273c7b,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libwinnow-876f7323b6273c7b.rlib,source=/libwinnow-876f7323b6273c7b.rlib \
   --mount=from=out-876f7323b6273c7b,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libwinnow-876f7323b6273c7b.rmeta,source=/libwinnow-876f7323b6273c7b.rmeta \
+  --mount=from=out-cfe125327cacaf16,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde-cfe125327cacaf16/out,source=/ \
+  --mount=from=out-badeea6458a799e8,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_core-badeea6458a799e8/out,source=/ \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=toml_edit \
         CARGO_INCREMENTAL=0 \
@@ -11690,8 +19105,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=27 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        NTPD_RS_GIT_DATE=2025-05-09 \
-        NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
       rustc --crate-name toml_edit --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --warn rust_2018_idioms --warn clippy'::zero_sized_map_values' --warn clippy'::wildcard_imports' --warn clippy'::verbose_file_reads' --warn unused_qualifications --warn unused_macro_rules --warn unused_lifetimes --warn unsafe_op_in_unsafe_fn --warn unreachable_pub --allow unnameable_types --warn clippy'::uninlined_format_args' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::todo' --warn clippy'::string_to_string' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_add_assign' --warn clippy'::string_add' --warn clippy'::str_to_string' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::self_named_module_files' --warn clippy'::same_functions_in_if_condition' --allow clippy'::result_large_err' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::ref_option_ref' --warn clippy'::redundant_feature_names' --warn clippy'::rc_mutex' --warn clippy'::ptr_as_ptr' --warn clippy'::path_buf_push_overwrite' --warn clippy'::negative_feature_names' --warn clippy'::needless_for_each' --allow clippy'::needless_continue' --warn clippy'::mutex_integer' --warn clippy'::mem_forget' --warn clippy'::macro_use_imports' --warn clippy'::lossy_float_literal' --warn clippy'::linkedlist' --allow clippy'::let_and_return' --warn clippy'::large_types_passed_by_value' --warn clippy'::large_stack_arrays' --warn clippy'::large_digit_groups' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::infinite_loop' --warn clippy'::inefficient_to_string' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::imprecise_flops' --warn clippy'::implicit_clone' --allow clippy'::if_same_then_else' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::fn_params_excessive_bools' --warn clippy'::float_cmp_const' --warn clippy'::flat_map_option' --warn clippy'::filter_map_next' --warn clippy'::fallible_impl_from' --warn clippy'::explicit_into_iter_loop' --warn clippy'::explicit_deref_methods' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::enum_glob_use' --warn clippy'::empty_enum' --warn clippy'::doc_markdown' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::dbg_macro' --warn clippy'::create_dir' --allow clippy'::collapsible_else_if' --warn clippy'::checked_conversions' --allow clippy'::branches_sharing_code' --allow clippy'::bool_assert_comparison' --cfg feature'="parse"' --cfg feature'="serde"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "display", "parse", "perf", "serde", "unbounded", "unstable-debug"))' -C metadata'=772afe54de999606' -C extra-filename'=-960c257e979200c0' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern indexmap'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libindexmap-a726055e510b5710.rmeta' --extern serde'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libserde-d9535ff1afbc9e07.rmeta' --extern serde_spanned'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libserde_spanned-9efeb8ba5429dc73.rmeta' --extern toml_datetime'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtoml_datetime-ba469190e2df5ae2.rmeta' --extern winnow'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libwinnow-876f7323b6273c7b.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/toml_edit-0.22.27/src/lib.rs \
         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-960c257e979200c0-stdout \
         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-960c257e979200c0-stderr \
@@ -11707,14 +19120,28 @@ COPY --link --from=dep-n-toml_edit-0.22.27-960c257e979200c0 /tmp/clis-ntpd_1-7-0
 ##     "f3886a4b366ef278",
 ##     "d9535ff1afbc9e07",
 ##     "1bc4bef1fdca14c4",
+##     "51979789556dbb03",
 ##     "b925936788ba7057",
 ##     "30dd1c0184916507",
 ##     "d90ab847601a2565",
+##     "ab9829a4a8b7788d",
 ##     "41756a17d2ad9431",
+##     "c63aae50eb6f480a",
 ##     "8f37513da063fb69",
+##     "9e59eb4de4feaddb",
 ##     "9efeb8ba5429dc73",
 ##     "ba469190e2df5ae2",
 ##     "876f7323b6273c7b",
+##     "badeea6458a799e8",
+##     "9a025c1b756d91f9",
+##     "edf8f660a3d601cc",
+##     "cfe125327cacaf16",
+## ]
+## buildrs_results = [
+##     "badeea6458a799e8",
+##     "9a025c1b756d91f9",
+##     "edf8f660a3d601cc",
+##     "cfe125327cacaf16",
 ## ]
 ## writes = [
 ##     "libtoml_edit-960c257e979200c0.rlib",
@@ -11841,13 +19268,13 @@ COPY --link --from=dep-n-toml_edit-0.22.27-960c257e979200c0 /tmp/clis-ntpd_1-7-0
 ## from = "out-876f7323b6273c7b"
 ## xtern = "libwinnow-876f7323b6273c7b.rmeta"
 ##
-## [[contexts]]
-## name = "crate_out-cfe125327cacaf16"
-## uri = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde-cfe125327cacaf16/out"
+## [[mounts]]
+## name = "out-cfe125327cacaf16"
+## mount = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde-cfe125327cacaf16/out"
 ##
-## [[contexts]]
-## name = "crate_out-badeea6458a799e8"
-## uri = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_core-badeea6458a799e8/out"
+## [[mounts]]
+## name = "out-badeea6458a799e8"
+## mount = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_core-badeea6458a799e8/out"
 ##
 ## [[stages]]
 ##
@@ -11899,6 +19326,8 @@ COPY --link --from=dep-n-toml_edit-0.22.27-960c257e979200c0 /tmp/clis-ntpd_1-7-0
 ##   --mount=from=out-ba469190e2df5ae2,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtoml_datetime-ba469190e2df5ae2.rmeta,source=/libtoml_datetime-ba469190e2df5ae2.rmeta \
 ##   --mount=from=out-876f7323b6273c7b,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libwinnow-876f7323b6273c7b.rlib,source=/libwinnow-876f7323b6273c7b.rlib \
 ##   --mount=from=out-876f7323b6273c7b,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libwinnow-876f7323b6273c7b.rmeta,source=/libwinnow-876f7323b6273c7b.rmeta \
+##   --mount=from=out-cfe125327cacaf16,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde-cfe125327cacaf16/out,source=/ \
+##   --mount=from=out-badeea6458a799e8,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_core-badeea6458a799e8/out,source=/ \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=toml_edit \
 ##         CARGO_INCREMENTAL=0 \
@@ -11919,8 +19348,6 @@ COPY --link --from=dep-n-toml_edit-0.22.27-960c257e979200c0 /tmp/clis-ntpd_1-7-0
 ##         CARGO_PKG_VERSION_PATCH=27 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         NTPD_RS_GIT_DATE=2025-05-09 \
-##         NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
 ##       rustc --crate-name toml_edit --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --warn rust_2018_idioms --warn clippy'::zero_sized_map_values' --warn clippy'::wildcard_imports' --warn clippy'::verbose_file_reads' --warn unused_qualifications --warn unused_macro_rules --warn unused_lifetimes --warn unsafe_op_in_unsafe_fn --warn unreachable_pub --allow unnameable_types --warn clippy'::uninlined_format_args' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::todo' --warn clippy'::string_to_string' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_add_assign' --warn clippy'::string_add' --warn clippy'::str_to_string' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::self_named_module_files' --warn clippy'::same_functions_in_if_condition' --allow clippy'::result_large_err' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::ref_option_ref' --warn clippy'::redundant_feature_names' --warn clippy'::rc_mutex' --warn clippy'::ptr_as_ptr' --warn clippy'::path_buf_push_overwrite' --warn clippy'::negative_feature_names' --warn clippy'::needless_for_each' --allow clippy'::needless_continue' --warn clippy'::mutex_integer' --warn clippy'::mem_forget' --warn clippy'::macro_use_imports' --warn clippy'::lossy_float_literal' --warn clippy'::linkedlist' --allow clippy'::let_and_return' --warn clippy'::large_types_passed_by_value' --warn clippy'::large_stack_arrays' --warn clippy'::large_digit_groups' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::infinite_loop' --warn clippy'::inefficient_to_string' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::imprecise_flops' --warn clippy'::implicit_clone' --allow clippy'::if_same_then_else' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::fn_params_excessive_bools' --warn clippy'::float_cmp_const' --warn clippy'::flat_map_option' --warn clippy'::filter_map_next' --warn clippy'::fallible_impl_from' --warn clippy'::explicit_into_iter_loop' --warn clippy'::explicit_deref_methods' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::enum_glob_use' --warn clippy'::empty_enum' --warn clippy'::doc_markdown' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::dbg_macro' --warn clippy'::create_dir' --allow clippy'::collapsible_else_if' --warn clippy'::checked_conversions' --allow clippy'::branches_sharing_code' --allow clippy'::bool_assert_comparison' --cfg feature'="parse"' --cfg feature'="serde"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "display", "parse", "perf", "serde", "unbounded", "unstable-debug"))' -C metadata'=772afe54de999606' -C extra-filename'=-960c257e979200c0' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern indexmap'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libindexmap-a726055e510b5710.rmeta' --extern serde'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libserde-d9535ff1afbc9e07.rmeta' --extern serde_spanned'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libserde_spanned-9efeb8ba5429dc73.rmeta' --extern toml_datetime'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtoml_datetime-ba469190e2df5ae2.rmeta' --extern winnow'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libwinnow-876f7323b6273c7b.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/toml_edit-0.22.27/src/lib.rs \
 ##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-960c257e979200c0-stdout \
 ##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-960c257e979200c0-stderr \
@@ -11970,6 +19397,8 @@ RUN \
   --mount=from=out-f3886a4b366ef278,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libhashbrown-f3886a4b366ef278.rmeta,source=/libhashbrown-f3886a4b366ef278.rmeta \
   --mount=from=out-876f7323b6273c7b,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libwinnow-876f7323b6273c7b.rlib,source=/libwinnow-876f7323b6273c7b.rlib \
   --mount=from=out-876f7323b6273c7b,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libwinnow-876f7323b6273c7b.rmeta,source=/libwinnow-876f7323b6273c7b.rmeta \
+  --mount=from=out-cfe125327cacaf16,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde-cfe125327cacaf16/out,source=/ \
+  --mount=from=out-badeea6458a799e8,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_core-badeea6458a799e8/out,source=/ \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=toml \
         CARGO_INCREMENTAL=0 \
@@ -11993,8 +19422,6 @@ facilitate deserializing and serializing Rust structures.\
         CARGO_PKG_VERSION_PATCH=23 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        NTPD_RS_GIT_DATE=2025-05-09 \
-        NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
       rustc --crate-name toml --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --warn rust_2018_idioms --warn clippy'::zero_sized_map_values' --warn clippy'::wildcard_imports' --warn clippy'::verbose_file_reads' --warn unused_qualifications --warn unused_macro_rules --warn unused_lifetimes --warn unsafe_op_in_unsafe_fn --warn unreachable_pub --allow unnameable_types --warn clippy'::uninlined_format_args' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::todo' --warn clippy'::string_to_string' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_add_assign' --warn clippy'::string_add' --warn clippy'::str_to_string' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::self_named_module_files' --warn clippy'::same_functions_in_if_condition' --allow clippy'::result_large_err' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::ref_option_ref' --warn clippy'::redundant_feature_names' --warn clippy'::rc_mutex' --warn clippy'::ptr_as_ptr' --warn clippy'::path_buf_push_overwrite' --warn clippy'::negative_feature_names' --warn clippy'::needless_for_each' --allow clippy'::needless_continue' --warn clippy'::mutex_integer' --warn clippy'::mem_forget' --warn clippy'::macro_use_imports' --warn clippy'::lossy_float_literal' --warn clippy'::linkedlist' --allow clippy'::let_and_return' --warn clippy'::large_types_passed_by_value' --warn clippy'::large_stack_arrays' --warn clippy'::large_digit_groups' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::infinite_loop' --warn clippy'::inefficient_to_string' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::imprecise_flops' --warn clippy'::implicit_clone' --allow clippy'::if_same_then_else' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::fn_params_excessive_bools' --warn clippy'::float_cmp_const' --warn clippy'::flat_map_option' --warn clippy'::filter_map_next' --warn clippy'::fallible_impl_from' --warn clippy'::explicit_into_iter_loop' --warn clippy'::explicit_deref_methods' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::enum_glob_use' --warn clippy'::empty_enum' --warn clippy'::doc_markdown' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::dbg_macro' --warn clippy'::create_dir' --allow clippy'::collapsible_else_if' --warn clippy'::checked_conversions' --allow clippy'::branches_sharing_code' --allow clippy'::bool_assert_comparison' --cfg feature'="parse"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "display", "indexmap", "parse", "preserve_order", "unbounded"))' -C metadata'=07862ef278a369fb' -C extra-filename'=-d7e70c2bc4581f22' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern serde'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libserde-d9535ff1afbc9e07.rmeta' --extern serde_spanned'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libserde_spanned-9efeb8ba5429dc73.rmeta' --extern toml_datetime'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtoml_datetime-ba469190e2df5ae2.rmeta' --extern toml_edit'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtoml_edit-960c257e979200c0.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/toml-0.8.23/src/lib.rs \
         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-d7e70c2bc4581f22-stdout \
         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-d7e70c2bc4581f22-stderr \
@@ -12007,11 +19434,15 @@ COPY --link --from=dep-n-toml-0.8.23-d7e70c2bc4581f22 /tmp/clis-ntpd_1-7-0-alpha
 ## deps = [
 ##     "d9535ff1afbc9e07",
 ##     "1bc4bef1fdca14c4",
+##     "51979789556dbb03",
 ##     "b925936788ba7057",
 ##     "30dd1c0184916507",
 ##     "d90ab847601a2565",
+##     "ab9829a4a8b7788d",
 ##     "41756a17d2ad9431",
+##     "c63aae50eb6f480a",
 ##     "8f37513da063fb69",
+##     "9e59eb4de4feaddb",
 ##     "9efeb8ba5429dc73",
 ##     "ba469190e2df5ae2",
 ##     "960c257e979200c0",
@@ -12019,6 +19450,16 @@ COPY --link --from=dep-n-toml-0.8.23-d7e70c2bc4581f22 /tmp/clis-ntpd_1-7-0-alpha
 ##     "4ab91e794913659c",
 ##     "f3886a4b366ef278",
 ##     "876f7323b6273c7b",
+##     "badeea6458a799e8",
+##     "9a025c1b756d91f9",
+##     "edf8f660a3d601cc",
+##     "cfe125327cacaf16",
+## ]
+## buildrs_results = [
+##     "badeea6458a799e8",
+##     "9a025c1b756d91f9",
+##     "edf8f660a3d601cc",
+##     "cfe125327cacaf16",
 ## ]
 ## writes = [
 ##     "libtoml-d7e70c2bc4581f22.rlib",
@@ -12139,13 +19580,13 @@ COPY --link --from=dep-n-toml-0.8.23-d7e70c2bc4581f22 /tmp/clis-ntpd_1-7-0-alpha
 ## from = "out-876f7323b6273c7b"
 ## xtern = "libwinnow-876f7323b6273c7b.rmeta"
 ##
-## [[contexts]]
-## name = "crate_out-cfe125327cacaf16"
-## uri = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde-cfe125327cacaf16/out"
+## [[mounts]]
+## name = "out-cfe125327cacaf16"
+## mount = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde-cfe125327cacaf16/out"
 ##
-## [[contexts]]
-## name = "crate_out-badeea6458a799e8"
-## uri = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_core-badeea6458a799e8/out"
+## [[mounts]]
+## name = "out-badeea6458a799e8"
+## mount = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_core-badeea6458a799e8/out"
 ##
 ## [[stages]]
 ##
@@ -12199,6 +19640,8 @@ COPY --link --from=dep-n-toml-0.8.23-d7e70c2bc4581f22 /tmp/clis-ntpd_1-7-0-alpha
 ##   --mount=from=out-f3886a4b366ef278,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libhashbrown-f3886a4b366ef278.rmeta,source=/libhashbrown-f3886a4b366ef278.rmeta \
 ##   --mount=from=out-876f7323b6273c7b,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libwinnow-876f7323b6273c7b.rlib,source=/libwinnow-876f7323b6273c7b.rlib \
 ##   --mount=from=out-876f7323b6273c7b,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libwinnow-876f7323b6273c7b.rmeta,source=/libwinnow-876f7323b6273c7b.rmeta \
+##   --mount=from=out-cfe125327cacaf16,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde-cfe125327cacaf16/out,source=/ \
+##   --mount=from=out-badeea6458a799e8,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_core-badeea6458a799e8/out,source=/ \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=toml \
 ##         CARGO_INCREMENTAL=0 \
@@ -12222,8 +19665,6 @@ COPY --link --from=dep-n-toml-0.8.23-d7e70c2bc4581f22 /tmp/clis-ntpd_1-7-0-alpha
 ##         CARGO_PKG_VERSION_PATCH=23 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         NTPD_RS_GIT_DATE=2025-05-09 \
-##         NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
 ##       rustc --crate-name toml --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --warn rust_2018_idioms --warn clippy'::zero_sized_map_values' --warn clippy'::wildcard_imports' --warn clippy'::verbose_file_reads' --warn unused_qualifications --warn unused_macro_rules --warn unused_lifetimes --warn unsafe_op_in_unsafe_fn --warn unreachable_pub --allow unnameable_types --warn clippy'::uninlined_format_args' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::todo' --warn clippy'::string_to_string' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_add_assign' --warn clippy'::string_add' --warn clippy'::str_to_string' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::self_named_module_files' --warn clippy'::same_functions_in_if_condition' --allow clippy'::result_large_err' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::ref_option_ref' --warn clippy'::redundant_feature_names' --warn clippy'::rc_mutex' --warn clippy'::ptr_as_ptr' --warn clippy'::path_buf_push_overwrite' --warn clippy'::negative_feature_names' --warn clippy'::needless_for_each' --allow clippy'::needless_continue' --warn clippy'::mutex_integer' --warn clippy'::mem_forget' --warn clippy'::macro_use_imports' --warn clippy'::lossy_float_literal' --warn clippy'::linkedlist' --allow clippy'::let_and_return' --warn clippy'::large_types_passed_by_value' --warn clippy'::large_stack_arrays' --warn clippy'::large_digit_groups' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::infinite_loop' --warn clippy'::inefficient_to_string' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::imprecise_flops' --warn clippy'::implicit_clone' --allow clippy'::if_same_then_else' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::fn_params_excessive_bools' --warn clippy'::float_cmp_const' --warn clippy'::flat_map_option' --warn clippy'::filter_map_next' --warn clippy'::fallible_impl_from' --warn clippy'::explicit_into_iter_loop' --warn clippy'::explicit_deref_methods' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::enum_glob_use' --warn clippy'::empty_enum' --warn clippy'::doc_markdown' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::dbg_macro' --warn clippy'::create_dir' --allow clippy'::collapsible_else_if' --warn clippy'::checked_conversions' --allow clippy'::branches_sharing_code' --allow clippy'::bool_assert_comparison' --cfg feature'="parse"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "display", "indexmap", "parse", "preserve_order", "unbounded"))' -C metadata'=07862ef278a369fb' -C extra-filename'=-d7e70c2bc4581f22' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern serde'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libserde-d9535ff1afbc9e07.rmeta' --extern serde_spanned'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libserde_spanned-9efeb8ba5429dc73.rmeta' --extern toml_datetime'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtoml_datetime-ba469190e2df5ae2.rmeta' --extern toml_edit'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtoml_edit-960c257e979200c0.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/toml-0.8.23/src/lib.rs \
 ##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-d7e70c2bc4581f22-stdout \
 ##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-d7e70c2bc4581f22-stderr \
@@ -12266,8 +19707,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        NTPD_RS_GIT_DATE=2025-05-09 \
-        NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
       rustc --crate-name nu_ansi_term --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("derive_serde_style", "gnu_legacy", "serde"))' -C metadata'=0614196077697a8c' -C extra-filename'=-6610440eb99272a1' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nu-ansi-term-0.50.1/src/lib.rs \
         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-6610440eb99272a1-stdout \
         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-6610440eb99272a1-stderr \
@@ -12333,8 +19772,6 @@ COPY --link --from=dep-n-nu-ansi-term-0.50.1-6610440eb99272a1 /tmp/clis-ntpd_1-7
 ##         CARGO_PKG_VERSION_PATCH=1 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         NTPD_RS_GIT_DATE=2025-05-09 \
-##         NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
 ##       rustc --crate-name nu_ansi_term --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("derive_serde_style", "gnu_legacy", "serde"))' -C metadata'=0614196077697a8c' -C extra-filename'=-6610440eb99272a1' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nu-ansi-term-0.50.1/src/lib.rs \
 ##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-6610440eb99272a1-stdout \
 ##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-6610440eb99272a1-stderr \
@@ -12377,8 +19814,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        NTPD_RS_GIT_DATE=2025-05-09 \
-        NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
       rustc --crate-name lazy_static --edition 2015 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("spin", "spin_no_std"))' -C metadata'=13f840a320853b69' -C extra-filename'=-7475590c5cec2ded' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/lazy_static-1.5.0/src/lib.rs \
         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-7475590c5cec2ded-stdout \
         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-7475590c5cec2ded-stderr \
@@ -12446,8 +19881,6 @@ COPY --link --from=dep-n-lazy_static-1.5.0-7475590c5cec2ded /tmp/clis-ntpd_1-7-0
 ##         CARGO_PKG_VERSION_PATCH=0 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         NTPD_RS_GIT_DATE=2025-05-09 \
-##         NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
 ##       rustc --crate-name lazy_static --edition 2015 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("spin", "spin_no_std"))' -C metadata'=13f840a320853b69' -C extra-filename'=-7475590c5cec2ded' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/lazy_static-1.5.0/src/lib.rs \
 ##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-7475590c5cec2ded-stdout \
 ##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-7475590c5cec2ded-stderr \
@@ -12493,8 +19926,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=7 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        NTPD_RS_GIT_DATE=2025-05-09 \
-        NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
       rustc --crate-name sharded_slab --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("loom"))' -C metadata'=25456a8728549e8b' -C extra-filename'=-4d66c3c554384830' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern lazy_static'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblazy_static-7475590c5cec2ded.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/sharded-slab-0.1.7/src/lib.rs \
         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-4d66c3c554384830-stdout \
         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-4d66c3c554384830-stderr \
@@ -12678,8 +20109,6 @@ COPY --link --from=dep-n-sharded-slab-0.1.7-4d66c3c554384830 /tmp/clis-ntpd_1-7-
 ##         CARGO_PKG_VERSION_PATCH=7 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         NTPD_RS_GIT_DATE=2025-05-09 \
-##         NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
 ##       rustc --crate-name sharded_slab --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("loom"))' -C metadata'=25456a8728549e8b' -C extra-filename'=-4d66c3c554384830' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern lazy_static'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblazy_static-7475590c5cec2ded.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/sharded-slab-0.1.7/src/lib.rs \
 ##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-4d66c3c554384830-stdout \
 ##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-4d66c3c554384830-stderr \
@@ -12724,8 +20153,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=9 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        NTPD_RS_GIT_DATE=2025-05-09 \
-        NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
       rustc --crate-name thread_local --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("nightly"))' -C metadata'=b4a1bcfdcb0928a9' -C extra-filename'=-42c7ea5a78f3c604' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern cfg_if'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcfg_if-5a4301c208f24f4c.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thread_local-1.1.9/src/lib.rs \
         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-42c7ea5a78f3c604-stdout \
         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-42c7ea5a78f3c604-stderr \
@@ -12807,8 +20234,6 @@ COPY --link --from=dep-n-thread_local-1.1.9-42c7ea5a78f3c604 /tmp/clis-ntpd_1-7-
 ##         CARGO_PKG_VERSION_PATCH=9 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         NTPD_RS_GIT_DATE=2025-05-09 \
-##         NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
 ##       rustc --crate-name thread_local --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("nightly"))' -C metadata'=b4a1bcfdcb0928a9' -C extra-filename'=-42c7ea5a78f3c604' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern cfg_if'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcfg_if-5a4301c208f24f4c.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thread_local-1.1.9/src/lib.rs \
 ##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-42c7ea5a78f3c604-stdout \
 ##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-42c7ea5a78f3c604-stderr \
@@ -12866,8 +20291,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=20 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        NTPD_RS_GIT_DATE=2025-05-09 \
-        NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
       rustc --crate-name tracing_subscriber --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --warn unexpected_cfgs --check-cfg cfg'(flaky_tests)' --check-cfg cfg'(tracing_unstable)' --check-cfg cfg'(unsound_local_offset)' --cfg feature'="alloc"' --cfg feature'="ansi"' --cfg feature'="fmt"' --cfg feature'="nu-ansi-term"' --cfg feature'="registry"' --cfg feature'="sharded-slab"' --cfg feature'="std"' --cfg feature'="thread_local"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "ansi", "chrono", "default", "env-filter", "fmt", "json", "local-time", "matchers", "nu-ansi-term", "once_cell", "parking_lot", "regex", "registry", "serde", "serde_json", "sharded-slab", "smallvec", "std", "thread_local", "time", "tracing", "tracing-log", "tracing-serde", "valuable", "valuable-serde", "valuable_crate"))' -C metadata'=14b00f3ec31e2d2e' -C extra-filename'=-b671934748d136d0' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern nu_ansi_term'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libnu_ansi_term-6610440eb99272a1.rmeta' --extern sharded_slab'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libsharded_slab-4d66c3c554384830.rmeta' --extern thread_local'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libthread_local-42c7ea5a78f3c604.rmeta' --extern tracing_core'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtracing_core-2bf32bfc77d4a425.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/tracing-subscriber-0.3.20/src/lib.rs \
         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-b671934748d136d0-stdout \
         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-b671934748d136d0-stderr \
@@ -13013,8 +20436,6 @@ COPY --link --from=dep-n-tracing-subscriber-0.3.20-b671934748d136d0 /tmp/clis-nt
 ##         CARGO_PKG_VERSION_PATCH=20 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         NTPD_RS_GIT_DATE=2025-05-09 \
-##         NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
 ##       rustc --crate-name tracing_subscriber --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --warn unexpected_cfgs --check-cfg cfg'(flaky_tests)' --check-cfg cfg'(tracing_unstable)' --check-cfg cfg'(unsound_local_offset)' --cfg feature'="alloc"' --cfg feature'="ansi"' --cfg feature'="fmt"' --cfg feature'="nu-ansi-term"' --cfg feature'="registry"' --cfg feature'="sharded-slab"' --cfg feature'="std"' --cfg feature'="thread_local"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "ansi", "chrono", "default", "env-filter", "fmt", "json", "local-time", "matchers", "nu-ansi-term", "once_cell", "parking_lot", "regex", "registry", "serde", "serde_json", "sharded-slab", "smallvec", "std", "thread_local", "time", "tracing", "tracing-log", "tracing-serde", "valuable", "valuable-serde", "valuable_crate"))' -C metadata'=14b00f3ec31e2d2e' -C extra-filename'=-b671934748d136d0' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern nu_ansi_term'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libnu_ansi_term-6610440eb99272a1.rmeta' --extern sharded_slab'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libsharded_slab-4d66c3c554384830.rmeta' --extern thread_local'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libthread_local-42c7ea5a78f3c604.rmeta' --extern tracing_core'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtracing_core-2bf32bfc77d4a425.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/tracing-subscriber-0.3.20/src/lib.rs \
 ##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-b671934748d136d0-stdout \
 ##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-b671934748d136d0-stderr \
@@ -13032,6 +20453,295 @@ COPY --link --from=dep-n-tracing-subscriber-0.3.20-b671934748d136d0 /tmp/clis-nt
 FROM scratch AS cratesio-ntpd-1.7.0-alpha.20251003
 ADD --chmod=0664 --unpack --checksum=sha256:f2092ae1d2a1ee3c03f4d4a0d0d7eb6a87cc87fe95068fb76832b171a825d877 \
   https://static.crates.io/crates/ntpd/ntpd-1.7.0-alpha.20251003.crate /
+FROM rust-base AS dep-x-ntpd-1.7.0-alpha.20251003-dc337ad90b4ca097
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/ntpd-dc337ad90b4ca097
+RUN \
+  --mount=from=cratesio-ntpd-1.7.0-alpha.20251003,source=/ntpd-1.7.0-alpha.20251003,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ntpd-1.7.0-alpha.20251003,rw \
+    { \
+        cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ntpd-1.7.0-alpha.20251003/build.rs | sed -E 's/^(pub[()a-z]* +)?(async +)?fn +main/\1\2fn actual_dc337ad90b4ca097_main/' >/_ && mv /_ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ntpd-1.7.0-alpha.20251003/build.rs ; \
+        { \
+          echo ; \
+          echo 'fn main() {' ; \
+          echo '    use std::env::{args_os, var_os};' ; \
+          echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+          echo '        use std::process::{Command, Stdio};' ; \
+          echo '        let mut cmd = Command::new("cargo-green");' ; \
+          echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+          echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+          echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+          echo '        assert!(res.success());' ; \
+          echo '    } else {' ; \
+          echo '        actual_dc337ad90b4ca097_main();' ; \
+          echo '    }' ; \
+          echo '}' ; \
+        } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ntpd-1.7.0-alpha.20251003/build.rs ; \
+    } && \
+    env CARGO="$(which cargo)" \
+        CARGO_CRATE_NAME=build_script_build \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ntpd-1.7.0-alpha.20251003 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ntpd-1.7.0-alpha.20251003/Cargo.toml \
+        CARGO_PKG_AUTHORS= \
+        CARGO_PKG_DESCRIPTION=Full-featured' implementation of NTP with NTS support' \
+        CARGO_PKG_HOMEPAGE=https'://github.com/pendulum-project/ntpd-rs' \
+        CARGO_PKG_LICENSE=Apache-2.0' OR MIT' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=ntpd \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/pendulum-project/ntpd-rs' \
+        CARGO_PKG_RUST_VERSION=1.88 \
+        CARGO_PKG_VERSION=1.7.0-alpha.20251003 \
+        CARGO_PKG_VERSION_MAJOR=1 \
+        CARGO_PKG_VERSION_MINOR=7 \
+        CARGO_PKG_VERSION_PATCH=0 \
+        CARGO_PKG_VERSION_PRE=alpha.20251003 \
+        CARGO_PRIMARY_PACKAGE=1 \
+        CARGO_SBOM_PATH= \
+        CARGOGREEN=1 \
+      rustc --crate-name build_script_build --edition 2024 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="pps"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "hardware-timestamping", "pps"))' -C metadata'=5fbb82d655ecb81e' -C extra-filename'=-dc337ad90b4ca097' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/ntpd-dc337ad90b4ca097 -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ntpd-1.7.0-alpha.20251003/build.rs \
+        1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/ntpd-dc337ad90b4ca097/out-dc337ad90b4ca097-stdout \
+        2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/ntpd-dc337ad90b4ca097/out-dc337ad90b4ca097-stderr \
+        || echo $? >/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/ntpd-dc337ad90b4ca097/out-dc337ad90b4ca097-errcode\
+  ; find /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/ntpd-dc337ad90b4ca097/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-dc337ad90b4ca097
+COPY --link --from=dep-x-ntpd-1.7.0-alpha.20251003-dc337ad90b4ca097 /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/ntpd-dc337ad90b4ca097/*-dc337ad90b4ca097* /
+
+## this = "dc337ad90b4ca097"
+## writes = [
+##     "build_script_build-dc337ad90b4ca097",
+##     "build_script_build-dc337ad90b4ca097.d",
+## ]
+## stderr = [
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/ntpd-dc337ad90b4ca097/build_script_build-dc337ad90b4ca097.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/ntpd-dc337ad90b4ca097/build_script_build-dc337ad90b4ca097","emit":"link"}',
+## ]
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
+##
+## [[stages]]
+##
+## [stages.Cratesio]
+## stage = "cratesio-ntpd-1.7.0-alpha.20251003"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ntpd-1.7.0-alpha.20251003"
+## name = "ntpd"
+## name_dash_version = "ntpd-1.7.0-alpha.20251003"
+## hash = "f2092ae1d2a1ee3c03f4d4a0d0d7eb6a87cc87fe95068fb76832b171a825d877"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "dep-x-ntpd-1.7.0-alpha.20251003-dc337ad90b4ca097"
+## script = '''
+## FROM rust-base AS dep-x-ntpd-1.7.0-alpha.20251003-dc337ad90b4ca097
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/ntpd-dc337ad90b4ca097
+## RUN \
+##   --mount=from=cratesio-ntpd-1.7.0-alpha.20251003,source=/ntpd-1.7.0-alpha.20251003,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ntpd-1.7.0-alpha.20251003,rw \
+##     { \
+##         cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ntpd-1.7.0-alpha.20251003/build.rs | sed -E 's/^(pub[()a-z]* +)?(async +)?fn +main/\1\2fn actual_dc337ad90b4ca097_main/' >/_ && mv /_ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ntpd-1.7.0-alpha.20251003/build.rs ; \
+##         { \
+##           echo ; \
+##           echo 'fn main() {' ; \
+##           echo '    use std::env::{args_os, var_os};' ; \
+##           echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+##           echo '        use std::process::{Command, Stdio};' ; \
+##           echo '        let mut cmd = Command::new("cargo-green");' ; \
+##           echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+##           echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+##           echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+##           echo '        assert!(res.success());' ; \
+##           echo '    } else {' ; \
+##           echo '        actual_dc337ad90b4ca097_main();' ; \
+##           echo '    }' ; \
+##           echo '}' ; \
+##         } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ntpd-1.7.0-alpha.20251003/build.rs ; \
+##     } && \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CRATE_NAME=build_script_build \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ntpd-1.7.0-alpha.20251003 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ntpd-1.7.0-alpha.20251003/Cargo.toml \
+##         CARGO_PKG_AUTHORS= \
+##         CARGO_PKG_DESCRIPTION=Full-featured' implementation of NTP with NTS support' \
+##         CARGO_PKG_HOMEPAGE=https'://github.com/pendulum-project/ntpd-rs' \
+##         CARGO_PKG_LICENSE=Apache-2.0' OR MIT' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=ntpd \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/pendulum-project/ntpd-rs' \
+##         CARGO_PKG_RUST_VERSION=1.88 \
+##         CARGO_PKG_VERSION=1.7.0-alpha.20251003 \
+##         CARGO_PKG_VERSION_MAJOR=1 \
+##         CARGO_PKG_VERSION_MINOR=7 \
+##         CARGO_PKG_VERSION_PATCH=0 \
+##         CARGO_PKG_VERSION_PRE=alpha.20251003 \
+##         CARGO_PRIMARY_PACKAGE=1 \
+##         CARGO_SBOM_PATH= \
+##         CARGOGREEN=1 \
+##       rustc --crate-name build_script_build --edition 2024 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="pps"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "hardware-timestamping", "pps"))' -C metadata'=5fbb82d655ecb81e' -C extra-filename'=-dc337ad90b4ca097' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/ntpd-dc337ad90b4ca097 -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ntpd-1.7.0-alpha.20251003/build.rs \
+##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/ntpd-dc337ad90b4ca097/out-dc337ad90b4ca097-stdout \
+##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/ntpd-dc337ad90b4ca097/out-dc337ad90b4ca097-stderr \
+##         || echo $? >/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/ntpd-dc337ad90b4ca097/out-dc337ad90b4ca097-errcode\
+##   ; find /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/ntpd-dc337ad90b4ca097/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-dc337ad90b4ca097"
+## script = """
+## FROM scratch AS out-dc337ad90b4ca097
+## COPY --link --from=dep-x-ntpd-1.7.0-alpha.20251003-dc337ad90b4ca097 /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/ntpd-dc337ad90b4ca097/*-dc337ad90b4ca097* /"""
+
+FROM rust-base AS run-z-ntpd-1.7.0-alpha.20251003-ddda28ab8da26074
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/ntpd-ddda28ab8da26074/out
+WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ntpd-1.7.0-alpha.20251003
+RUN \
+  --mount=from=out-dc337ad90b4ca097,source=/build_script_build-dc337ad90b4ca097,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/ntpd-dc337ad90b4ca097/build-script-build \
+  --mount=from=cratesio-ntpd-1.7.0-alpha.20251003,source=/ntpd-1.7.0-alpha.20251003,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ntpd-1.7.0-alpha.20251003 \
+    env CARGO="$(which cargo)" \
+        CARGO_CFG_FEATURE=default,pps \
+        CARGO_CFG_PANIC=unwind \
+        CARGO_CFG_TARGET_ABI= \
+        CARGO_CFG_TARGET_ARCH=x86_64 \
+        CARGO_CFG_TARGET_ENDIAN=little \
+        CARGO_CFG_TARGET_ENV=gnu \
+        CARGO_CFG_TARGET_FAMILY=unix \
+        CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
+        CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+        CARGO_CFG_TARGET_OS=linux \
+        CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+        CARGO_CFG_TARGET_VENDOR=unknown \
+        CARGO_CFG_UNIX= \
+        CARGO_ENCODED_RUSTFLAGS= \
+        CARGO_FEATURE_DEFAULT=1 \
+        CARGO_FEATURE_PPS=1 \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ntpd-1.7.0-alpha.20251003 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ntpd-1.7.0-alpha.20251003/Cargo.toml \
+        CARGO_PKG_AUTHORS= \
+        CARGO_PKG_DESCRIPTION=Full-featured' implementation of NTP with NTS support' \
+        CARGO_PKG_HOMEPAGE=https'://github.com/pendulum-project/ntpd-rs' \
+        CARGO_PKG_LICENSE=Apache-2.0' OR MIT' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=ntpd \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/pendulum-project/ntpd-rs' \
+        CARGO_PKG_RUST_VERSION=1.88 \
+        CARGO_PKG_VERSION=1.7.0-alpha.20251003 \
+        CARGO_PKG_VERSION_MAJOR=1 \
+        CARGO_PKG_VERSION_MINOR=7 \
+        CARGO_PKG_VERSION_PATCH=0 \
+        CARGO_PKG_VERSION_PRE=alpha.20251003 \
+        DEBUG=false \
+        HOST=x86_64-unknown-linux-gnu \
+        NUM_JOBS=4 \
+        OPT_LEVEL=3 \
+        OUT_DIR=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/ntpd-ddda28ab8da26074/out \
+        PROFILE=release \
+        RUSTC=rustc \
+        RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+        TARGET=x86_64-unknown-linux-gnu \
+        CARGOGREEN=1 \
+      CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/ntpd-dc337ad90b4ca097/build-script-build \
+        1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/ntpd-ddda28ab8da26074/out/out-ddda28ab8da26074-stdout \
+        2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/ntpd-ddda28ab8da26074/out/out-ddda28ab8da26074-stderr \
+        || echo $? >/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/ntpd-ddda28ab8da26074/out/out-ddda28ab8da26074-errcode\
+  ; find /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/ntpd-ddda28ab8da26074/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-ddda28ab8da26074
+COPY --link --from=run-z-ntpd-1.7.0-alpha.20251003-ddda28ab8da26074 /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/ntpd-ddda28ab8da26074/out /
+
+## this = "ddda28ab8da26074"
+## deps = ["dc337ad90b4ca097"]
+## writes_to = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/ntpd-ddda28ab8da26074/out"
+## stdout = [
+##     "cargo:rustc-env=NTPD_RS_GIT_REV=-",
+##     "cargo:rustc-env=NTPD_RS_GIT_DATE=-",
+##     "cargo:rustc-rerun-if-changed=.git/HEAD",
+## ]
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "run-z-ntpd-1.7.0-alpha.20251003-ddda28ab8da26074"
+## script = '''
+## FROM rust-base AS run-z-ntpd-1.7.0-alpha.20251003-ddda28ab8da26074
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/ntpd-ddda28ab8da26074/out
+## WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ntpd-1.7.0-alpha.20251003
+## RUN \
+##   --mount=from=out-dc337ad90b4ca097,source=/build_script_build-dc337ad90b4ca097,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/ntpd-dc337ad90b4ca097/build-script-build \
+##   --mount=from=cratesio-ntpd-1.7.0-alpha.20251003,source=/ntpd-1.7.0-alpha.20251003,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ntpd-1.7.0-alpha.20251003 \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CFG_FEATURE=default,pps \
+##         CARGO_CFG_PANIC=unwind \
+##         CARGO_CFG_TARGET_ABI= \
+##         CARGO_CFG_TARGET_ARCH=x86_64 \
+##         CARGO_CFG_TARGET_ENDIAN=little \
+##         CARGO_CFG_TARGET_ENV=gnu \
+##         CARGO_CFG_TARGET_FAMILY=unix \
+##         CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
+##         CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+##         CARGO_CFG_TARGET_OS=linux \
+##         CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+##         CARGO_CFG_TARGET_VENDOR=unknown \
+##         CARGO_CFG_UNIX= \
+##         CARGO_ENCODED_RUSTFLAGS= \
+##         CARGO_FEATURE_DEFAULT=1 \
+##         CARGO_FEATURE_PPS=1 \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ntpd-1.7.0-alpha.20251003 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ntpd-1.7.0-alpha.20251003/Cargo.toml \
+##         CARGO_PKG_AUTHORS= \
+##         CARGO_PKG_DESCRIPTION=Full-featured' implementation of NTP with NTS support' \
+##         CARGO_PKG_HOMEPAGE=https'://github.com/pendulum-project/ntpd-rs' \
+##         CARGO_PKG_LICENSE=Apache-2.0' OR MIT' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=ntpd \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/pendulum-project/ntpd-rs' \
+##         CARGO_PKG_RUST_VERSION=1.88 \
+##         CARGO_PKG_VERSION=1.7.0-alpha.20251003 \
+##         CARGO_PKG_VERSION_MAJOR=1 \
+##         CARGO_PKG_VERSION_MINOR=7 \
+##         CARGO_PKG_VERSION_PATCH=0 \
+##         CARGO_PKG_VERSION_PRE=alpha.20251003 \
+##         DEBUG=false \
+##         HOST=x86_64-unknown-linux-gnu \
+##         NUM_JOBS=4 \
+##         OPT_LEVEL=3 \
+##         OUT_DIR=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/ntpd-ddda28ab8da26074/out \
+##         PROFILE=release \
+##         RUSTC=rustc \
+##         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+##         TARGET=x86_64-unknown-linux-gnu \
+##         CARGOGREEN=1 \
+##       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/ntpd-dc337ad90b4ca097/build-script-build \
+##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/ntpd-ddda28ab8da26074/out/out-ddda28ab8da26074-stdout \
+##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/ntpd-ddda28ab8da26074/out/out-ddda28ab8da26074-stderr \
+##         || echo $? >/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/ntpd-ddda28ab8da26074/out/out-ddda28ab8da26074-errcode\
+##   ; find /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/ntpd-ddda28ab8da26074/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-ddda28ab8da26074"
+## script = """
+## FROM scratch AS out-ddda28ab8da26074
+## COPY --link --from=run-z-ntpd-1.7.0-alpha.20251003-ddda28ab8da26074 /tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/ntpd-ddda28ab8da26074/out /"""
+
+
 FROM rust-base AS dep-n-ntpd-1.7.0-alpha.20251003-27edfaa695fb596f
 SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps
@@ -13051,6 +20761,8 @@ RUN \
   --mount=from=out-523ed8994559e91b,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libgeneric_array-523ed8994559e91b.rmeta,source=/libgeneric_array-523ed8994559e91b.rmeta \
   --mount=from=out-7d56f2624f7fb484,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtypenum-7d56f2624f7fb484.rlib,source=/libtypenum-7d56f2624f7fb484.rlib \
   --mount=from=out-7d56f2624f7fb484,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtypenum-7d56f2624f7fb484.rmeta,source=/libtypenum-7d56f2624f7fb484.rmeta \
+  --mount=from=out-23b425cce0264739,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libversion_check-23b425cce0264739.rlib,source=/libversion_check-23b425cce0264739.rlib \
+  --mount=from=out-23b425cce0264739,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libversion_check-23b425cce0264739.rmeta,source=/libversion_check-23b425cce0264739.rmeta \
   --mount=from=out-fd7543c0686511cd,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/librand_core-fd7543c0686511cd.rlib,source=/librand_core-fd7543c0686511cd.rlib \
   --mount=from=out-fd7543c0686511cd,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/librand_core-fd7543c0686511cd.rmeta,source=/librand_core-fd7543c0686511cd.rmeta \
   --mount=from=out-2ae0eb9fb2c721bb,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libgetrandom-2ae0eb9fb2c721bb.rlib,source=/libgetrandom-2ae0eb9fb2c721bb.rlib \
@@ -13097,6 +20809,26 @@ RUN \
   --mount=from=out-90227bfec647f88b,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libaws_lc_rs-90227bfec647f88b.rmeta,source=/libaws_lc_rs-90227bfec647f88b.rmeta \
   --mount=from=out-135dbb753da3a4f4,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libaws_lc_sys-135dbb753da3a4f4.rlib,source=/libaws_lc_sys-135dbb753da3a4f4.rlib \
   --mount=from=out-135dbb753da3a4f4,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libaws_lc_sys-135dbb753da3a4f4.rmeta,source=/libaws_lc_sys-135dbb753da3a4f4.rmeta \
+  --mount=from=out-d2948f7c0c8497b1,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libfind_msvc_tools-d2948f7c0c8497b1.rlib,source=/libfind_msvc_tools-d2948f7c0c8497b1.rlib \
+  --mount=from=out-d2948f7c0c8497b1,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libfind_msvc_tools-d2948f7c0c8497b1.rmeta,source=/libfind_msvc_tools-d2948f7c0c8497b1.rmeta \
+  --mount=from=out-4dc141be22bbffce,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libjobserver-4dc141be22bbffce.rlib,source=/libjobserver-4dc141be22bbffce.rlib \
+  --mount=from=out-4dc141be22bbffce,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libjobserver-4dc141be22bbffce.rmeta,source=/libjobserver-4dc141be22bbffce.rmeta \
+  --mount=from=out-60426161aa87c673,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibc-60426161aa87c673.rlib,source=/liblibc-60426161aa87c673.rlib \
+  --mount=from=out-60426161aa87c673,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibc-60426161aa87c673.rmeta,source=/liblibc-60426161aa87c673.rmeta \
+  --mount=from=out-b166d1c75d83103c,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libshlex-b166d1c75d83103c.rlib,source=/libshlex-b166d1c75d83103c.rlib \
+  --mount=from=out-b166d1c75d83103c,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libshlex-b166d1c75d83103c.rmeta,source=/libshlex-b166d1c75d83103c.rmeta \
+  --mount=from=out-336c2d9100ab92f8,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcc-336c2d9100ab92f8.rlib,source=/libcc-336c2d9100ab92f8.rlib \
+  --mount=from=out-336c2d9100ab92f8,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcc-336c2d9100ab92f8.rmeta,source=/libcc-336c2d9100ab92f8.rmeta \
+  --mount=from=out-3ff4fdb389eab124,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcmake-3ff4fdb389eab124.rlib,source=/libcmake-3ff4fdb389eab124.rlib \
+  --mount=from=out-3ff4fdb389eab124,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcmake-3ff4fdb389eab124.rmeta,source=/libcmake-3ff4fdb389eab124.rmeta \
+  --mount=from=out-25a6bb4144c31f83,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libdunce-25a6bb4144c31f83.rlib,source=/libdunce-25a6bb4144c31f83.rlib \
+  --mount=from=out-25a6bb4144c31f83,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libdunce-25a6bb4144c31f83.rmeta,source=/libdunce-25a6bb4144c31f83.rmeta \
+  --mount=from=out-19400729ba85cd55,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libfs_extra-19400729ba85cd55.rlib,source=/libfs_extra-19400729ba85cd55.rlib \
+  --mount=from=out-19400729ba85cd55,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libfs_extra-19400729ba85cd55.rmeta,source=/libfs_extra-19400729ba85cd55.rmeta \
+  --mount=from=out-d905bd04d466c2b4,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcfg_if-d905bd04d466c2b4.rlib,source=/libcfg_if-d905bd04d466c2b4.rlib \
+  --mount=from=out-d905bd04d466c2b4,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcfg_if-d905bd04d466c2b4.rmeta,source=/libcfg_if-d905bd04d466c2b4.rmeta \
+  --mount=from=out-bcbfd880a9747f76,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibloading-bcbfd880a9747f76.rlib,source=/liblibloading-bcbfd880a9747f76.rlib \
+  --mount=from=out-bcbfd880a9747f76,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibloading-bcbfd880a9747f76.rmeta,source=/liblibloading-bcbfd880a9747f76.rmeta \
   --mount=from=out-64be2e589e1b58c5,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblog-64be2e589e1b58c5.rlib,source=/liblog-64be2e589e1b58c5.rlib \
   --mount=from=out-64be2e589e1b58c5,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblog-64be2e589e1b58c5.rmeta,source=/liblog-64be2e589e1b58c5.rmeta \
   --mount=from=out-d2455ec75a446def,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libonce_cell-d2455ec75a446def.rlib,source=/libonce_cell-d2455ec75a446def.rlib \
@@ -13182,6 +20914,11 @@ RUN \
   --mount=from=out-7475590c5cec2ded,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblazy_static-7475590c5cec2ded.rmeta,source=/liblazy_static-7475590c5cec2ded.rmeta \
   --mount=from=out-42c7ea5a78f3c604,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libthread_local-42c7ea5a78f3c604.rlib,source=/libthread_local-42c7ea5a78f3c604.rlib \
   --mount=from=out-42c7ea5a78f3c604,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libthread_local-42c7ea5a78f3c604.rmeta,source=/libthread_local-42c7ea5a78f3c604.rmeta \
+  --mount=from=out-c2a85ea3d52ad392,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-c2a85ea3d52ad392/out,source=/ \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out,source=/ \
+  --mount=from=out-badeea6458a799e8,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_core-badeea6458a799e8/out,source=/ \
+  --mount=from=out-cfe125327cacaf16,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde-cfe125327cacaf16/out,source=/ \
+  --mount=from=out-ddda28ab8da26074,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/ntpd-ddda28ab8da26074/out,source=/ \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=ntpd \
         CARGO_INCREMENTAL=0 \
@@ -13205,8 +20942,8 @@ RUN \
         CARGO_SBOM_PATH= \
         OUT_DIR=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/ntpd-ddda28ab8da26074/out \
         CARGOGREEN=1 \
-        NTPD_RS_GIT_DATE=2025-05-09 \
-        NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
+        NTPD_RS_GIT_REV=- \
+        NTPD_RS_GIT_DATE=- \
       rustc --crate-name ntpd --edition 2024 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --cfg feature'="default"' --cfg feature'="pps"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "hardware-timestamping", "pps"))' -C metadata'=1a2d85e9d33908ff' -C extra-filename'=-27edfaa695fb596f' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern clock_steering'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libclock_steering-9dd4b48829148398.rmeta' --extern libc'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibc-93b6478caf319772.rmeta' --extern ntp_proto'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libntp_proto-b5f6bfad0d8f8471.rmeta' --extern pps_time'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libpps_time-eb10259898586549.rmeta' --extern rand'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/librand-b2b2029003f4f41b.rmeta' --extern rustls23'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/librustls-79af5f0cc8b8fe11.rmeta' --extern serde'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libserde-d9535ff1afbc9e07.rmeta' --extern serde_json'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libserde_json-3956e8613ae2191d.rmeta' --extern timestamped_socket'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtimestamped_socket-e18c08f3473fbbaf.rmeta' --extern tokio'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtokio-c395c10495b0b3f9.rmeta' --extern toml'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtoml-d7e70c2bc4581f22.rmeta' --extern tracing'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtracing-075e13f932ee5314.rmeta' --extern tracing_subscriber'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtracing_subscriber-b671934748d136d0.rmeta' --cap-lints warn -L native'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ntpd-1.7.0-alpha.20251003/src/lib.rs \
         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-27edfaa695fb596f-stdout \
         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-27edfaa695fb596f-stderr \
@@ -13219,11 +20956,15 @@ COPY --link --from=dep-n-ntpd-1.7.0-alpha.20251003-27edfaa695fb596f /tmp/clis-nt
 ## deps = [
 ##     "9dd4b48829148398",
 ##     "93b6478caf319772",
+##     "7560e7c5c88ec4c4",
 ##     "b5f6bfad0d8f8471",
 ##     "4b9b0df243e430b1",
 ##     "cebe1cbff4994413",
 ##     "523ed8994559e91b",
 ##     "7d56f2624f7fb484",
+##     "a8fbaef0afd87b8e",
+##     "23b425cce0264739",
+##     "daae1221734799f2",
 ##     "fd7543c0686511cd",
 ##     "2ae0eb9fb2c721bb",
 ##     "5a4301c208f24f4c",
@@ -13244,24 +20985,42 @@ COPY --link --from=dep-n-ntpd-1.7.0-alpha.20251003-27edfaa695fb596f /tmp/clis-nt
 ##     "28f07c8df04e8bde",
 ##     "6e69d7ce14b873ac",
 ##     "3c4f5c2990477ff1",
+##     "5d3dfb9ebf1ffdb4",
 ##     "79af5f0cc8b8fe11",
 ##     "90227bfec647f88b",
 ##     "135dbb753da3a4f4",
+##     "d2948f7c0c8497b1",
+##     "4dc141be22bbffce",
+##     "60426161aa87c673",
+##     "b166d1c75d83103c",
+##     "336c2d9100ab92f8",
+##     "3ff4fdb389eab124",
+##     "25a6bb4144c31f83",
+##     "19400729ba85cd55",
+##     "d905bd04d466c2b4",
+##     "bcbfd880a9747f76",
+##     "b91f62695d1e67bd",
+##     "6215be1cd523c855",
 ##     "64be2e589e1b58c5",
 ##     "d2455ec75a446def",
 ##     "88022d560b8b0ce0",
 ##     "6da74749e9752714",
 ##     "2d8d07531d218763",
+##     "8ec054074e55cb28",
 ##     "db666fad349f8ca6",
 ##     "9227835a4d59a1b8",
 ##     "2ff594c6e039dec5",
 ##     "d9535ff1afbc9e07",
 ##     "1bc4bef1fdca14c4",
+##     "51979789556dbb03",
 ##     "b925936788ba7057",
 ##     "30dd1c0184916507",
 ##     "d90ab847601a2565",
+##     "ab9829a4a8b7788d",
 ##     "41756a17d2ad9431",
+##     "c63aae50eb6f480a",
 ##     "8f37513da063fb69",
+##     "9e59eb4de4feaddb",
 ##     "c395c10495b0b3f9",
 ##     "bf097c132b6f21a4",
 ##     "8a04991c75463c17",
@@ -13277,6 +21036,7 @@ COPY --link --from=dep-n-ntpd-1.7.0-alpha.20251003-27edfaa695fb596f /tmp/clis-nt
 ##     "810c45601233a792",
 ##     "1bf2d419b0e312f0",
 ##     "89e84ce63cef1c32",
+##     "8b3de377bc751c67",
 ##     "e18c08f3473fbbaf",
 ##     "d7e70c2bc4581f22",
 ##     "9efeb8ba5429dc73",
@@ -13291,6 +21051,36 @@ COPY --link --from=dep-n-ntpd-1.7.0-alpha.20251003-27edfaa695fb596f /tmp/clis-nt
 ##     "4d66c3c554384830",
 ##     "7475590c5cec2ded",
 ##     "42c7ea5a78f3c604",
+##     "ddda28ab8da26074",
+##     "d5b44a42806fd90b",
+##     "c2a85ea3d52ad392",
+##     "6319738dfa2a85a9",
+##     "d1d84d8a1ca91c51",
+##     "99856d878c8e44ce",
+##     "2d875791ad1d3d18",
+##     "7ef21a73dd92a44b",
+##     "8b3d3020feb33fc9",
+##     "badeea6458a799e8",
+##     "9a025c1b756d91f9",
+##     "edf8f660a3d601cc",
+##     "cfe125327cacaf16",
+##     "3d3221a83b9a3fdf",
+##     "dc337ad90b4ca097",
+## ]
+## buildrs_results = [
+##     "d5b44a42806fd90b",
+##     "c2a85ea3d52ad392",
+##     "6319738dfa2a85a9",
+##     "d1d84d8a1ca91c51",
+##     "2d875791ad1d3d18",
+##     "7ef21a73dd92a44b",
+##     "8b3d3020feb33fc9",
+##     "badeea6458a799e8",
+##     "9a025c1b756d91f9",
+##     "edf8f660a3d601cc",
+##     "cfe125327cacaf16",
+##     "3d3221a83b9a3fdf",
+##     "ddda28ab8da26074",
 ## ]
 ## writes = [
 ##     "libntpd-27edfaa695fb596f.rlib",
@@ -13358,6 +21148,14 @@ COPY --link --from=dep-n-ntpd-1.7.0-alpha.20251003-27edfaa695fb596f /tmp/clis-nt
 ## [[externs]]
 ## from = "out-7d56f2624f7fb484"
 ## xtern = "libtypenum-7d56f2624f7fb484.rmeta"
+##
+## [[externs]]
+## from = "out-23b425cce0264739"
+## xtern = "libversion_check-23b425cce0264739.rlib"
+##
+## [[externs]]
+## from = "out-23b425cce0264739"
+## xtern = "libversion_check-23b425cce0264739.rmeta"
 ##
 ## [[externs]]
 ## from = "out-fd7543c0686511cd"
@@ -13542,6 +21340,86 @@ COPY --link --from=dep-n-ntpd-1.7.0-alpha.20251003-27edfaa695fb596f /tmp/clis-nt
 ## [[externs]]
 ## from = "out-135dbb753da3a4f4"
 ## xtern = "libaws_lc_sys-135dbb753da3a4f4.rmeta"
+##
+## [[externs]]
+## from = "out-d2948f7c0c8497b1"
+## xtern = "libfind_msvc_tools-d2948f7c0c8497b1.rlib"
+##
+## [[externs]]
+## from = "out-d2948f7c0c8497b1"
+## xtern = "libfind_msvc_tools-d2948f7c0c8497b1.rmeta"
+##
+## [[externs]]
+## from = "out-4dc141be22bbffce"
+## xtern = "libjobserver-4dc141be22bbffce.rlib"
+##
+## [[externs]]
+## from = "out-4dc141be22bbffce"
+## xtern = "libjobserver-4dc141be22bbffce.rmeta"
+##
+## [[externs]]
+## from = "out-60426161aa87c673"
+## xtern = "liblibc-60426161aa87c673.rlib"
+##
+## [[externs]]
+## from = "out-60426161aa87c673"
+## xtern = "liblibc-60426161aa87c673.rmeta"
+##
+## [[externs]]
+## from = "out-b166d1c75d83103c"
+## xtern = "libshlex-b166d1c75d83103c.rlib"
+##
+## [[externs]]
+## from = "out-b166d1c75d83103c"
+## xtern = "libshlex-b166d1c75d83103c.rmeta"
+##
+## [[externs]]
+## from = "out-336c2d9100ab92f8"
+## xtern = "libcc-336c2d9100ab92f8.rlib"
+##
+## [[externs]]
+## from = "out-336c2d9100ab92f8"
+## xtern = "libcc-336c2d9100ab92f8.rmeta"
+##
+## [[externs]]
+## from = "out-3ff4fdb389eab124"
+## xtern = "libcmake-3ff4fdb389eab124.rlib"
+##
+## [[externs]]
+## from = "out-3ff4fdb389eab124"
+## xtern = "libcmake-3ff4fdb389eab124.rmeta"
+##
+## [[externs]]
+## from = "out-25a6bb4144c31f83"
+## xtern = "libdunce-25a6bb4144c31f83.rlib"
+##
+## [[externs]]
+## from = "out-25a6bb4144c31f83"
+## xtern = "libdunce-25a6bb4144c31f83.rmeta"
+##
+## [[externs]]
+## from = "out-19400729ba85cd55"
+## xtern = "libfs_extra-19400729ba85cd55.rlib"
+##
+## [[externs]]
+## from = "out-19400729ba85cd55"
+## xtern = "libfs_extra-19400729ba85cd55.rmeta"
+##
+## [[externs]]
+## from = "out-d905bd04d466c2b4"
+## xtern = "libcfg_if-d905bd04d466c2b4.rlib"
+##
+## [[externs]]
+## from = "out-d905bd04d466c2b4"
+## xtern = "libcfg_if-d905bd04d466c2b4.rmeta"
+##
+## [[externs]]
+## from = "out-bcbfd880a9747f76"
+## xtern = "liblibloading-bcbfd880a9747f76.rlib"
+##
+## [[externs]]
+## from = "out-bcbfd880a9747f76"
+## xtern = "liblibloading-bcbfd880a9747f76.rmeta"
 ##
 ## [[externs]]
 ## from = "out-64be2e589e1b58c5"
@@ -13883,21 +21761,29 @@ COPY --link --from=dep-n-ntpd-1.7.0-alpha.20251003-27edfaa695fb596f /tmp/clis-nt
 ## from = "out-42c7ea5a78f3c604"
 ## xtern = "libthread_local-42c7ea5a78f3c604.rmeta"
 ##
-## [[contexts]]
-## name = "crate_out-c2a85ea3d52ad392"
-## uri = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-c2a85ea3d52ad392/out"
+## [[mounts]]
+## name = "out-c2a85ea3d52ad392"
+## mount = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-c2a85ea3d52ad392/out"
 ##
-## [[contexts]]
-## name = "crate_out-2d875791ad1d3d18"
-## uri = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out"
+## [[mounts]]
+## name = "out-2d875791ad1d3d18"
+## mount = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out"
 ##
-## [[contexts]]
-## name = "crate_out-cfe125327cacaf16"
-## uri = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde-cfe125327cacaf16/out"
+## [[mounts]]
+## name = "out-badeea6458a799e8"
+## mount = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_core-badeea6458a799e8/out"
 ##
-## [[contexts]]
-## name = "crate_out-badeea6458a799e8"
-## uri = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_core-badeea6458a799e8/out"
+## [[mounts]]
+## name = "out-cfe125327cacaf16"
+## mount = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde-cfe125327cacaf16/out"
+##
+## [[mounts]]
+## name = "out-ddda28ab8da26074"
+## mount = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/ntpd-ddda28ab8da26074/out"
+##
+## [set_envs]
+## NTPD_RS_GIT_DATE = "-"
+## NTPD_RS_GIT_REV = "-"
 ##
 ## [[stages]]
 ##
@@ -13938,6 +21824,8 @@ COPY --link --from=dep-n-ntpd-1.7.0-alpha.20251003-27edfaa695fb596f /tmp/clis-nt
 ##   --mount=from=out-523ed8994559e91b,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libgeneric_array-523ed8994559e91b.rmeta,source=/libgeneric_array-523ed8994559e91b.rmeta \
 ##   --mount=from=out-7d56f2624f7fb484,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtypenum-7d56f2624f7fb484.rlib,source=/libtypenum-7d56f2624f7fb484.rlib \
 ##   --mount=from=out-7d56f2624f7fb484,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtypenum-7d56f2624f7fb484.rmeta,source=/libtypenum-7d56f2624f7fb484.rmeta \
+##   --mount=from=out-23b425cce0264739,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libversion_check-23b425cce0264739.rlib,source=/libversion_check-23b425cce0264739.rlib \
+##   --mount=from=out-23b425cce0264739,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libversion_check-23b425cce0264739.rmeta,source=/libversion_check-23b425cce0264739.rmeta \
 ##   --mount=from=out-fd7543c0686511cd,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/librand_core-fd7543c0686511cd.rlib,source=/librand_core-fd7543c0686511cd.rlib \
 ##   --mount=from=out-fd7543c0686511cd,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/librand_core-fd7543c0686511cd.rmeta,source=/librand_core-fd7543c0686511cd.rmeta \
 ##   --mount=from=out-2ae0eb9fb2c721bb,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libgetrandom-2ae0eb9fb2c721bb.rlib,source=/libgetrandom-2ae0eb9fb2c721bb.rlib \
@@ -13984,6 +21872,26 @@ COPY --link --from=dep-n-ntpd-1.7.0-alpha.20251003-27edfaa695fb596f /tmp/clis-nt
 ##   --mount=from=out-90227bfec647f88b,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libaws_lc_rs-90227bfec647f88b.rmeta,source=/libaws_lc_rs-90227bfec647f88b.rmeta \
 ##   --mount=from=out-135dbb753da3a4f4,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libaws_lc_sys-135dbb753da3a4f4.rlib,source=/libaws_lc_sys-135dbb753da3a4f4.rlib \
 ##   --mount=from=out-135dbb753da3a4f4,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libaws_lc_sys-135dbb753da3a4f4.rmeta,source=/libaws_lc_sys-135dbb753da3a4f4.rmeta \
+##   --mount=from=out-d2948f7c0c8497b1,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libfind_msvc_tools-d2948f7c0c8497b1.rlib,source=/libfind_msvc_tools-d2948f7c0c8497b1.rlib \
+##   --mount=from=out-d2948f7c0c8497b1,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libfind_msvc_tools-d2948f7c0c8497b1.rmeta,source=/libfind_msvc_tools-d2948f7c0c8497b1.rmeta \
+##   --mount=from=out-4dc141be22bbffce,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libjobserver-4dc141be22bbffce.rlib,source=/libjobserver-4dc141be22bbffce.rlib \
+##   --mount=from=out-4dc141be22bbffce,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libjobserver-4dc141be22bbffce.rmeta,source=/libjobserver-4dc141be22bbffce.rmeta \
+##   --mount=from=out-60426161aa87c673,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibc-60426161aa87c673.rlib,source=/liblibc-60426161aa87c673.rlib \
+##   --mount=from=out-60426161aa87c673,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibc-60426161aa87c673.rmeta,source=/liblibc-60426161aa87c673.rmeta \
+##   --mount=from=out-b166d1c75d83103c,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libshlex-b166d1c75d83103c.rlib,source=/libshlex-b166d1c75d83103c.rlib \
+##   --mount=from=out-b166d1c75d83103c,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libshlex-b166d1c75d83103c.rmeta,source=/libshlex-b166d1c75d83103c.rmeta \
+##   --mount=from=out-336c2d9100ab92f8,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcc-336c2d9100ab92f8.rlib,source=/libcc-336c2d9100ab92f8.rlib \
+##   --mount=from=out-336c2d9100ab92f8,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcc-336c2d9100ab92f8.rmeta,source=/libcc-336c2d9100ab92f8.rmeta \
+##   --mount=from=out-3ff4fdb389eab124,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcmake-3ff4fdb389eab124.rlib,source=/libcmake-3ff4fdb389eab124.rlib \
+##   --mount=from=out-3ff4fdb389eab124,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcmake-3ff4fdb389eab124.rmeta,source=/libcmake-3ff4fdb389eab124.rmeta \
+##   --mount=from=out-25a6bb4144c31f83,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libdunce-25a6bb4144c31f83.rlib,source=/libdunce-25a6bb4144c31f83.rlib \
+##   --mount=from=out-25a6bb4144c31f83,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libdunce-25a6bb4144c31f83.rmeta,source=/libdunce-25a6bb4144c31f83.rmeta \
+##   --mount=from=out-19400729ba85cd55,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libfs_extra-19400729ba85cd55.rlib,source=/libfs_extra-19400729ba85cd55.rlib \
+##   --mount=from=out-19400729ba85cd55,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libfs_extra-19400729ba85cd55.rmeta,source=/libfs_extra-19400729ba85cd55.rmeta \
+##   --mount=from=out-d905bd04d466c2b4,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcfg_if-d905bd04d466c2b4.rlib,source=/libcfg_if-d905bd04d466c2b4.rlib \
+##   --mount=from=out-d905bd04d466c2b4,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcfg_if-d905bd04d466c2b4.rmeta,source=/libcfg_if-d905bd04d466c2b4.rmeta \
+##   --mount=from=out-bcbfd880a9747f76,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibloading-bcbfd880a9747f76.rlib,source=/liblibloading-bcbfd880a9747f76.rlib \
+##   --mount=from=out-bcbfd880a9747f76,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibloading-bcbfd880a9747f76.rmeta,source=/liblibloading-bcbfd880a9747f76.rmeta \
 ##   --mount=from=out-64be2e589e1b58c5,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblog-64be2e589e1b58c5.rlib,source=/liblog-64be2e589e1b58c5.rlib \
 ##   --mount=from=out-64be2e589e1b58c5,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblog-64be2e589e1b58c5.rmeta,source=/liblog-64be2e589e1b58c5.rmeta \
 ##   --mount=from=out-d2455ec75a446def,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libonce_cell-d2455ec75a446def.rlib,source=/libonce_cell-d2455ec75a446def.rlib \
@@ -14069,6 +21977,11 @@ COPY --link --from=dep-n-ntpd-1.7.0-alpha.20251003-27edfaa695fb596f /tmp/clis-nt
 ##   --mount=from=out-7475590c5cec2ded,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblazy_static-7475590c5cec2ded.rmeta,source=/liblazy_static-7475590c5cec2ded.rmeta \
 ##   --mount=from=out-42c7ea5a78f3c604,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libthread_local-42c7ea5a78f3c604.rlib,source=/libthread_local-42c7ea5a78f3c604.rlib \
 ##   --mount=from=out-42c7ea5a78f3c604,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libthread_local-42c7ea5a78f3c604.rmeta,source=/libthread_local-42c7ea5a78f3c604.rmeta \
+##   --mount=from=out-c2a85ea3d52ad392,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-c2a85ea3d52ad392/out,source=/ \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out,source=/ \
+##   --mount=from=out-badeea6458a799e8,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_core-badeea6458a799e8/out,source=/ \
+##   --mount=from=out-cfe125327cacaf16,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde-cfe125327cacaf16/out,source=/ \
+##   --mount=from=out-ddda28ab8da26074,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/ntpd-ddda28ab8da26074/out,source=/ \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=ntpd \
 ##         CARGO_INCREMENTAL=0 \
@@ -14092,8 +22005,8 @@ COPY --link --from=dep-n-ntpd-1.7.0-alpha.20251003-27edfaa695fb596f /tmp/clis-nt
 ##         CARGO_SBOM_PATH= \
 ##         OUT_DIR=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/ntpd-ddda28ab8da26074/out \
 ##         CARGOGREEN=1 \
-##         NTPD_RS_GIT_DATE=2025-05-09 \
-##         NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
+##         NTPD_RS_GIT_REV=- \
+##         NTPD_RS_GIT_DATE=- \
 ##       rustc --crate-name ntpd --edition 2024 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --cfg feature'="default"' --cfg feature'="pps"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "hardware-timestamping", "pps"))' -C metadata'=1a2d85e9d33908ff' -C extra-filename'=-27edfaa695fb596f' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern clock_steering'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libclock_steering-9dd4b48829148398.rmeta' --extern libc'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibc-93b6478caf319772.rmeta' --extern ntp_proto'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libntp_proto-b5f6bfad0d8f8471.rmeta' --extern pps_time'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libpps_time-eb10259898586549.rmeta' --extern rand'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/librand-b2b2029003f4f41b.rmeta' --extern rustls23'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/librustls-79af5f0cc8b8fe11.rmeta' --extern serde'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libserde-d9535ff1afbc9e07.rmeta' --extern serde_json'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libserde_json-3956e8613ae2191d.rmeta' --extern timestamped_socket'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtimestamped_socket-e18c08f3473fbbaf.rmeta' --extern tokio'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtokio-c395c10495b0b3f9.rmeta' --extern toml'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtoml-d7e70c2bc4581f22.rmeta' --extern tracing'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtracing-075e13f932ee5314.rmeta' --extern tracing_subscriber'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtracing_subscriber-b671934748d136d0.rmeta' --cap-lints warn -L native'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ntpd-1.7.0-alpha.20251003/src/lib.rs \
 ##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-27edfaa695fb596f-stdout \
 ##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-27edfaa695fb596f-stderr \
@@ -14109,7 +22022,7 @@ COPY --link --from=dep-n-ntpd-1.7.0-alpha.20251003-27edfaa695fb596f /tmp/clis-nt
 ## COPY --link --from=dep-n-ntpd-1.7.0-alpha.20251003-27edfaa695fb596f /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/*-27edfaa695fb596f* /"""
 
 
-FROM rust-base AS dep-n-ntpd-1.7.0-alpha.20251003-608d6f568e30b338
+FROM rust-base AS dep-n-ntpd-1.7.0-alpha.20251003-955cc9491f209470
 SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps
 RUN \
@@ -14121,6 +22034,7 @@ RUN \
   --mount=from=out-cebe1cbff4994413,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcrypto_common-cebe1cbff4994413.rlib,source=/libcrypto_common-cebe1cbff4994413.rlib \
   --mount=from=out-523ed8994559e91b,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libgeneric_array-523ed8994559e91b.rlib,source=/libgeneric_array-523ed8994559e91b.rlib \
   --mount=from=out-7d56f2624f7fb484,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtypenum-7d56f2624f7fb484.rlib,source=/libtypenum-7d56f2624f7fb484.rlib \
+  --mount=from=out-23b425cce0264739,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libversion_check-23b425cce0264739.rlib,source=/libversion_check-23b425cce0264739.rlib \
   --mount=from=out-fd7543c0686511cd,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/librand_core-fd7543c0686511cd.rlib,source=/librand_core-fd7543c0686511cd.rlib \
   --mount=from=out-2ae0eb9fb2c721bb,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libgetrandom-2ae0eb9fb2c721bb.rlib,source=/libgetrandom-2ae0eb9fb2c721bb.rlib \
   --mount=from=out-5a4301c208f24f4c,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcfg_if-5a4301c208f24f4c.rlib,source=/libcfg_if-5a4301c208f24f4c.rlib \
@@ -14144,6 +22058,16 @@ RUN \
   --mount=from=out-79af5f0cc8b8fe11,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/librustls-79af5f0cc8b8fe11.rlib,source=/librustls-79af5f0cc8b8fe11.rlib \
   --mount=from=out-90227bfec647f88b,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libaws_lc_rs-90227bfec647f88b.rlib,source=/libaws_lc_rs-90227bfec647f88b.rlib \
   --mount=from=out-135dbb753da3a4f4,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libaws_lc_sys-135dbb753da3a4f4.rlib,source=/libaws_lc_sys-135dbb753da3a4f4.rlib \
+  --mount=from=out-d2948f7c0c8497b1,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libfind_msvc_tools-d2948f7c0c8497b1.rlib,source=/libfind_msvc_tools-d2948f7c0c8497b1.rlib \
+  --mount=from=out-4dc141be22bbffce,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libjobserver-4dc141be22bbffce.rlib,source=/libjobserver-4dc141be22bbffce.rlib \
+  --mount=from=out-60426161aa87c673,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibc-60426161aa87c673.rlib,source=/liblibc-60426161aa87c673.rlib \
+  --mount=from=out-b166d1c75d83103c,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libshlex-b166d1c75d83103c.rlib,source=/libshlex-b166d1c75d83103c.rlib \
+  --mount=from=out-336c2d9100ab92f8,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcc-336c2d9100ab92f8.rlib,source=/libcc-336c2d9100ab92f8.rlib \
+  --mount=from=out-3ff4fdb389eab124,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcmake-3ff4fdb389eab124.rlib,source=/libcmake-3ff4fdb389eab124.rlib \
+  --mount=from=out-25a6bb4144c31f83,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libdunce-25a6bb4144c31f83.rlib,source=/libdunce-25a6bb4144c31f83.rlib \
+  --mount=from=out-19400729ba85cd55,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libfs_extra-19400729ba85cd55.rlib,source=/libfs_extra-19400729ba85cd55.rlib \
+  --mount=from=out-d905bd04d466c2b4,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcfg_if-d905bd04d466c2b4.rlib,source=/libcfg_if-d905bd04d466c2b4.rlib \
+  --mount=from=out-bcbfd880a9747f76,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibloading-bcbfd880a9747f76.rlib,source=/liblibloading-bcbfd880a9747f76.rlib \
   --mount=from=out-64be2e589e1b58c5,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblog-64be2e589e1b58c5.rlib,source=/liblog-64be2e589e1b58c5.rlib \
   --mount=from=out-d2455ec75a446def,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libonce_cell-d2455ec75a446def.rlib,source=/libonce_cell-d2455ec75a446def.rlib \
   --mount=from=out-88022d560b8b0ce0,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/librustls_pki_types-88022d560b8b0ce0.rlib,source=/librustls_pki_types-88022d560b8b0ce0.rlib \
@@ -14190,9 +22114,14 @@ RUN \
   --mount=from=out-4d66c3c554384830,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libsharded_slab-4d66c3c554384830.rlib,source=/libsharded_slab-4d66c3c554384830.rlib \
   --mount=from=out-7475590c5cec2ded,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblazy_static-7475590c5cec2ded.rlib,source=/liblazy_static-7475590c5cec2ded.rlib \
   --mount=from=out-42c7ea5a78f3c604,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libthread_local-42c7ea5a78f3c604.rlib,source=/libthread_local-42c7ea5a78f3c604.rlib \
+  --mount=from=out-c2a85ea3d52ad392,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-c2a85ea3d52ad392/out,source=/ \
+  --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out,source=/ \
+  --mount=from=out-badeea6458a799e8,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_core-badeea6458a799e8/out,source=/ \
+  --mount=from=out-cfe125327cacaf16,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde-cfe125327cacaf16/out,source=/ \
+  --mount=from=out-ddda28ab8da26074,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/ntpd-ddda28ab8da26074/out,source=/ \
     env CARGO="$(which cargo)" \
-        CARGO_BIN_NAME=ntp-metrics-exporter \
-        CARGO_CRATE_NAME=ntp_metrics_exporter \
+        CARGO_BIN_NAME=ntp-ctl \
+        CARGO_CRATE_NAME=ntp_ctl \
         CARGO_INCREMENTAL=0 \
         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ntpd-1.7.0-alpha.20251003 \
         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ntpd-1.7.0-alpha.20251003/Cargo.toml \
@@ -14214,29 +22143,33 @@ RUN \
         CARGO_SBOM_PATH= \
         OUT_DIR=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/ntpd-ddda28ab8da26074/out \
         CARGOGREEN=1 \
-        NTPD_RS_GIT_DATE=2025-05-09 \
-        NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
-      rustc --crate-name ntp_metrics_exporter --edition 2024 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C opt-level'=3' -C embed-bitcode'=no' --cfg feature'="default"' --cfg feature'="pps"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "hardware-timestamping", "pps"))' -C metadata'=fe91005e497e1f05' -C extra-filename'=-608d6f568e30b338' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern clock_steering'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libclock_steering-9dd4b48829148398.rlib' --extern libc'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibc-93b6478caf319772.rlib' --extern ntp_proto'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libntp_proto-b5f6bfad0d8f8471.rlib' --extern ntpd'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libntpd-27edfaa695fb596f.rlib' --extern pps_time'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libpps_time-eb10259898586549.rlib' --extern rand'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/librand-b2b2029003f4f41b.rlib' --extern rustls23'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/librustls-79af5f0cc8b8fe11.rlib' --extern serde'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libserde-d9535ff1afbc9e07.rlib' --extern serde_json'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libserde_json-3956e8613ae2191d.rlib' --extern timestamped_socket'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtimestamped_socket-e18c08f3473fbbaf.rlib' --extern tokio'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtokio-c395c10495b0b3f9.rlib' --extern toml'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtoml-d7e70c2bc4581f22.rlib' --extern tracing'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtracing-075e13f932ee5314.rlib' --extern tracing_subscriber'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtracing_subscriber-b671934748d136d0.rlib' --cap-lints warn -L native'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ntpd-1.7.0-alpha.20251003/bin/ntp-metrics-exporter.rs \
-        1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-608d6f568e30b338-stdout \
-        2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-608d6f568e30b338-stderr \
-        || echo $? >/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-608d6f568e30b338-errcode\
-  ; find /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/*-608d6f568e30b338* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
-FROM scratch AS out-608d6f568e30b338
-COPY --link --from=dep-n-ntpd-1.7.0-alpha.20251003-608d6f568e30b338 /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/*-608d6f568e30b338* /
+        NTPD_RS_GIT_REV=- \
+        NTPD_RS_GIT_DATE=- \
+      rustc --crate-name ntp_ctl --edition 2024 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C opt-level'=3' -C embed-bitcode'=no' --cfg feature'="default"' --cfg feature'="pps"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "hardware-timestamping", "pps"))' -C metadata'=1017703d3e0229d1' -C extra-filename'=-955cc9491f209470' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern clock_steering'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libclock_steering-9dd4b48829148398.rlib' --extern libc'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibc-93b6478caf319772.rlib' --extern ntp_proto'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libntp_proto-b5f6bfad0d8f8471.rlib' --extern ntpd'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libntpd-27edfaa695fb596f.rlib' --extern pps_time'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libpps_time-eb10259898586549.rlib' --extern rand'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/librand-b2b2029003f4f41b.rlib' --extern rustls23'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/librustls-79af5f0cc8b8fe11.rlib' --extern serde'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libserde-d9535ff1afbc9e07.rlib' --extern serde_json'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libserde_json-3956e8613ae2191d.rlib' --extern timestamped_socket'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtimestamped_socket-e18c08f3473fbbaf.rlib' --extern tokio'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtokio-c395c10495b0b3f9.rlib' --extern toml'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtoml-d7e70c2bc4581f22.rlib' --extern tracing'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtracing-075e13f932ee5314.rlib' --extern tracing_subscriber'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtracing_subscriber-b671934748d136d0.rlib' --cap-lints warn -L native'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ntpd-1.7.0-alpha.20251003/bin/ntp-ctl.rs \
+        1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-955cc9491f209470-stdout \
+        2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-955cc9491f209470-stderr \
+        || echo $? >/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-955cc9491f209470-errcode\
+  ; find /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/*-955cc9491f209470* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-955cc9491f209470
+COPY --link --from=dep-n-ntpd-1.7.0-alpha.20251003-955cc9491f209470 /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/*-955cc9491f209470* /
 
-# Pipe this file to (not portable due to usage of local build contexts):
+# Pipe this file to:
 # DOCKER_BUILDKIT="1" \
-#   docker build --network=none --output=. --build-context=crate_out-c2a85ea3d52ad392=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-c2a85ea3d52ad392/out --build-context=crate_out-2d875791ad1d3d18=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out --build-context=crate_out-cfe125327cacaf16=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde-cfe125327cacaf16/out --build-context=crate_out-badeea6458a799e8=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_core-badeea6458a799e8/out - <THIS_FILE
+#   docker build --network=none --output=. - <THIS_FILE
 
-## this = "608d6f568e30b338"
+## this = "955cc9491f209470"
 ## deps = [
 ##     "9dd4b48829148398",
 ##     "93b6478caf319772",
+##     "7560e7c5c88ec4c4",
 ##     "b5f6bfad0d8f8471",
 ##     "4b9b0df243e430b1",
 ##     "cebe1cbff4994413",
 ##     "523ed8994559e91b",
 ##     "7d56f2624f7fb484",
+##     "a8fbaef0afd87b8e",
+##     "23b425cce0264739",
+##     "daae1221734799f2",
 ##     "fd7543c0686511cd",
 ##     "2ae0eb9fb2c721bb",
 ##     "5a4301c208f24f4c",
@@ -14257,24 +22190,42 @@ COPY --link --from=dep-n-ntpd-1.7.0-alpha.20251003-608d6f568e30b338 /tmp/clis-nt
 ##     "28f07c8df04e8bde",
 ##     "6e69d7ce14b873ac",
 ##     "3c4f5c2990477ff1",
+##     "5d3dfb9ebf1ffdb4",
 ##     "79af5f0cc8b8fe11",
 ##     "90227bfec647f88b",
 ##     "135dbb753da3a4f4",
+##     "d2948f7c0c8497b1",
+##     "4dc141be22bbffce",
+##     "60426161aa87c673",
+##     "b166d1c75d83103c",
+##     "336c2d9100ab92f8",
+##     "3ff4fdb389eab124",
+##     "25a6bb4144c31f83",
+##     "19400729ba85cd55",
+##     "d905bd04d466c2b4",
+##     "bcbfd880a9747f76",
+##     "b91f62695d1e67bd",
+##     "6215be1cd523c855",
 ##     "64be2e589e1b58c5",
 ##     "d2455ec75a446def",
 ##     "88022d560b8b0ce0",
 ##     "6da74749e9752714",
 ##     "2d8d07531d218763",
+##     "8ec054074e55cb28",
 ##     "db666fad349f8ca6",
 ##     "9227835a4d59a1b8",
 ##     "2ff594c6e039dec5",
 ##     "d9535ff1afbc9e07",
 ##     "1bc4bef1fdca14c4",
+##     "51979789556dbb03",
 ##     "b925936788ba7057",
 ##     "30dd1c0184916507",
 ##     "d90ab847601a2565",
+##     "ab9829a4a8b7788d",
 ##     "41756a17d2ad9431",
+##     "c63aae50eb6f480a",
 ##     "8f37513da063fb69",
+##     "9e59eb4de4feaddb",
 ##     "c395c10495b0b3f9",
 ##     "bf097c132b6f21a4",
 ##     "8a04991c75463c17",
@@ -14291,6 +22242,7 @@ COPY --link --from=dep-n-ntpd-1.7.0-alpha.20251003-608d6f568e30b338 /tmp/clis-nt
 ##     "810c45601233a792",
 ##     "1bf2d419b0e312f0",
 ##     "89e84ce63cef1c32",
+##     "8b3de377bc751c67",
 ##     "e18c08f3473fbbaf",
 ##     "d7e70c2bc4581f22",
 ##     "9efeb8ba5429dc73",
@@ -14305,14 +22257,44 @@ COPY --link --from=dep-n-ntpd-1.7.0-alpha.20251003-608d6f568e30b338 /tmp/clis-nt
 ##     "4d66c3c554384830",
 ##     "7475590c5cec2ded",
 ##     "42c7ea5a78f3c604",
+##     "dc337ad90b4ca097",
+##     "ddda28ab8da26074",
+##     "d5b44a42806fd90b",
+##     "c2a85ea3d52ad392",
+##     "6319738dfa2a85a9",
+##     "d1d84d8a1ca91c51",
+##     "99856d878c8e44ce",
+##     "2d875791ad1d3d18",
+##     "7ef21a73dd92a44b",
+##     "8b3d3020feb33fc9",
+##     "badeea6458a799e8",
+##     "9a025c1b756d91f9",
+##     "edf8f660a3d601cc",
+##     "cfe125327cacaf16",
+##     "3d3221a83b9a3fdf",
+## ]
+## buildrs_results = [
+##     "d5b44a42806fd90b",
+##     "c2a85ea3d52ad392",
+##     "6319738dfa2a85a9",
+##     "d1d84d8a1ca91c51",
+##     "2d875791ad1d3d18",
+##     "7ef21a73dd92a44b",
+##     "8b3d3020feb33fc9",
+##     "badeea6458a799e8",
+##     "9a025c1b756d91f9",
+##     "edf8f660a3d601cc",
+##     "cfe125327cacaf16",
+##     "3d3221a83b9a3fdf",
+##     "ddda28ab8da26074",
 ## ]
 ## writes = [
-##     "ntp_metrics_exporter-608d6f568e30b338",
-##     "ntp_metrics_exporter-608d6f568e30b338.d",
+##     "ntp_ctl-955cc9491f209470",
+##     "ntp_ctl-955cc9491f209470.d",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ntp_metrics_exporter-608d6f568e30b338.d","emit":"dep-info"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ntp_metrics_exporter-608d6f568e30b338","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ntp_ctl-955cc9491f209470.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/ntp_ctl-955cc9491f209470","emit":"link"}',
 ## ]
 ##
 ## [[externs]]
@@ -14342,6 +22324,10 @@ COPY --link --from=dep-n-ntpd-1.7.0-alpha.20251003-608d6f568e30b338 /tmp/clis-nt
 ## [[externs]]
 ## from = "out-7d56f2624f7fb484"
 ## xtern = "libtypenum-7d56f2624f7fb484.rlib"
+##
+## [[externs]]
+## from = "out-23b425cce0264739"
+## xtern = "libversion_check-23b425cce0264739.rlib"
 ##
 ## [[externs]]
 ## from = "out-fd7543c0686511cd"
@@ -14434,6 +22420,46 @@ COPY --link --from=dep-n-ntpd-1.7.0-alpha.20251003-608d6f568e30b338 /tmp/clis-nt
 ## [[externs]]
 ## from = "out-135dbb753da3a4f4"
 ## xtern = "libaws_lc_sys-135dbb753da3a4f4.rlib"
+##
+## [[externs]]
+## from = "out-d2948f7c0c8497b1"
+## xtern = "libfind_msvc_tools-d2948f7c0c8497b1.rlib"
+##
+## [[externs]]
+## from = "out-4dc141be22bbffce"
+## xtern = "libjobserver-4dc141be22bbffce.rlib"
+##
+## [[externs]]
+## from = "out-60426161aa87c673"
+## xtern = "liblibc-60426161aa87c673.rlib"
+##
+## [[externs]]
+## from = "out-b166d1c75d83103c"
+## xtern = "libshlex-b166d1c75d83103c.rlib"
+##
+## [[externs]]
+## from = "out-336c2d9100ab92f8"
+## xtern = "libcc-336c2d9100ab92f8.rlib"
+##
+## [[externs]]
+## from = "out-3ff4fdb389eab124"
+## xtern = "libcmake-3ff4fdb389eab124.rlib"
+##
+## [[externs]]
+## from = "out-25a6bb4144c31f83"
+## xtern = "libdunce-25a6bb4144c31f83.rlib"
+##
+## [[externs]]
+## from = "out-19400729ba85cd55"
+## xtern = "libfs_extra-19400729ba85cd55.rlib"
+##
+## [[externs]]
+## from = "out-d905bd04d466c2b4"
+## xtern = "libcfg_if-d905bd04d466c2b4.rlib"
+##
+## [[externs]]
+## from = "out-bcbfd880a9747f76"
+## xtern = "liblibloading-bcbfd880a9747f76.rlib"
 ##
 ## [[externs]]
 ## from = "out-64be2e589e1b58c5"
@@ -14619,21 +22645,29 @@ COPY --link --from=dep-n-ntpd-1.7.0-alpha.20251003-608d6f568e30b338 /tmp/clis-nt
 ## from = "out-42c7ea5a78f3c604"
 ## xtern = "libthread_local-42c7ea5a78f3c604.rlib"
 ##
-## [[contexts]]
-## name = "crate_out-c2a85ea3d52ad392"
-## uri = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-c2a85ea3d52ad392/out"
+## [[mounts]]
+## name = "out-c2a85ea3d52ad392"
+## mount = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-c2a85ea3d52ad392/out"
 ##
-## [[contexts]]
-## name = "crate_out-2d875791ad1d3d18"
-## uri = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out"
+## [[mounts]]
+## name = "out-2d875791ad1d3d18"
+## mount = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out"
 ##
-## [[contexts]]
-## name = "crate_out-cfe125327cacaf16"
-## uri = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde-cfe125327cacaf16/out"
+## [[mounts]]
+## name = "out-badeea6458a799e8"
+## mount = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_core-badeea6458a799e8/out"
 ##
-## [[contexts]]
-## name = "crate_out-badeea6458a799e8"
-## uri = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_core-badeea6458a799e8/out"
+## [[mounts]]
+## name = "out-cfe125327cacaf16"
+## mount = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde-cfe125327cacaf16/out"
+##
+## [[mounts]]
+## name = "out-ddda28ab8da26074"
+## mount = "/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/ntpd-ddda28ab8da26074/out"
+##
+## [set_envs]
+## NTPD_RS_GIT_REV = "-"
+## NTPD_RS_GIT_DATE = "-"
 ##
 ## [[stages]]
 ##
@@ -14653,9 +22687,9 @@ COPY --link --from=dep-n-ntpd-1.7.0-alpha.20251003-608d6f568e30b338 /tmp/clis-nt
 ## [[stages]]
 ##
 ## [stages.Script]
-## stage = "dep-n-ntpd-1.7.0-alpha.20251003-608d6f568e30b338"
+## stage = "dep-n-ntpd-1.7.0-alpha.20251003-955cc9491f209470"
 ## script = '''
-## FROM rust-base AS dep-n-ntpd-1.7.0-alpha.20251003-608d6f568e30b338
+## FROM rust-base AS dep-n-ntpd-1.7.0-alpha.20251003-955cc9491f209470
 ## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps
 ## RUN \
@@ -14667,6 +22701,7 @@ COPY --link --from=dep-n-ntpd-1.7.0-alpha.20251003-608d6f568e30b338 /tmp/clis-nt
 ##   --mount=from=out-cebe1cbff4994413,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcrypto_common-cebe1cbff4994413.rlib,source=/libcrypto_common-cebe1cbff4994413.rlib \
 ##   --mount=from=out-523ed8994559e91b,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libgeneric_array-523ed8994559e91b.rlib,source=/libgeneric_array-523ed8994559e91b.rlib \
 ##   --mount=from=out-7d56f2624f7fb484,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtypenum-7d56f2624f7fb484.rlib,source=/libtypenum-7d56f2624f7fb484.rlib \
+##   --mount=from=out-23b425cce0264739,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libversion_check-23b425cce0264739.rlib,source=/libversion_check-23b425cce0264739.rlib \
 ##   --mount=from=out-fd7543c0686511cd,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/librand_core-fd7543c0686511cd.rlib,source=/librand_core-fd7543c0686511cd.rlib \
 ##   --mount=from=out-2ae0eb9fb2c721bb,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libgetrandom-2ae0eb9fb2c721bb.rlib,source=/libgetrandom-2ae0eb9fb2c721bb.rlib \
 ##   --mount=from=out-5a4301c208f24f4c,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcfg_if-5a4301c208f24f4c.rlib,source=/libcfg_if-5a4301c208f24f4c.rlib \
@@ -14690,6 +22725,16 @@ COPY --link --from=dep-n-ntpd-1.7.0-alpha.20251003-608d6f568e30b338 /tmp/clis-nt
 ##   --mount=from=out-79af5f0cc8b8fe11,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/librustls-79af5f0cc8b8fe11.rlib,source=/librustls-79af5f0cc8b8fe11.rlib \
 ##   --mount=from=out-90227bfec647f88b,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libaws_lc_rs-90227bfec647f88b.rlib,source=/libaws_lc_rs-90227bfec647f88b.rlib \
 ##   --mount=from=out-135dbb753da3a4f4,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libaws_lc_sys-135dbb753da3a4f4.rlib,source=/libaws_lc_sys-135dbb753da3a4f4.rlib \
+##   --mount=from=out-d2948f7c0c8497b1,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libfind_msvc_tools-d2948f7c0c8497b1.rlib,source=/libfind_msvc_tools-d2948f7c0c8497b1.rlib \
+##   --mount=from=out-4dc141be22bbffce,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libjobserver-4dc141be22bbffce.rlib,source=/libjobserver-4dc141be22bbffce.rlib \
+##   --mount=from=out-60426161aa87c673,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibc-60426161aa87c673.rlib,source=/liblibc-60426161aa87c673.rlib \
+##   --mount=from=out-b166d1c75d83103c,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libshlex-b166d1c75d83103c.rlib,source=/libshlex-b166d1c75d83103c.rlib \
+##   --mount=from=out-336c2d9100ab92f8,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcc-336c2d9100ab92f8.rlib,source=/libcc-336c2d9100ab92f8.rlib \
+##   --mount=from=out-3ff4fdb389eab124,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcmake-3ff4fdb389eab124.rlib,source=/libcmake-3ff4fdb389eab124.rlib \
+##   --mount=from=out-25a6bb4144c31f83,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libdunce-25a6bb4144c31f83.rlib,source=/libdunce-25a6bb4144c31f83.rlib \
+##   --mount=from=out-19400729ba85cd55,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libfs_extra-19400729ba85cd55.rlib,source=/libfs_extra-19400729ba85cd55.rlib \
+##   --mount=from=out-d905bd04d466c2b4,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libcfg_if-d905bd04d466c2b4.rlib,source=/libcfg_if-d905bd04d466c2b4.rlib \
+##   --mount=from=out-bcbfd880a9747f76,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibloading-bcbfd880a9747f76.rlib,source=/liblibloading-bcbfd880a9747f76.rlib \
 ##   --mount=from=out-64be2e589e1b58c5,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblog-64be2e589e1b58c5.rlib,source=/liblog-64be2e589e1b58c5.rlib \
 ##   --mount=from=out-d2455ec75a446def,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libonce_cell-d2455ec75a446def.rlib,source=/libonce_cell-d2455ec75a446def.rlib \
 ##   --mount=from=out-88022d560b8b0ce0,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/librustls_pki_types-88022d560b8b0ce0.rlib,source=/librustls_pki_types-88022d560b8b0ce0.rlib \
@@ -14736,9 +22781,14 @@ COPY --link --from=dep-n-ntpd-1.7.0-alpha.20251003-608d6f568e30b338 /tmp/clis-nt
 ##   --mount=from=out-4d66c3c554384830,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libsharded_slab-4d66c3c554384830.rlib,source=/libsharded_slab-4d66c3c554384830.rlib \
 ##   --mount=from=out-7475590c5cec2ded,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblazy_static-7475590c5cec2ded.rlib,source=/liblazy_static-7475590c5cec2ded.rlib \
 ##   --mount=from=out-42c7ea5a78f3c604,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libthread_local-42c7ea5a78f3c604.rlib,source=/libthread_local-42c7ea5a78f3c604.rlib \
+##   --mount=from=out-c2a85ea3d52ad392,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/typenum-c2a85ea3d52ad392/out,source=/ \
+##   --mount=from=out-2d875791ad1d3d18,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out,source=/ \
+##   --mount=from=out-badeea6458a799e8,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde_core-badeea6458a799e8/out,source=/ \
+##   --mount=from=out-cfe125327cacaf16,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/serde-cfe125327cacaf16/out,source=/ \
+##   --mount=from=out-ddda28ab8da26074,dst=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/ntpd-ddda28ab8da26074/out,source=/ \
 ##     env CARGO="$(which cargo)" \
-##         CARGO_BIN_NAME=ntp-metrics-exporter \
-##         CARGO_CRATE_NAME=ntp_metrics_exporter \
+##         CARGO_BIN_NAME=ntp-ctl \
+##         CARGO_CRATE_NAME=ntp_ctl \
 ##         CARGO_INCREMENTAL=0 \
 ##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ntpd-1.7.0-alpha.20251003 \
 ##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ntpd-1.7.0-alpha.20251003/Cargo.toml \
@@ -14760,21 +22810,21 @@ COPY --link --from=dep-n-ntpd-1.7.0-alpha.20251003-608d6f568e30b338 /tmp/clis-nt
 ##         CARGO_SBOM_PATH= \
 ##         OUT_DIR=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/ntpd-ddda28ab8da26074/out \
 ##         CARGOGREEN=1 \
-##         NTPD_RS_GIT_DATE=2025-05-09 \
-##         NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b \
-##       rustc --crate-name ntp_metrics_exporter --edition 2024 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C opt-level'=3' -C embed-bitcode'=no' --cfg feature'="default"' --cfg feature'="pps"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "hardware-timestamping", "pps"))' -C metadata'=fe91005e497e1f05' -C extra-filename'=-608d6f568e30b338' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern clock_steering'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libclock_steering-9dd4b48829148398.rlib' --extern libc'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibc-93b6478caf319772.rlib' --extern ntp_proto'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libntp_proto-b5f6bfad0d8f8471.rlib' --extern ntpd'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libntpd-27edfaa695fb596f.rlib' --extern pps_time'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libpps_time-eb10259898586549.rlib' --extern rand'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/librand-b2b2029003f4f41b.rlib' --extern rustls23'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/librustls-79af5f0cc8b8fe11.rlib' --extern serde'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libserde-d9535ff1afbc9e07.rlib' --extern serde_json'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libserde_json-3956e8613ae2191d.rlib' --extern timestamped_socket'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtimestamped_socket-e18c08f3473fbbaf.rlib' --extern tokio'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtokio-c395c10495b0b3f9.rlib' --extern toml'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtoml-d7e70c2bc4581f22.rlib' --extern tracing'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtracing-075e13f932ee5314.rlib' --extern tracing_subscriber'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtracing_subscriber-b671934748d136d0.rlib' --cap-lints warn -L native'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ntpd-1.7.0-alpha.20251003/bin/ntp-metrics-exporter.rs \
-##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-608d6f568e30b338-stdout \
-##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-608d6f568e30b338-stderr \
-##         || echo $? >/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-608d6f568e30b338-errcode\
-##   ; find /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/*-608d6f568e30b338* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##         NTPD_RS_GIT_REV=- \
+##         NTPD_RS_GIT_DATE=- \
+##       rustc --crate-name ntp_ctl --edition 2024 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C opt-level'=3' -C embed-bitcode'=no' --cfg feature'="default"' --cfg feature'="pps"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "hardware-timestamping", "pps"))' -C metadata'=1017703d3e0229d1' -C extra-filename'=-955cc9491f209470' --out-dir /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps' --extern clock_steering'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libclock_steering-9dd4b48829148398.rlib' --extern libc'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/liblibc-93b6478caf319772.rlib' --extern ntp_proto'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libntp_proto-b5f6bfad0d8f8471.rlib' --extern ntpd'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libntpd-27edfaa695fb596f.rlib' --extern pps_time'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libpps_time-eb10259898586549.rlib' --extern rand'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/librand-b2b2029003f4f41b.rlib' --extern rustls23'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/librustls-79af5f0cc8b8fe11.rlib' --extern serde'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libserde-d9535ff1afbc9e07.rlib' --extern serde_json'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libserde_json-3956e8613ae2191d.rlib' --extern timestamped_socket'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtimestamped_socket-e18c08f3473fbbaf.rlib' --extern tokio'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtokio-c395c10495b0b3f9.rlib' --extern toml'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtoml-d7e70c2bc4581f22.rlib' --extern tracing'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtracing-075e13f932ee5314.rlib' --extern tracing_subscriber'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/libtracing_subscriber-b671934748d136d0.rlib' --cap-lints warn -L native'=/tmp/clis-ntpd_1-7-0-alpha-20251003/release/build/aws-lc-sys-2d875791ad1d3d18/out' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ntpd-1.7.0-alpha.20251003/bin/ntp-ctl.rs \
+##         1>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-955cc9491f209470-stdout \
+##         2>          /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-955cc9491f209470-stderr \
+##         || echo $? >/tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/out-955cc9491f209470-errcode\
+##   ; find /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/*-955cc9491f209470* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
 ## [stages.Script]
-## stage = "out-608d6f568e30b338"
+## stage = "out-955cc9491f209470"
 ## script = """
-## FROM scratch AS out-608d6f568e30b338
-## COPY --link --from=dep-n-ntpd-1.7.0-alpha.20251003-608d6f568e30b338 /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/*-608d6f568e30b338* /"""
+## FROM scratch AS out-955cc9491f209470
+## COPY --link --from=dep-n-ntpd-1.7.0-alpha.20251003-955cc9491f209470 /tmp/clis-ntpd_1-7-0-alpha-20251003/release/deps/*-955cc9491f209470* /"""
 
 FROM scratch
-COPY --link --from=out-608d6f568e30b338 /ntp_metrics_exporter-608d6f568e30b338 /ntp_metrics_exporter
+COPY --link --from=out-955cc9491f209470 /ntp_ctl-955cc9491f209470 /ntp_ctl

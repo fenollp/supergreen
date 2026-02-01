@@ -9,11 +9,296 @@ ARG SOURCE_DATE_EPOCH=42
 FROM scratch AS cratesio-anyhow-1.0.99
 ADD --chmod=0664 --unpack --checksum=sha256:b0674a1ddeecb70197781e945de4b3b8ffb61fa939a5597bcf48503737663100 \
   https://static.crates.io/crates/anyhow/anyhow-1.0.99.crate /
+FROM rust-base AS dep-x-anyhow-1.0.99-95b6ff70d80e9b5f
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-flamegraph_0-6-10/release/build/anyhow-95b6ff70d80e9b5f
+RUN \
+  --mount=from=cratesio-anyhow-1.0.99,source=/anyhow-1.0.99,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99,rw \
+    { \
+        cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/build.rs | sed -E 's/^(pub[()a-z]* +)?(async +)?fn +main/\1\2fn actual_95b6ff70d80e9b5f_main/' >/_ && mv /_ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/build.rs ; \
+        { \
+          echo ; \
+          echo 'fn main() {' ; \
+          echo '    use std::env::{args_os, var_os};' ; \
+          echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+          echo '        use std::process::{Command, Stdio};' ; \
+          echo '        let mut cmd = Command::new("cargo-green");' ; \
+          echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+          echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+          echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+          echo '        assert!(res.success());' ; \
+          echo '    } else {' ; \
+          echo '        actual_95b6ff70d80e9b5f_main();' ; \
+          echo '    }' ; \
+          echo '}' ; \
+        } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/build.rs ; \
+    } && \
+    env CARGO="$(which cargo)" \
+        CARGO_CRATE_NAME=build_script_build \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/Cargo.toml \
+        CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>' \
+        CARGO_PKG_DESCRIPTION=Flexible' concrete Error type built on std::error::Error' \
+        CARGO_PKG_HOMEPAGE= \
+        CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=anyhow \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/dtolnay/anyhow' \
+        CARGO_PKG_RUST_VERSION=1.39 \
+        CARGO_PKG_VERSION=1.0.99 \
+        CARGO_PKG_VERSION_MAJOR=1 \
+        CARGO_PKG_VERSION_MINOR=0 \
+        CARGO_PKG_VERSION_PATCH=99 \
+        CARGO_PKG_VERSION_PRE= \
+        CARGOGREEN=1 \
+      rustc --crate-name build_script_build --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("backtrace", "default", "std"))' -C metadata'=026036bfb7e9e54a' -C extra-filename'=-95b6ff70d80e9b5f' --out-dir /tmp/clis-flamegraph_0-6-10/release/build/anyhow-95b6ff70d80e9b5f -C strip'=debuginfo' -L dependency'=/tmp/clis-flamegraph_0-6-10/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/build.rs \
+        1>          /tmp/clis-flamegraph_0-6-10/release/build/anyhow-95b6ff70d80e9b5f/out-95b6ff70d80e9b5f-stdout \
+        2>          /tmp/clis-flamegraph_0-6-10/release/build/anyhow-95b6ff70d80e9b5f/out-95b6ff70d80e9b5f-stderr \
+        || echo $? >/tmp/clis-flamegraph_0-6-10/release/build/anyhow-95b6ff70d80e9b5f/out-95b6ff70d80e9b5f-errcode\
+  ; find /tmp/clis-flamegraph_0-6-10/release/build/anyhow-95b6ff70d80e9b5f/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-95b6ff70d80e9b5f
+COPY --link --from=dep-x-anyhow-1.0.99-95b6ff70d80e9b5f /tmp/clis-flamegraph_0-6-10/release/build/anyhow-95b6ff70d80e9b5f/*-95b6ff70d80e9b5f* /
+
+## this = "95b6ff70d80e9b5f"
+## writes = [
+##     "build_script_build-95b6ff70d80e9b5f",
+##     "build_script_build-95b6ff70d80e9b5f.d",
+## ]
+## stderr = [
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-flamegraph_0-6-10/release/build/anyhow-95b6ff70d80e9b5f/build_script_build-95b6ff70d80e9b5f.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-flamegraph_0-6-10/release/build/anyhow-95b6ff70d80e9b5f/build_script_build-95b6ff70d80e9b5f","emit":"link"}',
+## ]
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
+##
+## [[stages]]
+##
+## [stages.Cratesio]
+## stage = "cratesio-anyhow-1.0.99"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99"
+## name = "anyhow"
+## name_dash_version = "anyhow-1.0.99"
+## hash = "b0674a1ddeecb70197781e945de4b3b8ffb61fa939a5597bcf48503737663100"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "dep-x-anyhow-1.0.99-95b6ff70d80e9b5f"
+## script = '''
+## FROM rust-base AS dep-x-anyhow-1.0.99-95b6ff70d80e9b5f
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-flamegraph_0-6-10/release/build/anyhow-95b6ff70d80e9b5f
+## RUN \
+##   --mount=from=cratesio-anyhow-1.0.99,source=/anyhow-1.0.99,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99,rw \
+##     { \
+##         cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/build.rs | sed -E 's/^(pub[()a-z]* +)?(async +)?fn +main/\1\2fn actual_95b6ff70d80e9b5f_main/' >/_ && mv /_ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/build.rs ; \
+##         { \
+##           echo ; \
+##           echo 'fn main() {' ; \
+##           echo '    use std::env::{args_os, var_os};' ; \
+##           echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+##           echo '        use std::process::{Command, Stdio};' ; \
+##           echo '        let mut cmd = Command::new("cargo-green");' ; \
+##           echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+##           echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+##           echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+##           echo '        assert!(res.success());' ; \
+##           echo '    } else {' ; \
+##           echo '        actual_95b6ff70d80e9b5f_main();' ; \
+##           echo '    }' ; \
+##           echo '}' ; \
+##         } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/build.rs ; \
+##     } && \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CRATE_NAME=build_script_build \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/Cargo.toml \
+##         CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>' \
+##         CARGO_PKG_DESCRIPTION=Flexible' concrete Error type built on std::error::Error' \
+##         CARGO_PKG_HOMEPAGE= \
+##         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=anyhow \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/dtolnay/anyhow' \
+##         CARGO_PKG_RUST_VERSION=1.39 \
+##         CARGO_PKG_VERSION=1.0.99 \
+##         CARGO_PKG_VERSION_MAJOR=1 \
+##         CARGO_PKG_VERSION_MINOR=0 \
+##         CARGO_PKG_VERSION_PATCH=99 \
+##         CARGO_PKG_VERSION_PRE= \
+##         CARGOGREEN=1 \
+##       rustc --crate-name build_script_build --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("backtrace", "default", "std"))' -C metadata'=026036bfb7e9e54a' -C extra-filename'=-95b6ff70d80e9b5f' --out-dir /tmp/clis-flamegraph_0-6-10/release/build/anyhow-95b6ff70d80e9b5f -C strip'=debuginfo' -L dependency'=/tmp/clis-flamegraph_0-6-10/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/build.rs \
+##         1>          /tmp/clis-flamegraph_0-6-10/release/build/anyhow-95b6ff70d80e9b5f/out-95b6ff70d80e9b5f-stdout \
+##         2>          /tmp/clis-flamegraph_0-6-10/release/build/anyhow-95b6ff70d80e9b5f/out-95b6ff70d80e9b5f-stderr \
+##         || echo $? >/tmp/clis-flamegraph_0-6-10/release/build/anyhow-95b6ff70d80e9b5f/out-95b6ff70d80e9b5f-errcode\
+##   ; find /tmp/clis-flamegraph_0-6-10/release/build/anyhow-95b6ff70d80e9b5f/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-95b6ff70d80e9b5f"
+## script = """
+## FROM scratch AS out-95b6ff70d80e9b5f
+## COPY --link --from=dep-x-anyhow-1.0.99-95b6ff70d80e9b5f /tmp/clis-flamegraph_0-6-10/release/build/anyhow-95b6ff70d80e9b5f/*-95b6ff70d80e9b5f* /"""
+
+FROM rust-base AS run-z-anyhow-1.0.99-2ad6fd9cbd63bfef
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-flamegraph_0-6-10/release/build/anyhow-2ad6fd9cbd63bfef/out
+WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99
+RUN \
+  --mount=from=out-95b6ff70d80e9b5f,source=/build_script_build-95b6ff70d80e9b5f,dst=/tmp/clis-flamegraph_0-6-10/release/build/anyhow-95b6ff70d80e9b5f/build-script-build \
+  --mount=from=cratesio-anyhow-1.0.99,source=/anyhow-1.0.99,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99 \
+    env CARGO="$(which cargo)" \
+        CARGO_CFG_FEATURE=default,std \
+        CARGO_CFG_PANIC=unwind \
+        CARGO_CFG_TARGET_ABI= \
+        CARGO_CFG_TARGET_ARCH=x86_64 \
+        CARGO_CFG_TARGET_ENDIAN=little \
+        CARGO_CFG_TARGET_ENV=gnu \
+        CARGO_CFG_TARGET_FAMILY=unix \
+        CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
+        CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+        CARGO_CFG_TARGET_OS=linux \
+        CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+        CARGO_CFG_TARGET_VENDOR=unknown \
+        CARGO_CFG_UNIX= \
+        CARGO_ENCODED_RUSTFLAGS= \
+        CARGO_FEATURE_DEFAULT=1 \
+        CARGO_FEATURE_STD=1 \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/Cargo.toml \
+        CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>' \
+        CARGO_PKG_DESCRIPTION=Flexible' concrete Error type built on std::error::Error' \
+        CARGO_PKG_HOMEPAGE= \
+        CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=anyhow \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/dtolnay/anyhow' \
+        CARGO_PKG_RUST_VERSION=1.39 \
+        CARGO_PKG_VERSION=1.0.99 \
+        CARGO_PKG_VERSION_MAJOR=1 \
+        CARGO_PKG_VERSION_MINOR=0 \
+        CARGO_PKG_VERSION_PATCH=99 \
+        CARGO_PKG_VERSION_PRE= \
+        DEBUG=false \
+        HOST=x86_64-unknown-linux-gnu \
+        NUM_JOBS=4 \
+        OPT_LEVEL=3 \
+        OUT_DIR=/tmp/clis-flamegraph_0-6-10/release/build/anyhow-2ad6fd9cbd63bfef/out \
+        PROFILE=release \
+        RUSTC=rustc \
+        RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+        TARGET=x86_64-unknown-linux-gnu \
+        CARGOGREEN=1 \
+      CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-flamegraph_0-6-10/release/build/anyhow-95b6ff70d80e9b5f/build-script-build \
+        1>          /tmp/clis-flamegraph_0-6-10/release/build/anyhow-2ad6fd9cbd63bfef/out/out-2ad6fd9cbd63bfef-stdout \
+        2>          /tmp/clis-flamegraph_0-6-10/release/build/anyhow-2ad6fd9cbd63bfef/out/out-2ad6fd9cbd63bfef-stderr \
+        || echo $? >/tmp/clis-flamegraph_0-6-10/release/build/anyhow-2ad6fd9cbd63bfef/out/out-2ad6fd9cbd63bfef-errcode\
+  ; find /tmp/clis-flamegraph_0-6-10/release/build/anyhow-2ad6fd9cbd63bfef/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-2ad6fd9cbd63bfef
+COPY --link --from=run-z-anyhow-1.0.99-2ad6fd9cbd63bfef /tmp/clis-flamegraph_0-6-10/release/build/anyhow-2ad6fd9cbd63bfef/out /
+
+## this = "2ad6fd9cbd63bfef"
+## deps = ["95b6ff70d80e9b5f"]
+## writes_to = "/tmp/clis-flamegraph_0-6-10/release/build/anyhow-2ad6fd9cbd63bfef/out"
+## stdout = [
+##     "cargo:rerun-if-changed=src/nightly.rs",
+##     "cargo:rerun-if-env-changed=RUSTC_BOOTSTRAP",
+## ]
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "run-z-anyhow-1.0.99-2ad6fd9cbd63bfef"
+## script = '''
+## FROM rust-base AS run-z-anyhow-1.0.99-2ad6fd9cbd63bfef
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-flamegraph_0-6-10/release/build/anyhow-2ad6fd9cbd63bfef/out
+## WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99
+## RUN \
+##   --mount=from=out-95b6ff70d80e9b5f,source=/build_script_build-95b6ff70d80e9b5f,dst=/tmp/clis-flamegraph_0-6-10/release/build/anyhow-95b6ff70d80e9b5f/build-script-build \
+##   --mount=from=cratesio-anyhow-1.0.99,source=/anyhow-1.0.99,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99 \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CFG_FEATURE=default,std \
+##         CARGO_CFG_PANIC=unwind \
+##         CARGO_CFG_TARGET_ABI= \
+##         CARGO_CFG_TARGET_ARCH=x86_64 \
+##         CARGO_CFG_TARGET_ENDIAN=little \
+##         CARGO_CFG_TARGET_ENV=gnu \
+##         CARGO_CFG_TARGET_FAMILY=unix \
+##         CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
+##         CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+##         CARGO_CFG_TARGET_OS=linux \
+##         CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+##         CARGO_CFG_TARGET_VENDOR=unknown \
+##         CARGO_CFG_UNIX= \
+##         CARGO_ENCODED_RUSTFLAGS= \
+##         CARGO_FEATURE_DEFAULT=1 \
+##         CARGO_FEATURE_STD=1 \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/Cargo.toml \
+##         CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>' \
+##         CARGO_PKG_DESCRIPTION=Flexible' concrete Error type built on std::error::Error' \
+##         CARGO_PKG_HOMEPAGE= \
+##         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=anyhow \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/dtolnay/anyhow' \
+##         CARGO_PKG_RUST_VERSION=1.39 \
+##         CARGO_PKG_VERSION=1.0.99 \
+##         CARGO_PKG_VERSION_MAJOR=1 \
+##         CARGO_PKG_VERSION_MINOR=0 \
+##         CARGO_PKG_VERSION_PATCH=99 \
+##         CARGO_PKG_VERSION_PRE= \
+##         DEBUG=false \
+##         HOST=x86_64-unknown-linux-gnu \
+##         NUM_JOBS=4 \
+##         OPT_LEVEL=3 \
+##         OUT_DIR=/tmp/clis-flamegraph_0-6-10/release/build/anyhow-2ad6fd9cbd63bfef/out \
+##         PROFILE=release \
+##         RUSTC=rustc \
+##         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+##         TARGET=x86_64-unknown-linux-gnu \
+##         CARGOGREEN=1 \
+##       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-flamegraph_0-6-10/release/build/anyhow-95b6ff70d80e9b5f/build-script-build \
+##         1>          /tmp/clis-flamegraph_0-6-10/release/build/anyhow-2ad6fd9cbd63bfef/out/out-2ad6fd9cbd63bfef-stdout \
+##         2>          /tmp/clis-flamegraph_0-6-10/release/build/anyhow-2ad6fd9cbd63bfef/out/out-2ad6fd9cbd63bfef-stderr \
+##         || echo $? >/tmp/clis-flamegraph_0-6-10/release/build/anyhow-2ad6fd9cbd63bfef/out/out-2ad6fd9cbd63bfef-errcode\
+##   ; find /tmp/clis-flamegraph_0-6-10/release/build/anyhow-2ad6fd9cbd63bfef/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-2ad6fd9cbd63bfef"
+## script = """
+## FROM scratch AS out-2ad6fd9cbd63bfef
+## COPY --link --from=run-z-anyhow-1.0.99-2ad6fd9cbd63bfef /tmp/clis-flamegraph_0-6-10/release/build/anyhow-2ad6fd9cbd63bfef/out /"""
+
+
 FROM rust-base AS dep-n-anyhow-1.0.99-685a2f3787b242f1
 SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-flamegraph_0-6-10/release/deps
 RUN \
   --mount=from=cratesio-anyhow-1.0.99,source=/anyhow-1.0.99,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99 \
+  --mount=from=out-2ad6fd9cbd63bfef,dst=/tmp/clis-flamegraph_0-6-10/release/build/anyhow-2ad6fd9cbd63bfef/out,source=/ \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=anyhow \
         CARGO_INCREMENTAL=0 \
@@ -35,7 +320,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         OUT_DIR=/tmp/clis-flamegraph_0-6-10/release/build/anyhow-2ad6fd9cbd63bfef/out \
         CARGOGREEN=1 \
-      rustc --crate-name anyhow --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("backtrace", "default", "std"))' -C metadata'=bbf72278b2ccea91' -C extra-filename'=-685a2f3787b242f1' --out-dir /tmp/clis-flamegraph_0-6-10/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-flamegraph_0-6-10/release/deps' --cap-lints warn --cfg std_backtrace --check-cfg cfg'(anyhow_build_probe)' --check-cfg cfg'(anyhow_nightly_testing)' --check-cfg cfg'(anyhow_no_core_error)' --check-cfg cfg'(anyhow_no_core_unwind_safe)' --check-cfg cfg'(anyhow_no_fmt_arguments_as_str)' --check-cfg cfg'(anyhow_no_ptr_addr_of)' --check-cfg cfg'(anyhow_no_unsafe_op_in_unsafe_fn_lint)' --check-cfg cfg'(error_generic_member_access)' --check-cfg cfg'(std_backtrace)' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/lib.rs \
+      rustc --crate-name anyhow --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("backtrace", "default", "std"))' -C metadata'=bbf72278b2ccea91' -C extra-filename'=-685a2f3787b242f1' --out-dir /tmp/clis-flamegraph_0-6-10/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-flamegraph_0-6-10/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/lib.rs \
         1>          /tmp/clis-flamegraph_0-6-10/release/deps/out-685a2f3787b242f1-stdout \
         2>          /tmp/clis-flamegraph_0-6-10/release/deps/out-685a2f3787b242f1-stderr \
         || echo $? >/tmp/clis-flamegraph_0-6-10/release/deps/out-685a2f3787b242f1-errcode\
@@ -44,6 +329,11 @@ FROM scratch AS out-685a2f3787b242f1
 COPY --link --from=dep-n-anyhow-1.0.99-685a2f3787b242f1 /tmp/clis-flamegraph_0-6-10/release/deps/*-685a2f3787b242f1* /
 
 ## this = "685a2f3787b242f1"
+## deps = [
+##     "2ad6fd9cbd63bfef",
+##     "95b6ff70d80e9b5f",
+## ]
+## buildrs_results = ["2ad6fd9cbd63bfef"]
 ## writes = [
 ##     "anyhow-685a2f3787b242f1.d",
 ##     "libanyhow-685a2f3787b242f1.rlib",
@@ -51,9 +341,178 @@ COPY --link --from=dep-n-anyhow-1.0.99-685a2f3787b242f1 /tmp/clis-flamegraph_0-6
 ## ]
 ## stderr = [
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-flamegraph_0-6-10/release/deps/anyhow-685a2f3787b242f1.d","emit":"dep-info"}',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `error_generic_member_access`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/lib.rs","byte_start":6598,"byte_end":6625,"line_start":210,"line_end":210,"column_start":13,"column_end":40,"is_primary":true,"text":[{"text":"#![cfg_attr(error_generic_member_access, feature(error_generic_member_access))]","highlight_start":13,"highlight_end":40}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"expected names are: `docsrs`, `feature`, and `test` and 31 more","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(error_generic_member_access)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(error_generic_member_access)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"`#[warn(unexpected_cfgs)]` on by default","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `error_generic_member_access`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/lib.rs:210:13\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m210\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m#![cfg_attr(error_generic_member_access, feature(error_generic_member_access))]\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m             \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: expected names are: `docsrs`, `feature`, and `test` and 31 more\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(error_generic_member_access)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(error_generic_member_access)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: `#[warn(unexpected_cfgs)]` on by default\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_unsafe_op_in_unsafe_fn_lint`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/lib.rs","byte_start":6746,"byte_end":6783,"line_start":214,"line_end":214,"column_start":9,"column_end":46,"is_primary":true,"text":[{"text":"    not(anyhow_no_unsafe_op_in_unsafe_fn_lint),","highlight_start":9,"highlight_end":46}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_unsafe_op_in_unsafe_fn_lint)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_unsafe_op_in_unsafe_fn_lint)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_unsafe_op_in_unsafe_fn_lint`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/lib.rs:214:9\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m214\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    not(anyhow_no_unsafe_op_in_unsafe_fn_lint),\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m         \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_unsafe_op_in_unsafe_fn_lint)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_unsafe_op_in_unsafe_fn_lint)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_unsafe_op_in_unsafe_fn_lint`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/lib.rs","byte_start":6834,"byte_end":6871,"line_start":217,"line_end":217,"column_start":13,"column_end":50,"is_primary":true,"text":[{"text":"#![cfg_attr(anyhow_no_unsafe_op_in_unsafe_fn_lint, allow(unused_unsafe))]","highlight_start":13,"highlight_end":50}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_unsafe_op_in_unsafe_fn_lint)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_unsafe_op_in_unsafe_fn_lint)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_unsafe_op_in_unsafe_fn_lint`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/lib.rs:217:13\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m217\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m#![cfg_attr(anyhow_no_unsafe_op_in_unsafe_fn_lint, allow(unused_unsafe))]\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m             \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_unsafe_op_in_unsafe_fn_lint)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_unsafe_op_in_unsafe_fn_lint)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_nightly_testing`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/lib.rs","byte_start":7665,"byte_end":7687,"line_start":244,"line_end":244,"column_start":5,"column_end":27,"is_primary":true,"text":[{"text":"    anyhow_nightly_testing,","highlight_start":5,"highlight_end":27}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_nightly_testing)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_nightly_testing)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_nightly_testing`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/lib.rs:244:5\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m244\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    anyhow_nightly_testing,\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_nightly_testing)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_nightly_testing)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `error_generic_member_access`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/lib.rs","byte_start":7718,"byte_end":7745,"line_start":246,"line_end":246,"column_start":9,"column_end":36,"is_primary":true,"text":[{"text":"    not(error_generic_member_access)","highlight_start":9,"highlight_end":36}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(error_generic_member_access)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(error_generic_member_access)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `error_generic_member_access`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/lib.rs:246:9\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m246\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    not(error_generic_member_access)\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m         \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(error_generic_member_access)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(error_generic_member_access)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `error_generic_member_access`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/lib.rs","byte_start":7985,"byte_end":8012,"line_start":264,"line_end":264,"column_start":7,"column_end":34,"is_primary":true,"text":[{"text":"#[cfg(error_generic_member_access)]","highlight_start":7,"highlight_end":34}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(error_generic_member_access)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(error_generic_member_access)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `error_generic_member_access`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/lib.rs:264:7\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m264\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m#[cfg(error_generic_member_access)]\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m       \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(error_generic_member_access)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(error_generic_member_access)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_core_error`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/lib.rs","byte_start":8158,"byte_end":8178,"line_start":273,"line_end":273,"column_start":33,"column_end":53,"is_primary":true,"text":[{"text":"#[cfg(all(not(feature = \"std\"), anyhow_no_core_error))]","highlight_start":33,"highlight_end":53}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_core_error`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/lib.rs:273:33\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m273\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m#[cfg(all(not(feature = \"std\"), anyhow_no_core_error))]\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                 \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_core_error`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/lib.rs","byte_start":8296,"byte_end":8316,"line_start":279,"line_end":279,"column_start":32,"column_end":52,"is_primary":true,"text":[{"text":"#[cfg(not(any(feature = \"std\", anyhow_no_core_error)))]","highlight_start":32,"highlight_end":52}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_core_error`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/lib.rs:279:32\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m279\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m#[cfg(not(any(feature = \"std\", anyhow_no_core_error)))]\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_core_error`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/lib.rs","byte_start":8390,"byte_end":8410,"line_start":282,"line_end":282,"column_start":33,"column_end":53,"is_primary":true,"text":[{"text":"#[cfg(all(not(feature = \"std\"), anyhow_no_core_error))]","highlight_start":33,"highlight_end":53}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_core_error`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/lib.rs:282:33\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m282\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m#[cfg(all(not(feature = \"std\"), anyhow_no_core_error))]\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                 \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_core_error`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/lib.rs","byte_start":12332,"byte_end":12352,"line_start":417,"line_end":417,"column_start":32,"column_end":52,"is_primary":true,"text":[{"text":"#[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]","highlight_start":32,"highlight_end":52}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_core_error`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/lib.rs:417:32\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m417\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m#[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `std_backtrace`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/backtrace.rs","byte_start":6,"byte_end":19,"line_start":1,"line_end":1,"column_start":7,"column_end":20,"is_primary":true,"text":[{"text":"#[cfg(std_backtrace)]","highlight_start":7,"highlight_end":20}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(std_backtrace)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(std_backtrace)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `std_backtrace`\u001b[0m\n\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/backtrace.rs:1:7\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m1\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m#[cfg(std_backtrace)]\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m       \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m           [lints.rust]\u001b[0m\n\u001b[0m           unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(std_backtrace)'] }\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(std_backtrace)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `std_backtrace`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/backtrace.rs","byte_start":98,"byte_end":111,"line_start":4,"line_end":4,"column_start":15,"column_end":28,"is_primary":true,"text":[{"text":"#[cfg(all(not(std_backtrace), feature = \"backtrace\"))]","highlight_start":15,"highlight_end":28}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(std_backtrace)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(std_backtrace)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `std_backtrace`\u001b[0m\n\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/backtrace.rs:4:15\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m4\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m#[cfg(all(not(std_backtrace), feature = \"backtrace\"))]\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m               \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m           [lints.rust]\u001b[0m\n\u001b[0m           unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(std_backtrace)'] }\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(std_backtrace)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `std_backtrace`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/backtrace.rs","byte_start":214,"byte_end":227,"line_start":7,"line_end":7,"column_start":15,"column_end":28,"is_primary":true,"text":[{"text":"#[cfg(not(any(std_backtrace, feature = \"backtrace\")))]","highlight_start":15,"highlight_end":28}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(std_backtrace)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(std_backtrace)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `std_backtrace`\u001b[0m\n\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/backtrace.rs:7:15\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m7\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m#[cfg(not(any(std_backtrace, feature = \"backtrace\")))]\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m               \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m           [lints.rust]\u001b[0m\n\u001b[0m           unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(std_backtrace)'] }\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(std_backtrace)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `std_backtrace`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/backtrace.rs","byte_start":291,"byte_end":304,"line_start":10,"line_end":10,"column_start":7,"column_end":20,"is_primary":true,"text":[{"text":"#[cfg(std_backtrace)]","highlight_start":7,"highlight_end":20}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(std_backtrace)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(std_backtrace)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `std_backtrace`\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/backtrace.rs:10:7\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m10\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m#[cfg(std_backtrace)]\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m       \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m            [lints.rust]\u001b[0m\n\u001b[0m            unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(std_backtrace)'] }\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(std_backtrace)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `std_backtrace`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/backtrace.rs","byte_start":407,"byte_end":420,"line_start":17,"line_end":17,"column_start":15,"column_end":28,"is_primary":true,"text":[{"text":"#[cfg(all(not(std_backtrace), feature = \"backtrace\"))]","highlight_start":15,"highlight_end":28}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(std_backtrace)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(std_backtrace)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `std_backtrace`\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/backtrace.rs:17:15\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m17\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m#[cfg(all(not(std_backtrace), feature = \"backtrace\"))]\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m               \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m            [lints.rust]\u001b[0m\n\u001b[0m            unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(std_backtrace)'] }\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(std_backtrace)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `std_backtrace`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/backtrace.rs","byte_start":561,"byte_end":574,"line_start":24,"line_end":24,"column_start":11,"column_end":24,"is_primary":true,"text":[{"text":"#[cfg(any(std_backtrace, feature = \"backtrace\"))]","highlight_start":11,"highlight_end":24}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(std_backtrace)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(std_backtrace)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `std_backtrace`\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/backtrace.rs:24:11\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m24\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m#[cfg(any(std_backtrace, feature = \"backtrace\"))]\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m           \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m            [lints.rust]\u001b[0m\n\u001b[0m            unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(std_backtrace)'] }\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(std_backtrace)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `std_backtrace`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/backtrace.rs","byte_start":715,"byte_end":728,"line_start":31,"line_end":31,"column_start":15,"column_end":28,"is_primary":true,"text":[{"text":"#[cfg(not(any(std_backtrace, feature = \"backtrace\")))]","highlight_start":15,"highlight_end":28}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(std_backtrace)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(std_backtrace)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `std_backtrace`\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/backtrace.rs:31:15\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m31\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m#[cfg(not(any(std_backtrace, feature = \"backtrace\")))]\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m               \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m            [lints.rust]\u001b[0m\n\u001b[0m            unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(std_backtrace)'] }\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(std_backtrace)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `error_generic_member_access`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/backtrace.rs","byte_start":822,"byte_end":849,"line_start":38,"line_end":38,"column_start":7,"column_end":34,"is_primary":true,"text":[{"text":"#[cfg(error_generic_member_access)]","highlight_start":7,"highlight_end":34}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(error_generic_member_access)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(error_generic_member_access)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `error_generic_member_access`\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/backtrace.rs:38:7\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m38\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m#[cfg(error_generic_member_access)]\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m       \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m            [lints.rust]\u001b[0m\n\u001b[0m            unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(error_generic_member_access)'] }\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(error_generic_member_access)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_core_error`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/backtrace.rs","byte_start":1119,"byte_end":1139,"line_start":49,"line_end":49,"column_start":30,"column_end":50,"is_primary":true,"text":[{"text":"    any(feature = \"std\", not(anyhow_no_core_error)),","highlight_start":30,"highlight_end":50}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_core_error`\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/backtrace.rs:49:30\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m49\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    any(feature = \"std\", not(anyhow_no_core_error)),\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                              \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m            [lints.rust]\u001b[0m\n\u001b[0m            unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `error_generic_member_access`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/backtrace.rs","byte_start":1151,"byte_end":1178,"line_start":50,"line_end":50,"column_start":9,"column_end":36,"is_primary":true,"text":[{"text":"    not(error_generic_member_access),","highlight_start":9,"highlight_end":36}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(error_generic_member_access)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(error_generic_member_access)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `error_generic_member_access`\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/backtrace.rs:50:9\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m50\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    not(error_generic_member_access),\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m         \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m            [lints.rust]\u001b[0m\n\u001b[0m            unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(error_generic_member_access)'] }\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(error_generic_member_access)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `std_backtrace`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/backtrace.rs","byte_start":1189,"byte_end":1202,"line_start":51,"line_end":51,"column_start":9,"column_end":22,"is_primary":true,"text":[{"text":"    any(std_backtrace, feature = \"backtrace\")","highlight_start":9,"highlight_end":22}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(std_backtrace)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(std_backtrace)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `std_backtrace`\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/backtrace.rs:51:9\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m51\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    any(std_backtrace, feature = \"backtrace\")\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m         \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m            [lints.rust]\u001b[0m\n\u001b[0m            unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(std_backtrace)'] }\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(std_backtrace)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_core_error`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/backtrace.rs","byte_start":1358,"byte_end":1378,"line_start":60,"line_end":60,"column_start":30,"column_end":50,"is_primary":true,"text":[{"text":"    any(feature = \"std\", not(anyhow_no_core_error)),","highlight_start":30,"highlight_end":50}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_core_error`\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/backtrace.rs:60:30\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m60\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    any(feature = \"std\", not(anyhow_no_core_error)),\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                              \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m            [lints.rust]\u001b[0m\n\u001b[0m            unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `std_backtrace`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/backtrace.rs","byte_start":1390,"byte_end":1403,"line_start":61,"line_end":61,"column_start":9,"column_end":22,"is_primary":true,"text":[{"text":"    not(std_backtrace),","highlight_start":9,"highlight_end":22}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(std_backtrace)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(std_backtrace)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `std_backtrace`\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/backtrace.rs:61:9\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m61\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    not(std_backtrace),\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m         \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m            [lints.rust]\u001b[0m\n\u001b[0m            unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(std_backtrace)'] }\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(std_backtrace)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `std_backtrace`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/backtrace.rs","byte_start":1535,"byte_end":1548,"line_start":70,"line_end":70,"column_start":15,"column_end":28,"is_primary":true,"text":[{"text":"#[cfg(all(not(std_backtrace), feature = \"backtrace\"))]","highlight_start":15,"highlight_end":28}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(std_backtrace)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(std_backtrace)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `std_backtrace`\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/backtrace.rs:70:15\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m70\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m#[cfg(all(not(std_backtrace), feature = \"backtrace\"))]\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m               \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m            [lints.rust]\u001b[0m\n\u001b[0m            unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(std_backtrace)'] }\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(std_backtrace)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_core_error`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/chain.rs","byte_start":78,"byte_end":98,"line_start":4,"line_end":4,"column_start":32,"column_end":52,"is_primary":true,"text":[{"text":"#[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]","highlight_start":32,"highlight_end":52}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_core_error`\u001b[0m\n\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/chain.rs:4:32\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m4\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m#[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m           [lints.rust]\u001b[0m\n\u001b[0m           unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_core_error`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/chain.rs","byte_start":164,"byte_end":184,"line_start":7,"line_end":7,"column_start":32,"column_end":52,"is_primary":true,"text":[{"text":"#[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]","highlight_start":32,"highlight_end":52}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_core_error`\u001b[0m\n\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/chain.rs:7:32\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m7\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m#[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m           [lints.rust]\u001b[0m\n\u001b[0m           unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_core_error`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/chain.rs","byte_start":251,"byte_end":271,"line_start":10,"line_end":10,"column_start":33,"column_end":53,"is_primary":true,"text":[{"text":"#[cfg(all(not(feature = \"std\"), anyhow_no_core_error))]","highlight_start":33,"highlight_end":53}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_core_error`\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/chain.rs:10:33\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m10\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m#[cfg(all(not(feature = \"std\"), anyhow_no_core_error))]\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                 \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m            [lints.rust]\u001b[0m\n\u001b[0m            unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_core_error`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/chain.rs","byte_start":1381,"byte_end":1401,"line_start":56,"line_end":56,"column_start":32,"column_end":52,"is_primary":true,"text":[{"text":"#[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]","highlight_start":32,"highlight_end":52}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_core_error`\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/chain.rs:56:32\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m56\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m#[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m            [lints.rust]\u001b[0m\n\u001b[0m            unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_core_error`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/chain.rs","byte_start":2505,"byte_end":2525,"line_start":93,"line_end":93,"column_start":32,"column_end":52,"is_primary":true,"text":[{"text":"#[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]","highlight_start":32,"highlight_end":52}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_core_error`\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/chain.rs:93:32\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m93\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m#[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m            [lints.rust]\u001b[0m\n\u001b[0m            unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_core_error`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/chain.rs","byte_start":492,"byte_end":512,"line_start":20,"line_end":20,"column_start":36,"column_end":56,"is_primary":true,"text":[{"text":"    #[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]","highlight_start":36,"highlight_end":56}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_core_error`\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/chain.rs:20:36\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m20\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    #[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                    \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m            [lints.rust]\u001b[0m\n\u001b[0m            unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_core_error`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/chain.rs","byte_start":1146,"byte_end":1166,"line_start":45,"line_end":45,"column_start":44,"column_end":64,"is_primary":true,"text":[{"text":"            #[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]","highlight_start":44,"highlight_end":64}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_core_error`\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/chain.rs:45:44\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m45\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m            #[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                            \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m            [lints.rust]\u001b[0m\n\u001b[0m            unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_core_error`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/chain.rs","byte_start":2385,"byte_end":2405,"line_start":87,"line_end":87,"column_start":44,"column_end":64,"is_primary":true,"text":[{"text":"            #[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]","highlight_start":44,"highlight_end":64}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_core_error`\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/chain.rs:87:44\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m87\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m            #[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                            \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m            [lints.rust]\u001b[0m\n\u001b[0m            unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `error_generic_member_access`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/context.rs","byte_start":155,"byte_end":182,"line_start":6,"line_end":6,"column_start":7,"column_end":34,"is_primary":true,"text":[{"text":"#[cfg(error_generic_member_access)]","highlight_start":7,"highlight_end":34}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(error_generic_member_access)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(error_generic_member_access)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `error_generic_member_access`\u001b[0m\n\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/context.rs:6:7\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m6\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m#[cfg(error_generic_member_access)]\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m       \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m           [lints.rust]\u001b[0m\n\u001b[0m           unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(error_generic_member_access)'] }\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(error_generic_member_access)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_core_error`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/context.rs","byte_start":434,"byte_end":454,"line_start":18,"line_end":18,"column_start":36,"column_end":56,"is_primary":true,"text":[{"text":"    #[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]","highlight_start":36,"highlight_end":56}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_core_error`\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/context.rs:18:36\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m18\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    #[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                    \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m            [lints.rust]\u001b[0m\n\u001b[0m            unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `error_generic_member_access`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/context.rs","byte_start":3541,"byte_end":3568,"line_start":146,"line_end":146,"column_start":11,"column_end":38,"is_primary":true,"text":[{"text":"    #[cfg(error_generic_member_access)]","highlight_start":11,"highlight_end":38}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(error_generic_member_access)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(error_generic_member_access)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `error_generic_member_access`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/context.rs:146:11\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m146\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    #[cfg(error_generic_member_access)]\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m           \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(error_generic_member_access)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(error_generic_member_access)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `error_generic_member_access`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/context.rs","byte_start":3907,"byte_end":3934,"line_start":160,"line_end":160,"column_start":11,"column_end":38,"is_primary":true,"text":[{"text":"    #[cfg(error_generic_member_access)]","highlight_start":11,"highlight_end":38}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(error_generic_member_access)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(error_generic_member_access)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `error_generic_member_access`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/context.rs:160:11\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m160\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    #[cfg(error_generic_member_access)]\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m           \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(error_generic_member_access)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(error_generic_member_access)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `error_generic_member_access`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs","byte_start":64,"byte_end":91,"line_start":3,"line_end":3,"column_start":7,"column_end":34,"is_primary":true,"text":[{"text":"#[cfg(error_generic_member_access)]","highlight_start":7,"highlight_end":34}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(error_generic_member_access)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(error_generic_member_access)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `error_generic_member_access`\u001b[0m\n\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs:3:7\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m3\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m#[cfg(error_generic_member_access)]\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m       \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m           [lints.rust]\u001b[0m\n\u001b[0m           unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(error_generic_member_access)'] }\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(error_generic_member_access)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_core_error`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs","byte_start":162,"byte_end":182,"line_start":5,"line_end":5,"column_start":32,"column_end":52,"is_primary":true,"text":[{"text":"#[cfg(any(feature = \"std\", not(anyhow_no_core_error), anyhow_no_ptr_addr_of))]","highlight_start":32,"highlight_end":52}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_core_error`\u001b[0m\n\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs:5:32\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m5\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m#[cfg(any(feature = \"std\", not(anyhow_no_core_error), anyhow_no_ptr_addr_of))]\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m           [lints.rust]\u001b[0m\n\u001b[0m           unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_ptr_addr_of`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs","byte_start":185,"byte_end":206,"line_start":5,"line_end":5,"column_start":55,"column_end":76,"is_primary":true,"text":[{"text":"#[cfg(any(feature = \"std\", not(anyhow_no_core_error), anyhow_no_ptr_addr_of))]","highlight_start":55,"highlight_end":76}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_ptr_addr_of)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_ptr_addr_of)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_ptr_addr_of`\u001b[0m\n\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs:5:55\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m5\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m#[cfg(any(feature = \"std\", not(anyhow_no_core_error), anyhow_no_ptr_addr_of))]\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                                       \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m           [lints.rust]\u001b[0m\n\u001b[0m           unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_ptr_addr_of)'] }\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_ptr_addr_of)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_core_error`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs","byte_start":434,"byte_end":454,"line_start":13,"line_end":13,"column_start":32,"column_end":52,"is_primary":true,"text":[{"text":"#[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]","highlight_start":32,"highlight_end":52}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_core_error`\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs:13:32\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m13\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m#[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m            [lints.rust]\u001b[0m\n\u001b[0m            unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_core_unwind_safe`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs","byte_start":503,"byte_end":529,"line_start":15,"line_end":15,"column_start":11,"column_end":37,"is_primary":true,"text":[{"text":"#[cfg(not(anyhow_no_core_unwind_safe))]","highlight_start":11,"highlight_end":37}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_unwind_safe)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_unwind_safe)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_core_unwind_safe`\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs:15:11\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m15\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m#[cfg(not(anyhow_no_core_unwind_safe))]\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m           \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m            [lints.rust]\u001b[0m\n\u001b[0m            unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_unwind_safe)'] }\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_unwind_safe)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_ptr_addr_of`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs","byte_start":589,"byte_end":610,"line_start":17,"line_end":17,"column_start":11,"column_end":32,"is_primary":true,"text":[{"text":"#[cfg(not(anyhow_no_ptr_addr_of))]","highlight_start":11,"highlight_end":32}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_ptr_addr_of)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_ptr_addr_of)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_ptr_addr_of`\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs:17:11\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m17\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m#[cfg(not(anyhow_no_ptr_addr_of))]\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m           \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m            [lints.rust]\u001b[0m\n\u001b[0m            unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_ptr_addr_of)'] }\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_ptr_addr_of)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_core_unwind_safe`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs","byte_start":680,"byte_end":706,"line_start":20,"line_end":20,"column_start":28,"column_end":54,"is_primary":true,"text":[{"text":"#[cfg(all(feature = \"std\", anyhow_no_core_unwind_safe))]","highlight_start":28,"highlight_end":54}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_unwind_safe)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_unwind_safe)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_core_unwind_safe`\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs:20:28\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m20\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m#[cfg(all(feature = \"std\", anyhow_no_core_unwind_safe))]\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                            \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m            [lints.rust]\u001b[0m\n\u001b[0m            unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_unwind_safe)'] }\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_unwind_safe)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_core_error`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs","byte_start":28252,"byte_end":28272,"line_start":733,"line_end":733,"column_start":32,"column_end":52,"is_primary":true,"text":[{"text":"#[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]","highlight_start":32,"highlight_end":52}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_core_error`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs:733:32\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m733\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m#[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_core_error`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs","byte_start":28542,"byte_end":28562,"line_start":745,"line_end":745,"column_start":32,"column_end":52,"is_primary":true,"text":[{"text":"#[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]","highlight_start":32,"highlight_end":52}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_core_error`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs:745:32\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m745\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m#[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_core_error`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs","byte_start":28783,"byte_end":28803,"line_start":754,"line_end":754,"column_start":32,"column_end":52,"is_primary":true,"text":[{"text":"#[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]","highlight_start":32,"highlight_end":52}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_core_error`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs:754:32\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m754\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m#[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_core_error`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs","byte_start":32057,"byte_end":32077,"line_start":840,"line_end":840,"column_start":36,"column_end":56,"is_primary":true,"text":[{"text":"#[cfg(all(any(feature = \"std\", not(anyhow_no_core_error)), anyhow_no_ptr_addr_of))]","highlight_start":36,"highlight_end":56}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_core_error`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs:840:36\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m840\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m#[cfg(all(any(feature = \"std\", not(anyhow_no_core_error)), anyhow_no_ptr_addr_of))]\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                    \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_ptr_addr_of`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs","byte_start":32081,"byte_end":32102,"line_start":840,"line_end":840,"column_start":60,"column_end":81,"is_primary":true,"text":[{"text":"#[cfg(all(any(feature = \"std\", not(anyhow_no_core_error)), anyhow_no_ptr_addr_of))]","highlight_start":60,"highlight_end":81}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_ptr_addr_of)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_ptr_addr_of)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_ptr_addr_of`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs:840:60\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m840\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m#[cfg(all(any(feature = \"std\", not(anyhow_no_core_error)), anyhow_no_ptr_addr_of))]\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                                            \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_ptr_addr_of)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_ptr_addr_of)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_core_error`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs","byte_start":32510,"byte_end":32530,"line_start":851,"line_end":851,"column_start":32,"column_end":52,"is_primary":true,"text":[{"text":"#[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]","highlight_start":32,"highlight_end":52}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_core_error`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs:851:32\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m851\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m#[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_core_error`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs","byte_start":32930,"byte_end":32950,"line_start":862,"line_end":862,"column_start":32,"column_end":52,"is_primary":true,"text":[{"text":"#[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]","highlight_start":32,"highlight_end":52}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_core_error`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs:862:32\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m862\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m#[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_ptr_addr_of`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs","byte_start":34091,"byte_end":34112,"line_start":899,"line_end":899,"column_start":7,"column_end":28,"is_primary":true,"text":[{"text":"#[cfg(anyhow_no_ptr_addr_of)]","highlight_start":7,"highlight_end":28}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_ptr_addr_of)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_ptr_addr_of)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_ptr_addr_of`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs:899:7\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m899\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m#[cfg(anyhow_no_ptr_addr_of)]\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m       \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_ptr_addr_of)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_ptr_addr_of)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `error_generic_member_access`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs","byte_start":34600,"byte_end":34627,"line_start":916,"line_end":916,"column_start":9,"column_end":36,"is_primary":true,"text":[{"text":"    not(error_generic_member_access),","highlight_start":9,"highlight_end":36}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(error_generic_member_access)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(error_generic_member_access)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `error_generic_member_access`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs:916:9\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m916\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    not(error_generic_member_access),\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m         \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(error_generic_member_access)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(error_generic_member_access)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `std_backtrace`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs","byte_start":34638,"byte_end":34651,"line_start":917,"line_end":917,"column_start":9,"column_end":22,"is_primary":true,"text":[{"text":"    any(std_backtrace, feature = \"backtrace\")","highlight_start":9,"highlight_end":22}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(std_backtrace)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(std_backtrace)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `std_backtrace`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs:917:9\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m917\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    any(std_backtrace, feature = \"backtrace\")\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m         \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(std_backtrace)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(std_backtrace)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_core_error`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs","byte_start":34870,"byte_end":34890,"line_start":925,"line_end":925,"column_start":32,"column_end":52,"is_primary":true,"text":[{"text":"#[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]","highlight_start":32,"highlight_end":52}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_core_error`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs:925:32\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m925\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m#[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_ptr_addr_of`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs","byte_start":35614,"byte_end":35635,"line_start":945,"line_end":945,"column_start":28,"column_end":49,"is_primary":true,"text":[{"text":"#[cfg(all(feature = \"std\", anyhow_no_ptr_addr_of))]","highlight_start":28,"highlight_end":49}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_ptr_addr_of)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_ptr_addr_of)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_ptr_addr_of`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs:945:28\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m945\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m#[cfg(all(feature = \"std\", anyhow_no_ptr_addr_of))]\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                            \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_ptr_addr_of)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_ptr_addr_of)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_core_error`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs","byte_start":36382,"byte_end":36402,"line_start":965,"line_end":965,"column_start":32,"column_end":52,"is_primary":true,"text":[{"text":"#[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]","highlight_start":32,"highlight_end":52}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_core_error`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs:965:32\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m965\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m#[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_ptr_addr_of`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs","byte_start":37694,"byte_end":37715,"line_start":999,"line_end":999,"column_start":7,"column_end":28,"is_primary":true,"text":[{"text":"#[cfg(anyhow_no_ptr_addr_of)]","highlight_start":7,"highlight_end":28}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_ptr_addr_of)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_ptr_addr_of)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_ptr_addr_of`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs:999:7\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m999\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m#[cfg(anyhow_no_ptr_addr_of)]\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m       \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_ptr_addr_of)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_ptr_addr_of)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `error_generic_member_access`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs","byte_start":39449,"byte_end":39476,"line_start":1040,"line_end":1040,"column_start":9,"column_end":36,"is_primary":true,"text":[{"text":"    not(error_generic_member_access),","highlight_start":9,"highlight_end":36}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(error_generic_member_access)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(error_generic_member_access)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `error_generic_member_access`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs:1040:9\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m1040\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    not(error_generic_member_access),\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m         \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m              [lints.rust]\u001b[0m\n\u001b[0m              unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(error_generic_member_access)'] }\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(error_generic_member_access)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `std_backtrace`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs","byte_start":39487,"byte_end":39500,"line_start":1041,"line_end":1041,"column_start":9,"column_end":22,"is_primary":true,"text":[{"text":"    any(std_backtrace, feature = \"backtrace\")","highlight_start":9,"highlight_end":22}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(std_backtrace)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(std_backtrace)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `std_backtrace`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs:1041:9\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m1041\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    any(std_backtrace, feature = \"backtrace\")\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m         \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m              [lints.rust]\u001b[0m\n\u001b[0m              unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(std_backtrace)'] }\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(std_backtrace)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_core_error`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs","byte_start":44007,"byte_end":44027,"line_start":1176,"line_end":1176,"column_start":32,"column_end":52,"is_primary":true,"text":[{"text":"#[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]","highlight_start":32,"highlight_end":52}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_core_error`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs:1176:32\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m1176\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m#[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m              [lints.rust]\u001b[0m\n\u001b[0m              unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_core_error`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs","byte_start":44222,"byte_end":44242,"line_start":1184,"line_end":1184,"column_start":32,"column_end":52,"is_primary":true,"text":[{"text":"#[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]","highlight_start":32,"highlight_end":52}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_core_error`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs:1184:32\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m1184\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m#[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m              [lints.rust]\u001b[0m\n\u001b[0m              unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_core_error`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs","byte_start":44430,"byte_end":44450,"line_start":1192,"line_end":1192,"column_start":32,"column_end":52,"is_primary":true,"text":[{"text":"#[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]","highlight_start":32,"highlight_end":52}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_core_error`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs:1192:32\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m1192\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m#[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m              [lints.rust]\u001b[0m\n\u001b[0m              unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_core_error`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs","byte_start":44631,"byte_end":44651,"line_start":1200,"line_end":1200,"column_start":32,"column_end":52,"is_primary":true,"text":[{"text":"#[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]","highlight_start":32,"highlight_end":52}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_core_error`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs:1200:32\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m1200\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m#[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m              [lints.rust]\u001b[0m\n\u001b[0m              unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_core_error`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs","byte_start":44829,"byte_end":44849,"line_start":1207,"line_end":1207,"column_start":32,"column_end":52,"is_primary":true,"text":[{"text":"#[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]","highlight_start":32,"highlight_end":52}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_core_error`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs:1207:32\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m1207\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m#[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m              [lints.rust]\u001b[0m\n\u001b[0m              unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_core_unwind_safe`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs","byte_start":44999,"byte_end":45025,"line_start":1214,"line_end":1214,"column_start":32,"column_end":58,"is_primary":true,"text":[{"text":"#[cfg(any(feature = \"std\", not(anyhow_no_core_unwind_safe)))]","highlight_start":32,"highlight_end":58}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_unwind_safe)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_unwind_safe)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_core_unwind_safe`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs:1214:32\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m1214\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m#[cfg(any(feature = \"std\", not(anyhow_no_core_unwind_safe)))]\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m              [lints.rust]\u001b[0m\n\u001b[0m              unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_unwind_safe)'] }\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_unwind_safe)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_core_unwind_safe`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs","byte_start":45091,"byte_end":45117,"line_start":1217,"line_end":1217,"column_start":32,"column_end":58,"is_primary":true,"text":[{"text":"#[cfg(any(feature = \"std\", not(anyhow_no_core_unwind_safe)))]","highlight_start":32,"highlight_end":58}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_unwind_safe)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_unwind_safe)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_core_unwind_safe`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs:1217:32\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m1217\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m#[cfg(any(feature = \"std\", not(anyhow_no_core_unwind_safe)))]\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m              [lints.rust]\u001b[0m\n\u001b[0m              unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_unwind_safe)'] }\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_unwind_safe)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_core_error`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs","byte_start":1109,"byte_end":1129,"line_start":31,"line_end":31,"column_start":36,"column_end":56,"is_primary":true,"text":[{"text":"    #[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]","highlight_start":36,"highlight_end":56}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_core_error`\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs:31:36\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m31\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    #[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                    \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m            [lints.rust]\u001b[0m\n\u001b[0m            unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_core_error`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs","byte_start":4697,"byte_end":4717,"line_start":141,"line_end":141,"column_start":36,"column_end":56,"is_primary":true,"text":[{"text":"    #[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]","highlight_start":36,"highlight_end":56}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_core_error`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs:141:36\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m141\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    #[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                    \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_core_error`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs","byte_start":5001,"byte_end":5021,"line_start":149,"line_end":149,"column_start":36,"column_end":56,"is_primary":true,"text":[{"text":"    #[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]","highlight_start":36,"highlight_end":56}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_core_error`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs:149:36\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m149\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    #[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                    \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_core_error`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs","byte_start":9140,"byte_end":9160,"line_start":243,"line_end":243,"column_start":36,"column_end":56,"is_primary":true,"text":[{"text":"    #[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]","highlight_start":36,"highlight_end":56}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_core_error`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs:243:36\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m243\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    #[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                    \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_core_error`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs","byte_start":10621,"byte_end":10641,"line_start":280,"line_end":280,"column_start":36,"column_end":56,"is_primary":true,"text":[{"text":"    #[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]","highlight_start":36,"highlight_end":56}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_core_error`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs:280:36\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m280\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    #[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                    \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `std_backtrace`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs","byte_start":17847,"byte_end":17860,"line_start":461,"line_end":461,"column_start":15,"column_end":28,"is_primary":true,"text":[{"text":"    #[cfg(any(std_backtrace, feature = \"backtrace\"))]","highlight_start":15,"highlight_end":28}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(std_backtrace)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(std_backtrace)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `std_backtrace`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs:461:15\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m461\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    #[cfg(any(std_backtrace, feature = \"backtrace\"))]\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m               \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(std_backtrace)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(std_backtrace)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_core_error`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs","byte_start":18715,"byte_end":18735,"line_start":487,"line_end":487,"column_start":36,"column_end":56,"is_primary":true,"text":[{"text":"    #[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]","highlight_start":36,"highlight_end":56}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_core_error`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs:487:36\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m487\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    #[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                    \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_core_error`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs","byte_start":19099,"byte_end":19119,"line_start":498,"line_end":498,"column_start":36,"column_end":56,"is_primary":true,"text":[{"text":"    #[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]","highlight_start":36,"highlight_end":56}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_core_error`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs:498:36\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m498\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    #[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                    \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `error_generic_member_access`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs","byte_start":24307,"byte_end":24334,"line_start":640,"line_end":640,"column_start":20,"column_end":47,"is_primary":true,"text":[{"text":"    #[cfg_attr(not(error_generic_member_access), doc = \"# _ = stringify! {\")]","highlight_start":20,"highlight_end":47}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(error_generic_member_access)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(error_generic_member_access)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `error_generic_member_access`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs:640:20\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m640\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    #[cfg_attr(not(error_generic_member_access), doc = \"# _ = stringify! {\")]\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                    \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(error_generic_member_access)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(error_generic_member_access)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `error_generic_member_access`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs","byte_start":25106,"byte_end":25133,"line_start":658,"line_end":658,"column_start":20,"column_end":47,"is_primary":true,"text":[{"text":"    #[cfg_attr(not(error_generic_member_access), doc = \"# };\")]","highlight_start":20,"highlight_end":47}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(error_generic_member_access)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(error_generic_member_access)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `error_generic_member_access`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs:658:20\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m658\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    #[cfg_attr(not(error_generic_member_access), doc = \"# };\")]\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                    \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(error_generic_member_access)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(error_generic_member_access)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_core_error`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs","byte_start":25262,"byte_end":25282,"line_start":662,"line_end":662,"column_start":36,"column_end":56,"is_primary":true,"text":[{"text":"    #[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]","highlight_start":36,"highlight_end":56}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_core_error`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs:662:36\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m662\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    #[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                    \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `error_generic_member_access`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs","byte_start":26073,"byte_end":26100,"line_start":682,"line_end":682,"column_start":20,"column_end":47,"is_primary":true,"text":[{"text":"    #[cfg_attr(not(error_generic_member_access), doc = \"# _ = stringify!{\")]","highlight_start":20,"highlight_end":47}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(error_generic_member_access)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(error_generic_member_access)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `error_generic_member_access`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs:682:20\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m682\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    #[cfg_attr(not(error_generic_member_access), doc = \"# _ = stringify!{\")]\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                    \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(error_generic_member_access)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(error_generic_member_access)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `error_generic_member_access`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs","byte_start":27000,"byte_end":27027,"line_start":701,"line_end":701,"column_start":20,"column_end":47,"is_primary":true,"text":[{"text":"    #[cfg_attr(not(error_generic_member_access), doc = \"# };\")]","highlight_start":20,"highlight_end":47}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(error_generic_member_access)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(error_generic_member_access)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `error_generic_member_access`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs:701:20\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m701\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    #[cfg_attr(not(error_generic_member_access), doc = \"# };\")]\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                    \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(error_generic_member_access)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(error_generic_member_access)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_core_error`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs","byte_start":27092,"byte_end":27112,"line_start":703,"line_end":703,"column_start":36,"column_end":56,"is_primary":true,"text":[{"text":"    #[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]","highlight_start":36,"highlight_end":56}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_core_error`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs:703:36\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m703\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    #[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                    \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `error_generic_member_access`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs","byte_start":27535,"byte_end":27562,"line_start":716,"line_end":716,"column_start":11,"column_end":38,"is_primary":true,"text":[{"text":"    #[cfg(error_generic_member_access)]","highlight_start":11,"highlight_end":38}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(error_generic_member_access)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(error_generic_member_access)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `error_generic_member_access`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs:716:11\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m716\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    #[cfg(error_generic_member_access)]\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m           \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(error_generic_member_access)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(error_generic_member_access)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `error_generic_member_access`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs","byte_start":28053,"byte_end":28080,"line_start":726,"line_end":726,"column_start":11,"column_end":38,"is_primary":true,"text":[{"text":"    #[cfg(error_generic_member_access)]","highlight_start":11,"highlight_end":38}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(error_generic_member_access)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(error_generic_member_access)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `error_generic_member_access`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs:726:11\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m726\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    #[cfg(error_generic_member_access)]\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m           \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(error_generic_member_access)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(error_generic_member_access)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_ptr_addr_of`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs","byte_start":5325,"byte_end":5346,"line_start":158,"line_end":158,"column_start":19,"column_end":40,"is_primary":true,"text":[{"text":"            #[cfg(anyhow_no_ptr_addr_of)]","highlight_start":19,"highlight_end":40}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_ptr_addr_of)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_ptr_addr_of)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_ptr_addr_of`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs:158:19\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m158\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m            #[cfg(anyhow_no_ptr_addr_of)]\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                   \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_ptr_addr_of)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_ptr_addr_of)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_core_error`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs","byte_start":5433,"byte_end":5453,"line_start":160,"line_end":160,"column_start":44,"column_end":64,"is_primary":true,"text":[{"text":"            #[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]","highlight_start":44,"highlight_end":64}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_core_error`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs:160:44\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m160\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m            #[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                            \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_core_error`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs","byte_start":5546,"byte_end":5566,"line_start":162,"line_end":162,"column_start":44,"column_end":64,"is_primary":true,"text":[{"text":"            #[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]","highlight_start":44,"highlight_end":64}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_core_error`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs:162:44\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m162\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m            #[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                            \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_ptr_addr_of`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs","byte_start":5707,"byte_end":5728,"line_start":165,"line_end":165,"column_start":19,"column_end":40,"is_primary":true,"text":[{"text":"            #[cfg(anyhow_no_ptr_addr_of)]","highlight_start":19,"highlight_end":40}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_ptr_addr_of)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_ptr_addr_of)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_ptr_addr_of`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs:165:19\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m165\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m            #[cfg(anyhow_no_ptr_addr_of)]\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                   \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_ptr_addr_of)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_ptr_addr_of)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `error_generic_member_access`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs","byte_start":5887,"byte_end":5914,"line_start":169,"line_end":169,"column_start":21,"column_end":48,"is_primary":true,"text":[{"text":"                not(error_generic_member_access),","highlight_start":21,"highlight_end":48}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(error_generic_member_access)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(error_generic_member_access)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `error_generic_member_access`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs:169:21\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m169\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m                not(error_generic_member_access),\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                     \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(error_generic_member_access)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(error_generic_member_access)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `std_backtrace`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs","byte_start":5937,"byte_end":5950,"line_start":170,"line_end":170,"column_start":21,"column_end":34,"is_primary":true,"text":[{"text":"                any(std_backtrace, feature = \"backtrace\")","highlight_start":21,"highlight_end":34}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(std_backtrace)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(std_backtrace)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `std_backtrace`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs:170:21\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m170\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m                any(std_backtrace, feature = \"backtrace\")\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                     \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(std_backtrace)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(std_backtrace)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_core_error`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs","byte_start":6654,"byte_end":6674,"line_start":189,"line_end":189,"column_start":48,"column_end":68,"is_primary":true,"text":[{"text":"            #[cfg(all(any(feature = \"std\", not(anyhow_no_core_error)), anyhow_no_ptr_addr_of))]","highlight_start":48,"highlight_end":68}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_core_error`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs:189:48\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m189\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m            #[cfg(all(any(feature = \"std\", not(anyhow_no_core_error)), anyhow_no_ptr_addr_of))]\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                                \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_ptr_addr_of`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs","byte_start":6678,"byte_end":6699,"line_start":189,"line_end":189,"column_start":72,"column_end":93,"is_primary":true,"text":[{"text":"            #[cfg(all(any(feature = \"std\", not(anyhow_no_core_error)), anyhow_no_ptr_addr_of))]","highlight_start":72,"highlight_end":93}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_ptr_addr_of)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_ptr_addr_of)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_ptr_addr_of`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs:189:72\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m189\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m            #[cfg(all(any(feature = \"std\", not(anyhow_no_core_error)), anyhow_no_ptr_addr_of))]\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                                                        \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_ptr_addr_of)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_ptr_addr_of)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_core_error`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs","byte_start":6801,"byte_end":6821,"line_start":191,"line_end":191,"column_start":44,"column_end":64,"is_primary":true,"text":[{"text":"            #[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]","highlight_start":44,"highlight_end":64}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_core_error`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs:191:44\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m191\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m            #[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                            \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_core_error`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs","byte_start":6928,"byte_end":6948,"line_start":193,"line_end":193,"column_start":44,"column_end":64,"is_primary":true,"text":[{"text":"            #[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]","highlight_start":44,"highlight_end":64}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_core_error`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs:193:44\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m193\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m            #[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                            \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_ptr_addr_of`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs","byte_start":7103,"byte_end":7124,"line_start":196,"line_end":196,"column_start":19,"column_end":40,"is_primary":true,"text":[{"text":"            #[cfg(anyhow_no_ptr_addr_of)]","highlight_start":19,"highlight_end":40}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_ptr_addr_of)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_ptr_addr_of)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_ptr_addr_of`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs:196:19\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m196\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m            #[cfg(anyhow_no_ptr_addr_of)]\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                   \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_ptr_addr_of)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_ptr_addr_of)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `error_generic_member_access`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs","byte_start":7283,"byte_end":7310,"line_start":200,"line_end":200,"column_start":21,"column_end":48,"is_primary":true,"text":[{"text":"                not(error_generic_member_access),","highlight_start":21,"highlight_end":48}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(error_generic_member_access)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(error_generic_member_access)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `error_generic_member_access`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs:200:21\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m200\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m                not(error_generic_member_access),\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                     \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(error_generic_member_access)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(error_generic_member_access)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `std_backtrace`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs","byte_start":7333,"byte_end":7346,"line_start":201,"line_end":201,"column_start":21,"column_end":34,"is_primary":true,"text":[{"text":"                any(std_backtrace, feature = \"backtrace\")","highlight_start":21,"highlight_end":34}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(std_backtrace)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(std_backtrace)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `std_backtrace`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs:201:21\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m201\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m                any(std_backtrace, feature = \"backtrace\")\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                     \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(std_backtrace)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(std_backtrace)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_core_error`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs","byte_start":8111,"byte_end":8131,"line_start":221,"line_end":221,"column_start":48,"column_end":68,"is_primary":true,"text":[{"text":"            #[cfg(all(any(feature = \"std\", not(anyhow_no_core_error)), anyhow_no_ptr_addr_of))]","highlight_start":48,"highlight_end":68}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_core_error`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs:221:48\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m221\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m            #[cfg(all(any(feature = \"std\", not(anyhow_no_core_error)), anyhow_no_ptr_addr_of))]\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                                \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_ptr_addr_of`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs","byte_start":8135,"byte_end":8156,"line_start":221,"line_end":221,"column_start":72,"column_end":93,"is_primary":true,"text":[{"text":"            #[cfg(all(any(feature = \"std\", not(anyhow_no_core_error)), anyhow_no_ptr_addr_of))]","highlight_start":72,"highlight_end":93}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_ptr_addr_of)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_ptr_addr_of)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_ptr_addr_of`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs:221:72\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m221\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m            #[cfg(all(any(feature = \"std\", not(anyhow_no_core_error)), anyhow_no_ptr_addr_of))]\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                                                        \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_ptr_addr_of)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_ptr_addr_of)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_core_error`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs","byte_start":8258,"byte_end":8278,"line_start":223,"line_end":223,"column_start":44,"column_end":64,"is_primary":true,"text":[{"text":"            #[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]","highlight_start":44,"highlight_end":64}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_core_error`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs:223:44\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m223\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m            #[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                            \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_core_error`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs","byte_start":8385,"byte_end":8405,"line_start":225,"line_end":225,"column_start":44,"column_end":64,"is_primary":true,"text":[{"text":"            #[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]","highlight_start":44,"highlight_end":64}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_core_error`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs:225:44\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m225\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m            #[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                            \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_ptr_addr_of`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs","byte_start":8560,"byte_end":8581,"line_start":228,"line_end":228,"column_start":19,"column_end":40,"is_primary":true,"text":[{"text":"            #[cfg(anyhow_no_ptr_addr_of)]","highlight_start":19,"highlight_end":40}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_ptr_addr_of)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_ptr_addr_of)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_ptr_addr_of`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs:228:19\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m228\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m            #[cfg(anyhow_no_ptr_addr_of)]\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                   \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_ptr_addr_of)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_ptr_addr_of)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `error_generic_member_access`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs","byte_start":8740,"byte_end":8767,"line_start":232,"line_end":232,"column_start":21,"column_end":48,"is_primary":true,"text":[{"text":"                not(error_generic_member_access),","highlight_start":21,"highlight_end":48}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(error_generic_member_access)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(error_generic_member_access)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `error_generic_member_access`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs:232:21\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m232\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m                not(error_generic_member_access),\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                     \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(error_generic_member_access)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(error_generic_member_access)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `std_backtrace`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs","byte_start":8790,"byte_end":8803,"line_start":233,"line_end":233,"column_start":21,"column_end":34,"is_primary":true,"text":[{"text":"                any(std_backtrace, feature = \"backtrace\")","highlight_start":21,"highlight_end":34}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(std_backtrace)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(std_backtrace)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `std_backtrace`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs:233:21\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m233\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m                any(std_backtrace, feature = \"backtrace\")\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                     \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(std_backtrace)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(std_backtrace)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_ptr_addr_of`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs","byte_start":9666,"byte_end":9687,"line_start":259,"line_end":259,"column_start":19,"column_end":40,"is_primary":true,"text":[{"text":"            #[cfg(anyhow_no_ptr_addr_of)]","highlight_start":19,"highlight_end":40}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_ptr_addr_of)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_ptr_addr_of)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_ptr_addr_of`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs:259:19\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m259\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m            #[cfg(anyhow_no_ptr_addr_of)]\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                   \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_ptr_addr_of)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_ptr_addr_of)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_core_error`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs","byte_start":9791,"byte_end":9811,"line_start":261,"line_end":261,"column_start":44,"column_end":64,"is_primary":true,"text":[{"text":"            #[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]","highlight_start":44,"highlight_end":64}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_core_error`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs:261:44\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m261\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m            #[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                            \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_core_error`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs","byte_start":9921,"byte_end":9941,"line_start":263,"line_end":263,"column_start":44,"column_end":64,"is_primary":true,"text":[{"text":"            #[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]","highlight_start":44,"highlight_end":64}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_core_error`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs:263:44\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m263\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m            #[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                            \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_ptr_addr_of`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs","byte_start":10103,"byte_end":10124,"line_start":266,"line_end":266,"column_start":19,"column_end":40,"is_primary":true,"text":[{"text":"            #[cfg(anyhow_no_ptr_addr_of)]","highlight_start":19,"highlight_end":40}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_ptr_addr_of)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_ptr_addr_of)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_ptr_addr_of`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs:266:19\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m266\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m            #[cfg(anyhow_no_ptr_addr_of)]\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                   \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_ptr_addr_of)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_ptr_addr_of)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `error_generic_member_access`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs","byte_start":10290,"byte_end":10317,"line_start":270,"line_end":270,"column_start":21,"column_end":48,"is_primary":true,"text":[{"text":"                not(error_generic_member_access),","highlight_start":21,"highlight_end":48}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(error_generic_member_access)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(error_generic_member_access)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `error_generic_member_access`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs:270:21\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m270\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m                not(error_generic_member_access),\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                     \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(error_generic_member_access)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(error_generic_member_access)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `std_backtrace`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs","byte_start":10340,"byte_end":10353,"line_start":271,"line_end":271,"column_start":21,"column_end":34,"is_primary":true,"text":[{"text":"                any(std_backtrace, feature = \"backtrace\")","highlight_start":21,"highlight_end":34}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(std_backtrace)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(std_backtrace)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `std_backtrace`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs:271:21\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m271\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m                any(std_backtrace, feature = \"backtrace\")\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                     \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(std_backtrace)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(std_backtrace)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_ptr_addr_of`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs","byte_start":11035,"byte_end":11056,"line_start":291,"line_end":291,"column_start":19,"column_end":40,"is_primary":true,"text":[{"text":"            #[cfg(anyhow_no_ptr_addr_of)]","highlight_start":19,"highlight_end":40}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_ptr_addr_of)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_ptr_addr_of)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_ptr_addr_of`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs:291:19\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m291\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m            #[cfg(anyhow_no_ptr_addr_of)]\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                   \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_ptr_addr_of)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_ptr_addr_of)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_core_error`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs","byte_start":11152,"byte_end":11172,"line_start":293,"line_end":293,"column_start":44,"column_end":64,"is_primary":true,"text":[{"text":"            #[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]","highlight_start":44,"highlight_end":64}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_core_error`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs:293:44\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m293\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m            #[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                            \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_core_error`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs","byte_start":11274,"byte_end":11294,"line_start":295,"line_end":295,"column_start":44,"column_end":64,"is_primary":true,"text":[{"text":"            #[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]","highlight_start":44,"highlight_end":64}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_core_error`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs:295:44\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m295\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m            #[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                            \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_ptr_addr_of`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs","byte_start":11474,"byte_end":11495,"line_start":298,"line_end":298,"column_start":19,"column_end":40,"is_primary":true,"text":[{"text":"            #[cfg(anyhow_no_ptr_addr_of)]","highlight_start":19,"highlight_end":40}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_ptr_addr_of)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_ptr_addr_of)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_ptr_addr_of`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs:298:19\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m298\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m            #[cfg(anyhow_no_ptr_addr_of)]\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                   \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_ptr_addr_of)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_ptr_addr_of)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `error_generic_member_access`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs","byte_start":11714,"byte_end":11741,"line_start":302,"line_end":302,"column_start":21,"column_end":48,"is_primary":true,"text":[{"text":"                not(error_generic_member_access),","highlight_start":21,"highlight_end":48}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(error_generic_member_access)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(error_generic_member_access)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `error_generic_member_access`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs:302:21\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m302\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m                not(error_generic_member_access),\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                     \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(error_generic_member_access)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(error_generic_member_access)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `std_backtrace`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs","byte_start":11764,"byte_end":11777,"line_start":303,"line_end":303,"column_start":21,"column_end":34,"is_primary":true,"text":[{"text":"                any(std_backtrace, feature = \"backtrace\")","highlight_start":21,"highlight_end":34}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(std_backtrace)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(std_backtrace)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `std_backtrace`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs:303:21\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m303\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m                any(std_backtrace, feature = \"backtrace\")\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                     \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(std_backtrace)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(std_backtrace)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_core_error`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs","byte_start":15492,"byte_end":15512,"line_start":410,"line_end":410,"column_start":48,"column_end":68,"is_primary":true,"text":[{"text":"            #[cfg(all(any(feature = \"std\", not(anyhow_no_core_error)), anyhow_no_ptr_addr_of))]","highlight_start":48,"highlight_end":68}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_core_error`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs:410:48\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m410\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m            #[cfg(all(any(feature = \"std\", not(anyhow_no_core_error)), anyhow_no_ptr_addr_of))]\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                                \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_ptr_addr_of`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs","byte_start":15516,"byte_end":15537,"line_start":410,"line_end":410,"column_start":72,"column_end":93,"is_primary":true,"text":[{"text":"            #[cfg(all(any(feature = \"std\", not(anyhow_no_core_error)), anyhow_no_ptr_addr_of))]","highlight_start":72,"highlight_end":93}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_ptr_addr_of)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_ptr_addr_of)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_ptr_addr_of`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs:410:72\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m410\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m            #[cfg(all(any(feature = \"std\", not(anyhow_no_core_error)), anyhow_no_ptr_addr_of))]\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                                                        \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_ptr_addr_of)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_ptr_addr_of)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_core_error`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs","byte_start":15646,"byte_end":15666,"line_start":412,"line_end":412,"column_start":44,"column_end":64,"is_primary":true,"text":[{"text":"            #[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]","highlight_start":44,"highlight_end":64}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_core_error`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs:412:44\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m412\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m            #[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                            \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_core_error`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs","byte_start":15780,"byte_end":15800,"line_start":414,"line_end":414,"column_start":44,"column_end":64,"is_primary":true,"text":[{"text":"            #[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]","highlight_start":44,"highlight_end":64}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_core_error`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs:414:44\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m414\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m            #[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                            \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_ptr_addr_of`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs","byte_start":15969,"byte_end":15990,"line_start":417,"line_end":417,"column_start":19,"column_end":40,"is_primary":true,"text":[{"text":"            #[cfg(anyhow_no_ptr_addr_of)]","highlight_start":19,"highlight_end":40}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_ptr_addr_of)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_ptr_addr_of)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_ptr_addr_of`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs:417:19\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m417\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m            #[cfg(anyhow_no_ptr_addr_of)]\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                   \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_ptr_addr_of)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_ptr_addr_of)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `error_generic_member_access`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs","byte_start":16162,"byte_end":16189,"line_start":421,"line_end":421,"column_start":21,"column_end":48,"is_primary":true,"text":[{"text":"                not(error_generic_member_access),","highlight_start":21,"highlight_end":48}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(error_generic_member_access)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(error_generic_member_access)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `error_generic_member_access`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs:421:21\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m421\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m                not(error_generic_member_access),\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                     \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(error_generic_member_access)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(error_generic_member_access)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `std_backtrace`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs","byte_start":16212,"byte_end":16225,"line_start":422,"line_end":422,"column_start":21,"column_end":34,"is_primary":true,"text":[{"text":"                any(std_backtrace, feature = \"backtrace\")","highlight_start":21,"highlight_end":34}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(std_backtrace)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(std_backtrace)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `std_backtrace`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs:422:21\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m422\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m                any(std_backtrace, feature = \"backtrace\")\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                     \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(std_backtrace)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(std_backtrace)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_ptr_addr_of`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs","byte_start":20277,"byte_end":20298,"line_start":529,"line_end":529,"column_start":23,"column_end":44,"is_primary":true,"text":[{"text":"            #[cfg(not(anyhow_no_ptr_addr_of))]","highlight_start":23,"highlight_end":44}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_ptr_addr_of)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_ptr_addr_of)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_ptr_addr_of`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs:529:23\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m529\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m            #[cfg(not(anyhow_no_ptr_addr_of))]\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                       \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_ptr_addr_of)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_ptr_addr_of)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_ptr_addr_of`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs","byte_start":20522,"byte_end":20543,"line_start":534,"line_end":534,"column_start":19,"column_end":40,"is_primary":true,"text":[{"text":"            #[cfg(anyhow_no_ptr_addr_of)]","highlight_start":19,"highlight_end":40}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_ptr_addr_of)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_ptr_addr_of)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_ptr_addr_of`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs:534:19\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m534\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m            #[cfg(anyhow_no_ptr_addr_of)]\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                   \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_ptr_addr_of)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_ptr_addr_of)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_ptr_addr_of`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs","byte_start":23123,"byte_end":23144,"line_start":613,"line_end":613,"column_start":23,"column_end":44,"is_primary":true,"text":[{"text":"            #[cfg(not(anyhow_no_ptr_addr_of))]","highlight_start":23,"highlight_end":44}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_ptr_addr_of)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_ptr_addr_of)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_ptr_addr_of`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs:613:23\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m613\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m            #[cfg(not(anyhow_no_ptr_addr_of))]\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                       \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_ptr_addr_of)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_ptr_addr_of)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_ptr_addr_of`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs","byte_start":23287,"byte_end":23308,"line_start":617,"line_end":617,"column_start":19,"column_end":40,"is_primary":true,"text":[{"text":"            #[cfg(anyhow_no_ptr_addr_of)]","highlight_start":19,"highlight_end":40}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_ptr_addr_of)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_ptr_addr_of)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_ptr_addr_of`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs:617:19\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m617\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m            #[cfg(anyhow_no_ptr_addr_of)]\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                   \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_ptr_addr_of)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_ptr_addr_of)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_core_error`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs","byte_start":29680,"byte_end":29700,"line_start":785,"line_end":785,"column_start":40,"column_end":60,"is_primary":true,"text":[{"text":"    #[cfg(all(any(feature = \"std\", not(anyhow_no_core_error)), anyhow_no_ptr_addr_of))]","highlight_start":40,"highlight_end":60}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_core_error`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs:785:40\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m785\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    #[cfg(all(any(feature = \"std\", not(anyhow_no_core_error)), anyhow_no_ptr_addr_of))]\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                        \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_ptr_addr_of`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs","byte_start":29704,"byte_end":29725,"line_start":785,"line_end":785,"column_start":64,"column_end":85,"is_primary":true,"text":[{"text":"    #[cfg(all(any(feature = \"std\", not(anyhow_no_core_error)), anyhow_no_ptr_addr_of))]","highlight_start":64,"highlight_end":85}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_ptr_addr_of)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_ptr_addr_of)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_ptr_addr_of`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs:785:64\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m785\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    #[cfg(all(any(feature = \"std\", not(anyhow_no_core_error)), anyhow_no_ptr_addr_of))]\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                                                \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_ptr_addr_of)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_ptr_addr_of)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_core_error`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs","byte_start":29854,"byte_end":29874,"line_start":787,"line_end":787,"column_start":36,"column_end":56,"is_primary":true,"text":[{"text":"    #[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]","highlight_start":36,"highlight_end":56}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_core_error`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs:787:36\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m787\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    #[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                    \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_core_error`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs","byte_start":30004,"byte_end":30024,"line_start":789,"line_end":789,"column_start":36,"column_end":56,"is_primary":true,"text":[{"text":"    #[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]","highlight_start":36,"highlight_end":56}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_core_error`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs:789:36\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m789\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    #[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                    \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_ptr_addr_of`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs","byte_start":30215,"byte_end":30236,"line_start":792,"line_end":792,"column_start":11,"column_end":32,"is_primary":true,"text":[{"text":"    #[cfg(anyhow_no_ptr_addr_of)]","highlight_start":11,"highlight_end":32}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_ptr_addr_of)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_ptr_addr_of)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_ptr_addr_of`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs:792:11\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m792\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    #[cfg(anyhow_no_ptr_addr_of)]\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m           \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_ptr_addr_of)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_ptr_addr_of)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `error_generic_member_access`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs","byte_start":30402,"byte_end":30429,"line_start":796,"line_end":796,"column_start":13,"column_end":40,"is_primary":true,"text":[{"text":"        not(error_generic_member_access),","highlight_start":13,"highlight_end":40}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(error_generic_member_access)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(error_generic_member_access)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `error_generic_member_access`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs:796:13\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m796\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m        not(error_generic_member_access),\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m             \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(error_generic_member_access)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(error_generic_member_access)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `std_backtrace`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs","byte_start":30444,"byte_end":30457,"line_start":797,"line_end":797,"column_start":13,"column_end":26,"is_primary":true,"text":[{"text":"        any(std_backtrace, feature = \"backtrace\")","highlight_start":13,"highlight_end":26}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(std_backtrace)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(std_backtrace)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `std_backtrace`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs:797:13\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m797\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m        any(std_backtrace, feature = \"backtrace\")\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m             \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(std_backtrace)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(std_backtrace)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_ptr_addr_of`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs","byte_start":31665,"byte_end":31686,"line_start":829,"line_end":829,"column_start":15,"column_end":36,"is_primary":true,"text":[{"text":"    #[cfg(not(anyhow_no_ptr_addr_of))]","highlight_start":15,"highlight_end":36}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_ptr_addr_of)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_ptr_addr_of)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_ptr_addr_of`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs:829:15\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m829\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    #[cfg(not(anyhow_no_ptr_addr_of))]\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m               \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_ptr_addr_of)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_ptr_addr_of)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_ptr_addr_of`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs","byte_start":31833,"byte_end":31854,"line_start":834,"line_end":834,"column_start":11,"column_end":32,"is_primary":true,"text":[{"text":"    #[cfg(anyhow_no_ptr_addr_of)]","highlight_start":11,"highlight_end":32}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_ptr_addr_of)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_ptr_addr_of)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_ptr_addr_of`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs:834:11\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m834\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    #[cfg(anyhow_no_ptr_addr_of)]\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m           \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_ptr_addr_of)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_ptr_addr_of)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_ptr_addr_of`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs","byte_start":33637,"byte_end":33658,"line_start":883,"line_end":883,"column_start":19,"column_end":40,"is_primary":true,"text":[{"text":"        #[cfg(not(anyhow_no_ptr_addr_of))]","highlight_start":19,"highlight_end":40}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_ptr_addr_of)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_ptr_addr_of)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_ptr_addr_of`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs:883:19\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m883\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m        #[cfg(not(anyhow_no_ptr_addr_of))]\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                   \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_ptr_addr_of)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_ptr_addr_of)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_ptr_addr_of`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs","byte_start":33884,"byte_end":33905,"line_start":891,"line_end":891,"column_start":15,"column_end":36,"is_primary":true,"text":[{"text":"        #[cfg(anyhow_no_ptr_addr_of)]","highlight_start":15,"highlight_end":36}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_ptr_addr_of)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_ptr_addr_of)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_ptr_addr_of`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs:891:15\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m891\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m        #[cfg(anyhow_no_ptr_addr_of)]\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m               \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_ptr_addr_of)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_ptr_addr_of)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_core_error`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs","byte_start":41490,"byte_end":41510,"line_start":1097,"line_end":1097,"column_start":36,"column_end":56,"is_primary":true,"text":[{"text":"    #[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]","highlight_start":36,"highlight_end":56}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_core_error`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs:1097:36\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m1097\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    #[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                    \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m              [lints.rust]\u001b[0m\n\u001b[0m              unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `std_backtrace`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs","byte_start":42031,"byte_end":42044,"line_start":1113,"line_end":1113,"column_start":15,"column_end":28,"is_primary":true,"text":[{"text":"    #[cfg(any(std_backtrace, feature = \"backtrace\"))]","highlight_start":15,"highlight_end":28}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(std_backtrace)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(std_backtrace)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `std_backtrace`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs:1113:15\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m1113\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    #[cfg(any(std_backtrace, feature = \"backtrace\"))]\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m               \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m              [lints.rust]\u001b[0m\n\u001b[0m              unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(std_backtrace)'] }\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(std_backtrace)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `error_generic_member_access`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs","byte_start":42774,"byte_end":42801,"line_start":1130,"line_end":1130,"column_start":11,"column_end":38,"is_primary":true,"text":[{"text":"    #[cfg(error_generic_member_access)]","highlight_start":11,"highlight_end":38}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(error_generic_member_access)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(error_generic_member_access)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `error_generic_member_access`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs:1130:11\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m1130\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    #[cfg(error_generic_member_access)]\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m           \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m              [lints.rust]\u001b[0m\n\u001b[0m              unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(error_generic_member_access)'] }\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(error_generic_member_access)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_ptr_addr_of`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs","byte_start":41736,"byte_end":41757,"line_start":1102,"line_end":1102,"column_start":19,"column_end":40,"is_primary":true,"text":[{"text":"        #[cfg(not(anyhow_no_ptr_addr_of))]","highlight_start":19,"highlight_end":40}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_ptr_addr_of)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_ptr_addr_of)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_ptr_addr_of`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs:1102:19\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m1102\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m        #[cfg(not(anyhow_no_ptr_addr_of))]\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                   \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m              [lints.rust]\u001b[0m\n\u001b[0m              unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_ptr_addr_of)'] }\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_ptr_addr_of)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_ptr_addr_of`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs","byte_start":41923,"byte_end":41944,"line_start":1109,"line_end":1109,"column_start":15,"column_end":36,"is_primary":true,"text":[{"text":"        #[cfg(anyhow_no_ptr_addr_of)]","highlight_start":15,"highlight_end":36}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_ptr_addr_of)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_ptr_addr_of)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_ptr_addr_of`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs:1109:15\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m1109\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m        #[cfg(anyhow_no_ptr_addr_of)]\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m               \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m              [lints.rust]\u001b[0m\n\u001b[0m              unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_ptr_addr_of)'] }\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_ptr_addr_of)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `error_generic_member_access`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs","byte_start":43420,"byte_end":43447,"line_start":1152,"line_end":1152,"column_start":11,"column_end":38,"is_primary":true,"text":[{"text":"    #[cfg(error_generic_member_access)]","highlight_start":11,"highlight_end":38}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(error_generic_member_access)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(error_generic_member_access)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `error_generic_member_access`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/error.rs:1152:11\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m1152\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    #[cfg(error_generic_member_access)]\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m           \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m              [lints.rust]\u001b[0m\n\u001b[0m              unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(error_generic_member_access)'] }\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(error_generic_member_access)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `std_backtrace`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/fmt.rs","byte_start":1265,"byte_end":1278,"line_start":43,"line_end":43,"column_start":19,"column_end":32,"is_primary":true,"text":[{"text":"        #[cfg(any(std_backtrace, feature = \"backtrace\"))]","highlight_start":19,"highlight_end":32}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(std_backtrace)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(std_backtrace)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `std_backtrace`\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/fmt.rs:43:19\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m43\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m        #[cfg(any(std_backtrace, feature = \"backtrace\"))]\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                   \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m            [lints.rust]\u001b[0m\n\u001b[0m            unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(std_backtrace)'] }\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(std_backtrace)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_core_error`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/kind.rs","byte_start":1720,"byte_end":1740,"line_start":50,"line_end":50,"column_start":32,"column_end":52,"is_primary":true,"text":[{"text":"#[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]","highlight_start":32,"highlight_end":52}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_core_error`\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/kind.rs:50:32\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m50\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m#[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m            [lints.rust]\u001b[0m\n\u001b[0m            unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_core_error`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/kind.rs","byte_start":1797,"byte_end":1817,"line_start":52,"line_end":52,"column_start":32,"column_end":52,"is_primary":true,"text":[{"text":"#[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]","highlight_start":32,"highlight_end":52}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_core_error`\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/kind.rs:52:32\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m52\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m#[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m            [lints.rust]\u001b[0m\n\u001b[0m            unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_core_error`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/kind.rs","byte_start":2631,"byte_end":2651,"line_start":99,"line_end":99,"column_start":32,"column_end":52,"is_primary":true,"text":[{"text":"#[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]","highlight_start":32,"highlight_end":52}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_core_error`\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/kind.rs:99:32\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m99\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m#[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m            [lints.rust]\u001b[0m\n\u001b[0m            unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_core_error`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/kind.rs","byte_start":2706,"byte_end":2726,"line_start":102,"line_end":102,"column_start":32,"column_end":52,"is_primary":true,"text":[{"text":"#[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]","highlight_start":32,"highlight_end":52}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_core_error`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/kind.rs:102:32\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m102\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m#[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_core_error`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/kind.rs","byte_start":2880,"byte_end":2900,"line_start":111,"line_end":111,"column_start":32,"column_end":52,"is_primary":true,"text":[{"text":"#[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]","highlight_start":32,"highlight_end":52}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_core_error`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/kind.rs:111:32\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m111\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m#[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_core_error`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/kind.rs","byte_start":2991,"byte_end":3011,"line_start":114,"line_end":114,"column_start":32,"column_end":52,"is_primary":true,"text":[{"text":"#[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]","highlight_start":32,"highlight_end":52}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_core_error`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/kind.rs:114:32\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m114\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m#[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_ptr_addr_of`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/ptr.rs","byte_start":1569,"byte_end":1590,"line_start":94,"line_end":94,"column_start":15,"column_end":36,"is_primary":true,"text":[{"text":"    #[cfg(not(anyhow_no_ptr_addr_of))]","highlight_start":15,"highlight_end":36}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_ptr_addr_of)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_ptr_addr_of)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_ptr_addr_of`\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/ptr.rs:94:15\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m94\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    #[cfg(not(anyhow_no_ptr_addr_of))]\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m               \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m            [lints.rust]\u001b[0m\n\u001b[0m            unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_ptr_addr_of)'] }\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_ptr_addr_of)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_ptr_addr_of`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/ptr.rs","byte_start":1895,"byte_end":1916,"line_start":109,"line_end":109,"column_start":15,"column_end":36,"is_primary":true,"text":[{"text":"    #[cfg(not(anyhow_no_ptr_addr_of))]","highlight_start":15,"highlight_end":36}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_ptr_addr_of)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_ptr_addr_of)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_ptr_addr_of`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/ptr.rs:109:15\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m109\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    #[cfg(not(anyhow_no_ptr_addr_of))]\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m               \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_ptr_addr_of)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_ptr_addr_of)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_ptr_addr_of`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/ptr.rs","byte_start":2067,"byte_end":2088,"line_start":117,"line_end":117,"column_start":15,"column_end":36,"is_primary":true,"text":[{"text":"    #[cfg(not(anyhow_no_ptr_addr_of))]","highlight_start":15,"highlight_end":36}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_ptr_addr_of)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_ptr_addr_of)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_ptr_addr_of`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/ptr.rs:117:15\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m117\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    #[cfg(not(anyhow_no_ptr_addr_of))]\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m               \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_ptr_addr_of)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_ptr_addr_of)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_ptr_addr_of`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/ptr.rs","byte_start":2613,"byte_end":2634,"line_start":151,"line_end":151,"column_start":11,"column_end":32,"is_primary":true,"text":[{"text":"    #[cfg(anyhow_no_ptr_addr_of)]","highlight_start":11,"highlight_end":32}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_ptr_addr_of)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_ptr_addr_of)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_ptr_addr_of`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/ptr.rs:151:11\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m151\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    #[cfg(anyhow_no_ptr_addr_of)]\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m           \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_ptr_addr_of)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_ptr_addr_of)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_ptr_addr_of`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/ptr.rs","byte_start":2952,"byte_end":2973,"line_start":166,"line_end":166,"column_start":15,"column_end":36,"is_primary":true,"text":[{"text":"    #[cfg(not(anyhow_no_ptr_addr_of))]","highlight_start":15,"highlight_end":36}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_ptr_addr_of)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_ptr_addr_of)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_ptr_addr_of`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/ptr.rs:166:15\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m166\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    #[cfg(not(anyhow_no_ptr_addr_of))]\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m               \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_ptr_addr_of)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_ptr_addr_of)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_core_error`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/wrapper.rs","byte_start":92,"byte_end":112,"line_start":4,"line_end":4,"column_start":32,"column_end":52,"is_primary":true,"text":[{"text":"#[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]","highlight_start":32,"highlight_end":52}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_core_error`\u001b[0m\n\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/wrapper.rs:4:32\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m4\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m#[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m           [lints.rust]\u001b[0m\n\u001b[0m           unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `error_generic_member_access`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/wrapper.rs","byte_start":147,"byte_end":174,"line_start":7,"line_end":7,"column_start":7,"column_end":34,"is_primary":true,"text":[{"text":"#[cfg(error_generic_member_access)]","highlight_start":7,"highlight_end":34}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(error_generic_member_access)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(error_generic_member_access)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `error_generic_member_access`\u001b[0m\n\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/wrapper.rs:7:7\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m7\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m#[cfg(error_generic_member_access)]\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m       \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m           [lints.rust]\u001b[0m\n\u001b[0m           unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(error_generic_member_access)'] }\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(error_generic_member_access)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_core_error`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/wrapper.rs","byte_start":1158,"byte_end":1178,"line_start":56,"line_end":56,"column_start":32,"column_end":52,"is_primary":true,"text":[{"text":"#[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]","highlight_start":32,"highlight_end":52}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_core_error`\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/wrapper.rs:56:32\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m56\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m#[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m            [lints.rust]\u001b[0m\n\u001b[0m            unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_core_error`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/wrapper.rs","byte_start":1296,"byte_end":1316,"line_start":60,"line_end":60,"column_start":32,"column_end":52,"is_primary":true,"text":[{"text":"#[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]","highlight_start":32,"highlight_end":52}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_core_error`\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/wrapper.rs:60:32\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m60\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m#[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m            [lints.rust]\u001b[0m\n\u001b[0m            unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_core_error`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/wrapper.rs","byte_start":1479,"byte_end":1499,"line_start":67,"line_end":67,"column_start":32,"column_end":52,"is_primary":true,"text":[{"text":"#[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]","highlight_start":32,"highlight_end":52}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_core_error`\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/wrapper.rs:67:32\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m67\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m#[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m            [lints.rust]\u001b[0m\n\u001b[0m            unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_core_error`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/wrapper.rs","byte_start":1666,"byte_end":1686,"line_start":74,"line_end":74,"column_start":32,"column_end":52,"is_primary":true,"text":[{"text":"#[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]","highlight_start":32,"highlight_end":52}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_core_error`\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/wrapper.rs:74:32\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m74\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m#[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m            [lints.rust]\u001b[0m\n\u001b[0m            unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `error_generic_member_access`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/wrapper.rs","byte_start":1823,"byte_end":1850,"line_start":80,"line_end":80,"column_start":11,"column_end":38,"is_primary":true,"text":[{"text":"    #[cfg(error_generic_member_access)]","highlight_start":11,"highlight_end":38}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(error_generic_member_access)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(error_generic_member_access)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `error_generic_member_access`\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/wrapper.rs:80:11\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m80\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    #[cfg(error_generic_member_access)]\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m           \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m            [lints.rust]\u001b[0m\n\u001b[0m            unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(error_generic_member_access)'] }\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(error_generic_member_access)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_core_error`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/lib.rs","byte_start":20208,"byte_end":20228,"line_start":679,"line_end":679,"column_start":40,"column_end":60,"is_primary":true,"text":[{"text":"        #[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]","highlight_start":40,"highlight_end":60}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_core_error`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/lib.rs:679:40\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m679\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m        #[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                        \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_fmt_arguments_as_str`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/lib.rs","byte_start":20412,"byte_end":20442,"line_start":688,"line_end":688,"column_start":15,"column_end":45,"is_primary":true,"text":[{"text":"        #[cfg(anyhow_no_fmt_arguments_as_str)]","highlight_start":15,"highlight_end":45}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_fmt_arguments_as_str)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_fmt_arguments_as_str)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_fmt_arguments_as_str`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/lib.rs:688:15\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m688\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m        #[cfg(anyhow_no_fmt_arguments_as_str)]\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m               \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_fmt_arguments_as_str)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_fmt_arguments_as_str)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
+##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_fmt_arguments_as_str`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/lib.rs","byte_start":20512,"byte_end":20542,"line_start":690,"line_end":690,"column_start":19,"column_end":49,"is_primary":true,"text":[{"text":"        #[cfg(not(anyhow_no_fmt_arguments_as_str))]","highlight_start":19,"highlight_end":49}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_fmt_arguments_as_str)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_fmt_arguments_as_str)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_fmt_arguments_as_str`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/lib.rs:690:19\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m690\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m        #[cfg(not(anyhow_no_fmt_arguments_as_str))]\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                   \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_fmt_arguments_as_str)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_fmt_arguments_as_str)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-flamegraph_0-6-10/release/deps/libanyhow-685a2f3787b242f1.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-flamegraph_0-6-10/release/deps/libanyhow-685a2f3787b242f1.rlib","emit":"link"}',
+##     '{"$message_type":"diagnostic","message":"164 warnings emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 164 warnings emitted\u001b[0m\n\n"}',
 ## ]
+##
+## [[mounts]]
+## name = "out-2ad6fd9cbd63bfef"
+## mount = "/tmp/clis-flamegraph_0-6-10/release/build/anyhow-2ad6fd9cbd63bfef/out"
 ##
 ## [[stages]]
 ##
@@ -80,6 +539,7 @@ COPY --link --from=dep-n-anyhow-1.0.99-685a2f3787b242f1 /tmp/clis-flamegraph_0-6
 ## WORKDIR /tmp/clis-flamegraph_0-6-10/release/deps
 ## RUN \
 ##   --mount=from=cratesio-anyhow-1.0.99,source=/anyhow-1.0.99,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99 \
+##   --mount=from=out-2ad6fd9cbd63bfef,dst=/tmp/clis-flamegraph_0-6-10/release/build/anyhow-2ad6fd9cbd63bfef/out,source=/ \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=anyhow \
 ##         CARGO_INCREMENTAL=0 \
@@ -101,7 +561,7 @@ COPY --link --from=dep-n-anyhow-1.0.99-685a2f3787b242f1 /tmp/clis-flamegraph_0-6
 ##         CARGO_PKG_VERSION_PRE= \
 ##         OUT_DIR=/tmp/clis-flamegraph_0-6-10/release/build/anyhow-2ad6fd9cbd63bfef/out \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name anyhow --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("backtrace", "default", "std"))' -C metadata'=bbf72278b2ccea91' -C extra-filename'=-685a2f3787b242f1' --out-dir /tmp/clis-flamegraph_0-6-10/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-flamegraph_0-6-10/release/deps' --cap-lints warn --cfg std_backtrace --check-cfg cfg'(anyhow_build_probe)' --check-cfg cfg'(anyhow_nightly_testing)' --check-cfg cfg'(anyhow_no_core_error)' --check-cfg cfg'(anyhow_no_core_unwind_safe)' --check-cfg cfg'(anyhow_no_fmt_arguments_as_str)' --check-cfg cfg'(anyhow_no_ptr_addr_of)' --check-cfg cfg'(anyhow_no_unsafe_op_in_unsafe_fn_lint)' --check-cfg cfg'(error_generic_member_access)' --check-cfg cfg'(std_backtrace)' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/lib.rs \
+##       rustc --crate-name anyhow --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("backtrace", "default", "std"))' -C metadata'=bbf72278b2ccea91' -C extra-filename'=-685a2f3787b242f1' --out-dir /tmp/clis-flamegraph_0-6-10/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-flamegraph_0-6-10/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.99/src/lib.rs \
 ##         1>          /tmp/clis-flamegraph_0-6-10/release/deps/out-685a2f3787b242f1-stdout \
 ##         2>          /tmp/clis-flamegraph_0-6-10/release/deps/out-685a2f3787b242f1-stderr \
 ##         || echo $? >/tmp/clis-flamegraph_0-6-10/release/deps/out-685a2f3787b242f1-errcode\
@@ -225,6 +685,309 @@ COPY --link --from=dep-n-unicode-ident-1.0.18-75925c9cdd5a8d6c /tmp/clis-flamegr
 FROM scratch AS cratesio-proc-macro2-1.0.101
 ADD --chmod=0664 --unpack --checksum=sha256:89ae43fd86e4158d6db51ad8e2b80f313af9cc74f5c0e03ccb87de09998732de \
   https://static.crates.io/crates/proc-macro2/proc-macro2-1.0.101.crate /
+FROM rust-base AS dep-x-proc-macro2-1.0.101-ab9829a4a8b7788d
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-flamegraph_0-6-10/release/build/proc-macro2-ab9829a4a8b7788d
+RUN \
+  --mount=from=cratesio-proc-macro2-1.0.101,source=/proc-macro2-1.0.101,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.101,rw \
+    { \
+        cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.101/build.rs | sed -E 's/^(pub[()a-z]* +)?(async +)?fn +main/\1\2fn actual_ab9829a4a8b7788d_main/' >/_ && mv /_ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.101/build.rs ; \
+        { \
+          echo ; \
+          echo 'fn main() {' ; \
+          echo '    use std::env::{args_os, var_os};' ; \
+          echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+          echo '        use std::process::{Command, Stdio};' ; \
+          echo '        let mut cmd = Command::new("cargo-green");' ; \
+          echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+          echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+          echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+          echo '        assert!(res.success());' ; \
+          echo '    } else {' ; \
+          echo '        actual_ab9829a4a8b7788d_main();' ; \
+          echo '    }' ; \
+          echo '}' ; \
+        } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.101/build.rs ; \
+    } && \
+    env CARGO="$(which cargo)" \
+        CARGO_CRATE_NAME=build_script_build \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.101 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.101/Cargo.toml \
+        CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>:Alex Crichton <alex@alexcrichton.com>' \
+        CARGO_PKG_DESCRIPTION=A' substitute implementation of the compiler'\'s' `proc_macro` API to decouple token-based libraries from the procedural macro use case.' \
+        CARGO_PKG_HOMEPAGE= \
+        CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=proc-macro2 \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/dtolnay/proc-macro2' \
+        CARGO_PKG_RUST_VERSION=1.56 \
+        CARGO_PKG_VERSION=1.0.101 \
+        CARGO_PKG_VERSION_MAJOR=1 \
+        CARGO_PKG_VERSION_MINOR=0 \
+        CARGO_PKG_VERSION_PATCH=101 \
+        CARGO_PKG_VERSION_PRE= \
+        CARGOGREEN=1 \
+      rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="proc-macro"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "nightly", "proc-macro", "span-locations"))' -C metadata'=1352cf34a8a766a0' -C extra-filename'=-ab9829a4a8b7788d' --out-dir /tmp/clis-flamegraph_0-6-10/release/build/proc-macro2-ab9829a4a8b7788d -C strip'=debuginfo' -L dependency'=/tmp/clis-flamegraph_0-6-10/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.101/build.rs \
+        1>          /tmp/clis-flamegraph_0-6-10/release/build/proc-macro2-ab9829a4a8b7788d/out-ab9829a4a8b7788d-stdout \
+        2>          /tmp/clis-flamegraph_0-6-10/release/build/proc-macro2-ab9829a4a8b7788d/out-ab9829a4a8b7788d-stderr \
+        || echo $? >/tmp/clis-flamegraph_0-6-10/release/build/proc-macro2-ab9829a4a8b7788d/out-ab9829a4a8b7788d-errcode\
+  ; find /tmp/clis-flamegraph_0-6-10/release/build/proc-macro2-ab9829a4a8b7788d/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-ab9829a4a8b7788d
+COPY --link --from=dep-x-proc-macro2-1.0.101-ab9829a4a8b7788d /tmp/clis-flamegraph_0-6-10/release/build/proc-macro2-ab9829a4a8b7788d/*-ab9829a4a8b7788d* /
+
+## this = "ab9829a4a8b7788d"
+## writes = [
+##     "build_script_build-ab9829a4a8b7788d",
+##     "build_script_build-ab9829a4a8b7788d.d",
+## ]
+## stderr = [
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-flamegraph_0-6-10/release/build/proc-macro2-ab9829a4a8b7788d/build_script_build-ab9829a4a8b7788d.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-flamegraph_0-6-10/release/build/proc-macro2-ab9829a4a8b7788d/build_script_build-ab9829a4a8b7788d","emit":"link"}',
+## ]
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
+##
+## [[stages]]
+##
+## [stages.Cratesio]
+## stage = "cratesio-proc-macro2-1.0.101"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.101"
+## name = "proc-macro2"
+## name_dash_version = "proc-macro2-1.0.101"
+## hash = "89ae43fd86e4158d6db51ad8e2b80f313af9cc74f5c0e03ccb87de09998732de"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "dep-x-proc-macro2-1.0.101-ab9829a4a8b7788d"
+## script = '''
+## FROM rust-base AS dep-x-proc-macro2-1.0.101-ab9829a4a8b7788d
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-flamegraph_0-6-10/release/build/proc-macro2-ab9829a4a8b7788d
+## RUN \
+##   --mount=from=cratesio-proc-macro2-1.0.101,source=/proc-macro2-1.0.101,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.101,rw \
+##     { \
+##         cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.101/build.rs | sed -E 's/^(pub[()a-z]* +)?(async +)?fn +main/\1\2fn actual_ab9829a4a8b7788d_main/' >/_ && mv /_ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.101/build.rs ; \
+##         { \
+##           echo ; \
+##           echo 'fn main() {' ; \
+##           echo '    use std::env::{args_os, var_os};' ; \
+##           echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+##           echo '        use std::process::{Command, Stdio};' ; \
+##           echo '        let mut cmd = Command::new("cargo-green");' ; \
+##           echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+##           echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+##           echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+##           echo '        assert!(res.success());' ; \
+##           echo '    } else {' ; \
+##           echo '        actual_ab9829a4a8b7788d_main();' ; \
+##           echo '    }' ; \
+##           echo '}' ; \
+##         } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.101/build.rs ; \
+##     } && \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CRATE_NAME=build_script_build \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.101 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.101/Cargo.toml \
+##         CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>:Alex Crichton <alex@alexcrichton.com>' \
+##         CARGO_PKG_DESCRIPTION=A' substitute implementation of the compiler'\'s' `proc_macro` API to decouple token-based libraries from the procedural macro use case.' \
+##         CARGO_PKG_HOMEPAGE= \
+##         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=proc-macro2 \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/dtolnay/proc-macro2' \
+##         CARGO_PKG_RUST_VERSION=1.56 \
+##         CARGO_PKG_VERSION=1.0.101 \
+##         CARGO_PKG_VERSION_MAJOR=1 \
+##         CARGO_PKG_VERSION_MINOR=0 \
+##         CARGO_PKG_VERSION_PATCH=101 \
+##         CARGO_PKG_VERSION_PRE= \
+##         CARGOGREEN=1 \
+##       rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="proc-macro"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "nightly", "proc-macro", "span-locations"))' -C metadata'=1352cf34a8a766a0' -C extra-filename'=-ab9829a4a8b7788d' --out-dir /tmp/clis-flamegraph_0-6-10/release/build/proc-macro2-ab9829a4a8b7788d -C strip'=debuginfo' -L dependency'=/tmp/clis-flamegraph_0-6-10/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.101/build.rs \
+##         1>          /tmp/clis-flamegraph_0-6-10/release/build/proc-macro2-ab9829a4a8b7788d/out-ab9829a4a8b7788d-stdout \
+##         2>          /tmp/clis-flamegraph_0-6-10/release/build/proc-macro2-ab9829a4a8b7788d/out-ab9829a4a8b7788d-stderr \
+##         || echo $? >/tmp/clis-flamegraph_0-6-10/release/build/proc-macro2-ab9829a4a8b7788d/out-ab9829a4a8b7788d-errcode\
+##   ; find /tmp/clis-flamegraph_0-6-10/release/build/proc-macro2-ab9829a4a8b7788d/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-ab9829a4a8b7788d"
+## script = """
+## FROM scratch AS out-ab9829a4a8b7788d
+## COPY --link --from=dep-x-proc-macro2-1.0.101-ab9829a4a8b7788d /tmp/clis-flamegraph_0-6-10/release/build/proc-macro2-ab9829a4a8b7788d/*-ab9829a4a8b7788d* /"""
+
+FROM rust-base AS run-z-proc-macro2-1.0.101-9a025c1b756d91f9
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-flamegraph_0-6-10/release/build/proc-macro2-9a025c1b756d91f9/out
+WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.101
+RUN \
+  --mount=from=out-ab9829a4a8b7788d,source=/build_script_build-ab9829a4a8b7788d,dst=/tmp/clis-flamegraph_0-6-10/release/build/proc-macro2-ab9829a4a8b7788d/build-script-build \
+  --mount=from=cratesio-proc-macro2-1.0.101,source=/proc-macro2-1.0.101,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.101 \
+    env CARGO="$(which cargo)" \
+        CARGO_CFG_FEATURE=default,proc-macro \
+        CARGO_CFG_PANIC=unwind \
+        CARGO_CFG_TARGET_ABI= \
+        CARGO_CFG_TARGET_ARCH=x86_64 \
+        CARGO_CFG_TARGET_ENDIAN=little \
+        CARGO_CFG_TARGET_ENV=gnu \
+        CARGO_CFG_TARGET_FAMILY=unix \
+        CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
+        CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+        CARGO_CFG_TARGET_OS=linux \
+        CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+        CARGO_CFG_TARGET_VENDOR=unknown \
+        CARGO_CFG_UNIX= \
+        CARGO_ENCODED_RUSTFLAGS= \
+        CARGO_FEATURE_DEFAULT=1 \
+        CARGO_FEATURE_PROC_MACRO=1 \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.101 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.101/Cargo.toml \
+        CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>:Alex Crichton <alex@alexcrichton.com>' \
+        CARGO_PKG_DESCRIPTION=A' substitute implementation of the compiler'\'s' `proc_macro` API to decouple token-based libraries from the procedural macro use case.' \
+        CARGO_PKG_HOMEPAGE= \
+        CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=proc-macro2 \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/dtolnay/proc-macro2' \
+        CARGO_PKG_RUST_VERSION=1.56 \
+        CARGO_PKG_VERSION=1.0.101 \
+        CARGO_PKG_VERSION_MAJOR=1 \
+        CARGO_PKG_VERSION_MINOR=0 \
+        CARGO_PKG_VERSION_PATCH=101 \
+        CARGO_PKG_VERSION_PRE= \
+        DEBUG=false \
+        HOST=x86_64-unknown-linux-gnu \
+        NUM_JOBS=4 \
+        OPT_LEVEL=0 \
+        OUT_DIR=/tmp/clis-flamegraph_0-6-10/release/build/proc-macro2-9a025c1b756d91f9/out \
+        PROFILE=release \
+        RUSTC=rustc \
+        RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+        TARGET=x86_64-unknown-linux-gnu \
+        CARGOGREEN=1 \
+      CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-flamegraph_0-6-10/release/build/proc-macro2-ab9829a4a8b7788d/build-script-build \
+        1>          /tmp/clis-flamegraph_0-6-10/release/build/proc-macro2-9a025c1b756d91f9/out/out-9a025c1b756d91f9-stdout \
+        2>          /tmp/clis-flamegraph_0-6-10/release/build/proc-macro2-9a025c1b756d91f9/out/out-9a025c1b756d91f9-stderr \
+        || echo $? >/tmp/clis-flamegraph_0-6-10/release/build/proc-macro2-9a025c1b756d91f9/out/out-9a025c1b756d91f9-errcode\
+  ; find /tmp/clis-flamegraph_0-6-10/release/build/proc-macro2-9a025c1b756d91f9/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-9a025c1b756d91f9
+COPY --link --from=run-z-proc-macro2-1.0.101-9a025c1b756d91f9 /tmp/clis-flamegraph_0-6-10/release/build/proc-macro2-9a025c1b756d91f9/out /
+
+## this = "9a025c1b756d91f9"
+## deps = ["ab9829a4a8b7788d"]
+## writes_to = "/tmp/clis-flamegraph_0-6-10/release/build/proc-macro2-9a025c1b756d91f9/out"
+## stdout = [
+##     "cargo:rustc-check-cfg=cfg(fuzzing)",
+##     "cargo:rustc-check-cfg=cfg(no_is_available)",
+##     "cargo:rustc-check-cfg=cfg(no_literal_byte_character)",
+##     "cargo:rustc-check-cfg=cfg(no_literal_c_string)",
+##     "cargo:rustc-check-cfg=cfg(no_source_text)",
+##     "cargo:rustc-check-cfg=cfg(proc_macro_span)",
+##     "cargo:rustc-check-cfg=cfg(proc_macro_span_file)",
+##     "cargo:rustc-check-cfg=cfg(proc_macro_span_location)",
+##     "cargo:rustc-check-cfg=cfg(procmacro2_backtrace)",
+##     "cargo:rustc-check-cfg=cfg(procmacro2_build_probe)",
+##     "cargo:rustc-check-cfg=cfg(procmacro2_nightly_testing)",
+##     "cargo:rustc-check-cfg=cfg(procmacro2_semver_exempt)",
+##     "cargo:rustc-check-cfg=cfg(randomize_layout)",
+##     "cargo:rustc-check-cfg=cfg(span_locations)",
+##     "cargo:rustc-check-cfg=cfg(super_unstable)",
+##     "cargo:rustc-check-cfg=cfg(wrap_proc_macro)",
+##     "cargo:rerun-if-changed=src/probe/proc_macro_span.rs",
+##     "cargo:rustc-cfg=wrap_proc_macro",
+##     "cargo:rerun-if-changed=src/probe/proc_macro_span_location.rs",
+##     "cargo:rerun-if-changed=src/probe/proc_macro_span_file.rs",
+##     "cargo:rerun-if-env-changed=RUSTC_BOOTSTRAP",
+## ]
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "run-z-proc-macro2-1.0.101-9a025c1b756d91f9"
+## script = '''
+## FROM rust-base AS run-z-proc-macro2-1.0.101-9a025c1b756d91f9
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-flamegraph_0-6-10/release/build/proc-macro2-9a025c1b756d91f9/out
+## WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.101
+## RUN \
+##   --mount=from=out-ab9829a4a8b7788d,source=/build_script_build-ab9829a4a8b7788d,dst=/tmp/clis-flamegraph_0-6-10/release/build/proc-macro2-ab9829a4a8b7788d/build-script-build \
+##   --mount=from=cratesio-proc-macro2-1.0.101,source=/proc-macro2-1.0.101,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.101 \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CFG_FEATURE=default,proc-macro \
+##         CARGO_CFG_PANIC=unwind \
+##         CARGO_CFG_TARGET_ABI= \
+##         CARGO_CFG_TARGET_ARCH=x86_64 \
+##         CARGO_CFG_TARGET_ENDIAN=little \
+##         CARGO_CFG_TARGET_ENV=gnu \
+##         CARGO_CFG_TARGET_FAMILY=unix \
+##         CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
+##         CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+##         CARGO_CFG_TARGET_OS=linux \
+##         CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+##         CARGO_CFG_TARGET_VENDOR=unknown \
+##         CARGO_CFG_UNIX= \
+##         CARGO_ENCODED_RUSTFLAGS= \
+##         CARGO_FEATURE_DEFAULT=1 \
+##         CARGO_FEATURE_PROC_MACRO=1 \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.101 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.101/Cargo.toml \
+##         CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>:Alex Crichton <alex@alexcrichton.com>' \
+##         CARGO_PKG_DESCRIPTION=A' substitute implementation of the compiler'\'s' `proc_macro` API to decouple token-based libraries from the procedural macro use case.' \
+##         CARGO_PKG_HOMEPAGE= \
+##         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=proc-macro2 \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/dtolnay/proc-macro2' \
+##         CARGO_PKG_RUST_VERSION=1.56 \
+##         CARGO_PKG_VERSION=1.0.101 \
+##         CARGO_PKG_VERSION_MAJOR=1 \
+##         CARGO_PKG_VERSION_MINOR=0 \
+##         CARGO_PKG_VERSION_PATCH=101 \
+##         CARGO_PKG_VERSION_PRE= \
+##         DEBUG=false \
+##         HOST=x86_64-unknown-linux-gnu \
+##         NUM_JOBS=4 \
+##         OPT_LEVEL=0 \
+##         OUT_DIR=/tmp/clis-flamegraph_0-6-10/release/build/proc-macro2-9a025c1b756d91f9/out \
+##         PROFILE=release \
+##         RUSTC=rustc \
+##         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+##         TARGET=x86_64-unknown-linux-gnu \
+##         CARGOGREEN=1 \
+##       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-flamegraph_0-6-10/release/build/proc-macro2-ab9829a4a8b7788d/build-script-build \
+##         1>          /tmp/clis-flamegraph_0-6-10/release/build/proc-macro2-9a025c1b756d91f9/out/out-9a025c1b756d91f9-stdout \
+##         2>          /tmp/clis-flamegraph_0-6-10/release/build/proc-macro2-9a025c1b756d91f9/out/out-9a025c1b756d91f9-stderr \
+##         || echo $? >/tmp/clis-flamegraph_0-6-10/release/build/proc-macro2-9a025c1b756d91f9/out/out-9a025c1b756d91f9-errcode\
+##   ; find /tmp/clis-flamegraph_0-6-10/release/build/proc-macro2-9a025c1b756d91f9/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-9a025c1b756d91f9"
+## script = """
+## FROM scratch AS out-9a025c1b756d91f9
+## COPY --link --from=run-z-proc-macro2-1.0.101-9a025c1b756d91f9 /tmp/clis-flamegraph_0-6-10/release/build/proc-macro2-9a025c1b756d91f9/out /"""
+
+
 FROM rust-base AS dep-n-proc-macro2-1.0.101-f7da27be4da40736
 SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-flamegraph_0-6-10/release/deps
@@ -232,6 +995,7 @@ RUN \
   --mount=from=cratesio-proc-macro2-1.0.101,source=/proc-macro2-1.0.101,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.101 \
   --mount=from=out-75925c9cdd5a8d6c,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libunicode_ident-75925c9cdd5a8d6c.rlib,source=/libunicode_ident-75925c9cdd5a8d6c.rlib \
   --mount=from=out-75925c9cdd5a8d6c,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libunicode_ident-75925c9cdd5a8d6c.rmeta,source=/libunicode_ident-75925c9cdd5a8d6c.rmeta \
+  --mount=from=out-9a025c1b756d91f9,dst=/tmp/clis-flamegraph_0-6-10/release/build/proc-macro2-9a025c1b756d91f9/out,source=/ \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=proc_macro2 \
         CARGO_INCREMENTAL=0 \
@@ -253,7 +1017,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         OUT_DIR=/tmp/clis-flamegraph_0-6-10/release/build/proc-macro2-9a025c1b756d91f9/out \
         CARGOGREEN=1 \
-      rustc --crate-name proc_macro2 --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="proc-macro"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "nightly", "proc-macro", "span-locations"))' -C metadata'=d4249cb55520ad21' -C extra-filename'=-f7da27be4da40736' --out-dir /tmp/clis-flamegraph_0-6-10/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-flamegraph_0-6-10/release/deps' --extern unicode_ident'=/tmp/clis-flamegraph_0-6-10/release/deps/libunicode_ident-75925c9cdd5a8d6c.rmeta' --cap-lints warn --cfg wrap_proc_macro --cfg proc_macro_span_location --cfg proc_macro_span_file --check-cfg cfg'(fuzzing)' --check-cfg cfg'(no_is_available)' --check-cfg cfg'(no_literal_byte_character)' --check-cfg cfg'(no_literal_c_string)' --check-cfg cfg'(no_source_text)' --check-cfg cfg'(proc_macro_span)' --check-cfg cfg'(proc_macro_span_file)' --check-cfg cfg'(proc_macro_span_location)' --check-cfg cfg'(procmacro2_backtrace)' --check-cfg cfg'(procmacro2_build_probe)' --check-cfg cfg'(procmacro2_nightly_testing)' --check-cfg cfg'(procmacro2_semver_exempt)' --check-cfg cfg'(randomize_layout)' --check-cfg cfg'(span_locations)' --check-cfg cfg'(super_unstable)' --check-cfg cfg'(wrap_proc_macro)' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.101/src/lib.rs \
+      rustc --crate-name proc_macro2 --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="proc-macro"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "nightly", "proc-macro", "span-locations"))' -C metadata'=d4249cb55520ad21' -C extra-filename'=-f7da27be4da40736' --out-dir /tmp/clis-flamegraph_0-6-10/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-flamegraph_0-6-10/release/deps' --extern unicode_ident'=/tmp/clis-flamegraph_0-6-10/release/deps/libunicode_ident-75925c9cdd5a8d6c.rmeta' --cap-lints warn --cfg wrap_proc_macro --check-cfg cfg'(fuzzing)' --check-cfg cfg'(no_is_available)' --check-cfg cfg'(no_literal_byte_character)' --check-cfg cfg'(no_literal_c_string)' --check-cfg cfg'(no_source_text)' --check-cfg cfg'(proc_macro_span)' --check-cfg cfg'(proc_macro_span_file)' --check-cfg cfg'(proc_macro_span_location)' --check-cfg cfg'(procmacro2_backtrace)' --check-cfg cfg'(procmacro2_build_probe)' --check-cfg cfg'(procmacro2_nightly_testing)' --check-cfg cfg'(procmacro2_semver_exempt)' --check-cfg cfg'(randomize_layout)' --check-cfg cfg'(span_locations)' --check-cfg cfg'(super_unstable)' --check-cfg cfg'(wrap_proc_macro)' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.101/src/lib.rs \
         1>          /tmp/clis-flamegraph_0-6-10/release/deps/out-f7da27be4da40736-stdout \
         2>          /tmp/clis-flamegraph_0-6-10/release/deps/out-f7da27be4da40736-stderr \
         || echo $? >/tmp/clis-flamegraph_0-6-10/release/deps/out-f7da27be4da40736-errcode\
@@ -262,7 +1026,12 @@ FROM scratch AS out-f7da27be4da40736
 COPY --link --from=dep-n-proc-macro2-1.0.101-f7da27be4da40736 /tmp/clis-flamegraph_0-6-10/release/deps/*-f7da27be4da40736* /
 
 ## this = "f7da27be4da40736"
-## deps = ["75925c9cdd5a8d6c"]
+## deps = [
+##     "75925c9cdd5a8d6c",
+##     "9a025c1b756d91f9",
+##     "ab9829a4a8b7788d",
+## ]
+## buildrs_results = ["9a025c1b756d91f9"]
 ## writes = [
 ##     "libproc_macro2-f7da27be4da40736.rlib",
 ##     "libproc_macro2-f7da27be4da40736.rmeta",
@@ -281,6 +1050,10 @@ COPY --link --from=dep-n-proc-macro2-1.0.101-f7da27be4da40736 /tmp/clis-flamegra
 ## [[externs]]
 ## from = "out-75925c9cdd5a8d6c"
 ## xtern = "libunicode_ident-75925c9cdd5a8d6c.rmeta"
+##
+## [[mounts]]
+## name = "out-9a025c1b756d91f9"
+## mount = "/tmp/clis-flamegraph_0-6-10/release/build/proc-macro2-9a025c1b756d91f9/out"
 ##
 ## [[stages]]
 ##
@@ -309,6 +1082,7 @@ COPY --link --from=dep-n-proc-macro2-1.0.101-f7da27be4da40736 /tmp/clis-flamegra
 ##   --mount=from=cratesio-proc-macro2-1.0.101,source=/proc-macro2-1.0.101,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.101 \
 ##   --mount=from=out-75925c9cdd5a8d6c,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libunicode_ident-75925c9cdd5a8d6c.rlib,source=/libunicode_ident-75925c9cdd5a8d6c.rlib \
 ##   --mount=from=out-75925c9cdd5a8d6c,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libunicode_ident-75925c9cdd5a8d6c.rmeta,source=/libunicode_ident-75925c9cdd5a8d6c.rmeta \
+##   --mount=from=out-9a025c1b756d91f9,dst=/tmp/clis-flamegraph_0-6-10/release/build/proc-macro2-9a025c1b756d91f9/out,source=/ \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=proc_macro2 \
 ##         CARGO_INCREMENTAL=0 \
@@ -330,7 +1104,7 @@ COPY --link --from=dep-n-proc-macro2-1.0.101-f7da27be4da40736 /tmp/clis-flamegra
 ##         CARGO_PKG_VERSION_PRE= \
 ##         OUT_DIR=/tmp/clis-flamegraph_0-6-10/release/build/proc-macro2-9a025c1b756d91f9/out \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name proc_macro2 --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="proc-macro"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "nightly", "proc-macro", "span-locations"))' -C metadata'=d4249cb55520ad21' -C extra-filename'=-f7da27be4da40736' --out-dir /tmp/clis-flamegraph_0-6-10/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-flamegraph_0-6-10/release/deps' --extern unicode_ident'=/tmp/clis-flamegraph_0-6-10/release/deps/libunicode_ident-75925c9cdd5a8d6c.rmeta' --cap-lints warn --cfg wrap_proc_macro --cfg proc_macro_span_location --cfg proc_macro_span_file --check-cfg cfg'(fuzzing)' --check-cfg cfg'(no_is_available)' --check-cfg cfg'(no_literal_byte_character)' --check-cfg cfg'(no_literal_c_string)' --check-cfg cfg'(no_source_text)' --check-cfg cfg'(proc_macro_span)' --check-cfg cfg'(proc_macro_span_file)' --check-cfg cfg'(proc_macro_span_location)' --check-cfg cfg'(procmacro2_backtrace)' --check-cfg cfg'(procmacro2_build_probe)' --check-cfg cfg'(procmacro2_nightly_testing)' --check-cfg cfg'(procmacro2_semver_exempt)' --check-cfg cfg'(randomize_layout)' --check-cfg cfg'(span_locations)' --check-cfg cfg'(super_unstable)' --check-cfg cfg'(wrap_proc_macro)' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.101/src/lib.rs \
+##       rustc --crate-name proc_macro2 --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="proc-macro"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "nightly", "proc-macro", "span-locations"))' -C metadata'=d4249cb55520ad21' -C extra-filename'=-f7da27be4da40736' --out-dir /tmp/clis-flamegraph_0-6-10/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-flamegraph_0-6-10/release/deps' --extern unicode_ident'=/tmp/clis-flamegraph_0-6-10/release/deps/libunicode_ident-75925c9cdd5a8d6c.rmeta' --cap-lints warn --cfg wrap_proc_macro --check-cfg cfg'(fuzzing)' --check-cfg cfg'(no_is_available)' --check-cfg cfg'(no_literal_byte_character)' --check-cfg cfg'(no_literal_c_string)' --check-cfg cfg'(no_source_text)' --check-cfg cfg'(proc_macro_span)' --check-cfg cfg'(proc_macro_span_file)' --check-cfg cfg'(proc_macro_span_location)' --check-cfg cfg'(procmacro2_backtrace)' --check-cfg cfg'(procmacro2_build_probe)' --check-cfg cfg'(procmacro2_nightly_testing)' --check-cfg cfg'(procmacro2_semver_exempt)' --check-cfg cfg'(randomize_layout)' --check-cfg cfg'(span_locations)' --check-cfg cfg'(super_unstable)' --check-cfg cfg'(wrap_proc_macro)' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.101/src/lib.rs \
 ##         1>          /tmp/clis-flamegraph_0-6-10/release/deps/out-f7da27be4da40736-stdout \
 ##         2>          /tmp/clis-flamegraph_0-6-10/release/deps/out-f7da27be4da40736-stderr \
 ##         || echo $? >/tmp/clis-flamegraph_0-6-10/release/deps/out-f7da27be4da40736-errcode\
@@ -388,7 +1162,10 @@ COPY --link --from=dep-n-quote-1.0.40-67bdffcce9227268 /tmp/clis-flamegraph_0-6-
 ## deps = [
 ##     "f7da27be4da40736",
 ##     "75925c9cdd5a8d6c",
+##     "ab9829a4a8b7788d",
+##     "9a025c1b756d91f9",
 ## ]
+## buildrs_results = ["9a025c1b756d91f9"]
 ## writes = [
 ##     "libquote-67bdffcce9227268.rlib",
 ##     "libquote-67bdffcce9227268.rmeta",
@@ -525,8 +1302,11 @@ COPY --link --from=dep-n-syn-2.0.106-59a8027a56ed154e /tmp/clis-flamegraph_0-6-1
 ## deps = [
 ##     "f7da27be4da40736",
 ##     "75925c9cdd5a8d6c",
+##     "ab9829a4a8b7788d",
 ##     "67bdffcce9227268",
+##     "9a025c1b756d91f9",
 ## ]
+## buildrs_results = ["9a025c1b756d91f9"]
 ## writes = [
 ##     "libsyn-59a8027a56ed154e.rlib",
 ##     "libsyn-59a8027a56ed154e.rmeta",
@@ -671,9 +1451,12 @@ COPY --link --from=dep-n-serde_derive-1.0.219-1ed307bd0e4eb6e8 /tmp/clis-flamegr
 ## deps = [
 ##     "f7da27be4da40736",
 ##     "75925c9cdd5a8d6c",
+##     "ab9829a4a8b7788d",
 ##     "67bdffcce9227268",
 ##     "59a8027a56ed154e",
+##     "9a025c1b756d91f9",
 ## ]
+## buildrs_results = ["9a025c1b756d91f9"]
 ## writes = [
 ##     "libserde_derive-1ed307bd0e4eb6e8.so",
 ##     "serde_derive-1ed307bd0e4eb6e8.d",
@@ -769,6 +1552,307 @@ COPY --link --from=dep-n-serde_derive-1.0.219-1ed307bd0e4eb6e8 /tmp/clis-flamegr
 FROM scratch AS cratesio-serde-1.0.219
 ADD --chmod=0664 --unpack --checksum=sha256:5f0e2c6ed6606019b4e29e69dbaba95b11854410e5347d525002456dbbb786b6 \
   https://static.crates.io/crates/serde/serde-1.0.219.crate /
+FROM rust-base AS dep-x-serde-1.0.219-973af84dbfcc00ac
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-flamegraph_0-6-10/release/build/serde-973af84dbfcc00ac
+RUN \
+  --mount=from=cratesio-serde-1.0.219,source=/serde-1.0.219,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.219,rw \
+    { \
+        cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.219/build.rs | sed -E 's/^(pub[()a-z]* +)?(async +)?fn +main/\1\2fn actual_973af84dbfcc00ac_main/' >/_ && mv /_ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.219/build.rs ; \
+        { \
+          echo ; \
+          echo 'fn main() {' ; \
+          echo '    use std::env::{args_os, var_os};' ; \
+          echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+          echo '        use std::process::{Command, Stdio};' ; \
+          echo '        let mut cmd = Command::new("cargo-green");' ; \
+          echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+          echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+          echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+          echo '        assert!(res.success());' ; \
+          echo '    } else {' ; \
+          echo '        actual_973af84dbfcc00ac_main();' ; \
+          echo '    }' ; \
+          echo '}' ; \
+        } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.219/build.rs ; \
+    } && \
+    env CARGO="$(which cargo)" \
+        CARGO_CRATE_NAME=build_script_build \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.219 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.219/Cargo.toml \
+        CARGO_PKG_AUTHORS=Erick' Tryzelaar <erick.tryzelaar@gmail.com>:David Tolnay <dtolnay@gmail.com>' \
+        CARGO_PKG_DESCRIPTION=A' generic serialization/deserialization framework' \
+        CARGO_PKG_HOMEPAGE=https'://serde.rs' \
+        CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=serde \
+        CARGO_PKG_README=crates-io.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/serde-rs/serde' \
+        CARGO_PKG_RUST_VERSION=1.31 \
+        CARGO_PKG_VERSION=1.0.219 \
+        CARGO_PKG_VERSION_MAJOR=1 \
+        CARGO_PKG_VERSION_MINOR=0 \
+        CARGO_PKG_VERSION_PATCH=219 \
+        CARGO_PKG_VERSION_PRE= \
+        CARGOGREEN=1 \
+      rustc --crate-name build_script_build --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="derive"' --cfg feature'="serde_derive"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "derive", "rc", "serde_derive", "std", "unstable"))' -C metadata'=531341b4a687faaa' -C extra-filename'=-973af84dbfcc00ac' --out-dir /tmp/clis-flamegraph_0-6-10/release/build/serde-973af84dbfcc00ac -C strip'=debuginfo' -L dependency'=/tmp/clis-flamegraph_0-6-10/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.219/build.rs \
+        1>          /tmp/clis-flamegraph_0-6-10/release/build/serde-973af84dbfcc00ac/out-973af84dbfcc00ac-stdout \
+        2>          /tmp/clis-flamegraph_0-6-10/release/build/serde-973af84dbfcc00ac/out-973af84dbfcc00ac-stderr \
+        || echo $? >/tmp/clis-flamegraph_0-6-10/release/build/serde-973af84dbfcc00ac/out-973af84dbfcc00ac-errcode\
+  ; find /tmp/clis-flamegraph_0-6-10/release/build/serde-973af84dbfcc00ac/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-973af84dbfcc00ac
+COPY --link --from=dep-x-serde-1.0.219-973af84dbfcc00ac /tmp/clis-flamegraph_0-6-10/release/build/serde-973af84dbfcc00ac/*-973af84dbfcc00ac* /
+
+## this = "973af84dbfcc00ac"
+## writes = [
+##     "build_script_build-973af84dbfcc00ac",
+##     "build_script_build-973af84dbfcc00ac.d",
+## ]
+## stderr = [
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-flamegraph_0-6-10/release/build/serde-973af84dbfcc00ac/build_script_build-973af84dbfcc00ac.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-flamegraph_0-6-10/release/build/serde-973af84dbfcc00ac/build_script_build-973af84dbfcc00ac","emit":"link"}',
+## ]
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
+##
+## [[stages]]
+##
+## [stages.Cratesio]
+## stage = "cratesio-serde-1.0.219"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.219"
+## name = "serde"
+## name_dash_version = "serde-1.0.219"
+## hash = "5f0e2c6ed6606019b4e29e69dbaba95b11854410e5347d525002456dbbb786b6"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "dep-x-serde-1.0.219-973af84dbfcc00ac"
+## script = '''
+## FROM rust-base AS dep-x-serde-1.0.219-973af84dbfcc00ac
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-flamegraph_0-6-10/release/build/serde-973af84dbfcc00ac
+## RUN \
+##   --mount=from=cratesio-serde-1.0.219,source=/serde-1.0.219,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.219,rw \
+##     { \
+##         cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.219/build.rs | sed -E 's/^(pub[()a-z]* +)?(async +)?fn +main/\1\2fn actual_973af84dbfcc00ac_main/' >/_ && mv /_ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.219/build.rs ; \
+##         { \
+##           echo ; \
+##           echo 'fn main() {' ; \
+##           echo '    use std::env::{args_os, var_os};' ; \
+##           echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+##           echo '        use std::process::{Command, Stdio};' ; \
+##           echo '        let mut cmd = Command::new("cargo-green");' ; \
+##           echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+##           echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+##           echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+##           echo '        assert!(res.success());' ; \
+##           echo '    } else {' ; \
+##           echo '        actual_973af84dbfcc00ac_main();' ; \
+##           echo '    }' ; \
+##           echo '}' ; \
+##         } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.219/build.rs ; \
+##     } && \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CRATE_NAME=build_script_build \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.219 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.219/Cargo.toml \
+##         CARGO_PKG_AUTHORS=Erick' Tryzelaar <erick.tryzelaar@gmail.com>:David Tolnay <dtolnay@gmail.com>' \
+##         CARGO_PKG_DESCRIPTION=A' generic serialization/deserialization framework' \
+##         CARGO_PKG_HOMEPAGE=https'://serde.rs' \
+##         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=serde \
+##         CARGO_PKG_README=crates-io.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/serde-rs/serde' \
+##         CARGO_PKG_RUST_VERSION=1.31 \
+##         CARGO_PKG_VERSION=1.0.219 \
+##         CARGO_PKG_VERSION_MAJOR=1 \
+##         CARGO_PKG_VERSION_MINOR=0 \
+##         CARGO_PKG_VERSION_PATCH=219 \
+##         CARGO_PKG_VERSION_PRE= \
+##         CARGOGREEN=1 \
+##       rustc --crate-name build_script_build --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="derive"' --cfg feature'="serde_derive"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "derive", "rc", "serde_derive", "std", "unstable"))' -C metadata'=531341b4a687faaa' -C extra-filename'=-973af84dbfcc00ac' --out-dir /tmp/clis-flamegraph_0-6-10/release/build/serde-973af84dbfcc00ac -C strip'=debuginfo' -L dependency'=/tmp/clis-flamegraph_0-6-10/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.219/build.rs \
+##         1>          /tmp/clis-flamegraph_0-6-10/release/build/serde-973af84dbfcc00ac/out-973af84dbfcc00ac-stdout \
+##         2>          /tmp/clis-flamegraph_0-6-10/release/build/serde-973af84dbfcc00ac/out-973af84dbfcc00ac-stderr \
+##         || echo $? >/tmp/clis-flamegraph_0-6-10/release/build/serde-973af84dbfcc00ac/out-973af84dbfcc00ac-errcode\
+##   ; find /tmp/clis-flamegraph_0-6-10/release/build/serde-973af84dbfcc00ac/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-973af84dbfcc00ac"
+## script = """
+## FROM scratch AS out-973af84dbfcc00ac
+## COPY --link --from=dep-x-serde-1.0.219-973af84dbfcc00ac /tmp/clis-flamegraph_0-6-10/release/build/serde-973af84dbfcc00ac/*-973af84dbfcc00ac* /"""
+
+FROM rust-base AS run-z-serde-1.0.219-b6a8ff84ba0a9d99
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-flamegraph_0-6-10/release/build/serde-b6a8ff84ba0a9d99/out
+WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.219
+RUN \
+  --mount=from=out-973af84dbfcc00ac,source=/build_script_build-973af84dbfcc00ac,dst=/tmp/clis-flamegraph_0-6-10/release/build/serde-973af84dbfcc00ac/build-script-build \
+  --mount=from=cratesio-serde-1.0.219,source=/serde-1.0.219,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.219 \
+    env CARGO="$(which cargo)" \
+        CARGO_CFG_FEATURE=default,derive,serde_derive,std \
+        CARGO_CFG_PANIC=unwind \
+        CARGO_CFG_TARGET_ABI= \
+        CARGO_CFG_TARGET_ARCH=x86_64 \
+        CARGO_CFG_TARGET_ENDIAN=little \
+        CARGO_CFG_TARGET_ENV=gnu \
+        CARGO_CFG_TARGET_FAMILY=unix \
+        CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
+        CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+        CARGO_CFG_TARGET_OS=linux \
+        CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+        CARGO_CFG_TARGET_VENDOR=unknown \
+        CARGO_CFG_UNIX= \
+        CARGO_ENCODED_RUSTFLAGS= \
+        CARGO_FEATURE_DEFAULT=1 \
+        CARGO_FEATURE_DERIVE=1 \
+        CARGO_FEATURE_SERDE_DERIVE=1 \
+        CARGO_FEATURE_STD=1 \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.219 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.219/Cargo.toml \
+        CARGO_PKG_AUTHORS=Erick' Tryzelaar <erick.tryzelaar@gmail.com>:David Tolnay <dtolnay@gmail.com>' \
+        CARGO_PKG_DESCRIPTION=A' generic serialization/deserialization framework' \
+        CARGO_PKG_HOMEPAGE=https'://serde.rs' \
+        CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=serde \
+        CARGO_PKG_README=crates-io.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/serde-rs/serde' \
+        CARGO_PKG_RUST_VERSION=1.31 \
+        CARGO_PKG_VERSION=1.0.219 \
+        CARGO_PKG_VERSION_MAJOR=1 \
+        CARGO_PKG_VERSION_MINOR=0 \
+        CARGO_PKG_VERSION_PATCH=219 \
+        CARGO_PKG_VERSION_PRE= \
+        DEBUG=false \
+        HOST=x86_64-unknown-linux-gnu \
+        NUM_JOBS=4 \
+        OPT_LEVEL=3 \
+        OUT_DIR=/tmp/clis-flamegraph_0-6-10/release/build/serde-b6a8ff84ba0a9d99/out \
+        PROFILE=release \
+        RUSTC=rustc \
+        RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+        TARGET=x86_64-unknown-linux-gnu \
+        CARGOGREEN=1 \
+      CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-flamegraph_0-6-10/release/build/serde-973af84dbfcc00ac/build-script-build \
+        1>          /tmp/clis-flamegraph_0-6-10/release/build/serde-b6a8ff84ba0a9d99/out/out-b6a8ff84ba0a9d99-stdout \
+        2>          /tmp/clis-flamegraph_0-6-10/release/build/serde-b6a8ff84ba0a9d99/out/out-b6a8ff84ba0a9d99-stderr \
+        || echo $? >/tmp/clis-flamegraph_0-6-10/release/build/serde-b6a8ff84ba0a9d99/out/out-b6a8ff84ba0a9d99-errcode\
+  ; find /tmp/clis-flamegraph_0-6-10/release/build/serde-b6a8ff84ba0a9d99/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-b6a8ff84ba0a9d99
+COPY --link --from=run-z-serde-1.0.219-b6a8ff84ba0a9d99 /tmp/clis-flamegraph_0-6-10/release/build/serde-b6a8ff84ba0a9d99/out /
+
+## this = "b6a8ff84ba0a9d99"
+## deps = ["973af84dbfcc00ac"]
+## writes_to = "/tmp/clis-flamegraph_0-6-10/release/build/serde-b6a8ff84ba0a9d99/out"
+## stdout = [
+##     "cargo:rerun-if-changed=build.rs",
+##     "cargo:rustc-check-cfg=cfg(no_core_cstr)",
+##     "cargo:rustc-check-cfg=cfg(no_core_error)",
+##     "cargo:rustc-check-cfg=cfg(no_core_net)",
+##     "cargo:rustc-check-cfg=cfg(no_core_num_saturating)",
+##     "cargo:rustc-check-cfg=cfg(no_core_try_from)",
+##     "cargo:rustc-check-cfg=cfg(no_diagnostic_namespace)",
+##     "cargo:rustc-check-cfg=cfg(no_float_copysign)",
+##     "cargo:rustc-check-cfg=cfg(no_num_nonzero_signed)",
+##     "cargo:rustc-check-cfg=cfg(no_relaxed_trait_bounds)",
+##     "cargo:rustc-check-cfg=cfg(no_serde_derive)",
+##     "cargo:rustc-check-cfg=cfg(no_std_atomic)",
+##     "cargo:rustc-check-cfg=cfg(no_std_atomic64)",
+##     "cargo:rustc-check-cfg=cfg(no_systemtime_checked_add)",
+##     "cargo:rustc-check-cfg=cfg(no_target_has_atomic)",
+## ]
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "run-z-serde-1.0.219-b6a8ff84ba0a9d99"
+## script = '''
+## FROM rust-base AS run-z-serde-1.0.219-b6a8ff84ba0a9d99
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-flamegraph_0-6-10/release/build/serde-b6a8ff84ba0a9d99/out
+## WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.219
+## RUN \
+##   --mount=from=out-973af84dbfcc00ac,source=/build_script_build-973af84dbfcc00ac,dst=/tmp/clis-flamegraph_0-6-10/release/build/serde-973af84dbfcc00ac/build-script-build \
+##   --mount=from=cratesio-serde-1.0.219,source=/serde-1.0.219,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.219 \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CFG_FEATURE=default,derive,serde_derive,std \
+##         CARGO_CFG_PANIC=unwind \
+##         CARGO_CFG_TARGET_ABI= \
+##         CARGO_CFG_TARGET_ARCH=x86_64 \
+##         CARGO_CFG_TARGET_ENDIAN=little \
+##         CARGO_CFG_TARGET_ENV=gnu \
+##         CARGO_CFG_TARGET_FAMILY=unix \
+##         CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
+##         CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+##         CARGO_CFG_TARGET_OS=linux \
+##         CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+##         CARGO_CFG_TARGET_VENDOR=unknown \
+##         CARGO_CFG_UNIX= \
+##         CARGO_ENCODED_RUSTFLAGS= \
+##         CARGO_FEATURE_DEFAULT=1 \
+##         CARGO_FEATURE_DERIVE=1 \
+##         CARGO_FEATURE_SERDE_DERIVE=1 \
+##         CARGO_FEATURE_STD=1 \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.219 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.219/Cargo.toml \
+##         CARGO_PKG_AUTHORS=Erick' Tryzelaar <erick.tryzelaar@gmail.com>:David Tolnay <dtolnay@gmail.com>' \
+##         CARGO_PKG_DESCRIPTION=A' generic serialization/deserialization framework' \
+##         CARGO_PKG_HOMEPAGE=https'://serde.rs' \
+##         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=serde \
+##         CARGO_PKG_README=crates-io.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/serde-rs/serde' \
+##         CARGO_PKG_RUST_VERSION=1.31 \
+##         CARGO_PKG_VERSION=1.0.219 \
+##         CARGO_PKG_VERSION_MAJOR=1 \
+##         CARGO_PKG_VERSION_MINOR=0 \
+##         CARGO_PKG_VERSION_PATCH=219 \
+##         CARGO_PKG_VERSION_PRE= \
+##         DEBUG=false \
+##         HOST=x86_64-unknown-linux-gnu \
+##         NUM_JOBS=4 \
+##         OPT_LEVEL=3 \
+##         OUT_DIR=/tmp/clis-flamegraph_0-6-10/release/build/serde-b6a8ff84ba0a9d99/out \
+##         PROFILE=release \
+##         RUSTC=rustc \
+##         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+##         TARGET=x86_64-unknown-linux-gnu \
+##         CARGOGREEN=1 \
+##       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-flamegraph_0-6-10/release/build/serde-973af84dbfcc00ac/build-script-build \
+##         1>          /tmp/clis-flamegraph_0-6-10/release/build/serde-b6a8ff84ba0a9d99/out/out-b6a8ff84ba0a9d99-stdout \
+##         2>          /tmp/clis-flamegraph_0-6-10/release/build/serde-b6a8ff84ba0a9d99/out/out-b6a8ff84ba0a9d99-stderr \
+##         || echo $? >/tmp/clis-flamegraph_0-6-10/release/build/serde-b6a8ff84ba0a9d99/out/out-b6a8ff84ba0a9d99-errcode\
+##   ; find /tmp/clis-flamegraph_0-6-10/release/build/serde-b6a8ff84ba0a9d99/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-b6a8ff84ba0a9d99"
+## script = """
+## FROM scratch AS out-b6a8ff84ba0a9d99
+## COPY --link --from=run-z-serde-1.0.219-b6a8ff84ba0a9d99 /tmp/clis-flamegraph_0-6-10/release/build/serde-b6a8ff84ba0a9d99/out /"""
+
+
 FROM rust-base AS dep-n-serde-1.0.219-fb24883d99ae7a55
 SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-flamegraph_0-6-10/release/deps
@@ -779,6 +1863,7 @@ RUN \
   --mount=from=out-75925c9cdd5a8d6c,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libunicode_ident-75925c9cdd5a8d6c.rlib,source=/libunicode_ident-75925c9cdd5a8d6c.rlib \
   --mount=from=out-67bdffcce9227268,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libquote-67bdffcce9227268.rlib,source=/libquote-67bdffcce9227268.rlib \
   --mount=from=out-59a8027a56ed154e,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libsyn-59a8027a56ed154e.rlib,source=/libsyn-59a8027a56ed154e.rlib \
+  --mount=from=out-b6a8ff84ba0a9d99,dst=/tmp/clis-flamegraph_0-6-10/release/build/serde-b6a8ff84ba0a9d99/out,source=/ \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=serde \
         CARGO_INCREMENTAL=0 \
@@ -813,8 +1898,16 @@ COPY --link --from=dep-n-serde-1.0.219-fb24883d99ae7a55 /tmp/clis-flamegraph_0-6
 ##     "1ed307bd0e4eb6e8",
 ##     "f7da27be4da40736",
 ##     "75925c9cdd5a8d6c",
+##     "ab9829a4a8b7788d",
 ##     "67bdffcce9227268",
 ##     "59a8027a56ed154e",
+##     "b6a8ff84ba0a9d99",
+##     "9a025c1b756d91f9",
+##     "973af84dbfcc00ac",
+## ]
+## buildrs_results = [
+##     "9a025c1b756d91f9",
+##     "b6a8ff84ba0a9d99",
 ## ]
 ## writes = [
 ##     "libserde-fb24883d99ae7a55.rlib",
@@ -850,6 +1943,10 @@ COPY --link --from=dep-n-serde-1.0.219-fb24883d99ae7a55 /tmp/clis-flamegraph_0-6
 ## from = "out-59a8027a56ed154e"
 ## xtern = "libsyn-59a8027a56ed154e.rlib"
 ##
+## [[mounts]]
+## name = "out-b6a8ff84ba0a9d99"
+## mount = "/tmp/clis-flamegraph_0-6-10/release/build/serde-b6a8ff84ba0a9d99/out"
+##
 ## [[stages]]
 ##
 ## [stages.Script]
@@ -880,6 +1977,7 @@ COPY --link --from=dep-n-serde-1.0.219-fb24883d99ae7a55 /tmp/clis-flamegraph_0-6
 ##   --mount=from=out-75925c9cdd5a8d6c,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libunicode_ident-75925c9cdd5a8d6c.rlib,source=/libunicode_ident-75925c9cdd5a8d6c.rlib \
 ##   --mount=from=out-67bdffcce9227268,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libquote-67bdffcce9227268.rlib,source=/libquote-67bdffcce9227268.rlib \
 ##   --mount=from=out-59a8027a56ed154e,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libsyn-59a8027a56ed154e.rlib,source=/libsyn-59a8027a56ed154e.rlib \
+##   --mount=from=out-b6a8ff84ba0a9d99,dst=/tmp/clis-flamegraph_0-6-10/release/build/serde-b6a8ff84ba0a9d99/out,source=/ \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=serde \
 ##         CARGO_INCREMENTAL=0 \
@@ -918,6 +2016,304 @@ COPY --link --from=dep-n-serde-1.0.219-fb24883d99ae7a55 /tmp/clis-flamegraph_0-6
 FROM scratch AS cratesio-camino-1.1.11
 ADD --chmod=0664 --unpack --checksum=sha256:5d07aa9a93b00c76f71bc35d598bed923f6d4f3a9ca5c24b7737ae1a292841c0 \
   https://static.crates.io/crates/camino/camino-1.1.11.crate /
+FROM rust-base AS dep-x-camino-1.1.11-98c1f198d4a438cd
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-flamegraph_0-6-10/release/build/camino-98c1f198d4a438cd
+RUN \
+  --mount=from=cratesio-camino-1.1.11,source=/camino-1.1.11,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/camino-1.1.11,rw \
+    { \
+        cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/camino-1.1.11/build.rs | sed -E 's/^(pub[()a-z]* +)?(async +)?fn +main/\1\2fn actual_98c1f198d4a438cd_main/' >/_ && mv /_ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/camino-1.1.11/build.rs ; \
+        { \
+          echo ; \
+          echo 'fn main() {' ; \
+          echo '    use std::env::{args_os, var_os};' ; \
+          echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+          echo '        use std::process::{Command, Stdio};' ; \
+          echo '        let mut cmd = Command::new("cargo-green");' ; \
+          echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+          echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+          echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+          echo '        assert!(res.success());' ; \
+          echo '    } else {' ; \
+          echo '        actual_98c1f198d4a438cd_main();' ; \
+          echo '    }' ; \
+          echo '}' ; \
+        } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/camino-1.1.11/build.rs ; \
+    } && \
+    env CARGO="$(which cargo)" \
+        CARGO_CRATE_NAME=build_script_build \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/camino-1.1.11 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/camino-1.1.11/Cargo.toml \
+        CARGO_PKG_AUTHORS=Without' Boats <saoirse@without.boats>:Ashley Williams <ashley666ashley@gmail.com>:Steve Klabnik <steve@steveklabnik.com>:Rain <rain@sunshowers.io>' \
+        CARGO_PKG_DESCRIPTION=UTF-8' paths' \
+        CARGO_PKG_HOMEPAGE= \
+        CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=camino \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/camino-rs/camino' \
+        CARGO_PKG_RUST_VERSION=1.34.0 \
+        CARGO_PKG_VERSION=1.1.11 \
+        CARGO_PKG_VERSION_MAJOR=1 \
+        CARGO_PKG_VERSION_MINOR=1 \
+        CARGO_PKG_VERSION_PATCH=11 \
+        CARGO_PKG_VERSION_PRE= \
+        CARGOGREEN=1 \
+      rustc --crate-name build_script_build --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="serde"' --cfg feature'="serde1"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("proptest", "proptest1", "serde", "serde1"))' -C metadata'=9ed72648530f9ba1' -C extra-filename'=-98c1f198d4a438cd' --out-dir /tmp/clis-flamegraph_0-6-10/release/build/camino-98c1f198d4a438cd -C strip'=debuginfo' -L dependency'=/tmp/clis-flamegraph_0-6-10/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/camino-1.1.11/build.rs \
+        1>          /tmp/clis-flamegraph_0-6-10/release/build/camino-98c1f198d4a438cd/out-98c1f198d4a438cd-stdout \
+        2>          /tmp/clis-flamegraph_0-6-10/release/build/camino-98c1f198d4a438cd/out-98c1f198d4a438cd-stderr \
+        || echo $? >/tmp/clis-flamegraph_0-6-10/release/build/camino-98c1f198d4a438cd/out-98c1f198d4a438cd-errcode\
+  ; find /tmp/clis-flamegraph_0-6-10/release/build/camino-98c1f198d4a438cd/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-98c1f198d4a438cd
+COPY --link --from=dep-x-camino-1.1.11-98c1f198d4a438cd /tmp/clis-flamegraph_0-6-10/release/build/camino-98c1f198d4a438cd/*-98c1f198d4a438cd* /
+
+## this = "98c1f198d4a438cd"
+## writes = [
+##     "build_script_build-98c1f198d4a438cd",
+##     "build_script_build-98c1f198d4a438cd.d",
+## ]
+## stderr = [
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-flamegraph_0-6-10/release/build/camino-98c1f198d4a438cd/build_script_build-98c1f198d4a438cd.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-flamegraph_0-6-10/release/build/camino-98c1f198d4a438cd/build_script_build-98c1f198d4a438cd","emit":"link"}',
+## ]
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
+##
+## [[stages]]
+##
+## [stages.Cratesio]
+## stage = "cratesio-camino-1.1.11"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/camino-1.1.11"
+## name = "camino"
+## name_dash_version = "camino-1.1.11"
+## hash = "5d07aa9a93b00c76f71bc35d598bed923f6d4f3a9ca5c24b7737ae1a292841c0"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "dep-x-camino-1.1.11-98c1f198d4a438cd"
+## script = '''
+## FROM rust-base AS dep-x-camino-1.1.11-98c1f198d4a438cd
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-flamegraph_0-6-10/release/build/camino-98c1f198d4a438cd
+## RUN \
+##   --mount=from=cratesio-camino-1.1.11,source=/camino-1.1.11,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/camino-1.1.11,rw \
+##     { \
+##         cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/camino-1.1.11/build.rs | sed -E 's/^(pub[()a-z]* +)?(async +)?fn +main/\1\2fn actual_98c1f198d4a438cd_main/' >/_ && mv /_ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/camino-1.1.11/build.rs ; \
+##         { \
+##           echo ; \
+##           echo 'fn main() {' ; \
+##           echo '    use std::env::{args_os, var_os};' ; \
+##           echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+##           echo '        use std::process::{Command, Stdio};' ; \
+##           echo '        let mut cmd = Command::new("cargo-green");' ; \
+##           echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+##           echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+##           echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+##           echo '        assert!(res.success());' ; \
+##           echo '    } else {' ; \
+##           echo '        actual_98c1f198d4a438cd_main();' ; \
+##           echo '    }' ; \
+##           echo '}' ; \
+##         } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/camino-1.1.11/build.rs ; \
+##     } && \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CRATE_NAME=build_script_build \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/camino-1.1.11 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/camino-1.1.11/Cargo.toml \
+##         CARGO_PKG_AUTHORS=Without' Boats <saoirse@without.boats>:Ashley Williams <ashley666ashley@gmail.com>:Steve Klabnik <steve@steveklabnik.com>:Rain <rain@sunshowers.io>' \
+##         CARGO_PKG_DESCRIPTION=UTF-8' paths' \
+##         CARGO_PKG_HOMEPAGE= \
+##         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=camino \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/camino-rs/camino' \
+##         CARGO_PKG_RUST_VERSION=1.34.0 \
+##         CARGO_PKG_VERSION=1.1.11 \
+##         CARGO_PKG_VERSION_MAJOR=1 \
+##         CARGO_PKG_VERSION_MINOR=1 \
+##         CARGO_PKG_VERSION_PATCH=11 \
+##         CARGO_PKG_VERSION_PRE= \
+##         CARGOGREEN=1 \
+##       rustc --crate-name build_script_build --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="serde"' --cfg feature'="serde1"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("proptest", "proptest1", "serde", "serde1"))' -C metadata'=9ed72648530f9ba1' -C extra-filename'=-98c1f198d4a438cd' --out-dir /tmp/clis-flamegraph_0-6-10/release/build/camino-98c1f198d4a438cd -C strip'=debuginfo' -L dependency'=/tmp/clis-flamegraph_0-6-10/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/camino-1.1.11/build.rs \
+##         1>          /tmp/clis-flamegraph_0-6-10/release/build/camino-98c1f198d4a438cd/out-98c1f198d4a438cd-stdout \
+##         2>          /tmp/clis-flamegraph_0-6-10/release/build/camino-98c1f198d4a438cd/out-98c1f198d4a438cd-stderr \
+##         || echo $? >/tmp/clis-flamegraph_0-6-10/release/build/camino-98c1f198d4a438cd/out-98c1f198d4a438cd-errcode\
+##   ; find /tmp/clis-flamegraph_0-6-10/release/build/camino-98c1f198d4a438cd/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-98c1f198d4a438cd"
+## script = """
+## FROM scratch AS out-98c1f198d4a438cd
+## COPY --link --from=dep-x-camino-1.1.11-98c1f198d4a438cd /tmp/clis-flamegraph_0-6-10/release/build/camino-98c1f198d4a438cd/*-98c1f198d4a438cd* /"""
+
+FROM rust-base AS run-z-camino-1.1.11-92b8e9d8347c9a2e
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-flamegraph_0-6-10/release/build/camino-92b8e9d8347c9a2e/out
+WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/camino-1.1.11
+RUN \
+  --mount=from=out-98c1f198d4a438cd,source=/build_script_build-98c1f198d4a438cd,dst=/tmp/clis-flamegraph_0-6-10/release/build/camino-98c1f198d4a438cd/build-script-build \
+  --mount=from=cratesio-camino-1.1.11,source=/camino-1.1.11,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/camino-1.1.11 \
+    env CARGO="$(which cargo)" \
+        CARGO_CFG_FEATURE=serde,serde1 \
+        CARGO_CFG_PANIC=unwind \
+        CARGO_CFG_TARGET_ABI= \
+        CARGO_CFG_TARGET_ARCH=x86_64 \
+        CARGO_CFG_TARGET_ENDIAN=little \
+        CARGO_CFG_TARGET_ENV=gnu \
+        CARGO_CFG_TARGET_FAMILY=unix \
+        CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
+        CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+        CARGO_CFG_TARGET_OS=linux \
+        CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+        CARGO_CFG_TARGET_VENDOR=unknown \
+        CARGO_CFG_UNIX= \
+        CARGO_ENCODED_RUSTFLAGS= \
+        CARGO_FEATURE_SERDE=1 \
+        CARGO_FEATURE_SERDE1=1 \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/camino-1.1.11 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/camino-1.1.11/Cargo.toml \
+        CARGO_PKG_AUTHORS=Without' Boats <saoirse@without.boats>:Ashley Williams <ashley666ashley@gmail.com>:Steve Klabnik <steve@steveklabnik.com>:Rain <rain@sunshowers.io>' \
+        CARGO_PKG_DESCRIPTION=UTF-8' paths' \
+        CARGO_PKG_HOMEPAGE= \
+        CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=camino \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/camino-rs/camino' \
+        CARGO_PKG_RUST_VERSION=1.34.0 \
+        CARGO_PKG_VERSION=1.1.11 \
+        CARGO_PKG_VERSION_MAJOR=1 \
+        CARGO_PKG_VERSION_MINOR=1 \
+        CARGO_PKG_VERSION_PATCH=11 \
+        CARGO_PKG_VERSION_PRE= \
+        DEBUG=false \
+        HOST=x86_64-unknown-linux-gnu \
+        NUM_JOBS=4 \
+        OPT_LEVEL=3 \
+        OUT_DIR=/tmp/clis-flamegraph_0-6-10/release/build/camino-92b8e9d8347c9a2e/out \
+        PROFILE=release \
+        RUSTC=rustc \
+        RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+        TARGET=x86_64-unknown-linux-gnu \
+        CARGOGREEN=1 \
+      CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-flamegraph_0-6-10/release/build/camino-98c1f198d4a438cd/build-script-build \
+        1>          /tmp/clis-flamegraph_0-6-10/release/build/camino-92b8e9d8347c9a2e/out/out-92b8e9d8347c9a2e-stdout \
+        2>          /tmp/clis-flamegraph_0-6-10/release/build/camino-92b8e9d8347c9a2e/out/out-92b8e9d8347c9a2e-stderr \
+        || echo $? >/tmp/clis-flamegraph_0-6-10/release/build/camino-92b8e9d8347c9a2e/out/out-92b8e9d8347c9a2e-errcode\
+  ; find /tmp/clis-flamegraph_0-6-10/release/build/camino-92b8e9d8347c9a2e/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-92b8e9d8347c9a2e
+COPY --link --from=run-z-camino-1.1.11-92b8e9d8347c9a2e /tmp/clis-flamegraph_0-6-10/release/build/camino-92b8e9d8347c9a2e/out /
+
+## this = "92b8e9d8347c9a2e"
+## deps = ["98c1f198d4a438cd"]
+## writes_to = "/tmp/clis-flamegraph_0-6-10/release/build/camino-92b8e9d8347c9a2e/out"
+## stdout = [
+##     "cargo:rerun-if-changed=build.rs",
+##     "cargo:rustc-check-cfg=cfg(doc_cfg)",
+##     "cargo:rustc-check-cfg=cfg(path_buf_deref_mut)",
+##     "cargo:rustc-check-cfg=cfg(path_buf_capacity)",
+##     "cargo:rustc-check-cfg=cfg(shrink_to)",
+##     "cargo:rustc-check-cfg=cfg(try_reserve_2)",
+##     "cargo:rustc-check-cfg=cfg(os_str_bytes)",
+##     "cargo:rustc-check-cfg=cfg(os_string_pathbuf_leak)",
+##     "cargo:rustc-check-cfg=cfg(absolute_path)",
+##     "cargo:rustc-cfg=path_buf_capacity",
+##     "cargo:rustc-cfg=shrink_to",
+##     "cargo:rustc-cfg=try_reserve_2",
+##     "cargo:rustc-cfg=path_buf_deref_mut",
+##     "cargo:rustc-cfg=os_str_bytes",
+##     "cargo:rustc-cfg=absolute_path",
+##     "cargo:rustc-cfg=os_string_pathbuf_leak",
+## ]
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "run-z-camino-1.1.11-92b8e9d8347c9a2e"
+## script = '''
+## FROM rust-base AS run-z-camino-1.1.11-92b8e9d8347c9a2e
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-flamegraph_0-6-10/release/build/camino-92b8e9d8347c9a2e/out
+## WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/camino-1.1.11
+## RUN \
+##   --mount=from=out-98c1f198d4a438cd,source=/build_script_build-98c1f198d4a438cd,dst=/tmp/clis-flamegraph_0-6-10/release/build/camino-98c1f198d4a438cd/build-script-build \
+##   --mount=from=cratesio-camino-1.1.11,source=/camino-1.1.11,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/camino-1.1.11 \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CFG_FEATURE=serde,serde1 \
+##         CARGO_CFG_PANIC=unwind \
+##         CARGO_CFG_TARGET_ABI= \
+##         CARGO_CFG_TARGET_ARCH=x86_64 \
+##         CARGO_CFG_TARGET_ENDIAN=little \
+##         CARGO_CFG_TARGET_ENV=gnu \
+##         CARGO_CFG_TARGET_FAMILY=unix \
+##         CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
+##         CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+##         CARGO_CFG_TARGET_OS=linux \
+##         CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+##         CARGO_CFG_TARGET_VENDOR=unknown \
+##         CARGO_CFG_UNIX= \
+##         CARGO_ENCODED_RUSTFLAGS= \
+##         CARGO_FEATURE_SERDE=1 \
+##         CARGO_FEATURE_SERDE1=1 \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/camino-1.1.11 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/camino-1.1.11/Cargo.toml \
+##         CARGO_PKG_AUTHORS=Without' Boats <saoirse@without.boats>:Ashley Williams <ashley666ashley@gmail.com>:Steve Klabnik <steve@steveklabnik.com>:Rain <rain@sunshowers.io>' \
+##         CARGO_PKG_DESCRIPTION=UTF-8' paths' \
+##         CARGO_PKG_HOMEPAGE= \
+##         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=camino \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/camino-rs/camino' \
+##         CARGO_PKG_RUST_VERSION=1.34.0 \
+##         CARGO_PKG_VERSION=1.1.11 \
+##         CARGO_PKG_VERSION_MAJOR=1 \
+##         CARGO_PKG_VERSION_MINOR=1 \
+##         CARGO_PKG_VERSION_PATCH=11 \
+##         CARGO_PKG_VERSION_PRE= \
+##         DEBUG=false \
+##         HOST=x86_64-unknown-linux-gnu \
+##         NUM_JOBS=4 \
+##         OPT_LEVEL=3 \
+##         OUT_DIR=/tmp/clis-flamegraph_0-6-10/release/build/camino-92b8e9d8347c9a2e/out \
+##         PROFILE=release \
+##         RUSTC=rustc \
+##         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+##         TARGET=x86_64-unknown-linux-gnu \
+##         CARGOGREEN=1 \
+##       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-flamegraph_0-6-10/release/build/camino-98c1f198d4a438cd/build-script-build \
+##         1>          /tmp/clis-flamegraph_0-6-10/release/build/camino-92b8e9d8347c9a2e/out/out-92b8e9d8347c9a2e-stdout \
+##         2>          /tmp/clis-flamegraph_0-6-10/release/build/camino-92b8e9d8347c9a2e/out/out-92b8e9d8347c9a2e-stderr \
+##         || echo $? >/tmp/clis-flamegraph_0-6-10/release/build/camino-92b8e9d8347c9a2e/out/out-92b8e9d8347c9a2e-errcode\
+##   ; find /tmp/clis-flamegraph_0-6-10/release/build/camino-92b8e9d8347c9a2e/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-92b8e9d8347c9a2e"
+## script = """
+## FROM scratch AS out-92b8e9d8347c9a2e
+## COPY --link --from=run-z-camino-1.1.11-92b8e9d8347c9a2e /tmp/clis-flamegraph_0-6-10/release/build/camino-92b8e9d8347c9a2e/out /"""
+
+
 FROM rust-base AS dep-n-camino-1.1.11-97e010d1cbaea030
 SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-flamegraph_0-6-10/release/deps
@@ -934,6 +2330,7 @@ RUN \
   --mount=from=out-67bdffcce9227268,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libquote-67bdffcce9227268.rmeta,source=/libquote-67bdffcce9227268.rmeta \
   --mount=from=out-59a8027a56ed154e,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libsyn-59a8027a56ed154e.rlib,source=/libsyn-59a8027a56ed154e.rlib \
   --mount=from=out-59a8027a56ed154e,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libsyn-59a8027a56ed154e.rmeta,source=/libsyn-59a8027a56ed154e.rmeta \
+  --mount=from=out-92b8e9d8347c9a2e,dst=/tmp/clis-flamegraph_0-6-10/release/build/camino-92b8e9d8347c9a2e/out,source=/ \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=camino \
         CARGO_INCREMENTAL=0 \
@@ -969,8 +2366,19 @@ COPY --link --from=dep-n-camino-1.1.11-97e010d1cbaea030 /tmp/clis-flamegraph_0-6
 ##     "1ed307bd0e4eb6e8",
 ##     "f7da27be4da40736",
 ##     "75925c9cdd5a8d6c",
+##     "ab9829a4a8b7788d",
 ##     "67bdffcce9227268",
 ##     "59a8027a56ed154e",
+##     "973af84dbfcc00ac",
+##     "92b8e9d8347c9a2e",
+##     "9a025c1b756d91f9",
+##     "b6a8ff84ba0a9d99",
+##     "98c1f198d4a438cd",
+## ]
+## buildrs_results = [
+##     "9a025c1b756d91f9",
+##     "b6a8ff84ba0a9d99",
+##     "92b8e9d8347c9a2e",
 ## ]
 ## writes = [
 ##     "camino-97e010d1cbaea030.d",
@@ -1027,6 +2435,10 @@ COPY --link --from=dep-n-camino-1.1.11-97e010d1cbaea030 /tmp/clis-flamegraph_0-6
 ## from = "out-59a8027a56ed154e"
 ## xtern = "libsyn-59a8027a56ed154e.rmeta"
 ##
+## [[mounts]]
+## name = "out-92b8e9d8347c9a2e"
+## mount = "/tmp/clis-flamegraph_0-6-10/release/build/camino-92b8e9d8347c9a2e/out"
+##
 ## [[stages]]
 ##
 ## [stages.Script]
@@ -1063,6 +2475,7 @@ COPY --link --from=dep-n-camino-1.1.11-97e010d1cbaea030 /tmp/clis-flamegraph_0-6
 ##   --mount=from=out-67bdffcce9227268,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libquote-67bdffcce9227268.rmeta,source=/libquote-67bdffcce9227268.rmeta \
 ##   --mount=from=out-59a8027a56ed154e,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libsyn-59a8027a56ed154e.rlib,source=/libsyn-59a8027a56ed154e.rlib \
 ##   --mount=from=out-59a8027a56ed154e,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libsyn-59a8027a56ed154e.rmeta,source=/libsyn-59a8027a56ed154e.rmeta \
+##   --mount=from=out-92b8e9d8347c9a2e,dst=/tmp/clis-flamegraph_0-6-10/release/build/camino-92b8e9d8347c9a2e/out,source=/ \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=camino \
 ##         CARGO_INCREMENTAL=0 \
@@ -1151,8 +2564,16 @@ COPY --link --from=dep-n-cargo-platform-0.3.0-0fba42c911bb312b /tmp/clis-flamegr
 ##     "1ed307bd0e4eb6e8",
 ##     "f7da27be4da40736",
 ##     "75925c9cdd5a8d6c",
+##     "ab9829a4a8b7788d",
 ##     "67bdffcce9227268",
 ##     "59a8027a56ed154e",
+##     "973af84dbfcc00ac",
+##     "9a025c1b756d91f9",
+##     "b6a8ff84ba0a9d99",
+## ]
+## buildrs_results = [
+##     "9a025c1b756d91f9",
+##     "b6a8ff84ba0a9d99",
 ## ]
 ## writes = [
 ##     "cargo_platform-0fba42c911bb312b.d",
@@ -1282,6 +2703,300 @@ COPY --link --from=dep-n-cargo-platform-0.3.0-0fba42c911bb312b /tmp/clis-flamegr
 FROM scratch AS cratesio-semver-1.0.26
 ADD --chmod=0664 --unpack --checksum=sha256:56e6fa9c48d24d85fb3de5ad847117517440f6beceb7798af16b4a87d616b8d0 \
   https://static.crates.io/crates/semver/semver-1.0.26.crate /
+FROM rust-base AS dep-x-semver-1.0.26-f8b07fc90d255ac7
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-flamegraph_0-6-10/release/build/semver-f8b07fc90d255ac7
+RUN \
+  --mount=from=cratesio-semver-1.0.26,source=/semver-1.0.26,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/semver-1.0.26,rw \
+    { \
+        cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/semver-1.0.26/build.rs | sed -E 's/^(pub[()a-z]* +)?(async +)?fn +main/\1\2fn actual_f8b07fc90d255ac7_main/' >/_ && mv /_ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/semver-1.0.26/build.rs ; \
+        { \
+          echo ; \
+          echo 'fn main() {' ; \
+          echo '    use std::env::{args_os, var_os};' ; \
+          echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+          echo '        use std::process::{Command, Stdio};' ; \
+          echo '        let mut cmd = Command::new("cargo-green");' ; \
+          echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+          echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+          echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+          echo '        assert!(res.success());' ; \
+          echo '    } else {' ; \
+          echo '        actual_f8b07fc90d255ac7_main();' ; \
+          echo '    }' ; \
+          echo '}' ; \
+        } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/semver-1.0.26/build.rs ; \
+    } && \
+    env CARGO="$(which cargo)" \
+        CARGO_CRATE_NAME=build_script_build \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/semver-1.0.26 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/semver-1.0.26/Cargo.toml \
+        CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>' \
+        CARGO_PKG_DESCRIPTION=Parser' and evaluator for Cargo'\'s' flavor of Semantic Versioning' \
+        CARGO_PKG_HOMEPAGE= \
+        CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=semver \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/dtolnay/semver' \
+        CARGO_PKG_RUST_VERSION=1.31 \
+        CARGO_PKG_VERSION=1.0.26 \
+        CARGO_PKG_VERSION_MAJOR=1 \
+        CARGO_PKG_VERSION_MINOR=0 \
+        CARGO_PKG_VERSION_PATCH=26 \
+        CARGO_PKG_VERSION_PRE= \
+        CARGOGREEN=1 \
+      rustc --crate-name build_script_build --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="serde"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "serde", "std"))' -C metadata'=3576bc37d5d3196d' -C extra-filename'=-f8b07fc90d255ac7' --out-dir /tmp/clis-flamegraph_0-6-10/release/build/semver-f8b07fc90d255ac7 -C strip'=debuginfo' -L dependency'=/tmp/clis-flamegraph_0-6-10/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/semver-1.0.26/build.rs \
+        1>          /tmp/clis-flamegraph_0-6-10/release/build/semver-f8b07fc90d255ac7/out-f8b07fc90d255ac7-stdout \
+        2>          /tmp/clis-flamegraph_0-6-10/release/build/semver-f8b07fc90d255ac7/out-f8b07fc90d255ac7-stderr \
+        || echo $? >/tmp/clis-flamegraph_0-6-10/release/build/semver-f8b07fc90d255ac7/out-f8b07fc90d255ac7-errcode\
+  ; find /tmp/clis-flamegraph_0-6-10/release/build/semver-f8b07fc90d255ac7/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-f8b07fc90d255ac7
+COPY --link --from=dep-x-semver-1.0.26-f8b07fc90d255ac7 /tmp/clis-flamegraph_0-6-10/release/build/semver-f8b07fc90d255ac7/*-f8b07fc90d255ac7* /
+
+## this = "f8b07fc90d255ac7"
+## writes = [
+##     "build_script_build-f8b07fc90d255ac7",
+##     "build_script_build-f8b07fc90d255ac7.d",
+## ]
+## stderr = [
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-flamegraph_0-6-10/release/build/semver-f8b07fc90d255ac7/build_script_build-f8b07fc90d255ac7.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-flamegraph_0-6-10/release/build/semver-f8b07fc90d255ac7/build_script_build-f8b07fc90d255ac7","emit":"link"}',
+## ]
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
+##
+## [[stages]]
+##
+## [stages.Cratesio]
+## stage = "cratesio-semver-1.0.26"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/semver-1.0.26"
+## name = "semver"
+## name_dash_version = "semver-1.0.26"
+## hash = "56e6fa9c48d24d85fb3de5ad847117517440f6beceb7798af16b4a87d616b8d0"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "dep-x-semver-1.0.26-f8b07fc90d255ac7"
+## script = '''
+## FROM rust-base AS dep-x-semver-1.0.26-f8b07fc90d255ac7
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-flamegraph_0-6-10/release/build/semver-f8b07fc90d255ac7
+## RUN \
+##   --mount=from=cratesio-semver-1.0.26,source=/semver-1.0.26,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/semver-1.0.26,rw \
+##     { \
+##         cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/semver-1.0.26/build.rs | sed -E 's/^(pub[()a-z]* +)?(async +)?fn +main/\1\2fn actual_f8b07fc90d255ac7_main/' >/_ && mv /_ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/semver-1.0.26/build.rs ; \
+##         { \
+##           echo ; \
+##           echo 'fn main() {' ; \
+##           echo '    use std::env::{args_os, var_os};' ; \
+##           echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+##           echo '        use std::process::{Command, Stdio};' ; \
+##           echo '        let mut cmd = Command::new("cargo-green");' ; \
+##           echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+##           echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+##           echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+##           echo '        assert!(res.success());' ; \
+##           echo '    } else {' ; \
+##           echo '        actual_f8b07fc90d255ac7_main();' ; \
+##           echo '    }' ; \
+##           echo '}' ; \
+##         } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/semver-1.0.26/build.rs ; \
+##     } && \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CRATE_NAME=build_script_build \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/semver-1.0.26 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/semver-1.0.26/Cargo.toml \
+##         CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>' \
+##         CARGO_PKG_DESCRIPTION=Parser' and evaluator for Cargo'\'s' flavor of Semantic Versioning' \
+##         CARGO_PKG_HOMEPAGE= \
+##         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=semver \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/dtolnay/semver' \
+##         CARGO_PKG_RUST_VERSION=1.31 \
+##         CARGO_PKG_VERSION=1.0.26 \
+##         CARGO_PKG_VERSION_MAJOR=1 \
+##         CARGO_PKG_VERSION_MINOR=0 \
+##         CARGO_PKG_VERSION_PATCH=26 \
+##         CARGO_PKG_VERSION_PRE= \
+##         CARGOGREEN=1 \
+##       rustc --crate-name build_script_build --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="serde"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "serde", "std"))' -C metadata'=3576bc37d5d3196d' -C extra-filename'=-f8b07fc90d255ac7' --out-dir /tmp/clis-flamegraph_0-6-10/release/build/semver-f8b07fc90d255ac7 -C strip'=debuginfo' -L dependency'=/tmp/clis-flamegraph_0-6-10/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/semver-1.0.26/build.rs \
+##         1>          /tmp/clis-flamegraph_0-6-10/release/build/semver-f8b07fc90d255ac7/out-f8b07fc90d255ac7-stdout \
+##         2>          /tmp/clis-flamegraph_0-6-10/release/build/semver-f8b07fc90d255ac7/out-f8b07fc90d255ac7-stderr \
+##         || echo $? >/tmp/clis-flamegraph_0-6-10/release/build/semver-f8b07fc90d255ac7/out-f8b07fc90d255ac7-errcode\
+##   ; find /tmp/clis-flamegraph_0-6-10/release/build/semver-f8b07fc90d255ac7/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-f8b07fc90d255ac7"
+## script = """
+## FROM scratch AS out-f8b07fc90d255ac7
+## COPY --link --from=dep-x-semver-1.0.26-f8b07fc90d255ac7 /tmp/clis-flamegraph_0-6-10/release/build/semver-f8b07fc90d255ac7/*-f8b07fc90d255ac7* /"""
+
+FROM rust-base AS run-z-semver-1.0.26-4b323db41945775e
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-flamegraph_0-6-10/release/build/semver-4b323db41945775e/out
+WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/semver-1.0.26
+RUN \
+  --mount=from=out-f8b07fc90d255ac7,source=/build_script_build-f8b07fc90d255ac7,dst=/tmp/clis-flamegraph_0-6-10/release/build/semver-f8b07fc90d255ac7/build-script-build \
+  --mount=from=cratesio-semver-1.0.26,source=/semver-1.0.26,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/semver-1.0.26 \
+    env CARGO="$(which cargo)" \
+        CARGO_CFG_FEATURE=default,serde,std \
+        CARGO_CFG_PANIC=unwind \
+        CARGO_CFG_TARGET_ABI= \
+        CARGO_CFG_TARGET_ARCH=x86_64 \
+        CARGO_CFG_TARGET_ENDIAN=little \
+        CARGO_CFG_TARGET_ENV=gnu \
+        CARGO_CFG_TARGET_FAMILY=unix \
+        CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
+        CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+        CARGO_CFG_TARGET_OS=linux \
+        CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+        CARGO_CFG_TARGET_VENDOR=unknown \
+        CARGO_CFG_UNIX= \
+        CARGO_ENCODED_RUSTFLAGS= \
+        CARGO_FEATURE_DEFAULT=1 \
+        CARGO_FEATURE_SERDE=1 \
+        CARGO_FEATURE_STD=1 \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/semver-1.0.26 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/semver-1.0.26/Cargo.toml \
+        CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>' \
+        CARGO_PKG_DESCRIPTION=Parser' and evaluator for Cargo'\'s' flavor of Semantic Versioning' \
+        CARGO_PKG_HOMEPAGE= \
+        CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=semver \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/dtolnay/semver' \
+        CARGO_PKG_RUST_VERSION=1.31 \
+        CARGO_PKG_VERSION=1.0.26 \
+        CARGO_PKG_VERSION_MAJOR=1 \
+        CARGO_PKG_VERSION_MINOR=0 \
+        CARGO_PKG_VERSION_PATCH=26 \
+        CARGO_PKG_VERSION_PRE= \
+        DEBUG=false \
+        HOST=x86_64-unknown-linux-gnu \
+        NUM_JOBS=4 \
+        OPT_LEVEL=3 \
+        OUT_DIR=/tmp/clis-flamegraph_0-6-10/release/build/semver-4b323db41945775e/out \
+        PROFILE=release \
+        RUSTC=rustc \
+        RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+        TARGET=x86_64-unknown-linux-gnu \
+        CARGOGREEN=1 \
+      CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-flamegraph_0-6-10/release/build/semver-f8b07fc90d255ac7/build-script-build \
+        1>          /tmp/clis-flamegraph_0-6-10/release/build/semver-4b323db41945775e/out/out-4b323db41945775e-stdout \
+        2>          /tmp/clis-flamegraph_0-6-10/release/build/semver-4b323db41945775e/out/out-4b323db41945775e-stderr \
+        || echo $? >/tmp/clis-flamegraph_0-6-10/release/build/semver-4b323db41945775e/out/out-4b323db41945775e-errcode\
+  ; find /tmp/clis-flamegraph_0-6-10/release/build/semver-4b323db41945775e/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-4b323db41945775e
+COPY --link --from=run-z-semver-1.0.26-4b323db41945775e /tmp/clis-flamegraph_0-6-10/release/build/semver-4b323db41945775e/out /
+
+## this = "4b323db41945775e"
+## deps = ["f8b07fc90d255ac7"]
+## writes_to = "/tmp/clis-flamegraph_0-6-10/release/build/semver-4b323db41945775e/out"
+## stdout = [
+##     "cargo:rerun-if-changed=build.rs",
+##     "cargo:rustc-check-cfg=cfg(no_alloc_crate)",
+##     "cargo:rustc-check-cfg=cfg(no_const_vec_new)",
+##     "cargo:rustc-check-cfg=cfg(no_exhaustive_int_match)",
+##     "cargo:rustc-check-cfg=cfg(no_non_exhaustive)",
+##     "cargo:rustc-check-cfg=cfg(no_nonzero_bitscan)",
+##     "cargo:rustc-check-cfg=cfg(no_str_strip_prefix)",
+##     "cargo:rustc-check-cfg=cfg(no_track_caller)",
+##     "cargo:rustc-check-cfg=cfg(no_unsafe_op_in_unsafe_fn_lint)",
+##     "cargo:rustc-check-cfg=cfg(test_node_semver)",
+## ]
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "run-z-semver-1.0.26-4b323db41945775e"
+## script = '''
+## FROM rust-base AS run-z-semver-1.0.26-4b323db41945775e
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-flamegraph_0-6-10/release/build/semver-4b323db41945775e/out
+## WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/semver-1.0.26
+## RUN \
+##   --mount=from=out-f8b07fc90d255ac7,source=/build_script_build-f8b07fc90d255ac7,dst=/tmp/clis-flamegraph_0-6-10/release/build/semver-f8b07fc90d255ac7/build-script-build \
+##   --mount=from=cratesio-semver-1.0.26,source=/semver-1.0.26,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/semver-1.0.26 \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CFG_FEATURE=default,serde,std \
+##         CARGO_CFG_PANIC=unwind \
+##         CARGO_CFG_TARGET_ABI= \
+##         CARGO_CFG_TARGET_ARCH=x86_64 \
+##         CARGO_CFG_TARGET_ENDIAN=little \
+##         CARGO_CFG_TARGET_ENV=gnu \
+##         CARGO_CFG_TARGET_FAMILY=unix \
+##         CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
+##         CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+##         CARGO_CFG_TARGET_OS=linux \
+##         CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+##         CARGO_CFG_TARGET_VENDOR=unknown \
+##         CARGO_CFG_UNIX= \
+##         CARGO_ENCODED_RUSTFLAGS= \
+##         CARGO_FEATURE_DEFAULT=1 \
+##         CARGO_FEATURE_SERDE=1 \
+##         CARGO_FEATURE_STD=1 \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/semver-1.0.26 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/semver-1.0.26/Cargo.toml \
+##         CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>' \
+##         CARGO_PKG_DESCRIPTION=Parser' and evaluator for Cargo'\'s' flavor of Semantic Versioning' \
+##         CARGO_PKG_HOMEPAGE= \
+##         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=semver \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/dtolnay/semver' \
+##         CARGO_PKG_RUST_VERSION=1.31 \
+##         CARGO_PKG_VERSION=1.0.26 \
+##         CARGO_PKG_VERSION_MAJOR=1 \
+##         CARGO_PKG_VERSION_MINOR=0 \
+##         CARGO_PKG_VERSION_PATCH=26 \
+##         CARGO_PKG_VERSION_PRE= \
+##         DEBUG=false \
+##         HOST=x86_64-unknown-linux-gnu \
+##         NUM_JOBS=4 \
+##         OPT_LEVEL=3 \
+##         OUT_DIR=/tmp/clis-flamegraph_0-6-10/release/build/semver-4b323db41945775e/out \
+##         PROFILE=release \
+##         RUSTC=rustc \
+##         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+##         TARGET=x86_64-unknown-linux-gnu \
+##         CARGOGREEN=1 \
+##       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-flamegraph_0-6-10/release/build/semver-f8b07fc90d255ac7/build-script-build \
+##         1>          /tmp/clis-flamegraph_0-6-10/release/build/semver-4b323db41945775e/out/out-4b323db41945775e-stdout \
+##         2>          /tmp/clis-flamegraph_0-6-10/release/build/semver-4b323db41945775e/out/out-4b323db41945775e-stderr \
+##         || echo $? >/tmp/clis-flamegraph_0-6-10/release/build/semver-4b323db41945775e/out/out-4b323db41945775e-errcode\
+##   ; find /tmp/clis-flamegraph_0-6-10/release/build/semver-4b323db41945775e/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-4b323db41945775e"
+## script = """
+## FROM scratch AS out-4b323db41945775e
+## COPY --link --from=run-z-semver-1.0.26-4b323db41945775e /tmp/clis-flamegraph_0-6-10/release/build/semver-4b323db41945775e/out /"""
+
+
 FROM rust-base AS dep-n-semver-1.0.26-f8ee95e499c63653
 SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-flamegraph_0-6-10/release/deps
@@ -1298,6 +3013,7 @@ RUN \
   --mount=from=out-67bdffcce9227268,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libquote-67bdffcce9227268.rmeta,source=/libquote-67bdffcce9227268.rmeta \
   --mount=from=out-59a8027a56ed154e,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libsyn-59a8027a56ed154e.rlib,source=/libsyn-59a8027a56ed154e.rlib \
   --mount=from=out-59a8027a56ed154e,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libsyn-59a8027a56ed154e.rmeta,source=/libsyn-59a8027a56ed154e.rmeta \
+  --mount=from=out-4b323db41945775e,dst=/tmp/clis-flamegraph_0-6-10/release/build/semver-4b323db41945775e/out,source=/ \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=semver \
         CARGO_INCREMENTAL=0 \
@@ -1333,8 +3049,19 @@ COPY --link --from=dep-n-semver-1.0.26-f8ee95e499c63653 /tmp/clis-flamegraph_0-6
 ##     "1ed307bd0e4eb6e8",
 ##     "f7da27be4da40736",
 ##     "75925c9cdd5a8d6c",
+##     "ab9829a4a8b7788d",
 ##     "67bdffcce9227268",
 ##     "59a8027a56ed154e",
+##     "973af84dbfcc00ac",
+##     "4b323db41945775e",
+##     "9a025c1b756d91f9",
+##     "b6a8ff84ba0a9d99",
+##     "f8b07fc90d255ac7",
+## ]
+## buildrs_results = [
+##     "9a025c1b756d91f9",
+##     "b6a8ff84ba0a9d99",
+##     "4b323db41945775e",
 ## ]
 ## writes = [
 ##     "libsemver-f8ee95e499c63653.rlib",
@@ -1391,6 +3118,10 @@ COPY --link --from=dep-n-semver-1.0.26-f8ee95e499c63653 /tmp/clis-flamegraph_0-6
 ## from = "out-59a8027a56ed154e"
 ## xtern = "libsyn-59a8027a56ed154e.rmeta"
 ##
+## [[mounts]]
+## name = "out-4b323db41945775e"
+## mount = "/tmp/clis-flamegraph_0-6-10/release/build/semver-4b323db41945775e/out"
+##
 ## [[stages]]
 ##
 ## [stages.Script]
@@ -1427,6 +3158,7 @@ COPY --link --from=dep-n-semver-1.0.26-f8ee95e499c63653 /tmp/clis-flamegraph_0-6
 ##   --mount=from=out-67bdffcce9227268,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libquote-67bdffcce9227268.rmeta,source=/libquote-67bdffcce9227268.rmeta \
 ##   --mount=from=out-59a8027a56ed154e,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libsyn-59a8027a56ed154e.rlib,source=/libsyn-59a8027a56ed154e.rlib \
 ##   --mount=from=out-59a8027a56ed154e,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libsyn-59a8027a56ed154e.rmeta,source=/libsyn-59a8027a56ed154e.rmeta \
+##   --mount=from=out-4b323db41945775e,dst=/tmp/clis-flamegraph_0-6-10/release/build/semver-4b323db41945775e/out,source=/ \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=semver \
 ##         CARGO_INCREMENTAL=0 \
@@ -1790,6 +3522,293 @@ COPY --link --from=dep-n-ryu-1.0.20-89e84ce63cef1c32 /tmp/clis-flamegraph_0-6-10
 FROM scratch AS cratesio-serde_json-1.0.143
 ADD --chmod=0664 --unpack --checksum=sha256:d401abef1d108fbd9cbaebc3e46611f4b1021f714a0597a71f41ee463f5f4a5a \
   https://static.crates.io/crates/serde_json/serde_json-1.0.143.crate /
+FROM rust-base AS dep-x-serde_json-1.0.143-b095fb337ba01442
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-flamegraph_0-6-10/release/build/serde_json-b095fb337ba01442
+RUN \
+  --mount=from=cratesio-serde_json-1.0.143,source=/serde_json-1.0.143,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.143,rw \
+    { \
+        cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.143/build.rs | sed -E 's/^(pub[()a-z]* +)?(async +)?fn +main/\1\2fn actual_b095fb337ba01442_main/' >/_ && mv /_ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.143/build.rs ; \
+        { \
+          echo ; \
+          echo 'fn main() {' ; \
+          echo '    use std::env::{args_os, var_os};' ; \
+          echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+          echo '        use std::process::{Command, Stdio};' ; \
+          echo '        let mut cmd = Command::new("cargo-green");' ; \
+          echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+          echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+          echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+          echo '        assert!(res.success());' ; \
+          echo '    } else {' ; \
+          echo '        actual_b095fb337ba01442_main();' ; \
+          echo '    }' ; \
+          echo '}' ; \
+        } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.143/build.rs ; \
+    } && \
+    env CARGO="$(which cargo)" \
+        CARGO_CRATE_NAME=build_script_build \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.143 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.143/Cargo.toml \
+        CARGO_PKG_AUTHORS=Erick' Tryzelaar <erick.tryzelaar@gmail.com>:David Tolnay <dtolnay@gmail.com>' \
+        CARGO_PKG_DESCRIPTION=A' JSON serialization file format' \
+        CARGO_PKG_HOMEPAGE= \
+        CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=serde_json \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/serde-rs/json' \
+        CARGO_PKG_RUST_VERSION=1.56 \
+        CARGO_PKG_VERSION=1.0.143 \
+        CARGO_PKG_VERSION_MAJOR=1 \
+        CARGO_PKG_VERSION_MINOR=0 \
+        CARGO_PKG_VERSION_PATCH=143 \
+        CARGO_PKG_VERSION_PRE= \
+        CARGOGREEN=1 \
+      rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="std"' --cfg feature'="unbounded_depth"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "arbitrary_precision", "default", "float_roundtrip", "indexmap", "preserve_order", "raw_value", "std", "unbounded_depth"))' -C metadata'=57566a9503146cfc' -C extra-filename'=-b095fb337ba01442' --out-dir /tmp/clis-flamegraph_0-6-10/release/build/serde_json-b095fb337ba01442 -C strip'=debuginfo' -L dependency'=/tmp/clis-flamegraph_0-6-10/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.143/build.rs \
+        1>          /tmp/clis-flamegraph_0-6-10/release/build/serde_json-b095fb337ba01442/out-b095fb337ba01442-stdout \
+        2>          /tmp/clis-flamegraph_0-6-10/release/build/serde_json-b095fb337ba01442/out-b095fb337ba01442-stderr \
+        || echo $? >/tmp/clis-flamegraph_0-6-10/release/build/serde_json-b095fb337ba01442/out-b095fb337ba01442-errcode\
+  ; find /tmp/clis-flamegraph_0-6-10/release/build/serde_json-b095fb337ba01442/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-b095fb337ba01442
+COPY --link --from=dep-x-serde_json-1.0.143-b095fb337ba01442 /tmp/clis-flamegraph_0-6-10/release/build/serde_json-b095fb337ba01442/*-b095fb337ba01442* /
+
+## this = "b095fb337ba01442"
+## writes = [
+##     "build_script_build-b095fb337ba01442",
+##     "build_script_build-b095fb337ba01442.d",
+## ]
+## stderr = [
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-flamegraph_0-6-10/release/build/serde_json-b095fb337ba01442/build_script_build-b095fb337ba01442.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-flamegraph_0-6-10/release/build/serde_json-b095fb337ba01442/build_script_build-b095fb337ba01442","emit":"link"}',
+## ]
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
+##
+## [[stages]]
+##
+## [stages.Cratesio]
+## stage = "cratesio-serde_json-1.0.143"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.143"
+## name = "serde_json"
+## name_dash_version = "serde_json-1.0.143"
+## hash = "d401abef1d108fbd9cbaebc3e46611f4b1021f714a0597a71f41ee463f5f4a5a"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "dep-x-serde_json-1.0.143-b095fb337ba01442"
+## script = '''
+## FROM rust-base AS dep-x-serde_json-1.0.143-b095fb337ba01442
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-flamegraph_0-6-10/release/build/serde_json-b095fb337ba01442
+## RUN \
+##   --mount=from=cratesio-serde_json-1.0.143,source=/serde_json-1.0.143,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.143,rw \
+##     { \
+##         cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.143/build.rs | sed -E 's/^(pub[()a-z]* +)?(async +)?fn +main/\1\2fn actual_b095fb337ba01442_main/' >/_ && mv /_ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.143/build.rs ; \
+##         { \
+##           echo ; \
+##           echo 'fn main() {' ; \
+##           echo '    use std::env::{args_os, var_os};' ; \
+##           echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+##           echo '        use std::process::{Command, Stdio};' ; \
+##           echo '        let mut cmd = Command::new("cargo-green");' ; \
+##           echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+##           echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+##           echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+##           echo '        assert!(res.success());' ; \
+##           echo '    } else {' ; \
+##           echo '        actual_b095fb337ba01442_main();' ; \
+##           echo '    }' ; \
+##           echo '}' ; \
+##         } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.143/build.rs ; \
+##     } && \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CRATE_NAME=build_script_build \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.143 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.143/Cargo.toml \
+##         CARGO_PKG_AUTHORS=Erick' Tryzelaar <erick.tryzelaar@gmail.com>:David Tolnay <dtolnay@gmail.com>' \
+##         CARGO_PKG_DESCRIPTION=A' JSON serialization file format' \
+##         CARGO_PKG_HOMEPAGE= \
+##         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=serde_json \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/serde-rs/json' \
+##         CARGO_PKG_RUST_VERSION=1.56 \
+##         CARGO_PKG_VERSION=1.0.143 \
+##         CARGO_PKG_VERSION_MAJOR=1 \
+##         CARGO_PKG_VERSION_MINOR=0 \
+##         CARGO_PKG_VERSION_PATCH=143 \
+##         CARGO_PKG_VERSION_PRE= \
+##         CARGOGREEN=1 \
+##       rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="std"' --cfg feature'="unbounded_depth"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "arbitrary_precision", "default", "float_roundtrip", "indexmap", "preserve_order", "raw_value", "std", "unbounded_depth"))' -C metadata'=57566a9503146cfc' -C extra-filename'=-b095fb337ba01442' --out-dir /tmp/clis-flamegraph_0-6-10/release/build/serde_json-b095fb337ba01442 -C strip'=debuginfo' -L dependency'=/tmp/clis-flamegraph_0-6-10/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.143/build.rs \
+##         1>          /tmp/clis-flamegraph_0-6-10/release/build/serde_json-b095fb337ba01442/out-b095fb337ba01442-stdout \
+##         2>          /tmp/clis-flamegraph_0-6-10/release/build/serde_json-b095fb337ba01442/out-b095fb337ba01442-stderr \
+##         || echo $? >/tmp/clis-flamegraph_0-6-10/release/build/serde_json-b095fb337ba01442/out-b095fb337ba01442-errcode\
+##   ; find /tmp/clis-flamegraph_0-6-10/release/build/serde_json-b095fb337ba01442/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-b095fb337ba01442"
+## script = """
+## FROM scratch AS out-b095fb337ba01442
+## COPY --link --from=dep-x-serde_json-1.0.143-b095fb337ba01442 /tmp/clis-flamegraph_0-6-10/release/build/serde_json-b095fb337ba01442/*-b095fb337ba01442* /"""
+
+FROM rust-base AS run-z-serde_json-1.0.143-254085b54cf6dfd9
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-flamegraph_0-6-10/release/build/serde_json-254085b54cf6dfd9/out
+WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.143
+RUN \
+  --mount=from=out-b095fb337ba01442,source=/build_script_build-b095fb337ba01442,dst=/tmp/clis-flamegraph_0-6-10/release/build/serde_json-b095fb337ba01442/build-script-build \
+  --mount=from=cratesio-serde_json-1.0.143,source=/serde_json-1.0.143,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.143 \
+    env CARGO="$(which cargo)" \
+        CARGO_CFG_FEATURE=default,std,unbounded_depth \
+        CARGO_CFG_PANIC=unwind \
+        CARGO_CFG_TARGET_ABI= \
+        CARGO_CFG_TARGET_ARCH=x86_64 \
+        CARGO_CFG_TARGET_ENDIAN=little \
+        CARGO_CFG_TARGET_ENV=gnu \
+        CARGO_CFG_TARGET_FAMILY=unix \
+        CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
+        CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+        CARGO_CFG_TARGET_OS=linux \
+        CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+        CARGO_CFG_TARGET_VENDOR=unknown \
+        CARGO_CFG_UNIX= \
+        CARGO_ENCODED_RUSTFLAGS= \
+        CARGO_FEATURE_DEFAULT=1 \
+        CARGO_FEATURE_STD=1 \
+        CARGO_FEATURE_UNBOUNDED_DEPTH=1 \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.143 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.143/Cargo.toml \
+        CARGO_PKG_AUTHORS=Erick' Tryzelaar <erick.tryzelaar@gmail.com>:David Tolnay <dtolnay@gmail.com>' \
+        CARGO_PKG_DESCRIPTION=A' JSON serialization file format' \
+        CARGO_PKG_HOMEPAGE= \
+        CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=serde_json \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/serde-rs/json' \
+        CARGO_PKG_RUST_VERSION=1.56 \
+        CARGO_PKG_VERSION=1.0.143 \
+        CARGO_PKG_VERSION_MAJOR=1 \
+        CARGO_PKG_VERSION_MINOR=0 \
+        CARGO_PKG_VERSION_PATCH=143 \
+        CARGO_PKG_VERSION_PRE= \
+        DEBUG=false \
+        HOST=x86_64-unknown-linux-gnu \
+        NUM_JOBS=4 \
+        OPT_LEVEL=3 \
+        OUT_DIR=/tmp/clis-flamegraph_0-6-10/release/build/serde_json-254085b54cf6dfd9/out \
+        PROFILE=release \
+        RUSTC=rustc \
+        RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+        TARGET=x86_64-unknown-linux-gnu \
+        CARGOGREEN=1 \
+      CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-flamegraph_0-6-10/release/build/serde_json-b095fb337ba01442/build-script-build \
+        1>          /tmp/clis-flamegraph_0-6-10/release/build/serde_json-254085b54cf6dfd9/out/out-254085b54cf6dfd9-stdout \
+        2>          /tmp/clis-flamegraph_0-6-10/release/build/serde_json-254085b54cf6dfd9/out/out-254085b54cf6dfd9-stderr \
+        || echo $? >/tmp/clis-flamegraph_0-6-10/release/build/serde_json-254085b54cf6dfd9/out/out-254085b54cf6dfd9-errcode\
+  ; find /tmp/clis-flamegraph_0-6-10/release/build/serde_json-254085b54cf6dfd9/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-254085b54cf6dfd9
+COPY --link --from=run-z-serde_json-1.0.143-254085b54cf6dfd9 /tmp/clis-flamegraph_0-6-10/release/build/serde_json-254085b54cf6dfd9/out /
+
+## this = "254085b54cf6dfd9"
+## deps = ["b095fb337ba01442"]
+## writes_to = "/tmp/clis-flamegraph_0-6-10/release/build/serde_json-254085b54cf6dfd9/out"
+## stdout = [
+##     "cargo:rerun-if-changed=build.rs",
+##     'cargo:rustc-check-cfg=cfg(fast_arithmetic, values("32", "64"))',
+##     'cargo:rustc-cfg=fast_arithmetic="64"',
+## ]
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "run-z-serde_json-1.0.143-254085b54cf6dfd9"
+## script = '''
+## FROM rust-base AS run-z-serde_json-1.0.143-254085b54cf6dfd9
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-flamegraph_0-6-10/release/build/serde_json-254085b54cf6dfd9/out
+## WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.143
+## RUN \
+##   --mount=from=out-b095fb337ba01442,source=/build_script_build-b095fb337ba01442,dst=/tmp/clis-flamegraph_0-6-10/release/build/serde_json-b095fb337ba01442/build-script-build \
+##   --mount=from=cratesio-serde_json-1.0.143,source=/serde_json-1.0.143,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.143 \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CFG_FEATURE=default,std,unbounded_depth \
+##         CARGO_CFG_PANIC=unwind \
+##         CARGO_CFG_TARGET_ABI= \
+##         CARGO_CFG_TARGET_ARCH=x86_64 \
+##         CARGO_CFG_TARGET_ENDIAN=little \
+##         CARGO_CFG_TARGET_ENV=gnu \
+##         CARGO_CFG_TARGET_FAMILY=unix \
+##         CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
+##         CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+##         CARGO_CFG_TARGET_OS=linux \
+##         CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+##         CARGO_CFG_TARGET_VENDOR=unknown \
+##         CARGO_CFG_UNIX= \
+##         CARGO_ENCODED_RUSTFLAGS= \
+##         CARGO_FEATURE_DEFAULT=1 \
+##         CARGO_FEATURE_STD=1 \
+##         CARGO_FEATURE_UNBOUNDED_DEPTH=1 \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.143 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.143/Cargo.toml \
+##         CARGO_PKG_AUTHORS=Erick' Tryzelaar <erick.tryzelaar@gmail.com>:David Tolnay <dtolnay@gmail.com>' \
+##         CARGO_PKG_DESCRIPTION=A' JSON serialization file format' \
+##         CARGO_PKG_HOMEPAGE= \
+##         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=serde_json \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/serde-rs/json' \
+##         CARGO_PKG_RUST_VERSION=1.56 \
+##         CARGO_PKG_VERSION=1.0.143 \
+##         CARGO_PKG_VERSION_MAJOR=1 \
+##         CARGO_PKG_VERSION_MINOR=0 \
+##         CARGO_PKG_VERSION_PATCH=143 \
+##         CARGO_PKG_VERSION_PRE= \
+##         DEBUG=false \
+##         HOST=x86_64-unknown-linux-gnu \
+##         NUM_JOBS=4 \
+##         OPT_LEVEL=3 \
+##         OUT_DIR=/tmp/clis-flamegraph_0-6-10/release/build/serde_json-254085b54cf6dfd9/out \
+##         PROFILE=release \
+##         RUSTC=rustc \
+##         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+##         TARGET=x86_64-unknown-linux-gnu \
+##         CARGOGREEN=1 \
+##       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-flamegraph_0-6-10/release/build/serde_json-b095fb337ba01442/build-script-build \
+##         1>          /tmp/clis-flamegraph_0-6-10/release/build/serde_json-254085b54cf6dfd9/out/out-254085b54cf6dfd9-stdout \
+##         2>          /tmp/clis-flamegraph_0-6-10/release/build/serde_json-254085b54cf6dfd9/out/out-254085b54cf6dfd9-stderr \
+##         || echo $? >/tmp/clis-flamegraph_0-6-10/release/build/serde_json-254085b54cf6dfd9/out/out-254085b54cf6dfd9-errcode\
+##   ; find /tmp/clis-flamegraph_0-6-10/release/build/serde_json-254085b54cf6dfd9/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-254085b54cf6dfd9"
+## script = """
+## FROM scratch AS out-254085b54cf6dfd9
+## COPY --link --from=run-z-serde_json-1.0.143-254085b54cf6dfd9 /tmp/clis-flamegraph_0-6-10/release/build/serde_json-254085b54cf6dfd9/out /"""
+
+
 FROM rust-base AS dep-n-serde_json-1.0.143-3bbe9e40e72af6cd
 SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-flamegraph_0-6-10/release/deps
@@ -1812,6 +3831,7 @@ RUN \
   --mount=from=out-67bdffcce9227268,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libquote-67bdffcce9227268.rmeta,source=/libquote-67bdffcce9227268.rmeta \
   --mount=from=out-59a8027a56ed154e,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libsyn-59a8027a56ed154e.rlib,source=/libsyn-59a8027a56ed154e.rlib \
   --mount=from=out-59a8027a56ed154e,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libsyn-59a8027a56ed154e.rmeta,source=/libsyn-59a8027a56ed154e.rmeta \
+  --mount=from=out-254085b54cf6dfd9,dst=/tmp/clis-flamegraph_0-6-10/release/build/serde_json-254085b54cf6dfd9/out,source=/ \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=serde_json \
         CARGO_INCREMENTAL=0 \
@@ -1850,8 +3870,19 @@ COPY --link --from=dep-n-serde_json-1.0.143-3bbe9e40e72af6cd /tmp/clis-flamegrap
 ##     "1ed307bd0e4eb6e8",
 ##     "f7da27be4da40736",
 ##     "75925c9cdd5a8d6c",
+##     "ab9829a4a8b7788d",
 ##     "67bdffcce9227268",
 ##     "59a8027a56ed154e",
+##     "973af84dbfcc00ac",
+##     "254085b54cf6dfd9",
+##     "9a025c1b756d91f9",
+##     "b6a8ff84ba0a9d99",
+##     "b095fb337ba01442",
+## ]
+## buildrs_results = [
+##     "9a025c1b756d91f9",
+##     "b6a8ff84ba0a9d99",
+##     "254085b54cf6dfd9",
 ## ]
 ## writes = [
 ##     "libserde_json-3bbe9e40e72af6cd.rlib",
@@ -1932,6 +3963,10 @@ COPY --link --from=dep-n-serde_json-1.0.143-3bbe9e40e72af6cd /tmp/clis-flamegrap
 ## from = "out-59a8027a56ed154e"
 ## xtern = "libsyn-59a8027a56ed154e.rmeta"
 ##
+## [[mounts]]
+## name = "out-254085b54cf6dfd9"
+## mount = "/tmp/clis-flamegraph_0-6-10/release/build/serde_json-254085b54cf6dfd9/out"
+##
 ## [[stages]]
 ##
 ## [stages.Script]
@@ -1974,6 +4009,7 @@ COPY --link --from=dep-n-serde_json-1.0.143-3bbe9e40e72af6cd /tmp/clis-flamegrap
 ##   --mount=from=out-67bdffcce9227268,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libquote-67bdffcce9227268.rmeta,source=/libquote-67bdffcce9227268.rmeta \
 ##   --mount=from=out-59a8027a56ed154e,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libsyn-59a8027a56ed154e.rlib,source=/libsyn-59a8027a56ed154e.rlib \
 ##   --mount=from=out-59a8027a56ed154e,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libsyn-59a8027a56ed154e.rmeta,source=/libsyn-59a8027a56ed154e.rmeta \
+##   --mount=from=out-254085b54cf6dfd9,dst=/tmp/clis-flamegraph_0-6-10/release/build/serde_json-254085b54cf6dfd9/out,source=/ \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=serde_json \
 ##         CARGO_INCREMENTAL=0 \
@@ -2053,9 +4089,12 @@ COPY --link --from=dep-n-thiserror-impl-2.0.16-1e72ac622abf140e /tmp/clis-flameg
 ## deps = [
 ##     "f7da27be4da40736",
 ##     "75925c9cdd5a8d6c",
+##     "ab9829a4a8b7788d",
 ##     "67bdffcce9227268",
 ##     "59a8027a56ed154e",
+##     "9a025c1b756d91f9",
 ## ]
+## buildrs_results = ["9a025c1b756d91f9"]
 ## writes = [
 ##     "libthiserror_impl-1e72ac622abf140e.so",
 ##     "thiserror_impl-1e72ac622abf140e.d",
@@ -2147,6 +4186,293 @@ COPY --link --from=dep-n-thiserror-impl-2.0.16-1e72ac622abf140e /tmp/clis-flameg
 FROM scratch AS cratesio-thiserror-2.0.16
 ADD --chmod=0664 --unpack --checksum=sha256:3467d614147380f2e4e374161426ff399c91084acd2363eaf549172b3d5e60c0 \
   https://static.crates.io/crates/thiserror/thiserror-2.0.16.crate /
+FROM rust-base AS dep-x-thiserror-2.0.16-5771f4b446c688ee
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-flamegraph_0-6-10/release/build/thiserror-5771f4b446c688ee
+RUN \
+  --mount=from=cratesio-thiserror-2.0.16,source=/thiserror-2.0.16,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thiserror-2.0.16,rw \
+    { \
+        cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thiserror-2.0.16/build.rs | sed -E 's/^(pub[()a-z]* +)?(async +)?fn +main/\1\2fn actual_5771f4b446c688ee_main/' >/_ && mv /_ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thiserror-2.0.16/build.rs ; \
+        { \
+          echo ; \
+          echo 'fn main() {' ; \
+          echo '    use std::env::{args_os, var_os};' ; \
+          echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+          echo '        use std::process::{Command, Stdio};' ; \
+          echo '        let mut cmd = Command::new("cargo-green");' ; \
+          echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+          echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+          echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+          echo '        assert!(res.success());' ; \
+          echo '    } else {' ; \
+          echo '        actual_5771f4b446c688ee_main();' ; \
+          echo '    }' ; \
+          echo '}' ; \
+        } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thiserror-2.0.16/build.rs ; \
+    } && \
+    env CARGO="$(which cargo)" \
+        CARGO_CRATE_NAME=build_script_build \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thiserror-2.0.16 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thiserror-2.0.16/Cargo.toml \
+        CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>' \
+        CARGO_PKG_DESCRIPTION=derive'(Error)' \
+        CARGO_PKG_HOMEPAGE= \
+        CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=thiserror \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/dtolnay/thiserror' \
+        CARGO_PKG_RUST_VERSION=1.61 \
+        CARGO_PKG_VERSION=2.0.16 \
+        CARGO_PKG_VERSION_MAJOR=2 \
+        CARGO_PKG_VERSION_MINOR=0 \
+        CARGO_PKG_VERSION_PATCH=16 \
+        CARGO_PKG_VERSION_PRE= \
+        CARGOGREEN=1 \
+      rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "std"))' -C metadata'=def47fc226a04160' -C extra-filename'=-5771f4b446c688ee' --out-dir /tmp/clis-flamegraph_0-6-10/release/build/thiserror-5771f4b446c688ee -C strip'=debuginfo' -L dependency'=/tmp/clis-flamegraph_0-6-10/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thiserror-2.0.16/build.rs \
+        1>          /tmp/clis-flamegraph_0-6-10/release/build/thiserror-5771f4b446c688ee/out-5771f4b446c688ee-stdout \
+        2>          /tmp/clis-flamegraph_0-6-10/release/build/thiserror-5771f4b446c688ee/out-5771f4b446c688ee-stderr \
+        || echo $? >/tmp/clis-flamegraph_0-6-10/release/build/thiserror-5771f4b446c688ee/out-5771f4b446c688ee-errcode\
+  ; find /tmp/clis-flamegraph_0-6-10/release/build/thiserror-5771f4b446c688ee/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-5771f4b446c688ee
+COPY --link --from=dep-x-thiserror-2.0.16-5771f4b446c688ee /tmp/clis-flamegraph_0-6-10/release/build/thiserror-5771f4b446c688ee/*-5771f4b446c688ee* /
+
+## this = "5771f4b446c688ee"
+## writes = [
+##     "build_script_build-5771f4b446c688ee",
+##     "build_script_build-5771f4b446c688ee.d",
+## ]
+## stderr = [
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-flamegraph_0-6-10/release/build/thiserror-5771f4b446c688ee/build_script_build-5771f4b446c688ee.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-flamegraph_0-6-10/release/build/thiserror-5771f4b446c688ee/build_script_build-5771f4b446c688ee","emit":"link"}',
+## ]
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
+##
+## [[stages]]
+##
+## [stages.Cratesio]
+## stage = "cratesio-thiserror-2.0.16"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thiserror-2.0.16"
+## name = "thiserror"
+## name_dash_version = "thiserror-2.0.16"
+## hash = "3467d614147380f2e4e374161426ff399c91084acd2363eaf549172b3d5e60c0"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "dep-x-thiserror-2.0.16-5771f4b446c688ee"
+## script = '''
+## FROM rust-base AS dep-x-thiserror-2.0.16-5771f4b446c688ee
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-flamegraph_0-6-10/release/build/thiserror-5771f4b446c688ee
+## RUN \
+##   --mount=from=cratesio-thiserror-2.0.16,source=/thiserror-2.0.16,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thiserror-2.0.16,rw \
+##     { \
+##         cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thiserror-2.0.16/build.rs | sed -E 's/^(pub[()a-z]* +)?(async +)?fn +main/\1\2fn actual_5771f4b446c688ee_main/' >/_ && mv /_ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thiserror-2.0.16/build.rs ; \
+##         { \
+##           echo ; \
+##           echo 'fn main() {' ; \
+##           echo '    use std::env::{args_os, var_os};' ; \
+##           echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+##           echo '        use std::process::{Command, Stdio};' ; \
+##           echo '        let mut cmd = Command::new("cargo-green");' ; \
+##           echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+##           echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+##           echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+##           echo '        assert!(res.success());' ; \
+##           echo '    } else {' ; \
+##           echo '        actual_5771f4b446c688ee_main();' ; \
+##           echo '    }' ; \
+##           echo '}' ; \
+##         } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thiserror-2.0.16/build.rs ; \
+##     } && \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CRATE_NAME=build_script_build \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thiserror-2.0.16 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thiserror-2.0.16/Cargo.toml \
+##         CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>' \
+##         CARGO_PKG_DESCRIPTION=derive'(Error)' \
+##         CARGO_PKG_HOMEPAGE= \
+##         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=thiserror \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/dtolnay/thiserror' \
+##         CARGO_PKG_RUST_VERSION=1.61 \
+##         CARGO_PKG_VERSION=2.0.16 \
+##         CARGO_PKG_VERSION_MAJOR=2 \
+##         CARGO_PKG_VERSION_MINOR=0 \
+##         CARGO_PKG_VERSION_PATCH=16 \
+##         CARGO_PKG_VERSION_PRE= \
+##         CARGOGREEN=1 \
+##       rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "std"))' -C metadata'=def47fc226a04160' -C extra-filename'=-5771f4b446c688ee' --out-dir /tmp/clis-flamegraph_0-6-10/release/build/thiserror-5771f4b446c688ee -C strip'=debuginfo' -L dependency'=/tmp/clis-flamegraph_0-6-10/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thiserror-2.0.16/build.rs \
+##         1>          /tmp/clis-flamegraph_0-6-10/release/build/thiserror-5771f4b446c688ee/out-5771f4b446c688ee-stdout \
+##         2>          /tmp/clis-flamegraph_0-6-10/release/build/thiserror-5771f4b446c688ee/out-5771f4b446c688ee-stderr \
+##         || echo $? >/tmp/clis-flamegraph_0-6-10/release/build/thiserror-5771f4b446c688ee/out-5771f4b446c688ee-errcode\
+##   ; find /tmp/clis-flamegraph_0-6-10/release/build/thiserror-5771f4b446c688ee/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-5771f4b446c688ee"
+## script = """
+## FROM scratch AS out-5771f4b446c688ee
+## COPY --link --from=dep-x-thiserror-2.0.16-5771f4b446c688ee /tmp/clis-flamegraph_0-6-10/release/build/thiserror-5771f4b446c688ee/*-5771f4b446c688ee* /"""
+
+FROM rust-base AS run-z-thiserror-2.0.16-3c31a3270ab61520
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-flamegraph_0-6-10/release/build/thiserror-3c31a3270ab61520/out
+WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thiserror-2.0.16
+RUN \
+  --mount=from=out-5771f4b446c688ee,source=/build_script_build-5771f4b446c688ee,dst=/tmp/clis-flamegraph_0-6-10/release/build/thiserror-5771f4b446c688ee/build-script-build \
+  --mount=from=cratesio-thiserror-2.0.16,source=/thiserror-2.0.16,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thiserror-2.0.16 \
+    env CARGO="$(which cargo)" \
+        CARGO_CFG_FEATURE=default,std \
+        CARGO_CFG_PANIC=unwind \
+        CARGO_CFG_TARGET_ABI= \
+        CARGO_CFG_TARGET_ARCH=x86_64 \
+        CARGO_CFG_TARGET_ENDIAN=little \
+        CARGO_CFG_TARGET_ENV=gnu \
+        CARGO_CFG_TARGET_FAMILY=unix \
+        CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
+        CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+        CARGO_CFG_TARGET_OS=linux \
+        CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+        CARGO_CFG_TARGET_VENDOR=unknown \
+        CARGO_CFG_UNIX= \
+        CARGO_ENCODED_RUSTFLAGS= \
+        CARGO_FEATURE_DEFAULT=1 \
+        CARGO_FEATURE_STD=1 \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thiserror-2.0.16 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thiserror-2.0.16/Cargo.toml \
+        CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>' \
+        CARGO_PKG_DESCRIPTION=derive'(Error)' \
+        CARGO_PKG_HOMEPAGE= \
+        CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=thiserror \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/dtolnay/thiserror' \
+        CARGO_PKG_RUST_VERSION=1.61 \
+        CARGO_PKG_VERSION=2.0.16 \
+        CARGO_PKG_VERSION_MAJOR=2 \
+        CARGO_PKG_VERSION_MINOR=0 \
+        CARGO_PKG_VERSION_PATCH=16 \
+        CARGO_PKG_VERSION_PRE= \
+        DEBUG=false \
+        HOST=x86_64-unknown-linux-gnu \
+        NUM_JOBS=4 \
+        OPT_LEVEL=3 \
+        OUT_DIR=/tmp/clis-flamegraph_0-6-10/release/build/thiserror-3c31a3270ab61520/out \
+        PROFILE=release \
+        RUSTC=rustc \
+        RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+        TARGET=x86_64-unknown-linux-gnu \
+        CARGOGREEN=1 \
+      CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-flamegraph_0-6-10/release/build/thiserror-5771f4b446c688ee/build-script-build \
+        1>          /tmp/clis-flamegraph_0-6-10/release/build/thiserror-3c31a3270ab61520/out/out-3c31a3270ab61520-stdout \
+        2>          /tmp/clis-flamegraph_0-6-10/release/build/thiserror-3c31a3270ab61520/out/out-3c31a3270ab61520-stderr \
+        || echo $? >/tmp/clis-flamegraph_0-6-10/release/build/thiserror-3c31a3270ab61520/out/out-3c31a3270ab61520-errcode\
+  ; find /tmp/clis-flamegraph_0-6-10/release/build/thiserror-3c31a3270ab61520/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-3c31a3270ab61520
+COPY --link --from=run-z-thiserror-2.0.16-3c31a3270ab61520 /tmp/clis-flamegraph_0-6-10/release/build/thiserror-3c31a3270ab61520/out /
+
+## this = "3c31a3270ab61520"
+## deps = ["5771f4b446c688ee"]
+## writes_to = "/tmp/clis-flamegraph_0-6-10/release/build/thiserror-3c31a3270ab61520/out"
+## stdout = [
+##     "cargo:rerun-if-changed=build/probe.rs",
+##     "cargo:rustc-check-cfg=cfg(error_generic_member_access)",
+##     "cargo:rustc-check-cfg=cfg(thiserror_nightly_testing)",
+##     "cargo:rustc-check-cfg=cfg(thiserror_no_backtrace_type)",
+##     "cargo:rerun-if-env-changed=RUSTC_BOOTSTRAP",
+## ]
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "run-z-thiserror-2.0.16-3c31a3270ab61520"
+## script = '''
+## FROM rust-base AS run-z-thiserror-2.0.16-3c31a3270ab61520
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-flamegraph_0-6-10/release/build/thiserror-3c31a3270ab61520/out
+## WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thiserror-2.0.16
+## RUN \
+##   --mount=from=out-5771f4b446c688ee,source=/build_script_build-5771f4b446c688ee,dst=/tmp/clis-flamegraph_0-6-10/release/build/thiserror-5771f4b446c688ee/build-script-build \
+##   --mount=from=cratesio-thiserror-2.0.16,source=/thiserror-2.0.16,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thiserror-2.0.16 \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CFG_FEATURE=default,std \
+##         CARGO_CFG_PANIC=unwind \
+##         CARGO_CFG_TARGET_ABI= \
+##         CARGO_CFG_TARGET_ARCH=x86_64 \
+##         CARGO_CFG_TARGET_ENDIAN=little \
+##         CARGO_CFG_TARGET_ENV=gnu \
+##         CARGO_CFG_TARGET_FAMILY=unix \
+##         CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
+##         CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+##         CARGO_CFG_TARGET_OS=linux \
+##         CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+##         CARGO_CFG_TARGET_VENDOR=unknown \
+##         CARGO_CFG_UNIX= \
+##         CARGO_ENCODED_RUSTFLAGS= \
+##         CARGO_FEATURE_DEFAULT=1 \
+##         CARGO_FEATURE_STD=1 \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thiserror-2.0.16 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thiserror-2.0.16/Cargo.toml \
+##         CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>' \
+##         CARGO_PKG_DESCRIPTION=derive'(Error)' \
+##         CARGO_PKG_HOMEPAGE= \
+##         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=thiserror \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/dtolnay/thiserror' \
+##         CARGO_PKG_RUST_VERSION=1.61 \
+##         CARGO_PKG_VERSION=2.0.16 \
+##         CARGO_PKG_VERSION_MAJOR=2 \
+##         CARGO_PKG_VERSION_MINOR=0 \
+##         CARGO_PKG_VERSION_PATCH=16 \
+##         CARGO_PKG_VERSION_PRE= \
+##         DEBUG=false \
+##         HOST=x86_64-unknown-linux-gnu \
+##         NUM_JOBS=4 \
+##         OPT_LEVEL=3 \
+##         OUT_DIR=/tmp/clis-flamegraph_0-6-10/release/build/thiserror-3c31a3270ab61520/out \
+##         PROFILE=release \
+##         RUSTC=rustc \
+##         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+##         TARGET=x86_64-unknown-linux-gnu \
+##         CARGOGREEN=1 \
+##       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-flamegraph_0-6-10/release/build/thiserror-5771f4b446c688ee/build-script-build \
+##         1>          /tmp/clis-flamegraph_0-6-10/release/build/thiserror-3c31a3270ab61520/out/out-3c31a3270ab61520-stdout \
+##         2>          /tmp/clis-flamegraph_0-6-10/release/build/thiserror-3c31a3270ab61520/out/out-3c31a3270ab61520-stderr \
+##         || echo $? >/tmp/clis-flamegraph_0-6-10/release/build/thiserror-3c31a3270ab61520/out/out-3c31a3270ab61520-errcode\
+##   ; find /tmp/clis-flamegraph_0-6-10/release/build/thiserror-3c31a3270ab61520/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-3c31a3270ab61520"
+## script = """
+## FROM scratch AS out-3c31a3270ab61520
+## COPY --link --from=run-z-thiserror-2.0.16-3c31a3270ab61520 /tmp/clis-flamegraph_0-6-10/release/build/thiserror-3c31a3270ab61520/out /"""
+
+
 FROM rust-base AS dep-n-thiserror-2.0.16-f331994d8975d6f2
 SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-flamegraph_0-6-10/release/deps
@@ -2157,6 +4483,7 @@ RUN \
   --mount=from=out-75925c9cdd5a8d6c,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libunicode_ident-75925c9cdd5a8d6c.rlib,source=/libunicode_ident-75925c9cdd5a8d6c.rlib \
   --mount=from=out-67bdffcce9227268,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libquote-67bdffcce9227268.rlib,source=/libquote-67bdffcce9227268.rlib \
   --mount=from=out-59a8027a56ed154e,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libsyn-59a8027a56ed154e.rlib,source=/libsyn-59a8027a56ed154e.rlib \
+  --mount=from=out-3c31a3270ab61520,dst=/tmp/clis-flamegraph_0-6-10/release/build/thiserror-3c31a3270ab61520/out,source=/ \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=thiserror \
         CARGO_INCREMENTAL=0 \
@@ -2191,8 +4518,16 @@ COPY --link --from=dep-n-thiserror-2.0.16-f331994d8975d6f2 /tmp/clis-flamegraph_
 ##     "1e72ac622abf140e",
 ##     "f7da27be4da40736",
 ##     "75925c9cdd5a8d6c",
+##     "ab9829a4a8b7788d",
 ##     "67bdffcce9227268",
 ##     "59a8027a56ed154e",
+##     "3c31a3270ab61520",
+##     "9a025c1b756d91f9",
+##     "5771f4b446c688ee",
+## ]
+## buildrs_results = [
+##     "9a025c1b756d91f9",
+##     "3c31a3270ab61520",
 ## ]
 ## writes = [
 ##     "libthiserror-f331994d8975d6f2.rlib",
@@ -2225,6 +4560,10 @@ COPY --link --from=dep-n-thiserror-2.0.16-f331994d8975d6f2 /tmp/clis-flamegraph_
 ## from = "out-59a8027a56ed154e"
 ## xtern = "libsyn-59a8027a56ed154e.rlib"
 ##
+## [[mounts]]
+## name = "out-3c31a3270ab61520"
+## mount = "/tmp/clis-flamegraph_0-6-10/release/build/thiserror-3c31a3270ab61520/out"
+##
 ## [[stages]]
 ##
 ## [stages.Script]
@@ -2255,6 +4594,7 @@ COPY --link --from=dep-n-thiserror-2.0.16-f331994d8975d6f2 /tmp/clis-flamegraph_
 ##   --mount=from=out-75925c9cdd5a8d6c,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libunicode_ident-75925c9cdd5a8d6c.rlib,source=/libunicode_ident-75925c9cdd5a8d6c.rlib \
 ##   --mount=from=out-67bdffcce9227268,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libquote-67bdffcce9227268.rlib,source=/libquote-67bdffcce9227268.rlib \
 ##   --mount=from=out-59a8027a56ed154e,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libsyn-59a8027a56ed154e.rlib,source=/libsyn-59a8027a56ed154e.rlib \
+##   --mount=from=out-3c31a3270ab61520,dst=/tmp/clis-flamegraph_0-6-10/release/build/thiserror-3c31a3270ab61520/out,source=/ \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=thiserror \
 ##         CARGO_INCREMENTAL=0 \
@@ -2361,16 +4701,36 @@ COPY --link --from=dep-n-cargo_metadata-0.23.0-c844528e3f2fdc2a /tmp/clis-flameg
 ##     "1ed307bd0e4eb6e8",
 ##     "f7da27be4da40736",
 ##     "75925c9cdd5a8d6c",
+##     "ab9829a4a8b7788d",
 ##     "67bdffcce9227268",
 ##     "59a8027a56ed154e",
+##     "973af84dbfcc00ac",
+##     "98c1f198d4a438cd",
 ##     "0fba42c911bb312b",
 ##     "f8ee95e499c63653",
+##     "f8b07fc90d255ac7",
 ##     "3bbe9e40e72af6cd",
 ##     "810c45601233a792",
 ##     "780febcd16cbf874",
 ##     "89e84ce63cef1c32",
+##     "b095fb337ba01442",
 ##     "f331994d8975d6f2",
 ##     "1e72ac622abf140e",
+##     "5771f4b446c688ee",
+##     "9a025c1b756d91f9",
+##     "b6a8ff84ba0a9d99",
+##     "92b8e9d8347c9a2e",
+##     "4b323db41945775e",
+##     "254085b54cf6dfd9",
+##     "3c31a3270ab61520",
+## ]
+## buildrs_results = [
+##     "9a025c1b756d91f9",
+##     "b6a8ff84ba0a9d99",
+##     "92b8e9d8347c9a2e",
+##     "4b323db41945775e",
+##     "254085b54cf6dfd9",
+##     "3c31a3270ab61520",
 ## ]
 ## writes = [
 ##     "cargo_metadata-c844528e3f2fdc2a.d",
@@ -4021,9 +6381,12 @@ COPY --link --from=dep-n-clap_derive-4.5.45-248da20365d02a55 /tmp/clis-flamegrap
 ##     "3c7b5c3a02d329ae",
 ##     "f7da27be4da40736",
 ##     "75925c9cdd5a8d6c",
+##     "ab9829a4a8b7788d",
 ##     "67bdffcce9227268",
 ##     "59a8027a56ed154e",
+##     "9a025c1b756d91f9",
 ## ]
+## buildrs_results = ["9a025c1b756d91f9"]
 ## writes = [
 ##     "clap_derive-248da20365d02a55.d",
 ##     "libclap_derive-248da20365d02a55.so",
@@ -4200,9 +6563,12 @@ COPY --link --from=dep-n-clap-4.5.45-3f3ccbfd21df6ad4 /tmp/clis-flamegraph_0-6-1
 ##     "3c7b5c3a02d329ae",
 ##     "f7da27be4da40736",
 ##     "75925c9cdd5a8d6c",
+##     "ab9829a4a8b7788d",
 ##     "67bdffcce9227268",
 ##     "59a8027a56ed154e",
+##     "9a025c1b756d91f9",
 ## ]
+## buildrs_results = ["9a025c1b756d91f9"]
 ## writes = [
 ##     "clap-3f3ccbfd21df6ad4.d",
 ##     "libclap-3f3ccbfd21df6ad4.rlib",
@@ -4514,9 +6880,12 @@ COPY --link --from=dep-n-clap_complete-4.5.57-e74b2ea239ae15fb /tmp/clis-flamegr
 ##     "3c7b5c3a02d329ae",
 ##     "f7da27be4da40736",
 ##     "75925c9cdd5a8d6c",
+##     "ab9829a4a8b7788d",
 ##     "67bdffcce9227268",
 ##     "59a8027a56ed154e",
+##     "9a025c1b756d91f9",
 ## ]
+## buildrs_results = ["9a025c1b756d91f9"]
 ## writes = [
 ##     "clap_complete-e74b2ea239ae15fb.d",
 ##     "libclap_complete-e74b2ea239ae15fb.rlib",
@@ -4755,11 +7124,321 @@ COPY --link --from=dep-n-clap_complete-4.5.57-e74b2ea239ae15fb /tmp/clis-flamegr
 FROM scratch AS cratesio-libc-0.2.175
 ADD --chmod=0664 --unpack --checksum=sha256:6a82ae493e598baaea5209805c49bbf2ea7de956d50d7da0da1164f9c6d28543 \
   https://static.crates.io/crates/libc/libc-0.2.175.crate /
+FROM rust-base AS dep-x-libc-0.2.175-34ac38a29ecbc6d8
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-flamegraph_0-6-10/release/build/libc-34ac38a29ecbc6d8
+RUN \
+  --mount=from=cratesio-libc-0.2.175,source=/libc-0.2.175,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.175,rw \
+    { \
+        cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.175/build.rs | sed -E 's/^(pub[()a-z]* +)?(async +)?fn +main/\1\2fn actual_34ac38a29ecbc6d8_main/' >/_ && mv /_ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.175/build.rs ; \
+        { \
+          echo ; \
+          echo 'fn main() {' ; \
+          echo '    use std::env::{args_os, var_os};' ; \
+          echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+          echo '        use std::process::{Command, Stdio};' ; \
+          echo '        let mut cmd = Command::new("cargo-green");' ; \
+          echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+          echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+          echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+          echo '        assert!(res.success());' ; \
+          echo '    } else {' ; \
+          echo '        actual_34ac38a29ecbc6d8_main();' ; \
+          echo '    }' ; \
+          echo '}' ; \
+        } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.175/build.rs ; \
+    } && \
+    env CARGO="$(which cargo)" \
+        CARGO_CRATE_NAME=build_script_build \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.175 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.175/Cargo.toml \
+        CARGO_PKG_AUTHORS=The' Rust Project Developers' \
+        CARGO_PKG_DESCRIPTION=Raw' FFI bindings to platform libraries like libc.' \
+        CARGO_PKG_HOMEPAGE= \
+        CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=libc \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/libc' \
+        CARGO_PKG_RUST_VERSION=1.63 \
+        CARGO_PKG_VERSION=0.2.175 \
+        CARGO_PKG_VERSION_MAJOR=0 \
+        CARGO_PKG_VERSION_MINOR=2 \
+        CARGO_PKG_VERSION_PATCH=175 \
+        CARGO_PKG_VERSION_PRE= \
+        CARGOGREEN=1 \
+      rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' --allow clippy'::used_underscore_binding' --allow unused_qualifications --warn clippy'::unnecessary_semicolon' --allow clippy'::unnecessary_cast' --allow clippy'::uninlined_format_args' --warn clippy'::ptr_as_ptr' --allow clippy'::non_minimal_cfg' --allow clippy'::missing_safety_doc' --warn clippy'::map_unwrap_or' --warn clippy'::manual_assert' --allow clippy'::identity_op' --warn clippy'::explicit_iter_loop' --allow clippy'::expl_impl_clone_on_copy' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("align", "const-extern-fn", "default", "extra_traits", "rustc-dep-of-std", "rustc-std-workspace-core", "std", "use_std"))' -C metadata'=64070a87deea826d' -C extra-filename'=-34ac38a29ecbc6d8' --out-dir /tmp/clis-flamegraph_0-6-10/release/build/libc-34ac38a29ecbc6d8 -C strip'=debuginfo' -L dependency'=/tmp/clis-flamegraph_0-6-10/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.175/build.rs \
+        1>          /tmp/clis-flamegraph_0-6-10/release/build/libc-34ac38a29ecbc6d8/out-34ac38a29ecbc6d8-stdout \
+        2>          /tmp/clis-flamegraph_0-6-10/release/build/libc-34ac38a29ecbc6d8/out-34ac38a29ecbc6d8-stderr \
+        || echo $? >/tmp/clis-flamegraph_0-6-10/release/build/libc-34ac38a29ecbc6d8/out-34ac38a29ecbc6d8-errcode\
+  ; find /tmp/clis-flamegraph_0-6-10/release/build/libc-34ac38a29ecbc6d8/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-34ac38a29ecbc6d8
+COPY --link --from=dep-x-libc-0.2.175-34ac38a29ecbc6d8 /tmp/clis-flamegraph_0-6-10/release/build/libc-34ac38a29ecbc6d8/*-34ac38a29ecbc6d8* /
+
+## this = "34ac38a29ecbc6d8"
+## writes = [
+##     "build_script_build-34ac38a29ecbc6d8",
+##     "build_script_build-34ac38a29ecbc6d8.d",
+## ]
+## stderr = [
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-flamegraph_0-6-10/release/build/libc-34ac38a29ecbc6d8/build_script_build-34ac38a29ecbc6d8.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-flamegraph_0-6-10/release/build/libc-34ac38a29ecbc6d8/build_script_build-34ac38a29ecbc6d8","emit":"link"}',
+## ]
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
+##
+## [[stages]]
+##
+## [stages.Cratesio]
+## stage = "cratesio-libc-0.2.175"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.175"
+## name = "libc"
+## name_dash_version = "libc-0.2.175"
+## hash = "6a82ae493e598baaea5209805c49bbf2ea7de956d50d7da0da1164f9c6d28543"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "dep-x-libc-0.2.175-34ac38a29ecbc6d8"
+## script = '''
+## FROM rust-base AS dep-x-libc-0.2.175-34ac38a29ecbc6d8
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-flamegraph_0-6-10/release/build/libc-34ac38a29ecbc6d8
+## RUN \
+##   --mount=from=cratesio-libc-0.2.175,source=/libc-0.2.175,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.175,rw \
+##     { \
+##         cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.175/build.rs | sed -E 's/^(pub[()a-z]* +)?(async +)?fn +main/\1\2fn actual_34ac38a29ecbc6d8_main/' >/_ && mv /_ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.175/build.rs ; \
+##         { \
+##           echo ; \
+##           echo 'fn main() {' ; \
+##           echo '    use std::env::{args_os, var_os};' ; \
+##           echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+##           echo '        use std::process::{Command, Stdio};' ; \
+##           echo '        let mut cmd = Command::new("cargo-green");' ; \
+##           echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+##           echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+##           echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+##           echo '        assert!(res.success());' ; \
+##           echo '    } else {' ; \
+##           echo '        actual_34ac38a29ecbc6d8_main();' ; \
+##           echo '    }' ; \
+##           echo '}' ; \
+##         } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.175/build.rs ; \
+##     } && \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CRATE_NAME=build_script_build \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.175 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.175/Cargo.toml \
+##         CARGO_PKG_AUTHORS=The' Rust Project Developers' \
+##         CARGO_PKG_DESCRIPTION=Raw' FFI bindings to platform libraries like libc.' \
+##         CARGO_PKG_HOMEPAGE= \
+##         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=libc \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/libc' \
+##         CARGO_PKG_RUST_VERSION=1.63 \
+##         CARGO_PKG_VERSION=0.2.175 \
+##         CARGO_PKG_VERSION_MAJOR=0 \
+##         CARGO_PKG_VERSION_MINOR=2 \
+##         CARGO_PKG_VERSION_PATCH=175 \
+##         CARGO_PKG_VERSION_PRE= \
+##         CARGOGREEN=1 \
+##       rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' --allow clippy'::used_underscore_binding' --allow unused_qualifications --warn clippy'::unnecessary_semicolon' --allow clippy'::unnecessary_cast' --allow clippy'::uninlined_format_args' --warn clippy'::ptr_as_ptr' --allow clippy'::non_minimal_cfg' --allow clippy'::missing_safety_doc' --warn clippy'::map_unwrap_or' --warn clippy'::manual_assert' --allow clippy'::identity_op' --warn clippy'::explicit_iter_loop' --allow clippy'::expl_impl_clone_on_copy' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("align", "const-extern-fn", "default", "extra_traits", "rustc-dep-of-std", "rustc-std-workspace-core", "std", "use_std"))' -C metadata'=64070a87deea826d' -C extra-filename'=-34ac38a29ecbc6d8' --out-dir /tmp/clis-flamegraph_0-6-10/release/build/libc-34ac38a29ecbc6d8 -C strip'=debuginfo' -L dependency'=/tmp/clis-flamegraph_0-6-10/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.175/build.rs \
+##         1>          /tmp/clis-flamegraph_0-6-10/release/build/libc-34ac38a29ecbc6d8/out-34ac38a29ecbc6d8-stdout \
+##         2>          /tmp/clis-flamegraph_0-6-10/release/build/libc-34ac38a29ecbc6d8/out-34ac38a29ecbc6d8-stderr \
+##         || echo $? >/tmp/clis-flamegraph_0-6-10/release/build/libc-34ac38a29ecbc6d8/out-34ac38a29ecbc6d8-errcode\
+##   ; find /tmp/clis-flamegraph_0-6-10/release/build/libc-34ac38a29ecbc6d8/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-34ac38a29ecbc6d8"
+## script = """
+## FROM scratch AS out-34ac38a29ecbc6d8
+## COPY --link --from=dep-x-libc-0.2.175-34ac38a29ecbc6d8 /tmp/clis-flamegraph_0-6-10/release/build/libc-34ac38a29ecbc6d8/*-34ac38a29ecbc6d8* /"""
+
+FROM rust-base AS run-z-libc-0.2.175-fab8c0f59b008de9
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-flamegraph_0-6-10/release/build/libc-fab8c0f59b008de9/out
+WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.175
+RUN \
+  --mount=from=out-34ac38a29ecbc6d8,source=/build_script_build-34ac38a29ecbc6d8,dst=/tmp/clis-flamegraph_0-6-10/release/build/libc-34ac38a29ecbc6d8/build-script-build \
+  --mount=from=cratesio-libc-0.2.175,source=/libc-0.2.175,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.175 \
+    env CARGO="$(which cargo)" \
+        CARGO_CFG_FEATURE=default,std \
+        CARGO_CFG_PANIC=unwind \
+        CARGO_CFG_TARGET_ABI= \
+        CARGO_CFG_TARGET_ARCH=x86_64 \
+        CARGO_CFG_TARGET_ENDIAN=little \
+        CARGO_CFG_TARGET_ENV=gnu \
+        CARGO_CFG_TARGET_FAMILY=unix \
+        CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
+        CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+        CARGO_CFG_TARGET_OS=linux \
+        CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+        CARGO_CFG_TARGET_VENDOR=unknown \
+        CARGO_CFG_UNIX= \
+        CARGO_ENCODED_RUSTFLAGS= \
+        CARGO_FEATURE_DEFAULT=1 \
+        CARGO_FEATURE_STD=1 \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.175 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.175/Cargo.toml \
+        CARGO_PKG_AUTHORS=The' Rust Project Developers' \
+        CARGO_PKG_DESCRIPTION=Raw' FFI bindings to platform libraries like libc.' \
+        CARGO_PKG_HOMEPAGE= \
+        CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=libc \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/libc' \
+        CARGO_PKG_RUST_VERSION=1.63 \
+        CARGO_PKG_VERSION=0.2.175 \
+        CARGO_PKG_VERSION_MAJOR=0 \
+        CARGO_PKG_VERSION_MINOR=2 \
+        CARGO_PKG_VERSION_PATCH=175 \
+        CARGO_PKG_VERSION_PRE= \
+        DEBUG=false \
+        HOST=x86_64-unknown-linux-gnu \
+        NUM_JOBS=4 \
+        OPT_LEVEL=3 \
+        OUT_DIR=/tmp/clis-flamegraph_0-6-10/release/build/libc-fab8c0f59b008de9/out \
+        PROFILE=release \
+        RUSTC=rustc \
+        RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+        TARGET=x86_64-unknown-linux-gnu \
+        CARGOGREEN=1 \
+      CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-flamegraph_0-6-10/release/build/libc-34ac38a29ecbc6d8/build-script-build \
+        1>          /tmp/clis-flamegraph_0-6-10/release/build/libc-fab8c0f59b008de9/out/out-fab8c0f59b008de9-stdout \
+        2>          /tmp/clis-flamegraph_0-6-10/release/build/libc-fab8c0f59b008de9/out/out-fab8c0f59b008de9-stderr \
+        || echo $? >/tmp/clis-flamegraph_0-6-10/release/build/libc-fab8c0f59b008de9/out/out-fab8c0f59b008de9-errcode\
+  ; find /tmp/clis-flamegraph_0-6-10/release/build/libc-fab8c0f59b008de9/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-fab8c0f59b008de9
+COPY --link --from=run-z-libc-0.2.175-fab8c0f59b008de9 /tmp/clis-flamegraph_0-6-10/release/build/libc-fab8c0f59b008de9/out /
+
+## this = "fab8c0f59b008de9"
+## deps = ["34ac38a29ecbc6d8"]
+## writes_to = "/tmp/clis-flamegraph_0-6-10/release/build/libc-fab8c0f59b008de9/out"
+## stdout = [
+##     "cargo:rerun-if-changed=build.rs",
+##     "cargo:rerun-if-env-changed=RUST_LIBC_UNSTABLE_FREEBSD_VERSION",
+##     "cargo:rustc-cfg=freebsd11",
+##     "cargo:rerun-if-env-changed=RUST_LIBC_UNSTABLE_MUSL_V1_2_3",
+##     "cargo:rerun-if-env-changed=RUST_LIBC_UNSTABLE_LINUX_TIME_BITS64",
+##     "cargo:rerun-if-env-changed=RUST_LIBC_UNSTABLE_GNU_FILE_OFFSET_BITS",
+##     "cargo:rerun-if-env-changed=RUST_LIBC_UNSTABLE_GNU_TIME_BITS",
+##     "cargo:rustc-cfg=libc_const_extern_fn",
+##     "cargo:rustc-check-cfg=cfg(emscripten_old_stat_abi)",
+##     "cargo:rustc-check-cfg=cfg(espidf_time32)",
+##     "cargo:rustc-check-cfg=cfg(freebsd10)",
+##     "cargo:rustc-check-cfg=cfg(freebsd11)",
+##     "cargo:rustc-check-cfg=cfg(freebsd12)",
+##     "cargo:rustc-check-cfg=cfg(freebsd13)",
+##     "cargo:rustc-check-cfg=cfg(freebsd14)",
+##     "cargo:rustc-check-cfg=cfg(freebsd15)",
+##     "cargo:rustc-check-cfg=cfg(gnu_file_offset_bits64)",
+##     "cargo:rustc-check-cfg=cfg(gnu_time_bits64)",
+##     "cargo:rustc-check-cfg=cfg(libc_const_extern_fn)",
+##     "cargo:rustc-check-cfg=cfg(libc_deny_warnings)",
+##     "cargo:rustc-check-cfg=cfg(libc_thread_local)",
+##     "cargo:rustc-check-cfg=cfg(libc_ctest)",
+##     "cargo:rustc-check-cfg=cfg(linux_time_bits64)",
+##     "cargo:rustc-check-cfg=cfg(musl_v1_2_3)",
+##     'cargo:rustc-check-cfg=cfg(target_os,values("switch","aix","ohos","hurd","rtems","visionos","nuttx","cygwin"))',
+##     'cargo:rustc-check-cfg=cfg(target_env,values("illumos","wasi","aix","ohos","nto71_iosock","nto80"))',
+##     'cargo:rustc-check-cfg=cfg(target_arch,values("loongarch64","mips32r6","mips64r6","csky"))',
+## ]
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "run-z-libc-0.2.175-fab8c0f59b008de9"
+## script = '''
+## FROM rust-base AS run-z-libc-0.2.175-fab8c0f59b008de9
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-flamegraph_0-6-10/release/build/libc-fab8c0f59b008de9/out
+## WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.175
+## RUN \
+##   --mount=from=out-34ac38a29ecbc6d8,source=/build_script_build-34ac38a29ecbc6d8,dst=/tmp/clis-flamegraph_0-6-10/release/build/libc-34ac38a29ecbc6d8/build-script-build \
+##   --mount=from=cratesio-libc-0.2.175,source=/libc-0.2.175,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.175 \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CFG_FEATURE=default,std \
+##         CARGO_CFG_PANIC=unwind \
+##         CARGO_CFG_TARGET_ABI= \
+##         CARGO_CFG_TARGET_ARCH=x86_64 \
+##         CARGO_CFG_TARGET_ENDIAN=little \
+##         CARGO_CFG_TARGET_ENV=gnu \
+##         CARGO_CFG_TARGET_FAMILY=unix \
+##         CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
+##         CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+##         CARGO_CFG_TARGET_OS=linux \
+##         CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+##         CARGO_CFG_TARGET_VENDOR=unknown \
+##         CARGO_CFG_UNIX= \
+##         CARGO_ENCODED_RUSTFLAGS= \
+##         CARGO_FEATURE_DEFAULT=1 \
+##         CARGO_FEATURE_STD=1 \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.175 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.175/Cargo.toml \
+##         CARGO_PKG_AUTHORS=The' Rust Project Developers' \
+##         CARGO_PKG_DESCRIPTION=Raw' FFI bindings to platform libraries like libc.' \
+##         CARGO_PKG_HOMEPAGE= \
+##         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=libc \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/libc' \
+##         CARGO_PKG_RUST_VERSION=1.63 \
+##         CARGO_PKG_VERSION=0.2.175 \
+##         CARGO_PKG_VERSION_MAJOR=0 \
+##         CARGO_PKG_VERSION_MINOR=2 \
+##         CARGO_PKG_VERSION_PATCH=175 \
+##         CARGO_PKG_VERSION_PRE= \
+##         DEBUG=false \
+##         HOST=x86_64-unknown-linux-gnu \
+##         NUM_JOBS=4 \
+##         OPT_LEVEL=3 \
+##         OUT_DIR=/tmp/clis-flamegraph_0-6-10/release/build/libc-fab8c0f59b008de9/out \
+##         PROFILE=release \
+##         RUSTC=rustc \
+##         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+##         TARGET=x86_64-unknown-linux-gnu \
+##         CARGOGREEN=1 \
+##       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-flamegraph_0-6-10/release/build/libc-34ac38a29ecbc6d8/build-script-build \
+##         1>          /tmp/clis-flamegraph_0-6-10/release/build/libc-fab8c0f59b008de9/out/out-fab8c0f59b008de9-stdout \
+##         2>          /tmp/clis-flamegraph_0-6-10/release/build/libc-fab8c0f59b008de9/out/out-fab8c0f59b008de9-stderr \
+##         || echo $? >/tmp/clis-flamegraph_0-6-10/release/build/libc-fab8c0f59b008de9/out/out-fab8c0f59b008de9-errcode\
+##   ; find /tmp/clis-flamegraph_0-6-10/release/build/libc-fab8c0f59b008de9/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-fab8c0f59b008de9"
+## script = """
+## FROM scratch AS out-fab8c0f59b008de9
+## COPY --link --from=run-z-libc-0.2.175-fab8c0f59b008de9 /tmp/clis-flamegraph_0-6-10/release/build/libc-fab8c0f59b008de9/out /"""
+
+
 FROM rust-base AS dep-n-libc-0.2.175-dccd02569a0701db
 SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-flamegraph_0-6-10/release/deps
 RUN \
   --mount=from=cratesio-libc-0.2.175,source=/libc-0.2.175,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.175 \
+  --mount=from=out-fab8c0f59b008de9,dst=/tmp/clis-flamegraph_0-6-10/release/build/libc-fab8c0f59b008de9/out,source=/ \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=libc \
         CARGO_INCREMENTAL=0 \
@@ -4790,6 +7469,11 @@ FROM scratch AS out-dccd02569a0701db
 COPY --link --from=dep-n-libc-0.2.175-dccd02569a0701db /tmp/clis-flamegraph_0-6-10/release/deps/*-dccd02569a0701db* /
 
 ## this = "dccd02569a0701db"
+## deps = [
+##     "fab8c0f59b008de9",
+##     "34ac38a29ecbc6d8",
+## ]
+## buildrs_results = ["fab8c0f59b008de9"]
 ## writes = [
 ##     "libc-dccd02569a0701db.d",
 ##     "liblibc-dccd02569a0701db.rlib",
@@ -4800,6 +7484,10 @@ COPY --link --from=dep-n-libc-0.2.175-dccd02569a0701db /tmp/clis-flamegraph_0-6-
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-flamegraph_0-6-10/release/deps/liblibc-dccd02569a0701db.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-flamegraph_0-6-10/release/deps/liblibc-dccd02569a0701db.rlib","emit":"link"}',
 ## ]
+##
+## [[mounts]]
+## name = "out-fab8c0f59b008de9"
+## mount = "/tmp/clis-flamegraph_0-6-10/release/build/libc-fab8c0f59b008de9/out"
 ##
 ## [[stages]]
 ##
@@ -4826,6 +7514,7 @@ COPY --link --from=dep-n-libc-0.2.175-dccd02569a0701db /tmp/clis-flamegraph_0-6-
 ## WORKDIR /tmp/clis-flamegraph_0-6-10/release/deps
 ## RUN \
 ##   --mount=from=cratesio-libc-0.2.175,source=/libc-0.2.175,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.175 \
+##   --mount=from=out-fab8c0f59b008de9,dst=/tmp/clis-flamegraph_0-6-10/release/build/libc-fab8c0f59b008de9/out,source=/ \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=libc \
 ##         CARGO_INCREMENTAL=0 \
@@ -5124,9 +7813,12 @@ COPY --link --from=dep-n-console-0.16.0-cf9323a0d31530ac /tmp/clis-flamegraph_0-
 ## this = "cf9323a0d31530ac"
 ## deps = [
 ##     "dccd02569a0701db",
+##     "34ac38a29ecbc6d8",
 ##     "d2455ec75a446def",
 ##     "0d2304ccb610135f",
+##     "fab8c0f59b008de9",
 ## ]
+## buildrs_results = ["fab8c0f59b008de9"]
 ## writes = [
 ##     "console-cf9323a0d31530ac.d",
 ##     "libconsole-cf9323a0d31530ac.rlib",
@@ -5232,11 +7924,304 @@ COPY --link --from=dep-n-console-0.16.0-cf9323a0d31530ac /tmp/clis-flamegraph_0-
 FROM scratch AS cratesio-portable-atomic-1.11.1
 ADD --chmod=0664 --unpack --checksum=sha256:f84267b20a16ea918e43c6a88433c2d54fa145c92a811b5b047ccbe153674483 \
   https://static.crates.io/crates/portable-atomic/portable-atomic-1.11.1.crate /
+FROM rust-base AS dep-x-portable-atomic-1.11.1-26ad5078761a756b
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-flamegraph_0-6-10/release/build/portable-atomic-26ad5078761a756b
+RUN \
+  --mount=from=cratesio-portable-atomic-1.11.1,source=/portable-atomic-1.11.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/portable-atomic-1.11.1,rw \
+    { \
+        cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/portable-atomic-1.11.1/build.rs | sed -E 's/^(pub[()a-z]* +)?(async +)?fn +main/\1\2fn actual_26ad5078761a756b_main/' >/_ && mv /_ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/portable-atomic-1.11.1/build.rs ; \
+        { \
+          echo ; \
+          echo 'fn main() {' ; \
+          echo '    use std::env::{args_os, var_os};' ; \
+          echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+          echo '        use std::process::{Command, Stdio};' ; \
+          echo '        let mut cmd = Command::new("cargo-green");' ; \
+          echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+          echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+          echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+          echo '        assert!(res.success());' ; \
+          echo '    } else {' ; \
+          echo '        actual_26ad5078761a756b_main();' ; \
+          echo '    }' ; \
+          echo '}' ; \
+        } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/portable-atomic-1.11.1/build.rs ; \
+    } && \
+    env CARGO="$(which cargo)" \
+        CARGO_CRATE_NAME=build_script_build \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/portable-atomic-1.11.1 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/portable-atomic-1.11.1/Cargo.toml \
+        CARGO_PKG_AUTHORS= \
+        CARGO_PKG_DESCRIPTION=Portable' atomic types including support for 128-bit atomics, atomic float, etc.\
+' \
+        CARGO_PKG_HOMEPAGE= \
+        CARGO_PKG_LICENSE=Apache-2.0' OR MIT' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=portable-atomic \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/taiki-e/portable-atomic' \
+        CARGO_PKG_RUST_VERSION=1.34 \
+        CARGO_PKG_VERSION=1.11.1 \
+        CARGO_PKG_VERSION_MAJOR=1 \
+        CARGO_PKG_VERSION_MINOR=11 \
+        CARGO_PKG_VERSION_PATCH=1 \
+        CARGO_PKG_VERSION_PRE= \
+        CARGOGREEN=1 \
+      rustc --crate-name build_script_build --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' --warn clippy'::unused_trait_names' --warn unreachable_pub --warn unnameable_types --warn unexpected_cfgs --warn clippy'::undocumented_unsafe_blocks' --warn clippy'::transmute_undefined_repr' --warn clippy'::trailing_empty_array' --warn single_use_lifetimes --warn rust_2018_idioms --warn clippy'::pedantic' --warn non_ascii_idents --warn clippy'::inline_asm_x86_att_syntax' --warn improper_ctypes_definitions --warn improper_ctypes --warn deprecated_safe --warn clippy'::default_union_representation' --warn clippy'::as_underscore' --warn clippy'::as_ptr_cast_mut' --warn clippy'::all' --allow clippy'::unreadable_literal' --allow clippy'::type_complexity' --allow clippy'::too_many_lines' --allow clippy'::too_many_arguments' --allow clippy'::struct_field_names' --allow clippy'::struct_excessive_bools' --allow clippy'::single_match_else' --allow clippy'::single_match' --allow clippy'::similar_names' --allow clippy'::range_plus_one' --allow clippy'::nonminimal_bool' --allow clippy'::naive_bytecount' --allow clippy'::module_name_repetitions' --allow clippy'::missing_errors_doc' --allow clippy'::manual_range_contains' --allow clippy'::manual_assert' --allow clippy'::lint_groups_priority' --allow clippy'::incompatible_msrv' --allow clippy'::float_cmp' --allow clippy'::doc_markdown' --allow clippy'::declare_interior_mutable_const' --allow clippy'::cast_lossless' --allow clippy'::borrow_as_ptr' --allow clippy'::bool_assert_comparison' --check-cfg cfg'(target_arch,values("xtensa"))' --check-cfg cfg'(target_arch,values("amdgpu"))' --check-cfg cfg'(target_arch,values("loongarch32"))' --check-cfg cfg'(target_os,values("psx"))' --check-cfg cfg'(target_env,values("psx"))' --check-cfg cfg'(target_feature,values("lse2","lse128","rcpc3"))' --check-cfg cfg'(target_feature,values("quadword-atomics"))' --check-cfg cfg'(target_feature,values("zaamo","zabha"))' --check-cfg cfg'(target_feature,values("zacas"))' --check-cfg cfg'(target_pointer_width,values("128"))' --check-cfg cfg'(portable_atomic_no_outline_atomics,portable_atomic_outline_atomics,portable_atomic_unstable_f16,portable_atomic_unstable_f128)' --check-cfg cfg'(portable_atomic_unstable_coerce_unsized)' --check-cfg cfg'(portable_atomic_test_detect_false,portable_atomic_test_no_std_static_assert_ffi,qemu,valgrind)' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="fallback"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("critical-section", "default", "disable-fiq", "fallback", "float", "force-amo", "require-cas", "s-mode", "serde", "std", "unsafe-assume-single-core"))' -C metadata'=97c4fd2ec6c8f08d' -C extra-filename'=-26ad5078761a756b' --out-dir /tmp/clis-flamegraph_0-6-10/release/build/portable-atomic-26ad5078761a756b -C strip'=debuginfo' -L dependency'=/tmp/clis-flamegraph_0-6-10/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/portable-atomic-1.11.1/build.rs \
+        1>          /tmp/clis-flamegraph_0-6-10/release/build/portable-atomic-26ad5078761a756b/out-26ad5078761a756b-stdout \
+        2>          /tmp/clis-flamegraph_0-6-10/release/build/portable-atomic-26ad5078761a756b/out-26ad5078761a756b-stderr \
+        || echo $? >/tmp/clis-flamegraph_0-6-10/release/build/portable-atomic-26ad5078761a756b/out-26ad5078761a756b-errcode\
+  ; find /tmp/clis-flamegraph_0-6-10/release/build/portable-atomic-26ad5078761a756b/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-26ad5078761a756b
+COPY --link --from=dep-x-portable-atomic-1.11.1-26ad5078761a756b /tmp/clis-flamegraph_0-6-10/release/build/portable-atomic-26ad5078761a756b/*-26ad5078761a756b* /
+
+## this = "26ad5078761a756b"
+## writes = [
+##     "build_script_build-26ad5078761a756b",
+##     "build_script_build-26ad5078761a756b.d",
+## ]
+## stderr = [
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-flamegraph_0-6-10/release/build/portable-atomic-26ad5078761a756b/build_script_build-26ad5078761a756b.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-flamegraph_0-6-10/release/build/portable-atomic-26ad5078761a756b/build_script_build-26ad5078761a756b","emit":"link"}',
+## ]
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
+##
+## [[stages]]
+##
+## [stages.Cratesio]
+## stage = "cratesio-portable-atomic-1.11.1"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/portable-atomic-1.11.1"
+## name = "portable-atomic"
+## name_dash_version = "portable-atomic-1.11.1"
+## hash = "f84267b20a16ea918e43c6a88433c2d54fa145c92a811b5b047ccbe153674483"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "dep-x-portable-atomic-1.11.1-26ad5078761a756b"
+## script = '''
+## FROM rust-base AS dep-x-portable-atomic-1.11.1-26ad5078761a756b
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-flamegraph_0-6-10/release/build/portable-atomic-26ad5078761a756b
+## RUN \
+##   --mount=from=cratesio-portable-atomic-1.11.1,source=/portable-atomic-1.11.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/portable-atomic-1.11.1,rw \
+##     { \
+##         cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/portable-atomic-1.11.1/build.rs | sed -E 's/^(pub[()a-z]* +)?(async +)?fn +main/\1\2fn actual_26ad5078761a756b_main/' >/_ && mv /_ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/portable-atomic-1.11.1/build.rs ; \
+##         { \
+##           echo ; \
+##           echo 'fn main() {' ; \
+##           echo '    use std::env::{args_os, var_os};' ; \
+##           echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+##           echo '        use std::process::{Command, Stdio};' ; \
+##           echo '        let mut cmd = Command::new("cargo-green");' ; \
+##           echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+##           echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+##           echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+##           echo '        assert!(res.success());' ; \
+##           echo '    } else {' ; \
+##           echo '        actual_26ad5078761a756b_main();' ; \
+##           echo '    }' ; \
+##           echo '}' ; \
+##         } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/portable-atomic-1.11.1/build.rs ; \
+##     } && \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CRATE_NAME=build_script_build \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/portable-atomic-1.11.1 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/portable-atomic-1.11.1/Cargo.toml \
+##         CARGO_PKG_AUTHORS= \
+##         CARGO_PKG_DESCRIPTION=Portable' atomic types including support for 128-bit atomics, atomic float, etc.\
+## ' \
+##         CARGO_PKG_HOMEPAGE= \
+##         CARGO_PKG_LICENSE=Apache-2.0' OR MIT' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=portable-atomic \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/taiki-e/portable-atomic' \
+##         CARGO_PKG_RUST_VERSION=1.34 \
+##         CARGO_PKG_VERSION=1.11.1 \
+##         CARGO_PKG_VERSION_MAJOR=1 \
+##         CARGO_PKG_VERSION_MINOR=11 \
+##         CARGO_PKG_VERSION_PATCH=1 \
+##         CARGO_PKG_VERSION_PRE= \
+##         CARGOGREEN=1 \
+##       rustc --crate-name build_script_build --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' --warn clippy'::unused_trait_names' --warn unreachable_pub --warn unnameable_types --warn unexpected_cfgs --warn clippy'::undocumented_unsafe_blocks' --warn clippy'::transmute_undefined_repr' --warn clippy'::trailing_empty_array' --warn single_use_lifetimes --warn rust_2018_idioms --warn clippy'::pedantic' --warn non_ascii_idents --warn clippy'::inline_asm_x86_att_syntax' --warn improper_ctypes_definitions --warn improper_ctypes --warn deprecated_safe --warn clippy'::default_union_representation' --warn clippy'::as_underscore' --warn clippy'::as_ptr_cast_mut' --warn clippy'::all' --allow clippy'::unreadable_literal' --allow clippy'::type_complexity' --allow clippy'::too_many_lines' --allow clippy'::too_many_arguments' --allow clippy'::struct_field_names' --allow clippy'::struct_excessive_bools' --allow clippy'::single_match_else' --allow clippy'::single_match' --allow clippy'::similar_names' --allow clippy'::range_plus_one' --allow clippy'::nonminimal_bool' --allow clippy'::naive_bytecount' --allow clippy'::module_name_repetitions' --allow clippy'::missing_errors_doc' --allow clippy'::manual_range_contains' --allow clippy'::manual_assert' --allow clippy'::lint_groups_priority' --allow clippy'::incompatible_msrv' --allow clippy'::float_cmp' --allow clippy'::doc_markdown' --allow clippy'::declare_interior_mutable_const' --allow clippy'::cast_lossless' --allow clippy'::borrow_as_ptr' --allow clippy'::bool_assert_comparison' --check-cfg cfg'(target_arch,values("xtensa"))' --check-cfg cfg'(target_arch,values("amdgpu"))' --check-cfg cfg'(target_arch,values("loongarch32"))' --check-cfg cfg'(target_os,values("psx"))' --check-cfg cfg'(target_env,values("psx"))' --check-cfg cfg'(target_feature,values("lse2","lse128","rcpc3"))' --check-cfg cfg'(target_feature,values("quadword-atomics"))' --check-cfg cfg'(target_feature,values("zaamo","zabha"))' --check-cfg cfg'(target_feature,values("zacas"))' --check-cfg cfg'(target_pointer_width,values("128"))' --check-cfg cfg'(portable_atomic_no_outline_atomics,portable_atomic_outline_atomics,portable_atomic_unstable_f16,portable_atomic_unstable_f128)' --check-cfg cfg'(portable_atomic_unstable_coerce_unsized)' --check-cfg cfg'(portable_atomic_test_detect_false,portable_atomic_test_no_std_static_assert_ffi,qemu,valgrind)' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="fallback"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("critical-section", "default", "disable-fiq", "fallback", "float", "force-amo", "require-cas", "s-mode", "serde", "std", "unsafe-assume-single-core"))' -C metadata'=97c4fd2ec6c8f08d' -C extra-filename'=-26ad5078761a756b' --out-dir /tmp/clis-flamegraph_0-6-10/release/build/portable-atomic-26ad5078761a756b -C strip'=debuginfo' -L dependency'=/tmp/clis-flamegraph_0-6-10/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/portable-atomic-1.11.1/build.rs \
+##         1>          /tmp/clis-flamegraph_0-6-10/release/build/portable-atomic-26ad5078761a756b/out-26ad5078761a756b-stdout \
+##         2>          /tmp/clis-flamegraph_0-6-10/release/build/portable-atomic-26ad5078761a756b/out-26ad5078761a756b-stderr \
+##         || echo $? >/tmp/clis-flamegraph_0-6-10/release/build/portable-atomic-26ad5078761a756b/out-26ad5078761a756b-errcode\
+##   ; find /tmp/clis-flamegraph_0-6-10/release/build/portable-atomic-26ad5078761a756b/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-26ad5078761a756b"
+## script = """
+## FROM scratch AS out-26ad5078761a756b
+## COPY --link --from=dep-x-portable-atomic-1.11.1-26ad5078761a756b /tmp/clis-flamegraph_0-6-10/release/build/portable-atomic-26ad5078761a756b/*-26ad5078761a756b* /"""
+
+FROM rust-base AS run-z-portable-atomic-1.11.1-4a7fa8c4f698a596
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-flamegraph_0-6-10/release/build/portable-atomic-4a7fa8c4f698a596/out
+WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/portable-atomic-1.11.1
+RUN \
+  --mount=from=out-26ad5078761a756b,source=/build_script_build-26ad5078761a756b,dst=/tmp/clis-flamegraph_0-6-10/release/build/portable-atomic-26ad5078761a756b/build-script-build \
+  --mount=from=cratesio-portable-atomic-1.11.1,source=/portable-atomic-1.11.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/portable-atomic-1.11.1 \
+    env CARGO="$(which cargo)" \
+        CARGO_CFG_FEATURE=default,fallback \
+        CARGO_CFG_PANIC=unwind \
+        CARGO_CFG_TARGET_ABI= \
+        CARGO_CFG_TARGET_ARCH=x86_64 \
+        CARGO_CFG_TARGET_ENDIAN=little \
+        CARGO_CFG_TARGET_ENV=gnu \
+        CARGO_CFG_TARGET_FAMILY=unix \
+        CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
+        CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+        CARGO_CFG_TARGET_OS=linux \
+        CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+        CARGO_CFG_TARGET_VENDOR=unknown \
+        CARGO_CFG_UNIX= \
+        CARGO_ENCODED_RUSTFLAGS= \
+        CARGO_FEATURE_DEFAULT=1 \
+        CARGO_FEATURE_FALLBACK=1 \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/portable-atomic-1.11.1 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/portable-atomic-1.11.1/Cargo.toml \
+        CARGO_PKG_AUTHORS= \
+        CARGO_PKG_DESCRIPTION=Portable' atomic types including support for 128-bit atomics, atomic float, etc.\
+' \
+        CARGO_PKG_HOMEPAGE= \
+        CARGO_PKG_LICENSE=Apache-2.0' OR MIT' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=portable-atomic \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/taiki-e/portable-atomic' \
+        CARGO_PKG_RUST_VERSION=1.34 \
+        CARGO_PKG_VERSION=1.11.1 \
+        CARGO_PKG_VERSION_MAJOR=1 \
+        CARGO_PKG_VERSION_MINOR=11 \
+        CARGO_PKG_VERSION_PATCH=1 \
+        CARGO_PKG_VERSION_PRE= \
+        DEBUG=false \
+        HOST=x86_64-unknown-linux-gnu \
+        NUM_JOBS=4 \
+        OPT_LEVEL=3 \
+        OUT_DIR=/tmp/clis-flamegraph_0-6-10/release/build/portable-atomic-4a7fa8c4f698a596/out \
+        PROFILE=release \
+        RUSTC=rustc \
+        RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+        TARGET=x86_64-unknown-linux-gnu \
+        CARGOGREEN=1 \
+      CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-flamegraph_0-6-10/release/build/portable-atomic-26ad5078761a756b/build-script-build \
+        1>          /tmp/clis-flamegraph_0-6-10/release/build/portable-atomic-4a7fa8c4f698a596/out/out-4a7fa8c4f698a596-stdout \
+        2>          /tmp/clis-flamegraph_0-6-10/release/build/portable-atomic-4a7fa8c4f698a596/out/out-4a7fa8c4f698a596-stderr \
+        || echo $? >/tmp/clis-flamegraph_0-6-10/release/build/portable-atomic-4a7fa8c4f698a596/out/out-4a7fa8c4f698a596-errcode\
+  ; find /tmp/clis-flamegraph_0-6-10/release/build/portable-atomic-4a7fa8c4f698a596/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-4a7fa8c4f698a596
+COPY --link --from=run-z-portable-atomic-1.11.1-4a7fa8c4f698a596 /tmp/clis-flamegraph_0-6-10/release/build/portable-atomic-4a7fa8c4f698a596/out /
+
+## this = "4a7fa8c4f698a596"
+## deps = ["26ad5078761a756b"]
+## writes_to = "/tmp/clis-flamegraph_0-6-10/release/build/portable-atomic-4a7fa8c4f698a596/out"
+## stdout = [
+##     "cargo:rerun-if-changed=build.rs",
+##     "cargo:rerun-if-changed=src/gen/build.rs",
+##     "cargo:rerun-if-changed=version.rs",
+##     'cargo:rustc-check-cfg=cfg(target_feature,values("lsfe","fast-serialization","load-store-on-cond","distinct-ops","miscellaneous-extensions-3"))',
+##     "cargo:rustc-check-cfg=cfg(portable_atomic_disable_fiq,portable_atomic_force_amo,portable_atomic_ll_sc_rmw,portable_atomic_atomic_intrinsics,portable_atomic_no_asm,portable_atomic_no_asm_maybe_uninit,portable_atomic_no_atomic_64,portable_atomic_no_atomic_cas,portable_atomic_no_atomic_load_store,portable_atomic_no_atomic_min_max,portable_atomic_no_cfg_target_has_atomic,portable_atomic_no_cmpxchg16b_intrinsic,portable_atomic_no_cmpxchg16b_target_feature,portable_atomic_no_const_mut_refs,portable_atomic_no_const_raw_ptr_deref,portable_atomic_no_const_transmute,portable_atomic_no_core_unwind_safe,portable_atomic_no_diagnostic_namespace,portable_atomic_no_offset_of,portable_atomic_no_strict_provenance,portable_atomic_no_stronger_failure_ordering,portable_atomic_no_track_caller,portable_atomic_no_unsafe_op_in_unsafe_fn,portable_atomic_pre_llvm_15,portable_atomic_pre_llvm_16,portable_atomic_pre_llvm_18,portable_atomic_pre_llvm_20,portable_atomic_s_mode,portable_atomic_sanitize_thread,portable_atomic_target_feature,portable_atomic_unsafe_assume_single_core,portable_atomic_unstable_asm,portable_atomic_unstable_asm_experimental_arch,portable_atomic_unstable_cfg_target_has_atomic,portable_atomic_unstable_isa_attribute)",
+##     'cargo:rustc-check-cfg=cfg(portable_atomic_target_feature,values("cmpxchg16b","distinct-ops","fast-serialization","load-store-on-cond","lse","lse128","lse2","lsfe","mclass","miscellaneous-extensions-3","quadword-atomics","rcpc3","v6","zaamo","zabha","zacas"))',
+## ]
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "run-z-portable-atomic-1.11.1-4a7fa8c4f698a596"
+## script = '''
+## FROM rust-base AS run-z-portable-atomic-1.11.1-4a7fa8c4f698a596
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-flamegraph_0-6-10/release/build/portable-atomic-4a7fa8c4f698a596/out
+## WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/portable-atomic-1.11.1
+## RUN \
+##   --mount=from=out-26ad5078761a756b,source=/build_script_build-26ad5078761a756b,dst=/tmp/clis-flamegraph_0-6-10/release/build/portable-atomic-26ad5078761a756b/build-script-build \
+##   --mount=from=cratesio-portable-atomic-1.11.1,source=/portable-atomic-1.11.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/portable-atomic-1.11.1 \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CFG_FEATURE=default,fallback \
+##         CARGO_CFG_PANIC=unwind \
+##         CARGO_CFG_TARGET_ABI= \
+##         CARGO_CFG_TARGET_ARCH=x86_64 \
+##         CARGO_CFG_TARGET_ENDIAN=little \
+##         CARGO_CFG_TARGET_ENV=gnu \
+##         CARGO_CFG_TARGET_FAMILY=unix \
+##         CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
+##         CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+##         CARGO_CFG_TARGET_OS=linux \
+##         CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+##         CARGO_CFG_TARGET_VENDOR=unknown \
+##         CARGO_CFG_UNIX= \
+##         CARGO_ENCODED_RUSTFLAGS= \
+##         CARGO_FEATURE_DEFAULT=1 \
+##         CARGO_FEATURE_FALLBACK=1 \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/portable-atomic-1.11.1 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/portable-atomic-1.11.1/Cargo.toml \
+##         CARGO_PKG_AUTHORS= \
+##         CARGO_PKG_DESCRIPTION=Portable' atomic types including support for 128-bit atomics, atomic float, etc.\
+## ' \
+##         CARGO_PKG_HOMEPAGE= \
+##         CARGO_PKG_LICENSE=Apache-2.0' OR MIT' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=portable-atomic \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/taiki-e/portable-atomic' \
+##         CARGO_PKG_RUST_VERSION=1.34 \
+##         CARGO_PKG_VERSION=1.11.1 \
+##         CARGO_PKG_VERSION_MAJOR=1 \
+##         CARGO_PKG_VERSION_MINOR=11 \
+##         CARGO_PKG_VERSION_PATCH=1 \
+##         CARGO_PKG_VERSION_PRE= \
+##         DEBUG=false \
+##         HOST=x86_64-unknown-linux-gnu \
+##         NUM_JOBS=4 \
+##         OPT_LEVEL=3 \
+##         OUT_DIR=/tmp/clis-flamegraph_0-6-10/release/build/portable-atomic-4a7fa8c4f698a596/out \
+##         PROFILE=release \
+##         RUSTC=rustc \
+##         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+##         TARGET=x86_64-unknown-linux-gnu \
+##         CARGOGREEN=1 \
+##       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-flamegraph_0-6-10/release/build/portable-atomic-26ad5078761a756b/build-script-build \
+##         1>          /tmp/clis-flamegraph_0-6-10/release/build/portable-atomic-4a7fa8c4f698a596/out/out-4a7fa8c4f698a596-stdout \
+##         2>          /tmp/clis-flamegraph_0-6-10/release/build/portable-atomic-4a7fa8c4f698a596/out/out-4a7fa8c4f698a596-stderr \
+##         || echo $? >/tmp/clis-flamegraph_0-6-10/release/build/portable-atomic-4a7fa8c4f698a596/out/out-4a7fa8c4f698a596-errcode\
+##   ; find /tmp/clis-flamegraph_0-6-10/release/build/portable-atomic-4a7fa8c4f698a596/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-4a7fa8c4f698a596"
+## script = """
+## FROM scratch AS out-4a7fa8c4f698a596
+## COPY --link --from=run-z-portable-atomic-1.11.1-4a7fa8c4f698a596 /tmp/clis-flamegraph_0-6-10/release/build/portable-atomic-4a7fa8c4f698a596/out /"""
+
+
 FROM rust-base AS dep-n-portable-atomic-1.11.1-cc9c8e8aaa60c29d
 SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-flamegraph_0-6-10/release/deps
 RUN \
   --mount=from=cratesio-portable-atomic-1.11.1,source=/portable-atomic-1.11.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/portable-atomic-1.11.1 \
+  --mount=from=out-4a7fa8c4f698a596,dst=/tmp/clis-flamegraph_0-6-10/release/build/portable-atomic-4a7fa8c4f698a596/out,source=/ \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=portable_atomic \
         CARGO_INCREMENTAL=0 \
@@ -5268,6 +8253,11 @@ FROM scratch AS out-cc9c8e8aaa60c29d
 COPY --link --from=dep-n-portable-atomic-1.11.1-cc9c8e8aaa60c29d /tmp/clis-flamegraph_0-6-10/release/deps/*-cc9c8e8aaa60c29d* /
 
 ## this = "cc9c8e8aaa60c29d"
+## deps = [
+##     "4a7fa8c4f698a596",
+##     "26ad5078761a756b",
+## ]
+## buildrs_results = ["4a7fa8c4f698a596"]
 ## writes = [
 ##     "libportable_atomic-cc9c8e8aaa60c29d.rlib",
 ##     "libportable_atomic-cc9c8e8aaa60c29d.rmeta",
@@ -5278,6 +8268,10 @@ COPY --link --from=dep-n-portable-atomic-1.11.1-cc9c8e8aaa60c29d /tmp/clis-flame
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-flamegraph_0-6-10/release/deps/libportable_atomic-cc9c8e8aaa60c29d.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-flamegraph_0-6-10/release/deps/libportable_atomic-cc9c8e8aaa60c29d.rlib","emit":"link"}',
 ## ]
+##
+## [[mounts]]
+## name = "out-4a7fa8c4f698a596"
+## mount = "/tmp/clis-flamegraph_0-6-10/release/build/portable-atomic-4a7fa8c4f698a596/out"
 ##
 ## [[stages]]
 ##
@@ -5304,6 +8298,7 @@ COPY --link --from=dep-n-portable-atomic-1.11.1-cc9c8e8aaa60c29d /tmp/clis-flame
 ## WORKDIR /tmp/clis-flamegraph_0-6-10/release/deps
 ## RUN \
 ##   --mount=from=cratesio-portable-atomic-1.11.1,source=/portable-atomic-1.11.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/portable-atomic-1.11.1 \
+##   --mount=from=out-4a7fa8c4f698a596,dst=/tmp/clis-flamegraph_0-6-10/release/build/portable-atomic-4a7fa8c4f698a596/out,source=/ \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=portable_atomic \
 ##         CARGO_INCREMENTAL=0 \
@@ -5499,10 +8494,18 @@ COPY --link --from=dep-n-indicatif-0.18.0-fcc63cd70cee5c6a /tmp/clis-flamegraph_
 ## deps = [
 ##     "cf9323a0d31530ac",
 ##     "dccd02569a0701db",
+##     "34ac38a29ecbc6d8",
 ##     "d2455ec75a446def",
 ##     "0d2304ccb610135f",
 ##     "cc9c8e8aaa60c29d",
+##     "26ad5078761a756b",
 ##     "fe10370c5bcccd4b",
+##     "fab8c0f59b008de9",
+##     "4a7fa8c4f698a596",
+## ]
+## buildrs_results = [
+##     "fab8c0f59b008de9",
+##     "4a7fa8c4f698a596",
 ## ]
 ## writes = [
 ##     "indicatif-fcc63cd70cee5c6a.d",
@@ -5750,6 +8753,283 @@ COPY --link --from=dep-n-cfg-if-1.0.3-5a4301c208f24f4c /tmp/clis-flamegraph_0-6-
 FROM scratch AS cratesio-getrandom-0.3.3
 ADD --chmod=0664 --unpack --checksum=sha256:26145e563e54f2cadc477553f1ec5ee650b00862f0a58bcd12cbdc5f0ea2d2f4 \
   https://static.crates.io/crates/getrandom/getrandom-0.3.3.crate /
+FROM rust-base AS dep-x-getrandom-0.3.3-6e2123a6636d36d8
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-flamegraph_0-6-10/release/build/getrandom-6e2123a6636d36d8
+RUN \
+  --mount=from=cratesio-getrandom-0.3.3,source=/getrandom-0.3.3,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/getrandom-0.3.3,rw \
+    { \
+        cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/getrandom-0.3.3/build.rs | sed -E 's/^(pub[()a-z]* +)?(async +)?fn +main/\1\2fn actual_6e2123a6636d36d8_main/' >/_ && mv /_ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/getrandom-0.3.3/build.rs ; \
+        { \
+          echo ; \
+          echo 'fn main() {' ; \
+          echo '    use std::env::{args_os, var_os};' ; \
+          echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+          echo '        use std::process::{Command, Stdio};' ; \
+          echo '        let mut cmd = Command::new("cargo-green");' ; \
+          echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+          echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+          echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+          echo '        assert!(res.success());' ; \
+          echo '    } else {' ; \
+          echo '        actual_6e2123a6636d36d8_main();' ; \
+          echo '    }' ; \
+          echo '}' ; \
+        } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/getrandom-0.3.3/build.rs ; \
+    } && \
+    env CARGO="$(which cargo)" \
+        CARGO_CRATE_NAME=build_script_build \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/getrandom-0.3.3 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/getrandom-0.3.3/Cargo.toml \
+        CARGO_PKG_AUTHORS=The' Rand Project Developers' \
+        CARGO_PKG_DESCRIPTION=A' small cross-platform library for retrieving random data from system source' \
+        CARGO_PKG_HOMEPAGE= \
+        CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=getrandom \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/rust-random/getrandom' \
+        CARGO_PKG_RUST_VERSION=1.63 \
+        CARGO_PKG_VERSION=0.3.3 \
+        CARGO_PKG_VERSION_MAJOR=0 \
+        CARGO_PKG_VERSION_MINOR=3 \
+        CARGO_PKG_VERSION_PATCH=3 \
+        CARGO_PKG_VERSION_PRE= \
+        CARGOGREEN=1 \
+      rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' --warn unexpected_cfgs --check-cfg cfg'(getrandom_backend, values("custom", "efi_rng", "rdrand", "rndr", "linux_getrandom", "linux_raw", "wasm_js"))' --check-cfg cfg'(getrandom_msan)' --check-cfg cfg'(getrandom_windows_legacy)' --check-cfg cfg'(getrandom_test_linux_fallback)' --check-cfg cfg'(getrandom_test_linux_without_fallback)' --check-cfg cfg'(getrandom_test_netbsd_fallback)' --check-cfg cfg'(target_os, values("cygwin"))' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("rustc-dep-of-std", "std", "wasm_js"))' -C metadata'=2efcec963b685da8' -C extra-filename'=-6e2123a6636d36d8' --out-dir /tmp/clis-flamegraph_0-6-10/release/build/getrandom-6e2123a6636d36d8 -C strip'=debuginfo' -L dependency'=/tmp/clis-flamegraph_0-6-10/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/getrandom-0.3.3/build.rs \
+        1>          /tmp/clis-flamegraph_0-6-10/release/build/getrandom-6e2123a6636d36d8/out-6e2123a6636d36d8-stdout \
+        2>          /tmp/clis-flamegraph_0-6-10/release/build/getrandom-6e2123a6636d36d8/out-6e2123a6636d36d8-stderr \
+        || echo $? >/tmp/clis-flamegraph_0-6-10/release/build/getrandom-6e2123a6636d36d8/out-6e2123a6636d36d8-errcode\
+  ; find /tmp/clis-flamegraph_0-6-10/release/build/getrandom-6e2123a6636d36d8/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-6e2123a6636d36d8
+COPY --link --from=dep-x-getrandom-0.3.3-6e2123a6636d36d8 /tmp/clis-flamegraph_0-6-10/release/build/getrandom-6e2123a6636d36d8/*-6e2123a6636d36d8* /
+
+## this = "6e2123a6636d36d8"
+## writes = [
+##     "build_script_build-6e2123a6636d36d8",
+##     "build_script_build-6e2123a6636d36d8.d",
+## ]
+## stderr = [
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-flamegraph_0-6-10/release/build/getrandom-6e2123a6636d36d8/build_script_build-6e2123a6636d36d8.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-flamegraph_0-6-10/release/build/getrandom-6e2123a6636d36d8/build_script_build-6e2123a6636d36d8","emit":"link"}',
+## ]
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
+##
+## [[stages]]
+##
+## [stages.Cratesio]
+## stage = "cratesio-getrandom-0.3.3"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/getrandom-0.3.3"
+## name = "getrandom"
+## name_dash_version = "getrandom-0.3.3"
+## hash = "26145e563e54f2cadc477553f1ec5ee650b00862f0a58bcd12cbdc5f0ea2d2f4"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "dep-x-getrandom-0.3.3-6e2123a6636d36d8"
+## script = '''
+## FROM rust-base AS dep-x-getrandom-0.3.3-6e2123a6636d36d8
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-flamegraph_0-6-10/release/build/getrandom-6e2123a6636d36d8
+## RUN \
+##   --mount=from=cratesio-getrandom-0.3.3,source=/getrandom-0.3.3,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/getrandom-0.3.3,rw \
+##     { \
+##         cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/getrandom-0.3.3/build.rs | sed -E 's/^(pub[()a-z]* +)?(async +)?fn +main/\1\2fn actual_6e2123a6636d36d8_main/' >/_ && mv /_ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/getrandom-0.3.3/build.rs ; \
+##         { \
+##           echo ; \
+##           echo 'fn main() {' ; \
+##           echo '    use std::env::{args_os, var_os};' ; \
+##           echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+##           echo '        use std::process::{Command, Stdio};' ; \
+##           echo '        let mut cmd = Command::new("cargo-green");' ; \
+##           echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+##           echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+##           echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+##           echo '        assert!(res.success());' ; \
+##           echo '    } else {' ; \
+##           echo '        actual_6e2123a6636d36d8_main();' ; \
+##           echo '    }' ; \
+##           echo '}' ; \
+##         } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/getrandom-0.3.3/build.rs ; \
+##     } && \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CRATE_NAME=build_script_build \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/getrandom-0.3.3 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/getrandom-0.3.3/Cargo.toml \
+##         CARGO_PKG_AUTHORS=The' Rand Project Developers' \
+##         CARGO_PKG_DESCRIPTION=A' small cross-platform library for retrieving random data from system source' \
+##         CARGO_PKG_HOMEPAGE= \
+##         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=getrandom \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/rust-random/getrandom' \
+##         CARGO_PKG_RUST_VERSION=1.63 \
+##         CARGO_PKG_VERSION=0.3.3 \
+##         CARGO_PKG_VERSION_MAJOR=0 \
+##         CARGO_PKG_VERSION_MINOR=3 \
+##         CARGO_PKG_VERSION_PATCH=3 \
+##         CARGO_PKG_VERSION_PRE= \
+##         CARGOGREEN=1 \
+##       rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' --warn unexpected_cfgs --check-cfg cfg'(getrandom_backend, values("custom", "efi_rng", "rdrand", "rndr", "linux_getrandom", "linux_raw", "wasm_js"))' --check-cfg cfg'(getrandom_msan)' --check-cfg cfg'(getrandom_windows_legacy)' --check-cfg cfg'(getrandom_test_linux_fallback)' --check-cfg cfg'(getrandom_test_linux_without_fallback)' --check-cfg cfg'(getrandom_test_netbsd_fallback)' --check-cfg cfg'(target_os, values("cygwin"))' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("rustc-dep-of-std", "std", "wasm_js"))' -C metadata'=2efcec963b685da8' -C extra-filename'=-6e2123a6636d36d8' --out-dir /tmp/clis-flamegraph_0-6-10/release/build/getrandom-6e2123a6636d36d8 -C strip'=debuginfo' -L dependency'=/tmp/clis-flamegraph_0-6-10/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/getrandom-0.3.3/build.rs \
+##         1>          /tmp/clis-flamegraph_0-6-10/release/build/getrandom-6e2123a6636d36d8/out-6e2123a6636d36d8-stdout \
+##         2>          /tmp/clis-flamegraph_0-6-10/release/build/getrandom-6e2123a6636d36d8/out-6e2123a6636d36d8-stderr \
+##         || echo $? >/tmp/clis-flamegraph_0-6-10/release/build/getrandom-6e2123a6636d36d8/out-6e2123a6636d36d8-errcode\
+##   ; find /tmp/clis-flamegraph_0-6-10/release/build/getrandom-6e2123a6636d36d8/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-6e2123a6636d36d8"
+## script = """
+## FROM scratch AS out-6e2123a6636d36d8
+## COPY --link --from=dep-x-getrandom-0.3.3-6e2123a6636d36d8 /tmp/clis-flamegraph_0-6-10/release/build/getrandom-6e2123a6636d36d8/*-6e2123a6636d36d8* /"""
+
+FROM rust-base AS run-z-getrandom-0.3.3-ec533ba807300e5e
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-flamegraph_0-6-10/release/build/getrandom-ec533ba807300e5e/out
+WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/getrandom-0.3.3
+RUN \
+  --mount=from=out-6e2123a6636d36d8,source=/build_script_build-6e2123a6636d36d8,dst=/tmp/clis-flamegraph_0-6-10/release/build/getrandom-6e2123a6636d36d8/build-script-build \
+  --mount=from=cratesio-getrandom-0.3.3,source=/getrandom-0.3.3,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/getrandom-0.3.3 \
+    env CARGO="$(which cargo)" \
+        CARGO_CFG_FEATURE= \
+        CARGO_CFG_PANIC=unwind \
+        CARGO_CFG_TARGET_ABI= \
+        CARGO_CFG_TARGET_ARCH=x86_64 \
+        CARGO_CFG_TARGET_ENDIAN=little \
+        CARGO_CFG_TARGET_ENV=gnu \
+        CARGO_CFG_TARGET_FAMILY=unix \
+        CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
+        CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+        CARGO_CFG_TARGET_OS=linux \
+        CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+        CARGO_CFG_TARGET_VENDOR=unknown \
+        CARGO_CFG_UNIX= \
+        CARGO_ENCODED_RUSTFLAGS= \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/getrandom-0.3.3 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/getrandom-0.3.3/Cargo.toml \
+        CARGO_PKG_AUTHORS=The' Rand Project Developers' \
+        CARGO_PKG_DESCRIPTION=A' small cross-platform library for retrieving random data from system source' \
+        CARGO_PKG_HOMEPAGE= \
+        CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=getrandom \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/rust-random/getrandom' \
+        CARGO_PKG_RUST_VERSION=1.63 \
+        CARGO_PKG_VERSION=0.3.3 \
+        CARGO_PKG_VERSION_MAJOR=0 \
+        CARGO_PKG_VERSION_MINOR=3 \
+        CARGO_PKG_VERSION_PATCH=3 \
+        CARGO_PKG_VERSION_PRE= \
+        DEBUG=false \
+        HOST=x86_64-unknown-linux-gnu \
+        NUM_JOBS=4 \
+        OPT_LEVEL=3 \
+        OUT_DIR=/tmp/clis-flamegraph_0-6-10/release/build/getrandom-ec533ba807300e5e/out \
+        PROFILE=release \
+        RUSTC=rustc \
+        RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+        TARGET=x86_64-unknown-linux-gnu \
+        CARGOGREEN=1 \
+      CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-flamegraph_0-6-10/release/build/getrandom-6e2123a6636d36d8/build-script-build \
+        1>          /tmp/clis-flamegraph_0-6-10/release/build/getrandom-ec533ba807300e5e/out/out-ec533ba807300e5e-stdout \
+        2>          /tmp/clis-flamegraph_0-6-10/release/build/getrandom-ec533ba807300e5e/out/out-ec533ba807300e5e-stderr \
+        || echo $? >/tmp/clis-flamegraph_0-6-10/release/build/getrandom-ec533ba807300e5e/out/out-ec533ba807300e5e-errcode\
+  ; find /tmp/clis-flamegraph_0-6-10/release/build/getrandom-ec533ba807300e5e/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-ec533ba807300e5e
+COPY --link --from=run-z-getrandom-0.3.3-ec533ba807300e5e /tmp/clis-flamegraph_0-6-10/release/build/getrandom-ec533ba807300e5e/out /
+
+## this = "ec533ba807300e5e"
+## deps = ["6e2123a6636d36d8"]
+## writes_to = "/tmp/clis-flamegraph_0-6-10/release/build/getrandom-ec533ba807300e5e/out"
+## stdout = ["cargo:rerun-if-changed=build.rs"]
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "run-z-getrandom-0.3.3-ec533ba807300e5e"
+## script = '''
+## FROM rust-base AS run-z-getrandom-0.3.3-ec533ba807300e5e
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-flamegraph_0-6-10/release/build/getrandom-ec533ba807300e5e/out
+## WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/getrandom-0.3.3
+## RUN \
+##   --mount=from=out-6e2123a6636d36d8,source=/build_script_build-6e2123a6636d36d8,dst=/tmp/clis-flamegraph_0-6-10/release/build/getrandom-6e2123a6636d36d8/build-script-build \
+##   --mount=from=cratesio-getrandom-0.3.3,source=/getrandom-0.3.3,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/getrandom-0.3.3 \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CFG_FEATURE= \
+##         CARGO_CFG_PANIC=unwind \
+##         CARGO_CFG_TARGET_ABI= \
+##         CARGO_CFG_TARGET_ARCH=x86_64 \
+##         CARGO_CFG_TARGET_ENDIAN=little \
+##         CARGO_CFG_TARGET_ENV=gnu \
+##         CARGO_CFG_TARGET_FAMILY=unix \
+##         CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
+##         CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+##         CARGO_CFG_TARGET_OS=linux \
+##         CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+##         CARGO_CFG_TARGET_VENDOR=unknown \
+##         CARGO_CFG_UNIX= \
+##         CARGO_ENCODED_RUSTFLAGS= \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/getrandom-0.3.3 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/getrandom-0.3.3/Cargo.toml \
+##         CARGO_PKG_AUTHORS=The' Rand Project Developers' \
+##         CARGO_PKG_DESCRIPTION=A' small cross-platform library for retrieving random data from system source' \
+##         CARGO_PKG_HOMEPAGE= \
+##         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=getrandom \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/rust-random/getrandom' \
+##         CARGO_PKG_RUST_VERSION=1.63 \
+##         CARGO_PKG_VERSION=0.3.3 \
+##         CARGO_PKG_VERSION_MAJOR=0 \
+##         CARGO_PKG_VERSION_MINOR=3 \
+##         CARGO_PKG_VERSION_PATCH=3 \
+##         CARGO_PKG_VERSION_PRE= \
+##         DEBUG=false \
+##         HOST=x86_64-unknown-linux-gnu \
+##         NUM_JOBS=4 \
+##         OPT_LEVEL=3 \
+##         OUT_DIR=/tmp/clis-flamegraph_0-6-10/release/build/getrandom-ec533ba807300e5e/out \
+##         PROFILE=release \
+##         RUSTC=rustc \
+##         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+##         TARGET=x86_64-unknown-linux-gnu \
+##         CARGOGREEN=1 \
+##       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-flamegraph_0-6-10/release/build/getrandom-6e2123a6636d36d8/build-script-build \
+##         1>          /tmp/clis-flamegraph_0-6-10/release/build/getrandom-ec533ba807300e5e/out/out-ec533ba807300e5e-stdout \
+##         2>          /tmp/clis-flamegraph_0-6-10/release/build/getrandom-ec533ba807300e5e/out/out-ec533ba807300e5e-stderr \
+##         || echo $? >/tmp/clis-flamegraph_0-6-10/release/build/getrandom-ec533ba807300e5e/out/out-ec533ba807300e5e-errcode\
+##   ; find /tmp/clis-flamegraph_0-6-10/release/build/getrandom-ec533ba807300e5e/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-ec533ba807300e5e"
+## script = """
+## FROM scratch AS out-ec533ba807300e5e
+## COPY --link --from=run-z-getrandom-0.3.3-ec533ba807300e5e /tmp/clis-flamegraph_0-6-10/release/build/getrandom-ec533ba807300e5e/out /"""
+
+
 FROM rust-base AS dep-n-getrandom-0.3.3-def6b41d68858040
 SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-flamegraph_0-6-10/release/deps
@@ -5759,6 +9039,7 @@ RUN \
   --mount=from=out-5a4301c208f24f4c,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libcfg_if-5a4301c208f24f4c.rmeta,source=/libcfg_if-5a4301c208f24f4c.rmeta \
   --mount=from=out-dccd02569a0701db,dst=/tmp/clis-flamegraph_0-6-10/release/deps/liblibc-dccd02569a0701db.rlib,source=/liblibc-dccd02569a0701db.rlib \
   --mount=from=out-dccd02569a0701db,dst=/tmp/clis-flamegraph_0-6-10/release/deps/liblibc-dccd02569a0701db.rmeta,source=/liblibc-dccd02569a0701db.rmeta \
+  --mount=from=out-ec533ba807300e5e,dst=/tmp/clis-flamegraph_0-6-10/release/build/getrandom-ec533ba807300e5e/out,source=/ \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=getrandom \
         CARGO_INCREMENTAL=0 \
@@ -5792,6 +9073,14 @@ COPY --link --from=dep-n-getrandom-0.3.3-def6b41d68858040 /tmp/clis-flamegraph_0
 ## deps = [
 ##     "5a4301c208f24f4c",
 ##     "dccd02569a0701db",
+##     "34ac38a29ecbc6d8",
+##     "ec533ba807300e5e",
+##     "fab8c0f59b008de9",
+##     "6e2123a6636d36d8",
+## ]
+## buildrs_results = [
+##     "fab8c0f59b008de9",
+##     "ec533ba807300e5e",
 ## ]
 ## writes = [
 ##     "getrandom-def6b41d68858040.d",
@@ -5819,6 +9108,10 @@ COPY --link --from=dep-n-getrandom-0.3.3-def6b41d68858040 /tmp/clis-flamegraph_0
 ## [[externs]]
 ## from = "out-dccd02569a0701db"
 ## xtern = "liblibc-dccd02569a0701db.rmeta"
+##
+## [[mounts]]
+## name = "out-ec533ba807300e5e"
+## mount = "/tmp/clis-flamegraph_0-6-10/release/build/getrandom-ec533ba807300e5e/out"
 ##
 ## [[stages]]
 ##
@@ -5849,6 +9142,7 @@ COPY --link --from=dep-n-getrandom-0.3.3-def6b41d68858040 /tmp/clis-flamegraph_0
 ##   --mount=from=out-5a4301c208f24f4c,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libcfg_if-5a4301c208f24f4c.rmeta,source=/libcfg_if-5a4301c208f24f4c.rmeta \
 ##   --mount=from=out-dccd02569a0701db,dst=/tmp/clis-flamegraph_0-6-10/release/deps/liblibc-dccd02569a0701db.rlib,source=/liblibc-dccd02569a0701db.rlib \
 ##   --mount=from=out-dccd02569a0701db,dst=/tmp/clis-flamegraph_0-6-10/release/deps/liblibc-dccd02569a0701db.rmeta,source=/liblibc-dccd02569a0701db.rmeta \
+##   --mount=from=out-ec533ba807300e5e,dst=/tmp/clis-flamegraph_0-6-10/release/build/getrandom-ec533ba807300e5e/out,source=/ \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=getrandom \
 ##         CARGO_INCREMENTAL=0 \
@@ -5887,11 +9181,316 @@ COPY --link --from=dep-n-getrandom-0.3.3-def6b41d68858040 /tmp/clis-flamegraph_0
 FROM scratch AS cratesio-zerocopy-0.8.26
 ADD --chmod=0664 --unpack --checksum=sha256:1039dd0d3c310cf05de012d8a39ff557cb0d23087fd44cad61df08fc31907a2f \
   https://static.crates.io/crates/zerocopy/zerocopy-0.8.26.crate /
+FROM rust-base AS dep-x-zerocopy-0.8.26-79067ef5349c233e
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-flamegraph_0-6-10/release/build/zerocopy-79067ef5349c233e
+RUN \
+  --mount=from=cratesio-zerocopy-0.8.26,source=/zerocopy-0.8.26,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zerocopy-0.8.26,rw \
+    { \
+        cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zerocopy-0.8.26/build.rs | sed -E 's/^(pub[()a-z]* +)?(async +)?fn +main/\1\2fn actual_79067ef5349c233e_main/' >/_ && mv /_ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zerocopy-0.8.26/build.rs ; \
+        { \
+          echo ; \
+          echo 'fn main() {' ; \
+          echo '    use std::env::{args_os, var_os};' ; \
+          echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+          echo '        use std::process::{Command, Stdio};' ; \
+          echo '        let mut cmd = Command::new("cargo-green");' ; \
+          echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+          echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+          echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+          echo '        assert!(res.success());' ; \
+          echo '    } else {' ; \
+          echo '        actual_79067ef5349c233e_main();' ; \
+          echo '    }' ; \
+          echo '}' ; \
+        } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zerocopy-0.8.26/build.rs ; \
+    } && \
+    env CARGO="$(which cargo)" \
+        CARGO_CRATE_NAME=build_script_build \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zerocopy-0.8.26 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zerocopy-0.8.26/Cargo.toml \
+        CARGO_PKG_AUTHORS=Joshua' Liebow-Feeser <joshlf@google.com>:Jack Wrenn <jswrenn@amazon.com>' \
+        CARGO_PKG_DESCRIPTION=Zerocopy' makes zero-cost memory manipulation effortless. We write "unsafe" so you don'\'t' have to.' \
+        CARGO_PKG_HOMEPAGE= \
+        CARGO_PKG_LICENSE=BSD-2-Clause' OR Apache-2.0 OR MIT' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=zerocopy \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/google/zerocopy' \
+        CARGO_PKG_RUST_VERSION=1.56.0 \
+        CARGO_PKG_VERSION=0.8.26 \
+        CARGO_PKG_VERSION_MAJOR=0 \
+        CARGO_PKG_VERSION_MINOR=8 \
+        CARGO_PKG_VERSION_PATCH=26 \
+        CARGO_PKG_VERSION_PRE= \
+        CARGOGREEN=1 \
+      rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="simd"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("__internal_use_only_features_that_work_on_stable", "alloc", "derive", "float-nightly", "simd", "simd-nightly", "std", "zerocopy-derive"))' -C metadata'=274b681f34f9aaac' -C extra-filename'=-79067ef5349c233e' --out-dir /tmp/clis-flamegraph_0-6-10/release/build/zerocopy-79067ef5349c233e -C strip'=debuginfo' -L dependency'=/tmp/clis-flamegraph_0-6-10/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zerocopy-0.8.26/build.rs \
+        1>          /tmp/clis-flamegraph_0-6-10/release/build/zerocopy-79067ef5349c233e/out-79067ef5349c233e-stdout \
+        2>          /tmp/clis-flamegraph_0-6-10/release/build/zerocopy-79067ef5349c233e/out-79067ef5349c233e-stderr \
+        || echo $? >/tmp/clis-flamegraph_0-6-10/release/build/zerocopy-79067ef5349c233e/out-79067ef5349c233e-errcode\
+  ; find /tmp/clis-flamegraph_0-6-10/release/build/zerocopy-79067ef5349c233e/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-79067ef5349c233e
+COPY --link --from=dep-x-zerocopy-0.8.26-79067ef5349c233e /tmp/clis-flamegraph_0-6-10/release/build/zerocopy-79067ef5349c233e/*-79067ef5349c233e* /
+
+## this = "79067ef5349c233e"
+## writes = [
+##     "build_script_build-79067ef5349c233e",
+##     "build_script_build-79067ef5349c233e.d",
+## ]
+## stderr = [
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-flamegraph_0-6-10/release/build/zerocopy-79067ef5349c233e/build_script_build-79067ef5349c233e.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-flamegraph_0-6-10/release/build/zerocopy-79067ef5349c233e/build_script_build-79067ef5349c233e","emit":"link"}',
+## ]
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
+##
+## [[stages]]
+##
+## [stages.Cratesio]
+## stage = "cratesio-zerocopy-0.8.26"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zerocopy-0.8.26"
+## name = "zerocopy"
+## name_dash_version = "zerocopy-0.8.26"
+## hash = "1039dd0d3c310cf05de012d8a39ff557cb0d23087fd44cad61df08fc31907a2f"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "dep-x-zerocopy-0.8.26-79067ef5349c233e"
+## script = '''
+## FROM rust-base AS dep-x-zerocopy-0.8.26-79067ef5349c233e
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-flamegraph_0-6-10/release/build/zerocopy-79067ef5349c233e
+## RUN \
+##   --mount=from=cratesio-zerocopy-0.8.26,source=/zerocopy-0.8.26,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zerocopy-0.8.26,rw \
+##     { \
+##         cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zerocopy-0.8.26/build.rs | sed -E 's/^(pub[()a-z]* +)?(async +)?fn +main/\1\2fn actual_79067ef5349c233e_main/' >/_ && mv /_ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zerocopy-0.8.26/build.rs ; \
+##         { \
+##           echo ; \
+##           echo 'fn main() {' ; \
+##           echo '    use std::env::{args_os, var_os};' ; \
+##           echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+##           echo '        use std::process::{Command, Stdio};' ; \
+##           echo '        let mut cmd = Command::new("cargo-green");' ; \
+##           echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+##           echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+##           echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+##           echo '        assert!(res.success());' ; \
+##           echo '    } else {' ; \
+##           echo '        actual_79067ef5349c233e_main();' ; \
+##           echo '    }' ; \
+##           echo '}' ; \
+##         } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zerocopy-0.8.26/build.rs ; \
+##     } && \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CRATE_NAME=build_script_build \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zerocopy-0.8.26 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zerocopy-0.8.26/Cargo.toml \
+##         CARGO_PKG_AUTHORS=Joshua' Liebow-Feeser <joshlf@google.com>:Jack Wrenn <jswrenn@amazon.com>' \
+##         CARGO_PKG_DESCRIPTION=Zerocopy' makes zero-cost memory manipulation effortless. We write "unsafe" so you don'\'t' have to.' \
+##         CARGO_PKG_HOMEPAGE= \
+##         CARGO_PKG_LICENSE=BSD-2-Clause' OR Apache-2.0 OR MIT' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=zerocopy \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/google/zerocopy' \
+##         CARGO_PKG_RUST_VERSION=1.56.0 \
+##         CARGO_PKG_VERSION=0.8.26 \
+##         CARGO_PKG_VERSION_MAJOR=0 \
+##         CARGO_PKG_VERSION_MINOR=8 \
+##         CARGO_PKG_VERSION_PATCH=26 \
+##         CARGO_PKG_VERSION_PRE= \
+##         CARGOGREEN=1 \
+##       rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="simd"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("__internal_use_only_features_that_work_on_stable", "alloc", "derive", "float-nightly", "simd", "simd-nightly", "std", "zerocopy-derive"))' -C metadata'=274b681f34f9aaac' -C extra-filename'=-79067ef5349c233e' --out-dir /tmp/clis-flamegraph_0-6-10/release/build/zerocopy-79067ef5349c233e -C strip'=debuginfo' -L dependency'=/tmp/clis-flamegraph_0-6-10/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zerocopy-0.8.26/build.rs \
+##         1>          /tmp/clis-flamegraph_0-6-10/release/build/zerocopy-79067ef5349c233e/out-79067ef5349c233e-stdout \
+##         2>          /tmp/clis-flamegraph_0-6-10/release/build/zerocopy-79067ef5349c233e/out-79067ef5349c233e-stderr \
+##         || echo $? >/tmp/clis-flamegraph_0-6-10/release/build/zerocopy-79067ef5349c233e/out-79067ef5349c233e-errcode\
+##   ; find /tmp/clis-flamegraph_0-6-10/release/build/zerocopy-79067ef5349c233e/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-79067ef5349c233e"
+## script = """
+## FROM scratch AS out-79067ef5349c233e
+## COPY --link --from=dep-x-zerocopy-0.8.26-79067ef5349c233e /tmp/clis-flamegraph_0-6-10/release/build/zerocopy-79067ef5349c233e/*-79067ef5349c233e* /"""
+
+FROM rust-base AS run-z-zerocopy-0.8.26-f8ea397704a2e459
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-flamegraph_0-6-10/release/build/zerocopy-f8ea397704a2e459/out
+WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zerocopy-0.8.26
+RUN \
+  --mount=from=out-79067ef5349c233e,source=/build_script_build-79067ef5349c233e,dst=/tmp/clis-flamegraph_0-6-10/release/build/zerocopy-79067ef5349c233e/build-script-build \
+  --mount=from=cratesio-zerocopy-0.8.26,source=/zerocopy-0.8.26,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zerocopy-0.8.26 \
+    env CARGO="$(which cargo)" \
+        CARGO_CFG_FEATURE=simd \
+        CARGO_CFG_PANIC=unwind \
+        CARGO_CFG_TARGET_ABI= \
+        CARGO_CFG_TARGET_ARCH=x86_64 \
+        CARGO_CFG_TARGET_ENDIAN=little \
+        CARGO_CFG_TARGET_ENV=gnu \
+        CARGO_CFG_TARGET_FAMILY=unix \
+        CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
+        CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+        CARGO_CFG_TARGET_OS=linux \
+        CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+        CARGO_CFG_TARGET_VENDOR=unknown \
+        CARGO_CFG_UNIX= \
+        CARGO_ENCODED_RUSTFLAGS= \
+        CARGO_FEATURE_SIMD=1 \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zerocopy-0.8.26 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zerocopy-0.8.26/Cargo.toml \
+        CARGO_PKG_AUTHORS=Joshua' Liebow-Feeser <joshlf@google.com>:Jack Wrenn <jswrenn@amazon.com>' \
+        CARGO_PKG_DESCRIPTION=Zerocopy' makes zero-cost memory manipulation effortless. We write "unsafe" so you don'\'t' have to.' \
+        CARGO_PKG_HOMEPAGE= \
+        CARGO_PKG_LICENSE=BSD-2-Clause' OR Apache-2.0 OR MIT' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=zerocopy \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/google/zerocopy' \
+        CARGO_PKG_RUST_VERSION=1.56.0 \
+        CARGO_PKG_VERSION=0.8.26 \
+        CARGO_PKG_VERSION_MAJOR=0 \
+        CARGO_PKG_VERSION_MINOR=8 \
+        CARGO_PKG_VERSION_PATCH=26 \
+        CARGO_PKG_VERSION_PRE= \
+        DEBUG=false \
+        HOST=x86_64-unknown-linux-gnu \
+        NUM_JOBS=4 \
+        OPT_LEVEL=3 \
+        OUT_DIR=/tmp/clis-flamegraph_0-6-10/release/build/zerocopy-f8ea397704a2e459/out \
+        PROFILE=release \
+        RUSTC=rustc \
+        RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+        TARGET=x86_64-unknown-linux-gnu \
+        CARGOGREEN=1 \
+      CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-flamegraph_0-6-10/release/build/zerocopy-79067ef5349c233e/build-script-build \
+        1>          /tmp/clis-flamegraph_0-6-10/release/build/zerocopy-f8ea397704a2e459/out/out-f8ea397704a2e459-stdout \
+        2>          /tmp/clis-flamegraph_0-6-10/release/build/zerocopy-f8ea397704a2e459/out/out-f8ea397704a2e459-stderr \
+        || echo $? >/tmp/clis-flamegraph_0-6-10/release/build/zerocopy-f8ea397704a2e459/out/out-f8ea397704a2e459-errcode\
+  ; find /tmp/clis-flamegraph_0-6-10/release/build/zerocopy-f8ea397704a2e459/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-f8ea397704a2e459
+COPY --link --from=run-z-zerocopy-0.8.26-f8ea397704a2e459 /tmp/clis-flamegraph_0-6-10/release/build/zerocopy-f8ea397704a2e459/out /
+
+## this = "f8ea397704a2e459"
+## deps = ["79067ef5349c233e"]
+## writes_to = "/tmp/clis-flamegraph_0-6-10/release/build/zerocopy-f8ea397704a2e459/out"
+## stdout = [
+##     "cargo:rerun-if-changed=build.rs",
+##     "cargo:rerun-if-changed=Cargo.toml",
+##     "cargo:rustc-check-cfg=cfg(zerocopy_aarch64_simd_1_59_0)",
+##     'cargo:rustc-check-cfg=cfg(rust, values("1.59.0"))',
+##     "cargo:rustc-check-cfg=cfg(zerocopy_core_error_1_81_0)",
+##     'cargo:rustc-check-cfg=cfg(rust, values("1.81.0"))',
+##     "cargo:rustc-check-cfg=cfg(zerocopy_diagnostic_on_unimplemented_1_78_0)",
+##     'cargo:rustc-check-cfg=cfg(rust, values("1.78.0"))',
+##     "cargo:rustc-check-cfg=cfg(zerocopy_generic_bounds_in_const_fn_1_61_0)",
+##     'cargo:rustc-check-cfg=cfg(rust, values("1.61.0"))',
+##     "cargo:rustc-check-cfg=cfg(zerocopy_panic_in_const_and_vec_try_reserve_1_57_0)",
+##     'cargo:rustc-check-cfg=cfg(rust, values("1.57.0"))',
+##     "cargo:rustc-check-cfg=cfg(zerocopy_target_has_atomics_1_60_0)",
+##     'cargo:rustc-check-cfg=cfg(rust, values("1.60.0"))',
+##     "cargo:rustc-check-cfg=cfg(doc_cfg)",
+##     "cargo:rustc-check-cfg=cfg(kani)",
+##     "cargo:rustc-check-cfg=cfg(__ZEROCOPY_INTERNAL_USE_ONLY_NIGHTLY_FEATURES_IN_TESTS)",
+##     "cargo:rustc-check-cfg=cfg(coverage_nightly)",
+##     "cargo:rustc-cfg=zerocopy_aarch64_simd_1_59_0",
+##     "cargo:rustc-cfg=zerocopy_core_error_1_81_0",
+##     "cargo:rustc-cfg=zerocopy_diagnostic_on_unimplemented_1_78_0",
+##     "cargo:rustc-cfg=zerocopy_generic_bounds_in_const_fn_1_61_0",
+##     "cargo:rustc-cfg=zerocopy_panic_in_const_and_vec_try_reserve_1_57_0",
+##     "cargo:rustc-cfg=zerocopy_target_has_atomics_1_60_0",
+## ]
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "run-z-zerocopy-0.8.26-f8ea397704a2e459"
+## script = '''
+## FROM rust-base AS run-z-zerocopy-0.8.26-f8ea397704a2e459
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-flamegraph_0-6-10/release/build/zerocopy-f8ea397704a2e459/out
+## WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zerocopy-0.8.26
+## RUN \
+##   --mount=from=out-79067ef5349c233e,source=/build_script_build-79067ef5349c233e,dst=/tmp/clis-flamegraph_0-6-10/release/build/zerocopy-79067ef5349c233e/build-script-build \
+##   --mount=from=cratesio-zerocopy-0.8.26,source=/zerocopy-0.8.26,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zerocopy-0.8.26 \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CFG_FEATURE=simd \
+##         CARGO_CFG_PANIC=unwind \
+##         CARGO_CFG_TARGET_ABI= \
+##         CARGO_CFG_TARGET_ARCH=x86_64 \
+##         CARGO_CFG_TARGET_ENDIAN=little \
+##         CARGO_CFG_TARGET_ENV=gnu \
+##         CARGO_CFG_TARGET_FAMILY=unix \
+##         CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
+##         CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+##         CARGO_CFG_TARGET_OS=linux \
+##         CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+##         CARGO_CFG_TARGET_VENDOR=unknown \
+##         CARGO_CFG_UNIX= \
+##         CARGO_ENCODED_RUSTFLAGS= \
+##         CARGO_FEATURE_SIMD=1 \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zerocopy-0.8.26 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zerocopy-0.8.26/Cargo.toml \
+##         CARGO_PKG_AUTHORS=Joshua' Liebow-Feeser <joshlf@google.com>:Jack Wrenn <jswrenn@amazon.com>' \
+##         CARGO_PKG_DESCRIPTION=Zerocopy' makes zero-cost memory manipulation effortless. We write "unsafe" so you don'\'t' have to.' \
+##         CARGO_PKG_HOMEPAGE= \
+##         CARGO_PKG_LICENSE=BSD-2-Clause' OR Apache-2.0 OR MIT' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=zerocopy \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/google/zerocopy' \
+##         CARGO_PKG_RUST_VERSION=1.56.0 \
+##         CARGO_PKG_VERSION=0.8.26 \
+##         CARGO_PKG_VERSION_MAJOR=0 \
+##         CARGO_PKG_VERSION_MINOR=8 \
+##         CARGO_PKG_VERSION_PATCH=26 \
+##         CARGO_PKG_VERSION_PRE= \
+##         DEBUG=false \
+##         HOST=x86_64-unknown-linux-gnu \
+##         NUM_JOBS=4 \
+##         OPT_LEVEL=3 \
+##         OUT_DIR=/tmp/clis-flamegraph_0-6-10/release/build/zerocopy-f8ea397704a2e459/out \
+##         PROFILE=release \
+##         RUSTC=rustc \
+##         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+##         TARGET=x86_64-unknown-linux-gnu \
+##         CARGOGREEN=1 \
+##       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-flamegraph_0-6-10/release/build/zerocopy-79067ef5349c233e/build-script-build \
+##         1>          /tmp/clis-flamegraph_0-6-10/release/build/zerocopy-f8ea397704a2e459/out/out-f8ea397704a2e459-stdout \
+##         2>          /tmp/clis-flamegraph_0-6-10/release/build/zerocopy-f8ea397704a2e459/out/out-f8ea397704a2e459-stderr \
+##         || echo $? >/tmp/clis-flamegraph_0-6-10/release/build/zerocopy-f8ea397704a2e459/out/out-f8ea397704a2e459-errcode\
+##   ; find /tmp/clis-flamegraph_0-6-10/release/build/zerocopy-f8ea397704a2e459/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-f8ea397704a2e459"
+## script = """
+## FROM scratch AS out-f8ea397704a2e459
+## COPY --link --from=run-z-zerocopy-0.8.26-f8ea397704a2e459 /tmp/clis-flamegraph_0-6-10/release/build/zerocopy-f8ea397704a2e459/out /"""
+
+
 FROM rust-base AS dep-n-zerocopy-0.8.26-edd5fe1b967d7744
 SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-flamegraph_0-6-10/release/deps
 RUN \
   --mount=from=cratesio-zerocopy-0.8.26,source=/zerocopy-0.8.26,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zerocopy-0.8.26 \
+  --mount=from=out-f8ea397704a2e459,dst=/tmp/clis-flamegraph_0-6-10/release/build/zerocopy-f8ea397704a2e459/out,source=/ \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=zerocopy \
         CARGO_INCREMENTAL=0 \
@@ -5922,6 +9521,11 @@ FROM scratch AS out-edd5fe1b967d7744
 COPY --link --from=dep-n-zerocopy-0.8.26-edd5fe1b967d7744 /tmp/clis-flamegraph_0-6-10/release/deps/*-edd5fe1b967d7744* /
 
 ## this = "edd5fe1b967d7744"
+## deps = [
+##     "f8ea397704a2e459",
+##     "79067ef5349c233e",
+## ]
+## buildrs_results = ["f8ea397704a2e459"]
 ## writes = [
 ##     "libzerocopy-edd5fe1b967d7744.rlib",
 ##     "libzerocopy-edd5fe1b967d7744.rmeta",
@@ -5932,6 +9536,10 @@ COPY --link --from=dep-n-zerocopy-0.8.26-edd5fe1b967d7744 /tmp/clis-flamegraph_0
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-flamegraph_0-6-10/release/deps/libzerocopy-edd5fe1b967d7744.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-flamegraph_0-6-10/release/deps/libzerocopy-edd5fe1b967d7744.rlib","emit":"link"}',
 ## ]
+##
+## [[mounts]]
+## name = "out-f8ea397704a2e459"
+## mount = "/tmp/clis-flamegraph_0-6-10/release/build/zerocopy-f8ea397704a2e459/out"
 ##
 ## [[stages]]
 ##
@@ -5958,6 +9566,7 @@ COPY --link --from=dep-n-zerocopy-0.8.26-edd5fe1b967d7744 /tmp/clis-flamegraph_0
 ## WORKDIR /tmp/clis-flamegraph_0-6-10/release/deps
 ## RUN \
 ##   --mount=from=cratesio-zerocopy-0.8.26,source=/zerocopy-0.8.26,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zerocopy-0.8.26 \
+##   --mount=from=out-f8ea397704a2e459,dst=/tmp/clis-flamegraph_0-6-10/release/build/zerocopy-f8ea397704a2e459/out,source=/ \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=zerocopy \
 ##         CARGO_INCREMENTAL=0 \
@@ -5993,9 +9602,416 @@ COPY --link --from=dep-n-zerocopy-0.8.26-edd5fe1b967d7744 /tmp/clis-flamegraph_0
 ## FROM scratch AS out-edd5fe1b967d7744
 ## COPY --link --from=dep-n-zerocopy-0.8.26-edd5fe1b967d7744 /tmp/clis-flamegraph_0-6-10/release/deps/*-edd5fe1b967d7744* /"""
 
+FROM scratch AS cratesio-version_check-0.9.5
+ADD --chmod=0664 --unpack --checksum=sha256:0b928f33d975fc6ad9f86c8f283853ad26bdd5b10b7f1542aa2fa15e2289105a \
+  https://static.crates.io/crates/version_check/version_check-0.9.5.crate /
+FROM rust-base AS dep-n-version_check-0.9.5-23b425cce0264739
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-flamegraph_0-6-10/release/deps
+RUN \
+  --mount=from=cratesio-version_check-0.9.5,source=/version_check-0.9.5,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/version_check-0.9.5 \
+    env CARGO="$(which cargo)" \
+        CARGO_CRATE_NAME=version_check \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/version_check-0.9.5 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/version_check-0.9.5/Cargo.toml \
+        CARGO_PKG_AUTHORS=Sergio' Benitez <sb@sergio.bz>' \
+        CARGO_PKG_DESCRIPTION=Tiny' crate to check the version of the installed/running rustc.' \
+        CARGO_PKG_HOMEPAGE= \
+        CARGO_PKG_LICENSE=MIT/Apache-2.0 \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=version_check \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/SergioBenitez/version_check' \
+        CARGO_PKG_RUST_VERSION= \
+        CARGO_PKG_VERSION=0.9.5 \
+        CARGO_PKG_VERSION_MAJOR=0 \
+        CARGO_PKG_VERSION_MINOR=9 \
+        CARGO_PKG_VERSION_PATCH=5 \
+        CARGO_PKG_VERSION_PRE= \
+        CARGOGREEN=1 \
+      rustc --crate-name version_check --edition 2015 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=93973a915f03e2c2' -C extra-filename'=-23b425cce0264739' --out-dir /tmp/clis-flamegraph_0-6-10/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-flamegraph_0-6-10/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/version_check-0.9.5/src/lib.rs \
+        1>          /tmp/clis-flamegraph_0-6-10/release/deps/out-23b425cce0264739-stdout \
+        2>          /tmp/clis-flamegraph_0-6-10/release/deps/out-23b425cce0264739-stderr \
+        || echo $? >/tmp/clis-flamegraph_0-6-10/release/deps/out-23b425cce0264739-errcode\
+  ; find /tmp/clis-flamegraph_0-6-10/release/deps/*-23b425cce0264739* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-23b425cce0264739
+COPY --link --from=dep-n-version_check-0.9.5-23b425cce0264739 /tmp/clis-flamegraph_0-6-10/release/deps/*-23b425cce0264739* /
+
+## this = "23b425cce0264739"
+## writes = [
+##     "libversion_check-23b425cce0264739.rlib",
+##     "libversion_check-23b425cce0264739.rmeta",
+##     "version_check-23b425cce0264739.d",
+## ]
+## stderr = [
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-flamegraph_0-6-10/release/deps/version_check-23b425cce0264739.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-flamegraph_0-6-10/release/deps/libversion_check-23b425cce0264739.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-flamegraph_0-6-10/release/deps/libversion_check-23b425cce0264739.rlib","emit":"link"}',
+## ]
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
+##
+## [[stages]]
+##
+## [stages.Cratesio]
+## stage = "cratesio-version_check-0.9.5"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/version_check-0.9.5"
+## name = "version_check"
+## name_dash_version = "version_check-0.9.5"
+## hash = "0b928f33d975fc6ad9f86c8f283853ad26bdd5b10b7f1542aa2fa15e2289105a"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "dep-n-version_check-0.9.5-23b425cce0264739"
+## script = '''
+## FROM rust-base AS dep-n-version_check-0.9.5-23b425cce0264739
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-flamegraph_0-6-10/release/deps
+## RUN \
+##   --mount=from=cratesio-version_check-0.9.5,source=/version_check-0.9.5,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/version_check-0.9.5 \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CRATE_NAME=version_check \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/version_check-0.9.5 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/version_check-0.9.5/Cargo.toml \
+##         CARGO_PKG_AUTHORS=Sergio' Benitez <sb@sergio.bz>' \
+##         CARGO_PKG_DESCRIPTION=Tiny' crate to check the version of the installed/running rustc.' \
+##         CARGO_PKG_HOMEPAGE= \
+##         CARGO_PKG_LICENSE=MIT/Apache-2.0 \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=version_check \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/SergioBenitez/version_check' \
+##         CARGO_PKG_RUST_VERSION= \
+##         CARGO_PKG_VERSION=0.9.5 \
+##         CARGO_PKG_VERSION_MAJOR=0 \
+##         CARGO_PKG_VERSION_MINOR=9 \
+##         CARGO_PKG_VERSION_PATCH=5 \
+##         CARGO_PKG_VERSION_PRE= \
+##         CARGOGREEN=1 \
+##       rustc --crate-name version_check --edition 2015 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=93973a915f03e2c2' -C extra-filename'=-23b425cce0264739' --out-dir /tmp/clis-flamegraph_0-6-10/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-flamegraph_0-6-10/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/version_check-0.9.5/src/lib.rs \
+##         1>          /tmp/clis-flamegraph_0-6-10/release/deps/out-23b425cce0264739-stdout \
+##         2>          /tmp/clis-flamegraph_0-6-10/release/deps/out-23b425cce0264739-stderr \
+##         || echo $? >/tmp/clis-flamegraph_0-6-10/release/deps/out-23b425cce0264739-errcode\
+##   ; find /tmp/clis-flamegraph_0-6-10/release/deps/*-23b425cce0264739* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-23b425cce0264739"
+## script = """
+## FROM scratch AS out-23b425cce0264739
+## COPY --link --from=dep-n-version_check-0.9.5-23b425cce0264739 /tmp/clis-flamegraph_0-6-10/release/deps/*-23b425cce0264739* /"""
+
 FROM scratch AS cratesio-ahash-0.8.12
 ADD --chmod=0664 --unpack --checksum=sha256:5a15f179cd60c4584b8a8c596927aadc462e27f2ca70c04e0071964a73ba7a75 \
   https://static.crates.io/crates/ahash/ahash-0.8.12.crate /
+FROM rust-base AS dep-x-ahash-0.8.12-68d55095ddc72a51
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-flamegraph_0-6-10/release/build/ahash-68d55095ddc72a51
+RUN \
+  --mount=from=cratesio-ahash-0.8.12,source=/ahash-0.8.12,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ahash-0.8.12,rw \
+  --mount=from=out-23b425cce0264739,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libversion_check-23b425cce0264739.rlib,source=/libversion_check-23b425cce0264739.rlib \
+    { \
+        cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ahash-0.8.12/build.rs | sed -E 's/^(pub[()a-z]* +)?(async +)?fn +main/\1\2fn actual_68d55095ddc72a51_main/' >/_ && mv /_ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ahash-0.8.12/build.rs ; \
+        { \
+          echo ; \
+          echo 'fn main() {' ; \
+          echo '    use std::env::{args_os, var_os};' ; \
+          echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+          echo '        use std::process::{Command, Stdio};' ; \
+          echo '        let mut cmd = Command::new("cargo-green");' ; \
+          echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+          echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+          echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+          echo '        assert!(res.success());' ; \
+          echo '    } else {' ; \
+          echo '        actual_68d55095ddc72a51_main();' ; \
+          echo '    }' ; \
+          echo '}' ; \
+        } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ahash-0.8.12/build.rs ; \
+    } && \
+    env CARGO="$(which cargo)" \
+        CARGO_CRATE_NAME=build_script_build \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ahash-0.8.12 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ahash-0.8.12/Cargo.toml \
+        CARGO_PKG_AUTHORS=Tom' Kaitchuck <Tom.Kaitchuck@gmail.com>' \
+        CARGO_PKG_DESCRIPTION=A' non-cryptographic hash function using AES-NI for high performance' \
+        CARGO_PKG_HOMEPAGE= \
+        CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=ahash \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/tkaitchuck/ahash' \
+        CARGO_PKG_RUST_VERSION=1.60.0 \
+        CARGO_PKG_VERSION=0.8.12 \
+        CARGO_PKG_VERSION_MAJOR=0 \
+        CARGO_PKG_VERSION_MINOR=8 \
+        CARGO_PKG_VERSION_PATCH=12 \
+        CARGO_PKG_VERSION_PRE= \
+        CARGOGREEN=1 \
+      rustc --crate-name build_script_build --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="getrandom"' --cfg feature'="runtime-rng"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("atomic-polyfill", "compile-time-rng", "const-random", "default", "getrandom", "nightly-arm-aes", "no-rng", "runtime-rng", "serde", "std"))' -C metadata'=69cab8edc6f24bea' -C extra-filename'=-68d55095ddc72a51' --out-dir /tmp/clis-flamegraph_0-6-10/release/build/ahash-68d55095ddc72a51 -C strip'=debuginfo' -L dependency'=/tmp/clis-flamegraph_0-6-10/release/deps' --extern version_check'=/tmp/clis-flamegraph_0-6-10/release/deps/libversion_check-23b425cce0264739.rlib' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ahash-0.8.12/build.rs \
+        1>          /tmp/clis-flamegraph_0-6-10/release/build/ahash-68d55095ddc72a51/out-68d55095ddc72a51-stdout \
+        2>          /tmp/clis-flamegraph_0-6-10/release/build/ahash-68d55095ddc72a51/out-68d55095ddc72a51-stderr \
+        || echo $? >/tmp/clis-flamegraph_0-6-10/release/build/ahash-68d55095ddc72a51/out-68d55095ddc72a51-errcode\
+  ; find /tmp/clis-flamegraph_0-6-10/release/build/ahash-68d55095ddc72a51/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-68d55095ddc72a51
+COPY --link --from=dep-x-ahash-0.8.12-68d55095ddc72a51 /tmp/clis-flamegraph_0-6-10/release/build/ahash-68d55095ddc72a51/*-68d55095ddc72a51* /
+
+## this = "68d55095ddc72a51"
+## deps = ["23b425cce0264739"]
+## writes = [
+##     "build_script_build-68d55095ddc72a51",
+##     "build_script_build-68d55095ddc72a51.d",
+## ]
+## stderr = [
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-flamegraph_0-6-10/release/build/ahash-68d55095ddc72a51/build_script_build-68d55095ddc72a51.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-flamegraph_0-6-10/release/build/ahash-68d55095ddc72a51/build_script_build-68d55095ddc72a51","emit":"link"}',
+## ]
+##
+## [[externs]]
+## from = "out-23b425cce0264739"
+## xtern = "libversion_check-23b425cce0264739.rlib"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
+##
+## [[stages]]
+##
+## [stages.Cratesio]
+## stage = "cratesio-ahash-0.8.12"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ahash-0.8.12"
+## name = "ahash"
+## name_dash_version = "ahash-0.8.12"
+## hash = "5a15f179cd60c4584b8a8c596927aadc462e27f2ca70c04e0071964a73ba7a75"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "dep-x-ahash-0.8.12-68d55095ddc72a51"
+## script = '''
+## FROM rust-base AS dep-x-ahash-0.8.12-68d55095ddc72a51
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-flamegraph_0-6-10/release/build/ahash-68d55095ddc72a51
+## RUN \
+##   --mount=from=cratesio-ahash-0.8.12,source=/ahash-0.8.12,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ahash-0.8.12,rw \
+##   --mount=from=out-23b425cce0264739,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libversion_check-23b425cce0264739.rlib,source=/libversion_check-23b425cce0264739.rlib \
+##     { \
+##         cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ahash-0.8.12/build.rs | sed -E 's/^(pub[()a-z]* +)?(async +)?fn +main/\1\2fn actual_68d55095ddc72a51_main/' >/_ && mv /_ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ahash-0.8.12/build.rs ; \
+##         { \
+##           echo ; \
+##           echo 'fn main() {' ; \
+##           echo '    use std::env::{args_os, var_os};' ; \
+##           echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+##           echo '        use std::process::{Command, Stdio};' ; \
+##           echo '        let mut cmd = Command::new("cargo-green");' ; \
+##           echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+##           echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+##           echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+##           echo '        assert!(res.success());' ; \
+##           echo '    } else {' ; \
+##           echo '        actual_68d55095ddc72a51_main();' ; \
+##           echo '    }' ; \
+##           echo '}' ; \
+##         } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ahash-0.8.12/build.rs ; \
+##     } && \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CRATE_NAME=build_script_build \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ahash-0.8.12 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ahash-0.8.12/Cargo.toml \
+##         CARGO_PKG_AUTHORS=Tom' Kaitchuck <Tom.Kaitchuck@gmail.com>' \
+##         CARGO_PKG_DESCRIPTION=A' non-cryptographic hash function using AES-NI for high performance' \
+##         CARGO_PKG_HOMEPAGE= \
+##         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=ahash \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/tkaitchuck/ahash' \
+##         CARGO_PKG_RUST_VERSION=1.60.0 \
+##         CARGO_PKG_VERSION=0.8.12 \
+##         CARGO_PKG_VERSION_MAJOR=0 \
+##         CARGO_PKG_VERSION_MINOR=8 \
+##         CARGO_PKG_VERSION_PATCH=12 \
+##         CARGO_PKG_VERSION_PRE= \
+##         CARGOGREEN=1 \
+##       rustc --crate-name build_script_build --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="getrandom"' --cfg feature'="runtime-rng"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("atomic-polyfill", "compile-time-rng", "const-random", "default", "getrandom", "nightly-arm-aes", "no-rng", "runtime-rng", "serde", "std"))' -C metadata'=69cab8edc6f24bea' -C extra-filename'=-68d55095ddc72a51' --out-dir /tmp/clis-flamegraph_0-6-10/release/build/ahash-68d55095ddc72a51 -C strip'=debuginfo' -L dependency'=/tmp/clis-flamegraph_0-6-10/release/deps' --extern version_check'=/tmp/clis-flamegraph_0-6-10/release/deps/libversion_check-23b425cce0264739.rlib' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ahash-0.8.12/build.rs \
+##         1>          /tmp/clis-flamegraph_0-6-10/release/build/ahash-68d55095ddc72a51/out-68d55095ddc72a51-stdout \
+##         2>          /tmp/clis-flamegraph_0-6-10/release/build/ahash-68d55095ddc72a51/out-68d55095ddc72a51-stderr \
+##         || echo $? >/tmp/clis-flamegraph_0-6-10/release/build/ahash-68d55095ddc72a51/out-68d55095ddc72a51-errcode\
+##   ; find /tmp/clis-flamegraph_0-6-10/release/build/ahash-68d55095ddc72a51/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-68d55095ddc72a51"
+## script = """
+## FROM scratch AS out-68d55095ddc72a51
+## COPY --link --from=dep-x-ahash-0.8.12-68d55095ddc72a51 /tmp/clis-flamegraph_0-6-10/release/build/ahash-68d55095ddc72a51/*-68d55095ddc72a51* /"""
+
+FROM rust-base AS run-z-ahash-0.8.12-8e0d774804319f0b
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-flamegraph_0-6-10/release/build/ahash-8e0d774804319f0b/out
+WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ahash-0.8.12
+RUN \
+  --mount=from=out-68d55095ddc72a51,source=/build_script_build-68d55095ddc72a51,dst=/tmp/clis-flamegraph_0-6-10/release/build/ahash-68d55095ddc72a51/build-script-build \
+  --mount=from=cratesio-ahash-0.8.12,source=/ahash-0.8.12,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ahash-0.8.12 \
+    env CARGO="$(which cargo)" \
+        CARGO_CFG_FEATURE=default,getrandom,runtime-rng,std \
+        CARGO_CFG_PANIC=unwind \
+        CARGO_CFG_TARGET_ABI= \
+        CARGO_CFG_TARGET_ARCH=x86_64 \
+        CARGO_CFG_TARGET_ENDIAN=little \
+        CARGO_CFG_TARGET_ENV=gnu \
+        CARGO_CFG_TARGET_FAMILY=unix \
+        CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
+        CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+        CARGO_CFG_TARGET_OS=linux \
+        CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+        CARGO_CFG_TARGET_VENDOR=unknown \
+        CARGO_CFG_UNIX= \
+        CARGO_ENCODED_RUSTFLAGS= \
+        CARGO_FEATURE_DEFAULT=1 \
+        CARGO_FEATURE_GETRANDOM=1 \
+        CARGO_FEATURE_RUNTIME_RNG=1 \
+        CARGO_FEATURE_STD=1 \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ahash-0.8.12 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ahash-0.8.12/Cargo.toml \
+        CARGO_PKG_AUTHORS=Tom' Kaitchuck <Tom.Kaitchuck@gmail.com>' \
+        CARGO_PKG_DESCRIPTION=A' non-cryptographic hash function using AES-NI for high performance' \
+        CARGO_PKG_HOMEPAGE= \
+        CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=ahash \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/tkaitchuck/ahash' \
+        CARGO_PKG_RUST_VERSION=1.60.0 \
+        CARGO_PKG_VERSION=0.8.12 \
+        CARGO_PKG_VERSION_MAJOR=0 \
+        CARGO_PKG_VERSION_MINOR=8 \
+        CARGO_PKG_VERSION_PATCH=12 \
+        CARGO_PKG_VERSION_PRE= \
+        DEBUG=false \
+        HOST=x86_64-unknown-linux-gnu \
+        NUM_JOBS=4 \
+        OPT_LEVEL=3 \
+        OUT_DIR=/tmp/clis-flamegraph_0-6-10/release/build/ahash-8e0d774804319f0b/out \
+        PROFILE=release \
+        RUSTC=rustc \
+        RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+        TARGET=x86_64-unknown-linux-gnu \
+        CARGOGREEN=1 \
+      CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-flamegraph_0-6-10/release/build/ahash-68d55095ddc72a51/build-script-build \
+        1>          /tmp/clis-flamegraph_0-6-10/release/build/ahash-8e0d774804319f0b/out/out-8e0d774804319f0b-stdout \
+        2>          /tmp/clis-flamegraph_0-6-10/release/build/ahash-8e0d774804319f0b/out/out-8e0d774804319f0b-stderr \
+        || echo $? >/tmp/clis-flamegraph_0-6-10/release/build/ahash-8e0d774804319f0b/out/out-8e0d774804319f0b-errcode\
+  ; find /tmp/clis-flamegraph_0-6-10/release/build/ahash-8e0d774804319f0b/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-8e0d774804319f0b
+COPY --link --from=run-z-ahash-0.8.12-8e0d774804319f0b /tmp/clis-flamegraph_0-6-10/release/build/ahash-8e0d774804319f0b/out /
+
+## this = "8e0d774804319f0b"
+## deps = [
+##     "23b425cce0264739",
+##     "68d55095ddc72a51",
+## ]
+## writes_to = "/tmp/clis-flamegraph_0-6-10/release/build/ahash-8e0d774804319f0b/out"
+## stdout = [
+##     "cargo:rerun-if-changed=build.rs",
+##     "cargo:rustc-check-cfg=cfg(specialize)",
+##     "cargo:rustc-check-cfg=cfg(folded_multiply)",
+##     "cargo:rustc-cfg=folded_multiply",
+## ]
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "run-z-ahash-0.8.12-8e0d774804319f0b"
+## script = '''
+## FROM rust-base AS run-z-ahash-0.8.12-8e0d774804319f0b
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-flamegraph_0-6-10/release/build/ahash-8e0d774804319f0b/out
+## WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ahash-0.8.12
+## RUN \
+##   --mount=from=out-68d55095ddc72a51,source=/build_script_build-68d55095ddc72a51,dst=/tmp/clis-flamegraph_0-6-10/release/build/ahash-68d55095ddc72a51/build-script-build \
+##   --mount=from=cratesio-ahash-0.8.12,source=/ahash-0.8.12,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ahash-0.8.12 \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CFG_FEATURE=default,getrandom,runtime-rng,std \
+##         CARGO_CFG_PANIC=unwind \
+##         CARGO_CFG_TARGET_ABI= \
+##         CARGO_CFG_TARGET_ARCH=x86_64 \
+##         CARGO_CFG_TARGET_ENDIAN=little \
+##         CARGO_CFG_TARGET_ENV=gnu \
+##         CARGO_CFG_TARGET_FAMILY=unix \
+##         CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
+##         CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+##         CARGO_CFG_TARGET_OS=linux \
+##         CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+##         CARGO_CFG_TARGET_VENDOR=unknown \
+##         CARGO_CFG_UNIX= \
+##         CARGO_ENCODED_RUSTFLAGS= \
+##         CARGO_FEATURE_DEFAULT=1 \
+##         CARGO_FEATURE_GETRANDOM=1 \
+##         CARGO_FEATURE_RUNTIME_RNG=1 \
+##         CARGO_FEATURE_STD=1 \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ahash-0.8.12 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ahash-0.8.12/Cargo.toml \
+##         CARGO_PKG_AUTHORS=Tom' Kaitchuck <Tom.Kaitchuck@gmail.com>' \
+##         CARGO_PKG_DESCRIPTION=A' non-cryptographic hash function using AES-NI for high performance' \
+##         CARGO_PKG_HOMEPAGE= \
+##         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=ahash \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/tkaitchuck/ahash' \
+##         CARGO_PKG_RUST_VERSION=1.60.0 \
+##         CARGO_PKG_VERSION=0.8.12 \
+##         CARGO_PKG_VERSION_MAJOR=0 \
+##         CARGO_PKG_VERSION_MINOR=8 \
+##         CARGO_PKG_VERSION_PATCH=12 \
+##         CARGO_PKG_VERSION_PRE= \
+##         DEBUG=false \
+##         HOST=x86_64-unknown-linux-gnu \
+##         NUM_JOBS=4 \
+##         OPT_LEVEL=3 \
+##         OUT_DIR=/tmp/clis-flamegraph_0-6-10/release/build/ahash-8e0d774804319f0b/out \
+##         PROFILE=release \
+##         RUSTC=rustc \
+##         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+##         TARGET=x86_64-unknown-linux-gnu \
+##         CARGOGREEN=1 \
+##       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-flamegraph_0-6-10/release/build/ahash-68d55095ddc72a51/build-script-build \
+##         1>          /tmp/clis-flamegraph_0-6-10/release/build/ahash-8e0d774804319f0b/out/out-8e0d774804319f0b-stdout \
+##         2>          /tmp/clis-flamegraph_0-6-10/release/build/ahash-8e0d774804319f0b/out/out-8e0d774804319f0b-stderr \
+##         || echo $? >/tmp/clis-flamegraph_0-6-10/release/build/ahash-8e0d774804319f0b/out/out-8e0d774804319f0b-errcode\
+##   ; find /tmp/clis-flamegraph_0-6-10/release/build/ahash-8e0d774804319f0b/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-8e0d774804319f0b"
+## script = """
+## FROM scratch AS out-8e0d774804319f0b
+## COPY --link --from=run-z-ahash-0.8.12-8e0d774804319f0b /tmp/clis-flamegraph_0-6-10/release/build/ahash-8e0d774804319f0b/out /"""
+
+
 FROM rust-base AS dep-n-ahash-0.8.12-b7a4f95c065f6eeb
 SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-flamegraph_0-6-10/release/deps
@@ -6011,6 +10027,7 @@ RUN \
   --mount=from=out-d2455ec75a446def,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libonce_cell-d2455ec75a446def.rmeta,source=/libonce_cell-d2455ec75a446def.rmeta \
   --mount=from=out-edd5fe1b967d7744,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libzerocopy-edd5fe1b967d7744.rlib,source=/libzerocopy-edd5fe1b967d7744.rlib \
   --mount=from=out-edd5fe1b967d7744,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libzerocopy-edd5fe1b967d7744.rmeta,source=/libzerocopy-edd5fe1b967d7744.rmeta \
+  --mount=from=out-8e0d774804319f0b,dst=/tmp/clis-flamegraph_0-6-10/release/build/ahash-8e0d774804319f0b/out,source=/ \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=ahash \
         CARGO_INCREMENTAL=0 \
@@ -6045,8 +10062,23 @@ COPY --link --from=dep-n-ahash-0.8.12-b7a4f95c065f6eeb /tmp/clis-flamegraph_0-6-
 ##     "5a4301c208f24f4c",
 ##     "def6b41d68858040",
 ##     "dccd02569a0701db",
+##     "34ac38a29ecbc6d8",
+##     "6e2123a6636d36d8",
 ##     "d2455ec75a446def",
 ##     "edd5fe1b967d7744",
+##     "79067ef5349c233e",
+##     "8e0d774804319f0b",
+##     "fab8c0f59b008de9",
+##     "ec533ba807300e5e",
+##     "f8ea397704a2e459",
+##     "23b425cce0264739",
+##     "68d55095ddc72a51",
+## ]
+## buildrs_results = [
+##     "fab8c0f59b008de9",
+##     "ec533ba807300e5e",
+##     "f8ea397704a2e459",
+##     "8e0d774804319f0b",
 ## ]
 ## writes = [
 ##     "ahash-b7a4f95c065f6eeb.d",
@@ -6104,6 +10136,10 @@ COPY --link --from=dep-n-ahash-0.8.12-b7a4f95c065f6eeb /tmp/clis-flamegraph_0-6-
 ## from = "out-edd5fe1b967d7744"
 ## xtern = "libzerocopy-edd5fe1b967d7744.rmeta"
 ##
+## [[mounts]]
+## name = "out-8e0d774804319f0b"
+## mount = "/tmp/clis-flamegraph_0-6-10/release/build/ahash-8e0d774804319f0b/out"
+##
 ## [[stages]]
 ##
 ## [stages.Script]
@@ -6139,6 +10175,7 @@ COPY --link --from=dep-n-ahash-0.8.12-b7a4f95c065f6eeb /tmp/clis-flamegraph_0-6-
 ##   --mount=from=out-d2455ec75a446def,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libonce_cell-d2455ec75a446def.rmeta,source=/libonce_cell-d2455ec75a446def.rmeta \
 ##   --mount=from=out-edd5fe1b967d7744,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libzerocopy-edd5fe1b967d7744.rlib,source=/libzerocopy-edd5fe1b967d7744.rlib \
 ##   --mount=from=out-edd5fe1b967d7744,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libzerocopy-edd5fe1b967d7744.rmeta,source=/libzerocopy-edd5fe1b967d7744.rmeta \
+##   --mount=from=out-8e0d774804319f0b,dst=/tmp/clis-flamegraph_0-6-10/release/build/ahash-8e0d774804319f0b/out,source=/ \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=ahash \
 ##         CARGO_INCREMENTAL=0 \
@@ -6177,11 +10214,296 @@ COPY --link --from=dep-n-ahash-0.8.12-b7a4f95c065f6eeb /tmp/clis-flamegraph_0-6-
 FROM scratch AS cratesio-crossbeam-utils-0.8.21
 ADD --chmod=0664 --unpack --checksum=sha256:d0a5c400df2834b80a4c3327b3aad3a4c4cd4de0629063962b03235697506a28 \
   https://static.crates.io/crates/crossbeam-utils/crossbeam-utils-0.8.21.crate /
+FROM rust-base AS dep-x-crossbeam-utils-0.8.21-f45d51ea245fd809
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-flamegraph_0-6-10/release/build/crossbeam-utils-f45d51ea245fd809
+RUN \
+  --mount=from=cratesio-crossbeam-utils-0.8.21,source=/crossbeam-utils-0.8.21,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.21,rw \
+    { \
+        cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.21/build.rs | sed -E 's/^(pub[()a-z]* +)?(async +)?fn +main/\1\2fn actual_f45d51ea245fd809_main/' >/_ && mv /_ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.21/build.rs ; \
+        { \
+          echo ; \
+          echo 'fn main() {' ; \
+          echo '    use std::env::{args_os, var_os};' ; \
+          echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+          echo '        use std::process::{Command, Stdio};' ; \
+          echo '        let mut cmd = Command::new("cargo-green");' ; \
+          echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+          echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+          echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+          echo '        assert!(res.success());' ; \
+          echo '    } else {' ; \
+          echo '        actual_f45d51ea245fd809_main();' ; \
+          echo '    }' ; \
+          echo '}' ; \
+        } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.21/build.rs ; \
+    } && \
+    env CARGO="$(which cargo)" \
+        CARGO_CRATE_NAME=build_script_build \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.21 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.21/Cargo.toml \
+        CARGO_PKG_AUTHORS= \
+        CARGO_PKG_DESCRIPTION=Utilities' for concurrent programming' \
+        CARGO_PKG_HOMEPAGE=https'://github.com/crossbeam-rs/crossbeam/tree/master/crossbeam-utils' \
+        CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=crossbeam-utils \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/crossbeam-rs/crossbeam' \
+        CARGO_PKG_RUST_VERSION=1.60 \
+        CARGO_PKG_VERSION=0.8.21 \
+        CARGO_PKG_VERSION_MAJOR=0 \
+        CARGO_PKG_VERSION_MINOR=8 \
+        CARGO_PKG_VERSION_PATCH=21 \
+        CARGO_PKG_VERSION_PRE= \
+        CARGOGREEN=1 \
+      rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' --warn unexpected_cfgs --allow clippy'::lint_groups_priority' --allow clippy'::declare_interior_mutable_const' --check-cfg cfg'(crossbeam_loom)' --check-cfg cfg'(crossbeam_sanitize)' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "loom", "nightly", "std"))' -C metadata'=f49f67e8218856aa' -C extra-filename'=-f45d51ea245fd809' --out-dir /tmp/clis-flamegraph_0-6-10/release/build/crossbeam-utils-f45d51ea245fd809 -C strip'=debuginfo' -L dependency'=/tmp/clis-flamegraph_0-6-10/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.21/build.rs \
+        1>          /tmp/clis-flamegraph_0-6-10/release/build/crossbeam-utils-f45d51ea245fd809/out-f45d51ea245fd809-stdout \
+        2>          /tmp/clis-flamegraph_0-6-10/release/build/crossbeam-utils-f45d51ea245fd809/out-f45d51ea245fd809-stderr \
+        || echo $? >/tmp/clis-flamegraph_0-6-10/release/build/crossbeam-utils-f45d51ea245fd809/out-f45d51ea245fd809-errcode\
+  ; find /tmp/clis-flamegraph_0-6-10/release/build/crossbeam-utils-f45d51ea245fd809/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-f45d51ea245fd809
+COPY --link --from=dep-x-crossbeam-utils-0.8.21-f45d51ea245fd809 /tmp/clis-flamegraph_0-6-10/release/build/crossbeam-utils-f45d51ea245fd809/*-f45d51ea245fd809* /
+
+## this = "f45d51ea245fd809"
+## writes = [
+##     "build_script_build-f45d51ea245fd809",
+##     "build_script_build-f45d51ea245fd809.d",
+## ]
+## stderr = [
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-flamegraph_0-6-10/release/build/crossbeam-utils-f45d51ea245fd809/build_script_build-f45d51ea245fd809.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-flamegraph_0-6-10/release/build/crossbeam-utils-f45d51ea245fd809/build_script_build-f45d51ea245fd809","emit":"link"}',
+## ]
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
+##
+## [[stages]]
+##
+## [stages.Cratesio]
+## stage = "cratesio-crossbeam-utils-0.8.21"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.21"
+## name = "crossbeam-utils"
+## name_dash_version = "crossbeam-utils-0.8.21"
+## hash = "d0a5c400df2834b80a4c3327b3aad3a4c4cd4de0629063962b03235697506a28"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "dep-x-crossbeam-utils-0.8.21-f45d51ea245fd809"
+## script = '''
+## FROM rust-base AS dep-x-crossbeam-utils-0.8.21-f45d51ea245fd809
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-flamegraph_0-6-10/release/build/crossbeam-utils-f45d51ea245fd809
+## RUN \
+##   --mount=from=cratesio-crossbeam-utils-0.8.21,source=/crossbeam-utils-0.8.21,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.21,rw \
+##     { \
+##         cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.21/build.rs | sed -E 's/^(pub[()a-z]* +)?(async +)?fn +main/\1\2fn actual_f45d51ea245fd809_main/' >/_ && mv /_ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.21/build.rs ; \
+##         { \
+##           echo ; \
+##           echo 'fn main() {' ; \
+##           echo '    use std::env::{args_os, var_os};' ; \
+##           echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+##           echo '        use std::process::{Command, Stdio};' ; \
+##           echo '        let mut cmd = Command::new("cargo-green");' ; \
+##           echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+##           echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+##           echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+##           echo '        assert!(res.success());' ; \
+##           echo '    } else {' ; \
+##           echo '        actual_f45d51ea245fd809_main();' ; \
+##           echo '    }' ; \
+##           echo '}' ; \
+##         } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.21/build.rs ; \
+##     } && \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CRATE_NAME=build_script_build \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.21 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.21/Cargo.toml \
+##         CARGO_PKG_AUTHORS= \
+##         CARGO_PKG_DESCRIPTION=Utilities' for concurrent programming' \
+##         CARGO_PKG_HOMEPAGE=https'://github.com/crossbeam-rs/crossbeam/tree/master/crossbeam-utils' \
+##         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=crossbeam-utils \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/crossbeam-rs/crossbeam' \
+##         CARGO_PKG_RUST_VERSION=1.60 \
+##         CARGO_PKG_VERSION=0.8.21 \
+##         CARGO_PKG_VERSION_MAJOR=0 \
+##         CARGO_PKG_VERSION_MINOR=8 \
+##         CARGO_PKG_VERSION_PATCH=21 \
+##         CARGO_PKG_VERSION_PRE= \
+##         CARGOGREEN=1 \
+##       rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' --warn unexpected_cfgs --allow clippy'::lint_groups_priority' --allow clippy'::declare_interior_mutable_const' --check-cfg cfg'(crossbeam_loom)' --check-cfg cfg'(crossbeam_sanitize)' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "loom", "nightly", "std"))' -C metadata'=f49f67e8218856aa' -C extra-filename'=-f45d51ea245fd809' --out-dir /tmp/clis-flamegraph_0-6-10/release/build/crossbeam-utils-f45d51ea245fd809 -C strip'=debuginfo' -L dependency'=/tmp/clis-flamegraph_0-6-10/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.21/build.rs \
+##         1>          /tmp/clis-flamegraph_0-6-10/release/build/crossbeam-utils-f45d51ea245fd809/out-f45d51ea245fd809-stdout \
+##         2>          /tmp/clis-flamegraph_0-6-10/release/build/crossbeam-utils-f45d51ea245fd809/out-f45d51ea245fd809-stderr \
+##         || echo $? >/tmp/clis-flamegraph_0-6-10/release/build/crossbeam-utils-f45d51ea245fd809/out-f45d51ea245fd809-errcode\
+##   ; find /tmp/clis-flamegraph_0-6-10/release/build/crossbeam-utils-f45d51ea245fd809/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-f45d51ea245fd809"
+## script = """
+## FROM scratch AS out-f45d51ea245fd809
+## COPY --link --from=dep-x-crossbeam-utils-0.8.21-f45d51ea245fd809 /tmp/clis-flamegraph_0-6-10/release/build/crossbeam-utils-f45d51ea245fd809/*-f45d51ea245fd809* /"""
+
+FROM rust-base AS run-z-crossbeam-utils-0.8.21-548f5ba1ed589a3e
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-flamegraph_0-6-10/release/build/crossbeam-utils-548f5ba1ed589a3e/out
+WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.21
+RUN \
+  --mount=from=out-f45d51ea245fd809,source=/build_script_build-f45d51ea245fd809,dst=/tmp/clis-flamegraph_0-6-10/release/build/crossbeam-utils-f45d51ea245fd809/build-script-build \
+  --mount=from=cratesio-crossbeam-utils-0.8.21,source=/crossbeam-utils-0.8.21,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.21 \
+    env CARGO="$(which cargo)" \
+        CARGO_CFG_FEATURE=default,std \
+        CARGO_CFG_PANIC=unwind \
+        CARGO_CFG_TARGET_ABI= \
+        CARGO_CFG_TARGET_ARCH=x86_64 \
+        CARGO_CFG_TARGET_ENDIAN=little \
+        CARGO_CFG_TARGET_ENV=gnu \
+        CARGO_CFG_TARGET_FAMILY=unix \
+        CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
+        CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+        CARGO_CFG_TARGET_OS=linux \
+        CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+        CARGO_CFG_TARGET_VENDOR=unknown \
+        CARGO_CFG_UNIX= \
+        CARGO_ENCODED_RUSTFLAGS= \
+        CARGO_FEATURE_DEFAULT=1 \
+        CARGO_FEATURE_STD=1 \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.21 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.21/Cargo.toml \
+        CARGO_PKG_AUTHORS= \
+        CARGO_PKG_DESCRIPTION=Utilities' for concurrent programming' \
+        CARGO_PKG_HOMEPAGE=https'://github.com/crossbeam-rs/crossbeam/tree/master/crossbeam-utils' \
+        CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=crossbeam-utils \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/crossbeam-rs/crossbeam' \
+        CARGO_PKG_RUST_VERSION=1.60 \
+        CARGO_PKG_VERSION=0.8.21 \
+        CARGO_PKG_VERSION_MAJOR=0 \
+        CARGO_PKG_VERSION_MINOR=8 \
+        CARGO_PKG_VERSION_PATCH=21 \
+        CARGO_PKG_VERSION_PRE= \
+        DEBUG=false \
+        HOST=x86_64-unknown-linux-gnu \
+        NUM_JOBS=4 \
+        OPT_LEVEL=3 \
+        OUT_DIR=/tmp/clis-flamegraph_0-6-10/release/build/crossbeam-utils-548f5ba1ed589a3e/out \
+        PROFILE=release \
+        RUSTC=rustc \
+        RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+        TARGET=x86_64-unknown-linux-gnu \
+        CARGOGREEN=1 \
+      CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-flamegraph_0-6-10/release/build/crossbeam-utils-f45d51ea245fd809/build-script-build \
+        1>          /tmp/clis-flamegraph_0-6-10/release/build/crossbeam-utils-548f5ba1ed589a3e/out/out-548f5ba1ed589a3e-stdout \
+        2>          /tmp/clis-flamegraph_0-6-10/release/build/crossbeam-utils-548f5ba1ed589a3e/out/out-548f5ba1ed589a3e-stderr \
+        || echo $? >/tmp/clis-flamegraph_0-6-10/release/build/crossbeam-utils-548f5ba1ed589a3e/out/out-548f5ba1ed589a3e-errcode\
+  ; find /tmp/clis-flamegraph_0-6-10/release/build/crossbeam-utils-548f5ba1ed589a3e/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-548f5ba1ed589a3e
+COPY --link --from=run-z-crossbeam-utils-0.8.21-548f5ba1ed589a3e /tmp/clis-flamegraph_0-6-10/release/build/crossbeam-utils-548f5ba1ed589a3e/out /
+
+## this = "548f5ba1ed589a3e"
+## deps = ["f45d51ea245fd809"]
+## writes_to = "/tmp/clis-flamegraph_0-6-10/release/build/crossbeam-utils-548f5ba1ed589a3e/out"
+## stdout = [
+##     "cargo:rerun-if-changed=no_atomic.rs",
+##     "cargo:rustc-check-cfg=cfg(crossbeam_no_atomic,crossbeam_sanitize_thread)",
+## ]
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "run-z-crossbeam-utils-0.8.21-548f5ba1ed589a3e"
+## script = '''
+## FROM rust-base AS run-z-crossbeam-utils-0.8.21-548f5ba1ed589a3e
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-flamegraph_0-6-10/release/build/crossbeam-utils-548f5ba1ed589a3e/out
+## WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.21
+## RUN \
+##   --mount=from=out-f45d51ea245fd809,source=/build_script_build-f45d51ea245fd809,dst=/tmp/clis-flamegraph_0-6-10/release/build/crossbeam-utils-f45d51ea245fd809/build-script-build \
+##   --mount=from=cratesio-crossbeam-utils-0.8.21,source=/crossbeam-utils-0.8.21,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.21 \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CFG_FEATURE=default,std \
+##         CARGO_CFG_PANIC=unwind \
+##         CARGO_CFG_TARGET_ABI= \
+##         CARGO_CFG_TARGET_ARCH=x86_64 \
+##         CARGO_CFG_TARGET_ENDIAN=little \
+##         CARGO_CFG_TARGET_ENV=gnu \
+##         CARGO_CFG_TARGET_FAMILY=unix \
+##         CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
+##         CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+##         CARGO_CFG_TARGET_OS=linux \
+##         CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+##         CARGO_CFG_TARGET_VENDOR=unknown \
+##         CARGO_CFG_UNIX= \
+##         CARGO_ENCODED_RUSTFLAGS= \
+##         CARGO_FEATURE_DEFAULT=1 \
+##         CARGO_FEATURE_STD=1 \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.21 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.21/Cargo.toml \
+##         CARGO_PKG_AUTHORS= \
+##         CARGO_PKG_DESCRIPTION=Utilities' for concurrent programming' \
+##         CARGO_PKG_HOMEPAGE=https'://github.com/crossbeam-rs/crossbeam/tree/master/crossbeam-utils' \
+##         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=crossbeam-utils \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/crossbeam-rs/crossbeam' \
+##         CARGO_PKG_RUST_VERSION=1.60 \
+##         CARGO_PKG_VERSION=0.8.21 \
+##         CARGO_PKG_VERSION_MAJOR=0 \
+##         CARGO_PKG_VERSION_MINOR=8 \
+##         CARGO_PKG_VERSION_PATCH=21 \
+##         CARGO_PKG_VERSION_PRE= \
+##         DEBUG=false \
+##         HOST=x86_64-unknown-linux-gnu \
+##         NUM_JOBS=4 \
+##         OPT_LEVEL=3 \
+##         OUT_DIR=/tmp/clis-flamegraph_0-6-10/release/build/crossbeam-utils-548f5ba1ed589a3e/out \
+##         PROFILE=release \
+##         RUSTC=rustc \
+##         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+##         TARGET=x86_64-unknown-linux-gnu \
+##         CARGOGREEN=1 \
+##       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-flamegraph_0-6-10/release/build/crossbeam-utils-f45d51ea245fd809/build-script-build \
+##         1>          /tmp/clis-flamegraph_0-6-10/release/build/crossbeam-utils-548f5ba1ed589a3e/out/out-548f5ba1ed589a3e-stdout \
+##         2>          /tmp/clis-flamegraph_0-6-10/release/build/crossbeam-utils-548f5ba1ed589a3e/out/out-548f5ba1ed589a3e-stderr \
+##         || echo $? >/tmp/clis-flamegraph_0-6-10/release/build/crossbeam-utils-548f5ba1ed589a3e/out/out-548f5ba1ed589a3e-errcode\
+##   ; find /tmp/clis-flamegraph_0-6-10/release/build/crossbeam-utils-548f5ba1ed589a3e/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-548f5ba1ed589a3e"
+## script = """
+## FROM scratch AS out-548f5ba1ed589a3e
+## COPY --link --from=run-z-crossbeam-utils-0.8.21-548f5ba1ed589a3e /tmp/clis-flamegraph_0-6-10/release/build/crossbeam-utils-548f5ba1ed589a3e/out /"""
+
+
 FROM rust-base AS dep-n-crossbeam-utils-0.8.21-67764cf5e4057190
 SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-flamegraph_0-6-10/release/deps
 RUN \
   --mount=from=cratesio-crossbeam-utils-0.8.21,source=/crossbeam-utils-0.8.21,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.21 \
+  --mount=from=out-548f5ba1ed589a3e,dst=/tmp/clis-flamegraph_0-6-10/release/build/crossbeam-utils-548f5ba1ed589a3e/out,source=/ \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=crossbeam_utils \
         CARGO_INCREMENTAL=0 \
@@ -6212,6 +10534,11 @@ FROM scratch AS out-67764cf5e4057190
 COPY --link --from=dep-n-crossbeam-utils-0.8.21-67764cf5e4057190 /tmp/clis-flamegraph_0-6-10/release/deps/*-67764cf5e4057190* /
 
 ## this = "67764cf5e4057190"
+## deps = [
+##     "548f5ba1ed589a3e",
+##     "f45d51ea245fd809",
+## ]
+## buildrs_results = ["548f5ba1ed589a3e"]
 ## writes = [
 ##     "crossbeam_utils-67764cf5e4057190.d",
 ##     "libcrossbeam_utils-67764cf5e4057190.rlib",
@@ -6222,6 +10549,10 @@ COPY --link --from=dep-n-crossbeam-utils-0.8.21-67764cf5e4057190 /tmp/clis-flame
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-flamegraph_0-6-10/release/deps/libcrossbeam_utils-67764cf5e4057190.rmeta","emit":"metadata"}',
 ##     '{"$message_type":"artifact","artifact":"/tmp/clis-flamegraph_0-6-10/release/deps/libcrossbeam_utils-67764cf5e4057190.rlib","emit":"link"}',
 ## ]
+##
+## [[mounts]]
+## name = "out-548f5ba1ed589a3e"
+## mount = "/tmp/clis-flamegraph_0-6-10/release/build/crossbeam-utils-548f5ba1ed589a3e/out"
 ##
 ## [[stages]]
 ##
@@ -6248,6 +10579,7 @@ COPY --link --from=dep-n-crossbeam-utils-0.8.21-67764cf5e4057190 /tmp/clis-flame
 ## WORKDIR /tmp/clis-flamegraph_0-6-10/release/deps
 ## RUN \
 ##   --mount=from=cratesio-crossbeam-utils-0.8.21,source=/crossbeam-utils-0.8.21,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.21 \
+##   --mount=from=out-548f5ba1ed589a3e,dst=/tmp/clis-flamegraph_0-6-10/release/build/crossbeam-utils-548f5ba1ed589a3e/out,source=/ \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=crossbeam_utils \
 ##         CARGO_INCREMENTAL=0 \
@@ -6322,7 +10654,12 @@ FROM scratch AS out-a14202b9cdd591e4
 COPY --link --from=dep-n-crossbeam-channel-0.5.15-a14202b9cdd591e4 /tmp/clis-flamegraph_0-6-10/release/deps/*-a14202b9cdd591e4* /
 
 ## this = "a14202b9cdd591e4"
-## deps = ["67764cf5e4057190"]
+## deps = [
+##     "67764cf5e4057190",
+##     "f45d51ea245fd809",
+##     "548f5ba1ed589a3e",
+## ]
+## buildrs_results = ["548f5ba1ed589a3e"]
 ## writes = [
 ##     "crossbeam_channel-a14202b9cdd591e4.d",
 ##     "libcrossbeam_channel-a14202b9cdd591e4.rlib",
@@ -6627,9 +10964,411 @@ COPY --link --from=dep-n-scopeguard-1.2.0-0c2f3c3fb0dde363 /tmp/clis-flamegraph_
 ## FROM scratch AS out-0c2f3c3fb0dde363
 ## COPY --link --from=dep-n-scopeguard-1.2.0-0c2f3c3fb0dde363 /tmp/clis-flamegraph_0-6-10/release/deps/*-0c2f3c3fb0dde363* /"""
 
+FROM scratch AS cratesio-autocfg-1.5.0
+ADD --chmod=0664 --unpack --checksum=sha256:c08606f8c3cbf4ce6ec8e28fb0014a2c086708fe954eaa885384a6165172e7e8 \
+  https://static.crates.io/crates/autocfg/autocfg-1.5.0.crate /
+FROM rust-base AS dep-n-autocfg-1.5.0-f2b41e0845677d6c
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-flamegraph_0-6-10/release/deps
+RUN \
+  --mount=from=cratesio-autocfg-1.5.0,source=/autocfg-1.5.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/autocfg-1.5.0 \
+    env CARGO="$(which cargo)" \
+        CARGO_CRATE_NAME=autocfg \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/autocfg-1.5.0 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/autocfg-1.5.0/Cargo.toml \
+        CARGO_PKG_AUTHORS=Josh' Stone <cuviper@gmail.com>' \
+        CARGO_PKG_DESCRIPTION=Automatic' cfg for Rust compiler features' \
+        CARGO_PKG_HOMEPAGE= \
+        CARGO_PKG_LICENSE=Apache-2.0' OR MIT' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=autocfg \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/cuviper/autocfg' \
+        CARGO_PKG_RUST_VERSION=1.0 \
+        CARGO_PKG_VERSION=1.5.0 \
+        CARGO_PKG_VERSION_MAJOR=1 \
+        CARGO_PKG_VERSION_MINOR=5 \
+        CARGO_PKG_VERSION_PATCH=0 \
+        CARGO_PKG_VERSION_PRE= \
+        CARGOGREEN=1 \
+      rustc --crate-name autocfg --edition 2015 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=e7a67b13c59b7ba6' -C extra-filename'=-f2b41e0845677d6c' --out-dir /tmp/clis-flamegraph_0-6-10/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-flamegraph_0-6-10/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/autocfg-1.5.0/src/lib.rs \
+        1>          /tmp/clis-flamegraph_0-6-10/release/deps/out-f2b41e0845677d6c-stdout \
+        2>          /tmp/clis-flamegraph_0-6-10/release/deps/out-f2b41e0845677d6c-stderr \
+        || echo $? >/tmp/clis-flamegraph_0-6-10/release/deps/out-f2b41e0845677d6c-errcode\
+  ; find /tmp/clis-flamegraph_0-6-10/release/deps/*-f2b41e0845677d6c* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-f2b41e0845677d6c
+COPY --link --from=dep-n-autocfg-1.5.0-f2b41e0845677d6c /tmp/clis-flamegraph_0-6-10/release/deps/*-f2b41e0845677d6c* /
+
+## this = "f2b41e0845677d6c"
+## writes = [
+##     "autocfg-f2b41e0845677d6c.d",
+##     "libautocfg-f2b41e0845677d6c.rlib",
+##     "libautocfg-f2b41e0845677d6c.rmeta",
+## ]
+## stderr = [
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-flamegraph_0-6-10/release/deps/autocfg-f2b41e0845677d6c.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-flamegraph_0-6-10/release/deps/libautocfg-f2b41e0845677d6c.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-flamegraph_0-6-10/release/deps/libautocfg-f2b41e0845677d6c.rlib","emit":"link"}',
+## ]
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
+##
+## [[stages]]
+##
+## [stages.Cratesio]
+## stage = "cratesio-autocfg-1.5.0"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/autocfg-1.5.0"
+## name = "autocfg"
+## name_dash_version = "autocfg-1.5.0"
+## hash = "c08606f8c3cbf4ce6ec8e28fb0014a2c086708fe954eaa885384a6165172e7e8"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "dep-n-autocfg-1.5.0-f2b41e0845677d6c"
+## script = '''
+## FROM rust-base AS dep-n-autocfg-1.5.0-f2b41e0845677d6c
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-flamegraph_0-6-10/release/deps
+## RUN \
+##   --mount=from=cratesio-autocfg-1.5.0,source=/autocfg-1.5.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/autocfg-1.5.0 \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CRATE_NAME=autocfg \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/autocfg-1.5.0 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/autocfg-1.5.0/Cargo.toml \
+##         CARGO_PKG_AUTHORS=Josh' Stone <cuviper@gmail.com>' \
+##         CARGO_PKG_DESCRIPTION=Automatic' cfg for Rust compiler features' \
+##         CARGO_PKG_HOMEPAGE= \
+##         CARGO_PKG_LICENSE=Apache-2.0' OR MIT' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=autocfg \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/cuviper/autocfg' \
+##         CARGO_PKG_RUST_VERSION=1.0 \
+##         CARGO_PKG_VERSION=1.5.0 \
+##         CARGO_PKG_VERSION_MAJOR=1 \
+##         CARGO_PKG_VERSION_MINOR=5 \
+##         CARGO_PKG_VERSION_PATCH=0 \
+##         CARGO_PKG_VERSION_PRE= \
+##         CARGOGREEN=1 \
+##       rustc --crate-name autocfg --edition 2015 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=e7a67b13c59b7ba6' -C extra-filename'=-f2b41e0845677d6c' --out-dir /tmp/clis-flamegraph_0-6-10/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-flamegraph_0-6-10/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/autocfg-1.5.0/src/lib.rs \
+##         1>          /tmp/clis-flamegraph_0-6-10/release/deps/out-f2b41e0845677d6c-stdout \
+##         2>          /tmp/clis-flamegraph_0-6-10/release/deps/out-f2b41e0845677d6c-stderr \
+##         || echo $? >/tmp/clis-flamegraph_0-6-10/release/deps/out-f2b41e0845677d6c-errcode\
+##   ; find /tmp/clis-flamegraph_0-6-10/release/deps/*-f2b41e0845677d6c* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-f2b41e0845677d6c"
+## script = """
+## FROM scratch AS out-f2b41e0845677d6c
+## COPY --link --from=dep-n-autocfg-1.5.0-f2b41e0845677d6c /tmp/clis-flamegraph_0-6-10/release/deps/*-f2b41e0845677d6c* /"""
+
 FROM scratch AS cratesio-lock_api-0.4.13
 ADD --chmod=0664 --unpack --checksum=sha256:96936507f153605bddfcda068dd804796c84324ed2510809e5b2a624c81da765 \
   https://static.crates.io/crates/lock_api/lock_api-0.4.13.crate /
+FROM rust-base AS dep-x-lock_api-0.4.13-a75629032379aa07
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-flamegraph_0-6-10/release/build/lock_api-a75629032379aa07
+RUN \
+  --mount=from=cratesio-lock_api-0.4.13,source=/lock_api-0.4.13,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/lock_api-0.4.13,rw \
+  --mount=from=out-f2b41e0845677d6c,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libautocfg-f2b41e0845677d6c.rlib,source=/libautocfg-f2b41e0845677d6c.rlib \
+    { \
+        cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/lock_api-0.4.13/build.rs | sed -E 's/^(pub[()a-z]* +)?(async +)?fn +main/\1\2fn actual_a75629032379aa07_main/' >/_ && mv /_ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/lock_api-0.4.13/build.rs ; \
+        { \
+          echo ; \
+          echo 'fn main() {' ; \
+          echo '    use std::env::{args_os, var_os};' ; \
+          echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+          echo '        use std::process::{Command, Stdio};' ; \
+          echo '        let mut cmd = Command::new("cargo-green");' ; \
+          echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+          echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+          echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+          echo '        assert!(res.success());' ; \
+          echo '    } else {' ; \
+          echo '        actual_a75629032379aa07_main();' ; \
+          echo '    }' ; \
+          echo '}' ; \
+        } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/lock_api-0.4.13/build.rs ; \
+    } && \
+    env CARGO="$(which cargo)" \
+        CARGO_CRATE_NAME=build_script_build \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/lock_api-0.4.13 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/lock_api-0.4.13/Cargo.toml \
+        CARGO_PKG_AUTHORS=Amanieu' d'\'Antras' <amanieu@gmail.com>' \
+        CARGO_PKG_DESCRIPTION=Wrappers' to create fully-featured Mutex and RwLock types. Compatible with no_std.' \
+        CARGO_PKG_HOMEPAGE= \
+        CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=lock_api \
+        CARGO_PKG_README= \
+        CARGO_PKG_REPOSITORY=https'://github.com/Amanieu/parking_lot' \
+        CARGO_PKG_RUST_VERSION=1.64.0 \
+        CARGO_PKG_VERSION=0.4.13 \
+        CARGO_PKG_VERSION_MAJOR=0 \
+        CARGO_PKG_VERSION_MINOR=4 \
+        CARGO_PKG_VERSION_PATCH=13 \
+        CARGO_PKG_VERSION_PRE= \
+        CARGOGREEN=1 \
+      rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="atomic_usize"' --cfg feature'="default"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("arc_lock", "atomic_usize", "default", "nightly", "owning_ref", "serde"))' -C metadata'=d6442e612a21234b' -C extra-filename'=-a75629032379aa07' --out-dir /tmp/clis-flamegraph_0-6-10/release/build/lock_api-a75629032379aa07 -C strip'=debuginfo' -L dependency'=/tmp/clis-flamegraph_0-6-10/release/deps' --extern autocfg'=/tmp/clis-flamegraph_0-6-10/release/deps/libautocfg-f2b41e0845677d6c.rlib' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/lock_api-0.4.13/build.rs \
+        1>          /tmp/clis-flamegraph_0-6-10/release/build/lock_api-a75629032379aa07/out-a75629032379aa07-stdout \
+        2>          /tmp/clis-flamegraph_0-6-10/release/build/lock_api-a75629032379aa07/out-a75629032379aa07-stderr \
+        || echo $? >/tmp/clis-flamegraph_0-6-10/release/build/lock_api-a75629032379aa07/out-a75629032379aa07-errcode\
+  ; find /tmp/clis-flamegraph_0-6-10/release/build/lock_api-a75629032379aa07/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-a75629032379aa07
+COPY --link --from=dep-x-lock_api-0.4.13-a75629032379aa07 /tmp/clis-flamegraph_0-6-10/release/build/lock_api-a75629032379aa07/*-a75629032379aa07* /
+
+## this = "a75629032379aa07"
+## deps = ["f2b41e0845677d6c"]
+## writes = [
+##     "build_script_build-a75629032379aa07",
+##     "build_script_build-a75629032379aa07.d",
+## ]
+## stderr = [
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-flamegraph_0-6-10/release/build/lock_api-a75629032379aa07/build_script_build-a75629032379aa07.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-flamegraph_0-6-10/release/build/lock_api-a75629032379aa07/build_script_build-a75629032379aa07","emit":"link"}',
+## ]
+##
+## [[externs]]
+## from = "out-f2b41e0845677d6c"
+## xtern = "libautocfg-f2b41e0845677d6c.rlib"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
+##
+## [[stages]]
+##
+## [stages.Cratesio]
+## stage = "cratesio-lock_api-0.4.13"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/lock_api-0.4.13"
+## name = "lock_api"
+## name_dash_version = "lock_api-0.4.13"
+## hash = "96936507f153605bddfcda068dd804796c84324ed2510809e5b2a624c81da765"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "dep-x-lock_api-0.4.13-a75629032379aa07"
+## script = '''
+## FROM rust-base AS dep-x-lock_api-0.4.13-a75629032379aa07
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-flamegraph_0-6-10/release/build/lock_api-a75629032379aa07
+## RUN \
+##   --mount=from=cratesio-lock_api-0.4.13,source=/lock_api-0.4.13,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/lock_api-0.4.13,rw \
+##   --mount=from=out-f2b41e0845677d6c,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libautocfg-f2b41e0845677d6c.rlib,source=/libautocfg-f2b41e0845677d6c.rlib \
+##     { \
+##         cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/lock_api-0.4.13/build.rs | sed -E 's/^(pub[()a-z]* +)?(async +)?fn +main/\1\2fn actual_a75629032379aa07_main/' >/_ && mv /_ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/lock_api-0.4.13/build.rs ; \
+##         { \
+##           echo ; \
+##           echo 'fn main() {' ; \
+##           echo '    use std::env::{args_os, var_os};' ; \
+##           echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+##           echo '        use std::process::{Command, Stdio};' ; \
+##           echo '        let mut cmd = Command::new("cargo-green");' ; \
+##           echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+##           echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+##           echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+##           echo '        assert!(res.success());' ; \
+##           echo '    } else {' ; \
+##           echo '        actual_a75629032379aa07_main();' ; \
+##           echo '    }' ; \
+##           echo '}' ; \
+##         } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/lock_api-0.4.13/build.rs ; \
+##     } && \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CRATE_NAME=build_script_build \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/lock_api-0.4.13 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/lock_api-0.4.13/Cargo.toml \
+##         CARGO_PKG_AUTHORS=Amanieu' d'\'Antras' <amanieu@gmail.com>' \
+##         CARGO_PKG_DESCRIPTION=Wrappers' to create fully-featured Mutex and RwLock types. Compatible with no_std.' \
+##         CARGO_PKG_HOMEPAGE= \
+##         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=lock_api \
+##         CARGO_PKG_README= \
+##         CARGO_PKG_REPOSITORY=https'://github.com/Amanieu/parking_lot' \
+##         CARGO_PKG_RUST_VERSION=1.64.0 \
+##         CARGO_PKG_VERSION=0.4.13 \
+##         CARGO_PKG_VERSION_MAJOR=0 \
+##         CARGO_PKG_VERSION_MINOR=4 \
+##         CARGO_PKG_VERSION_PATCH=13 \
+##         CARGO_PKG_VERSION_PRE= \
+##         CARGOGREEN=1 \
+##       rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="atomic_usize"' --cfg feature'="default"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("arc_lock", "atomic_usize", "default", "nightly", "owning_ref", "serde"))' -C metadata'=d6442e612a21234b' -C extra-filename'=-a75629032379aa07' --out-dir /tmp/clis-flamegraph_0-6-10/release/build/lock_api-a75629032379aa07 -C strip'=debuginfo' -L dependency'=/tmp/clis-flamegraph_0-6-10/release/deps' --extern autocfg'=/tmp/clis-flamegraph_0-6-10/release/deps/libautocfg-f2b41e0845677d6c.rlib' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/lock_api-0.4.13/build.rs \
+##         1>          /tmp/clis-flamegraph_0-6-10/release/build/lock_api-a75629032379aa07/out-a75629032379aa07-stdout \
+##         2>          /tmp/clis-flamegraph_0-6-10/release/build/lock_api-a75629032379aa07/out-a75629032379aa07-stderr \
+##         || echo $? >/tmp/clis-flamegraph_0-6-10/release/build/lock_api-a75629032379aa07/out-a75629032379aa07-errcode\
+##   ; find /tmp/clis-flamegraph_0-6-10/release/build/lock_api-a75629032379aa07/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-a75629032379aa07"
+## script = """
+## FROM scratch AS out-a75629032379aa07
+## COPY --link --from=dep-x-lock_api-0.4.13-a75629032379aa07 /tmp/clis-flamegraph_0-6-10/release/build/lock_api-a75629032379aa07/*-a75629032379aa07* /"""
+
+FROM rust-base AS run-z-lock_api-0.4.13-c37e07c332b288bc
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-flamegraph_0-6-10/release/build/lock_api-c37e07c332b288bc/out
+WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/lock_api-0.4.13
+RUN \
+  --mount=from=out-a75629032379aa07,source=/build_script_build-a75629032379aa07,dst=/tmp/clis-flamegraph_0-6-10/release/build/lock_api-a75629032379aa07/build-script-build \
+  --mount=from=cratesio-lock_api-0.4.13,source=/lock_api-0.4.13,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/lock_api-0.4.13 \
+    env CARGO="$(which cargo)" \
+        CARGO_CFG_FEATURE=atomic_usize,default \
+        CARGO_CFG_PANIC=unwind \
+        CARGO_CFG_TARGET_ABI= \
+        CARGO_CFG_TARGET_ARCH=x86_64 \
+        CARGO_CFG_TARGET_ENDIAN=little \
+        CARGO_CFG_TARGET_ENV=gnu \
+        CARGO_CFG_TARGET_FAMILY=unix \
+        CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
+        CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+        CARGO_CFG_TARGET_OS=linux \
+        CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+        CARGO_CFG_TARGET_VENDOR=unknown \
+        CARGO_CFG_UNIX= \
+        CARGO_ENCODED_RUSTFLAGS= \
+        CARGO_FEATURE_ATOMIC_USIZE=1 \
+        CARGO_FEATURE_DEFAULT=1 \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/lock_api-0.4.13 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/lock_api-0.4.13/Cargo.toml \
+        CARGO_PKG_AUTHORS=Amanieu' d'\'Antras' <amanieu@gmail.com>' \
+        CARGO_PKG_DESCRIPTION=Wrappers' to create fully-featured Mutex and RwLock types. Compatible with no_std.' \
+        CARGO_PKG_HOMEPAGE= \
+        CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=lock_api \
+        CARGO_PKG_README= \
+        CARGO_PKG_REPOSITORY=https'://github.com/Amanieu/parking_lot' \
+        CARGO_PKG_RUST_VERSION=1.64.0 \
+        CARGO_PKG_VERSION=0.4.13 \
+        CARGO_PKG_VERSION_MAJOR=0 \
+        CARGO_PKG_VERSION_MINOR=4 \
+        CARGO_PKG_VERSION_PATCH=13 \
+        CARGO_PKG_VERSION_PRE= \
+        DEBUG=false \
+        HOST=x86_64-unknown-linux-gnu \
+        NUM_JOBS=4 \
+        OPT_LEVEL=3 \
+        OUT_DIR=/tmp/clis-flamegraph_0-6-10/release/build/lock_api-c37e07c332b288bc/out \
+        PROFILE=release \
+        RUSTC=rustc \
+        RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+        TARGET=x86_64-unknown-linux-gnu \
+        CARGOGREEN=1 \
+      CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-flamegraph_0-6-10/release/build/lock_api-a75629032379aa07/build-script-build \
+        1>          /tmp/clis-flamegraph_0-6-10/release/build/lock_api-c37e07c332b288bc/out/out-c37e07c332b288bc-stdout \
+        2>          /tmp/clis-flamegraph_0-6-10/release/build/lock_api-c37e07c332b288bc/out/out-c37e07c332b288bc-stderr \
+        || echo $? >/tmp/clis-flamegraph_0-6-10/release/build/lock_api-c37e07c332b288bc/out/out-c37e07c332b288bc-errcode\
+  ; find /tmp/clis-flamegraph_0-6-10/release/build/lock_api-c37e07c332b288bc/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-c37e07c332b288bc
+COPY --link --from=run-z-lock_api-0.4.13-c37e07c332b288bc /tmp/clis-flamegraph_0-6-10/release/build/lock_api-c37e07c332b288bc/out /
+
+## this = "c37e07c332b288bc"
+## deps = [
+##     "f2b41e0845677d6c",
+##     "a75629032379aa07",
+## ]
+## writes_to = "/tmp/clis-flamegraph_0-6-10/release/build/lock_api-c37e07c332b288bc/out"
+## stdout = [
+##     "cargo:rerun-if-changed=build.rs",
+##     "cargo:rustc-check-cfg=cfg(has_const_fn_trait_bound)",
+##     "cargo:rustc-cfg=has_const_fn_trait_bound",
+## ]
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "run-z-lock_api-0.4.13-c37e07c332b288bc"
+## script = '''
+## FROM rust-base AS run-z-lock_api-0.4.13-c37e07c332b288bc
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-flamegraph_0-6-10/release/build/lock_api-c37e07c332b288bc/out
+## WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/lock_api-0.4.13
+## RUN \
+##   --mount=from=out-a75629032379aa07,source=/build_script_build-a75629032379aa07,dst=/tmp/clis-flamegraph_0-6-10/release/build/lock_api-a75629032379aa07/build-script-build \
+##   --mount=from=cratesio-lock_api-0.4.13,source=/lock_api-0.4.13,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/lock_api-0.4.13 \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CFG_FEATURE=atomic_usize,default \
+##         CARGO_CFG_PANIC=unwind \
+##         CARGO_CFG_TARGET_ABI= \
+##         CARGO_CFG_TARGET_ARCH=x86_64 \
+##         CARGO_CFG_TARGET_ENDIAN=little \
+##         CARGO_CFG_TARGET_ENV=gnu \
+##         CARGO_CFG_TARGET_FAMILY=unix \
+##         CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
+##         CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+##         CARGO_CFG_TARGET_OS=linux \
+##         CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+##         CARGO_CFG_TARGET_VENDOR=unknown \
+##         CARGO_CFG_UNIX= \
+##         CARGO_ENCODED_RUSTFLAGS= \
+##         CARGO_FEATURE_ATOMIC_USIZE=1 \
+##         CARGO_FEATURE_DEFAULT=1 \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/lock_api-0.4.13 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/lock_api-0.4.13/Cargo.toml \
+##         CARGO_PKG_AUTHORS=Amanieu' d'\'Antras' <amanieu@gmail.com>' \
+##         CARGO_PKG_DESCRIPTION=Wrappers' to create fully-featured Mutex and RwLock types. Compatible with no_std.' \
+##         CARGO_PKG_HOMEPAGE= \
+##         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=lock_api \
+##         CARGO_PKG_README= \
+##         CARGO_PKG_REPOSITORY=https'://github.com/Amanieu/parking_lot' \
+##         CARGO_PKG_RUST_VERSION=1.64.0 \
+##         CARGO_PKG_VERSION=0.4.13 \
+##         CARGO_PKG_VERSION_MAJOR=0 \
+##         CARGO_PKG_VERSION_MINOR=4 \
+##         CARGO_PKG_VERSION_PATCH=13 \
+##         CARGO_PKG_VERSION_PRE= \
+##         DEBUG=false \
+##         HOST=x86_64-unknown-linux-gnu \
+##         NUM_JOBS=4 \
+##         OPT_LEVEL=3 \
+##         OUT_DIR=/tmp/clis-flamegraph_0-6-10/release/build/lock_api-c37e07c332b288bc/out \
+##         PROFILE=release \
+##         RUSTC=rustc \
+##         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+##         TARGET=x86_64-unknown-linux-gnu \
+##         CARGOGREEN=1 \
+##       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-flamegraph_0-6-10/release/build/lock_api-a75629032379aa07/build-script-build \
+##         1>          /tmp/clis-flamegraph_0-6-10/release/build/lock_api-c37e07c332b288bc/out/out-c37e07c332b288bc-stdout \
+##         2>          /tmp/clis-flamegraph_0-6-10/release/build/lock_api-c37e07c332b288bc/out/out-c37e07c332b288bc-stderr \
+##         || echo $? >/tmp/clis-flamegraph_0-6-10/release/build/lock_api-c37e07c332b288bc/out/out-c37e07c332b288bc-errcode\
+##   ; find /tmp/clis-flamegraph_0-6-10/release/build/lock_api-c37e07c332b288bc/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-c37e07c332b288bc"
+## script = """
+## FROM scratch AS out-c37e07c332b288bc
+## COPY --link --from=run-z-lock_api-0.4.13-c37e07c332b288bc /tmp/clis-flamegraph_0-6-10/release/build/lock_api-c37e07c332b288bc/out /"""
+
+
 FROM rust-base AS dep-n-lock_api-0.4.13-bf2135ad93eb8b0c
 SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-flamegraph_0-6-10/release/deps
@@ -6637,6 +11376,7 @@ RUN \
   --mount=from=cratesio-lock_api-0.4.13,source=/lock_api-0.4.13,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/lock_api-0.4.13 \
   --mount=from=out-0c2f3c3fb0dde363,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libscopeguard-0c2f3c3fb0dde363.rlib,source=/libscopeguard-0c2f3c3fb0dde363.rlib \
   --mount=from=out-0c2f3c3fb0dde363,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libscopeguard-0c2f3c3fb0dde363.rmeta,source=/libscopeguard-0c2f3c3fb0dde363.rmeta \
+  --mount=from=out-c37e07c332b288bc,dst=/tmp/clis-flamegraph_0-6-10/release/build/lock_api-c37e07c332b288bc/out,source=/ \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=lock_api \
         CARGO_INCREMENTAL=0 \
@@ -6667,7 +11407,13 @@ FROM scratch AS out-bf2135ad93eb8b0c
 COPY --link --from=dep-n-lock_api-0.4.13-bf2135ad93eb8b0c /tmp/clis-flamegraph_0-6-10/release/deps/*-bf2135ad93eb8b0c* /
 
 ## this = "bf2135ad93eb8b0c"
-## deps = ["0c2f3c3fb0dde363"]
+## deps = [
+##     "0c2f3c3fb0dde363",
+##     "c37e07c332b288bc",
+##     "f2b41e0845677d6c",
+##     "a75629032379aa07",
+## ]
+## buildrs_results = ["c37e07c332b288bc"]
 ## writes = [
 ##     "liblock_api-bf2135ad93eb8b0c.rlib",
 ##     "liblock_api-bf2135ad93eb8b0c.rmeta",
@@ -6686,6 +11432,10 @@ COPY --link --from=dep-n-lock_api-0.4.13-bf2135ad93eb8b0c /tmp/clis-flamegraph_0
 ## [[externs]]
 ## from = "out-0c2f3c3fb0dde363"
 ## xtern = "libscopeguard-0c2f3c3fb0dde363.rmeta"
+##
+## [[mounts]]
+## name = "out-c37e07c332b288bc"
+## mount = "/tmp/clis-flamegraph_0-6-10/release/build/lock_api-c37e07c332b288bc/out"
 ##
 ## [[stages]]
 ##
@@ -6714,6 +11464,7 @@ COPY --link --from=dep-n-lock_api-0.4.13-bf2135ad93eb8b0c /tmp/clis-flamegraph_0
 ##   --mount=from=cratesio-lock_api-0.4.13,source=/lock_api-0.4.13,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/lock_api-0.4.13 \
 ##   --mount=from=out-0c2f3c3fb0dde363,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libscopeguard-0c2f3c3fb0dde363.rlib,source=/libscopeguard-0c2f3c3fb0dde363.rlib \
 ##   --mount=from=out-0c2f3c3fb0dde363,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libscopeguard-0c2f3c3fb0dde363.rmeta,source=/libscopeguard-0c2f3c3fb0dde363.rmeta \
+##   --mount=from=out-c37e07c332b288bc,dst=/tmp/clis-flamegraph_0-6-10/release/build/lock_api-c37e07c332b288bc/out,source=/ \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=lock_api \
 ##         CARGO_INCREMENTAL=0 \
@@ -6859,6 +11610,286 @@ COPY --link --from=dep-n-smallvec-1.15.1-eafa1f7040f188f5 /tmp/clis-flamegraph_0
 FROM scratch AS cratesio-parking_lot_core-0.9.11
 ADD --chmod=0664 --unpack --checksum=sha256:bc838d2a56b5b1a6c25f55575dfc605fabb63bb2365f6c2353ef9159aa69e4a5 \
   https://static.crates.io/crates/parking_lot_core/parking_lot_core-0.9.11.crate /
+FROM rust-base AS dep-x-parking_lot_core-0.9.11-066169db5799f212
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-flamegraph_0-6-10/release/build/parking_lot_core-066169db5799f212
+RUN \
+  --mount=from=cratesio-parking_lot_core-0.9.11,source=/parking_lot_core-0.9.11,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/parking_lot_core-0.9.11,rw \
+    { \
+        cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/parking_lot_core-0.9.11/build.rs | sed -E 's/^(pub[()a-z]* +)?(async +)?fn +main/\1\2fn actual_066169db5799f212_main/' >/_ && mv /_ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/parking_lot_core-0.9.11/build.rs ; \
+        { \
+          echo ; \
+          echo 'fn main() {' ; \
+          echo '    use std::env::{args_os, var_os};' ; \
+          echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+          echo '        use std::process::{Command, Stdio};' ; \
+          echo '        let mut cmd = Command::new("cargo-green");' ; \
+          echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+          echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+          echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+          echo '        assert!(res.success());' ; \
+          echo '    } else {' ; \
+          echo '        actual_066169db5799f212_main();' ; \
+          echo '    }' ; \
+          echo '}' ; \
+        } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/parking_lot_core-0.9.11/build.rs ; \
+    } && \
+    env CARGO="$(which cargo)" \
+        CARGO_CRATE_NAME=build_script_build \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/parking_lot_core-0.9.11 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/parking_lot_core-0.9.11/Cargo.toml \
+        CARGO_PKG_AUTHORS=Amanieu' d'\'Antras' <amanieu@gmail.com>' \
+        CARGO_PKG_DESCRIPTION=An' advanced API for creating custom synchronization primitives.' \
+        CARGO_PKG_HOMEPAGE= \
+        CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=parking_lot_core \
+        CARGO_PKG_README= \
+        CARGO_PKG_REPOSITORY=https'://github.com/Amanieu/parking_lot' \
+        CARGO_PKG_RUST_VERSION=1.64.0 \
+        CARGO_PKG_VERSION=0.9.11 \
+        CARGO_PKG_VERSION_MAJOR=0 \
+        CARGO_PKG_VERSION_MINOR=9 \
+        CARGO_PKG_VERSION_PATCH=11 \
+        CARGO_PKG_VERSION_PRE= \
+        CARGOGREEN=1 \
+      rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("backtrace", "deadlock_detection", "nightly", "petgraph", "thread-id"))' -C metadata'=3a862b13c50e6259' -C extra-filename'=-066169db5799f212' --out-dir /tmp/clis-flamegraph_0-6-10/release/build/parking_lot_core-066169db5799f212 -C strip'=debuginfo' -L dependency'=/tmp/clis-flamegraph_0-6-10/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/parking_lot_core-0.9.11/build.rs \
+        1>          /tmp/clis-flamegraph_0-6-10/release/build/parking_lot_core-066169db5799f212/out-066169db5799f212-stdout \
+        2>          /tmp/clis-flamegraph_0-6-10/release/build/parking_lot_core-066169db5799f212/out-066169db5799f212-stderr \
+        || echo $? >/tmp/clis-flamegraph_0-6-10/release/build/parking_lot_core-066169db5799f212/out-066169db5799f212-errcode\
+  ; find /tmp/clis-flamegraph_0-6-10/release/build/parking_lot_core-066169db5799f212/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-066169db5799f212
+COPY --link --from=dep-x-parking_lot_core-0.9.11-066169db5799f212 /tmp/clis-flamegraph_0-6-10/release/build/parking_lot_core-066169db5799f212/*-066169db5799f212* /
+
+## this = "066169db5799f212"
+## writes = [
+##     "build_script_build-066169db5799f212",
+##     "build_script_build-066169db5799f212.d",
+## ]
+## stderr = [
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-flamegraph_0-6-10/release/build/parking_lot_core-066169db5799f212/build_script_build-066169db5799f212.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-flamegraph_0-6-10/release/build/parking_lot_core-066169db5799f212/build_script_build-066169db5799f212","emit":"link"}',
+## ]
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
+##
+## [[stages]]
+##
+## [stages.Cratesio]
+## stage = "cratesio-parking_lot_core-0.9.11"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/parking_lot_core-0.9.11"
+## name = "parking_lot_core"
+## name_dash_version = "parking_lot_core-0.9.11"
+## hash = "bc838d2a56b5b1a6c25f55575dfc605fabb63bb2365f6c2353ef9159aa69e4a5"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "dep-x-parking_lot_core-0.9.11-066169db5799f212"
+## script = '''
+## FROM rust-base AS dep-x-parking_lot_core-0.9.11-066169db5799f212
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-flamegraph_0-6-10/release/build/parking_lot_core-066169db5799f212
+## RUN \
+##   --mount=from=cratesio-parking_lot_core-0.9.11,source=/parking_lot_core-0.9.11,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/parking_lot_core-0.9.11,rw \
+##     { \
+##         cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/parking_lot_core-0.9.11/build.rs | sed -E 's/^(pub[()a-z]* +)?(async +)?fn +main/\1\2fn actual_066169db5799f212_main/' >/_ && mv /_ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/parking_lot_core-0.9.11/build.rs ; \
+##         { \
+##           echo ; \
+##           echo 'fn main() {' ; \
+##           echo '    use std::env::{args_os, var_os};' ; \
+##           echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+##           echo '        use std::process::{Command, Stdio};' ; \
+##           echo '        let mut cmd = Command::new("cargo-green");' ; \
+##           echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+##           echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+##           echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+##           echo '        assert!(res.success());' ; \
+##           echo '    } else {' ; \
+##           echo '        actual_066169db5799f212_main();' ; \
+##           echo '    }' ; \
+##           echo '}' ; \
+##         } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/parking_lot_core-0.9.11/build.rs ; \
+##     } && \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CRATE_NAME=build_script_build \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/parking_lot_core-0.9.11 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/parking_lot_core-0.9.11/Cargo.toml \
+##         CARGO_PKG_AUTHORS=Amanieu' d'\'Antras' <amanieu@gmail.com>' \
+##         CARGO_PKG_DESCRIPTION=An' advanced API for creating custom synchronization primitives.' \
+##         CARGO_PKG_HOMEPAGE= \
+##         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=parking_lot_core \
+##         CARGO_PKG_README= \
+##         CARGO_PKG_REPOSITORY=https'://github.com/Amanieu/parking_lot' \
+##         CARGO_PKG_RUST_VERSION=1.64.0 \
+##         CARGO_PKG_VERSION=0.9.11 \
+##         CARGO_PKG_VERSION_MAJOR=0 \
+##         CARGO_PKG_VERSION_MINOR=9 \
+##         CARGO_PKG_VERSION_PATCH=11 \
+##         CARGO_PKG_VERSION_PRE= \
+##         CARGOGREEN=1 \
+##       rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("backtrace", "deadlock_detection", "nightly", "petgraph", "thread-id"))' -C metadata'=3a862b13c50e6259' -C extra-filename'=-066169db5799f212' --out-dir /tmp/clis-flamegraph_0-6-10/release/build/parking_lot_core-066169db5799f212 -C strip'=debuginfo' -L dependency'=/tmp/clis-flamegraph_0-6-10/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/parking_lot_core-0.9.11/build.rs \
+##         1>          /tmp/clis-flamegraph_0-6-10/release/build/parking_lot_core-066169db5799f212/out-066169db5799f212-stdout \
+##         2>          /tmp/clis-flamegraph_0-6-10/release/build/parking_lot_core-066169db5799f212/out-066169db5799f212-stderr \
+##         || echo $? >/tmp/clis-flamegraph_0-6-10/release/build/parking_lot_core-066169db5799f212/out-066169db5799f212-errcode\
+##   ; find /tmp/clis-flamegraph_0-6-10/release/build/parking_lot_core-066169db5799f212/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-066169db5799f212"
+## script = """
+## FROM scratch AS out-066169db5799f212
+## COPY --link --from=dep-x-parking_lot_core-0.9.11-066169db5799f212 /tmp/clis-flamegraph_0-6-10/release/build/parking_lot_core-066169db5799f212/*-066169db5799f212* /"""
+
+FROM rust-base AS run-z-parking_lot_core-0.9.11-a02375f7e2ad9d68
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-flamegraph_0-6-10/release/build/parking_lot_core-a02375f7e2ad9d68/out
+WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/parking_lot_core-0.9.11
+RUN \
+  --mount=from=out-066169db5799f212,source=/build_script_build-066169db5799f212,dst=/tmp/clis-flamegraph_0-6-10/release/build/parking_lot_core-066169db5799f212/build-script-build \
+  --mount=from=cratesio-parking_lot_core-0.9.11,source=/parking_lot_core-0.9.11,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/parking_lot_core-0.9.11 \
+    env CARGO="$(which cargo)" \
+        CARGO_CFG_FEATURE= \
+        CARGO_CFG_PANIC=unwind \
+        CARGO_CFG_TARGET_ABI= \
+        CARGO_CFG_TARGET_ARCH=x86_64 \
+        CARGO_CFG_TARGET_ENDIAN=little \
+        CARGO_CFG_TARGET_ENV=gnu \
+        CARGO_CFG_TARGET_FAMILY=unix \
+        CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
+        CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+        CARGO_CFG_TARGET_OS=linux \
+        CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+        CARGO_CFG_TARGET_VENDOR=unknown \
+        CARGO_CFG_UNIX= \
+        CARGO_ENCODED_RUSTFLAGS= \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/parking_lot_core-0.9.11 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/parking_lot_core-0.9.11/Cargo.toml \
+        CARGO_PKG_AUTHORS=Amanieu' d'\'Antras' <amanieu@gmail.com>' \
+        CARGO_PKG_DESCRIPTION=An' advanced API for creating custom synchronization primitives.' \
+        CARGO_PKG_HOMEPAGE= \
+        CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=parking_lot_core \
+        CARGO_PKG_README= \
+        CARGO_PKG_REPOSITORY=https'://github.com/Amanieu/parking_lot' \
+        CARGO_PKG_RUST_VERSION=1.64.0 \
+        CARGO_PKG_VERSION=0.9.11 \
+        CARGO_PKG_VERSION_MAJOR=0 \
+        CARGO_PKG_VERSION_MINOR=9 \
+        CARGO_PKG_VERSION_PATCH=11 \
+        CARGO_PKG_VERSION_PRE= \
+        DEBUG=false \
+        HOST=x86_64-unknown-linux-gnu \
+        NUM_JOBS=4 \
+        OPT_LEVEL=3 \
+        OUT_DIR=/tmp/clis-flamegraph_0-6-10/release/build/parking_lot_core-a02375f7e2ad9d68/out \
+        PROFILE=release \
+        RUSTC=rustc \
+        RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+        TARGET=x86_64-unknown-linux-gnu \
+        CARGOGREEN=1 \
+      CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-flamegraph_0-6-10/release/build/parking_lot_core-066169db5799f212/build-script-build \
+        1>          /tmp/clis-flamegraph_0-6-10/release/build/parking_lot_core-a02375f7e2ad9d68/out/out-a02375f7e2ad9d68-stdout \
+        2>          /tmp/clis-flamegraph_0-6-10/release/build/parking_lot_core-a02375f7e2ad9d68/out/out-a02375f7e2ad9d68-stderr \
+        || echo $? >/tmp/clis-flamegraph_0-6-10/release/build/parking_lot_core-a02375f7e2ad9d68/out/out-a02375f7e2ad9d68-errcode\
+  ; find /tmp/clis-flamegraph_0-6-10/release/build/parking_lot_core-a02375f7e2ad9d68/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-a02375f7e2ad9d68
+COPY --link --from=run-z-parking_lot_core-0.9.11-a02375f7e2ad9d68 /tmp/clis-flamegraph_0-6-10/release/build/parking_lot_core-a02375f7e2ad9d68/out /
+
+## this = "a02375f7e2ad9d68"
+## deps = ["066169db5799f212"]
+## writes_to = "/tmp/clis-flamegraph_0-6-10/release/build/parking_lot_core-a02375f7e2ad9d68/out"
+## stdout = [
+##     "cargo:rerun-if-changed=build.rs",
+##     "cargo:rustc-check-cfg=cfg(tsan_enabled)",
+## ]
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "run-z-parking_lot_core-0.9.11-a02375f7e2ad9d68"
+## script = '''
+## FROM rust-base AS run-z-parking_lot_core-0.9.11-a02375f7e2ad9d68
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-flamegraph_0-6-10/release/build/parking_lot_core-a02375f7e2ad9d68/out
+## WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/parking_lot_core-0.9.11
+## RUN \
+##   --mount=from=out-066169db5799f212,source=/build_script_build-066169db5799f212,dst=/tmp/clis-flamegraph_0-6-10/release/build/parking_lot_core-066169db5799f212/build-script-build \
+##   --mount=from=cratesio-parking_lot_core-0.9.11,source=/parking_lot_core-0.9.11,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/parking_lot_core-0.9.11 \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CFG_FEATURE= \
+##         CARGO_CFG_PANIC=unwind \
+##         CARGO_CFG_TARGET_ABI= \
+##         CARGO_CFG_TARGET_ARCH=x86_64 \
+##         CARGO_CFG_TARGET_ENDIAN=little \
+##         CARGO_CFG_TARGET_ENV=gnu \
+##         CARGO_CFG_TARGET_FAMILY=unix \
+##         CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
+##         CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+##         CARGO_CFG_TARGET_OS=linux \
+##         CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+##         CARGO_CFG_TARGET_VENDOR=unknown \
+##         CARGO_CFG_UNIX= \
+##         CARGO_ENCODED_RUSTFLAGS= \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/parking_lot_core-0.9.11 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/parking_lot_core-0.9.11/Cargo.toml \
+##         CARGO_PKG_AUTHORS=Amanieu' d'\'Antras' <amanieu@gmail.com>' \
+##         CARGO_PKG_DESCRIPTION=An' advanced API for creating custom synchronization primitives.' \
+##         CARGO_PKG_HOMEPAGE= \
+##         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=parking_lot_core \
+##         CARGO_PKG_README= \
+##         CARGO_PKG_REPOSITORY=https'://github.com/Amanieu/parking_lot' \
+##         CARGO_PKG_RUST_VERSION=1.64.0 \
+##         CARGO_PKG_VERSION=0.9.11 \
+##         CARGO_PKG_VERSION_MAJOR=0 \
+##         CARGO_PKG_VERSION_MINOR=9 \
+##         CARGO_PKG_VERSION_PATCH=11 \
+##         CARGO_PKG_VERSION_PRE= \
+##         DEBUG=false \
+##         HOST=x86_64-unknown-linux-gnu \
+##         NUM_JOBS=4 \
+##         OPT_LEVEL=3 \
+##         OUT_DIR=/tmp/clis-flamegraph_0-6-10/release/build/parking_lot_core-a02375f7e2ad9d68/out \
+##         PROFILE=release \
+##         RUSTC=rustc \
+##         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+##         TARGET=x86_64-unknown-linux-gnu \
+##         CARGOGREEN=1 \
+##       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-flamegraph_0-6-10/release/build/parking_lot_core-066169db5799f212/build-script-build \
+##         1>          /tmp/clis-flamegraph_0-6-10/release/build/parking_lot_core-a02375f7e2ad9d68/out/out-a02375f7e2ad9d68-stdout \
+##         2>          /tmp/clis-flamegraph_0-6-10/release/build/parking_lot_core-a02375f7e2ad9d68/out/out-a02375f7e2ad9d68-stderr \
+##         || echo $? >/tmp/clis-flamegraph_0-6-10/release/build/parking_lot_core-a02375f7e2ad9d68/out/out-a02375f7e2ad9d68-errcode\
+##   ; find /tmp/clis-flamegraph_0-6-10/release/build/parking_lot_core-a02375f7e2ad9d68/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-a02375f7e2ad9d68"
+## script = """
+## FROM scratch AS out-a02375f7e2ad9d68
+## COPY --link --from=run-z-parking_lot_core-0.9.11-a02375f7e2ad9d68 /tmp/clis-flamegraph_0-6-10/release/build/parking_lot_core-a02375f7e2ad9d68/out /"""
+
+
 FROM rust-base AS dep-n-parking_lot_core-0.9.11-c28fbd01eba03d7d
 SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-flamegraph_0-6-10/release/deps
@@ -6870,6 +11901,7 @@ RUN \
   --mount=from=out-dccd02569a0701db,dst=/tmp/clis-flamegraph_0-6-10/release/deps/liblibc-dccd02569a0701db.rmeta,source=/liblibc-dccd02569a0701db.rmeta \
   --mount=from=out-eafa1f7040f188f5,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libsmallvec-eafa1f7040f188f5.rlib,source=/libsmallvec-eafa1f7040f188f5.rlib \
   --mount=from=out-eafa1f7040f188f5,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libsmallvec-eafa1f7040f188f5.rmeta,source=/libsmallvec-eafa1f7040f188f5.rmeta \
+  --mount=from=out-a02375f7e2ad9d68,dst=/tmp/clis-flamegraph_0-6-10/release/build/parking_lot_core-a02375f7e2ad9d68/out,source=/ \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=parking_lot_core \
         CARGO_INCREMENTAL=0 \
@@ -6903,7 +11935,15 @@ COPY --link --from=dep-n-parking_lot_core-0.9.11-c28fbd01eba03d7d /tmp/clis-flam
 ## deps = [
 ##     "5a4301c208f24f4c",
 ##     "dccd02569a0701db",
+##     "34ac38a29ecbc6d8",
 ##     "eafa1f7040f188f5",
+##     "a02375f7e2ad9d68",
+##     "fab8c0f59b008de9",
+##     "066169db5799f212",
+## ]
+## buildrs_results = [
+##     "fab8c0f59b008de9",
+##     "a02375f7e2ad9d68",
 ## ]
 ## writes = [
 ##     "libparking_lot_core-c28fbd01eba03d7d.rlib",
@@ -6940,6 +11980,10 @@ COPY --link --from=dep-n-parking_lot_core-0.9.11-c28fbd01eba03d7d /tmp/clis-flam
 ## from = "out-eafa1f7040f188f5"
 ## xtern = "libsmallvec-eafa1f7040f188f5.rmeta"
 ##
+## [[mounts]]
+## name = "out-a02375f7e2ad9d68"
+## mount = "/tmp/clis-flamegraph_0-6-10/release/build/parking_lot_core-a02375f7e2ad9d68/out"
+##
 ## [[stages]]
 ##
 ## [stages.Script]
@@ -6971,6 +12015,7 @@ COPY --link --from=dep-n-parking_lot_core-0.9.11-c28fbd01eba03d7d /tmp/clis-flam
 ##   --mount=from=out-dccd02569a0701db,dst=/tmp/clis-flamegraph_0-6-10/release/deps/liblibc-dccd02569a0701db.rmeta,source=/liblibc-dccd02569a0701db.rmeta \
 ##   --mount=from=out-eafa1f7040f188f5,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libsmallvec-eafa1f7040f188f5.rlib,source=/libsmallvec-eafa1f7040f188f5.rlib \
 ##   --mount=from=out-eafa1f7040f188f5,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libsmallvec-eafa1f7040f188f5.rmeta,source=/libsmallvec-eafa1f7040f188f5.rmeta \
+##   --mount=from=out-a02375f7e2ad9d68,dst=/tmp/clis-flamegraph_0-6-10/release/build/parking_lot_core-a02375f7e2ad9d68/out,source=/ \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=parking_lot_core \
 ##         CARGO_INCREMENTAL=0 \
@@ -7024,6 +12069,8 @@ RUN \
   --mount=from=out-bf2135ad93eb8b0c,dst=/tmp/clis-flamegraph_0-6-10/release/deps/liblock_api-bf2135ad93eb8b0c.rmeta,source=/liblock_api-bf2135ad93eb8b0c.rmeta \
   --mount=from=out-0c2f3c3fb0dde363,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libscopeguard-0c2f3c3fb0dde363.rlib,source=/libscopeguard-0c2f3c3fb0dde363.rlib \
   --mount=from=out-0c2f3c3fb0dde363,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libscopeguard-0c2f3c3fb0dde363.rmeta,source=/libscopeguard-0c2f3c3fb0dde363.rmeta \
+  --mount=from=out-f2b41e0845677d6c,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libautocfg-f2b41e0845677d6c.rlib,source=/libautocfg-f2b41e0845677d6c.rlib \
+  --mount=from=out-f2b41e0845677d6c,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libautocfg-f2b41e0845677d6c.rmeta,source=/libautocfg-f2b41e0845677d6c.rmeta \
   --mount=from=out-d2455ec75a446def,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libonce_cell-d2455ec75a446def.rlib,source=/libonce_cell-d2455ec75a446def.rlib \
   --mount=from=out-d2455ec75a446def,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libonce_cell-d2455ec75a446def.rmeta,source=/libonce_cell-d2455ec75a446def.rmeta \
   --mount=from=out-c28fbd01eba03d7d,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libparking_lot_core-c28fbd01eba03d7d.rlib,source=/libparking_lot_core-c28fbd01eba03d7d.rlib \
@@ -7064,13 +12111,28 @@ COPY --link --from=dep-n-dashmap-6.1.0-7191325124fecab9 /tmp/clis-flamegraph_0-6
 ## deps = [
 ##     "5a4301c208f24f4c",
 ##     "67764cf5e4057190",
+##     "f45d51ea245fd809",
 ##     "9cf852482bb48385",
 ##     "bf2135ad93eb8b0c",
 ##     "0c2f3c3fb0dde363",
+##     "f2b41e0845677d6c",
+##     "a75629032379aa07",
 ##     "d2455ec75a446def",
 ##     "c28fbd01eba03d7d",
 ##     "dccd02569a0701db",
+##     "34ac38a29ecbc6d8",
 ##     "eafa1f7040f188f5",
+##     "066169db5799f212",
+##     "548f5ba1ed589a3e",
+##     "c37e07c332b288bc",
+##     "fab8c0f59b008de9",
+##     "a02375f7e2ad9d68",
+## ]
+## buildrs_results = [
+##     "548f5ba1ed589a3e",
+##     "c37e07c332b288bc",
+##     "fab8c0f59b008de9",
+##     "a02375f7e2ad9d68",
 ## ]
 ## writes = [
 ##     "dashmap-7191325124fecab9.d",
@@ -7122,6 +12184,14 @@ COPY --link --from=dep-n-dashmap-6.1.0-7191325124fecab9 /tmp/clis-flamegraph_0-6
 ## [[externs]]
 ## from = "out-0c2f3c3fb0dde363"
 ## xtern = "libscopeguard-0c2f3c3fb0dde363.rmeta"
+##
+## [[externs]]
+## from = "out-f2b41e0845677d6c"
+## xtern = "libautocfg-f2b41e0845677d6c.rlib"
+##
+## [[externs]]
+## from = "out-f2b41e0845677d6c"
+## xtern = "libautocfg-f2b41e0845677d6c.rmeta"
 ##
 ## [[externs]]
 ## from = "out-d2455ec75a446def"
@@ -7190,6 +12260,8 @@ COPY --link --from=dep-n-dashmap-6.1.0-7191325124fecab9 /tmp/clis-flamegraph_0-6
 ##   --mount=from=out-bf2135ad93eb8b0c,dst=/tmp/clis-flamegraph_0-6-10/release/deps/liblock_api-bf2135ad93eb8b0c.rmeta,source=/liblock_api-bf2135ad93eb8b0c.rmeta \
 ##   --mount=from=out-0c2f3c3fb0dde363,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libscopeguard-0c2f3c3fb0dde363.rlib,source=/libscopeguard-0c2f3c3fb0dde363.rlib \
 ##   --mount=from=out-0c2f3c3fb0dde363,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libscopeguard-0c2f3c3fb0dde363.rmeta,source=/libscopeguard-0c2f3c3fb0dde363.rmeta \
+##   --mount=from=out-f2b41e0845677d6c,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libautocfg-f2b41e0845677d6c.rlib,source=/libautocfg-f2b41e0845677d6c.rlib \
+##   --mount=from=out-f2b41e0845677d6c,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libautocfg-f2b41e0845677d6c.rmeta,source=/libautocfg-f2b41e0845677d6c.rmeta \
 ##   --mount=from=out-d2455ec75a446def,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libonce_cell-d2455ec75a446def.rlib,source=/libonce_cell-d2455ec75a446def.rlib \
 ##   --mount=from=out-d2455ec75a446def,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libonce_cell-d2455ec75a446def.rmeta,source=/libonce_cell-d2455ec75a446def.rmeta \
 ##   --mount=from=out-c28fbd01eba03d7d,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libparking_lot_core-c28fbd01eba03d7d.rlib,source=/libparking_lot_core-c28fbd01eba03d7d.rlib \
@@ -8458,6 +13530,8 @@ RUN \
   --mount=from=out-d2455ec75a446def,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libonce_cell-d2455ec75a446def.rmeta,source=/libonce_cell-d2455ec75a446def.rmeta \
   --mount=from=out-edd5fe1b967d7744,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libzerocopy-edd5fe1b967d7744.rlib,source=/libzerocopy-edd5fe1b967d7744.rlib \
   --mount=from=out-edd5fe1b967d7744,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libzerocopy-edd5fe1b967d7744.rmeta,source=/libzerocopy-edd5fe1b967d7744.rmeta \
+  --mount=from=out-23b425cce0264739,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libversion_check-23b425cce0264739.rlib,source=/libversion_check-23b425cce0264739.rlib \
+  --mount=from=out-23b425cce0264739,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libversion_check-23b425cce0264739.rmeta,source=/libversion_check-23b425cce0264739.rmeta \
   --mount=from=out-a14202b9cdd591e4,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libcrossbeam_channel-a14202b9cdd591e4.rlib,source=/libcrossbeam_channel-a14202b9cdd591e4.rlib \
   --mount=from=out-a14202b9cdd591e4,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libcrossbeam_channel-a14202b9cdd591e4.rmeta,source=/libcrossbeam_channel-a14202b9cdd591e4.rmeta \
   --mount=from=out-67764cf5e4057190,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libcrossbeam_utils-67764cf5e4057190.rlib,source=/libcrossbeam_utils-67764cf5e4057190.rlib \
@@ -8470,6 +13544,8 @@ RUN \
   --mount=from=out-bf2135ad93eb8b0c,dst=/tmp/clis-flamegraph_0-6-10/release/deps/liblock_api-bf2135ad93eb8b0c.rmeta,source=/liblock_api-bf2135ad93eb8b0c.rmeta \
   --mount=from=out-0c2f3c3fb0dde363,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libscopeguard-0c2f3c3fb0dde363.rlib,source=/libscopeguard-0c2f3c3fb0dde363.rlib \
   --mount=from=out-0c2f3c3fb0dde363,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libscopeguard-0c2f3c3fb0dde363.rmeta,source=/libscopeguard-0c2f3c3fb0dde363.rmeta \
+  --mount=from=out-f2b41e0845677d6c,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libautocfg-f2b41e0845677d6c.rlib,source=/libautocfg-f2b41e0845677d6c.rlib \
+  --mount=from=out-f2b41e0845677d6c,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libautocfg-f2b41e0845677d6c.rmeta,source=/libautocfg-f2b41e0845677d6c.rmeta \
   --mount=from=out-c28fbd01eba03d7d,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libparking_lot_core-c28fbd01eba03d7d.rlib,source=/libparking_lot_core-c28fbd01eba03d7d.rlib \
   --mount=from=out-c28fbd01eba03d7d,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libparking_lot_core-c28fbd01eba03d7d.rmeta,source=/libparking_lot_core-c28fbd01eba03d7d.rmeta \
   --mount=from=out-eafa1f7040f188f5,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libsmallvec-eafa1f7040f188f5.rlib,source=/libsmallvec-eafa1f7040f188f5.rlib \
@@ -8532,16 +13608,25 @@ COPY --link --from=dep-n-inferno-0.12.3-a856a785d4b1ad8e /tmp/clis-flamegraph_0-
 ##     "5a4301c208f24f4c",
 ##     "def6b41d68858040",
 ##     "dccd02569a0701db",
+##     "34ac38a29ecbc6d8",
+##     "6e2123a6636d36d8",
 ##     "d2455ec75a446def",
 ##     "edd5fe1b967d7744",
+##     "79067ef5349c233e",
+##     "23b425cce0264739",
+##     "68d55095ddc72a51",
 ##     "a14202b9cdd591e4",
 ##     "67764cf5e4057190",
+##     "f45d51ea245fd809",
 ##     "7191325124fecab9",
 ##     "9cf852482bb48385",
 ##     "bf2135ad93eb8b0c",
 ##     "0c2f3c3fb0dde363",
+##     "f2b41e0845677d6c",
+##     "a75629032379aa07",
 ##     "c28fbd01eba03d7d",
 ##     "eafa1f7040f188f5",
+##     "066169db5799f212",
 ##     "a128f47ec5c000f7",
 ##     "4ab91e794913659c",
 ##     "7330f672ca255d25",
@@ -8554,6 +13639,22 @@ COPY --link --from=dep-n-inferno-0.12.3-a856a785d4b1ad8e /tmp/clis-flamegraph_0-
 ##     "f608fbb86369b305",
 ##     "8666683e6f8c24c3",
 ##     "ebb5d57f9818d5f0",
+##     "fab8c0f59b008de9",
+##     "ec533ba807300e5e",
+##     "f8ea397704a2e459",
+##     "8e0d774804319f0b",
+##     "548f5ba1ed589a3e",
+##     "c37e07c332b288bc",
+##     "a02375f7e2ad9d68",
+## ]
+## buildrs_results = [
+##     "fab8c0f59b008de9",
+##     "ec533ba807300e5e",
+##     "f8ea397704a2e459",
+##     "8e0d774804319f0b",
+##     "548f5ba1ed589a3e",
+##     "c37e07c332b288bc",
+##     "a02375f7e2ad9d68",
 ## ]
 ## writes = [
 ##     "inferno-a856a785d4b1ad8e.d",
@@ -8617,6 +13718,14 @@ COPY --link --from=dep-n-inferno-0.12.3-a856a785d4b1ad8e /tmp/clis-flamegraph_0-
 ## xtern = "libzerocopy-edd5fe1b967d7744.rmeta"
 ##
 ## [[externs]]
+## from = "out-23b425cce0264739"
+## xtern = "libversion_check-23b425cce0264739.rlib"
+##
+## [[externs]]
+## from = "out-23b425cce0264739"
+## xtern = "libversion_check-23b425cce0264739.rmeta"
+##
+## [[externs]]
 ## from = "out-a14202b9cdd591e4"
 ## xtern = "libcrossbeam_channel-a14202b9cdd591e4.rlib"
 ##
@@ -8663,6 +13772,14 @@ COPY --link --from=dep-n-inferno-0.12.3-a856a785d4b1ad8e /tmp/clis-flamegraph_0-
 ## [[externs]]
 ## from = "out-0c2f3c3fb0dde363"
 ## xtern = "libscopeguard-0c2f3c3fb0dde363.rmeta"
+##
+## [[externs]]
+## from = "out-f2b41e0845677d6c"
+## xtern = "libautocfg-f2b41e0845677d6c.rlib"
+##
+## [[externs]]
+## from = "out-f2b41e0845677d6c"
+## xtern = "libautocfg-f2b41e0845677d6c.rmeta"
 ##
 ## [[externs]]
 ## from = "out-c28fbd01eba03d7d"
@@ -8813,6 +13930,8 @@ COPY --link --from=dep-n-inferno-0.12.3-a856a785d4b1ad8e /tmp/clis-flamegraph_0-
 ##   --mount=from=out-d2455ec75a446def,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libonce_cell-d2455ec75a446def.rmeta,source=/libonce_cell-d2455ec75a446def.rmeta \
 ##   --mount=from=out-edd5fe1b967d7744,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libzerocopy-edd5fe1b967d7744.rlib,source=/libzerocopy-edd5fe1b967d7744.rlib \
 ##   --mount=from=out-edd5fe1b967d7744,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libzerocopy-edd5fe1b967d7744.rmeta,source=/libzerocopy-edd5fe1b967d7744.rmeta \
+##   --mount=from=out-23b425cce0264739,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libversion_check-23b425cce0264739.rlib,source=/libversion_check-23b425cce0264739.rlib \
+##   --mount=from=out-23b425cce0264739,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libversion_check-23b425cce0264739.rmeta,source=/libversion_check-23b425cce0264739.rmeta \
 ##   --mount=from=out-a14202b9cdd591e4,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libcrossbeam_channel-a14202b9cdd591e4.rlib,source=/libcrossbeam_channel-a14202b9cdd591e4.rlib \
 ##   --mount=from=out-a14202b9cdd591e4,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libcrossbeam_channel-a14202b9cdd591e4.rmeta,source=/libcrossbeam_channel-a14202b9cdd591e4.rmeta \
 ##   --mount=from=out-67764cf5e4057190,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libcrossbeam_utils-67764cf5e4057190.rlib,source=/libcrossbeam_utils-67764cf5e4057190.rlib \
@@ -8825,6 +13944,8 @@ COPY --link --from=dep-n-inferno-0.12.3-a856a785d4b1ad8e /tmp/clis-flamegraph_0-
 ##   --mount=from=out-bf2135ad93eb8b0c,dst=/tmp/clis-flamegraph_0-6-10/release/deps/liblock_api-bf2135ad93eb8b0c.rmeta,source=/liblock_api-bf2135ad93eb8b0c.rmeta \
 ##   --mount=from=out-0c2f3c3fb0dde363,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libscopeguard-0c2f3c3fb0dde363.rlib,source=/libscopeguard-0c2f3c3fb0dde363.rlib \
 ##   --mount=from=out-0c2f3c3fb0dde363,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libscopeguard-0c2f3c3fb0dde363.rmeta,source=/libscopeguard-0c2f3c3fb0dde363.rmeta \
+##   --mount=from=out-f2b41e0845677d6c,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libautocfg-f2b41e0845677d6c.rlib,source=/libautocfg-f2b41e0845677d6c.rlib \
+##   --mount=from=out-f2b41e0845677d6c,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libautocfg-f2b41e0845677d6c.rmeta,source=/libautocfg-f2b41e0845677d6c.rmeta \
 ##   --mount=from=out-c28fbd01eba03d7d,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libparking_lot_core-c28fbd01eba03d7d.rlib,source=/libparking_lot_core-c28fbd01eba03d7d.rlib \
 ##   --mount=from=out-c28fbd01eba03d7d,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libparking_lot_core-c28fbd01eba03d7d.rmeta,source=/libparking_lot_core-c28fbd01eba03d7d.rmeta \
 ##   --mount=from=out-eafa1f7040f188f5,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libsmallvec-eafa1f7040f188f5.rlib,source=/libsmallvec-eafa1f7040f188f5.rlib \
@@ -9548,7 +14669,12 @@ FROM scratch AS out-960c26bd88610753
 COPY --link --from=dep-n-signal-hook-registry-1.4.6-960c26bd88610753 /tmp/clis-flamegraph_0-6-10/release/deps/*-960c26bd88610753* /
 
 ## this = "960c26bd88610753"
-## deps = ["dccd02569a0701db"]
+## deps = [
+##     "dccd02569a0701db",
+##     "34ac38a29ecbc6d8",
+##     "fab8c0f59b008de9",
+## ]
+## buildrs_results = ["fab8c0f59b008de9"]
 ## writes = [
 ##     "libsignal_hook_registry-960c26bd88610753.rlib",
 ##     "libsignal_hook_registry-960c26bd88610753.rmeta",
@@ -9635,6 +14761,288 @@ COPY --link --from=dep-n-signal-hook-registry-1.4.6-960c26bd88610753 /tmp/clis-f
 FROM scratch AS cratesio-signal-hook-0.3.18
 ADD --chmod=0664 --unpack --checksum=sha256:d881a16cf4426aa584979d30bd82cb33429027e42122b169753d6ef1085ed6e2 \
   https://static.crates.io/crates/signal-hook/signal-hook-0.3.18.crate /
+FROM rust-base AS dep-x-signal-hook-0.3.18-2dda4bb176f5ca1d
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-flamegraph_0-6-10/release/build/signal-hook-2dda4bb176f5ca1d
+RUN \
+  --mount=from=cratesio-signal-hook-0.3.18,source=/signal-hook-0.3.18,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/signal-hook-0.3.18,rw \
+    { \
+        cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/signal-hook-0.3.18/build.rs | sed -E 's/^(pub[()a-z]* +)?(async +)?fn +main/\1\2fn actual_2dda4bb176f5ca1d_main/' >/_ && mv /_ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/signal-hook-0.3.18/build.rs ; \
+        { \
+          echo ; \
+          echo 'fn main() {' ; \
+          echo '    use std::env::{args_os, var_os};' ; \
+          echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+          echo '        use std::process::{Command, Stdio};' ; \
+          echo '        let mut cmd = Command::new("cargo-green");' ; \
+          echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+          echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+          echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+          echo '        assert!(res.success());' ; \
+          echo '    } else {' ; \
+          echo '        actual_2dda4bb176f5ca1d_main();' ; \
+          echo '    }' ; \
+          echo '}' ; \
+        } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/signal-hook-0.3.18/build.rs ; \
+    } && \
+    env CARGO="$(which cargo)" \
+        CARGO_CRATE_NAME=build_script_build \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/signal-hook-0.3.18 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/signal-hook-0.3.18/Cargo.toml \
+        CARGO_PKG_AUTHORS=Michal' '\'vorner\'' Vaner <vorner@vorner.cz>:Thomas Himmelstoss <thimm@posteo.de>' \
+        CARGO_PKG_DESCRIPTION=Unix' signal handling' \
+        CARGO_PKG_HOMEPAGE= \
+        CARGO_PKG_LICENSE=Apache-2.0/MIT \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=signal-hook \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/vorner/signal-hook' \
+        CARGO_PKG_RUST_VERSION= \
+        CARGO_PKG_VERSION=0.3.18 \
+        CARGO_PKG_VERSION_MAJOR=0 \
+        CARGO_PKG_VERSION_MINOR=3 \
+        CARGO_PKG_VERSION_PATCH=18 \
+        CARGO_PKG_VERSION_PRE= \
+        CARGOGREEN=1 \
+      rustc --crate-name build_script_build --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="channel"' --cfg feature'="default"' --cfg feature'="iterator"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("cc", "channel", "default", "extended-siginfo", "extended-siginfo-raw", "iterator"))' -C metadata'=5a883826bd6b5796' -C extra-filename'=-2dda4bb176f5ca1d' --out-dir /tmp/clis-flamegraph_0-6-10/release/build/signal-hook-2dda4bb176f5ca1d -C strip'=debuginfo' -L dependency'=/tmp/clis-flamegraph_0-6-10/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/signal-hook-0.3.18/build.rs \
+        1>          /tmp/clis-flamegraph_0-6-10/release/build/signal-hook-2dda4bb176f5ca1d/out-2dda4bb176f5ca1d-stdout \
+        2>          /tmp/clis-flamegraph_0-6-10/release/build/signal-hook-2dda4bb176f5ca1d/out-2dda4bb176f5ca1d-stderr \
+        || echo $? >/tmp/clis-flamegraph_0-6-10/release/build/signal-hook-2dda4bb176f5ca1d/out-2dda4bb176f5ca1d-errcode\
+  ; find /tmp/clis-flamegraph_0-6-10/release/build/signal-hook-2dda4bb176f5ca1d/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-2dda4bb176f5ca1d
+COPY --link --from=dep-x-signal-hook-0.3.18-2dda4bb176f5ca1d /tmp/clis-flamegraph_0-6-10/release/build/signal-hook-2dda4bb176f5ca1d/*-2dda4bb176f5ca1d* /
+
+## this = "2dda4bb176f5ca1d"
+## writes = [
+##     "build_script_build-2dda4bb176f5ca1d",
+##     "build_script_build-2dda4bb176f5ca1d.d",
+## ]
+## stderr = [
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-flamegraph_0-6-10/release/build/signal-hook-2dda4bb176f5ca1d/build_script_build-2dda4bb176f5ca1d.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/tmp/clis-flamegraph_0-6-10/release/build/signal-hook-2dda4bb176f5ca1d/build_script_build-2dda4bb176f5ca1d","emit":"link"}',
+## ]
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
+##
+## [[stages]]
+##
+## [stages.Cratesio]
+## stage = "cratesio-signal-hook-0.3.18"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/signal-hook-0.3.18"
+## name = "signal-hook"
+## name_dash_version = "signal-hook-0.3.18"
+## hash = "d881a16cf4426aa584979d30bd82cb33429027e42122b169753d6ef1085ed6e2"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "dep-x-signal-hook-0.3.18-2dda4bb176f5ca1d"
+## script = '''
+## FROM rust-base AS dep-x-signal-hook-0.3.18-2dda4bb176f5ca1d
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-flamegraph_0-6-10/release/build/signal-hook-2dda4bb176f5ca1d
+## RUN \
+##   --mount=from=cratesio-signal-hook-0.3.18,source=/signal-hook-0.3.18,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/signal-hook-0.3.18,rw \
+##     { \
+##         cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/signal-hook-0.3.18/build.rs | sed -E 's/^(pub[()a-z]* +)?(async +)?fn +main/\1\2fn actual_2dda4bb176f5ca1d_main/' >/_ && mv /_ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/signal-hook-0.3.18/build.rs ; \
+##         { \
+##           echo ; \
+##           echo 'fn main() {' ; \
+##           echo '    use std::env::{args_os, var_os};' ; \
+##           echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
+##           echo '        use std::process::{Command, Stdio};' ; \
+##           echo '        let mut cmd = Command::new("cargo-green");' ; \
+##           echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
+##           echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
+##           echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
+##           echo '        assert!(res.success());' ; \
+##           echo '    } else {' ; \
+##           echo '        actual_2dda4bb176f5ca1d_main();' ; \
+##           echo '    }' ; \
+##           echo '}' ; \
+##         } >>/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/signal-hook-0.3.18/build.rs ; \
+##     } && \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CRATE_NAME=build_script_build \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/signal-hook-0.3.18 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/signal-hook-0.3.18/Cargo.toml \
+##         CARGO_PKG_AUTHORS=Michal' '\'vorner\'' Vaner <vorner@vorner.cz>:Thomas Himmelstoss <thimm@posteo.de>' \
+##         CARGO_PKG_DESCRIPTION=Unix' signal handling' \
+##         CARGO_PKG_HOMEPAGE= \
+##         CARGO_PKG_LICENSE=Apache-2.0/MIT \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=signal-hook \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/vorner/signal-hook' \
+##         CARGO_PKG_RUST_VERSION= \
+##         CARGO_PKG_VERSION=0.3.18 \
+##         CARGO_PKG_VERSION_MAJOR=0 \
+##         CARGO_PKG_VERSION_MINOR=3 \
+##         CARGO_PKG_VERSION_PATCH=18 \
+##         CARGO_PKG_VERSION_PRE= \
+##         CARGOGREEN=1 \
+##       rustc --crate-name build_script_build --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="channel"' --cfg feature'="default"' --cfg feature'="iterator"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("cc", "channel", "default", "extended-siginfo", "extended-siginfo-raw", "iterator"))' -C metadata'=5a883826bd6b5796' -C extra-filename'=-2dda4bb176f5ca1d' --out-dir /tmp/clis-flamegraph_0-6-10/release/build/signal-hook-2dda4bb176f5ca1d -C strip'=debuginfo' -L dependency'=/tmp/clis-flamegraph_0-6-10/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/signal-hook-0.3.18/build.rs \
+##         1>          /tmp/clis-flamegraph_0-6-10/release/build/signal-hook-2dda4bb176f5ca1d/out-2dda4bb176f5ca1d-stdout \
+##         2>          /tmp/clis-flamegraph_0-6-10/release/build/signal-hook-2dda4bb176f5ca1d/out-2dda4bb176f5ca1d-stderr \
+##         || echo $? >/tmp/clis-flamegraph_0-6-10/release/build/signal-hook-2dda4bb176f5ca1d/out-2dda4bb176f5ca1d-errcode\
+##   ; find /tmp/clis-flamegraph_0-6-10/release/build/signal-hook-2dda4bb176f5ca1d/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-2dda4bb176f5ca1d"
+## script = """
+## FROM scratch AS out-2dda4bb176f5ca1d
+## COPY --link --from=dep-x-signal-hook-0.3.18-2dda4bb176f5ca1d /tmp/clis-flamegraph_0-6-10/release/build/signal-hook-2dda4bb176f5ca1d/*-2dda4bb176f5ca1d* /"""
+
+FROM rust-base AS run-z-signal-hook-0.3.18-b39913d98948e491
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /tmp/clis-flamegraph_0-6-10/release/build/signal-hook-b39913d98948e491/out
+WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/signal-hook-0.3.18
+RUN \
+  --mount=from=out-2dda4bb176f5ca1d,source=/build_script_build-2dda4bb176f5ca1d,dst=/tmp/clis-flamegraph_0-6-10/release/build/signal-hook-2dda4bb176f5ca1d/build-script-build \
+  --mount=from=cratesio-signal-hook-0.3.18,source=/signal-hook-0.3.18,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/signal-hook-0.3.18 \
+    env CARGO="$(which cargo)" \
+        CARGO_CFG_FEATURE=channel,default,iterator \
+        CARGO_CFG_PANIC=unwind \
+        CARGO_CFG_TARGET_ABI= \
+        CARGO_CFG_TARGET_ARCH=x86_64 \
+        CARGO_CFG_TARGET_ENDIAN=little \
+        CARGO_CFG_TARGET_ENV=gnu \
+        CARGO_CFG_TARGET_FAMILY=unix \
+        CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
+        CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+        CARGO_CFG_TARGET_OS=linux \
+        CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+        CARGO_CFG_TARGET_VENDOR=unknown \
+        CARGO_CFG_UNIX= \
+        CARGO_ENCODED_RUSTFLAGS= \
+        CARGO_FEATURE_CHANNEL=1 \
+        CARGO_FEATURE_DEFAULT=1 \
+        CARGO_FEATURE_ITERATOR=1 \
+        CARGO_INCREMENTAL=0 \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/signal-hook-0.3.18 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/signal-hook-0.3.18/Cargo.toml \
+        CARGO_PKG_AUTHORS=Michal' '\'vorner\'' Vaner <vorner@vorner.cz>:Thomas Himmelstoss <thimm@posteo.de>' \
+        CARGO_PKG_DESCRIPTION=Unix' signal handling' \
+        CARGO_PKG_HOMEPAGE= \
+        CARGO_PKG_LICENSE=Apache-2.0/MIT \
+        CARGO_PKG_LICENSE_FILE= \
+        CARGO_PKG_NAME=signal-hook \
+        CARGO_PKG_README=README.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/vorner/signal-hook' \
+        CARGO_PKG_RUST_VERSION= \
+        CARGO_PKG_VERSION=0.3.18 \
+        CARGO_PKG_VERSION_MAJOR=0 \
+        CARGO_PKG_VERSION_MINOR=3 \
+        CARGO_PKG_VERSION_PATCH=18 \
+        CARGO_PKG_VERSION_PRE= \
+        DEBUG=false \
+        HOST=x86_64-unknown-linux-gnu \
+        NUM_JOBS=4 \
+        OPT_LEVEL=3 \
+        OUT_DIR=/tmp/clis-flamegraph_0-6-10/release/build/signal-hook-b39913d98948e491/out \
+        PROFILE=release \
+        RUSTC=rustc \
+        RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+        TARGET=x86_64-unknown-linux-gnu \
+        CARGOGREEN=1 \
+      CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-flamegraph_0-6-10/release/build/signal-hook-2dda4bb176f5ca1d/build-script-build \
+        1>          /tmp/clis-flamegraph_0-6-10/release/build/signal-hook-b39913d98948e491/out/out-b39913d98948e491-stdout \
+        2>          /tmp/clis-flamegraph_0-6-10/release/build/signal-hook-b39913d98948e491/out/out-b39913d98948e491-stderr \
+        || echo $? >/tmp/clis-flamegraph_0-6-10/release/build/signal-hook-b39913d98948e491/out/out-b39913d98948e491-errcode\
+  ; find /tmp/clis-flamegraph_0-6-10/release/build/signal-hook-b39913d98948e491/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-b39913d98948e491
+COPY --link --from=run-z-signal-hook-0.3.18-b39913d98948e491 /tmp/clis-flamegraph_0-6-10/release/build/signal-hook-b39913d98948e491/out /
+
+## this = "b39913d98948e491"
+## deps = ["2dda4bb176f5ca1d"]
+## writes_to = "/tmp/clis-flamegraph_0-6-10/release/build/signal-hook-b39913d98948e491/out"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "rust-base"
+## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "run-z-signal-hook-0.3.18-b39913d98948e491"
+## script = '''
+## FROM rust-base AS run-z-signal-hook-0.3.18-b39913d98948e491
+## SHELL ["/bin/sh", "-eux", "-c"]
+## WORKDIR /tmp/clis-flamegraph_0-6-10/release/build/signal-hook-b39913d98948e491/out
+## WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/signal-hook-0.3.18
+## RUN \
+##   --mount=from=out-2dda4bb176f5ca1d,source=/build_script_build-2dda4bb176f5ca1d,dst=/tmp/clis-flamegraph_0-6-10/release/build/signal-hook-2dda4bb176f5ca1d/build-script-build \
+##   --mount=from=cratesio-signal-hook-0.3.18,source=/signal-hook-0.3.18,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/signal-hook-0.3.18 \
+##     env CARGO="$(which cargo)" \
+##         CARGO_CFG_FEATURE=channel,default,iterator \
+##         CARGO_CFG_PANIC=unwind \
+##         CARGO_CFG_TARGET_ABI= \
+##         CARGO_CFG_TARGET_ARCH=x86_64 \
+##         CARGO_CFG_TARGET_ENDIAN=little \
+##         CARGO_CFG_TARGET_ENV=gnu \
+##         CARGO_CFG_TARGET_FAMILY=unix \
+##         CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
+##         CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
+##         CARGO_CFG_TARGET_OS=linux \
+##         CARGO_CFG_TARGET_POINTER_WIDTH=64 \
+##         CARGO_CFG_TARGET_VENDOR=unknown \
+##         CARGO_CFG_UNIX= \
+##         CARGO_ENCODED_RUSTFLAGS= \
+##         CARGO_FEATURE_CHANNEL=1 \
+##         CARGO_FEATURE_DEFAULT=1 \
+##         CARGO_FEATURE_ITERATOR=1 \
+##         CARGO_INCREMENTAL=0 \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/signal-hook-0.3.18 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/signal-hook-0.3.18/Cargo.toml \
+##         CARGO_PKG_AUTHORS=Michal' '\'vorner\'' Vaner <vorner@vorner.cz>:Thomas Himmelstoss <thimm@posteo.de>' \
+##         CARGO_PKG_DESCRIPTION=Unix' signal handling' \
+##         CARGO_PKG_HOMEPAGE= \
+##         CARGO_PKG_LICENSE=Apache-2.0/MIT \
+##         CARGO_PKG_LICENSE_FILE= \
+##         CARGO_PKG_NAME=signal-hook \
+##         CARGO_PKG_README=README.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/vorner/signal-hook' \
+##         CARGO_PKG_RUST_VERSION= \
+##         CARGO_PKG_VERSION=0.3.18 \
+##         CARGO_PKG_VERSION_MAJOR=0 \
+##         CARGO_PKG_VERSION_MINOR=3 \
+##         CARGO_PKG_VERSION_PATCH=18 \
+##         CARGO_PKG_VERSION_PRE= \
+##         DEBUG=false \
+##         HOST=x86_64-unknown-linux-gnu \
+##         NUM_JOBS=4 \
+##         OPT_LEVEL=3 \
+##         OUT_DIR=/tmp/clis-flamegraph_0-6-10/release/build/signal-hook-b39913d98948e491/out \
+##         PROFILE=release \
+##         RUSTC=rustc \
+##         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+##         TARGET=x86_64-unknown-linux-gnu \
+##         CARGOGREEN=1 \
+##       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-flamegraph_0-6-10/release/build/signal-hook-2dda4bb176f5ca1d/build-script-build \
+##         1>          /tmp/clis-flamegraph_0-6-10/release/build/signal-hook-b39913d98948e491/out/out-b39913d98948e491-stdout \
+##         2>          /tmp/clis-flamegraph_0-6-10/release/build/signal-hook-b39913d98948e491/out/out-b39913d98948e491-stderr \
+##         || echo $? >/tmp/clis-flamegraph_0-6-10/release/build/signal-hook-b39913d98948e491/out/out-b39913d98948e491-errcode\
+##   ; find /tmp/clis-flamegraph_0-6-10/release/build/signal-hook-b39913d98948e491/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##
+## [[stages]]
+##
+## [stages.Script]
+## stage = "out-b39913d98948e491"
+## script = """
+## FROM scratch AS out-b39913d98948e491
+## COPY --link --from=run-z-signal-hook-0.3.18-b39913d98948e491 /tmp/clis-flamegraph_0-6-10/release/build/signal-hook-b39913d98948e491/out /"""
+
+
 FROM rust-base AS dep-n-signal-hook-0.3.18-c5b32c4efeb47c1b
 SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /tmp/clis-flamegraph_0-6-10/release/deps
@@ -9644,6 +15052,7 @@ RUN \
   --mount=from=out-dccd02569a0701db,dst=/tmp/clis-flamegraph_0-6-10/release/deps/liblibc-dccd02569a0701db.rmeta,source=/liblibc-dccd02569a0701db.rmeta \
   --mount=from=out-960c26bd88610753,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libsignal_hook_registry-960c26bd88610753.rlib,source=/libsignal_hook_registry-960c26bd88610753.rlib \
   --mount=from=out-960c26bd88610753,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libsignal_hook_registry-960c26bd88610753.rmeta,source=/libsignal_hook_registry-960c26bd88610753.rmeta \
+  --mount=from=out-b39913d98948e491,dst=/tmp/clis-flamegraph_0-6-10/release/build/signal-hook-b39913d98948e491/out,source=/ \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=signal_hook \
         CARGO_INCREMENTAL=0 \
@@ -9676,7 +15085,15 @@ COPY --link --from=dep-n-signal-hook-0.3.18-c5b32c4efeb47c1b /tmp/clis-flamegrap
 ## this = "c5b32c4efeb47c1b"
 ## deps = [
 ##     "dccd02569a0701db",
+##     "34ac38a29ecbc6d8",
 ##     "960c26bd88610753",
+##     "b39913d98948e491",
+##     "fab8c0f59b008de9",
+##     "2dda4bb176f5ca1d",
+## ]
+## buildrs_results = [
+##     "fab8c0f59b008de9",
+##     "b39913d98948e491",
 ## ]
 ## writes = [
 ##     "libsignal_hook-c5b32c4efeb47c1b.rlib",
@@ -9707,6 +15124,10 @@ COPY --link --from=dep-n-signal-hook-0.3.18-c5b32c4efeb47c1b /tmp/clis-flamegrap
 ## from = "out-960c26bd88610753"
 ## xtern = "libsignal_hook_registry-960c26bd88610753.rmeta"
 ##
+## [[mounts]]
+## name = "out-b39913d98948e491"
+## mount = "/tmp/clis-flamegraph_0-6-10/release/build/signal-hook-b39913d98948e491/out"
+##
 ## [[stages]]
 ##
 ## [stages.Script]
@@ -9736,6 +15157,7 @@ COPY --link --from=dep-n-signal-hook-0.3.18-c5b32c4efeb47c1b /tmp/clis-flamegrap
 ##   --mount=from=out-dccd02569a0701db,dst=/tmp/clis-flamegraph_0-6-10/release/deps/liblibc-dccd02569a0701db.rmeta,source=/liblibc-dccd02569a0701db.rmeta \
 ##   --mount=from=out-960c26bd88610753,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libsignal_hook_registry-960c26bd88610753.rlib,source=/libsignal_hook_registry-960c26bd88610753.rlib \
 ##   --mount=from=out-960c26bd88610753,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libsignal_hook_registry-960c26bd88610753.rmeta,source=/libsignal_hook_registry-960c26bd88610753.rmeta \
+##   --mount=from=out-b39913d98948e491,dst=/tmp/clis-flamegraph_0-6-10/release/build/signal-hook-b39913d98948e491/out,source=/ \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=signal_hook \
 ##         CARGO_INCREMENTAL=0 \
@@ -9862,6 +15284,8 @@ RUN \
   --mount=from=out-def6b41d68858040,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libgetrandom-def6b41d68858040.rmeta,source=/libgetrandom-def6b41d68858040.rmeta \
   --mount=from=out-edd5fe1b967d7744,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libzerocopy-edd5fe1b967d7744.rlib,source=/libzerocopy-edd5fe1b967d7744.rlib \
   --mount=from=out-edd5fe1b967d7744,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libzerocopy-edd5fe1b967d7744.rmeta,source=/libzerocopy-edd5fe1b967d7744.rmeta \
+  --mount=from=out-23b425cce0264739,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libversion_check-23b425cce0264739.rlib,source=/libversion_check-23b425cce0264739.rlib \
+  --mount=from=out-23b425cce0264739,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libversion_check-23b425cce0264739.rmeta,source=/libversion_check-23b425cce0264739.rmeta \
   --mount=from=out-a14202b9cdd591e4,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libcrossbeam_channel-a14202b9cdd591e4.rlib,source=/libcrossbeam_channel-a14202b9cdd591e4.rlib \
   --mount=from=out-a14202b9cdd591e4,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libcrossbeam_channel-a14202b9cdd591e4.rmeta,source=/libcrossbeam_channel-a14202b9cdd591e4.rmeta \
   --mount=from=out-67764cf5e4057190,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libcrossbeam_utils-67764cf5e4057190.rlib,source=/libcrossbeam_utils-67764cf5e4057190.rlib \
@@ -9874,6 +15298,8 @@ RUN \
   --mount=from=out-bf2135ad93eb8b0c,dst=/tmp/clis-flamegraph_0-6-10/release/deps/liblock_api-bf2135ad93eb8b0c.rmeta,source=/liblock_api-bf2135ad93eb8b0c.rmeta \
   --mount=from=out-0c2f3c3fb0dde363,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libscopeguard-0c2f3c3fb0dde363.rlib,source=/libscopeguard-0c2f3c3fb0dde363.rlib \
   --mount=from=out-0c2f3c3fb0dde363,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libscopeguard-0c2f3c3fb0dde363.rmeta,source=/libscopeguard-0c2f3c3fb0dde363.rmeta \
+  --mount=from=out-f2b41e0845677d6c,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libautocfg-f2b41e0845677d6c.rlib,source=/libautocfg-f2b41e0845677d6c.rlib \
+  --mount=from=out-f2b41e0845677d6c,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libautocfg-f2b41e0845677d6c.rmeta,source=/libautocfg-f2b41e0845677d6c.rmeta \
   --mount=from=out-c28fbd01eba03d7d,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libparking_lot_core-c28fbd01eba03d7d.rlib,source=/libparking_lot_core-c28fbd01eba03d7d.rlib \
   --mount=from=out-c28fbd01eba03d7d,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libparking_lot_core-c28fbd01eba03d7d.rmeta,source=/libparking_lot_core-c28fbd01eba03d7d.rmeta \
   --mount=from=out-eafa1f7040f188f5,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libsmallvec-eafa1f7040f188f5.rlib,source=/libsmallvec-eafa1f7040f188f5.rlib \
@@ -9945,22 +15371,29 @@ COPY --link --from=dep-n-flamegraph-0.6.10-49fb4f01e5ffab92 /tmp/clis-flamegraph
 ## this = "49fb4f01e5ffab92"
 ## deps = [
 ##     "685a2f3787b242f1",
+##     "95b6ff70d80e9b5f",
 ##     "c844528e3f2fdc2a",
 ##     "97e010d1cbaea030",
 ##     "fb24883d99ae7a55",
 ##     "1ed307bd0e4eb6e8",
 ##     "f7da27be4da40736",
 ##     "75925c9cdd5a8d6c",
+##     "ab9829a4a8b7788d",
 ##     "67bdffcce9227268",
 ##     "59a8027a56ed154e",
+##     "973af84dbfcc00ac",
+##     "98c1f198d4a438cd",
 ##     "0fba42c911bb312b",
 ##     "f8ee95e499c63653",
+##     "f8b07fc90d255ac7",
 ##     "3bbe9e40e72af6cd",
 ##     "810c45601233a792",
 ##     "780febcd16cbf874",
 ##     "89e84ce63cef1c32",
+##     "b095fb337ba01442",
 ##     "f331994d8975d6f2",
 ##     "1e72ac622abf140e",
+##     "5771f4b446c688ee",
 ##     "3f3ccbfd21df6ad4",
 ##     "ed9ff48efd1a3659",
 ##     "25333a50fa6136ad",
@@ -9978,23 +15411,33 @@ COPY --link --from=dep-n-flamegraph-0.6.10-49fb4f01e5ffab92 /tmp/clis-flamegraph
 ##     "fcc63cd70cee5c6a",
 ##     "cf9323a0d31530ac",
 ##     "dccd02569a0701db",
+##     "34ac38a29ecbc6d8",
 ##     "d2455ec75a446def",
 ##     "0d2304ccb610135f",
 ##     "cc9c8e8aaa60c29d",
+##     "26ad5078761a756b",
 ##     "fe10370c5bcccd4b",
 ##     "a856a785d4b1ad8e",
 ##     "b7a4f95c065f6eeb",
 ##     "5a4301c208f24f4c",
 ##     "def6b41d68858040",
+##     "6e2123a6636d36d8",
 ##     "edd5fe1b967d7744",
+##     "79067ef5349c233e",
+##     "23b425cce0264739",
+##     "68d55095ddc72a51",
 ##     "a14202b9cdd591e4",
 ##     "67764cf5e4057190",
+##     "f45d51ea245fd809",
 ##     "7191325124fecab9",
 ##     "9cf852482bb48385",
 ##     "bf2135ad93eb8b0c",
 ##     "0c2f3c3fb0dde363",
+##     "f2b41e0845677d6c",
+##     "a75629032379aa07",
 ##     "c28fbd01eba03d7d",
 ##     "eafa1f7040f188f5",
+##     "066169db5799f212",
 ##     "a128f47ec5c000f7",
 ##     "4ab91e794913659c",
 ##     "7330f672ca255d25",
@@ -10012,6 +15455,41 @@ COPY --link --from=dep-n-flamegraph-0.6.10-49fb4f01e5ffab92 /tmp/clis-flamegraph
 ##     "a2dd0fe0df0b57cb",
 ##     "c5b32c4efeb47c1b",
 ##     "960c26bd88610753",
+##     "2dda4bb176f5ca1d",
+##     "2ad6fd9cbd63bfef",
+##     "9a025c1b756d91f9",
+##     "b6a8ff84ba0a9d99",
+##     "92b8e9d8347c9a2e",
+##     "4b323db41945775e",
+##     "254085b54cf6dfd9",
+##     "3c31a3270ab61520",
+##     "fab8c0f59b008de9",
+##     "4a7fa8c4f698a596",
+##     "ec533ba807300e5e",
+##     "f8ea397704a2e459",
+##     "8e0d774804319f0b",
+##     "548f5ba1ed589a3e",
+##     "c37e07c332b288bc",
+##     "a02375f7e2ad9d68",
+##     "b39913d98948e491",
+## ]
+## buildrs_results = [
+##     "2ad6fd9cbd63bfef",
+##     "9a025c1b756d91f9",
+##     "b6a8ff84ba0a9d99",
+##     "92b8e9d8347c9a2e",
+##     "4b323db41945775e",
+##     "254085b54cf6dfd9",
+##     "3c31a3270ab61520",
+##     "fab8c0f59b008de9",
+##     "4a7fa8c4f698a596",
+##     "ec533ba807300e5e",
+##     "f8ea397704a2e459",
+##     "8e0d774804319f0b",
+##     "548f5ba1ed589a3e",
+##     "c37e07c332b288bc",
+##     "a02375f7e2ad9d68",
+##     "b39913d98948e491",
 ## ]
 ## writes = [
 ##     "flamegraph-49fb4f01e5ffab92.d",
@@ -10357,6 +15835,14 @@ COPY --link --from=dep-n-flamegraph-0.6.10-49fb4f01e5ffab92 /tmp/clis-flamegraph
 ## xtern = "libzerocopy-edd5fe1b967d7744.rmeta"
 ##
 ## [[externs]]
+## from = "out-23b425cce0264739"
+## xtern = "libversion_check-23b425cce0264739.rlib"
+##
+## [[externs]]
+## from = "out-23b425cce0264739"
+## xtern = "libversion_check-23b425cce0264739.rmeta"
+##
+## [[externs]]
 ## from = "out-a14202b9cdd591e4"
 ## xtern = "libcrossbeam_channel-a14202b9cdd591e4.rlib"
 ##
@@ -10403,6 +15889,14 @@ COPY --link --from=dep-n-flamegraph-0.6.10-49fb4f01e5ffab92 /tmp/clis-flamegraph
 ## [[externs]]
 ## from = "out-0c2f3c3fb0dde363"
 ## xtern = "libscopeguard-0c2f3c3fb0dde363.rmeta"
+##
+## [[externs]]
+## from = "out-f2b41e0845677d6c"
+## xtern = "libautocfg-f2b41e0845677d6c.rlib"
+##
+## [[externs]]
+## from = "out-f2b41e0845677d6c"
+## xtern = "libautocfg-f2b41e0845677d6c.rmeta"
 ##
 ## [[externs]]
 ## from = "out-c28fbd01eba03d7d"
@@ -10664,6 +16158,8 @@ COPY --link --from=dep-n-flamegraph-0.6.10-49fb4f01e5ffab92 /tmp/clis-flamegraph
 ##   --mount=from=out-def6b41d68858040,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libgetrandom-def6b41d68858040.rmeta,source=/libgetrandom-def6b41d68858040.rmeta \
 ##   --mount=from=out-edd5fe1b967d7744,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libzerocopy-edd5fe1b967d7744.rlib,source=/libzerocopy-edd5fe1b967d7744.rlib \
 ##   --mount=from=out-edd5fe1b967d7744,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libzerocopy-edd5fe1b967d7744.rmeta,source=/libzerocopy-edd5fe1b967d7744.rmeta \
+##   --mount=from=out-23b425cce0264739,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libversion_check-23b425cce0264739.rlib,source=/libversion_check-23b425cce0264739.rlib \
+##   --mount=from=out-23b425cce0264739,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libversion_check-23b425cce0264739.rmeta,source=/libversion_check-23b425cce0264739.rmeta \
 ##   --mount=from=out-a14202b9cdd591e4,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libcrossbeam_channel-a14202b9cdd591e4.rlib,source=/libcrossbeam_channel-a14202b9cdd591e4.rlib \
 ##   --mount=from=out-a14202b9cdd591e4,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libcrossbeam_channel-a14202b9cdd591e4.rmeta,source=/libcrossbeam_channel-a14202b9cdd591e4.rmeta \
 ##   --mount=from=out-67764cf5e4057190,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libcrossbeam_utils-67764cf5e4057190.rlib,source=/libcrossbeam_utils-67764cf5e4057190.rlib \
@@ -10676,6 +16172,8 @@ COPY --link --from=dep-n-flamegraph-0.6.10-49fb4f01e5ffab92 /tmp/clis-flamegraph
 ##   --mount=from=out-bf2135ad93eb8b0c,dst=/tmp/clis-flamegraph_0-6-10/release/deps/liblock_api-bf2135ad93eb8b0c.rmeta,source=/liblock_api-bf2135ad93eb8b0c.rmeta \
 ##   --mount=from=out-0c2f3c3fb0dde363,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libscopeguard-0c2f3c3fb0dde363.rlib,source=/libscopeguard-0c2f3c3fb0dde363.rlib \
 ##   --mount=from=out-0c2f3c3fb0dde363,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libscopeguard-0c2f3c3fb0dde363.rmeta,source=/libscopeguard-0c2f3c3fb0dde363.rmeta \
+##   --mount=from=out-f2b41e0845677d6c,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libautocfg-f2b41e0845677d6c.rlib,source=/libautocfg-f2b41e0845677d6c.rlib \
+##   --mount=from=out-f2b41e0845677d6c,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libautocfg-f2b41e0845677d6c.rmeta,source=/libautocfg-f2b41e0845677d6c.rmeta \
 ##   --mount=from=out-c28fbd01eba03d7d,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libparking_lot_core-c28fbd01eba03d7d.rlib,source=/libparking_lot_core-c28fbd01eba03d7d.rlib \
 ##   --mount=from=out-c28fbd01eba03d7d,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libparking_lot_core-c28fbd01eba03d7d.rmeta,source=/libparking_lot_core-c28fbd01eba03d7d.rmeta \
 ##   --mount=from=out-eafa1f7040f188f5,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libsmallvec-eafa1f7040f188f5.rlib,source=/libsmallvec-eafa1f7040f188f5.rlib \
@@ -10800,12 +16298,14 @@ RUN \
   --mount=from=out-5a4301c208f24f4c,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libcfg_if-5a4301c208f24f4c.rlib,source=/libcfg_if-5a4301c208f24f4c.rlib \
   --mount=from=out-def6b41d68858040,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libgetrandom-def6b41d68858040.rlib,source=/libgetrandom-def6b41d68858040.rlib \
   --mount=from=out-edd5fe1b967d7744,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libzerocopy-edd5fe1b967d7744.rlib,source=/libzerocopy-edd5fe1b967d7744.rlib \
+  --mount=from=out-23b425cce0264739,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libversion_check-23b425cce0264739.rlib,source=/libversion_check-23b425cce0264739.rlib \
   --mount=from=out-a14202b9cdd591e4,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libcrossbeam_channel-a14202b9cdd591e4.rlib,source=/libcrossbeam_channel-a14202b9cdd591e4.rlib \
   --mount=from=out-67764cf5e4057190,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libcrossbeam_utils-67764cf5e4057190.rlib,source=/libcrossbeam_utils-67764cf5e4057190.rlib \
   --mount=from=out-7191325124fecab9,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libdashmap-7191325124fecab9.rlib,source=/libdashmap-7191325124fecab9.rlib \
   --mount=from=out-9cf852482bb48385,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libhashbrown-9cf852482bb48385.rlib,source=/libhashbrown-9cf852482bb48385.rlib \
   --mount=from=out-bf2135ad93eb8b0c,dst=/tmp/clis-flamegraph_0-6-10/release/deps/liblock_api-bf2135ad93eb8b0c.rlib,source=/liblock_api-bf2135ad93eb8b0c.rlib \
   --mount=from=out-0c2f3c3fb0dde363,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libscopeguard-0c2f3c3fb0dde363.rlib,source=/libscopeguard-0c2f3c3fb0dde363.rlib \
+  --mount=from=out-f2b41e0845677d6c,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libautocfg-f2b41e0845677d6c.rlib,source=/libautocfg-f2b41e0845677d6c.rlib \
   --mount=from=out-c28fbd01eba03d7d,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libparking_lot_core-c28fbd01eba03d7d.rlib,source=/libparking_lot_core-c28fbd01eba03d7d.rlib \
   --mount=from=out-eafa1f7040f188f5,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libsmallvec-eafa1f7040f188f5.rlib,source=/libsmallvec-eafa1f7040f188f5.rlib \
   --mount=from=out-a128f47ec5c000f7,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libindexmap-a128f47ec5c000f7.rlib,source=/libindexmap-a128f47ec5c000f7.rlib \
@@ -10863,22 +16363,29 @@ COPY --link --from=dep-n-flamegraph-0.6.10-11d70c8398a7e188 /tmp/clis-flamegraph
 ## this = "11d70c8398a7e188"
 ## deps = [
 ##     "685a2f3787b242f1",
+##     "95b6ff70d80e9b5f",
 ##     "c844528e3f2fdc2a",
 ##     "97e010d1cbaea030",
 ##     "fb24883d99ae7a55",
 ##     "1ed307bd0e4eb6e8",
 ##     "f7da27be4da40736",
 ##     "75925c9cdd5a8d6c",
+##     "ab9829a4a8b7788d",
 ##     "67bdffcce9227268",
 ##     "59a8027a56ed154e",
+##     "973af84dbfcc00ac",
+##     "98c1f198d4a438cd",
 ##     "0fba42c911bb312b",
 ##     "f8ee95e499c63653",
+##     "f8b07fc90d255ac7",
 ##     "3bbe9e40e72af6cd",
 ##     "810c45601233a792",
 ##     "780febcd16cbf874",
 ##     "89e84ce63cef1c32",
+##     "b095fb337ba01442",
 ##     "f331994d8975d6f2",
 ##     "1e72ac622abf140e",
+##     "5771f4b446c688ee",
 ##     "3f3ccbfd21df6ad4",
 ##     "ed9ff48efd1a3659",
 ##     "25333a50fa6136ad",
@@ -10897,23 +16404,33 @@ COPY --link --from=dep-n-flamegraph-0.6.10-11d70c8398a7e188 /tmp/clis-flamegraph
 ##     "fcc63cd70cee5c6a",
 ##     "cf9323a0d31530ac",
 ##     "dccd02569a0701db",
+##     "34ac38a29ecbc6d8",
 ##     "d2455ec75a446def",
 ##     "0d2304ccb610135f",
 ##     "cc9c8e8aaa60c29d",
+##     "26ad5078761a756b",
 ##     "fe10370c5bcccd4b",
 ##     "a856a785d4b1ad8e",
 ##     "b7a4f95c065f6eeb",
 ##     "5a4301c208f24f4c",
 ##     "def6b41d68858040",
+##     "6e2123a6636d36d8",
 ##     "edd5fe1b967d7744",
+##     "79067ef5349c233e",
+##     "23b425cce0264739",
+##     "68d55095ddc72a51",
 ##     "a14202b9cdd591e4",
 ##     "67764cf5e4057190",
+##     "f45d51ea245fd809",
 ##     "7191325124fecab9",
 ##     "9cf852482bb48385",
 ##     "bf2135ad93eb8b0c",
 ##     "0c2f3c3fb0dde363",
+##     "f2b41e0845677d6c",
+##     "a75629032379aa07",
 ##     "c28fbd01eba03d7d",
 ##     "eafa1f7040f188f5",
+##     "066169db5799f212",
 ##     "a128f47ec5c000f7",
 ##     "4ab91e794913659c",
 ##     "7330f672ca255d25",
@@ -10931,6 +16448,41 @@ COPY --link --from=dep-n-flamegraph-0.6.10-11d70c8398a7e188 /tmp/clis-flamegraph
 ##     "a2dd0fe0df0b57cb",
 ##     "c5b32c4efeb47c1b",
 ##     "960c26bd88610753",
+##     "2dda4bb176f5ca1d",
+##     "2ad6fd9cbd63bfef",
+##     "9a025c1b756d91f9",
+##     "b6a8ff84ba0a9d99",
+##     "92b8e9d8347c9a2e",
+##     "4b323db41945775e",
+##     "254085b54cf6dfd9",
+##     "3c31a3270ab61520",
+##     "fab8c0f59b008de9",
+##     "4a7fa8c4f698a596",
+##     "ec533ba807300e5e",
+##     "f8ea397704a2e459",
+##     "8e0d774804319f0b",
+##     "548f5ba1ed589a3e",
+##     "c37e07c332b288bc",
+##     "a02375f7e2ad9d68",
+##     "b39913d98948e491",
+## ]
+## buildrs_results = [
+##     "2ad6fd9cbd63bfef",
+##     "9a025c1b756d91f9",
+##     "b6a8ff84ba0a9d99",
+##     "92b8e9d8347c9a2e",
+##     "4b323db41945775e",
+##     "254085b54cf6dfd9",
+##     "3c31a3270ab61520",
+##     "fab8c0f59b008de9",
+##     "4a7fa8c4f698a596",
+##     "ec533ba807300e5e",
+##     "f8ea397704a2e459",
+##     "8e0d774804319f0b",
+##     "548f5ba1ed589a3e",
+##     "c37e07c332b288bc",
+##     "a02375f7e2ad9d68",
+##     "b39913d98948e491",
 ## ]
 ## writes = [
 ##     "cargo_flamegraph-11d70c8398a7e188",
@@ -11118,6 +16670,10 @@ COPY --link --from=dep-n-flamegraph-0.6.10-11d70c8398a7e188 /tmp/clis-flamegraph
 ## xtern = "libzerocopy-edd5fe1b967d7744.rlib"
 ##
 ## [[externs]]
+## from = "out-23b425cce0264739"
+## xtern = "libversion_check-23b425cce0264739.rlib"
+##
+## [[externs]]
 ## from = "out-a14202b9cdd591e4"
 ## xtern = "libcrossbeam_channel-a14202b9cdd591e4.rlib"
 ##
@@ -11140,6 +16696,10 @@ COPY --link --from=dep-n-flamegraph-0.6.10-11d70c8398a7e188 /tmp/clis-flamegraph
 ## [[externs]]
 ## from = "out-0c2f3c3fb0dde363"
 ## xtern = "libscopeguard-0c2f3c3fb0dde363.rlib"
+##
+## [[externs]]
+## from = "out-f2b41e0845677d6c"
+## xtern = "libautocfg-f2b41e0845677d6c.rlib"
 ##
 ## [[externs]]
 ## from = "out-c28fbd01eba03d7d"
@@ -11286,12 +16846,14 @@ COPY --link --from=dep-n-flamegraph-0.6.10-11d70c8398a7e188 /tmp/clis-flamegraph
 ##   --mount=from=out-5a4301c208f24f4c,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libcfg_if-5a4301c208f24f4c.rlib,source=/libcfg_if-5a4301c208f24f4c.rlib \
 ##   --mount=from=out-def6b41d68858040,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libgetrandom-def6b41d68858040.rlib,source=/libgetrandom-def6b41d68858040.rlib \
 ##   --mount=from=out-edd5fe1b967d7744,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libzerocopy-edd5fe1b967d7744.rlib,source=/libzerocopy-edd5fe1b967d7744.rlib \
+##   --mount=from=out-23b425cce0264739,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libversion_check-23b425cce0264739.rlib,source=/libversion_check-23b425cce0264739.rlib \
 ##   --mount=from=out-a14202b9cdd591e4,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libcrossbeam_channel-a14202b9cdd591e4.rlib,source=/libcrossbeam_channel-a14202b9cdd591e4.rlib \
 ##   --mount=from=out-67764cf5e4057190,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libcrossbeam_utils-67764cf5e4057190.rlib,source=/libcrossbeam_utils-67764cf5e4057190.rlib \
 ##   --mount=from=out-7191325124fecab9,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libdashmap-7191325124fecab9.rlib,source=/libdashmap-7191325124fecab9.rlib \
 ##   --mount=from=out-9cf852482bb48385,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libhashbrown-9cf852482bb48385.rlib,source=/libhashbrown-9cf852482bb48385.rlib \
 ##   --mount=from=out-bf2135ad93eb8b0c,dst=/tmp/clis-flamegraph_0-6-10/release/deps/liblock_api-bf2135ad93eb8b0c.rlib,source=/liblock_api-bf2135ad93eb8b0c.rlib \
 ##   --mount=from=out-0c2f3c3fb0dde363,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libscopeguard-0c2f3c3fb0dde363.rlib,source=/libscopeguard-0c2f3c3fb0dde363.rlib \
+##   --mount=from=out-f2b41e0845677d6c,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libautocfg-f2b41e0845677d6c.rlib,source=/libautocfg-f2b41e0845677d6c.rlib \
 ##   --mount=from=out-c28fbd01eba03d7d,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libparking_lot_core-c28fbd01eba03d7d.rlib,source=/libparking_lot_core-c28fbd01eba03d7d.rlib \
 ##   --mount=from=out-eafa1f7040f188f5,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libsmallvec-eafa1f7040f188f5.rlib,source=/libsmallvec-eafa1f7040f188f5.rlib \
 ##   --mount=from=out-a128f47ec5c000f7,dst=/tmp/clis-flamegraph_0-6-10/release/deps/libindexmap-a128f47ec5c000f7.rlib,source=/libindexmap-a128f47ec5c000f7.rlib \
