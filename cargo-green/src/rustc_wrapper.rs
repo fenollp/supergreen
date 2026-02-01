@@ -298,11 +298,12 @@ async fn do_wrap_rustc(
         rustc_block.push_str(&format!("  --mount=from={from},dst={dst},source=/{xtern} \\\n"));
     }
 
+    let args = args.into_iter().map(|arg| safeify(&arg).unwrap()).collect::<Vec<_>>().join(" ");
     md.run_block(
         &rustc_stage,
         &out_stage,
         &out_dir,
-        format!("rustc '{}' {input}", args.join("' '")),
+        format!("rustc {args} {input}"),
         &green.set_envs,
         buildrs,
         rustc_block,
