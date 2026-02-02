@@ -404,7 +404,7 @@ $(unset_action_envs)
         env ${envvars[@]} \\
           cargo green -vv install --locked --force $(as_install "$name_at_version") $@ |& tee _
     - name: 🔵 cargo install jobs=1
-      if: \${{ job.steps.cargo-install.status == failure() }}
+      if: \${{ job.steps.cargo-install.outcome == 'failure' }}
       run: |
 $(unset_action_envs)
         env ${envvars[@]} \\

@@ -194,7 +194,7 @@ jobs:
         env  \
           cargo green -vv install --locked --force buildxargs --git https://github.com/fenollp/buildxargs.git |& tee _
     - name: 🔵 cargo install jobs=1
-      if: ${{ job.steps.cargo-install.status == failure() }}
+      if: ${{ job.steps.cargo-install.outcome == 'failure' }}
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
@@ -516,7 +516,7 @@ jobs:
         env  \
           cargo green -vv install --locked --force cargo-audit@0.22.0 --features=fix |& tee _
     - name: 🔵 cargo install jobs=1
-      if: ${{ job.steps.cargo-install.status == failure() }}
+      if: ${{ job.steps.cargo-install.outcome == 'failure' }}
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
@@ -838,7 +838,7 @@ jobs:
         env  \
           cargo green -vv install --locked --force cargo-deny@0.18.5  |& tee _
     - name: 🔵 cargo install jobs=1
-      if: ${{ job.steps.cargo-install.status == failure() }}
+      if: ${{ job.steps.cargo-install.outcome == 'failure' }}
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
@@ -1160,7 +1160,7 @@ jobs:
         env  \
           cargo green -vv install --locked --force cargo-llvm-cov@0.6.21  |& tee _
     - name: 🔵 cargo install jobs=1
-      if: ${{ job.steps.cargo-install.status == failure() }}
+      if: ${{ job.steps.cargo-install.outcome == 'failure' }}
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
@@ -1482,7 +1482,7 @@ jobs:
         env CARGOGREEN_SET_ENVS=NEXTEST_BUILD_HOST_TARGET,TARGET \
           cargo green -vv install --locked --force cargo-nextest@0.9.114  |& tee _
     - name: 🔵 cargo install jobs=1
-      if: ${{ job.steps.cargo-install.status == failure() }}
+      if: ${{ job.steps.cargo-install.outcome == 'failure' }}
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
@@ -1804,7 +1804,7 @@ jobs:
         env  \
           cargo green -vv install --locked --force cross@0.2.5 --git https://github.com/cross-rs/cross.git --rev=49cd054de9b832dfc11a4895c72b0aef533b5c6a cross |& tee _
     - name: 🔵 cargo install jobs=1
-      if: ${{ job.steps.cargo-install.status == failure() }}
+      if: ${{ job.steps.cargo-install.outcome == 'failure' }}
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
@@ -2126,7 +2126,7 @@ jobs:
         env CARGOGREEN_SET_ENVS=TYPENUM_BUILD_CONSTS,TYPENUM_BUILD_OP \
           cargo green -vv install --locked --force dbcc@2.2.1  |& tee _
     - name: 🔵 cargo install jobs=1
-      if: ${{ job.steps.cargo-install.status == failure() }}
+      if: ${{ job.steps.cargo-install.outcome == 'failure' }}
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
@@ -2448,7 +2448,7 @@ jobs:
         env CARGOGREEN_ADD_APT=libpq-dev \
           cargo green -vv install --locked --force diesel_cli@2.3.4 --no-default-features --features=postgres |& tee _
     - name: 🔵 cargo install jobs=1
-      if: ${{ job.steps.cargo-install.status == failure() }}
+      if: ${{ job.steps.cargo-install.outcome == 'failure' }}
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
@@ -2770,7 +2770,7 @@ jobs:
         env CARGOGREEN_SET_ENVS=RING_CORE_PREFIX \
           cargo green -vv install --locked --force hickory-dns@0.26.0-alpha.1  |& tee _
     - name: 🔵 cargo install jobs=1
-      if: ${{ job.steps.cargo-install.status == failure() }}
+      if: ${{ job.steps.cargo-install.outcome == 'failure' }}
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
@@ -3092,7 +3092,7 @@ jobs:
         env CARGOGREEN_ADD_APT=libsqlite3-dev,libssl-dev,zlib1g-dev \
           cargo green -vv install --locked --force mussh@3.1.3  |& tee _
     - name: 🔵 cargo install jobs=1
-      if: ${{ job.steps.cargo-install.status == failure() }}
+      if: ${{ job.steps.cargo-install.outcome == 'failure' }}
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
@@ -3415,7 +3415,7 @@ jobs:
         env CARGOGREEN_SET_ENVS=NTPD_RS_GIT_DATE,NTPD_RS_GIT_REV,RING_CORE_PREFIX \
           cargo green -vv install --locked --force ntpd@1.7.0-alpha.20251003  |& tee _
     - name: 🔵 cargo install jobs=1
-      if: ${{ job.steps.cargo-install.status == failure() }}
+      if: ${{ job.steps.cargo-install.outcome == 'failure' }}
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
@@ -3737,7 +3737,7 @@ jobs:
         env  \
           cargo green -vv install --locked --force qcow2-rs@0.1.6  |& tee _
     - name: 🔵 cargo install jobs=1
-      if: ${{ job.steps.cargo-install.status == failure() }}
+      if: ${{ job.steps.cargo-install.outcome == 'failure' }}
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
@@ -4059,7 +4059,7 @@ jobs:
         env  \
           cargo green -vv install --locked --force ripgrep@15.1.0  |& tee _
     - name: 🔵 cargo install jobs=1
-      if: ${{ job.steps.cargo-install.status == failure() }}
+      if: ${{ job.steps.cargo-install.outcome == 'failure' }}
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
@@ -4381,7 +4381,7 @@ jobs:
         env  \
           cargo green -vv install --locked --force rublk@0.2.13  |& tee _
     - name: 🔵 cargo install jobs=1
-      if: ${{ job.steps.cargo-install.status == failure() }}
+      if: ${{ job.steps.cargo-install.outcome == 'failure' }}
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
@@ -4703,7 +4703,7 @@ jobs:
         env  \
           cargo green -vv install --locked --force shpool@0.9.3  |& tee _
     - name: 🔵 cargo install jobs=1
-      if: ${{ job.steps.cargo-install.status == failure() }}
+      if: ${{ job.steps.cargo-install.outcome == 'failure' }}
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
@@ -5025,7 +5025,7 @@ jobs:
         env CARGOGREEN_SET_ENVS=VERGEN_CARGO_TARGET_TRIPLE,VERGEN_BUILD_SEMVER \
           cargo green -vv install --locked --force statehub@0.14.10  |& tee _
     - name: 🔵 cargo install jobs=1
-      if: ${{ job.steps.cargo-install.status == failure() }}
+      if: ${{ job.steps.cargo-install.outcome == 'failure' }}
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
@@ -5347,7 +5347,7 @@ jobs:
         env CARGOGREEN_SET_ENVS=RING_CORE_PREFIX \
           cargo green -vv install --locked --force stu@0.7.5  |& tee _
     - name: 🔵 cargo install jobs=1
-      if: ${{ job.steps.cargo-install.status == failure() }}
+      if: ${{ job.steps.cargo-install.outcome == 'failure' }}
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
@@ -5669,7 +5669,7 @@ jobs:
         env CARGOGREEN_ADD_APT=libssl-dev,zlib1g-dev \
           cargo green -vv install --locked --force cargo-authors@0.5.5  |& tee _
     - name: 🔵 cargo install jobs=1
-      if: ${{ job.steps.cargo-install.status == failure() }}
+      if: ${{ job.steps.cargo-install.outcome == 'failure' }}
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
@@ -5991,7 +5991,7 @@ jobs:
         env  \
           cargo green -vv install --locked --force vixargs@0.1.0  |& tee _
     - name: 🔵 cargo install jobs=1
-      if: ${{ job.steps.cargo-install.status == failure() }}
+      if: ${{ job.steps.cargo-install.outcome == 'failure' }}
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
@@ -6313,7 +6313,7 @@ jobs:
         env  \
           cargo green -vv install --locked --force cargo-config2@0.1.39 --example=get |& tee _
     - name: 🔵 cargo install jobs=1
-      if: ${{ job.steps.cargo-install.status == failure() }}
+      if: ${{ job.steps.cargo-install.outcome == 'failure' }}
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
@@ -6635,7 +6635,7 @@ jobs:
         env CARGOGREEN_SET_ENVS=TARGET \
           cargo green -vv install --locked --force kani-verifier@0.66.0 --bin=cargo-kani |& tee _
     - name: 🔵 cargo install jobs=1
-      if: ${{ job.steps.cargo-install.status == failure() }}
+      if: ${{ job.steps.cargo-install.outcome == 'failure' }}
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
@@ -6957,7 +6957,7 @@ jobs:
         env  \
           cargo green -vv install --locked --force cargo-tally@1.0.71  |& tee _
     - name: 🔵 cargo install jobs=1
-      if: ${{ job.steps.cargo-install.status == failure() }}
+      if: ${{ job.steps.cargo-install.outcome == 'failure' }}
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
@@ -7279,7 +7279,7 @@ jobs:
         env  \
           cargo green -vv install --locked --force cargo-mutants@25.3.1  |& tee _
     - name: 🔵 cargo install jobs=1
-      if: ${{ job.steps.cargo-install.status == failure() }}
+      if: ${{ job.steps.cargo-install.outcome == 'failure' }}
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
@@ -7601,7 +7601,7 @@ jobs:
         env  \
           cargo green -vv install --locked --force binsider@0.3.0  |& tee _
     - name: 🔵 cargo install jobs=1
-      if: ${{ job.steps.cargo-install.status == failure() }}
+      if: ${{ job.steps.cargo-install.outcome == 'failure' }}
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
@@ -7923,7 +7923,7 @@ jobs:
         env  \
           cargo green -vv install --locked --force gifski@1.34.0  |& tee _
     - name: 🔵 cargo install jobs=1
-      if: ${{ job.steps.cargo-install.status == failure() }}
+      if: ${{ job.steps.cargo-install.outcome == 'failure' }}
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
@@ -8245,7 +8245,7 @@ jobs:
         env  \
           cargo green -vv install --locked --force flamegraph@0.6.10  |& tee _
     - name: 🔵 cargo install jobs=1
-      if: ${{ job.steps.cargo-install.status == failure() }}
+      if: ${{ job.steps.cargo-install.outcome == 'failure' }}
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
@@ -8567,7 +8567,7 @@ jobs:
         env CARGOGREEN_ADD_APT=libssl-dev,zlib1g-dev CARGOGREEN_SET_ENVS=RING_CORE_PREFIX \
           cargo green -vv install --locked --force sccache@0.12.0  |& tee _
     - name: 🔵 cargo install jobs=1
-      if: ${{ job.steps.cargo-install.status == failure() }}
+      if: ${{ job.steps.cargo-install.outcome == 'failure' }}
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
@@ -8889,7 +8889,7 @@ jobs:
         env CARGOGREEN_SET_ENVS=BTM_GENERATE,BTM_BUILD_RELEASE_CALLER,CIRRUS_CHANGE_IN_REPO,GITHUB_SHA BTM_GENERATE= BTM_BUILD_RELEASE_CALLER= CIRRUS_CHANGE_IN_REPO= GITHUB_SHA= \
           cargo green -vv install --locked --force bottom@0.11.4  |& tee _
     - name: 🔵 cargo install jobs=1
-      if: ${{ job.steps.cargo-install.status == failure() }}
+      if: ${{ job.steps.cargo-install.outcome == 'failure' }}
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
