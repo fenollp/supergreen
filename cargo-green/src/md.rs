@@ -314,6 +314,7 @@ impl Md {
                     .iter()
                     .filter(|w: &&Utf8PathBuf| !w.as_str().ends_with(".d"))
                     .filter(|w: &&Utf8PathBuf| exclude_rmeta_when_not_needed(w))
+                    .filter(|w: &&Utf8PathBuf| !w.as_str().starts_with("build_script_")) //FIXME: skip md if buildrs exe
                     .map(|w| w.file_name().unwrap().to_owned())
                     .map(|xtern: String| MountExtern { from: dep_stage.clone(), xtern }),
             );
