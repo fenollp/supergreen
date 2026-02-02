@@ -698,6 +698,7 @@ all:
   * [x] [`buildkit`: Build function: ResourceExhausted: grpc: received message larger than max (_ vs. 4194304)](https://github.com/moby/buildkit/issues/5217)
   * [x] [`buildx`: `ResourceExhausted: grpc: received message larger than max (_ vs. 4194304)`](https://github.com/docker/buildx/issues/2453)
   * [ ] [`buildkit`: remote `docker buildx build` with large dockerfile gives `trying to send message larger than max (22482550 vs. 16777216)` error](https://github.com/moby/buildkit/issues/6097)
+  * [ ] [`buildx`: `error reading from server: connection error: COMPRESSION_ERROR`](https://github.com/docker/buildx/issues/3637)
 * [ ] [`buildkit`: Support multiple input dockerfiles (single frontend)](https://github.com/moby/buildkit/issues/6508)
 * [x] [`buildkit`: Support extracting `ADD --checksum=.. https://.. ..`](https://github.com/moby/buildkit/issues/4907)
 * [ ] [`buildkit`: `RUN --no-cache` to skip reading & writing a RUN layer to cache](https://github.com/moby/buildkit/issues/6303)
