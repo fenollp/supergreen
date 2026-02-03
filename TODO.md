@@ -570,3 +570,8 @@ works tho
 https://github.com/ariel-os/ariel-os
 
 ---
+
+https://github.com/checkpoint-restore/criu-image-streamer
+
+---
+
