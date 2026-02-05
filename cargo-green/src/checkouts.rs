@@ -16,7 +16,7 @@ pub(crate) struct Checkouts {
     stage: Stage,
     repo: String,
     commit: String,
-    krate_manifest_dir: Utf8PathBuf,
+    mount: Utf8PathBuf,
 }
 
 impl AsBlock for Checkouts {
@@ -38,13 +38,16 @@ impl AsStage<'_> for Checkouts {
     }
 
     fn mounts(&self) -> Vec<(Option<Utf8PathBuf>, Utf8PathBuf, bool)> {
-        vec![(None, self.krate_manifest_dir.clone(), false)]
+        vec![(None, self.mount.clone(), false)]
     }
 }
 
 /// https://docs.docker.com/reference/dockerfile/#add---keep-git-dir
 /// --build-arg BUILDKIT_CONTEXT_KEEP_GIT_DIR=0 https://docs.docker.com/engine/reference/builder/#buildkit-built-in-build-args
-pub(crate) async fn as_stage(krate_manifest_dir: &Utf8Path) -> Result<NamedStage> {
+pub(crate) async fn as_stage(
+    workdir: &Utf8Path,
+    krate_manifest_dir: &Utf8Path,
+) -> Result<NamedStage> {
     // TODO: replace execve with pure Rust impl, e.g. gitoxide
     let mut cmd = Command::new("git");
     cmd.kill_on_drop(true); // Underlying OS process dies with us
@@ -81,7 +84,7 @@ pub(crate) async fn as_stage(krate_manifest_dir: &Utf8Path) -> Result<NamedStage
         stage,
         repo: repo.to_owned(),
         commit: commit.to_owned(),
-        krate_manifest_dir: krate_manifest_dir.to_owned(),
+        mount: workdir.to_owned(),
     }))
 }
 
