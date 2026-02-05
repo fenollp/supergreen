@@ -52,7 +52,7 @@ declare -a nvs nvs_args
 ((i+=1)); nvs[i]=shpool@0.9.3;                oks[i]=ok; nvs_args[i]=''
 
 #cdylib
-((i+=1)); nvs[i]=statehub@0.14.10;            oks[i]=oD; nvs_args[i]=''
+((i+=1)); nvs[i]=statehub@0.14.10;            oks[i]=kD; nvs_args[i]='' # Flaky builds + non-hermetic CARGOGREEN_SET_ENVS='VERGEN_CARGO_TARGET_TRIPLE,VERGEN_BUILD_SEMVER'
 ((i+=1)); nvs[i]=code_reload@main             oks[i]=ko; nvs_args[i]='--git https://github.com/alordash/code_reload.git --rev=fc16bd2102ea1b59f55563923d6c161684230950 simple' # Pinned on 2025/12/03 # BUG: couldn't read `$CARGO_HOME/git/checkouts/code_reload-a4960c8e3a9a144c/fc16bd2/src/code_reload_core/src/lib.rs`: No such file or directory (os error 2)
 ((i+=1)); nvs[i]=stu@0.7.5;                   oks[i]=ok; nvs_args[i]=''
 
@@ -196,7 +196,6 @@ as_env() {
     ntpd@*) envvars+=(CARGOGREEN_SET_ENVS='NTPD_RS_GIT_DATE,NTPD_RS_GIT_REV,RING_CORE_PREFIX') ;;
     privaxy@*) envvars+=(CARGOGREEN_ADD_APT='libssl-dev') ;;
     sccache@*) envvars+=(CARGOGREEN_ADD_APT='libssl-dev,zlib1g-dev' CARGOGREEN_SET_ENVS='RING_CORE_PREFIX') ;;
-    statehub@*) envvars+=(CARGOGREEN_SET_ENVS='VERGEN_CARGO_TARGET_TRIPLE,VERGEN_BUILD_SEMVER') ;;
     stu@*) envvars+=(CARGOGREEN_SET_ENVS='RING_CORE_PREFIX') ;;
     torrust-index@*) envvars+=(CARGOGREEN_ADD_APT='libssl-dev,zlib1g-dev' CARGOGREEN_SET_ENVS='MIME_TYPES_GENERATED_PATH,RING_CORE_PREFIX') ;;
     zed@*) envvars+=(CARGOGREEN_SET_ENVS='CRUNCHY_LIB_SUFFIX') ;;

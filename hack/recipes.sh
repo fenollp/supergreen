@@ -23,7 +23,6 @@ for f in *.Dockerfile/*.Dockerfile; do
 	#  and changes to cargo JSON stderr messages. (TODO: drop) Turns out these are flaky though multiple builds...
 	if git --no-pager diff --exit-code \
 		--ignore-matching-lines='^#' \
-		--ignore-matching-lines='VERGEN_BUILD_TIMESTAMP=' \
 		--ignore-matching-lines=' AS rust-base$' \
 		-- $f; then
 		git checkout -- $f
