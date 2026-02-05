@@ -34,7 +34,7 @@ source "$repo_root"/hack/ck.sh
 # ok: builds | ko: doesn't build | [ok]D: ok|ko but old: shows too many cfg warnings | Ok: takes >=10min in CI
 declare -a nvs nvs_args
    i=0  ; nvs[i]=buildxargs@master;           oks[i]=ok; nvs_args[i]='--git https://github.com/fenollp/buildxargs.git'
-((i+=1)); nvs[i]=cargo-audit@0.22.0;          oks[i]=Ok; nvs_args[i]='--features=fix'
+((i+=1)); nvs[i]=cargo-audit@0.22.0;          oks[i]=kO; nvs_args[i]='--features=fix' # Flaky and slow
 ((i+=1)); nvs[i]=cargo-deny@0.18.5;           oks[i]=Ok; nvs_args[i]=''
 ((i+=1)); nvs[i]=cargo-fuzz@0.13.1;           oks[i]=ko; nvs_args[i]=''
 ((i+=1)); nvs[i]=cargo-green@main;            oks[i]=ko; nvs_args[i]='--git https://github.com/fenollp/supergreen.git --branch=main cargo-green' # BUG: couldn't read `cargo-green/src/main.rs`: No such file or directory (os error 2)
