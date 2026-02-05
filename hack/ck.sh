@@ -133,7 +133,6 @@ cat <<EOF
           final_diff+=(--exit-code)
         fi
         final_diff+=(--ignore-matching-lines='^#')
-        final_diff+=(--ignore-matching-lines='VERGEN_BUILD_TIMESTAMP=')
         final_diff+=(--ignore-matching-lines=' AS rust-base$')
         final_diff+=(-- \$CARGOGREEN_FINAL_PATH)
         "\${final_diff[@]}"
