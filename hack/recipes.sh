@@ -25,7 +25,7 @@ for f in *.Dockerfile/*.Dockerfile; do
 		--ignore-matching-lines='^#' \
 		--ignore-matching-lines=' AS rust-base$' \
 		-- $f; then
-		git checkout -- $f
+		git checkout -- $f 2>/dev/null || true
 	# else
 	# 	"$repo_root"/hack/graph.sh $f
 	fi
