@@ -175,6 +175,36 @@ fn cargo_home() -> Result<Utf8PathBuf> {
         .map_err(|e| anyhow!("corrupted $CARGO_HOME path: {e}"))
 }
 
+fn git_mount(cargo_home: &Utf8Path, path: &Utf8Path) -> Option<Utf8PathBuf> {
+    if path.starts_with(cargo_home.join("git/checkouts")) {
+        return Some(path.components().take(cargo_home.components().count() + 2 + 2).collect());
+    }
+    None
+}
+
+#[test]
+fn gitmount() {
+    assert_eq!(
+        Some("/home/pete/.cargo/git/checkouts/code_reload-a4960c8e3a9a144c/fc16bd2".into()),
+        git_mount(
+            "/home/pete/.cargo".into(),
+            "/home/pete/.cargo/git/checkouts/code_reload-a4960c8e3a9a144c/fc16bd2".into()
+        )
+    );
+    assert_eq!(
+        Some("$CARGO_HOME/git/checkouts/code_reload-a4960c8e3a9a144c/fc16bd2".into()),
+        git_mount(
+            "$CARGO_HOME".into(),
+            "$CARGO_HOME/git/checkouts/code_reload-a4960c8e3a9a144c/fc16bd2/blip/blop".into()
+        )
+    );
+}
+
+// WORKDIR /home/pete/.cargo/git/checkouts/code_reload-a4960c8e3a9a144c/fc16bd2
+// T 26/02/05 23:31:35.322 N simple 0.1.0 0000000000000000 ❯         CARGO_MANIFEST_DIR=/home/pete/.cargo/git/checkouts/code_reload-a4960c8e3a9a144c/fc16bd2/examples/simple \
+// T 26/02/05 23:31:35.322 N simple 0.1.0 0000000000000000 ❯         CARGO_MANIFEST_PATH=/home/pete/.cargo/git/checkouts/code_reload-a4960c8e3a9a144c/fc16bd2/examples/simple/Cargo.toml \
+// simple/src/lib.rs
+
 #[expect(clippy::too_many_arguments)]
 async fn do_wrap_rustc(
     green: Green,
@@ -207,8 +237,9 @@ async fn do_wrap_rustc(
     rustc_block.push_str(&format!("WORKDIR {out_dir}\n"));
     if !pwd.starts_with(cargo_home.join("registry/src")) {
         // Essentially match the same-ish path that points to crates-io paths.
-        // Experiment showed that git-check'ed-out crates didn't like: // if !pwd.starts_with(&cargo_home) {
-        rustc_block.push_str(&format!("WORKDIR {pwd}\n"));
+        // let workdir = git_mount(&cargo_home, &pwd).unwrap_or_else(|| pwd.clone());
+        let workdir = &pwd;
+        rustc_block.push_str(&format!("WORKDIR {workdir}\n"));
     }
 
     if let Some(ref incremental) = incremental {
@@ -225,7 +256,8 @@ async fn do_wrap_rustc(
     } else if krate_manifest_dir.starts_with(cargo_home.join("git/checkouts")) {
         // Input is of a git checked out dep
 
-        checkouts::as_stage(krate_manifest_dir).await?
+        let workdir = git_mount(&cargo_home, krate_manifest_dir).unwrap();
+        checkouts::as_stage(&workdir, krate_manifest_dir).await?
     } else if input.is_relative() {
         // Input is local code
 
