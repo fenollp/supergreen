@@ -48,6 +48,8 @@ pub(crate) const ERRCODE: &str = "errcode";
 pub(crate) const STDERR: &str = "stderr";
 pub(crate) const STDOUT: &str = "stdout";
 
+pub(crate) const SHELL: &[&str] = &["/bin/sh", "-eux", "-c"];
+
 impl Green {
     /// Read digest from builder cache, then maybe from default cache.
     ///

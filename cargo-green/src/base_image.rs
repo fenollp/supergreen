@@ -3,7 +3,7 @@ use std::sync::LazyLock;
 use rustc_version::{Channel, Version, VersionMeta};
 use serde::{Deserialize, Serialize};
 
-use crate::{add::Add, image_uri::ImageUri, network::Network, stage::RST};
+use crate::{add::Add, build::SHELL, image_uri::ImageUri, network::Network, stage::RST};
 
 macro_rules! ENV_BASE_IMAGE {
     () => {
@@ -193,7 +193,7 @@ impl RustcV {
         let block = format!(
             r#"
 FROM scratch AS rustup-{short_checksum}
-SHELL
+SHELL {SHELL:?}
 ADD --link --chmod=0144 --checksum=sha256:{rustup_checksum} \
   https://static.rust-lang.org/rustup/archive/{rustup_version}/{host}/rustup-init /rustup-init
 {packages_block}
