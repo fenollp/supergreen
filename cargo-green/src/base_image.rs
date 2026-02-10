@@ -1,6 +1,6 @@
 use std::sync::LazyLock;
 
-use rustc_version::{Channel, Version, VersionMeta};
+use rustc_version::{Channel, VersionMeta};
 use serde::{Deserialize, Serialize};
 
 use crate::{add::Add, build::SHELL, image_uri::ImageUri, network::Network, stage::RST};
@@ -74,7 +74,7 @@ impl BaseImage {
 
     #[must_use]
     fn from_rustcv(
-        VersionMeta { semver, commit_hash, commit_date, channel, host, .. }: VersionMeta,
+        VersionMeta { short_version_string, commit_hash, commit_date, channel, host, .. }: VersionMeta,
     ) -> Option<Self> {
         // if channel == Channel::Stable {
         //     assert!(STABLE_RUST.contains(":1-"));
@@ -82,7 +82,7 @@ impl BaseImage {
         //     return Some(Self::from_image(minored.try_into().unwrap()));
         // }
         commit_hash.zip(commit_date).map(|(commit, date)| {
-            RustcV { version: semver, commit, date, channel, host }.as_base_image()
+            RustcV { version: short_version_string, commit, date, channel, host }.as_base_image()
         })
         //get --target=??? from args  then use ^host^ as default?
     }
@@ -121,8 +121,7 @@ impl BaseImage {
 
 // TODO? maybe use commit & version as selector too?
 struct RustcV {
-    #[expect(unused)]
-    version: Version,
+    version: String,
     #[expect(unused)]
     commit: String,
     date: String,
@@ -167,12 +166,11 @@ impl RustcV {
         //   https://github.com/reproducible-containers/repro-pkg-cache
         //   https://github.com/reproducible-containers/repro-get
 
-        let RustcV { date, channel, .. } = self;
-        let channel = match channel {
-            Channel::Stable => "stable",
-            Channel::Dev => "dev",
-            Channel::Beta => "beta",
-            Channel::Nightly => "nightly",
+        let toolchain = match self {
+            RustcV { channel: Channel::Nightly, date, .. } => format!("nightly-{date}"),
+            RustcV { channel: Channel::Stable, version, .. } => format!("stable-{version}"),
+            RustcV { channel: Channel::Beta, version, .. } => format!("beta-{version}"),
+            RustcV { channel: Channel::Dev, version, .. } => format!("dev-{version}"),
         };
         //=> sub fn that takes "{channel}-{date}" in, because rustup takes somewhat-freeform toolchain specs
         //==> $RUSTUP_TOOLCHAIN https://rust-lang.github.io/rustup/environment-variables.html
@@ -181,7 +179,7 @@ impl RustcV {
         let base = image.noscheme();
         assert!(base.contains("/debian:"));
 
-        let (with_network, packages_block) = Add {
+        let (_, packages_block) = Add {
             // From https://github.com/rust-lang/docker-rust/blob/d14e1ad7efeb270012b1a7e88fea699b1d1082f2/nightly/alpine3.20/Dockerfile
             apk: vec!["ca-certificates".to_owned(), "gcc".to_owned()],
             // From https://github.com/rust-lang/docker-rust/blob/d14e1ad7efeb270012b1a7e88fea699b1d1082f2/nightly/bullseye/slim/Dockerfile
@@ -203,7 +201,7 @@ ENV RUSTUP_HOME=/usr/local/rustup \
 RUN \
  --mount=from=rustup-{short_checksum},source=/rustup-init,dst=/rustup-init \
    set -eux \
-&& /rustup-init --verbose -y --no-modify-path --profile minimal --default-toolchain {channel}-{date} --default-host {host} --target {host} \
+&& /rustup-init --verbose -y --no-modify-path --profile minimal --default-toolchain {toolchain} --default-host {host} --target {host} \
 && chmod -R a+w $RUSTUP_HOME $CARGO_HOME \
 && rustup --version \
 && cargo --version \
@@ -215,7 +213,7 @@ RUN \
         );
         //TODO: <<EOR
 
-        BaseImage { with_network, image, image_inline: Some(block) }
+        BaseImage { with_network: Network::Default, image, image_inline: Some(block) }
     }
 }
 
