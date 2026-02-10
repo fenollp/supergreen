@@ -8192,7 +8192,7 @@ jobs:
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
-        env CARGOGREEN_SET_ENVS=BTM_GENERATE,BTM_BUILD_RELEASE_CALLER,CIRRUS_CHANGE_IN_REPO,GITHUB_SHA BTM_GENERATE= BTM_BUILD_RELEASE_CALLER= CIRRUS_CHANGE_IN_REPO= GITHUB_SHA= \
+        env CARGOGREEN_SET_ENVS=GITHUB_SHA GITHUB_SHA= \
           cargo green -vv install --locked --force bottom@0.11.4  |& tee _
     - name: 🔵 cargo install jobs=1
       #if: ${{ job.steps.cargo-install.outcome == 'failure' }} this actually hides failure of cargo-install step
@@ -8201,7 +8201,7 @@ jobs:
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
-        env CARGOGREEN_SET_ENVS=BTM_GENERATE,BTM_BUILD_RELEASE_CALLER,CIRRUS_CHANGE_IN_REPO,GITHUB_SHA BTM_GENERATE= BTM_BUILD_RELEASE_CALLER= CIRRUS_CHANGE_IN_REPO= GITHUB_SHA= \
+        env CARGOGREEN_SET_ENVS=GITHUB_SHA GITHUB_SHA= \
           cargo green -vv install --jobs=1 --locked --force bottom@0.11.4  |& tee _
     - if: ${{ always() && matrix.toolchain != '1.91.1' }}
       uses: actions/upload-artifact@v6
@@ -8287,7 +8287,7 @@ jobs:
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
-        env CARGOGREEN_SET_ENVS=BTM_GENERATE,BTM_BUILD_RELEASE_CALLER,CIRRUS_CHANGE_IN_REPO,GITHUB_SHA BTM_GENERATE= BTM_BUILD_RELEASE_CALLER= CIRRUS_CHANGE_IN_REPO= GITHUB_SHA= \
+        env CARGOGREEN_SET_ENVS=GITHUB_SHA GITHUB_SHA= \
           cargo green -vv install --locked --force bottom@0.11.4  |& tee _
     - name: ...doesn't recompile anything
       run: |
