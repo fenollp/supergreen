@@ -178,7 +178,7 @@ as_env() {
   local name_at_version=$1; shift
   [[ $# -eq 0 ]]
   case "$name_at_version" in
-    bottom@*) envvars+=(CARGOGREEN_SET_ENVS='BTM_GENERATE,BTM_BUILD_RELEASE_CALLER,CIRRUS_CHANGE_IN_REPO,GITHUB_SHA'); envvars+=(BTM_GENERATE=); envvars+=(BTM_BUILD_RELEASE_CALLER=); envvars+=(CIRRUS_CHANGE_IN_REPO=); envvars+=(GITHUB_SHA=) ;; # TODO: drop once fully wrapping buildrs execs
+    bottom@*) envvars+=(CARGOGREEN_SET_ENVS='GITHUB_SHA'); envvars+=(GITHUB_SHA=) ;; # "Dirty bottom v0.11.4: the environment variable GITHUB_SHA changed"
     cargo-authors@*) envvars+=(CARGOGREEN_ADD_APT='libcurl4-openssl-dev,pkg-config') ;;
     cargo-udeps@*) envvars+=(CARGOGREEN_ADD_APT='libssl-dev,pkg-config,zlib1g-dev') ;;
     coccinelleforrust@*) envvars+=(CARGOGREEN_ADD_APT='python3-dev') ;;

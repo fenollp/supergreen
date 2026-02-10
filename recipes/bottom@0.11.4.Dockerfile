@@ -53,9 +53,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=100 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name build_script_build --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("backtrace", "default", "std"))' -C metadata'=a6ed485789ff2177' -C extra-filename'=-27bf7476891d3737' --out-dir /tmp/clis-bottom_0-11-4/release/build/anyhow-27bf7476891d3737 -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.100/build.rs \
         1>          /tmp/clis-bottom_0-11-4/release/build/anyhow-27bf7476891d3737/out-27bf7476891d3737-stdout \
@@ -139,9 +136,6 @@ COPY --link --from=dep-x-anyhow-1.0.100-27bf7476891d3737 /tmp/clis-bottom_0-11-4
 ##         CARGO_PKG_VERSION_PATCH=100 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name build_script_build --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("backtrace", "default", "std"))' -C metadata'=a6ed485789ff2177' -C extra-filename'=-27bf7476891d3737' --out-dir /tmp/clis-bottom_0-11-4/release/build/anyhow-27bf7476891d3737 -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.100/build.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/build/anyhow-27bf7476891d3737/out-27bf7476891d3737-stdout \
@@ -208,9 +202,6 @@ RUN \
         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
         TARGET=x86_64-unknown-linux-gnu \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-bottom_0-11-4/release/build/anyhow-27bf7476891d3737/build-script-build \
         1>          /tmp/clis-bottom_0-11-4/release/build/anyhow-7ab53ea3d9de3870/out/out-7ab53ea3d9de3870-stdout \
@@ -290,9 +281,6 @@ COPY --link --from=run-z-anyhow-1.0.100-7ab53ea3d9de3870 /tmp/clis-bottom_0-11-4
 ##         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
 ##         TARGET=x86_64-unknown-linux-gnu \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-bottom_0-11-4/release/build/anyhow-27bf7476891d3737/build-script-build \
 ##         1>          /tmp/clis-bottom_0-11-4/release/build/anyhow-7ab53ea3d9de3870/out/out-7ab53ea3d9de3870-stdout \
@@ -336,9 +324,6 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         OUT_DIR=/tmp/clis-bottom_0-11-4/release/build/anyhow-7ab53ea3d9de3870/out \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name anyhow --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("backtrace", "default", "std"))' -C metadata'=2d2def15f5c5f0ff' -C extra-filename'=-543166d220417af1' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.100/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-543166d220417af1-stdout \
@@ -584,9 +569,6 @@ COPY --link --from=dep-n-anyhow-1.0.100-543166d220417af1 /tmp/clis-bottom_0-11-4
 ##         CARGO_PKG_VERSION_PRE= \
 ##         OUT_DIR=/tmp/clis-bottom_0-11-4/release/build/anyhow-7ab53ea3d9de3870/out \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name anyhow --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("backtrace", "default", "std"))' -C metadata'=2d2def15f5c5f0ff' -C extra-filename'=-543166d220417af1' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.100/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-543166d220417af1-stdout \
@@ -630,9 +612,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name gimli --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --cfg feature'="read"' --cfg feature'="read-core"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "endian-reader", "fallible-iterator", "read", "read-all", "read-core", "rustc-dep-of-std", "std", "write"))' -C metadata'=eca388d3b98509a9' -C extra-filename'=-aecdb940ee340dcf' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/gimli-0.31.1/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-aecdb940ee340dcf-stdout \
@@ -699,9 +678,6 @@ COPY --link --from=dep-n-gimli-0.31.1-aecdb940ee340dcf /tmp/clis-bottom_0-11-4/r
 ##         CARGO_PKG_VERSION_PATCH=1 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name gimli --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --cfg feature'="read"' --cfg feature'="read-core"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "endian-reader", "fallible-iterator", "read", "read-all", "read-core", "rustc-dep-of-std", "std", "write"))' -C metadata'=eca388d3b98509a9' -C extra-filename'=-aecdb940ee340dcf' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/gimli-0.31.1/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-aecdb940ee340dcf-stdout \
@@ -747,9 +723,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=2 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name addr2line --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("all", "alloc", "bin", "cargo-all", "compiler_builtins", "core", "cpp_demangle", "default", "fallible-iterator", "loader", "rustc-demangle", "rustc-dep-of-std", "smallvec", "std"))' -C metadata'=35d78f4e46a45d80' -C extra-filename'=-ab8ec344bce3c3a9' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern gimli'=/tmp/clis-bottom_0-11-4/release/deps/libgimli-aecdb940ee340dcf.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/addr2line-0.24.2/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-ab8ec344bce3c3a9-stdout \
@@ -830,9 +803,6 @@ COPY --link --from=dep-n-addr2line-0.24.2-ab8ec344bce3c3a9 /tmp/clis-bottom_0-11
 ##         CARGO_PKG_VERSION_PATCH=2 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name addr2line --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("all", "alloc", "bin", "cargo-all", "compiler_builtins", "core", "cpp_demangle", "default", "fallible-iterator", "loader", "rustc-demangle", "rustc-dep-of-std", "smallvec", "std"))' -C metadata'=35d78f4e46a45d80' -C extra-filename'=-ab8ec344bce3c3a9' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern gimli'=/tmp/clis-bottom_0-11-4/release/deps/libgimli-aecdb940ee340dcf.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/addr2line-0.24.2/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-ab8ec344bce3c3a9-stdout \
@@ -879,9 +849,6 @@ item that gets emitted.\
         CARGO_PKG_VERSION_PATCH=3 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name cfg_if --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("core", "rustc-dep-of-std"))' -C metadata'=3d5744d9b85cd117' -C extra-filename'=-bcc7b80470034230' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/cfg-if-1.0.3/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-bcc7b80470034230-stdout \
@@ -951,9 +918,6 @@ COPY --link --from=dep-n-cfg-if-1.0.3-bcc7b80470034230 /tmp/clis-bottom_0-11-4/r
 ##         CARGO_PKG_VERSION_PATCH=3 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name cfg_if --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("core", "rustc-dep-of-std"))' -C metadata'=3d5744d9b85cd117' -C extra-filename'=-bcc7b80470034230' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/cfg-if-1.0.3/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-bcc7b80470034230-stdout \
@@ -1016,9 +980,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=176 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' --allow clippy'::used_underscore_binding' --allow unused_qualifications --warn clippy'::unnecessary_semicolon' --allow clippy'::unnecessary_cast' --allow clippy'::uninlined_format_args' --warn clippy'::ptr_as_ptr' --allow clippy'::non_minimal_cfg' --allow clippy'::missing_safety_doc' --warn clippy'::map_unwrap_or' --warn clippy'::manual_assert' --allow clippy'::identity_op' --warn clippy'::explicit_iter_loop' --allow clippy'::expl_impl_clone_on_copy' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="extra_traits"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("align", "const-extern-fn", "default", "extra_traits", "rustc-dep-of-std", "rustc-std-workspace-core", "std", "use_std"))' -C metadata'=9534c839b1e4f3f8' -C extra-filename'=-d58de9ba7f731104' --out-dir /tmp/clis-bottom_0-11-4/release/build/libc-d58de9ba7f731104 -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.176/build.rs \
         1>          /tmp/clis-bottom_0-11-4/release/build/libc-d58de9ba7f731104/out-d58de9ba7f731104-stdout \
@@ -1102,9 +1063,6 @@ COPY --link --from=dep-x-libc-0.2.176-d58de9ba7f731104 /tmp/clis-bottom_0-11-4/r
 ##         CARGO_PKG_VERSION_PATCH=176 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' --allow clippy'::used_underscore_binding' --allow unused_qualifications --warn clippy'::unnecessary_semicolon' --allow clippy'::unnecessary_cast' --allow clippy'::uninlined_format_args' --warn clippy'::ptr_as_ptr' --allow clippy'::non_minimal_cfg' --allow clippy'::missing_safety_doc' --warn clippy'::map_unwrap_or' --warn clippy'::manual_assert' --allow clippy'::identity_op' --warn clippy'::explicit_iter_loop' --allow clippy'::expl_impl_clone_on_copy' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="extra_traits"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("align", "const-extern-fn", "default", "extra_traits", "rustc-dep-of-std", "rustc-std-workspace-core", "std", "use_std"))' -C metadata'=9534c839b1e4f3f8' -C extra-filename'=-d58de9ba7f731104' --out-dir /tmp/clis-bottom_0-11-4/release/build/libc-d58de9ba7f731104 -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.176/build.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/build/libc-d58de9ba7f731104/out-d58de9ba7f731104-stdout \
@@ -1172,9 +1130,6 @@ RUN \
         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
         TARGET=x86_64-unknown-linux-gnu \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-bottom_0-11-4/release/build/libc-d58de9ba7f731104/build-script-build \
         1>          /tmp/clis-bottom_0-11-4/release/build/libc-1d371dd24ebe0886/out/out-1d371dd24ebe0886-stdout \
@@ -1277,9 +1232,6 @@ COPY --link --from=run-z-libc-0.2.176-1d371dd24ebe0886 /tmp/clis-bottom_0-11-4/r
 ##         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
 ##         TARGET=x86_64-unknown-linux-gnu \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-bottom_0-11-4/release/build/libc-d58de9ba7f731104/build-script-build \
 ##         1>          /tmp/clis-bottom_0-11-4/release/build/libc-1d371dd24ebe0886/out/out-1d371dd24ebe0886-stdout \
@@ -1323,9 +1275,6 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         OUT_DIR=/tmp/clis-bottom_0-11-4/release/build/libc-1d371dd24ebe0886/out \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name libc --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --allow clippy'::used_underscore_binding' --allow unused_qualifications --warn clippy'::unnecessary_semicolon' --allow clippy'::unnecessary_cast' --allow clippy'::uninlined_format_args' --warn clippy'::ptr_as_ptr' --allow clippy'::non_minimal_cfg' --allow clippy'::missing_safety_doc' --warn clippy'::map_unwrap_or' --warn clippy'::manual_assert' --allow clippy'::identity_op' --warn clippy'::explicit_iter_loop' --allow clippy'::expl_impl_clone_on_copy' --cfg feature'="default"' --cfg feature'="extra_traits"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("align", "const-extern-fn", "default", "extra_traits", "rustc-dep-of-std", "rustc-std-workspace-core", "std", "use_std"))' -C metadata'=e12a396d055da4bb' -C extra-filename'=-f9a7f201e668dfaf' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn --cfg freebsd12 --check-cfg cfg'(emscripten_old_stat_abi)' --check-cfg cfg'(espidf_time32)' --check-cfg cfg'(freebsd10)' --check-cfg cfg'(freebsd11)' --check-cfg cfg'(freebsd12)' --check-cfg cfg'(freebsd13)' --check-cfg cfg'(freebsd14)' --check-cfg cfg'(freebsd15)' --check-cfg cfg'(gnu_file_offset_bits64)' --check-cfg cfg'(gnu_time_bits64)' --check-cfg cfg'(libc_deny_warnings)' --check-cfg cfg'(libc_thread_local)' --check-cfg cfg'(linux_time_bits64)' --check-cfg cfg'(musl_v1_2_3)' --check-cfg cfg'(target_os,values("switch","aix","ohos","hurd","rtems","visionos","nuttx","cygwin"))' --check-cfg cfg'(target_env,values("illumos","wasi","aix","ohos","nto71_iosock","nto80"))' --check-cfg cfg'(target_arch,values("loongarch64","mips32r6","mips64r6","csky"))' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.176/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-f9a7f201e668dfaf-stdout \
@@ -1403,9 +1352,6 @@ COPY --link --from=dep-n-libc-0.2.176-f9a7f201e668dfaf /tmp/clis-bottom_0-11-4/r
 ##         CARGO_PKG_VERSION_PRE= \
 ##         OUT_DIR=/tmp/clis-bottom_0-11-4/release/build/libc-1d371dd24ebe0886/out \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name libc --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --allow clippy'::used_underscore_binding' --allow unused_qualifications --warn clippy'::unnecessary_semicolon' --allow clippy'::unnecessary_cast' --allow clippy'::uninlined_format_args' --warn clippy'::ptr_as_ptr' --allow clippy'::non_minimal_cfg' --allow clippy'::missing_safety_doc' --warn clippy'::map_unwrap_or' --warn clippy'::manual_assert' --allow clippy'::identity_op' --warn clippy'::explicit_iter_loop' --allow clippy'::expl_impl_clone_on_copy' --cfg feature'="default"' --cfg feature'="extra_traits"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("align", "const-extern-fn", "default", "extra_traits", "rustc-dep-of-std", "rustc-std-workspace-core", "std", "use_std"))' -C metadata'=e12a396d055da4bb' -C extra-filename'=-f9a7f201e668dfaf' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn --cfg freebsd12 --check-cfg cfg'(emscripten_old_stat_abi)' --check-cfg cfg'(espidf_time32)' --check-cfg cfg'(freebsd10)' --check-cfg cfg'(freebsd11)' --check-cfg cfg'(freebsd12)' --check-cfg cfg'(freebsd13)' --check-cfg cfg'(freebsd14)' --check-cfg cfg'(freebsd15)' --check-cfg cfg'(gnu_file_offset_bits64)' --check-cfg cfg'(gnu_time_bits64)' --check-cfg cfg'(libc_deny_warnings)' --check-cfg cfg'(libc_thread_local)' --check-cfg cfg'(linux_time_bits64)' --check-cfg cfg'(musl_v1_2_3)' --check-cfg cfg'(target_os,values("switch","aix","ohos","hurd","rtems","visionos","nuttx","cygwin"))' --check-cfg cfg'(target_env,values("illumos","wasi","aix","ohos","nto71_iosock","nto80"))' --check-cfg cfg'(target_arch,values("loongarch64","mips32r6","mips64r6","csky"))' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.176/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-f9a7f201e668dfaf-stdout \
@@ -1449,9 +1395,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name adler2 --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("core", "default", "rustc-dep-of-std", "std"))' -C metadata'=b8e4e9a24ee4439b' -C extra-filename'=-5c64281ff3719f6c' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/adler2-2.0.1/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-5c64281ff3719f6c-stdout \
@@ -1518,9 +1461,6 @@ COPY --link --from=dep-n-adler2-2.0.1-5c64281ff3719f6c /tmp/clis-bottom_0-11-4/r
 ##         CARGO_PKG_VERSION_PATCH=1 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name adler2 --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("core", "default", "rustc-dep-of-std", "std"))' -C metadata'=b8e4e9a24ee4439b' -C extra-filename'=-5c64281ff3719f6c' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/adler2-2.0.1/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-5c64281ff3719f6c-stdout \
@@ -1566,9 +1506,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=9 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name miniz_oxide --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --warn unexpected_cfgs --check-cfg cfg'(fuzzing)' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "block-boundary", "core", "default", "rustc-dep-of-std", "serde", "simd", "simd-adler32", "std", "with-alloc"))' -C metadata'=eb54d348d9d0b8c5' -C extra-filename'=-7624e0df862dfe1f' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern adler2'=/tmp/clis-bottom_0-11-4/release/deps/libadler2-5c64281ff3719f6c.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/miniz_oxide-0.8.9/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-7624e0df862dfe1f-stdout \
@@ -1646,9 +1583,6 @@ COPY --link --from=dep-n-miniz_oxide-0.8.9-7624e0df862dfe1f /tmp/clis-bottom_0-1
 ##         CARGO_PKG_VERSION_PATCH=9 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name miniz_oxide --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --warn unexpected_cfgs --check-cfg cfg'(fuzzing)' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "block-boundary", "core", "default", "rustc-dep-of-std", "serde", "simd", "simd-adler32", "std", "with-alloc"))' -C metadata'=eb54d348d9d0b8c5' -C extra-filename'=-7624e0df862dfe1f' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern adler2'=/tmp/clis-bottom_0-11-4/release/deps/libadler2-5c64281ff3719f6c.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/miniz_oxide-0.8.9/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-7624e0df862dfe1f-stdout \
@@ -1694,9 +1628,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=5 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name memchr --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --cfg feature'="alloc"' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "core", "default", "libc", "logging", "rustc-dep-of-std", "std", "use_std"))' -C metadata'=c9bfd46f297a7059' -C extra-filename'=-c80d603364c0d236' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/memchr-2.7.5/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-c80d603364c0d236-stdout \
@@ -1765,9 +1696,6 @@ COPY --link --from=dep-n-memchr-2.7.5-c80d603364c0d236 /tmp/clis-bottom_0-11-4/r
 ##         CARGO_PKG_VERSION_PATCH=5 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name memchr --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --cfg feature'="alloc"' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "core", "default", "libc", "logging", "rustc-dep-of-std", "std", "use_std"))' -C metadata'=c9bfd46f297a7059' -C extra-filename'=-c80d603364c0d236' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/memchr-2.7.5/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-c80d603364c0d236-stdout \
@@ -1830,9 +1758,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=7 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name build_script_build --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="archive"' --cfg feature'="coff"' --cfg feature'="elf"' --cfg feature'="macho"' --cfg feature'="pe"' --cfg feature'="read_core"' --cfg feature'="unaligned"' --cfg feature'="xcoff"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("all", "alloc", "archive", "build", "build_core", "cargo-all", "coff", "compiler_builtins", "compression", "core", "default", "doc", "elf", "macho", "pe", "read", "read_core", "rustc-dep-of-std", "std", "unaligned", "unstable", "unstable-all", "wasm", "write", "write_core", "write_std", "xcoff"))' -C metadata'=7439a9ce5cecad95' -C extra-filename'=-86ba4fbababf6f5f' --out-dir /tmp/clis-bottom_0-11-4/release/build/object-86ba4fbababf6f5f -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/object-0.36.7/build.rs \
         1>          /tmp/clis-bottom_0-11-4/release/build/object-86ba4fbababf6f5f/out-86ba4fbababf6f5f-stdout \
@@ -1916,9 +1841,6 @@ COPY --link --from=dep-x-object-0.36.7-86ba4fbababf6f5f /tmp/clis-bottom_0-11-4/
 ##         CARGO_PKG_VERSION_PATCH=7 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name build_script_build --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="archive"' --cfg feature'="coff"' --cfg feature'="elf"' --cfg feature'="macho"' --cfg feature'="pe"' --cfg feature'="read_core"' --cfg feature'="unaligned"' --cfg feature'="xcoff"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("all", "alloc", "archive", "build", "build_core", "cargo-all", "coff", "compiler_builtins", "compression", "core", "default", "doc", "elf", "macho", "pe", "read", "read_core", "rustc-dep-of-std", "std", "unaligned", "unstable", "unstable-all", "wasm", "write", "write_core", "write_std", "xcoff"))' -C metadata'=7439a9ce5cecad95' -C extra-filename'=-86ba4fbababf6f5f' --out-dir /tmp/clis-bottom_0-11-4/release/build/object-86ba4fbababf6f5f -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/object-0.36.7/build.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/build/object-86ba4fbababf6f5f/out-86ba4fbababf6f5f-stdout \
@@ -1991,9 +1913,6 @@ RUN \
         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
         TARGET=x86_64-unknown-linux-gnu \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-bottom_0-11-4/release/build/object-86ba4fbababf6f5f/build-script-build \
         1>          /tmp/clis-bottom_0-11-4/release/build/object-6003cf8bd1be048d/out/out-6003cf8bd1be048d-stdout \
@@ -2079,9 +1998,6 @@ COPY --link --from=run-z-object-0.36.7-6003cf8bd1be048d /tmp/clis-bottom_0-11-4/
 ##         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
 ##         TARGET=x86_64-unknown-linux-gnu \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-bottom_0-11-4/release/build/object-86ba4fbababf6f5f/build-script-build \
 ##         1>          /tmp/clis-bottom_0-11-4/release/build/object-6003cf8bd1be048d/out/out-6003cf8bd1be048d-stdout \
@@ -2127,9 +2043,6 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         OUT_DIR=/tmp/clis-bottom_0-11-4/release/build/object-6003cf8bd1be048d/out \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name object --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --cfg feature'="archive"' --cfg feature'="coff"' --cfg feature'="elf"' --cfg feature'="macho"' --cfg feature'="pe"' --cfg feature'="read_core"' --cfg feature'="unaligned"' --cfg feature'="xcoff"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("all", "alloc", "archive", "build", "build_core", "cargo-all", "coff", "compiler_builtins", "compression", "core", "default", "doc", "elf", "macho", "pe", "read", "read_core", "rustc-dep-of-std", "std", "unaligned", "unstable", "unstable-all", "wasm", "write", "write_core", "write_std", "xcoff"))' -C metadata'=274131697c93a1ac' -C extra-filename'=-5fcd109adb9e8917' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern memchr'=/tmp/clis-bottom_0-11-4/release/deps/libmemchr-c80d603364c0d236.rmeta' --cap-lints warn --cfg core_error --check-cfg cfg'(core_error)' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/object-0.36.7/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-5fcd109adb9e8917-stdout \
@@ -2218,9 +2131,6 @@ COPY --link --from=dep-n-object-0.36.7-5fcd109adb9e8917 /tmp/clis-bottom_0-11-4/
 ##         CARGO_PKG_VERSION_PRE= \
 ##         OUT_DIR=/tmp/clis-bottom_0-11-4/release/build/object-6003cf8bd1be048d/out \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name object --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --cfg feature'="archive"' --cfg feature'="coff"' --cfg feature'="elf"' --cfg feature'="macho"' --cfg feature'="pe"' --cfg feature'="read_core"' --cfg feature'="unaligned"' --cfg feature'="xcoff"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("all", "alloc", "archive", "build", "build_core", "cargo-all", "coff", "compiler_builtins", "compression", "core", "default", "doc", "elf", "macho", "pe", "read", "read_core", "rustc-dep-of-std", "std", "unaligned", "unstable", "unstable-all", "wasm", "write", "write_core", "write_std", "xcoff"))' -C metadata'=274131697c93a1ac' -C extra-filename'=-5fcd109adb9e8917' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern memchr'=/tmp/clis-bottom_0-11-4/release/deps/libmemchr-c80d603364c0d236.rmeta' --cap-lints warn --cfg core_error --check-cfg cfg'(core_error)' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/object-0.36.7/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-5fcd109adb9e8917-stdout \
@@ -2265,9 +2175,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=26 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name rustc_demangle --edition 2015 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("compiler_builtins", "core", "rustc-dep-of-std", "std"))' -C metadata'=299f13216ca7976f' -C extra-filename'=-6330deb0bd1f668c' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustc-demangle-0.1.26/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-6330deb0bd1f668c-stdout \
@@ -2340,9 +2247,6 @@ COPY --link --from=dep-n-rustc-demangle-0.1.26-6330deb0bd1f668c /tmp/clis-bottom
 ##         CARGO_PKG_VERSION_PATCH=26 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name rustc_demangle --edition 2015 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("compiler_builtins", "core", "rustc-dep-of-std", "std"))' -C metadata'=299f13216ca7976f' -C extra-filename'=-6330deb0bd1f668c' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustc-demangle-0.1.26/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-6330deb0bd1f668c-stdout \
@@ -2405,9 +2309,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=75 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name backtrace --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --allow unexpected_cfgs --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("coresymbolication", "cpp_demangle", "dbghelp", "default", "dl_iterate_phdr", "dladdr", "kernel32", "libunwind", "ruzstd", "serde", "serialize-serde", "std", "unix-backtrace"))' -C metadata'=dd2aadc50bf89722' -C extra-filename'=-4b25e827b1f336c5' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern addr2line'=/tmp/clis-bottom_0-11-4/release/deps/libaddr2line-ab8ec344bce3c3a9.rmeta' --extern cfg_if'=/tmp/clis-bottom_0-11-4/release/deps/libcfg_if-bcc7b80470034230.rmeta' --extern libc'=/tmp/clis-bottom_0-11-4/release/deps/liblibc-f9a7f201e668dfaf.rmeta' --extern miniz_oxide'=/tmp/clis-bottom_0-11-4/release/deps/libminiz_oxide-7624e0df862dfe1f.rmeta' --extern object'=/tmp/clis-bottom_0-11-4/release/deps/libobject-5fcd109adb9e8917.rmeta' --extern rustc_demangle'=/tmp/clis-bottom_0-11-4/release/deps/librustc_demangle-6330deb0bd1f668c.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/backtrace-0.3.75/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-4b25e827b1f336c5-stdout \
@@ -2584,9 +2485,6 @@ COPY --link --from=dep-n-backtrace-0.3.75-4b25e827b1f336c5 /tmp/clis-bottom_0-11
 ##         CARGO_PKG_VERSION_PATCH=75 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name backtrace --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --allow unexpected_cfgs --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("coresymbolication", "cpp_demangle", "dbghelp", "default", "dl_iterate_phdr", "dladdr", "kernel32", "libunwind", "ruzstd", "serde", "serialize-serde", "std", "unix-backtrace"))' -C metadata'=dd2aadc50bf89722' -C extra-filename'=-4b25e827b1f336c5' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern addr2line'=/tmp/clis-bottom_0-11-4/release/deps/libaddr2line-ab8ec344bce3c3a9.rmeta' --extern cfg_if'=/tmp/clis-bottom_0-11-4/release/deps/libcfg_if-bcc7b80470034230.rmeta' --extern libc'=/tmp/clis-bottom_0-11-4/release/deps/liblibc-f9a7f201e668dfaf.rmeta' --extern miniz_oxide'=/tmp/clis-bottom_0-11-4/release/deps/libminiz_oxide-7624e0df862dfe1f.rmeta' --extern object'=/tmp/clis-bottom_0-11-4/release/deps/libobject-5fcd109adb9e8917.rmeta' --extern rustc_demangle'=/tmp/clis-bottom_0-11-4/release/deps/librustc_demangle-6330deb0bd1f668c.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/backtrace-0.3.75/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-4b25e827b1f336c5-stdout \
@@ -2630,9 +2528,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=11 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name anstyle --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --warn rust_2018_idioms --warn clippy'::zero_sized_map_values' --warn clippy'::wildcard_imports' --warn clippy'::verbose_file_reads' --warn unused_qualifications --warn unused_macro_rules --warn unused_lifetimes --warn unsafe_op_in_unsafe_fn --warn unreachable_pub --warn unnameable_types --warn clippy'::uninlined_format_args' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::todo' --warn clippy'::string_to_string' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_add_assign' --warn clippy'::string_add' --warn clippy'::str_to_string' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::self_named_module_files' --warn clippy'::same_functions_in_if_condition' --allow clippy'::result_large_err' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::ref_option_ref' --warn clippy'::redundant_feature_names' --warn clippy'::rc_mutex' --warn clippy'::ptr_as_ptr' --warn clippy'::path_buf_push_overwrite' --warn clippy'::negative_feature_names' --warn clippy'::needless_for_each' --allow clippy'::needless_continue' --warn clippy'::mutex_integer' --warn clippy'::mem_forget' --warn clippy'::macro_use_imports' --warn clippy'::lossy_float_literal' --warn clippy'::linkedlist' --allow clippy'::let_and_return' --warn clippy'::large_types_passed_by_value' --warn clippy'::large_stack_arrays' --warn clippy'::large_digit_groups' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::infinite_loop' --warn clippy'::inefficient_to_string' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::imprecise_flops' --warn clippy'::implicit_clone' --allow clippy'::if_same_then_else' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::fn_params_excessive_bools' --warn clippy'::float_cmp_const' --warn clippy'::flat_map_option' --warn clippy'::filter_map_next' --warn clippy'::fallible_impl_from' --warn clippy'::explicit_into_iter_loop' --warn clippy'::explicit_deref_methods' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::enum_glob_use' --warn clippy'::empty_enum' --warn clippy'::doc_markdown' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::dbg_macro' --warn clippy'::create_dir' --allow clippy'::collapsible_else_if' --warn clippy'::checked_conversions' --allow clippy'::branches_sharing_code' --allow clippy'::bool_assert_comparison' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "std"))' -C metadata'=5e5a14ddd613bf04' -C extra-filename'=-474d4f32b765f566' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anstyle-1.0.11/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-474d4f32b765f566-stdout \
@@ -2699,9 +2594,6 @@ COPY --link --from=dep-n-anstyle-1.0.11-474d4f32b765f566 /tmp/clis-bottom_0-11-4
 ##         CARGO_PKG_VERSION_PATCH=11 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name anstyle --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --warn rust_2018_idioms --warn clippy'::zero_sized_map_values' --warn clippy'::wildcard_imports' --warn clippy'::verbose_file_reads' --warn unused_qualifications --warn unused_macro_rules --warn unused_lifetimes --warn unsafe_op_in_unsafe_fn --warn unreachable_pub --warn unnameable_types --warn clippy'::uninlined_format_args' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::todo' --warn clippy'::string_to_string' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_add_assign' --warn clippy'::string_add' --warn clippy'::str_to_string' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::self_named_module_files' --warn clippy'::same_functions_in_if_condition' --allow clippy'::result_large_err' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::ref_option_ref' --warn clippy'::redundant_feature_names' --warn clippy'::rc_mutex' --warn clippy'::ptr_as_ptr' --warn clippy'::path_buf_push_overwrite' --warn clippy'::negative_feature_names' --warn clippy'::needless_for_each' --allow clippy'::needless_continue' --warn clippy'::mutex_integer' --warn clippy'::mem_forget' --warn clippy'::macro_use_imports' --warn clippy'::lossy_float_literal' --warn clippy'::linkedlist' --allow clippy'::let_and_return' --warn clippy'::large_types_passed_by_value' --warn clippy'::large_stack_arrays' --warn clippy'::large_digit_groups' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::infinite_loop' --warn clippy'::inefficient_to_string' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::imprecise_flops' --warn clippy'::implicit_clone' --allow clippy'::if_same_then_else' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::fn_params_excessive_bools' --warn clippy'::float_cmp_const' --warn clippy'::flat_map_option' --warn clippy'::filter_map_next' --warn clippy'::fallible_impl_from' --warn clippy'::explicit_into_iter_loop' --warn clippy'::explicit_deref_methods' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::enum_glob_use' --warn clippy'::empty_enum' --warn clippy'::doc_markdown' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::dbg_macro' --warn clippy'::create_dir' --allow clippy'::collapsible_else_if' --warn clippy'::checked_conversions' --allow clippy'::branches_sharing_code' --allow clippy'::bool_assert_comparison' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "std"))' -C metadata'=5e5a14ddd613bf04' -C extra-filename'=-474d4f32b765f566' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anstyle-1.0.11/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-474d4f32b765f566-stdout \
@@ -2745,9 +2637,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=2 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name utf8parse --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --cfg feature'="default"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "nightly"))' -C metadata'=df7ccf046cf5fd1d' -C extra-filename'=-485f25491c4f3159' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/utf8parse-0.2.2/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-485f25491c4f3159-stdout \
@@ -2814,9 +2703,6 @@ COPY --link --from=dep-n-utf8parse-0.2.2-485f25491c4f3159 /tmp/clis-bottom_0-11-
 ##         CARGO_PKG_VERSION_PATCH=2 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name utf8parse --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --cfg feature'="default"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "nightly"))' -C metadata'=df7ccf046cf5fd1d' -C extra-filename'=-485f25491c4f3159' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/utf8parse-0.2.2/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-485f25491c4f3159-stdout \
@@ -2862,9 +2748,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=7 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name anstyle_parse --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --warn rust_2018_idioms --warn clippy'::zero_sized_map_values' --warn clippy'::wildcard_imports' --warn clippy'::verbose_file_reads' --warn unused_qualifications --warn unused_macro_rules --warn unused_lifetimes --warn unsafe_op_in_unsafe_fn --warn unreachable_pub --warn unnameable_types --warn clippy'::uninlined_format_args' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::todo' --warn clippy'::string_to_string' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_add_assign' --warn clippy'::string_add' --warn clippy'::str_to_string' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::self_named_module_files' --warn clippy'::same_functions_in_if_condition' --allow clippy'::result_large_err' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::ref_option_ref' --warn clippy'::redundant_feature_names' --warn clippy'::rc_mutex' --warn clippy'::ptr_as_ptr' --warn clippy'::path_buf_push_overwrite' --warn clippy'::negative_feature_names' --warn clippy'::needless_for_each' --allow clippy'::needless_continue' --warn clippy'::mutex_integer' --warn clippy'::mem_forget' --warn clippy'::macro_use_imports' --warn clippy'::lossy_float_literal' --warn clippy'::linkedlist' --allow clippy'::let_and_return' --warn clippy'::large_types_passed_by_value' --warn clippy'::large_stack_arrays' --warn clippy'::large_digit_groups' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::infinite_loop' --warn clippy'::inefficient_to_string' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::imprecise_flops' --warn clippy'::implicit_clone' --allow clippy'::if_same_then_else' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::fn_params_excessive_bools' --warn clippy'::float_cmp_const' --warn clippy'::flat_map_option' --warn clippy'::filter_map_next' --warn clippy'::fallible_impl_from' --warn clippy'::explicit_into_iter_loop' --warn clippy'::explicit_deref_methods' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::enum_glob_use' --warn clippy'::empty_enum' --warn clippy'::doc_markdown' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::dbg_macro' --warn clippy'::create_dir' --allow clippy'::collapsible_else_if' --warn clippy'::checked_conversions' --allow clippy'::branches_sharing_code' --allow clippy'::bool_assert_comparison' --cfg feature'="default"' --cfg feature'="utf8"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("core", "default", "utf8"))' -C metadata'=e9adad59abe305c9' -C extra-filename'=-0128270153fe60f9' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern utf8parse'=/tmp/clis-bottom_0-11-4/release/deps/libutf8parse-485f25491c4f3159.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anstyle-parse-0.2.7/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-0128270153fe60f9-stdout \
@@ -2942,9 +2825,6 @@ COPY --link --from=dep-n-anstyle-parse-0.2.7-0128270153fe60f9 /tmp/clis-bottom_0
 ##         CARGO_PKG_VERSION_PATCH=7 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name anstyle_parse --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --warn rust_2018_idioms --warn clippy'::zero_sized_map_values' --warn clippy'::wildcard_imports' --warn clippy'::verbose_file_reads' --warn unused_qualifications --warn unused_macro_rules --warn unused_lifetimes --warn unsafe_op_in_unsafe_fn --warn unreachable_pub --warn unnameable_types --warn clippy'::uninlined_format_args' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::todo' --warn clippy'::string_to_string' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_add_assign' --warn clippy'::string_add' --warn clippy'::str_to_string' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::self_named_module_files' --warn clippy'::same_functions_in_if_condition' --allow clippy'::result_large_err' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::ref_option_ref' --warn clippy'::redundant_feature_names' --warn clippy'::rc_mutex' --warn clippy'::ptr_as_ptr' --warn clippy'::path_buf_push_overwrite' --warn clippy'::negative_feature_names' --warn clippy'::needless_for_each' --allow clippy'::needless_continue' --warn clippy'::mutex_integer' --warn clippy'::mem_forget' --warn clippy'::macro_use_imports' --warn clippy'::lossy_float_literal' --warn clippy'::linkedlist' --allow clippy'::let_and_return' --warn clippy'::large_types_passed_by_value' --warn clippy'::large_stack_arrays' --warn clippy'::large_digit_groups' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::infinite_loop' --warn clippy'::inefficient_to_string' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::imprecise_flops' --warn clippy'::implicit_clone' --allow clippy'::if_same_then_else' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::fn_params_excessive_bools' --warn clippy'::float_cmp_const' --warn clippy'::flat_map_option' --warn clippy'::filter_map_next' --warn clippy'::fallible_impl_from' --warn clippy'::explicit_into_iter_loop' --warn clippy'::explicit_deref_methods' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::enum_glob_use' --warn clippy'::empty_enum' --warn clippy'::doc_markdown' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::dbg_macro' --warn clippy'::create_dir' --allow clippy'::collapsible_else_if' --warn clippy'::checked_conversions' --allow clippy'::branches_sharing_code' --allow clippy'::bool_assert_comparison' --cfg feature'="default"' --cfg feature'="utf8"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("core", "default", "utf8"))' -C metadata'=e9adad59abe305c9' -C extra-filename'=-0128270153fe60f9' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern utf8parse'=/tmp/clis-bottom_0-11-4/release/deps/libutf8parse-485f25491c4f3159.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anstyle-parse-0.2.7/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-0128270153fe60f9-stdout \
@@ -2988,9 +2868,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=4 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name anstyle_query --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --warn rust_2018_idioms --warn clippy'::zero_sized_map_values' --warn clippy'::wildcard_imports' --warn clippy'::verbose_file_reads' --warn unused_qualifications --warn unused_macro_rules --warn unused_lifetimes --warn unsafe_op_in_unsafe_fn --warn unreachable_pub --warn unnameable_types --warn clippy'::uninlined_format_args' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::todo' --warn clippy'::string_to_string' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_add_assign' --warn clippy'::string_add' --warn clippy'::str_to_string' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::self_named_module_files' --warn clippy'::same_functions_in_if_condition' --allow clippy'::result_large_err' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::ref_option_ref' --warn clippy'::redundant_feature_names' --warn clippy'::rc_mutex' --warn clippy'::ptr_as_ptr' --warn clippy'::path_buf_push_overwrite' --warn clippy'::negative_feature_names' --warn clippy'::needless_for_each' --allow clippy'::needless_continue' --warn clippy'::mutex_integer' --warn clippy'::mem_forget' --warn clippy'::macro_use_imports' --warn clippy'::lossy_float_literal' --warn clippy'::linkedlist' --allow clippy'::let_and_return' --warn clippy'::large_types_passed_by_value' --warn clippy'::large_stack_arrays' --warn clippy'::large_digit_groups' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::infinite_loop' --warn clippy'::inefficient_to_string' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::imprecise_flops' --warn clippy'::implicit_clone' --allow clippy'::if_same_then_else' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::fn_params_excessive_bools' --warn clippy'::float_cmp_const' --warn clippy'::flat_map_option' --warn clippy'::filter_map_next' --warn clippy'::fallible_impl_from' --warn clippy'::explicit_into_iter_loop' --warn clippy'::explicit_deref_methods' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::enum_glob_use' --warn clippy'::empty_enum' --warn clippy'::doc_markdown' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::dbg_macro' --warn clippy'::create_dir' --allow clippy'::collapsible_else_if' --warn clippy'::checked_conversions' --allow clippy'::branches_sharing_code' --allow clippy'::bool_assert_comparison' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=29467524041e9ac4' -C extra-filename'=-51ecac537d9b8985' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anstyle-query-1.1.4/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-51ecac537d9b8985-stdout \
@@ -3057,9 +2934,6 @@ COPY --link --from=dep-n-anstyle-query-1.1.4-51ecac537d9b8985 /tmp/clis-bottom_0
 ##         CARGO_PKG_VERSION_PATCH=4 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name anstyle_query --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --warn rust_2018_idioms --warn clippy'::zero_sized_map_values' --warn clippy'::wildcard_imports' --warn clippy'::verbose_file_reads' --warn unused_qualifications --warn unused_macro_rules --warn unused_lifetimes --warn unsafe_op_in_unsafe_fn --warn unreachable_pub --warn unnameable_types --warn clippy'::uninlined_format_args' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::todo' --warn clippy'::string_to_string' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_add_assign' --warn clippy'::string_add' --warn clippy'::str_to_string' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::self_named_module_files' --warn clippy'::same_functions_in_if_condition' --allow clippy'::result_large_err' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::ref_option_ref' --warn clippy'::redundant_feature_names' --warn clippy'::rc_mutex' --warn clippy'::ptr_as_ptr' --warn clippy'::path_buf_push_overwrite' --warn clippy'::negative_feature_names' --warn clippy'::needless_for_each' --allow clippy'::needless_continue' --warn clippy'::mutex_integer' --warn clippy'::mem_forget' --warn clippy'::macro_use_imports' --warn clippy'::lossy_float_literal' --warn clippy'::linkedlist' --allow clippy'::let_and_return' --warn clippy'::large_types_passed_by_value' --warn clippy'::large_stack_arrays' --warn clippy'::large_digit_groups' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::infinite_loop' --warn clippy'::inefficient_to_string' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::imprecise_flops' --warn clippy'::implicit_clone' --allow clippy'::if_same_then_else' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::fn_params_excessive_bools' --warn clippy'::float_cmp_const' --warn clippy'::flat_map_option' --warn clippy'::filter_map_next' --warn clippy'::fallible_impl_from' --warn clippy'::explicit_into_iter_loop' --warn clippy'::explicit_deref_methods' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::enum_glob_use' --warn clippy'::empty_enum' --warn clippy'::doc_markdown' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::dbg_macro' --warn clippy'::create_dir' --allow clippy'::collapsible_else_if' --warn clippy'::checked_conversions' --allow clippy'::branches_sharing_code' --allow clippy'::bool_assert_comparison' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=29467524041e9ac4' -C extra-filename'=-51ecac537d9b8985' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anstyle-query-1.1.4/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-51ecac537d9b8985-stdout \
@@ -3103,9 +2977,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=4 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name colorchoice --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --warn rust_2018_idioms --warn clippy'::zero_sized_map_values' --warn clippy'::wildcard_imports' --warn clippy'::verbose_file_reads' --warn unused_qualifications --warn unused_macro_rules --warn unused_lifetimes --warn unsafe_op_in_unsafe_fn --warn unreachable_pub --warn unnameable_types --warn clippy'::uninlined_format_args' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::todo' --warn clippy'::string_to_string' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_add_assign' --warn clippy'::string_add' --warn clippy'::str_to_string' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::self_named_module_files' --warn clippy'::same_functions_in_if_condition' --allow clippy'::result_large_err' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::ref_option_ref' --warn clippy'::redundant_feature_names' --warn clippy'::rc_mutex' --warn clippy'::ptr_as_ptr' --warn clippy'::path_buf_push_overwrite' --warn clippy'::negative_feature_names' --warn clippy'::needless_for_each' --allow clippy'::needless_continue' --warn clippy'::mutex_integer' --warn clippy'::mem_forget' --warn clippy'::macro_use_imports' --warn clippy'::lossy_float_literal' --warn clippy'::linkedlist' --allow clippy'::let_and_return' --warn clippy'::large_types_passed_by_value' --warn clippy'::large_stack_arrays' --warn clippy'::large_digit_groups' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::infinite_loop' --warn clippy'::inefficient_to_string' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::imprecise_flops' --warn clippy'::implicit_clone' --allow clippy'::if_same_then_else' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::fn_params_excessive_bools' --warn clippy'::float_cmp_const' --warn clippy'::flat_map_option' --warn clippy'::filter_map_next' --warn clippy'::fallible_impl_from' --warn clippy'::explicit_into_iter_loop' --warn clippy'::explicit_deref_methods' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::enum_glob_use' --warn clippy'::empty_enum' --warn clippy'::doc_markdown' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::dbg_macro' --warn clippy'::create_dir' --allow clippy'::collapsible_else_if' --warn clippy'::checked_conversions' --allow clippy'::branches_sharing_code' --allow clippy'::bool_assert_comparison' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=53fc0b55482b38ac' -C extra-filename'=-f8497aaf26004854' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/colorchoice-1.0.4/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-f8497aaf26004854-stdout \
@@ -3172,9 +3043,6 @@ COPY --link --from=dep-n-colorchoice-1.0.4-f8497aaf26004854 /tmp/clis-bottom_0-1
 ##         CARGO_PKG_VERSION_PATCH=4 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name colorchoice --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --warn rust_2018_idioms --warn clippy'::zero_sized_map_values' --warn clippy'::wildcard_imports' --warn clippy'::verbose_file_reads' --warn unused_qualifications --warn unused_macro_rules --warn unused_lifetimes --warn unsafe_op_in_unsafe_fn --warn unreachable_pub --warn unnameable_types --warn clippy'::uninlined_format_args' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::todo' --warn clippy'::string_to_string' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_add_assign' --warn clippy'::string_add' --warn clippy'::str_to_string' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::self_named_module_files' --warn clippy'::same_functions_in_if_condition' --allow clippy'::result_large_err' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::ref_option_ref' --warn clippy'::redundant_feature_names' --warn clippy'::rc_mutex' --warn clippy'::ptr_as_ptr' --warn clippy'::path_buf_push_overwrite' --warn clippy'::negative_feature_names' --warn clippy'::needless_for_each' --allow clippy'::needless_continue' --warn clippy'::mutex_integer' --warn clippy'::mem_forget' --warn clippy'::macro_use_imports' --warn clippy'::lossy_float_literal' --warn clippy'::linkedlist' --allow clippy'::let_and_return' --warn clippy'::large_types_passed_by_value' --warn clippy'::large_stack_arrays' --warn clippy'::large_digit_groups' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::infinite_loop' --warn clippy'::inefficient_to_string' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::imprecise_flops' --warn clippy'::implicit_clone' --allow clippy'::if_same_then_else' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::fn_params_excessive_bools' --warn clippy'::float_cmp_const' --warn clippy'::flat_map_option' --warn clippy'::filter_map_next' --warn clippy'::fallible_impl_from' --warn clippy'::explicit_into_iter_loop' --warn clippy'::explicit_deref_methods' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::enum_glob_use' --warn clippy'::empty_enum' --warn clippy'::doc_markdown' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::dbg_macro' --warn clippy'::create_dir' --allow clippy'::collapsible_else_if' --warn clippy'::checked_conversions' --allow clippy'::branches_sharing_code' --allow clippy'::bool_assert_comparison' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=53fc0b55482b38ac' -C extra-filename'=-f8497aaf26004854' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/colorchoice-1.0.4/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-f8497aaf26004854-stdout \
@@ -3218,9 +3086,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name is_terminal_polyfill --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --warn clippy'::zero_sized_map_values' --warn clippy'::wildcard_imports' --warn clippy'::verbose_file_reads' --warn unused_qualifications --warn unused_macro_rules --warn unused_lifetimes --warn unsafe_op_in_unsafe_fn --warn unreachable_pub --warn clippy'::trait_duplication_in_bounds' --warn clippy'::todo' --warn clippy'::string_to_string' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_add_assign' --warn clippy'::string_add' --warn clippy'::str_to_string' --warn clippy'::single_match_else' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::self_named_module_files' --warn clippy'::same_functions_in_if_condition' --warn rust_2018_idioms --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::ref_option_ref' --warn clippy'::redundant_feature_names' --warn clippy'::rc_mutex' --warn clippy'::ptr_as_ptr' --warn clippy'::path_buf_push_overwrite' --warn clippy'::negative_feature_names' --warn clippy'::needless_for_each' --warn clippy'::needless_continue' --warn clippy'::mutex_integer' --warn clippy'::mem_forget' --warn clippy'::match_wildcard_for_single_variants' --warn clippy'::macro_use_imports' --warn clippy'::lossy_float_literal' --warn clippy'::linkedlist' --allow clippy'::let_and_return' --warn clippy'::large_types_passed_by_value' --warn clippy'::large_stack_arrays' --warn clippy'::large_digit_groups' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::infinite_loop' --warn clippy'::inefficient_to_string' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::imprecise_flops' --warn clippy'::implicit_clone' --allow clippy'::if_same_then_else' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::fn_params_excessive_bools' --warn clippy'::float_cmp_const' --warn clippy'::flat_map_option' --warn clippy'::filter_map_next' --warn clippy'::fallible_impl_from' --warn clippy'::explicit_into_iter_loop' --warn clippy'::explicit_deref_methods' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::enum_glob_use' --warn clippy'::empty_enum' --warn clippy'::doc_markdown' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::dbg_macro' --warn clippy'::create_dir' --allow clippy'::collapsible_else_if' --warn clippy'::checked_conversions' --allow clippy'::branches_sharing_code' --allow clippy'::bool_assert_comparison' --cfg feature'="default"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default"))' -C metadata'=597f3fe6036f7b32' -C extra-filename'=-7ceac97f45c2812c' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/is_terminal_polyfill-1.70.1/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-7ceac97f45c2812c-stdout \
@@ -3287,9 +3152,6 @@ COPY --link --from=dep-n-is_terminal_polyfill-1.70.1-7ceac97f45c2812c /tmp/clis-
 ##         CARGO_PKG_VERSION_PATCH=1 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name is_terminal_polyfill --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --warn clippy'::zero_sized_map_values' --warn clippy'::wildcard_imports' --warn clippy'::verbose_file_reads' --warn unused_qualifications --warn unused_macro_rules --warn unused_lifetimes --warn unsafe_op_in_unsafe_fn --warn unreachable_pub --warn clippy'::trait_duplication_in_bounds' --warn clippy'::todo' --warn clippy'::string_to_string' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_add_assign' --warn clippy'::string_add' --warn clippy'::str_to_string' --warn clippy'::single_match_else' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::self_named_module_files' --warn clippy'::same_functions_in_if_condition' --warn rust_2018_idioms --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::ref_option_ref' --warn clippy'::redundant_feature_names' --warn clippy'::rc_mutex' --warn clippy'::ptr_as_ptr' --warn clippy'::path_buf_push_overwrite' --warn clippy'::negative_feature_names' --warn clippy'::needless_for_each' --warn clippy'::needless_continue' --warn clippy'::mutex_integer' --warn clippy'::mem_forget' --warn clippy'::match_wildcard_for_single_variants' --warn clippy'::macro_use_imports' --warn clippy'::lossy_float_literal' --warn clippy'::linkedlist' --allow clippy'::let_and_return' --warn clippy'::large_types_passed_by_value' --warn clippy'::large_stack_arrays' --warn clippy'::large_digit_groups' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::infinite_loop' --warn clippy'::inefficient_to_string' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::imprecise_flops' --warn clippy'::implicit_clone' --allow clippy'::if_same_then_else' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::fn_params_excessive_bools' --warn clippy'::float_cmp_const' --warn clippy'::flat_map_option' --warn clippy'::filter_map_next' --warn clippy'::fallible_impl_from' --warn clippy'::explicit_into_iter_loop' --warn clippy'::explicit_deref_methods' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::enum_glob_use' --warn clippy'::empty_enum' --warn clippy'::doc_markdown' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::dbg_macro' --warn clippy'::create_dir' --allow clippy'::collapsible_else_if' --warn clippy'::checked_conversions' --allow clippy'::branches_sharing_code' --allow clippy'::bool_assert_comparison' --cfg feature'="default"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default"))' -C metadata'=597f3fe6036f7b32' -C extra-filename'=-7ceac97f45c2812c' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/is_terminal_polyfill-1.70.1/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-7ceac97f45c2812c-stdout \
@@ -3345,9 +3207,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=20 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name anstream --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --warn rust_2018_idioms --warn clippy'::zero_sized_map_values' --warn clippy'::wildcard_imports' --warn clippy'::verbose_file_reads' --warn unused_qualifications --warn unused_macro_rules --warn unused_lifetimes --warn unsafe_op_in_unsafe_fn --warn unreachable_pub --warn unnameable_types --warn clippy'::uninlined_format_args' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::todo' --warn clippy'::string_to_string' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_add_assign' --warn clippy'::string_add' --warn clippy'::str_to_string' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::self_named_module_files' --warn clippy'::same_functions_in_if_condition' --allow clippy'::result_large_err' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::ref_option_ref' --warn clippy'::redundant_feature_names' --warn clippy'::rc_mutex' --warn clippy'::ptr_as_ptr' --warn clippy'::path_buf_push_overwrite' --warn clippy'::negative_feature_names' --warn clippy'::needless_for_each' --allow clippy'::needless_continue' --warn clippy'::mutex_integer' --warn clippy'::mem_forget' --warn clippy'::macro_use_imports' --warn clippy'::lossy_float_literal' --warn clippy'::linkedlist' --allow clippy'::let_and_return' --warn clippy'::large_types_passed_by_value' --warn clippy'::large_stack_arrays' --warn clippy'::large_digit_groups' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::infinite_loop' --warn clippy'::inefficient_to_string' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::imprecise_flops' --warn clippy'::implicit_clone' --allow clippy'::if_same_then_else' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::fn_params_excessive_bools' --warn clippy'::float_cmp_const' --warn clippy'::flat_map_option' --warn clippy'::filter_map_next' --warn clippy'::fallible_impl_from' --warn clippy'::explicit_into_iter_loop' --warn clippy'::explicit_deref_methods' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::enum_glob_use' --warn clippy'::empty_enum' --warn clippy'::doc_markdown' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::dbg_macro' --warn clippy'::create_dir' --allow clippy'::collapsible_else_if' --warn clippy'::checked_conversions' --allow clippy'::branches_sharing_code' --allow clippy'::bool_assert_comparison' --cfg feature'="auto"' --cfg feature'="default"' --cfg feature'="wincon"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("auto", "default", "test", "wincon"))' -C metadata'=11f4a274377c43f0' -C extra-filename'=-7781d61f12b9b080' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern anstyle'=/tmp/clis-bottom_0-11-4/release/deps/libanstyle-474d4f32b765f566.rmeta' --extern anstyle_parse'=/tmp/clis-bottom_0-11-4/release/deps/libanstyle_parse-0128270153fe60f9.rmeta' --extern anstyle_query'=/tmp/clis-bottom_0-11-4/release/deps/libanstyle_query-51ecac537d9b8985.rmeta' --extern colorchoice'=/tmp/clis-bottom_0-11-4/release/deps/libcolorchoice-f8497aaf26004854.rmeta' --extern is_terminal_polyfill'=/tmp/clis-bottom_0-11-4/release/deps/libis_terminal_polyfill-7ceac97f45c2812c.rmeta' --extern utf8parse'=/tmp/clis-bottom_0-11-4/release/deps/libutf8parse-485f25491c4f3159.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anstream-0.6.20/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-7781d61f12b9b080-stdout \
@@ -3482,9 +3341,6 @@ COPY --link --from=dep-n-anstream-0.6.20-7781d61f12b9b080 /tmp/clis-bottom_0-11-
 ##         CARGO_PKG_VERSION_PATCH=20 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name anstream --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --warn rust_2018_idioms --warn clippy'::zero_sized_map_values' --warn clippy'::wildcard_imports' --warn clippy'::verbose_file_reads' --warn unused_qualifications --warn unused_macro_rules --warn unused_lifetimes --warn unsafe_op_in_unsafe_fn --warn unreachable_pub --warn unnameable_types --warn clippy'::uninlined_format_args' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::todo' --warn clippy'::string_to_string' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_add_assign' --warn clippy'::string_add' --warn clippy'::str_to_string' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::self_named_module_files' --warn clippy'::same_functions_in_if_condition' --allow clippy'::result_large_err' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::ref_option_ref' --warn clippy'::redundant_feature_names' --warn clippy'::rc_mutex' --warn clippy'::ptr_as_ptr' --warn clippy'::path_buf_push_overwrite' --warn clippy'::negative_feature_names' --warn clippy'::needless_for_each' --allow clippy'::needless_continue' --warn clippy'::mutex_integer' --warn clippy'::mem_forget' --warn clippy'::macro_use_imports' --warn clippy'::lossy_float_literal' --warn clippy'::linkedlist' --allow clippy'::let_and_return' --warn clippy'::large_types_passed_by_value' --warn clippy'::large_stack_arrays' --warn clippy'::large_digit_groups' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::infinite_loop' --warn clippy'::inefficient_to_string' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::imprecise_flops' --warn clippy'::implicit_clone' --allow clippy'::if_same_then_else' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::fn_params_excessive_bools' --warn clippy'::float_cmp_const' --warn clippy'::flat_map_option' --warn clippy'::filter_map_next' --warn clippy'::fallible_impl_from' --warn clippy'::explicit_into_iter_loop' --warn clippy'::explicit_deref_methods' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::enum_glob_use' --warn clippy'::empty_enum' --warn clippy'::doc_markdown' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::dbg_macro' --warn clippy'::create_dir' --allow clippy'::collapsible_else_if' --warn clippy'::checked_conversions' --allow clippy'::branches_sharing_code' --allow clippy'::bool_assert_comparison' --cfg feature'="auto"' --cfg feature'="default"' --cfg feature'="wincon"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("auto", "default", "test", "wincon"))' -C metadata'=11f4a274377c43f0' -C extra-filename'=-7781d61f12b9b080' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern anstyle'=/tmp/clis-bottom_0-11-4/release/deps/libanstyle-474d4f32b765f566.rmeta' --extern anstyle_parse'=/tmp/clis-bottom_0-11-4/release/deps/libanstyle_parse-0128270153fe60f9.rmeta' --extern anstyle_query'=/tmp/clis-bottom_0-11-4/release/deps/libanstyle_query-51ecac537d9b8985.rmeta' --extern colorchoice'=/tmp/clis-bottom_0-11-4/release/deps/libcolorchoice-f8497aaf26004854.rmeta' --extern is_terminal_polyfill'=/tmp/clis-bottom_0-11-4/release/deps/libis_terminal_polyfill-7ceac97f45c2812c.rmeta' --extern utf8parse'=/tmp/clis-bottom_0-11-4/release/deps/libutf8parse-485f25491c4f3159.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anstream-0.6.20/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-7781d61f12b9b080-stdout \
@@ -3528,9 +3384,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=5 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name clap_lex --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --warn rust_2018_idioms --warn clippy'::zero_sized_map_values' --warn clippy'::verbose_file_reads' --warn unused_qualifications --warn unused_macro_rules --warn unused_lifetimes --warn unsafe_op_in_unsafe_fn --warn unreachable_pub --allow unnameable_types --warn clippy'::uninlined_format_args' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::todo' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_add_assign' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::self_named_module_files' --warn clippy'::same_functions_in_if_condition' --allow clippy'::result_large_err' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::ref_option_ref' --warn clippy'::redundant_feature_names' --warn clippy'::rc_mutex' --warn clippy'::ptr_as_ptr' --warn clippy'::path_buf_push_overwrite' --warn clippy'::negative_feature_names' --warn clippy'::needless_for_each' --allow clippy'::needless_continue' --warn clippy'::mutex_integer' --allow clippy'::multiple_bound_locations' --warn clippy'::mem_forget' --warn clippy'::macro_use_imports' --warn clippy'::lossy_float_literal' --warn clippy'::linkedlist' --allow clippy'::let_and_return' --warn clippy'::large_types_passed_by_value' --warn clippy'::large_stack_arrays' --warn clippy'::large_digit_groups' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::infinite_loop' --warn clippy'::inefficient_to_string' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::imprecise_flops' --warn clippy'::implicit_clone' --allow clippy'::if_same_then_else' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::fn_params_excessive_bools' --warn clippy'::float_cmp_const' --warn clippy'::flat_map_option' --warn clippy'::filter_map_next' --warn clippy'::fallible_impl_from' --warn clippy'::explicit_into_iter_loop' --warn clippy'::explicit_deref_methods' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::enum_glob_use' --warn clippy'::empty_enum' --warn clippy'::doc_markdown' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::dbg_macro' --warn clippy'::create_dir' --allow clippy'::collapsible_else_if' --warn clippy'::checked_conversions' --allow clippy'::branches_sharing_code' --allow clippy'::bool_assert_comparison' --allow clippy'::blocks_in_conditions' --allow clippy'::assigning_clones' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=57db492d086b2ff4' -C extra-filename'=-6c766cb86489d754' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/clap_lex-0.7.5/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-6c766cb86489d754-stdout \
@@ -3597,9 +3450,6 @@ COPY --link --from=dep-n-clap_lex-0.7.5-6c766cb86489d754 /tmp/clis-bottom_0-11-4
 ##         CARGO_PKG_VERSION_PATCH=5 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name clap_lex --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --warn rust_2018_idioms --warn clippy'::zero_sized_map_values' --warn clippy'::verbose_file_reads' --warn unused_qualifications --warn unused_macro_rules --warn unused_lifetimes --warn unsafe_op_in_unsafe_fn --warn unreachable_pub --allow unnameable_types --warn clippy'::uninlined_format_args' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::todo' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_add_assign' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::self_named_module_files' --warn clippy'::same_functions_in_if_condition' --allow clippy'::result_large_err' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::ref_option_ref' --warn clippy'::redundant_feature_names' --warn clippy'::rc_mutex' --warn clippy'::ptr_as_ptr' --warn clippy'::path_buf_push_overwrite' --warn clippy'::negative_feature_names' --warn clippy'::needless_for_each' --allow clippy'::needless_continue' --warn clippy'::mutex_integer' --allow clippy'::multiple_bound_locations' --warn clippy'::mem_forget' --warn clippy'::macro_use_imports' --warn clippy'::lossy_float_literal' --warn clippy'::linkedlist' --allow clippy'::let_and_return' --warn clippy'::large_types_passed_by_value' --warn clippy'::large_stack_arrays' --warn clippy'::large_digit_groups' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::infinite_loop' --warn clippy'::inefficient_to_string' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::imprecise_flops' --warn clippy'::implicit_clone' --allow clippy'::if_same_then_else' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::fn_params_excessive_bools' --warn clippy'::float_cmp_const' --warn clippy'::flat_map_option' --warn clippy'::filter_map_next' --warn clippy'::fallible_impl_from' --warn clippy'::explicit_into_iter_loop' --warn clippy'::explicit_deref_methods' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::enum_glob_use' --warn clippy'::empty_enum' --warn clippy'::doc_markdown' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::dbg_macro' --warn clippy'::create_dir' --allow clippy'::collapsible_else_if' --warn clippy'::checked_conversions' --allow clippy'::branches_sharing_code' --allow clippy'::bool_assert_comparison' --allow clippy'::blocks_in_conditions' --allow clippy'::assigning_clones' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=57db492d086b2ff4' -C extra-filename'=-6c766cb86489d754' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/clap_lex-0.7.5/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-6c766cb86489d754-stdout \
@@ -3645,9 +3495,6 @@ OSA, Damerau-Levenshtein, Jaro, Jaro-Winkler, and Sørensen-Dice.\
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name strsim --edition 2015 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=95fe5461f73c375b' -C extra-filename'=-97094fd99bcbe118' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/strsim-0.11.1/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-97094fd99bcbe118-stdout \
@@ -3716,9 +3563,6 @@ COPY --link --from=dep-n-strsim-0.11.1-97094fd99bcbe118 /tmp/clis-bottom_0-11-4/
 ##         CARGO_PKG_VERSION_PATCH=1 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name strsim --edition 2015 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=95fe5461f73c375b' -C extra-filename'=-97094fd99bcbe118' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/strsim-0.11.1/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-97094fd99bcbe118-stdout \
@@ -3763,9 +3607,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name bitflags --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("arbitrary", "bytemuck", "example_generated", "serde", "serde_core", "std"))' -C metadata'=06e4c32e96be6d3f' -C extra-filename'=-f4de441526a3a0e1' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bitflags-2.10.0/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-f4de441526a3a0e1-stdout \
@@ -3833,9 +3674,6 @@ COPY --link --from=dep-n-bitflags-2.10.0-f4de441526a3a0e1 /tmp/clis-bottom_0-11-
 ##         CARGO_PKG_VERSION_PATCH=0 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name bitflags --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("arbitrary", "bytemuck", "example_generated", "serde", "serde_core", "std"))' -C metadata'=06e4c32e96be6d3f' -C extra-filename'=-f4de441526a3a0e1' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bitflags-2.10.0/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-f4de441526a3a0e1-stdout \
@@ -3879,9 +3717,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name linux_raw_sys --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --warn unexpected_cfgs --check-cfg cfg'(target_arch, values("xtensa"))' --cfg feature'="auxvec"' --cfg feature'="elf"' --cfg feature'="errno"' --cfg feature'="general"' --cfg feature'="ioctl"' --cfg feature'="no_std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("auxvec", "bootparam", "btrfs", "core", "default", "elf", "elf_uapi", "errno", "general", "if_arp", "if_ether", "if_packet", "image", "io_uring", "ioctl", "landlock", "loop_device", "mempolicy", "net", "netlink", "no_std", "prctl", "ptrace", "rustc-dep-of-std", "std", "system", "xdp"))' -C metadata'=8d5bfc22de7ef198' -C extra-filename'=-d76349ee608b2408' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/linux-raw-sys-0.11.0/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-d76349ee608b2408-stdout \
@@ -3948,9 +3783,6 @@ COPY --link --from=dep-n-linux-raw-sys-0.11.0-d76349ee608b2408 /tmp/clis-bottom_
 ##         CARGO_PKG_VERSION_PATCH=0 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name linux_raw_sys --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --warn unexpected_cfgs --check-cfg cfg'(target_arch, values("xtensa"))' --cfg feature'="auxvec"' --cfg feature'="elf"' --cfg feature'="errno"' --cfg feature'="general"' --cfg feature'="ioctl"' --cfg feature'="no_std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("auxvec", "bootparam", "btrfs", "core", "default", "elf", "elf_uapi", "errno", "general", "if_arp", "if_ether", "if_packet", "image", "io_uring", "ioctl", "landlock", "loop_device", "mempolicy", "net", "netlink", "no_std", "prctl", "ptrace", "rustc-dep-of-std", "std", "system", "xdp"))' -C metadata'=8d5bfc22de7ef198' -C extra-filename'=-d76349ee608b2408' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/linux-raw-sys-0.11.0/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-d76349ee608b2408-stdout \
@@ -4013,9 +3845,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=2 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' --warn unexpected_cfgs --check-cfg cfg'(alloc_c_string)' --check-cfg cfg'(alloc_ffi)' --check-cfg cfg'(apple)' --check-cfg cfg'(asm_experimental_arch)' --check-cfg cfg'(bsd)' --check-cfg cfg'(core_c_str)' --check-cfg cfg'(core_ffi_c)' --check-cfg cfg'(core_intrinsics)' --check-cfg cfg'(criterion)' --check-cfg cfg'(document_experimental_runtime_api)' --check-cfg cfg'(error_in_core)' --check-cfg cfg'(fix_y2038)' --check-cfg cfg'(freebsdlike)' --check-cfg cfg'(libc)' --check-cfg cfg'(linux_kernel)' --check-cfg cfg'(linux_like)' --check-cfg cfg'(linux_raw)' --check-cfg cfg'(linux_raw_dep)' --check-cfg cfg'(lower_upper_exp_for_non_zero)' --check-cfg cfg'(netbsdlike)' --check-cfg cfg'(rustc_attrs)' --check-cfg cfg'(rustc_diagnostics)' --check-cfg cfg'(solarish)' --check-cfg cfg'(staged_api)' --check-cfg cfg'(static_assertions)' --check-cfg cfg'(thumb_mode)' --check-cfg cfg'(wasi)' --check-cfg cfg'(wasi_ext)' --check-cfg cfg'(wasip2)' --check-cfg cfg'(target_arch, values("xtensa"))' --check-cfg cfg'(target_os, values("cygwin"))' -C debug-assertions'=off' --cfg feature'="alloc"' --cfg feature'="default"' --cfg feature'="fs"' --cfg feature'="param"' --cfg feature'="std"' --cfg feature'="stdio"' --cfg feature'="termios"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("all-apis", "alloc", "core", "default", "event", "fs", "io_uring", "libc", "libc_errno", "linux_4_11", "linux_5_1", "linux_5_11", "linux_latest", "mm", "mount", "net", "param", "pipe", "process", "pty", "rand", "runtime", "rustc-dep-of-std", "rustc-std-workspace-alloc", "shm", "std", "stdio", "system", "termios", "thread", "time", "try_close", "use-explicitly-provided-auxv", "use-libc", "use-libc-auxv"))' -C metadata'=eb9b42bca1c3191c' -C extra-filename'=-81a330f9e7524b6b' --out-dir /tmp/clis-bottom_0-11-4/release/build/rustix-81a330f9e7524b6b -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustix-1.1.2/build.rs \
         1>          /tmp/clis-bottom_0-11-4/release/build/rustix-81a330f9e7524b6b/out-81a330f9e7524b6b-stdout \
@@ -4099,9 +3928,6 @@ COPY --link --from=dep-x-rustix-1.1.2-81a330f9e7524b6b /tmp/clis-bottom_0-11-4/r
 ##         CARGO_PKG_VERSION_PATCH=2 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' --warn unexpected_cfgs --check-cfg cfg'(alloc_c_string)' --check-cfg cfg'(alloc_ffi)' --check-cfg cfg'(apple)' --check-cfg cfg'(asm_experimental_arch)' --check-cfg cfg'(bsd)' --check-cfg cfg'(core_c_str)' --check-cfg cfg'(core_ffi_c)' --check-cfg cfg'(core_intrinsics)' --check-cfg cfg'(criterion)' --check-cfg cfg'(document_experimental_runtime_api)' --check-cfg cfg'(error_in_core)' --check-cfg cfg'(fix_y2038)' --check-cfg cfg'(freebsdlike)' --check-cfg cfg'(libc)' --check-cfg cfg'(linux_kernel)' --check-cfg cfg'(linux_like)' --check-cfg cfg'(linux_raw)' --check-cfg cfg'(linux_raw_dep)' --check-cfg cfg'(lower_upper_exp_for_non_zero)' --check-cfg cfg'(netbsdlike)' --check-cfg cfg'(rustc_attrs)' --check-cfg cfg'(rustc_diagnostics)' --check-cfg cfg'(solarish)' --check-cfg cfg'(staged_api)' --check-cfg cfg'(static_assertions)' --check-cfg cfg'(thumb_mode)' --check-cfg cfg'(wasi)' --check-cfg cfg'(wasi_ext)' --check-cfg cfg'(wasip2)' --check-cfg cfg'(target_arch, values("xtensa"))' --check-cfg cfg'(target_os, values("cygwin"))' -C debug-assertions'=off' --cfg feature'="alloc"' --cfg feature'="default"' --cfg feature'="fs"' --cfg feature'="param"' --cfg feature'="std"' --cfg feature'="stdio"' --cfg feature'="termios"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("all-apis", "alloc", "core", "default", "event", "fs", "io_uring", "libc", "libc_errno", "linux_4_11", "linux_5_1", "linux_5_11", "linux_latest", "mm", "mount", "net", "param", "pipe", "process", "pty", "rand", "runtime", "rustc-dep-of-std", "rustc-std-workspace-alloc", "shm", "std", "stdio", "system", "termios", "thread", "time", "try_close", "use-explicitly-provided-auxv", "use-libc", "use-libc-auxv"))' -C metadata'=eb9b42bca1c3191c' -C extra-filename'=-81a330f9e7524b6b' --out-dir /tmp/clis-bottom_0-11-4/release/build/rustix-81a330f9e7524b6b -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustix-1.1.2/build.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/build/rustix-81a330f9e7524b6b/out-81a330f9e7524b6b-stdout \
@@ -4173,9 +3999,6 @@ RUN \
         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
         TARGET=x86_64-unknown-linux-gnu \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-bottom_0-11-4/release/build/rustix-81a330f9e7524b6b/build-script-build \
         1>          /tmp/clis-bottom_0-11-4/release/build/rustix-e77920fa9b71c578/out/out-e77920fa9b71c578-stdout \
@@ -4271,9 +4094,6 @@ COPY --link --from=run-z-rustix-1.1.2-e77920fa9b71c578 /tmp/clis-bottom_0-11-4/r
 ##         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
 ##         TARGET=x86_64-unknown-linux-gnu \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-bottom_0-11-4/release/build/rustix-81a330f9e7524b6b/build-script-build \
 ##         1>          /tmp/clis-bottom_0-11-4/release/build/rustix-e77920fa9b71c578/out/out-e77920fa9b71c578-stdout \
@@ -4321,9 +4141,6 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         OUT_DIR=/tmp/clis-bottom_0-11-4/release/build/rustix-e77920fa9b71c578/out \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name rustix --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --warn unexpected_cfgs --check-cfg cfg'(alloc_c_string)' --check-cfg cfg'(alloc_ffi)' --check-cfg cfg'(apple)' --check-cfg cfg'(asm_experimental_arch)' --check-cfg cfg'(bsd)' --check-cfg cfg'(core_c_str)' --check-cfg cfg'(core_ffi_c)' --check-cfg cfg'(core_intrinsics)' --check-cfg cfg'(criterion)' --check-cfg cfg'(document_experimental_runtime_api)' --check-cfg cfg'(error_in_core)' --check-cfg cfg'(fix_y2038)' --check-cfg cfg'(freebsdlike)' --check-cfg cfg'(libc)' --check-cfg cfg'(linux_kernel)' --check-cfg cfg'(linux_like)' --check-cfg cfg'(linux_raw)' --check-cfg cfg'(linux_raw_dep)' --check-cfg cfg'(lower_upper_exp_for_non_zero)' --check-cfg cfg'(netbsdlike)' --check-cfg cfg'(rustc_attrs)' --check-cfg cfg'(rustc_diagnostics)' --check-cfg cfg'(solarish)' --check-cfg cfg'(staged_api)' --check-cfg cfg'(static_assertions)' --check-cfg cfg'(thumb_mode)' --check-cfg cfg'(wasi)' --check-cfg cfg'(wasi_ext)' --check-cfg cfg'(wasip2)' --check-cfg cfg'(target_arch, values("xtensa"))' --check-cfg cfg'(target_os, values("cygwin"))' --cfg feature'="alloc"' --cfg feature'="default"' --cfg feature'="fs"' --cfg feature'="param"' --cfg feature'="std"' --cfg feature'="stdio"' --cfg feature'="termios"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("all-apis", "alloc", "core", "default", "event", "fs", "io_uring", "libc", "libc_errno", "linux_4_11", "linux_5_1", "linux_5_11", "linux_latest", "mm", "mount", "net", "param", "pipe", "process", "pty", "rand", "runtime", "rustc-dep-of-std", "rustc-std-workspace-alloc", "shm", "std", "stdio", "system", "termios", "thread", "time", "try_close", "use-explicitly-provided-auxv", "use-libc", "use-libc-auxv"))' -C metadata'=e40d0d261061d63e' -C extra-filename'=-4b7500c7860b2cc4' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern bitflags'=/tmp/clis-bottom_0-11-4/release/deps/libbitflags-f4de441526a3a0e1.rmeta' --extern linux_raw_sys'=/tmp/clis-bottom_0-11-4/release/deps/liblinux_raw_sys-d76349ee608b2408.rmeta' --cap-lints warn --cfg static_assertions --cfg lower_upper_exp_for_non_zero --cfg rustc_diagnostics --cfg linux_raw_dep --cfg linux_raw --cfg linux_like --cfg linux_kernel /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustix-1.1.2/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-4b7500c7860b2cc4-stdout \
@@ -4423,9 +4240,6 @@ COPY --link --from=dep-n-rustix-1.1.2-4b7500c7860b2cc4 /tmp/clis-bottom_0-11-4/r
 ##         CARGO_PKG_VERSION_PRE= \
 ##         OUT_DIR=/tmp/clis-bottom_0-11-4/release/build/rustix-e77920fa9b71c578/out \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name rustix --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --warn unexpected_cfgs --check-cfg cfg'(alloc_c_string)' --check-cfg cfg'(alloc_ffi)' --check-cfg cfg'(apple)' --check-cfg cfg'(asm_experimental_arch)' --check-cfg cfg'(bsd)' --check-cfg cfg'(core_c_str)' --check-cfg cfg'(core_ffi_c)' --check-cfg cfg'(core_intrinsics)' --check-cfg cfg'(criterion)' --check-cfg cfg'(document_experimental_runtime_api)' --check-cfg cfg'(error_in_core)' --check-cfg cfg'(fix_y2038)' --check-cfg cfg'(freebsdlike)' --check-cfg cfg'(libc)' --check-cfg cfg'(linux_kernel)' --check-cfg cfg'(linux_like)' --check-cfg cfg'(linux_raw)' --check-cfg cfg'(linux_raw_dep)' --check-cfg cfg'(lower_upper_exp_for_non_zero)' --check-cfg cfg'(netbsdlike)' --check-cfg cfg'(rustc_attrs)' --check-cfg cfg'(rustc_diagnostics)' --check-cfg cfg'(solarish)' --check-cfg cfg'(staged_api)' --check-cfg cfg'(static_assertions)' --check-cfg cfg'(thumb_mode)' --check-cfg cfg'(wasi)' --check-cfg cfg'(wasi_ext)' --check-cfg cfg'(wasip2)' --check-cfg cfg'(target_arch, values("xtensa"))' --check-cfg cfg'(target_os, values("cygwin"))' --cfg feature'="alloc"' --cfg feature'="default"' --cfg feature'="fs"' --cfg feature'="param"' --cfg feature'="std"' --cfg feature'="stdio"' --cfg feature'="termios"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("all-apis", "alloc", "core", "default", "event", "fs", "io_uring", "libc", "libc_errno", "linux_4_11", "linux_5_1", "linux_5_11", "linux_latest", "mm", "mount", "net", "param", "pipe", "process", "pty", "rand", "runtime", "rustc-dep-of-std", "rustc-std-workspace-alloc", "shm", "std", "stdio", "system", "termios", "thread", "time", "try_close", "use-explicitly-provided-auxv", "use-libc", "use-libc-auxv"))' -C metadata'=e40d0d261061d63e' -C extra-filename'=-4b7500c7860b2cc4' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern bitflags'=/tmp/clis-bottom_0-11-4/release/deps/libbitflags-f4de441526a3a0e1.rmeta' --extern linux_raw_sys'=/tmp/clis-bottom_0-11-4/release/deps/liblinux_raw_sys-d76349ee608b2408.rmeta' --cap-lints warn --cfg static_assertions --cfg lower_upper_exp_for_non_zero --cfg rustc_diagnostics --cfg linux_raw_dep --cfg linux_raw --cfg linux_like --cfg linux_kernel /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustix-1.1.2/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-4b7500c7860b2cc4-stdout \
@@ -4475,9 +4289,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=3 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name terminal_size --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=b20ea17aee2d8c83' -C extra-filename'=-05041d90e5ab8975' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern rustix'=/tmp/clis-bottom_0-11-4/release/deps/librustix-4b7500c7860b2cc4.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/terminal_size-0.4.3/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-05041d90e5ab8975-stdout \
@@ -4582,9 +4393,6 @@ COPY --link --from=dep-n-terminal_size-0.4.3-05041d90e5ab8975 /tmp/clis-bottom_0
 ##         CARGO_PKG_VERSION_PATCH=3 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name terminal_size --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=b20ea17aee2d8c83' -C extra-filename'=-05041d90e5ab8975' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern rustix'=/tmp/clis-bottom_0-11-4/release/deps/librustix-4b7500c7860b2cc4.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/terminal_size-0.4.3/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-05041d90e5ab8975-stdout \
@@ -4654,9 +4462,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=48 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name clap_builder --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --warn rust_2018_idioms --warn clippy'::zero_sized_map_values' --warn clippy'::verbose_file_reads' --warn unused_qualifications --warn unused_macro_rules --warn unused_lifetimes --warn unsafe_op_in_unsafe_fn --warn unreachable_pub --allow unnameable_types --warn clippy'::uninlined_format_args' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::todo' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_add_assign' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::self_named_module_files' --warn clippy'::same_functions_in_if_condition' --allow clippy'::result_large_err' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::ref_option_ref' --warn clippy'::redundant_feature_names' --warn clippy'::rc_mutex' --warn clippy'::ptr_as_ptr' --warn clippy'::path_buf_push_overwrite' --warn clippy'::negative_feature_names' --warn clippy'::needless_for_each' --allow clippy'::needless_continue' --warn clippy'::mutex_integer' --allow clippy'::multiple_bound_locations' --warn clippy'::mem_forget' --warn clippy'::macro_use_imports' --warn clippy'::lossy_float_literal' --warn clippy'::linkedlist' --allow clippy'::let_and_return' --warn clippy'::large_types_passed_by_value' --warn clippy'::large_stack_arrays' --warn clippy'::large_digit_groups' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::infinite_loop' --warn clippy'::inefficient_to_string' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::imprecise_flops' --warn clippy'::implicit_clone' --allow clippy'::if_same_then_else' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::fn_params_excessive_bools' --warn clippy'::float_cmp_const' --warn clippy'::flat_map_option' --warn clippy'::filter_map_next' --warn clippy'::fallible_impl_from' --warn clippy'::explicit_into_iter_loop' --warn clippy'::explicit_deref_methods' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::enum_glob_use' --warn clippy'::empty_enum' --warn clippy'::doc_markdown' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::dbg_macro' --warn clippy'::create_dir' --allow clippy'::collapsible_else_if' --warn clippy'::checked_conversions' --allow clippy'::branches_sharing_code' --allow clippy'::bool_assert_comparison' --allow clippy'::blocks_in_conditions' --allow clippy'::assigning_clones' --cfg feature'="cargo"' --cfg feature'="color"' --cfg feature'="error-context"' --cfg feature'="help"' --cfg feature'="std"' --cfg feature'="suggestions"' --cfg feature'="usage"' --cfg feature'="wrap_help"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("cargo", "color", "debug", "default", "deprecated", "env", "error-context", "help", "std", "string", "suggestions", "unicode", "unstable-doc", "unstable-ext", "unstable-styles", "unstable-v5", "usage", "wrap_help"))' -C metadata'=1d67e3fc5855066c' -C extra-filename'=-3e6104b95ab1cefa' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern anstream'=/tmp/clis-bottom_0-11-4/release/deps/libanstream-7781d61f12b9b080.rmeta' --extern anstyle'=/tmp/clis-bottom_0-11-4/release/deps/libanstyle-474d4f32b765f566.rmeta' --extern clap_lex'=/tmp/clis-bottom_0-11-4/release/deps/libclap_lex-6c766cb86489d754.rmeta' --extern strsim'=/tmp/clis-bottom_0-11-4/release/deps/libstrsim-97094fd99bcbe118.rmeta' --extern terminal_size'=/tmp/clis-bottom_0-11-4/release/deps/libterminal_size-05041d90e5ab8975.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/clap_builder-4.5.48/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-3e6104b95ab1cefa-stdout \
@@ -4871,9 +4676,6 @@ COPY --link --from=dep-n-clap_builder-4.5.48-3e6104b95ab1cefa /tmp/clis-bottom_0
 ##         CARGO_PKG_VERSION_PATCH=48 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name clap_builder --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --warn rust_2018_idioms --warn clippy'::zero_sized_map_values' --warn clippy'::verbose_file_reads' --warn unused_qualifications --warn unused_macro_rules --warn unused_lifetimes --warn unsafe_op_in_unsafe_fn --warn unreachable_pub --allow unnameable_types --warn clippy'::uninlined_format_args' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::todo' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_add_assign' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::self_named_module_files' --warn clippy'::same_functions_in_if_condition' --allow clippy'::result_large_err' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::ref_option_ref' --warn clippy'::redundant_feature_names' --warn clippy'::rc_mutex' --warn clippy'::ptr_as_ptr' --warn clippy'::path_buf_push_overwrite' --warn clippy'::negative_feature_names' --warn clippy'::needless_for_each' --allow clippy'::needless_continue' --warn clippy'::mutex_integer' --allow clippy'::multiple_bound_locations' --warn clippy'::mem_forget' --warn clippy'::macro_use_imports' --warn clippy'::lossy_float_literal' --warn clippy'::linkedlist' --allow clippy'::let_and_return' --warn clippy'::large_types_passed_by_value' --warn clippy'::large_stack_arrays' --warn clippy'::large_digit_groups' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::infinite_loop' --warn clippy'::inefficient_to_string' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::imprecise_flops' --warn clippy'::implicit_clone' --allow clippy'::if_same_then_else' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::fn_params_excessive_bools' --warn clippy'::float_cmp_const' --warn clippy'::flat_map_option' --warn clippy'::filter_map_next' --warn clippy'::fallible_impl_from' --warn clippy'::explicit_into_iter_loop' --warn clippy'::explicit_deref_methods' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::enum_glob_use' --warn clippy'::empty_enum' --warn clippy'::doc_markdown' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::dbg_macro' --warn clippy'::create_dir' --allow clippy'::collapsible_else_if' --warn clippy'::checked_conversions' --allow clippy'::branches_sharing_code' --allow clippy'::bool_assert_comparison' --allow clippy'::blocks_in_conditions' --allow clippy'::assigning_clones' --cfg feature'="cargo"' --cfg feature'="color"' --cfg feature'="error-context"' --cfg feature'="help"' --cfg feature'="std"' --cfg feature'="suggestions"' --cfg feature'="usage"' --cfg feature'="wrap_help"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("cargo", "color", "debug", "default", "deprecated", "env", "error-context", "help", "std", "string", "suggestions", "unicode", "unstable-doc", "unstable-ext", "unstable-styles", "unstable-v5", "usage", "wrap_help"))' -C metadata'=1d67e3fc5855066c' -C extra-filename'=-3e6104b95ab1cefa' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern anstream'=/tmp/clis-bottom_0-11-4/release/deps/libanstream-7781d61f12b9b080.rmeta' --extern anstyle'=/tmp/clis-bottom_0-11-4/release/deps/libanstyle-474d4f32b765f566.rmeta' --extern clap_lex'=/tmp/clis-bottom_0-11-4/release/deps/libclap_lex-6c766cb86489d754.rmeta' --extern strsim'=/tmp/clis-bottom_0-11-4/release/deps/libstrsim-97094fd99bcbe118.rmeta' --extern terminal_size'=/tmp/clis-bottom_0-11-4/release/deps/libterminal_size-05041d90e5ab8975.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/clap_builder-4.5.48/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-3e6104b95ab1cefa-stdout \
@@ -4917,9 +4719,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name heck --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=71465e66ab12f837' -C extra-filename'=-80ea6e95a9b9cb95' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/heck-0.5.0/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-80ea6e95a9b9cb95-stdout \
@@ -4986,9 +4785,6 @@ COPY --link --from=dep-n-heck-0.5.0-80ea6e95a9b9cb95 /tmp/clis-bottom_0-11-4/rel
 ##         CARGO_PKG_VERSION_PATCH=0 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name heck --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=71465e66ab12f837' -C extra-filename'=-80ea6e95a9b9cb95' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/heck-0.5.0/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-80ea6e95a9b9cb95-stdout \
@@ -5032,9 +4828,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=19 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name unicode_ident --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=0cd41c649582606a' -C extra-filename'=-e5b0a74e46b2ddd2' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/unicode-ident-1.0.19/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-e5b0a74e46b2ddd2-stdout \
@@ -5101,9 +4894,6 @@ COPY --link --from=dep-n-unicode-ident-1.0.19-e5b0a74e46b2ddd2 /tmp/clis-bottom_
 ##         CARGO_PKG_VERSION_PATCH=19 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name unicode_ident --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=0cd41c649582606a' -C extra-filename'=-e5b0a74e46b2ddd2' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/unicode-ident-1.0.19/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-e5b0a74e46b2ddd2-stdout \
@@ -5166,9 +4956,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=101 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="proc-macro"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "nightly", "proc-macro", "span-locations"))' -C metadata'=be914986f2c545bb' -C extra-filename'=-49dba574c4d5298c' --out-dir /tmp/clis-bottom_0-11-4/release/build/proc-macro2-49dba574c4d5298c -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.101/build.rs \
         1>          /tmp/clis-bottom_0-11-4/release/build/proc-macro2-49dba574c4d5298c/out-49dba574c4d5298c-stdout \
@@ -5252,9 +5039,6 @@ COPY --link --from=dep-x-proc-macro2-1.0.101-49dba574c4d5298c /tmp/clis-bottom_0
 ##         CARGO_PKG_VERSION_PATCH=101 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="proc-macro"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "nightly", "proc-macro", "span-locations"))' -C metadata'=be914986f2c545bb' -C extra-filename'=-49dba574c4d5298c' --out-dir /tmp/clis-bottom_0-11-4/release/build/proc-macro2-49dba574c4d5298c -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.101/build.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/build/proc-macro2-49dba574c4d5298c/out-49dba574c4d5298c-stdout \
@@ -5321,9 +5105,6 @@ RUN \
         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
         TARGET=x86_64-unknown-linux-gnu \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-bottom_0-11-4/release/build/proc-macro2-49dba574c4d5298c/build-script-build \
         1>          /tmp/clis-bottom_0-11-4/release/build/proc-macro2-766b20bb9a28a2e1/out/out-766b20bb9a28a2e1-stdout \
@@ -5422,9 +5203,6 @@ COPY --link --from=run-z-proc-macro2-1.0.101-766b20bb9a28a2e1 /tmp/clis-bottom_0
 ##         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
 ##         TARGET=x86_64-unknown-linux-gnu \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-bottom_0-11-4/release/build/proc-macro2-49dba574c4d5298c/build-script-build \
 ##         1>          /tmp/clis-bottom_0-11-4/release/build/proc-macro2-766b20bb9a28a2e1/out/out-766b20bb9a28a2e1-stdout \
@@ -5470,9 +5248,6 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         OUT_DIR=/tmp/clis-bottom_0-11-4/release/build/proc-macro2-766b20bb9a28a2e1/out \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name proc_macro2 --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="proc-macro"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "nightly", "proc-macro", "span-locations"))' -C metadata'=6fb4489d8303ee6f' -C extra-filename'=-a6a685fcaf51819c' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern unicode_ident'=/tmp/clis-bottom_0-11-4/release/deps/libunicode_ident-e5b0a74e46b2ddd2.rmeta' --cap-lints warn --cfg wrap_proc_macro --check-cfg cfg'(fuzzing)' --check-cfg cfg'(no_is_available)' --check-cfg cfg'(no_literal_byte_character)' --check-cfg cfg'(no_literal_c_string)' --check-cfg cfg'(no_source_text)' --check-cfg cfg'(proc_macro_span)' --check-cfg cfg'(proc_macro_span_file)' --check-cfg cfg'(proc_macro_span_location)' --check-cfg cfg'(procmacro2_backtrace)' --check-cfg cfg'(procmacro2_build_probe)' --check-cfg cfg'(procmacro2_nightly_testing)' --check-cfg cfg'(procmacro2_semver_exempt)' --check-cfg cfg'(randomize_layout)' --check-cfg cfg'(span_locations)' --check-cfg cfg'(super_unstable)' --check-cfg cfg'(wrap_proc_macro)' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.101/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-a6a685fcaf51819c-stdout \
@@ -5561,9 +5336,6 @@ COPY --link --from=dep-n-proc-macro2-1.0.101-a6a685fcaf51819c /tmp/clis-bottom_0
 ##         CARGO_PKG_VERSION_PRE= \
 ##         OUT_DIR=/tmp/clis-bottom_0-11-4/release/build/proc-macro2-766b20bb9a28a2e1/out \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name proc_macro2 --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="proc-macro"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "nightly", "proc-macro", "span-locations"))' -C metadata'=6fb4489d8303ee6f' -C extra-filename'=-a6a685fcaf51819c' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern unicode_ident'=/tmp/clis-bottom_0-11-4/release/deps/libunicode_ident-e5b0a74e46b2ddd2.rmeta' --cap-lints warn --cfg wrap_proc_macro --check-cfg cfg'(fuzzing)' --check-cfg cfg'(no_is_available)' --check-cfg cfg'(no_literal_byte_character)' --check-cfg cfg'(no_literal_c_string)' --check-cfg cfg'(no_source_text)' --check-cfg cfg'(proc_macro_span)' --check-cfg cfg'(proc_macro_span_file)' --check-cfg cfg'(proc_macro_span_location)' --check-cfg cfg'(procmacro2_backtrace)' --check-cfg cfg'(procmacro2_build_probe)' --check-cfg cfg'(procmacro2_nightly_testing)' --check-cfg cfg'(procmacro2_semver_exempt)' --check-cfg cfg'(randomize_layout)' --check-cfg cfg'(span_locations)' --check-cfg cfg'(super_unstable)' --check-cfg cfg'(wrap_proc_macro)' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.101/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-a6a685fcaf51819c-stdout \
@@ -5611,9 +5383,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=40 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name quote --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="proc-macro"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "proc-macro"))' -C metadata'=8f624934ce819f31' -C extra-filename'=-fe88bef665d31034' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern proc_macro2'=/tmp/clis-bottom_0-11-4/release/deps/libproc_macro2-a6a685fcaf51819c.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.40/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-fe88bef665d31034-stdout \
@@ -5707,9 +5476,6 @@ COPY --link --from=dep-n-quote-1.0.40-fe88bef665d31034 /tmp/clis-bottom_0-11-4/r
 ##         CARGO_PKG_VERSION_PATCH=40 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name quote --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="proc-macro"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "proc-macro"))' -C metadata'=8f624934ce819f31' -C extra-filename'=-fe88bef665d31034' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern proc_macro2'=/tmp/clis-bottom_0-11-4/release/deps/libproc_macro2-a6a685fcaf51819c.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quote-1.0.40/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-fe88bef665d31034-stdout \
@@ -5759,9 +5525,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=106 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name syn --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="clone-impls"' --cfg feature'="default"' --cfg feature'="derive"' --cfg feature'="extra-traits"' --cfg feature'="full"' --cfg feature'="parsing"' --cfg feature'="printing"' --cfg feature'="proc-macro"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("clone-impls", "default", "derive", "extra-traits", "fold", "full", "parsing", "printing", "proc-macro", "test", "visit", "visit-mut"))' -C metadata'=c17d4e9d7a9fe827' -C extra-filename'=-d8ac7146e5acfe07' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern proc_macro2'=/tmp/clis-bottom_0-11-4/release/deps/libproc_macro2-a6a685fcaf51819c.rmeta' --extern quote'=/tmp/clis-bottom_0-11-4/release/deps/libquote-fe88bef665d31034.rmeta' --extern unicode_ident'=/tmp/clis-bottom_0-11-4/release/deps/libunicode_ident-e5b0a74e46b2ddd2.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/syn-2.0.106/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-d8ac7146e5acfe07-stdout \
@@ -5866,9 +5629,6 @@ COPY --link --from=dep-n-syn-2.0.106-d8ac7146e5acfe07 /tmp/clis-bottom_0-11-4/re
 ##         CARGO_PKG_VERSION_PATCH=106 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name syn --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="clone-impls"' --cfg feature'="default"' --cfg feature'="derive"' --cfg feature'="extra-traits"' --cfg feature'="full"' --cfg feature'="parsing"' --cfg feature'="printing"' --cfg feature'="proc-macro"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("clone-impls", "default", "derive", "extra-traits", "fold", "full", "parsing", "printing", "proc-macro", "test", "visit", "visit-mut"))' -C metadata'=c17d4e9d7a9fe827' -C extra-filename'=-d8ac7146e5acfe07' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern proc_macro2'=/tmp/clis-bottom_0-11-4/release/deps/libproc_macro2-a6a685fcaf51819c.rmeta' --extern quote'=/tmp/clis-bottom_0-11-4/release/deps/libquote-fe88bef665d31034.rmeta' --extern unicode_ident'=/tmp/clis-bottom_0-11-4/release/deps/libunicode_ident-e5b0a74e46b2ddd2.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/syn-2.0.106/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-d8ac7146e5acfe07-stdout \
@@ -5917,9 +5677,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=47 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name clap_derive --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type proc-macro --emit dep-info,link -C prefer-dynamic -C embed-bitcode'=no' --warn rust_2018_idioms --warn clippy'::zero_sized_map_values' --warn clippy'::verbose_file_reads' --warn unused_qualifications --warn unused_macro_rules --warn unused_lifetimes --warn unsafe_op_in_unsafe_fn --warn unreachable_pub --allow unnameable_types --warn clippy'::uninlined_format_args' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::todo' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_add_assign' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::self_named_module_files' --warn clippy'::same_functions_in_if_condition' --allow clippy'::result_large_err' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::ref_option_ref' --warn clippy'::redundant_feature_names' --warn clippy'::rc_mutex' --warn clippy'::ptr_as_ptr' --warn clippy'::path_buf_push_overwrite' --warn clippy'::negative_feature_names' --warn clippy'::needless_for_each' --allow clippy'::needless_continue' --warn clippy'::mutex_integer' --allow clippy'::multiple_bound_locations' --warn clippy'::mem_forget' --warn clippy'::macro_use_imports' --warn clippy'::lossy_float_literal' --warn clippy'::linkedlist' --allow clippy'::let_and_return' --warn clippy'::large_types_passed_by_value' --warn clippy'::large_stack_arrays' --warn clippy'::large_digit_groups' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::infinite_loop' --warn clippy'::inefficient_to_string' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::imprecise_flops' --warn clippy'::implicit_clone' --allow clippy'::if_same_then_else' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::fn_params_excessive_bools' --warn clippy'::float_cmp_const' --warn clippy'::flat_map_option' --warn clippy'::filter_map_next' --warn clippy'::fallible_impl_from' --warn clippy'::explicit_into_iter_loop' --warn clippy'::explicit_deref_methods' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::enum_glob_use' --warn clippy'::empty_enum' --warn clippy'::doc_markdown' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::dbg_macro' --warn clippy'::create_dir' --allow clippy'::collapsible_else_if' --warn clippy'::checked_conversions' --allow clippy'::branches_sharing_code' --allow clippy'::bool_assert_comparison' --allow clippy'::blocks_in_conditions' --allow clippy'::assigning_clones' -C debug-assertions'=off' --cfg feature'="default"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("debug", "default", "deprecated", "raw-deprecated", "unstable-markdown", "unstable-v5"))' -C metadata'=a493d4455367a00f' -C extra-filename'=-0162f5e01682605c' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern heck'=/tmp/clis-bottom_0-11-4/release/deps/libheck-80ea6e95a9b9cb95.rlib' --extern proc_macro2'=/tmp/clis-bottom_0-11-4/release/deps/libproc_macro2-a6a685fcaf51819c.rlib' --extern quote'=/tmp/clis-bottom_0-11-4/release/deps/libquote-fe88bef665d31034.rlib' --extern syn'=/tmp/clis-bottom_0-11-4/release/deps/libsyn-d8ac7146e5acfe07.rlib' --extern proc_macro --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/clap_derive-4.5.47/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-0162f5e01682605c-stdout \
@@ -6019,9 +5776,6 @@ COPY --link --from=dep-n-clap_derive-4.5.47-0162f5e01682605c /tmp/clis-bottom_0-
 ##         CARGO_PKG_VERSION_PATCH=47 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name clap_derive --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type proc-macro --emit dep-info,link -C prefer-dynamic -C embed-bitcode'=no' --warn rust_2018_idioms --warn clippy'::zero_sized_map_values' --warn clippy'::verbose_file_reads' --warn unused_qualifications --warn unused_macro_rules --warn unused_lifetimes --warn unsafe_op_in_unsafe_fn --warn unreachable_pub --allow unnameable_types --warn clippy'::uninlined_format_args' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::todo' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_add_assign' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::self_named_module_files' --warn clippy'::same_functions_in_if_condition' --allow clippy'::result_large_err' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::ref_option_ref' --warn clippy'::redundant_feature_names' --warn clippy'::rc_mutex' --warn clippy'::ptr_as_ptr' --warn clippy'::path_buf_push_overwrite' --warn clippy'::negative_feature_names' --warn clippy'::needless_for_each' --allow clippy'::needless_continue' --warn clippy'::mutex_integer' --allow clippy'::multiple_bound_locations' --warn clippy'::mem_forget' --warn clippy'::macro_use_imports' --warn clippy'::lossy_float_literal' --warn clippy'::linkedlist' --allow clippy'::let_and_return' --warn clippy'::large_types_passed_by_value' --warn clippy'::large_stack_arrays' --warn clippy'::large_digit_groups' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::infinite_loop' --warn clippy'::inefficient_to_string' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::imprecise_flops' --warn clippy'::implicit_clone' --allow clippy'::if_same_then_else' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::fn_params_excessive_bools' --warn clippy'::float_cmp_const' --warn clippy'::flat_map_option' --warn clippy'::filter_map_next' --warn clippy'::fallible_impl_from' --warn clippy'::explicit_into_iter_loop' --warn clippy'::explicit_deref_methods' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::enum_glob_use' --warn clippy'::empty_enum' --warn clippy'::doc_markdown' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::dbg_macro' --warn clippy'::create_dir' --allow clippy'::collapsible_else_if' --warn clippy'::checked_conversions' --allow clippy'::branches_sharing_code' --allow clippy'::bool_assert_comparison' --allow clippy'::blocks_in_conditions' --allow clippy'::assigning_clones' -C debug-assertions'=off' --cfg feature'="default"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("debug", "default", "deprecated", "raw-deprecated", "unstable-markdown", "unstable-v5"))' -C metadata'=a493d4455367a00f' -C extra-filename'=-0162f5e01682605c' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern heck'=/tmp/clis-bottom_0-11-4/release/deps/libheck-80ea6e95a9b9cb95.rlib' --extern proc_macro2'=/tmp/clis-bottom_0-11-4/release/deps/libproc_macro2-a6a685fcaf51819c.rlib' --extern quote'=/tmp/clis-bottom_0-11-4/release/deps/libquote-fe88bef665d31034.rlib' --extern syn'=/tmp/clis-bottom_0-11-4/release/deps/libsyn-d8ac7146e5acfe07.rlib' --extern proc_macro --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/clap_derive-4.5.47/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-0162f5e01682605c-stdout \
@@ -6104,9 +5858,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=48 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name clap --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --warn rust_2018_idioms --warn clippy'::zero_sized_map_values' --warn clippy'::verbose_file_reads' --warn unused_qualifications --warn unused_macro_rules --warn unused_lifetimes --warn unsafe_op_in_unsafe_fn --warn unreachable_pub --allow unnameable_types --warn clippy'::uninlined_format_args' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::todo' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_add_assign' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::self_named_module_files' --warn clippy'::same_functions_in_if_condition' --allow clippy'::result_large_err' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::ref_option_ref' --warn clippy'::redundant_feature_names' --warn clippy'::rc_mutex' --warn clippy'::ptr_as_ptr' --warn clippy'::path_buf_push_overwrite' --warn clippy'::negative_feature_names' --warn clippy'::needless_for_each' --allow clippy'::needless_continue' --warn clippy'::mutex_integer' --allow clippy'::multiple_bound_locations' --warn clippy'::mem_forget' --warn clippy'::macro_use_imports' --warn clippy'::lossy_float_literal' --warn clippy'::linkedlist' --allow clippy'::let_and_return' --warn clippy'::large_types_passed_by_value' --warn clippy'::large_stack_arrays' --warn clippy'::large_digit_groups' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::infinite_loop' --warn clippy'::inefficient_to_string' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::imprecise_flops' --warn clippy'::implicit_clone' --allow clippy'::if_same_then_else' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::fn_params_excessive_bools' --warn clippy'::float_cmp_const' --warn clippy'::flat_map_option' --warn clippy'::filter_map_next' --warn clippy'::fallible_impl_from' --warn clippy'::explicit_into_iter_loop' --warn clippy'::explicit_deref_methods' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::enum_glob_use' --warn clippy'::empty_enum' --warn clippy'::doc_markdown' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::dbg_macro' --warn clippy'::create_dir' --allow clippy'::collapsible_else_if' --warn clippy'::checked_conversions' --allow clippy'::branches_sharing_code' --allow clippy'::bool_assert_comparison' --allow clippy'::blocks_in_conditions' --allow clippy'::assigning_clones' --cfg feature'="cargo"' --cfg feature'="color"' --cfg feature'="default"' --cfg feature'="derive"' --cfg feature'="error-context"' --cfg feature'="help"' --cfg feature'="std"' --cfg feature'="suggestions"' --cfg feature'="usage"' --cfg feature'="wrap_help"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("cargo", "color", "debug", "default", "deprecated", "derive", "env", "error-context", "help", "std", "string", "suggestions", "unicode", "unstable-derive-ui-tests", "unstable-doc", "unstable-ext", "unstable-markdown", "unstable-styles", "unstable-v5", "usage", "wrap_help"))' -C metadata'=3b5bee3a4b70f0eb' -C extra-filename'=-ff1c187a0dbef276' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern clap_builder'=/tmp/clis-bottom_0-11-4/release/deps/libclap_builder-3e6104b95ab1cefa.rmeta' --extern clap_derive'=/tmp/clis-bottom_0-11-4/release/deps/libclap_derive-0162f5e01682605c.so' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/clap-4.5.48/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-ff1c187a0dbef276-stdout \
@@ -6398,9 +6149,6 @@ COPY --link --from=dep-n-clap-4.5.48-ff1c187a0dbef276 /tmp/clis-bottom_0-11-4/re
 ##         CARGO_PKG_VERSION_PATCH=48 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name clap --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --warn rust_2018_idioms --warn clippy'::zero_sized_map_values' --warn clippy'::verbose_file_reads' --warn unused_qualifications --warn unused_macro_rules --warn unused_lifetimes --warn unsafe_op_in_unsafe_fn --warn unreachable_pub --allow unnameable_types --warn clippy'::uninlined_format_args' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::todo' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_add_assign' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::self_named_module_files' --warn clippy'::same_functions_in_if_condition' --allow clippy'::result_large_err' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::ref_option_ref' --warn clippy'::redundant_feature_names' --warn clippy'::rc_mutex' --warn clippy'::ptr_as_ptr' --warn clippy'::path_buf_push_overwrite' --warn clippy'::negative_feature_names' --warn clippy'::needless_for_each' --allow clippy'::needless_continue' --warn clippy'::mutex_integer' --allow clippy'::multiple_bound_locations' --warn clippy'::mem_forget' --warn clippy'::macro_use_imports' --warn clippy'::lossy_float_literal' --warn clippy'::linkedlist' --allow clippy'::let_and_return' --warn clippy'::large_types_passed_by_value' --warn clippy'::large_stack_arrays' --warn clippy'::large_digit_groups' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::infinite_loop' --warn clippy'::inefficient_to_string' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::imprecise_flops' --warn clippy'::implicit_clone' --allow clippy'::if_same_then_else' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::fn_params_excessive_bools' --warn clippy'::float_cmp_const' --warn clippy'::flat_map_option' --warn clippy'::filter_map_next' --warn clippy'::fallible_impl_from' --warn clippy'::explicit_into_iter_loop' --warn clippy'::explicit_deref_methods' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::enum_glob_use' --warn clippy'::empty_enum' --warn clippy'::doc_markdown' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::dbg_macro' --warn clippy'::create_dir' --allow clippy'::collapsible_else_if' --warn clippy'::checked_conversions' --allow clippy'::branches_sharing_code' --allow clippy'::bool_assert_comparison' --allow clippy'::blocks_in_conditions' --allow clippy'::assigning_clones' --cfg feature'="cargo"' --cfg feature'="color"' --cfg feature'="default"' --cfg feature'="derive"' --cfg feature'="error-context"' --cfg feature'="help"' --cfg feature'="std"' --cfg feature'="suggestions"' --cfg feature'="usage"' --cfg feature'="wrap_help"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("cargo", "color", "debug", "default", "deprecated", "derive", "env", "error-context", "help", "std", "string", "suggestions", "unicode", "unstable-derive-ui-tests", "unstable-doc", "unstable-ext", "unstable-markdown", "unstable-styles", "unstable-v5", "usage", "wrap_help"))' -C metadata'=3b5bee3a4b70f0eb' -C extra-filename'=-ff1c187a0dbef276' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern clap_builder'=/tmp/clis-bottom_0-11-4/release/deps/libclap_builder-3e6104b95ab1cefa.rmeta' --extern clap_derive'=/tmp/clis-bottom_0-11-4/release/deps/libclap_derive-0162f5e01682605c.so' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/clap-4.5.48/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-ff1c187a0dbef276-stdout \
@@ -6444,9 +6192,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name concat_string --edition 2015 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=d1e39b74a779111c' -C extra-filename'=-502a42165bb1ea2e' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/concat-string-1.0.1/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-502a42165bb1ea2e-stdout \
@@ -6522,9 +6267,6 @@ COPY --link --from=dep-n-concat-string-1.0.1-502a42165bb1ea2e /tmp/clis-bottom_0
 ##         CARGO_PKG_VERSION_PATCH=1 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name concat_string --edition 2015 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=d1e39b74a779111c' -C extra-filename'=-502a42165bb1ea2e' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/concat-string-1.0.1/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-502a42165bb1ea2e-stdout \
@@ -6570,9 +6312,6 @@ according to Unicode Standard Annex #29 rules.\
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name unicode_segmentation --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("no_std"))' -C metadata'=dcdbc241e4fbbb10' -C extra-filename'=-e2e2c4e4f1494ad7' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/unicode-segmentation-1.12.0/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-e2e2c4e4f1494ad7-stdout \
@@ -6651,9 +6390,6 @@ COPY --link --from=dep-n-unicode-segmentation-1.12.0-e2e2c4e4f1494ad7 /tmp/clis-
 ##         CARGO_PKG_VERSION_PATCH=0 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name unicode_segmentation --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("no_std"))' -C metadata'=dcdbc241e4fbbb10' -C extra-filename'=-e2e2c4e4f1494ad7' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/unicode-segmentation-1.12.0/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-e2e2c4e4f1494ad7-stdout \
@@ -6699,9 +6435,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name convert_case --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("rand", "random"))' -C metadata'=5f13f0ca71b6b3d4' -C extra-filename'=-23f17bf60a47bf29' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern unicode_segmentation'=/tmp/clis-bottom_0-11-4/release/deps/libunicode_segmentation-e2e2c4e4f1494ad7.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/convert_case-0.7.1/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-23f17bf60a47bf29-stdout \
@@ -6786,9 +6519,6 @@ COPY --link --from=dep-n-convert_case-0.7.1-23f17bf60a47bf29 /tmp/clis-bottom_0-
 ##         CARGO_PKG_VERSION_PATCH=1 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name convert_case --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("rand", "random"))' -C metadata'=5f13f0ca71b6b3d4' -C extra-filename'=-23f17bf60a47bf29' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern unicode_segmentation'=/tmp/clis-bottom_0-11-4/release/deps/libunicode_segmentation-e2e2c4e4f1494ad7.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/convert_case-0.7.1/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-23f17bf60a47bf29-stdout \
@@ -6838,9 +6568,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name derive_more_impl --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type proc-macro --emit dep-info,link -C prefer-dynamic -C embed-bitcode'=no' --warn unexpected_cfgs --check-cfg cfg'(ci)' --check-cfg cfg'(nightly)' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="is_variant"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("add", "add_assign", "as_ref", "constructor", "debug", "default", "deref", "deref_mut", "display", "error", "from", "from_str", "full", "index", "index_mut", "into", "into_iterator", "is_variant", "mul", "mul_assign", "not", "sum", "testing-helpers", "try_from", "try_into", "try_unwrap", "unwrap"))' -C metadata'=73b89cbb0a38e51e' -C extra-filename'=-76ad1e4169cd8fb1' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern convert_case'=/tmp/clis-bottom_0-11-4/release/deps/libconvert_case-23f17bf60a47bf29.rlib' --extern proc_macro2'=/tmp/clis-bottom_0-11-4/release/deps/libproc_macro2-a6a685fcaf51819c.rlib' --extern quote'=/tmp/clis-bottom_0-11-4/release/deps/libquote-fe88bef665d31034.rlib' --extern syn'=/tmp/clis-bottom_0-11-4/release/deps/libsyn-d8ac7146e5acfe07.rlib' --extern proc_macro --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/derive_more-impl-2.0.1/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-76ad1e4169cd8fb1-stdout \
@@ -6946,9 +6673,6 @@ COPY --link --from=dep-n-derive_more-impl-2.0.1-76ad1e4169cd8fb1 /tmp/clis-botto
 ##         CARGO_PKG_VERSION_PATCH=1 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name derive_more_impl --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type proc-macro --emit dep-info,link -C prefer-dynamic -C embed-bitcode'=no' --warn unexpected_cfgs --check-cfg cfg'(ci)' --check-cfg cfg'(nightly)' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="is_variant"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("add", "add_assign", "as_ref", "constructor", "debug", "default", "deref", "deref_mut", "display", "error", "from", "from_str", "full", "index", "index_mut", "into", "into_iterator", "is_variant", "mul", "mul_assign", "not", "sum", "testing-helpers", "try_from", "try_into", "try_unwrap", "unwrap"))' -C metadata'=73b89cbb0a38e51e' -C extra-filename'=-76ad1e4169cd8fb1' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern convert_case'=/tmp/clis-bottom_0-11-4/release/deps/libconvert_case-23f17bf60a47bf29.rlib' --extern proc_macro2'=/tmp/clis-bottom_0-11-4/release/deps/libproc_macro2-a6a685fcaf51819c.rlib' --extern quote'=/tmp/clis-bottom_0-11-4/release/deps/libquote-fe88bef665d31034.rlib' --extern syn'=/tmp/clis-bottom_0-11-4/release/deps/libsyn-d8ac7146e5acfe07.rlib' --extern proc_macro --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/derive_more-impl-2.0.1/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-76ad1e4169cd8fb1-stdout \
@@ -6999,9 +6723,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name derive_more --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --warn unexpected_cfgs --check-cfg cfg'(ci)' --check-cfg cfg'(nightly)' --cfg feature'="default"' --cfg feature'="is_variant"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("add", "add_assign", "as_ref", "constructor", "debug", "default", "deref", "deref_mut", "display", "error", "from", "from_str", "full", "index", "index_mut", "into", "into_iterator", "is_variant", "mul", "mul_assign", "not", "std", "sum", "testing-helpers", "try_from", "try_into", "try_unwrap", "unwrap"))' -C metadata'=e3c2b1789e706f9b' -C extra-filename'=-8e36e7e24472db53' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern derive_more_impl'=/tmp/clis-bottom_0-11-4/release/deps/libderive_more_impl-76ad1e4169cd8fb1.so' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/derive_more-2.0.1/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-8e36e7e24472db53-stdout \
@@ -7115,9 +6836,6 @@ COPY --link --from=dep-n-derive_more-2.0.1-8e36e7e24472db53 /tmp/clis-bottom_0-1
 ##         CARGO_PKG_VERSION_PATCH=1 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name derive_more --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --warn unexpected_cfgs --check-cfg cfg'(ci)' --check-cfg cfg'(nightly)' --cfg feature'="default"' --cfg feature'="is_variant"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("add", "add_assign", "as_ref", "constructor", "debug", "default", "deref", "deref_mut", "display", "error", "from", "from_str", "full", "index", "index_mut", "into", "into_iterator", "is_variant", "mul", "mul_assign", "not", "std", "sum", "testing-helpers", "try_from", "try_into", "try_unwrap", "unwrap"))' -C metadata'=e3c2b1789e706f9b' -C extra-filename'=-8e36e7e24472db53' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern derive_more_impl'=/tmp/clis-bottom_0-11-4/release/deps/libderive_more_impl-76ad1e4169cd8fb1.so' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/derive_more-2.0.1/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-8e36e7e24472db53-stdout \
@@ -7164,9 +6882,6 @@ be used outside of a proc-macro context.\
         CARGO_PKG_VERSION_PATCH=2 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name litrs --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("check_suffix", "default", "proc-macro2", "unicode-xid"))' -C metadata'=bcb73b0804ee08c8' -C extra-filename'=-3604409be8eaf589' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/litrs-0.4.2/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-3604409be8eaf589-stdout \
@@ -7236,9 +6951,6 @@ COPY --link --from=dep-n-litrs-0.4.2-3604409be8eaf589 /tmp/clis-bottom_0-11-4/re
 ##         CARGO_PKG_VERSION_PATCH=2 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name litrs --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("check_suffix", "default", "proc-macro2", "unicode-xid"))' -C metadata'=bcb73b0804ee08c8' -C extra-filename'=-3604409be8eaf589' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/litrs-0.4.2/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-3604409be8eaf589-stdout \
@@ -7283,9 +6995,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=11 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name document_features --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type proc-macro --emit dep-info,link -C prefer-dynamic -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="default"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "self-test"))' -C metadata'=05341933a8c12051' -C extra-filename'=-a357ac629c0bd6ed' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern litrs'=/tmp/clis-bottom_0-11-4/release/deps/liblitrs-3604409be8eaf589.rlib' --extern proc_macro --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/document-features-0.2.11/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-a357ac629c0bd6ed-stdout \
@@ -7356,9 +7065,6 @@ COPY --link --from=dep-n-document-features-0.2.11-a357ac629c0bd6ed /tmp/clis-bot
 ##         CARGO_PKG_VERSION_PATCH=11 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name document_features --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type proc-macro --emit dep-info,link -C prefer-dynamic -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="default"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "self-test"))' -C metadata'=05341933a8c12051' -C extra-filename'=-a357ac629c0bd6ed' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern litrs'=/tmp/clis-bottom_0-11-4/release/deps/liblitrs-3604409be8eaf589.rlib' --extern proc_macro --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/document-features-0.2.11/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-a357ac629c0bd6ed-stdout \
@@ -7403,9 +7109,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=28 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name log --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("kv", "kv_serde", "kv_std", "kv_sval", "kv_unstable", "kv_unstable_serde", "kv_unstable_std", "kv_unstable_sval", "max_level_debug", "max_level_error", "max_level_info", "max_level_off", "max_level_trace", "max_level_warn", "release_max_level_debug", "release_max_level_error", "release_max_level_info", "release_max_level_off", "release_max_level_trace", "release_max_level_warn", "serde", "std", "sval", "sval_ref", "value-bag"))' -C metadata'=cc909998dd883985' -C extra-filename'=-c01ce176251a4811' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/log-0.4.28/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-c01ce176251a4811-stdout \
@@ -7473,9 +7176,6 @@ COPY --link --from=dep-n-log-0.4.28-c01ce176251a4811 /tmp/clis-bottom_0-11-4/rel
 ##         CARGO_PKG_VERSION_PATCH=28 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name log --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("kv", "kv_serde", "kv_std", "kv_sval", "kv_unstable", "kv_unstable_serde", "kv_unstable_std", "kv_unstable_sval", "max_level_debug", "max_level_error", "max_level_info", "max_level_off", "max_level_trace", "max_level_warn", "release_max_level_debug", "release_max_level_error", "release_max_level_info", "release_max_level_off", "release_max_level_trace", "release_max_level_warn", "serde", "std", "sval", "sval_ref", "value-bag"))' -C metadata'=cc909998dd883985' -C extra-filename'=-c01ce176251a4811' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/log-0.4.28/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-c01ce176251a4811-stdout \
@@ -7523,9 +7223,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=4 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name mio --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --warn unexpected_cfgs --check-cfg cfg'(mio_unsupported_force_poll_poll)' --check-cfg cfg'(mio_unsupported_force_waker_pipe)' --cfg feature'="default"' --cfg feature'="log"' --cfg feature'="net"' --cfg feature'="os-ext"' --cfg feature'="os-poll"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "log", "net", "os-ext", "os-poll"))' -C metadata'=0ba0b99f18359aa4' -C extra-filename'=-bf1e1fb5f7dcb9cb' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern libc'=/tmp/clis-bottom_0-11-4/release/deps/liblibc-f9a7f201e668dfaf.rmeta' --extern log'=/tmp/clis-bottom_0-11-4/release/deps/liblog-c01ce176251a4811.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/mio-1.0.4/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-bf1e1fb5f7dcb9cb-stdout \
@@ -7619,9 +7316,6 @@ COPY --link --from=dep-n-mio-1.0.4-bf1e1fb5f7dcb9cb /tmp/clis-bottom_0-11-4/rele
 ##         CARGO_PKG_VERSION_PATCH=4 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name mio --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --warn unexpected_cfgs --check-cfg cfg'(mio_unsupported_force_poll_poll)' --check-cfg cfg'(mio_unsupported_force_waker_pipe)' --cfg feature'="default"' --cfg feature'="log"' --cfg feature'="net"' --cfg feature'="os-ext"' --cfg feature'="os-poll"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "log", "net", "os-ext", "os-poll"))' -C metadata'=0ba0b99f18359aa4' -C extra-filename'=-bf1e1fb5f7dcb9cb' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern libc'=/tmp/clis-bottom_0-11-4/release/deps/liblibc-f9a7f201e668dfaf.rmeta' --extern log'=/tmp/clis-bottom_0-11-4/release/deps/liblog-c01ce176251a4811.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/mio-1.0.4/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-bf1e1fb5f7dcb9cb-stdout \
@@ -7670,9 +7364,6 @@ shorthands for guards with one of the implemented strategies.\
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name scopeguard --edition 2015 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "use_std"))' -C metadata'=05e073162592c0b2' -C extra-filename'=-cd2fb476592b617e' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/scopeguard-1.2.0/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-cd2fb476592b617e-stdout \
@@ -7744,9 +7435,6 @@ COPY --link --from=dep-n-scopeguard-1.2.0-cd2fb476592b617e /tmp/clis-bottom_0-11
 ##         CARGO_PKG_VERSION_PATCH=0 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name scopeguard --edition 2015 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "use_std"))' -C metadata'=05e073162592c0b2' -C extra-filename'=-cd2fb476592b617e' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/scopeguard-1.2.0/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-cd2fb476592b617e-stdout \
@@ -7790,9 +7478,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name autocfg --edition 2015 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=278d87c4de86bea7' -C extra-filename'=-54801e684ac31c95' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/autocfg-1.5.0/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-54801e684ac31c95-stdout \
@@ -7859,9 +7544,6 @@ COPY --link --from=dep-n-autocfg-1.5.0-54801e684ac31c95 /tmp/clis-bottom_0-11-4/
 ##         CARGO_PKG_VERSION_PATCH=0 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name autocfg --edition 2015 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=278d87c4de86bea7' -C extra-filename'=-54801e684ac31c95' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/autocfg-1.5.0/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-54801e684ac31c95-stdout \
@@ -7925,9 +7607,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=13 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="atomic_usize"' --cfg feature'="default"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("arc_lock", "atomic_usize", "default", "nightly", "owning_ref", "serde"))' -C metadata'=fcde08a257a77b4a' -C extra-filename'=-44deeac02131ac37' --out-dir /tmp/clis-bottom_0-11-4/release/build/lock_api-44deeac02131ac37 -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern autocfg'=/tmp/clis-bottom_0-11-4/release/deps/libautocfg-54801e684ac31c95.rlib' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/lock_api-0.4.13/build.rs \
         1>          /tmp/clis-bottom_0-11-4/release/build/lock_api-44deeac02131ac37/out-44deeac02131ac37-stdout \
@@ -8017,9 +7696,6 @@ COPY --link --from=dep-x-lock_api-0.4.13-44deeac02131ac37 /tmp/clis-bottom_0-11-
 ##         CARGO_PKG_VERSION_PATCH=13 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="atomic_usize"' --cfg feature'="default"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("arc_lock", "atomic_usize", "default", "nightly", "owning_ref", "serde"))' -C metadata'=fcde08a257a77b4a' -C extra-filename'=-44deeac02131ac37' --out-dir /tmp/clis-bottom_0-11-4/release/build/lock_api-44deeac02131ac37 -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern autocfg'=/tmp/clis-bottom_0-11-4/release/deps/libautocfg-54801e684ac31c95.rlib' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/lock_api-0.4.13/build.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/build/lock_api-44deeac02131ac37/out-44deeac02131ac37-stdout \
@@ -8086,9 +7762,6 @@ RUN \
         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
         TARGET=x86_64-unknown-linux-gnu \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-bottom_0-11-4/release/build/lock_api-44deeac02131ac37/build-script-build \
         1>          /tmp/clis-bottom_0-11-4/release/build/lock_api-755b1669711fd483/out/out-755b1669711fd483-stdout \
@@ -8172,9 +7845,6 @@ COPY --link --from=run-z-lock_api-0.4.13-755b1669711fd483 /tmp/clis-bottom_0-11-
 ##         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
 ##         TARGET=x86_64-unknown-linux-gnu \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-bottom_0-11-4/release/build/lock_api-44deeac02131ac37/build-script-build \
 ##         1>          /tmp/clis-bottom_0-11-4/release/build/lock_api-755b1669711fd483/out/out-755b1669711fd483-stdout \
@@ -8220,9 +7890,6 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         OUT_DIR=/tmp/clis-bottom_0-11-4/release/build/lock_api-755b1669711fd483/out \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name lock_api --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --cfg feature'="atomic_usize"' --cfg feature'="default"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("arc_lock", "atomic_usize", "default", "nightly", "owning_ref", "serde"))' -C metadata'=19fbabfb3897fd8f' -C extra-filename'=-8375f72fd9e6cff1' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern scopeguard'=/tmp/clis-bottom_0-11-4/release/deps/libscopeguard-cd2fb476592b617e.rmeta' --cap-lints warn --cfg has_const_fn_trait_bound --check-cfg cfg'(has_const_fn_trait_bound)' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/lock_api-0.4.13/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-8375f72fd9e6cff1-stdout \
@@ -8312,9 +7979,6 @@ COPY --link --from=dep-n-lock_api-0.4.13-8375f72fd9e6cff1 /tmp/clis-bottom_0-11-
 ##         CARGO_PKG_VERSION_PRE= \
 ##         OUT_DIR=/tmp/clis-bottom_0-11-4/release/build/lock_api-755b1669711fd483/out \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name lock_api --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --cfg feature'="atomic_usize"' --cfg feature'="default"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("arc_lock", "atomic_usize", "default", "nightly", "owning_ref", "serde"))' -C metadata'=19fbabfb3897fd8f' -C extra-filename'=-8375f72fd9e6cff1' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern scopeguard'=/tmp/clis-bottom_0-11-4/release/deps/libscopeguard-cd2fb476592b617e.rmeta' --cap-lints warn --cfg has_const_fn_trait_bound --check-cfg cfg'(has_const_fn_trait_bound)' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/lock_api-0.4.13/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-8375f72fd9e6cff1-stdout \
@@ -8358,9 +8022,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name smallvec --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("arbitrary", "bincode", "const_generics", "const_new", "debugger_visualizer", "drain_filter", "drain_keep_rest", "impl_bincode", "malloc_size_of", "may_dangle", "serde", "specialization", "union", "unty", "write"))' -C metadata'=f7d705da97979ac7' -C extra-filename'=-58dafb16b883fa0b' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/smallvec-1.15.1/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-58dafb16b883fa0b-stdout \
@@ -8427,9 +8088,6 @@ COPY --link --from=dep-n-smallvec-1.15.1-58dafb16b883fa0b /tmp/clis-bottom_0-11-
 ##         CARGO_PKG_VERSION_PATCH=1 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name smallvec --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("arbitrary", "bincode", "const_generics", "const_new", "debugger_visualizer", "drain_filter", "drain_keep_rest", "impl_bincode", "malloc_size_of", "may_dangle", "serde", "specialization", "union", "unty", "write"))' -C metadata'=f7d705da97979ac7' -C extra-filename'=-58dafb16b883fa0b' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/smallvec-1.15.1/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-58dafb16b883fa0b-stdout \
@@ -8492,9 +8150,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=11 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("backtrace", "deadlock_detection", "nightly", "petgraph", "thread-id"))' -C metadata'=72f9be880d7397ee' -C extra-filename'=-d487c7222383d485' --out-dir /tmp/clis-bottom_0-11-4/release/build/parking_lot_core-d487c7222383d485 -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/parking_lot_core-0.9.11/build.rs \
         1>          /tmp/clis-bottom_0-11-4/release/build/parking_lot_core-d487c7222383d485/out-d487c7222383d485-stdout \
@@ -8578,9 +8233,6 @@ COPY --link --from=dep-x-parking_lot_core-0.9.11-d487c7222383d485 /tmp/clis-bott
 ##         CARGO_PKG_VERSION_PATCH=11 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("backtrace", "deadlock_detection", "nightly", "petgraph", "thread-id"))' -C metadata'=72f9be880d7397ee' -C extra-filename'=-d487c7222383d485' --out-dir /tmp/clis-bottom_0-11-4/release/build/parking_lot_core-d487c7222383d485 -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/parking_lot_core-0.9.11/build.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/build/parking_lot_core-d487c7222383d485/out-d487c7222383d485-stdout \
@@ -8645,9 +8297,6 @@ RUN \
         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
         TARGET=x86_64-unknown-linux-gnu \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-bottom_0-11-4/release/build/parking_lot_core-d487c7222383d485/build-script-build \
         1>          /tmp/clis-bottom_0-11-4/release/build/parking_lot_core-a280da011bd6c65f/out/out-a280da011bd6c65f-stdout \
@@ -8725,9 +8374,6 @@ COPY --link --from=run-z-parking_lot_core-0.9.11-a280da011bd6c65f /tmp/clis-bott
 ##         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
 ##         TARGET=x86_64-unknown-linux-gnu \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-bottom_0-11-4/release/build/parking_lot_core-d487c7222383d485/build-script-build \
 ##         1>          /tmp/clis-bottom_0-11-4/release/build/parking_lot_core-a280da011bd6c65f/out/out-a280da011bd6c65f-stdout \
@@ -8777,9 +8423,6 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         OUT_DIR=/tmp/clis-bottom_0-11-4/release/build/parking_lot_core-a280da011bd6c65f/out \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name parking_lot_core --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("backtrace", "deadlock_detection", "nightly", "petgraph", "thread-id"))' -C metadata'=4e3a86fd71de952b' -C extra-filename'=-538126fd8c817f0d' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern cfg_if'=/tmp/clis-bottom_0-11-4/release/deps/libcfg_if-bcc7b80470034230.rmeta' --extern libc'=/tmp/clis-bottom_0-11-4/release/deps/liblibc-f9a7f201e668dfaf.rmeta' --extern smallvec'=/tmp/clis-bottom_0-11-4/release/deps/libsmallvec-58dafb16b883fa0b.rmeta' --cap-lints warn --check-cfg cfg'(tsan_enabled)' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/parking_lot_core-0.9.11/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-538126fd8c817f0d-stdout \
@@ -8895,9 +8538,6 @@ COPY --link --from=dep-n-parking_lot_core-0.9.11-538126fd8c817f0d /tmp/clis-bott
 ##         CARGO_PKG_VERSION_PRE= \
 ##         OUT_DIR=/tmp/clis-bottom_0-11-4/release/build/parking_lot_core-a280da011bd6c65f/out \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name parking_lot_core --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("backtrace", "deadlock_detection", "nightly", "petgraph", "thread-id"))' -C metadata'=4e3a86fd71de952b' -C extra-filename'=-538126fd8c817f0d' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern cfg_if'=/tmp/clis-bottom_0-11-4/release/deps/libcfg_if-bcc7b80470034230.rmeta' --extern libc'=/tmp/clis-bottom_0-11-4/release/deps/liblibc-f9a7f201e668dfaf.rmeta' --extern smallvec'=/tmp/clis-bottom_0-11-4/release/deps/libsmallvec-58dafb16b883fa0b.rmeta' --cap-lints warn --check-cfg cfg'(tsan_enabled)' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/parking_lot_core-0.9.11/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-538126fd8c817f0d-stdout \
@@ -8955,9 +8595,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=4 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name parking_lot --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --cfg feature'="default"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("arc_lock", "deadlock_detection", "default", "hardware-lock-elision", "nightly", "owning_ref", "send_guard", "serde"))' -C metadata'=329f1d90e44ccf65' -C extra-filename'=-bd7f807a29c9e838' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern lock_api'=/tmp/clis-bottom_0-11-4/release/deps/liblock_api-8375f72fd9e6cff1.rmeta' --extern parking_lot_core'=/tmp/clis-bottom_0-11-4/release/deps/libparking_lot_core-538126fd8c817f0d.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/parking_lot-0.12.4/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-bd7f807a29c9e838-stdout \
@@ -9114,9 +8751,6 @@ COPY --link --from=dep-n-parking_lot-0.12.4-bd7f807a29c9e838 /tmp/clis-bottom_0-
 ##         CARGO_PKG_VERSION_PATCH=4 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name parking_lot --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --cfg feature'="default"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("arc_lock", "deadlock_detection", "default", "hardware-lock-elision", "nightly", "owning_ref", "send_guard", "serde"))' -C metadata'=329f1d90e44ccf65' -C extra-filename'=-bd7f807a29c9e838' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern lock_api'=/tmp/clis-bottom_0-11-4/release/deps/liblock_api-8375f72fd9e6cff1.rmeta' --extern parking_lot_core'=/tmp/clis-bottom_0-11-4/release/deps/libparking_lot_core-538126fd8c817f0d.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/parking_lot-0.12.4/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-bd7f807a29c9e838-stdout \
@@ -9162,9 +8796,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=6 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name signal_hook_registry --edition 2015 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=1e65347c50be9495' -C extra-filename'=-cc2c207d3ff51418' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern libc'=/tmp/clis-bottom_0-11-4/release/deps/liblibc-f9a7f201e668dfaf.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/signal-hook-registry-1.4.6/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-cc2c207d3ff51418-stdout \
@@ -9250,9 +8881,6 @@ COPY --link --from=dep-n-signal-hook-registry-1.4.6-cc2c207d3ff51418 /tmp/clis-b
 ##         CARGO_PKG_VERSION_PATCH=6 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name signal_hook_registry --edition 2015 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=1e65347c50be9495' -C extra-filename'=-cc2c207d3ff51418' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern libc'=/tmp/clis-bottom_0-11-4/release/deps/liblibc-f9a7f201e668dfaf.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/signal-hook-registry-1.4.6/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-cc2c207d3ff51418-stdout \
@@ -9315,9 +8943,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=18 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name build_script_build --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="channel"' --cfg feature'="default"' --cfg feature'="iterator"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("cc", "channel", "default", "extended-siginfo", "extended-siginfo-raw", "iterator"))' -C metadata'=7f99534d780c37a2' -C extra-filename'=-03053dbeac06f1d1' --out-dir /tmp/clis-bottom_0-11-4/release/build/signal-hook-03053dbeac06f1d1 -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/signal-hook-0.3.18/build.rs \
         1>          /tmp/clis-bottom_0-11-4/release/build/signal-hook-03053dbeac06f1d1/out-03053dbeac06f1d1-stdout \
@@ -9401,9 +9026,6 @@ COPY --link --from=dep-x-signal-hook-0.3.18-03053dbeac06f1d1 /tmp/clis-bottom_0-
 ##         CARGO_PKG_VERSION_PATCH=18 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name build_script_build --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="channel"' --cfg feature'="default"' --cfg feature'="iterator"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("cc", "channel", "default", "extended-siginfo", "extended-siginfo-raw", "iterator"))' -C metadata'=7f99534d780c37a2' -C extra-filename'=-03053dbeac06f1d1' --out-dir /tmp/clis-bottom_0-11-4/release/build/signal-hook-03053dbeac06f1d1 -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/signal-hook-0.3.18/build.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/build/signal-hook-03053dbeac06f1d1/out-03053dbeac06f1d1-stdout \
@@ -9471,9 +9093,6 @@ RUN \
         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
         TARGET=x86_64-unknown-linux-gnu \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-bottom_0-11-4/release/build/signal-hook-03053dbeac06f1d1/build-script-build \
         1>          /tmp/clis-bottom_0-11-4/release/build/signal-hook-b5fde4f4e555a44a/out/out-b5fde4f4e555a44a-stdout \
@@ -9550,9 +9169,6 @@ COPY --link --from=run-z-signal-hook-0.3.18-b5fde4f4e555a44a /tmp/clis-bottom_0-
 ##         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
 ##         TARGET=x86_64-unknown-linux-gnu \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-bottom_0-11-4/release/build/signal-hook-03053dbeac06f1d1/build-script-build \
 ##         1>          /tmp/clis-bottom_0-11-4/release/build/signal-hook-b5fde4f4e555a44a/out/out-b5fde4f4e555a44a-stdout \
@@ -9600,9 +9216,6 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         OUT_DIR=/tmp/clis-bottom_0-11-4/release/build/signal-hook-b5fde4f4e555a44a/out \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name signal_hook --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --cfg feature'="channel"' --cfg feature'="default"' --cfg feature'="iterator"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("cc", "channel", "default", "extended-siginfo", "extended-siginfo-raw", "iterator"))' -C metadata'=b028e7e6f773ff5c' -C extra-filename'=-d71989a1402a8c27' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern libc'=/tmp/clis-bottom_0-11-4/release/deps/liblibc-f9a7f201e668dfaf.rmeta' --extern signal_hook_registry'=/tmp/clis-bottom_0-11-4/release/deps/libsignal_hook_registry-cc2c207d3ff51418.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/signal-hook-0.3.18/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-d71989a1402a8c27-stdout \
@@ -9709,9 +9322,6 @@ COPY --link --from=dep-n-signal-hook-0.3.18-d71989a1402a8c27 /tmp/clis-bottom_0-
 ##         CARGO_PKG_VERSION_PRE= \
 ##         OUT_DIR=/tmp/clis-bottom_0-11-4/release/build/signal-hook-b5fde4f4e555a44a/out \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name signal_hook --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --cfg feature'="channel"' --cfg feature'="default"' --cfg feature'="iterator"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("cc", "channel", "default", "extended-siginfo", "extended-siginfo-raw", "iterator"))' -C metadata'=b028e7e6f773ff5c' -C extra-filename'=-d71989a1402a8c27' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern libc'=/tmp/clis-bottom_0-11-4/release/deps/liblibc-f9a7f201e668dfaf.rmeta' --extern signal_hook_registry'=/tmp/clis-bottom_0-11-4/release/deps/libsignal_hook_registry-cc2c207d3ff51418.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/signal-hook-0.3.18/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-d71989a1402a8c27-stdout \
@@ -9765,9 +9375,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=4 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name signal_hook_mio --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --cfg feature'="mio-1_0"' --cfg feature'="support-v1_0"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("mio-0_6", "mio-0_7", "mio-0_8", "mio-1_0", "mio-uds", "support-v0_6", "support-v0_7", "support-v0_8", "support-v1_0"))' -C metadata'=4137be52de2bf290' -C extra-filename'=-a80732dbcc1c030b' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern libc'=/tmp/clis-bottom_0-11-4/release/deps/liblibc-f9a7f201e668dfaf.rmeta' --extern mio_1_0'=/tmp/clis-bottom_0-11-4/release/deps/libmio-bf1e1fb5f7dcb9cb.rmeta' --extern signal_hook'=/tmp/clis-bottom_0-11-4/release/deps/libsignal_hook-d71989a1402a8c27.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/signal-hook-mio-0.2.4/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-a80732dbcc1c030b-stdout \
@@ -9899,9 +9506,6 @@ COPY --link --from=dep-n-signal-hook-mio-0.2.4-a80732dbcc1c030b /tmp/clis-bottom
 ##         CARGO_PKG_VERSION_PATCH=4 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name signal_hook_mio --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --cfg feature'="mio-1_0"' --cfg feature'="support-v1_0"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("mio-0_6", "mio-0_7", "mio-0_8", "mio-1_0", "mio-uds", "support-v0_6", "support-v0_7", "support-v0_8", "support-v1_0"))' -C metadata'=4137be52de2bf290' -C extra-filename'=-a80732dbcc1c030b' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern libc'=/tmp/clis-bottom_0-11-4/release/deps/liblibc-f9a7f201e668dfaf.rmeta' --extern mio_1_0'=/tmp/clis-bottom_0-11-4/release/deps/libmio-bf1e1fb5f7dcb9cb.rmeta' --extern signal_hook'=/tmp/clis-bottom_0-11-4/release/deps/libsignal_hook-d71989a1402a8c27.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/signal-hook-mio-0.2.4/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-a80732dbcc1c030b-stdout \
@@ -9995,9 +9599,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name crossterm --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --cfg feature'="bracketed-paste"' --cfg feature'="default"' --cfg feature'="derive-more"' --cfg feature'="events"' --cfg feature'="windows"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("bracketed-paste", "default", "derive-more", "event-stream", "events", "filedescriptor", "libc", "osc52", "serde", "use-dev-tty", "windows"))' -C metadata'=f6e241c6714001aa' -C extra-filename'=-ebe2f271fb65aaff' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern bitflags'=/tmp/clis-bottom_0-11-4/release/deps/libbitflags-f4de441526a3a0e1.rmeta' --extern derive_more'=/tmp/clis-bottom_0-11-4/release/deps/libderive_more-8e36e7e24472db53.rmeta' --extern document_features'=/tmp/clis-bottom_0-11-4/release/deps/libdocument_features-a357ac629c0bd6ed.so' --extern mio'=/tmp/clis-bottom_0-11-4/release/deps/libmio-bf1e1fb5f7dcb9cb.rmeta' --extern parking_lot'=/tmp/clis-bottom_0-11-4/release/deps/libparking_lot-bd7f807a29c9e838.rmeta' --extern rustix'=/tmp/clis-bottom_0-11-4/release/deps/librustix-4b7500c7860b2cc4.rmeta' --extern signal_hook'=/tmp/clis-bottom_0-11-4/release/deps/libsignal_hook-d71989a1402a8c27.rmeta' --extern signal_hook_mio'=/tmp/clis-bottom_0-11-4/release/deps/libsignal_hook_mio-a80732dbcc1c030b.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossterm-0.29.0/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-ebe2f271fb65aaff-stdout \
@@ -10364,9 +9965,6 @@ COPY --link --from=dep-n-crossterm-0.29.0-ebe2f271fb65aaff /tmp/clis-bottom_0-11
 ##         CARGO_PKG_VERSION_PATCH=0 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name crossterm --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --cfg feature'="bracketed-paste"' --cfg feature'="default"' --cfg feature'="derive-more"' --cfg feature'="events"' --cfg feature'="windows"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("bracketed-paste", "default", "derive-more", "event-stream", "events", "filedescriptor", "libc", "osc52", "serde", "use-dev-tty", "windows"))' -C metadata'=f6e241c6714001aa' -C extra-filename'=-ebe2f271fb65aaff' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern bitflags'=/tmp/clis-bottom_0-11-4/release/deps/libbitflags-f4de441526a3a0e1.rmeta' --extern derive_more'=/tmp/clis-bottom_0-11-4/release/deps/libderive_more-8e36e7e24472db53.rmeta' --extern document_features'=/tmp/clis-bottom_0-11-4/release/deps/libdocument_features-a357ac629c0bd6ed.so' --extern mio'=/tmp/clis-bottom_0-11-4/release/deps/libmio-bf1e1fb5f7dcb9cb.rmeta' --extern parking_lot'=/tmp/clis-bottom_0-11-4/release/deps/libparking_lot-bd7f807a29c9e838.rmeta' --extern rustix'=/tmp/clis-bottom_0-11-4/release/deps/librustix-4b7500c7860b2cc4.rmeta' --extern signal_hook'=/tmp/clis-bottom_0-11-4/release/deps/libsignal_hook-d71989a1402a8c27.rmeta' --extern signal_hook_mio'=/tmp/clis-bottom_0-11-4/release/deps/libsignal_hook_mio-a80732dbcc1c030b.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossterm-0.29.0/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-ebe2f271fb65aaff-stdout \
@@ -10410,9 +10008,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name cfg_aliases --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' --deny clippy'::str_to_string' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=f2932fdeacda1c40' -C extra-filename'=-03140850a5edaa31' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/cfg_aliases-0.2.1/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-03140850a5edaa31-stdout \
@@ -10479,9 +10074,6 @@ COPY --link --from=dep-n-cfg_aliases-0.2.1-03140850a5edaa31 /tmp/clis-bottom_0-1
 ##         CARGO_PKG_VERSION_PATCH=1 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name cfg_aliases --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' --deny clippy'::str_to_string' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=f2932fdeacda1c40' -C extra-filename'=-03140850a5edaa31' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/cfg_aliases-0.2.1/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-03140850a5edaa31-stdout \
@@ -10545,9 +10137,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="process"' --cfg feature'="signal"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("acct", "aio", "default", "dir", "env", "event", "fanotify", "feature", "fs", "hostname", "inotify", "ioctl", "kmod", "memoffset", "mman", "mount", "mqueue", "net", "personality", "pin-utils", "poll", "process", "pthread", "ptrace", "quota", "reboot", "resource", "sched", "signal", "socket", "syslog", "term", "time", "ucontext", "uio", "user", "zerocopy"))' -C metadata'=6ac0116570ff9002' -C extra-filename'=-ce20619ef24771d5' --out-dir /tmp/clis-bottom_0-11-4/release/build/nix-ce20619ef24771d5 -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern cfg_aliases'=/tmp/clis-bottom_0-11-4/release/deps/libcfg_aliases-03140850a5edaa31.rlib' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nix-0.30.1/build.rs \
         1>          /tmp/clis-bottom_0-11-4/release/build/nix-ce20619ef24771d5/out-ce20619ef24771d5-stdout \
@@ -10637,9 +10226,6 @@ COPY --link --from=dep-x-nix-0.30.1-ce20619ef24771d5 /tmp/clis-bottom_0-11-4/rel
 ##         CARGO_PKG_VERSION_PATCH=1 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="process"' --cfg feature'="signal"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("acct", "aio", "default", "dir", "env", "event", "fanotify", "feature", "fs", "hostname", "inotify", "ioctl", "kmod", "memoffset", "mman", "mount", "mqueue", "net", "personality", "pin-utils", "poll", "process", "pthread", "ptrace", "quota", "reboot", "resource", "sched", "signal", "socket", "syslog", "term", "time", "ucontext", "uio", "user", "zerocopy"))' -C metadata'=6ac0116570ff9002' -C extra-filename'=-ce20619ef24771d5' --out-dir /tmp/clis-bottom_0-11-4/release/build/nix-ce20619ef24771d5 -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern cfg_aliases'=/tmp/clis-bottom_0-11-4/release/deps/libcfg_aliases-03140850a5edaa31.rlib' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nix-0.30.1/build.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/build/nix-ce20619ef24771d5/out-ce20619ef24771d5-stdout \
@@ -10706,9 +10292,6 @@ RUN \
         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
         TARGET=x86_64-unknown-linux-gnu \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-bottom_0-11-4/release/build/nix-ce20619ef24771d5/build-script-build \
         1>          /tmp/clis-bottom_0-11-4/release/build/nix-1013aa56c6c873d5/out/out-1013aa56c6c873d5-stdout \
@@ -10814,9 +10397,6 @@ COPY --link --from=run-z-nix-0.30.1-1013aa56c6c873d5 /tmp/clis-bottom_0-11-4/rel
 ##         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
 ##         TARGET=x86_64-unknown-linux-gnu \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-bottom_0-11-4/release/build/nix-ce20619ef24771d5/build-script-build \
 ##         1>          /tmp/clis-bottom_0-11-4/release/build/nix-1013aa56c6c873d5/out/out-1013aa56c6c873d5-stdout \
@@ -10866,9 +10446,6 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         OUT_DIR=/tmp/clis-bottom_0-11-4/release/build/nix-1013aa56c6c873d5/out \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name nix --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --cfg feature'="process"' --cfg feature'="signal"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("acct", "aio", "default", "dir", "env", "event", "fanotify", "feature", "fs", "hostname", "inotify", "ioctl", "kmod", "memoffset", "mman", "mount", "mqueue", "net", "personality", "pin-utils", "poll", "process", "pthread", "ptrace", "quota", "reboot", "resource", "sched", "signal", "socket", "syslog", "term", "time", "ucontext", "uio", "user", "zerocopy"))' -C metadata'=10b0a10206b185f9' -C extra-filename'=-7fcbdfc3e33c4e2a' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern bitflags'=/tmp/clis-bottom_0-11-4/release/deps/libbitflags-f4de441526a3a0e1.rmeta' --extern cfg_if'=/tmp/clis-bottom_0-11-4/release/deps/libcfg_if-bcc7b80470034230.rmeta' --extern libc'=/tmp/clis-bottom_0-11-4/release/deps/liblibc-f9a7f201e668dfaf.rmeta' --cap-lints warn --cfg linux --cfg linux_android --check-cfg cfg'(android)' --check-cfg cfg'(dragonfly)' --check-cfg cfg'(ios)' --check-cfg cfg'(freebsd)' --check-cfg cfg'(illumos)' --check-cfg cfg'(linux)' --check-cfg cfg'(macos)' --check-cfg cfg'(netbsd)' --check-cfg cfg'(openbsd)' --check-cfg cfg'(solaris)' --check-cfg cfg'(watchos)' --check-cfg cfg'(tvos)' --check-cfg cfg'(visionos)' --check-cfg cfg'(apple_targets)' --check-cfg cfg'(bsd)' --check-cfg cfg'(bsd_without_apple)' --check-cfg cfg'(linux_android)' --check-cfg cfg'(freebsdlike)' --check-cfg cfg'(netbsdlike)' --check-cfg cfg'(solarish)' --check-cfg cfg'(fbsd14)' --check-cfg cfg'(qemu)' --check-cfg cfg'(target_os, values("cygwin"))' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nix-0.30.1/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-7fcbdfc3e33c4e2a-stdout \
@@ -10989,9 +10566,6 @@ COPY --link --from=dep-n-nix-0.30.1-7fcbdfc3e33c4e2a /tmp/clis-bottom_0-11-4/rel
 ##         CARGO_PKG_VERSION_PRE= \
 ##         OUT_DIR=/tmp/clis-bottom_0-11-4/release/build/nix-1013aa56c6c873d5/out \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name nix --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --cfg feature'="process"' --cfg feature'="signal"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("acct", "aio", "default", "dir", "env", "event", "fanotify", "feature", "fs", "hostname", "inotify", "ioctl", "kmod", "memoffset", "mman", "mount", "mqueue", "net", "personality", "pin-utils", "poll", "process", "pthread", "ptrace", "quota", "reboot", "resource", "sched", "signal", "socket", "syslog", "term", "time", "ucontext", "uio", "user", "zerocopy"))' -C metadata'=10b0a10206b185f9' -C extra-filename'=-7fcbdfc3e33c4e2a' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern bitflags'=/tmp/clis-bottom_0-11-4/release/deps/libbitflags-f4de441526a3a0e1.rmeta' --extern cfg_if'=/tmp/clis-bottom_0-11-4/release/deps/libcfg_if-bcc7b80470034230.rmeta' --extern libc'=/tmp/clis-bottom_0-11-4/release/deps/liblibc-f9a7f201e668dfaf.rmeta' --cap-lints warn --cfg linux --cfg linux_android --check-cfg cfg'(android)' --check-cfg cfg'(dragonfly)' --check-cfg cfg'(ios)' --check-cfg cfg'(freebsd)' --check-cfg cfg'(illumos)' --check-cfg cfg'(linux)' --check-cfg cfg'(macos)' --check-cfg cfg'(netbsd)' --check-cfg cfg'(openbsd)' --check-cfg cfg'(solaris)' --check-cfg cfg'(watchos)' --check-cfg cfg'(tvos)' --check-cfg cfg'(visionos)' --check-cfg cfg'(apple_targets)' --check-cfg cfg'(bsd)' --check-cfg cfg'(bsd_without_apple)' --check-cfg cfg'(linux_android)' --check-cfg cfg'(freebsdlike)' --check-cfg cfg'(netbsdlike)' --check-cfg cfg'(solarish)' --check-cfg cfg'(fbsd14)' --check-cfg cfg'(qemu)' --check-cfg cfg'(target_os, values("cygwin"))' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nix-0.30.1/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-7fcbdfc3e33c4e2a-stdout \
@@ -11045,9 +10619,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name ctrlc --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --cfg feature'="termination"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("termination"))' -C metadata'=19619899da5cde2a' -C extra-filename'=-1d6911db2f7eed96' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern nix'=/tmp/clis-bottom_0-11-4/release/deps/libnix-7fcbdfc3e33c4e2a.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ctrlc-3.5.0/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-1d6911db2f7eed96-stdout \
@@ -11179,9 +10750,6 @@ COPY --link --from=dep-n-ctrlc-3.5.0-1d6911db2f7eed96 /tmp/clis-bottom_0-11-4/re
 ##         CARGO_PKG_VERSION_PATCH=0 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name ctrlc --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --cfg feature'="termination"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("termination"))' -C metadata'=19619899da5cde2a' -C extra-filename'=-1d6911db2f7eed96' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern nix'=/tmp/clis-bottom_0-11-4/release/deps/libnix-7fcbdfc3e33c4e2a.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ctrlc-3.5.0/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-1d6911db2f7eed96-stdout \
@@ -11225,9 +10793,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name option_ext --edition 2015 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=ffba2ff99c2b25de' -C extra-filename'=-4add3e8b8273fdc2' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/option-ext-0.2.0/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-4add3e8b8273fdc2-stdout \
@@ -11294,9 +10859,6 @@ COPY --link --from=dep-n-option-ext-0.2.0-4add3e8b8273fdc2 /tmp/clis-bottom_0-11
 ##         CARGO_PKG_VERSION_PATCH=0 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name option_ext --edition 2015 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=ffba2ff99c2b25de' -C extra-filename'=-4add3e8b8273fdc2' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/option-ext-0.2.0/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-4add3e8b8273fdc2-stdout \
@@ -11344,9 +10906,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name dirs_sys --edition 2015 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=8336520b268e1f9b' -C extra-filename'=-611cd2b65a99ff1c' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern libc'=/tmp/clis-bottom_0-11-4/release/deps/liblibc-f9a7f201e668dfaf.rmeta' --extern option_ext'=/tmp/clis-bottom_0-11-4/release/deps/liboption_ext-4add3e8b8273fdc2.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/dirs-sys-0.5.0/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-611cd2b65a99ff1c-stdout \
@@ -11440,9 +10999,6 @@ COPY --link --from=dep-n-dirs-sys-0.5.0-611cd2b65a99ff1c /tmp/clis-bottom_0-11-4
 ##         CARGO_PKG_VERSION_PATCH=0 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name dirs_sys --edition 2015 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=8336520b268e1f9b' -C extra-filename'=-611cd2b65a99ff1c' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern libc'=/tmp/clis-bottom_0-11-4/release/deps/liblibc-f9a7f201e668dfaf.rmeta' --extern option_ext'=/tmp/clis-bottom_0-11-4/release/deps/liboption_ext-4add3e8b8273fdc2.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/dirs-sys-0.5.0/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-611cd2b65a99ff1c-stdout \
@@ -11492,9 +11048,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name dirs --edition 2015 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=7c926b534d02b87d' -C extra-filename'=-85591fa479b21f9f' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern dirs_sys'=/tmp/clis-bottom_0-11-4/release/deps/libdirs_sys-611cd2b65a99ff1c.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/dirs-6.0.0/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-85591fa479b21f9f-stdout \
@@ -11599,9 +11152,6 @@ COPY --link --from=dep-n-dirs-6.0.0-85591fa479b21f9f /tmp/clis-bottom_0-11-4/rel
 ##         CARGO_PKG_VERSION_PATCH=0 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name dirs --edition 2015 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=7c926b534d02b87d' -C extra-filename'=-85591fa479b21f9f' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern dirs_sys'=/tmp/clis-bottom_0-11-4/release/deps/libdirs_sys-611cd2b65a99ff1c.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/dirs-6.0.0/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-85591fa479b21f9f-stdout \
@@ -11645,9 +11195,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=21 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name allocator_api2 --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --warn unexpected_cfgs --check-cfg cfg'(no_global_oom_handling)' --cfg feature'="alloc"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "fresh-rust", "nightly", "serde", "std"))' -C metadata'=f9364a39bca6b83f' -C extra-filename'=-237920045c805089' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/allocator-api2-0.2.21/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-237920045c805089-stdout \
@@ -11716,9 +11263,6 @@ COPY --link --from=dep-n-allocator-api2-0.2.21-237920045c805089 /tmp/clis-bottom
 ##         CARGO_PKG_VERSION_PATCH=21 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name allocator_api2 --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --warn unexpected_cfgs --check-cfg cfg'(no_global_oom_handling)' --cfg feature'="alloc"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "fresh-rust", "nightly", "serde", "std"))' -C metadata'=f9364a39bca6b83f' -C extra-filename'=-237920045c805089' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/allocator-api2-0.2.21/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-237920045c805089-stdout \
@@ -11762,9 +11306,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=2 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name equivalent --edition 2015 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=c07d1ac725e0a7f0' -C extra-filename'=-377c55d6e7e3018c' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/equivalent-1.0.2/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-377c55d6e7e3018c-stdout \
@@ -11831,9 +11372,6 @@ COPY --link --from=dep-n-equivalent-1.0.2-377c55d6e7e3018c /tmp/clis-bottom_0-11
 ##         CARGO_PKG_VERSION_PATCH=2 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name equivalent --edition 2015 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=c07d1ac725e0a7f0' -C extra-filename'=-377c55d6e7e3018c' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/equivalent-1.0.2/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-377c55d6e7e3018c-stdout \
@@ -11877,9 +11415,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name foldhash --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "nightly", "std"))' -C metadata'=62349fac8f512028' -C extra-filename'=-096447fe41f6c043' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/foldhash-0.2.0/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-096447fe41f6c043-stdout \
@@ -11946,9 +11481,6 @@ COPY --link --from=dep-n-foldhash-0.2.0-096447fe41f6c043 /tmp/clis-bottom_0-11-4
 ##         CARGO_PKG_VERSION_PATCH=0 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name foldhash --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "nightly", "std"))' -C metadata'=62349fac8f512028' -C extra-filename'=-096447fe41f6c043' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/foldhash-0.2.0/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-096447fe41f6c043-stdout \
@@ -11998,9 +11530,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name hashbrown --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --cfg feature'="allocator-api2"' --cfg feature'="default"' --cfg feature'="default-hasher"' --cfg feature'="equivalent"' --cfg feature'="inline-more"' --cfg feature'="raw-entry"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "allocator-api2", "core", "default", "default-hasher", "equivalent", "inline-more", "nightly", "raw-entry", "rayon", "rustc-dep-of-std", "rustc-internal-api", "serde"))' -C metadata'=d675c22d6d6f6f19' -C extra-filename'=-75a46f0c9de185ab' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern allocator_api2'=/tmp/clis-bottom_0-11-4/release/deps/liballocator_api2-237920045c805089.rmeta' --extern equivalent'=/tmp/clis-bottom_0-11-4/release/deps/libequivalent-377c55d6e7e3018c.rmeta' --extern foldhash'=/tmp/clis-bottom_0-11-4/release/deps/libfoldhash-096447fe41f6c043.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/hashbrown-0.16.0/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-75a46f0c9de185ab-stdout \
@@ -12102,9 +11631,6 @@ COPY --link --from=dep-n-hashbrown-0.16.0-75a46f0c9de185ab /tmp/clis-bottom_0-11
 ##         CARGO_PKG_VERSION_PATCH=0 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name hashbrown --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --cfg feature'="allocator-api2"' --cfg feature'="default"' --cfg feature'="default-hasher"' --cfg feature'="equivalent"' --cfg feature'="inline-more"' --cfg feature'="raw-entry"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "allocator-api2", "core", "default", "default-hasher", "equivalent", "inline-more", "nightly", "raw-entry", "rayon", "rustc-dep-of-std", "rustc-internal-api", "serde"))' -C metadata'=d675c22d6d6f6f19' -C extra-filename'=-75a46f0c9de185ab' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern allocator_api2'=/tmp/clis-bottom_0-11-4/release/deps/liballocator_api2-237920045c805089.rmeta' --extern equivalent'=/tmp/clis-bottom_0-11-4/release/deps/libequivalent-377c55d6e7e3018c.rmeta' --extern foldhash'=/tmp/clis-bottom_0-11-4/release/deps/libfoldhash-096447fe41f6c043.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/hashbrown-0.16.0/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-75a46f0c9de185ab-stdout \
@@ -12148,9 +11674,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name humantime --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("mu"))' -C metadata'=83c54dda87695a23' -C extra-filename'=-8d10865a98510d2d' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/humantime-2.3.0/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-8d10865a98510d2d-stdout \
@@ -12217,9 +11740,6 @@ COPY --link --from=dep-n-humantime-2.3.0-8d10865a98510d2d /tmp/clis-bottom_0-11-
 ##         CARGO_PKG_VERSION_PATCH=0 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name humantime --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("mu"))' -C metadata'=83c54dda87695a23' -C extra-filename'=-8d10865a98510d2d' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/humantime-2.3.0/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-8d10865a98510d2d-stdout \
@@ -12271,9 +11791,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=4 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name indexmap --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --allow clippy'::style' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("arbitrary", "borsh", "default", "quickcheck", "rayon", "serde", "std", "sval", "test_debug"))' -C metadata'=b8059a09efdb3665' -C extra-filename'=-b43e6c5f947e2f50' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern equivalent'=/tmp/clis-bottom_0-11-4/release/deps/libequivalent-377c55d6e7e3018c.rmeta' --extern hashbrown'=/tmp/clis-bottom_0-11-4/release/deps/libhashbrown-75a46f0c9de185ab.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/indexmap-2.11.4/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-b43e6c5f947e2f50-stdout \
@@ -12386,9 +11903,6 @@ COPY --link --from=dep-n-indexmap-2.11.4-b43e6c5f947e2f50 /tmp/clis-bottom_0-11-
 ##         CARGO_PKG_VERSION_PATCH=4 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name indexmap --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --allow clippy'::style' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("arbitrary", "borsh", "default", "quickcheck", "rayon", "serde", "std", "sval", "test_debug"))' -C metadata'=b8059a09efdb3665' -C extra-filename'=-b43e6c5f947e2f50' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern equivalent'=/tmp/clis-bottom_0-11-4/release/deps/libequivalent-377c55d6e7e3018c.rmeta' --extern hashbrown'=/tmp/clis-bottom_0-11-4/release/deps/libhashbrown-75a46f0c9de185ab.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/indexmap-2.11.4/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-b43e6c5f947e2f50-stdout \
@@ -12432,9 +11946,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=6 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name indoc --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type proc-macro --emit dep-info,link -C prefer-dynamic -C embed-bitcode'=no' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=50728edcdd658748' -C extra-filename'=-6220bf836a43fe21' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern proc_macro --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/indoc-2.0.6/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-6220bf836a43fe21-stdout \
@@ -12505,9 +12016,6 @@ COPY --link --from=dep-n-indoc-2.0.6-6220bf836a43fe21 /tmp/clis-bottom_0-11-4/re
 ##         CARGO_PKG_VERSION_PATCH=6 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name indoc --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type proc-macro --emit dep-info,link -C prefer-dynamic -C embed-bitcode'=no' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=50728edcdd658748' -C extra-filename'=-6220bf836a43fe21' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern proc_macro --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/indoc-2.0.6/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-6220bf836a43fe21-stdout \
@@ -12552,9 +12060,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name either --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --cfg feature'="std"' --cfg feature'="use_std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "serde", "std", "use_std"))' -C metadata'=e5d272302a459b31' -C extra-filename'=-2f7cbff5a773db3c' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/either-1.15.0/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-2f7cbff5a773db3c-stdout \
@@ -12622,9 +12127,6 @@ COPY --link --from=dep-n-either-1.15.0-2f7cbff5a773db3c /tmp/clis-bottom_0-11-4/
 ##         CARGO_PKG_VERSION_PATCH=0 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name either --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --cfg feature'="std"' --cfg feature'="use_std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "serde", "std", "use_std"))' -C metadata'=e5d272302a459b31' -C extra-filename'=-2f7cbff5a773db3c' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/either-1.15.0/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-2f7cbff5a773db3c-stdout \
@@ -12670,9 +12172,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name itertools --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --cfg feature'="default"' --cfg feature'="use_alloc"' --cfg feature'="use_std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "use_alloc", "use_std"))' -C metadata'=a789ed1724bea3a2' -C extra-filename'=-62522c8d5cefce5c' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern either'=/tmp/clis-bottom_0-11-4/release/deps/libeither-2f7cbff5a773db3c.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/itertools-0.14.0/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-62522c8d5cefce5c-stdout \
@@ -12757,9 +12256,6 @@ COPY --link --from=dep-n-itertools-0.14.0-62522c8d5cefce5c /tmp/clis-bottom_0-11
 ##         CARGO_PKG_VERSION_PATCH=0 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name itertools --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --cfg feature'="default"' --cfg feature'="use_alloc"' --cfg feature'="use_std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "use_alloc", "use_std"))' -C metadata'=a789ed1724bea3a2' -C extra-filename'=-62522c8d5cefce5c' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern either'=/tmp/clis-bottom_0-11-4/release/deps/libeither-2f7cbff5a773db3c.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/itertools-0.14.0/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-62522c8d5cefce5c-stdout \
@@ -12805,9 +12301,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=9 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name libloading --edition 2015 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --warn unexpected_cfgs --check-cfg cfg'(libloading_docs)' --check-cfg cfg'(target_os, values("cygwin"))' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=26a5425d8092707d' -C extra-filename'=-df4754f37f4b1975' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern cfg_if'=/tmp/clis-bottom_0-11-4/release/deps/libcfg_if-bcc7b80470034230.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libloading-0.8.9/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-df4754f37f4b1975-stdout \
@@ -12885,9 +12378,6 @@ COPY --link --from=dep-n-libloading-0.8.9-df4754f37f4b1975 /tmp/clis-bottom_0-11
 ##         CARGO_PKG_VERSION_PATCH=9 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name libloading --edition 2015 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --warn unexpected_cfgs --check-cfg cfg'(libloading_docs)' --check-cfg cfg'(target_os, values("cygwin"))' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=26a5425d8092707d' -C extra-filename'=-df4754f37f4b1975' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern cfg_if'=/tmp/clis-bottom_0-11-4/release/deps/libcfg_if-bcc7b80470034230.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libloading-0.8.9/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-df4754f37f4b1975-stdout \
@@ -12935,9 +12425,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name nvml_wrapper_sys --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --cfg feature'="default"' --cfg feature'="legacy-functions"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "legacy-functions"))' -C metadata'=7053515e1c17d279' -C extra-filename'=-d90cab48e1e9dad4' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern libloading'=/tmp/clis-bottom_0-11-4/release/deps/liblibloading-df4754f37f4b1975.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nvml-wrapper-sys-0.9.0/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-d90cab48e1e9dad4-stdout \
@@ -13028,9 +12515,6 @@ COPY --link --from=dep-n-nvml-wrapper-sys-0.9.0-d90cab48e1e9dad4 /tmp/clis-botto
 ##         CARGO_PKG_VERSION_PATCH=0 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name nvml_wrapper_sys --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --cfg feature'="default"' --cfg feature'="legacy-functions"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "legacy-functions"))' -C metadata'=7053515e1c17d279' -C extra-filename'=-d90cab48e1e9dad4' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern libloading'=/tmp/clis-bottom_0-11-4/release/deps/liblibloading-df4754f37f4b1975.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nvml-wrapper-sys-0.9.0/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-d90cab48e1e9dad4-stdout \
@@ -13074,9 +12558,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name static_assertions --edition 2015 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("nightly"))' -C metadata'=2dcdc3511ec56658' -C extra-filename'=-59c5c7af2d8c2ea3' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/static_assertions-1.1.0/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-59c5c7af2d8c2ea3-stdout \
@@ -13143,9 +12624,6 @@ COPY --link --from=dep-n-static_assertions-1.1.0-59c5c7af2d8c2ea3 /tmp/clis-bott
 ##         CARGO_PKG_VERSION_PATCH=0 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name static_assertions --edition 2015 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("nightly"))' -C metadata'=2dcdc3511ec56658' -C extra-filename'=-59c5c7af2d8c2ea3' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/static_assertions-1.1.0/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-59c5c7af2d8c2ea3-stdout \
@@ -13193,9 +12671,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=69 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name thiserror_impl --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type proc-macro --emit dep-info,link -C prefer-dynamic -C embed-bitcode'=no' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=e4de718ef18511d5' -C extra-filename'=-d53e4373fd9c345d' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern proc_macro2'=/tmp/clis-bottom_0-11-4/release/deps/libproc_macro2-a6a685fcaf51819c.rlib' --extern quote'=/tmp/clis-bottom_0-11-4/release/deps/libquote-fe88bef665d31034.rlib' --extern syn'=/tmp/clis-bottom_0-11-4/release/deps/libsyn-d8ac7146e5acfe07.rlib' --extern proc_macro --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thiserror-impl-1.0.69/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-d53e4373fd9c345d-stdout \
@@ -13299,9 +12774,6 @@ COPY --link --from=dep-n-thiserror-impl-1.0.69-d53e4373fd9c345d /tmp/clis-bottom
 ##         CARGO_PKG_VERSION_PATCH=69 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name thiserror_impl --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type proc-macro --emit dep-info,link -C prefer-dynamic -C embed-bitcode'=no' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=e4de718ef18511d5' -C extra-filename'=-d53e4373fd9c345d' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern proc_macro2'=/tmp/clis-bottom_0-11-4/release/deps/libproc_macro2-a6a685fcaf51819c.rlib' --extern quote'=/tmp/clis-bottom_0-11-4/release/deps/libquote-fe88bef665d31034.rlib' --extern syn'=/tmp/clis-bottom_0-11-4/release/deps/libsyn-d8ac7146e5acfe07.rlib' --extern proc_macro --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thiserror-impl-1.0.69/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-d53e4373fd9c345d-stdout \
@@ -13364,9 +12836,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=69 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=2dfff5121e7d71e4' -C extra-filename'=-a4d551f66c200cfe' --out-dir /tmp/clis-bottom_0-11-4/release/build/thiserror-a4d551f66c200cfe -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thiserror-1.0.69/build.rs \
         1>          /tmp/clis-bottom_0-11-4/release/build/thiserror-a4d551f66c200cfe/out-a4d551f66c200cfe-stdout \
@@ -13450,9 +12919,6 @@ COPY --link --from=dep-x-thiserror-1.0.69-a4d551f66c200cfe /tmp/clis-bottom_0-11
 ##         CARGO_PKG_VERSION_PATCH=69 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=2dfff5121e7d71e4' -C extra-filename'=-a4d551f66c200cfe' --out-dir /tmp/clis-bottom_0-11-4/release/build/thiserror-a4d551f66c200cfe -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thiserror-1.0.69/build.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/build/thiserror-a4d551f66c200cfe/out-a4d551f66c200cfe-stdout \
@@ -13517,9 +12983,6 @@ RUN \
         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
         TARGET=x86_64-unknown-linux-gnu \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-bottom_0-11-4/release/build/thiserror-a4d551f66c200cfe/build-script-build \
         1>          /tmp/clis-bottom_0-11-4/release/build/thiserror-b605952eb926f209/out/out-b605952eb926f209-stdout \
@@ -13599,9 +13062,6 @@ COPY --link --from=run-z-thiserror-1.0.69-b605952eb926f209 /tmp/clis-bottom_0-11
 ##         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
 ##         TARGET=x86_64-unknown-linux-gnu \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-bottom_0-11-4/release/build/thiserror-a4d551f66c200cfe/build-script-build \
 ##         1>          /tmp/clis-bottom_0-11-4/release/build/thiserror-b605952eb926f209/out/out-b605952eb926f209-stdout \
@@ -13650,9 +13110,6 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         OUT_DIR=/tmp/clis-bottom_0-11-4/release/build/thiserror-b605952eb926f209/out \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name thiserror --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=0bed95791594c44f' -C extra-filename'=-5165da34b7b78b17' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern thiserror_impl'=/tmp/clis-bottom_0-11-4/release/deps/libthiserror_impl-d53e4373fd9c345d.so' --cap-lints warn --check-cfg cfg'(error_generic_member_access)' --check-cfg cfg'(thiserror_nightly_testing)' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thiserror-1.0.69/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-5165da34b7b78b17-stdout \
@@ -13765,9 +13222,6 @@ COPY --link --from=dep-n-thiserror-1.0.69-5165da34b7b78b17 /tmp/clis-bottom_0-11
 ##         CARGO_PKG_VERSION_PRE= \
 ##         OUT_DIR=/tmp/clis-bottom_0-11-4/release/build/thiserror-b605952eb926f209/out \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name thiserror --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=0bed95791594c44f' -C extra-filename'=-5165da34b7b78b17' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern thiserror_impl'=/tmp/clis-bottom_0-11-4/release/deps/libthiserror_impl-d53e4373fd9c345d.so' --cap-lints warn --check-cfg cfg'(error_generic_member_access)' --check-cfg cfg'(thiserror_nightly_testing)' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thiserror-1.0.69/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-5165da34b7b78b17-stdout \
@@ -13811,9 +13265,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=7 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name fnv --edition 2015 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "std"))' -C metadata'=4663d1e8c161e2e2' -C extra-filename'=-498ad1309b878047' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/fnv-1.0.7/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-498ad1309b878047-stdout \
@@ -13880,9 +13331,6 @@ COPY --link --from=dep-n-fnv-1.0.7-498ad1309b878047 /tmp/clis-bottom_0-11-4/rele
 ##         CARGO_PKG_VERSION_PATCH=7 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name fnv --edition 2015 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "std"))' -C metadata'=4663d1e8c161e2e2' -C extra-filename'=-498ad1309b878047' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/fnv-1.0.7/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-498ad1309b878047-stdout \
@@ -13926,9 +13374,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name ident_case --edition 2015 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=ca2f55527f1d3397' -C extra-filename'=-40d25c5ef07f6027' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ident_case-1.0.1/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-40d25c5ef07f6027-stdout \
@@ -13998,9 +13443,6 @@ COPY --link --from=dep-n-ident_case-1.0.1-40d25c5ef07f6027 /tmp/clis-bottom_0-11
 ##         CARGO_PKG_VERSION_PATCH=1 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name ident_case --edition 2015 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=ca2f55527f1d3397' -C extra-filename'=-40d25c5ef07f6027' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ident_case-1.0.1/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-40d25c5ef07f6027-stdout \
@@ -14044,9 +13486,6 @@ OSA, Damerau-Levenshtein, Jaro, Jaro-Winkler, and Sørensen-Dice.\
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name strsim --edition 2015 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=ff6b6d5f69033919' -C extra-filename'=-c308dc16fc5a3763' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/strsim-0.11.1/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-c308dc16fc5a3763-stdout \
@@ -14115,9 +13554,6 @@ COPY --link --from=dep-n-strsim-0.11.1-c308dc16fc5a3763 /tmp/clis-bottom_0-11-4/
 ##         CARGO_PKG_VERSION_PATCH=1 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name strsim --edition 2015 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=ff6b6d5f69033919' -C extra-filename'=-c308dc16fc5a3763' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/strsim-0.11.1/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-c308dc16fc5a3763-stdout \
@@ -14177,9 +13613,6 @@ implementing custom derives. Use https://crates.io/crates/darling in your code.\
         CARGO_PKG_VERSION_PATCH=11 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name darling_core --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="strsim"' --cfg feature'="suggestions"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("diagnostics", "strsim", "suggestions"))' -C metadata'=c2edd744f382a953' -C extra-filename'=-4c8f223e192a4051' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern fnv'=/tmp/clis-bottom_0-11-4/release/deps/libfnv-498ad1309b878047.rmeta' --extern ident_case'=/tmp/clis-bottom_0-11-4/release/deps/libident_case-40d25c5ef07f6027.rmeta' --extern proc_macro2'=/tmp/clis-bottom_0-11-4/release/deps/libproc_macro2-a6a685fcaf51819c.rmeta' --extern quote'=/tmp/clis-bottom_0-11-4/release/deps/libquote-fe88bef665d31034.rmeta' --extern strsim'=/tmp/clis-bottom_0-11-4/release/deps/libstrsim-c308dc16fc5a3763.rmeta' --extern syn'=/tmp/clis-bottom_0-11-4/release/deps/libsyn-d8ac7146e5acfe07.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/darling_core-0.20.11/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-4c8f223e192a4051-stdout \
@@ -14330,9 +13763,6 @@ COPY --link --from=dep-n-darling_core-0.20.11-4c8f223e192a4051 /tmp/clis-bottom_
 ##         CARGO_PKG_VERSION_PATCH=11 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name darling_core --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="strsim"' --cfg feature'="suggestions"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("diagnostics", "strsim", "suggestions"))' -C metadata'=c2edd744f382a953' -C extra-filename'=-4c8f223e192a4051' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern fnv'=/tmp/clis-bottom_0-11-4/release/deps/libfnv-498ad1309b878047.rmeta' --extern ident_case'=/tmp/clis-bottom_0-11-4/release/deps/libident_case-40d25c5ef07f6027.rmeta' --extern proc_macro2'=/tmp/clis-bottom_0-11-4/release/deps/libproc_macro2-a6a685fcaf51819c.rmeta' --extern quote'=/tmp/clis-bottom_0-11-4/release/deps/libquote-fe88bef665d31034.rmeta' --extern strsim'=/tmp/clis-bottom_0-11-4/release/deps/libstrsim-c308dc16fc5a3763.rmeta' --extern syn'=/tmp/clis-bottom_0-11-4/release/deps/libsyn-d8ac7146e5acfe07.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/darling_core-0.20.11/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-4c8f223e192a4051-stdout \
@@ -14386,9 +13816,6 @@ implementing custom derives. Use https://crates.io/crates/darling in your code.\
         CARGO_PKG_VERSION_PATCH=11 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name darling_macro --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type proc-macro --emit dep-info,link -C prefer-dynamic -C embed-bitcode'=no' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=cae621b474af4848' -C extra-filename'=-74a806dd3208bbe9' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern darling_core'=/tmp/clis-bottom_0-11-4/release/deps/libdarling_core-4c8f223e192a4051.rlib' --extern quote'=/tmp/clis-bottom_0-11-4/release/deps/libquote-fe88bef665d31034.rlib' --extern syn'=/tmp/clis-bottom_0-11-4/release/deps/libsyn-d8ac7146e5acfe07.rlib' --extern proc_macro --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/darling_macro-0.20.11/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-74a806dd3208bbe9-stdout \
@@ -14508,9 +13935,6 @@ COPY --link --from=dep-n-darling_macro-0.20.11-74a806dd3208bbe9 /tmp/clis-bottom
 ##         CARGO_PKG_VERSION_PATCH=11 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name darling_macro --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type proc-macro --emit dep-info,link -C prefer-dynamic -C embed-bitcode'=no' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=cae621b474af4848' -C extra-filename'=-74a806dd3208bbe9' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern darling_core'=/tmp/clis-bottom_0-11-4/release/deps/libdarling_core-4c8f223e192a4051.rlib' --extern quote'=/tmp/clis-bottom_0-11-4/release/deps/libquote-fe88bef665d31034.rlib' --extern syn'=/tmp/clis-bottom_0-11-4/release/deps/libsyn-d8ac7146e5acfe07.rlib' --extern proc_macro --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/darling_macro-0.20.11/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-74a806dd3208bbe9-stdout \
@@ -14573,9 +13997,6 @@ implementing custom derives.\
         CARGO_PKG_VERSION_PATCH=11 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name darling --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' --warn unexpected_cfgs --check-cfg cfg'(compiletests)' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="suggestions"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "diagnostics", "suggestions"))' -C metadata'=885f6f483de5da04' -C extra-filename'=-32d5bae9b92de94f' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern darling_core'=/tmp/clis-bottom_0-11-4/release/deps/libdarling_core-4c8f223e192a4051.rmeta' --extern darling_macro'=/tmp/clis-bottom_0-11-4/release/deps/libdarling_macro-74a806dd3208bbe9.so' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/darling-0.20.11/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-32d5bae9b92de94f-stdout \
@@ -14743,9 +14164,6 @@ COPY --link --from=dep-n-darling-0.20.11-32d5bae9b92de94f /tmp/clis-bottom_0-11-
 ##         CARGO_PKG_VERSION_PATCH=11 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name darling --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' --warn unexpected_cfgs --check-cfg cfg'(compiletests)' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="suggestions"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "diagnostics", "suggestions"))' -C metadata'=885f6f483de5da04' -C extra-filename'=-32d5bae9b92de94f' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern darling_core'=/tmp/clis-bottom_0-11-4/release/deps/libdarling_core-4c8f223e192a4051.rmeta' --extern darling_macro'=/tmp/clis-bottom_0-11-4/release/deps/libdarling_macro-74a806dd3208bbe9.so' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/darling-0.20.11/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-32d5bae9b92de94f-stdout \
@@ -14799,9 +14217,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name wrapcenum_derive --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type proc-macro --emit dep-info,link -C prefer-dynamic -C embed-bitcode'=no' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=bf25940c29b730b9' -C extra-filename'=-0c9b558737a241ab' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern darling'=/tmp/clis-bottom_0-11-4/release/deps/libdarling-32d5bae9b92de94f.rlib' --extern proc_macro2'=/tmp/clis-bottom_0-11-4/release/deps/libproc_macro2-a6a685fcaf51819c.rlib' --extern quote'=/tmp/clis-bottom_0-11-4/release/deps/libquote-fe88bef665d31034.rlib' --extern syn'=/tmp/clis-bottom_0-11-4/release/deps/libsyn-d8ac7146e5acfe07.rlib' --extern proc_macro --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/wrapcenum-derive-0.4.1/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-0c9b558737a241ab-stdout \
@@ -14931,9 +14346,6 @@ COPY --link --from=dep-n-wrapcenum-derive-0.4.1-0c9b558737a241ab /tmp/clis-botto
 ##         CARGO_PKG_VERSION_PATCH=1 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name wrapcenum_derive --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type proc-macro --emit dep-info,link -C prefer-dynamic -C embed-bitcode'=no' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=bf25940c29b730b9' -C extra-filename'=-0c9b558737a241ab' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern darling'=/tmp/clis-bottom_0-11-4/release/deps/libdarling-32d5bae9b92de94f.rlib' --extern proc_macro2'=/tmp/clis-bottom_0-11-4/release/deps/libproc_macro2-a6a685fcaf51819c.rlib' --extern quote'=/tmp/clis-bottom_0-11-4/release/deps/libquote-fe88bef665d31034.rlib' --extern syn'=/tmp/clis-bottom_0-11-4/release/deps/libsyn-d8ac7146e5acfe07.rlib' --extern proc_macro --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/wrapcenum-derive-0.4.1/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-0c9b558737a241ab-stdout \
@@ -15010,9 +14422,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name nvml_wrapper --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --cfg feature'="default"' --cfg feature'="legacy-functions"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "legacy-functions", "serde"))' -C metadata'=4494957e7c5b36eb' -C extra-filename'=-00a58d6d9cc67991' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern bitflags'=/tmp/clis-bottom_0-11-4/release/deps/libbitflags-f4de441526a3a0e1.rmeta' --extern libloading'=/tmp/clis-bottom_0-11-4/release/deps/liblibloading-df4754f37f4b1975.rmeta' --extern nvml_wrapper_sys'=/tmp/clis-bottom_0-11-4/release/deps/libnvml_wrapper_sys-d90cab48e1e9dad4.rmeta' --extern static_assertions'=/tmp/clis-bottom_0-11-4/release/deps/libstatic_assertions-59c5c7af2d8c2ea3.rmeta' --extern thiserror'=/tmp/clis-bottom_0-11-4/release/deps/libthiserror-5165da34b7b78b17.rmeta' --extern wrapcenum_derive'=/tmp/clis-bottom_0-11-4/release/deps/libwrapcenum_derive-0c9b558737a241ab.so' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nvml-wrapper-0.11.0/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-00a58d6d9cc67991-stdout \
@@ -15283,9 +14692,6 @@ COPY --link --from=dep-n-nvml-wrapper-0.11.0-00a58d6d9cc67991 /tmp/clis-bottom_0
 ##         CARGO_PKG_VERSION_PATCH=0 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name nvml_wrapper --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --cfg feature'="default"' --cfg feature'="legacy-functions"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "legacy-functions", "serde"))' -C metadata'=4494957e7c5b36eb' -C extra-filename'=-00a58d6d9cc67991' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern bitflags'=/tmp/clis-bottom_0-11-4/release/deps/libbitflags-f4de441526a3a0e1.rmeta' --extern libloading'=/tmp/clis-bottom_0-11-4/release/deps/liblibloading-df4754f37f4b1975.rmeta' --extern nvml_wrapper_sys'=/tmp/clis-bottom_0-11-4/release/deps/libnvml_wrapper_sys-d90cab48e1e9dad4.rmeta' --extern static_assertions'=/tmp/clis-bottom_0-11-4/release/deps/libstatic_assertions-59c5c7af2d8c2ea3.rmeta' --extern thiserror'=/tmp/clis-bottom_0-11-4/release/deps/libthiserror-5165da34b7b78b17.rmeta' --extern wrapcenum_derive'=/tmp/clis-bottom_0-11-4/release/deps/libwrapcenum_derive-0c9b558737a241ab.so' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/nvml-wrapper-0.11.0/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-00a58d6d9cc67991-stdout \
@@ -15348,9 +14754,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=9 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=08666715d425496a' -C extra-filename'=-08f1d0718cdd5a4c' --out-dir /tmp/clis-bottom_0-11-4/release/build/instability-08f1d0718cdd5a4c -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/instability-0.3.9/build.rs \
         1>          /tmp/clis-bottom_0-11-4/release/build/instability-08f1d0718cdd5a4c/out-08f1d0718cdd5a4c-stdout \
@@ -15434,9 +14837,6 @@ COPY --link --from=dep-x-instability-0.3.9-08f1d0718cdd5a4c /tmp/clis-bottom_0-1
 ##         CARGO_PKG_VERSION_PATCH=9 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=08666715d425496a' -C extra-filename'=-08f1d0718cdd5a4c' --out-dir /tmp/clis-bottom_0-11-4/release/build/instability-08f1d0718cdd5a4c -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/instability-0.3.9/build.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/build/instability-08f1d0718cdd5a4c/out-08f1d0718cdd5a4c-stdout \
@@ -15501,9 +14901,6 @@ RUN \
         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
         TARGET=x86_64-unknown-linux-gnu \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-bottom_0-11-4/release/build/instability-08f1d0718cdd5a4c/build-script-build \
         1>          /tmp/clis-bottom_0-11-4/release/build/instability-93f4facbeec8e125/out/out-93f4facbeec8e125-stdout \
@@ -15578,9 +14975,6 @@ COPY --link --from=run-z-instability-0.3.9-93f4facbeec8e125 /tmp/clis-bottom_0-1
 ##         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
 ##         TARGET=x86_64-unknown-linux-gnu \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-bottom_0-11-4/release/build/instability-08f1d0718cdd5a4c/build-script-build \
 ##         1>          /tmp/clis-bottom_0-11-4/release/build/instability-93f4facbeec8e125/out/out-93f4facbeec8e125-stdout \
@@ -15635,9 +15029,6 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         OUT_DIR=/tmp/clis-bottom_0-11-4/release/build/instability-93f4facbeec8e125/out \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name instability --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type proc-macro --emit dep-info,link -C prefer-dynamic -C embed-bitcode'=no' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=adf4fbc20c1793df' -C extra-filename'=-aae7976707a3a506' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern darling'=/tmp/clis-bottom_0-11-4/release/deps/libdarling-32d5bae9b92de94f.rlib' --extern indoc'=/tmp/clis-bottom_0-11-4/release/deps/libindoc-6220bf836a43fe21.so' --extern proc_macro2'=/tmp/clis-bottom_0-11-4/release/deps/libproc_macro2-a6a685fcaf51819c.rlib' --extern quote'=/tmp/clis-bottom_0-11-4/release/deps/libquote-fe88bef665d31034.rlib' --extern syn'=/tmp/clis-bottom_0-11-4/release/deps/libsyn-d8ac7146e5acfe07.rlib' --extern proc_macro --cap-lints warn --check-cfg cfg'(instability_disable_unstable_docs)' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/instability-0.3.9/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-aae7976707a3a506-stdout \
@@ -15784,9 +15175,6 @@ COPY --link --from=dep-n-instability-0.3.9-aae7976707a3a506 /tmp/clis-bottom_0-1
 ##         CARGO_PKG_VERSION_PRE= \
 ##         OUT_DIR=/tmp/clis-bottom_0-11-4/release/build/instability-93f4facbeec8e125/out \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name instability --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type proc-macro --emit dep-info,link -C prefer-dynamic -C embed-bitcode'=no' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=adf4fbc20c1793df' -C extra-filename'=-aae7976707a3a506' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern darling'=/tmp/clis-bottom_0-11-4/release/deps/libdarling-32d5bae9b92de94f.rlib' --extern indoc'=/tmp/clis-bottom_0-11-4/release/deps/libindoc-6220bf836a43fe21.so' --extern proc_macro2'=/tmp/clis-bottom_0-11-4/release/deps/libproc_macro2-a6a685fcaf51819c.rlib' --extern quote'=/tmp/clis-bottom_0-11-4/release/deps/libquote-fe88bef665d31034.rlib' --extern syn'=/tmp/clis-bottom_0-11-4/release/deps/libsyn-d8ac7146e5acfe07.rlib' --extern proc_macro --cap-lints warn --check-cfg cfg'(instability_disable_unstable_docs)' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/instability-0.3.9/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-aae7976707a3a506-stdout \
@@ -15849,9 +15237,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=22 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name build_script_build --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=87e77a263cd1ae24' -C extra-filename'=-c530ab8e0164c2a0' --out-dir /tmp/clis-bottom_0-11-4/release/build/rustversion-c530ab8e0164c2a0 -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustversion-1.0.22/build/build.rs \
         1>          /tmp/clis-bottom_0-11-4/release/build/rustversion-c530ab8e0164c2a0/out-c530ab8e0164c2a0-stdout \
@@ -15935,9 +15320,6 @@ COPY --link --from=dep-x-rustversion-1.0.22-c530ab8e0164c2a0 /tmp/clis-bottom_0-
 ##         CARGO_PKG_VERSION_PATCH=22 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name build_script_build --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=87e77a263cd1ae24' -C extra-filename'=-c530ab8e0164c2a0' --out-dir /tmp/clis-bottom_0-11-4/release/build/rustversion-c530ab8e0164c2a0 -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustversion-1.0.22/build/build.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/build/rustversion-c530ab8e0164c2a0/out-c530ab8e0164c2a0-stdout \
@@ -16002,9 +15384,6 @@ RUN \
         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
         TARGET=x86_64-unknown-linux-gnu \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-bottom_0-11-4/release/build/rustversion-c530ab8e0164c2a0/build-script-build \
         1>          /tmp/clis-bottom_0-11-4/release/build/rustversion-bad50d9b12f2ed5f/out/out-bad50d9b12f2ed5f-stdout \
@@ -16084,9 +15463,6 @@ COPY --link --from=run-z-rustversion-1.0.22-bad50d9b12f2ed5f /tmp/clis-bottom_0-
 ##         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
 ##         TARGET=x86_64-unknown-linux-gnu \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-bottom_0-11-4/release/build/rustversion-c530ab8e0164c2a0/build-script-build \
 ##         1>          /tmp/clis-bottom_0-11-4/release/build/rustversion-bad50d9b12f2ed5f/out/out-bad50d9b12f2ed5f-stdout \
@@ -16130,9 +15506,6 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         OUT_DIR=/tmp/clis-bottom_0-11-4/release/build/rustversion-bad50d9b12f2ed5f/out \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name rustversion --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type proc-macro --emit dep-info,link -C prefer-dynamic -C embed-bitcode'=no' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=29fa25964e29362e' -C extra-filename'=-dda15780a2e006fc' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern proc_macro --cap-lints warn --check-cfg cfg'(cfg_macro_not_allowed)' --check-cfg cfg'(host_os, values("windows"))' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustversion-1.0.22/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-dda15780a2e006fc-stdout \
@@ -16208,9 +15581,6 @@ COPY --link --from=dep-n-rustversion-1.0.22-dda15780a2e006fc /tmp/clis-bottom_0-
 ##         CARGO_PKG_VERSION_PRE= \
 ##         OUT_DIR=/tmp/clis-bottom_0-11-4/release/build/rustversion-bad50d9b12f2ed5f/out \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name rustversion --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type proc-macro --emit dep-info,link -C prefer-dynamic -C embed-bitcode'=no' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=29fa25964e29362e' -C extra-filename'=-dda15780a2e006fc' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern proc_macro --cap-lints warn --check-cfg cfg'(cfg_macro_not_allowed)' --check-cfg cfg'(host_os, values("windows"))' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustversion-1.0.22/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-dda15780a2e006fc-stdout \
@@ -16256,9 +15626,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=4 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name castaway --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --cfg feature'="alloc"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "std"))' -C metadata'=d12390741dcc1c74' -C extra-filename'=-8decb7bcf8b14c00' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern rustversion'=/tmp/clis-bottom_0-11-4/release/deps/librustversion-dda15780a2e006fc.so' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/castaway-0.2.4/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-8decb7bcf8b14c00-stdout \
@@ -16341,9 +15708,6 @@ COPY --link --from=dep-n-castaway-0.2.4-8decb7bcf8b14c00 /tmp/clis-bottom_0-11-4
 ##         CARGO_PKG_VERSION_PATCH=4 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name castaway --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --cfg feature'="alloc"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "std"))' -C metadata'=d12390741dcc1c74' -C extra-filename'=-8decb7bcf8b14c00' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern rustversion'=/tmp/clis-bottom_0-11-4/release/deps/librustversion-dda15780a2e006fc.so' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/castaway-0.2.4/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-8decb7bcf8b14c00-stdout \
@@ -16387,9 +15751,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=15 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name itoa --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("no-panic"))' -C metadata'=dd5bc36bb498beeb' -C extra-filename'=-69b00326e9a10f07' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/itoa-1.0.15/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-69b00326e9a10f07-stdout \
@@ -16456,9 +15817,6 @@ COPY --link --from=dep-n-itoa-1.0.15-69b00326e9a10f07 /tmp/clis-bottom_0-11-4/re
 ##         CARGO_PKG_VERSION_PATCH=15 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name itoa --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("no-panic"))' -C metadata'=dd5bc36bb498beeb' -C extra-filename'=-69b00326e9a10f07' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/itoa-1.0.15/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-69b00326e9a10f07-stdout \
@@ -16502,9 +15860,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=20 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name ryu --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("no-panic", "small"))' -C metadata'=0cdfd2c06f8bb21b' -C extra-filename'=-18f3925ee0c911f3' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ryu-1.0.20/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-18f3925ee0c911f3-stdout \
@@ -16571,9 +15926,6 @@ COPY --link --from=dep-n-ryu-1.0.20-18f3925ee0c911f3 /tmp/clis-bottom_0-11-4/rel
 ##         CARGO_PKG_VERSION_PATCH=20 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name ryu --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("no-panic", "small"))' -C metadata'=0cdfd2c06f8bb21b' -C extra-filename'=-18f3925ee0c911f3' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ryu-1.0.20/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-18f3925ee0c911f3-stdout \
@@ -16629,9 +15981,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name compact_str --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("arbitrary", "borsh", "bytes", "default", "diesel", "markup", "proptest", "quickcheck", "rkyv", "serde", "smallvec", "sqlx", "sqlx-mysql", "sqlx-postgres", "sqlx-sqlite", "std", "zeroize"))' -C metadata'=16d90fa736a0ff9b' -C extra-filename'=-9d597eb8a044c444' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern castaway'=/tmp/clis-bottom_0-11-4/release/deps/libcastaway-8decb7bcf8b14c00.rmeta' --extern cfg_if'=/tmp/clis-bottom_0-11-4/release/deps/libcfg_if-bcc7b80470034230.rmeta' --extern itoa'=/tmp/clis-bottom_0-11-4/release/deps/libitoa-69b00326e9a10f07.rmeta' --extern rustversion'=/tmp/clis-bottom_0-11-4/release/deps/librustversion-dda15780a2e006fc.so' --extern ryu'=/tmp/clis-bottom_0-11-4/release/deps/libryu-18f3925ee0c911f3.rmeta' --extern static_assertions'=/tmp/clis-bottom_0-11-4/release/deps/libstatic_assertions-59c5c7af2d8c2ea3.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/compact_str-0.9.0/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-9d597eb8a044c444-stdout \
@@ -16769,9 +16118,6 @@ COPY --link --from=dep-n-compact_str-0.9.0-9d597eb8a044c444 /tmp/clis-bottom_0-1
 ##         CARGO_PKG_VERSION_PATCH=0 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name compact_str --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("arbitrary", "borsh", "bytes", "default", "diesel", "markup", "proptest", "quickcheck", "rkyv", "serde", "smallvec", "sqlx", "sqlx-mysql", "sqlx-postgres", "sqlx-sqlite", "std", "zeroize"))' -C metadata'=16d90fa736a0ff9b' -C extra-filename'=-9d597eb8a044c444' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern castaway'=/tmp/clis-bottom_0-11-4/release/deps/libcastaway-8decb7bcf8b14c00.rmeta' --extern cfg_if'=/tmp/clis-bottom_0-11-4/release/deps/libcfg_if-bcc7b80470034230.rmeta' --extern itoa'=/tmp/clis-bottom_0-11-4/release/deps/libitoa-69b00326e9a10f07.rmeta' --extern rustversion'=/tmp/clis-bottom_0-11-4/release/deps/librustversion-dda15780a2e006fc.so' --extern ryu'=/tmp/clis-bottom_0-11-4/release/deps/libryu-18f3925ee0c911f3.rmeta' --extern static_assertions'=/tmp/clis-bottom_0-11-4/release/deps/libstatic_assertions-59c5c7af2d8c2ea3.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/compact_str-0.9.0/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-9d597eb8a044c444-stdout \
@@ -16819,9 +16165,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=16 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name thiserror_impl --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type proc-macro --emit dep-info,link -C prefer-dynamic -C embed-bitcode'=no' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=292ec6d6affaf313' -C extra-filename'=-7d11f28f28b53c03' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern proc_macro2'=/tmp/clis-bottom_0-11-4/release/deps/libproc_macro2-a6a685fcaf51819c.rlib' --extern quote'=/tmp/clis-bottom_0-11-4/release/deps/libquote-fe88bef665d31034.rlib' --extern syn'=/tmp/clis-bottom_0-11-4/release/deps/libsyn-d8ac7146e5acfe07.rlib' --extern proc_macro --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thiserror-impl-2.0.16/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-7d11f28f28b53c03-stdout \
@@ -16915,9 +16258,6 @@ COPY --link --from=dep-n-thiserror-impl-2.0.16-7d11f28f28b53c03 /tmp/clis-bottom
 ##         CARGO_PKG_VERSION_PATCH=16 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name thiserror_impl --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type proc-macro --emit dep-info,link -C prefer-dynamic -C embed-bitcode'=no' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=292ec6d6affaf313' -C extra-filename'=-7d11f28f28b53c03' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern proc_macro2'=/tmp/clis-bottom_0-11-4/release/deps/libproc_macro2-a6a685fcaf51819c.rlib' --extern quote'=/tmp/clis-bottom_0-11-4/release/deps/libquote-fe88bef665d31034.rlib' --extern syn'=/tmp/clis-bottom_0-11-4/release/deps/libsyn-d8ac7146e5acfe07.rlib' --extern proc_macro --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thiserror-impl-2.0.16/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-7d11f28f28b53c03-stdout \
@@ -16980,9 +16320,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=16 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "std"))' -C metadata'=378ac6463d513a4a' -C extra-filename'=-e21cf0b9c2e42a15' --out-dir /tmp/clis-bottom_0-11-4/release/build/thiserror-e21cf0b9c2e42a15 -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thiserror-2.0.16/build.rs \
         1>          /tmp/clis-bottom_0-11-4/release/build/thiserror-e21cf0b9c2e42a15/out-e21cf0b9c2e42a15-stdout \
@@ -17066,9 +16403,6 @@ COPY --link --from=dep-x-thiserror-2.0.16-e21cf0b9c2e42a15 /tmp/clis-bottom_0-11
 ##         CARGO_PKG_VERSION_PATCH=16 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "std"))' -C metadata'=378ac6463d513a4a' -C extra-filename'=-e21cf0b9c2e42a15' --out-dir /tmp/clis-bottom_0-11-4/release/build/thiserror-e21cf0b9c2e42a15 -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thiserror-2.0.16/build.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/build/thiserror-e21cf0b9c2e42a15/out-e21cf0b9c2e42a15-stdout \
@@ -17134,9 +16468,6 @@ RUN \
         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
         TARGET=x86_64-unknown-linux-gnu \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-bottom_0-11-4/release/build/thiserror-e21cf0b9c2e42a15/build-script-build \
         1>          /tmp/clis-bottom_0-11-4/release/build/thiserror-b0eea23219f22bd7/out/out-b0eea23219f22bd7-stdout \
@@ -17218,9 +16549,6 @@ COPY --link --from=run-z-thiserror-2.0.16-b0eea23219f22bd7 /tmp/clis-bottom_0-11
 ##         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
 ##         TARGET=x86_64-unknown-linux-gnu \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-bottom_0-11-4/release/build/thiserror-e21cf0b9c2e42a15/build-script-build \
 ##         1>          /tmp/clis-bottom_0-11-4/release/build/thiserror-b0eea23219f22bd7/out/out-b0eea23219f22bd7-stdout \
@@ -17269,9 +16597,6 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         OUT_DIR=/tmp/clis-bottom_0-11-4/release/build/thiserror-b0eea23219f22bd7/out \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name thiserror --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "std"))' -C metadata'=1e980a52ef8eec75' -C extra-filename'=-36c67758280c66db' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern thiserror_impl'=/tmp/clis-bottom_0-11-4/release/deps/libthiserror_impl-7d11f28f28b53c03.so' --cap-lints warn --check-cfg cfg'(error_generic_member_access)' --check-cfg cfg'(thiserror_nightly_testing)' --check-cfg cfg'(thiserror_no_backtrace_type)' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thiserror-2.0.16/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-36c67758280c66db-stdout \
@@ -17384,9 +16709,6 @@ COPY --link --from=dep-n-thiserror-2.0.16-36c67758280c66db /tmp/clis-bottom_0-11
 ##         CARGO_PKG_VERSION_PRE= \
 ##         OUT_DIR=/tmp/clis-bottom_0-11-4/release/build/thiserror-b0eea23219f22bd7/out \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name thiserror --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "std"))' -C metadata'=1e980a52ef8eec75' -C extra-filename'=-36c67758280c66db' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern thiserror_impl'=/tmp/clis-bottom_0-11-4/release/deps/libthiserror_impl-7d11f28f28b53c03.so' --cap-lints warn --check-cfg cfg'(error_generic_member_access)' --check-cfg cfg'(thiserror_nightly_testing)' --check-cfg cfg'(thiserror_no_backtrace_type)' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thiserror-2.0.16/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-36c67758280c66db-stdout \
@@ -17452,9 +16774,6 @@ Kasuari is the indonesian name for the cassowary bird.\
         CARGO_PKG_VERSION_PATCH=9 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name kasuari --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "portable-atomic", "std"))' -C metadata'=cdfde41a318e4e0a' -C extra-filename'=-b8afbfd5ebd5409a' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern hashbrown'=/tmp/clis-bottom_0-11-4/release/deps/libhashbrown-75a46f0c9de185ab.rmeta' --extern thiserror'=/tmp/clis-bottom_0-11-4/release/deps/libthiserror-36c67758280c66db.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/kasuari-0.4.9/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-b8afbfd5ebd5409a-stdout \
@@ -17639,9 +16958,6 @@ COPY --link --from=dep-n-kasuari-0.4.9-b8afbfd5ebd5409a /tmp/clis-bottom_0-11-4/
 ##         CARGO_PKG_VERSION_PATCH=9 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name kasuari --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "portable-atomic", "std"))' -C metadata'=cdfde41a318e4e0a' -C extra-filename'=-b8afbfd5ebd5409a' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern hashbrown'=/tmp/clis-bottom_0-11-4/release/deps/libhashbrown-75a46f0c9de185ab.rmeta' --extern thiserror'=/tmp/clis-bottom_0-11-4/release/deps/libthiserror-36c67758280c66db.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/kasuari-0.4.9/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-b8afbfd5ebd5409a-stdout \
@@ -17693,9 +17009,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=2 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name lru --edition 2015 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --cfg feature'="default"' --cfg feature'="hashbrown"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "hashbrown", "nightly"))' -C metadata'=e3e8cf8c7326f873' -C extra-filename'=-8b8abe6a59d58226' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern hashbrown'=/tmp/clis-bottom_0-11-4/release/deps/libhashbrown-75a46f0c9de185ab.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/lru-0.16.2/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-8b8abe6a59d58226-stdout \
@@ -17808,9 +17121,6 @@ COPY --link --from=dep-n-lru-0.16.2-8b8abe6a59d58226 /tmp/clis-bottom_0-11-4/rel
 ##         CARGO_PKG_VERSION_PATCH=2 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name lru --edition 2015 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --cfg feature'="default"' --cfg feature'="hashbrown"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "hashbrown", "nightly"))' -C metadata'=e3e8cf8c7326f873' -C extra-filename'=-8b8abe6a59d58226' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern hashbrown'=/tmp/clis-bottom_0-11-4/release/deps/libhashbrown-75a46f0c9de185ab.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/lru-0.16.2/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-8b8abe6a59d58226-stdout \
@@ -17859,9 +17169,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=2 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name strum_macros --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type proc-macro --emit dep-info,link -C prefer-dynamic -C embed-bitcode'=no' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=08bb53c54872d4fe' -C extra-filename'=-af45737d814ae18e' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern heck'=/tmp/clis-bottom_0-11-4/release/deps/libheck-80ea6e95a9b9cb95.rlib' --extern proc_macro2'=/tmp/clis-bottom_0-11-4/release/deps/libproc_macro2-a6a685fcaf51819c.rlib' --extern quote'=/tmp/clis-bottom_0-11-4/release/deps/libquote-fe88bef665d31034.rlib' --extern syn'=/tmp/clis-bottom_0-11-4/release/deps/libsyn-d8ac7146e5acfe07.rlib' --extern proc_macro --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/strum_macros-0.27.2/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-af45737d814ae18e-stdout \
@@ -17961,9 +17268,6 @@ COPY --link --from=dep-n-strum_macros-0.27.2-af45737d814ae18e /tmp/clis-bottom_0
 ##         CARGO_PKG_VERSION_PATCH=2 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name strum_macros --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type proc-macro --emit dep-info,link -C prefer-dynamic -C embed-bitcode'=no' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=08bb53c54872d4fe' -C extra-filename'=-af45737d814ae18e' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern heck'=/tmp/clis-bottom_0-11-4/release/deps/libheck-80ea6e95a9b9cb95.rlib' --extern proc_macro2'=/tmp/clis-bottom_0-11-4/release/deps/libproc_macro2-a6a685fcaf51819c.rlib' --extern quote'=/tmp/clis-bottom_0-11-4/release/deps/libquote-fe88bef665d31034.rlib' --extern syn'=/tmp/clis-bottom_0-11-4/release/deps/libsyn-d8ac7146e5acfe07.rlib' --extern proc_macro --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/strum_macros-0.27.2/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-af45737d814ae18e-stdout \
@@ -18013,9 +17317,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=2 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name strum --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --cfg feature'="derive"' --cfg feature'="std"' --cfg feature'="strum_macros"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "derive", "phf", "std", "strum_macros"))' -C metadata'=4e2814d06831d18c' -C extra-filename'=-618d55986ea84d86' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern strum_macros'=/tmp/clis-bottom_0-11-4/release/deps/libstrum_macros-af45737d814ae18e.so' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/strum-0.27.2/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-618d55986ea84d86-stdout \
@@ -18123,9 +17424,6 @@ COPY --link --from=dep-n-strum-0.27.2-618d55986ea84d86 /tmp/clis-bottom_0-11-4/r
 ##         CARGO_PKG_VERSION_PATCH=2 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name strum --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --cfg feature'="derive"' --cfg feature'="std"' --cfg feature'="strum_macros"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "derive", "phf", "std", "strum_macros"))' -C metadata'=4e2814d06831d18c' -C extra-filename'=-618d55986ea84d86' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern strum_macros'=/tmp/clis-bottom_0-11-4/release/deps/libstrum_macros-af45737d814ae18e.so' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/strum-0.27.2/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-618d55986ea84d86-stdout \
@@ -18169,9 +17467,6 @@ according to Unicode Standard Annex #29 rules.\
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name unicode_segmentation --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("no_std"))' -C metadata'=0f128ca28d457c21' -C extra-filename'=-c3cf906c5a4083dc' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/unicode-segmentation-1.12.0/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-c3cf906c5a4083dc-stdout \
@@ -18250,9 +17545,6 @@ COPY --link --from=dep-n-unicode-segmentation-1.12.0-c3cf906c5a4083dc /tmp/clis-
 ##         CARGO_PKG_VERSION_PATCH=0 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name unicode_segmentation --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("no_std"))' -C metadata'=0f128ca28d457c21' -C extra-filename'=-c3cf906c5a4083dc' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/unicode-segmentation-1.12.0/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-c3cf906c5a4083dc-stdout \
@@ -18298,9 +17590,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name itertools --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "use_alloc", "use_std"))' -C metadata'=38b62496a882e806' -C extra-filename'=-e975a39171bd5743' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern either'=/tmp/clis-bottom_0-11-4/release/deps/libeither-2f7cbff5a773db3c.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/itertools-0.13.0/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-e975a39171bd5743-stdout \
@@ -18385,9 +17674,6 @@ COPY --link --from=dep-n-itertools-0.13.0-e975a39171bd5743 /tmp/clis-bottom_0-11
 ##         CARGO_PKG_VERSION_PATCH=0 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name itertools --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "use_alloc", "use_std"))' -C metadata'=38b62496a882e806' -C extra-filename'=-e975a39171bd5743' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern either'=/tmp/clis-bottom_0-11-4/release/deps/libeither-2f7cbff5a773db3c.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/itertools-0.13.0/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-e975a39171bd5743-stdout \
@@ -18433,9 +17719,6 @@ according to Unicode Standard Annex #11 rules.\
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name unicode_width --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --cfg feature'="cjk"' --cfg feature'="default"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("cjk", "compiler_builtins", "core", "default", "no_std", "rustc-dep-of-std", "std"))' -C metadata'=51974cacbc1cc1b7' -C extra-filename'=-f6f32a8a5a2fe2b5' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/unicode-width-0.2.0/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-f6f32a8a5a2fe2b5-stdout \
@@ -18504,9 +17787,6 @@ COPY --link --from=dep-n-unicode-width-0.2.0-f6f32a8a5a2fe2b5 /tmp/clis-bottom_0
 ##         CARGO_PKG_VERSION_PATCH=0 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name unicode_width --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --cfg feature'="cjk"' --cfg feature'="default"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("cjk", "compiler_builtins", "core", "default", "no_std", "rustc-dep-of-std", "std"))' -C metadata'=51974cacbc1cc1b7' -C extra-filename'=-f6f32a8a5a2fe2b5' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/unicode-width-0.2.0/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-f6f32a8a5a2fe2b5-stdout \
@@ -18559,9 +17839,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name unicode_truncate --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "std"))' -C metadata'=e0a7b16c48c237a5' -C extra-filename'=-5b7939c59c45c565' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern itertools'=/tmp/clis-bottom_0-11-4/release/deps/libitertools-e975a39171bd5743.rmeta' --extern unicode_segmentation'=/tmp/clis-bottom_0-11-4/release/deps/libunicode_segmentation-c3cf906c5a4083dc.rmeta' --extern unicode_width'=/tmp/clis-bottom_0-11-4/release/deps/libunicode_width-f6f32a8a5a2fe2b5.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/unicode-truncate-2.0.0/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-5b7939c59c45c565-stdout \
@@ -18675,9 +17952,6 @@ COPY --link --from=dep-n-unicode-truncate-2.0.0-5b7939c59c45c565 /tmp/clis-botto
 ##         CARGO_PKG_VERSION_PATCH=0 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name unicode_truncate --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "std"))' -C metadata'=e0a7b16c48c237a5' -C extra-filename'=-5b7939c59c45c565' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern itertools'=/tmp/clis-bottom_0-11-4/release/deps/libitertools-e975a39171bd5743.rmeta' --extern unicode_segmentation'=/tmp/clis-bottom_0-11-4/release/deps/libunicode_segmentation-c3cf906c5a4083dc.rmeta' --extern unicode_width'=/tmp/clis-bottom_0-11-4/release/deps/libunicode_width-f6f32a8a5a2fe2b5.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/unicode-truncate-2.0.0/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-5b7939c59c45c565-stdout \
@@ -18780,9 +18054,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE=beta.0 \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name ratatui_core --edition 2024 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --warn clippy'::pedantic' --warn clippy'::use_self' --forbid unsafe_code --warn clippy'::unnecessary_self_imports' --warn clippy'::string_to_string' --warn clippy'::string_slice' --warn clippy'::string_lit_chars_any' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::redundant_type_annotations' --warn clippy'::or_fun_call' --warn clippy'::needless_raw_strings' --warn clippy'::needless_pass_by_ref_mut' --allow clippy'::must_use_candidate' --allow clippy'::module_name_repetitions' --allow clippy'::module_inception' --warn clippy'::mod_module_files' --warn clippy'::mixed_read_write_in_expression' --allow clippy'::missing_panics_doc' --allow clippy'::missing_errors_doc' --warn clippy'::missing_const_for_fn' --warn clippy'::map_err_ignore' --warn clippy'::format_push_string' --warn clippy'::fn_to_numeric_cast_any' --warn clippy'::equatable_if_let' --warn clippy'::empty_line_after_doc_comments' --warn clippy'::else_if_without_else' --warn clippy'::deref_by_slicing' --allow clippy'::cast_sign_loss' --allow clippy'::cast_precision_loss' --allow clippy'::cast_possible_wrap' --allow clippy'::cast_possible_truncation' --warn clippy'::as_underscore' --cfg feature'="default"' --cfg feature'="layout-cache"' --cfg feature'="std"' --cfg feature'="underline-color"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("anstyle", "default", "document-features", "layout-cache", "palette", "portable-atomic", "scrolling-regions", "serde", "std", "underline-color"))' -C metadata'=1ca9f0ce26170ea4' -C extra-filename'=-9cd79dc02c3057e6' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern bitflags'=/tmp/clis-bottom_0-11-4/release/deps/libbitflags-f4de441526a3a0e1.rmeta' --extern compact_str'=/tmp/clis-bottom_0-11-4/release/deps/libcompact_str-9d597eb8a044c444.rmeta' --extern hashbrown'=/tmp/clis-bottom_0-11-4/release/deps/libhashbrown-75a46f0c9de185ab.rmeta' --extern indoc'=/tmp/clis-bottom_0-11-4/release/deps/libindoc-6220bf836a43fe21.so' --extern itertools'=/tmp/clis-bottom_0-11-4/release/deps/libitertools-62522c8d5cefce5c.rmeta' --extern kasuari'=/tmp/clis-bottom_0-11-4/release/deps/libkasuari-b8afbfd5ebd5409a.rmeta' --extern lru'=/tmp/clis-bottom_0-11-4/release/deps/liblru-8b8abe6a59d58226.rmeta' --extern strum'=/tmp/clis-bottom_0-11-4/release/deps/libstrum-618d55986ea84d86.rmeta' --extern thiserror'=/tmp/clis-bottom_0-11-4/release/deps/libthiserror-36c67758280c66db.rmeta' --extern unicode_segmentation'=/tmp/clis-bottom_0-11-4/release/deps/libunicode_segmentation-c3cf906c5a4083dc.rmeta' --extern unicode_truncate'=/tmp/clis-bottom_0-11-4/release/deps/libunicode_truncate-5b7939c59c45c565.rmeta' --extern unicode_width'=/tmp/clis-bottom_0-11-4/release/deps/libunicode_width-f6f32a8a5a2fe2b5.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ratatui-core-0.1.0-beta.0/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-9cd79dc02c3057e6-stdout \
@@ -19179,9 +18450,6 @@ COPY --link --from=dep-n-ratatui-core-0.1.0-beta.0-9cd79dc02c3057e6 /tmp/clis-bo
 ##         CARGO_PKG_VERSION_PATCH=0 \
 ##         CARGO_PKG_VERSION_PRE=beta.0 \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name ratatui_core --edition 2024 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --warn clippy'::pedantic' --warn clippy'::use_self' --forbid unsafe_code --warn clippy'::unnecessary_self_imports' --warn clippy'::string_to_string' --warn clippy'::string_slice' --warn clippy'::string_lit_chars_any' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::redundant_type_annotations' --warn clippy'::or_fun_call' --warn clippy'::needless_raw_strings' --warn clippy'::needless_pass_by_ref_mut' --allow clippy'::must_use_candidate' --allow clippy'::module_name_repetitions' --allow clippy'::module_inception' --warn clippy'::mod_module_files' --warn clippy'::mixed_read_write_in_expression' --allow clippy'::missing_panics_doc' --allow clippy'::missing_errors_doc' --warn clippy'::missing_const_for_fn' --warn clippy'::map_err_ignore' --warn clippy'::format_push_string' --warn clippy'::fn_to_numeric_cast_any' --warn clippy'::equatable_if_let' --warn clippy'::empty_line_after_doc_comments' --warn clippy'::else_if_without_else' --warn clippy'::deref_by_slicing' --allow clippy'::cast_sign_loss' --allow clippy'::cast_precision_loss' --allow clippy'::cast_possible_wrap' --allow clippy'::cast_possible_truncation' --warn clippy'::as_underscore' --cfg feature'="default"' --cfg feature'="layout-cache"' --cfg feature'="std"' --cfg feature'="underline-color"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("anstyle", "default", "document-features", "layout-cache", "palette", "portable-atomic", "scrolling-regions", "serde", "std", "underline-color"))' -C metadata'=1ca9f0ce26170ea4' -C extra-filename'=-9cd79dc02c3057e6' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern bitflags'=/tmp/clis-bottom_0-11-4/release/deps/libbitflags-f4de441526a3a0e1.rmeta' --extern compact_str'=/tmp/clis-bottom_0-11-4/release/deps/libcompact_str-9d597eb8a044c444.rmeta' --extern hashbrown'=/tmp/clis-bottom_0-11-4/release/deps/libhashbrown-75a46f0c9de185ab.rmeta' --extern indoc'=/tmp/clis-bottom_0-11-4/release/deps/libindoc-6220bf836a43fe21.so' --extern itertools'=/tmp/clis-bottom_0-11-4/release/deps/libitertools-62522c8d5cefce5c.rmeta' --extern kasuari'=/tmp/clis-bottom_0-11-4/release/deps/libkasuari-b8afbfd5ebd5409a.rmeta' --extern lru'=/tmp/clis-bottom_0-11-4/release/deps/liblru-8b8abe6a59d58226.rmeta' --extern strum'=/tmp/clis-bottom_0-11-4/release/deps/libstrum-618d55986ea84d86.rmeta' --extern thiserror'=/tmp/clis-bottom_0-11-4/release/deps/libthiserror-36c67758280c66db.rmeta' --extern unicode_segmentation'=/tmp/clis-bottom_0-11-4/release/deps/libunicode_segmentation-c3cf906c5a4083dc.rmeta' --extern unicode_truncate'=/tmp/clis-bottom_0-11-4/release/deps/libunicode_truncate-5b7939c59c45c565.rmeta' --extern unicode_width'=/tmp/clis-bottom_0-11-4/release/deps/libunicode_width-f6f32a8a5a2fe2b5.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ratatui-core-0.1.0-beta.0/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-9cd79dc02c3057e6-stdout \
@@ -19336,9 +18604,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE=beta.0 \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name ratatui_crossterm --edition 2024 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --warn clippy'::pedantic' --warn clippy'::use_self' --forbid unsafe_code --warn clippy'::unnecessary_self_imports' --warn clippy'::string_to_string' --warn clippy'::string_slice' --warn clippy'::string_lit_chars_any' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::redundant_type_annotations' --warn clippy'::or_fun_call' --warn clippy'::needless_raw_strings' --warn clippy'::needless_pass_by_ref_mut' --allow clippy'::must_use_candidate' --allow clippy'::module_name_repetitions' --allow clippy'::module_inception' --warn clippy'::mod_module_files' --warn clippy'::mixed_read_write_in_expression' --allow clippy'::missing_panics_doc' --allow clippy'::missing_errors_doc' --warn clippy'::missing_const_for_fn' --warn clippy'::map_err_ignore' --warn clippy'::format_push_string' --warn clippy'::fn_to_numeric_cast_any' --warn clippy'::equatable_if_let' --warn clippy'::empty_line_after_doc_comments' --warn clippy'::else_if_without_else' --warn clippy'::deref_by_slicing' --allow clippy'::cast_sign_loss' --allow clippy'::cast_precision_loss' --allow clippy'::cast_possible_wrap' --allow clippy'::cast_possible_truncation' --warn clippy'::as_underscore' --cfg feature'="crossterm_0_29"' --cfg feature'="default"' --cfg feature'="underline-color"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("crossterm_0_28", "crossterm_0_29", "default", "document-features", "scrolling-regions", "serde", "underline-color", "unstable", "unstable-backend-writer"))' -C metadata'=9788d59ddc943d43' -C extra-filename'=-e23c37a3c4a8c828' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern cfg_if'=/tmp/clis-bottom_0-11-4/release/deps/libcfg_if-bcc7b80470034230.rmeta' --extern crossterm_0_29'=/tmp/clis-bottom_0-11-4/release/deps/libcrossterm-ebe2f271fb65aaff.rmeta' --extern instability'=/tmp/clis-bottom_0-11-4/release/deps/libinstability-aae7976707a3a506.so' --extern ratatui_core'=/tmp/clis-bottom_0-11-4/release/deps/libratatui_core-9cd79dc02c3057e6.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ratatui-crossterm-0.1.0-beta.0/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-e23c37a3c4a8c828-stdout \
@@ -20050,9 +19315,6 @@ COPY --link --from=dep-n-ratatui-crossterm-0.1.0-beta.0-e23c37a3c4a8c828 /tmp/cl
 ##         CARGO_PKG_VERSION_PATCH=0 \
 ##         CARGO_PKG_VERSION_PRE=beta.0 \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name ratatui_crossterm --edition 2024 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --warn clippy'::pedantic' --warn clippy'::use_self' --forbid unsafe_code --warn clippy'::unnecessary_self_imports' --warn clippy'::string_to_string' --warn clippy'::string_slice' --warn clippy'::string_lit_chars_any' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::redundant_type_annotations' --warn clippy'::or_fun_call' --warn clippy'::needless_raw_strings' --warn clippy'::needless_pass_by_ref_mut' --allow clippy'::must_use_candidate' --allow clippy'::module_name_repetitions' --allow clippy'::module_inception' --warn clippy'::mod_module_files' --warn clippy'::mixed_read_write_in_expression' --allow clippy'::missing_panics_doc' --allow clippy'::missing_errors_doc' --warn clippy'::missing_const_for_fn' --warn clippy'::map_err_ignore' --warn clippy'::format_push_string' --warn clippy'::fn_to_numeric_cast_any' --warn clippy'::equatable_if_let' --warn clippy'::empty_line_after_doc_comments' --warn clippy'::else_if_without_else' --warn clippy'::deref_by_slicing' --allow clippy'::cast_sign_loss' --allow clippy'::cast_precision_loss' --allow clippy'::cast_possible_wrap' --allow clippy'::cast_possible_truncation' --warn clippy'::as_underscore' --cfg feature'="crossterm_0_29"' --cfg feature'="default"' --cfg feature'="underline-color"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("crossterm_0_28", "crossterm_0_29", "default", "document-features", "scrolling-regions", "serde", "underline-color", "unstable", "unstable-backend-writer"))' -C metadata'=9788d59ddc943d43' -C extra-filename'=-e23c37a3c4a8c828' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern cfg_if'=/tmp/clis-bottom_0-11-4/release/deps/libcfg_if-bcc7b80470034230.rmeta' --extern crossterm_0_29'=/tmp/clis-bottom_0-11-4/release/deps/libcrossterm-ebe2f271fb65aaff.rmeta' --extern instability'=/tmp/clis-bottom_0-11-4/release/deps/libinstability-aae7976707a3a506.so' --extern ratatui_core'=/tmp/clis-bottom_0-11-4/release/deps/libratatui_core-9cd79dc02c3057e6.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ratatui-crossterm-0.1.0-beta.0/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-e23c37a3c4a8c828-stdout \
@@ -20098,9 +19360,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=3 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name line_clipping --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --forbid unsafe_code --warn clippy'::pedantic' --warn clippy'::nursery' --warn missing_docs --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=7959c74ff29b60c8' -C extra-filename'=-d2dc0977654598eb' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern bitflags'=/tmp/clis-bottom_0-11-4/release/deps/libbitflags-f4de441526a3a0e1.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/line-clipping-0.3.3/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-d2dc0977654598eb-stdout \
@@ -20178,9 +19437,6 @@ COPY --link --from=dep-n-line-clipping-0.3.3-d2dc0977654598eb /tmp/clis-bottom_0
 ##         CARGO_PKG_VERSION_PATCH=3 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name line_clipping --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --forbid unsafe_code --warn clippy'::pedantic' --warn clippy'::nursery' --warn missing_docs --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=7959c74ff29b60c8' -C extra-filename'=-d2dc0977654598eb' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern bitflags'=/tmp/clis-bottom_0-11-4/release/deps/libbitflags-f4de441526a3a0e1.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/line-clipping-0.3.3/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-d2dc0977654598eb-stdout \
@@ -20227,9 +19483,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name powerfmt --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "macros", "std"))' -C metadata'=8e7dcf6caf98c53c' -C extra-filename'=-e64a19be6d4ec013' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/powerfmt-0.2.0/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-e64a19be6d4ec013-stdout \
@@ -20303,9 +19556,6 @@ COPY --link --from=dep-n-powerfmt-0.2.0-e64a19be6d4ec013 /tmp/clis-bottom_0-11-4
 ##         CARGO_PKG_VERSION_PATCH=0 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name powerfmt --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "macros", "std"))' -C metadata'=8e7dcf6caf98c53c' -C extra-filename'=-e64a19be6d4ec013' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/powerfmt-0.2.0/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-e64a19be6d4ec013-stdout \
@@ -20351,9 +19601,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=4 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name deranged --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --warn unused --warn clippy'::nursery' --warn clippy'::all' --warn variant-size-differences --warn clippy'::use-debug' --warn clippy'::unwrap-used' --warn clippy'::unwrap-in-result' --warn unused-qualifications --warn unused-lifetimes --warn unused-import-braces --deny unstable-syntax-pre-expansion --deny unsafe-op-in-unsafe-fn --warn unreachable-pub --warn clippy'::unnested-or-patterns' --deny unnameable-test-items --warn clippy'::uninlined-format-args' --warn clippy'::unimplemented' --warn rustdoc'::unescaped-backticks' --deny clippy'::undocumented-unsafe-blocks' --deny unconditional-recursion --warn trivial-numeric-casts --warn trivial-casts --warn clippy'::todo' --deny suspicious-double-ref-op --deny clippy'::std-instead-of-core' --warn single-use-lifetimes --warn clippy'::semicolon-outside-block' --allow clippy'::redundant-pub-crate' --warn rustdoc'::private-doc-tests' --warn clippy'::print-stdout' --deny overlapping-range-endpoints --allow clippy'::option-if-let-else' --deny opaque-hidden-inferred-bound --warn clippy'::obfuscated-if-else' --warn noop-method-call --deny non-ascii-idents --deny named-arguments-used-positionally --warn clippy'::missing-enforced-import-renames' --warn clippy'::missing-docs-in-private-items' --warn missing-docs --warn missing-debug-implementations --warn missing-copy-implementations --warn missing-abi --warn meta-variable-misuse --warn clippy'::manual-let-else' --warn macro-use-extern-crate --warn let-underscore --warn keyword-idents --deny invalid-value --deny invalid-reference-casting --deny invalid-nan-comparisons --deny invalid-macro-export-arguments --deny invalid-from-utf8 --deny improper-ctypes-definitions --deny improper-ctypes --deny hidden-glob-reexports --warn clippy'::get-unwrap' --deny future-incompatible --warn clippy'::explicit-auto-deref' --deny drop-bounds --deny deref-nullptr --warn clippy'::decimal-literal-representation' --warn clippy'::dbg-macro' --deny dangling-pointers-from-temporaries --deny const-item-mutation --deny clashing-extern-declarations --deny ambiguous-glob-reexports --deny clippy'::alloc-instead-of-core' --warn unstable-name-collisions --allow path-statements --cfg feature'="default"' --cfg feature'="powerfmt"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "macros", "num", "powerfmt", "quickcheck", "rand", "rand08", "rand09", "serde"))' -C metadata'=48881ea5d927e8e1' -C extra-filename'=-8d9f9e5c65b7205e' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern powerfmt'=/tmp/clis-bottom_0-11-4/release/deps/libpowerfmt-e64a19be6d4ec013.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/deranged-0.5.4/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-8d9f9e5c65b7205e-stdout \
@@ -20431,9 +19678,6 @@ COPY --link --from=dep-n-deranged-0.5.4-8d9f9e5c65b7205e /tmp/clis-bottom_0-11-4
 ##         CARGO_PKG_VERSION_PATCH=4 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name deranged --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --warn unused --warn clippy'::nursery' --warn clippy'::all' --warn variant-size-differences --warn clippy'::use-debug' --warn clippy'::unwrap-used' --warn clippy'::unwrap-in-result' --warn unused-qualifications --warn unused-lifetimes --warn unused-import-braces --deny unstable-syntax-pre-expansion --deny unsafe-op-in-unsafe-fn --warn unreachable-pub --warn clippy'::unnested-or-patterns' --deny unnameable-test-items --warn clippy'::uninlined-format-args' --warn clippy'::unimplemented' --warn rustdoc'::unescaped-backticks' --deny clippy'::undocumented-unsafe-blocks' --deny unconditional-recursion --warn trivial-numeric-casts --warn trivial-casts --warn clippy'::todo' --deny suspicious-double-ref-op --deny clippy'::std-instead-of-core' --warn single-use-lifetimes --warn clippy'::semicolon-outside-block' --allow clippy'::redundant-pub-crate' --warn rustdoc'::private-doc-tests' --warn clippy'::print-stdout' --deny overlapping-range-endpoints --allow clippy'::option-if-let-else' --deny opaque-hidden-inferred-bound --warn clippy'::obfuscated-if-else' --warn noop-method-call --deny non-ascii-idents --deny named-arguments-used-positionally --warn clippy'::missing-enforced-import-renames' --warn clippy'::missing-docs-in-private-items' --warn missing-docs --warn missing-debug-implementations --warn missing-copy-implementations --warn missing-abi --warn meta-variable-misuse --warn clippy'::manual-let-else' --warn macro-use-extern-crate --warn let-underscore --warn keyword-idents --deny invalid-value --deny invalid-reference-casting --deny invalid-nan-comparisons --deny invalid-macro-export-arguments --deny invalid-from-utf8 --deny improper-ctypes-definitions --deny improper-ctypes --deny hidden-glob-reexports --warn clippy'::get-unwrap' --deny future-incompatible --warn clippy'::explicit-auto-deref' --deny drop-bounds --deny deref-nullptr --warn clippy'::decimal-literal-representation' --warn clippy'::dbg-macro' --deny dangling-pointers-from-temporaries --deny const-item-mutation --deny clashing-extern-declarations --deny ambiguous-glob-reexports --deny clippy'::alloc-instead-of-core' --warn unstable-name-collisions --allow path-statements --cfg feature'="default"' --cfg feature'="powerfmt"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "macros", "num", "powerfmt", "quickcheck", "rand", "rand08", "rand09", "serde"))' -C metadata'=48881ea5d927e8e1' -C extra-filename'=-8d9f9e5c65b7205e' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern powerfmt'=/tmp/clis-bottom_0-11-4/release/deps/libpowerfmt-e64a19be6d4ec013.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/deranged-0.5.4/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-8d9f9e5c65b7205e-stdout \
@@ -20480,9 +19724,6 @@ turbofish syntax.\
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name num_conv --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --warn unused --warn unreachable-pub --deny clippy'::std-instead-of-core' --warn missing-docs --deny clippy'::alloc-instead-of-core' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=2d3b04eba03fce09' -C extra-filename'=-0dc06332281b1d1e' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-conv-0.1.0/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-0dc06332281b1d1e-stdout \
@@ -20552,9 +19793,6 @@ COPY --link --from=dep-n-num-conv-0.1.0-0dc06332281b1d1e /tmp/clis-bottom_0-11-4
 ##         CARGO_PKG_VERSION_PATCH=0 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name num_conv --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --warn unused --warn unreachable-pub --deny clippy'::std-instead-of-core' --warn missing-docs --deny clippy'::alloc-instead-of-core' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=2d3b04eba03fce09' -C extra-filename'=-0dc06332281b1d1e' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-conv-0.1.0/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-0dc06332281b1d1e-stdout \
@@ -20598,9 +19836,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=7 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name num_threads --edition 2015 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=3148c59d1471c531' -C extra-filename'=-da62e1a72e26635a' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num_threads-0.1.7/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-da62e1a72e26635a-stdout \
@@ -20667,9 +19902,6 @@ COPY --link --from=dep-n-num_threads-0.1.7-da62e1a72e26635a /tmp/clis-bottom_0-1
 ##         CARGO_PKG_VERSION_PATCH=7 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name num_threads --edition 2015 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=3148c59d1471c531' -C extra-filename'=-da62e1a72e26635a' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num_threads-0.1.7/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-da62e1a72e26635a-stdout \
@@ -20713,9 +19945,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=6 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name time_core --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --warn unused --warn clippy'::nursery' --warn clippy'::all' --warn variant-size-differences --warn clippy'::use-debug' --warn clippy'::unwrap-used' --warn clippy'::unwrap-in-result' --warn unused-qualifications --warn unused-lifetimes --warn unused-import-braces --deny unstable-syntax-pre-expansion --deny unsafe-op-in-unsafe-fn --warn unreachable-pub --warn clippy'::unnested-or-patterns' --deny unnameable-test-items --warn clippy'::uninlined-format-args' --warn clippy'::unimplemented' --deny unexpected_cfgs --warn rustdoc'::unescaped-backticks' --deny clippy'::undocumented-unsafe-blocks' --deny unconditional-recursion --warn trivial-numeric-casts --warn trivial-casts --warn clippy'::todo' --deny suspicious-double-ref-op --deny clippy'::std-instead-of-core' --warn single-use-lifetimes --warn clippy'::semicolon-outside-block' --warn rustdoc'::private-doc-tests' --warn clippy'::print-stdout' --deny overlapping-range-endpoints --deny opaque-hidden-inferred-bound --warn clippy'::obfuscated-if-else' --warn noop-method-call --deny non-ascii-idents --deny named-arguments-used-positionally --warn clippy'::missing-enforced-import-renames' --warn clippy'::missing-docs-in-private-items' --warn missing-docs --warn missing-debug-implementations --warn missing-copy-implementations --warn missing-abi --warn meta-variable-misuse --warn clippy'::manual-let-else' --warn macro-use-extern-crate --warn let-underscore --warn keyword-idents --deny invalid-value --deny invalid-reference-casting --deny invalid-nan-comparisons --deny invalid-macro-export-arguments --deny invalid-from-utf8 --deny improper-ctypes-definitions --deny improper-ctypes --deny hidden-glob-reexports --warn clippy'::get-unwrap' --deny future-incompatible --warn clippy'::explicit-auto-deref' --deny drop-bounds --deny deref-nullptr --warn clippy'::decimal-literal-representation' --warn clippy'::dbg-macro' --deny dangling-pointers-from-temporaries --deny const-item-mutation --deny clashing-extern-declarations --warn clippy'::as-underscore' --deny ambiguous-glob-reexports --deny clippy'::alloc-instead-of-core' --allow unstable-name-collisions --allow clippy'::uninhabited-references' --allow clippy'::redundant-pub-crate' --allow clippy'::option-if-let-else' --allow clippy'::incompatible-msrv' --check-cfg cfg'(__ui_tests)' --check-cfg cfg'(bench)' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=0961a3687f45c0d6' -C extra-filename'=-6b511e8369ee2b6b' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/time-core-0.1.6/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-6b511e8369ee2b6b-stdout \
@@ -20782,9 +20011,6 @@ COPY --link --from=dep-n-time-core-0.1.6-6b511e8369ee2b6b /tmp/clis-bottom_0-11-
 ##         CARGO_PKG_VERSION_PATCH=6 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name time_core --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --warn unused --warn clippy'::nursery' --warn clippy'::all' --warn variant-size-differences --warn clippy'::use-debug' --warn clippy'::unwrap-used' --warn clippy'::unwrap-in-result' --warn unused-qualifications --warn unused-lifetimes --warn unused-import-braces --deny unstable-syntax-pre-expansion --deny unsafe-op-in-unsafe-fn --warn unreachable-pub --warn clippy'::unnested-or-patterns' --deny unnameable-test-items --warn clippy'::uninlined-format-args' --warn clippy'::unimplemented' --deny unexpected_cfgs --warn rustdoc'::unescaped-backticks' --deny clippy'::undocumented-unsafe-blocks' --deny unconditional-recursion --warn trivial-numeric-casts --warn trivial-casts --warn clippy'::todo' --deny suspicious-double-ref-op --deny clippy'::std-instead-of-core' --warn single-use-lifetimes --warn clippy'::semicolon-outside-block' --warn rustdoc'::private-doc-tests' --warn clippy'::print-stdout' --deny overlapping-range-endpoints --deny opaque-hidden-inferred-bound --warn clippy'::obfuscated-if-else' --warn noop-method-call --deny non-ascii-idents --deny named-arguments-used-positionally --warn clippy'::missing-enforced-import-renames' --warn clippy'::missing-docs-in-private-items' --warn missing-docs --warn missing-debug-implementations --warn missing-copy-implementations --warn missing-abi --warn meta-variable-misuse --warn clippy'::manual-let-else' --warn macro-use-extern-crate --warn let-underscore --warn keyword-idents --deny invalid-value --deny invalid-reference-casting --deny invalid-nan-comparisons --deny invalid-macro-export-arguments --deny invalid-from-utf8 --deny improper-ctypes-definitions --deny improper-ctypes --deny hidden-glob-reexports --warn clippy'::get-unwrap' --deny future-incompatible --warn clippy'::explicit-auto-deref' --deny drop-bounds --deny deref-nullptr --warn clippy'::decimal-literal-representation' --warn clippy'::dbg-macro' --deny dangling-pointers-from-temporaries --deny const-item-mutation --deny clashing-extern-declarations --warn clippy'::as-underscore' --deny ambiguous-glob-reexports --deny clippy'::alloc-instead-of-core' --allow unstable-name-collisions --allow clippy'::uninhabited-references' --allow clippy'::redundant-pub-crate' --allow clippy'::option-if-let-else' --allow clippy'::incompatible-msrv' --check-cfg cfg'(__ui_tests)' --check-cfg cfg'(bench)' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=0961a3687f45c0d6' -C extra-filename'=-6b511e8369ee2b6b' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/time-core-0.1.6/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-6b511e8369ee2b6b-stdout \
@@ -20840,9 +20066,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=44 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name time --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --warn unused --warn clippy'::nursery' --warn clippy'::all' --warn variant-size-differences --warn clippy'::use-debug' --warn clippy'::unwrap-used' --warn clippy'::unwrap-in-result' --warn unused-qualifications --warn unused-lifetimes --warn unused-import-braces --deny unstable-syntax-pre-expansion --deny unsafe-op-in-unsafe-fn --warn unreachable-pub --warn clippy'::unnested-or-patterns' --deny unnameable-test-items --warn clippy'::uninlined-format-args' --warn clippy'::unimplemented' --deny unexpected_cfgs --warn rustdoc'::unescaped-backticks' --deny clippy'::undocumented-unsafe-blocks' --deny unconditional-recursion --warn trivial-numeric-casts --warn trivial-casts --warn clippy'::todo' --deny suspicious-double-ref-op --deny clippy'::std-instead-of-core' --warn single-use-lifetimes --warn clippy'::semicolon-outside-block' --warn rustdoc'::private-doc-tests' --warn clippy'::print-stdout' --deny overlapping-range-endpoints --deny opaque-hidden-inferred-bound --warn clippy'::obfuscated-if-else' --warn noop-method-call --deny non-ascii-idents --deny named-arguments-used-positionally --warn clippy'::missing-enforced-import-renames' --warn clippy'::missing-docs-in-private-items' --warn missing-docs --warn missing-debug-implementations --warn missing-copy-implementations --warn missing-abi --warn meta-variable-misuse --warn clippy'::manual-let-else' --warn macro-use-extern-crate --warn let-underscore --warn keyword-idents --deny invalid-value --deny invalid-reference-casting --deny invalid-nan-comparisons --deny invalid-macro-export-arguments --deny invalid-from-utf8 --deny improper-ctypes-definitions --deny improper-ctypes --deny hidden-glob-reexports --warn clippy'::get-unwrap' --deny future-incompatible --warn clippy'::explicit-auto-deref' --deny drop-bounds --deny deref-nullptr --warn clippy'::decimal-literal-representation' --warn clippy'::dbg-macro' --deny dangling-pointers-from-temporaries --deny const-item-mutation --deny clashing-extern-declarations --warn clippy'::as-underscore' --deny ambiguous-glob-reexports --deny clippy'::alloc-instead-of-core' --allow unstable-name-collisions --allow clippy'::uninhabited-references' --allow clippy'::redundant-pub-crate' --allow clippy'::option-if-let-else' --allow clippy'::incompatible-msrv' --check-cfg cfg'(__ui_tests)' --check-cfg cfg'(bench)' --cfg feature'="alloc"' --cfg feature'="local-offset"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "formatting", "large-dates", "local-offset", "macros", "parsing", "quickcheck", "rand", "rand08", "rand09", "serde", "serde-human-readable", "serde-well-known", "std", "wasm-bindgen"))' -C metadata'=1626191f44b9d1c3' -C extra-filename'=-d48fa55a8ead9508' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern deranged'=/tmp/clis-bottom_0-11-4/release/deps/libderanged-8d9f9e5c65b7205e.rmeta' --extern libc'=/tmp/clis-bottom_0-11-4/release/deps/liblibc-f9a7f201e668dfaf.rmeta' --extern num_conv'=/tmp/clis-bottom_0-11-4/release/deps/libnum_conv-0dc06332281b1d1e.rmeta' --extern num_threads'=/tmp/clis-bottom_0-11-4/release/deps/libnum_threads-da62e1a72e26635a.rmeta' --extern powerfmt'=/tmp/clis-bottom_0-11-4/release/deps/libpowerfmt-e64a19be6d4ec013.rmeta' --extern time_core'=/tmp/clis-bottom_0-11-4/release/deps/libtime_core-6b511e8369ee2b6b.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/time-0.3.44/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-d48fa55a8ead9508-stdout \
@@ -20980,9 +20203,6 @@ COPY --link --from=dep-n-time-0.3.44-d48fa55a8ead9508 /tmp/clis-bottom_0-11-4/re
 ##         CARGO_PKG_VERSION_PATCH=44 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name time --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --warn unused --warn clippy'::nursery' --warn clippy'::all' --warn variant-size-differences --warn clippy'::use-debug' --warn clippy'::unwrap-used' --warn clippy'::unwrap-in-result' --warn unused-qualifications --warn unused-lifetimes --warn unused-import-braces --deny unstable-syntax-pre-expansion --deny unsafe-op-in-unsafe-fn --warn unreachable-pub --warn clippy'::unnested-or-patterns' --deny unnameable-test-items --warn clippy'::uninlined-format-args' --warn clippy'::unimplemented' --deny unexpected_cfgs --warn rustdoc'::unescaped-backticks' --deny clippy'::undocumented-unsafe-blocks' --deny unconditional-recursion --warn trivial-numeric-casts --warn trivial-casts --warn clippy'::todo' --deny suspicious-double-ref-op --deny clippy'::std-instead-of-core' --warn single-use-lifetimes --warn clippy'::semicolon-outside-block' --warn rustdoc'::private-doc-tests' --warn clippy'::print-stdout' --deny overlapping-range-endpoints --deny opaque-hidden-inferred-bound --warn clippy'::obfuscated-if-else' --warn noop-method-call --deny non-ascii-idents --deny named-arguments-used-positionally --warn clippy'::missing-enforced-import-renames' --warn clippy'::missing-docs-in-private-items' --warn missing-docs --warn missing-debug-implementations --warn missing-copy-implementations --warn missing-abi --warn meta-variable-misuse --warn clippy'::manual-let-else' --warn macro-use-extern-crate --warn let-underscore --warn keyword-idents --deny invalid-value --deny invalid-reference-casting --deny invalid-nan-comparisons --deny invalid-macro-export-arguments --deny invalid-from-utf8 --deny improper-ctypes-definitions --deny improper-ctypes --deny hidden-glob-reexports --warn clippy'::get-unwrap' --deny future-incompatible --warn clippy'::explicit-auto-deref' --deny drop-bounds --deny deref-nullptr --warn clippy'::decimal-literal-representation' --warn clippy'::dbg-macro' --deny dangling-pointers-from-temporaries --deny const-item-mutation --deny clashing-extern-declarations --warn clippy'::as-underscore' --deny ambiguous-glob-reexports --deny clippy'::alloc-instead-of-core' --allow unstable-name-collisions --allow clippy'::uninhabited-references' --allow clippy'::redundant-pub-crate' --allow clippy'::option-if-let-else' --allow clippy'::incompatible-msrv' --check-cfg cfg'(__ui_tests)' --check-cfg cfg'(bench)' --cfg feature'="alloc"' --cfg feature'="local-offset"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "formatting", "large-dates", "local-offset", "macros", "parsing", "quickcheck", "rand", "rand08", "rand09", "serde", "serde-human-readable", "serde-well-known", "std", "wasm-bindgen"))' -C metadata'=1626191f44b9d1c3' -C extra-filename'=-d48fa55a8ead9508' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern deranged'=/tmp/clis-bottom_0-11-4/release/deps/libderanged-8d9f9e5c65b7205e.rmeta' --extern libc'=/tmp/clis-bottom_0-11-4/release/deps/liblibc-f9a7f201e668dfaf.rmeta' --extern num_conv'=/tmp/clis-bottom_0-11-4/release/deps/libnum_conv-0dc06332281b1d1e.rmeta' --extern num_threads'=/tmp/clis-bottom_0-11-4/release/deps/libnum_threads-da62e1a72e26635a.rmeta' --extern powerfmt'=/tmp/clis-bottom_0-11-4/release/deps/libpowerfmt-e64a19be6d4ec013.rmeta' --extern time_core'=/tmp/clis-bottom_0-11-4/release/deps/libtime_core-6b511e8369ee2b6b.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/time-0.3.44/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-d48fa55a8ead9508-stdout \
@@ -21113,9 +20333,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE=beta.0 \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name ratatui_widgets --edition 2024 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --warn clippy'::pedantic' --warn clippy'::use_self' --forbid unsafe_code --warn clippy'::unnecessary_self_imports' --warn clippy'::string_to_string' --warn clippy'::string_slice' --warn clippy'::string_lit_chars_any' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::redundant_type_annotations' --warn clippy'::or_fun_call' --warn clippy'::needless_raw_strings' --warn clippy'::needless_pass_by_ref_mut' --allow clippy'::must_use_candidate' --allow clippy'::module_name_repetitions' --allow clippy'::module_inception' --warn clippy'::mod_module_files' --warn clippy'::mixed_read_write_in_expression' --allow clippy'::missing_panics_doc' --allow clippy'::missing_errors_doc' --warn clippy'::missing_const_for_fn' --warn clippy'::map_err_ignore' --warn clippy'::format_push_string' --warn clippy'::fn_to_numeric_cast_any' --warn clippy'::equatable_if_let' --warn clippy'::empty_line_after_doc_comments' --warn clippy'::else_if_without_else' --warn clippy'::deref_by_slicing' --allow clippy'::cast_sign_loss' --allow clippy'::cast_precision_loss' --allow clippy'::cast_possible_wrap' --allow clippy'::cast_possible_truncation' --warn clippy'::as_underscore' --cfg feature'="all-widgets"' --cfg feature'="calendar"' --cfg feature'="default"' --cfg feature'="std"' --cfg feature'="unstable-rendered-line-info"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("all-widgets", "calendar", "default", "document-features", "serde", "std", "unstable", "unstable-rendered-line-info"))' -C metadata'=7af81174dcfd6013' -C extra-filename'=-0a88be36706a839f' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern bitflags'=/tmp/clis-bottom_0-11-4/release/deps/libbitflags-f4de441526a3a0e1.rmeta' --extern hashbrown'=/tmp/clis-bottom_0-11-4/release/deps/libhashbrown-75a46f0c9de185ab.rmeta' --extern indoc'=/tmp/clis-bottom_0-11-4/release/deps/libindoc-6220bf836a43fe21.so' --extern instability'=/tmp/clis-bottom_0-11-4/release/deps/libinstability-aae7976707a3a506.so' --extern itertools'=/tmp/clis-bottom_0-11-4/release/deps/libitertools-62522c8d5cefce5c.rmeta' --extern line_clipping'=/tmp/clis-bottom_0-11-4/release/deps/libline_clipping-d2dc0977654598eb.rmeta' --extern ratatui_core'=/tmp/clis-bottom_0-11-4/release/deps/libratatui_core-9cd79dc02c3057e6.rmeta' --extern strum'=/tmp/clis-bottom_0-11-4/release/deps/libstrum-618d55986ea84d86.rmeta' --extern time'=/tmp/clis-bottom_0-11-4/release/deps/libtime-d48fa55a8ead9508.rmeta' --extern unicode_segmentation'=/tmp/clis-bottom_0-11-4/release/deps/libunicode_segmentation-c3cf906c5a4083dc.rmeta' --extern unicode_width'=/tmp/clis-bottom_0-11-4/release/deps/libunicode_width-f6f32a8a5a2fe2b5.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ratatui-widgets-0.3.0-beta.0/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-0a88be36706a839f-stdout \
@@ -21682,9 +20899,6 @@ COPY --link --from=dep-n-ratatui-widgets-0.3.0-beta.0-0a88be36706a839f /tmp/clis
 ##         CARGO_PKG_VERSION_PATCH=0 \
 ##         CARGO_PKG_VERSION_PRE=beta.0 \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name ratatui_widgets --edition 2024 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --warn clippy'::pedantic' --warn clippy'::use_self' --forbid unsafe_code --warn clippy'::unnecessary_self_imports' --warn clippy'::string_to_string' --warn clippy'::string_slice' --warn clippy'::string_lit_chars_any' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::redundant_type_annotations' --warn clippy'::or_fun_call' --warn clippy'::needless_raw_strings' --warn clippy'::needless_pass_by_ref_mut' --allow clippy'::must_use_candidate' --allow clippy'::module_name_repetitions' --allow clippy'::module_inception' --warn clippy'::mod_module_files' --warn clippy'::mixed_read_write_in_expression' --allow clippy'::missing_panics_doc' --allow clippy'::missing_errors_doc' --warn clippy'::missing_const_for_fn' --warn clippy'::map_err_ignore' --warn clippy'::format_push_string' --warn clippy'::fn_to_numeric_cast_any' --warn clippy'::equatable_if_let' --warn clippy'::empty_line_after_doc_comments' --warn clippy'::else_if_without_else' --warn clippy'::deref_by_slicing' --allow clippy'::cast_sign_loss' --allow clippy'::cast_precision_loss' --allow clippy'::cast_possible_wrap' --allow clippy'::cast_possible_truncation' --warn clippy'::as_underscore' --cfg feature'="all-widgets"' --cfg feature'="calendar"' --cfg feature'="default"' --cfg feature'="std"' --cfg feature'="unstable-rendered-line-info"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("all-widgets", "calendar", "default", "document-features", "serde", "std", "unstable", "unstable-rendered-line-info"))' -C metadata'=7af81174dcfd6013' -C extra-filename'=-0a88be36706a839f' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern bitflags'=/tmp/clis-bottom_0-11-4/release/deps/libbitflags-f4de441526a3a0e1.rmeta' --extern hashbrown'=/tmp/clis-bottom_0-11-4/release/deps/libhashbrown-75a46f0c9de185ab.rmeta' --extern indoc'=/tmp/clis-bottom_0-11-4/release/deps/libindoc-6220bf836a43fe21.so' --extern instability'=/tmp/clis-bottom_0-11-4/release/deps/libinstability-aae7976707a3a506.so' --extern itertools'=/tmp/clis-bottom_0-11-4/release/deps/libitertools-62522c8d5cefce5c.rmeta' --extern line_clipping'=/tmp/clis-bottom_0-11-4/release/deps/libline_clipping-d2dc0977654598eb.rmeta' --extern ratatui_core'=/tmp/clis-bottom_0-11-4/release/deps/libratatui_core-9cd79dc02c3057e6.rmeta' --extern strum'=/tmp/clis-bottom_0-11-4/release/deps/libstrum-618d55986ea84d86.rmeta' --extern time'=/tmp/clis-bottom_0-11-4/release/deps/libtime-d48fa55a8ead9508.rmeta' --extern unicode_segmentation'=/tmp/clis-bottom_0-11-4/release/deps/libunicode_segmentation-c3cf906c5a4083dc.rmeta' --extern unicode_width'=/tmp/clis-bottom_0-11-4/release/deps/libunicode_width-f6f32a8a5a2fe2b5.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ratatui-widgets-0.3.0-beta.0/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-0a88be36706a839f-stdout \
@@ -21817,9 +21031,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE=beta.0 \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name ratatui_macros --edition 2024 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=14dc48e6ecc4e656' -C extra-filename'=-f2b0d417d18ff3fe' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern ratatui_core'=/tmp/clis-bottom_0-11-4/release/deps/libratatui_core-9cd79dc02c3057e6.rmeta' --extern ratatui_widgets'=/tmp/clis-bottom_0-11-4/release/deps/libratatui_widgets-0a88be36706a839f.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ratatui-macros-0.7.0-beta.0/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-f2b0d417d18ff3fe-stdout \
@@ -22397,9 +21608,6 @@ COPY --link --from=dep-n-ratatui-macros-0.7.0-beta.0-f2b0d417d18ff3fe /tmp/clis-
 ##         CARGO_PKG_VERSION_PATCH=0 \
 ##         CARGO_PKG_VERSION_PRE=beta.0 \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name ratatui_macros --edition 2024 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=14dc48e6ecc4e656' -C extra-filename'=-f2b0d417d18ff3fe' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern ratatui_core'=/tmp/clis-bottom_0-11-4/release/deps/libratatui_core-9cd79dc02c3057e6.rmeta' --extern ratatui_widgets'=/tmp/clis-bottom_0-11-4/release/deps/libratatui_widgets-0a88be36706a839f.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ratatui-macros-0.7.0-beta.0/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-f2b0d417d18ff3fe-stdout \
@@ -22574,9 +21782,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE=beta.0 \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name ratatui --edition 2024 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --warn clippy'::pedantic' --warn clippy'::use_self' --forbid unsafe_code --warn clippy'::unnecessary_self_imports' --warn clippy'::string_to_string' --warn clippy'::string_slice' --warn clippy'::string_lit_chars_any' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::redundant_type_annotations' --warn clippy'::or_fun_call' --warn clippy'::needless_raw_strings' --warn clippy'::needless_pass_by_ref_mut' --allow clippy'::must_use_candidate' --allow clippy'::module_name_repetitions' --allow clippy'::module_inception' --warn clippy'::mod_module_files' --warn clippy'::mixed_read_write_in_expression' --allow clippy'::missing_panics_doc' --allow clippy'::missing_errors_doc' --warn clippy'::missing_const_for_fn' --warn clippy'::map_err_ignore' --warn clippy'::format_push_string' --warn clippy'::fn_to_numeric_cast_any' --warn clippy'::equatable_if_let' --warn clippy'::empty_line_after_doc_comments' --warn clippy'::else_if_without_else' --warn clippy'::deref_by_slicing' --allow clippy'::cast_sign_loss' --allow clippy'::cast_precision_loss' --allow clippy'::cast_possible_wrap' --allow clippy'::cast_possible_truncation' --warn clippy'::as_underscore' --cfg feature'="all-widgets"' --cfg feature'="crossterm"' --cfg feature'="default"' --cfg feature'="layout-cache"' --cfg feature'="macros"' --cfg feature'="std"' --cfg feature'="underline-color"' --cfg feature'="unstable-rendered-line-info"' --cfg feature'="widget-calendar"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("all-widgets", "crossterm", "default", "document-features", "layout-cache", "macros", "palette", "portable-atomic", "scrolling-regions", "serde", "std", "termion", "termwiz", "underline-color", "unstable", "unstable-backend-writer", "unstable-rendered-line-info", "unstable-widget-ref", "widget-calendar"))' -C metadata'=27ef4d85a48d4afb' -C extra-filename'=-85dafea1106b5a19' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern instability'=/tmp/clis-bottom_0-11-4/release/deps/libinstability-aae7976707a3a506.so' --extern ratatui_core'=/tmp/clis-bottom_0-11-4/release/deps/libratatui_core-9cd79dc02c3057e6.rmeta' --extern ratatui_crossterm'=/tmp/clis-bottom_0-11-4/release/deps/libratatui_crossterm-e23c37a3c4a8c828.rmeta' --extern ratatui_macros'=/tmp/clis-bottom_0-11-4/release/deps/libratatui_macros-f2b0d417d18ff3fe.rmeta' --extern ratatui_widgets'=/tmp/clis-bottom_0-11-4/release/deps/libratatui_widgets-0a88be36706a839f.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ratatui-0.30.0-beta.0/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-85dafea1106b5a19-stdout \
@@ -23398,9 +22603,6 @@ COPY --link --from=dep-n-ratatui-0.30.0-beta.0-85dafea1106b5a19 /tmp/clis-bottom
 ##         CARGO_PKG_VERSION_PATCH=0 \
 ##         CARGO_PKG_VERSION_PRE=beta.0 \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name ratatui --edition 2024 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --warn clippy'::pedantic' --warn clippy'::use_self' --forbid unsafe_code --warn clippy'::unnecessary_self_imports' --warn clippy'::string_to_string' --warn clippy'::string_slice' --warn clippy'::string_lit_chars_any' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::redundant_type_annotations' --warn clippy'::or_fun_call' --warn clippy'::needless_raw_strings' --warn clippy'::needless_pass_by_ref_mut' --allow clippy'::must_use_candidate' --allow clippy'::module_name_repetitions' --allow clippy'::module_inception' --warn clippy'::mod_module_files' --warn clippy'::mixed_read_write_in_expression' --allow clippy'::missing_panics_doc' --allow clippy'::missing_errors_doc' --warn clippy'::missing_const_for_fn' --warn clippy'::map_err_ignore' --warn clippy'::format_push_string' --warn clippy'::fn_to_numeric_cast_any' --warn clippy'::equatable_if_let' --warn clippy'::empty_line_after_doc_comments' --warn clippy'::else_if_without_else' --warn clippy'::deref_by_slicing' --allow clippy'::cast_sign_loss' --allow clippy'::cast_precision_loss' --allow clippy'::cast_possible_wrap' --allow clippy'::cast_possible_truncation' --warn clippy'::as_underscore' --cfg feature'="all-widgets"' --cfg feature'="crossterm"' --cfg feature'="default"' --cfg feature'="layout-cache"' --cfg feature'="macros"' --cfg feature'="std"' --cfg feature'="underline-color"' --cfg feature'="unstable-rendered-line-info"' --cfg feature'="widget-calendar"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("all-widgets", "crossterm", "default", "document-features", "layout-cache", "macros", "palette", "portable-atomic", "scrolling-regions", "serde", "std", "termion", "termwiz", "underline-color", "unstable", "unstable-backend-writer", "unstable-rendered-line-info", "unstable-widget-ref", "widget-calendar"))' -C metadata'=27ef4d85a48d4afb' -C extra-filename'=-85dafea1106b5a19' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern instability'=/tmp/clis-bottom_0-11-4/release/deps/libinstability-aae7976707a3a506.so' --extern ratatui_core'=/tmp/clis-bottom_0-11-4/release/deps/libratatui_core-9cd79dc02c3057e6.rmeta' --extern ratatui_crossterm'=/tmp/clis-bottom_0-11-4/release/deps/libratatui_crossterm-e23c37a3c4a8c828.rmeta' --extern ratatui_macros'=/tmp/clis-bottom_0-11-4/release/deps/libratatui_macros-f2b0d417d18ff3fe.rmeta' --extern ratatui_widgets'=/tmp/clis-bottom_0-11-4/release/deps/libratatui_widgets-0a88be36706a839f.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ratatui-0.30.0-beta.0/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-85dafea1106b5a19-stdout \
@@ -23446,9 +22648,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=3 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name aho_corasick --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --cfg feature'="perf-literal"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "logging", "perf-literal", "std"))' -C metadata'=8e12f6135b9416db' -C extra-filename'=-818dcc26aba0d876' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern memchr'=/tmp/clis-bottom_0-11-4/release/deps/libmemchr-c80d603364c0d236.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aho-corasick-1.1.3/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-818dcc26aba0d876-stdout \
@@ -23531,9 +22730,6 @@ COPY --link --from=dep-n-aho-corasick-1.1.3-818dcc26aba0d876 /tmp/clis-bottom_0-
 ##         CARGO_PKG_VERSION_PATCH=3 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name aho_corasick --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --cfg feature'="perf-literal"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "logging", "perf-literal", "std"))' -C metadata'=8e12f6135b9416db' -C extra-filename'=-818dcc26aba0d876' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern memchr'=/tmp/clis-bottom_0-11-4/release/deps/libmemchr-c80d603364c0d236.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aho-corasick-1.1.3/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-818dcc26aba0d876-stdout \
@@ -23577,9 +22773,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=6 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name regex_syntax --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --cfg feature'="default"' --cfg feature'="std"' --cfg feature'="unicode"' --cfg feature'="unicode-age"' --cfg feature'="unicode-bool"' --cfg feature'="unicode-case"' --cfg feature'="unicode-gencat"' --cfg feature'="unicode-perl"' --cfg feature'="unicode-script"' --cfg feature'="unicode-segment"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("arbitrary", "default", "std", "unicode", "unicode-age", "unicode-bool", "unicode-case", "unicode-gencat", "unicode-perl", "unicode-script", "unicode-segment"))' -C metadata'=9528aa0336d9ce84' -C extra-filename'=-e8c86476c582c98b' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/regex-syntax-0.8.6/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-e8c86476c582c98b-stdout \
@@ -23646,9 +22839,6 @@ COPY --link --from=dep-n-regex-syntax-0.8.6-e8c86476c582c98b /tmp/clis-bottom_0-
 ##         CARGO_PKG_VERSION_PATCH=6 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name regex_syntax --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --cfg feature'="default"' --cfg feature'="std"' --cfg feature'="unicode"' --cfg feature'="unicode-age"' --cfg feature'="unicode-bool"' --cfg feature'="unicode-case"' --cfg feature'="unicode-gencat"' --cfg feature'="unicode-perl"' --cfg feature'="unicode-script"' --cfg feature'="unicode-segment"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("arbitrary", "default", "std", "unicode", "unicode-age", "unicode-bool", "unicode-case", "unicode-gencat", "unicode-perl", "unicode-script", "unicode-segment"))' -C metadata'=9528aa0336d9ce84' -C extra-filename'=-e8c86476c582c98b' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/regex-syntax-0.8.6/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-e8c86476c582c98b-stdout \
@@ -23698,9 +22888,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=10 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name regex_automata --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --cfg feature'="alloc"' --cfg feature'="dfa-onepass"' --cfg feature'="hybrid"' --cfg feature'="meta"' --cfg feature'="nfa-backtrack"' --cfg feature'="nfa-pikevm"' --cfg feature'="nfa-thompson"' --cfg feature'="perf-inline"' --cfg feature'="perf-literal"' --cfg feature'="perf-literal-multisubstring"' --cfg feature'="perf-literal-substring"' --cfg feature'="std"' --cfg feature'="syntax"' --cfg feature'="unicode"' --cfg feature'="unicode-age"' --cfg feature'="unicode-bool"' --cfg feature'="unicode-case"' --cfg feature'="unicode-gencat"' --cfg feature'="unicode-perl"' --cfg feature'="unicode-script"' --cfg feature'="unicode-segment"' --cfg feature'="unicode-word-boundary"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "dfa", "dfa-build", "dfa-onepass", "dfa-search", "hybrid", "internal-instrument", "internal-instrument-pikevm", "logging", "meta", "nfa", "nfa-backtrack", "nfa-pikevm", "nfa-thompson", "perf", "perf-inline", "perf-literal", "perf-literal-multisubstring", "perf-literal-substring", "std", "syntax", "unicode", "unicode-age", "unicode-bool", "unicode-case", "unicode-gencat", "unicode-perl", "unicode-script", "unicode-segment", "unicode-word-boundary"))' -C metadata'=8634cace833f8a51' -C extra-filename'=-6f7c303d142e0412' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern aho_corasick'=/tmp/clis-bottom_0-11-4/release/deps/libaho_corasick-818dcc26aba0d876.rmeta' --extern memchr'=/tmp/clis-bottom_0-11-4/release/deps/libmemchr-c80d603364c0d236.rmeta' --extern regex_syntax'=/tmp/clis-bottom_0-11-4/release/deps/libregex_syntax-e8c86476c582c98b.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/regex-automata-0.4.10/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-6f7c303d142e0412-stdout \
@@ -23802,9 +22989,6 @@ COPY --link --from=dep-n-regex-automata-0.4.10-6f7c303d142e0412 /tmp/clis-bottom
 ##         CARGO_PKG_VERSION_PATCH=10 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name regex_automata --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --cfg feature'="alloc"' --cfg feature'="dfa-onepass"' --cfg feature'="hybrid"' --cfg feature'="meta"' --cfg feature'="nfa-backtrack"' --cfg feature'="nfa-pikevm"' --cfg feature'="nfa-thompson"' --cfg feature'="perf-inline"' --cfg feature'="perf-literal"' --cfg feature'="perf-literal-multisubstring"' --cfg feature'="perf-literal-substring"' --cfg feature'="std"' --cfg feature'="syntax"' --cfg feature'="unicode"' --cfg feature'="unicode-age"' --cfg feature'="unicode-bool"' --cfg feature'="unicode-case"' --cfg feature'="unicode-gencat"' --cfg feature'="unicode-perl"' --cfg feature'="unicode-script"' --cfg feature'="unicode-segment"' --cfg feature'="unicode-word-boundary"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "dfa", "dfa-build", "dfa-onepass", "dfa-search", "hybrid", "internal-instrument", "internal-instrument-pikevm", "logging", "meta", "nfa", "nfa-backtrack", "nfa-pikevm", "nfa-thompson", "perf", "perf-inline", "perf-literal", "perf-literal-multisubstring", "perf-literal-substring", "std", "syntax", "unicode", "unicode-age", "unicode-bool", "unicode-case", "unicode-gencat", "unicode-perl", "unicode-script", "unicode-segment", "unicode-word-boundary"))' -C metadata'=8634cace833f8a51' -C extra-filename'=-6f7c303d142e0412' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern aho_corasick'=/tmp/clis-bottom_0-11-4/release/deps/libaho_corasick-818dcc26aba0d876.rmeta' --extern memchr'=/tmp/clis-bottom_0-11-4/release/deps/libmemchr-c80d603364c0d236.rmeta' --extern regex_syntax'=/tmp/clis-bottom_0-11-4/release/deps/libregex_syntax-e8c86476c582c98b.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/regex-automata-0.4.10/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-6f7c303d142e0412-stdout \
@@ -23858,9 +23042,6 @@ finite automata and guarantees linear time matching on all inputs.\
         CARGO_PKG_VERSION_PATCH=2 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name regex --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --cfg feature'="default"' --cfg feature'="perf"' --cfg feature'="perf-backtrack"' --cfg feature'="perf-cache"' --cfg feature'="perf-dfa"' --cfg feature'="perf-inline"' --cfg feature'="perf-literal"' --cfg feature'="perf-onepass"' --cfg feature'="std"' --cfg feature'="unicode"' --cfg feature'="unicode-age"' --cfg feature'="unicode-bool"' --cfg feature'="unicode-case"' --cfg feature'="unicode-gencat"' --cfg feature'="unicode-perl"' --cfg feature'="unicode-script"' --cfg feature'="unicode-segment"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "logging", "pattern", "perf", "perf-backtrack", "perf-cache", "perf-dfa", "perf-dfa-full", "perf-inline", "perf-literal", "perf-onepass", "std", "unicode", "unicode-age", "unicode-bool", "unicode-case", "unicode-gencat", "unicode-perl", "unicode-script", "unicode-segment", "unstable", "use_std"))' -C metadata'=9772d6e46321a6f5' -C extra-filename'=-df900add298d9323' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern aho_corasick'=/tmp/clis-bottom_0-11-4/release/deps/libaho_corasick-818dcc26aba0d876.rmeta' --extern memchr'=/tmp/clis-bottom_0-11-4/release/deps/libmemchr-c80d603364c0d236.rmeta' --extern regex_automata'=/tmp/clis-bottom_0-11-4/release/deps/libregex_automata-6f7c303d142e0412.rmeta' --extern regex_syntax'=/tmp/clis-bottom_0-11-4/release/deps/libregex_syntax-e8c86476c582c98b.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/regex-1.11.2/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-df900add298d9323-stdout \
@@ -23975,9 +23156,6 @@ COPY --link --from=dep-n-regex-1.11.2-df900add298d9323 /tmp/clis-bottom_0-11-4/r
 ##         CARGO_PKG_VERSION_PATCH=2 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name regex --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --cfg feature'="default"' --cfg feature'="perf"' --cfg feature'="perf-backtrack"' --cfg feature'="perf-cache"' --cfg feature'="perf-dfa"' --cfg feature'="perf-inline"' --cfg feature'="perf-literal"' --cfg feature'="perf-onepass"' --cfg feature'="std"' --cfg feature'="unicode"' --cfg feature'="unicode-age"' --cfg feature'="unicode-bool"' --cfg feature'="unicode-case"' --cfg feature'="unicode-gencat"' --cfg feature'="unicode-perl"' --cfg feature'="unicode-script"' --cfg feature'="unicode-segment"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "logging", "pattern", "perf", "perf-backtrack", "perf-cache", "perf-dfa", "perf-dfa-full", "perf-inline", "perf-literal", "perf-onepass", "std", "unicode", "unicode-age", "unicode-bool", "unicode-case", "unicode-gencat", "unicode-perl", "unicode-script", "unicode-segment", "unstable", "use_std"))' -C metadata'=9772d6e46321a6f5' -C extra-filename'=-df900add298d9323' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern aho_corasick'=/tmp/clis-bottom_0-11-4/release/deps/libaho_corasick-818dcc26aba0d876.rmeta' --extern memchr'=/tmp/clis-bottom_0-11-4/release/deps/libmemchr-c80d603364c0d236.rmeta' --extern regex_automata'=/tmp/clis-bottom_0-11-4/release/deps/libregex_automata-6f7c303d142e0412.rmeta' --extern regex_syntax'=/tmp/clis-bottom_0-11-4/release/deps/libregex_syntax-e8c86476c582c98b.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/regex-1.11.2/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-df900add298d9323-stdout \
@@ -24040,9 +23218,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=226 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="alloc"' --cfg feature'="default"' --cfg feature'="result"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "rc", "result", "std", "unstable"))' -C metadata'=9bf8af8bc4532557' -C extra-filename'=-709f4e0ee003ee10' --out-dir /tmp/clis-bottom_0-11-4/release/build/serde_core-709f4e0ee003ee10 -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_core-1.0.226/build.rs \
         1>          /tmp/clis-bottom_0-11-4/release/build/serde_core-709f4e0ee003ee10/out-709f4e0ee003ee10-stdout \
@@ -24126,9 +23301,6 @@ COPY --link --from=dep-x-serde_core-1.0.226-709f4e0ee003ee10 /tmp/clis-bottom_0-
 ##         CARGO_PKG_VERSION_PATCH=226 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="alloc"' --cfg feature'="default"' --cfg feature'="result"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "rc", "result", "std", "unstable"))' -C metadata'=9bf8af8bc4532557' -C extra-filename'=-709f4e0ee003ee10' --out-dir /tmp/clis-bottom_0-11-4/release/build/serde_core-709f4e0ee003ee10 -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_core-1.0.226/build.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/build/serde_core-709f4e0ee003ee10/out-709f4e0ee003ee10-stdout \
@@ -24197,9 +23369,6 @@ RUN \
         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
         TARGET=x86_64-unknown-linux-gnu \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-bottom_0-11-4/release/build/serde_core-709f4e0ee003ee10/build-script-build \
         1>          /tmp/clis-bottom_0-11-4/release/build/serde_core-cc6da97a70fe7bbb/out/out-cc6da97a70fe7bbb-stdout \
@@ -24290,9 +23459,6 @@ COPY --link --from=run-z-serde_core-1.0.226-cc6da97a70fe7bbb /tmp/clis-bottom_0-
 ##         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
 ##         TARGET=x86_64-unknown-linux-gnu \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-bottom_0-11-4/release/build/serde_core-709f4e0ee003ee10/build-script-build \
 ##         1>          /tmp/clis-bottom_0-11-4/release/build/serde_core-cc6da97a70fe7bbb/out/out-cc6da97a70fe7bbb-stdout \
@@ -24336,9 +23502,6 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         OUT_DIR=/tmp/clis-bottom_0-11-4/release/build/serde_core-cc6da97a70fe7bbb/out \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name serde_core --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --cfg feature'="alloc"' --cfg feature'="default"' --cfg feature'="result"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "rc", "result", "std", "unstable"))' -C metadata'=aa1e650519c8b2bb' -C extra-filename'=-e386c3d490144c22' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn --check-cfg cfg'(no_core_cstr)' --check-cfg cfg'(no_core_error)' --check-cfg cfg'(no_core_net)' --check-cfg cfg'(no_core_num_saturating)' --check-cfg cfg'(no_diagnostic_namespace)' --check-cfg cfg'(no_serde_derive)' --check-cfg cfg'(no_std_atomic)' --check-cfg cfg'(no_std_atomic64)' --check-cfg cfg'(no_target_has_atomic)' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_core-1.0.226/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-e386c3d490144c22-stdout \
@@ -24416,9 +23579,6 @@ COPY --link --from=dep-n-serde_core-1.0.226-e386c3d490144c22 /tmp/clis-bottom_0-
 ##         CARGO_PKG_VERSION_PRE= \
 ##         OUT_DIR=/tmp/clis-bottom_0-11-4/release/build/serde_core-cc6da97a70fe7bbb/out \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name serde_core --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --cfg feature'="alloc"' --cfg feature'="default"' --cfg feature'="result"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "rc", "result", "std", "unstable"))' -C metadata'=aa1e650519c8b2bb' -C extra-filename'=-e386c3d490144c22' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn --check-cfg cfg'(no_core_cstr)' --check-cfg cfg'(no_core_error)' --check-cfg cfg'(no_core_net)' --check-cfg cfg'(no_core_num_saturating)' --check-cfg cfg'(no_diagnostic_namespace)' --check-cfg cfg'(no_serde_derive)' --check-cfg cfg'(no_std_atomic)' --check-cfg cfg'(no_std_atomic64)' --check-cfg cfg'(no_target_has_atomic)' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_core-1.0.226/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-e386c3d490144c22-stdout \
@@ -24466,9 +23626,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=226 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name serde_derive --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type proc-macro --emit dep-info,link -C prefer-dynamic -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="default"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "deserialize_in_place"))' -C metadata'=518434c22bbd0697' -C extra-filename'=-f819c6fdab92cab2' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern proc_macro2'=/tmp/clis-bottom_0-11-4/release/deps/libproc_macro2-a6a685fcaf51819c.rlib' --extern quote'=/tmp/clis-bottom_0-11-4/release/deps/libquote-fe88bef665d31034.rlib' --extern syn'=/tmp/clis-bottom_0-11-4/release/deps/libsyn-d8ac7146e5acfe07.rlib' --extern proc_macro --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_derive-1.0.226/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-f819c6fdab92cab2-stdout \
@@ -24562,9 +23719,6 @@ COPY --link --from=dep-n-serde_derive-1.0.226-f819c6fdab92cab2 /tmp/clis-bottom_
 ##         CARGO_PKG_VERSION_PATCH=226 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name serde_derive --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type proc-macro --emit dep-info,link -C prefer-dynamic -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="default"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "deserialize_in_place"))' -C metadata'=518434c22bbd0697' -C extra-filename'=-f819c6fdab92cab2' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern proc_macro2'=/tmp/clis-bottom_0-11-4/release/deps/libproc_macro2-a6a685fcaf51819c.rlib' --extern quote'=/tmp/clis-bottom_0-11-4/release/deps/libquote-fe88bef665d31034.rlib' --extern syn'=/tmp/clis-bottom_0-11-4/release/deps/libsyn-d8ac7146e5acfe07.rlib' --extern proc_macro --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_derive-1.0.226/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-f819c6fdab92cab2-stdout \
@@ -24627,9 +23781,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=226 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="derive"' --cfg feature'="serde_derive"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "derive", "rc", "serde_derive", "std", "unstable"))' -C metadata'=166ca1fccd88799f' -C extra-filename'=-602c0ea171ee5243' --out-dir /tmp/clis-bottom_0-11-4/release/build/serde-602c0ea171ee5243 -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.226/build.rs \
         1>          /tmp/clis-bottom_0-11-4/release/build/serde-602c0ea171ee5243/out-602c0ea171ee5243-stdout \
@@ -24713,9 +23864,6 @@ COPY --link --from=dep-x-serde-1.0.226-602c0ea171ee5243 /tmp/clis-bottom_0-11-4/
 ##         CARGO_PKG_VERSION_PATCH=226 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="derive"' --cfg feature'="serde_derive"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "derive", "rc", "serde_derive", "std", "unstable"))' -C metadata'=166ca1fccd88799f' -C extra-filename'=-602c0ea171ee5243' --out-dir /tmp/clis-bottom_0-11-4/release/build/serde-602c0ea171ee5243 -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.226/build.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/build/serde-602c0ea171ee5243/out-602c0ea171ee5243-stdout \
@@ -24784,9 +23932,6 @@ RUN \
         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
         TARGET=x86_64-unknown-linux-gnu \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-bottom_0-11-4/release/build/serde-602c0ea171ee5243/build-script-build \
         1>          /tmp/clis-bottom_0-11-4/release/build/serde-12978f264b000085/out/out-12978f264b000085-stdout \
@@ -24870,9 +24015,6 @@ COPY --link --from=run-z-serde-1.0.226-12978f264b000085 /tmp/clis-bottom_0-11-4/
 ##         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
 ##         TARGET=x86_64-unknown-linux-gnu \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-bottom_0-11-4/release/build/serde-602c0ea171ee5243/build-script-build \
 ##         1>          /tmp/clis-bottom_0-11-4/release/build/serde-12978f264b000085/out/out-12978f264b000085-stdout \
@@ -24928,9 +24070,6 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         OUT_DIR=/tmp/clis-bottom_0-11-4/release/build/serde-12978f264b000085/out \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name serde --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --cfg feature'="default"' --cfg feature'="derive"' --cfg feature'="serde_derive"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "derive", "rc", "serde_derive", "std", "unstable"))' -C metadata'=a3d7f8ecad4bbe30' -C extra-filename'=-4fa987dce710c612' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern serde_core'=/tmp/clis-bottom_0-11-4/release/deps/libserde_core-e386c3d490144c22.rmeta' --extern serde_derive'=/tmp/clis-bottom_0-11-4/release/deps/libserde_derive-f819c6fdab92cab2.so' --cap-lints warn --check-cfg cfg'(no_diagnostic_namespace)' --check-cfg cfg'(no_serde_derive)' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.226/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-4fa987dce710c612-stdout \
@@ -25082,9 +24221,6 @@ COPY --link --from=dep-n-serde-1.0.226-4fa987dce710c612 /tmp/clis-bottom_0-11-4/
 ##         CARGO_PKG_VERSION_PRE= \
 ##         OUT_DIR=/tmp/clis-bottom_0-11-4/release/build/serde-12978f264b000085/out \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name serde --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --cfg feature'="default"' --cfg feature'="derive"' --cfg feature'="serde_derive"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "derive", "rc", "serde_derive", "std", "unstable"))' -C metadata'=a3d7f8ecad4bbe30' -C extra-filename'=-4fa987dce710c612' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern serde_core'=/tmp/clis-bottom_0-11-4/release/deps/libserde_core-e386c3d490144c22.rmeta' --extern serde_derive'=/tmp/clis-bottom_0-11-4/release/deps/libserde_derive-f819c6fdab92cab2.so' --cap-lints warn --check-cfg cfg'(no_diagnostic_namespace)' --check-cfg cfg'(no_serde_derive)' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.226/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-4fa987dce710c612-stdout \
@@ -25128,9 +24264,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name lazycell --edition 2015 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("clippy", "nightly", "nightly-testing", "serde"))' -C metadata'=d192cf42bb44bceb' -C extra-filename'=-17ad1b883e8355fd' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/lazycell-1.3.0/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-17ad1b883e8355fd-stdout \
@@ -25200,9 +24333,6 @@ COPY --link --from=dep-n-lazycell-1.3.0-17ad1b883e8355fd /tmp/clis-bottom_0-11-4
 ##         CARGO_PKG_VERSION_PATCH=0 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name lazycell --edition 2015 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("clippy", "nightly", "nightly-testing", "serde"))' -C metadata'=d192cf42bb44bceb' -C extra-filename'=-17ad1b883e8355fd' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/lazycell-1.3.0/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-17ad1b883e8355fd-stdout \
@@ -25266,9 +24396,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=19 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "i128", "libm", "std"))' -C metadata'=c8792dc155f4c144' -C extra-filename'=-c0d98f190c79d7e9' --out-dir /tmp/clis-bottom_0-11-4/release/build/num-traits-c0d98f190c79d7e9 -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern autocfg'=/tmp/clis-bottom_0-11-4/release/deps/libautocfg-54801e684ac31c95.rlib' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-traits-0.2.19/build.rs \
         1>          /tmp/clis-bottom_0-11-4/release/build/num-traits-c0d98f190c79d7e9/out-c0d98f190c79d7e9-stdout \
@@ -25358,9 +24485,6 @@ COPY --link --from=dep-x-num-traits-0.2.19-c0d98f190c79d7e9 /tmp/clis-bottom_0-1
 ##         CARGO_PKG_VERSION_PATCH=19 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "i128", "libm", "std"))' -C metadata'=c8792dc155f4c144' -C extra-filename'=-c0d98f190c79d7e9' --out-dir /tmp/clis-bottom_0-11-4/release/build/num-traits-c0d98f190c79d7e9 -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern autocfg'=/tmp/clis-bottom_0-11-4/release/deps/libautocfg-54801e684ac31c95.rlib' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-traits-0.2.19/build.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/build/num-traits-c0d98f190c79d7e9/out-c0d98f190c79d7e9-stdout \
@@ -25426,9 +24550,6 @@ RUN \
         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
         TARGET=x86_64-unknown-linux-gnu \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-bottom_0-11-4/release/build/num-traits-c0d98f190c79d7e9/build-script-build \
         1>          /tmp/clis-bottom_0-11-4/release/build/num-traits-86226c8ef4e3b172/out/out-86226c8ef4e3b172-stdout \
@@ -25511,9 +24632,6 @@ COPY --link --from=run-z-num-traits-0.2.19-86226c8ef4e3b172 /tmp/clis-bottom_0-1
 ##         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
 ##         TARGET=x86_64-unknown-linux-gnu \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-bottom_0-11-4/release/build/num-traits-c0d98f190c79d7e9/build-script-build \
 ##         1>          /tmp/clis-bottom_0-11-4/release/build/num-traits-86226c8ef4e3b172/out/out-86226c8ef4e3b172-stdout \
@@ -25557,9 +24675,6 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         OUT_DIR=/tmp/clis-bottom_0-11-4/release/build/num-traits-86226c8ef4e3b172/out \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name num_traits --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "i128", "libm", "std"))' -C metadata'=d14074c934f68fd5' -C extra-filename'=-fe709d6b7b792595' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn --cfg has_total_cmp --check-cfg cfg'(has_total_cmp)' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-traits-0.2.19/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-fe709d6b7b792595-stdout \
@@ -25638,9 +24753,6 @@ COPY --link --from=dep-n-num-traits-0.2.19-fe709d6b7b792595 /tmp/clis-bottom_0-1
 ##         CARGO_PKG_VERSION_PRE= \
 ##         OUT_DIR=/tmp/clis-bottom_0-11-4/release/build/num-traits-86226c8ef4e3b172/out \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name num_traits --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "i128", "libm", "std"))' -C metadata'=d14074c934f68fd5' -C extra-filename'=-fe709d6b7b792595' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn --cfg has_total_cmp --check-cfg cfg'(has_total_cmp)' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-traits-0.2.19/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-fe709d6b7b792595-stdout \
@@ -25706,9 +24818,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name build_script_build --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("const-generics", "force_unix_path_separator", "i128", "no_std", "scale-info", "scale_info", "strict"))' -C metadata'=3535781fbd5f8f59' -C extra-filename'=-01714a3865cb1388' --out-dir /tmp/clis-bottom_0-11-4/release/build/typenum-01714a3865cb1388 -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/typenum-1.18.0/build.rs \
         1>          /tmp/clis-bottom_0-11-4/release/build/typenum-01714a3865cb1388/out-01714a3865cb1388-stdout \
@@ -25795,9 +24904,6 @@ COPY --link --from=dep-x-typenum-1.18.0-01714a3865cb1388 /tmp/clis-bottom_0-11-4
 ##         CARGO_PKG_VERSION_PATCH=0 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name build_script_build --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("const-generics", "force_unix_path_separator", "i128", "no_std", "scale-info", "scale_info", "strict"))' -C metadata'=3535781fbd5f8f59' -C extra-filename'=-01714a3865cb1388' --out-dir /tmp/clis-bottom_0-11-4/release/build/typenum-01714a3865cb1388 -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/typenum-1.18.0/build.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/build/typenum-01714a3865cb1388/out-01714a3865cb1388-stdout \
@@ -25865,9 +24971,6 @@ RUN \
         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
         TARGET=x86_64-unknown-linux-gnu \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-bottom_0-11-4/release/build/typenum-01714a3865cb1388/build-script-build \
         1>          /tmp/clis-bottom_0-11-4/release/build/typenum-d9a335b83768a642/out/out-d9a335b83768a642-stdout \
@@ -25946,9 +25049,6 @@ COPY --link --from=run-z-typenum-1.18.0-d9a335b83768a642 /tmp/clis-bottom_0-11-4
 ##         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
 ##         TARGET=x86_64-unknown-linux-gnu \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-bottom_0-11-4/release/build/typenum-01714a3865cb1388/build-script-build \
 ##         1>          /tmp/clis-bottom_0-11-4/release/build/typenum-d9a335b83768a642/out/out-d9a335b83768a642-stdout \
@@ -25995,9 +25095,6 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         OUT_DIR=/tmp/clis-bottom_0-11-4/release/build/typenum-d9a335b83768a642/out \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name typenum --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("const-generics", "force_unix_path_separator", "i128", "no_std", "scale-info", "scale_info", "strict"))' -C metadata'=55bd9a121f5d5f9f' -C extra-filename'=-28fef2c975a78e11' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/typenum-1.18.0/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-28fef2c975a78e11-stdout \
@@ -26078,9 +25175,6 @@ COPY --link --from=dep-n-typenum-1.18.0-28fef2c975a78e11 /tmp/clis-bottom_0-11-4
 ##         CARGO_PKG_VERSION_PRE= \
 ##         OUT_DIR=/tmp/clis-bottom_0-11-4/release/build/typenum-d9a335b83768a642/out \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name typenum --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("const-generics", "force_unix_path_separator", "i128", "no_std", "scale-info", "scale_info", "strict"))' -C metadata'=55bd9a121f5d5f9f' -C extra-filename'=-28fef2c975a78e11' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/typenum-1.18.0/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-28fef2c975a78e11-stdout \
@@ -26131,9 +25225,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name uom --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --cfg feature'="autoconvert"' --cfg feature'="default"' --cfg feature'="f32"' --cfg feature'="f64"' --cfg feature'="si"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("autoconvert", "bigint", "bigint-support", "bigrational", "biguint", "complex-support", "complex32", "complex64", "default", "f32", "f64", "i128", "i16", "i32", "i64", "i8", "isize", "num-bigint", "num-complex", "num-rational", "rational", "rational-support", "rational32", "rational64", "serde", "si", "std", "try-from", "u128", "u16", "u32", "u64", "u8", "use_serde", "usize"))' -C metadata'=334f91ac3353a3e1' -C extra-filename'=-f8a67bb39d66d364' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern num_traits'=/tmp/clis-bottom_0-11-4/release/deps/libnum_traits-fe709d6b7b792595.rmeta' --extern typenum'=/tmp/clis-bottom_0-11-4/release/deps/libtypenum-28fef2c975a78e11.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/uom-0.37.0/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-f8a67bb39d66d364-stdout \
@@ -26284,9 +25375,6 @@ COPY --link --from=dep-n-uom-0.37.0-f8a67bb39d66d364 /tmp/clis-bottom_0-11-4/rel
 ##         CARGO_PKG_VERSION_PATCH=0 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name uom --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --cfg feature'="autoconvert"' --cfg feature'="default"' --cfg feature'="f32"' --cfg feature'="f64"' --cfg feature'="si"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("autoconvert", "bigint", "bigint-support", "bigrational", "biguint", "complex-support", "complex32", "complex64", "default", "f32", "f64", "i128", "i16", "i32", "i64", "i8", "isize", "num-bigint", "num-complex", "num-rational", "rational", "rational-support", "rational32", "rational64", "serde", "si", "std", "try-from", "u128", "u16", "u32", "u64", "u8", "use_serde", "usize"))' -C metadata'=334f91ac3353a3e1' -C extra-filename'=-f8a67bb39d66d364' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern num_traits'=/tmp/clis-bottom_0-11-4/release/deps/libnum_traits-fe709d6b7b792595.rmeta' --extern typenum'=/tmp/clis-bottom_0-11-4/release/deps/libtypenum-28fef2c975a78e11.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/uom-0.37.0/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-f8a67bb39d66d364-stdout \
@@ -26349,9 +25437,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=2 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("config-schema", "schemars", "serde"))' -C metadata'=36b4b71bc984b610' -C extra-filename'=-6cb10c9ab2055372' --out-dir /tmp/clis-bottom_0-11-4/release/build/starship-battery-6cb10c9ab2055372 -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/starship-battery-0.10.2/build.rs \
         1>          /tmp/clis-bottom_0-11-4/release/build/starship-battery-6cb10c9ab2055372/out-6cb10c9ab2055372-stdout \
@@ -26435,9 +25520,6 @@ COPY --link --from=dep-x-starship-battery-0.10.2-6cb10c9ab2055372 /tmp/clis-bott
 ##         CARGO_PKG_VERSION_PATCH=2 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("config-schema", "schemars", "serde"))' -C metadata'=36b4b71bc984b610' -C extra-filename'=-6cb10c9ab2055372' --out-dir /tmp/clis-bottom_0-11-4/release/build/starship-battery-6cb10c9ab2055372 -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/starship-battery-0.10.2/build.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/build/starship-battery-6cb10c9ab2055372/out-6cb10c9ab2055372-stdout \
@@ -26502,9 +25584,6 @@ RUN \
         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
         TARGET=x86_64-unknown-linux-gnu \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-bottom_0-11-4/release/build/starship-battery-6cb10c9ab2055372/build-script-build \
         1>          /tmp/clis-bottom_0-11-4/release/build/starship-battery-bfd725a404af7a25/out/out-bfd725a404af7a25-stdout \
@@ -26578,9 +25657,6 @@ COPY --link --from=run-z-starship-battery-0.10.2-bfd725a404af7a25 /tmp/clis-bott
 ##         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
 ##         TARGET=x86_64-unknown-linux-gnu \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-bottom_0-11-4/release/build/starship-battery-6cb10c9ab2055372/build-script-build \
 ##         1>          /tmp/clis-bottom_0-11-4/release/build/starship-battery-bfd725a404af7a25/out/out-bfd725a404af7a25-stdout \
@@ -26637,9 +25713,6 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         OUT_DIR=/tmp/clis-bottom_0-11-4/release/build/starship-battery-bfd725a404af7a25/out \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name starship_battery --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("config-schema", "schemars", "serde"))' -C metadata'=4dac9edb3bc1cfac' -C extra-filename'=-1c1146852062883c' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern cfg_if'=/tmp/clis-bottom_0-11-4/release/deps/libcfg_if-bcc7b80470034230.rmeta' --extern lazycell'=/tmp/clis-bottom_0-11-4/release/deps/liblazycell-17ad1b883e8355fd.rmeta' --extern num_traits'=/tmp/clis-bottom_0-11-4/release/deps/libnum_traits-fe709d6b7b792595.rmeta' --extern uom'=/tmp/clis-bottom_0-11-4/release/deps/libuom-f8a67bb39d66d364.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/starship-battery-0.10.2/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-1c1146852062883c-stdout \
@@ -26796,9 +25869,6 @@ COPY --link --from=dep-n-starship-battery-0.10.2-1c1146852062883c /tmp/clis-bott
 ##         CARGO_PKG_VERSION_PRE= \
 ##         OUT_DIR=/tmp/clis-bottom_0-11-4/release/build/starship-battery-bfd725a404af7a25/out \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name starship_battery --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("config-schema", "schemars", "serde"))' -C metadata'=4dac9edb3bc1cfac' -C extra-filename'=-1c1146852062883c' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern cfg_if'=/tmp/clis-bottom_0-11-4/release/deps/libcfg_if-bcc7b80470034230.rmeta' --extern lazycell'=/tmp/clis-bottom_0-11-4/release/deps/liblazycell-17ad1b883e8355fd.rmeta' --extern num_traits'=/tmp/clis-bottom_0-11-4/release/deps/libnum_traits-fe709d6b7b792595.rmeta' --extern uom'=/tmp/clis-bottom_0-11-4/release/deps/libuom-f8a67bb39d66d364.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/starship-battery-0.10.2/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-1c1146852062883c-stdout \
@@ -26846,9 +25916,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name sysinfo --edition 2024 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --cfg feature'="component"' --cfg feature'="default"' --cfg feature'="disk"' --cfg feature'="network"' --cfg feature'="objc2-io-kit"' --cfg feature'="system"' --cfg feature'="user"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("apple-app-store", "apple-sandbox", "c-interface", "component", "debug", "default", "disk", "linux-netdevs", "linux-tmpfs", "multithread", "network", "objc2-core-foundation", "objc2-io-kit", "serde", "system", "unknown-ci", "user", "windows"))' -C metadata'=8fd9344ec7ceba63' -C extra-filename'=-b88ad5a61ec178e5' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern libc'=/tmp/clis-bottom_0-11-4/release/deps/liblibc-f9a7f201e668dfaf.rmeta' --extern memchr'=/tmp/clis-bottom_0-11-4/release/deps/libmemchr-c80d603364c0d236.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/sysinfo-0.37.0/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-b88ad5a61ec178e5-stdout \
@@ -26942,9 +26009,6 @@ COPY --link --from=dep-n-sysinfo-0.37.0-b88ad5a61ec178e5 /tmp/clis-bottom_0-11-4
 ##         CARGO_PKG_VERSION_PATCH=0 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name sysinfo --edition 2024 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --cfg feature'="component"' --cfg feature'="default"' --cfg feature'="disk"' --cfg feature'="network"' --cfg feature'="objc2-io-kit"' --cfg feature'="system"' --cfg feature'="user"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("apple-app-store", "apple-sandbox", "c-interface", "component", "debug", "default", "disk", "linux-netdevs", "linux-tmpfs", "multithread", "network", "objc2-core-foundation", "objc2-io-kit", "serde", "system", "unknown-ci", "user", "windows"))' -C metadata'=8fd9344ec7ceba63' -C extra-filename'=-b88ad5a61ec178e5' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern libc'=/tmp/clis-bottom_0-11-4/release/deps/liblibc-f9a7f201e668dfaf.rmeta' --extern memchr'=/tmp/clis-bottom_0-11-4/release/deps/libmemchr-c80d603364c0d236.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/sysinfo-0.37.0/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-b88ad5a61ec178e5-stdout \
@@ -26988,9 +26052,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=14 \
         CARGO_PKG_VERSION_PRE=alpha \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name timeless --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --deny clippy'::unimplemented' --deny clippy'::todo' --deny rust_2018_idioms --deny clippy'::missing_safety_doc' --deny rustdoc'::missing_crate_level_docs' --deny rustdoc'::broken_intra_doc_links' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=4742ea5d5a5189a5' -C extra-filename'=-3f9985f66e9630d5' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/timeless-0.0.14-alpha/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-3f9985f66e9630d5-stdout \
@@ -27057,9 +26118,6 @@ COPY --link --from=dep-n-timeless-0.0.14-alpha-3f9985f66e9630d5 /tmp/clis-bottom
 ##         CARGO_PKG_VERSION_PATCH=14 \
 ##         CARGO_PKG_VERSION_PRE=alpha \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name timeless --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --deny clippy'::unimplemented' --deny clippy'::todo' --deny rust_2018_idioms --deny clippy'::missing_safety_doc' --deny rustdoc'::missing_crate_level_docs' --deny rustdoc'::broken_intra_doc_links' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=4742ea5d5a5189a5' -C extra-filename'=-3f9985f66e9630d5' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/timeless-0.0.14-alpha/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-3f9985f66e9630d5-stdout \
@@ -27106,9 +26164,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=2 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name serde_spanned --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --warn rust_2018_idioms --warn clippy'::zero_sized_map_values' --warn clippy'::wildcard_imports' --warn clippy'::verbose_file_reads' --warn clippy'::use_self' --warn unused_qualifications --warn unused_macro_rules --warn unused_lifetimes --warn unsafe_op_in_unsafe_fn --warn unreachable_pub --allow unnameable_types --warn clippy'::uninlined_format_args' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::todo' --warn clippy'::string_to_string' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_add_assign' --warn clippy'::string_add' --warn clippy'::str_to_string' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::self_named_module_files' --warn clippy'::same_functions_in_if_condition' --allow clippy'::result_large_err' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::ref_option_ref' --warn clippy'::redundant_feature_names' --warn clippy'::rc_mutex' --warn clippy'::ptr_as_ptr' --warn clippy'::path_buf_push_overwrite' --warn clippy'::negative_feature_names' --warn clippy'::needless_for_each' --allow clippy'::needless_continue' --allow clippy'::needless_bool' --warn clippy'::mutex_integer' --warn clippy'::mem_forget' --warn clippy'::macro_use_imports' --warn clippy'::lossy_float_literal' --warn clippy'::linkedlist' --allow clippy'::let_and_return' --warn clippy'::large_types_passed_by_value' --warn clippy'::large_stack_arrays' --warn clippy'::large_digit_groups' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::infinite_loop' --warn clippy'::inefficient_to_string' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::imprecise_flops' --warn clippy'::implicit_clone' --allow clippy'::if_same_then_else' --allow clippy'::get_first' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::fn_params_excessive_bools' --warn clippy'::float_cmp_const' --warn clippy'::flat_map_option' --warn clippy'::filter_map_next' --warn clippy'::fallible_impl_from' --warn clippy'::explicit_into_iter_loop' --warn clippy'::explicit_deref_methods' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::enum_glob_use' --warn clippy'::empty_enum' --warn clippy'::doc_markdown' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::dbg_macro' --warn clippy'::create_dir' --allow clippy'::collapsible_else_if' --warn clippy'::checked_conversions' --allow clippy'::branches_sharing_code' --allow clippy'::bool_assert_comparison' --cfg feature'="alloc"' --cfg feature'="default"' --cfg feature'="serde"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "serde", "std"))' -C metadata'=0055d57d94f105c9' -C extra-filename'=-486f5010721ca03f' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern serde_core'=/tmp/clis-bottom_0-11-4/release/deps/libserde_core-e386c3d490144c22.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_spanned-1.0.2/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-486f5010721ca03f-stdout \
@@ -27196,9 +26251,6 @@ COPY --link --from=dep-n-serde_spanned-1.0.2-486f5010721ca03f /tmp/clis-bottom_0
 ##         CARGO_PKG_VERSION_PATCH=2 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name serde_spanned --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --warn rust_2018_idioms --warn clippy'::zero_sized_map_values' --warn clippy'::wildcard_imports' --warn clippy'::verbose_file_reads' --warn clippy'::use_self' --warn unused_qualifications --warn unused_macro_rules --warn unused_lifetimes --warn unsafe_op_in_unsafe_fn --warn unreachable_pub --allow unnameable_types --warn clippy'::uninlined_format_args' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::todo' --warn clippy'::string_to_string' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_add_assign' --warn clippy'::string_add' --warn clippy'::str_to_string' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::self_named_module_files' --warn clippy'::same_functions_in_if_condition' --allow clippy'::result_large_err' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::ref_option_ref' --warn clippy'::redundant_feature_names' --warn clippy'::rc_mutex' --warn clippy'::ptr_as_ptr' --warn clippy'::path_buf_push_overwrite' --warn clippy'::negative_feature_names' --warn clippy'::needless_for_each' --allow clippy'::needless_continue' --allow clippy'::needless_bool' --warn clippy'::mutex_integer' --warn clippy'::mem_forget' --warn clippy'::macro_use_imports' --warn clippy'::lossy_float_literal' --warn clippy'::linkedlist' --allow clippy'::let_and_return' --warn clippy'::large_types_passed_by_value' --warn clippy'::large_stack_arrays' --warn clippy'::large_digit_groups' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::infinite_loop' --warn clippy'::inefficient_to_string' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::imprecise_flops' --warn clippy'::implicit_clone' --allow clippy'::if_same_then_else' --allow clippy'::get_first' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::fn_params_excessive_bools' --warn clippy'::float_cmp_const' --warn clippy'::flat_map_option' --warn clippy'::filter_map_next' --warn clippy'::fallible_impl_from' --warn clippy'::explicit_into_iter_loop' --warn clippy'::explicit_deref_methods' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::enum_glob_use' --warn clippy'::empty_enum' --warn clippy'::doc_markdown' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::dbg_macro' --warn clippy'::create_dir' --allow clippy'::collapsible_else_if' --warn clippy'::checked_conversions' --allow clippy'::branches_sharing_code' --allow clippy'::bool_assert_comparison' --cfg feature'="alloc"' --cfg feature'="default"' --cfg feature'="serde"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "serde", "std"))' -C metadata'=0055d57d94f105c9' -C extra-filename'=-486f5010721ca03f' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern serde_core'=/tmp/clis-bottom_0-11-4/release/deps/libserde_core-e386c3d490144c22.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_spanned-1.0.2/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-486f5010721ca03f-stdout \
@@ -27245,9 +26297,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=2 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name toml_datetime --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --warn rust_2018_idioms --warn clippy'::zero_sized_map_values' --warn clippy'::wildcard_imports' --warn clippy'::verbose_file_reads' --warn clippy'::use_self' --warn unused_qualifications --warn unused_macro_rules --warn unused_lifetimes --warn unsafe_op_in_unsafe_fn --warn unreachable_pub --allow unnameable_types --warn clippy'::uninlined_format_args' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::todo' --warn clippy'::string_to_string' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_add_assign' --warn clippy'::string_add' --warn clippy'::str_to_string' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::self_named_module_files' --warn clippy'::same_functions_in_if_condition' --allow clippy'::result_large_err' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::ref_option_ref' --warn clippy'::redundant_feature_names' --warn clippy'::rc_mutex' --warn clippy'::ptr_as_ptr' --warn clippy'::path_buf_push_overwrite' --warn clippy'::negative_feature_names' --warn clippy'::needless_for_each' --allow clippy'::needless_continue' --allow clippy'::needless_bool' --warn clippy'::mutex_integer' --warn clippy'::mem_forget' --warn clippy'::macro_use_imports' --warn clippy'::lossy_float_literal' --warn clippy'::linkedlist' --allow clippy'::let_and_return' --warn clippy'::large_types_passed_by_value' --warn clippy'::large_stack_arrays' --warn clippy'::large_digit_groups' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::infinite_loop' --warn clippy'::inefficient_to_string' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::imprecise_flops' --warn clippy'::implicit_clone' --allow clippy'::if_same_then_else' --allow clippy'::get_first' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::fn_params_excessive_bools' --warn clippy'::float_cmp_const' --warn clippy'::flat_map_option' --warn clippy'::filter_map_next' --warn clippy'::fallible_impl_from' --warn clippy'::explicit_into_iter_loop' --warn clippy'::explicit_deref_methods' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::enum_glob_use' --warn clippy'::empty_enum' --warn clippy'::doc_markdown' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::dbg_macro' --warn clippy'::create_dir' --allow clippy'::collapsible_else_if' --warn clippy'::checked_conversions' --allow clippy'::branches_sharing_code' --allow clippy'::bool_assert_comparison' --cfg feature'="alloc"' --cfg feature'="default"' --cfg feature'="serde"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "serde", "std"))' -C metadata'=54f668a534a3c03c' -C extra-filename'=-a6131364fdfb66ea' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern serde_core'=/tmp/clis-bottom_0-11-4/release/deps/libserde_core-e386c3d490144c22.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/toml_datetime-0.7.2/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-a6131364fdfb66ea-stdout \
@@ -27335,9 +26384,6 @@ COPY --link --from=dep-n-toml_datetime-0.7.2-a6131364fdfb66ea /tmp/clis-bottom_0
 ##         CARGO_PKG_VERSION_PATCH=2 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name toml_datetime --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --warn rust_2018_idioms --warn clippy'::zero_sized_map_values' --warn clippy'::wildcard_imports' --warn clippy'::verbose_file_reads' --warn clippy'::use_self' --warn unused_qualifications --warn unused_macro_rules --warn unused_lifetimes --warn unsafe_op_in_unsafe_fn --warn unreachable_pub --allow unnameable_types --warn clippy'::uninlined_format_args' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::todo' --warn clippy'::string_to_string' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_add_assign' --warn clippy'::string_add' --warn clippy'::str_to_string' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::self_named_module_files' --warn clippy'::same_functions_in_if_condition' --allow clippy'::result_large_err' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::ref_option_ref' --warn clippy'::redundant_feature_names' --warn clippy'::rc_mutex' --warn clippy'::ptr_as_ptr' --warn clippy'::path_buf_push_overwrite' --warn clippy'::negative_feature_names' --warn clippy'::needless_for_each' --allow clippy'::needless_continue' --allow clippy'::needless_bool' --warn clippy'::mutex_integer' --warn clippy'::mem_forget' --warn clippy'::macro_use_imports' --warn clippy'::lossy_float_literal' --warn clippy'::linkedlist' --allow clippy'::let_and_return' --warn clippy'::large_types_passed_by_value' --warn clippy'::large_stack_arrays' --warn clippy'::large_digit_groups' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::infinite_loop' --warn clippy'::inefficient_to_string' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::imprecise_flops' --warn clippy'::implicit_clone' --allow clippy'::if_same_then_else' --allow clippy'::get_first' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::fn_params_excessive_bools' --warn clippy'::float_cmp_const' --warn clippy'::flat_map_option' --warn clippy'::filter_map_next' --warn clippy'::fallible_impl_from' --warn clippy'::explicit_into_iter_loop' --warn clippy'::explicit_deref_methods' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::enum_glob_use' --warn clippy'::empty_enum' --warn clippy'::doc_markdown' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::dbg_macro' --warn clippy'::create_dir' --allow clippy'::collapsible_else_if' --warn clippy'::checked_conversions' --allow clippy'::branches_sharing_code' --allow clippy'::bool_assert_comparison' --cfg feature'="alloc"' --cfg feature'="default"' --cfg feature'="serde"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "serde", "std"))' -C metadata'=54f668a534a3c03c' -C extra-filename'=-a6131364fdfb66ea' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern serde_core'=/tmp/clis-bottom_0-11-4/release/deps/libserde_core-e386c3d490144c22.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/toml_datetime-0.7.2/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-a6131364fdfb66ea-stdout \
@@ -27381,9 +26427,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=13 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name winnow --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --warn rust_2018_idioms --warn clippy'::zero_sized_map_values' --allow clippy'::wildcard_imports' --warn clippy'::verbose_file_reads' --warn unused_macro_rules --warn unused_lifetimes --warn unsafe_op_in_unsafe_fn --warn unreachable_pub --warn unnameable_types --warn clippy'::uninlined_format_args' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::todo' --warn clippy'::string_to_string' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_add_assign' --warn clippy'::string_add' --warn clippy'::str_to_string' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::same_functions_in_if_condition' --allow clippy'::result_large_err' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::ref_option_ref' --warn clippy'::redundant_feature_names' --warn clippy'::rc_mutex' --warn clippy'::ptr_as_ptr' --warn clippy'::path_buf_push_overwrite' --warn clippy'::negative_feature_names' --warn clippy'::needless_for_each' --allow clippy'::needless_continue' --warn clippy'::mutex_integer' --warn clippy'::mem_forget' --warn clippy'::macro_use_imports' --warn clippy'::lossy_float_literal' --warn clippy'::linkedlist' --allow clippy'::let_and_return' --warn clippy'::large_types_passed_by_value' --warn clippy'::large_stack_arrays' --warn clippy'::large_digit_groups' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::infinite_loop' --warn clippy'::inefficient_to_string' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::imprecise_flops' --warn clippy'::implicit_clone' --allow clippy'::if_same_then_else' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::fn_params_excessive_bools' --warn clippy'::float_cmp_const' --warn clippy'::flat_map_option' --warn clippy'::filter_map_next' --warn clippy'::fallible_impl_from' --warn clippy'::explicit_into_iter_loop' --warn clippy'::explicit_deref_methods' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::enum_glob_use' --warn clippy'::empty_enum' --warn clippy'::doc_markdown' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::dbg_macro' --warn clippy'::create_dir' --allow clippy'::collapsible_else_if' --warn clippy'::checked_conversions' --allow clippy'::branches_sharing_code' --allow clippy'::bool_assert_comparison' --cfg feature'="alloc"' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "debug", "default", "simd", "std", "unstable-doc", "unstable-recover"))' -C metadata'=91452b467a10993e' -C extra-filename'=-5ad81920c96388dd' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/winnow-0.7.13/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-5ad81920c96388dd-stdout \
@@ -27450,9 +26493,6 @@ COPY --link --from=dep-n-winnow-0.7.13-5ad81920c96388dd /tmp/clis-bottom_0-11-4/
 ##         CARGO_PKG_VERSION_PATCH=13 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name winnow --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --warn rust_2018_idioms --warn clippy'::zero_sized_map_values' --allow clippy'::wildcard_imports' --warn clippy'::verbose_file_reads' --warn unused_macro_rules --warn unused_lifetimes --warn unsafe_op_in_unsafe_fn --warn unreachable_pub --warn unnameable_types --warn clippy'::uninlined_format_args' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::todo' --warn clippy'::string_to_string' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_add_assign' --warn clippy'::string_add' --warn clippy'::str_to_string' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::same_functions_in_if_condition' --allow clippy'::result_large_err' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::ref_option_ref' --warn clippy'::redundant_feature_names' --warn clippy'::rc_mutex' --warn clippy'::ptr_as_ptr' --warn clippy'::path_buf_push_overwrite' --warn clippy'::negative_feature_names' --warn clippy'::needless_for_each' --allow clippy'::needless_continue' --warn clippy'::mutex_integer' --warn clippy'::mem_forget' --warn clippy'::macro_use_imports' --warn clippy'::lossy_float_literal' --warn clippy'::linkedlist' --allow clippy'::let_and_return' --warn clippy'::large_types_passed_by_value' --warn clippy'::large_stack_arrays' --warn clippy'::large_digit_groups' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::infinite_loop' --warn clippy'::inefficient_to_string' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::imprecise_flops' --warn clippy'::implicit_clone' --allow clippy'::if_same_then_else' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::fn_params_excessive_bools' --warn clippy'::float_cmp_const' --warn clippy'::flat_map_option' --warn clippy'::filter_map_next' --warn clippy'::fallible_impl_from' --warn clippy'::explicit_into_iter_loop' --warn clippy'::explicit_deref_methods' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::enum_glob_use' --warn clippy'::empty_enum' --warn clippy'::doc_markdown' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::dbg_macro' --warn clippy'::create_dir' --allow clippy'::collapsible_else_if' --warn clippy'::checked_conversions' --allow clippy'::branches_sharing_code' --allow clippy'::bool_assert_comparison' --cfg feature'="alloc"' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "debug", "default", "simd", "std", "unstable-doc", "unstable-recover"))' -C metadata'=91452b467a10993e' -C extra-filename'=-5ad81920c96388dd' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/winnow-0.7.13/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-5ad81920c96388dd-stdout \
@@ -27498,9 +26538,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=3 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name toml_parser --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --warn rust_2018_idioms --warn clippy'::zero_sized_map_values' --warn clippy'::wildcard_imports' --warn clippy'::verbose_file_reads' --warn clippy'::use_self' --warn unused_qualifications --warn unused_macro_rules --warn unused_lifetimes --warn unsafe_op_in_unsafe_fn --warn unreachable_pub --allow unnameable_types --warn clippy'::uninlined_format_args' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::todo' --warn clippy'::string_to_string' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_add_assign' --warn clippy'::string_add' --warn clippy'::str_to_string' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::self_named_module_files' --warn clippy'::same_functions_in_if_condition' --allow clippy'::result_large_err' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::ref_option_ref' --warn clippy'::redundant_feature_names' --warn clippy'::rc_mutex' --warn clippy'::ptr_as_ptr' --warn clippy'::path_buf_push_overwrite' --warn clippy'::negative_feature_names' --warn clippy'::needless_for_each' --allow clippy'::needless_continue' --allow clippy'::needless_bool' --warn clippy'::mutex_integer' --warn clippy'::mem_forget' --warn clippy'::macro_use_imports' --warn clippy'::lossy_float_literal' --warn clippy'::linkedlist' --allow clippy'::let_and_return' --warn clippy'::large_types_passed_by_value' --warn clippy'::large_stack_arrays' --warn clippy'::large_digit_groups' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::infinite_loop' --warn clippy'::inefficient_to_string' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::imprecise_flops' --warn clippy'::implicit_clone' --allow clippy'::if_same_then_else' --allow clippy'::get_first' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::fn_params_excessive_bools' --warn clippy'::float_cmp_const' --warn clippy'::flat_map_option' --warn clippy'::filter_map_next' --warn clippy'::fallible_impl_from' --warn clippy'::explicit_into_iter_loop' --warn clippy'::explicit_deref_methods' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::enum_glob_use' --warn clippy'::empty_enum' --warn clippy'::doc_markdown' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::dbg_macro' --warn clippy'::create_dir' --allow clippy'::collapsible_else_if' --warn clippy'::checked_conversions' --allow clippy'::branches_sharing_code' --allow clippy'::bool_assert_comparison' --cfg feature'="alloc"' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "debug", "default", "simd", "std", "unsafe"))' -C metadata'=78001e60a74a2604' -C extra-filename'=-71ba734f92c1b05b' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern winnow'=/tmp/clis-bottom_0-11-4/release/deps/libwinnow-5ad81920c96388dd.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/toml_parser-1.0.3/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-71ba734f92c1b05b-stdout \
@@ -27578,9 +26615,6 @@ COPY --link --from=dep-n-toml_parser-1.0.3-71ba734f92c1b05b /tmp/clis-bottom_0-1
 ##         CARGO_PKG_VERSION_PATCH=3 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name toml_parser --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --warn rust_2018_idioms --warn clippy'::zero_sized_map_values' --warn clippy'::wildcard_imports' --warn clippy'::verbose_file_reads' --warn clippy'::use_self' --warn unused_qualifications --warn unused_macro_rules --warn unused_lifetimes --warn unsafe_op_in_unsafe_fn --warn unreachable_pub --allow unnameable_types --warn clippy'::uninlined_format_args' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::todo' --warn clippy'::string_to_string' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_add_assign' --warn clippy'::string_add' --warn clippy'::str_to_string' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::self_named_module_files' --warn clippy'::same_functions_in_if_condition' --allow clippy'::result_large_err' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::ref_option_ref' --warn clippy'::redundant_feature_names' --warn clippy'::rc_mutex' --warn clippy'::ptr_as_ptr' --warn clippy'::path_buf_push_overwrite' --warn clippy'::negative_feature_names' --warn clippy'::needless_for_each' --allow clippy'::needless_continue' --allow clippy'::needless_bool' --warn clippy'::mutex_integer' --warn clippy'::mem_forget' --warn clippy'::macro_use_imports' --warn clippy'::lossy_float_literal' --warn clippy'::linkedlist' --allow clippy'::let_and_return' --warn clippy'::large_types_passed_by_value' --warn clippy'::large_stack_arrays' --warn clippy'::large_digit_groups' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::infinite_loop' --warn clippy'::inefficient_to_string' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::imprecise_flops' --warn clippy'::implicit_clone' --allow clippy'::if_same_then_else' --allow clippy'::get_first' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::fn_params_excessive_bools' --warn clippy'::float_cmp_const' --warn clippy'::flat_map_option' --warn clippy'::filter_map_next' --warn clippy'::fallible_impl_from' --warn clippy'::explicit_into_iter_loop' --warn clippy'::explicit_deref_methods' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::enum_glob_use' --warn clippy'::empty_enum' --warn clippy'::doc_markdown' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::dbg_macro' --warn clippy'::create_dir' --allow clippy'::collapsible_else_if' --warn clippy'::checked_conversions' --allow clippy'::branches_sharing_code' --allow clippy'::bool_assert_comparison' --cfg feature'="alloc"' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "debug", "default", "simd", "std", "unsafe"))' -C metadata'=78001e60a74a2604' -C extra-filename'=-71ba734f92c1b05b' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern winnow'=/tmp/clis-bottom_0-11-4/release/deps/libwinnow-5ad81920c96388dd.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/toml_parser-1.0.3/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-71ba734f92c1b05b-stdout \
@@ -27625,9 +26659,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=3 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name toml_writer --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --warn rust_2018_idioms --warn clippy'::zero_sized_map_values' --warn clippy'::wildcard_imports' --warn clippy'::verbose_file_reads' --warn clippy'::use_self' --warn unused_qualifications --warn unused_macro_rules --warn unused_lifetimes --warn unsafe_op_in_unsafe_fn --warn unreachable_pub --allow unnameable_types --warn clippy'::uninlined_format_args' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::todo' --warn clippy'::string_to_string' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_add_assign' --warn clippy'::string_add' --warn clippy'::str_to_string' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::self_named_module_files' --warn clippy'::same_functions_in_if_condition' --allow clippy'::result_large_err' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::ref_option_ref' --warn clippy'::redundant_feature_names' --warn clippy'::rc_mutex' --warn clippy'::ptr_as_ptr' --warn clippy'::path_buf_push_overwrite' --warn clippy'::negative_feature_names' --warn clippy'::needless_for_each' --allow clippy'::needless_continue' --allow clippy'::needless_bool' --warn clippy'::mutex_integer' --warn clippy'::mem_forget' --warn clippy'::macro_use_imports' --warn clippy'::lossy_float_literal' --warn clippy'::linkedlist' --allow clippy'::let_and_return' --warn clippy'::large_types_passed_by_value' --warn clippy'::large_stack_arrays' --warn clippy'::large_digit_groups' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::infinite_loop' --warn clippy'::inefficient_to_string' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::imprecise_flops' --warn clippy'::implicit_clone' --allow clippy'::if_same_then_else' --allow clippy'::get_first' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::fn_params_excessive_bools' --warn clippy'::float_cmp_const' --warn clippy'::flat_map_option' --warn clippy'::filter_map_next' --warn clippy'::fallible_impl_from' --warn clippy'::explicit_into_iter_loop' --warn clippy'::explicit_deref_methods' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::enum_glob_use' --warn clippy'::empty_enum' --warn clippy'::doc_markdown' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::dbg_macro' --warn clippy'::create_dir' --allow clippy'::collapsible_else_if' --warn clippy'::checked_conversions' --allow clippy'::branches_sharing_code' --allow clippy'::bool_assert_comparison' --cfg feature'="alloc"' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "std"))' -C metadata'=341c6b82684872eb' -C extra-filename'=-b0da495d45294c09' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/toml_writer-1.0.3/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-b0da495d45294c09-stdout \
@@ -27695,9 +26726,6 @@ COPY --link --from=dep-n-toml_writer-1.0.3-b0da495d45294c09 /tmp/clis-bottom_0-1
 ##         CARGO_PKG_VERSION_PATCH=3 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name toml_writer --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --warn rust_2018_idioms --warn clippy'::zero_sized_map_values' --warn clippy'::wildcard_imports' --warn clippy'::verbose_file_reads' --warn clippy'::use_self' --warn unused_qualifications --warn unused_macro_rules --warn unused_lifetimes --warn unsafe_op_in_unsafe_fn --warn unreachable_pub --allow unnameable_types --warn clippy'::uninlined_format_args' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::todo' --warn clippy'::string_to_string' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_add_assign' --warn clippy'::string_add' --warn clippy'::str_to_string' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::self_named_module_files' --warn clippy'::same_functions_in_if_condition' --allow clippy'::result_large_err' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::ref_option_ref' --warn clippy'::redundant_feature_names' --warn clippy'::rc_mutex' --warn clippy'::ptr_as_ptr' --warn clippy'::path_buf_push_overwrite' --warn clippy'::negative_feature_names' --warn clippy'::needless_for_each' --allow clippy'::needless_continue' --allow clippy'::needless_bool' --warn clippy'::mutex_integer' --warn clippy'::mem_forget' --warn clippy'::macro_use_imports' --warn clippy'::lossy_float_literal' --warn clippy'::linkedlist' --allow clippy'::let_and_return' --warn clippy'::large_types_passed_by_value' --warn clippy'::large_stack_arrays' --warn clippy'::large_digit_groups' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::infinite_loop' --warn clippy'::inefficient_to_string' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::imprecise_flops' --warn clippy'::implicit_clone' --allow clippy'::if_same_then_else' --allow clippy'::get_first' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::fn_params_excessive_bools' --warn clippy'::float_cmp_const' --warn clippy'::flat_map_option' --warn clippy'::filter_map_next' --warn clippy'::fallible_impl_from' --warn clippy'::explicit_into_iter_loop' --warn clippy'::explicit_deref_methods' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::enum_glob_use' --warn clippy'::empty_enum' --warn clippy'::doc_markdown' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::dbg_macro' --warn clippy'::create_dir' --allow clippy'::collapsible_else_if' --warn clippy'::checked_conversions' --allow clippy'::branches_sharing_code' --allow clippy'::bool_assert_comparison' --cfg feature'="alloc"' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "std"))' -C metadata'=341c6b82684872eb' -C extra-filename'=-b0da495d45294c09' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/toml_writer-1.0.3/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-b0da495d45294c09-stdout \
@@ -27764,9 +26792,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=6 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name toml_edit --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --warn rust_2018_idioms --warn clippy'::zero_sized_map_values' --warn clippy'::wildcard_imports' --warn clippy'::verbose_file_reads' --warn clippy'::use_self' --warn unused_qualifications --warn unused_macro_rules --warn unused_lifetimes --warn unsafe_op_in_unsafe_fn --warn unreachable_pub --allow unnameable_types --warn clippy'::uninlined_format_args' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::todo' --warn clippy'::string_to_string' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_add_assign' --warn clippy'::string_add' --warn clippy'::str_to_string' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::self_named_module_files' --warn clippy'::same_functions_in_if_condition' --allow clippy'::result_large_err' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::ref_option_ref' --warn clippy'::redundant_feature_names' --warn clippy'::rc_mutex' --warn clippy'::ptr_as_ptr' --warn clippy'::path_buf_push_overwrite' --warn clippy'::negative_feature_names' --warn clippy'::needless_for_each' --allow clippy'::needless_continue' --allow clippy'::needless_bool' --warn clippy'::mutex_integer' --warn clippy'::mem_forget' --warn clippy'::macro_use_imports' --warn clippy'::lossy_float_literal' --warn clippy'::linkedlist' --allow clippy'::let_and_return' --warn clippy'::large_types_passed_by_value' --warn clippy'::large_stack_arrays' --warn clippy'::large_digit_groups' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::infinite_loop' --warn clippy'::inefficient_to_string' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::imprecise_flops' --warn clippy'::implicit_clone' --allow clippy'::if_same_then_else' --allow clippy'::get_first' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::fn_params_excessive_bools' --warn clippy'::float_cmp_const' --warn clippy'::flat_map_option' --warn clippy'::filter_map_next' --warn clippy'::fallible_impl_from' --warn clippy'::explicit_into_iter_loop' --warn clippy'::explicit_deref_methods' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::enum_glob_use' --warn clippy'::empty_enum' --warn clippy'::doc_markdown' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::dbg_macro' --warn clippy'::create_dir' --allow clippy'::collapsible_else_if' --warn clippy'::checked_conversions' --allow clippy'::branches_sharing_code' --allow clippy'::bool_assert_comparison' --cfg feature'="default"' --cfg feature'="display"' --cfg feature'="parse"' --cfg feature'="serde"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("debug", "default", "display", "parse", "serde", "unbounded"))' -C metadata'=56a4af82314e191c' -C extra-filename'=-0c3cafbaba151b29' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern indexmap'=/tmp/clis-bottom_0-11-4/release/deps/libindexmap-b43e6c5f947e2f50.rmeta' --extern serde_core'=/tmp/clis-bottom_0-11-4/release/deps/libserde_core-e386c3d490144c22.rmeta' --extern serde_spanned'=/tmp/clis-bottom_0-11-4/release/deps/libserde_spanned-486f5010721ca03f.rmeta' --extern toml_datetime'=/tmp/clis-bottom_0-11-4/release/deps/libtoml_datetime-a6131364fdfb66ea.rmeta' --extern toml_parser'=/tmp/clis-bottom_0-11-4/release/deps/libtoml_parser-71ba734f92c1b05b.rmeta' --extern toml_writer'=/tmp/clis-bottom_0-11-4/release/deps/libtoml_writer-b0da495d45294c09.rmeta' --extern winnow'=/tmp/clis-bottom_0-11-4/release/deps/libwinnow-5ad81920c96388dd.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/toml_edit-0.23.6/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-0c3cafbaba151b29-stdout \
@@ -27964,9 +26989,6 @@ COPY --link --from=dep-n-toml_edit-0.23.6-0c3cafbaba151b29 /tmp/clis-bottom_0-11
 ##         CARGO_PKG_VERSION_PATCH=6 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name toml_edit --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --warn rust_2018_idioms --warn clippy'::zero_sized_map_values' --warn clippy'::wildcard_imports' --warn clippy'::verbose_file_reads' --warn clippy'::use_self' --warn unused_qualifications --warn unused_macro_rules --warn unused_lifetimes --warn unsafe_op_in_unsafe_fn --warn unreachable_pub --allow unnameable_types --warn clippy'::uninlined_format_args' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::todo' --warn clippy'::string_to_string' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_add_assign' --warn clippy'::string_add' --warn clippy'::str_to_string' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::self_named_module_files' --warn clippy'::same_functions_in_if_condition' --allow clippy'::result_large_err' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::ref_option_ref' --warn clippy'::redundant_feature_names' --warn clippy'::rc_mutex' --warn clippy'::ptr_as_ptr' --warn clippy'::path_buf_push_overwrite' --warn clippy'::negative_feature_names' --warn clippy'::needless_for_each' --allow clippy'::needless_continue' --allow clippy'::needless_bool' --warn clippy'::mutex_integer' --warn clippy'::mem_forget' --warn clippy'::macro_use_imports' --warn clippy'::lossy_float_literal' --warn clippy'::linkedlist' --allow clippy'::let_and_return' --warn clippy'::large_types_passed_by_value' --warn clippy'::large_stack_arrays' --warn clippy'::large_digit_groups' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::infinite_loop' --warn clippy'::inefficient_to_string' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::imprecise_flops' --warn clippy'::implicit_clone' --allow clippy'::if_same_then_else' --allow clippy'::get_first' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::fn_params_excessive_bools' --warn clippy'::float_cmp_const' --warn clippy'::flat_map_option' --warn clippy'::filter_map_next' --warn clippy'::fallible_impl_from' --warn clippy'::explicit_into_iter_loop' --warn clippy'::explicit_deref_methods' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::enum_glob_use' --warn clippy'::empty_enum' --warn clippy'::doc_markdown' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::dbg_macro' --warn clippy'::create_dir' --allow clippy'::collapsible_else_if' --warn clippy'::checked_conversions' --allow clippy'::branches_sharing_code' --allow clippy'::bool_assert_comparison' --cfg feature'="default"' --cfg feature'="display"' --cfg feature'="parse"' --cfg feature'="serde"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("debug", "default", "display", "parse", "serde", "unbounded"))' -C metadata'=56a4af82314e191c' -C extra-filename'=-0c3cafbaba151b29' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern indexmap'=/tmp/clis-bottom_0-11-4/release/deps/libindexmap-b43e6c5f947e2f50.rmeta' --extern serde_core'=/tmp/clis-bottom_0-11-4/release/deps/libserde_core-e386c3d490144c22.rmeta' --extern serde_spanned'=/tmp/clis-bottom_0-11-4/release/deps/libserde_spanned-486f5010721ca03f.rmeta' --extern toml_datetime'=/tmp/clis-bottom_0-11-4/release/deps/libtoml_datetime-a6131364fdfb66ea.rmeta' --extern toml_parser'=/tmp/clis-bottom_0-11-4/release/deps/libtoml_parser-71ba734f92c1b05b.rmeta' --extern toml_writer'=/tmp/clis-bottom_0-11-4/release/deps/libtoml_writer-b0da495d45294c09.rmeta' --extern winnow'=/tmp/clis-bottom_0-11-4/release/deps/libwinnow-5ad81920c96388dd.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/toml_edit-0.23.6/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-0c3cafbaba151b29-stdout \
@@ -28014,9 +27036,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name unicode_ellipsis --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --deny clippy'::unimplemented' --deny clippy'::todo' --deny rust_2018_idioms --deny clippy'::missing_safety_doc' --deny rustdoc'::missing_crate_level_docs' --deny rustdoc'::broken_intra_doc_links' --cfg feature'="default"' --cfg feature'="fish"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "fish"))' -C metadata'=47f7056eca0c0752' -C extra-filename'=-5655a7c92326394a' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern unicode_segmentation'=/tmp/clis-bottom_0-11-4/release/deps/libunicode_segmentation-c3cf906c5a4083dc.rmeta' --extern unicode_width'=/tmp/clis-bottom_0-11-4/release/deps/libunicode_width-f6f32a8a5a2fe2b5.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/unicode-ellipsis-0.3.0/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-5655a7c92326394a-stdout \
@@ -28107,9 +27126,6 @@ COPY --link --from=dep-n-unicode-ellipsis-0.3.0-5655a7c92326394a /tmp/clis-botto
 ##         CARGO_PKG_VERSION_PATCH=0 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name unicode_ellipsis --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --deny clippy'::unimplemented' --deny clippy'::todo' --deny rust_2018_idioms --deny clippy'::missing_safety_doc' --deny rustdoc'::missing_crate_level_docs' --deny rustdoc'::broken_intra_doc_links' --cfg feature'="default"' --cfg feature'="fish"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "fish"))' -C metadata'=47f7056eca0c0752' -C extra-filename'=-5655a7c92326394a' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern unicode_segmentation'=/tmp/clis-bottom_0-11-4/release/deps/libunicode_segmentation-c3cf906c5a4083dc.rmeta' --extern unicode_width'=/tmp/clis-bottom_0-11-4/release/deps/libunicode_width-f6f32a8a5a2fe2b5.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/unicode-ellipsis-0.3.0/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-5655a7c92326394a-stdout \
@@ -28151,9 +27167,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=11 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name anstyle --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' --warn rust_2018_idioms --warn clippy'::zero_sized_map_values' --warn clippy'::wildcard_imports' --warn clippy'::verbose_file_reads' --warn unused_qualifications --warn unused_macro_rules --warn unused_lifetimes --warn unsafe_op_in_unsafe_fn --warn unreachable_pub --warn unnameable_types --warn clippy'::uninlined_format_args' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::todo' --warn clippy'::string_to_string' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_add_assign' --warn clippy'::string_add' --warn clippy'::str_to_string' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::self_named_module_files' --warn clippy'::same_functions_in_if_condition' --allow clippy'::result_large_err' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::ref_option_ref' --warn clippy'::redundant_feature_names' --warn clippy'::rc_mutex' --warn clippy'::ptr_as_ptr' --warn clippy'::path_buf_push_overwrite' --warn clippy'::negative_feature_names' --warn clippy'::needless_for_each' --allow clippy'::needless_continue' --warn clippy'::mutex_integer' --warn clippy'::mem_forget' --warn clippy'::macro_use_imports' --warn clippy'::lossy_float_literal' --warn clippy'::linkedlist' --allow clippy'::let_and_return' --warn clippy'::large_types_passed_by_value' --warn clippy'::large_stack_arrays' --warn clippy'::large_digit_groups' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::infinite_loop' --warn clippy'::inefficient_to_string' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::imprecise_flops' --warn clippy'::implicit_clone' --allow clippy'::if_same_then_else' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::fn_params_excessive_bools' --warn clippy'::float_cmp_const' --warn clippy'::flat_map_option' --warn clippy'::filter_map_next' --warn clippy'::fallible_impl_from' --warn clippy'::explicit_into_iter_loop' --warn clippy'::explicit_deref_methods' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::enum_glob_use' --warn clippy'::empty_enum' --warn clippy'::doc_markdown' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::dbg_macro' --warn clippy'::create_dir' --allow clippy'::collapsible_else_if' --warn clippy'::checked_conversions' --allow clippy'::branches_sharing_code' --allow clippy'::bool_assert_comparison' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "std"))' -C metadata'=3d6193f676aa2b02' -C extra-filename'=-582a0a1ba10d9416' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anstyle-1.0.11/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-582a0a1ba10d9416-stdout \
@@ -28220,9 +27233,6 @@ COPY --link --from=dep-n-anstyle-1.0.11-582a0a1ba10d9416 /tmp/clis-bottom_0-11-4
 ##         CARGO_PKG_VERSION_PATCH=11 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name anstyle --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' --warn rust_2018_idioms --warn clippy'::zero_sized_map_values' --warn clippy'::wildcard_imports' --warn clippy'::verbose_file_reads' --warn unused_qualifications --warn unused_macro_rules --warn unused_lifetimes --warn unsafe_op_in_unsafe_fn --warn unreachable_pub --warn unnameable_types --warn clippy'::uninlined_format_args' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::todo' --warn clippy'::string_to_string' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_add_assign' --warn clippy'::string_add' --warn clippy'::str_to_string' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::self_named_module_files' --warn clippy'::same_functions_in_if_condition' --allow clippy'::result_large_err' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::ref_option_ref' --warn clippy'::redundant_feature_names' --warn clippy'::rc_mutex' --warn clippy'::ptr_as_ptr' --warn clippy'::path_buf_push_overwrite' --warn clippy'::negative_feature_names' --warn clippy'::needless_for_each' --allow clippy'::needless_continue' --warn clippy'::mutex_integer' --warn clippy'::mem_forget' --warn clippy'::macro_use_imports' --warn clippy'::lossy_float_literal' --warn clippy'::linkedlist' --allow clippy'::let_and_return' --warn clippy'::large_types_passed_by_value' --warn clippy'::large_stack_arrays' --warn clippy'::large_digit_groups' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::infinite_loop' --warn clippy'::inefficient_to_string' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::imprecise_flops' --warn clippy'::implicit_clone' --allow clippy'::if_same_then_else' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::fn_params_excessive_bools' --warn clippy'::float_cmp_const' --warn clippy'::flat_map_option' --warn clippy'::filter_map_next' --warn clippy'::fallible_impl_from' --warn clippy'::explicit_into_iter_loop' --warn clippy'::explicit_deref_methods' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::enum_glob_use' --warn clippy'::empty_enum' --warn clippy'::doc_markdown' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::dbg_macro' --warn clippy'::create_dir' --allow clippy'::collapsible_else_if' --warn clippy'::checked_conversions' --allow clippy'::branches_sharing_code' --allow clippy'::bool_assert_comparison' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "std"))' -C metadata'=3d6193f676aa2b02' -C extra-filename'=-582a0a1ba10d9416' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anstyle-1.0.11/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-582a0a1ba10d9416-stdout \
@@ -28264,9 +27274,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=2 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name utf8parse --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="default"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "nightly"))' -C metadata'=c7a1875e36425d60' -C extra-filename'=-4df9c4358399eb58' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/utf8parse-0.2.2/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-4df9c4358399eb58-stdout \
@@ -28333,9 +27340,6 @@ COPY --link --from=dep-n-utf8parse-0.2.2-4df9c4358399eb58 /tmp/clis-bottom_0-11-
 ##         CARGO_PKG_VERSION_PATCH=2 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name utf8parse --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="default"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "nightly"))' -C metadata'=c7a1875e36425d60' -C extra-filename'=-4df9c4358399eb58' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/utf8parse-0.2.2/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-4df9c4358399eb58-stdout \
@@ -28379,9 +27383,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=7 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name anstyle_parse --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' --warn rust_2018_idioms --warn clippy'::zero_sized_map_values' --warn clippy'::wildcard_imports' --warn clippy'::verbose_file_reads' --warn unused_qualifications --warn unused_macro_rules --warn unused_lifetimes --warn unsafe_op_in_unsafe_fn --warn unreachable_pub --warn unnameable_types --warn clippy'::uninlined_format_args' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::todo' --warn clippy'::string_to_string' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_add_assign' --warn clippy'::string_add' --warn clippy'::str_to_string' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::self_named_module_files' --warn clippy'::same_functions_in_if_condition' --allow clippy'::result_large_err' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::ref_option_ref' --warn clippy'::redundant_feature_names' --warn clippy'::rc_mutex' --warn clippy'::ptr_as_ptr' --warn clippy'::path_buf_push_overwrite' --warn clippy'::negative_feature_names' --warn clippy'::needless_for_each' --allow clippy'::needless_continue' --warn clippy'::mutex_integer' --warn clippy'::mem_forget' --warn clippy'::macro_use_imports' --warn clippy'::lossy_float_literal' --warn clippy'::linkedlist' --allow clippy'::let_and_return' --warn clippy'::large_types_passed_by_value' --warn clippy'::large_stack_arrays' --warn clippy'::large_digit_groups' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::infinite_loop' --warn clippy'::inefficient_to_string' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::imprecise_flops' --warn clippy'::implicit_clone' --allow clippy'::if_same_then_else' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::fn_params_excessive_bools' --warn clippy'::float_cmp_const' --warn clippy'::flat_map_option' --warn clippy'::filter_map_next' --warn clippy'::fallible_impl_from' --warn clippy'::explicit_into_iter_loop' --warn clippy'::explicit_deref_methods' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::enum_glob_use' --warn clippy'::empty_enum' --warn clippy'::doc_markdown' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::dbg_macro' --warn clippy'::create_dir' --allow clippy'::collapsible_else_if' --warn clippy'::checked_conversions' --allow clippy'::branches_sharing_code' --allow clippy'::bool_assert_comparison' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="utf8"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("core", "default", "utf8"))' -C metadata'=b29814f34e94c706' -C extra-filename'=-928d94c5c404c76a' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern utf8parse'=/tmp/clis-bottom_0-11-4/release/deps/libutf8parse-4df9c4358399eb58.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anstyle-parse-0.2.7/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-928d94c5c404c76a-stdout \
@@ -28459,9 +27460,6 @@ COPY --link --from=dep-n-anstyle-parse-0.2.7-928d94c5c404c76a /tmp/clis-bottom_0
 ##         CARGO_PKG_VERSION_PATCH=7 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name anstyle_parse --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' --warn rust_2018_idioms --warn clippy'::zero_sized_map_values' --warn clippy'::wildcard_imports' --warn clippy'::verbose_file_reads' --warn unused_qualifications --warn unused_macro_rules --warn unused_lifetimes --warn unsafe_op_in_unsafe_fn --warn unreachable_pub --warn unnameable_types --warn clippy'::uninlined_format_args' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::todo' --warn clippy'::string_to_string' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_add_assign' --warn clippy'::string_add' --warn clippy'::str_to_string' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::self_named_module_files' --warn clippy'::same_functions_in_if_condition' --allow clippy'::result_large_err' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::ref_option_ref' --warn clippy'::redundant_feature_names' --warn clippy'::rc_mutex' --warn clippy'::ptr_as_ptr' --warn clippy'::path_buf_push_overwrite' --warn clippy'::negative_feature_names' --warn clippy'::needless_for_each' --allow clippy'::needless_continue' --warn clippy'::mutex_integer' --warn clippy'::mem_forget' --warn clippy'::macro_use_imports' --warn clippy'::lossy_float_literal' --warn clippy'::linkedlist' --allow clippy'::let_and_return' --warn clippy'::large_types_passed_by_value' --warn clippy'::large_stack_arrays' --warn clippy'::large_digit_groups' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::infinite_loop' --warn clippy'::inefficient_to_string' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::imprecise_flops' --warn clippy'::implicit_clone' --allow clippy'::if_same_then_else' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::fn_params_excessive_bools' --warn clippy'::float_cmp_const' --warn clippy'::flat_map_option' --warn clippy'::filter_map_next' --warn clippy'::fallible_impl_from' --warn clippy'::explicit_into_iter_loop' --warn clippy'::explicit_deref_methods' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::enum_glob_use' --warn clippy'::empty_enum' --warn clippy'::doc_markdown' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::dbg_macro' --warn clippy'::create_dir' --allow clippy'::collapsible_else_if' --warn clippy'::checked_conversions' --allow clippy'::branches_sharing_code' --allow clippy'::bool_assert_comparison' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="utf8"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("core", "default", "utf8"))' -C metadata'=b29814f34e94c706' -C extra-filename'=-928d94c5c404c76a' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern utf8parse'=/tmp/clis-bottom_0-11-4/release/deps/libutf8parse-4df9c4358399eb58.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anstyle-parse-0.2.7/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-928d94c5c404c76a-stdout \
@@ -28503,9 +27501,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=4 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name anstyle_query --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' --warn rust_2018_idioms --warn clippy'::zero_sized_map_values' --warn clippy'::wildcard_imports' --warn clippy'::verbose_file_reads' --warn unused_qualifications --warn unused_macro_rules --warn unused_lifetimes --warn unsafe_op_in_unsafe_fn --warn unreachable_pub --warn unnameable_types --warn clippy'::uninlined_format_args' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::todo' --warn clippy'::string_to_string' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_add_assign' --warn clippy'::string_add' --warn clippy'::str_to_string' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::self_named_module_files' --warn clippy'::same_functions_in_if_condition' --allow clippy'::result_large_err' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::ref_option_ref' --warn clippy'::redundant_feature_names' --warn clippy'::rc_mutex' --warn clippy'::ptr_as_ptr' --warn clippy'::path_buf_push_overwrite' --warn clippy'::negative_feature_names' --warn clippy'::needless_for_each' --allow clippy'::needless_continue' --warn clippy'::mutex_integer' --warn clippy'::mem_forget' --warn clippy'::macro_use_imports' --warn clippy'::lossy_float_literal' --warn clippy'::linkedlist' --allow clippy'::let_and_return' --warn clippy'::large_types_passed_by_value' --warn clippy'::large_stack_arrays' --warn clippy'::large_digit_groups' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::infinite_loop' --warn clippy'::inefficient_to_string' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::imprecise_flops' --warn clippy'::implicit_clone' --allow clippy'::if_same_then_else' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::fn_params_excessive_bools' --warn clippy'::float_cmp_const' --warn clippy'::flat_map_option' --warn clippy'::filter_map_next' --warn clippy'::fallible_impl_from' --warn clippy'::explicit_into_iter_loop' --warn clippy'::explicit_deref_methods' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::enum_glob_use' --warn clippy'::empty_enum' --warn clippy'::doc_markdown' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::dbg_macro' --warn clippy'::create_dir' --allow clippy'::collapsible_else_if' --warn clippy'::checked_conversions' --allow clippy'::branches_sharing_code' --allow clippy'::bool_assert_comparison' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=823ad2c2cd4bf417' -C extra-filename'=-a3b357c0afea6e31' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anstyle-query-1.1.4/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-a3b357c0afea6e31-stdout \
@@ -28572,9 +27567,6 @@ COPY --link --from=dep-n-anstyle-query-1.1.4-a3b357c0afea6e31 /tmp/clis-bottom_0
 ##         CARGO_PKG_VERSION_PATCH=4 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name anstyle_query --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' --warn rust_2018_idioms --warn clippy'::zero_sized_map_values' --warn clippy'::wildcard_imports' --warn clippy'::verbose_file_reads' --warn unused_qualifications --warn unused_macro_rules --warn unused_lifetimes --warn unsafe_op_in_unsafe_fn --warn unreachable_pub --warn unnameable_types --warn clippy'::uninlined_format_args' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::todo' --warn clippy'::string_to_string' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_add_assign' --warn clippy'::string_add' --warn clippy'::str_to_string' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::self_named_module_files' --warn clippy'::same_functions_in_if_condition' --allow clippy'::result_large_err' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::ref_option_ref' --warn clippy'::redundant_feature_names' --warn clippy'::rc_mutex' --warn clippy'::ptr_as_ptr' --warn clippy'::path_buf_push_overwrite' --warn clippy'::negative_feature_names' --warn clippy'::needless_for_each' --allow clippy'::needless_continue' --warn clippy'::mutex_integer' --warn clippy'::mem_forget' --warn clippy'::macro_use_imports' --warn clippy'::lossy_float_literal' --warn clippy'::linkedlist' --allow clippy'::let_and_return' --warn clippy'::large_types_passed_by_value' --warn clippy'::large_stack_arrays' --warn clippy'::large_digit_groups' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::infinite_loop' --warn clippy'::inefficient_to_string' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::imprecise_flops' --warn clippy'::implicit_clone' --allow clippy'::if_same_then_else' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::fn_params_excessive_bools' --warn clippy'::float_cmp_const' --warn clippy'::flat_map_option' --warn clippy'::filter_map_next' --warn clippy'::fallible_impl_from' --warn clippy'::explicit_into_iter_loop' --warn clippy'::explicit_deref_methods' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::enum_glob_use' --warn clippy'::empty_enum' --warn clippy'::doc_markdown' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::dbg_macro' --warn clippy'::create_dir' --allow clippy'::collapsible_else_if' --warn clippy'::checked_conversions' --allow clippy'::branches_sharing_code' --allow clippy'::bool_assert_comparison' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=823ad2c2cd4bf417' -C extra-filename'=-a3b357c0afea6e31' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anstyle-query-1.1.4/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-a3b357c0afea6e31-stdout \
@@ -28616,9 +27608,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=4 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name colorchoice --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' --warn rust_2018_idioms --warn clippy'::zero_sized_map_values' --warn clippy'::wildcard_imports' --warn clippy'::verbose_file_reads' --warn unused_qualifications --warn unused_macro_rules --warn unused_lifetimes --warn unsafe_op_in_unsafe_fn --warn unreachable_pub --warn unnameable_types --warn clippy'::uninlined_format_args' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::todo' --warn clippy'::string_to_string' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_add_assign' --warn clippy'::string_add' --warn clippy'::str_to_string' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::self_named_module_files' --warn clippy'::same_functions_in_if_condition' --allow clippy'::result_large_err' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::ref_option_ref' --warn clippy'::redundant_feature_names' --warn clippy'::rc_mutex' --warn clippy'::ptr_as_ptr' --warn clippy'::path_buf_push_overwrite' --warn clippy'::negative_feature_names' --warn clippy'::needless_for_each' --allow clippy'::needless_continue' --warn clippy'::mutex_integer' --warn clippy'::mem_forget' --warn clippy'::macro_use_imports' --warn clippy'::lossy_float_literal' --warn clippy'::linkedlist' --allow clippy'::let_and_return' --warn clippy'::large_types_passed_by_value' --warn clippy'::large_stack_arrays' --warn clippy'::large_digit_groups' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::infinite_loop' --warn clippy'::inefficient_to_string' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::imprecise_flops' --warn clippy'::implicit_clone' --allow clippy'::if_same_then_else' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::fn_params_excessive_bools' --warn clippy'::float_cmp_const' --warn clippy'::flat_map_option' --warn clippy'::filter_map_next' --warn clippy'::fallible_impl_from' --warn clippy'::explicit_into_iter_loop' --warn clippy'::explicit_deref_methods' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::enum_glob_use' --warn clippy'::empty_enum' --warn clippy'::doc_markdown' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::dbg_macro' --warn clippy'::create_dir' --allow clippy'::collapsible_else_if' --warn clippy'::checked_conversions' --allow clippy'::branches_sharing_code' --allow clippy'::bool_assert_comparison' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=df7ef48a99e0b76f' -C extra-filename'=-6215a25a321ac8dd' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/colorchoice-1.0.4/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-6215a25a321ac8dd-stdout \
@@ -28685,9 +27674,6 @@ COPY --link --from=dep-n-colorchoice-1.0.4-6215a25a321ac8dd /tmp/clis-bottom_0-1
 ##         CARGO_PKG_VERSION_PATCH=4 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name colorchoice --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' --warn rust_2018_idioms --warn clippy'::zero_sized_map_values' --warn clippy'::wildcard_imports' --warn clippy'::verbose_file_reads' --warn unused_qualifications --warn unused_macro_rules --warn unused_lifetimes --warn unsafe_op_in_unsafe_fn --warn unreachable_pub --warn unnameable_types --warn clippy'::uninlined_format_args' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::todo' --warn clippy'::string_to_string' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_add_assign' --warn clippy'::string_add' --warn clippy'::str_to_string' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::self_named_module_files' --warn clippy'::same_functions_in_if_condition' --allow clippy'::result_large_err' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::ref_option_ref' --warn clippy'::redundant_feature_names' --warn clippy'::rc_mutex' --warn clippy'::ptr_as_ptr' --warn clippy'::path_buf_push_overwrite' --warn clippy'::negative_feature_names' --warn clippy'::needless_for_each' --allow clippy'::needless_continue' --warn clippy'::mutex_integer' --warn clippy'::mem_forget' --warn clippy'::macro_use_imports' --warn clippy'::lossy_float_literal' --warn clippy'::linkedlist' --allow clippy'::let_and_return' --warn clippy'::large_types_passed_by_value' --warn clippy'::large_stack_arrays' --warn clippy'::large_digit_groups' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::infinite_loop' --warn clippy'::inefficient_to_string' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::imprecise_flops' --warn clippy'::implicit_clone' --allow clippy'::if_same_then_else' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::fn_params_excessive_bools' --warn clippy'::float_cmp_const' --warn clippy'::flat_map_option' --warn clippy'::filter_map_next' --warn clippy'::fallible_impl_from' --warn clippy'::explicit_into_iter_loop' --warn clippy'::explicit_deref_methods' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::enum_glob_use' --warn clippy'::empty_enum' --warn clippy'::doc_markdown' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::dbg_macro' --warn clippy'::create_dir' --allow clippy'::collapsible_else_if' --warn clippy'::checked_conversions' --allow clippy'::branches_sharing_code' --allow clippy'::bool_assert_comparison' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=df7ef48a99e0b76f' -C extra-filename'=-6215a25a321ac8dd' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/colorchoice-1.0.4/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-6215a25a321ac8dd-stdout \
@@ -28729,9 +27715,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name is_terminal_polyfill --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' --warn clippy'::zero_sized_map_values' --warn clippy'::wildcard_imports' --warn clippy'::verbose_file_reads' --warn unused_qualifications --warn unused_macro_rules --warn unused_lifetimes --warn unsafe_op_in_unsafe_fn --warn unreachable_pub --warn clippy'::trait_duplication_in_bounds' --warn clippy'::todo' --warn clippy'::string_to_string' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_add_assign' --warn clippy'::string_add' --warn clippy'::str_to_string' --warn clippy'::single_match_else' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::self_named_module_files' --warn clippy'::same_functions_in_if_condition' --warn rust_2018_idioms --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::ref_option_ref' --warn clippy'::redundant_feature_names' --warn clippy'::rc_mutex' --warn clippy'::ptr_as_ptr' --warn clippy'::path_buf_push_overwrite' --warn clippy'::negative_feature_names' --warn clippy'::needless_for_each' --warn clippy'::needless_continue' --warn clippy'::mutex_integer' --warn clippy'::mem_forget' --warn clippy'::match_wildcard_for_single_variants' --warn clippy'::macro_use_imports' --warn clippy'::lossy_float_literal' --warn clippy'::linkedlist' --allow clippy'::let_and_return' --warn clippy'::large_types_passed_by_value' --warn clippy'::large_stack_arrays' --warn clippy'::large_digit_groups' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::infinite_loop' --warn clippy'::inefficient_to_string' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::imprecise_flops' --warn clippy'::implicit_clone' --allow clippy'::if_same_then_else' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::fn_params_excessive_bools' --warn clippy'::float_cmp_const' --warn clippy'::flat_map_option' --warn clippy'::filter_map_next' --warn clippy'::fallible_impl_from' --warn clippy'::explicit_into_iter_loop' --warn clippy'::explicit_deref_methods' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::enum_glob_use' --warn clippy'::empty_enum' --warn clippy'::doc_markdown' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::dbg_macro' --warn clippy'::create_dir' --allow clippy'::collapsible_else_if' --warn clippy'::checked_conversions' --allow clippy'::branches_sharing_code' --allow clippy'::bool_assert_comparison' -C debug-assertions'=off' --cfg feature'="default"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default"))' -C metadata'=e567b3ccf0e5bc6d' -C extra-filename'=-af71a0bec8a9eec8' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/is_terminal_polyfill-1.70.1/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-af71a0bec8a9eec8-stdout \
@@ -28798,9 +27781,6 @@ COPY --link --from=dep-n-is_terminal_polyfill-1.70.1-af71a0bec8a9eec8 /tmp/clis-
 ##         CARGO_PKG_VERSION_PATCH=1 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name is_terminal_polyfill --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' --warn clippy'::zero_sized_map_values' --warn clippy'::wildcard_imports' --warn clippy'::verbose_file_reads' --warn unused_qualifications --warn unused_macro_rules --warn unused_lifetimes --warn unsafe_op_in_unsafe_fn --warn unreachable_pub --warn clippy'::trait_duplication_in_bounds' --warn clippy'::todo' --warn clippy'::string_to_string' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_add_assign' --warn clippy'::string_add' --warn clippy'::str_to_string' --warn clippy'::single_match_else' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::self_named_module_files' --warn clippy'::same_functions_in_if_condition' --warn rust_2018_idioms --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::ref_option_ref' --warn clippy'::redundant_feature_names' --warn clippy'::rc_mutex' --warn clippy'::ptr_as_ptr' --warn clippy'::path_buf_push_overwrite' --warn clippy'::negative_feature_names' --warn clippy'::needless_for_each' --warn clippy'::needless_continue' --warn clippy'::mutex_integer' --warn clippy'::mem_forget' --warn clippy'::match_wildcard_for_single_variants' --warn clippy'::macro_use_imports' --warn clippy'::lossy_float_literal' --warn clippy'::linkedlist' --allow clippy'::let_and_return' --warn clippy'::large_types_passed_by_value' --warn clippy'::large_stack_arrays' --warn clippy'::large_digit_groups' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::infinite_loop' --warn clippy'::inefficient_to_string' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::imprecise_flops' --warn clippy'::implicit_clone' --allow clippy'::if_same_then_else' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::fn_params_excessive_bools' --warn clippy'::float_cmp_const' --warn clippy'::flat_map_option' --warn clippy'::filter_map_next' --warn clippy'::fallible_impl_from' --warn clippy'::explicit_into_iter_loop' --warn clippy'::explicit_deref_methods' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::enum_glob_use' --warn clippy'::empty_enum' --warn clippy'::doc_markdown' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::dbg_macro' --warn clippy'::create_dir' --allow clippy'::collapsible_else_if' --warn clippy'::checked_conversions' --allow clippy'::branches_sharing_code' --allow clippy'::bool_assert_comparison' -C debug-assertions'=off' --cfg feature'="default"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default"))' -C metadata'=e567b3ccf0e5bc6d' -C extra-filename'=-af71a0bec8a9eec8' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/is_terminal_polyfill-1.70.1/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-af71a0bec8a9eec8-stdout \
@@ -28854,9 +27834,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=20 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name anstream --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' --warn rust_2018_idioms --warn clippy'::zero_sized_map_values' --warn clippy'::wildcard_imports' --warn clippy'::verbose_file_reads' --warn unused_qualifications --warn unused_macro_rules --warn unused_lifetimes --warn unsafe_op_in_unsafe_fn --warn unreachable_pub --warn unnameable_types --warn clippy'::uninlined_format_args' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::todo' --warn clippy'::string_to_string' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_add_assign' --warn clippy'::string_add' --warn clippy'::str_to_string' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::self_named_module_files' --warn clippy'::same_functions_in_if_condition' --allow clippy'::result_large_err' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::ref_option_ref' --warn clippy'::redundant_feature_names' --warn clippy'::rc_mutex' --warn clippy'::ptr_as_ptr' --warn clippy'::path_buf_push_overwrite' --warn clippy'::negative_feature_names' --warn clippy'::needless_for_each' --allow clippy'::needless_continue' --warn clippy'::mutex_integer' --warn clippy'::mem_forget' --warn clippy'::macro_use_imports' --warn clippy'::lossy_float_literal' --warn clippy'::linkedlist' --allow clippy'::let_and_return' --warn clippy'::large_types_passed_by_value' --warn clippy'::large_stack_arrays' --warn clippy'::large_digit_groups' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::infinite_loop' --warn clippy'::inefficient_to_string' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::imprecise_flops' --warn clippy'::implicit_clone' --allow clippy'::if_same_then_else' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::fn_params_excessive_bools' --warn clippy'::float_cmp_const' --warn clippy'::flat_map_option' --warn clippy'::filter_map_next' --warn clippy'::fallible_impl_from' --warn clippy'::explicit_into_iter_loop' --warn clippy'::explicit_deref_methods' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::enum_glob_use' --warn clippy'::empty_enum' --warn clippy'::doc_markdown' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::dbg_macro' --warn clippy'::create_dir' --allow clippy'::collapsible_else_if' --warn clippy'::checked_conversions' --allow clippy'::branches_sharing_code' --allow clippy'::bool_assert_comparison' -C debug-assertions'=off' --cfg feature'="auto"' --cfg feature'="default"' --cfg feature'="wincon"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("auto", "default", "test", "wincon"))' -C metadata'=233f3e73ed9aa460' -C extra-filename'=-12a91ac4ae0decb1' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern anstyle'=/tmp/clis-bottom_0-11-4/release/deps/libanstyle-582a0a1ba10d9416.rmeta' --extern anstyle_parse'=/tmp/clis-bottom_0-11-4/release/deps/libanstyle_parse-928d94c5c404c76a.rmeta' --extern anstyle_query'=/tmp/clis-bottom_0-11-4/release/deps/libanstyle_query-a3b357c0afea6e31.rmeta' --extern colorchoice'=/tmp/clis-bottom_0-11-4/release/deps/libcolorchoice-6215a25a321ac8dd.rmeta' --extern is_terminal_polyfill'=/tmp/clis-bottom_0-11-4/release/deps/libis_terminal_polyfill-af71a0bec8a9eec8.rmeta' --extern utf8parse'=/tmp/clis-bottom_0-11-4/release/deps/libutf8parse-4df9c4358399eb58.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anstream-0.6.20/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-12a91ac4ae0decb1-stdout \
@@ -28991,9 +27968,6 @@ COPY --link --from=dep-n-anstream-0.6.20-12a91ac4ae0decb1 /tmp/clis-bottom_0-11-
 ##         CARGO_PKG_VERSION_PATCH=20 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name anstream --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' --warn rust_2018_idioms --warn clippy'::zero_sized_map_values' --warn clippy'::wildcard_imports' --warn clippy'::verbose_file_reads' --warn unused_qualifications --warn unused_macro_rules --warn unused_lifetimes --warn unsafe_op_in_unsafe_fn --warn unreachable_pub --warn unnameable_types --warn clippy'::uninlined_format_args' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::todo' --warn clippy'::string_to_string' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_add_assign' --warn clippy'::string_add' --warn clippy'::str_to_string' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::self_named_module_files' --warn clippy'::same_functions_in_if_condition' --allow clippy'::result_large_err' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::ref_option_ref' --warn clippy'::redundant_feature_names' --warn clippy'::rc_mutex' --warn clippy'::ptr_as_ptr' --warn clippy'::path_buf_push_overwrite' --warn clippy'::negative_feature_names' --warn clippy'::needless_for_each' --allow clippy'::needless_continue' --warn clippy'::mutex_integer' --warn clippy'::mem_forget' --warn clippy'::macro_use_imports' --warn clippy'::lossy_float_literal' --warn clippy'::linkedlist' --allow clippy'::let_and_return' --warn clippy'::large_types_passed_by_value' --warn clippy'::large_stack_arrays' --warn clippy'::large_digit_groups' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::infinite_loop' --warn clippy'::inefficient_to_string' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::imprecise_flops' --warn clippy'::implicit_clone' --allow clippy'::if_same_then_else' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::fn_params_excessive_bools' --warn clippy'::float_cmp_const' --warn clippy'::flat_map_option' --warn clippy'::filter_map_next' --warn clippy'::fallible_impl_from' --warn clippy'::explicit_into_iter_loop' --warn clippy'::explicit_deref_methods' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::enum_glob_use' --warn clippy'::empty_enum' --warn clippy'::doc_markdown' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::dbg_macro' --warn clippy'::create_dir' --allow clippy'::collapsible_else_if' --warn clippy'::checked_conversions' --allow clippy'::branches_sharing_code' --allow clippy'::bool_assert_comparison' -C debug-assertions'=off' --cfg feature'="auto"' --cfg feature'="default"' --cfg feature'="wincon"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("auto", "default", "test", "wincon"))' -C metadata'=233f3e73ed9aa460' -C extra-filename'=-12a91ac4ae0decb1' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern anstyle'=/tmp/clis-bottom_0-11-4/release/deps/libanstyle-582a0a1ba10d9416.rmeta' --extern anstyle_parse'=/tmp/clis-bottom_0-11-4/release/deps/libanstyle_parse-928d94c5c404c76a.rmeta' --extern anstyle_query'=/tmp/clis-bottom_0-11-4/release/deps/libanstyle_query-a3b357c0afea6e31.rmeta' --extern colorchoice'=/tmp/clis-bottom_0-11-4/release/deps/libcolorchoice-6215a25a321ac8dd.rmeta' --extern is_terminal_polyfill'=/tmp/clis-bottom_0-11-4/release/deps/libis_terminal_polyfill-af71a0bec8a9eec8.rmeta' --extern utf8parse'=/tmp/clis-bottom_0-11-4/release/deps/libutf8parse-4df9c4358399eb58.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anstream-0.6.20/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-12a91ac4ae0decb1-stdout \
@@ -29035,9 +28009,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=5 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name clap_lex --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' --warn rust_2018_idioms --warn clippy'::zero_sized_map_values' --warn clippy'::verbose_file_reads' --warn unused_qualifications --warn unused_macro_rules --warn unused_lifetimes --warn unsafe_op_in_unsafe_fn --warn unreachable_pub --allow unnameable_types --warn clippy'::uninlined_format_args' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::todo' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_add_assign' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::self_named_module_files' --warn clippy'::same_functions_in_if_condition' --allow clippy'::result_large_err' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::ref_option_ref' --warn clippy'::redundant_feature_names' --warn clippy'::rc_mutex' --warn clippy'::ptr_as_ptr' --warn clippy'::path_buf_push_overwrite' --warn clippy'::negative_feature_names' --warn clippy'::needless_for_each' --allow clippy'::needless_continue' --warn clippy'::mutex_integer' --allow clippy'::multiple_bound_locations' --warn clippy'::mem_forget' --warn clippy'::macro_use_imports' --warn clippy'::lossy_float_literal' --warn clippy'::linkedlist' --allow clippy'::let_and_return' --warn clippy'::large_types_passed_by_value' --warn clippy'::large_stack_arrays' --warn clippy'::large_digit_groups' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::infinite_loop' --warn clippy'::inefficient_to_string' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::imprecise_flops' --warn clippy'::implicit_clone' --allow clippy'::if_same_then_else' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::fn_params_excessive_bools' --warn clippy'::float_cmp_const' --warn clippy'::flat_map_option' --warn clippy'::filter_map_next' --warn clippy'::fallible_impl_from' --warn clippy'::explicit_into_iter_loop' --warn clippy'::explicit_deref_methods' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::enum_glob_use' --warn clippy'::empty_enum' --warn clippy'::doc_markdown' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::dbg_macro' --warn clippy'::create_dir' --allow clippy'::collapsible_else_if' --warn clippy'::checked_conversions' --allow clippy'::branches_sharing_code' --allow clippy'::bool_assert_comparison' --allow clippy'::blocks_in_conditions' --allow clippy'::assigning_clones' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=894e03ff0cd47418' -C extra-filename'=-da756f41f1ce923a' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/clap_lex-0.7.5/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-da756f41f1ce923a-stdout \
@@ -29104,9 +28075,6 @@ COPY --link --from=dep-n-clap_lex-0.7.5-da756f41f1ce923a /tmp/clis-bottom_0-11-4
 ##         CARGO_PKG_VERSION_PATCH=5 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name clap_lex --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' --warn rust_2018_idioms --warn clippy'::zero_sized_map_values' --warn clippy'::verbose_file_reads' --warn unused_qualifications --warn unused_macro_rules --warn unused_lifetimes --warn unsafe_op_in_unsafe_fn --warn unreachable_pub --allow unnameable_types --warn clippy'::uninlined_format_args' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::todo' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_add_assign' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::self_named_module_files' --warn clippy'::same_functions_in_if_condition' --allow clippy'::result_large_err' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::ref_option_ref' --warn clippy'::redundant_feature_names' --warn clippy'::rc_mutex' --warn clippy'::ptr_as_ptr' --warn clippy'::path_buf_push_overwrite' --warn clippy'::negative_feature_names' --warn clippy'::needless_for_each' --allow clippy'::needless_continue' --warn clippy'::mutex_integer' --allow clippy'::multiple_bound_locations' --warn clippy'::mem_forget' --warn clippy'::macro_use_imports' --warn clippy'::lossy_float_literal' --warn clippy'::linkedlist' --allow clippy'::let_and_return' --warn clippy'::large_types_passed_by_value' --warn clippy'::large_stack_arrays' --warn clippy'::large_digit_groups' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::infinite_loop' --warn clippy'::inefficient_to_string' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::imprecise_flops' --warn clippy'::implicit_clone' --allow clippy'::if_same_then_else' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::fn_params_excessive_bools' --warn clippy'::float_cmp_const' --warn clippy'::flat_map_option' --warn clippy'::filter_map_next' --warn clippy'::fallible_impl_from' --warn clippy'::explicit_into_iter_loop' --warn clippy'::explicit_deref_methods' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::enum_glob_use' --warn clippy'::empty_enum' --warn clippy'::doc_markdown' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::dbg_macro' --warn clippy'::create_dir' --allow clippy'::collapsible_else_if' --warn clippy'::checked_conversions' --allow clippy'::branches_sharing_code' --allow clippy'::bool_assert_comparison' --allow clippy'::blocks_in_conditions' --allow clippy'::assigning_clones' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=894e03ff0cd47418' -C extra-filename'=-da756f41f1ce923a' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/clap_lex-0.7.5/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-da756f41f1ce923a-stdout \
@@ -29149,9 +28117,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name bitflags --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("arbitrary", "bytemuck", "example_generated", "serde", "serde_core", "std"))' -C metadata'=202c64a83a890a3c' -C extra-filename'=-95fac024c973dbd5' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bitflags-2.10.0/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-95fac024c973dbd5-stdout \
@@ -29219,9 +28184,6 @@ COPY --link --from=dep-n-bitflags-2.10.0-95fac024c973dbd5 /tmp/clis-bottom_0-11-
 ##         CARGO_PKG_VERSION_PATCH=0 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name bitflags --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("arbitrary", "bytemuck", "example_generated", "serde", "serde_core", "std"))' -C metadata'=202c64a83a890a3c' -C extra-filename'=-95fac024c973dbd5' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bitflags-2.10.0/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-95fac024c973dbd5-stdout \
@@ -29263,9 +28225,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name linux_raw_sys --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' --warn unexpected_cfgs --check-cfg cfg'(target_arch, values("xtensa"))' -C debug-assertions'=off' --cfg feature'="auxvec"' --cfg feature'="elf"' --cfg feature'="errno"' --cfg feature'="general"' --cfg feature'="ioctl"' --cfg feature'="no_std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("auxvec", "bootparam", "btrfs", "core", "default", "elf", "elf_uapi", "errno", "general", "if_arp", "if_ether", "if_packet", "image", "io_uring", "ioctl", "landlock", "loop_device", "mempolicy", "net", "netlink", "no_std", "prctl", "ptrace", "rustc-dep-of-std", "std", "system", "xdp"))' -C metadata'=9869fb0f9b5cf817' -C extra-filename'=-d17e9e200a7f717e' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/linux-raw-sys-0.11.0/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-d17e9e200a7f717e-stdout \
@@ -29332,9 +28291,6 @@ COPY --link --from=dep-n-linux-raw-sys-0.11.0-d17e9e200a7f717e /tmp/clis-bottom_
 ##         CARGO_PKG_VERSION_PATCH=0 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name linux_raw_sys --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' --warn unexpected_cfgs --check-cfg cfg'(target_arch, values("xtensa"))' -C debug-assertions'=off' --cfg feature'="auxvec"' --cfg feature'="elf"' --cfg feature'="errno"' --cfg feature'="general"' --cfg feature'="ioctl"' --cfg feature'="no_std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("auxvec", "bootparam", "btrfs", "core", "default", "elf", "elf_uapi", "errno", "general", "if_arp", "if_ether", "if_packet", "image", "io_uring", "ioctl", "landlock", "loop_device", "mempolicy", "net", "netlink", "no_std", "prctl", "ptrace", "rustc-dep-of-std", "std", "system", "xdp"))' -C metadata'=9869fb0f9b5cf817' -C extra-filename'=-d17e9e200a7f717e' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/linux-raw-sys-0.11.0/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-d17e9e200a7f717e-stdout \
@@ -29395,9 +28351,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=2 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' --warn unexpected_cfgs --check-cfg cfg'(alloc_c_string)' --check-cfg cfg'(alloc_ffi)' --check-cfg cfg'(apple)' --check-cfg cfg'(asm_experimental_arch)' --check-cfg cfg'(bsd)' --check-cfg cfg'(core_c_str)' --check-cfg cfg'(core_ffi_c)' --check-cfg cfg'(core_intrinsics)' --check-cfg cfg'(criterion)' --check-cfg cfg'(document_experimental_runtime_api)' --check-cfg cfg'(error_in_core)' --check-cfg cfg'(fix_y2038)' --check-cfg cfg'(freebsdlike)' --check-cfg cfg'(libc)' --check-cfg cfg'(linux_kernel)' --check-cfg cfg'(linux_like)' --check-cfg cfg'(linux_raw)' --check-cfg cfg'(linux_raw_dep)' --check-cfg cfg'(lower_upper_exp_for_non_zero)' --check-cfg cfg'(netbsdlike)' --check-cfg cfg'(rustc_attrs)' --check-cfg cfg'(rustc_diagnostics)' --check-cfg cfg'(solarish)' --check-cfg cfg'(staged_api)' --check-cfg cfg'(static_assertions)' --check-cfg cfg'(thumb_mode)' --check-cfg cfg'(wasi)' --check-cfg cfg'(wasi_ext)' --check-cfg cfg'(wasip2)' --check-cfg cfg'(target_arch, values("xtensa"))' --check-cfg cfg'(target_os, values("cygwin"))' -C debug-assertions'=off' --cfg feature'="alloc"' --cfg feature'="default"' --cfg feature'="std"' --cfg feature'="termios"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("all-apis", "alloc", "core", "default", "event", "fs", "io_uring", "libc", "libc_errno", "linux_4_11", "linux_5_1", "linux_5_11", "linux_latest", "mm", "mount", "net", "param", "pipe", "process", "pty", "rand", "runtime", "rustc-dep-of-std", "rustc-std-workspace-alloc", "shm", "std", "stdio", "system", "termios", "thread", "time", "try_close", "use-explicitly-provided-auxv", "use-libc", "use-libc-auxv"))' -C metadata'=d4a6bcd867c8337e' -C extra-filename'=-9bfe76b0894e1d23' --out-dir /tmp/clis-bottom_0-11-4/release/build/rustix-9bfe76b0894e1d23 -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustix-1.1.2/build.rs \
         1>          /tmp/clis-bottom_0-11-4/release/build/rustix-9bfe76b0894e1d23/out-9bfe76b0894e1d23-stdout \
@@ -29481,9 +28434,6 @@ COPY --link --from=dep-x-rustix-1.1.2-9bfe76b0894e1d23 /tmp/clis-bottom_0-11-4/r
 ##         CARGO_PKG_VERSION_PATCH=2 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' --warn unexpected_cfgs --check-cfg cfg'(alloc_c_string)' --check-cfg cfg'(alloc_ffi)' --check-cfg cfg'(apple)' --check-cfg cfg'(asm_experimental_arch)' --check-cfg cfg'(bsd)' --check-cfg cfg'(core_c_str)' --check-cfg cfg'(core_ffi_c)' --check-cfg cfg'(core_intrinsics)' --check-cfg cfg'(criterion)' --check-cfg cfg'(document_experimental_runtime_api)' --check-cfg cfg'(error_in_core)' --check-cfg cfg'(fix_y2038)' --check-cfg cfg'(freebsdlike)' --check-cfg cfg'(libc)' --check-cfg cfg'(linux_kernel)' --check-cfg cfg'(linux_like)' --check-cfg cfg'(linux_raw)' --check-cfg cfg'(linux_raw_dep)' --check-cfg cfg'(lower_upper_exp_for_non_zero)' --check-cfg cfg'(netbsdlike)' --check-cfg cfg'(rustc_attrs)' --check-cfg cfg'(rustc_diagnostics)' --check-cfg cfg'(solarish)' --check-cfg cfg'(staged_api)' --check-cfg cfg'(static_assertions)' --check-cfg cfg'(thumb_mode)' --check-cfg cfg'(wasi)' --check-cfg cfg'(wasi_ext)' --check-cfg cfg'(wasip2)' --check-cfg cfg'(target_arch, values("xtensa"))' --check-cfg cfg'(target_os, values("cygwin"))' -C debug-assertions'=off' --cfg feature'="alloc"' --cfg feature'="default"' --cfg feature'="std"' --cfg feature'="termios"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("all-apis", "alloc", "core", "default", "event", "fs", "io_uring", "libc", "libc_errno", "linux_4_11", "linux_5_1", "linux_5_11", "linux_latest", "mm", "mount", "net", "param", "pipe", "process", "pty", "rand", "runtime", "rustc-dep-of-std", "rustc-std-workspace-alloc", "shm", "std", "stdio", "system", "termios", "thread", "time", "try_close", "use-explicitly-provided-auxv", "use-libc", "use-libc-auxv"))' -C metadata'=d4a6bcd867c8337e' -C extra-filename'=-9bfe76b0894e1d23' --out-dir /tmp/clis-bottom_0-11-4/release/build/rustix-9bfe76b0894e1d23 -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustix-1.1.2/build.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/build/rustix-9bfe76b0894e1d23/out-9bfe76b0894e1d23-stdout \
@@ -29552,9 +28502,6 @@ RUN \
         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
         TARGET=x86_64-unknown-linux-gnu \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-bottom_0-11-4/release/build/rustix-9bfe76b0894e1d23/build-script-build \
         1>          /tmp/clis-bottom_0-11-4/release/build/rustix-6a7cc8232593be96/out/out-6a7cc8232593be96-stdout \
@@ -29647,9 +28594,6 @@ COPY --link --from=run-z-rustix-1.1.2-6a7cc8232593be96 /tmp/clis-bottom_0-11-4/r
 ##         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
 ##         TARGET=x86_64-unknown-linux-gnu \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-bottom_0-11-4/release/build/rustix-9bfe76b0894e1d23/build-script-build \
 ##         1>          /tmp/clis-bottom_0-11-4/release/build/rustix-6a7cc8232593be96/out/out-6a7cc8232593be96-stdout \
@@ -29697,9 +28641,6 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         OUT_DIR=/tmp/clis-bottom_0-11-4/release/build/rustix-6a7cc8232593be96/out \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name rustix --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' --warn unexpected_cfgs --check-cfg cfg'(alloc_c_string)' --check-cfg cfg'(alloc_ffi)' --check-cfg cfg'(apple)' --check-cfg cfg'(asm_experimental_arch)' --check-cfg cfg'(bsd)' --check-cfg cfg'(core_c_str)' --check-cfg cfg'(core_ffi_c)' --check-cfg cfg'(core_intrinsics)' --check-cfg cfg'(criterion)' --check-cfg cfg'(document_experimental_runtime_api)' --check-cfg cfg'(error_in_core)' --check-cfg cfg'(fix_y2038)' --check-cfg cfg'(freebsdlike)' --check-cfg cfg'(libc)' --check-cfg cfg'(linux_kernel)' --check-cfg cfg'(linux_like)' --check-cfg cfg'(linux_raw)' --check-cfg cfg'(linux_raw_dep)' --check-cfg cfg'(lower_upper_exp_for_non_zero)' --check-cfg cfg'(netbsdlike)' --check-cfg cfg'(rustc_attrs)' --check-cfg cfg'(rustc_diagnostics)' --check-cfg cfg'(solarish)' --check-cfg cfg'(staged_api)' --check-cfg cfg'(static_assertions)' --check-cfg cfg'(thumb_mode)' --check-cfg cfg'(wasi)' --check-cfg cfg'(wasi_ext)' --check-cfg cfg'(wasip2)' --check-cfg cfg'(target_arch, values("xtensa"))' --check-cfg cfg'(target_os, values("cygwin"))' -C debug-assertions'=off' --cfg feature'="alloc"' --cfg feature'="default"' --cfg feature'="std"' --cfg feature'="termios"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("all-apis", "alloc", "core", "default", "event", "fs", "io_uring", "libc", "libc_errno", "linux_4_11", "linux_5_1", "linux_5_11", "linux_latest", "mm", "mount", "net", "param", "pipe", "process", "pty", "rand", "runtime", "rustc-dep-of-std", "rustc-std-workspace-alloc", "shm", "std", "stdio", "system", "termios", "thread", "time", "try_close", "use-explicitly-provided-auxv", "use-libc", "use-libc-auxv"))' -C metadata'=3d2e40eac3dcc3c9' -C extra-filename'=-5c9032449cbea16a' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern bitflags'=/tmp/clis-bottom_0-11-4/release/deps/libbitflags-95fac024c973dbd5.rmeta' --extern linux_raw_sys'=/tmp/clis-bottom_0-11-4/release/deps/liblinux_raw_sys-d17e9e200a7f717e.rmeta' --cap-lints warn --cfg static_assertions --cfg lower_upper_exp_for_non_zero --cfg rustc_diagnostics --cfg linux_raw_dep --cfg linux_raw --cfg linux_like --cfg linux_kernel /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustix-1.1.2/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-5c9032449cbea16a-stdout \
@@ -29799,9 +28740,6 @@ COPY --link --from=dep-n-rustix-1.1.2-5c9032449cbea16a /tmp/clis-bottom_0-11-4/r
 ##         CARGO_PKG_VERSION_PRE= \
 ##         OUT_DIR=/tmp/clis-bottom_0-11-4/release/build/rustix-6a7cc8232593be96/out \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name rustix --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' --warn unexpected_cfgs --check-cfg cfg'(alloc_c_string)' --check-cfg cfg'(alloc_ffi)' --check-cfg cfg'(apple)' --check-cfg cfg'(asm_experimental_arch)' --check-cfg cfg'(bsd)' --check-cfg cfg'(core_c_str)' --check-cfg cfg'(core_ffi_c)' --check-cfg cfg'(core_intrinsics)' --check-cfg cfg'(criterion)' --check-cfg cfg'(document_experimental_runtime_api)' --check-cfg cfg'(error_in_core)' --check-cfg cfg'(fix_y2038)' --check-cfg cfg'(freebsdlike)' --check-cfg cfg'(libc)' --check-cfg cfg'(linux_kernel)' --check-cfg cfg'(linux_like)' --check-cfg cfg'(linux_raw)' --check-cfg cfg'(linux_raw_dep)' --check-cfg cfg'(lower_upper_exp_for_non_zero)' --check-cfg cfg'(netbsdlike)' --check-cfg cfg'(rustc_attrs)' --check-cfg cfg'(rustc_diagnostics)' --check-cfg cfg'(solarish)' --check-cfg cfg'(staged_api)' --check-cfg cfg'(static_assertions)' --check-cfg cfg'(thumb_mode)' --check-cfg cfg'(wasi)' --check-cfg cfg'(wasi_ext)' --check-cfg cfg'(wasip2)' --check-cfg cfg'(target_arch, values("xtensa"))' --check-cfg cfg'(target_os, values("cygwin"))' -C debug-assertions'=off' --cfg feature'="alloc"' --cfg feature'="default"' --cfg feature'="std"' --cfg feature'="termios"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("all-apis", "alloc", "core", "default", "event", "fs", "io_uring", "libc", "libc_errno", "linux_4_11", "linux_5_1", "linux_5_11", "linux_latest", "mm", "mount", "net", "param", "pipe", "process", "pty", "rand", "runtime", "rustc-dep-of-std", "rustc-std-workspace-alloc", "shm", "std", "stdio", "system", "termios", "thread", "time", "try_close", "use-explicitly-provided-auxv", "use-libc", "use-libc-auxv"))' -C metadata'=3d2e40eac3dcc3c9' -C extra-filename'=-5c9032449cbea16a' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern bitflags'=/tmp/clis-bottom_0-11-4/release/deps/libbitflags-95fac024c973dbd5.rmeta' --extern linux_raw_sys'=/tmp/clis-bottom_0-11-4/release/deps/liblinux_raw_sys-d17e9e200a7f717e.rmeta' --cap-lints warn --cfg static_assertions --cfg lower_upper_exp_for_non_zero --cfg rustc_diagnostics --cfg linux_raw_dep --cfg linux_raw --cfg linux_like --cfg linux_kernel /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rustix-1.1.2/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-5c9032449cbea16a-stdout \
@@ -29849,9 +28787,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=3 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name terminal_size --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=30bea35a2b55c275' -C extra-filename'=-575e2a0c058be817' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern rustix'=/tmp/clis-bottom_0-11-4/release/deps/librustix-5c9032449cbea16a.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/terminal_size-0.4.3/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-575e2a0c058be817-stdout \
@@ -29956,9 +28891,6 @@ COPY --link --from=dep-n-terminal_size-0.4.3-575e2a0c058be817 /tmp/clis-bottom_0
 ##         CARGO_PKG_VERSION_PATCH=3 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name terminal_size --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=30bea35a2b55c275' -C extra-filename'=-575e2a0c058be817' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern rustix'=/tmp/clis-bottom_0-11-4/release/deps/librustix-5c9032449cbea16a.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/terminal_size-0.4.3/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-575e2a0c058be817-stdout \
@@ -30026,9 +28958,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=48 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name clap_builder --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' --warn rust_2018_idioms --warn clippy'::zero_sized_map_values' --warn clippy'::verbose_file_reads' --warn unused_qualifications --warn unused_macro_rules --warn unused_lifetimes --warn unsafe_op_in_unsafe_fn --warn unreachable_pub --allow unnameable_types --warn clippy'::uninlined_format_args' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::todo' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_add_assign' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::self_named_module_files' --warn clippy'::same_functions_in_if_condition' --allow clippy'::result_large_err' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::ref_option_ref' --warn clippy'::redundant_feature_names' --warn clippy'::rc_mutex' --warn clippy'::ptr_as_ptr' --warn clippy'::path_buf_push_overwrite' --warn clippy'::negative_feature_names' --warn clippy'::needless_for_each' --allow clippy'::needless_continue' --warn clippy'::mutex_integer' --allow clippy'::multiple_bound_locations' --warn clippy'::mem_forget' --warn clippy'::macro_use_imports' --warn clippy'::lossy_float_literal' --warn clippy'::linkedlist' --allow clippy'::let_and_return' --warn clippy'::large_types_passed_by_value' --warn clippy'::large_stack_arrays' --warn clippy'::large_digit_groups' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::infinite_loop' --warn clippy'::inefficient_to_string' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::imprecise_flops' --warn clippy'::implicit_clone' --allow clippy'::if_same_then_else' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::fn_params_excessive_bools' --warn clippy'::float_cmp_const' --warn clippy'::flat_map_option' --warn clippy'::filter_map_next' --warn clippy'::fallible_impl_from' --warn clippy'::explicit_into_iter_loop' --warn clippy'::explicit_deref_methods' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::enum_glob_use' --warn clippy'::empty_enum' --warn clippy'::doc_markdown' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::dbg_macro' --warn clippy'::create_dir' --allow clippy'::collapsible_else_if' --warn clippy'::checked_conversions' --allow clippy'::branches_sharing_code' --allow clippy'::bool_assert_comparison' --allow clippy'::blocks_in_conditions' --allow clippy'::assigning_clones' -C debug-assertions'=off' --cfg feature'="cargo"' --cfg feature'="color"' --cfg feature'="env"' --cfg feature'="error-context"' --cfg feature'="help"' --cfg feature'="std"' --cfg feature'="suggestions"' --cfg feature'="usage"' --cfg feature'="wrap_help"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("cargo", "color", "debug", "default", "deprecated", "env", "error-context", "help", "std", "string", "suggestions", "unicode", "unstable-doc", "unstable-ext", "unstable-styles", "unstable-v5", "usage", "wrap_help"))' -C metadata'=9562f40817099c09' -C extra-filename'=-e7766fa15aeef8ee' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern anstream'=/tmp/clis-bottom_0-11-4/release/deps/libanstream-12a91ac4ae0decb1.rmeta' --extern anstyle'=/tmp/clis-bottom_0-11-4/release/deps/libanstyle-582a0a1ba10d9416.rmeta' --extern clap_lex'=/tmp/clis-bottom_0-11-4/release/deps/libclap_lex-da756f41f1ce923a.rmeta' --extern strsim'=/tmp/clis-bottom_0-11-4/release/deps/libstrsim-c308dc16fc5a3763.rmeta' --extern terminal_size'=/tmp/clis-bottom_0-11-4/release/deps/libterminal_size-575e2a0c058be817.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/clap_builder-4.5.48/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-e7766fa15aeef8ee-stdout \
@@ -30243,9 +29172,6 @@ COPY --link --from=dep-n-clap_builder-4.5.48-e7766fa15aeef8ee /tmp/clis-bottom_0
 ##         CARGO_PKG_VERSION_PATCH=48 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name clap_builder --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' --warn rust_2018_idioms --warn clippy'::zero_sized_map_values' --warn clippy'::verbose_file_reads' --warn unused_qualifications --warn unused_macro_rules --warn unused_lifetimes --warn unsafe_op_in_unsafe_fn --warn unreachable_pub --allow unnameable_types --warn clippy'::uninlined_format_args' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::todo' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_add_assign' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::self_named_module_files' --warn clippy'::same_functions_in_if_condition' --allow clippy'::result_large_err' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::ref_option_ref' --warn clippy'::redundant_feature_names' --warn clippy'::rc_mutex' --warn clippy'::ptr_as_ptr' --warn clippy'::path_buf_push_overwrite' --warn clippy'::negative_feature_names' --warn clippy'::needless_for_each' --allow clippy'::needless_continue' --warn clippy'::mutex_integer' --allow clippy'::multiple_bound_locations' --warn clippy'::mem_forget' --warn clippy'::macro_use_imports' --warn clippy'::lossy_float_literal' --warn clippy'::linkedlist' --allow clippy'::let_and_return' --warn clippy'::large_types_passed_by_value' --warn clippy'::large_stack_arrays' --warn clippy'::large_digit_groups' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::infinite_loop' --warn clippy'::inefficient_to_string' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::imprecise_flops' --warn clippy'::implicit_clone' --allow clippy'::if_same_then_else' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::fn_params_excessive_bools' --warn clippy'::float_cmp_const' --warn clippy'::flat_map_option' --warn clippy'::filter_map_next' --warn clippy'::fallible_impl_from' --warn clippy'::explicit_into_iter_loop' --warn clippy'::explicit_deref_methods' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::enum_glob_use' --warn clippy'::empty_enum' --warn clippy'::doc_markdown' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::dbg_macro' --warn clippy'::create_dir' --allow clippy'::collapsible_else_if' --warn clippy'::checked_conversions' --allow clippy'::branches_sharing_code' --allow clippy'::bool_assert_comparison' --allow clippy'::blocks_in_conditions' --allow clippy'::assigning_clones' -C debug-assertions'=off' --cfg feature'="cargo"' --cfg feature'="color"' --cfg feature'="env"' --cfg feature'="error-context"' --cfg feature'="help"' --cfg feature'="std"' --cfg feature'="suggestions"' --cfg feature'="usage"' --cfg feature'="wrap_help"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("cargo", "color", "debug", "default", "deprecated", "env", "error-context", "help", "std", "string", "suggestions", "unicode", "unstable-doc", "unstable-ext", "unstable-styles", "unstable-v5", "usage", "wrap_help"))' -C metadata'=9562f40817099c09' -C extra-filename'=-e7766fa15aeef8ee' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern anstream'=/tmp/clis-bottom_0-11-4/release/deps/libanstream-12a91ac4ae0decb1.rmeta' --extern anstyle'=/tmp/clis-bottom_0-11-4/release/deps/libanstyle-582a0a1ba10d9416.rmeta' --extern clap_lex'=/tmp/clis-bottom_0-11-4/release/deps/libclap_lex-da756f41f1ce923a.rmeta' --extern strsim'=/tmp/clis-bottom_0-11-4/release/deps/libstrsim-c308dc16fc5a3763.rmeta' --extern terminal_size'=/tmp/clis-bottom_0-11-4/release/deps/libterminal_size-575e2a0c058be817.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/clap_builder-4.5.48/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-e7766fa15aeef8ee-stdout \
@@ -30326,9 +29252,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=48 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name clap --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' --warn rust_2018_idioms --warn clippy'::zero_sized_map_values' --warn clippy'::verbose_file_reads' --warn unused_qualifications --warn unused_macro_rules --warn unused_lifetimes --warn unsafe_op_in_unsafe_fn --warn unreachable_pub --allow unnameable_types --warn clippy'::uninlined_format_args' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::todo' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_add_assign' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::self_named_module_files' --warn clippy'::same_functions_in_if_condition' --allow clippy'::result_large_err' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::ref_option_ref' --warn clippy'::redundant_feature_names' --warn clippy'::rc_mutex' --warn clippy'::ptr_as_ptr' --warn clippy'::path_buf_push_overwrite' --warn clippy'::negative_feature_names' --warn clippy'::needless_for_each' --allow clippy'::needless_continue' --warn clippy'::mutex_integer' --allow clippy'::multiple_bound_locations' --warn clippy'::mem_forget' --warn clippy'::macro_use_imports' --warn clippy'::lossy_float_literal' --warn clippy'::linkedlist' --allow clippy'::let_and_return' --warn clippy'::large_types_passed_by_value' --warn clippy'::large_stack_arrays' --warn clippy'::large_digit_groups' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::infinite_loop' --warn clippy'::inefficient_to_string' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::imprecise_flops' --warn clippy'::implicit_clone' --allow clippy'::if_same_then_else' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::fn_params_excessive_bools' --warn clippy'::float_cmp_const' --warn clippy'::flat_map_option' --warn clippy'::filter_map_next' --warn clippy'::fallible_impl_from' --warn clippy'::explicit_into_iter_loop' --warn clippy'::explicit_deref_methods' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::enum_glob_use' --warn clippy'::empty_enum' --warn clippy'::doc_markdown' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::dbg_macro' --warn clippy'::create_dir' --allow clippy'::collapsible_else_if' --warn clippy'::checked_conversions' --allow clippy'::branches_sharing_code' --allow clippy'::bool_assert_comparison' --allow clippy'::blocks_in_conditions' --allow clippy'::assigning_clones' -C debug-assertions'=off' --cfg feature'="cargo"' --cfg feature'="color"' --cfg feature'="default"' --cfg feature'="derive"' --cfg feature'="env"' --cfg feature'="error-context"' --cfg feature'="help"' --cfg feature'="std"' --cfg feature'="suggestions"' --cfg feature'="usage"' --cfg feature'="wrap_help"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("cargo", "color", "debug", "default", "deprecated", "derive", "env", "error-context", "help", "std", "string", "suggestions", "unicode", "unstable-derive-ui-tests", "unstable-doc", "unstable-ext", "unstable-markdown", "unstable-styles", "unstable-v5", "usage", "wrap_help"))' -C metadata'=fc8badb4b4b7e261' -C extra-filename'=-3425a06da56d3e74' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern clap_builder'=/tmp/clis-bottom_0-11-4/release/deps/libclap_builder-e7766fa15aeef8ee.rmeta' --extern clap_derive'=/tmp/clis-bottom_0-11-4/release/deps/libclap_derive-0162f5e01682605c.so' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/clap-4.5.48/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-3425a06da56d3e74-stdout \
@@ -30620,9 +29543,6 @@ COPY --link --from=dep-n-clap-4.5.48-3425a06da56d3e74 /tmp/clis-bottom_0-11-4/re
 ##         CARGO_PKG_VERSION_PATCH=48 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name clap --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' --warn rust_2018_idioms --warn clippy'::zero_sized_map_values' --warn clippy'::verbose_file_reads' --warn unused_qualifications --warn unused_macro_rules --warn unused_lifetimes --warn unsafe_op_in_unsafe_fn --warn unreachable_pub --allow unnameable_types --warn clippy'::uninlined_format_args' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::todo' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_add_assign' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::self_named_module_files' --warn clippy'::same_functions_in_if_condition' --allow clippy'::result_large_err' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::ref_option_ref' --warn clippy'::redundant_feature_names' --warn clippy'::rc_mutex' --warn clippy'::ptr_as_ptr' --warn clippy'::path_buf_push_overwrite' --warn clippy'::negative_feature_names' --warn clippy'::needless_for_each' --allow clippy'::needless_continue' --warn clippy'::mutex_integer' --allow clippy'::multiple_bound_locations' --warn clippy'::mem_forget' --warn clippy'::macro_use_imports' --warn clippy'::lossy_float_literal' --warn clippy'::linkedlist' --allow clippy'::let_and_return' --warn clippy'::large_types_passed_by_value' --warn clippy'::large_stack_arrays' --warn clippy'::large_digit_groups' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::infinite_loop' --warn clippy'::inefficient_to_string' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::imprecise_flops' --warn clippy'::implicit_clone' --allow clippy'::if_same_then_else' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::fn_params_excessive_bools' --warn clippy'::float_cmp_const' --warn clippy'::flat_map_option' --warn clippy'::filter_map_next' --warn clippy'::fallible_impl_from' --warn clippy'::explicit_into_iter_loop' --warn clippy'::explicit_deref_methods' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::enum_glob_use' --warn clippy'::empty_enum' --warn clippy'::doc_markdown' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::dbg_macro' --warn clippy'::create_dir' --allow clippy'::collapsible_else_if' --warn clippy'::checked_conversions' --allow clippy'::branches_sharing_code' --allow clippy'::bool_assert_comparison' --allow clippy'::blocks_in_conditions' --allow clippy'::assigning_clones' -C debug-assertions'=off' --cfg feature'="cargo"' --cfg feature'="color"' --cfg feature'="default"' --cfg feature'="derive"' --cfg feature'="env"' --cfg feature'="error-context"' --cfg feature'="help"' --cfg feature'="std"' --cfg feature'="suggestions"' --cfg feature'="usage"' --cfg feature'="wrap_help"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("cargo", "color", "debug", "default", "deprecated", "derive", "env", "error-context", "help", "std", "string", "suggestions", "unicode", "unstable-derive-ui-tests", "unstable-doc", "unstable-ext", "unstable-markdown", "unstable-styles", "unstable-v5", "usage", "wrap_help"))' -C metadata'=fc8badb4b4b7e261' -C extra-filename'=-3425a06da56d3e74' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern clap_builder'=/tmp/clis-bottom_0-11-4/release/deps/libclap_builder-e7766fa15aeef8ee.rmeta' --extern clap_derive'=/tmp/clis-bottom_0-11-4/release/deps/libclap_derive-0162f5e01682605c.so' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/clap-4.5.48/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-3425a06da56d3e74-stdout \
@@ -30707,9 +29627,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=58 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name clap_complete --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' --warn rust_2018_idioms --warn clippy'::zero_sized_map_values' --warn clippy'::verbose_file_reads' --warn unused_qualifications --warn unused_macro_rules --warn unused_lifetimes --warn unsafe_op_in_unsafe_fn --warn unreachable_pub --allow unnameable_types --warn clippy'::uninlined_format_args' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::todo' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_add_assign' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::self_named_module_files' --warn clippy'::same_functions_in_if_condition' --allow clippy'::result_large_err' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::ref_option_ref' --warn clippy'::redundant_feature_names' --warn clippy'::rc_mutex' --warn clippy'::ptr_as_ptr' --warn clippy'::path_buf_push_overwrite' --warn clippy'::negative_feature_names' --warn clippy'::needless_for_each' --allow clippy'::needless_continue' --warn clippy'::mutex_integer' --allow clippy'::multiple_bound_locations' --warn clippy'::mem_forget' --warn clippy'::macro_use_imports' --warn clippy'::lossy_float_literal' --warn clippy'::linkedlist' --allow clippy'::let_and_return' --warn clippy'::large_types_passed_by_value' --warn clippy'::large_stack_arrays' --warn clippy'::large_digit_groups' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::infinite_loop' --warn clippy'::inefficient_to_string' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::imprecise_flops' --warn clippy'::implicit_clone' --allow clippy'::if_same_then_else' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::fn_params_excessive_bools' --warn clippy'::float_cmp_const' --warn clippy'::flat_map_option' --warn clippy'::filter_map_next' --warn clippy'::fallible_impl_from' --warn clippy'::explicit_into_iter_loop' --warn clippy'::explicit_deref_methods' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::enum_glob_use' --warn clippy'::empty_enum' --warn clippy'::doc_markdown' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::dbg_macro' --warn clippy'::create_dir' --allow clippy'::collapsible_else_if' --warn clippy'::checked_conversions' --allow clippy'::branches_sharing_code' --allow clippy'::bool_assert_comparison' --allow clippy'::blocks_in_conditions' --allow clippy'::assigning_clones' -C debug-assertions'=off' --cfg feature'="default"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("debug", "default", "unstable-doc", "unstable-dynamic", "unstable-shell-tests"))' -C metadata'=3ecdbef05acdb334' -C extra-filename'=-9dc8c22f6431049f' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern clap'=/tmp/clis-bottom_0-11-4/release/deps/libclap-3425a06da56d3e74.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/clap_complete-4.5.58/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-9dc8c22f6431049f-stdout \
@@ -31012,9 +29929,6 @@ COPY --link --from=dep-n-clap_complete-4.5.58-9dc8c22f6431049f /tmp/clis-bottom_
 ##         CARGO_PKG_VERSION_PATCH=58 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name clap_complete --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' --warn rust_2018_idioms --warn clippy'::zero_sized_map_values' --warn clippy'::verbose_file_reads' --warn unused_qualifications --warn unused_macro_rules --warn unused_lifetimes --warn unsafe_op_in_unsafe_fn --warn unreachable_pub --allow unnameable_types --warn clippy'::uninlined_format_args' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::todo' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_add_assign' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::self_named_module_files' --warn clippy'::same_functions_in_if_condition' --allow clippy'::result_large_err' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::ref_option_ref' --warn clippy'::redundant_feature_names' --warn clippy'::rc_mutex' --warn clippy'::ptr_as_ptr' --warn clippy'::path_buf_push_overwrite' --warn clippy'::negative_feature_names' --warn clippy'::needless_for_each' --allow clippy'::needless_continue' --warn clippy'::mutex_integer' --allow clippy'::multiple_bound_locations' --warn clippy'::mem_forget' --warn clippy'::macro_use_imports' --warn clippy'::lossy_float_literal' --warn clippy'::linkedlist' --allow clippy'::let_and_return' --warn clippy'::large_types_passed_by_value' --warn clippy'::large_stack_arrays' --warn clippy'::large_digit_groups' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::infinite_loop' --warn clippy'::inefficient_to_string' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::imprecise_flops' --warn clippy'::implicit_clone' --allow clippy'::if_same_then_else' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::fn_params_excessive_bools' --warn clippy'::float_cmp_const' --warn clippy'::flat_map_option' --warn clippy'::filter_map_next' --warn clippy'::fallible_impl_from' --warn clippy'::explicit_into_iter_loop' --warn clippy'::explicit_deref_methods' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::enum_glob_use' --warn clippy'::empty_enum' --warn clippy'::doc_markdown' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::dbg_macro' --warn clippy'::create_dir' --allow clippy'::collapsible_else_if' --warn clippy'::checked_conversions' --allow clippy'::branches_sharing_code' --allow clippy'::bool_assert_comparison' --allow clippy'::blocks_in_conditions' --allow clippy'::assigning_clones' -C debug-assertions'=off' --cfg feature'="default"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("debug", "default", "unstable-doc", "unstable-dynamic", "unstable-shell-tests"))' -C metadata'=3ecdbef05acdb334' -C extra-filename'=-9dc8c22f6431049f' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern clap'=/tmp/clis-bottom_0-11-4/release/deps/libclap-3425a06da56d3e74.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/clap_complete-4.5.58/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-9dc8c22f6431049f-stdout \
@@ -31101,9 +30015,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=2 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name clap_complete_fig --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' --warn clippy'::zero_sized_map_values' --warn clippy'::verbose_file_reads' --warn unused_qualifications --warn unused_macro_rules --warn unused_lifetimes --warn unsafe_op_in_unsafe_fn --warn unreachable_pub --warn clippy'::trait_duplication_in_bounds' --warn clippy'::todo' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_add_assign' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::self_named_module_files' --warn clippy'::same_functions_in_if_condition' --warn rust_2018_idioms --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::ref_option_ref' --warn clippy'::redundant_feature_names' --warn clippy'::rc_mutex' --warn clippy'::ptr_as_ptr' --warn clippy'::path_buf_push_overwrite' --warn clippy'::negative_feature_names' --warn clippy'::needless_for_each' --warn clippy'::needless_continue' --warn clippy'::mutex_integer' --allow clippy'::multiple_bound_locations' --warn clippy'::mem_forget' --warn clippy'::match_wildcard_for_single_variants' --warn clippy'::macro_use_imports' --warn clippy'::lossy_float_literal' --warn clippy'::linkedlist' --allow clippy'::let_and_return' --warn clippy'::large_types_passed_by_value' --warn clippy'::large_stack_arrays' --warn clippy'::large_digit_groups' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::infinite_loop' --warn clippy'::inefficient_to_string' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::imprecise_flops' --warn clippy'::implicit_clone' --allow clippy'::if_same_then_else' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::fn_params_excessive_bools' --warn clippy'::float_cmp_const' --warn clippy'::flat_map_option' --warn clippy'::filter_map_next' --warn clippy'::fallible_impl_from' --warn clippy'::explicit_into_iter_loop' --warn clippy'::explicit_deref_methods' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::enum_glob_use' --warn clippy'::empty_enum' --warn clippy'::doc_markdown' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::dbg_macro' --warn clippy'::create_dir' --allow clippy'::collapsible_else_if' --warn clippy'::checked_conversions' --allow clippy'::branches_sharing_code' --allow clippy'::bool_assert_comparison' --allow clippy'::blocks_in_conditions' --allow clippy'::assigning_clones' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=9bd3c1e25b7fd0da' -C extra-filename'=-7f68df3bac7f0cfb' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern clap'=/tmp/clis-bottom_0-11-4/release/deps/libclap-3425a06da56d3e74.rmeta' --extern clap_complete'=/tmp/clis-bottom_0-11-4/release/deps/libclap_complete-9dc8c22f6431049f.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/clap_complete_fig-4.5.2/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-7f68df3bac7f0cfb-stdout \
@@ -31417,9 +30328,6 @@ COPY --link --from=dep-n-clap_complete_fig-4.5.2-7f68df3bac7f0cfb /tmp/clis-bott
 ##         CARGO_PKG_VERSION_PATCH=2 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name clap_complete_fig --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' --warn clippy'::zero_sized_map_values' --warn clippy'::verbose_file_reads' --warn unused_qualifications --warn unused_macro_rules --warn unused_lifetimes --warn unsafe_op_in_unsafe_fn --warn unreachable_pub --warn clippy'::trait_duplication_in_bounds' --warn clippy'::todo' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_add_assign' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::self_named_module_files' --warn clippy'::same_functions_in_if_condition' --warn rust_2018_idioms --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::ref_option_ref' --warn clippy'::redundant_feature_names' --warn clippy'::rc_mutex' --warn clippy'::ptr_as_ptr' --warn clippy'::path_buf_push_overwrite' --warn clippy'::negative_feature_names' --warn clippy'::needless_for_each' --warn clippy'::needless_continue' --warn clippy'::mutex_integer' --allow clippy'::multiple_bound_locations' --warn clippy'::mem_forget' --warn clippy'::match_wildcard_for_single_variants' --warn clippy'::macro_use_imports' --warn clippy'::lossy_float_literal' --warn clippy'::linkedlist' --allow clippy'::let_and_return' --warn clippy'::large_types_passed_by_value' --warn clippy'::large_stack_arrays' --warn clippy'::large_digit_groups' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::infinite_loop' --warn clippy'::inefficient_to_string' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::imprecise_flops' --warn clippy'::implicit_clone' --allow clippy'::if_same_then_else' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::fn_params_excessive_bools' --warn clippy'::float_cmp_const' --warn clippy'::flat_map_option' --warn clippy'::filter_map_next' --warn clippy'::fallible_impl_from' --warn clippy'::explicit_into_iter_loop' --warn clippy'::explicit_deref_methods' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::enum_glob_use' --warn clippy'::empty_enum' --warn clippy'::doc_markdown' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::dbg_macro' --warn clippy'::create_dir' --allow clippy'::collapsible_else_if' --warn clippy'::checked_conversions' --allow clippy'::branches_sharing_code' --allow clippy'::bool_assert_comparison' --allow clippy'::blocks_in_conditions' --allow clippy'::assigning_clones' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=9bd3c1e25b7fd0da' -C extra-filename'=-7f68df3bac7f0cfb' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern clap'=/tmp/clis-bottom_0-11-4/release/deps/libclap-3425a06da56d3e74.rmeta' --extern clap_complete'=/tmp/clis-bottom_0-11-4/release/deps/libclap_complete-9dc8c22f6431049f.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/clap_complete_fig-4.5.2/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-7f68df3bac7f0cfb-stdout \
@@ -31506,9 +30414,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=8 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name clap_complete_nushell --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' --warn rust_2018_idioms --warn clippy'::zero_sized_map_values' --warn clippy'::verbose_file_reads' --warn unused_qualifications --warn unused_macro_rules --warn unused_lifetimes --warn unsafe_op_in_unsafe_fn --warn unreachable_pub --allow unnameable_types --warn clippy'::uninlined_format_args' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::todo' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_add_assign' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::self_named_module_files' --warn clippy'::same_functions_in_if_condition' --allow clippy'::result_large_err' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::ref_option_ref' --warn clippy'::redundant_feature_names' --warn clippy'::rc_mutex' --warn clippy'::ptr_as_ptr' --warn clippy'::path_buf_push_overwrite' --warn clippy'::negative_feature_names' --warn clippy'::needless_for_each' --allow clippy'::needless_continue' --warn clippy'::mutex_integer' --allow clippy'::multiple_bound_locations' --warn clippy'::mem_forget' --warn clippy'::macro_use_imports' --warn clippy'::lossy_float_literal' --warn clippy'::linkedlist' --allow clippy'::let_and_return' --warn clippy'::large_types_passed_by_value' --warn clippy'::large_stack_arrays' --warn clippy'::large_digit_groups' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::infinite_loop' --warn clippy'::inefficient_to_string' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::imprecise_flops' --warn clippy'::implicit_clone' --allow clippy'::if_same_then_else' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::fn_params_excessive_bools' --warn clippy'::float_cmp_const' --warn clippy'::flat_map_option' --warn clippy'::filter_map_next' --warn clippy'::fallible_impl_from' --warn clippy'::explicit_into_iter_loop' --warn clippy'::explicit_deref_methods' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::enum_glob_use' --warn clippy'::empty_enum' --warn clippy'::doc_markdown' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::dbg_macro' --warn clippy'::create_dir' --allow clippy'::collapsible_else_if' --warn clippy'::checked_conversions' --allow clippy'::branches_sharing_code' --allow clippy'::bool_assert_comparison' --allow clippy'::blocks_in_conditions' --allow clippy'::assigning_clones' -C debug-assertions'=off' --cfg feature'="default"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "unstable-shell-tests"))' -C metadata'=5ea2649b43bece2f' -C extra-filename'=-ee198df3bcb67b7b' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern clap'=/tmp/clis-bottom_0-11-4/release/deps/libclap-3425a06da56d3e74.rmeta' --extern clap_complete'=/tmp/clis-bottom_0-11-4/release/deps/libclap_complete-9dc8c22f6431049f.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/clap_complete_nushell-4.5.8/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-ee198df3bcb67b7b-stdout \
@@ -31822,9 +30727,6 @@ COPY --link --from=dep-n-clap_complete_nushell-4.5.8-ee198df3bcb67b7b /tmp/clis-
 ##         CARGO_PKG_VERSION_PATCH=8 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name clap_complete_nushell --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' --warn rust_2018_idioms --warn clippy'::zero_sized_map_values' --warn clippy'::verbose_file_reads' --warn unused_qualifications --warn unused_macro_rules --warn unused_lifetimes --warn unsafe_op_in_unsafe_fn --warn unreachable_pub --allow unnameable_types --warn clippy'::uninlined_format_args' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::todo' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_add_assign' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::self_named_module_files' --warn clippy'::same_functions_in_if_condition' --allow clippy'::result_large_err' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::ref_option_ref' --warn clippy'::redundant_feature_names' --warn clippy'::rc_mutex' --warn clippy'::ptr_as_ptr' --warn clippy'::path_buf_push_overwrite' --warn clippy'::negative_feature_names' --warn clippy'::needless_for_each' --allow clippy'::needless_continue' --warn clippy'::mutex_integer' --allow clippy'::multiple_bound_locations' --warn clippy'::mem_forget' --warn clippy'::macro_use_imports' --warn clippy'::lossy_float_literal' --warn clippy'::linkedlist' --allow clippy'::let_and_return' --warn clippy'::large_types_passed_by_value' --warn clippy'::large_stack_arrays' --warn clippy'::large_digit_groups' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::infinite_loop' --warn clippy'::inefficient_to_string' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::imprecise_flops' --warn clippy'::implicit_clone' --allow clippy'::if_same_then_else' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::fn_params_excessive_bools' --warn clippy'::float_cmp_const' --warn clippy'::flat_map_option' --warn clippy'::filter_map_next' --warn clippy'::fallible_impl_from' --warn clippy'::explicit_into_iter_loop' --warn clippy'::explicit_deref_methods' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::enum_glob_use' --warn clippy'::empty_enum' --warn clippy'::doc_markdown' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::dbg_macro' --warn clippy'::create_dir' --allow clippy'::collapsible_else_if' --warn clippy'::checked_conversions' --allow clippy'::branches_sharing_code' --allow clippy'::bool_assert_comparison' --allow clippy'::blocks_in_conditions' --allow clippy'::assigning_clones' -C debug-assertions'=off' --cfg feature'="default"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "unstable-shell-tests"))' -C metadata'=5ea2649b43bece2f' -C extra-filename'=-ee198df3bcb67b7b' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern clap'=/tmp/clis-bottom_0-11-4/release/deps/libclap-3425a06da56d3e74.rmeta' --extern clap_complete'=/tmp/clis-bottom_0-11-4/release/deps/libclap_complete-9dc8c22f6431049f.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/clap_complete_nushell-4.5.8/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-ee198df3bcb67b7b-stdout \
@@ -31868,9 +30770,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=2 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name roff --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' --warn clippy'::zero_sized_map_values' --warn clippy'::wildcard_imports' --warn clippy'::verbose_file_reads' --warn unused_qualifications --warn unused_macro_rules --warn unused_lifetimes --warn unsafe_op_in_unsafe_fn --warn unreachable_pub --warn clippy'::trait_duplication_in_bounds' --warn clippy'::todo' --warn clippy'::string_to_string' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_add_assign' --warn clippy'::string_add' --warn clippy'::str_to_string' --warn clippy'::single_match_else' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::self_named_module_files' --warn clippy'::same_functions_in_if_condition' --warn rust_2018_idioms --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::ref_option_ref' --warn clippy'::redundant_feature_names' --warn clippy'::rc_mutex' --warn clippy'::ptr_as_ptr' --warn clippy'::path_buf_push_overwrite' --warn clippy'::negative_feature_names' --warn clippy'::needless_for_each' --warn clippy'::needless_continue' --warn clippy'::mutex_integer' --warn clippy'::mem_forget' --warn clippy'::match_wildcard_for_single_variants' --warn clippy'::macro_use_imports' --warn clippy'::lossy_float_literal' --warn clippy'::linkedlist' --allow clippy'::let_and_return' --warn clippy'::large_types_passed_by_value' --warn clippy'::large_stack_arrays' --warn clippy'::large_digit_groups' --warn clippy'::items_after_statements' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::infinite_loop' --warn clippy'::inefficient_to_string' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::imprecise_flops' --warn clippy'::implicit_clone' --allow clippy'::if_same_then_else' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::fn_params_excessive_bools' --warn clippy'::float_cmp_const' --warn clippy'::flat_map_option' --warn clippy'::filter_map_next' --warn clippy'::fallible_impl_from' --warn clippy'::explicit_into_iter_loop' --warn clippy'::explicit_deref_methods' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::enum_glob_use' --warn clippy'::empty_enum' --warn clippy'::doc_markdown' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::dbg_macro' --warn clippy'::create_dir' --allow clippy'::collapsible_else_if' --warn clippy'::checked_conversions' --allow clippy'::branches_sharing_code' --allow clippy'::bool_assert_comparison' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=9e256e8d5e90f6ef' -C extra-filename'=-827e7ede0f3df6ed' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/roff-0.2.2/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-827e7ede0f3df6ed-stdout \
@@ -31937,9 +30836,6 @@ COPY --link --from=dep-n-roff-0.2.2-827e7ede0f3df6ed /tmp/clis-bottom_0-11-4/rel
 ##         CARGO_PKG_VERSION_PATCH=2 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name roff --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' --warn clippy'::zero_sized_map_values' --warn clippy'::wildcard_imports' --warn clippy'::verbose_file_reads' --warn unused_qualifications --warn unused_macro_rules --warn unused_lifetimes --warn unsafe_op_in_unsafe_fn --warn unreachable_pub --warn clippy'::trait_duplication_in_bounds' --warn clippy'::todo' --warn clippy'::string_to_string' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_add_assign' --warn clippy'::string_add' --warn clippy'::str_to_string' --warn clippy'::single_match_else' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::self_named_module_files' --warn clippy'::same_functions_in_if_condition' --warn rust_2018_idioms --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::ref_option_ref' --warn clippy'::redundant_feature_names' --warn clippy'::rc_mutex' --warn clippy'::ptr_as_ptr' --warn clippy'::path_buf_push_overwrite' --warn clippy'::negative_feature_names' --warn clippy'::needless_for_each' --warn clippy'::needless_continue' --warn clippy'::mutex_integer' --warn clippy'::mem_forget' --warn clippy'::match_wildcard_for_single_variants' --warn clippy'::macro_use_imports' --warn clippy'::lossy_float_literal' --warn clippy'::linkedlist' --allow clippy'::let_and_return' --warn clippy'::large_types_passed_by_value' --warn clippy'::large_stack_arrays' --warn clippy'::large_digit_groups' --warn clippy'::items_after_statements' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::infinite_loop' --warn clippy'::inefficient_to_string' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::imprecise_flops' --warn clippy'::implicit_clone' --allow clippy'::if_same_then_else' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::fn_params_excessive_bools' --warn clippy'::float_cmp_const' --warn clippy'::flat_map_option' --warn clippy'::filter_map_next' --warn clippy'::fallible_impl_from' --warn clippy'::explicit_into_iter_loop' --warn clippy'::explicit_deref_methods' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::enum_glob_use' --warn clippy'::empty_enum' --warn clippy'::doc_markdown' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::dbg_macro' --warn clippy'::create_dir' --allow clippy'::collapsible_else_if' --warn clippy'::checked_conversions' --allow clippy'::branches_sharing_code' --allow clippy'::bool_assert_comparison' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=9e256e8d5e90f6ef' -C extra-filename'=-827e7ede0f3df6ed' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/roff-0.2.2/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-827e7ede0f3df6ed-stdout \
@@ -32026,9 +30922,6 @@ RUN \
         CARGO_PKG_VERSION_PATCH=29 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name clap_mangen --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' --warn rust_2018_idioms --warn clippy'::zero_sized_map_values' --warn clippy'::verbose_file_reads' --warn unused_qualifications --warn unused_macro_rules --warn unused_lifetimes --warn unsafe_op_in_unsafe_fn --warn unreachable_pub --allow unnameable_types --warn clippy'::uninlined_format_args' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::todo' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_add_assign' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::self_named_module_files' --warn clippy'::same_functions_in_if_condition' --allow clippy'::result_large_err' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::ref_option_ref' --warn clippy'::redundant_feature_names' --warn clippy'::rc_mutex' --warn clippy'::ptr_as_ptr' --warn clippy'::path_buf_push_overwrite' --warn clippy'::negative_feature_names' --warn clippy'::needless_for_each' --allow clippy'::needless_continue' --warn clippy'::mutex_integer' --allow clippy'::multiple_bound_locations' --warn clippy'::mem_forget' --warn clippy'::macro_use_imports' --warn clippy'::lossy_float_literal' --warn clippy'::linkedlist' --allow clippy'::let_and_return' --warn clippy'::large_types_passed_by_value' --warn clippy'::large_stack_arrays' --warn clippy'::large_digit_groups' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::infinite_loop' --warn clippy'::inefficient_to_string' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::imprecise_flops' --warn clippy'::implicit_clone' --allow clippy'::if_same_then_else' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::fn_params_excessive_bools' --warn clippy'::float_cmp_const' --warn clippy'::flat_map_option' --warn clippy'::filter_map_next' --warn clippy'::fallible_impl_from' --warn clippy'::explicit_into_iter_loop' --warn clippy'::explicit_deref_methods' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::enum_glob_use' --warn clippy'::empty_enum' --warn clippy'::doc_markdown' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::dbg_macro' --warn clippy'::create_dir' --allow clippy'::collapsible_else_if' --warn clippy'::checked_conversions' --allow clippy'::branches_sharing_code' --allow clippy'::bool_assert_comparison' --allow clippy'::blocks_in_conditions' --allow clippy'::assigning_clones' -C debug-assertions'=off' --cfg feature'="default"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("debug", "default"))' -C metadata'=8cdeb7ae329b8fdf' -C extra-filename'=-7739a76558eefd4b' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern clap'=/tmp/clis-bottom_0-11-4/release/deps/libclap-3425a06da56d3e74.rmeta' --extern roff'=/tmp/clis-bottom_0-11-4/release/deps/libroff-827e7ede0f3df6ed.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/clap_mangen-0.2.29/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-7739a76558eefd4b-stdout \
@@ -32342,9 +31235,6 @@ COPY --link --from=dep-n-clap_mangen-0.2.29-7739a76558eefd4b /tmp/clis-bottom_0-
 ##         CARGO_PKG_VERSION_PATCH=29 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name clap_mangen --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' --warn rust_2018_idioms --warn clippy'::zero_sized_map_values' --warn clippy'::verbose_file_reads' --warn unused_qualifications --warn unused_macro_rules --warn unused_lifetimes --warn unsafe_op_in_unsafe_fn --warn unreachable_pub --allow unnameable_types --warn clippy'::uninlined_format_args' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::todo' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_add_assign' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::self_named_module_files' --warn clippy'::same_functions_in_if_condition' --allow clippy'::result_large_err' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::ref_option_ref' --warn clippy'::redundant_feature_names' --warn clippy'::rc_mutex' --warn clippy'::ptr_as_ptr' --warn clippy'::path_buf_push_overwrite' --warn clippy'::negative_feature_names' --warn clippy'::needless_for_each' --allow clippy'::needless_continue' --warn clippy'::mutex_integer' --allow clippy'::multiple_bound_locations' --warn clippy'::mem_forget' --warn clippy'::macro_use_imports' --warn clippy'::lossy_float_literal' --warn clippy'::linkedlist' --allow clippy'::let_and_return' --warn clippy'::large_types_passed_by_value' --warn clippy'::large_stack_arrays' --warn clippy'::large_digit_groups' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::infinite_loop' --warn clippy'::inefficient_to_string' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::imprecise_flops' --warn clippy'::implicit_clone' --allow clippy'::if_same_then_else' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::fn_params_excessive_bools' --warn clippy'::float_cmp_const' --warn clippy'::flat_map_option' --warn clippy'::filter_map_next' --warn clippy'::fallible_impl_from' --warn clippy'::explicit_into_iter_loop' --warn clippy'::explicit_deref_methods' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::enum_glob_use' --warn clippy'::empty_enum' --warn clippy'::doc_markdown' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::dbg_macro' --warn clippy'::create_dir' --allow clippy'::collapsible_else_if' --warn clippy'::checked_conversions' --allow clippy'::branches_sharing_code' --allow clippy'::bool_assert_comparison' --allow clippy'::blocks_in_conditions' --allow clippy'::assigning_clones' -C debug-assertions'=off' --cfg feature'="default"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("debug", "default"))' -C metadata'=8cdeb7ae329b8fdf' -C extra-filename'=-7739a76558eefd4b' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern clap'=/tmp/clis-bottom_0-11-4/release/deps/libclap-3425a06da56d3e74.rmeta' --extern roff'=/tmp/clis-bottom_0-11-4/release/deps/libroff-827e7ede0f3df6ed.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/clap_mangen-0.2.29/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-7739a76558eefd4b-stdout \
@@ -32436,9 +31326,6 @@ RUN \
         CARGO_PRIMARY_PACKAGE=1 \
         CARGO_SBOM_PATH= \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' --deny clippy'::unimplemented' --deny clippy'::todo' --deny rust_2018_idioms --deny clippy'::missing_safety_doc' --deny rustdoc'::missing_crate_level_docs' --deny rustdoc'::broken_intra_doc_links' -C debug-assertions'=off' --cfg feature'="battery"' --cfg feature'="default"' --cfg feature'="deploy"' --cfg feature'="gpu"' --cfg feature'="nvidia"' --cfg feature'="nvml-wrapper"' --cfg feature'="starship-battery"' --cfg feature'="zfs"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("battery", "default", "deploy", "fern", "generate_schema", "gpu", "log", "logging", "nvidia", "nvml-wrapper", "schemars", "serde_json", "starship-battery", "strum", "time", "zfs"))' -C metadata'=5b99deb3e08a4ee1' -C extra-filename'=-4c37675ddeff2f8b' --out-dir /tmp/clis-bottom_0-11-4/release/build/bottom-4c37675ddeff2f8b -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern clap'=/tmp/clis-bottom_0-11-4/release/deps/libclap-3425a06da56d3e74.rlib' --extern clap_complete'=/tmp/clis-bottom_0-11-4/release/deps/libclap_complete-9dc8c22f6431049f.rlib' --extern clap_complete_fig'=/tmp/clis-bottom_0-11-4/release/deps/libclap_complete_fig-7f68df3bac7f0cfb.rlib' --extern clap_complete_nushell'=/tmp/clis-bottom_0-11-4/release/deps/libclap_complete_nushell-ee198df3bcb67b7b.rlib' --extern clap_mangen'=/tmp/clis-bottom_0-11-4/release/deps/libclap_mangen-7739a76558eefd4b.rlib' --extern indoc'=/tmp/clis-bottom_0-11-4/release/deps/libindoc-6220bf836a43fe21.so' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bottom-0.11.4/build.rs \
         1>          /tmp/clis-bottom_0-11-4/release/build/bottom-4c37675ddeff2f8b/out-4c37675ddeff2f8b-stdout \
@@ -32698,9 +31585,6 @@ COPY --link --from=dep-x-bottom-0.11.4-4c37675ddeff2f8b /tmp/clis-bottom_0-11-4/
 ##         CARGO_PRIMARY_PACKAGE=1 \
 ##         CARGO_SBOM_PATH= \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' --deny clippy'::unimplemented' --deny clippy'::todo' --deny rust_2018_idioms --deny clippy'::missing_safety_doc' --deny rustdoc'::missing_crate_level_docs' --deny rustdoc'::broken_intra_doc_links' -C debug-assertions'=off' --cfg feature'="battery"' --cfg feature'="default"' --cfg feature'="deploy"' --cfg feature'="gpu"' --cfg feature'="nvidia"' --cfg feature'="nvml-wrapper"' --cfg feature'="starship-battery"' --cfg feature'="zfs"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("battery", "default", "deploy", "fern", "generate_schema", "gpu", "log", "logging", "nvidia", "nvml-wrapper", "schemars", "serde_json", "starship-battery", "strum", "time", "zfs"))' -C metadata'=5b99deb3e08a4ee1' -C extra-filename'=-4c37675ddeff2f8b' --out-dir /tmp/clis-bottom_0-11-4/release/build/bottom-4c37675ddeff2f8b -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern clap'=/tmp/clis-bottom_0-11-4/release/deps/libclap-3425a06da56d3e74.rlib' --extern clap_complete'=/tmp/clis-bottom_0-11-4/release/deps/libclap_complete-9dc8c22f6431049f.rlib' --extern clap_complete_fig'=/tmp/clis-bottom_0-11-4/release/deps/libclap_complete_fig-7f68df3bac7f0cfb.rlib' --extern clap_complete_nushell'=/tmp/clis-bottom_0-11-4/release/deps/libclap_complete_nushell-ee198df3bcb67b7b.rlib' --extern clap_mangen'=/tmp/clis-bottom_0-11-4/release/deps/libclap_mangen-7739a76558eefd4b.rlib' --extern indoc'=/tmp/clis-bottom_0-11-4/release/deps/libindoc-6220bf836a43fe21.so' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bottom-0.11.4/build.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/build/bottom-4c37675ddeff2f8b/out-4c37675ddeff2f8b-stdout \
@@ -32773,9 +31657,6 @@ RUN \
         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
         TARGET=x86_64-unknown-linux-gnu \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-bottom_0-11-4/release/build/bottom-4c37675ddeff2f8b/build-script-build \
         1>          /tmp/clis-bottom_0-11-4/release/build/bottom-085b99eafbf8b4cb/out/out-085b99eafbf8b4cb-stdout \
@@ -32895,9 +31776,6 @@ COPY --link --from=run-z-bottom-0.11.4-085b99eafbf8b4cb /tmp/clis-bottom_0-11-4/
 ##         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
 ##         TARGET=x86_64-unknown-linux-gnu \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-bottom_0-11-4/release/build/bottom-4c37675ddeff2f8b/build-script-build \
 ##         1>          /tmp/clis-bottom_0-11-4/release/build/bottom-085b99eafbf8b4cb/out/out-085b99eafbf8b4cb-stdout \
@@ -33191,9 +32069,6 @@ RUN \
         CARGO_SBOM_PATH= \
         OUT_DIR=/tmp/clis-bottom_0-11-4/release/build/bottom-085b99eafbf8b4cb/out \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name bottom --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --deny clippy'::unimplemented' --deny clippy'::todo' --deny rust_2018_idioms --deny clippy'::missing_safety_doc' --deny rustdoc'::missing_crate_level_docs' --deny rustdoc'::broken_intra_doc_links' --cfg feature'="battery"' --cfg feature'="default"' --cfg feature'="deploy"' --cfg feature'="gpu"' --cfg feature'="nvidia"' --cfg feature'="nvml-wrapper"' --cfg feature'="starship-battery"' --cfg feature'="zfs"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("battery", "default", "deploy", "fern", "generate_schema", "gpu", "log", "logging", "nvidia", "nvml-wrapper", "schemars", "serde_json", "starship-battery", "strum", "time", "zfs"))' -C metadata'=6227a0e6385dafde' -C extra-filename'=-e9185293987a3339' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern anyhow'=/tmp/clis-bottom_0-11-4/release/deps/libanyhow-543166d220417af1.rmeta' --extern backtrace'=/tmp/clis-bottom_0-11-4/release/deps/libbacktrace-4b25e827b1f336c5.rmeta' --extern cfg_if'=/tmp/clis-bottom_0-11-4/release/deps/libcfg_if-bcc7b80470034230.rmeta' --extern clap'=/tmp/clis-bottom_0-11-4/release/deps/libclap-ff1c187a0dbef276.rmeta' --extern concat_string'=/tmp/clis-bottom_0-11-4/release/deps/libconcat_string-502a42165bb1ea2e.rmeta' --extern crossterm'=/tmp/clis-bottom_0-11-4/release/deps/libcrossterm-ebe2f271fb65aaff.rmeta' --extern ctrlc'=/tmp/clis-bottom_0-11-4/release/deps/libctrlc-1d6911db2f7eed96.rmeta' --extern dirs'=/tmp/clis-bottom_0-11-4/release/deps/libdirs-85591fa479b21f9f.rmeta' --extern hashbrown'=/tmp/clis-bottom_0-11-4/release/deps/libhashbrown-75a46f0c9de185ab.rmeta' --extern humantime'=/tmp/clis-bottom_0-11-4/release/deps/libhumantime-8d10865a98510d2d.rmeta' --extern indexmap'=/tmp/clis-bottom_0-11-4/release/deps/libindexmap-b43e6c5f947e2f50.rmeta' --extern indoc'=/tmp/clis-bottom_0-11-4/release/deps/libindoc-6220bf836a43fe21.so' --extern itertools'=/tmp/clis-bottom_0-11-4/release/deps/libitertools-62522c8d5cefce5c.rmeta' --extern libc'=/tmp/clis-bottom_0-11-4/release/deps/liblibc-f9a7f201e668dfaf.rmeta' --extern nvml_wrapper'=/tmp/clis-bottom_0-11-4/release/deps/libnvml_wrapper-00a58d6d9cc67991.rmeta' --extern tui'=/tmp/clis-bottom_0-11-4/release/deps/libratatui-85dafea1106b5a19.rmeta' --extern regex'=/tmp/clis-bottom_0-11-4/release/deps/libregex-df900add298d9323.rmeta' --extern rustix'=/tmp/clis-bottom_0-11-4/release/deps/librustix-4b7500c7860b2cc4.rmeta' --extern serde'=/tmp/clis-bottom_0-11-4/release/deps/libserde-4fa987dce710c612.rmeta' --extern starship_battery'=/tmp/clis-bottom_0-11-4/release/deps/libstarship_battery-1c1146852062883c.rmeta' --extern sysinfo'=/tmp/clis-bottom_0-11-4/release/deps/libsysinfo-b88ad5a61ec178e5.rmeta' --extern timeless'=/tmp/clis-bottom_0-11-4/release/deps/libtimeless-3f9985f66e9630d5.rmeta' --extern toml_edit'=/tmp/clis-bottom_0-11-4/release/deps/libtoml_edit-0c3cafbaba151b29.rmeta' --extern unicode_ellipsis'=/tmp/clis-bottom_0-11-4/release/deps/libunicode_ellipsis-5655a7c92326394a.rmeta' --extern unicode_segmentation'=/tmp/clis-bottom_0-11-4/release/deps/libunicode_segmentation-c3cf906c5a4083dc.rmeta' --extern unicode_width'=/tmp/clis-bottom_0-11-4/release/deps/libunicode_width-f6f32a8a5a2fe2b5.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bottom-0.11.4/src/lib.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-e9185293987a3339-stdout \
@@ -34718,9 +33593,6 @@ COPY --link --from=dep-n-bottom-0.11.4-e9185293987a3339 /tmp/clis-bottom_0-11-4/
 ##         CARGO_SBOM_PATH= \
 ##         OUT_DIR=/tmp/clis-bottom_0-11-4/release/build/bottom-085b99eafbf8b4cb/out \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name bottom --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C linker-plugin-lto -C codegen-units'=1' --deny clippy'::unimplemented' --deny clippy'::todo' --deny rust_2018_idioms --deny clippy'::missing_safety_doc' --deny rustdoc'::missing_crate_level_docs' --deny rustdoc'::broken_intra_doc_links' --cfg feature'="battery"' --cfg feature'="default"' --cfg feature'="deploy"' --cfg feature'="gpu"' --cfg feature'="nvidia"' --cfg feature'="nvml-wrapper"' --cfg feature'="starship-battery"' --cfg feature'="zfs"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("battery", "default", "deploy", "fern", "generate_schema", "gpu", "log", "logging", "nvidia", "nvml-wrapper", "schemars", "serde_json", "starship-battery", "strum", "time", "zfs"))' -C metadata'=6227a0e6385dafde' -C extra-filename'=-e9185293987a3339' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern anyhow'=/tmp/clis-bottom_0-11-4/release/deps/libanyhow-543166d220417af1.rmeta' --extern backtrace'=/tmp/clis-bottom_0-11-4/release/deps/libbacktrace-4b25e827b1f336c5.rmeta' --extern cfg_if'=/tmp/clis-bottom_0-11-4/release/deps/libcfg_if-bcc7b80470034230.rmeta' --extern clap'=/tmp/clis-bottom_0-11-4/release/deps/libclap-ff1c187a0dbef276.rmeta' --extern concat_string'=/tmp/clis-bottom_0-11-4/release/deps/libconcat_string-502a42165bb1ea2e.rmeta' --extern crossterm'=/tmp/clis-bottom_0-11-4/release/deps/libcrossterm-ebe2f271fb65aaff.rmeta' --extern ctrlc'=/tmp/clis-bottom_0-11-4/release/deps/libctrlc-1d6911db2f7eed96.rmeta' --extern dirs'=/tmp/clis-bottom_0-11-4/release/deps/libdirs-85591fa479b21f9f.rmeta' --extern hashbrown'=/tmp/clis-bottom_0-11-4/release/deps/libhashbrown-75a46f0c9de185ab.rmeta' --extern humantime'=/tmp/clis-bottom_0-11-4/release/deps/libhumantime-8d10865a98510d2d.rmeta' --extern indexmap'=/tmp/clis-bottom_0-11-4/release/deps/libindexmap-b43e6c5f947e2f50.rmeta' --extern indoc'=/tmp/clis-bottom_0-11-4/release/deps/libindoc-6220bf836a43fe21.so' --extern itertools'=/tmp/clis-bottom_0-11-4/release/deps/libitertools-62522c8d5cefce5c.rmeta' --extern libc'=/tmp/clis-bottom_0-11-4/release/deps/liblibc-f9a7f201e668dfaf.rmeta' --extern nvml_wrapper'=/tmp/clis-bottom_0-11-4/release/deps/libnvml_wrapper-00a58d6d9cc67991.rmeta' --extern tui'=/tmp/clis-bottom_0-11-4/release/deps/libratatui-85dafea1106b5a19.rmeta' --extern regex'=/tmp/clis-bottom_0-11-4/release/deps/libregex-df900add298d9323.rmeta' --extern rustix'=/tmp/clis-bottom_0-11-4/release/deps/librustix-4b7500c7860b2cc4.rmeta' --extern serde'=/tmp/clis-bottom_0-11-4/release/deps/libserde-4fa987dce710c612.rmeta' --extern starship_battery'=/tmp/clis-bottom_0-11-4/release/deps/libstarship_battery-1c1146852062883c.rmeta' --extern sysinfo'=/tmp/clis-bottom_0-11-4/release/deps/libsysinfo-b88ad5a61ec178e5.rmeta' --extern timeless'=/tmp/clis-bottom_0-11-4/release/deps/libtimeless-3f9985f66e9630d5.rmeta' --extern toml_edit'=/tmp/clis-bottom_0-11-4/release/deps/libtoml_edit-0c3cafbaba151b29.rmeta' --extern unicode_ellipsis'=/tmp/clis-bottom_0-11-4/release/deps/libunicode_ellipsis-5655a7c92326394a.rmeta' --extern unicode_segmentation'=/tmp/clis-bottom_0-11-4/release/deps/libunicode_segmentation-c3cf906c5a4083dc.rmeta' --extern unicode_width'=/tmp/clis-bottom_0-11-4/release/deps/libunicode_width-f6f32a8a5a2fe2b5.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bottom-0.11.4/src/lib.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-e9185293987a3339-stdout \
@@ -34919,9 +33791,6 @@ RUN \
         CARGO_SBOM_PATH= \
         OUT_DIR=/tmp/clis-bottom_0-11-4/release/build/bottom-085b99eafbf8b4cb/out \
         CARGOGREEN=1 \
-        BTM_GENERATE= \
-        BTM_BUILD_RELEASE_CALLER= \
-        CIRRUS_CHANGE_IN_REPO= \
         GITHUB_SHA= \
       rustc --crate-name btm --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C opt-level'=3' -C lto -C codegen-units'=1' --deny clippy'::unimplemented' --deny clippy'::todo' --deny rust_2018_idioms --deny clippy'::missing_safety_doc' --deny rustdoc'::missing_crate_level_docs' --deny rustdoc'::broken_intra_doc_links' --cfg feature'="battery"' --cfg feature'="default"' --cfg feature'="deploy"' --cfg feature'="gpu"' --cfg feature'="nvidia"' --cfg feature'="nvml-wrapper"' --cfg feature'="starship-battery"' --cfg feature'="zfs"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("battery", "default", "deploy", "fern", "generate_schema", "gpu", "log", "logging", "nvidia", "nvml-wrapper", "schemars", "serde_json", "starship-battery", "strum", "time", "zfs"))' -C metadata'=117786319bf095ff' -C extra-filename'=-4ec85bbd35749cc4' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern anyhow'=/tmp/clis-bottom_0-11-4/release/deps/libanyhow-543166d220417af1.rlib' --extern backtrace'=/tmp/clis-bottom_0-11-4/release/deps/libbacktrace-4b25e827b1f336c5.rlib' --extern bottom'=/tmp/clis-bottom_0-11-4/release/deps/libbottom-e9185293987a3339.rlib' --extern cfg_if'=/tmp/clis-bottom_0-11-4/release/deps/libcfg_if-bcc7b80470034230.rlib' --extern clap'=/tmp/clis-bottom_0-11-4/release/deps/libclap-ff1c187a0dbef276.rlib' --extern concat_string'=/tmp/clis-bottom_0-11-4/release/deps/libconcat_string-502a42165bb1ea2e.rlib' --extern crossterm'=/tmp/clis-bottom_0-11-4/release/deps/libcrossterm-ebe2f271fb65aaff.rlib' --extern ctrlc'=/tmp/clis-bottom_0-11-4/release/deps/libctrlc-1d6911db2f7eed96.rlib' --extern dirs'=/tmp/clis-bottom_0-11-4/release/deps/libdirs-85591fa479b21f9f.rlib' --extern hashbrown'=/tmp/clis-bottom_0-11-4/release/deps/libhashbrown-75a46f0c9de185ab.rlib' --extern humantime'=/tmp/clis-bottom_0-11-4/release/deps/libhumantime-8d10865a98510d2d.rlib' --extern indexmap'=/tmp/clis-bottom_0-11-4/release/deps/libindexmap-b43e6c5f947e2f50.rlib' --extern indoc'=/tmp/clis-bottom_0-11-4/release/deps/libindoc-6220bf836a43fe21.so' --extern itertools'=/tmp/clis-bottom_0-11-4/release/deps/libitertools-62522c8d5cefce5c.rlib' --extern libc'=/tmp/clis-bottom_0-11-4/release/deps/liblibc-f9a7f201e668dfaf.rlib' --extern nvml_wrapper'=/tmp/clis-bottom_0-11-4/release/deps/libnvml_wrapper-00a58d6d9cc67991.rlib' --extern tui'=/tmp/clis-bottom_0-11-4/release/deps/libratatui-85dafea1106b5a19.rlib' --extern regex'=/tmp/clis-bottom_0-11-4/release/deps/libregex-df900add298d9323.rlib' --extern rustix'=/tmp/clis-bottom_0-11-4/release/deps/librustix-4b7500c7860b2cc4.rlib' --extern serde'=/tmp/clis-bottom_0-11-4/release/deps/libserde-4fa987dce710c612.rlib' --extern starship_battery'=/tmp/clis-bottom_0-11-4/release/deps/libstarship_battery-1c1146852062883c.rlib' --extern sysinfo'=/tmp/clis-bottom_0-11-4/release/deps/libsysinfo-b88ad5a61ec178e5.rlib' --extern timeless'=/tmp/clis-bottom_0-11-4/release/deps/libtimeless-3f9985f66e9630d5.rlib' --extern toml_edit'=/tmp/clis-bottom_0-11-4/release/deps/libtoml_edit-0c3cafbaba151b29.rlib' --extern unicode_ellipsis'=/tmp/clis-bottom_0-11-4/release/deps/libunicode_ellipsis-5655a7c92326394a.rlib' --extern unicode_segmentation'=/tmp/clis-bottom_0-11-4/release/deps/libunicode_segmentation-c3cf906c5a4083dc.rlib' --extern unicode_width'=/tmp/clis-bottom_0-11-4/release/deps/libunicode_width-f6f32a8a5a2fe2b5.rlib' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bottom-0.11.4/src/bin/main.rs \
         1>          /tmp/clis-bottom_0-11-4/release/deps/out-4ec85bbd35749cc4-stdout \
@@ -35970,9 +34839,6 @@ COPY --link --from=dep-n-bottom-0.11.4-4ec85bbd35749cc4 /tmp/clis-bottom_0-11-4/
 ##         CARGO_SBOM_PATH= \
 ##         OUT_DIR=/tmp/clis-bottom_0-11-4/release/build/bottom-085b99eafbf8b4cb/out \
 ##         CARGOGREEN=1 \
-##         BTM_GENERATE= \
-##         BTM_BUILD_RELEASE_CALLER= \
-##         CIRRUS_CHANGE_IN_REPO= \
 ##         GITHUB_SHA= \
 ##       rustc --crate-name btm --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C opt-level'=3' -C lto -C codegen-units'=1' --deny clippy'::unimplemented' --deny clippy'::todo' --deny rust_2018_idioms --deny clippy'::missing_safety_doc' --deny rustdoc'::missing_crate_level_docs' --deny rustdoc'::broken_intra_doc_links' --cfg feature'="battery"' --cfg feature'="default"' --cfg feature'="deploy"' --cfg feature'="gpu"' --cfg feature'="nvidia"' --cfg feature'="nvml-wrapper"' --cfg feature'="starship-battery"' --cfg feature'="zfs"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("battery", "default", "deploy", "fern", "generate_schema", "gpu", "log", "logging", "nvidia", "nvml-wrapper", "schemars", "serde_json", "starship-battery", "strum", "time", "zfs"))' -C metadata'=117786319bf095ff' -C extra-filename'=-4ec85bbd35749cc4' --out-dir /tmp/clis-bottom_0-11-4/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-bottom_0-11-4/release/deps' --extern anyhow'=/tmp/clis-bottom_0-11-4/release/deps/libanyhow-543166d220417af1.rlib' --extern backtrace'=/tmp/clis-bottom_0-11-4/release/deps/libbacktrace-4b25e827b1f336c5.rlib' --extern bottom'=/tmp/clis-bottom_0-11-4/release/deps/libbottom-e9185293987a3339.rlib' --extern cfg_if'=/tmp/clis-bottom_0-11-4/release/deps/libcfg_if-bcc7b80470034230.rlib' --extern clap'=/tmp/clis-bottom_0-11-4/release/deps/libclap-ff1c187a0dbef276.rlib' --extern concat_string'=/tmp/clis-bottom_0-11-4/release/deps/libconcat_string-502a42165bb1ea2e.rlib' --extern crossterm'=/tmp/clis-bottom_0-11-4/release/deps/libcrossterm-ebe2f271fb65aaff.rlib' --extern ctrlc'=/tmp/clis-bottom_0-11-4/release/deps/libctrlc-1d6911db2f7eed96.rlib' --extern dirs'=/tmp/clis-bottom_0-11-4/release/deps/libdirs-85591fa479b21f9f.rlib' --extern hashbrown'=/tmp/clis-bottom_0-11-4/release/deps/libhashbrown-75a46f0c9de185ab.rlib' --extern humantime'=/tmp/clis-bottom_0-11-4/release/deps/libhumantime-8d10865a98510d2d.rlib' --extern indexmap'=/tmp/clis-bottom_0-11-4/release/deps/libindexmap-b43e6c5f947e2f50.rlib' --extern indoc'=/tmp/clis-bottom_0-11-4/release/deps/libindoc-6220bf836a43fe21.so' --extern itertools'=/tmp/clis-bottom_0-11-4/release/deps/libitertools-62522c8d5cefce5c.rlib' --extern libc'=/tmp/clis-bottom_0-11-4/release/deps/liblibc-f9a7f201e668dfaf.rlib' --extern nvml_wrapper'=/tmp/clis-bottom_0-11-4/release/deps/libnvml_wrapper-00a58d6d9cc67991.rlib' --extern tui'=/tmp/clis-bottom_0-11-4/release/deps/libratatui-85dafea1106b5a19.rlib' --extern regex'=/tmp/clis-bottom_0-11-4/release/deps/libregex-df900add298d9323.rlib' --extern rustix'=/tmp/clis-bottom_0-11-4/release/deps/librustix-4b7500c7860b2cc4.rlib' --extern serde'=/tmp/clis-bottom_0-11-4/release/deps/libserde-4fa987dce710c612.rlib' --extern starship_battery'=/tmp/clis-bottom_0-11-4/release/deps/libstarship_battery-1c1146852062883c.rlib' --extern sysinfo'=/tmp/clis-bottom_0-11-4/release/deps/libsysinfo-b88ad5a61ec178e5.rlib' --extern timeless'=/tmp/clis-bottom_0-11-4/release/deps/libtimeless-3f9985f66e9630d5.rlib' --extern toml_edit'=/tmp/clis-bottom_0-11-4/release/deps/libtoml_edit-0c3cafbaba151b29.rlib' --extern unicode_ellipsis'=/tmp/clis-bottom_0-11-4/release/deps/libunicode_ellipsis-5655a7c92326394a.rlib' --extern unicode_segmentation'=/tmp/clis-bottom_0-11-4/release/deps/libunicode_segmentation-c3cf906c5a4083dc.rlib' --extern unicode_width'=/tmp/clis-bottom_0-11-4/release/deps/libunicode_width-f6f32a8a5a2fe2b5.rlib' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bottom-0.11.4/src/bin/main.rs \
 ##         1>          /tmp/clis-bottom_0-11-4/release/deps/out-4ec85bbd35749cc4-stdout \
