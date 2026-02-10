@@ -280,6 +280,11 @@ name = "test-package"
     green.base.image = ImageUri::default();
     assert!(green.base.image.is_empty());
 
+    assert!(green.base.image_inline.is_some());
+    green.base.image_inline = None;
+    assert!(green.base.image_inline.is_none());
+    green.base.with_network = Network::None;
+
     assert!(!green.registry_mirrors.is_empty());
     green.registry_mirrors = vec![];
     assert!(green.registry_mirrors.is_empty());

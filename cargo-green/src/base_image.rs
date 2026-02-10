@@ -76,14 +76,15 @@ impl BaseImage {
     fn from_rustcv(
         VersionMeta { semver, commit_hash, commit_date, channel, host, .. }: VersionMeta,
     ) -> Option<Self> {
-        if channel == Channel::Stable {
-            assert!(STABLE_RUST.contains(":1-"));
-            let minored = STABLE_RUST.as_str().replace(":1-", &format!(":{semver}-"));
-            return Some(Self::from_image(minored.try_into().unwrap()));
-        }
+        // if channel == Channel::Stable {
+        //     assert!(STABLE_RUST.contains(":1-"));
+        //     let minored = STABLE_RUST.as_str().replace(":1-", &format!(":{semver}-"));
+        //     return Some(Self::from_image(minored.try_into().unwrap()));
+        // }
         commit_hash.zip(commit_date).map(|(commit, date)| {
             RustcV { version: semver, commit, date, channel, host }.as_base_image()
         })
+        //get --target=??? from args  then use ^host^ as default?
     }
 
     #[must_use]
@@ -98,19 +99,21 @@ impl BaseImage {
 
     #[must_use]
     pub(crate) fn as_block(&self) -> (Network, String) {
-        let mut with_network = self.with_network;
+        let with_network = self.with_network;
         let block = self.image_inline.clone().unwrap_or_else(|| {
             let base = self.image.noscheme();
-            // TODO? ARG RUST_BASE=myorg/myapp:latest \n FROM $RUST_BASE (+ similar for non-stable imgs)
-            let target = "aarch64-apple-darwin";
-            let target_is_host = false;
-            let add = if target_is_host {
-                "".to_owned()
-            } else {
-                with_network = Network::Default;
-                format!("\nRUN rustup target add {target}")
-            };
-            format!("FROM --platform=$BUILDPLATFORM {base} AS {RST}{add}\n")
+            // // TODO? ARG RUST_BASE=myorg/myapp:latest \n FROM $RUST_BASE (+ similar for non-stable imgs)
+            // let target = "aarch64-apple-darwin";
+            // let target_is_host = false;
+            // let target_is_host = target != local_rustc.host;???
+            // let add = if target_is_host {
+            //     "".to_owned()
+            // } else {
+            //     with_network = Network::Default;
+            //     format!("\nRUN rustup target add {target}")
+            // };
+            // format!("FROM --platform=$BUILDPLATFORM {base} AS {RST}{add}\n")
+            format!("FROM --platform=$BUILDPLATFORM {base} AS {RST}\n")
         });
         (with_network, block)
     }
@@ -136,9 +139,10 @@ impl RustcV {
         let rustup_checksum = "a3339fb004c3d0bb9862ba0bce001861fe5cbde9c10d16591eb3f39ee6cd3e7f";
 
         // FIXME: multiplatformify (using auto ARG.s) (use rustc_version::VersionMeta.host)
+        //NOTE: rust:1-slim is already multiplatform: uses same (rustc)host as docker's host
+        //====> always use our own rustup-activated images?
         // let host = "x86_64-unknown-linux-gnu";
         // let host = "aarch64-apple-darwin";
-        let host = &self.host;
 
         // have buildkit call rustc with `--target $(adapted $TARGETPLATFORM)`, if not given `--target`
         // `adapted` translates buildkit platform format to rustc's
@@ -207,6 +211,7 @@ RUN \
 "#,
             packages_block = packages_block.trim(),
             short_checksum = &rustup_checksum[..7],
+            host = &self.host,
         );
 
         BaseImage { with_network, image, image_inline: Some(block) }
@@ -264,7 +269,8 @@ LLVM version: 18.1.7
     )
     .unwrap();
     let res = BaseImage::from_rustcv(some_stable).unwrap();
-    assert_eq!(res.image, ImageUri::std("rust:1.80.0-slim"));
+    // assert_eq!(res.image, ImageUri::std("rust:1.80.0-slim"));
+    assert_eq!(res.image, *BASE_FOR_RUST);
     assert_eq!(res.image_inline, None);
     assert_eq!(res.with_network, Network::None);
 
