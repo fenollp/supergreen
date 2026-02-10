@@ -9,6 +9,7 @@ use log::{error, info, trace};
 use tokio::process::Command;
 
 use crate::{
+    build::SHELL,
     ext::CommandExt,
     green::Green,
     logging::{self},
@@ -150,7 +151,7 @@ async fn do_exec_buildrs(
     };
 
     let mut run_block = format!("FROM {RST} AS {run_stage}\n");
-    run_block.push_str(&format!("SHELL {:?}\n", ["/bin/sh", "-eux", "-c"]));
+    run_block.push_str(&format!("SHELL {SHELL:?}\n"));
     run_block.push_str(&format!("WORKDIR {out_dir_var}\n"));
     for (_, code_dst, _) in code_stage.mounts() {
         run_block.push_str(&format!("WORKDIR {code_dst}\n"));
