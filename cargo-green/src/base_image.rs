@@ -202,7 +202,7 @@ ENV RUSTUP_HOME=/usr/local/rustup \
            PATH=/usr/local/cargo/bin:$PATH
 RUN \
  --mount=from=rustup-{short_checksum},source=/rustup-init,dst=/rustup-init \
-   set -eux \ <<EOR
+   set -eux \
 && /rustup-init --verbose -y --no-modify-path --profile minimal --default-toolchain {channel}-{date} --default-host {host} --target {host} \
 && chmod -R a+w $RUSTUP_HOME $CARGO_HOME \
 && rustup --version \
@@ -213,6 +213,7 @@ RUN \
             short_checksum = &rustup_checksum[..7],
             host = &self.host,
         );
+        //TODO: <<EOR
 
         BaseImage { with_network, image, image_inline: Some(block) }
     }
