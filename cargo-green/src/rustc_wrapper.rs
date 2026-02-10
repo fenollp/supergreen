@@ -11,7 +11,7 @@ use log::{debug, error, info, warn};
 use tokio::process::Command;
 
 use crate::{
-    build::{Effects, ERRCODE, STDERR, STDOUT},
+    build::{Effects, ERRCODE, SHELL, STDERR, STDOUT},
     buildrs_wrapper::rewrite_main,
     checkouts,
     cratesio::{self, rewrite_cratesio_index},
@@ -203,7 +203,7 @@ async fn do_wrap_rustc(
     info!("picked {rustc_stage} for {input}");
 
     let mut rustc_block = format!("FROM {RST} AS {rustc_stage}\n");
-    rustc_block.push_str(&format!("SHELL {:?}\n", ["/bin/sh", "-eux", "-c"]));
+    rustc_block.push_str(&format!("SHELL {SHELL:?}\n"));
     rustc_block.push_str(&format!("WORKDIR {out_dir}\n"));
     if !pwd.starts_with(cargo_home.join("registry/src")) {
         // Essentially match the same-ish path that points to crates-io paths.
