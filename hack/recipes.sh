@@ -24,6 +24,7 @@ for f in *.Dockerfile/*.Dockerfile; do
 	if git --no-pager diff --exit-code \
 		--ignore-matching-lines='^#' \
 		--ignore-matching-lines=' AS rust-base$' \
+		--ignore-matching-lines=' NUM_JOBS=' \
 		-- $f; then
 		git checkout -- $f 2>/dev/null || true
 	# else
