@@ -11,7 +11,7 @@ ADD --chmod=0664 --unpack --checksum=sha256:5be167a7af36ee22fe3115051bc51f6e6c70
   https://static.crates.io/crates/pico-args/pico-args-0.5.0.crate /
 FROM rust-base AS dep-n-pico-args-0.5.0-b23dd1fb69296b44
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-buildxargs_master/release/deps
+WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-pico-args-0.5.0,source=/pico-args-0.5.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/pico-args-0.5.0 \
     env CARGO="$(which cargo)" \
@@ -34,13 +34,13 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --crate-name pico_args --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --cfg feature'="default"' --cfg feature'="eq-separator"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("combined-flags", "default", "eq-separator", "short-space-opt"))' -C metadata'=1bda40e58e10df29' -C extra-filename'=-b23dd1fb69296b44' --out-dir /tmp/clis-buildxargs_master/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-buildxargs_master/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/pico-args-0.5.0/src/lib.rs \
-        1>          /tmp/clis-buildxargs_master/release/deps/out-b23dd1fb69296b44-stdout \
-        2>          /tmp/clis-buildxargs_master/release/deps/out-b23dd1fb69296b44-stderr \
-        || echo $? >/tmp/clis-buildxargs_master/release/deps/out-b23dd1fb69296b44-errcode\
-  ; find /tmp/clis-buildxargs_master/release/deps/*-b23dd1fb69296b44* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      rustc --crate-name pico_args --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --cfg feature'="default"' --cfg feature'="eq-separator"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("combined-flags", "default", "eq-separator", "short-space-opt"))' -C metadata'=1bda40e58e10df29' -C extra-filename'=-b23dd1fb69296b44' --out-dir /target/release/deps -C strip'=debuginfo' -L dependency'=/target/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/pico-args-0.5.0/src/lib.rs \
+        1>          /target/release/deps/out-b23dd1fb69296b44-stdout \
+        2>          /target/release/deps/out-b23dd1fb69296b44-stderr \
+        || echo $? >/target/release/deps/out-b23dd1fb69296b44-errcode\
+  ; find /target/release/deps/*-b23dd1fb69296b44* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-b23dd1fb69296b44
-COPY --link --from=dep-n-pico-args-0.5.0-b23dd1fb69296b44 /tmp/clis-buildxargs_master/release/deps/*-b23dd1fb69296b44* /
+COPY --link --from=dep-n-pico-args-0.5.0-b23dd1fb69296b44 /target/release/deps/*-b23dd1fb69296b44* /
 
 ## this = "b23dd1fb69296b44"
 ## writes = [
@@ -49,9 +49,9 @@ COPY --link --from=dep-n-pico-args-0.5.0-b23dd1fb69296b44 /tmp/clis-buildxargs_m
 ##     "pico_args-b23dd1fb69296b44.d",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-buildxargs_master/release/deps/pico_args-b23dd1fb69296b44.d","emit":"dep-info"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-buildxargs_master/release/deps/libpico_args-b23dd1fb69296b44.rmeta","emit":"metadata"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-buildxargs_master/release/deps/libpico_args-b23dd1fb69296b44.rlib","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/pico_args-b23dd1fb69296b44.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libpico_args-b23dd1fb69296b44.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libpico_args-b23dd1fb69296b44.rlib","emit":"link"}',
 ## ]
 ##
 ## [[stages]]
@@ -76,7 +76,7 @@ COPY --link --from=dep-n-pico-args-0.5.0-b23dd1fb69296b44 /tmp/clis-buildxargs_m
 ## script = '''
 ## FROM rust-base AS dep-n-pico-args-0.5.0-b23dd1fb69296b44
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-buildxargs_master/release/deps
+## WORKDIR /target/release/deps
 ## RUN \
 ##   --mount=from=cratesio-pico-args-0.5.0,source=/pico-args-0.5.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/pico-args-0.5.0 \
 ##     env CARGO="$(which cargo)" \
@@ -99,11 +99,11 @@ COPY --link --from=dep-n-pico-args-0.5.0-b23dd1fb69296b44 /tmp/clis-buildxargs_m
 ##         CARGO_PKG_VERSION_PATCH=0 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name pico_args --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --cfg feature'="default"' --cfg feature'="eq-separator"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("combined-flags", "default", "eq-separator", "short-space-opt"))' -C metadata'=1bda40e58e10df29' -C extra-filename'=-b23dd1fb69296b44' --out-dir /tmp/clis-buildxargs_master/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-buildxargs_master/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/pico-args-0.5.0/src/lib.rs \
-##         1>          /tmp/clis-buildxargs_master/release/deps/out-b23dd1fb69296b44-stdout \
-##         2>          /tmp/clis-buildxargs_master/release/deps/out-b23dd1fb69296b44-stderr \
-##         || echo $? >/tmp/clis-buildxargs_master/release/deps/out-b23dd1fb69296b44-errcode\
-##   ; find /tmp/clis-buildxargs_master/release/deps/*-b23dd1fb69296b44* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name pico_args --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --cfg feature'="default"' --cfg feature'="eq-separator"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("combined-flags", "default", "eq-separator", "short-space-opt"))' -C metadata'=1bda40e58e10df29' -C extra-filename'=-b23dd1fb69296b44' --out-dir /target/release/deps -C strip'=debuginfo' -L dependency'=/target/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/pico-args-0.5.0/src/lib.rs \
+##         1>          /target/release/deps/out-b23dd1fb69296b44-stdout \
+##         2>          /target/release/deps/out-b23dd1fb69296b44-stderr \
+##         || echo $? >/target/release/deps/out-b23dd1fb69296b44-errcode\
+##   ; find /target/release/deps/*-b23dd1fb69296b44* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -111,14 +111,14 @@ COPY --link --from=dep-n-pico-args-0.5.0-b23dd1fb69296b44 /tmp/clis-buildxargs_m
 ## stage = "out-b23dd1fb69296b44"
 ## script = """
 ## FROM scratch AS out-b23dd1fb69296b44
-## COPY --link --from=dep-n-pico-args-0.5.0-b23dd1fb69296b44 /tmp/clis-buildxargs_master/release/deps/*-b23dd1fb69296b44* /"""
+## COPY --link --from=dep-n-pico-args-0.5.0-b23dd1fb69296b44 /target/release/deps/*-b23dd1fb69296b44* /"""
 
 FROM scratch AS cratesio-shlex-1.3.0
 ADD --chmod=0664 --unpack --checksum=sha256:0fda2ff0d084019ba4d7c6f371c95d8fd75ce3524c3cb8fb653a3023f6323e64 \
   https://static.crates.io/crates/shlex/shlex-1.3.0.crate /
 FROM rust-base AS dep-n-shlex-1.3.0-a2dd0fe0df0b57cb
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-buildxargs_master/release/deps
+WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-shlex-1.3.0,source=/shlex-1.3.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0 \
     env CARGO="$(which cargo)" \
@@ -141,13 +141,13 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --crate-name shlex --edition 2015 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "std"))' -C metadata'=76b1101dc62b2e16' -C extra-filename'=-a2dd0fe0df0b57cb' --out-dir /tmp/clis-buildxargs_master/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-buildxargs_master/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0/src/lib.rs \
-        1>          /tmp/clis-buildxargs_master/release/deps/out-a2dd0fe0df0b57cb-stdout \
-        2>          /tmp/clis-buildxargs_master/release/deps/out-a2dd0fe0df0b57cb-stderr \
-        || echo $? >/tmp/clis-buildxargs_master/release/deps/out-a2dd0fe0df0b57cb-errcode\
-  ; find /tmp/clis-buildxargs_master/release/deps/*-a2dd0fe0df0b57cb* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      rustc --crate-name shlex --edition 2015 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "std"))' -C metadata'=76b1101dc62b2e16' -C extra-filename'=-a2dd0fe0df0b57cb' --out-dir /target/release/deps -C strip'=debuginfo' -L dependency'=/target/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0/src/lib.rs \
+        1>          /target/release/deps/out-a2dd0fe0df0b57cb-stdout \
+        2>          /target/release/deps/out-a2dd0fe0df0b57cb-stderr \
+        || echo $? >/target/release/deps/out-a2dd0fe0df0b57cb-errcode\
+  ; find /target/release/deps/*-a2dd0fe0df0b57cb* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-a2dd0fe0df0b57cb
-COPY --link --from=dep-n-shlex-1.3.0-a2dd0fe0df0b57cb /tmp/clis-buildxargs_master/release/deps/*-a2dd0fe0df0b57cb* /
+COPY --link --from=dep-n-shlex-1.3.0-a2dd0fe0df0b57cb /target/release/deps/*-a2dd0fe0df0b57cb* /
 
 ## this = "a2dd0fe0df0b57cb"
 ## writes = [
@@ -156,14 +156,14 @@ COPY --link --from=dep-n-shlex-1.3.0-a2dd0fe0df0b57cb /tmp/clis-buildxargs_maste
 ##     "shlex-a2dd0fe0df0b57cb.d",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-buildxargs_master/release/deps/shlex-a2dd0fe0df0b57cb.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/shlex-a2dd0fe0df0b57cb.d","emit":"dep-info"}',
 ##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `manual_codegen_check`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0/src/bytes.rs","byte_start":13988,"byte_end":14008,"line_start":353,"line_end":353,"column_start":12,"column_end":32,"is_primary":true,"text":[{"text":"#[cfg_attr(manual_codegen_check, inline(never))]","highlight_start":12,"highlight_end":32}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"expected names are: `docsrs`, `feature`, and `test` and 31 more","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(manual_codegen_check)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(manual_codegen_check)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"`#[warn(unexpected_cfgs)]` on by default","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `manual_codegen_check`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0/src/bytes.rs:353:12\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m353\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m#[cfg_attr(manual_codegen_check, inline(never))]\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m            \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: expected names are: `docsrs`, `feature`, and `test` and 31 more\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(manual_codegen_check)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(manual_codegen_check)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: `#[warn(unexpected_cfgs)]` on by default\u001b[0m\n\n"}''',
 ##     '''{"$message_type":"diagnostic","message":"hiding a lifetime that's elided elsewhere is confusing","code":{"code":"mismatched_lifetime_syntaxes","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0/src/lib.rs","byte_start":8833,"byte_end":8837,"line_start":228,"line_end":228,"column_start":22,"column_end":26,"is_primary":true,"text":[{"text":"pub fn quote(in_str: &str) -> Cow<str> {","highlight_start":22,"highlight_end":26}],"label":"the lifetime is elided here","suggested_replacement":null,"suggestion_applicability":null,"expansion":null},{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0/src/lib.rs","byte_start":8842,"byte_end":8850,"line_start":228,"line_end":228,"column_start":31,"column_end":39,"is_primary":false,"text":[{"text":"pub fn quote(in_str: &str) -> Cow<str> {","highlight_start":31,"highlight_end":39}],"label":"the same lifetime is hidden here","suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"the same lifetime is referred to in inconsistent ways, making the signature confusing","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"`#[warn(mismatched_lifetime_syntaxes)]` on by default","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"use `'_` for type paths","code":null,"level":"help","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0/src/lib.rs","byte_start":8846,"byte_end":8846,"line_start":228,"line_end":228,"column_start":35,"column_end":35,"is_primary":true,"text":[{"text":"pub fn quote(in_str: &str) -> Cow<str> {","highlight_start":35,"highlight_end":35}],"label":null,"suggested_replacement":"'_, ","suggestion_applicability":"MaybeIncorrect","expansion":null}],"children":[],"rendered":null},{"message":"consistently use `'_`","code":null,"level":"help","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0/src/lib.rs","byte_start":8834,"byte_end":8834,"line_start":228,"line_end":228,"column_start":23,"column_end":23,"is_primary":true,"text":[{"text":"pub fn quote(in_str: &str) -> Cow<str> {","highlight_start":23,"highlight_end":23}],"label":null,"suggested_replacement":"'_ ","suggestion_applicability":"MaybeIncorrect","expansion":null},{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0/src/lib.rs","byte_start":8846,"byte_end":8846,"line_start":228,"line_end":228,"column_start":35,"column_end":35,"is_primary":true,"text":[{"text":"pub fn quote(in_str: &str) -> Cow<str> {","highlight_start":35,"highlight_end":35}],"label":null,"suggested_replacement":"'_, ","suggestion_applicability":"MaybeIncorrect","expansion":null}],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: hiding a lifetime that's elided elsewhere is confusing\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0/src/lib.rs:228:22\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m228\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0mpub fn quote(in_str: &str) -> Cow<str> {\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                      \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^\u001b[0m\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--------\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12mthe same lifetime is hidden here\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                      \u001b[0m\u001b[0m\u001b[1m\u001b[33m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                      \u001b[0m\u001b[0m\u001b[1m\u001b[33mthe lifetime is elided here\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: the same lifetime is referred to in inconsistent ways, making the signature confusing\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: `#[warn(mismatched_lifetime_syntaxes)]` on by default\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;14mhelp\u001b[0m\u001b[0m: use `'_` for type paths\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m228\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m| \u001b[0m\u001b[0mpub fn quote(in_str: &str) -> Cow<\u001b[0m\u001b[0m\u001b[38;5;10m'_, \u001b[0m\u001b[0mstr> {\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                   \u001b[0m\u001b[0m\u001b[38;5;10m+++\u001b[0m\n\n"}''',
 ##     '''{"$message_type":"diagnostic","message":"hiding a lifetime that's elided elsewhere is confusing","code":{"code":"mismatched_lifetime_syntaxes","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0/src/lib.rs","byte_start":9312,"byte_end":9316,"line_start":241,"line_end":241,"column_start":26,"column_end":30,"is_primary":true,"text":[{"text":"pub fn try_quote(in_str: &str) -> Result<Cow<str>, QuoteError> {","highlight_start":26,"highlight_end":30}],"label":"the lifetime is elided here","suggested_replacement":null,"suggestion_applicability":null,"expansion":null},{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0/src/lib.rs","byte_start":9328,"byte_end":9336,"line_start":241,"line_end":241,"column_start":42,"column_end":50,"is_primary":false,"text":[{"text":"pub fn try_quote(in_str: &str) -> Result<Cow<str>, QuoteError> {","highlight_start":42,"highlight_end":50}],"label":"the same lifetime is hidden here","suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"the same lifetime is referred to in inconsistent ways, making the signature confusing","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"use `'_` for type paths","code":null,"level":"help","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0/src/lib.rs","byte_start":9332,"byte_end":9332,"line_start":241,"line_end":241,"column_start":46,"column_end":46,"is_primary":true,"text":[{"text":"pub fn try_quote(in_str: &str) -> Result<Cow<str>, QuoteError> {","highlight_start":46,"highlight_end":46}],"label":null,"suggested_replacement":"'_, ","suggestion_applicability":"MaybeIncorrect","expansion":null}],"children":[],"rendered":null},{"message":"consistently use `'_`","code":null,"level":"help","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0/src/lib.rs","byte_start":9313,"byte_end":9313,"line_start":241,"line_end":241,"column_start":27,"column_end":27,"is_primary":true,"text":[{"text":"pub fn try_quote(in_str: &str) -> Result<Cow<str>, QuoteError> {","highlight_start":27,"highlight_end":27}],"label":null,"suggested_replacement":"'_ ","suggestion_applicability":"MaybeIncorrect","expansion":null},{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0/src/lib.rs","byte_start":9332,"byte_end":9332,"line_start":241,"line_end":241,"column_start":46,"column_end":46,"is_primary":true,"text":[{"text":"pub fn try_quote(in_str: &str) -> Result<Cow<str>, QuoteError> {","highlight_start":46,"highlight_end":46}],"label":null,"suggested_replacement":"'_, ","suggestion_applicability":"MaybeIncorrect","expansion":null}],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: hiding a lifetime that's elided elsewhere is confusing\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0/src/lib.rs:241:26\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m241\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0mpub fn try_quote(in_str: &str) -> Result<Cow<str>, QuoteError> {\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                          \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^\u001b[0m\u001b[0m            \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--------\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12mthe same lifetime is hidden here\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                          \u001b[0m\u001b[0m\u001b[1m\u001b[33m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                          \u001b[0m\u001b[0m\u001b[1m\u001b[33mthe lifetime is elided here\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: the same lifetime is referred to in inconsistent ways, making the signature confusing\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;14mhelp\u001b[0m\u001b[0m: use `'_` for type paths\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m241\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m| \u001b[0m\u001b[0mpub fn try_quote(in_str: &str) -> Result<Cow<\u001b[0m\u001b[0m\u001b[38;5;10m'_, \u001b[0m\u001b[0mstr>, QuoteError> {\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                              \u001b[0m\u001b[0m\u001b[38;5;10m+++\u001b[0m\n\n"}''',
 ##     '''{"$message_type":"diagnostic","message":"hiding a lifetime that's elided elsewhere is confusing","code":{"code":"mismatched_lifetime_syntaxes","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0/src/bytes.rs","byte_start":19037,"byte_end":19042,"line_start":484,"line_end":484,"column_start":24,"column_end":29,"is_primary":true,"text":[{"text":"pub fn quote(in_bytes: &[u8]) -> Cow<[u8]> {","highlight_start":24,"highlight_end":29}],"label":"the lifetime is elided here","suggested_replacement":null,"suggestion_applicability":null,"expansion":null},{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0/src/bytes.rs","byte_start":19047,"byte_end":19056,"line_start":484,"line_end":484,"column_start":34,"column_end":43,"is_primary":false,"text":[{"text":"pub fn quote(in_bytes: &[u8]) -> Cow<[u8]> {","highlight_start":34,"highlight_end":43}],"label":"the same lifetime is hidden here","suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"the same lifetime is referred to in inconsistent ways, making the signature confusing","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"use `'_` for type paths","code":null,"level":"help","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0/src/bytes.rs","byte_start":19051,"byte_end":19051,"line_start":484,"line_end":484,"column_start":38,"column_end":38,"is_primary":true,"text":[{"text":"pub fn quote(in_bytes: &[u8]) -> Cow<[u8]> {","highlight_start":38,"highlight_end":38}],"label":null,"suggested_replacement":"'_, ","suggestion_applicability":"MaybeIncorrect","expansion":null}],"children":[],"rendered":null},{"message":"consistently use `'_`","code":null,"level":"help","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0/src/bytes.rs","byte_start":19038,"byte_end":19038,"line_start":484,"line_end":484,"column_start":25,"column_end":25,"is_primary":true,"text":[{"text":"pub fn quote(in_bytes: &[u8]) -> Cow<[u8]> {","highlight_start":25,"highlight_end":25}],"label":null,"suggested_replacement":"'_ ","suggestion_applicability":"MaybeIncorrect","expansion":null},{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0/src/bytes.rs","byte_start":19051,"byte_end":19051,"line_start":484,"line_end":484,"column_start":38,"column_end":38,"is_primary":true,"text":[{"text":"pub fn quote(in_bytes: &[u8]) -> Cow<[u8]> {","highlight_start":38,"highlight_end":38}],"label":null,"suggested_replacement":"'_, ","suggestion_applicability":"MaybeIncorrect","expansion":null}],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: hiding a lifetime that's elided elsewhere is confusing\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0/src/bytes.rs:484:24\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m484\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0mpub fn quote(in_bytes: &[u8]) -> Cow<[u8]> {\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                        \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^\u001b[0m\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m---------\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12mthe same lifetime is hidden here\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                        \u001b[0m\u001b[0m\u001b[1m\u001b[33m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                        \u001b[0m\u001b[0m\u001b[1m\u001b[33mthe lifetime is elided here\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: the same lifetime is referred to in inconsistent ways, making the signature confusing\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;14mhelp\u001b[0m\u001b[0m: use `'_` for type paths\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m484\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m| \u001b[0m\u001b[0mpub fn quote(in_bytes: &[u8]) -> Cow<\u001b[0m\u001b[0m\u001b[38;5;10m'_, \u001b[0m\u001b[0m[u8]> {\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                      \u001b[0m\u001b[0m\u001b[38;5;10m+++\u001b[0m\n\n"}''',
 ##     '''{"$message_type":"diagnostic","message":"hiding a lifetime that's elided elsewhere is confusing","code":{"code":"mismatched_lifetime_syntaxes","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0/src/bytes.rs","byte_start":19525,"byte_end":19530,"line_start":497,"line_end":497,"column_start":28,"column_end":33,"is_primary":true,"text":[{"text":"pub fn try_quote(in_bytes: &[u8]) -> Result<Cow<[u8]>, QuoteError> {","highlight_start":28,"highlight_end":33}],"label":"the lifetime is elided here","suggested_replacement":null,"suggestion_applicability":null,"expansion":null},{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0/src/bytes.rs","byte_start":19542,"byte_end":19551,"line_start":497,"line_end":497,"column_start":45,"column_end":54,"is_primary":false,"text":[{"text":"pub fn try_quote(in_bytes: &[u8]) -> Result<Cow<[u8]>, QuoteError> {","highlight_start":45,"highlight_end":54}],"label":"the same lifetime is hidden here","suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"the same lifetime is referred to in inconsistent ways, making the signature confusing","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"use `'_` for type paths","code":null,"level":"help","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0/src/bytes.rs","byte_start":19546,"byte_end":19546,"line_start":497,"line_end":497,"column_start":49,"column_end":49,"is_primary":true,"text":[{"text":"pub fn try_quote(in_bytes: &[u8]) -> Result<Cow<[u8]>, QuoteError> {","highlight_start":49,"highlight_end":49}],"label":null,"suggested_replacement":"'_, ","suggestion_applicability":"MaybeIncorrect","expansion":null}],"children":[],"rendered":null},{"message":"consistently use `'_`","code":null,"level":"help","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0/src/bytes.rs","byte_start":19526,"byte_end":19526,"line_start":497,"line_end":497,"column_start":29,"column_end":29,"is_primary":true,"text":[{"text":"pub fn try_quote(in_bytes: &[u8]) -> Result<Cow<[u8]>, QuoteError> {","highlight_start":29,"highlight_end":29}],"label":null,"suggested_replacement":"'_ ","suggestion_applicability":"MaybeIncorrect","expansion":null},{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0/src/bytes.rs","byte_start":19546,"byte_end":19546,"line_start":497,"line_end":497,"column_start":49,"column_end":49,"is_primary":true,"text":[{"text":"pub fn try_quote(in_bytes: &[u8]) -> Result<Cow<[u8]>, QuoteError> {","highlight_start":49,"highlight_end":49}],"label":null,"suggested_replacement":"'_, ","suggestion_applicability":"MaybeIncorrect","expansion":null}],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: hiding a lifetime that's elided elsewhere is confusing\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0/src/bytes.rs:497:28\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m497\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0mpub fn try_quote(in_bytes: &[u8]) -> Result<Cow<[u8]>, QuoteError> {\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                            \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^\u001b[0m\u001b[0m            \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m---------\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12mthe same lifetime is hidden here\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                            \u001b[0m\u001b[0m\u001b[1m\u001b[33m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                            \u001b[0m\u001b[0m\u001b[1m\u001b[33mthe lifetime is elided here\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: the same lifetime is referred to in inconsistent ways, making the signature confusing\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;14mhelp\u001b[0m\u001b[0m: use `'_` for type paths\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m497\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m| \u001b[0m\u001b[0mpub fn try_quote(in_bytes: &[u8]) -> Result<Cow<\u001b[0m\u001b[0m\u001b[38;5;10m'_, \u001b[0m\u001b[0m[u8]>, QuoteError> {\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                                 \u001b[0m\u001b[0m\u001b[38;5;10m+++\u001b[0m\n\n"}''',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-buildxargs_master/release/deps/libshlex-a2dd0fe0df0b57cb.rmeta","emit":"metadata"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-buildxargs_master/release/deps/libshlex-a2dd0fe0df0b57cb.rlib","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libshlex-a2dd0fe0df0b57cb.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libshlex-a2dd0fe0df0b57cb.rlib","emit":"link"}',
 ##     '{"$message_type":"diagnostic","message":"5 warnings emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 5 warnings emitted\u001b[0m\n\n"}',
 ## ]
 ##
@@ -189,7 +189,7 @@ COPY --link --from=dep-n-shlex-1.3.0-a2dd0fe0df0b57cb /tmp/clis-buildxargs_maste
 ## script = '''
 ## FROM rust-base AS dep-n-shlex-1.3.0-a2dd0fe0df0b57cb
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-buildxargs_master/release/deps
+## WORKDIR /target/release/deps
 ## RUN \
 ##   --mount=from=cratesio-shlex-1.3.0,source=/shlex-1.3.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0 \
 ##     env CARGO="$(which cargo)" \
@@ -212,11 +212,11 @@ COPY --link --from=dep-n-shlex-1.3.0-a2dd0fe0df0b57cb /tmp/clis-buildxargs_maste
 ##         CARGO_PKG_VERSION_PATCH=0 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name shlex --edition 2015 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "std"))' -C metadata'=76b1101dc62b2e16' -C extra-filename'=-a2dd0fe0df0b57cb' --out-dir /tmp/clis-buildxargs_master/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-buildxargs_master/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0/src/lib.rs \
-##         1>          /tmp/clis-buildxargs_master/release/deps/out-a2dd0fe0df0b57cb-stdout \
-##         2>          /tmp/clis-buildxargs_master/release/deps/out-a2dd0fe0df0b57cb-stderr \
-##         || echo $? >/tmp/clis-buildxargs_master/release/deps/out-a2dd0fe0df0b57cb-errcode\
-##   ; find /tmp/clis-buildxargs_master/release/deps/*-a2dd0fe0df0b57cb* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name shlex --edition 2015 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "std"))' -C metadata'=76b1101dc62b2e16' -C extra-filename'=-a2dd0fe0df0b57cb' --out-dir /target/release/deps -C strip'=debuginfo' -L dependency'=/target/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0/src/lib.rs \
+##         1>          /target/release/deps/out-a2dd0fe0df0b57cb-stdout \
+##         2>          /target/release/deps/out-a2dd0fe0df0b57cb-stderr \
+##         || echo $? >/target/release/deps/out-a2dd0fe0df0b57cb-errcode\
+##   ; find /target/release/deps/*-a2dd0fe0df0b57cb* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -224,21 +224,21 @@ COPY --link --from=dep-n-shlex-1.3.0-a2dd0fe0df0b57cb /tmp/clis-buildxargs_maste
 ## stage = "out-a2dd0fe0df0b57cb"
 ## script = """
 ## FROM scratch AS out-a2dd0fe0df0b57cb
-## COPY --link --from=dep-n-shlex-1.3.0-a2dd0fe0df0b57cb /tmp/clis-buildxargs_master/release/deps/*-a2dd0fe0df0b57cb* /"""
+## COPY --link --from=dep-n-shlex-1.3.0-a2dd0fe0df0b57cb /target/release/deps/*-a2dd0fe0df0b57cb* /"""
 
 FROM scratch AS checkout-buildxargs-76dd4ee9dadcdcf0-0060a682a2f84b295cfd2cff36602784f36ed9cf
 ADD --keep-git-dir=false \
   https://github.com/fenollp/buildxargs.git#0060a682a2f84b295cfd2cff36602784f36ed9cf /
 FROM rust-base AS dep-n-buildxargs-1.4.0-6b139e29a6fbee8c
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-buildxargs_master/release/deps
+WORKDIR /target/release/deps
 WORKDIR /home/runner/.cargo/git/checkouts/buildxargs-76dd4ee9dadcdcf0/0060a68
 RUN \
   --mount=from=checkout-buildxargs-76dd4ee9dadcdcf0-0060a682a2f84b295cfd2cff36602784f36ed9cf,dst=/home/runner/.cargo/git/checkouts/buildxargs-76dd4ee9dadcdcf0/0060a68 \
-  --mount=from=out-b23dd1fb69296b44,dst=/tmp/clis-buildxargs_master/release/deps/libpico_args-b23dd1fb69296b44.rlib,source=/libpico_args-b23dd1fb69296b44.rlib \
-  --mount=from=out-b23dd1fb69296b44,dst=/tmp/clis-buildxargs_master/release/deps/libpico_args-b23dd1fb69296b44.rmeta,source=/libpico_args-b23dd1fb69296b44.rmeta \
-  --mount=from=out-a2dd0fe0df0b57cb,dst=/tmp/clis-buildxargs_master/release/deps/libshlex-a2dd0fe0df0b57cb.rlib,source=/libshlex-a2dd0fe0df0b57cb.rlib \
-  --mount=from=out-a2dd0fe0df0b57cb,dst=/tmp/clis-buildxargs_master/release/deps/libshlex-a2dd0fe0df0b57cb.rmeta,source=/libshlex-a2dd0fe0df0b57cb.rmeta \
+  --mount=from=out-b23dd1fb69296b44,dst=/target/release/deps/libpico_args-b23dd1fb69296b44.rlib,source=/libpico_args-b23dd1fb69296b44.rlib \
+  --mount=from=out-b23dd1fb69296b44,dst=/target/release/deps/libpico_args-b23dd1fb69296b44.rmeta,source=/libpico_args-b23dd1fb69296b44.rmeta \
+  --mount=from=out-a2dd0fe0df0b57cb,dst=/target/release/deps/libshlex-a2dd0fe0df0b57cb.rlib,source=/libshlex-a2dd0fe0df0b57cb.rlib \
+  --mount=from=out-a2dd0fe0df0b57cb,dst=/target/release/deps/libshlex-a2dd0fe0df0b57cb.rmeta,source=/libshlex-a2dd0fe0df0b57cb.rmeta \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=buildxargs \
         CARGO_INCREMENTAL=0 \
@@ -261,13 +261,13 @@ RUN \
         CARGO_PRIMARY_PACKAGE=1 \
         CARGO_SBOM_PATH= \
         CARGOGREEN=1 \
-      rustc --crate-name buildxargs --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=2914f7f314c5df4b' -C extra-filename'=-6b139e29a6fbee8c' --out-dir /tmp/clis-buildxargs_master/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-buildxargs_master/release/deps' --extern pico_args'=/tmp/clis-buildxargs_master/release/deps/libpico_args-b23dd1fb69296b44.rmeta' --extern shlex'=/tmp/clis-buildxargs_master/release/deps/libshlex-a2dd0fe0df0b57cb.rmeta' src/lib.rs \
-        1>          /tmp/clis-buildxargs_master/release/deps/out-6b139e29a6fbee8c-stdout \
-        2>          /tmp/clis-buildxargs_master/release/deps/out-6b139e29a6fbee8c-stderr \
-        || echo $? >/tmp/clis-buildxargs_master/release/deps/out-6b139e29a6fbee8c-errcode\
-  ; find /tmp/clis-buildxargs_master/release/deps/*-6b139e29a6fbee8c* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      rustc --crate-name buildxargs --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=2914f7f314c5df4b' -C extra-filename'=-6b139e29a6fbee8c' --out-dir /target/release/deps -C strip'=debuginfo' -L dependency'=/target/release/deps' --extern pico_args'=/target/release/deps/libpico_args-b23dd1fb69296b44.rmeta' --extern shlex'=/target/release/deps/libshlex-a2dd0fe0df0b57cb.rmeta' src/lib.rs \
+        1>          /target/release/deps/out-6b139e29a6fbee8c-stdout \
+        2>          /target/release/deps/out-6b139e29a6fbee8c-stderr \
+        || echo $? >/target/release/deps/out-6b139e29a6fbee8c-errcode\
+  ; find /target/release/deps/*-6b139e29a6fbee8c* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-6b139e29a6fbee8c
-COPY --link --from=dep-n-buildxargs-1.4.0-6b139e29a6fbee8c /tmp/clis-buildxargs_master/release/deps/*-6b139e29a6fbee8c* /
+COPY --link --from=dep-n-buildxargs-1.4.0-6b139e29a6fbee8c /target/release/deps/*-6b139e29a6fbee8c* /
 
 ## this = "6b139e29a6fbee8c"
 ## deps = [
@@ -280,9 +280,9 @@ COPY --link --from=dep-n-buildxargs-1.4.0-6b139e29a6fbee8c /tmp/clis-buildxargs_
 ##     "libbuildxargs-6b139e29a6fbee8c.rmeta",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-buildxargs_master/release/deps/buildxargs-6b139e29a6fbee8c.d","emit":"dep-info"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-buildxargs_master/release/deps/libbuildxargs-6b139e29a6fbee8c.rmeta","emit":"metadata"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-buildxargs_master/release/deps/libbuildxargs-6b139e29a6fbee8c.rlib","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/buildxargs-6b139e29a6fbee8c.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libbuildxargs-6b139e29a6fbee8c.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libbuildxargs-6b139e29a6fbee8c.rlib","emit":"link"}',
 ## ]
 ##
 ## [[externs]]
@@ -322,14 +322,14 @@ COPY --link --from=dep-n-buildxargs-1.4.0-6b139e29a6fbee8c /tmp/clis-buildxargs_
 ## script = '''
 ## FROM rust-base AS dep-n-buildxargs-1.4.0-6b139e29a6fbee8c
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-buildxargs_master/release/deps
+## WORKDIR /target/release/deps
 ## WORKDIR /home/runner/.cargo/git/checkouts/buildxargs-76dd4ee9dadcdcf0/0060a68
 ## RUN \
 ##   --mount=from=checkout-buildxargs-76dd4ee9dadcdcf0-0060a682a2f84b295cfd2cff36602784f36ed9cf,dst=/home/runner/.cargo/git/checkouts/buildxargs-76dd4ee9dadcdcf0/0060a68 \
-##   --mount=from=out-b23dd1fb69296b44,dst=/tmp/clis-buildxargs_master/release/deps/libpico_args-b23dd1fb69296b44.rlib,source=/libpico_args-b23dd1fb69296b44.rlib \
-##   --mount=from=out-b23dd1fb69296b44,dst=/tmp/clis-buildxargs_master/release/deps/libpico_args-b23dd1fb69296b44.rmeta,source=/libpico_args-b23dd1fb69296b44.rmeta \
-##   --mount=from=out-a2dd0fe0df0b57cb,dst=/tmp/clis-buildxargs_master/release/deps/libshlex-a2dd0fe0df0b57cb.rlib,source=/libshlex-a2dd0fe0df0b57cb.rlib \
-##   --mount=from=out-a2dd0fe0df0b57cb,dst=/tmp/clis-buildxargs_master/release/deps/libshlex-a2dd0fe0df0b57cb.rmeta,source=/libshlex-a2dd0fe0df0b57cb.rmeta \
+##   --mount=from=out-b23dd1fb69296b44,dst=/target/release/deps/libpico_args-b23dd1fb69296b44.rlib,source=/libpico_args-b23dd1fb69296b44.rlib \
+##   --mount=from=out-b23dd1fb69296b44,dst=/target/release/deps/libpico_args-b23dd1fb69296b44.rmeta,source=/libpico_args-b23dd1fb69296b44.rmeta \
+##   --mount=from=out-a2dd0fe0df0b57cb,dst=/target/release/deps/libshlex-a2dd0fe0df0b57cb.rlib,source=/libshlex-a2dd0fe0df0b57cb.rlib \
+##   --mount=from=out-a2dd0fe0df0b57cb,dst=/target/release/deps/libshlex-a2dd0fe0df0b57cb.rmeta,source=/libshlex-a2dd0fe0df0b57cb.rmeta \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=buildxargs \
 ##         CARGO_INCREMENTAL=0 \
@@ -352,11 +352,11 @@ COPY --link --from=dep-n-buildxargs-1.4.0-6b139e29a6fbee8c /tmp/clis-buildxargs_
 ##         CARGO_PRIMARY_PACKAGE=1 \
 ##         CARGO_SBOM_PATH= \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name buildxargs --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=2914f7f314c5df4b' -C extra-filename'=-6b139e29a6fbee8c' --out-dir /tmp/clis-buildxargs_master/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-buildxargs_master/release/deps' --extern pico_args'=/tmp/clis-buildxargs_master/release/deps/libpico_args-b23dd1fb69296b44.rmeta' --extern shlex'=/tmp/clis-buildxargs_master/release/deps/libshlex-a2dd0fe0df0b57cb.rmeta' src/lib.rs \
-##         1>          /tmp/clis-buildxargs_master/release/deps/out-6b139e29a6fbee8c-stdout \
-##         2>          /tmp/clis-buildxargs_master/release/deps/out-6b139e29a6fbee8c-stderr \
-##         || echo $? >/tmp/clis-buildxargs_master/release/deps/out-6b139e29a6fbee8c-errcode\
-##   ; find /tmp/clis-buildxargs_master/release/deps/*-6b139e29a6fbee8c* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name buildxargs --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=2914f7f314c5df4b' -C extra-filename'=-6b139e29a6fbee8c' --out-dir /target/release/deps -C strip'=debuginfo' -L dependency'=/target/release/deps' --extern pico_args'=/target/release/deps/libpico_args-b23dd1fb69296b44.rmeta' --extern shlex'=/target/release/deps/libshlex-a2dd0fe0df0b57cb.rmeta' src/lib.rs \
+##         1>          /target/release/deps/out-6b139e29a6fbee8c-stdout \
+##         2>          /target/release/deps/out-6b139e29a6fbee8c-stderr \
+##         || echo $? >/target/release/deps/out-6b139e29a6fbee8c-errcode\
+##   ; find /target/release/deps/*-6b139e29a6fbee8c* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -364,18 +364,18 @@ COPY --link --from=dep-n-buildxargs-1.4.0-6b139e29a6fbee8c /tmp/clis-buildxargs_
 ## stage = "out-6b139e29a6fbee8c"
 ## script = """
 ## FROM scratch AS out-6b139e29a6fbee8c
-## COPY --link --from=dep-n-buildxargs-1.4.0-6b139e29a6fbee8c /tmp/clis-buildxargs_master/release/deps/*-6b139e29a6fbee8c* /"""
+## COPY --link --from=dep-n-buildxargs-1.4.0-6b139e29a6fbee8c /target/release/deps/*-6b139e29a6fbee8c* /"""
 
 
 FROM rust-base AS dep-n-buildxargs-1.4.0-08fbf7e44bba6617
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-buildxargs_master/release/deps
+WORKDIR /target/release/deps
 WORKDIR /home/runner/.cargo/git/checkouts/buildxargs-76dd4ee9dadcdcf0/0060a68
 RUN \
   --mount=from=checkout-buildxargs-76dd4ee9dadcdcf0-0060a682a2f84b295cfd2cff36602784f36ed9cf,dst=/home/runner/.cargo/git/checkouts/buildxargs-76dd4ee9dadcdcf0/0060a68 \
-  --mount=from=out-6b139e29a6fbee8c,dst=/tmp/clis-buildxargs_master/release/deps/libbuildxargs-6b139e29a6fbee8c.rlib,source=/libbuildxargs-6b139e29a6fbee8c.rlib \
-  --mount=from=out-b23dd1fb69296b44,dst=/tmp/clis-buildxargs_master/release/deps/libpico_args-b23dd1fb69296b44.rlib,source=/libpico_args-b23dd1fb69296b44.rlib \
-  --mount=from=out-a2dd0fe0df0b57cb,dst=/tmp/clis-buildxargs_master/release/deps/libshlex-a2dd0fe0df0b57cb.rlib,source=/libshlex-a2dd0fe0df0b57cb.rlib \
+  --mount=from=out-6b139e29a6fbee8c,dst=/target/release/deps/libbuildxargs-6b139e29a6fbee8c.rlib,source=/libbuildxargs-6b139e29a6fbee8c.rlib \
+  --mount=from=out-b23dd1fb69296b44,dst=/target/release/deps/libpico_args-b23dd1fb69296b44.rlib,source=/libpico_args-b23dd1fb69296b44.rlib \
+  --mount=from=out-a2dd0fe0df0b57cb,dst=/target/release/deps/libshlex-a2dd0fe0df0b57cb.rlib,source=/libshlex-a2dd0fe0df0b57cb.rlib \
     env CARGO="$(which cargo)" \
         CARGO_BIN_NAME=buildxargs \
         CARGO_CRATE_NAME=buildxargs \
@@ -399,13 +399,13 @@ RUN \
         CARGO_PRIMARY_PACKAGE=1 \
         CARGO_SBOM_PATH= \
         CARGOGREEN=1 \
-      rustc --crate-name buildxargs --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C opt-level'=3' -C embed-bitcode'=no' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=bfcc25fbb1d1e27e' -C extra-filename'=-08fbf7e44bba6617' --out-dir /tmp/clis-buildxargs_master/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-buildxargs_master/release/deps' --extern buildxargs'=/tmp/clis-buildxargs_master/release/deps/libbuildxargs-6b139e29a6fbee8c.rlib' --extern pico_args'=/tmp/clis-buildxargs_master/release/deps/libpico_args-b23dd1fb69296b44.rlib' --extern shlex'=/tmp/clis-buildxargs_master/release/deps/libshlex-a2dd0fe0df0b57cb.rlib' src/main.rs \
-        1>          /tmp/clis-buildxargs_master/release/deps/out-08fbf7e44bba6617-stdout \
-        2>          /tmp/clis-buildxargs_master/release/deps/out-08fbf7e44bba6617-stderr \
-        || echo $? >/tmp/clis-buildxargs_master/release/deps/out-08fbf7e44bba6617-errcode\
-  ; find /tmp/clis-buildxargs_master/release/deps/*-08fbf7e44bba6617* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      rustc --crate-name buildxargs --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C opt-level'=3' -C embed-bitcode'=no' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=bfcc25fbb1d1e27e' -C extra-filename'=-08fbf7e44bba6617' --out-dir /target/release/deps -C strip'=debuginfo' -L dependency'=/target/release/deps' --extern buildxargs'=/target/release/deps/libbuildxargs-6b139e29a6fbee8c.rlib' --extern pico_args'=/target/release/deps/libpico_args-b23dd1fb69296b44.rlib' --extern shlex'=/target/release/deps/libshlex-a2dd0fe0df0b57cb.rlib' src/main.rs \
+        1>          /target/release/deps/out-08fbf7e44bba6617-stdout \
+        2>          /target/release/deps/out-08fbf7e44bba6617-stderr \
+        || echo $? >/target/release/deps/out-08fbf7e44bba6617-errcode\
+  ; find /target/release/deps/*-08fbf7e44bba6617* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-08fbf7e44bba6617
-COPY --link --from=dep-n-buildxargs-1.4.0-08fbf7e44bba6617 /tmp/clis-buildxargs_master/release/deps/*-08fbf7e44bba6617* /
+COPY --link --from=dep-n-buildxargs-1.4.0-08fbf7e44bba6617 /target/release/deps/*-08fbf7e44bba6617* /
 
 # Pipe this file to:
 # DOCKER_BUILDKIT="1" \
@@ -422,8 +422,8 @@ COPY --link --from=dep-n-buildxargs-1.4.0-08fbf7e44bba6617 /tmp/clis-buildxargs_
 ##     "buildxargs-08fbf7e44bba6617.d",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-buildxargs_master/release/deps/buildxargs-08fbf7e44bba6617.d","emit":"dep-info"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-buildxargs_master/release/deps/buildxargs-08fbf7e44bba6617","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/buildxargs-08fbf7e44bba6617.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/buildxargs-08fbf7e44bba6617","emit":"link"}',
 ## ]
 ##
 ## [[externs]]
@@ -459,13 +459,13 @@ COPY --link --from=dep-n-buildxargs-1.4.0-08fbf7e44bba6617 /tmp/clis-buildxargs_
 ## script = '''
 ## FROM rust-base AS dep-n-buildxargs-1.4.0-08fbf7e44bba6617
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-buildxargs_master/release/deps
+## WORKDIR /target/release/deps
 ## WORKDIR /home/runner/.cargo/git/checkouts/buildxargs-76dd4ee9dadcdcf0/0060a68
 ## RUN \
 ##   --mount=from=checkout-buildxargs-76dd4ee9dadcdcf0-0060a682a2f84b295cfd2cff36602784f36ed9cf,dst=/home/runner/.cargo/git/checkouts/buildxargs-76dd4ee9dadcdcf0/0060a68 \
-##   --mount=from=out-6b139e29a6fbee8c,dst=/tmp/clis-buildxargs_master/release/deps/libbuildxargs-6b139e29a6fbee8c.rlib,source=/libbuildxargs-6b139e29a6fbee8c.rlib \
-##   --mount=from=out-b23dd1fb69296b44,dst=/tmp/clis-buildxargs_master/release/deps/libpico_args-b23dd1fb69296b44.rlib,source=/libpico_args-b23dd1fb69296b44.rlib \
-##   --mount=from=out-a2dd0fe0df0b57cb,dst=/tmp/clis-buildxargs_master/release/deps/libshlex-a2dd0fe0df0b57cb.rlib,source=/libshlex-a2dd0fe0df0b57cb.rlib \
+##   --mount=from=out-6b139e29a6fbee8c,dst=/target/release/deps/libbuildxargs-6b139e29a6fbee8c.rlib,source=/libbuildxargs-6b139e29a6fbee8c.rlib \
+##   --mount=from=out-b23dd1fb69296b44,dst=/target/release/deps/libpico_args-b23dd1fb69296b44.rlib,source=/libpico_args-b23dd1fb69296b44.rlib \
+##   --mount=from=out-a2dd0fe0df0b57cb,dst=/target/release/deps/libshlex-a2dd0fe0df0b57cb.rlib,source=/libshlex-a2dd0fe0df0b57cb.rlib \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_BIN_NAME=buildxargs \
 ##         CARGO_CRATE_NAME=buildxargs \
@@ -489,11 +489,11 @@ COPY --link --from=dep-n-buildxargs-1.4.0-08fbf7e44bba6617 /tmp/clis-buildxargs_
 ##         CARGO_PRIMARY_PACKAGE=1 \
 ##         CARGO_SBOM_PATH= \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name buildxargs --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C opt-level'=3' -C embed-bitcode'=no' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=bfcc25fbb1d1e27e' -C extra-filename'=-08fbf7e44bba6617' --out-dir /tmp/clis-buildxargs_master/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-buildxargs_master/release/deps' --extern buildxargs'=/tmp/clis-buildxargs_master/release/deps/libbuildxargs-6b139e29a6fbee8c.rlib' --extern pico_args'=/tmp/clis-buildxargs_master/release/deps/libpico_args-b23dd1fb69296b44.rlib' --extern shlex'=/tmp/clis-buildxargs_master/release/deps/libshlex-a2dd0fe0df0b57cb.rlib' src/main.rs \
-##         1>          /tmp/clis-buildxargs_master/release/deps/out-08fbf7e44bba6617-stdout \
-##         2>          /tmp/clis-buildxargs_master/release/deps/out-08fbf7e44bba6617-stderr \
-##         || echo $? >/tmp/clis-buildxargs_master/release/deps/out-08fbf7e44bba6617-errcode\
-##   ; find /tmp/clis-buildxargs_master/release/deps/*-08fbf7e44bba6617* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name buildxargs --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C opt-level'=3' -C embed-bitcode'=no' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=bfcc25fbb1d1e27e' -C extra-filename'=-08fbf7e44bba6617' --out-dir /target/release/deps -C strip'=debuginfo' -L dependency'=/target/release/deps' --extern buildxargs'=/target/release/deps/libbuildxargs-6b139e29a6fbee8c.rlib' --extern pico_args'=/target/release/deps/libpico_args-b23dd1fb69296b44.rlib' --extern shlex'=/target/release/deps/libshlex-a2dd0fe0df0b57cb.rlib' src/main.rs \
+##         1>          /target/release/deps/out-08fbf7e44bba6617-stdout \
+##         2>          /target/release/deps/out-08fbf7e44bba6617-stderr \
+##         || echo $? >/target/release/deps/out-08fbf7e44bba6617-errcode\
+##   ; find /target/release/deps/*-08fbf7e44bba6617* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -501,7 +501,7 @@ COPY --link --from=dep-n-buildxargs-1.4.0-08fbf7e44bba6617 /tmp/clis-buildxargs_
 ## stage = "out-08fbf7e44bba6617"
 ## script = """
 ## FROM scratch AS out-08fbf7e44bba6617
-## COPY --link --from=dep-n-buildxargs-1.4.0-08fbf7e44bba6617 /tmp/clis-buildxargs_master/release/deps/*-08fbf7e44bba6617* /"""
+## COPY --link --from=dep-n-buildxargs-1.4.0-08fbf7e44bba6617 /target/release/deps/*-08fbf7e44bba6617* /"""
 
 FROM scratch
 COPY --link --from=out-08fbf7e44bba6617 /buildxargs-08fbf7e44bba6617 /buildxargs

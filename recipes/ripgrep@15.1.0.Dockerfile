@@ -11,7 +11,7 @@ ADD --chmod=0664 --unpack --checksum=sha256:a23eb6b1614318a8071c9b2521f36b424b2c
   https://static.crates.io/crates/anyhow/anyhow-1.0.100.crate /
 FROM rust-base AS dep-x-anyhow-1.0.100-aac75221c73a1ce4
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-ripgrep_15-1-0/release/build/anyhow-aac75221c73a1ce4
+WORKDIR /target/release/build/anyhow-aac75221c73a1ce4
 RUN \
   --mount=from=cratesio-anyhow-1.0.100,source=/anyhow-1.0.100,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.100,rw \
     { \
@@ -53,13 +53,13 @@ RUN \
         CARGO_PKG_VERSION_PATCH=100 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --crate-name build_script_build --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("backtrace", "default", "std"))' -C metadata'=3d4062f3e874b50f' -C extra-filename'=-aac75221c73a1ce4' --out-dir /tmp/clis-ripgrep_15-1-0/release/build/anyhow-aac75221c73a1ce4 -L dependency'=/tmp/clis-ripgrep_15-1-0/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.100/build.rs \
-        1>          /tmp/clis-ripgrep_15-1-0/release/build/anyhow-aac75221c73a1ce4/out-aac75221c73a1ce4-stdout \
-        2>          /tmp/clis-ripgrep_15-1-0/release/build/anyhow-aac75221c73a1ce4/out-aac75221c73a1ce4-stderr \
-        || echo $? >/tmp/clis-ripgrep_15-1-0/release/build/anyhow-aac75221c73a1ce4/out-aac75221c73a1ce4-errcode\
-  ; find /tmp/clis-ripgrep_15-1-0/release/build/anyhow-aac75221c73a1ce4/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      rustc --crate-name build_script_build --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("backtrace", "default", "std"))' -C metadata'=3d4062f3e874b50f' -C extra-filename'=-aac75221c73a1ce4' --out-dir /target/release/build/anyhow-aac75221c73a1ce4 -L dependency'=/target/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.100/build.rs \
+        1>          /target/release/build/anyhow-aac75221c73a1ce4/out-aac75221c73a1ce4-stdout \
+        2>          /target/release/build/anyhow-aac75221c73a1ce4/out-aac75221c73a1ce4-stderr \
+        || echo $? >/target/release/build/anyhow-aac75221c73a1ce4/out-aac75221c73a1ce4-errcode\
+  ; find /target/release/build/anyhow-aac75221c73a1ce4/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-aac75221c73a1ce4
-COPY --link --from=dep-x-anyhow-1.0.100-aac75221c73a1ce4 /tmp/clis-ripgrep_15-1-0/release/build/anyhow-aac75221c73a1ce4/*-aac75221c73a1ce4* /
+COPY --link --from=dep-x-anyhow-1.0.100-aac75221c73a1ce4 /target/release/build/anyhow-aac75221c73a1ce4/*-aac75221c73a1ce4* /
 
 ## this = "aac75221c73a1ce4"
 ## writes = [
@@ -67,8 +67,8 @@ COPY --link --from=dep-x-anyhow-1.0.100-aac75221c73a1ce4 /tmp/clis-ripgrep_15-1-
 ##     "build_script_build-aac75221c73a1ce4.d",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/build/anyhow-aac75221c73a1ce4/build_script_build-aac75221c73a1ce4.d","emit":"dep-info"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/build/anyhow-aac75221c73a1ce4/build_script_build-aac75221c73a1ce4","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/build/anyhow-aac75221c73a1ce4/build_script_build-aac75221c73a1ce4.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/build/anyhow-aac75221c73a1ce4/build_script_build-aac75221c73a1ce4","emit":"link"}',
 ## ]
 ##
 ## [[stages]]
@@ -93,7 +93,7 @@ COPY --link --from=dep-x-anyhow-1.0.100-aac75221c73a1ce4 /tmp/clis-ripgrep_15-1-
 ## script = '''
 ## FROM rust-base AS dep-x-anyhow-1.0.100-aac75221c73a1ce4
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-ripgrep_15-1-0/release/build/anyhow-aac75221c73a1ce4
+## WORKDIR /target/release/build/anyhow-aac75221c73a1ce4
 ## RUN \
 ##   --mount=from=cratesio-anyhow-1.0.100,source=/anyhow-1.0.100,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.100,rw \
 ##     { \
@@ -135,11 +135,11 @@ COPY --link --from=dep-x-anyhow-1.0.100-aac75221c73a1ce4 /tmp/clis-ripgrep_15-1-
 ##         CARGO_PKG_VERSION_PATCH=100 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name build_script_build --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("backtrace", "default", "std"))' -C metadata'=3d4062f3e874b50f' -C extra-filename'=-aac75221c73a1ce4' --out-dir /tmp/clis-ripgrep_15-1-0/release/build/anyhow-aac75221c73a1ce4 -L dependency'=/tmp/clis-ripgrep_15-1-0/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.100/build.rs \
-##         1>          /tmp/clis-ripgrep_15-1-0/release/build/anyhow-aac75221c73a1ce4/out-aac75221c73a1ce4-stdout \
-##         2>          /tmp/clis-ripgrep_15-1-0/release/build/anyhow-aac75221c73a1ce4/out-aac75221c73a1ce4-stderr \
-##         || echo $? >/tmp/clis-ripgrep_15-1-0/release/build/anyhow-aac75221c73a1ce4/out-aac75221c73a1ce4-errcode\
-##   ; find /tmp/clis-ripgrep_15-1-0/release/build/anyhow-aac75221c73a1ce4/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name build_script_build --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("backtrace", "default", "std"))' -C metadata'=3d4062f3e874b50f' -C extra-filename'=-aac75221c73a1ce4' --out-dir /target/release/build/anyhow-aac75221c73a1ce4 -L dependency'=/target/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.100/build.rs \
+##         1>          /target/release/build/anyhow-aac75221c73a1ce4/out-aac75221c73a1ce4-stdout \
+##         2>          /target/release/build/anyhow-aac75221c73a1ce4/out-aac75221c73a1ce4-stderr \
+##         || echo $? >/target/release/build/anyhow-aac75221c73a1ce4/out-aac75221c73a1ce4-errcode\
+##   ; find /target/release/build/anyhow-aac75221c73a1ce4/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -147,14 +147,14 @@ COPY --link --from=dep-x-anyhow-1.0.100-aac75221c73a1ce4 /tmp/clis-ripgrep_15-1-
 ## stage = "out-aac75221c73a1ce4"
 ## script = """
 ## FROM scratch AS out-aac75221c73a1ce4
-## COPY --link --from=dep-x-anyhow-1.0.100-aac75221c73a1ce4 /tmp/clis-ripgrep_15-1-0/release/build/anyhow-aac75221c73a1ce4/*-aac75221c73a1ce4* /"""
+## COPY --link --from=dep-x-anyhow-1.0.100-aac75221c73a1ce4 /target/release/build/anyhow-aac75221c73a1ce4/*-aac75221c73a1ce4* /"""
 
 FROM rust-base AS run-z-anyhow-1.0.100-fbac27a1a62de6cb
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-ripgrep_15-1-0/release/build/anyhow-fbac27a1a62de6cb/out
+WORKDIR /target/release/build/anyhow-fbac27a1a62de6cb/out
 WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.100
 RUN \
-  --mount=from=out-aac75221c73a1ce4,source=/build_script_build-aac75221c73a1ce4,dst=/tmp/clis-ripgrep_15-1-0/release/build/anyhow-aac75221c73a1ce4/build-script-build \
+  --mount=from=out-aac75221c73a1ce4,source=/build_script_build-aac75221c73a1ce4,dst=/target/release/build/anyhow-aac75221c73a1ce4/build-script-build \
   --mount=from=cratesio-anyhow-1.0.100,source=/anyhow-1.0.100,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.100 \
     env CARGO="$(which cargo)" \
         CARGO_CFG_FEATURE=default,std \
@@ -194,23 +194,23 @@ RUN \
         HOST=x86_64-unknown-linux-gnu \
         NUM_JOBS=4 \
         OPT_LEVEL=3 \
-        OUT_DIR=/tmp/clis-ripgrep_15-1-0/release/build/anyhow-fbac27a1a62de6cb/out \
+        OUT_DIR=/target/release/build/anyhow-fbac27a1a62de6cb/out \
         PROFILE=release \
         RUSTC=rustc \
         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
         TARGET=x86_64-unknown-linux-gnu \
         CARGOGREEN=1 \
-      CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-ripgrep_15-1-0/release/build/anyhow-aac75221c73a1ce4/build-script-build \
-        1>          /tmp/clis-ripgrep_15-1-0/release/build/anyhow-fbac27a1a62de6cb/out/out-fbac27a1a62de6cb-stdout \
-        2>          /tmp/clis-ripgrep_15-1-0/release/build/anyhow-fbac27a1a62de6cb/out/out-fbac27a1a62de6cb-stderr \
-        || echo $? >/tmp/clis-ripgrep_15-1-0/release/build/anyhow-fbac27a1a62de6cb/out/out-fbac27a1a62de6cb-errcode\
-  ; find /tmp/clis-ripgrep_15-1-0/release/build/anyhow-fbac27a1a62de6cb/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      CARGOGREEN_EXECUTE_BUILDRS_= /target/release/build/anyhow-aac75221c73a1ce4/build-script-build \
+        1>          /target/release/build/anyhow-fbac27a1a62de6cb/out/out-fbac27a1a62de6cb-stdout \
+        2>          /target/release/build/anyhow-fbac27a1a62de6cb/out/out-fbac27a1a62de6cb-stderr \
+        || echo $? >/target/release/build/anyhow-fbac27a1a62de6cb/out/out-fbac27a1a62de6cb-errcode\
+  ; find /target/release/build/anyhow-fbac27a1a62de6cb/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-fbac27a1a62de6cb
-COPY --link --from=run-z-anyhow-1.0.100-fbac27a1a62de6cb /tmp/clis-ripgrep_15-1-0/release/build/anyhow-fbac27a1a62de6cb/out /
+COPY --link --from=run-z-anyhow-1.0.100-fbac27a1a62de6cb /target/release/build/anyhow-fbac27a1a62de6cb/out /
 
 ## this = "fbac27a1a62de6cb"
 ## deps = ["aac75221c73a1ce4"]
-## writes_to = "/tmp/clis-ripgrep_15-1-0/release/build/anyhow-fbac27a1a62de6cb/out"
+## writes_to = "/target/release/build/anyhow-fbac27a1a62de6cb/out"
 ## stdout = [
 ##     "cargo:rerun-if-changed=src/nightly.rs",
 ##     "cargo:rerun-if-env-changed=RUSTC_BOOTSTRAP",
@@ -229,10 +229,10 @@ COPY --link --from=run-z-anyhow-1.0.100-fbac27a1a62de6cb /tmp/clis-ripgrep_15-1-
 ## script = '''
 ## FROM rust-base AS run-z-anyhow-1.0.100-fbac27a1a62de6cb
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-ripgrep_15-1-0/release/build/anyhow-fbac27a1a62de6cb/out
+## WORKDIR /target/release/build/anyhow-fbac27a1a62de6cb/out
 ## WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.100
 ## RUN \
-##   --mount=from=out-aac75221c73a1ce4,source=/build_script_build-aac75221c73a1ce4,dst=/tmp/clis-ripgrep_15-1-0/release/build/anyhow-aac75221c73a1ce4/build-script-build \
+##   --mount=from=out-aac75221c73a1ce4,source=/build_script_build-aac75221c73a1ce4,dst=/target/release/build/anyhow-aac75221c73a1ce4/build-script-build \
 ##   --mount=from=cratesio-anyhow-1.0.100,source=/anyhow-1.0.100,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.100 \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CFG_FEATURE=default,std \
@@ -272,17 +272,17 @@ COPY --link --from=run-z-anyhow-1.0.100-fbac27a1a62de6cb /tmp/clis-ripgrep_15-1-
 ##         HOST=x86_64-unknown-linux-gnu \
 ##         NUM_JOBS=4 \
 ##         OPT_LEVEL=3 \
-##         OUT_DIR=/tmp/clis-ripgrep_15-1-0/release/build/anyhow-fbac27a1a62de6cb/out \
+##         OUT_DIR=/target/release/build/anyhow-fbac27a1a62de6cb/out \
 ##         PROFILE=release \
 ##         RUSTC=rustc \
 ##         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
 ##         TARGET=x86_64-unknown-linux-gnu \
 ##         CARGOGREEN=1 \
-##       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-ripgrep_15-1-0/release/build/anyhow-aac75221c73a1ce4/build-script-build \
-##         1>          /tmp/clis-ripgrep_15-1-0/release/build/anyhow-fbac27a1a62de6cb/out/out-fbac27a1a62de6cb-stdout \
-##         2>          /tmp/clis-ripgrep_15-1-0/release/build/anyhow-fbac27a1a62de6cb/out/out-fbac27a1a62de6cb-stderr \
-##         || echo $? >/tmp/clis-ripgrep_15-1-0/release/build/anyhow-fbac27a1a62de6cb/out/out-fbac27a1a62de6cb-errcode\
-##   ; find /tmp/clis-ripgrep_15-1-0/release/build/anyhow-fbac27a1a62de6cb/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       CARGOGREEN_EXECUTE_BUILDRS_= /target/release/build/anyhow-aac75221c73a1ce4/build-script-build \
+##         1>          /target/release/build/anyhow-fbac27a1a62de6cb/out/out-fbac27a1a62de6cb-stdout \
+##         2>          /target/release/build/anyhow-fbac27a1a62de6cb/out/out-fbac27a1a62de6cb-stderr \
+##         || echo $? >/target/release/build/anyhow-fbac27a1a62de6cb/out/out-fbac27a1a62de6cb-errcode\
+##   ; find /target/release/build/anyhow-fbac27a1a62de6cb/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -290,15 +290,15 @@ COPY --link --from=run-z-anyhow-1.0.100-fbac27a1a62de6cb /tmp/clis-ripgrep_15-1-
 ## stage = "out-fbac27a1a62de6cb"
 ## script = """
 ## FROM scratch AS out-fbac27a1a62de6cb
-## COPY --link --from=run-z-anyhow-1.0.100-fbac27a1a62de6cb /tmp/clis-ripgrep_15-1-0/release/build/anyhow-fbac27a1a62de6cb/out /"""
+## COPY --link --from=run-z-anyhow-1.0.100-fbac27a1a62de6cb /target/release/build/anyhow-fbac27a1a62de6cb/out /"""
 
 
 FROM rust-base AS dep-n-anyhow-1.0.100-668c6ccec8f0b208
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-ripgrep_15-1-0/release/deps
+WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-anyhow-1.0.100,source=/anyhow-1.0.100,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.100 \
-  --mount=from=out-fbac27a1a62de6cb,dst=/tmp/clis-ripgrep_15-1-0/release/build/anyhow-fbac27a1a62de6cb/out,source=/ \
+  --mount=from=out-fbac27a1a62de6cb,dst=/target/release/build/anyhow-fbac27a1a62de6cb/out,source=/ \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=anyhow \
         CARGO_INCREMENTAL=0 \
@@ -318,15 +318,15 @@ RUN \
         CARGO_PKG_VERSION_MINOR=0 \
         CARGO_PKG_VERSION_PATCH=100 \
         CARGO_PKG_VERSION_PRE= \
-        OUT_DIR=/tmp/clis-ripgrep_15-1-0/release/build/anyhow-fbac27a1a62de6cb/out \
+        OUT_DIR=/target/release/build/anyhow-fbac27a1a62de6cb/out \
         CARGOGREEN=1 \
-      rustc --crate-name anyhow --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("backtrace", "default", "std"))' -C metadata'=9ff840e8a60496fa' -C extra-filename'=-668c6ccec8f0b208' --out-dir /tmp/clis-ripgrep_15-1-0/release/deps -L dependency'=/tmp/clis-ripgrep_15-1-0/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.100/src/lib.rs \
-        1>          /tmp/clis-ripgrep_15-1-0/release/deps/out-668c6ccec8f0b208-stdout \
-        2>          /tmp/clis-ripgrep_15-1-0/release/deps/out-668c6ccec8f0b208-stderr \
-        || echo $? >/tmp/clis-ripgrep_15-1-0/release/deps/out-668c6ccec8f0b208-errcode\
-  ; find /tmp/clis-ripgrep_15-1-0/release/deps/*-668c6ccec8f0b208* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      rustc --crate-name anyhow --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("backtrace", "default", "std"))' -C metadata'=9ff840e8a60496fa' -C extra-filename'=-668c6ccec8f0b208' --out-dir /target/release/deps -L dependency'=/target/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.100/src/lib.rs \
+        1>          /target/release/deps/out-668c6ccec8f0b208-stdout \
+        2>          /target/release/deps/out-668c6ccec8f0b208-stderr \
+        || echo $? >/target/release/deps/out-668c6ccec8f0b208-errcode\
+  ; find /target/release/deps/*-668c6ccec8f0b208* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-668c6ccec8f0b208
-COPY --link --from=dep-n-anyhow-1.0.100-668c6ccec8f0b208 /tmp/clis-ripgrep_15-1-0/release/deps/*-668c6ccec8f0b208* /
+COPY --link --from=dep-n-anyhow-1.0.100-668c6ccec8f0b208 /target/release/deps/*-668c6ccec8f0b208* /
 
 ## this = "668c6ccec8f0b208"
 ## deps = [
@@ -340,7 +340,7 @@ COPY --link --from=dep-n-anyhow-1.0.100-668c6ccec8f0b208 /tmp/clis-ripgrep_15-1-
 ##     "libanyhow-668c6ccec8f0b208.rmeta",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/deps/anyhow-668c6ccec8f0b208.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/anyhow-668c6ccec8f0b208.d","emit":"dep-info"}',
 ##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `error_generic_member_access`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.100/src/lib.rs","byte_start":6599,"byte_end":6626,"line_start":210,"line_end":210,"column_start":13,"column_end":40,"is_primary":true,"text":[{"text":"#![cfg_attr(error_generic_member_access, feature(error_generic_member_access))]","highlight_start":13,"highlight_end":40}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"expected names are: `docsrs`, `feature`, and `test` and 31 more","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(error_generic_member_access)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(error_generic_member_access)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"`#[warn(unexpected_cfgs)]` on by default","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `error_generic_member_access`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.100/src/lib.rs:210:13\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m210\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m#![cfg_attr(error_generic_member_access, feature(error_generic_member_access))]\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m             \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: expected names are: `docsrs`, `feature`, and `test` and 31 more\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(error_generic_member_access)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(error_generic_member_access)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: `#[warn(unexpected_cfgs)]` on by default\u001b[0m\n\n"}''',
 ##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_unsafe_op_in_unsafe_fn_lint`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.100/src/lib.rs","byte_start":6747,"byte_end":6784,"line_start":214,"line_end":214,"column_start":9,"column_end":46,"is_primary":true,"text":[{"text":"    not(anyhow_no_unsafe_op_in_unsafe_fn_lint),","highlight_start":9,"highlight_end":46}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_unsafe_op_in_unsafe_fn_lint)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_unsafe_op_in_unsafe_fn_lint)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_unsafe_op_in_unsafe_fn_lint`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.100/src/lib.rs:214:9\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m214\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    not(anyhow_no_unsafe_op_in_unsafe_fn_lint),\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m         \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_unsafe_op_in_unsafe_fn_lint)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_unsafe_op_in_unsafe_fn_lint)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
 ##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_unsafe_op_in_unsafe_fn_lint`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.100/src/lib.rs","byte_start":6835,"byte_end":6872,"line_start":217,"line_end":217,"column_start":13,"column_end":50,"is_primary":true,"text":[{"text":"#![cfg_attr(anyhow_no_unsafe_op_in_unsafe_fn_lint, allow(unused_unsafe))]","highlight_start":13,"highlight_end":50}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_unsafe_op_in_unsafe_fn_lint)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_unsafe_op_in_unsafe_fn_lint)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_unsafe_op_in_unsafe_fn_lint`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.100/src/lib.rs:217:13\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m217\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m#![cfg_attr(anyhow_no_unsafe_op_in_unsafe_fn_lint, allow(unused_unsafe))]\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m             \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_unsafe_op_in_unsafe_fn_lint)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_unsafe_op_in_unsafe_fn_lint)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
@@ -508,14 +508,14 @@ COPY --link --from=dep-n-anyhow-1.0.100-668c6ccec8f0b208 /tmp/clis-ripgrep_15-1-
 ##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_core_error`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.100/src/lib.rs","byte_start":20209,"byte_end":20229,"line_start":679,"line_end":679,"column_start":40,"column_end":60,"is_primary":true,"text":[{"text":"        #[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]","highlight_start":40,"highlight_end":60}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_core_error`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.100/src/lib.rs:679:40\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m679\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m        #[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                        \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
 ##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_fmt_arguments_as_str`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.100/src/lib.rs","byte_start":20413,"byte_end":20443,"line_start":688,"line_end":688,"column_start":15,"column_end":45,"is_primary":true,"text":[{"text":"        #[cfg(anyhow_no_fmt_arguments_as_str)]","highlight_start":15,"highlight_end":45}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_fmt_arguments_as_str)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_fmt_arguments_as_str)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_fmt_arguments_as_str`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.100/src/lib.rs:688:15\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m688\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m        #[cfg(anyhow_no_fmt_arguments_as_str)]\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m               \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_fmt_arguments_as_str)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_fmt_arguments_as_str)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
 ##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_fmt_arguments_as_str`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.100/src/lib.rs","byte_start":20513,"byte_end":20543,"line_start":690,"line_end":690,"column_start":19,"column_end":49,"is_primary":true,"text":[{"text":"        #[cfg(not(anyhow_no_fmt_arguments_as_str))]","highlight_start":19,"highlight_end":49}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_fmt_arguments_as_str)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_fmt_arguments_as_str)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_fmt_arguments_as_str`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.100/src/lib.rs:690:19\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m690\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m        #[cfg(not(anyhow_no_fmt_arguments_as_str))]\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                   \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_fmt_arguments_as_str)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_fmt_arguments_as_str)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/deps/libanyhow-668c6ccec8f0b208.rmeta","emit":"metadata"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/deps/libanyhow-668c6ccec8f0b208.rlib","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libanyhow-668c6ccec8f0b208.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libanyhow-668c6ccec8f0b208.rlib","emit":"link"}',
 ##     '{"$message_type":"diagnostic","message":"167 warnings emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 167 warnings emitted\u001b[0m\n\n"}',
 ## ]
 ##
 ## [[mounts]]
 ## name = "out-fbac27a1a62de6cb"
-## mount = "/tmp/clis-ripgrep_15-1-0/release/build/anyhow-fbac27a1a62de6cb/out"
+## mount = "/target/release/build/anyhow-fbac27a1a62de6cb/out"
 ##
 ## [[stages]]
 ##
@@ -539,10 +539,10 @@ COPY --link --from=dep-n-anyhow-1.0.100-668c6ccec8f0b208 /tmp/clis-ripgrep_15-1-
 ## script = '''
 ## FROM rust-base AS dep-n-anyhow-1.0.100-668c6ccec8f0b208
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-ripgrep_15-1-0/release/deps
+## WORKDIR /target/release/deps
 ## RUN \
 ##   --mount=from=cratesio-anyhow-1.0.100,source=/anyhow-1.0.100,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.100 \
-##   --mount=from=out-fbac27a1a62de6cb,dst=/tmp/clis-ripgrep_15-1-0/release/build/anyhow-fbac27a1a62de6cb/out,source=/ \
+##   --mount=from=out-fbac27a1a62de6cb,dst=/target/release/build/anyhow-fbac27a1a62de6cb/out,source=/ \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=anyhow \
 ##         CARGO_INCREMENTAL=0 \
@@ -562,13 +562,13 @@ COPY --link --from=dep-n-anyhow-1.0.100-668c6ccec8f0b208 /tmp/clis-ripgrep_15-1-
 ##         CARGO_PKG_VERSION_MINOR=0 \
 ##         CARGO_PKG_VERSION_PATCH=100 \
 ##         CARGO_PKG_VERSION_PRE= \
-##         OUT_DIR=/tmp/clis-ripgrep_15-1-0/release/build/anyhow-fbac27a1a62de6cb/out \
+##         OUT_DIR=/target/release/build/anyhow-fbac27a1a62de6cb/out \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name anyhow --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("backtrace", "default", "std"))' -C metadata'=9ff840e8a60496fa' -C extra-filename'=-668c6ccec8f0b208' --out-dir /tmp/clis-ripgrep_15-1-0/release/deps -L dependency'=/tmp/clis-ripgrep_15-1-0/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.100/src/lib.rs \
-##         1>          /tmp/clis-ripgrep_15-1-0/release/deps/out-668c6ccec8f0b208-stdout \
-##         2>          /tmp/clis-ripgrep_15-1-0/release/deps/out-668c6ccec8f0b208-stderr \
-##         || echo $? >/tmp/clis-ripgrep_15-1-0/release/deps/out-668c6ccec8f0b208-errcode\
-##   ; find /tmp/clis-ripgrep_15-1-0/release/deps/*-668c6ccec8f0b208* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name anyhow --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("backtrace", "default", "std"))' -C metadata'=9ff840e8a60496fa' -C extra-filename'=-668c6ccec8f0b208' --out-dir /target/release/deps -L dependency'=/target/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.100/src/lib.rs \
+##         1>          /target/release/deps/out-668c6ccec8f0b208-stdout \
+##         2>          /target/release/deps/out-668c6ccec8f0b208-stderr \
+##         || echo $? >/target/release/deps/out-668c6ccec8f0b208-errcode\
+##   ; find /target/release/deps/*-668c6ccec8f0b208* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -576,14 +576,14 @@ COPY --link --from=dep-n-anyhow-1.0.100-668c6ccec8f0b208 /tmp/clis-ripgrep_15-1-
 ## stage = "out-668c6ccec8f0b208"
 ## script = """
 ## FROM scratch AS out-668c6ccec8f0b208
-## COPY --link --from=dep-n-anyhow-1.0.100-668c6ccec8f0b208 /tmp/clis-ripgrep_15-1-0/release/deps/*-668c6ccec8f0b208* /"""
+## COPY --link --from=dep-n-anyhow-1.0.100-668c6ccec8f0b208 /target/release/deps/*-668c6ccec8f0b208* /"""
 
 FROM scratch AS cratesio-memchr-2.7.6
 ADD --chmod=0664 --unpack --checksum=sha256:f52b00d39961fc5b2736ea853c9cc86238e165017a493d1d5c8eac6bdc4cc273 \
   https://static.crates.io/crates/memchr/memchr-2.7.6.crate /
 FROM rust-base AS dep-n-memchr-2.7.6-3a40f50ac19c9d2e
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-ripgrep_15-1-0/release/deps
+WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-memchr-2.7.6,source=/memchr-2.7.6,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/memchr-2.7.6 \
     env CARGO="$(which cargo)" \
@@ -608,13 +608,13 @@ RUN \
         CARGO_PKG_VERSION_PATCH=6 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --crate-name memchr --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --cfg feature'="alloc"' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "core", "default", "libc", "logging", "rustc-dep-of-std", "std", "use_std"))' -C metadata'=62682e59b0b2a48b' -C extra-filename'=-3a40f50ac19c9d2e' --out-dir /tmp/clis-ripgrep_15-1-0/release/deps -L dependency'=/tmp/clis-ripgrep_15-1-0/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/memchr-2.7.6/src/lib.rs \
-        1>          /tmp/clis-ripgrep_15-1-0/release/deps/out-3a40f50ac19c9d2e-stdout \
-        2>          /tmp/clis-ripgrep_15-1-0/release/deps/out-3a40f50ac19c9d2e-stderr \
-        || echo $? >/tmp/clis-ripgrep_15-1-0/release/deps/out-3a40f50ac19c9d2e-errcode\
-  ; find /tmp/clis-ripgrep_15-1-0/release/deps/*-3a40f50ac19c9d2e* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      rustc --crate-name memchr --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --cfg feature'="alloc"' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "core", "default", "libc", "logging", "rustc-dep-of-std", "std", "use_std"))' -C metadata'=62682e59b0b2a48b' -C extra-filename'=-3a40f50ac19c9d2e' --out-dir /target/release/deps -L dependency'=/target/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/memchr-2.7.6/src/lib.rs \
+        1>          /target/release/deps/out-3a40f50ac19c9d2e-stdout \
+        2>          /target/release/deps/out-3a40f50ac19c9d2e-stderr \
+        || echo $? >/target/release/deps/out-3a40f50ac19c9d2e-errcode\
+  ; find /target/release/deps/*-3a40f50ac19c9d2e* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-3a40f50ac19c9d2e
-COPY --link --from=dep-n-memchr-2.7.6-3a40f50ac19c9d2e /tmp/clis-ripgrep_15-1-0/release/deps/*-3a40f50ac19c9d2e* /
+COPY --link --from=dep-n-memchr-2.7.6-3a40f50ac19c9d2e /target/release/deps/*-3a40f50ac19c9d2e* /
 
 ## this = "3a40f50ac19c9d2e"
 ## writes = [
@@ -623,9 +623,9 @@ COPY --link --from=dep-n-memchr-2.7.6-3a40f50ac19c9d2e /tmp/clis-ripgrep_15-1-0/
 ##     "memchr-3a40f50ac19c9d2e.d",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/deps/memchr-3a40f50ac19c9d2e.d","emit":"dep-info"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/deps/libmemchr-3a40f50ac19c9d2e.rmeta","emit":"metadata"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/deps/libmemchr-3a40f50ac19c9d2e.rlib","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/memchr-3a40f50ac19c9d2e.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libmemchr-3a40f50ac19c9d2e.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libmemchr-3a40f50ac19c9d2e.rlib","emit":"link"}',
 ## ]
 ##
 ## [[stages]]
@@ -650,7 +650,7 @@ COPY --link --from=dep-n-memchr-2.7.6-3a40f50ac19c9d2e /tmp/clis-ripgrep_15-1-0/
 ## script = '''
 ## FROM rust-base AS dep-n-memchr-2.7.6-3a40f50ac19c9d2e
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-ripgrep_15-1-0/release/deps
+## WORKDIR /target/release/deps
 ## RUN \
 ##   --mount=from=cratesio-memchr-2.7.6,source=/memchr-2.7.6,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/memchr-2.7.6 \
 ##     env CARGO="$(which cargo)" \
@@ -675,11 +675,11 @@ COPY --link --from=dep-n-memchr-2.7.6-3a40f50ac19c9d2e /tmp/clis-ripgrep_15-1-0/
 ##         CARGO_PKG_VERSION_PATCH=6 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name memchr --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --cfg feature'="alloc"' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "core", "default", "libc", "logging", "rustc-dep-of-std", "std", "use_std"))' -C metadata'=62682e59b0b2a48b' -C extra-filename'=-3a40f50ac19c9d2e' --out-dir /tmp/clis-ripgrep_15-1-0/release/deps -L dependency'=/tmp/clis-ripgrep_15-1-0/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/memchr-2.7.6/src/lib.rs \
-##         1>          /tmp/clis-ripgrep_15-1-0/release/deps/out-3a40f50ac19c9d2e-stdout \
-##         2>          /tmp/clis-ripgrep_15-1-0/release/deps/out-3a40f50ac19c9d2e-stderr \
-##         || echo $? >/tmp/clis-ripgrep_15-1-0/release/deps/out-3a40f50ac19c9d2e-errcode\
-##   ; find /tmp/clis-ripgrep_15-1-0/release/deps/*-3a40f50ac19c9d2e* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name memchr --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --cfg feature'="alloc"' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "core", "default", "libc", "logging", "rustc-dep-of-std", "std", "use_std"))' -C metadata'=62682e59b0b2a48b' -C extra-filename'=-3a40f50ac19c9d2e' --out-dir /target/release/deps -L dependency'=/target/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/memchr-2.7.6/src/lib.rs \
+##         1>          /target/release/deps/out-3a40f50ac19c9d2e-stdout \
+##         2>          /target/release/deps/out-3a40f50ac19c9d2e-stderr \
+##         || echo $? >/target/release/deps/out-3a40f50ac19c9d2e-errcode\
+##   ; find /target/release/deps/*-3a40f50ac19c9d2e* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -687,18 +687,18 @@ COPY --link --from=dep-n-memchr-2.7.6-3a40f50ac19c9d2e /tmp/clis-ripgrep_15-1-0/
 ## stage = "out-3a40f50ac19c9d2e"
 ## script = """
 ## FROM scratch AS out-3a40f50ac19c9d2e
-## COPY --link --from=dep-n-memchr-2.7.6-3a40f50ac19c9d2e /tmp/clis-ripgrep_15-1-0/release/deps/*-3a40f50ac19c9d2e* /"""
+## COPY --link --from=dep-n-memchr-2.7.6-3a40f50ac19c9d2e /target/release/deps/*-3a40f50ac19c9d2e* /"""
 
 FROM scratch AS cratesio-aho-corasick-1.1.3
 ADD --chmod=0664 --unpack --checksum=sha256:8e60d3430d3a69478ad0993f19238d2df97c507009a52b3c10addcd7f6bcb916 \
   https://static.crates.io/crates/aho-corasick/aho-corasick-1.1.3.crate /
 FROM rust-base AS dep-n-aho-corasick-1.1.3-a01a7f030e27d71e
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-ripgrep_15-1-0/release/deps
+WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-aho-corasick-1.1.3,source=/aho-corasick-1.1.3,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aho-corasick-1.1.3 \
-  --mount=from=out-3a40f50ac19c9d2e,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libmemchr-3a40f50ac19c9d2e.rlib,source=/libmemchr-3a40f50ac19c9d2e.rlib \
-  --mount=from=out-3a40f50ac19c9d2e,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libmemchr-3a40f50ac19c9d2e.rmeta,source=/libmemchr-3a40f50ac19c9d2e.rmeta \
+  --mount=from=out-3a40f50ac19c9d2e,dst=/target/release/deps/libmemchr-3a40f50ac19c9d2e.rlib,source=/libmemchr-3a40f50ac19c9d2e.rlib \
+  --mount=from=out-3a40f50ac19c9d2e,dst=/target/release/deps/libmemchr-3a40f50ac19c9d2e.rmeta,source=/libmemchr-3a40f50ac19c9d2e.rmeta \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=aho_corasick \
         CARGO_INCREMENTAL=0 \
@@ -719,13 +719,13 @@ RUN \
         CARGO_PKG_VERSION_PATCH=3 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --crate-name aho_corasick --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --cfg feature'="default"' --cfg feature'="perf-literal"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "logging", "perf-literal", "std"))' -C metadata'=732c2c66a3742a2c' -C extra-filename'=-a01a7f030e27d71e' --out-dir /tmp/clis-ripgrep_15-1-0/release/deps -L dependency'=/tmp/clis-ripgrep_15-1-0/release/deps' --extern memchr'=/tmp/clis-ripgrep_15-1-0/release/deps/libmemchr-3a40f50ac19c9d2e.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aho-corasick-1.1.3/src/lib.rs \
-        1>          /tmp/clis-ripgrep_15-1-0/release/deps/out-a01a7f030e27d71e-stdout \
-        2>          /tmp/clis-ripgrep_15-1-0/release/deps/out-a01a7f030e27d71e-stderr \
-        || echo $? >/tmp/clis-ripgrep_15-1-0/release/deps/out-a01a7f030e27d71e-errcode\
-  ; find /tmp/clis-ripgrep_15-1-0/release/deps/*-a01a7f030e27d71e* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      rustc --crate-name aho_corasick --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --cfg feature'="default"' --cfg feature'="perf-literal"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "logging", "perf-literal", "std"))' -C metadata'=732c2c66a3742a2c' -C extra-filename'=-a01a7f030e27d71e' --out-dir /target/release/deps -L dependency'=/target/release/deps' --extern memchr'=/target/release/deps/libmemchr-3a40f50ac19c9d2e.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aho-corasick-1.1.3/src/lib.rs \
+        1>          /target/release/deps/out-a01a7f030e27d71e-stdout \
+        2>          /target/release/deps/out-a01a7f030e27d71e-stderr \
+        || echo $? >/target/release/deps/out-a01a7f030e27d71e-errcode\
+  ; find /target/release/deps/*-a01a7f030e27d71e* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-a01a7f030e27d71e
-COPY --link --from=dep-n-aho-corasick-1.1.3-a01a7f030e27d71e /tmp/clis-ripgrep_15-1-0/release/deps/*-a01a7f030e27d71e* /
+COPY --link --from=dep-n-aho-corasick-1.1.3-a01a7f030e27d71e /target/release/deps/*-a01a7f030e27d71e* /
 
 ## this = "a01a7f030e27d71e"
 ## deps = ["3a40f50ac19c9d2e"]
@@ -735,13 +735,13 @@ COPY --link --from=dep-n-aho-corasick-1.1.3-a01a7f030e27d71e /tmp/clis-ripgrep_1
 ##     "libaho_corasick-a01a7f030e27d71e.rmeta",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/deps/aho_corasick-a01a7f030e27d71e.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/aho_corasick-a01a7f030e27d71e.d","emit":"dep-info"}',
 ##     '{"$message_type":"diagnostic","message":"associated constant `BITS` is never used","code":{"code":"dead_code","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aho-corasick-1.1.3/src/packed/vector.rs","byte_start":1353,"byte_end":1359,"line_start":28,"line_end":28,"column_start":18,"column_end":24,"is_primary":false,"text":[{"text":"pub(crate) trait Vector:","highlight_start":18,"highlight_end":24}],"label":"associated constant in this trait","suggested_replacement":null,"suggestion_applicability":null,"expansion":null},{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aho-corasick-1.1.3/src/packed/vector.rs","byte_start":1475,"byte_end":1479,"line_start":32,"line_end":32,"column_start":11,"column_end":15,"is_primary":true,"text":[{"text":"    const BITS: usize;","highlight_start":11,"highlight_end":15}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"`#[warn(dead_code)]` on by default","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: associated constant `BITS` is never used\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aho-corasick-1.1.3/src/packed/vector.rs:32:11\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m28\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0mpub(crate) trait Vector:\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m------\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12massociated constant in this trait\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m...\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m32\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    const BITS: usize;\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m           \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: `#[warn(dead_code)]` on by default\u001b[0m\n\n"}',
 ##     '''{"$message_type":"diagnostic","message":"hiding a lifetime that's elided elsewhere is confusing","code":{"code":"mismatched_lifetime_syntaxes","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aho-corasick-1.1.3/src/automaton.rs","byte_start":43421,"byte_end":43430,"line_start":1117,"line_end":1117,"column_start":13,"column_end":22,"is_primary":true,"text":[{"text":"    fn next(&mut self) -> Option<std::io::Result<StreamChunk>> {","highlight_start":13,"highlight_end":22}],"label":"the lifetime is elided here","suggested_replacement":null,"suggestion_applicability":null,"expansion":null},{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aho-corasick-1.1.3/src/automaton.rs","byte_start":43458,"byte_end":43469,"line_start":1117,"line_end":1117,"column_start":50,"column_end":61,"is_primary":false,"text":[{"text":"    fn next(&mut self) -> Option<std::io::Result<StreamChunk>> {","highlight_start":50,"highlight_end":61}],"label":"the same lifetime is hidden here","suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"the same lifetime is referred to in inconsistent ways, making the signature confusing","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"`#[warn(mismatched_lifetime_syntaxes)]` on by default","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"use `'_` for type paths","code":null,"level":"help","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aho-corasick-1.1.3/src/automaton.rs","byte_start":43469,"byte_end":43469,"line_start":1117,"line_end":1117,"column_start":61,"column_end":61,"is_primary":true,"text":[{"text":"    fn next(&mut self) -> Option<std::io::Result<StreamChunk>> {","highlight_start":61,"highlight_end":61}],"label":null,"suggested_replacement":"<'_>","suggestion_applicability":"MaybeIncorrect","expansion":null}],"children":[],"rendered":null},{"message":"consistently use `'_`","code":null,"level":"help","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aho-corasick-1.1.3/src/automaton.rs","byte_start":43422,"byte_end":43422,"line_start":1117,"line_end":1117,"column_start":14,"column_end":14,"is_primary":true,"text":[{"text":"    fn next(&mut self) -> Option<std::io::Result<StreamChunk>> {","highlight_start":14,"highlight_end":14}],"label":null,"suggested_replacement":"'_ ","suggestion_applicability":"MaybeIncorrect","expansion":null},{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aho-corasick-1.1.3/src/automaton.rs","byte_start":43469,"byte_end":43469,"line_start":1117,"line_end":1117,"column_start":61,"column_end":61,"is_primary":true,"text":[{"text":"    fn next(&mut self) -> Option<std::io::Result<StreamChunk>> {","highlight_start":61,"highlight_end":61}],"label":null,"suggested_replacement":"<'_>","suggestion_applicability":"MaybeIncorrect","expansion":null}],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: hiding a lifetime that's elided elsewhere is confusing\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aho-corasick-1.1.3/src/automaton.rs:1117:13\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m1117\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    fn next(&mut self) -> Option<std::io::Result<StreamChunk>> {\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m             \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^\u001b[0m\u001b[0m                            \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m-----------\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12mthe same lifetime is hidden here\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m             \u001b[0m\u001b[0m\u001b[1m\u001b[33m|\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m             \u001b[0m\u001b[0m\u001b[1m\u001b[33mthe lifetime is elided here\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: the same lifetime is referred to in inconsistent ways, making the signature confusing\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: `#[warn(mismatched_lifetime_syntaxes)]` on by default\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;14mhelp\u001b[0m\u001b[0m: use `'_` for type paths\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m1117\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m| \u001b[0m\u001b[0m    fn next(&mut self) -> Option<std::io::Result<StreamChunk\u001b[0m\u001b[0m\u001b[38;5;10m<'_>\u001b[0m\u001b[0m>> {\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                                             \u001b[0m\u001b[0m\u001b[38;5;10m++++\u001b[0m\n\n"}''',
 ##     '''{"$message_type":"diagnostic","message":"hiding a lifetime that's elided elsewhere is confusing","code":{"code":"mismatched_lifetime_syntaxes","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aho-corasick-1.1.3/src/util/alphabet.rs","byte_start":3146,"byte_end":3151,"line_start":85,"line_end":85,"column_start":28,"column_end":33,"is_primary":true,"text":[{"text":"    pub(crate) fn elements(&self, class: u8) -> ByteClassElements {","highlight_start":28,"highlight_end":33}],"label":"the lifetime is elided here","suggested_replacement":null,"suggestion_applicability":null,"expansion":null},{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aho-corasick-1.1.3/src/util/alphabet.rs","byte_start":3167,"byte_end":3184,"line_start":85,"line_end":85,"column_start":49,"column_end":66,"is_primary":false,"text":[{"text":"    pub(crate) fn elements(&self, class: u8) -> ByteClassElements {","highlight_start":49,"highlight_end":66}],"label":"the same lifetime is hidden here","suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"the same lifetime is referred to in inconsistent ways, making the signature confusing","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"use `'_` for type paths","code":null,"level":"help","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aho-corasick-1.1.3/src/util/alphabet.rs","byte_start":3184,"byte_end":3184,"line_start":85,"line_end":85,"column_start":66,"column_end":66,"is_primary":true,"text":[{"text":"    pub(crate) fn elements(&self, class: u8) -> ByteClassElements {","highlight_start":66,"highlight_end":66}],"label":null,"suggested_replacement":"<'_>","suggestion_applicability":"MaybeIncorrect","expansion":null}],"children":[],"rendered":null},{"message":"consistently use `'_`","code":null,"level":"help","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aho-corasick-1.1.3/src/util/alphabet.rs","byte_start":3147,"byte_end":3147,"line_start":85,"line_end":85,"column_start":29,"column_end":29,"is_primary":true,"text":[{"text":"    pub(crate) fn elements(&self, class: u8) -> ByteClassElements {","highlight_start":29,"highlight_end":29}],"label":null,"suggested_replacement":"'_ ","suggestion_applicability":"MaybeIncorrect","expansion":null},{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aho-corasick-1.1.3/src/util/alphabet.rs","byte_start":3184,"byte_end":3184,"line_start":85,"line_end":85,"column_start":66,"column_end":66,"is_primary":true,"text":[{"text":"    pub(crate) fn elements(&self, class: u8) -> ByteClassElements {","highlight_start":66,"highlight_end":66}],"label":null,"suggested_replacement":"<'_>","suggestion_applicability":"MaybeIncorrect","expansion":null}],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: hiding a lifetime that's elided elsewhere is confusing\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aho-corasick-1.1.3/src/util/alphabet.rs:85:28\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m85\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    pub(crate) fn elements(&self, class: u8) -> ByteClassElements {\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                            \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^\u001b[0m\u001b[0m                \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m-----------------\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12mthe same lifetime is hidden here\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                            \u001b[0m\u001b[0m\u001b[1m\u001b[33m|\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                            \u001b[0m\u001b[0m\u001b[1m\u001b[33mthe lifetime is elided here\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: the same lifetime is referred to in inconsistent ways, making the signature confusing\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;14mhelp\u001b[0m\u001b[0m: use `'_` for type paths\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m85\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m| \u001b[0m\u001b[0m    pub(crate) fn elements(&self, class: u8) -> ByteClassElements\u001b[0m\u001b[0m\u001b[38;5;10m<'_>\u001b[0m\u001b[0m {\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                                                  \u001b[0m\u001b[0m\u001b[38;5;10m++++\u001b[0m\n\n"}''',
 ##     '''{"$message_type":"diagnostic","message":"hiding a lifetime that's elided elsewhere is confusing","code":{"code":"mismatched_lifetime_syntaxes","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aho-corasick-1.1.3/src/util/alphabet.rs","byte_start":3495,"byte_end":3500,"line_start":93,"line_end":93,"column_start":23,"column_end":28,"is_primary":true,"text":[{"text":"    fn element_ranges(&self, class: u8) -> ByteClassElementRanges {","highlight_start":23,"highlight_end":28}],"label":"the lifetime is elided here","suggested_replacement":null,"suggestion_applicability":null,"expansion":null},{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aho-corasick-1.1.3/src/util/alphabet.rs","byte_start":3516,"byte_end":3538,"line_start":93,"line_end":93,"column_start":44,"column_end":66,"is_primary":false,"text":[{"text":"    fn element_ranges(&self, class: u8) -> ByteClassElementRanges {","highlight_start":44,"highlight_end":66}],"label":"the same lifetime is hidden here","suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"the same lifetime is referred to in inconsistent ways, making the signature confusing","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"use `'_` for type paths","code":null,"level":"help","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aho-corasick-1.1.3/src/util/alphabet.rs","byte_start":3538,"byte_end":3538,"line_start":93,"line_end":93,"column_start":66,"column_end":66,"is_primary":true,"text":[{"text":"    fn element_ranges(&self, class: u8) -> ByteClassElementRanges {","highlight_start":66,"highlight_end":66}],"label":null,"suggested_replacement":"<'_>","suggestion_applicability":"MaybeIncorrect","expansion":null}],"children":[],"rendered":null},{"message":"consistently use `'_`","code":null,"level":"help","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aho-corasick-1.1.3/src/util/alphabet.rs","byte_start":3496,"byte_end":3496,"line_start":93,"line_end":93,"column_start":24,"column_end":24,"is_primary":true,"text":[{"text":"    fn element_ranges(&self, class: u8) -> ByteClassElementRanges {","highlight_start":24,"highlight_end":24}],"label":null,"suggested_replacement":"'_ ","suggestion_applicability":"MaybeIncorrect","expansion":null},{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aho-corasick-1.1.3/src/util/alphabet.rs","byte_start":3538,"byte_end":3538,"line_start":93,"line_end":93,"column_start":66,"column_end":66,"is_primary":true,"text":[{"text":"    fn element_ranges(&self, class: u8) -> ByteClassElementRanges {","highlight_start":66,"highlight_end":66}],"label":null,"suggested_replacement":"<'_>","suggestion_applicability":"MaybeIncorrect","expansion":null}],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: hiding a lifetime that's elided elsewhere is confusing\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aho-corasick-1.1.3/src/util/alphabet.rs:93:23\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m93\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    fn element_ranges(&self, class: u8) -> ByteClassElementRanges {\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                       \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^\u001b[0m\u001b[0m                \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m----------------------\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12mthe same lifetime is hidden here\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                       \u001b[0m\u001b[0m\u001b[1m\u001b[33m|\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                       \u001b[0m\u001b[0m\u001b[1m\u001b[33mthe lifetime is elided here\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: the same lifetime is referred to in inconsistent ways, making the signature confusing\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;14mhelp\u001b[0m\u001b[0m: use `'_` for type paths\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m93\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m| \u001b[0m\u001b[0m    fn element_ranges(&self, class: u8) -> ByteClassElementRanges\u001b[0m\u001b[0m\u001b[38;5;10m<'_>\u001b[0m\u001b[0m {\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                                                  \u001b[0m\u001b[0m\u001b[38;5;10m++++\u001b[0m\n\n"}''',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/deps/libaho_corasick-a01a7f030e27d71e.rmeta","emit":"metadata"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/deps/libaho_corasick-a01a7f030e27d71e.rlib","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libaho_corasick-a01a7f030e27d71e.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libaho_corasick-a01a7f030e27d71e.rlib","emit":"link"}',
 ##     '{"$message_type":"diagnostic","message":"4 warnings emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 4 warnings emitted\u001b[0m\n\n"}',
 ## ]
 ##
@@ -775,11 +775,11 @@ COPY --link --from=dep-n-aho-corasick-1.1.3-a01a7f030e27d71e /tmp/clis-ripgrep_1
 ## script = '''
 ## FROM rust-base AS dep-n-aho-corasick-1.1.3-a01a7f030e27d71e
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-ripgrep_15-1-0/release/deps
+## WORKDIR /target/release/deps
 ## RUN \
 ##   --mount=from=cratesio-aho-corasick-1.1.3,source=/aho-corasick-1.1.3,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aho-corasick-1.1.3 \
-##   --mount=from=out-3a40f50ac19c9d2e,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libmemchr-3a40f50ac19c9d2e.rlib,source=/libmemchr-3a40f50ac19c9d2e.rlib \
-##   --mount=from=out-3a40f50ac19c9d2e,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libmemchr-3a40f50ac19c9d2e.rmeta,source=/libmemchr-3a40f50ac19c9d2e.rmeta \
+##   --mount=from=out-3a40f50ac19c9d2e,dst=/target/release/deps/libmemchr-3a40f50ac19c9d2e.rlib,source=/libmemchr-3a40f50ac19c9d2e.rlib \
+##   --mount=from=out-3a40f50ac19c9d2e,dst=/target/release/deps/libmemchr-3a40f50ac19c9d2e.rmeta,source=/libmemchr-3a40f50ac19c9d2e.rmeta \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=aho_corasick \
 ##         CARGO_INCREMENTAL=0 \
@@ -800,11 +800,11 @@ COPY --link --from=dep-n-aho-corasick-1.1.3-a01a7f030e27d71e /tmp/clis-ripgrep_1
 ##         CARGO_PKG_VERSION_PATCH=3 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name aho_corasick --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --cfg feature'="default"' --cfg feature'="perf-literal"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "logging", "perf-literal", "std"))' -C metadata'=732c2c66a3742a2c' -C extra-filename'=-a01a7f030e27d71e' --out-dir /tmp/clis-ripgrep_15-1-0/release/deps -L dependency'=/tmp/clis-ripgrep_15-1-0/release/deps' --extern memchr'=/tmp/clis-ripgrep_15-1-0/release/deps/libmemchr-3a40f50ac19c9d2e.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aho-corasick-1.1.3/src/lib.rs \
-##         1>          /tmp/clis-ripgrep_15-1-0/release/deps/out-a01a7f030e27d71e-stdout \
-##         2>          /tmp/clis-ripgrep_15-1-0/release/deps/out-a01a7f030e27d71e-stderr \
-##         || echo $? >/tmp/clis-ripgrep_15-1-0/release/deps/out-a01a7f030e27d71e-errcode\
-##   ; find /tmp/clis-ripgrep_15-1-0/release/deps/*-a01a7f030e27d71e* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name aho_corasick --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --cfg feature'="default"' --cfg feature'="perf-literal"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "logging", "perf-literal", "std"))' -C metadata'=732c2c66a3742a2c' -C extra-filename'=-a01a7f030e27d71e' --out-dir /target/release/deps -L dependency'=/target/release/deps' --extern memchr'=/target/release/deps/libmemchr-3a40f50ac19c9d2e.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/aho-corasick-1.1.3/src/lib.rs \
+##         1>          /target/release/deps/out-a01a7f030e27d71e-stdout \
+##         2>          /target/release/deps/out-a01a7f030e27d71e-stderr \
+##         || echo $? >/target/release/deps/out-a01a7f030e27d71e-errcode\
+##   ; find /target/release/deps/*-a01a7f030e27d71e* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -812,14 +812,14 @@ COPY --link --from=dep-n-aho-corasick-1.1.3-a01a7f030e27d71e /tmp/clis-ripgrep_1
 ## stage = "out-a01a7f030e27d71e"
 ## script = """
 ## FROM scratch AS out-a01a7f030e27d71e
-## COPY --link --from=dep-n-aho-corasick-1.1.3-a01a7f030e27d71e /tmp/clis-ripgrep_15-1-0/release/deps/*-a01a7f030e27d71e* /"""
+## COPY --link --from=dep-n-aho-corasick-1.1.3-a01a7f030e27d71e /target/release/deps/*-a01a7f030e27d71e* /"""
 
 FROM scratch AS cratesio-regex-syntax-0.8.8
 ADD --chmod=0664 --unpack --checksum=sha256:7a2d987857b319362043e95f5353c0535c1f58eec5336fdfcf626430af7def58 \
   https://static.crates.io/crates/regex-syntax/regex-syntax-0.8.8.crate /
 FROM rust-base AS dep-n-regex-syntax-0.8.8-34711e95edd06069
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-ripgrep_15-1-0/release/deps
+WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-regex-syntax-0.8.8,source=/regex-syntax-0.8.8,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/regex-syntax-0.8.8 \
     env CARGO="$(which cargo)" \
@@ -842,13 +842,13 @@ RUN \
         CARGO_PKG_VERSION_PATCH=8 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --crate-name regex_syntax --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --allow unexpected_cfgs --check-cfg cfg'(docsrs_regex)' --cfg feature'="default"' --cfg feature'="std"' --cfg feature'="unicode"' --cfg feature'="unicode-age"' --cfg feature'="unicode-bool"' --cfg feature'="unicode-case"' --cfg feature'="unicode-gencat"' --cfg feature'="unicode-perl"' --cfg feature'="unicode-script"' --cfg feature'="unicode-segment"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("arbitrary", "default", "std", "unicode", "unicode-age", "unicode-bool", "unicode-case", "unicode-gencat", "unicode-perl", "unicode-script", "unicode-segment"))' -C metadata'=9eed780e692ed2df' -C extra-filename'=-34711e95edd06069' --out-dir /tmp/clis-ripgrep_15-1-0/release/deps -L dependency'=/tmp/clis-ripgrep_15-1-0/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/regex-syntax-0.8.8/src/lib.rs \
-        1>          /tmp/clis-ripgrep_15-1-0/release/deps/out-34711e95edd06069-stdout \
-        2>          /tmp/clis-ripgrep_15-1-0/release/deps/out-34711e95edd06069-stderr \
-        || echo $? >/tmp/clis-ripgrep_15-1-0/release/deps/out-34711e95edd06069-errcode\
-  ; find /tmp/clis-ripgrep_15-1-0/release/deps/*-34711e95edd06069* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      rustc --crate-name regex_syntax --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --allow unexpected_cfgs --check-cfg cfg'(docsrs_regex)' --cfg feature'="default"' --cfg feature'="std"' --cfg feature'="unicode"' --cfg feature'="unicode-age"' --cfg feature'="unicode-bool"' --cfg feature'="unicode-case"' --cfg feature'="unicode-gencat"' --cfg feature'="unicode-perl"' --cfg feature'="unicode-script"' --cfg feature'="unicode-segment"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("arbitrary", "default", "std", "unicode", "unicode-age", "unicode-bool", "unicode-case", "unicode-gencat", "unicode-perl", "unicode-script", "unicode-segment"))' -C metadata'=9eed780e692ed2df' -C extra-filename'=-34711e95edd06069' --out-dir /target/release/deps -L dependency'=/target/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/regex-syntax-0.8.8/src/lib.rs \
+        1>          /target/release/deps/out-34711e95edd06069-stdout \
+        2>          /target/release/deps/out-34711e95edd06069-stderr \
+        || echo $? >/target/release/deps/out-34711e95edd06069-errcode\
+  ; find /target/release/deps/*-34711e95edd06069* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-34711e95edd06069
-COPY --link --from=dep-n-regex-syntax-0.8.8-34711e95edd06069 /tmp/clis-ripgrep_15-1-0/release/deps/*-34711e95edd06069* /
+COPY --link --from=dep-n-regex-syntax-0.8.8-34711e95edd06069 /target/release/deps/*-34711e95edd06069* /
 
 ## this = "34711e95edd06069"
 ## writes = [
@@ -857,9 +857,9 @@ COPY --link --from=dep-n-regex-syntax-0.8.8-34711e95edd06069 /tmp/clis-ripgrep_1
 ##     "regex_syntax-34711e95edd06069.d",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/deps/regex_syntax-34711e95edd06069.d","emit":"dep-info"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/deps/libregex_syntax-34711e95edd06069.rmeta","emit":"metadata"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/deps/libregex_syntax-34711e95edd06069.rlib","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/regex_syntax-34711e95edd06069.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libregex_syntax-34711e95edd06069.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libregex_syntax-34711e95edd06069.rlib","emit":"link"}',
 ## ]
 ##
 ## [[stages]]
@@ -884,7 +884,7 @@ COPY --link --from=dep-n-regex-syntax-0.8.8-34711e95edd06069 /tmp/clis-ripgrep_1
 ## script = '''
 ## FROM rust-base AS dep-n-regex-syntax-0.8.8-34711e95edd06069
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-ripgrep_15-1-0/release/deps
+## WORKDIR /target/release/deps
 ## RUN \
 ##   --mount=from=cratesio-regex-syntax-0.8.8,source=/regex-syntax-0.8.8,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/regex-syntax-0.8.8 \
 ##     env CARGO="$(which cargo)" \
@@ -907,11 +907,11 @@ COPY --link --from=dep-n-regex-syntax-0.8.8-34711e95edd06069 /tmp/clis-ripgrep_1
 ##         CARGO_PKG_VERSION_PATCH=8 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name regex_syntax --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --allow unexpected_cfgs --check-cfg cfg'(docsrs_regex)' --cfg feature'="default"' --cfg feature'="std"' --cfg feature'="unicode"' --cfg feature'="unicode-age"' --cfg feature'="unicode-bool"' --cfg feature'="unicode-case"' --cfg feature'="unicode-gencat"' --cfg feature'="unicode-perl"' --cfg feature'="unicode-script"' --cfg feature'="unicode-segment"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("arbitrary", "default", "std", "unicode", "unicode-age", "unicode-bool", "unicode-case", "unicode-gencat", "unicode-perl", "unicode-script", "unicode-segment"))' -C metadata'=9eed780e692ed2df' -C extra-filename'=-34711e95edd06069' --out-dir /tmp/clis-ripgrep_15-1-0/release/deps -L dependency'=/tmp/clis-ripgrep_15-1-0/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/regex-syntax-0.8.8/src/lib.rs \
-##         1>          /tmp/clis-ripgrep_15-1-0/release/deps/out-34711e95edd06069-stdout \
-##         2>          /tmp/clis-ripgrep_15-1-0/release/deps/out-34711e95edd06069-stderr \
-##         || echo $? >/tmp/clis-ripgrep_15-1-0/release/deps/out-34711e95edd06069-errcode\
-##   ; find /tmp/clis-ripgrep_15-1-0/release/deps/*-34711e95edd06069* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name regex_syntax --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --allow unexpected_cfgs --check-cfg cfg'(docsrs_regex)' --cfg feature'="default"' --cfg feature'="std"' --cfg feature'="unicode"' --cfg feature'="unicode-age"' --cfg feature'="unicode-bool"' --cfg feature'="unicode-case"' --cfg feature'="unicode-gencat"' --cfg feature'="unicode-perl"' --cfg feature'="unicode-script"' --cfg feature'="unicode-segment"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("arbitrary", "default", "std", "unicode", "unicode-age", "unicode-bool", "unicode-case", "unicode-gencat", "unicode-perl", "unicode-script", "unicode-segment"))' -C metadata'=9eed780e692ed2df' -C extra-filename'=-34711e95edd06069' --out-dir /target/release/deps -L dependency'=/target/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/regex-syntax-0.8.8/src/lib.rs \
+##         1>          /target/release/deps/out-34711e95edd06069-stdout \
+##         2>          /target/release/deps/out-34711e95edd06069-stderr \
+##         || echo $? >/target/release/deps/out-34711e95edd06069-errcode\
+##   ; find /target/release/deps/*-34711e95edd06069* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -919,22 +919,22 @@ COPY --link --from=dep-n-regex-syntax-0.8.8-34711e95edd06069 /tmp/clis-ripgrep_1
 ## stage = "out-34711e95edd06069"
 ## script = """
 ## FROM scratch AS out-34711e95edd06069
-## COPY --link --from=dep-n-regex-syntax-0.8.8-34711e95edd06069 /tmp/clis-ripgrep_15-1-0/release/deps/*-34711e95edd06069* /"""
+## COPY --link --from=dep-n-regex-syntax-0.8.8-34711e95edd06069 /target/release/deps/*-34711e95edd06069* /"""
 
 FROM scratch AS cratesio-regex-automata-0.4.13
 ADD --chmod=0664 --unpack --checksum=sha256:5276caf25ac86c8d810222b3dbb938e512c55c6831a10f3e6ed1c93b84041f1c \
   https://static.crates.io/crates/regex-automata/regex-automata-0.4.13.crate /
 FROM rust-base AS dep-n-regex-automata-0.4.13-e22c3e2bd8aa6773
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-ripgrep_15-1-0/release/deps
+WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-regex-automata-0.4.13,source=/regex-automata-0.4.13,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/regex-automata-0.4.13 \
-  --mount=from=out-a01a7f030e27d71e,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libaho_corasick-a01a7f030e27d71e.rlib,source=/libaho_corasick-a01a7f030e27d71e.rlib \
-  --mount=from=out-a01a7f030e27d71e,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libaho_corasick-a01a7f030e27d71e.rmeta,source=/libaho_corasick-a01a7f030e27d71e.rmeta \
-  --mount=from=out-3a40f50ac19c9d2e,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libmemchr-3a40f50ac19c9d2e.rlib,source=/libmemchr-3a40f50ac19c9d2e.rlib \
-  --mount=from=out-3a40f50ac19c9d2e,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libmemchr-3a40f50ac19c9d2e.rmeta,source=/libmemchr-3a40f50ac19c9d2e.rmeta \
-  --mount=from=out-34711e95edd06069,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libregex_syntax-34711e95edd06069.rlib,source=/libregex_syntax-34711e95edd06069.rlib \
-  --mount=from=out-34711e95edd06069,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libregex_syntax-34711e95edd06069.rmeta,source=/libregex_syntax-34711e95edd06069.rmeta \
+  --mount=from=out-a01a7f030e27d71e,dst=/target/release/deps/libaho_corasick-a01a7f030e27d71e.rlib,source=/libaho_corasick-a01a7f030e27d71e.rlib \
+  --mount=from=out-a01a7f030e27d71e,dst=/target/release/deps/libaho_corasick-a01a7f030e27d71e.rmeta,source=/libaho_corasick-a01a7f030e27d71e.rmeta \
+  --mount=from=out-3a40f50ac19c9d2e,dst=/target/release/deps/libmemchr-3a40f50ac19c9d2e.rlib,source=/libmemchr-3a40f50ac19c9d2e.rlib \
+  --mount=from=out-3a40f50ac19c9d2e,dst=/target/release/deps/libmemchr-3a40f50ac19c9d2e.rmeta,source=/libmemchr-3a40f50ac19c9d2e.rmeta \
+  --mount=from=out-34711e95edd06069,dst=/target/release/deps/libregex_syntax-34711e95edd06069.rlib,source=/libregex_syntax-34711e95edd06069.rlib \
+  --mount=from=out-34711e95edd06069,dst=/target/release/deps/libregex_syntax-34711e95edd06069.rmeta,source=/libregex_syntax-34711e95edd06069.rmeta \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=regex_automata \
         CARGO_INCREMENTAL=0 \
@@ -955,13 +955,13 @@ RUN \
         CARGO_PKG_VERSION_PATCH=13 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --crate-name regex_automata --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --allow unexpected_cfgs --check-cfg cfg'(docsrs_regex)' --cfg feature'="alloc"' --cfg feature'="default"' --cfg feature'="dfa"' --cfg feature'="dfa-build"' --cfg feature'="dfa-onepass"' --cfg feature'="dfa-search"' --cfg feature'="hybrid"' --cfg feature'="meta"' --cfg feature'="nfa"' --cfg feature'="nfa-backtrack"' --cfg feature'="nfa-pikevm"' --cfg feature'="nfa-thompson"' --cfg feature'="perf"' --cfg feature'="perf-inline"' --cfg feature'="perf-literal"' --cfg feature'="perf-literal-multisubstring"' --cfg feature'="perf-literal-substring"' --cfg feature'="std"' --cfg feature'="syntax"' --cfg feature'="unicode"' --cfg feature'="unicode-age"' --cfg feature'="unicode-bool"' --cfg feature'="unicode-case"' --cfg feature'="unicode-gencat"' --cfg feature'="unicode-perl"' --cfg feature'="unicode-script"' --cfg feature'="unicode-segment"' --cfg feature'="unicode-word-boundary"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "dfa", "dfa-build", "dfa-onepass", "dfa-search", "hybrid", "internal-instrument", "internal-instrument-pikevm", "logging", "meta", "nfa", "nfa-backtrack", "nfa-pikevm", "nfa-thompson", "perf", "perf-inline", "perf-literal", "perf-literal-multisubstring", "perf-literal-substring", "std", "syntax", "unicode", "unicode-age", "unicode-bool", "unicode-case", "unicode-gencat", "unicode-perl", "unicode-script", "unicode-segment", "unicode-word-boundary"))' -C metadata'=9e46bcacf71338ad' -C extra-filename'=-e22c3e2bd8aa6773' --out-dir /tmp/clis-ripgrep_15-1-0/release/deps -L dependency'=/tmp/clis-ripgrep_15-1-0/release/deps' --extern aho_corasick'=/tmp/clis-ripgrep_15-1-0/release/deps/libaho_corasick-a01a7f030e27d71e.rmeta' --extern memchr'=/tmp/clis-ripgrep_15-1-0/release/deps/libmemchr-3a40f50ac19c9d2e.rmeta' --extern regex_syntax'=/tmp/clis-ripgrep_15-1-0/release/deps/libregex_syntax-34711e95edd06069.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/regex-automata-0.4.13/src/lib.rs \
-        1>          /tmp/clis-ripgrep_15-1-0/release/deps/out-e22c3e2bd8aa6773-stdout \
-        2>          /tmp/clis-ripgrep_15-1-0/release/deps/out-e22c3e2bd8aa6773-stderr \
-        || echo $? >/tmp/clis-ripgrep_15-1-0/release/deps/out-e22c3e2bd8aa6773-errcode\
-  ; find /tmp/clis-ripgrep_15-1-0/release/deps/*-e22c3e2bd8aa6773* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      rustc --crate-name regex_automata --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --allow unexpected_cfgs --check-cfg cfg'(docsrs_regex)' --cfg feature'="alloc"' --cfg feature'="default"' --cfg feature'="dfa"' --cfg feature'="dfa-build"' --cfg feature'="dfa-onepass"' --cfg feature'="dfa-search"' --cfg feature'="hybrid"' --cfg feature'="meta"' --cfg feature'="nfa"' --cfg feature'="nfa-backtrack"' --cfg feature'="nfa-pikevm"' --cfg feature'="nfa-thompson"' --cfg feature'="perf"' --cfg feature'="perf-inline"' --cfg feature'="perf-literal"' --cfg feature'="perf-literal-multisubstring"' --cfg feature'="perf-literal-substring"' --cfg feature'="std"' --cfg feature'="syntax"' --cfg feature'="unicode"' --cfg feature'="unicode-age"' --cfg feature'="unicode-bool"' --cfg feature'="unicode-case"' --cfg feature'="unicode-gencat"' --cfg feature'="unicode-perl"' --cfg feature'="unicode-script"' --cfg feature'="unicode-segment"' --cfg feature'="unicode-word-boundary"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "dfa", "dfa-build", "dfa-onepass", "dfa-search", "hybrid", "internal-instrument", "internal-instrument-pikevm", "logging", "meta", "nfa", "nfa-backtrack", "nfa-pikevm", "nfa-thompson", "perf", "perf-inline", "perf-literal", "perf-literal-multisubstring", "perf-literal-substring", "std", "syntax", "unicode", "unicode-age", "unicode-bool", "unicode-case", "unicode-gencat", "unicode-perl", "unicode-script", "unicode-segment", "unicode-word-boundary"))' -C metadata'=9e46bcacf71338ad' -C extra-filename'=-e22c3e2bd8aa6773' --out-dir /target/release/deps -L dependency'=/target/release/deps' --extern aho_corasick'=/target/release/deps/libaho_corasick-a01a7f030e27d71e.rmeta' --extern memchr'=/target/release/deps/libmemchr-3a40f50ac19c9d2e.rmeta' --extern regex_syntax'=/target/release/deps/libregex_syntax-34711e95edd06069.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/regex-automata-0.4.13/src/lib.rs \
+        1>          /target/release/deps/out-e22c3e2bd8aa6773-stdout \
+        2>          /target/release/deps/out-e22c3e2bd8aa6773-stderr \
+        || echo $? >/target/release/deps/out-e22c3e2bd8aa6773-errcode\
+  ; find /target/release/deps/*-e22c3e2bd8aa6773* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-e22c3e2bd8aa6773
-COPY --link --from=dep-n-regex-automata-0.4.13-e22c3e2bd8aa6773 /tmp/clis-ripgrep_15-1-0/release/deps/*-e22c3e2bd8aa6773* /
+COPY --link --from=dep-n-regex-automata-0.4.13-e22c3e2bd8aa6773 /target/release/deps/*-e22c3e2bd8aa6773* /
 
 ## this = "e22c3e2bd8aa6773"
 ## deps = [
@@ -975,9 +975,9 @@ COPY --link --from=dep-n-regex-automata-0.4.13-e22c3e2bd8aa6773 /tmp/clis-ripgre
 ##     "regex_automata-e22c3e2bd8aa6773.d",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/deps/regex_automata-e22c3e2bd8aa6773.d","emit":"dep-info"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/deps/libregex_automata-e22c3e2bd8aa6773.rmeta","emit":"metadata"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/deps/libregex_automata-e22c3e2bd8aa6773.rlib","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/regex_automata-e22c3e2bd8aa6773.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libregex_automata-e22c3e2bd8aa6773.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libregex_automata-e22c3e2bd8aa6773.rlib","emit":"link"}',
 ## ]
 ##
 ## [[externs]]
@@ -1026,15 +1026,15 @@ COPY --link --from=dep-n-regex-automata-0.4.13-e22c3e2bd8aa6773 /tmp/clis-ripgre
 ## script = '''
 ## FROM rust-base AS dep-n-regex-automata-0.4.13-e22c3e2bd8aa6773
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-ripgrep_15-1-0/release/deps
+## WORKDIR /target/release/deps
 ## RUN \
 ##   --mount=from=cratesio-regex-automata-0.4.13,source=/regex-automata-0.4.13,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/regex-automata-0.4.13 \
-##   --mount=from=out-a01a7f030e27d71e,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libaho_corasick-a01a7f030e27d71e.rlib,source=/libaho_corasick-a01a7f030e27d71e.rlib \
-##   --mount=from=out-a01a7f030e27d71e,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libaho_corasick-a01a7f030e27d71e.rmeta,source=/libaho_corasick-a01a7f030e27d71e.rmeta \
-##   --mount=from=out-3a40f50ac19c9d2e,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libmemchr-3a40f50ac19c9d2e.rlib,source=/libmemchr-3a40f50ac19c9d2e.rlib \
-##   --mount=from=out-3a40f50ac19c9d2e,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libmemchr-3a40f50ac19c9d2e.rmeta,source=/libmemchr-3a40f50ac19c9d2e.rmeta \
-##   --mount=from=out-34711e95edd06069,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libregex_syntax-34711e95edd06069.rlib,source=/libregex_syntax-34711e95edd06069.rlib \
-##   --mount=from=out-34711e95edd06069,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libregex_syntax-34711e95edd06069.rmeta,source=/libregex_syntax-34711e95edd06069.rmeta \
+##   --mount=from=out-a01a7f030e27d71e,dst=/target/release/deps/libaho_corasick-a01a7f030e27d71e.rlib,source=/libaho_corasick-a01a7f030e27d71e.rlib \
+##   --mount=from=out-a01a7f030e27d71e,dst=/target/release/deps/libaho_corasick-a01a7f030e27d71e.rmeta,source=/libaho_corasick-a01a7f030e27d71e.rmeta \
+##   --mount=from=out-3a40f50ac19c9d2e,dst=/target/release/deps/libmemchr-3a40f50ac19c9d2e.rlib,source=/libmemchr-3a40f50ac19c9d2e.rlib \
+##   --mount=from=out-3a40f50ac19c9d2e,dst=/target/release/deps/libmemchr-3a40f50ac19c9d2e.rmeta,source=/libmemchr-3a40f50ac19c9d2e.rmeta \
+##   --mount=from=out-34711e95edd06069,dst=/target/release/deps/libregex_syntax-34711e95edd06069.rlib,source=/libregex_syntax-34711e95edd06069.rlib \
+##   --mount=from=out-34711e95edd06069,dst=/target/release/deps/libregex_syntax-34711e95edd06069.rmeta,source=/libregex_syntax-34711e95edd06069.rmeta \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=regex_automata \
 ##         CARGO_INCREMENTAL=0 \
@@ -1055,11 +1055,11 @@ COPY --link --from=dep-n-regex-automata-0.4.13-e22c3e2bd8aa6773 /tmp/clis-ripgre
 ##         CARGO_PKG_VERSION_PATCH=13 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name regex_automata --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --allow unexpected_cfgs --check-cfg cfg'(docsrs_regex)' --cfg feature'="alloc"' --cfg feature'="default"' --cfg feature'="dfa"' --cfg feature'="dfa-build"' --cfg feature'="dfa-onepass"' --cfg feature'="dfa-search"' --cfg feature'="hybrid"' --cfg feature'="meta"' --cfg feature'="nfa"' --cfg feature'="nfa-backtrack"' --cfg feature'="nfa-pikevm"' --cfg feature'="nfa-thompson"' --cfg feature'="perf"' --cfg feature'="perf-inline"' --cfg feature'="perf-literal"' --cfg feature'="perf-literal-multisubstring"' --cfg feature'="perf-literal-substring"' --cfg feature'="std"' --cfg feature'="syntax"' --cfg feature'="unicode"' --cfg feature'="unicode-age"' --cfg feature'="unicode-bool"' --cfg feature'="unicode-case"' --cfg feature'="unicode-gencat"' --cfg feature'="unicode-perl"' --cfg feature'="unicode-script"' --cfg feature'="unicode-segment"' --cfg feature'="unicode-word-boundary"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "dfa", "dfa-build", "dfa-onepass", "dfa-search", "hybrid", "internal-instrument", "internal-instrument-pikevm", "logging", "meta", "nfa", "nfa-backtrack", "nfa-pikevm", "nfa-thompson", "perf", "perf-inline", "perf-literal", "perf-literal-multisubstring", "perf-literal-substring", "std", "syntax", "unicode", "unicode-age", "unicode-bool", "unicode-case", "unicode-gencat", "unicode-perl", "unicode-script", "unicode-segment", "unicode-word-boundary"))' -C metadata'=9e46bcacf71338ad' -C extra-filename'=-e22c3e2bd8aa6773' --out-dir /tmp/clis-ripgrep_15-1-0/release/deps -L dependency'=/tmp/clis-ripgrep_15-1-0/release/deps' --extern aho_corasick'=/tmp/clis-ripgrep_15-1-0/release/deps/libaho_corasick-a01a7f030e27d71e.rmeta' --extern memchr'=/tmp/clis-ripgrep_15-1-0/release/deps/libmemchr-3a40f50ac19c9d2e.rmeta' --extern regex_syntax'=/tmp/clis-ripgrep_15-1-0/release/deps/libregex_syntax-34711e95edd06069.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/regex-automata-0.4.13/src/lib.rs \
-##         1>          /tmp/clis-ripgrep_15-1-0/release/deps/out-e22c3e2bd8aa6773-stdout \
-##         2>          /tmp/clis-ripgrep_15-1-0/release/deps/out-e22c3e2bd8aa6773-stderr \
-##         || echo $? >/tmp/clis-ripgrep_15-1-0/release/deps/out-e22c3e2bd8aa6773-errcode\
-##   ; find /tmp/clis-ripgrep_15-1-0/release/deps/*-e22c3e2bd8aa6773* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name regex_automata --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --allow unexpected_cfgs --check-cfg cfg'(docsrs_regex)' --cfg feature'="alloc"' --cfg feature'="default"' --cfg feature'="dfa"' --cfg feature'="dfa-build"' --cfg feature'="dfa-onepass"' --cfg feature'="dfa-search"' --cfg feature'="hybrid"' --cfg feature'="meta"' --cfg feature'="nfa"' --cfg feature'="nfa-backtrack"' --cfg feature'="nfa-pikevm"' --cfg feature'="nfa-thompson"' --cfg feature'="perf"' --cfg feature'="perf-inline"' --cfg feature'="perf-literal"' --cfg feature'="perf-literal-multisubstring"' --cfg feature'="perf-literal-substring"' --cfg feature'="std"' --cfg feature'="syntax"' --cfg feature'="unicode"' --cfg feature'="unicode-age"' --cfg feature'="unicode-bool"' --cfg feature'="unicode-case"' --cfg feature'="unicode-gencat"' --cfg feature'="unicode-perl"' --cfg feature'="unicode-script"' --cfg feature'="unicode-segment"' --cfg feature'="unicode-word-boundary"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "dfa", "dfa-build", "dfa-onepass", "dfa-search", "hybrid", "internal-instrument", "internal-instrument-pikevm", "logging", "meta", "nfa", "nfa-backtrack", "nfa-pikevm", "nfa-thompson", "perf", "perf-inline", "perf-literal", "perf-literal-multisubstring", "perf-literal-substring", "std", "syntax", "unicode", "unicode-age", "unicode-bool", "unicode-case", "unicode-gencat", "unicode-perl", "unicode-script", "unicode-segment", "unicode-word-boundary"))' -C metadata'=9e46bcacf71338ad' -C extra-filename'=-e22c3e2bd8aa6773' --out-dir /target/release/deps -L dependency'=/target/release/deps' --extern aho_corasick'=/target/release/deps/libaho_corasick-a01a7f030e27d71e.rmeta' --extern memchr'=/target/release/deps/libmemchr-3a40f50ac19c9d2e.rmeta' --extern regex_syntax'=/target/release/deps/libregex_syntax-34711e95edd06069.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/regex-automata-0.4.13/src/lib.rs \
+##         1>          /target/release/deps/out-e22c3e2bd8aa6773-stdout \
+##         2>          /target/release/deps/out-e22c3e2bd8aa6773-stderr \
+##         || echo $? >/target/release/deps/out-e22c3e2bd8aa6773-errcode\
+##   ; find /target/release/deps/*-e22c3e2bd8aa6773* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -1067,24 +1067,24 @@ COPY --link --from=dep-n-regex-automata-0.4.13-e22c3e2bd8aa6773 /tmp/clis-ripgre
 ## stage = "out-e22c3e2bd8aa6773"
 ## script = """
 ## FROM scratch AS out-e22c3e2bd8aa6773
-## COPY --link --from=dep-n-regex-automata-0.4.13-e22c3e2bd8aa6773 /tmp/clis-ripgrep_15-1-0/release/deps/*-e22c3e2bd8aa6773* /"""
+## COPY --link --from=dep-n-regex-automata-0.4.13-e22c3e2bd8aa6773 /target/release/deps/*-e22c3e2bd8aa6773* /"""
 
 FROM scratch AS cratesio-bstr-1.12.0
 ADD --chmod=0664 --unpack --checksum=sha256:234113d19d0d7d613b40e86fb654acf958910802bcceab913a4f9e7cda03b1a4 \
   https://static.crates.io/crates/bstr/bstr-1.12.0.crate /
 FROM rust-base AS dep-n-bstr-1.12.0-d3eea57fb24a933f
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-ripgrep_15-1-0/release/deps
+WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-bstr-1.12.0,source=/bstr-1.12.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bstr-1.12.0 \
-  --mount=from=out-3a40f50ac19c9d2e,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libmemchr-3a40f50ac19c9d2e.rlib,source=/libmemchr-3a40f50ac19c9d2e.rlib \
-  --mount=from=out-3a40f50ac19c9d2e,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libmemchr-3a40f50ac19c9d2e.rmeta,source=/libmemchr-3a40f50ac19c9d2e.rmeta \
-  --mount=from=out-e22c3e2bd8aa6773,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libregex_automata-e22c3e2bd8aa6773.rlib,source=/libregex_automata-e22c3e2bd8aa6773.rlib \
-  --mount=from=out-e22c3e2bd8aa6773,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libregex_automata-e22c3e2bd8aa6773.rmeta,source=/libregex_automata-e22c3e2bd8aa6773.rmeta \
-  --mount=from=out-a01a7f030e27d71e,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libaho_corasick-a01a7f030e27d71e.rlib,source=/libaho_corasick-a01a7f030e27d71e.rlib \
-  --mount=from=out-a01a7f030e27d71e,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libaho_corasick-a01a7f030e27d71e.rmeta,source=/libaho_corasick-a01a7f030e27d71e.rmeta \
-  --mount=from=out-34711e95edd06069,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libregex_syntax-34711e95edd06069.rlib,source=/libregex_syntax-34711e95edd06069.rlib \
-  --mount=from=out-34711e95edd06069,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libregex_syntax-34711e95edd06069.rmeta,source=/libregex_syntax-34711e95edd06069.rmeta \
+  --mount=from=out-3a40f50ac19c9d2e,dst=/target/release/deps/libmemchr-3a40f50ac19c9d2e.rlib,source=/libmemchr-3a40f50ac19c9d2e.rlib \
+  --mount=from=out-3a40f50ac19c9d2e,dst=/target/release/deps/libmemchr-3a40f50ac19c9d2e.rmeta,source=/libmemchr-3a40f50ac19c9d2e.rmeta \
+  --mount=from=out-e22c3e2bd8aa6773,dst=/target/release/deps/libregex_automata-e22c3e2bd8aa6773.rlib,source=/libregex_automata-e22c3e2bd8aa6773.rlib \
+  --mount=from=out-e22c3e2bd8aa6773,dst=/target/release/deps/libregex_automata-e22c3e2bd8aa6773.rmeta,source=/libregex_automata-e22c3e2bd8aa6773.rmeta \
+  --mount=from=out-a01a7f030e27d71e,dst=/target/release/deps/libaho_corasick-a01a7f030e27d71e.rlib,source=/libaho_corasick-a01a7f030e27d71e.rlib \
+  --mount=from=out-a01a7f030e27d71e,dst=/target/release/deps/libaho_corasick-a01a7f030e27d71e.rmeta,source=/libaho_corasick-a01a7f030e27d71e.rmeta \
+  --mount=from=out-34711e95edd06069,dst=/target/release/deps/libregex_syntax-34711e95edd06069.rlib,source=/libregex_syntax-34711e95edd06069.rlib \
+  --mount=from=out-34711e95edd06069,dst=/target/release/deps/libregex_syntax-34711e95edd06069.rmeta,source=/libregex_syntax-34711e95edd06069.rmeta \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=bstr \
         CARGO_INCREMENTAL=0 \
@@ -1105,13 +1105,13 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --crate-name bstr --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --cfg feature'="alloc"' --cfg feature'="default"' --cfg feature'="std"' --cfg feature'="unicode"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "serde", "std", "unicode"))' -C metadata'=a5705748271aaa5d' -C extra-filename'=-d3eea57fb24a933f' --out-dir /tmp/clis-ripgrep_15-1-0/release/deps -L dependency'=/tmp/clis-ripgrep_15-1-0/release/deps' --extern memchr'=/tmp/clis-ripgrep_15-1-0/release/deps/libmemchr-3a40f50ac19c9d2e.rmeta' --extern regex_automata'=/tmp/clis-ripgrep_15-1-0/release/deps/libregex_automata-e22c3e2bd8aa6773.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bstr-1.12.0/src/lib.rs \
-        1>          /tmp/clis-ripgrep_15-1-0/release/deps/out-d3eea57fb24a933f-stdout \
-        2>          /tmp/clis-ripgrep_15-1-0/release/deps/out-d3eea57fb24a933f-stderr \
-        || echo $? >/tmp/clis-ripgrep_15-1-0/release/deps/out-d3eea57fb24a933f-errcode\
-  ; find /tmp/clis-ripgrep_15-1-0/release/deps/*-d3eea57fb24a933f* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      rustc --crate-name bstr --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --cfg feature'="alloc"' --cfg feature'="default"' --cfg feature'="std"' --cfg feature'="unicode"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "serde", "std", "unicode"))' -C metadata'=a5705748271aaa5d' -C extra-filename'=-d3eea57fb24a933f' --out-dir /target/release/deps -L dependency'=/target/release/deps' --extern memchr'=/target/release/deps/libmemchr-3a40f50ac19c9d2e.rmeta' --extern regex_automata'=/target/release/deps/libregex_automata-e22c3e2bd8aa6773.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bstr-1.12.0/src/lib.rs \
+        1>          /target/release/deps/out-d3eea57fb24a933f-stdout \
+        2>          /target/release/deps/out-d3eea57fb24a933f-stderr \
+        || echo $? >/target/release/deps/out-d3eea57fb24a933f-errcode\
+  ; find /target/release/deps/*-d3eea57fb24a933f* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-d3eea57fb24a933f
-COPY --link --from=dep-n-bstr-1.12.0-d3eea57fb24a933f /tmp/clis-ripgrep_15-1-0/release/deps/*-d3eea57fb24a933f* /
+COPY --link --from=dep-n-bstr-1.12.0-d3eea57fb24a933f /target/release/deps/*-d3eea57fb24a933f* /
 
 ## this = "d3eea57fb24a933f"
 ## deps = [
@@ -1126,9 +1126,9 @@ COPY --link --from=dep-n-bstr-1.12.0-d3eea57fb24a933f /tmp/clis-ripgrep_15-1-0/r
 ##     "libbstr-d3eea57fb24a933f.rmeta",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/deps/bstr-d3eea57fb24a933f.d","emit":"dep-info"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/deps/libbstr-d3eea57fb24a933f.rmeta","emit":"metadata"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/deps/libbstr-d3eea57fb24a933f.rlib","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/bstr-d3eea57fb24a933f.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libbstr-d3eea57fb24a933f.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libbstr-d3eea57fb24a933f.rlib","emit":"link"}',
 ## ]
 ##
 ## [[externs]]
@@ -1185,17 +1185,17 @@ COPY --link --from=dep-n-bstr-1.12.0-d3eea57fb24a933f /tmp/clis-ripgrep_15-1-0/r
 ## script = '''
 ## FROM rust-base AS dep-n-bstr-1.12.0-d3eea57fb24a933f
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-ripgrep_15-1-0/release/deps
+## WORKDIR /target/release/deps
 ## RUN \
 ##   --mount=from=cratesio-bstr-1.12.0,source=/bstr-1.12.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bstr-1.12.0 \
-##   --mount=from=out-3a40f50ac19c9d2e,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libmemchr-3a40f50ac19c9d2e.rlib,source=/libmemchr-3a40f50ac19c9d2e.rlib \
-##   --mount=from=out-3a40f50ac19c9d2e,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libmemchr-3a40f50ac19c9d2e.rmeta,source=/libmemchr-3a40f50ac19c9d2e.rmeta \
-##   --mount=from=out-e22c3e2bd8aa6773,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libregex_automata-e22c3e2bd8aa6773.rlib,source=/libregex_automata-e22c3e2bd8aa6773.rlib \
-##   --mount=from=out-e22c3e2bd8aa6773,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libregex_automata-e22c3e2bd8aa6773.rmeta,source=/libregex_automata-e22c3e2bd8aa6773.rmeta \
-##   --mount=from=out-a01a7f030e27d71e,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libaho_corasick-a01a7f030e27d71e.rlib,source=/libaho_corasick-a01a7f030e27d71e.rlib \
-##   --mount=from=out-a01a7f030e27d71e,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libaho_corasick-a01a7f030e27d71e.rmeta,source=/libaho_corasick-a01a7f030e27d71e.rmeta \
-##   --mount=from=out-34711e95edd06069,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libregex_syntax-34711e95edd06069.rlib,source=/libregex_syntax-34711e95edd06069.rlib \
-##   --mount=from=out-34711e95edd06069,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libregex_syntax-34711e95edd06069.rmeta,source=/libregex_syntax-34711e95edd06069.rmeta \
+##   --mount=from=out-3a40f50ac19c9d2e,dst=/target/release/deps/libmemchr-3a40f50ac19c9d2e.rlib,source=/libmemchr-3a40f50ac19c9d2e.rlib \
+##   --mount=from=out-3a40f50ac19c9d2e,dst=/target/release/deps/libmemchr-3a40f50ac19c9d2e.rmeta,source=/libmemchr-3a40f50ac19c9d2e.rmeta \
+##   --mount=from=out-e22c3e2bd8aa6773,dst=/target/release/deps/libregex_automata-e22c3e2bd8aa6773.rlib,source=/libregex_automata-e22c3e2bd8aa6773.rlib \
+##   --mount=from=out-e22c3e2bd8aa6773,dst=/target/release/deps/libregex_automata-e22c3e2bd8aa6773.rmeta,source=/libregex_automata-e22c3e2bd8aa6773.rmeta \
+##   --mount=from=out-a01a7f030e27d71e,dst=/target/release/deps/libaho_corasick-a01a7f030e27d71e.rlib,source=/libaho_corasick-a01a7f030e27d71e.rlib \
+##   --mount=from=out-a01a7f030e27d71e,dst=/target/release/deps/libaho_corasick-a01a7f030e27d71e.rmeta,source=/libaho_corasick-a01a7f030e27d71e.rmeta \
+##   --mount=from=out-34711e95edd06069,dst=/target/release/deps/libregex_syntax-34711e95edd06069.rlib,source=/libregex_syntax-34711e95edd06069.rlib \
+##   --mount=from=out-34711e95edd06069,dst=/target/release/deps/libregex_syntax-34711e95edd06069.rmeta,source=/libregex_syntax-34711e95edd06069.rmeta \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=bstr \
 ##         CARGO_INCREMENTAL=0 \
@@ -1216,11 +1216,11 @@ COPY --link --from=dep-n-bstr-1.12.0-d3eea57fb24a933f /tmp/clis-ripgrep_15-1-0/r
 ##         CARGO_PKG_VERSION_PATCH=0 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name bstr --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --cfg feature'="alloc"' --cfg feature'="default"' --cfg feature'="std"' --cfg feature'="unicode"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "serde", "std", "unicode"))' -C metadata'=a5705748271aaa5d' -C extra-filename'=-d3eea57fb24a933f' --out-dir /tmp/clis-ripgrep_15-1-0/release/deps -L dependency'=/tmp/clis-ripgrep_15-1-0/release/deps' --extern memchr'=/tmp/clis-ripgrep_15-1-0/release/deps/libmemchr-3a40f50ac19c9d2e.rmeta' --extern regex_automata'=/tmp/clis-ripgrep_15-1-0/release/deps/libregex_automata-e22c3e2bd8aa6773.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bstr-1.12.0/src/lib.rs \
-##         1>          /tmp/clis-ripgrep_15-1-0/release/deps/out-d3eea57fb24a933f-stdout \
-##         2>          /tmp/clis-ripgrep_15-1-0/release/deps/out-d3eea57fb24a933f-stderr \
-##         || echo $? >/tmp/clis-ripgrep_15-1-0/release/deps/out-d3eea57fb24a933f-errcode\
-##   ; find /tmp/clis-ripgrep_15-1-0/release/deps/*-d3eea57fb24a933f* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name bstr --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --cfg feature'="alloc"' --cfg feature'="default"' --cfg feature'="std"' --cfg feature'="unicode"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "serde", "std", "unicode"))' -C metadata'=a5705748271aaa5d' -C extra-filename'=-d3eea57fb24a933f' --out-dir /target/release/deps -L dependency'=/target/release/deps' --extern memchr'=/target/release/deps/libmemchr-3a40f50ac19c9d2e.rmeta' --extern regex_automata'=/target/release/deps/libregex_automata-e22c3e2bd8aa6773.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bstr-1.12.0/src/lib.rs \
+##         1>          /target/release/deps/out-d3eea57fb24a933f-stdout \
+##         2>          /target/release/deps/out-d3eea57fb24a933f-stderr \
+##         || echo $? >/target/release/deps/out-d3eea57fb24a933f-errcode\
+##   ; find /target/release/deps/*-d3eea57fb24a933f* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -1228,14 +1228,14 @@ COPY --link --from=dep-n-bstr-1.12.0-d3eea57fb24a933f /tmp/clis-ripgrep_15-1-0/r
 ## stage = "out-d3eea57fb24a933f"
 ## script = """
 ## FROM scratch AS out-d3eea57fb24a933f
-## COPY --link --from=dep-n-bstr-1.12.0-d3eea57fb24a933f /tmp/clis-ripgrep_15-1-0/release/deps/*-d3eea57fb24a933f* /"""
+## COPY --link --from=dep-n-bstr-1.12.0-d3eea57fb24a933f /target/release/deps/*-d3eea57fb24a933f* /"""
 
 FROM scratch AS cratesio-log-0.4.28
 ADD --chmod=0664 --unpack --checksum=sha256:34080505efa8e45a4b816c349525ebe327ceaa8559756f0356cba97ef3bf7432 \
   https://static.crates.io/crates/log/log-0.4.28.crate /
 FROM rust-base AS dep-n-log-0.4.28-961aebfc4598d968
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-ripgrep_15-1-0/release/deps
+WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-log-0.4.28,source=/log-0.4.28,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/log-0.4.28 \
     env CARGO="$(which cargo)" \
@@ -1259,13 +1259,13 @@ RUN \
         CARGO_PKG_VERSION_PATCH=28 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --crate-name log --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("kv", "kv_serde", "kv_std", "kv_sval", "kv_unstable", "kv_unstable_serde", "kv_unstable_std", "kv_unstable_sval", "max_level_debug", "max_level_error", "max_level_info", "max_level_off", "max_level_trace", "max_level_warn", "release_max_level_debug", "release_max_level_error", "release_max_level_info", "release_max_level_off", "release_max_level_trace", "release_max_level_warn", "serde", "std", "sval", "sval_ref", "value-bag"))' -C metadata'=4e207e3dd928442f' -C extra-filename'=-961aebfc4598d968' --out-dir /tmp/clis-ripgrep_15-1-0/release/deps -L dependency'=/tmp/clis-ripgrep_15-1-0/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/log-0.4.28/src/lib.rs \
-        1>          /tmp/clis-ripgrep_15-1-0/release/deps/out-961aebfc4598d968-stdout \
-        2>          /tmp/clis-ripgrep_15-1-0/release/deps/out-961aebfc4598d968-stderr \
-        || echo $? >/tmp/clis-ripgrep_15-1-0/release/deps/out-961aebfc4598d968-errcode\
-  ; find /tmp/clis-ripgrep_15-1-0/release/deps/*-961aebfc4598d968* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      rustc --crate-name log --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("kv", "kv_serde", "kv_std", "kv_sval", "kv_unstable", "kv_unstable_serde", "kv_unstable_std", "kv_unstable_sval", "max_level_debug", "max_level_error", "max_level_info", "max_level_off", "max_level_trace", "max_level_warn", "release_max_level_debug", "release_max_level_error", "release_max_level_info", "release_max_level_off", "release_max_level_trace", "release_max_level_warn", "serde", "std", "sval", "sval_ref", "value-bag"))' -C metadata'=4e207e3dd928442f' -C extra-filename'=-961aebfc4598d968' --out-dir /target/release/deps -L dependency'=/target/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/log-0.4.28/src/lib.rs \
+        1>          /target/release/deps/out-961aebfc4598d968-stdout \
+        2>          /target/release/deps/out-961aebfc4598d968-stderr \
+        || echo $? >/target/release/deps/out-961aebfc4598d968-errcode\
+  ; find /target/release/deps/*-961aebfc4598d968* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-961aebfc4598d968
-COPY --link --from=dep-n-log-0.4.28-961aebfc4598d968 /tmp/clis-ripgrep_15-1-0/release/deps/*-961aebfc4598d968* /
+COPY --link --from=dep-n-log-0.4.28-961aebfc4598d968 /target/release/deps/*-961aebfc4598d968* /
 
 ## this = "961aebfc4598d968"
 ## writes = [
@@ -1274,9 +1274,9 @@ COPY --link --from=dep-n-log-0.4.28-961aebfc4598d968 /tmp/clis-ripgrep_15-1-0/re
 ##     "log-961aebfc4598d968.d",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/deps/log-961aebfc4598d968.d","emit":"dep-info"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/deps/liblog-961aebfc4598d968.rmeta","emit":"metadata"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/deps/liblog-961aebfc4598d968.rlib","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/log-961aebfc4598d968.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/liblog-961aebfc4598d968.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/liblog-961aebfc4598d968.rlib","emit":"link"}',
 ## ]
 ##
 ## [[stages]]
@@ -1301,7 +1301,7 @@ COPY --link --from=dep-n-log-0.4.28-961aebfc4598d968 /tmp/clis-ripgrep_15-1-0/re
 ## script = '''
 ## FROM rust-base AS dep-n-log-0.4.28-961aebfc4598d968
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-ripgrep_15-1-0/release/deps
+## WORKDIR /target/release/deps
 ## RUN \
 ##   --mount=from=cratesio-log-0.4.28,source=/log-0.4.28,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/log-0.4.28 \
 ##     env CARGO="$(which cargo)" \
@@ -1325,11 +1325,11 @@ COPY --link --from=dep-n-log-0.4.28-961aebfc4598d968 /tmp/clis-ripgrep_15-1-0/re
 ##         CARGO_PKG_VERSION_PATCH=28 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name log --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("kv", "kv_serde", "kv_std", "kv_sval", "kv_unstable", "kv_unstable_serde", "kv_unstable_std", "kv_unstable_sval", "max_level_debug", "max_level_error", "max_level_info", "max_level_off", "max_level_trace", "max_level_warn", "release_max_level_debug", "release_max_level_error", "release_max_level_info", "release_max_level_off", "release_max_level_trace", "release_max_level_warn", "serde", "std", "sval", "sval_ref", "value-bag"))' -C metadata'=4e207e3dd928442f' -C extra-filename'=-961aebfc4598d968' --out-dir /tmp/clis-ripgrep_15-1-0/release/deps -L dependency'=/tmp/clis-ripgrep_15-1-0/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/log-0.4.28/src/lib.rs \
-##         1>          /tmp/clis-ripgrep_15-1-0/release/deps/out-961aebfc4598d968-stdout \
-##         2>          /tmp/clis-ripgrep_15-1-0/release/deps/out-961aebfc4598d968-stderr \
-##         || echo $? >/tmp/clis-ripgrep_15-1-0/release/deps/out-961aebfc4598d968-errcode\
-##   ; find /tmp/clis-ripgrep_15-1-0/release/deps/*-961aebfc4598d968* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name log --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("kv", "kv_serde", "kv_std", "kv_sval", "kv_unstable", "kv_unstable_serde", "kv_unstable_std", "kv_unstable_sval", "max_level_debug", "max_level_error", "max_level_info", "max_level_off", "max_level_trace", "max_level_warn", "release_max_level_debug", "release_max_level_error", "release_max_level_info", "release_max_level_off", "release_max_level_trace", "release_max_level_warn", "serde", "std", "sval", "sval_ref", "value-bag"))' -C metadata'=4e207e3dd928442f' -C extra-filename'=-961aebfc4598d968' --out-dir /target/release/deps -L dependency'=/target/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/log-0.4.28/src/lib.rs \
+##         1>          /target/release/deps/out-961aebfc4598d968-stdout \
+##         2>          /target/release/deps/out-961aebfc4598d968-stderr \
+##         || echo $? >/target/release/deps/out-961aebfc4598d968-errcode\
+##   ; find /target/release/deps/*-961aebfc4598d968* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -1337,28 +1337,28 @@ COPY --link --from=dep-n-log-0.4.28-961aebfc4598d968 /tmp/clis-ripgrep_15-1-0/re
 ## stage = "out-961aebfc4598d968"
 ## script = """
 ## FROM scratch AS out-961aebfc4598d968
-## COPY --link --from=dep-n-log-0.4.28-961aebfc4598d968 /tmp/clis-ripgrep_15-1-0/release/deps/*-961aebfc4598d968* /"""
+## COPY --link --from=dep-n-log-0.4.28-961aebfc4598d968 /target/release/deps/*-961aebfc4598d968* /"""
 
 FROM scratch AS cratesio-globset-0.4.18
 ADD --chmod=0664 --unpack --checksum=sha256:52dfc19153a48bde0cbd630453615c8151bce3a5adfac7a0aebfbf0a1e1f57e3 \
   https://static.crates.io/crates/globset/globset-0.4.18.crate /
 FROM rust-base AS dep-n-globset-0.4.18-626b3cb378b61839
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-ripgrep_15-1-0/release/deps
+WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-globset-0.4.18,source=/globset-0.4.18,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/globset-0.4.18 \
-  --mount=from=out-a01a7f030e27d71e,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libaho_corasick-a01a7f030e27d71e.rlib,source=/libaho_corasick-a01a7f030e27d71e.rlib \
-  --mount=from=out-a01a7f030e27d71e,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libaho_corasick-a01a7f030e27d71e.rmeta,source=/libaho_corasick-a01a7f030e27d71e.rmeta \
-  --mount=from=out-3a40f50ac19c9d2e,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libmemchr-3a40f50ac19c9d2e.rlib,source=/libmemchr-3a40f50ac19c9d2e.rlib \
-  --mount=from=out-3a40f50ac19c9d2e,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libmemchr-3a40f50ac19c9d2e.rmeta,source=/libmemchr-3a40f50ac19c9d2e.rmeta \
-  --mount=from=out-d3eea57fb24a933f,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libbstr-d3eea57fb24a933f.rlib,source=/libbstr-d3eea57fb24a933f.rlib \
-  --mount=from=out-d3eea57fb24a933f,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libbstr-d3eea57fb24a933f.rmeta,source=/libbstr-d3eea57fb24a933f.rmeta \
-  --mount=from=out-e22c3e2bd8aa6773,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libregex_automata-e22c3e2bd8aa6773.rlib,source=/libregex_automata-e22c3e2bd8aa6773.rlib \
-  --mount=from=out-e22c3e2bd8aa6773,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libregex_automata-e22c3e2bd8aa6773.rmeta,source=/libregex_automata-e22c3e2bd8aa6773.rmeta \
-  --mount=from=out-34711e95edd06069,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libregex_syntax-34711e95edd06069.rlib,source=/libregex_syntax-34711e95edd06069.rlib \
-  --mount=from=out-34711e95edd06069,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libregex_syntax-34711e95edd06069.rmeta,source=/libregex_syntax-34711e95edd06069.rmeta \
-  --mount=from=out-961aebfc4598d968,dst=/tmp/clis-ripgrep_15-1-0/release/deps/liblog-961aebfc4598d968.rlib,source=/liblog-961aebfc4598d968.rlib \
-  --mount=from=out-961aebfc4598d968,dst=/tmp/clis-ripgrep_15-1-0/release/deps/liblog-961aebfc4598d968.rmeta,source=/liblog-961aebfc4598d968.rmeta \
+  --mount=from=out-a01a7f030e27d71e,dst=/target/release/deps/libaho_corasick-a01a7f030e27d71e.rlib,source=/libaho_corasick-a01a7f030e27d71e.rlib \
+  --mount=from=out-a01a7f030e27d71e,dst=/target/release/deps/libaho_corasick-a01a7f030e27d71e.rmeta,source=/libaho_corasick-a01a7f030e27d71e.rmeta \
+  --mount=from=out-3a40f50ac19c9d2e,dst=/target/release/deps/libmemchr-3a40f50ac19c9d2e.rlib,source=/libmemchr-3a40f50ac19c9d2e.rlib \
+  --mount=from=out-3a40f50ac19c9d2e,dst=/target/release/deps/libmemchr-3a40f50ac19c9d2e.rmeta,source=/libmemchr-3a40f50ac19c9d2e.rmeta \
+  --mount=from=out-d3eea57fb24a933f,dst=/target/release/deps/libbstr-d3eea57fb24a933f.rlib,source=/libbstr-d3eea57fb24a933f.rlib \
+  --mount=from=out-d3eea57fb24a933f,dst=/target/release/deps/libbstr-d3eea57fb24a933f.rmeta,source=/libbstr-d3eea57fb24a933f.rmeta \
+  --mount=from=out-e22c3e2bd8aa6773,dst=/target/release/deps/libregex_automata-e22c3e2bd8aa6773.rlib,source=/libregex_automata-e22c3e2bd8aa6773.rlib \
+  --mount=from=out-e22c3e2bd8aa6773,dst=/target/release/deps/libregex_automata-e22c3e2bd8aa6773.rmeta,source=/libregex_automata-e22c3e2bd8aa6773.rmeta \
+  --mount=from=out-34711e95edd06069,dst=/target/release/deps/libregex_syntax-34711e95edd06069.rlib,source=/libregex_syntax-34711e95edd06069.rlib \
+  --mount=from=out-34711e95edd06069,dst=/target/release/deps/libregex_syntax-34711e95edd06069.rmeta,source=/libregex_syntax-34711e95edd06069.rmeta \
+  --mount=from=out-961aebfc4598d968,dst=/target/release/deps/liblog-961aebfc4598d968.rlib,source=/liblog-961aebfc4598d968.rlib \
+  --mount=from=out-961aebfc4598d968,dst=/target/release/deps/liblog-961aebfc4598d968.rmeta,source=/liblog-961aebfc4598d968.rmeta \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=globset \
         CARGO_INCREMENTAL=0 \
@@ -1382,13 +1382,13 @@ simultaneously, and returning all of the globs that matched.\
         CARGO_PKG_VERSION_PATCH=18 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --crate-name globset --edition 2024 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --cfg feature'="default"' --cfg feature'="log"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("arbitrary", "default", "log", "serde", "serde1", "simd-accel"))' -C metadata'=acf1ac0fa0f388d4' -C extra-filename'=-626b3cb378b61839' --out-dir /tmp/clis-ripgrep_15-1-0/release/deps -L dependency'=/tmp/clis-ripgrep_15-1-0/release/deps' --extern aho_corasick'=/tmp/clis-ripgrep_15-1-0/release/deps/libaho_corasick-a01a7f030e27d71e.rmeta' --extern bstr'=/tmp/clis-ripgrep_15-1-0/release/deps/libbstr-d3eea57fb24a933f.rmeta' --extern log'=/tmp/clis-ripgrep_15-1-0/release/deps/liblog-961aebfc4598d968.rmeta' --extern regex_automata'=/tmp/clis-ripgrep_15-1-0/release/deps/libregex_automata-e22c3e2bd8aa6773.rmeta' --extern regex_syntax'=/tmp/clis-ripgrep_15-1-0/release/deps/libregex_syntax-34711e95edd06069.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/globset-0.4.18/src/lib.rs \
-        1>          /tmp/clis-ripgrep_15-1-0/release/deps/out-626b3cb378b61839-stdout \
-        2>          /tmp/clis-ripgrep_15-1-0/release/deps/out-626b3cb378b61839-stderr \
-        || echo $? >/tmp/clis-ripgrep_15-1-0/release/deps/out-626b3cb378b61839-errcode\
-  ; find /tmp/clis-ripgrep_15-1-0/release/deps/*-626b3cb378b61839* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      rustc --crate-name globset --edition 2024 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --cfg feature'="default"' --cfg feature'="log"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("arbitrary", "default", "log", "serde", "serde1", "simd-accel"))' -C metadata'=acf1ac0fa0f388d4' -C extra-filename'=-626b3cb378b61839' --out-dir /target/release/deps -L dependency'=/target/release/deps' --extern aho_corasick'=/target/release/deps/libaho_corasick-a01a7f030e27d71e.rmeta' --extern bstr'=/target/release/deps/libbstr-d3eea57fb24a933f.rmeta' --extern log'=/target/release/deps/liblog-961aebfc4598d968.rmeta' --extern regex_automata'=/target/release/deps/libregex_automata-e22c3e2bd8aa6773.rmeta' --extern regex_syntax'=/target/release/deps/libregex_syntax-34711e95edd06069.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/globset-0.4.18/src/lib.rs \
+        1>          /target/release/deps/out-626b3cb378b61839-stdout \
+        2>          /target/release/deps/out-626b3cb378b61839-stderr \
+        || echo $? >/target/release/deps/out-626b3cb378b61839-errcode\
+  ; find /target/release/deps/*-626b3cb378b61839* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-626b3cb378b61839
-COPY --link --from=dep-n-globset-0.4.18-626b3cb378b61839 /tmp/clis-ripgrep_15-1-0/release/deps/*-626b3cb378b61839* /
+COPY --link --from=dep-n-globset-0.4.18-626b3cb378b61839 /target/release/deps/*-626b3cb378b61839* /
 
 ## this = "626b3cb378b61839"
 ## deps = [
@@ -1405,9 +1405,9 @@ COPY --link --from=dep-n-globset-0.4.18-626b3cb378b61839 /tmp/clis-ripgrep_15-1-
 ##     "libglobset-626b3cb378b61839.rmeta",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/deps/globset-626b3cb378b61839.d","emit":"dep-info"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/deps/libglobset-626b3cb378b61839.rmeta","emit":"metadata"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/deps/libglobset-626b3cb378b61839.rlib","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/globset-626b3cb378b61839.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libglobset-626b3cb378b61839.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libglobset-626b3cb378b61839.rlib","emit":"link"}',
 ## ]
 ##
 ## [[externs]]
@@ -1480,21 +1480,21 @@ COPY --link --from=dep-n-globset-0.4.18-626b3cb378b61839 /tmp/clis-ripgrep_15-1-
 ## script = '''
 ## FROM rust-base AS dep-n-globset-0.4.18-626b3cb378b61839
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-ripgrep_15-1-0/release/deps
+## WORKDIR /target/release/deps
 ## RUN \
 ##   --mount=from=cratesio-globset-0.4.18,source=/globset-0.4.18,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/globset-0.4.18 \
-##   --mount=from=out-a01a7f030e27d71e,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libaho_corasick-a01a7f030e27d71e.rlib,source=/libaho_corasick-a01a7f030e27d71e.rlib \
-##   --mount=from=out-a01a7f030e27d71e,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libaho_corasick-a01a7f030e27d71e.rmeta,source=/libaho_corasick-a01a7f030e27d71e.rmeta \
-##   --mount=from=out-3a40f50ac19c9d2e,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libmemchr-3a40f50ac19c9d2e.rlib,source=/libmemchr-3a40f50ac19c9d2e.rlib \
-##   --mount=from=out-3a40f50ac19c9d2e,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libmemchr-3a40f50ac19c9d2e.rmeta,source=/libmemchr-3a40f50ac19c9d2e.rmeta \
-##   --mount=from=out-d3eea57fb24a933f,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libbstr-d3eea57fb24a933f.rlib,source=/libbstr-d3eea57fb24a933f.rlib \
-##   --mount=from=out-d3eea57fb24a933f,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libbstr-d3eea57fb24a933f.rmeta,source=/libbstr-d3eea57fb24a933f.rmeta \
-##   --mount=from=out-e22c3e2bd8aa6773,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libregex_automata-e22c3e2bd8aa6773.rlib,source=/libregex_automata-e22c3e2bd8aa6773.rlib \
-##   --mount=from=out-e22c3e2bd8aa6773,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libregex_automata-e22c3e2bd8aa6773.rmeta,source=/libregex_automata-e22c3e2bd8aa6773.rmeta \
-##   --mount=from=out-34711e95edd06069,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libregex_syntax-34711e95edd06069.rlib,source=/libregex_syntax-34711e95edd06069.rlib \
-##   --mount=from=out-34711e95edd06069,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libregex_syntax-34711e95edd06069.rmeta,source=/libregex_syntax-34711e95edd06069.rmeta \
-##   --mount=from=out-961aebfc4598d968,dst=/tmp/clis-ripgrep_15-1-0/release/deps/liblog-961aebfc4598d968.rlib,source=/liblog-961aebfc4598d968.rlib \
-##   --mount=from=out-961aebfc4598d968,dst=/tmp/clis-ripgrep_15-1-0/release/deps/liblog-961aebfc4598d968.rmeta,source=/liblog-961aebfc4598d968.rmeta \
+##   --mount=from=out-a01a7f030e27d71e,dst=/target/release/deps/libaho_corasick-a01a7f030e27d71e.rlib,source=/libaho_corasick-a01a7f030e27d71e.rlib \
+##   --mount=from=out-a01a7f030e27d71e,dst=/target/release/deps/libaho_corasick-a01a7f030e27d71e.rmeta,source=/libaho_corasick-a01a7f030e27d71e.rmeta \
+##   --mount=from=out-3a40f50ac19c9d2e,dst=/target/release/deps/libmemchr-3a40f50ac19c9d2e.rlib,source=/libmemchr-3a40f50ac19c9d2e.rlib \
+##   --mount=from=out-3a40f50ac19c9d2e,dst=/target/release/deps/libmemchr-3a40f50ac19c9d2e.rmeta,source=/libmemchr-3a40f50ac19c9d2e.rmeta \
+##   --mount=from=out-d3eea57fb24a933f,dst=/target/release/deps/libbstr-d3eea57fb24a933f.rlib,source=/libbstr-d3eea57fb24a933f.rlib \
+##   --mount=from=out-d3eea57fb24a933f,dst=/target/release/deps/libbstr-d3eea57fb24a933f.rmeta,source=/libbstr-d3eea57fb24a933f.rmeta \
+##   --mount=from=out-e22c3e2bd8aa6773,dst=/target/release/deps/libregex_automata-e22c3e2bd8aa6773.rlib,source=/libregex_automata-e22c3e2bd8aa6773.rlib \
+##   --mount=from=out-e22c3e2bd8aa6773,dst=/target/release/deps/libregex_automata-e22c3e2bd8aa6773.rmeta,source=/libregex_automata-e22c3e2bd8aa6773.rmeta \
+##   --mount=from=out-34711e95edd06069,dst=/target/release/deps/libregex_syntax-34711e95edd06069.rlib,source=/libregex_syntax-34711e95edd06069.rlib \
+##   --mount=from=out-34711e95edd06069,dst=/target/release/deps/libregex_syntax-34711e95edd06069.rmeta,source=/libregex_syntax-34711e95edd06069.rmeta \
+##   --mount=from=out-961aebfc4598d968,dst=/target/release/deps/liblog-961aebfc4598d968.rlib,source=/liblog-961aebfc4598d968.rlib \
+##   --mount=from=out-961aebfc4598d968,dst=/target/release/deps/liblog-961aebfc4598d968.rmeta,source=/liblog-961aebfc4598d968.rmeta \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=globset \
 ##         CARGO_INCREMENTAL=0 \
@@ -1518,11 +1518,11 @@ COPY --link --from=dep-n-globset-0.4.18-626b3cb378b61839 /tmp/clis-ripgrep_15-1-
 ##         CARGO_PKG_VERSION_PATCH=18 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name globset --edition 2024 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --cfg feature'="default"' --cfg feature'="log"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("arbitrary", "default", "log", "serde", "serde1", "simd-accel"))' -C metadata'=acf1ac0fa0f388d4' -C extra-filename'=-626b3cb378b61839' --out-dir /tmp/clis-ripgrep_15-1-0/release/deps -L dependency'=/tmp/clis-ripgrep_15-1-0/release/deps' --extern aho_corasick'=/tmp/clis-ripgrep_15-1-0/release/deps/libaho_corasick-a01a7f030e27d71e.rmeta' --extern bstr'=/tmp/clis-ripgrep_15-1-0/release/deps/libbstr-d3eea57fb24a933f.rmeta' --extern log'=/tmp/clis-ripgrep_15-1-0/release/deps/liblog-961aebfc4598d968.rmeta' --extern regex_automata'=/tmp/clis-ripgrep_15-1-0/release/deps/libregex_automata-e22c3e2bd8aa6773.rmeta' --extern regex_syntax'=/tmp/clis-ripgrep_15-1-0/release/deps/libregex_syntax-34711e95edd06069.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/globset-0.4.18/src/lib.rs \
-##         1>          /tmp/clis-ripgrep_15-1-0/release/deps/out-626b3cb378b61839-stdout \
-##         2>          /tmp/clis-ripgrep_15-1-0/release/deps/out-626b3cb378b61839-stderr \
-##         || echo $? >/tmp/clis-ripgrep_15-1-0/release/deps/out-626b3cb378b61839-errcode\
-##   ; find /tmp/clis-ripgrep_15-1-0/release/deps/*-626b3cb378b61839* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name globset --edition 2024 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --cfg feature'="default"' --cfg feature'="log"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("arbitrary", "default", "log", "serde", "serde1", "simd-accel"))' -C metadata'=acf1ac0fa0f388d4' -C extra-filename'=-626b3cb378b61839' --out-dir /target/release/deps -L dependency'=/target/release/deps' --extern aho_corasick'=/target/release/deps/libaho_corasick-a01a7f030e27d71e.rmeta' --extern bstr'=/target/release/deps/libbstr-d3eea57fb24a933f.rmeta' --extern log'=/target/release/deps/liblog-961aebfc4598d968.rmeta' --extern regex_automata'=/target/release/deps/libregex_automata-e22c3e2bd8aa6773.rmeta' --extern regex_syntax'=/target/release/deps/libregex_syntax-34711e95edd06069.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/globset-0.4.18/src/lib.rs \
+##         1>          /target/release/deps/out-626b3cb378b61839-stdout \
+##         2>          /target/release/deps/out-626b3cb378b61839-stderr \
+##         || echo $? >/target/release/deps/out-626b3cb378b61839-errcode\
+##   ; find /target/release/deps/*-626b3cb378b61839* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -1530,14 +1530,14 @@ COPY --link --from=dep-n-globset-0.4.18-626b3cb378b61839 /tmp/clis-ripgrep_15-1-
 ## stage = "out-626b3cb378b61839"
 ## script = """
 ## FROM scratch AS out-626b3cb378b61839
-## COPY --link --from=dep-n-globset-0.4.18-626b3cb378b61839 /tmp/clis-ripgrep_15-1-0/release/deps/*-626b3cb378b61839* /"""
+## COPY --link --from=dep-n-globset-0.4.18-626b3cb378b61839 /target/release/deps/*-626b3cb378b61839* /"""
 
 FROM scratch AS cratesio-libc-0.2.177
 ADD --chmod=0664 --unpack --checksum=sha256:2874a2af47a2325c2001a6e6fad9b16a53b802102b528163885171cf92b15976 \
   https://static.crates.io/crates/libc/libc-0.2.177.crate /
 FROM rust-base AS dep-x-libc-0.2.177-4498d6c94b422472
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-ripgrep_15-1-0/release/build/libc-4498d6c94b422472
+WORKDIR /target/release/build/libc-4498d6c94b422472
 RUN \
   --mount=from=cratesio-libc-0.2.177,source=/libc-0.2.177,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.177,rw \
     { \
@@ -1579,13 +1579,13 @@ RUN \
         CARGO_PKG_VERSION_PATCH=177 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' --allow clippy'::used_underscore_binding' --allow unused_qualifications --warn clippy'::unnecessary_semicolon' --allow clippy'::unnecessary_cast' --allow clippy'::uninlined_format_args' --warn clippy'::ptr_as_ptr' --allow clippy'::non_minimal_cfg' --allow clippy'::missing_safety_doc' --warn clippy'::map_unwrap_or' --warn clippy'::manual_assert' --allow clippy'::identity_op' --warn clippy'::explicit_iter_loop' --allow clippy'::expl_impl_clone_on_copy' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("align", "const-extern-fn", "default", "extra_traits", "rustc-dep-of-std", "rustc-std-workspace-core", "std", "use_std"))' -C metadata'=f6d41ecd17d4eac4' -C extra-filename'=-4498d6c94b422472' --out-dir /tmp/clis-ripgrep_15-1-0/release/build/libc-4498d6c94b422472 -L dependency'=/tmp/clis-ripgrep_15-1-0/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.177/build.rs \
-        1>          /tmp/clis-ripgrep_15-1-0/release/build/libc-4498d6c94b422472/out-4498d6c94b422472-stdout \
-        2>          /tmp/clis-ripgrep_15-1-0/release/build/libc-4498d6c94b422472/out-4498d6c94b422472-stderr \
-        || echo $? >/tmp/clis-ripgrep_15-1-0/release/build/libc-4498d6c94b422472/out-4498d6c94b422472-errcode\
-  ; find /tmp/clis-ripgrep_15-1-0/release/build/libc-4498d6c94b422472/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' --allow clippy'::used_underscore_binding' --allow unused_qualifications --warn clippy'::unnecessary_semicolon' --allow clippy'::unnecessary_cast' --allow clippy'::uninlined_format_args' --warn clippy'::ptr_as_ptr' --allow clippy'::non_minimal_cfg' --allow clippy'::missing_safety_doc' --warn clippy'::map_unwrap_or' --warn clippy'::manual_assert' --allow clippy'::identity_op' --warn clippy'::explicit_iter_loop' --allow clippy'::expl_impl_clone_on_copy' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("align", "const-extern-fn", "default", "extra_traits", "rustc-dep-of-std", "rustc-std-workspace-core", "std", "use_std"))' -C metadata'=f6d41ecd17d4eac4' -C extra-filename'=-4498d6c94b422472' --out-dir /target/release/build/libc-4498d6c94b422472 -L dependency'=/target/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.177/build.rs \
+        1>          /target/release/build/libc-4498d6c94b422472/out-4498d6c94b422472-stdout \
+        2>          /target/release/build/libc-4498d6c94b422472/out-4498d6c94b422472-stderr \
+        || echo $? >/target/release/build/libc-4498d6c94b422472/out-4498d6c94b422472-errcode\
+  ; find /target/release/build/libc-4498d6c94b422472/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-4498d6c94b422472
-COPY --link --from=dep-x-libc-0.2.177-4498d6c94b422472 /tmp/clis-ripgrep_15-1-0/release/build/libc-4498d6c94b422472/*-4498d6c94b422472* /
+COPY --link --from=dep-x-libc-0.2.177-4498d6c94b422472 /target/release/build/libc-4498d6c94b422472/*-4498d6c94b422472* /
 
 ## this = "4498d6c94b422472"
 ## writes = [
@@ -1593,8 +1593,8 @@ COPY --link --from=dep-x-libc-0.2.177-4498d6c94b422472 /tmp/clis-ripgrep_15-1-0/
 ##     "build_script_build-4498d6c94b422472.d",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/build/libc-4498d6c94b422472/build_script_build-4498d6c94b422472.d","emit":"dep-info"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/build/libc-4498d6c94b422472/build_script_build-4498d6c94b422472","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/build/libc-4498d6c94b422472/build_script_build-4498d6c94b422472.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/build/libc-4498d6c94b422472/build_script_build-4498d6c94b422472","emit":"link"}',
 ## ]
 ##
 ## [[stages]]
@@ -1619,7 +1619,7 @@ COPY --link --from=dep-x-libc-0.2.177-4498d6c94b422472 /tmp/clis-ripgrep_15-1-0/
 ## script = '''
 ## FROM rust-base AS dep-x-libc-0.2.177-4498d6c94b422472
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-ripgrep_15-1-0/release/build/libc-4498d6c94b422472
+## WORKDIR /target/release/build/libc-4498d6c94b422472
 ## RUN \
 ##   --mount=from=cratesio-libc-0.2.177,source=/libc-0.2.177,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.177,rw \
 ##     { \
@@ -1661,11 +1661,11 @@ COPY --link --from=dep-x-libc-0.2.177-4498d6c94b422472 /tmp/clis-ripgrep_15-1-0/
 ##         CARGO_PKG_VERSION_PATCH=177 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' --allow clippy'::used_underscore_binding' --allow unused_qualifications --warn clippy'::unnecessary_semicolon' --allow clippy'::unnecessary_cast' --allow clippy'::uninlined_format_args' --warn clippy'::ptr_as_ptr' --allow clippy'::non_minimal_cfg' --allow clippy'::missing_safety_doc' --warn clippy'::map_unwrap_or' --warn clippy'::manual_assert' --allow clippy'::identity_op' --warn clippy'::explicit_iter_loop' --allow clippy'::expl_impl_clone_on_copy' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("align", "const-extern-fn", "default", "extra_traits", "rustc-dep-of-std", "rustc-std-workspace-core", "std", "use_std"))' -C metadata'=f6d41ecd17d4eac4' -C extra-filename'=-4498d6c94b422472' --out-dir /tmp/clis-ripgrep_15-1-0/release/build/libc-4498d6c94b422472 -L dependency'=/tmp/clis-ripgrep_15-1-0/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.177/build.rs \
-##         1>          /tmp/clis-ripgrep_15-1-0/release/build/libc-4498d6c94b422472/out-4498d6c94b422472-stdout \
-##         2>          /tmp/clis-ripgrep_15-1-0/release/build/libc-4498d6c94b422472/out-4498d6c94b422472-stderr \
-##         || echo $? >/tmp/clis-ripgrep_15-1-0/release/build/libc-4498d6c94b422472/out-4498d6c94b422472-errcode\
-##   ; find /tmp/clis-ripgrep_15-1-0/release/build/libc-4498d6c94b422472/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' --allow clippy'::used_underscore_binding' --allow unused_qualifications --warn clippy'::unnecessary_semicolon' --allow clippy'::unnecessary_cast' --allow clippy'::uninlined_format_args' --warn clippy'::ptr_as_ptr' --allow clippy'::non_minimal_cfg' --allow clippy'::missing_safety_doc' --warn clippy'::map_unwrap_or' --warn clippy'::manual_assert' --allow clippy'::identity_op' --warn clippy'::explicit_iter_loop' --allow clippy'::expl_impl_clone_on_copy' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("align", "const-extern-fn", "default", "extra_traits", "rustc-dep-of-std", "rustc-std-workspace-core", "std", "use_std"))' -C metadata'=f6d41ecd17d4eac4' -C extra-filename'=-4498d6c94b422472' --out-dir /target/release/build/libc-4498d6c94b422472 -L dependency'=/target/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.177/build.rs \
+##         1>          /target/release/build/libc-4498d6c94b422472/out-4498d6c94b422472-stdout \
+##         2>          /target/release/build/libc-4498d6c94b422472/out-4498d6c94b422472-stderr \
+##         || echo $? >/target/release/build/libc-4498d6c94b422472/out-4498d6c94b422472-errcode\
+##   ; find /target/release/build/libc-4498d6c94b422472/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -1673,14 +1673,14 @@ COPY --link --from=dep-x-libc-0.2.177-4498d6c94b422472 /tmp/clis-ripgrep_15-1-0/
 ## stage = "out-4498d6c94b422472"
 ## script = """
 ## FROM scratch AS out-4498d6c94b422472
-## COPY --link --from=dep-x-libc-0.2.177-4498d6c94b422472 /tmp/clis-ripgrep_15-1-0/release/build/libc-4498d6c94b422472/*-4498d6c94b422472* /"""
+## COPY --link --from=dep-x-libc-0.2.177-4498d6c94b422472 /target/release/build/libc-4498d6c94b422472/*-4498d6c94b422472* /"""
 
 FROM rust-base AS run-z-libc-0.2.177-5e046f860ff6d720
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-ripgrep_15-1-0/release/build/libc-5e046f860ff6d720/out
+WORKDIR /target/release/build/libc-5e046f860ff6d720/out
 WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.177
 RUN \
-  --mount=from=out-4498d6c94b422472,source=/build_script_build-4498d6c94b422472,dst=/tmp/clis-ripgrep_15-1-0/release/build/libc-4498d6c94b422472/build-script-build \
+  --mount=from=out-4498d6c94b422472,source=/build_script_build-4498d6c94b422472,dst=/target/release/build/libc-4498d6c94b422472/build-script-build \
   --mount=from=cratesio-libc-0.2.177,source=/libc-0.2.177,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.177 \
     env CARGO="$(which cargo)" \
         CARGO_CFG_FEATURE=default,std \
@@ -1720,23 +1720,23 @@ RUN \
         HOST=x86_64-unknown-linux-gnu \
         NUM_JOBS=4 \
         OPT_LEVEL=3 \
-        OUT_DIR=/tmp/clis-ripgrep_15-1-0/release/build/libc-5e046f860ff6d720/out \
+        OUT_DIR=/target/release/build/libc-5e046f860ff6d720/out \
         PROFILE=release \
         RUSTC=rustc \
         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
         TARGET=x86_64-unknown-linux-gnu \
         CARGOGREEN=1 \
-      CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-ripgrep_15-1-0/release/build/libc-4498d6c94b422472/build-script-build \
-        1>          /tmp/clis-ripgrep_15-1-0/release/build/libc-5e046f860ff6d720/out/out-5e046f860ff6d720-stdout \
-        2>          /tmp/clis-ripgrep_15-1-0/release/build/libc-5e046f860ff6d720/out/out-5e046f860ff6d720-stderr \
-        || echo $? >/tmp/clis-ripgrep_15-1-0/release/build/libc-5e046f860ff6d720/out/out-5e046f860ff6d720-errcode\
-  ; find /tmp/clis-ripgrep_15-1-0/release/build/libc-5e046f860ff6d720/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      CARGOGREEN_EXECUTE_BUILDRS_= /target/release/build/libc-4498d6c94b422472/build-script-build \
+        1>          /target/release/build/libc-5e046f860ff6d720/out/out-5e046f860ff6d720-stdout \
+        2>          /target/release/build/libc-5e046f860ff6d720/out/out-5e046f860ff6d720-stderr \
+        || echo $? >/target/release/build/libc-5e046f860ff6d720/out/out-5e046f860ff6d720-errcode\
+  ; find /target/release/build/libc-5e046f860ff6d720/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-5e046f860ff6d720
-COPY --link --from=run-z-libc-0.2.177-5e046f860ff6d720 /tmp/clis-ripgrep_15-1-0/release/build/libc-5e046f860ff6d720/out /
+COPY --link --from=run-z-libc-0.2.177-5e046f860ff6d720 /target/release/build/libc-5e046f860ff6d720/out /
 
 ## this = "5e046f860ff6d720"
 ## deps = ["4498d6c94b422472"]
-## writes_to = "/tmp/clis-ripgrep_15-1-0/release/build/libc-5e046f860ff6d720/out"
+## writes_to = "/target/release/build/libc-5e046f860ff6d720/out"
 ## stdout = [
 ##     "cargo:rerun-if-changed=build.rs",
 ##     "cargo:rerun-if-env-changed=RUST_LIBC_UNSTABLE_FREEBSD_VERSION",
@@ -1777,10 +1777,10 @@ COPY --link --from=run-z-libc-0.2.177-5e046f860ff6d720 /tmp/clis-ripgrep_15-1-0/
 ## script = '''
 ## FROM rust-base AS run-z-libc-0.2.177-5e046f860ff6d720
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-ripgrep_15-1-0/release/build/libc-5e046f860ff6d720/out
+## WORKDIR /target/release/build/libc-5e046f860ff6d720/out
 ## WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.177
 ## RUN \
-##   --mount=from=out-4498d6c94b422472,source=/build_script_build-4498d6c94b422472,dst=/tmp/clis-ripgrep_15-1-0/release/build/libc-4498d6c94b422472/build-script-build \
+##   --mount=from=out-4498d6c94b422472,source=/build_script_build-4498d6c94b422472,dst=/target/release/build/libc-4498d6c94b422472/build-script-build \
 ##   --mount=from=cratesio-libc-0.2.177,source=/libc-0.2.177,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.177 \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CFG_FEATURE=default,std \
@@ -1820,17 +1820,17 @@ COPY --link --from=run-z-libc-0.2.177-5e046f860ff6d720 /tmp/clis-ripgrep_15-1-0/
 ##         HOST=x86_64-unknown-linux-gnu \
 ##         NUM_JOBS=4 \
 ##         OPT_LEVEL=3 \
-##         OUT_DIR=/tmp/clis-ripgrep_15-1-0/release/build/libc-5e046f860ff6d720/out \
+##         OUT_DIR=/target/release/build/libc-5e046f860ff6d720/out \
 ##         PROFILE=release \
 ##         RUSTC=rustc \
 ##         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
 ##         TARGET=x86_64-unknown-linux-gnu \
 ##         CARGOGREEN=1 \
-##       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-ripgrep_15-1-0/release/build/libc-4498d6c94b422472/build-script-build \
-##         1>          /tmp/clis-ripgrep_15-1-0/release/build/libc-5e046f860ff6d720/out/out-5e046f860ff6d720-stdout \
-##         2>          /tmp/clis-ripgrep_15-1-0/release/build/libc-5e046f860ff6d720/out/out-5e046f860ff6d720-stderr \
-##         || echo $? >/tmp/clis-ripgrep_15-1-0/release/build/libc-5e046f860ff6d720/out/out-5e046f860ff6d720-errcode\
-##   ; find /tmp/clis-ripgrep_15-1-0/release/build/libc-5e046f860ff6d720/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       CARGOGREEN_EXECUTE_BUILDRS_= /target/release/build/libc-4498d6c94b422472/build-script-build \
+##         1>          /target/release/build/libc-5e046f860ff6d720/out/out-5e046f860ff6d720-stdout \
+##         2>          /target/release/build/libc-5e046f860ff6d720/out/out-5e046f860ff6d720-stderr \
+##         || echo $? >/target/release/build/libc-5e046f860ff6d720/out/out-5e046f860ff6d720-errcode\
+##   ; find /target/release/build/libc-5e046f860ff6d720/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -1838,15 +1838,15 @@ COPY --link --from=run-z-libc-0.2.177-5e046f860ff6d720 /tmp/clis-ripgrep_15-1-0/
 ## stage = "out-5e046f860ff6d720"
 ## script = """
 ## FROM scratch AS out-5e046f860ff6d720
-## COPY --link --from=run-z-libc-0.2.177-5e046f860ff6d720 /tmp/clis-ripgrep_15-1-0/release/build/libc-5e046f860ff6d720/out /"""
+## COPY --link --from=run-z-libc-0.2.177-5e046f860ff6d720 /target/release/build/libc-5e046f860ff6d720/out /"""
 
 
 FROM rust-base AS dep-n-libc-0.2.177-fda8220236222977
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-ripgrep_15-1-0/release/deps
+WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-libc-0.2.177,source=/libc-0.2.177,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.177 \
-  --mount=from=out-5e046f860ff6d720,dst=/tmp/clis-ripgrep_15-1-0/release/build/libc-5e046f860ff6d720/out,source=/ \
+  --mount=from=out-5e046f860ff6d720,dst=/target/release/build/libc-5e046f860ff6d720/out,source=/ \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=libc \
         CARGO_INCREMENTAL=0 \
@@ -1866,15 +1866,15 @@ RUN \
         CARGO_PKG_VERSION_MINOR=2 \
         CARGO_PKG_VERSION_PATCH=177 \
         CARGO_PKG_VERSION_PRE= \
-        OUT_DIR=/tmp/clis-ripgrep_15-1-0/release/build/libc-5e046f860ff6d720/out \
+        OUT_DIR=/target/release/build/libc-5e046f860ff6d720/out \
         CARGOGREEN=1 \
-      rustc --crate-name libc --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --allow clippy'::used_underscore_binding' --allow unused_qualifications --warn clippy'::unnecessary_semicolon' --allow clippy'::unnecessary_cast' --allow clippy'::uninlined_format_args' --warn clippy'::ptr_as_ptr' --allow clippy'::non_minimal_cfg' --allow clippy'::missing_safety_doc' --warn clippy'::map_unwrap_or' --warn clippy'::manual_assert' --allow clippy'::identity_op' --warn clippy'::explicit_iter_loop' --allow clippy'::expl_impl_clone_on_copy' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("align", "const-extern-fn", "default", "extra_traits", "rustc-dep-of-std", "rustc-std-workspace-core", "std", "use_std"))' -C metadata'=af107b84c4ec9478' -C extra-filename'=-fda8220236222977' --out-dir /tmp/clis-ripgrep_15-1-0/release/deps -L dependency'=/tmp/clis-ripgrep_15-1-0/release/deps' --cap-lints warn --cfg freebsd12 --check-cfg cfg'(emscripten_old_stat_abi)' --check-cfg cfg'(espidf_time32)' --check-cfg cfg'(freebsd10)' --check-cfg cfg'(freebsd11)' --check-cfg cfg'(freebsd12)' --check-cfg cfg'(freebsd13)' --check-cfg cfg'(freebsd14)' --check-cfg cfg'(freebsd15)' --check-cfg cfg'(gnu_file_offset_bits64)' --check-cfg cfg'(gnu_time_bits64)' --check-cfg cfg'(libc_deny_warnings)' --check-cfg cfg'(libc_thread_local)' --check-cfg cfg'(linux_time_bits64)' --check-cfg cfg'(musl_v1_2_3)' --check-cfg cfg'(target_os,values("switch","aix","ohos","hurd","rtems","visionos","nuttx","cygwin"))' --check-cfg cfg'(target_env,values("illumos","wasi","aix","ohos","nto71_iosock","nto80"))' --check-cfg cfg'(target_arch,values("loongarch64","mips32r6","mips64r6","csky"))' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.177/src/lib.rs \
-        1>          /tmp/clis-ripgrep_15-1-0/release/deps/out-fda8220236222977-stdout \
-        2>          /tmp/clis-ripgrep_15-1-0/release/deps/out-fda8220236222977-stderr \
-        || echo $? >/tmp/clis-ripgrep_15-1-0/release/deps/out-fda8220236222977-errcode\
-  ; find /tmp/clis-ripgrep_15-1-0/release/deps/*-fda8220236222977* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      rustc --crate-name libc --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --allow clippy'::used_underscore_binding' --allow unused_qualifications --warn clippy'::unnecessary_semicolon' --allow clippy'::unnecessary_cast' --allow clippy'::uninlined_format_args' --warn clippy'::ptr_as_ptr' --allow clippy'::non_minimal_cfg' --allow clippy'::missing_safety_doc' --warn clippy'::map_unwrap_or' --warn clippy'::manual_assert' --allow clippy'::identity_op' --warn clippy'::explicit_iter_loop' --allow clippy'::expl_impl_clone_on_copy' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("align", "const-extern-fn", "default", "extra_traits", "rustc-dep-of-std", "rustc-std-workspace-core", "std", "use_std"))' -C metadata'=af107b84c4ec9478' -C extra-filename'=-fda8220236222977' --out-dir /target/release/deps -L dependency'=/target/release/deps' --cap-lints warn --cfg freebsd12 --check-cfg cfg'(emscripten_old_stat_abi)' --check-cfg cfg'(espidf_time32)' --check-cfg cfg'(freebsd10)' --check-cfg cfg'(freebsd11)' --check-cfg cfg'(freebsd12)' --check-cfg cfg'(freebsd13)' --check-cfg cfg'(freebsd14)' --check-cfg cfg'(freebsd15)' --check-cfg cfg'(gnu_file_offset_bits64)' --check-cfg cfg'(gnu_time_bits64)' --check-cfg cfg'(libc_deny_warnings)' --check-cfg cfg'(libc_thread_local)' --check-cfg cfg'(linux_time_bits64)' --check-cfg cfg'(musl_v1_2_3)' --check-cfg cfg'(target_os,values("switch","aix","ohos","hurd","rtems","visionos","nuttx","cygwin"))' --check-cfg cfg'(target_env,values("illumos","wasi","aix","ohos","nto71_iosock","nto80"))' --check-cfg cfg'(target_arch,values("loongarch64","mips32r6","mips64r6","csky"))' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.177/src/lib.rs \
+        1>          /target/release/deps/out-fda8220236222977-stdout \
+        2>          /target/release/deps/out-fda8220236222977-stderr \
+        || echo $? >/target/release/deps/out-fda8220236222977-errcode\
+  ; find /target/release/deps/*-fda8220236222977* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-fda8220236222977
-COPY --link --from=dep-n-libc-0.2.177-fda8220236222977 /tmp/clis-ripgrep_15-1-0/release/deps/*-fda8220236222977* /
+COPY --link --from=dep-n-libc-0.2.177-fda8220236222977 /target/release/deps/*-fda8220236222977* /
 
 ## this = "fda8220236222977"
 ## deps = [
@@ -1888,14 +1888,14 @@ COPY --link --from=dep-n-libc-0.2.177-fda8220236222977 /tmp/clis-ripgrep_15-1-0/
 ##     "liblibc-fda8220236222977.rmeta",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/deps/libc-fda8220236222977.d","emit":"dep-info"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/deps/liblibc-fda8220236222977.rmeta","emit":"metadata"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/deps/liblibc-fda8220236222977.rlib","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libc-fda8220236222977.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/liblibc-fda8220236222977.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/liblibc-fda8220236222977.rlib","emit":"link"}',
 ## ]
 ##
 ## [[mounts]]
 ## name = "out-5e046f860ff6d720"
-## mount = "/tmp/clis-ripgrep_15-1-0/release/build/libc-5e046f860ff6d720/out"
+## mount = "/target/release/build/libc-5e046f860ff6d720/out"
 ##
 ## [[stages]]
 ##
@@ -1919,10 +1919,10 @@ COPY --link --from=dep-n-libc-0.2.177-fda8220236222977 /tmp/clis-ripgrep_15-1-0/
 ## script = '''
 ## FROM rust-base AS dep-n-libc-0.2.177-fda8220236222977
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-ripgrep_15-1-0/release/deps
+## WORKDIR /target/release/deps
 ## RUN \
 ##   --mount=from=cratesio-libc-0.2.177,source=/libc-0.2.177,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.177 \
-##   --mount=from=out-5e046f860ff6d720,dst=/tmp/clis-ripgrep_15-1-0/release/build/libc-5e046f860ff6d720/out,source=/ \
+##   --mount=from=out-5e046f860ff6d720,dst=/target/release/build/libc-5e046f860ff6d720/out,source=/ \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=libc \
 ##         CARGO_INCREMENTAL=0 \
@@ -1942,13 +1942,13 @@ COPY --link --from=dep-n-libc-0.2.177-fda8220236222977 /tmp/clis-ripgrep_15-1-0/
 ##         CARGO_PKG_VERSION_MINOR=2 \
 ##         CARGO_PKG_VERSION_PATCH=177 \
 ##         CARGO_PKG_VERSION_PRE= \
-##         OUT_DIR=/tmp/clis-ripgrep_15-1-0/release/build/libc-5e046f860ff6d720/out \
+##         OUT_DIR=/target/release/build/libc-5e046f860ff6d720/out \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name libc --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --allow clippy'::used_underscore_binding' --allow unused_qualifications --warn clippy'::unnecessary_semicolon' --allow clippy'::unnecessary_cast' --allow clippy'::uninlined_format_args' --warn clippy'::ptr_as_ptr' --allow clippy'::non_minimal_cfg' --allow clippy'::missing_safety_doc' --warn clippy'::map_unwrap_or' --warn clippy'::manual_assert' --allow clippy'::identity_op' --warn clippy'::explicit_iter_loop' --allow clippy'::expl_impl_clone_on_copy' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("align", "const-extern-fn", "default", "extra_traits", "rustc-dep-of-std", "rustc-std-workspace-core", "std", "use_std"))' -C metadata'=af107b84c4ec9478' -C extra-filename'=-fda8220236222977' --out-dir /tmp/clis-ripgrep_15-1-0/release/deps -L dependency'=/tmp/clis-ripgrep_15-1-0/release/deps' --cap-lints warn --cfg freebsd12 --check-cfg cfg'(emscripten_old_stat_abi)' --check-cfg cfg'(espidf_time32)' --check-cfg cfg'(freebsd10)' --check-cfg cfg'(freebsd11)' --check-cfg cfg'(freebsd12)' --check-cfg cfg'(freebsd13)' --check-cfg cfg'(freebsd14)' --check-cfg cfg'(freebsd15)' --check-cfg cfg'(gnu_file_offset_bits64)' --check-cfg cfg'(gnu_time_bits64)' --check-cfg cfg'(libc_deny_warnings)' --check-cfg cfg'(libc_thread_local)' --check-cfg cfg'(linux_time_bits64)' --check-cfg cfg'(musl_v1_2_3)' --check-cfg cfg'(target_os,values("switch","aix","ohos","hurd","rtems","visionos","nuttx","cygwin"))' --check-cfg cfg'(target_env,values("illumos","wasi","aix","ohos","nto71_iosock","nto80"))' --check-cfg cfg'(target_arch,values("loongarch64","mips32r6","mips64r6","csky"))' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.177/src/lib.rs \
-##         1>          /tmp/clis-ripgrep_15-1-0/release/deps/out-fda8220236222977-stdout \
-##         2>          /tmp/clis-ripgrep_15-1-0/release/deps/out-fda8220236222977-stderr \
-##         || echo $? >/tmp/clis-ripgrep_15-1-0/release/deps/out-fda8220236222977-errcode\
-##   ; find /tmp/clis-ripgrep_15-1-0/release/deps/*-fda8220236222977* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name libc --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --allow clippy'::used_underscore_binding' --allow unused_qualifications --warn clippy'::unnecessary_semicolon' --allow clippy'::unnecessary_cast' --allow clippy'::uninlined_format_args' --warn clippy'::ptr_as_ptr' --allow clippy'::non_minimal_cfg' --allow clippy'::missing_safety_doc' --warn clippy'::map_unwrap_or' --warn clippy'::manual_assert' --allow clippy'::identity_op' --warn clippy'::explicit_iter_loop' --allow clippy'::expl_impl_clone_on_copy' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("align", "const-extern-fn", "default", "extra_traits", "rustc-dep-of-std", "rustc-std-workspace-core", "std", "use_std"))' -C metadata'=af107b84c4ec9478' -C extra-filename'=-fda8220236222977' --out-dir /target/release/deps -L dependency'=/target/release/deps' --cap-lints warn --cfg freebsd12 --check-cfg cfg'(emscripten_old_stat_abi)' --check-cfg cfg'(espidf_time32)' --check-cfg cfg'(freebsd10)' --check-cfg cfg'(freebsd11)' --check-cfg cfg'(freebsd12)' --check-cfg cfg'(freebsd13)' --check-cfg cfg'(freebsd14)' --check-cfg cfg'(freebsd15)' --check-cfg cfg'(gnu_file_offset_bits64)' --check-cfg cfg'(gnu_time_bits64)' --check-cfg cfg'(libc_deny_warnings)' --check-cfg cfg'(libc_thread_local)' --check-cfg cfg'(linux_time_bits64)' --check-cfg cfg'(musl_v1_2_3)' --check-cfg cfg'(target_os,values("switch","aix","ohos","hurd","rtems","visionos","nuttx","cygwin"))' --check-cfg cfg'(target_env,values("illumos","wasi","aix","ohos","nto71_iosock","nto80"))' --check-cfg cfg'(target_arch,values("loongarch64","mips32r6","mips64r6","csky"))' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.177/src/lib.rs \
+##         1>          /target/release/deps/out-fda8220236222977-stdout \
+##         2>          /target/release/deps/out-fda8220236222977-stderr \
+##         || echo $? >/target/release/deps/out-fda8220236222977-errcode\
+##   ; find /target/release/deps/*-fda8220236222977* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -1956,14 +1956,14 @@ COPY --link --from=dep-n-libc-0.2.177-fda8220236222977 /tmp/clis-ripgrep_15-1-0/
 ## stage = "out-fda8220236222977"
 ## script = """
 ## FROM scratch AS out-fda8220236222977
-## COPY --link --from=dep-n-libc-0.2.177-fda8220236222977 /tmp/clis-ripgrep_15-1-0/release/deps/*-fda8220236222977* /"""
+## COPY --link --from=dep-n-libc-0.2.177-fda8220236222977 /target/release/deps/*-fda8220236222977* /"""
 
 FROM scratch AS cratesio-termcolor-1.4.1
 ADD --chmod=0664 --unpack --checksum=sha256:06794f8f6c5c898b3275aebefa6b8a1cb24cd2c6c79397ab15774837a0bc5755 \
   https://static.crates.io/crates/termcolor/termcolor-1.4.1.crate /
 FROM rust-base AS dep-n-termcolor-1.4.1-82ca06e8aad1563b
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-ripgrep_15-1-0/release/deps
+WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-termcolor-1.4.1,source=/termcolor-1.4.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/termcolor-1.4.1 \
     env CARGO="$(which cargo)" \
@@ -1987,13 +1987,13 @@ RUN \
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --crate-name termcolor --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=f59092b939656dfa' -C extra-filename'=-82ca06e8aad1563b' --out-dir /tmp/clis-ripgrep_15-1-0/release/deps -L dependency'=/tmp/clis-ripgrep_15-1-0/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/termcolor-1.4.1/src/lib.rs \
-        1>          /tmp/clis-ripgrep_15-1-0/release/deps/out-82ca06e8aad1563b-stdout \
-        2>          /tmp/clis-ripgrep_15-1-0/release/deps/out-82ca06e8aad1563b-stderr \
-        || echo $? >/tmp/clis-ripgrep_15-1-0/release/deps/out-82ca06e8aad1563b-errcode\
-  ; find /tmp/clis-ripgrep_15-1-0/release/deps/*-82ca06e8aad1563b* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      rustc --crate-name termcolor --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=f59092b939656dfa' -C extra-filename'=-82ca06e8aad1563b' --out-dir /target/release/deps -L dependency'=/target/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/termcolor-1.4.1/src/lib.rs \
+        1>          /target/release/deps/out-82ca06e8aad1563b-stdout \
+        2>          /target/release/deps/out-82ca06e8aad1563b-stderr \
+        || echo $? >/target/release/deps/out-82ca06e8aad1563b-errcode\
+  ; find /target/release/deps/*-82ca06e8aad1563b* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-82ca06e8aad1563b
-COPY --link --from=dep-n-termcolor-1.4.1-82ca06e8aad1563b /tmp/clis-ripgrep_15-1-0/release/deps/*-82ca06e8aad1563b* /
+COPY --link --from=dep-n-termcolor-1.4.1-82ca06e8aad1563b /target/release/deps/*-82ca06e8aad1563b* /
 
 ## this = "82ca06e8aad1563b"
 ## writes = [
@@ -2002,9 +2002,9 @@ COPY --link --from=dep-n-termcolor-1.4.1-82ca06e8aad1563b /tmp/clis-ripgrep_15-1
 ##     "termcolor-82ca06e8aad1563b.d",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/deps/termcolor-82ca06e8aad1563b.d","emit":"dep-info"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/deps/libtermcolor-82ca06e8aad1563b.rmeta","emit":"metadata"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/deps/libtermcolor-82ca06e8aad1563b.rlib","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/termcolor-82ca06e8aad1563b.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libtermcolor-82ca06e8aad1563b.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libtermcolor-82ca06e8aad1563b.rlib","emit":"link"}',
 ## ]
 ##
 ## [[stages]]
@@ -2029,7 +2029,7 @@ COPY --link --from=dep-n-termcolor-1.4.1-82ca06e8aad1563b /tmp/clis-ripgrep_15-1
 ## script = '''
 ## FROM rust-base AS dep-n-termcolor-1.4.1-82ca06e8aad1563b
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-ripgrep_15-1-0/release/deps
+## WORKDIR /target/release/deps
 ## RUN \
 ##   --mount=from=cratesio-termcolor-1.4.1,source=/termcolor-1.4.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/termcolor-1.4.1 \
 ##     env CARGO="$(which cargo)" \
@@ -2053,11 +2053,11 @@ COPY --link --from=dep-n-termcolor-1.4.1-82ca06e8aad1563b /tmp/clis-ripgrep_15-1
 ##         CARGO_PKG_VERSION_PATCH=1 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name termcolor --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=f59092b939656dfa' -C extra-filename'=-82ca06e8aad1563b' --out-dir /tmp/clis-ripgrep_15-1-0/release/deps -L dependency'=/tmp/clis-ripgrep_15-1-0/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/termcolor-1.4.1/src/lib.rs \
-##         1>          /tmp/clis-ripgrep_15-1-0/release/deps/out-82ca06e8aad1563b-stdout \
-##         2>          /tmp/clis-ripgrep_15-1-0/release/deps/out-82ca06e8aad1563b-stderr \
-##         || echo $? >/tmp/clis-ripgrep_15-1-0/release/deps/out-82ca06e8aad1563b-errcode\
-##   ; find /tmp/clis-ripgrep_15-1-0/release/deps/*-82ca06e8aad1563b* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name termcolor --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=f59092b939656dfa' -C extra-filename'=-82ca06e8aad1563b' --out-dir /target/release/deps -L dependency'=/target/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/termcolor-1.4.1/src/lib.rs \
+##         1>          /target/release/deps/out-82ca06e8aad1563b-stdout \
+##         2>          /target/release/deps/out-82ca06e8aad1563b-stderr \
+##         || echo $? >/target/release/deps/out-82ca06e8aad1563b-errcode\
+##   ; find /target/release/deps/*-82ca06e8aad1563b* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -2065,34 +2065,34 @@ COPY --link --from=dep-n-termcolor-1.4.1-82ca06e8aad1563b /tmp/clis-ripgrep_15-1
 ## stage = "out-82ca06e8aad1563b"
 ## script = """
 ## FROM scratch AS out-82ca06e8aad1563b
-## COPY --link --from=dep-n-termcolor-1.4.1-82ca06e8aad1563b /tmp/clis-ripgrep_15-1-0/release/deps/*-82ca06e8aad1563b* /"""
+## COPY --link --from=dep-n-termcolor-1.4.1-82ca06e8aad1563b /target/release/deps/*-82ca06e8aad1563b* /"""
 
 FROM scratch AS cratesio-grep-cli-0.1.12
 ADD --chmod=0664 --unpack --checksum=sha256:cf32d263c5d5cc2a23ce587097f5ddafdb188492ba2e6fb638eaccdc22453631 \
   https://static.crates.io/crates/grep-cli/grep-cli-0.1.12.crate /
 FROM rust-base AS dep-n-grep-cli-0.1.12-1b7b0003cc5fcc34
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-ripgrep_15-1-0/release/deps
+WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-grep-cli-0.1.12,source=/grep-cli-0.1.12,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-cli-0.1.12 \
-  --mount=from=out-d3eea57fb24a933f,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libbstr-d3eea57fb24a933f.rlib,source=/libbstr-d3eea57fb24a933f.rlib \
-  --mount=from=out-d3eea57fb24a933f,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libbstr-d3eea57fb24a933f.rmeta,source=/libbstr-d3eea57fb24a933f.rmeta \
-  --mount=from=out-3a40f50ac19c9d2e,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libmemchr-3a40f50ac19c9d2e.rlib,source=/libmemchr-3a40f50ac19c9d2e.rlib \
-  --mount=from=out-3a40f50ac19c9d2e,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libmemchr-3a40f50ac19c9d2e.rmeta,source=/libmemchr-3a40f50ac19c9d2e.rmeta \
-  --mount=from=out-e22c3e2bd8aa6773,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libregex_automata-e22c3e2bd8aa6773.rlib,source=/libregex_automata-e22c3e2bd8aa6773.rlib \
-  --mount=from=out-e22c3e2bd8aa6773,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libregex_automata-e22c3e2bd8aa6773.rmeta,source=/libregex_automata-e22c3e2bd8aa6773.rmeta \
-  --mount=from=out-a01a7f030e27d71e,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libaho_corasick-a01a7f030e27d71e.rlib,source=/libaho_corasick-a01a7f030e27d71e.rlib \
-  --mount=from=out-a01a7f030e27d71e,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libaho_corasick-a01a7f030e27d71e.rmeta,source=/libaho_corasick-a01a7f030e27d71e.rmeta \
-  --mount=from=out-34711e95edd06069,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libregex_syntax-34711e95edd06069.rlib,source=/libregex_syntax-34711e95edd06069.rlib \
-  --mount=from=out-34711e95edd06069,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libregex_syntax-34711e95edd06069.rmeta,source=/libregex_syntax-34711e95edd06069.rmeta \
-  --mount=from=out-626b3cb378b61839,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libglobset-626b3cb378b61839.rlib,source=/libglobset-626b3cb378b61839.rlib \
-  --mount=from=out-626b3cb378b61839,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libglobset-626b3cb378b61839.rmeta,source=/libglobset-626b3cb378b61839.rmeta \
-  --mount=from=out-961aebfc4598d968,dst=/tmp/clis-ripgrep_15-1-0/release/deps/liblog-961aebfc4598d968.rlib,source=/liblog-961aebfc4598d968.rlib \
-  --mount=from=out-961aebfc4598d968,dst=/tmp/clis-ripgrep_15-1-0/release/deps/liblog-961aebfc4598d968.rmeta,source=/liblog-961aebfc4598d968.rmeta \
-  --mount=from=out-fda8220236222977,dst=/tmp/clis-ripgrep_15-1-0/release/deps/liblibc-fda8220236222977.rlib,source=/liblibc-fda8220236222977.rlib \
-  --mount=from=out-fda8220236222977,dst=/tmp/clis-ripgrep_15-1-0/release/deps/liblibc-fda8220236222977.rmeta,source=/liblibc-fda8220236222977.rmeta \
-  --mount=from=out-82ca06e8aad1563b,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libtermcolor-82ca06e8aad1563b.rlib,source=/libtermcolor-82ca06e8aad1563b.rlib \
-  --mount=from=out-82ca06e8aad1563b,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libtermcolor-82ca06e8aad1563b.rmeta,source=/libtermcolor-82ca06e8aad1563b.rmeta \
+  --mount=from=out-d3eea57fb24a933f,dst=/target/release/deps/libbstr-d3eea57fb24a933f.rlib,source=/libbstr-d3eea57fb24a933f.rlib \
+  --mount=from=out-d3eea57fb24a933f,dst=/target/release/deps/libbstr-d3eea57fb24a933f.rmeta,source=/libbstr-d3eea57fb24a933f.rmeta \
+  --mount=from=out-3a40f50ac19c9d2e,dst=/target/release/deps/libmemchr-3a40f50ac19c9d2e.rlib,source=/libmemchr-3a40f50ac19c9d2e.rlib \
+  --mount=from=out-3a40f50ac19c9d2e,dst=/target/release/deps/libmemchr-3a40f50ac19c9d2e.rmeta,source=/libmemchr-3a40f50ac19c9d2e.rmeta \
+  --mount=from=out-e22c3e2bd8aa6773,dst=/target/release/deps/libregex_automata-e22c3e2bd8aa6773.rlib,source=/libregex_automata-e22c3e2bd8aa6773.rlib \
+  --mount=from=out-e22c3e2bd8aa6773,dst=/target/release/deps/libregex_automata-e22c3e2bd8aa6773.rmeta,source=/libregex_automata-e22c3e2bd8aa6773.rmeta \
+  --mount=from=out-a01a7f030e27d71e,dst=/target/release/deps/libaho_corasick-a01a7f030e27d71e.rlib,source=/libaho_corasick-a01a7f030e27d71e.rlib \
+  --mount=from=out-a01a7f030e27d71e,dst=/target/release/deps/libaho_corasick-a01a7f030e27d71e.rmeta,source=/libaho_corasick-a01a7f030e27d71e.rmeta \
+  --mount=from=out-34711e95edd06069,dst=/target/release/deps/libregex_syntax-34711e95edd06069.rlib,source=/libregex_syntax-34711e95edd06069.rlib \
+  --mount=from=out-34711e95edd06069,dst=/target/release/deps/libregex_syntax-34711e95edd06069.rmeta,source=/libregex_syntax-34711e95edd06069.rmeta \
+  --mount=from=out-626b3cb378b61839,dst=/target/release/deps/libglobset-626b3cb378b61839.rlib,source=/libglobset-626b3cb378b61839.rlib \
+  --mount=from=out-626b3cb378b61839,dst=/target/release/deps/libglobset-626b3cb378b61839.rmeta,source=/libglobset-626b3cb378b61839.rmeta \
+  --mount=from=out-961aebfc4598d968,dst=/target/release/deps/liblog-961aebfc4598d968.rlib,source=/liblog-961aebfc4598d968.rlib \
+  --mount=from=out-961aebfc4598d968,dst=/target/release/deps/liblog-961aebfc4598d968.rmeta,source=/liblog-961aebfc4598d968.rmeta \
+  --mount=from=out-fda8220236222977,dst=/target/release/deps/liblibc-fda8220236222977.rlib,source=/liblibc-fda8220236222977.rlib \
+  --mount=from=out-fda8220236222977,dst=/target/release/deps/liblibc-fda8220236222977.rmeta,source=/liblibc-fda8220236222977.rmeta \
+  --mount=from=out-82ca06e8aad1563b,dst=/target/release/deps/libtermcolor-82ca06e8aad1563b.rlib,source=/libtermcolor-82ca06e8aad1563b.rlib \
+  --mount=from=out-82ca06e8aad1563b,dst=/target/release/deps/libtermcolor-82ca06e8aad1563b.rmeta,source=/libtermcolor-82ca06e8aad1563b.rmeta \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=grep_cli \
         CARGO_INCREMENTAL=0 \
@@ -2114,13 +2114,13 @@ RUN \
         CARGO_PKG_VERSION_PATCH=12 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --crate-name grep_cli --edition 2024 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=72a09910e418139b' -C extra-filename'=-1b7b0003cc5fcc34' --out-dir /tmp/clis-ripgrep_15-1-0/release/deps -L dependency'=/tmp/clis-ripgrep_15-1-0/release/deps' --extern bstr'=/tmp/clis-ripgrep_15-1-0/release/deps/libbstr-d3eea57fb24a933f.rmeta' --extern globset'=/tmp/clis-ripgrep_15-1-0/release/deps/libglobset-626b3cb378b61839.rmeta' --extern libc'=/tmp/clis-ripgrep_15-1-0/release/deps/liblibc-fda8220236222977.rmeta' --extern log'=/tmp/clis-ripgrep_15-1-0/release/deps/liblog-961aebfc4598d968.rmeta' --extern termcolor'=/tmp/clis-ripgrep_15-1-0/release/deps/libtermcolor-82ca06e8aad1563b.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-cli-0.1.12/src/lib.rs \
-        1>          /tmp/clis-ripgrep_15-1-0/release/deps/out-1b7b0003cc5fcc34-stdout \
-        2>          /tmp/clis-ripgrep_15-1-0/release/deps/out-1b7b0003cc5fcc34-stderr \
-        || echo $? >/tmp/clis-ripgrep_15-1-0/release/deps/out-1b7b0003cc5fcc34-errcode\
-  ; find /tmp/clis-ripgrep_15-1-0/release/deps/*-1b7b0003cc5fcc34* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      rustc --crate-name grep_cli --edition 2024 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=72a09910e418139b' -C extra-filename'=-1b7b0003cc5fcc34' --out-dir /target/release/deps -L dependency'=/target/release/deps' --extern bstr'=/target/release/deps/libbstr-d3eea57fb24a933f.rmeta' --extern globset'=/target/release/deps/libglobset-626b3cb378b61839.rmeta' --extern libc'=/target/release/deps/liblibc-fda8220236222977.rmeta' --extern log'=/target/release/deps/liblog-961aebfc4598d968.rmeta' --extern termcolor'=/target/release/deps/libtermcolor-82ca06e8aad1563b.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-cli-0.1.12/src/lib.rs \
+        1>          /target/release/deps/out-1b7b0003cc5fcc34-stdout \
+        2>          /target/release/deps/out-1b7b0003cc5fcc34-stderr \
+        || echo $? >/target/release/deps/out-1b7b0003cc5fcc34-errcode\
+  ; find /target/release/deps/*-1b7b0003cc5fcc34* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-1b7b0003cc5fcc34
-COPY --link --from=dep-n-grep-cli-0.1.12-1b7b0003cc5fcc34 /tmp/clis-ripgrep_15-1-0/release/deps/*-1b7b0003cc5fcc34* /
+COPY --link --from=dep-n-grep-cli-0.1.12-1b7b0003cc5fcc34 /target/release/deps/*-1b7b0003cc5fcc34* /
 
 ## this = "1b7b0003cc5fcc34"
 ## deps = [
@@ -2143,9 +2143,9 @@ COPY --link --from=dep-n-grep-cli-0.1.12-1b7b0003cc5fcc34 /tmp/clis-ripgrep_15-1
 ##     "libgrep_cli-1b7b0003cc5fcc34.rmeta",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/deps/grep_cli-1b7b0003cc5fcc34.d","emit":"dep-info"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/deps/libgrep_cli-1b7b0003cc5fcc34.rmeta","emit":"metadata"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/deps/libgrep_cli-1b7b0003cc5fcc34.rlib","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/grep_cli-1b7b0003cc5fcc34.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libgrep_cli-1b7b0003cc5fcc34.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libgrep_cli-1b7b0003cc5fcc34.rlib","emit":"link"}',
 ## ]
 ##
 ## [[externs]]
@@ -2242,27 +2242,27 @@ COPY --link --from=dep-n-grep-cli-0.1.12-1b7b0003cc5fcc34 /tmp/clis-ripgrep_15-1
 ## script = '''
 ## FROM rust-base AS dep-n-grep-cli-0.1.12-1b7b0003cc5fcc34
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-ripgrep_15-1-0/release/deps
+## WORKDIR /target/release/deps
 ## RUN \
 ##   --mount=from=cratesio-grep-cli-0.1.12,source=/grep-cli-0.1.12,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-cli-0.1.12 \
-##   --mount=from=out-d3eea57fb24a933f,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libbstr-d3eea57fb24a933f.rlib,source=/libbstr-d3eea57fb24a933f.rlib \
-##   --mount=from=out-d3eea57fb24a933f,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libbstr-d3eea57fb24a933f.rmeta,source=/libbstr-d3eea57fb24a933f.rmeta \
-##   --mount=from=out-3a40f50ac19c9d2e,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libmemchr-3a40f50ac19c9d2e.rlib,source=/libmemchr-3a40f50ac19c9d2e.rlib \
-##   --mount=from=out-3a40f50ac19c9d2e,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libmemchr-3a40f50ac19c9d2e.rmeta,source=/libmemchr-3a40f50ac19c9d2e.rmeta \
-##   --mount=from=out-e22c3e2bd8aa6773,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libregex_automata-e22c3e2bd8aa6773.rlib,source=/libregex_automata-e22c3e2bd8aa6773.rlib \
-##   --mount=from=out-e22c3e2bd8aa6773,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libregex_automata-e22c3e2bd8aa6773.rmeta,source=/libregex_automata-e22c3e2bd8aa6773.rmeta \
-##   --mount=from=out-a01a7f030e27d71e,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libaho_corasick-a01a7f030e27d71e.rlib,source=/libaho_corasick-a01a7f030e27d71e.rlib \
-##   --mount=from=out-a01a7f030e27d71e,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libaho_corasick-a01a7f030e27d71e.rmeta,source=/libaho_corasick-a01a7f030e27d71e.rmeta \
-##   --mount=from=out-34711e95edd06069,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libregex_syntax-34711e95edd06069.rlib,source=/libregex_syntax-34711e95edd06069.rlib \
-##   --mount=from=out-34711e95edd06069,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libregex_syntax-34711e95edd06069.rmeta,source=/libregex_syntax-34711e95edd06069.rmeta \
-##   --mount=from=out-626b3cb378b61839,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libglobset-626b3cb378b61839.rlib,source=/libglobset-626b3cb378b61839.rlib \
-##   --mount=from=out-626b3cb378b61839,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libglobset-626b3cb378b61839.rmeta,source=/libglobset-626b3cb378b61839.rmeta \
-##   --mount=from=out-961aebfc4598d968,dst=/tmp/clis-ripgrep_15-1-0/release/deps/liblog-961aebfc4598d968.rlib,source=/liblog-961aebfc4598d968.rlib \
-##   --mount=from=out-961aebfc4598d968,dst=/tmp/clis-ripgrep_15-1-0/release/deps/liblog-961aebfc4598d968.rmeta,source=/liblog-961aebfc4598d968.rmeta \
-##   --mount=from=out-fda8220236222977,dst=/tmp/clis-ripgrep_15-1-0/release/deps/liblibc-fda8220236222977.rlib,source=/liblibc-fda8220236222977.rlib \
-##   --mount=from=out-fda8220236222977,dst=/tmp/clis-ripgrep_15-1-0/release/deps/liblibc-fda8220236222977.rmeta,source=/liblibc-fda8220236222977.rmeta \
-##   --mount=from=out-82ca06e8aad1563b,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libtermcolor-82ca06e8aad1563b.rlib,source=/libtermcolor-82ca06e8aad1563b.rlib \
-##   --mount=from=out-82ca06e8aad1563b,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libtermcolor-82ca06e8aad1563b.rmeta,source=/libtermcolor-82ca06e8aad1563b.rmeta \
+##   --mount=from=out-d3eea57fb24a933f,dst=/target/release/deps/libbstr-d3eea57fb24a933f.rlib,source=/libbstr-d3eea57fb24a933f.rlib \
+##   --mount=from=out-d3eea57fb24a933f,dst=/target/release/deps/libbstr-d3eea57fb24a933f.rmeta,source=/libbstr-d3eea57fb24a933f.rmeta \
+##   --mount=from=out-3a40f50ac19c9d2e,dst=/target/release/deps/libmemchr-3a40f50ac19c9d2e.rlib,source=/libmemchr-3a40f50ac19c9d2e.rlib \
+##   --mount=from=out-3a40f50ac19c9d2e,dst=/target/release/deps/libmemchr-3a40f50ac19c9d2e.rmeta,source=/libmemchr-3a40f50ac19c9d2e.rmeta \
+##   --mount=from=out-e22c3e2bd8aa6773,dst=/target/release/deps/libregex_automata-e22c3e2bd8aa6773.rlib,source=/libregex_automata-e22c3e2bd8aa6773.rlib \
+##   --mount=from=out-e22c3e2bd8aa6773,dst=/target/release/deps/libregex_automata-e22c3e2bd8aa6773.rmeta,source=/libregex_automata-e22c3e2bd8aa6773.rmeta \
+##   --mount=from=out-a01a7f030e27d71e,dst=/target/release/deps/libaho_corasick-a01a7f030e27d71e.rlib,source=/libaho_corasick-a01a7f030e27d71e.rlib \
+##   --mount=from=out-a01a7f030e27d71e,dst=/target/release/deps/libaho_corasick-a01a7f030e27d71e.rmeta,source=/libaho_corasick-a01a7f030e27d71e.rmeta \
+##   --mount=from=out-34711e95edd06069,dst=/target/release/deps/libregex_syntax-34711e95edd06069.rlib,source=/libregex_syntax-34711e95edd06069.rlib \
+##   --mount=from=out-34711e95edd06069,dst=/target/release/deps/libregex_syntax-34711e95edd06069.rmeta,source=/libregex_syntax-34711e95edd06069.rmeta \
+##   --mount=from=out-626b3cb378b61839,dst=/target/release/deps/libglobset-626b3cb378b61839.rlib,source=/libglobset-626b3cb378b61839.rlib \
+##   --mount=from=out-626b3cb378b61839,dst=/target/release/deps/libglobset-626b3cb378b61839.rmeta,source=/libglobset-626b3cb378b61839.rmeta \
+##   --mount=from=out-961aebfc4598d968,dst=/target/release/deps/liblog-961aebfc4598d968.rlib,source=/liblog-961aebfc4598d968.rlib \
+##   --mount=from=out-961aebfc4598d968,dst=/target/release/deps/liblog-961aebfc4598d968.rmeta,source=/liblog-961aebfc4598d968.rmeta \
+##   --mount=from=out-fda8220236222977,dst=/target/release/deps/liblibc-fda8220236222977.rlib,source=/liblibc-fda8220236222977.rlib \
+##   --mount=from=out-fda8220236222977,dst=/target/release/deps/liblibc-fda8220236222977.rmeta,source=/liblibc-fda8220236222977.rmeta \
+##   --mount=from=out-82ca06e8aad1563b,dst=/target/release/deps/libtermcolor-82ca06e8aad1563b.rlib,source=/libtermcolor-82ca06e8aad1563b.rlib \
+##   --mount=from=out-82ca06e8aad1563b,dst=/target/release/deps/libtermcolor-82ca06e8aad1563b.rmeta,source=/libtermcolor-82ca06e8aad1563b.rmeta \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=grep_cli \
 ##         CARGO_INCREMENTAL=0 \
@@ -2284,11 +2284,11 @@ COPY --link --from=dep-n-grep-cli-0.1.12-1b7b0003cc5fcc34 /tmp/clis-ripgrep_15-1
 ##         CARGO_PKG_VERSION_PATCH=12 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name grep_cli --edition 2024 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=72a09910e418139b' -C extra-filename'=-1b7b0003cc5fcc34' --out-dir /tmp/clis-ripgrep_15-1-0/release/deps -L dependency'=/tmp/clis-ripgrep_15-1-0/release/deps' --extern bstr'=/tmp/clis-ripgrep_15-1-0/release/deps/libbstr-d3eea57fb24a933f.rmeta' --extern globset'=/tmp/clis-ripgrep_15-1-0/release/deps/libglobset-626b3cb378b61839.rmeta' --extern libc'=/tmp/clis-ripgrep_15-1-0/release/deps/liblibc-fda8220236222977.rmeta' --extern log'=/tmp/clis-ripgrep_15-1-0/release/deps/liblog-961aebfc4598d968.rmeta' --extern termcolor'=/tmp/clis-ripgrep_15-1-0/release/deps/libtermcolor-82ca06e8aad1563b.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-cli-0.1.12/src/lib.rs \
-##         1>          /tmp/clis-ripgrep_15-1-0/release/deps/out-1b7b0003cc5fcc34-stdout \
-##         2>          /tmp/clis-ripgrep_15-1-0/release/deps/out-1b7b0003cc5fcc34-stderr \
-##         || echo $? >/tmp/clis-ripgrep_15-1-0/release/deps/out-1b7b0003cc5fcc34-errcode\
-##   ; find /tmp/clis-ripgrep_15-1-0/release/deps/*-1b7b0003cc5fcc34* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name grep_cli --edition 2024 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=72a09910e418139b' -C extra-filename'=-1b7b0003cc5fcc34' --out-dir /target/release/deps -L dependency'=/target/release/deps' --extern bstr'=/target/release/deps/libbstr-d3eea57fb24a933f.rmeta' --extern globset'=/target/release/deps/libglobset-626b3cb378b61839.rmeta' --extern libc'=/target/release/deps/liblibc-fda8220236222977.rmeta' --extern log'=/target/release/deps/liblog-961aebfc4598d968.rmeta' --extern termcolor'=/target/release/deps/libtermcolor-82ca06e8aad1563b.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-cli-0.1.12/src/lib.rs \
+##         1>          /target/release/deps/out-1b7b0003cc5fcc34-stdout \
+##         2>          /target/release/deps/out-1b7b0003cc5fcc34-stderr \
+##         || echo $? >/target/release/deps/out-1b7b0003cc5fcc34-errcode\
+##   ; find /target/release/deps/*-1b7b0003cc5fcc34* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -2296,18 +2296,18 @@ COPY --link --from=dep-n-grep-cli-0.1.12-1b7b0003cc5fcc34 /tmp/clis-ripgrep_15-1
 ## stage = "out-1b7b0003cc5fcc34"
 ## script = """
 ## FROM scratch AS out-1b7b0003cc5fcc34
-## COPY --link --from=dep-n-grep-cli-0.1.12-1b7b0003cc5fcc34 /tmp/clis-ripgrep_15-1-0/release/deps/*-1b7b0003cc5fcc34* /"""
+## COPY --link --from=dep-n-grep-cli-0.1.12-1b7b0003cc5fcc34 /target/release/deps/*-1b7b0003cc5fcc34* /"""
 
 FROM scratch AS cratesio-grep-matcher-0.1.8
 ADD --chmod=0664 --unpack --checksum=sha256:36d7b71093325ab22d780b40d7df3066ae4aebb518ba719d38c697a8228a8023 \
   https://static.crates.io/crates/grep-matcher/grep-matcher-0.1.8.crate /
 FROM rust-base AS dep-n-grep-matcher-0.1.8-d59a566cc66becf8
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-ripgrep_15-1-0/release/deps
+WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-grep-matcher-0.1.8,source=/grep-matcher-0.1.8,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-matcher-0.1.8 \
-  --mount=from=out-3a40f50ac19c9d2e,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libmemchr-3a40f50ac19c9d2e.rlib,source=/libmemchr-3a40f50ac19c9d2e.rlib \
-  --mount=from=out-3a40f50ac19c9d2e,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libmemchr-3a40f50ac19c9d2e.rmeta,source=/libmemchr-3a40f50ac19c9d2e.rmeta \
+  --mount=from=out-3a40f50ac19c9d2e,dst=/target/release/deps/libmemchr-3a40f50ac19c9d2e.rlib,source=/libmemchr-3a40f50ac19c9d2e.rlib \
+  --mount=from=out-3a40f50ac19c9d2e,dst=/target/release/deps/libmemchr-3a40f50ac19c9d2e.rmeta,source=/libmemchr-3a40f50ac19c9d2e.rmeta \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=grep_matcher \
         CARGO_INCREMENTAL=0 \
@@ -2329,13 +2329,13 @@ RUN \
         CARGO_PKG_VERSION_PATCH=8 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --crate-name grep_matcher --edition 2024 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=7eb0353a7fc53d67' -C extra-filename'=-d59a566cc66becf8' --out-dir /tmp/clis-ripgrep_15-1-0/release/deps -L dependency'=/tmp/clis-ripgrep_15-1-0/release/deps' --extern memchr'=/tmp/clis-ripgrep_15-1-0/release/deps/libmemchr-3a40f50ac19c9d2e.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-matcher-0.1.8/src/lib.rs \
-        1>          /tmp/clis-ripgrep_15-1-0/release/deps/out-d59a566cc66becf8-stdout \
-        2>          /tmp/clis-ripgrep_15-1-0/release/deps/out-d59a566cc66becf8-stderr \
-        || echo $? >/tmp/clis-ripgrep_15-1-0/release/deps/out-d59a566cc66becf8-errcode\
-  ; find /tmp/clis-ripgrep_15-1-0/release/deps/*-d59a566cc66becf8* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      rustc --crate-name grep_matcher --edition 2024 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=7eb0353a7fc53d67' -C extra-filename'=-d59a566cc66becf8' --out-dir /target/release/deps -L dependency'=/target/release/deps' --extern memchr'=/target/release/deps/libmemchr-3a40f50ac19c9d2e.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-matcher-0.1.8/src/lib.rs \
+        1>          /target/release/deps/out-d59a566cc66becf8-stdout \
+        2>          /target/release/deps/out-d59a566cc66becf8-stderr \
+        || echo $? >/target/release/deps/out-d59a566cc66becf8-errcode\
+  ; find /target/release/deps/*-d59a566cc66becf8* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-d59a566cc66becf8
-COPY --link --from=dep-n-grep-matcher-0.1.8-d59a566cc66becf8 /tmp/clis-ripgrep_15-1-0/release/deps/*-d59a566cc66becf8* /
+COPY --link --from=dep-n-grep-matcher-0.1.8-d59a566cc66becf8 /target/release/deps/*-d59a566cc66becf8* /
 
 ## this = "d59a566cc66becf8"
 ## deps = ["3a40f50ac19c9d2e"]
@@ -2345,9 +2345,9 @@ COPY --link --from=dep-n-grep-matcher-0.1.8-d59a566cc66becf8 /tmp/clis-ripgrep_1
 ##     "libgrep_matcher-d59a566cc66becf8.rmeta",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/deps/grep_matcher-d59a566cc66becf8.d","emit":"dep-info"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/deps/libgrep_matcher-d59a566cc66becf8.rmeta","emit":"metadata"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/deps/libgrep_matcher-d59a566cc66becf8.rlib","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/grep_matcher-d59a566cc66becf8.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libgrep_matcher-d59a566cc66becf8.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libgrep_matcher-d59a566cc66becf8.rlib","emit":"link"}',
 ## ]
 ##
 ## [[externs]]
@@ -2380,11 +2380,11 @@ COPY --link --from=dep-n-grep-matcher-0.1.8-d59a566cc66becf8 /tmp/clis-ripgrep_1
 ## script = '''
 ## FROM rust-base AS dep-n-grep-matcher-0.1.8-d59a566cc66becf8
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-ripgrep_15-1-0/release/deps
+## WORKDIR /target/release/deps
 ## RUN \
 ##   --mount=from=cratesio-grep-matcher-0.1.8,source=/grep-matcher-0.1.8,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-matcher-0.1.8 \
-##   --mount=from=out-3a40f50ac19c9d2e,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libmemchr-3a40f50ac19c9d2e.rlib,source=/libmemchr-3a40f50ac19c9d2e.rlib \
-##   --mount=from=out-3a40f50ac19c9d2e,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libmemchr-3a40f50ac19c9d2e.rmeta,source=/libmemchr-3a40f50ac19c9d2e.rmeta \
+##   --mount=from=out-3a40f50ac19c9d2e,dst=/target/release/deps/libmemchr-3a40f50ac19c9d2e.rlib,source=/libmemchr-3a40f50ac19c9d2e.rlib \
+##   --mount=from=out-3a40f50ac19c9d2e,dst=/target/release/deps/libmemchr-3a40f50ac19c9d2e.rmeta,source=/libmemchr-3a40f50ac19c9d2e.rmeta \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=grep_matcher \
 ##         CARGO_INCREMENTAL=0 \
@@ -2406,11 +2406,11 @@ COPY --link --from=dep-n-grep-matcher-0.1.8-d59a566cc66becf8 /tmp/clis-ripgrep_1
 ##         CARGO_PKG_VERSION_PATCH=8 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name grep_matcher --edition 2024 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=7eb0353a7fc53d67' -C extra-filename'=-d59a566cc66becf8' --out-dir /tmp/clis-ripgrep_15-1-0/release/deps -L dependency'=/tmp/clis-ripgrep_15-1-0/release/deps' --extern memchr'=/tmp/clis-ripgrep_15-1-0/release/deps/libmemchr-3a40f50ac19c9d2e.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-matcher-0.1.8/src/lib.rs \
-##         1>          /tmp/clis-ripgrep_15-1-0/release/deps/out-d59a566cc66becf8-stdout \
-##         2>          /tmp/clis-ripgrep_15-1-0/release/deps/out-d59a566cc66becf8-stderr \
-##         || echo $? >/tmp/clis-ripgrep_15-1-0/release/deps/out-d59a566cc66becf8-errcode\
-##   ; find /tmp/clis-ripgrep_15-1-0/release/deps/*-d59a566cc66becf8* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name grep_matcher --edition 2024 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=7eb0353a7fc53d67' -C extra-filename'=-d59a566cc66becf8' --out-dir /target/release/deps -L dependency'=/target/release/deps' --extern memchr'=/target/release/deps/libmemchr-3a40f50ac19c9d2e.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-matcher-0.1.8/src/lib.rs \
+##         1>          /target/release/deps/out-d59a566cc66becf8-stdout \
+##         2>          /target/release/deps/out-d59a566cc66becf8-stderr \
+##         || echo $? >/target/release/deps/out-d59a566cc66becf8-errcode\
+##   ; find /target/release/deps/*-d59a566cc66becf8* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -2418,14 +2418,14 @@ COPY --link --from=dep-n-grep-matcher-0.1.8-d59a566cc66becf8 /tmp/clis-ripgrep_1
 ## stage = "out-d59a566cc66becf8"
 ## script = """
 ## FROM scratch AS out-d59a566cc66becf8
-## COPY --link --from=dep-n-grep-matcher-0.1.8-d59a566cc66becf8 /tmp/clis-ripgrep_15-1-0/release/deps/*-d59a566cc66becf8* /"""
+## COPY --link --from=dep-n-grep-matcher-0.1.8-d59a566cc66becf8 /target/release/deps/*-d59a566cc66becf8* /"""
 
 FROM scratch AS cratesio-cfg-if-1.0.4
 ADD --chmod=0664 --unpack --checksum=sha256:9330f8b2ff13f34540b44e946ef35111825727b38d33286ef986142615121801 \
   https://static.crates.io/crates/cfg-if/cfg-if-1.0.4.crate /
 FROM rust-base AS dep-n-cfg-if-1.0.4-e78ec6df4b56941f
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-ripgrep_15-1-0/release/deps
+WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-cfg-if-1.0.4,source=/cfg-if-1.0.4,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/cfg-if-1.0.4 \
     env CARGO="$(which cargo)" \
@@ -2451,13 +2451,13 @@ item that gets emitted.\
         CARGO_PKG_VERSION_PATCH=4 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --crate-name cfg_if --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("core", "rustc-dep-of-std"))' -C metadata'=d967b258b3adbd78' -C extra-filename'=-e78ec6df4b56941f' --out-dir /tmp/clis-ripgrep_15-1-0/release/deps -L dependency'=/tmp/clis-ripgrep_15-1-0/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/cfg-if-1.0.4/src/lib.rs \
-        1>          /tmp/clis-ripgrep_15-1-0/release/deps/out-e78ec6df4b56941f-stdout \
-        2>          /tmp/clis-ripgrep_15-1-0/release/deps/out-e78ec6df4b56941f-stderr \
-        || echo $? >/tmp/clis-ripgrep_15-1-0/release/deps/out-e78ec6df4b56941f-errcode\
-  ; find /tmp/clis-ripgrep_15-1-0/release/deps/*-e78ec6df4b56941f* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      rustc --crate-name cfg_if --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("core", "rustc-dep-of-std"))' -C metadata'=d967b258b3adbd78' -C extra-filename'=-e78ec6df4b56941f' --out-dir /target/release/deps -L dependency'=/target/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/cfg-if-1.0.4/src/lib.rs \
+        1>          /target/release/deps/out-e78ec6df4b56941f-stdout \
+        2>          /target/release/deps/out-e78ec6df4b56941f-stderr \
+        || echo $? >/target/release/deps/out-e78ec6df4b56941f-errcode\
+  ; find /target/release/deps/*-e78ec6df4b56941f* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-e78ec6df4b56941f
-COPY --link --from=dep-n-cfg-if-1.0.4-e78ec6df4b56941f /tmp/clis-ripgrep_15-1-0/release/deps/*-e78ec6df4b56941f* /
+COPY --link --from=dep-n-cfg-if-1.0.4-e78ec6df4b56941f /target/release/deps/*-e78ec6df4b56941f* /
 
 ## this = "e78ec6df4b56941f"
 ## writes = [
@@ -2466,9 +2466,9 @@ COPY --link --from=dep-n-cfg-if-1.0.4-e78ec6df4b56941f /tmp/clis-ripgrep_15-1-0/
 ##     "libcfg_if-e78ec6df4b56941f.rmeta",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/deps/cfg_if-e78ec6df4b56941f.d","emit":"dep-info"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/deps/libcfg_if-e78ec6df4b56941f.rmeta","emit":"metadata"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/deps/libcfg_if-e78ec6df4b56941f.rlib","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/cfg_if-e78ec6df4b56941f.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libcfg_if-e78ec6df4b56941f.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libcfg_if-e78ec6df4b56941f.rlib","emit":"link"}',
 ## ]
 ##
 ## [[stages]]
@@ -2493,7 +2493,7 @@ COPY --link --from=dep-n-cfg-if-1.0.4-e78ec6df4b56941f /tmp/clis-ripgrep_15-1-0/
 ## script = '''
 ## FROM rust-base AS dep-n-cfg-if-1.0.4-e78ec6df4b56941f
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-ripgrep_15-1-0/release/deps
+## WORKDIR /target/release/deps
 ## RUN \
 ##   --mount=from=cratesio-cfg-if-1.0.4,source=/cfg-if-1.0.4,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/cfg-if-1.0.4 \
 ##     env CARGO="$(which cargo)" \
@@ -2519,11 +2519,11 @@ COPY --link --from=dep-n-cfg-if-1.0.4-e78ec6df4b56941f /tmp/clis-ripgrep_15-1-0/
 ##         CARGO_PKG_VERSION_PATCH=4 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name cfg_if --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("core", "rustc-dep-of-std"))' -C metadata'=d967b258b3adbd78' -C extra-filename'=-e78ec6df4b56941f' --out-dir /tmp/clis-ripgrep_15-1-0/release/deps -L dependency'=/tmp/clis-ripgrep_15-1-0/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/cfg-if-1.0.4/src/lib.rs \
-##         1>          /tmp/clis-ripgrep_15-1-0/release/deps/out-e78ec6df4b56941f-stdout \
-##         2>          /tmp/clis-ripgrep_15-1-0/release/deps/out-e78ec6df4b56941f-stderr \
-##         || echo $? >/tmp/clis-ripgrep_15-1-0/release/deps/out-e78ec6df4b56941f-errcode\
-##   ; find /tmp/clis-ripgrep_15-1-0/release/deps/*-e78ec6df4b56941f* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name cfg_if --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("core", "rustc-dep-of-std"))' -C metadata'=d967b258b3adbd78' -C extra-filename'=-e78ec6df4b56941f' --out-dir /target/release/deps -L dependency'=/target/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/cfg-if-1.0.4/src/lib.rs \
+##         1>          /target/release/deps/out-e78ec6df4b56941f-stdout \
+##         2>          /target/release/deps/out-e78ec6df4b56941f-stderr \
+##         || echo $? >/target/release/deps/out-e78ec6df4b56941f-errcode\
+##   ; find /target/release/deps/*-e78ec6df4b56941f* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -2531,18 +2531,18 @@ COPY --link --from=dep-n-cfg-if-1.0.4-e78ec6df4b56941f /tmp/clis-ripgrep_15-1-0/
 ## stage = "out-e78ec6df4b56941f"
 ## script = """
 ## FROM scratch AS out-e78ec6df4b56941f
-## COPY --link --from=dep-n-cfg-if-1.0.4-e78ec6df4b56941f /tmp/clis-ripgrep_15-1-0/release/deps/*-e78ec6df4b56941f* /"""
+## COPY --link --from=dep-n-cfg-if-1.0.4-e78ec6df4b56941f /target/release/deps/*-e78ec6df4b56941f* /"""
 
 FROM scratch AS cratesio-encoding_rs-0.8.35
 ADD --chmod=0664 --unpack --checksum=sha256:75030f3c4f45dafd7586dd6780965a8c7e8e285a5ecb86713e63a79c5b2766f3 \
   https://static.crates.io/crates/encoding_rs/encoding_rs-0.8.35.crate /
 FROM rust-base AS dep-n-encoding_rs-0.8.35-e0d6e4f8a8eb4371
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-ripgrep_15-1-0/release/deps
+WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-encoding_rs-0.8.35,source=/encoding_rs-0.8.35,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/encoding_rs-0.8.35 \
-  --mount=from=out-e78ec6df4b56941f,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libcfg_if-e78ec6df4b56941f.rlib,source=/libcfg_if-e78ec6df4b56941f.rlib \
-  --mount=from=out-e78ec6df4b56941f,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libcfg_if-e78ec6df4b56941f.rmeta,source=/libcfg_if-e78ec6df4b56941f.rmeta \
+  --mount=from=out-e78ec6df4b56941f,dst=/target/release/deps/libcfg_if-e78ec6df4b56941f.rlib,source=/libcfg_if-e78ec6df4b56941f.rlib \
+  --mount=from=out-e78ec6df4b56941f,dst=/target/release/deps/libcfg_if-e78ec6df4b56941f.rmeta,source=/libcfg_if-e78ec6df4b56941f.rmeta \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=encoding_rs \
         CARGO_INCREMENTAL=0 \
@@ -2563,13 +2563,13 @@ RUN \
         CARGO_PKG_VERSION_PATCH=35 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --crate-name encoding_rs --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --cfg feature'="alloc"' --cfg feature'="default"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "any_all_workaround", "default", "fast-big5-hanzi-encode", "fast-gb-hanzi-encode", "fast-hangul-encode", "fast-hanja-encode", "fast-kanji-encode", "fast-legacy-encode", "less-slow-big5-hanzi-encode", "less-slow-gb-hanzi-encode", "less-slow-kanji-encode", "serde", "simd-accel"))' -C metadata'=9d7cb9a1da1cd85c' -C extra-filename'=-e0d6e4f8a8eb4371' --out-dir /tmp/clis-ripgrep_15-1-0/release/deps -L dependency'=/tmp/clis-ripgrep_15-1-0/release/deps' --extern cfg_if'=/tmp/clis-ripgrep_15-1-0/release/deps/libcfg_if-e78ec6df4b56941f.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/encoding_rs-0.8.35/src/lib.rs \
-        1>          /tmp/clis-ripgrep_15-1-0/release/deps/out-e0d6e4f8a8eb4371-stdout \
-        2>          /tmp/clis-ripgrep_15-1-0/release/deps/out-e0d6e4f8a8eb4371-stderr \
-        || echo $? >/tmp/clis-ripgrep_15-1-0/release/deps/out-e0d6e4f8a8eb4371-errcode\
-  ; find /tmp/clis-ripgrep_15-1-0/release/deps/*-e0d6e4f8a8eb4371* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      rustc --crate-name encoding_rs --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --cfg feature'="alloc"' --cfg feature'="default"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "any_all_workaround", "default", "fast-big5-hanzi-encode", "fast-gb-hanzi-encode", "fast-hangul-encode", "fast-hanja-encode", "fast-kanji-encode", "fast-legacy-encode", "less-slow-big5-hanzi-encode", "less-slow-gb-hanzi-encode", "less-slow-kanji-encode", "serde", "simd-accel"))' -C metadata'=9d7cb9a1da1cd85c' -C extra-filename'=-e0d6e4f8a8eb4371' --out-dir /target/release/deps -L dependency'=/target/release/deps' --extern cfg_if'=/target/release/deps/libcfg_if-e78ec6df4b56941f.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/encoding_rs-0.8.35/src/lib.rs \
+        1>          /target/release/deps/out-e0d6e4f8a8eb4371-stdout \
+        2>          /target/release/deps/out-e0d6e4f8a8eb4371-stderr \
+        || echo $? >/target/release/deps/out-e0d6e4f8a8eb4371-errcode\
+  ; find /target/release/deps/*-e0d6e4f8a8eb4371* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-e0d6e4f8a8eb4371
-COPY --link --from=dep-n-encoding_rs-0.8.35-e0d6e4f8a8eb4371 /tmp/clis-ripgrep_15-1-0/release/deps/*-e0d6e4f8a8eb4371* /
+COPY --link --from=dep-n-encoding_rs-0.8.35-e0d6e4f8a8eb4371 /target/release/deps/*-e0d6e4f8a8eb4371* /
 
 ## this = "e0d6e4f8a8eb4371"
 ## deps = ["e78ec6df4b56941f"]
@@ -2579,7 +2579,7 @@ COPY --link --from=dep-n-encoding_rs-0.8.35-e0d6e4f8a8eb4371 /tmp/clis-ripgrep_1
 ##     "libencoding_rs-e0d6e4f8a8eb4371.rmeta",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/deps/encoding_rs-e0d6e4f8a8eb4371.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/encoding_rs-e0d6e4f8a8eb4371.d","emit":"dep-info"}',
 ##     '{"$message_type":"diagnostic","message":"unexpected `cfg` condition value: `cargo-clippy`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/encoding_rs-0.8.35/src/lib.rs","byte_start":2175,"byte_end":2199,"line_start":42,"line_end":42,"column_start":5,"column_end":29,"is_primary":true,"text":[{"text":"    feature = \"cargo-clippy\",","highlight_start":5,"highlight_end":29}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"expected values for `feature` are: `alloc`, `any_all_workaround`, `default`, `fast-big5-hanzi-encode`, `fast-gb-hanzi-encode`, `fast-hangul-encode`, `fast-hanja-encode`, `fast-kanji-encode`, `fast-legacy-encode`, `less-slow-big5-hanzi-encode`, `less-slow-gb-hanzi-encode`, `less-slow-kanji-encode`, `serde`, and `simd-accel`","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"consider adding `cargo-clippy` as a feature in `Cargo.toml`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"`#[warn(unexpected_cfgs)]` on by default","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition value: `cargo-clippy`\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/encoding_rs-0.8.35/src/lib.rs:42:5\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m42\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    feature = \"cargo-clippy\",\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: expected values for `feature` are: `alloc`, `any_all_workaround`, `default`, `fast-big5-hanzi-encode`, `fast-gb-hanzi-encode`, `fast-hangul-encode`, `fast-hanja-encode`, `fast-kanji-encode`, `fast-legacy-encode`, `less-slow-big5-hanzi-encode`, `less-slow-gb-hanzi-encode`, `less-slow-kanji-encode`, `serde`, and `simd-accel`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider adding `cargo-clippy` as a feature in `Cargo.toml`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: `#[warn(unexpected_cfgs)]` on by default\u001b[0m\n\n"}',
 ##     '{"$message_type":"diagnostic","message":"unexpected `cfg` condition value: `cargo-clippy`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/encoding_rs-0.8.35/src/macros.rs","byte_start":30925,"byte_end":30949,"line_start":689,"line_end":689,"column_start":16,"column_end":40,"is_primary":true,"text":[{"text":"    #[cfg_attr(feature = \"cargo-clippy\", allow(never_loop))]","highlight_start":16,"highlight_end":40}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":{"span":{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/encoding_rs-0.8.35/src/macros.rs","byte_start":43894,"byte_end":44414,"line_start":919,"line_end":937,"column_start":9,"column_end":10,"is_primary":false,"text":[{"text":"        euc_jp_decoder_function!(","highlight_start":9,"highlight_end":34},{"text":"            $jis0802_trail_body,","highlight_start":1,"highlight_end":33},{"text":"            $jis0812_lead_body,","highlight_start":1,"highlight_end":32},{"text":"            $jis0812_trail_body,","highlight_start":1,"highlight_end":33},{"text":"            $half_width_katakana_body,","highlight_start":1,"highlight_end":39},{"text":"            $slf,","highlight_start":1,"highlight_end":18},{"text":"            $non_ascii,","highlight_start":1,"highlight_end":24},{"text":"            $jis0208_lead_minus_offset,","highlight_start":1,"highlight_end":40},{"text":"            $byte,","highlight_start":1,"highlight_end":19},{"text":"            $unread_handle_trail,","highlight_start":1,"highlight_end":34},{"text":"            $jis0212_lead_minus_offset,","highlight_start":1,"highlight_end":40},{"text":"            $lead,","highlight_start":1,"highlight_end":19},{"text":"            $unread_handle_jis0212,","highlight_start":1,"highlight_end":36},{"text":"            $source,","highlight_start":1,"highlight_end":21},{"text":"            $handle,","highlight_start":1,"highlight_end":21},{"text":"            decode_to_utf8_raw,","highlight_start":1,"highlight_end":32},{"text":"            u8,","highlight_start":1,"highlight_end":16},{"text":"            Utf8Destination","highlight_start":1,"highlight_end":28},{"text":"        );","highlight_start":1,"highlight_end":10}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":{"span":{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/encoding_rs-0.8.35/src/euc_jp.rs","byte_start":2162,"byte_end":8430,"line_start":77,"line_end":221,"column_start":5,"column_end":6,"is_primary":false,"text":[{"text":"    euc_jp_decoder_functions!(","highlight_start":5,"highlight_end":31},{"text":"        {","highlight_start":1,"highlight_end":10},{"text":"            let trail_minus_offset = byte.wrapping_sub(0xA1);","highlight_start":1,"highlight_end":62},{"text":"            // Fast-track Hiragana (60% according to Lunde)","highlight_start":1,"highlight_end":60},{"text":"            // and Katakana (10% acconding to Lunde).","highlight_start":1,"highlight_end":54},{"text":"            if jis0208_lead_minus_offset == 0x03 && trail_minus_offset < 0x53 {","highlight_start":1,"highlight_end":80},{"text":"                // Hiragana","highlight_start":1,"highlight_end":28},{"text":"                handle.write_upper_bmp(0x3041 + u16::from(trail_minus_offset))","highlight_start":1,"highlight_end":79},{"text":"            } else if jis0208_lead_minus_offset == 0x04 && trail_minus_offset < 0x56 {","highlight_start":1,"highlight_end":87},{"text":"                // Katakana","highlight_start":1,"highlight_end":28},{"text":"                handle.write_upper_bmp(0x30A1 + u16::from(trail_minus_offset))","highlight_start":1,"highlight_end":79},{"text":"            } else if trail_minus_offset > (0xFE - 0xA1) {","highlight_start":1,"highlight_end":59},{"text":"                if byte < 0x80 {","highlight_start":1,"highlight_end":33},{"text":"                    return (","highlight_start":1,"highlight_end":29},{"text":"                        DecoderResult::Malformed(1, 0),","highlight_start":1,"highlight_end":56},{"text":"                        unread_handle_trail.unread(),","highlight_start":1,"highlight_end":54},{"text":"                        handle.written(),","highlight_start":1,"highlight_end":42},{"text":"                    );","highlight_start":1,"highlight_end":23},{"text":"                }","highlight_start":1,"highlight_end":18},{"text":"                return (","highlight_start":1,"highlight_end":25},{"text":"                    DecoderResult::Malformed(2, 0),","highlight_start":1,"highlight_end":52},{"text":"                    unread_handle_trail.consumed(),","highlight_start":1,"highlight_end":52},{"text":"                    handle.written(),","highlight_start":1,"highlight_end":38},{"text":"                );","highlight_start":1,"highlight_end":19},{"text":"            } else {","highlight_start":1,"highlight_end":21},{"text":"                let pointer = mul_94(jis0208_lead_minus_offset) + usize::from(trail_minus_offset);","highlight_start":1,"highlight_end":99},{"text":"                let level1_pointer = pointer.wrapping_sub(1410);","highlight_start":1,"highlight_end":65},{"text":"                if level1_pointer < JIS0208_LEVEL1_KANJI.len() {","highlight_start":1,"highlight_end":65},{"text":"                    handle.write_upper_bmp(JIS0208_LEVEL1_KANJI[level1_pointer])","highlight_start":1,"highlight_end":81},{"text":"                } else {","highlight_start":1,"highlight_end":25},{"text":"                    let level2_pointer = pointer.wrapping_sub(4418);","highlight_start":1,"highlight_end":69},{"text":"                    if level2_pointer < JIS0208_LEVEL2_AND_ADDITIONAL_KANJI.len() {","highlight_start":1,"highlight_end":84},{"text":"                        handle.write_upper_bmp(JIS0208_LEVEL2_AND_ADDITIONAL_KANJI[level2_pointer])","highlight_start":1,"highlight_end":100},{"text":"                    } else {","highlight_start":1,"highlight_end":29},{"text":"                        let ibm_pointer = pointer.wrapping_sub(8272);","highlight_start":1,"highlight_end":70},{"text":"                        if ibm_pointer < IBM_KANJI.len() {","highlight_start":1,"highlight_end":59},{"text":"                            handle.write_upper_bmp(IBM_KANJI[ibm_pointer])","highlight_start":1,"highlight_end":75},{"text":"                        } else if let Some(bmp) = jis0208_symbol_decode(pointer) {","highlight_start":1,"highlight_end":83},{"text":"                            handle.write_bmp_excl_ascii(bmp)","highlight_start":1,"highlight_end":61},{"text":"                        } else if let Some(bmp) = jis0208_range_decode(pointer) {","highlight_start":1,"highlight_end":82},{"text":"                            handle.write_bmp_excl_ascii(bmp)","highlight_start":1,"highlight_end":61},{"text":"                        } else {","highlight_start":1,"highlight_end":33},{"text":"                            return (","highlight_start":1,"highlight_end":37},{"text":"                                DecoderResult::Malformed(2, 0),","highlight_start":1,"highlight_end":64},{"text":"                                unread_handle_trail.consumed(),","highlight_start":1,"highlight_end":64},{"text":"                                handle.written(),","highlight_start":1,"highlight_end":50},{"text":"                            );","highlight_start":1,"highlight_end":31},{"text":"                        }","highlight_start":1,"highlight_end":26},{"text":"                    }","highlight_start":1,"highlight_end":22},{"text":"                }","highlight_start":1,"highlight_end":18},{"text":"            }","highlight_start":1,"highlight_end":14},{"text":"        },","highlight_start":1,"highlight_end":11},{"text":"        {","highlight_start":1,"highlight_end":10},{"text":"            // If lead is between 0xA1 and 0xFE, inclusive,","highlight_start":1,"highlight_end":60},{"text":"            // subtract 0xA1.","highlight_start":1,"highlight_end":30},{"text":"            let jis0212_lead_minus_offset = lead.wrapping_sub(0xA1);","highlight_start":1,"highlight_end":69},{"text":"            if jis0212_lead_minus_offset > (0xFE - 0xA1) {","highlight_start":1,"highlight_end":59},{"text":"                if lead < 0x80 {","highlight_start":1,"highlight_end":33},{"text":"                    return (","highlight_start":1,"highlight_end":29},{"text":"                        DecoderResult::Malformed(1, 0),","highlight_start":1,"highlight_end":56},{"text":"                        unread_handle_jis0212.unread(),","highlight_start":1,"highlight_end":56},{"text":"                        handle.written(),","highlight_start":1,"highlight_end":42},{"text":"                    );","highlight_start":1,"highlight_end":23},{"text":"                }","highlight_start":1,"highlight_end":18},{"text":"                return (","highlight_start":1,"highlight_end":25},{"text":"                    DecoderResult::Malformed(2, 0),","highlight_start":1,"highlight_end":52},{"text":"                    unread_handle_jis0212.consumed(),","highlight_start":1,"highlight_end":54},{"text":"                    handle.written(),","highlight_start":1,"highlight_end":38},{"text":"                );","highlight_start":1,"highlight_end":19},{"text":"            }","highlight_start":1,"highlight_end":14},{"text":"            jis0212_lead_minus_offset","highlight_start":1,"highlight_end":38},{"text":"        },","highlight_start":1,"highlight_end":11},{"text":"        {","highlight_start":1,"highlight_end":10},{"text":"            // If trail is between 0xA1 and 0xFE, inclusive,","highlight_start":1,"highlight_end":61},{"text":"            // subtract 0xA1.","highlight_start":1,"highlight_end":30},{"text":"            let trail_minus_offset = byte.wrapping_sub(0xA1);","highlight_start":1,"highlight_end":62},{"text":"            if trail_minus_offset > (0xFE - 0xA1) {","highlight_start":1,"highlight_end":52},{"text":"                if byte < 0x80 {","highlight_start":1,"highlight_end":33},{"text":"                    return (","highlight_start":1,"highlight_end":29},{"text":"                        DecoderResult::Malformed(2, 0),","highlight_start":1,"highlight_end":56},{"text":"                        unread_handle_trail.unread(),","highlight_start":1,"highlight_end":54},{"text":"                        handle.written(),","highlight_start":1,"highlight_end":42},{"text":"                    );","highlight_start":1,"highlight_end":23},{"text":"                }","highlight_start":1,"highlight_end":18},{"text":"                return (","highlight_start":1,"highlight_end":25},{"text":"                    DecoderResult::Malformed(3, 0),","highlight_start":1,"highlight_end":52},{"text":"                    unread_handle_trail.consumed(),","highlight_start":1,"highlight_end":52},{"text":"                    handle.written(),","highlight_start":1,"highlight_end":38},{"text":"                );","highlight_start":1,"highlight_end":19},{"text":"            }","highlight_start":1,"highlight_end":14},{"text":"            let pointer = mul_94(jis0212_lead_minus_offset) + usize::from(trail_minus_offset);","highlight_start":1,"highlight_end":95},{"text":"            let pointer_minus_kanji = pointer.wrapping_sub(1410);","highlight_start":1,"highlight_end":66},{"text":"            if pointer_minus_kanji < JIS0212_KANJI.len() {","highlight_start":1,"highlight_end":59},{"text":"                handle.write_upper_bmp(JIS0212_KANJI[pointer_minus_kanji])","highlight_start":1,"highlight_end":75},{"text":"            } else if let Some(bmp) = jis0212_accented_decode(pointer) {","highlight_start":1,"highlight_end":73},{"text":"                handle.write_bmp_excl_ascii(bmp)","highlight_start":1,"highlight_end":49},{"text":"            } else {","highlight_start":1,"highlight_end":21},{"text":"                let pointer_minus_upper_cyrillic = pointer.wrapping_sub(597);","highlight_start":1,"highlight_end":78},{"text":"                if pointer_minus_upper_cyrillic <= (607 - 597) {","highlight_start":1,"highlight_end":65},{"text":"                    handle.write_mid_bmp(0x0402 + pointer_minus_upper_cyrillic as u16)","highlight_start":1,"highlight_end":87},{"text":"                } else {","highlight_start":1,"highlight_end":25},{"text":"                    let pointer_minus_lower_cyrillic = pointer.wrapping_sub(645);","highlight_start":1,"highlight_end":82},{"text":"                    if pointer_minus_lower_cyrillic <= (655 - 645) {","highlight_start":1,"highlight_end":69},{"text":"                        handle.write_mid_bmp(0x0452 + pointer_minus_lower_cyrillic as u16)","highlight_start":1,"highlight_end":91},{"text":"                    } else {","highlight_start":1,"highlight_end":29},{"text":"                        return (","highlight_start":1,"highlight_end":33},{"text":"                            DecoderResult::Malformed(3, 0),","highlight_start":1,"highlight_end":60},{"text":"                            unread_handle_trail.consumed(),","highlight_start":1,"highlight_end":60},{"text":"                            handle.written(),","highlight_start":1,"highlight_end":46},{"text":"                        );","highlight_start":1,"highlight_end":27},{"text":"                    }","highlight_start":1,"highlight_end":22},{"text":"                }","highlight_start":1,"highlight_end":18},{"text":"            }","highlight_start":1,"highlight_end":14},{"text":"        },","highlight_start":1,"highlight_end":11},{"text":"        {","highlight_start":1,"highlight_end":10},{"text":"            // If trail is between 0xA1 and 0xDF, inclusive,","highlight_start":1,"highlight_end":61},{"text":"            // subtract 0xA1 and map to half-width Katakana.","highlight_start":1,"highlight_end":61},{"text":"            let trail_minus_offset = byte.wrapping_sub(0xA1);","highlight_start":1,"highlight_end":62},{"text":"            if trail_minus_offset > (0xDF - 0xA1) {","highlight_start":1,"highlight_end":52},{"text":"                if byte < 0x80 {","highlight_start":1,"highlight_end":33},{"text":"                    return (","highlight_start":1,"highlight_end":29},{"text":"                        DecoderResult::Malformed(1, 0),","highlight_start":1,"highlight_end":56},{"text":"                        unread_handle_trail.unread(),","highlight_start":1,"highlight_end":54},{"text":"                        handle.written(),","highlight_start":1,"highlight_end":42},{"text":"                    );","highlight_start":1,"highlight_end":23},{"text":"                }","highlight_start":1,"highlight_end":18},{"text":"                return (","highlight_start":1,"highlight_end":25},{"text":"                    DecoderResult::Malformed(2, 0),","highlight_start":1,"highlight_end":52},{"text":"                    unread_handle_trail.consumed(),","highlight_start":1,"highlight_end":52},{"text":"                    handle.written(),","highlight_start":1,"highlight_end":38},{"text":"                );","highlight_start":1,"highlight_end":19},{"text":"            }","highlight_start":1,"highlight_end":14},{"text":"            handle.write_upper_bmp(0xFF61 + u16::from(trail_minus_offset))","highlight_start":1,"highlight_end":75},{"text":"        },","highlight_start":1,"highlight_end":11},{"text":"        self,","highlight_start":1,"highlight_end":14},{"text":"        non_ascii,","highlight_start":1,"highlight_end":19},{"text":"        jis0208_lead_minus_offset,","highlight_start":1,"highlight_end":35},{"text":"        byte,","highlight_start":1,"highlight_end":14},{"text":"        unread_handle_trail,","highlight_start":1,"highlight_end":29},{"text":"        jis0212_lead_minus_offset,","highlight_start":1,"highlight_end":35},{"text":"        lead,","highlight_start":1,"highlight_end":14},{"text":"        unread_handle_jis0212,","highlight_start":1,"highlight_end":31},{"text":"        source,","highlight_start":1,"highlight_end":16},{"text":"        handle","highlight_start":1,"highlight_end":15},{"text":"    );","highlight_start":1,"highlight_end":6}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null},"macro_decl_name":"euc_jp_decoder_functions!","def_site_span":{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/encoding_rs-0.8.35/src/macros.rs","byte_start":43393,"byte_end":43430,"line_start":902,"line_end":902,"column_start":1,"column_end":38,"is_primary":false,"text":[{"text":"macro_rules! euc_jp_decoder_functions {","highlight_start":1,"highlight_end":38}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}}},"macro_decl_name":"euc_jp_decoder_function!","def_site_span":{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/encoding_rs-0.8.35/src/macros.rs","byte_start":30408,"byte_end":30444,"line_start":671,"line_end":671,"column_start":1,"column_end":37,"is_primary":false,"text":[{"text":"macro_rules! euc_jp_decoder_function {","highlight_start":1,"highlight_end":37}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}}}],"children":[{"message":"expected values for `feature` are: `alloc`, `any_all_workaround`, `default`, `fast-big5-hanzi-encode`, `fast-gb-hanzi-encode`, `fast-hangul-encode`, `fast-hanja-encode`, `fast-kanji-encode`, `fast-legacy-encode`, `less-slow-big5-hanzi-encode`, `less-slow-gb-hanzi-encode`, `less-slow-kanji-encode`, `serde`, and `simd-accel`","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"consider adding `cargo-clippy` as a feature in `Cargo.toml`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition value: `cargo-clippy`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/encoding_rs-0.8.35/src/macros.rs:689:16\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m689\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m   \u001b[0m\u001b[0m    #[cfg_attr(feature = \"cargo-clippy\", allow(never_loop))]\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                  \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m::: \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/encoding_rs-0.8.35/src/euc_jp.rs:77:5\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m77\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m/\u001b[0m\u001b[0m \u001b[0m\u001b[0m    euc_jp_decoder_functions!(\u001b[0m\n\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m78\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m        {\u001b[0m\n\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m79\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m            let trail_minus_offset = byte.wrapping_sub(0xA1);\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m...\u001b[0m\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m220\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m        handle\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m221\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    );\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|_____-\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12min this macro invocation\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: expected values for `feature` are: `alloc`, `any_all_workaround`, `default`, `fast-big5-hanzi-encode`, `fast-gb-hanzi-encode`, `fast-hangul-encode`, `fast-hanja-encode`, `fast-kanji-encode`, `fast-legacy-encode`, `less-slow-big5-hanzi-encode`, `less-slow-gb-hanzi-encode`, `less-slow-kanji-encode`, `serde`, and `simd-accel`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider adding `cargo-clippy` as a feature in `Cargo.toml`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: this warning originates in the macro `euc_jp_decoder_function` which comes from the expansion of the macro `euc_jp_decoder_functions` (in Nightly builds, run with -Z macro-backtrace for more info)\u001b[0m\n\n"}',
 ##     '{"$message_type":"diagnostic","message":"unexpected `cfg` condition value: `cargo-clippy`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/encoding_rs-0.8.35/src/macros.rs","byte_start":30925,"byte_end":30949,"line_start":689,"line_end":689,"column_start":16,"column_end":40,"is_primary":true,"text":[{"text":"    #[cfg_attr(feature = \"cargo-clippy\", allow(never_loop))]","highlight_start":16,"highlight_end":40}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":{"span":{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/encoding_rs-0.8.35/src/macros.rs","byte_start":44424,"byte_end":44947,"line_start":938,"line_end":956,"column_start":9,"column_end":10,"is_primary":false,"text":[{"text":"        euc_jp_decoder_function!(","highlight_start":9,"highlight_end":34},{"text":"            $jis0802_trail_body,","highlight_start":1,"highlight_end":33},{"text":"            $jis0812_lead_body,","highlight_start":1,"highlight_end":32},{"text":"            $jis0812_trail_body,","highlight_start":1,"highlight_end":33},{"text":"            $half_width_katakana_body,","highlight_start":1,"highlight_end":39},{"text":"            $slf,","highlight_start":1,"highlight_end":18},{"text":"            $non_ascii,","highlight_start":1,"highlight_end":24},{"text":"            $jis0208_lead_minus_offset,","highlight_start":1,"highlight_end":40},{"text":"            $byte,","highlight_start":1,"highlight_end":19},{"text":"            $unread_handle_trail,","highlight_start":1,"highlight_end":34},{"text":"            $jis0212_lead_minus_offset,","highlight_start":1,"highlight_end":40},{"text":"            $lead,","highlight_start":1,"highlight_end":19},{"text":"            $unread_handle_jis0212,","highlight_start":1,"highlight_end":36},{"text":"            $source,","highlight_start":1,"highlight_end":21},{"text":"            $handle,","highlight_start":1,"highlight_end":21},{"text":"            decode_to_utf16_raw,","highlight_start":1,"highlight_end":33},{"text":"            u16,","highlight_start":1,"highlight_end":17},{"text":"            Utf16Destination","highlight_start":1,"highlight_end":29},{"text":"        );","highlight_start":1,"highlight_end":10}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":{"span":{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/encoding_rs-0.8.35/src/euc_jp.rs","byte_start":2162,"byte_end":8430,"line_start":77,"line_end":221,"column_start":5,"column_end":6,"is_primary":false,"text":[{"text":"    euc_jp_decoder_functions!(","highlight_start":5,"highlight_end":31},{"text":"        {","highlight_start":1,"highlight_end":10},{"text":"            let trail_minus_offset = byte.wrapping_sub(0xA1);","highlight_start":1,"highlight_end":62},{"text":"            // Fast-track Hiragana (60% according to Lunde)","highlight_start":1,"highlight_end":60},{"text":"            // and Katakana (10% acconding to Lunde).","highlight_start":1,"highlight_end":54},{"text":"            if jis0208_lead_minus_offset == 0x03 && trail_minus_offset < 0x53 {","highlight_start":1,"highlight_end":80},{"text":"                // Hiragana","highlight_start":1,"highlight_end":28},{"text":"                handle.write_upper_bmp(0x3041 + u16::from(trail_minus_offset))","highlight_start":1,"highlight_end":79},{"text":"            } else if jis0208_lead_minus_offset == 0x04 && trail_minus_offset < 0x56 {","highlight_start":1,"highlight_end":87},{"text":"                // Katakana","highlight_start":1,"highlight_end":28},{"text":"                handle.write_upper_bmp(0x30A1 + u16::from(trail_minus_offset))","highlight_start":1,"highlight_end":79},{"text":"            } else if trail_minus_offset > (0xFE - 0xA1) {","highlight_start":1,"highlight_end":59},{"text":"                if byte < 0x80 {","highlight_start":1,"highlight_end":33},{"text":"                    return (","highlight_start":1,"highlight_end":29},{"text":"                        DecoderResult::Malformed(1, 0),","highlight_start":1,"highlight_end":56},{"text":"                        unread_handle_trail.unread(),","highlight_start":1,"highlight_end":54},{"text":"                        handle.written(),","highlight_start":1,"highlight_end":42},{"text":"                    );","highlight_start":1,"highlight_end":23},{"text":"                }","highlight_start":1,"highlight_end":18},{"text":"                return (","highlight_start":1,"highlight_end":25},{"text":"                    DecoderResult::Malformed(2, 0),","highlight_start":1,"highlight_end":52},{"text":"                    unread_handle_trail.consumed(),","highlight_start":1,"highlight_end":52},{"text":"                    handle.written(),","highlight_start":1,"highlight_end":38},{"text":"                );","highlight_start":1,"highlight_end":19},{"text":"            } else {","highlight_start":1,"highlight_end":21},{"text":"                let pointer = mul_94(jis0208_lead_minus_offset) + usize::from(trail_minus_offset);","highlight_start":1,"highlight_end":99},{"text":"                let level1_pointer = pointer.wrapping_sub(1410);","highlight_start":1,"highlight_end":65},{"text":"                if level1_pointer < JIS0208_LEVEL1_KANJI.len() {","highlight_start":1,"highlight_end":65},{"text":"                    handle.write_upper_bmp(JIS0208_LEVEL1_KANJI[level1_pointer])","highlight_start":1,"highlight_end":81},{"text":"                } else {","highlight_start":1,"highlight_end":25},{"text":"                    let level2_pointer = pointer.wrapping_sub(4418);","highlight_start":1,"highlight_end":69},{"text":"                    if level2_pointer < JIS0208_LEVEL2_AND_ADDITIONAL_KANJI.len() {","highlight_start":1,"highlight_end":84},{"text":"                        handle.write_upper_bmp(JIS0208_LEVEL2_AND_ADDITIONAL_KANJI[level2_pointer])","highlight_start":1,"highlight_end":100},{"text":"                    } else {","highlight_start":1,"highlight_end":29},{"text":"                        let ibm_pointer = pointer.wrapping_sub(8272);","highlight_start":1,"highlight_end":70},{"text":"                        if ibm_pointer < IBM_KANJI.len() {","highlight_start":1,"highlight_end":59},{"text":"                            handle.write_upper_bmp(IBM_KANJI[ibm_pointer])","highlight_start":1,"highlight_end":75},{"text":"                        } else if let Some(bmp) = jis0208_symbol_decode(pointer) {","highlight_start":1,"highlight_end":83},{"text":"                            handle.write_bmp_excl_ascii(bmp)","highlight_start":1,"highlight_end":61},{"text":"                        } else if let Some(bmp) = jis0208_range_decode(pointer) {","highlight_start":1,"highlight_end":82},{"text":"                            handle.write_bmp_excl_ascii(bmp)","highlight_start":1,"highlight_end":61},{"text":"                        } else {","highlight_start":1,"highlight_end":33},{"text":"                            return (","highlight_start":1,"highlight_end":37},{"text":"                                DecoderResult::Malformed(2, 0),","highlight_start":1,"highlight_end":64},{"text":"                                unread_handle_trail.consumed(),","highlight_start":1,"highlight_end":64},{"text":"                                handle.written(),","highlight_start":1,"highlight_end":50},{"text":"                            );","highlight_start":1,"highlight_end":31},{"text":"                        }","highlight_start":1,"highlight_end":26},{"text":"                    }","highlight_start":1,"highlight_end":22},{"text":"                }","highlight_start":1,"highlight_end":18},{"text":"            }","highlight_start":1,"highlight_end":14},{"text":"        },","highlight_start":1,"highlight_end":11},{"text":"        {","highlight_start":1,"highlight_end":10},{"text":"            // If lead is between 0xA1 and 0xFE, inclusive,","highlight_start":1,"highlight_end":60},{"text":"            // subtract 0xA1.","highlight_start":1,"highlight_end":30},{"text":"            let jis0212_lead_minus_offset = lead.wrapping_sub(0xA1);","highlight_start":1,"highlight_end":69},{"text":"            if jis0212_lead_minus_offset > (0xFE - 0xA1) {","highlight_start":1,"highlight_end":59},{"text":"                if lead < 0x80 {","highlight_start":1,"highlight_end":33},{"text":"                    return (","highlight_start":1,"highlight_end":29},{"text":"                        DecoderResult::Malformed(1, 0),","highlight_start":1,"highlight_end":56},{"text":"                        unread_handle_jis0212.unread(),","highlight_start":1,"highlight_end":56},{"text":"                        handle.written(),","highlight_start":1,"highlight_end":42},{"text":"                    );","highlight_start":1,"highlight_end":23},{"text":"                }","highlight_start":1,"highlight_end":18},{"text":"                return (","highlight_start":1,"highlight_end":25},{"text":"                    DecoderResult::Malformed(2, 0),","highlight_start":1,"highlight_end":52},{"text":"                    unread_handle_jis0212.consumed(),","highlight_start":1,"highlight_end":54},{"text":"                    handle.written(),","highlight_start":1,"highlight_end":38},{"text":"                );","highlight_start":1,"highlight_end":19},{"text":"            }","highlight_start":1,"highlight_end":14},{"text":"            jis0212_lead_minus_offset","highlight_start":1,"highlight_end":38},{"text":"        },","highlight_start":1,"highlight_end":11},{"text":"        {","highlight_start":1,"highlight_end":10},{"text":"            // If trail is between 0xA1 and 0xFE, inclusive,","highlight_start":1,"highlight_end":61},{"text":"            // subtract 0xA1.","highlight_start":1,"highlight_end":30},{"text":"            let trail_minus_offset = byte.wrapping_sub(0xA1);","highlight_start":1,"highlight_end":62},{"text":"            if trail_minus_offset > (0xFE - 0xA1) {","highlight_start":1,"highlight_end":52},{"text":"                if byte < 0x80 {","highlight_start":1,"highlight_end":33},{"text":"                    return (","highlight_start":1,"highlight_end":29},{"text":"                        DecoderResult::Malformed(2, 0),","highlight_start":1,"highlight_end":56},{"text":"                        unread_handle_trail.unread(),","highlight_start":1,"highlight_end":54},{"text":"                        handle.written(),","highlight_start":1,"highlight_end":42},{"text":"                    );","highlight_start":1,"highlight_end":23},{"text":"                }","highlight_start":1,"highlight_end":18},{"text":"                return (","highlight_start":1,"highlight_end":25},{"text":"                    DecoderResult::Malformed(3, 0),","highlight_start":1,"highlight_end":52},{"text":"                    unread_handle_trail.consumed(),","highlight_start":1,"highlight_end":52},{"text":"                    handle.written(),","highlight_start":1,"highlight_end":38},{"text":"                );","highlight_start":1,"highlight_end":19},{"text":"            }","highlight_start":1,"highlight_end":14},{"text":"            let pointer = mul_94(jis0212_lead_minus_offset) + usize::from(trail_minus_offset);","highlight_start":1,"highlight_end":95},{"text":"            let pointer_minus_kanji = pointer.wrapping_sub(1410);","highlight_start":1,"highlight_end":66},{"text":"            if pointer_minus_kanji < JIS0212_KANJI.len() {","highlight_start":1,"highlight_end":59},{"text":"                handle.write_upper_bmp(JIS0212_KANJI[pointer_minus_kanji])","highlight_start":1,"highlight_end":75},{"text":"            } else if let Some(bmp) = jis0212_accented_decode(pointer) {","highlight_start":1,"highlight_end":73},{"text":"                handle.write_bmp_excl_ascii(bmp)","highlight_start":1,"highlight_end":49},{"text":"            } else {","highlight_start":1,"highlight_end":21},{"text":"                let pointer_minus_upper_cyrillic = pointer.wrapping_sub(597);","highlight_start":1,"highlight_end":78},{"text":"                if pointer_minus_upper_cyrillic <= (607 - 597) {","highlight_start":1,"highlight_end":65},{"text":"                    handle.write_mid_bmp(0x0402 + pointer_minus_upper_cyrillic as u16)","highlight_start":1,"highlight_end":87},{"text":"                } else {","highlight_start":1,"highlight_end":25},{"text":"                    let pointer_minus_lower_cyrillic = pointer.wrapping_sub(645);","highlight_start":1,"highlight_end":82},{"text":"                    if pointer_minus_lower_cyrillic <= (655 - 645) {","highlight_start":1,"highlight_end":69},{"text":"                        handle.write_mid_bmp(0x0452 + pointer_minus_lower_cyrillic as u16)","highlight_start":1,"highlight_end":91},{"text":"                    } else {","highlight_start":1,"highlight_end":29},{"text":"                        return (","highlight_start":1,"highlight_end":33},{"text":"                            DecoderResult::Malformed(3, 0),","highlight_start":1,"highlight_end":60},{"text":"                            unread_handle_trail.consumed(),","highlight_start":1,"highlight_end":60},{"text":"                            handle.written(),","highlight_start":1,"highlight_end":46},{"text":"                        );","highlight_start":1,"highlight_end":27},{"text":"                    }","highlight_start":1,"highlight_end":22},{"text":"                }","highlight_start":1,"highlight_end":18},{"text":"            }","highlight_start":1,"highlight_end":14},{"text":"        },","highlight_start":1,"highlight_end":11},{"text":"        {","highlight_start":1,"highlight_end":10},{"text":"            // If trail is between 0xA1 and 0xDF, inclusive,","highlight_start":1,"highlight_end":61},{"text":"            // subtract 0xA1 and map to half-width Katakana.","highlight_start":1,"highlight_end":61},{"text":"            let trail_minus_offset = byte.wrapping_sub(0xA1);","highlight_start":1,"highlight_end":62},{"text":"            if trail_minus_offset > (0xDF - 0xA1) {","highlight_start":1,"highlight_end":52},{"text":"                if byte < 0x80 {","highlight_start":1,"highlight_end":33},{"text":"                    return (","highlight_start":1,"highlight_end":29},{"text":"                        DecoderResult::Malformed(1, 0),","highlight_start":1,"highlight_end":56},{"text":"                        unread_handle_trail.unread(),","highlight_start":1,"highlight_end":54},{"text":"                        handle.written(),","highlight_start":1,"highlight_end":42},{"text":"                    );","highlight_start":1,"highlight_end":23},{"text":"                }","highlight_start":1,"highlight_end":18},{"text":"                return (","highlight_start":1,"highlight_end":25},{"text":"                    DecoderResult::Malformed(2, 0),","highlight_start":1,"highlight_end":52},{"text":"                    unread_handle_trail.consumed(),","highlight_start":1,"highlight_end":52},{"text":"                    handle.written(),","highlight_start":1,"highlight_end":38},{"text":"                );","highlight_start":1,"highlight_end":19},{"text":"            }","highlight_start":1,"highlight_end":14},{"text":"            handle.write_upper_bmp(0xFF61 + u16::from(trail_minus_offset))","highlight_start":1,"highlight_end":75},{"text":"        },","highlight_start":1,"highlight_end":11},{"text":"        self,","highlight_start":1,"highlight_end":14},{"text":"        non_ascii,","highlight_start":1,"highlight_end":19},{"text":"        jis0208_lead_minus_offset,","highlight_start":1,"highlight_end":35},{"text":"        byte,","highlight_start":1,"highlight_end":14},{"text":"        unread_handle_trail,","highlight_start":1,"highlight_end":29},{"text":"        jis0212_lead_minus_offset,","highlight_start":1,"highlight_end":35},{"text":"        lead,","highlight_start":1,"highlight_end":14},{"text":"        unread_handle_jis0212,","highlight_start":1,"highlight_end":31},{"text":"        source,","highlight_start":1,"highlight_end":16},{"text":"        handle","highlight_start":1,"highlight_end":15},{"text":"    );","highlight_start":1,"highlight_end":6}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null},"macro_decl_name":"euc_jp_decoder_functions!","def_site_span":{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/encoding_rs-0.8.35/src/macros.rs","byte_start":43393,"byte_end":43430,"line_start":902,"line_end":902,"column_start":1,"column_end":38,"is_primary":false,"text":[{"text":"macro_rules! euc_jp_decoder_functions {","highlight_start":1,"highlight_end":38}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}}},"macro_decl_name":"euc_jp_decoder_function!","def_site_span":{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/encoding_rs-0.8.35/src/macros.rs","byte_start":30408,"byte_end":30444,"line_start":671,"line_end":671,"column_start":1,"column_end":37,"is_primary":false,"text":[{"text":"macro_rules! euc_jp_decoder_function {","highlight_start":1,"highlight_end":37}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}}}],"children":[{"message":"expected values for `feature` are: `alloc`, `any_all_workaround`, `default`, `fast-big5-hanzi-encode`, `fast-gb-hanzi-encode`, `fast-hangul-encode`, `fast-hanja-encode`, `fast-kanji-encode`, `fast-legacy-encode`, `less-slow-big5-hanzi-encode`, `less-slow-gb-hanzi-encode`, `less-slow-kanji-encode`, `serde`, and `simd-accel`","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"consider adding `cargo-clippy` as a feature in `Cargo.toml`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition value: `cargo-clippy`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/encoding_rs-0.8.35/src/macros.rs:689:16\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m689\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m   \u001b[0m\u001b[0m    #[cfg_attr(feature = \"cargo-clippy\", allow(never_loop))]\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                  \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m::: \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/encoding_rs-0.8.35/src/euc_jp.rs:77:5\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m77\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m/\u001b[0m\u001b[0m \u001b[0m\u001b[0m    euc_jp_decoder_functions!(\u001b[0m\n\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m78\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m        {\u001b[0m\n\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m79\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m            let trail_minus_offset = byte.wrapping_sub(0xA1);\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m...\u001b[0m\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m220\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m        handle\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m221\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    );\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|_____-\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12min this macro invocation\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: expected values for `feature` are: `alloc`, `any_all_workaround`, `default`, `fast-big5-hanzi-encode`, `fast-gb-hanzi-encode`, `fast-hangul-encode`, `fast-hanja-encode`, `fast-kanji-encode`, `fast-legacy-encode`, `less-slow-big5-hanzi-encode`, `less-slow-gb-hanzi-encode`, `less-slow-kanji-encode`, `serde`, and `simd-accel`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider adding `cargo-clippy` as a feature in `Cargo.toml`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: this warning originates in the macro `euc_jp_decoder_function` which comes from the expansion of the macro `euc_jp_decoder_functions` (in Nightly builds, run with -Z macro-backtrace for more info)\u001b[0m\n\n"}',
@@ -2613,8 +2613,8 @@ COPY --link --from=dep-n-encoding_rs-0.8.35-e0d6e4f8a8eb4371 /tmp/clis-ripgrep_1
 ##     '''{"$message_type":"diagnostic","message":"hiding a lifetime that's elided elsewhere is confusing","code":{"code":"mismatched_lifetime_syntaxes","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/encoding_rs-0.8.35/src/handles.rs","byte_start":38724,"byte_end":38730,"line_start":1168,"line_end":1168,"column_start":21,"column_end":27,"is_primary":true,"text":[{"text":"    pub fn new(src: &[u16]) -> Utf16Source {","highlight_start":21,"highlight_end":27}],"label":"the lifetime is elided here","suggested_replacement":null,"suggestion_applicability":null,"expansion":null},{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/encoding_rs-0.8.35/src/handles.rs","byte_start":38735,"byte_end":38746,"line_start":1168,"line_end":1168,"column_start":32,"column_end":43,"is_primary":false,"text":[{"text":"    pub fn new(src: &[u16]) -> Utf16Source {","highlight_start":32,"highlight_end":43}],"label":"the same lifetime is hidden here","suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"the same lifetime is referred to in inconsistent ways, making the signature confusing","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"use `'_` for type paths","code":null,"level":"help","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/encoding_rs-0.8.35/src/handles.rs","byte_start":38746,"byte_end":38746,"line_start":1168,"line_end":1168,"column_start":43,"column_end":43,"is_primary":true,"text":[{"text":"    pub fn new(src: &[u16]) -> Utf16Source {","highlight_start":43,"highlight_end":43}],"label":null,"suggested_replacement":"<'_>","suggestion_applicability":"MaybeIncorrect","expansion":null}],"children":[],"rendered":null},{"message":"consistently use `'_`","code":null,"level":"help","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/encoding_rs-0.8.35/src/handles.rs","byte_start":38725,"byte_end":38725,"line_start":1168,"line_end":1168,"column_start":22,"column_end":22,"is_primary":true,"text":[{"text":"    pub fn new(src: &[u16]) -> Utf16Source {","highlight_start":22,"highlight_end":22}],"label":null,"suggested_replacement":"'_ ","suggestion_applicability":"MaybeIncorrect","expansion":null},{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/encoding_rs-0.8.35/src/handles.rs","byte_start":38746,"byte_end":38746,"line_start":1168,"line_end":1168,"column_start":43,"column_end":43,"is_primary":true,"text":[{"text":"    pub fn new(src: &[u16]) -> Utf16Source {","highlight_start":43,"highlight_end":43}],"label":null,"suggested_replacement":"<'_>","suggestion_applicability":"MaybeIncorrect","expansion":null}],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: hiding a lifetime that's elided elsewhere is confusing\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/encoding_rs-0.8.35/src/handles.rs:1168:21\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m1168\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    pub fn new(src: &[u16]) -> Utf16Source {\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                     \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^\u001b[0m\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m-----------\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12mthe same lifetime is hidden here\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                     \u001b[0m\u001b[0m\u001b[1m\u001b[33m|\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                     \u001b[0m\u001b[0m\u001b[1m\u001b[33mthe lifetime is elided here\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: the same lifetime is referred to in inconsistent ways, making the signature confusing\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;14mhelp\u001b[0m\u001b[0m: use `'_` for type paths\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m1168\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m| \u001b[0m\u001b[0m    pub fn new(src: &[u16]) -> Utf16Source\u001b[0m\u001b[0m\u001b[38;5;10m<'_>\u001b[0m\u001b[0m {\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                           \u001b[0m\u001b[0m\u001b[38;5;10m++++\u001b[0m\n\n"}''',
 ##     '''{"$message_type":"diagnostic","message":"hiding a lifetime that's elided elsewhere is confusing","code":{"code":"mismatched_lifetime_syntaxes","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/encoding_rs-0.8.35/src/handles.rs","byte_start":51440,"byte_end":51444,"line_start":1477,"line_end":1477,"column_start":21,"column_end":25,"is_primary":true,"text":[{"text":"    pub fn new(src: &str) -> Utf8Source {","highlight_start":21,"highlight_end":25}],"label":"the lifetime is elided here","suggested_replacement":null,"suggestion_applicability":null,"expansion":null},{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/encoding_rs-0.8.35/src/handles.rs","byte_start":51449,"byte_end":51459,"line_start":1477,"line_end":1477,"column_start":30,"column_end":40,"is_primary":false,"text":[{"text":"    pub fn new(src: &str) -> Utf8Source {","highlight_start":30,"highlight_end":40}],"label":"the same lifetime is hidden here","suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"the same lifetime is referred to in inconsistent ways, making the signature confusing","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"use `'_` for type paths","code":null,"level":"help","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/encoding_rs-0.8.35/src/handles.rs","byte_start":51459,"byte_end":51459,"line_start":1477,"line_end":1477,"column_start":40,"column_end":40,"is_primary":true,"text":[{"text":"    pub fn new(src: &str) -> Utf8Source {","highlight_start":40,"highlight_end":40}],"label":null,"suggested_replacement":"<'_>","suggestion_applicability":"MaybeIncorrect","expansion":null}],"children":[],"rendered":null},{"message":"consistently use `'_`","code":null,"level":"help","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/encoding_rs-0.8.35/src/handles.rs","byte_start":51441,"byte_end":51441,"line_start":1477,"line_end":1477,"column_start":22,"column_end":22,"is_primary":true,"text":[{"text":"    pub fn new(src: &str) -> Utf8Source {","highlight_start":22,"highlight_end":22}],"label":null,"suggested_replacement":"'_ ","suggestion_applicability":"MaybeIncorrect","expansion":null},{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/encoding_rs-0.8.35/src/handles.rs","byte_start":51459,"byte_end":51459,"line_start":1477,"line_end":1477,"column_start":40,"column_end":40,"is_primary":true,"text":[{"text":"    pub fn new(src: &str) -> Utf8Source {","highlight_start":40,"highlight_end":40}],"label":null,"suggested_replacement":"<'_>","suggestion_applicability":"MaybeIncorrect","expansion":null}],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: hiding a lifetime that's elided elsewhere is confusing\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/encoding_rs-0.8.35/src/handles.rs:1477:21\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m1477\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    pub fn new(src: &str) -> Utf8Source {\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                     \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^\u001b[0m\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m----------\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12mthe same lifetime is hidden here\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                     \u001b[0m\u001b[0m\u001b[1m\u001b[33m|\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                     \u001b[0m\u001b[0m\u001b[1m\u001b[33mthe lifetime is elided here\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: the same lifetime is referred to in inconsistent ways, making the signature confusing\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;14mhelp\u001b[0m\u001b[0m: use `'_` for type paths\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m1477\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m| \u001b[0m\u001b[0m    pub fn new(src: &str) -> Utf8Source\u001b[0m\u001b[0m\u001b[38;5;10m<'_>\u001b[0m\u001b[0m {\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                        \u001b[0m\u001b[0m\u001b[38;5;10m++++\u001b[0m\n\n"}''',
 ##     '''{"$message_type":"diagnostic","message":"hiding a lifetime that's elided elsewhere is confusing","code":{"code":"mismatched_lifetime_syntaxes","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/encoding_rs-0.8.35/src/handles.rs","byte_start":67404,"byte_end":67413,"line_start":1936,"line_end":1936,"column_start":21,"column_end":30,"is_primary":true,"text":[{"text":"    pub fn new(dst: &mut [u8]) -> ByteDestination {","highlight_start":21,"highlight_end":30}],"label":"the lifetime is elided here","suggested_replacement":null,"suggestion_applicability":null,"expansion":null},{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/encoding_rs-0.8.35/src/handles.rs","byte_start":67418,"byte_end":67433,"line_start":1936,"line_end":1936,"column_start":35,"column_end":50,"is_primary":false,"text":[{"text":"    pub fn new(dst: &mut [u8]) -> ByteDestination {","highlight_start":35,"highlight_end":50}],"label":"the same lifetime is hidden here","suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"the same lifetime is referred to in inconsistent ways, making the signature confusing","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"use `'_` for type paths","code":null,"level":"help","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/encoding_rs-0.8.35/src/handles.rs","byte_start":67433,"byte_end":67433,"line_start":1936,"line_end":1936,"column_start":50,"column_end":50,"is_primary":true,"text":[{"text":"    pub fn new(dst: &mut [u8]) -> ByteDestination {","highlight_start":50,"highlight_end":50}],"label":null,"suggested_replacement":"<'_>","suggestion_applicability":"MaybeIncorrect","expansion":null}],"children":[],"rendered":null},{"message":"consistently use `'_`","code":null,"level":"help","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/encoding_rs-0.8.35/src/handles.rs","byte_start":67405,"byte_end":67405,"line_start":1936,"line_end":1936,"column_start":22,"column_end":22,"is_primary":true,"text":[{"text":"    pub fn new(dst: &mut [u8]) -> ByteDestination {","highlight_start":22,"highlight_end":22}],"label":null,"suggested_replacement":"'_ ","suggestion_applicability":"MaybeIncorrect","expansion":null},{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/encoding_rs-0.8.35/src/handles.rs","byte_start":67433,"byte_end":67433,"line_start":1936,"line_end":1936,"column_start":50,"column_end":50,"is_primary":true,"text":[{"text":"    pub fn new(dst: &mut [u8]) -> ByteDestination {","highlight_start":50,"highlight_end":50}],"label":null,"suggested_replacement":"<'_>","suggestion_applicability":"MaybeIncorrect","expansion":null}],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: hiding a lifetime that's elided elsewhere is confusing\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/encoding_rs-0.8.35/src/handles.rs:1936:21\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m1936\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    pub fn new(dst: &mut [u8]) -> ByteDestination {\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                     \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^\u001b[0m\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m---------------\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12mthe same lifetime is hidden here\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                     \u001b[0m\u001b[0m\u001b[1m\u001b[33m|\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                     \u001b[0m\u001b[0m\u001b[1m\u001b[33mthe lifetime is elided here\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: the same lifetime is referred to in inconsistent ways, making the signature confusing\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;14mhelp\u001b[0m\u001b[0m: use `'_` for type paths\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m1936\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m| \u001b[0m\u001b[0m    pub fn new(dst: &mut [u8]) -> ByteDestination\u001b[0m\u001b[0m\u001b[38;5;10m<'_>\u001b[0m\u001b[0m {\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                                  \u001b[0m\u001b[0m\u001b[38;5;10m++++\u001b[0m\n\n"}''',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/deps/libencoding_rs-e0d6e4f8a8eb4371.rmeta","emit":"metadata"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/deps/libencoding_rs-e0d6e4f8a8eb4371.rlib","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libencoding_rs-e0d6e4f8a8eb4371.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libencoding_rs-e0d6e4f8a8eb4371.rlib","emit":"link"}',
 ##     '{"$message_type":"diagnostic","message":"33 warnings emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 33 warnings emitted\u001b[0m\n\n"}',
 ## ]
 ##
@@ -2648,11 +2648,11 @@ COPY --link --from=dep-n-encoding_rs-0.8.35-e0d6e4f8a8eb4371 /tmp/clis-ripgrep_1
 ## script = '''
 ## FROM rust-base AS dep-n-encoding_rs-0.8.35-e0d6e4f8a8eb4371
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-ripgrep_15-1-0/release/deps
+## WORKDIR /target/release/deps
 ## RUN \
 ##   --mount=from=cratesio-encoding_rs-0.8.35,source=/encoding_rs-0.8.35,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/encoding_rs-0.8.35 \
-##   --mount=from=out-e78ec6df4b56941f,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libcfg_if-e78ec6df4b56941f.rlib,source=/libcfg_if-e78ec6df4b56941f.rlib \
-##   --mount=from=out-e78ec6df4b56941f,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libcfg_if-e78ec6df4b56941f.rmeta,source=/libcfg_if-e78ec6df4b56941f.rmeta \
+##   --mount=from=out-e78ec6df4b56941f,dst=/target/release/deps/libcfg_if-e78ec6df4b56941f.rlib,source=/libcfg_if-e78ec6df4b56941f.rlib \
+##   --mount=from=out-e78ec6df4b56941f,dst=/target/release/deps/libcfg_if-e78ec6df4b56941f.rmeta,source=/libcfg_if-e78ec6df4b56941f.rmeta \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=encoding_rs \
 ##         CARGO_INCREMENTAL=0 \
@@ -2673,11 +2673,11 @@ COPY --link --from=dep-n-encoding_rs-0.8.35-e0d6e4f8a8eb4371 /tmp/clis-ripgrep_1
 ##         CARGO_PKG_VERSION_PATCH=35 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name encoding_rs --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --cfg feature'="alloc"' --cfg feature'="default"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "any_all_workaround", "default", "fast-big5-hanzi-encode", "fast-gb-hanzi-encode", "fast-hangul-encode", "fast-hanja-encode", "fast-kanji-encode", "fast-legacy-encode", "less-slow-big5-hanzi-encode", "less-slow-gb-hanzi-encode", "less-slow-kanji-encode", "serde", "simd-accel"))' -C metadata'=9d7cb9a1da1cd85c' -C extra-filename'=-e0d6e4f8a8eb4371' --out-dir /tmp/clis-ripgrep_15-1-0/release/deps -L dependency'=/tmp/clis-ripgrep_15-1-0/release/deps' --extern cfg_if'=/tmp/clis-ripgrep_15-1-0/release/deps/libcfg_if-e78ec6df4b56941f.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/encoding_rs-0.8.35/src/lib.rs \
-##         1>          /tmp/clis-ripgrep_15-1-0/release/deps/out-e0d6e4f8a8eb4371-stdout \
-##         2>          /tmp/clis-ripgrep_15-1-0/release/deps/out-e0d6e4f8a8eb4371-stderr \
-##         || echo $? >/tmp/clis-ripgrep_15-1-0/release/deps/out-e0d6e4f8a8eb4371-errcode\
-##   ; find /tmp/clis-ripgrep_15-1-0/release/deps/*-e0d6e4f8a8eb4371* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name encoding_rs --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --cfg feature'="alloc"' --cfg feature'="default"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "any_all_workaround", "default", "fast-big5-hanzi-encode", "fast-gb-hanzi-encode", "fast-hangul-encode", "fast-hanja-encode", "fast-kanji-encode", "fast-legacy-encode", "less-slow-big5-hanzi-encode", "less-slow-gb-hanzi-encode", "less-slow-kanji-encode", "serde", "simd-accel"))' -C metadata'=9d7cb9a1da1cd85c' -C extra-filename'=-e0d6e4f8a8eb4371' --out-dir /target/release/deps -L dependency'=/target/release/deps' --extern cfg_if'=/target/release/deps/libcfg_if-e78ec6df4b56941f.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/encoding_rs-0.8.35/src/lib.rs \
+##         1>          /target/release/deps/out-e0d6e4f8a8eb4371-stdout \
+##         2>          /target/release/deps/out-e0d6e4f8a8eb4371-stderr \
+##         || echo $? >/target/release/deps/out-e0d6e4f8a8eb4371-errcode\
+##   ; find /target/release/deps/*-e0d6e4f8a8eb4371* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -2685,20 +2685,20 @@ COPY --link --from=dep-n-encoding_rs-0.8.35-e0d6e4f8a8eb4371 /tmp/clis-ripgrep_1
 ## stage = "out-e0d6e4f8a8eb4371"
 ## script = """
 ## FROM scratch AS out-e0d6e4f8a8eb4371
-## COPY --link --from=dep-n-encoding_rs-0.8.35-e0d6e4f8a8eb4371 /tmp/clis-ripgrep_15-1-0/release/deps/*-e0d6e4f8a8eb4371* /"""
+## COPY --link --from=dep-n-encoding_rs-0.8.35-e0d6e4f8a8eb4371 /target/release/deps/*-e0d6e4f8a8eb4371* /"""
 
 FROM scratch AS cratesio-encoding_rs_io-0.1.7
 ADD --chmod=0664 --unpack --checksum=sha256:1cc3c5651fb62ab8aa3103998dade57efdd028544bd300516baa31840c252a83 \
   https://static.crates.io/crates/encoding_rs_io/encoding_rs_io-0.1.7.crate /
 FROM rust-base AS dep-n-encoding_rs_io-0.1.7-651f5691fade4e93
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-ripgrep_15-1-0/release/deps
+WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-encoding_rs_io-0.1.7,source=/encoding_rs_io-0.1.7,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/encoding_rs_io-0.1.7 \
-  --mount=from=out-e0d6e4f8a8eb4371,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libencoding_rs-e0d6e4f8a8eb4371.rlib,source=/libencoding_rs-e0d6e4f8a8eb4371.rlib \
-  --mount=from=out-e0d6e4f8a8eb4371,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libencoding_rs-e0d6e4f8a8eb4371.rmeta,source=/libencoding_rs-e0d6e4f8a8eb4371.rmeta \
-  --mount=from=out-e78ec6df4b56941f,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libcfg_if-e78ec6df4b56941f.rlib,source=/libcfg_if-e78ec6df4b56941f.rlib \
-  --mount=from=out-e78ec6df4b56941f,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libcfg_if-e78ec6df4b56941f.rmeta,source=/libcfg_if-e78ec6df4b56941f.rmeta \
+  --mount=from=out-e0d6e4f8a8eb4371,dst=/target/release/deps/libencoding_rs-e0d6e4f8a8eb4371.rlib,source=/libencoding_rs-e0d6e4f8a8eb4371.rlib \
+  --mount=from=out-e0d6e4f8a8eb4371,dst=/target/release/deps/libencoding_rs-e0d6e4f8a8eb4371.rmeta,source=/libencoding_rs-e0d6e4f8a8eb4371.rmeta \
+  --mount=from=out-e78ec6df4b56941f,dst=/target/release/deps/libcfg_if-e78ec6df4b56941f.rlib,source=/libcfg_if-e78ec6df4b56941f.rlib \
+  --mount=from=out-e78ec6df4b56941f,dst=/target/release/deps/libcfg_if-e78ec6df4b56941f.rmeta,source=/libcfg_if-e78ec6df4b56941f.rmeta \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=encoding_rs_io \
         CARGO_INCREMENTAL=0 \
@@ -2719,13 +2719,13 @@ RUN \
         CARGO_PKG_VERSION_PATCH=7 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --crate-name encoding_rs_io --edition 2015 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=5fba78e2cae826a4' -C extra-filename'=-651f5691fade4e93' --out-dir /tmp/clis-ripgrep_15-1-0/release/deps -L dependency'=/tmp/clis-ripgrep_15-1-0/release/deps' --extern encoding_rs'=/tmp/clis-ripgrep_15-1-0/release/deps/libencoding_rs-e0d6e4f8a8eb4371.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/encoding_rs_io-0.1.7/src/lib.rs \
-        1>          /tmp/clis-ripgrep_15-1-0/release/deps/out-651f5691fade4e93-stdout \
-        2>          /tmp/clis-ripgrep_15-1-0/release/deps/out-651f5691fade4e93-stderr \
-        || echo $? >/tmp/clis-ripgrep_15-1-0/release/deps/out-651f5691fade4e93-errcode\
-  ; find /tmp/clis-ripgrep_15-1-0/release/deps/*-651f5691fade4e93* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      rustc --crate-name encoding_rs_io --edition 2015 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=5fba78e2cae826a4' -C extra-filename'=-651f5691fade4e93' --out-dir /target/release/deps -L dependency'=/target/release/deps' --extern encoding_rs'=/target/release/deps/libencoding_rs-e0d6e4f8a8eb4371.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/encoding_rs_io-0.1.7/src/lib.rs \
+        1>          /target/release/deps/out-651f5691fade4e93-stdout \
+        2>          /target/release/deps/out-651f5691fade4e93-stderr \
+        || echo $? >/target/release/deps/out-651f5691fade4e93-errcode\
+  ; find /target/release/deps/*-651f5691fade4e93* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-651f5691fade4e93
-COPY --link --from=dep-n-encoding_rs_io-0.1.7-651f5691fade4e93 /tmp/clis-ripgrep_15-1-0/release/deps/*-651f5691fade4e93* /
+COPY --link --from=dep-n-encoding_rs_io-0.1.7-651f5691fade4e93 /target/release/deps/*-651f5691fade4e93* /
 
 ## this = "651f5691fade4e93"
 ## deps = [
@@ -2738,9 +2738,9 @@ COPY --link --from=dep-n-encoding_rs_io-0.1.7-651f5691fade4e93 /tmp/clis-ripgrep
 ##     "libencoding_rs_io-651f5691fade4e93.rmeta",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/deps/encoding_rs_io-651f5691fade4e93.d","emit":"dep-info"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/deps/libencoding_rs_io-651f5691fade4e93.rmeta","emit":"metadata"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/deps/libencoding_rs_io-651f5691fade4e93.rlib","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/encoding_rs_io-651f5691fade4e93.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libencoding_rs_io-651f5691fade4e93.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libencoding_rs_io-651f5691fade4e93.rlib","emit":"link"}',
 ## ]
 ##
 ## [[externs]]
@@ -2781,13 +2781,13 @@ COPY --link --from=dep-n-encoding_rs_io-0.1.7-651f5691fade4e93 /tmp/clis-ripgrep
 ## script = '''
 ## FROM rust-base AS dep-n-encoding_rs_io-0.1.7-651f5691fade4e93
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-ripgrep_15-1-0/release/deps
+## WORKDIR /target/release/deps
 ## RUN \
 ##   --mount=from=cratesio-encoding_rs_io-0.1.7,source=/encoding_rs_io-0.1.7,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/encoding_rs_io-0.1.7 \
-##   --mount=from=out-e0d6e4f8a8eb4371,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libencoding_rs-e0d6e4f8a8eb4371.rlib,source=/libencoding_rs-e0d6e4f8a8eb4371.rlib \
-##   --mount=from=out-e0d6e4f8a8eb4371,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libencoding_rs-e0d6e4f8a8eb4371.rmeta,source=/libencoding_rs-e0d6e4f8a8eb4371.rmeta \
-##   --mount=from=out-e78ec6df4b56941f,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libcfg_if-e78ec6df4b56941f.rlib,source=/libcfg_if-e78ec6df4b56941f.rlib \
-##   --mount=from=out-e78ec6df4b56941f,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libcfg_if-e78ec6df4b56941f.rmeta,source=/libcfg_if-e78ec6df4b56941f.rmeta \
+##   --mount=from=out-e0d6e4f8a8eb4371,dst=/target/release/deps/libencoding_rs-e0d6e4f8a8eb4371.rlib,source=/libencoding_rs-e0d6e4f8a8eb4371.rlib \
+##   --mount=from=out-e0d6e4f8a8eb4371,dst=/target/release/deps/libencoding_rs-e0d6e4f8a8eb4371.rmeta,source=/libencoding_rs-e0d6e4f8a8eb4371.rmeta \
+##   --mount=from=out-e78ec6df4b56941f,dst=/target/release/deps/libcfg_if-e78ec6df4b56941f.rlib,source=/libcfg_if-e78ec6df4b56941f.rlib \
+##   --mount=from=out-e78ec6df4b56941f,dst=/target/release/deps/libcfg_if-e78ec6df4b56941f.rmeta,source=/libcfg_if-e78ec6df4b56941f.rmeta \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=encoding_rs_io \
 ##         CARGO_INCREMENTAL=0 \
@@ -2808,11 +2808,11 @@ COPY --link --from=dep-n-encoding_rs_io-0.1.7-651f5691fade4e93 /tmp/clis-ripgrep
 ##         CARGO_PKG_VERSION_PATCH=7 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name encoding_rs_io --edition 2015 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=5fba78e2cae826a4' -C extra-filename'=-651f5691fade4e93' --out-dir /tmp/clis-ripgrep_15-1-0/release/deps -L dependency'=/tmp/clis-ripgrep_15-1-0/release/deps' --extern encoding_rs'=/tmp/clis-ripgrep_15-1-0/release/deps/libencoding_rs-e0d6e4f8a8eb4371.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/encoding_rs_io-0.1.7/src/lib.rs \
-##         1>          /tmp/clis-ripgrep_15-1-0/release/deps/out-651f5691fade4e93-stdout \
-##         2>          /tmp/clis-ripgrep_15-1-0/release/deps/out-651f5691fade4e93-stderr \
-##         || echo $? >/tmp/clis-ripgrep_15-1-0/release/deps/out-651f5691fade4e93-errcode\
-##   ; find /tmp/clis-ripgrep_15-1-0/release/deps/*-651f5691fade4e93* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name encoding_rs_io --edition 2015 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=5fba78e2cae826a4' -C extra-filename'=-651f5691fade4e93' --out-dir /target/release/deps -L dependency'=/target/release/deps' --extern encoding_rs'=/target/release/deps/libencoding_rs-e0d6e4f8a8eb4371.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/encoding_rs_io-0.1.7/src/lib.rs \
+##         1>          /target/release/deps/out-651f5691fade4e93-stdout \
+##         2>          /target/release/deps/out-651f5691fade4e93-stderr \
+##         || echo $? >/target/release/deps/out-651f5691fade4e93-errcode\
+##   ; find /target/release/deps/*-651f5691fade4e93* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -2820,18 +2820,18 @@ COPY --link --from=dep-n-encoding_rs_io-0.1.7-651f5691fade4e93 /tmp/clis-ripgrep
 ## stage = "out-651f5691fade4e93"
 ## script = """
 ## FROM scratch AS out-651f5691fade4e93
-## COPY --link --from=dep-n-encoding_rs_io-0.1.7-651f5691fade4e93 /tmp/clis-ripgrep_15-1-0/release/deps/*-651f5691fade4e93* /"""
+## COPY --link --from=dep-n-encoding_rs_io-0.1.7-651f5691fade4e93 /target/release/deps/*-651f5691fade4e93* /"""
 
 FROM scratch AS cratesio-memmap2-0.9.9
 ADD --chmod=0664 --unpack --checksum=sha256:744133e4a0e0a658e1374cf3bf8e415c4052a15a111acd372764c55b4177d490 \
   https://static.crates.io/crates/memmap2/memmap2-0.9.9.crate /
 FROM rust-base AS dep-n-memmap2-0.9.9-977b6f2f3b8d0f6b
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-ripgrep_15-1-0/release/deps
+WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-memmap2-0.9.9,source=/memmap2-0.9.9,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/memmap2-0.9.9 \
-  --mount=from=out-fda8220236222977,dst=/tmp/clis-ripgrep_15-1-0/release/deps/liblibc-fda8220236222977.rlib,source=/liblibc-fda8220236222977.rlib \
-  --mount=from=out-fda8220236222977,dst=/tmp/clis-ripgrep_15-1-0/release/deps/liblibc-fda8220236222977.rmeta,source=/liblibc-fda8220236222977.rmeta \
+  --mount=from=out-fda8220236222977,dst=/target/release/deps/liblibc-fda8220236222977.rlib,source=/liblibc-fda8220236222977.rlib \
+  --mount=from=out-fda8220236222977,dst=/target/release/deps/liblibc-fda8220236222977.rmeta,source=/liblibc-fda8220236222977.rmeta \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=memmap2 \
         CARGO_INCREMENTAL=0 \
@@ -2852,13 +2852,13 @@ RUN \
         CARGO_PKG_VERSION_PATCH=9 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --crate-name memmap2 --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("stable_deref_trait"))' -C metadata'=d78f935ab97ebd3e' -C extra-filename'=-977b6f2f3b8d0f6b' --out-dir /tmp/clis-ripgrep_15-1-0/release/deps -L dependency'=/tmp/clis-ripgrep_15-1-0/release/deps' --extern libc'=/tmp/clis-ripgrep_15-1-0/release/deps/liblibc-fda8220236222977.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/memmap2-0.9.9/src/lib.rs \
-        1>          /tmp/clis-ripgrep_15-1-0/release/deps/out-977b6f2f3b8d0f6b-stdout \
-        2>          /tmp/clis-ripgrep_15-1-0/release/deps/out-977b6f2f3b8d0f6b-stderr \
-        || echo $? >/tmp/clis-ripgrep_15-1-0/release/deps/out-977b6f2f3b8d0f6b-errcode\
-  ; find /tmp/clis-ripgrep_15-1-0/release/deps/*-977b6f2f3b8d0f6b* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      rustc --crate-name memmap2 --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("stable_deref_trait"))' -C metadata'=d78f935ab97ebd3e' -C extra-filename'=-977b6f2f3b8d0f6b' --out-dir /target/release/deps -L dependency'=/target/release/deps' --extern libc'=/target/release/deps/liblibc-fda8220236222977.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/memmap2-0.9.9/src/lib.rs \
+        1>          /target/release/deps/out-977b6f2f3b8d0f6b-stdout \
+        2>          /target/release/deps/out-977b6f2f3b8d0f6b-stderr \
+        || echo $? >/target/release/deps/out-977b6f2f3b8d0f6b-errcode\
+  ; find /target/release/deps/*-977b6f2f3b8d0f6b* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-977b6f2f3b8d0f6b
-COPY --link --from=dep-n-memmap2-0.9.9-977b6f2f3b8d0f6b /tmp/clis-ripgrep_15-1-0/release/deps/*-977b6f2f3b8d0f6b* /
+COPY --link --from=dep-n-memmap2-0.9.9-977b6f2f3b8d0f6b /target/release/deps/*-977b6f2f3b8d0f6b* /
 
 ## this = "977b6f2f3b8d0f6b"
 ## deps = [
@@ -2873,9 +2873,9 @@ COPY --link --from=dep-n-memmap2-0.9.9-977b6f2f3b8d0f6b /tmp/clis-ripgrep_15-1-0
 ##     "memmap2-977b6f2f3b8d0f6b.d",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/deps/memmap2-977b6f2f3b8d0f6b.d","emit":"dep-info"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/deps/libmemmap2-977b6f2f3b8d0f6b.rmeta","emit":"metadata"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/deps/libmemmap2-977b6f2f3b8d0f6b.rlib","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/memmap2-977b6f2f3b8d0f6b.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libmemmap2-977b6f2f3b8d0f6b.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libmemmap2-977b6f2f3b8d0f6b.rlib","emit":"link"}',
 ## ]
 ##
 ## [[externs]]
@@ -2908,11 +2908,11 @@ COPY --link --from=dep-n-memmap2-0.9.9-977b6f2f3b8d0f6b /tmp/clis-ripgrep_15-1-0
 ## script = '''
 ## FROM rust-base AS dep-n-memmap2-0.9.9-977b6f2f3b8d0f6b
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-ripgrep_15-1-0/release/deps
+## WORKDIR /target/release/deps
 ## RUN \
 ##   --mount=from=cratesio-memmap2-0.9.9,source=/memmap2-0.9.9,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/memmap2-0.9.9 \
-##   --mount=from=out-fda8220236222977,dst=/tmp/clis-ripgrep_15-1-0/release/deps/liblibc-fda8220236222977.rlib,source=/liblibc-fda8220236222977.rlib \
-##   --mount=from=out-fda8220236222977,dst=/tmp/clis-ripgrep_15-1-0/release/deps/liblibc-fda8220236222977.rmeta,source=/liblibc-fda8220236222977.rmeta \
+##   --mount=from=out-fda8220236222977,dst=/target/release/deps/liblibc-fda8220236222977.rlib,source=/liblibc-fda8220236222977.rlib \
+##   --mount=from=out-fda8220236222977,dst=/target/release/deps/liblibc-fda8220236222977.rmeta,source=/liblibc-fda8220236222977.rmeta \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=memmap2 \
 ##         CARGO_INCREMENTAL=0 \
@@ -2933,11 +2933,11 @@ COPY --link --from=dep-n-memmap2-0.9.9-977b6f2f3b8d0f6b /tmp/clis-ripgrep_15-1-0
 ##         CARGO_PKG_VERSION_PATCH=9 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name memmap2 --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("stable_deref_trait"))' -C metadata'=d78f935ab97ebd3e' -C extra-filename'=-977b6f2f3b8d0f6b' --out-dir /tmp/clis-ripgrep_15-1-0/release/deps -L dependency'=/tmp/clis-ripgrep_15-1-0/release/deps' --extern libc'=/tmp/clis-ripgrep_15-1-0/release/deps/liblibc-fda8220236222977.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/memmap2-0.9.9/src/lib.rs \
-##         1>          /tmp/clis-ripgrep_15-1-0/release/deps/out-977b6f2f3b8d0f6b-stdout \
-##         2>          /tmp/clis-ripgrep_15-1-0/release/deps/out-977b6f2f3b8d0f6b-stderr \
-##         || echo $? >/tmp/clis-ripgrep_15-1-0/release/deps/out-977b6f2f3b8d0f6b-errcode\
-##   ; find /tmp/clis-ripgrep_15-1-0/release/deps/*-977b6f2f3b8d0f6b* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name memmap2 --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("stable_deref_trait"))' -C metadata'=d78f935ab97ebd3e' -C extra-filename'=-977b6f2f3b8d0f6b' --out-dir /target/release/deps -L dependency'=/target/release/deps' --extern libc'=/target/release/deps/liblibc-fda8220236222977.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/memmap2-0.9.9/src/lib.rs \
+##         1>          /target/release/deps/out-977b6f2f3b8d0f6b-stdout \
+##         2>          /target/release/deps/out-977b6f2f3b8d0f6b-stderr \
+##         || echo $? >/target/release/deps/out-977b6f2f3b8d0f6b-errcode\
+##   ; find /target/release/deps/*-977b6f2f3b8d0f6b* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -2945,40 +2945,40 @@ COPY --link --from=dep-n-memmap2-0.9.9-977b6f2f3b8d0f6b /tmp/clis-ripgrep_15-1-0
 ## stage = "out-977b6f2f3b8d0f6b"
 ## script = """
 ## FROM scratch AS out-977b6f2f3b8d0f6b
-## COPY --link --from=dep-n-memmap2-0.9.9-977b6f2f3b8d0f6b /tmp/clis-ripgrep_15-1-0/release/deps/*-977b6f2f3b8d0f6b* /"""
+## COPY --link --from=dep-n-memmap2-0.9.9-977b6f2f3b8d0f6b /target/release/deps/*-977b6f2f3b8d0f6b* /"""
 
 FROM scratch AS cratesio-grep-searcher-0.1.16
 ADD --chmod=0664 --unpack --checksum=sha256:ac63295322dc48ebb20a25348147905d816318888e64f531bfc2a2bc0577dc34 \
   https://static.crates.io/crates/grep-searcher/grep-searcher-0.1.16.crate /
 FROM rust-base AS dep-n-grep-searcher-0.1.16-82a451c10ca406e4
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-ripgrep_15-1-0/release/deps
+WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-grep-searcher-0.1.16,source=/grep-searcher-0.1.16,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-searcher-0.1.16 \
-  --mount=from=out-d3eea57fb24a933f,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libbstr-d3eea57fb24a933f.rlib,source=/libbstr-d3eea57fb24a933f.rlib \
-  --mount=from=out-d3eea57fb24a933f,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libbstr-d3eea57fb24a933f.rmeta,source=/libbstr-d3eea57fb24a933f.rmeta \
-  --mount=from=out-3a40f50ac19c9d2e,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libmemchr-3a40f50ac19c9d2e.rlib,source=/libmemchr-3a40f50ac19c9d2e.rlib \
-  --mount=from=out-3a40f50ac19c9d2e,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libmemchr-3a40f50ac19c9d2e.rmeta,source=/libmemchr-3a40f50ac19c9d2e.rmeta \
-  --mount=from=out-e22c3e2bd8aa6773,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libregex_automata-e22c3e2bd8aa6773.rlib,source=/libregex_automata-e22c3e2bd8aa6773.rlib \
-  --mount=from=out-e22c3e2bd8aa6773,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libregex_automata-e22c3e2bd8aa6773.rmeta,source=/libregex_automata-e22c3e2bd8aa6773.rmeta \
-  --mount=from=out-a01a7f030e27d71e,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libaho_corasick-a01a7f030e27d71e.rlib,source=/libaho_corasick-a01a7f030e27d71e.rlib \
-  --mount=from=out-a01a7f030e27d71e,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libaho_corasick-a01a7f030e27d71e.rmeta,source=/libaho_corasick-a01a7f030e27d71e.rmeta \
-  --mount=from=out-34711e95edd06069,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libregex_syntax-34711e95edd06069.rlib,source=/libregex_syntax-34711e95edd06069.rlib \
-  --mount=from=out-34711e95edd06069,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libregex_syntax-34711e95edd06069.rmeta,source=/libregex_syntax-34711e95edd06069.rmeta \
-  --mount=from=out-e0d6e4f8a8eb4371,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libencoding_rs-e0d6e4f8a8eb4371.rlib,source=/libencoding_rs-e0d6e4f8a8eb4371.rlib \
-  --mount=from=out-e0d6e4f8a8eb4371,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libencoding_rs-e0d6e4f8a8eb4371.rmeta,source=/libencoding_rs-e0d6e4f8a8eb4371.rmeta \
-  --mount=from=out-e78ec6df4b56941f,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libcfg_if-e78ec6df4b56941f.rlib,source=/libcfg_if-e78ec6df4b56941f.rlib \
-  --mount=from=out-e78ec6df4b56941f,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libcfg_if-e78ec6df4b56941f.rmeta,source=/libcfg_if-e78ec6df4b56941f.rmeta \
-  --mount=from=out-651f5691fade4e93,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libencoding_rs_io-651f5691fade4e93.rlib,source=/libencoding_rs_io-651f5691fade4e93.rlib \
-  --mount=from=out-651f5691fade4e93,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libencoding_rs_io-651f5691fade4e93.rmeta,source=/libencoding_rs_io-651f5691fade4e93.rmeta \
-  --mount=from=out-d59a566cc66becf8,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libgrep_matcher-d59a566cc66becf8.rlib,source=/libgrep_matcher-d59a566cc66becf8.rlib \
-  --mount=from=out-d59a566cc66becf8,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libgrep_matcher-d59a566cc66becf8.rmeta,source=/libgrep_matcher-d59a566cc66becf8.rmeta \
-  --mount=from=out-961aebfc4598d968,dst=/tmp/clis-ripgrep_15-1-0/release/deps/liblog-961aebfc4598d968.rlib,source=/liblog-961aebfc4598d968.rlib \
-  --mount=from=out-961aebfc4598d968,dst=/tmp/clis-ripgrep_15-1-0/release/deps/liblog-961aebfc4598d968.rmeta,source=/liblog-961aebfc4598d968.rmeta \
-  --mount=from=out-977b6f2f3b8d0f6b,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libmemmap2-977b6f2f3b8d0f6b.rlib,source=/libmemmap2-977b6f2f3b8d0f6b.rlib \
-  --mount=from=out-977b6f2f3b8d0f6b,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libmemmap2-977b6f2f3b8d0f6b.rmeta,source=/libmemmap2-977b6f2f3b8d0f6b.rmeta \
-  --mount=from=out-fda8220236222977,dst=/tmp/clis-ripgrep_15-1-0/release/deps/liblibc-fda8220236222977.rlib,source=/liblibc-fda8220236222977.rlib \
-  --mount=from=out-fda8220236222977,dst=/tmp/clis-ripgrep_15-1-0/release/deps/liblibc-fda8220236222977.rmeta,source=/liblibc-fda8220236222977.rmeta \
+  --mount=from=out-d3eea57fb24a933f,dst=/target/release/deps/libbstr-d3eea57fb24a933f.rlib,source=/libbstr-d3eea57fb24a933f.rlib \
+  --mount=from=out-d3eea57fb24a933f,dst=/target/release/deps/libbstr-d3eea57fb24a933f.rmeta,source=/libbstr-d3eea57fb24a933f.rmeta \
+  --mount=from=out-3a40f50ac19c9d2e,dst=/target/release/deps/libmemchr-3a40f50ac19c9d2e.rlib,source=/libmemchr-3a40f50ac19c9d2e.rlib \
+  --mount=from=out-3a40f50ac19c9d2e,dst=/target/release/deps/libmemchr-3a40f50ac19c9d2e.rmeta,source=/libmemchr-3a40f50ac19c9d2e.rmeta \
+  --mount=from=out-e22c3e2bd8aa6773,dst=/target/release/deps/libregex_automata-e22c3e2bd8aa6773.rlib,source=/libregex_automata-e22c3e2bd8aa6773.rlib \
+  --mount=from=out-e22c3e2bd8aa6773,dst=/target/release/deps/libregex_automata-e22c3e2bd8aa6773.rmeta,source=/libregex_automata-e22c3e2bd8aa6773.rmeta \
+  --mount=from=out-a01a7f030e27d71e,dst=/target/release/deps/libaho_corasick-a01a7f030e27d71e.rlib,source=/libaho_corasick-a01a7f030e27d71e.rlib \
+  --mount=from=out-a01a7f030e27d71e,dst=/target/release/deps/libaho_corasick-a01a7f030e27d71e.rmeta,source=/libaho_corasick-a01a7f030e27d71e.rmeta \
+  --mount=from=out-34711e95edd06069,dst=/target/release/deps/libregex_syntax-34711e95edd06069.rlib,source=/libregex_syntax-34711e95edd06069.rlib \
+  --mount=from=out-34711e95edd06069,dst=/target/release/deps/libregex_syntax-34711e95edd06069.rmeta,source=/libregex_syntax-34711e95edd06069.rmeta \
+  --mount=from=out-e0d6e4f8a8eb4371,dst=/target/release/deps/libencoding_rs-e0d6e4f8a8eb4371.rlib,source=/libencoding_rs-e0d6e4f8a8eb4371.rlib \
+  --mount=from=out-e0d6e4f8a8eb4371,dst=/target/release/deps/libencoding_rs-e0d6e4f8a8eb4371.rmeta,source=/libencoding_rs-e0d6e4f8a8eb4371.rmeta \
+  --mount=from=out-e78ec6df4b56941f,dst=/target/release/deps/libcfg_if-e78ec6df4b56941f.rlib,source=/libcfg_if-e78ec6df4b56941f.rlib \
+  --mount=from=out-e78ec6df4b56941f,dst=/target/release/deps/libcfg_if-e78ec6df4b56941f.rmeta,source=/libcfg_if-e78ec6df4b56941f.rmeta \
+  --mount=from=out-651f5691fade4e93,dst=/target/release/deps/libencoding_rs_io-651f5691fade4e93.rlib,source=/libencoding_rs_io-651f5691fade4e93.rlib \
+  --mount=from=out-651f5691fade4e93,dst=/target/release/deps/libencoding_rs_io-651f5691fade4e93.rmeta,source=/libencoding_rs_io-651f5691fade4e93.rmeta \
+  --mount=from=out-d59a566cc66becf8,dst=/target/release/deps/libgrep_matcher-d59a566cc66becf8.rlib,source=/libgrep_matcher-d59a566cc66becf8.rlib \
+  --mount=from=out-d59a566cc66becf8,dst=/target/release/deps/libgrep_matcher-d59a566cc66becf8.rmeta,source=/libgrep_matcher-d59a566cc66becf8.rmeta \
+  --mount=from=out-961aebfc4598d968,dst=/target/release/deps/liblog-961aebfc4598d968.rlib,source=/liblog-961aebfc4598d968.rlib \
+  --mount=from=out-961aebfc4598d968,dst=/target/release/deps/liblog-961aebfc4598d968.rmeta,source=/liblog-961aebfc4598d968.rmeta \
+  --mount=from=out-977b6f2f3b8d0f6b,dst=/target/release/deps/libmemmap2-977b6f2f3b8d0f6b.rlib,source=/libmemmap2-977b6f2f3b8d0f6b.rlib \
+  --mount=from=out-977b6f2f3b8d0f6b,dst=/target/release/deps/libmemmap2-977b6f2f3b8d0f6b.rmeta,source=/libmemmap2-977b6f2f3b8d0f6b.rmeta \
+  --mount=from=out-fda8220236222977,dst=/target/release/deps/liblibc-fda8220236222977.rlib,source=/liblibc-fda8220236222977.rlib \
+  --mount=from=out-fda8220236222977,dst=/target/release/deps/liblibc-fda8220236222977.rmeta,source=/liblibc-fda8220236222977.rmeta \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=grep_searcher \
         CARGO_INCREMENTAL=0 \
@@ -3000,13 +3000,13 @@ RUN \
         CARGO_PKG_VERSION_PATCH=16 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --crate-name grep_searcher --edition 2024 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("avx-accel", "simd-accel"))' -C metadata'=8ad2341f244c1a30' -C extra-filename'=-82a451c10ca406e4' --out-dir /tmp/clis-ripgrep_15-1-0/release/deps -L dependency'=/tmp/clis-ripgrep_15-1-0/release/deps' --extern bstr'=/tmp/clis-ripgrep_15-1-0/release/deps/libbstr-d3eea57fb24a933f.rmeta' --extern encoding_rs'=/tmp/clis-ripgrep_15-1-0/release/deps/libencoding_rs-e0d6e4f8a8eb4371.rmeta' --extern encoding_rs_io'=/tmp/clis-ripgrep_15-1-0/release/deps/libencoding_rs_io-651f5691fade4e93.rmeta' --extern grep_matcher'=/tmp/clis-ripgrep_15-1-0/release/deps/libgrep_matcher-d59a566cc66becf8.rmeta' --extern log'=/tmp/clis-ripgrep_15-1-0/release/deps/liblog-961aebfc4598d968.rmeta' --extern memchr'=/tmp/clis-ripgrep_15-1-0/release/deps/libmemchr-3a40f50ac19c9d2e.rmeta' --extern memmap'=/tmp/clis-ripgrep_15-1-0/release/deps/libmemmap2-977b6f2f3b8d0f6b.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-searcher-0.1.16/src/lib.rs \
-        1>          /tmp/clis-ripgrep_15-1-0/release/deps/out-82a451c10ca406e4-stdout \
-        2>          /tmp/clis-ripgrep_15-1-0/release/deps/out-82a451c10ca406e4-stderr \
-        || echo $? >/tmp/clis-ripgrep_15-1-0/release/deps/out-82a451c10ca406e4-errcode\
-  ; find /tmp/clis-ripgrep_15-1-0/release/deps/*-82a451c10ca406e4* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      rustc --crate-name grep_searcher --edition 2024 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("avx-accel", "simd-accel"))' -C metadata'=8ad2341f244c1a30' -C extra-filename'=-82a451c10ca406e4' --out-dir /target/release/deps -L dependency'=/target/release/deps' --extern bstr'=/target/release/deps/libbstr-d3eea57fb24a933f.rmeta' --extern encoding_rs'=/target/release/deps/libencoding_rs-e0d6e4f8a8eb4371.rmeta' --extern encoding_rs_io'=/target/release/deps/libencoding_rs_io-651f5691fade4e93.rmeta' --extern grep_matcher'=/target/release/deps/libgrep_matcher-d59a566cc66becf8.rmeta' --extern log'=/target/release/deps/liblog-961aebfc4598d968.rmeta' --extern memchr'=/target/release/deps/libmemchr-3a40f50ac19c9d2e.rmeta' --extern memmap'=/target/release/deps/libmemmap2-977b6f2f3b8d0f6b.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-searcher-0.1.16/src/lib.rs \
+        1>          /target/release/deps/out-82a451c10ca406e4-stdout \
+        2>          /target/release/deps/out-82a451c10ca406e4-stderr \
+        || echo $? >/target/release/deps/out-82a451c10ca406e4-errcode\
+  ; find /target/release/deps/*-82a451c10ca406e4* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-82a451c10ca406e4
-COPY --link --from=dep-n-grep-searcher-0.1.16-82a451c10ca406e4 /tmp/clis-ripgrep_15-1-0/release/deps/*-82a451c10ca406e4* /
+COPY --link --from=dep-n-grep-searcher-0.1.16-82a451c10ca406e4 /target/release/deps/*-82a451c10ca406e4* /
 
 ## this = "82a451c10ca406e4"
 ## deps = [
@@ -3032,9 +3032,9 @@ COPY --link --from=dep-n-grep-searcher-0.1.16-82a451c10ca406e4 /tmp/clis-ripgrep
 ##     "libgrep_searcher-82a451c10ca406e4.rmeta",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/deps/grep_searcher-82a451c10ca406e4.d","emit":"dep-info"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/deps/libgrep_searcher-82a451c10ca406e4.rmeta","emit":"metadata"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/deps/libgrep_searcher-82a451c10ca406e4.rlib","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/grep_searcher-82a451c10ca406e4.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libgrep_searcher-82a451c10ca406e4.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libgrep_searcher-82a451c10ca406e4.rlib","emit":"link"}',
 ## ]
 ##
 ## [[externs]]
@@ -3155,33 +3155,33 @@ COPY --link --from=dep-n-grep-searcher-0.1.16-82a451c10ca406e4 /tmp/clis-ripgrep
 ## script = '''
 ## FROM rust-base AS dep-n-grep-searcher-0.1.16-82a451c10ca406e4
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-ripgrep_15-1-0/release/deps
+## WORKDIR /target/release/deps
 ## RUN \
 ##   --mount=from=cratesio-grep-searcher-0.1.16,source=/grep-searcher-0.1.16,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-searcher-0.1.16 \
-##   --mount=from=out-d3eea57fb24a933f,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libbstr-d3eea57fb24a933f.rlib,source=/libbstr-d3eea57fb24a933f.rlib \
-##   --mount=from=out-d3eea57fb24a933f,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libbstr-d3eea57fb24a933f.rmeta,source=/libbstr-d3eea57fb24a933f.rmeta \
-##   --mount=from=out-3a40f50ac19c9d2e,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libmemchr-3a40f50ac19c9d2e.rlib,source=/libmemchr-3a40f50ac19c9d2e.rlib \
-##   --mount=from=out-3a40f50ac19c9d2e,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libmemchr-3a40f50ac19c9d2e.rmeta,source=/libmemchr-3a40f50ac19c9d2e.rmeta \
-##   --mount=from=out-e22c3e2bd8aa6773,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libregex_automata-e22c3e2bd8aa6773.rlib,source=/libregex_automata-e22c3e2bd8aa6773.rlib \
-##   --mount=from=out-e22c3e2bd8aa6773,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libregex_automata-e22c3e2bd8aa6773.rmeta,source=/libregex_automata-e22c3e2bd8aa6773.rmeta \
-##   --mount=from=out-a01a7f030e27d71e,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libaho_corasick-a01a7f030e27d71e.rlib,source=/libaho_corasick-a01a7f030e27d71e.rlib \
-##   --mount=from=out-a01a7f030e27d71e,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libaho_corasick-a01a7f030e27d71e.rmeta,source=/libaho_corasick-a01a7f030e27d71e.rmeta \
-##   --mount=from=out-34711e95edd06069,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libregex_syntax-34711e95edd06069.rlib,source=/libregex_syntax-34711e95edd06069.rlib \
-##   --mount=from=out-34711e95edd06069,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libregex_syntax-34711e95edd06069.rmeta,source=/libregex_syntax-34711e95edd06069.rmeta \
-##   --mount=from=out-e0d6e4f8a8eb4371,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libencoding_rs-e0d6e4f8a8eb4371.rlib,source=/libencoding_rs-e0d6e4f8a8eb4371.rlib \
-##   --mount=from=out-e0d6e4f8a8eb4371,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libencoding_rs-e0d6e4f8a8eb4371.rmeta,source=/libencoding_rs-e0d6e4f8a8eb4371.rmeta \
-##   --mount=from=out-e78ec6df4b56941f,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libcfg_if-e78ec6df4b56941f.rlib,source=/libcfg_if-e78ec6df4b56941f.rlib \
-##   --mount=from=out-e78ec6df4b56941f,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libcfg_if-e78ec6df4b56941f.rmeta,source=/libcfg_if-e78ec6df4b56941f.rmeta \
-##   --mount=from=out-651f5691fade4e93,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libencoding_rs_io-651f5691fade4e93.rlib,source=/libencoding_rs_io-651f5691fade4e93.rlib \
-##   --mount=from=out-651f5691fade4e93,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libencoding_rs_io-651f5691fade4e93.rmeta,source=/libencoding_rs_io-651f5691fade4e93.rmeta \
-##   --mount=from=out-d59a566cc66becf8,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libgrep_matcher-d59a566cc66becf8.rlib,source=/libgrep_matcher-d59a566cc66becf8.rlib \
-##   --mount=from=out-d59a566cc66becf8,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libgrep_matcher-d59a566cc66becf8.rmeta,source=/libgrep_matcher-d59a566cc66becf8.rmeta \
-##   --mount=from=out-961aebfc4598d968,dst=/tmp/clis-ripgrep_15-1-0/release/deps/liblog-961aebfc4598d968.rlib,source=/liblog-961aebfc4598d968.rlib \
-##   --mount=from=out-961aebfc4598d968,dst=/tmp/clis-ripgrep_15-1-0/release/deps/liblog-961aebfc4598d968.rmeta,source=/liblog-961aebfc4598d968.rmeta \
-##   --mount=from=out-977b6f2f3b8d0f6b,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libmemmap2-977b6f2f3b8d0f6b.rlib,source=/libmemmap2-977b6f2f3b8d0f6b.rlib \
-##   --mount=from=out-977b6f2f3b8d0f6b,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libmemmap2-977b6f2f3b8d0f6b.rmeta,source=/libmemmap2-977b6f2f3b8d0f6b.rmeta \
-##   --mount=from=out-fda8220236222977,dst=/tmp/clis-ripgrep_15-1-0/release/deps/liblibc-fda8220236222977.rlib,source=/liblibc-fda8220236222977.rlib \
-##   --mount=from=out-fda8220236222977,dst=/tmp/clis-ripgrep_15-1-0/release/deps/liblibc-fda8220236222977.rmeta,source=/liblibc-fda8220236222977.rmeta \
+##   --mount=from=out-d3eea57fb24a933f,dst=/target/release/deps/libbstr-d3eea57fb24a933f.rlib,source=/libbstr-d3eea57fb24a933f.rlib \
+##   --mount=from=out-d3eea57fb24a933f,dst=/target/release/deps/libbstr-d3eea57fb24a933f.rmeta,source=/libbstr-d3eea57fb24a933f.rmeta \
+##   --mount=from=out-3a40f50ac19c9d2e,dst=/target/release/deps/libmemchr-3a40f50ac19c9d2e.rlib,source=/libmemchr-3a40f50ac19c9d2e.rlib \
+##   --mount=from=out-3a40f50ac19c9d2e,dst=/target/release/deps/libmemchr-3a40f50ac19c9d2e.rmeta,source=/libmemchr-3a40f50ac19c9d2e.rmeta \
+##   --mount=from=out-e22c3e2bd8aa6773,dst=/target/release/deps/libregex_automata-e22c3e2bd8aa6773.rlib,source=/libregex_automata-e22c3e2bd8aa6773.rlib \
+##   --mount=from=out-e22c3e2bd8aa6773,dst=/target/release/deps/libregex_automata-e22c3e2bd8aa6773.rmeta,source=/libregex_automata-e22c3e2bd8aa6773.rmeta \
+##   --mount=from=out-a01a7f030e27d71e,dst=/target/release/deps/libaho_corasick-a01a7f030e27d71e.rlib,source=/libaho_corasick-a01a7f030e27d71e.rlib \
+##   --mount=from=out-a01a7f030e27d71e,dst=/target/release/deps/libaho_corasick-a01a7f030e27d71e.rmeta,source=/libaho_corasick-a01a7f030e27d71e.rmeta \
+##   --mount=from=out-34711e95edd06069,dst=/target/release/deps/libregex_syntax-34711e95edd06069.rlib,source=/libregex_syntax-34711e95edd06069.rlib \
+##   --mount=from=out-34711e95edd06069,dst=/target/release/deps/libregex_syntax-34711e95edd06069.rmeta,source=/libregex_syntax-34711e95edd06069.rmeta \
+##   --mount=from=out-e0d6e4f8a8eb4371,dst=/target/release/deps/libencoding_rs-e0d6e4f8a8eb4371.rlib,source=/libencoding_rs-e0d6e4f8a8eb4371.rlib \
+##   --mount=from=out-e0d6e4f8a8eb4371,dst=/target/release/deps/libencoding_rs-e0d6e4f8a8eb4371.rmeta,source=/libencoding_rs-e0d6e4f8a8eb4371.rmeta \
+##   --mount=from=out-e78ec6df4b56941f,dst=/target/release/deps/libcfg_if-e78ec6df4b56941f.rlib,source=/libcfg_if-e78ec6df4b56941f.rlib \
+##   --mount=from=out-e78ec6df4b56941f,dst=/target/release/deps/libcfg_if-e78ec6df4b56941f.rmeta,source=/libcfg_if-e78ec6df4b56941f.rmeta \
+##   --mount=from=out-651f5691fade4e93,dst=/target/release/deps/libencoding_rs_io-651f5691fade4e93.rlib,source=/libencoding_rs_io-651f5691fade4e93.rlib \
+##   --mount=from=out-651f5691fade4e93,dst=/target/release/deps/libencoding_rs_io-651f5691fade4e93.rmeta,source=/libencoding_rs_io-651f5691fade4e93.rmeta \
+##   --mount=from=out-d59a566cc66becf8,dst=/target/release/deps/libgrep_matcher-d59a566cc66becf8.rlib,source=/libgrep_matcher-d59a566cc66becf8.rlib \
+##   --mount=from=out-d59a566cc66becf8,dst=/target/release/deps/libgrep_matcher-d59a566cc66becf8.rmeta,source=/libgrep_matcher-d59a566cc66becf8.rmeta \
+##   --mount=from=out-961aebfc4598d968,dst=/target/release/deps/liblog-961aebfc4598d968.rlib,source=/liblog-961aebfc4598d968.rlib \
+##   --mount=from=out-961aebfc4598d968,dst=/target/release/deps/liblog-961aebfc4598d968.rmeta,source=/liblog-961aebfc4598d968.rmeta \
+##   --mount=from=out-977b6f2f3b8d0f6b,dst=/target/release/deps/libmemmap2-977b6f2f3b8d0f6b.rlib,source=/libmemmap2-977b6f2f3b8d0f6b.rlib \
+##   --mount=from=out-977b6f2f3b8d0f6b,dst=/target/release/deps/libmemmap2-977b6f2f3b8d0f6b.rmeta,source=/libmemmap2-977b6f2f3b8d0f6b.rmeta \
+##   --mount=from=out-fda8220236222977,dst=/target/release/deps/liblibc-fda8220236222977.rlib,source=/liblibc-fda8220236222977.rlib \
+##   --mount=from=out-fda8220236222977,dst=/target/release/deps/liblibc-fda8220236222977.rmeta,source=/liblibc-fda8220236222977.rmeta \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=grep_searcher \
 ##         CARGO_INCREMENTAL=0 \
@@ -3203,11 +3203,11 @@ COPY --link --from=dep-n-grep-searcher-0.1.16-82a451c10ca406e4 /tmp/clis-ripgrep
 ##         CARGO_PKG_VERSION_PATCH=16 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name grep_searcher --edition 2024 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("avx-accel", "simd-accel"))' -C metadata'=8ad2341f244c1a30' -C extra-filename'=-82a451c10ca406e4' --out-dir /tmp/clis-ripgrep_15-1-0/release/deps -L dependency'=/tmp/clis-ripgrep_15-1-0/release/deps' --extern bstr'=/tmp/clis-ripgrep_15-1-0/release/deps/libbstr-d3eea57fb24a933f.rmeta' --extern encoding_rs'=/tmp/clis-ripgrep_15-1-0/release/deps/libencoding_rs-e0d6e4f8a8eb4371.rmeta' --extern encoding_rs_io'=/tmp/clis-ripgrep_15-1-0/release/deps/libencoding_rs_io-651f5691fade4e93.rmeta' --extern grep_matcher'=/tmp/clis-ripgrep_15-1-0/release/deps/libgrep_matcher-d59a566cc66becf8.rmeta' --extern log'=/tmp/clis-ripgrep_15-1-0/release/deps/liblog-961aebfc4598d968.rmeta' --extern memchr'=/tmp/clis-ripgrep_15-1-0/release/deps/libmemchr-3a40f50ac19c9d2e.rmeta' --extern memmap'=/tmp/clis-ripgrep_15-1-0/release/deps/libmemmap2-977b6f2f3b8d0f6b.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-searcher-0.1.16/src/lib.rs \
-##         1>          /tmp/clis-ripgrep_15-1-0/release/deps/out-82a451c10ca406e4-stdout \
-##         2>          /tmp/clis-ripgrep_15-1-0/release/deps/out-82a451c10ca406e4-stderr \
-##         || echo $? >/tmp/clis-ripgrep_15-1-0/release/deps/out-82a451c10ca406e4-errcode\
-##   ; find /tmp/clis-ripgrep_15-1-0/release/deps/*-82a451c10ca406e4* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name grep_searcher --edition 2024 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("avx-accel", "simd-accel"))' -C metadata'=8ad2341f244c1a30' -C extra-filename'=-82a451c10ca406e4' --out-dir /target/release/deps -L dependency'=/target/release/deps' --extern bstr'=/target/release/deps/libbstr-d3eea57fb24a933f.rmeta' --extern encoding_rs'=/target/release/deps/libencoding_rs-e0d6e4f8a8eb4371.rmeta' --extern encoding_rs_io'=/target/release/deps/libencoding_rs_io-651f5691fade4e93.rmeta' --extern grep_matcher'=/target/release/deps/libgrep_matcher-d59a566cc66becf8.rmeta' --extern log'=/target/release/deps/liblog-961aebfc4598d968.rmeta' --extern memchr'=/target/release/deps/libmemchr-3a40f50ac19c9d2e.rmeta' --extern memmap'=/target/release/deps/libmemmap2-977b6f2f3b8d0f6b.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-searcher-0.1.16/src/lib.rs \
+##         1>          /target/release/deps/out-82a451c10ca406e4-stdout \
+##         2>          /target/release/deps/out-82a451c10ca406e4-stderr \
+##         || echo $? >/target/release/deps/out-82a451c10ca406e4-errcode\
+##   ; find /target/release/deps/*-82a451c10ca406e4* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -3215,14 +3215,14 @@ COPY --link --from=dep-n-grep-searcher-0.1.16-82a451c10ca406e4 /tmp/clis-ripgrep
 ## stage = "out-82a451c10ca406e4"
 ## script = """
 ## FROM scratch AS out-82a451c10ca406e4
-## COPY --link --from=dep-n-grep-searcher-0.1.16-82a451c10ca406e4 /tmp/clis-ripgrep_15-1-0/release/deps/*-82a451c10ca406e4* /"""
+## COPY --link --from=dep-n-grep-searcher-0.1.16-82a451c10ca406e4 /target/release/deps/*-82a451c10ca406e4* /"""
 
 FROM scratch AS cratesio-serde_core-1.0.228
 ADD --chmod=0664 --unpack --checksum=sha256:41d385c7d4ca58e59fc732af25c3983b67ac852c1a25000afe1175de458b67ad \
   https://static.crates.io/crates/serde_core/serde_core-1.0.228.crate /
 FROM rust-base AS dep-x-serde_core-1.0.228-de48ddf59432a44f
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-ripgrep_15-1-0/release/build/serde_core-de48ddf59432a44f
+WORKDIR /target/release/build/serde_core-de48ddf59432a44f
 RUN \
   --mount=from=cratesio-serde_core-1.0.228,source=/serde_core-1.0.228,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_core-1.0.228,rw \
     { \
@@ -3264,13 +3264,13 @@ RUN \
         CARGO_PKG_VERSION_PATCH=228 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="result"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "rc", "result", "std", "unstable"))' -C metadata'=f34233f968610038' -C extra-filename'=-de48ddf59432a44f' --out-dir /tmp/clis-ripgrep_15-1-0/release/build/serde_core-de48ddf59432a44f -L dependency'=/tmp/clis-ripgrep_15-1-0/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_core-1.0.228/build.rs \
-        1>          /tmp/clis-ripgrep_15-1-0/release/build/serde_core-de48ddf59432a44f/out-de48ddf59432a44f-stdout \
-        2>          /tmp/clis-ripgrep_15-1-0/release/build/serde_core-de48ddf59432a44f/out-de48ddf59432a44f-stderr \
-        || echo $? >/tmp/clis-ripgrep_15-1-0/release/build/serde_core-de48ddf59432a44f/out-de48ddf59432a44f-errcode\
-  ; find /tmp/clis-ripgrep_15-1-0/release/build/serde_core-de48ddf59432a44f/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="result"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "rc", "result", "std", "unstable"))' -C metadata'=f34233f968610038' -C extra-filename'=-de48ddf59432a44f' --out-dir /target/release/build/serde_core-de48ddf59432a44f -L dependency'=/target/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_core-1.0.228/build.rs \
+        1>          /target/release/build/serde_core-de48ddf59432a44f/out-de48ddf59432a44f-stdout \
+        2>          /target/release/build/serde_core-de48ddf59432a44f/out-de48ddf59432a44f-stderr \
+        || echo $? >/target/release/build/serde_core-de48ddf59432a44f/out-de48ddf59432a44f-errcode\
+  ; find /target/release/build/serde_core-de48ddf59432a44f/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-de48ddf59432a44f
-COPY --link --from=dep-x-serde_core-1.0.228-de48ddf59432a44f /tmp/clis-ripgrep_15-1-0/release/build/serde_core-de48ddf59432a44f/*-de48ddf59432a44f* /
+COPY --link --from=dep-x-serde_core-1.0.228-de48ddf59432a44f /target/release/build/serde_core-de48ddf59432a44f/*-de48ddf59432a44f* /
 
 ## this = "de48ddf59432a44f"
 ## writes = [
@@ -3278,8 +3278,8 @@ COPY --link --from=dep-x-serde_core-1.0.228-de48ddf59432a44f /tmp/clis-ripgrep_1
 ##     "build_script_build-de48ddf59432a44f.d",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/build/serde_core-de48ddf59432a44f/build_script_build-de48ddf59432a44f.d","emit":"dep-info"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/build/serde_core-de48ddf59432a44f/build_script_build-de48ddf59432a44f","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/build/serde_core-de48ddf59432a44f/build_script_build-de48ddf59432a44f.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/build/serde_core-de48ddf59432a44f/build_script_build-de48ddf59432a44f","emit":"link"}',
 ## ]
 ##
 ## [[stages]]
@@ -3304,7 +3304,7 @@ COPY --link --from=dep-x-serde_core-1.0.228-de48ddf59432a44f /tmp/clis-ripgrep_1
 ## script = '''
 ## FROM rust-base AS dep-x-serde_core-1.0.228-de48ddf59432a44f
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-ripgrep_15-1-0/release/build/serde_core-de48ddf59432a44f
+## WORKDIR /target/release/build/serde_core-de48ddf59432a44f
 ## RUN \
 ##   --mount=from=cratesio-serde_core-1.0.228,source=/serde_core-1.0.228,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_core-1.0.228,rw \
 ##     { \
@@ -3346,11 +3346,11 @@ COPY --link --from=dep-x-serde_core-1.0.228-de48ddf59432a44f /tmp/clis-ripgrep_1
 ##         CARGO_PKG_VERSION_PATCH=228 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="result"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "rc", "result", "std", "unstable"))' -C metadata'=f34233f968610038' -C extra-filename'=-de48ddf59432a44f' --out-dir /tmp/clis-ripgrep_15-1-0/release/build/serde_core-de48ddf59432a44f -L dependency'=/tmp/clis-ripgrep_15-1-0/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_core-1.0.228/build.rs \
-##         1>          /tmp/clis-ripgrep_15-1-0/release/build/serde_core-de48ddf59432a44f/out-de48ddf59432a44f-stdout \
-##         2>          /tmp/clis-ripgrep_15-1-0/release/build/serde_core-de48ddf59432a44f/out-de48ddf59432a44f-stderr \
-##         || echo $? >/tmp/clis-ripgrep_15-1-0/release/build/serde_core-de48ddf59432a44f/out-de48ddf59432a44f-errcode\
-##   ; find /tmp/clis-ripgrep_15-1-0/release/build/serde_core-de48ddf59432a44f/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="result"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "rc", "result", "std", "unstable"))' -C metadata'=f34233f968610038' -C extra-filename'=-de48ddf59432a44f' --out-dir /target/release/build/serde_core-de48ddf59432a44f -L dependency'=/target/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_core-1.0.228/build.rs \
+##         1>          /target/release/build/serde_core-de48ddf59432a44f/out-de48ddf59432a44f-stdout \
+##         2>          /target/release/build/serde_core-de48ddf59432a44f/out-de48ddf59432a44f-stderr \
+##         || echo $? >/target/release/build/serde_core-de48ddf59432a44f/out-de48ddf59432a44f-errcode\
+##   ; find /target/release/build/serde_core-de48ddf59432a44f/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -3358,14 +3358,14 @@ COPY --link --from=dep-x-serde_core-1.0.228-de48ddf59432a44f /tmp/clis-ripgrep_1
 ## stage = "out-de48ddf59432a44f"
 ## script = """
 ## FROM scratch AS out-de48ddf59432a44f
-## COPY --link --from=dep-x-serde_core-1.0.228-de48ddf59432a44f /tmp/clis-ripgrep_15-1-0/release/build/serde_core-de48ddf59432a44f/*-de48ddf59432a44f* /"""
+## COPY --link --from=dep-x-serde_core-1.0.228-de48ddf59432a44f /target/release/build/serde_core-de48ddf59432a44f/*-de48ddf59432a44f* /"""
 
 FROM rust-base AS run-z-serde_core-1.0.228-5f8fd3dd93685614
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-ripgrep_15-1-0/release/build/serde_core-5f8fd3dd93685614/out
+WORKDIR /target/release/build/serde_core-5f8fd3dd93685614/out
 WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_core-1.0.228
 RUN \
-  --mount=from=out-de48ddf59432a44f,source=/build_script_build-de48ddf59432a44f,dst=/tmp/clis-ripgrep_15-1-0/release/build/serde_core-de48ddf59432a44f/build-script-build \
+  --mount=from=out-de48ddf59432a44f,source=/build_script_build-de48ddf59432a44f,dst=/target/release/build/serde_core-de48ddf59432a44f/build-script-build \
   --mount=from=cratesio-serde_core-1.0.228,source=/serde_core-1.0.228,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_core-1.0.228 \
     env CARGO="$(which cargo)" \
         CARGO_CFG_FEATURE=result,std \
@@ -3405,23 +3405,23 @@ RUN \
         HOST=x86_64-unknown-linux-gnu \
         NUM_JOBS=4 \
         OPT_LEVEL=3 \
-        OUT_DIR=/tmp/clis-ripgrep_15-1-0/release/build/serde_core-5f8fd3dd93685614/out \
+        OUT_DIR=/target/release/build/serde_core-5f8fd3dd93685614/out \
         PROFILE=release \
         RUSTC=rustc \
         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
         TARGET=x86_64-unknown-linux-gnu \
         CARGOGREEN=1 \
-      CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-ripgrep_15-1-0/release/build/serde_core-de48ddf59432a44f/build-script-build \
-        1>          /tmp/clis-ripgrep_15-1-0/release/build/serde_core-5f8fd3dd93685614/out/out-5f8fd3dd93685614-stdout \
-        2>          /tmp/clis-ripgrep_15-1-0/release/build/serde_core-5f8fd3dd93685614/out/out-5f8fd3dd93685614-stderr \
-        || echo $? >/tmp/clis-ripgrep_15-1-0/release/build/serde_core-5f8fd3dd93685614/out/out-5f8fd3dd93685614-errcode\
-  ; find /tmp/clis-ripgrep_15-1-0/release/build/serde_core-5f8fd3dd93685614/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      CARGOGREEN_EXECUTE_BUILDRS_= /target/release/build/serde_core-de48ddf59432a44f/build-script-build \
+        1>          /target/release/build/serde_core-5f8fd3dd93685614/out/out-5f8fd3dd93685614-stdout \
+        2>          /target/release/build/serde_core-5f8fd3dd93685614/out/out-5f8fd3dd93685614-stderr \
+        || echo $? >/target/release/build/serde_core-5f8fd3dd93685614/out/out-5f8fd3dd93685614-errcode\
+  ; find /target/release/build/serde_core-5f8fd3dd93685614/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-5f8fd3dd93685614
-COPY --link --from=run-z-serde_core-1.0.228-5f8fd3dd93685614 /tmp/clis-ripgrep_15-1-0/release/build/serde_core-5f8fd3dd93685614/out /
+COPY --link --from=run-z-serde_core-1.0.228-5f8fd3dd93685614 /target/release/build/serde_core-5f8fd3dd93685614/out /
 
 ## this = "5f8fd3dd93685614"
 ## deps = ["de48ddf59432a44f"]
-## writes_to = "/tmp/clis-ripgrep_15-1-0/release/build/serde_core-5f8fd3dd93685614/out"
+## writes_to = "/target/release/build/serde_core-5f8fd3dd93685614/out"
 ## writes = ["private.rs"]
 ## stdout = [
 ##     "cargo:rerun-if-changed=build.rs",
@@ -3450,10 +3450,10 @@ COPY --link --from=run-z-serde_core-1.0.228-5f8fd3dd93685614 /tmp/clis-ripgrep_1
 ## script = '''
 ## FROM rust-base AS run-z-serde_core-1.0.228-5f8fd3dd93685614
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-ripgrep_15-1-0/release/build/serde_core-5f8fd3dd93685614/out
+## WORKDIR /target/release/build/serde_core-5f8fd3dd93685614/out
 ## WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_core-1.0.228
 ## RUN \
-##   --mount=from=out-de48ddf59432a44f,source=/build_script_build-de48ddf59432a44f,dst=/tmp/clis-ripgrep_15-1-0/release/build/serde_core-de48ddf59432a44f/build-script-build \
+##   --mount=from=out-de48ddf59432a44f,source=/build_script_build-de48ddf59432a44f,dst=/target/release/build/serde_core-de48ddf59432a44f/build-script-build \
 ##   --mount=from=cratesio-serde_core-1.0.228,source=/serde_core-1.0.228,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_core-1.0.228 \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CFG_FEATURE=result,std \
@@ -3493,17 +3493,17 @@ COPY --link --from=run-z-serde_core-1.0.228-5f8fd3dd93685614 /tmp/clis-ripgrep_1
 ##         HOST=x86_64-unknown-linux-gnu \
 ##         NUM_JOBS=4 \
 ##         OPT_LEVEL=3 \
-##         OUT_DIR=/tmp/clis-ripgrep_15-1-0/release/build/serde_core-5f8fd3dd93685614/out \
+##         OUT_DIR=/target/release/build/serde_core-5f8fd3dd93685614/out \
 ##         PROFILE=release \
 ##         RUSTC=rustc \
 ##         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
 ##         TARGET=x86_64-unknown-linux-gnu \
 ##         CARGOGREEN=1 \
-##       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-ripgrep_15-1-0/release/build/serde_core-de48ddf59432a44f/build-script-build \
-##         1>          /tmp/clis-ripgrep_15-1-0/release/build/serde_core-5f8fd3dd93685614/out/out-5f8fd3dd93685614-stdout \
-##         2>          /tmp/clis-ripgrep_15-1-0/release/build/serde_core-5f8fd3dd93685614/out/out-5f8fd3dd93685614-stderr \
-##         || echo $? >/tmp/clis-ripgrep_15-1-0/release/build/serde_core-5f8fd3dd93685614/out/out-5f8fd3dd93685614-errcode\
-##   ; find /tmp/clis-ripgrep_15-1-0/release/build/serde_core-5f8fd3dd93685614/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       CARGOGREEN_EXECUTE_BUILDRS_= /target/release/build/serde_core-de48ddf59432a44f/build-script-build \
+##         1>          /target/release/build/serde_core-5f8fd3dd93685614/out/out-5f8fd3dd93685614-stdout \
+##         2>          /target/release/build/serde_core-5f8fd3dd93685614/out/out-5f8fd3dd93685614-stderr \
+##         || echo $? >/target/release/build/serde_core-5f8fd3dd93685614/out/out-5f8fd3dd93685614-errcode\
+##   ; find /target/release/build/serde_core-5f8fd3dd93685614/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -3511,15 +3511,15 @@ COPY --link --from=run-z-serde_core-1.0.228-5f8fd3dd93685614 /tmp/clis-ripgrep_1
 ## stage = "out-5f8fd3dd93685614"
 ## script = """
 ## FROM scratch AS out-5f8fd3dd93685614
-## COPY --link --from=run-z-serde_core-1.0.228-5f8fd3dd93685614 /tmp/clis-ripgrep_15-1-0/release/build/serde_core-5f8fd3dd93685614/out /"""
+## COPY --link --from=run-z-serde_core-1.0.228-5f8fd3dd93685614 /target/release/build/serde_core-5f8fd3dd93685614/out /"""
 
 
 FROM rust-base AS dep-n-serde_core-1.0.228-9c5f6198d88ce592
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-ripgrep_15-1-0/release/deps
+WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-serde_core-1.0.228,source=/serde_core-1.0.228,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_core-1.0.228 \
-  --mount=from=out-5f8fd3dd93685614,dst=/tmp/clis-ripgrep_15-1-0/release/build/serde_core-5f8fd3dd93685614/out,source=/ \
+  --mount=from=out-5f8fd3dd93685614,dst=/target/release/build/serde_core-5f8fd3dd93685614/out,source=/ \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=serde_core \
         CARGO_INCREMENTAL=0 \
@@ -3539,15 +3539,15 @@ RUN \
         CARGO_PKG_VERSION_MINOR=0 \
         CARGO_PKG_VERSION_PATCH=228 \
         CARGO_PKG_VERSION_PRE= \
-        OUT_DIR=/tmp/clis-ripgrep_15-1-0/release/build/serde_core-5f8fd3dd93685614/out \
+        OUT_DIR=/target/release/build/serde_core-5f8fd3dd93685614/out \
         CARGOGREEN=1 \
-      rustc --crate-name serde_core --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --cfg feature'="result"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "rc", "result", "std", "unstable"))' -C metadata'=43b63a511cd707e5' -C extra-filename'=-9c5f6198d88ce592' --out-dir /tmp/clis-ripgrep_15-1-0/release/deps -L dependency'=/tmp/clis-ripgrep_15-1-0/release/deps' --cap-lints warn --check-cfg cfg'(if_docsrs_then_no_serde_core)' --check-cfg cfg'(no_core_cstr)' --check-cfg cfg'(no_core_error)' --check-cfg cfg'(no_core_net)' --check-cfg cfg'(no_core_num_saturating)' --check-cfg cfg'(no_diagnostic_namespace)' --check-cfg cfg'(no_serde_derive)' --check-cfg cfg'(no_std_atomic)' --check-cfg cfg'(no_std_atomic64)' --check-cfg cfg'(no_target_has_atomic)' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_core-1.0.228/src/lib.rs \
-        1>          /tmp/clis-ripgrep_15-1-0/release/deps/out-9c5f6198d88ce592-stdout \
-        2>          /tmp/clis-ripgrep_15-1-0/release/deps/out-9c5f6198d88ce592-stderr \
-        || echo $? >/tmp/clis-ripgrep_15-1-0/release/deps/out-9c5f6198d88ce592-errcode\
-  ; find /tmp/clis-ripgrep_15-1-0/release/deps/*-9c5f6198d88ce592* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      rustc --crate-name serde_core --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --cfg feature'="result"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "rc", "result", "std", "unstable"))' -C metadata'=43b63a511cd707e5' -C extra-filename'=-9c5f6198d88ce592' --out-dir /target/release/deps -L dependency'=/target/release/deps' --cap-lints warn --check-cfg cfg'(if_docsrs_then_no_serde_core)' --check-cfg cfg'(no_core_cstr)' --check-cfg cfg'(no_core_error)' --check-cfg cfg'(no_core_net)' --check-cfg cfg'(no_core_num_saturating)' --check-cfg cfg'(no_diagnostic_namespace)' --check-cfg cfg'(no_serde_derive)' --check-cfg cfg'(no_std_atomic)' --check-cfg cfg'(no_std_atomic64)' --check-cfg cfg'(no_target_has_atomic)' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_core-1.0.228/src/lib.rs \
+        1>          /target/release/deps/out-9c5f6198d88ce592-stdout \
+        2>          /target/release/deps/out-9c5f6198d88ce592-stderr \
+        || echo $? >/target/release/deps/out-9c5f6198d88ce592-errcode\
+  ; find /target/release/deps/*-9c5f6198d88ce592* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-9c5f6198d88ce592
-COPY --link --from=dep-n-serde_core-1.0.228-9c5f6198d88ce592 /tmp/clis-ripgrep_15-1-0/release/deps/*-9c5f6198d88ce592* /
+COPY --link --from=dep-n-serde_core-1.0.228-9c5f6198d88ce592 /target/release/deps/*-9c5f6198d88ce592* /
 
 ## this = "9c5f6198d88ce592"
 ## deps = [
@@ -3561,14 +3561,14 @@ COPY --link --from=dep-n-serde_core-1.0.228-9c5f6198d88ce592 /tmp/clis-ripgrep_1
 ##     "serde_core-9c5f6198d88ce592.d",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/deps/serde_core-9c5f6198d88ce592.d","emit":"dep-info"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/deps/libserde_core-9c5f6198d88ce592.rmeta","emit":"metadata"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/deps/libserde_core-9c5f6198d88ce592.rlib","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/serde_core-9c5f6198d88ce592.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libserde_core-9c5f6198d88ce592.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libserde_core-9c5f6198d88ce592.rlib","emit":"link"}',
 ## ]
 ##
 ## [[mounts]]
 ## name = "out-5f8fd3dd93685614"
-## mount = "/tmp/clis-ripgrep_15-1-0/release/build/serde_core-5f8fd3dd93685614/out"
+## mount = "/target/release/build/serde_core-5f8fd3dd93685614/out"
 ##
 ## [[stages]]
 ##
@@ -3592,10 +3592,10 @@ COPY --link --from=dep-n-serde_core-1.0.228-9c5f6198d88ce592 /tmp/clis-ripgrep_1
 ## script = '''
 ## FROM rust-base AS dep-n-serde_core-1.0.228-9c5f6198d88ce592
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-ripgrep_15-1-0/release/deps
+## WORKDIR /target/release/deps
 ## RUN \
 ##   --mount=from=cratesio-serde_core-1.0.228,source=/serde_core-1.0.228,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_core-1.0.228 \
-##   --mount=from=out-5f8fd3dd93685614,dst=/tmp/clis-ripgrep_15-1-0/release/build/serde_core-5f8fd3dd93685614/out,source=/ \
+##   --mount=from=out-5f8fd3dd93685614,dst=/target/release/build/serde_core-5f8fd3dd93685614/out,source=/ \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=serde_core \
 ##         CARGO_INCREMENTAL=0 \
@@ -3615,13 +3615,13 @@ COPY --link --from=dep-n-serde_core-1.0.228-9c5f6198d88ce592 /tmp/clis-ripgrep_1
 ##         CARGO_PKG_VERSION_MINOR=0 \
 ##         CARGO_PKG_VERSION_PATCH=228 \
 ##         CARGO_PKG_VERSION_PRE= \
-##         OUT_DIR=/tmp/clis-ripgrep_15-1-0/release/build/serde_core-5f8fd3dd93685614/out \
+##         OUT_DIR=/target/release/build/serde_core-5f8fd3dd93685614/out \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name serde_core --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --cfg feature'="result"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "rc", "result", "std", "unstable"))' -C metadata'=43b63a511cd707e5' -C extra-filename'=-9c5f6198d88ce592' --out-dir /tmp/clis-ripgrep_15-1-0/release/deps -L dependency'=/tmp/clis-ripgrep_15-1-0/release/deps' --cap-lints warn --check-cfg cfg'(if_docsrs_then_no_serde_core)' --check-cfg cfg'(no_core_cstr)' --check-cfg cfg'(no_core_error)' --check-cfg cfg'(no_core_net)' --check-cfg cfg'(no_core_num_saturating)' --check-cfg cfg'(no_diagnostic_namespace)' --check-cfg cfg'(no_serde_derive)' --check-cfg cfg'(no_std_atomic)' --check-cfg cfg'(no_std_atomic64)' --check-cfg cfg'(no_target_has_atomic)' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_core-1.0.228/src/lib.rs \
-##         1>          /tmp/clis-ripgrep_15-1-0/release/deps/out-9c5f6198d88ce592-stdout \
-##         2>          /tmp/clis-ripgrep_15-1-0/release/deps/out-9c5f6198d88ce592-stderr \
-##         || echo $? >/tmp/clis-ripgrep_15-1-0/release/deps/out-9c5f6198d88ce592-errcode\
-##   ; find /tmp/clis-ripgrep_15-1-0/release/deps/*-9c5f6198d88ce592* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name serde_core --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --cfg feature'="result"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "rc", "result", "std", "unstable"))' -C metadata'=43b63a511cd707e5' -C extra-filename'=-9c5f6198d88ce592' --out-dir /target/release/deps -L dependency'=/target/release/deps' --cap-lints warn --check-cfg cfg'(if_docsrs_then_no_serde_core)' --check-cfg cfg'(no_core_cstr)' --check-cfg cfg'(no_core_error)' --check-cfg cfg'(no_core_net)' --check-cfg cfg'(no_core_num_saturating)' --check-cfg cfg'(no_diagnostic_namespace)' --check-cfg cfg'(no_serde_derive)' --check-cfg cfg'(no_std_atomic)' --check-cfg cfg'(no_std_atomic64)' --check-cfg cfg'(no_target_has_atomic)' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_core-1.0.228/src/lib.rs \
+##         1>          /target/release/deps/out-9c5f6198d88ce592-stdout \
+##         2>          /target/release/deps/out-9c5f6198d88ce592-stderr \
+##         || echo $? >/target/release/deps/out-9c5f6198d88ce592-errcode\
+##   ; find /target/release/deps/*-9c5f6198d88ce592* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -3629,14 +3629,14 @@ COPY --link --from=dep-n-serde_core-1.0.228-9c5f6198d88ce592 /tmp/clis-ripgrep_1
 ## stage = "out-9c5f6198d88ce592"
 ## script = """
 ## FROM scratch AS out-9c5f6198d88ce592
-## COPY --link --from=dep-n-serde_core-1.0.228-9c5f6198d88ce592 /tmp/clis-ripgrep_15-1-0/release/deps/*-9c5f6198d88ce592* /"""
+## COPY --link --from=dep-n-serde_core-1.0.228-9c5f6198d88ce592 /target/release/deps/*-9c5f6198d88ce592* /"""
 
 FROM scratch AS cratesio-serde-1.0.228
 ADD --chmod=0664 --unpack --checksum=sha256:9a8e94ea7f378bd32cbbd37198a4a91436180c5bb472411e48b5ec2e2124ae9e \
   https://static.crates.io/crates/serde/serde-1.0.228.crate /
 FROM rust-base AS dep-x-serde-1.0.228-0f33d30b62c10dae
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-ripgrep_15-1-0/release/build/serde-0f33d30b62c10dae
+WORKDIR /target/release/build/serde-0f33d30b62c10dae
 RUN \
   --mount=from=cratesio-serde-1.0.228,source=/serde-1.0.228,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.228,rw \
     { \
@@ -3678,13 +3678,13 @@ RUN \
         CARGO_PKG_VERSION_PATCH=228 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "derive", "rc", "serde_derive", "std", "unstable"))' -C metadata'=15659de74e753d7e' -C extra-filename'=-0f33d30b62c10dae' --out-dir /tmp/clis-ripgrep_15-1-0/release/build/serde-0f33d30b62c10dae -L dependency'=/tmp/clis-ripgrep_15-1-0/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.228/build.rs \
-        1>          /tmp/clis-ripgrep_15-1-0/release/build/serde-0f33d30b62c10dae/out-0f33d30b62c10dae-stdout \
-        2>          /tmp/clis-ripgrep_15-1-0/release/build/serde-0f33d30b62c10dae/out-0f33d30b62c10dae-stderr \
-        || echo $? >/tmp/clis-ripgrep_15-1-0/release/build/serde-0f33d30b62c10dae/out-0f33d30b62c10dae-errcode\
-  ; find /tmp/clis-ripgrep_15-1-0/release/build/serde-0f33d30b62c10dae/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "derive", "rc", "serde_derive", "std", "unstable"))' -C metadata'=15659de74e753d7e' -C extra-filename'=-0f33d30b62c10dae' --out-dir /target/release/build/serde-0f33d30b62c10dae -L dependency'=/target/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.228/build.rs \
+        1>          /target/release/build/serde-0f33d30b62c10dae/out-0f33d30b62c10dae-stdout \
+        2>          /target/release/build/serde-0f33d30b62c10dae/out-0f33d30b62c10dae-stderr \
+        || echo $? >/target/release/build/serde-0f33d30b62c10dae/out-0f33d30b62c10dae-errcode\
+  ; find /target/release/build/serde-0f33d30b62c10dae/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-0f33d30b62c10dae
-COPY --link --from=dep-x-serde-1.0.228-0f33d30b62c10dae /tmp/clis-ripgrep_15-1-0/release/build/serde-0f33d30b62c10dae/*-0f33d30b62c10dae* /
+COPY --link --from=dep-x-serde-1.0.228-0f33d30b62c10dae /target/release/build/serde-0f33d30b62c10dae/*-0f33d30b62c10dae* /
 
 ## this = "0f33d30b62c10dae"
 ## writes = [
@@ -3692,8 +3692,8 @@ COPY --link --from=dep-x-serde-1.0.228-0f33d30b62c10dae /tmp/clis-ripgrep_15-1-0
 ##     "build_script_build-0f33d30b62c10dae.d",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/build/serde-0f33d30b62c10dae/build_script_build-0f33d30b62c10dae.d","emit":"dep-info"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/build/serde-0f33d30b62c10dae/build_script_build-0f33d30b62c10dae","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/build/serde-0f33d30b62c10dae/build_script_build-0f33d30b62c10dae.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/build/serde-0f33d30b62c10dae/build_script_build-0f33d30b62c10dae","emit":"link"}',
 ## ]
 ##
 ## [[stages]]
@@ -3718,7 +3718,7 @@ COPY --link --from=dep-x-serde-1.0.228-0f33d30b62c10dae /tmp/clis-ripgrep_15-1-0
 ## script = '''
 ## FROM rust-base AS dep-x-serde-1.0.228-0f33d30b62c10dae
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-ripgrep_15-1-0/release/build/serde-0f33d30b62c10dae
+## WORKDIR /target/release/build/serde-0f33d30b62c10dae
 ## RUN \
 ##   --mount=from=cratesio-serde-1.0.228,source=/serde-1.0.228,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.228,rw \
 ##     { \
@@ -3760,11 +3760,11 @@ COPY --link --from=dep-x-serde-1.0.228-0f33d30b62c10dae /tmp/clis-ripgrep_15-1-0
 ##         CARGO_PKG_VERSION_PATCH=228 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "derive", "rc", "serde_derive", "std", "unstable"))' -C metadata'=15659de74e753d7e' -C extra-filename'=-0f33d30b62c10dae' --out-dir /tmp/clis-ripgrep_15-1-0/release/build/serde-0f33d30b62c10dae -L dependency'=/tmp/clis-ripgrep_15-1-0/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.228/build.rs \
-##         1>          /tmp/clis-ripgrep_15-1-0/release/build/serde-0f33d30b62c10dae/out-0f33d30b62c10dae-stdout \
-##         2>          /tmp/clis-ripgrep_15-1-0/release/build/serde-0f33d30b62c10dae/out-0f33d30b62c10dae-stderr \
-##         || echo $? >/tmp/clis-ripgrep_15-1-0/release/build/serde-0f33d30b62c10dae/out-0f33d30b62c10dae-errcode\
-##   ; find /tmp/clis-ripgrep_15-1-0/release/build/serde-0f33d30b62c10dae/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "derive", "rc", "serde_derive", "std", "unstable"))' -C metadata'=15659de74e753d7e' -C extra-filename'=-0f33d30b62c10dae' --out-dir /target/release/build/serde-0f33d30b62c10dae -L dependency'=/target/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.228/build.rs \
+##         1>          /target/release/build/serde-0f33d30b62c10dae/out-0f33d30b62c10dae-stdout \
+##         2>          /target/release/build/serde-0f33d30b62c10dae/out-0f33d30b62c10dae-stderr \
+##         || echo $? >/target/release/build/serde-0f33d30b62c10dae/out-0f33d30b62c10dae-errcode\
+##   ; find /target/release/build/serde-0f33d30b62c10dae/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -3772,14 +3772,14 @@ COPY --link --from=dep-x-serde-1.0.228-0f33d30b62c10dae /tmp/clis-ripgrep_15-1-0
 ## stage = "out-0f33d30b62c10dae"
 ## script = """
 ## FROM scratch AS out-0f33d30b62c10dae
-## COPY --link --from=dep-x-serde-1.0.228-0f33d30b62c10dae /tmp/clis-ripgrep_15-1-0/release/build/serde-0f33d30b62c10dae/*-0f33d30b62c10dae* /"""
+## COPY --link --from=dep-x-serde-1.0.228-0f33d30b62c10dae /target/release/build/serde-0f33d30b62c10dae/*-0f33d30b62c10dae* /"""
 
 FROM rust-base AS run-z-serde-1.0.228-ba8a06e0f44b5ff8
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-ripgrep_15-1-0/release/build/serde-ba8a06e0f44b5ff8/out
+WORKDIR /target/release/build/serde-ba8a06e0f44b5ff8/out
 WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.228
 RUN \
-  --mount=from=out-0f33d30b62c10dae,source=/build_script_build-0f33d30b62c10dae,dst=/tmp/clis-ripgrep_15-1-0/release/build/serde-0f33d30b62c10dae/build-script-build \
+  --mount=from=out-0f33d30b62c10dae,source=/build_script_build-0f33d30b62c10dae,dst=/target/release/build/serde-0f33d30b62c10dae/build-script-build \
   --mount=from=cratesio-serde-1.0.228,source=/serde-1.0.228,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.228 \
     env CARGO="$(which cargo)" \
         CARGO_CFG_FEATURE=default,std \
@@ -3819,23 +3819,23 @@ RUN \
         HOST=x86_64-unknown-linux-gnu \
         NUM_JOBS=4 \
         OPT_LEVEL=3 \
-        OUT_DIR=/tmp/clis-ripgrep_15-1-0/release/build/serde-ba8a06e0f44b5ff8/out \
+        OUT_DIR=/target/release/build/serde-ba8a06e0f44b5ff8/out \
         PROFILE=release \
         RUSTC=rustc \
         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
         TARGET=x86_64-unknown-linux-gnu \
         CARGOGREEN=1 \
-      CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-ripgrep_15-1-0/release/build/serde-0f33d30b62c10dae/build-script-build \
-        1>          /tmp/clis-ripgrep_15-1-0/release/build/serde-ba8a06e0f44b5ff8/out/out-ba8a06e0f44b5ff8-stdout \
-        2>          /tmp/clis-ripgrep_15-1-0/release/build/serde-ba8a06e0f44b5ff8/out/out-ba8a06e0f44b5ff8-stderr \
-        || echo $? >/tmp/clis-ripgrep_15-1-0/release/build/serde-ba8a06e0f44b5ff8/out/out-ba8a06e0f44b5ff8-errcode\
-  ; find /tmp/clis-ripgrep_15-1-0/release/build/serde-ba8a06e0f44b5ff8/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      CARGOGREEN_EXECUTE_BUILDRS_= /target/release/build/serde-0f33d30b62c10dae/build-script-build \
+        1>          /target/release/build/serde-ba8a06e0f44b5ff8/out/out-ba8a06e0f44b5ff8-stdout \
+        2>          /target/release/build/serde-ba8a06e0f44b5ff8/out/out-ba8a06e0f44b5ff8-stderr \
+        || echo $? >/target/release/build/serde-ba8a06e0f44b5ff8/out/out-ba8a06e0f44b5ff8-errcode\
+  ; find /target/release/build/serde-ba8a06e0f44b5ff8/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-ba8a06e0f44b5ff8
-COPY --link --from=run-z-serde-1.0.228-ba8a06e0f44b5ff8 /tmp/clis-ripgrep_15-1-0/release/build/serde-ba8a06e0f44b5ff8/out /
+COPY --link --from=run-z-serde-1.0.228-ba8a06e0f44b5ff8 /target/release/build/serde-ba8a06e0f44b5ff8/out /
 
 ## this = "ba8a06e0f44b5ff8"
 ## deps = ["0f33d30b62c10dae"]
-## writes_to = "/tmp/clis-ripgrep_15-1-0/release/build/serde-ba8a06e0f44b5ff8/out"
+## writes_to = "/target/release/build/serde-ba8a06e0f44b5ff8/out"
 ## writes = ["private.rs"]
 ## stdout = [
 ##     "cargo:rerun-if-changed=build.rs",
@@ -3866,10 +3866,10 @@ COPY --link --from=run-z-serde-1.0.228-ba8a06e0f44b5ff8 /tmp/clis-ripgrep_15-1-0
 ## script = '''
 ## FROM rust-base AS run-z-serde-1.0.228-ba8a06e0f44b5ff8
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-ripgrep_15-1-0/release/build/serde-ba8a06e0f44b5ff8/out
+## WORKDIR /target/release/build/serde-ba8a06e0f44b5ff8/out
 ## WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.228
 ## RUN \
-##   --mount=from=out-0f33d30b62c10dae,source=/build_script_build-0f33d30b62c10dae,dst=/tmp/clis-ripgrep_15-1-0/release/build/serde-0f33d30b62c10dae/build-script-build \
+##   --mount=from=out-0f33d30b62c10dae,source=/build_script_build-0f33d30b62c10dae,dst=/target/release/build/serde-0f33d30b62c10dae/build-script-build \
 ##   --mount=from=cratesio-serde-1.0.228,source=/serde-1.0.228,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.228 \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CFG_FEATURE=default,std \
@@ -3909,17 +3909,17 @@ COPY --link --from=run-z-serde-1.0.228-ba8a06e0f44b5ff8 /tmp/clis-ripgrep_15-1-0
 ##         HOST=x86_64-unknown-linux-gnu \
 ##         NUM_JOBS=4 \
 ##         OPT_LEVEL=3 \
-##         OUT_DIR=/tmp/clis-ripgrep_15-1-0/release/build/serde-ba8a06e0f44b5ff8/out \
+##         OUT_DIR=/target/release/build/serde-ba8a06e0f44b5ff8/out \
 ##         PROFILE=release \
 ##         RUSTC=rustc \
 ##         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
 ##         TARGET=x86_64-unknown-linux-gnu \
 ##         CARGOGREEN=1 \
-##       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-ripgrep_15-1-0/release/build/serde-0f33d30b62c10dae/build-script-build \
-##         1>          /tmp/clis-ripgrep_15-1-0/release/build/serde-ba8a06e0f44b5ff8/out/out-ba8a06e0f44b5ff8-stdout \
-##         2>          /tmp/clis-ripgrep_15-1-0/release/build/serde-ba8a06e0f44b5ff8/out/out-ba8a06e0f44b5ff8-stderr \
-##         || echo $? >/tmp/clis-ripgrep_15-1-0/release/build/serde-ba8a06e0f44b5ff8/out/out-ba8a06e0f44b5ff8-errcode\
-##   ; find /tmp/clis-ripgrep_15-1-0/release/build/serde-ba8a06e0f44b5ff8/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       CARGOGREEN_EXECUTE_BUILDRS_= /target/release/build/serde-0f33d30b62c10dae/build-script-build \
+##         1>          /target/release/build/serde-ba8a06e0f44b5ff8/out/out-ba8a06e0f44b5ff8-stdout \
+##         2>          /target/release/build/serde-ba8a06e0f44b5ff8/out/out-ba8a06e0f44b5ff8-stderr \
+##         || echo $? >/target/release/build/serde-ba8a06e0f44b5ff8/out/out-ba8a06e0f44b5ff8-errcode\
+##   ; find /target/release/build/serde-ba8a06e0f44b5ff8/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -3927,18 +3927,18 @@ COPY --link --from=run-z-serde-1.0.228-ba8a06e0f44b5ff8 /tmp/clis-ripgrep_15-1-0
 ## stage = "out-ba8a06e0f44b5ff8"
 ## script = """
 ## FROM scratch AS out-ba8a06e0f44b5ff8
-## COPY --link --from=run-z-serde-1.0.228-ba8a06e0f44b5ff8 /tmp/clis-ripgrep_15-1-0/release/build/serde-ba8a06e0f44b5ff8/out /"""
+## COPY --link --from=run-z-serde-1.0.228-ba8a06e0f44b5ff8 /target/release/build/serde-ba8a06e0f44b5ff8/out /"""
 
 
 FROM rust-base AS dep-n-serde-1.0.228-b2e448cd36891534
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-ripgrep_15-1-0/release/deps
+WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-serde-1.0.228,source=/serde-1.0.228,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.228 \
-  --mount=from=out-9c5f6198d88ce592,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libserde_core-9c5f6198d88ce592.rlib,source=/libserde_core-9c5f6198d88ce592.rlib \
-  --mount=from=out-9c5f6198d88ce592,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libserde_core-9c5f6198d88ce592.rmeta,source=/libserde_core-9c5f6198d88ce592.rmeta \
-  --mount=from=out-5f8fd3dd93685614,dst=/tmp/clis-ripgrep_15-1-0/release/build/serde_core-5f8fd3dd93685614/out,source=/ \
-  --mount=from=out-ba8a06e0f44b5ff8,dst=/tmp/clis-ripgrep_15-1-0/release/build/serde-ba8a06e0f44b5ff8/out,source=/ \
+  --mount=from=out-9c5f6198d88ce592,dst=/target/release/deps/libserde_core-9c5f6198d88ce592.rlib,source=/libserde_core-9c5f6198d88ce592.rlib \
+  --mount=from=out-9c5f6198d88ce592,dst=/target/release/deps/libserde_core-9c5f6198d88ce592.rmeta,source=/libserde_core-9c5f6198d88ce592.rmeta \
+  --mount=from=out-5f8fd3dd93685614,dst=/target/release/build/serde_core-5f8fd3dd93685614/out,source=/ \
+  --mount=from=out-ba8a06e0f44b5ff8,dst=/target/release/build/serde-ba8a06e0f44b5ff8/out,source=/ \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=serde \
         CARGO_INCREMENTAL=0 \
@@ -3958,15 +3958,15 @@ RUN \
         CARGO_PKG_VERSION_MINOR=0 \
         CARGO_PKG_VERSION_PATCH=228 \
         CARGO_PKG_VERSION_PRE= \
-        OUT_DIR=/tmp/clis-ripgrep_15-1-0/release/build/serde-ba8a06e0f44b5ff8/out \
+        OUT_DIR=/target/release/build/serde-ba8a06e0f44b5ff8/out \
         CARGOGREEN=1 \
-      rustc --crate-name serde --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "derive", "rc", "serde_derive", "std", "unstable"))' -C metadata'=f7f46dcea6d089c0' -C extra-filename'=-b2e448cd36891534' --out-dir /tmp/clis-ripgrep_15-1-0/release/deps -L dependency'=/tmp/clis-ripgrep_15-1-0/release/deps' --extern serde_core'=/tmp/clis-ripgrep_15-1-0/release/deps/libserde_core-9c5f6198d88ce592.rmeta' --cap-lints warn --cfg if_docsrs_then_no_serde_core --check-cfg cfg'(feature, values("result"))' --check-cfg cfg'(if_docsrs_then_no_serde_core)' --check-cfg cfg'(no_core_cstr)' --check-cfg cfg'(no_core_error)' --check-cfg cfg'(no_core_net)' --check-cfg cfg'(no_core_num_saturating)' --check-cfg cfg'(no_diagnostic_namespace)' --check-cfg cfg'(no_serde_derive)' --check-cfg cfg'(no_std_atomic)' --check-cfg cfg'(no_std_atomic64)' --check-cfg cfg'(no_target_has_atomic)' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.228/src/lib.rs \
-        1>          /tmp/clis-ripgrep_15-1-0/release/deps/out-b2e448cd36891534-stdout \
-        2>          /tmp/clis-ripgrep_15-1-0/release/deps/out-b2e448cd36891534-stderr \
-        || echo $? >/tmp/clis-ripgrep_15-1-0/release/deps/out-b2e448cd36891534-errcode\
-  ; find /tmp/clis-ripgrep_15-1-0/release/deps/*-b2e448cd36891534* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      rustc --crate-name serde --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "derive", "rc", "serde_derive", "std", "unstable"))' -C metadata'=f7f46dcea6d089c0' -C extra-filename'=-b2e448cd36891534' --out-dir /target/release/deps -L dependency'=/target/release/deps' --extern serde_core'=/target/release/deps/libserde_core-9c5f6198d88ce592.rmeta' --cap-lints warn --cfg if_docsrs_then_no_serde_core --check-cfg cfg'(feature, values("result"))' --check-cfg cfg'(if_docsrs_then_no_serde_core)' --check-cfg cfg'(no_core_cstr)' --check-cfg cfg'(no_core_error)' --check-cfg cfg'(no_core_net)' --check-cfg cfg'(no_core_num_saturating)' --check-cfg cfg'(no_diagnostic_namespace)' --check-cfg cfg'(no_serde_derive)' --check-cfg cfg'(no_std_atomic)' --check-cfg cfg'(no_std_atomic64)' --check-cfg cfg'(no_target_has_atomic)' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.228/src/lib.rs \
+        1>          /target/release/deps/out-b2e448cd36891534-stdout \
+        2>          /target/release/deps/out-b2e448cd36891534-stderr \
+        || echo $? >/target/release/deps/out-b2e448cd36891534-errcode\
+  ; find /target/release/deps/*-b2e448cd36891534* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-b2e448cd36891534
-COPY --link --from=dep-n-serde-1.0.228-b2e448cd36891534 /tmp/clis-ripgrep_15-1-0/release/deps/*-b2e448cd36891534* /
+COPY --link --from=dep-n-serde-1.0.228-b2e448cd36891534 /target/release/deps/*-b2e448cd36891534* /
 
 ## this = "b2e448cd36891534"
 ## deps = [
@@ -3986,9 +3986,9 @@ COPY --link --from=dep-n-serde-1.0.228-b2e448cd36891534 /tmp/clis-ripgrep_15-1-0
 ##     "serde-b2e448cd36891534.d",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/deps/serde-b2e448cd36891534.d","emit":"dep-info"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/deps/libserde-b2e448cd36891534.rmeta","emit":"metadata"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/deps/libserde-b2e448cd36891534.rlib","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/serde-b2e448cd36891534.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libserde-b2e448cd36891534.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libserde-b2e448cd36891534.rlib","emit":"link"}',
 ## ]
 ##
 ## [[externs]]
@@ -4001,11 +4001,11 @@ COPY --link --from=dep-n-serde-1.0.228-b2e448cd36891534 /tmp/clis-ripgrep_15-1-0
 ##
 ## [[mounts]]
 ## name = "out-5f8fd3dd93685614"
-## mount = "/tmp/clis-ripgrep_15-1-0/release/build/serde_core-5f8fd3dd93685614/out"
+## mount = "/target/release/build/serde_core-5f8fd3dd93685614/out"
 ##
 ## [[mounts]]
 ## name = "out-ba8a06e0f44b5ff8"
-## mount = "/tmp/clis-ripgrep_15-1-0/release/build/serde-ba8a06e0f44b5ff8/out"
+## mount = "/target/release/build/serde-ba8a06e0f44b5ff8/out"
 ##
 ## [[stages]]
 ##
@@ -4029,13 +4029,13 @@ COPY --link --from=dep-n-serde-1.0.228-b2e448cd36891534 /tmp/clis-ripgrep_15-1-0
 ## script = '''
 ## FROM rust-base AS dep-n-serde-1.0.228-b2e448cd36891534
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-ripgrep_15-1-0/release/deps
+## WORKDIR /target/release/deps
 ## RUN \
 ##   --mount=from=cratesio-serde-1.0.228,source=/serde-1.0.228,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.228 \
-##   --mount=from=out-9c5f6198d88ce592,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libserde_core-9c5f6198d88ce592.rlib,source=/libserde_core-9c5f6198d88ce592.rlib \
-##   --mount=from=out-9c5f6198d88ce592,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libserde_core-9c5f6198d88ce592.rmeta,source=/libserde_core-9c5f6198d88ce592.rmeta \
-##   --mount=from=out-5f8fd3dd93685614,dst=/tmp/clis-ripgrep_15-1-0/release/build/serde_core-5f8fd3dd93685614/out,source=/ \
-##   --mount=from=out-ba8a06e0f44b5ff8,dst=/tmp/clis-ripgrep_15-1-0/release/build/serde-ba8a06e0f44b5ff8/out,source=/ \
+##   --mount=from=out-9c5f6198d88ce592,dst=/target/release/deps/libserde_core-9c5f6198d88ce592.rlib,source=/libserde_core-9c5f6198d88ce592.rlib \
+##   --mount=from=out-9c5f6198d88ce592,dst=/target/release/deps/libserde_core-9c5f6198d88ce592.rmeta,source=/libserde_core-9c5f6198d88ce592.rmeta \
+##   --mount=from=out-5f8fd3dd93685614,dst=/target/release/build/serde_core-5f8fd3dd93685614/out,source=/ \
+##   --mount=from=out-ba8a06e0f44b5ff8,dst=/target/release/build/serde-ba8a06e0f44b5ff8/out,source=/ \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=serde \
 ##         CARGO_INCREMENTAL=0 \
@@ -4055,13 +4055,13 @@ COPY --link --from=dep-n-serde-1.0.228-b2e448cd36891534 /tmp/clis-ripgrep_15-1-0
 ##         CARGO_PKG_VERSION_MINOR=0 \
 ##         CARGO_PKG_VERSION_PATCH=228 \
 ##         CARGO_PKG_VERSION_PRE= \
-##         OUT_DIR=/tmp/clis-ripgrep_15-1-0/release/build/serde-ba8a06e0f44b5ff8/out \
+##         OUT_DIR=/target/release/build/serde-ba8a06e0f44b5ff8/out \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name serde --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "derive", "rc", "serde_derive", "std", "unstable"))' -C metadata'=f7f46dcea6d089c0' -C extra-filename'=-b2e448cd36891534' --out-dir /tmp/clis-ripgrep_15-1-0/release/deps -L dependency'=/tmp/clis-ripgrep_15-1-0/release/deps' --extern serde_core'=/tmp/clis-ripgrep_15-1-0/release/deps/libserde_core-9c5f6198d88ce592.rmeta' --cap-lints warn --cfg if_docsrs_then_no_serde_core --check-cfg cfg'(feature, values("result"))' --check-cfg cfg'(if_docsrs_then_no_serde_core)' --check-cfg cfg'(no_core_cstr)' --check-cfg cfg'(no_core_error)' --check-cfg cfg'(no_core_net)' --check-cfg cfg'(no_core_num_saturating)' --check-cfg cfg'(no_diagnostic_namespace)' --check-cfg cfg'(no_serde_derive)' --check-cfg cfg'(no_std_atomic)' --check-cfg cfg'(no_std_atomic64)' --check-cfg cfg'(no_target_has_atomic)' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.228/src/lib.rs \
-##         1>          /tmp/clis-ripgrep_15-1-0/release/deps/out-b2e448cd36891534-stdout \
-##         2>          /tmp/clis-ripgrep_15-1-0/release/deps/out-b2e448cd36891534-stderr \
-##         || echo $? >/tmp/clis-ripgrep_15-1-0/release/deps/out-b2e448cd36891534-errcode\
-##   ; find /tmp/clis-ripgrep_15-1-0/release/deps/*-b2e448cd36891534* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name serde --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "derive", "rc", "serde_derive", "std", "unstable"))' -C metadata'=f7f46dcea6d089c0' -C extra-filename'=-b2e448cd36891534' --out-dir /target/release/deps -L dependency'=/target/release/deps' --extern serde_core'=/target/release/deps/libserde_core-9c5f6198d88ce592.rmeta' --cap-lints warn --cfg if_docsrs_then_no_serde_core --check-cfg cfg'(feature, values("result"))' --check-cfg cfg'(if_docsrs_then_no_serde_core)' --check-cfg cfg'(no_core_cstr)' --check-cfg cfg'(no_core_error)' --check-cfg cfg'(no_core_net)' --check-cfg cfg'(no_core_num_saturating)' --check-cfg cfg'(no_diagnostic_namespace)' --check-cfg cfg'(no_serde_derive)' --check-cfg cfg'(no_std_atomic)' --check-cfg cfg'(no_std_atomic64)' --check-cfg cfg'(no_target_has_atomic)' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde-1.0.228/src/lib.rs \
+##         1>          /target/release/deps/out-b2e448cd36891534-stdout \
+##         2>          /target/release/deps/out-b2e448cd36891534-stderr \
+##         || echo $? >/target/release/deps/out-b2e448cd36891534-errcode\
+##   ; find /target/release/deps/*-b2e448cd36891534* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -4069,14 +4069,14 @@ COPY --link --from=dep-n-serde-1.0.228-b2e448cd36891534 /tmp/clis-ripgrep_15-1-0
 ## stage = "out-b2e448cd36891534"
 ## script = """
 ## FROM scratch AS out-b2e448cd36891534
-## COPY --link --from=dep-n-serde-1.0.228-b2e448cd36891534 /tmp/clis-ripgrep_15-1-0/release/deps/*-b2e448cd36891534* /"""
+## COPY --link --from=dep-n-serde-1.0.228-b2e448cd36891534 /target/release/deps/*-b2e448cd36891534* /"""
 
 FROM scratch AS cratesio-itoa-1.0.15
 ADD --chmod=0664 --unpack --checksum=sha256:4a5f13b858c8d314ee3e8f639011f7ccefe71f97f96e50151fb991f267928e2c \
   https://static.crates.io/crates/itoa/itoa-1.0.15.crate /
 FROM rust-base AS dep-n-itoa-1.0.15-4ed5967b8bb80767
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-ripgrep_15-1-0/release/deps
+WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-itoa-1.0.15,source=/itoa-1.0.15,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/itoa-1.0.15 \
     env CARGO="$(which cargo)" \
@@ -4099,13 +4099,13 @@ RUN \
         CARGO_PKG_VERSION_PATCH=15 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --crate-name itoa --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("no-panic"))' -C metadata'=8369fe34ee7ff1af' -C extra-filename'=-4ed5967b8bb80767' --out-dir /tmp/clis-ripgrep_15-1-0/release/deps -L dependency'=/tmp/clis-ripgrep_15-1-0/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/itoa-1.0.15/src/lib.rs \
-        1>          /tmp/clis-ripgrep_15-1-0/release/deps/out-4ed5967b8bb80767-stdout \
-        2>          /tmp/clis-ripgrep_15-1-0/release/deps/out-4ed5967b8bb80767-stderr \
-        || echo $? >/tmp/clis-ripgrep_15-1-0/release/deps/out-4ed5967b8bb80767-errcode\
-  ; find /tmp/clis-ripgrep_15-1-0/release/deps/*-4ed5967b8bb80767* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      rustc --crate-name itoa --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("no-panic"))' -C metadata'=8369fe34ee7ff1af' -C extra-filename'=-4ed5967b8bb80767' --out-dir /target/release/deps -L dependency'=/target/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/itoa-1.0.15/src/lib.rs \
+        1>          /target/release/deps/out-4ed5967b8bb80767-stdout \
+        2>          /target/release/deps/out-4ed5967b8bb80767-stderr \
+        || echo $? >/target/release/deps/out-4ed5967b8bb80767-errcode\
+  ; find /target/release/deps/*-4ed5967b8bb80767* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-4ed5967b8bb80767
-COPY --link --from=dep-n-itoa-1.0.15-4ed5967b8bb80767 /tmp/clis-ripgrep_15-1-0/release/deps/*-4ed5967b8bb80767* /
+COPY --link --from=dep-n-itoa-1.0.15-4ed5967b8bb80767 /target/release/deps/*-4ed5967b8bb80767* /
 
 ## this = "4ed5967b8bb80767"
 ## writes = [
@@ -4114,9 +4114,9 @@ COPY --link --from=dep-n-itoa-1.0.15-4ed5967b8bb80767 /tmp/clis-ripgrep_15-1-0/r
 ##     "libitoa-4ed5967b8bb80767.rmeta",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/deps/itoa-4ed5967b8bb80767.d","emit":"dep-info"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/deps/libitoa-4ed5967b8bb80767.rmeta","emit":"metadata"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/deps/libitoa-4ed5967b8bb80767.rlib","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/itoa-4ed5967b8bb80767.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libitoa-4ed5967b8bb80767.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libitoa-4ed5967b8bb80767.rlib","emit":"link"}',
 ## ]
 ##
 ## [[stages]]
@@ -4141,7 +4141,7 @@ COPY --link --from=dep-n-itoa-1.0.15-4ed5967b8bb80767 /tmp/clis-ripgrep_15-1-0/r
 ## script = '''
 ## FROM rust-base AS dep-n-itoa-1.0.15-4ed5967b8bb80767
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-ripgrep_15-1-0/release/deps
+## WORKDIR /target/release/deps
 ## RUN \
 ##   --mount=from=cratesio-itoa-1.0.15,source=/itoa-1.0.15,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/itoa-1.0.15 \
 ##     env CARGO="$(which cargo)" \
@@ -4164,11 +4164,11 @@ COPY --link --from=dep-n-itoa-1.0.15-4ed5967b8bb80767 /tmp/clis-ripgrep_15-1-0/r
 ##         CARGO_PKG_VERSION_PATCH=15 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name itoa --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("no-panic"))' -C metadata'=8369fe34ee7ff1af' -C extra-filename'=-4ed5967b8bb80767' --out-dir /tmp/clis-ripgrep_15-1-0/release/deps -L dependency'=/tmp/clis-ripgrep_15-1-0/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/itoa-1.0.15/src/lib.rs \
-##         1>          /tmp/clis-ripgrep_15-1-0/release/deps/out-4ed5967b8bb80767-stdout \
-##         2>          /tmp/clis-ripgrep_15-1-0/release/deps/out-4ed5967b8bb80767-stderr \
-##         || echo $? >/tmp/clis-ripgrep_15-1-0/release/deps/out-4ed5967b8bb80767-errcode\
-##   ; find /tmp/clis-ripgrep_15-1-0/release/deps/*-4ed5967b8bb80767* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name itoa --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("no-panic"))' -C metadata'=8369fe34ee7ff1af' -C extra-filename'=-4ed5967b8bb80767' --out-dir /target/release/deps -L dependency'=/target/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/itoa-1.0.15/src/lib.rs \
+##         1>          /target/release/deps/out-4ed5967b8bb80767-stdout \
+##         2>          /target/release/deps/out-4ed5967b8bb80767-stderr \
+##         || echo $? >/target/release/deps/out-4ed5967b8bb80767-errcode\
+##   ; find /target/release/deps/*-4ed5967b8bb80767* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -4176,14 +4176,14 @@ COPY --link --from=dep-n-itoa-1.0.15-4ed5967b8bb80767 /tmp/clis-ripgrep_15-1-0/r
 ## stage = "out-4ed5967b8bb80767"
 ## script = """
 ## FROM scratch AS out-4ed5967b8bb80767
-## COPY --link --from=dep-n-itoa-1.0.15-4ed5967b8bb80767 /tmp/clis-ripgrep_15-1-0/release/deps/*-4ed5967b8bb80767* /"""
+## COPY --link --from=dep-n-itoa-1.0.15-4ed5967b8bb80767 /target/release/deps/*-4ed5967b8bb80767* /"""
 
 FROM scratch AS cratesio-ryu-1.0.20
 ADD --chmod=0664 --unpack --checksum=sha256:28d3b2b1366ec20994f1fd18c3c594f05c5dd4bc44d8bb0c1c632c8d6829481f \
   https://static.crates.io/crates/ryu/ryu-1.0.20.crate /
 FROM rust-base AS dep-n-ryu-1.0.20-60ca480634bc0094
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-ripgrep_15-1-0/release/deps
+WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-ryu-1.0.20,source=/ryu-1.0.20,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ryu-1.0.20 \
     env CARGO="$(which cargo)" \
@@ -4206,13 +4206,13 @@ RUN \
         CARGO_PKG_VERSION_PATCH=20 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --crate-name ryu --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("no-panic", "small"))' -C metadata'=2106abe523c2f016' -C extra-filename'=-60ca480634bc0094' --out-dir /tmp/clis-ripgrep_15-1-0/release/deps -L dependency'=/tmp/clis-ripgrep_15-1-0/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ryu-1.0.20/src/lib.rs \
-        1>          /tmp/clis-ripgrep_15-1-0/release/deps/out-60ca480634bc0094-stdout \
-        2>          /tmp/clis-ripgrep_15-1-0/release/deps/out-60ca480634bc0094-stderr \
-        || echo $? >/tmp/clis-ripgrep_15-1-0/release/deps/out-60ca480634bc0094-errcode\
-  ; find /tmp/clis-ripgrep_15-1-0/release/deps/*-60ca480634bc0094* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      rustc --crate-name ryu --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("no-panic", "small"))' -C metadata'=2106abe523c2f016' -C extra-filename'=-60ca480634bc0094' --out-dir /target/release/deps -L dependency'=/target/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ryu-1.0.20/src/lib.rs \
+        1>          /target/release/deps/out-60ca480634bc0094-stdout \
+        2>          /target/release/deps/out-60ca480634bc0094-stderr \
+        || echo $? >/target/release/deps/out-60ca480634bc0094-errcode\
+  ; find /target/release/deps/*-60ca480634bc0094* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-60ca480634bc0094
-COPY --link --from=dep-n-ryu-1.0.20-60ca480634bc0094 /tmp/clis-ripgrep_15-1-0/release/deps/*-60ca480634bc0094* /
+COPY --link --from=dep-n-ryu-1.0.20-60ca480634bc0094 /target/release/deps/*-60ca480634bc0094* /
 
 ## this = "60ca480634bc0094"
 ## writes = [
@@ -4221,9 +4221,9 @@ COPY --link --from=dep-n-ryu-1.0.20-60ca480634bc0094 /tmp/clis-ripgrep_15-1-0/re
 ##     "ryu-60ca480634bc0094.d",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/deps/ryu-60ca480634bc0094.d","emit":"dep-info"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/deps/libryu-60ca480634bc0094.rmeta","emit":"metadata"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/deps/libryu-60ca480634bc0094.rlib","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/ryu-60ca480634bc0094.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libryu-60ca480634bc0094.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libryu-60ca480634bc0094.rlib","emit":"link"}',
 ## ]
 ##
 ## [[stages]]
@@ -4248,7 +4248,7 @@ COPY --link --from=dep-n-ryu-1.0.20-60ca480634bc0094 /tmp/clis-ripgrep_15-1-0/re
 ## script = '''
 ## FROM rust-base AS dep-n-ryu-1.0.20-60ca480634bc0094
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-ripgrep_15-1-0/release/deps
+## WORKDIR /target/release/deps
 ## RUN \
 ##   --mount=from=cratesio-ryu-1.0.20,source=/ryu-1.0.20,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ryu-1.0.20 \
 ##     env CARGO="$(which cargo)" \
@@ -4271,11 +4271,11 @@ COPY --link --from=dep-n-ryu-1.0.20-60ca480634bc0094 /tmp/clis-ripgrep_15-1-0/re
 ##         CARGO_PKG_VERSION_PATCH=20 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name ryu --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("no-panic", "small"))' -C metadata'=2106abe523c2f016' -C extra-filename'=-60ca480634bc0094' --out-dir /tmp/clis-ripgrep_15-1-0/release/deps -L dependency'=/tmp/clis-ripgrep_15-1-0/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ryu-1.0.20/src/lib.rs \
-##         1>          /tmp/clis-ripgrep_15-1-0/release/deps/out-60ca480634bc0094-stdout \
-##         2>          /tmp/clis-ripgrep_15-1-0/release/deps/out-60ca480634bc0094-stderr \
-##         || echo $? >/tmp/clis-ripgrep_15-1-0/release/deps/out-60ca480634bc0094-errcode\
-##   ; find /tmp/clis-ripgrep_15-1-0/release/deps/*-60ca480634bc0094* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name ryu --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("no-panic", "small"))' -C metadata'=2106abe523c2f016' -C extra-filename'=-60ca480634bc0094' --out-dir /target/release/deps -L dependency'=/target/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ryu-1.0.20/src/lib.rs \
+##         1>          /target/release/deps/out-60ca480634bc0094-stdout \
+##         2>          /target/release/deps/out-60ca480634bc0094-stderr \
+##         || echo $? >/target/release/deps/out-60ca480634bc0094-errcode\
+##   ; find /target/release/deps/*-60ca480634bc0094* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -4283,14 +4283,14 @@ COPY --link --from=dep-n-ryu-1.0.20-60ca480634bc0094 /tmp/clis-ripgrep_15-1-0/re
 ## stage = "out-60ca480634bc0094"
 ## script = """
 ## FROM scratch AS out-60ca480634bc0094
-## COPY --link --from=dep-n-ryu-1.0.20-60ca480634bc0094 /tmp/clis-ripgrep_15-1-0/release/deps/*-60ca480634bc0094* /"""
+## COPY --link --from=dep-n-ryu-1.0.20-60ca480634bc0094 /target/release/deps/*-60ca480634bc0094* /"""
 
 FROM scratch AS cratesio-serde_json-1.0.145
 ADD --chmod=0664 --unpack --checksum=sha256:402a6f66d8c709116cf22f558eab210f5a50187f702eb4d7e5ef38d9a7f1c79c \
   https://static.crates.io/crates/serde_json/serde_json-1.0.145.crate /
 FROM rust-base AS dep-x-serde_json-1.0.145-c2c381dede6da00d
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-ripgrep_15-1-0/release/build/serde_json-c2c381dede6da00d
+WORKDIR /target/release/build/serde_json-c2c381dede6da00d
 RUN \
   --mount=from=cratesio-serde_json-1.0.145,source=/serde_json-1.0.145,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.145,rw \
     { \
@@ -4332,13 +4332,13 @@ RUN \
         CARGO_PKG_VERSION_PATCH=145 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "arbitrary_precision", "default", "float_roundtrip", "indexmap", "preserve_order", "raw_value", "std", "unbounded_depth"))' -C metadata'=83e7231f201f3208' -C extra-filename'=-c2c381dede6da00d' --out-dir /tmp/clis-ripgrep_15-1-0/release/build/serde_json-c2c381dede6da00d -L dependency'=/tmp/clis-ripgrep_15-1-0/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.145/build.rs \
-        1>          /tmp/clis-ripgrep_15-1-0/release/build/serde_json-c2c381dede6da00d/out-c2c381dede6da00d-stdout \
-        2>          /tmp/clis-ripgrep_15-1-0/release/build/serde_json-c2c381dede6da00d/out-c2c381dede6da00d-stderr \
-        || echo $? >/tmp/clis-ripgrep_15-1-0/release/build/serde_json-c2c381dede6da00d/out-c2c381dede6da00d-errcode\
-  ; find /tmp/clis-ripgrep_15-1-0/release/build/serde_json-c2c381dede6da00d/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "arbitrary_precision", "default", "float_roundtrip", "indexmap", "preserve_order", "raw_value", "std", "unbounded_depth"))' -C metadata'=83e7231f201f3208' -C extra-filename'=-c2c381dede6da00d' --out-dir /target/release/build/serde_json-c2c381dede6da00d -L dependency'=/target/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.145/build.rs \
+        1>          /target/release/build/serde_json-c2c381dede6da00d/out-c2c381dede6da00d-stdout \
+        2>          /target/release/build/serde_json-c2c381dede6da00d/out-c2c381dede6da00d-stderr \
+        || echo $? >/target/release/build/serde_json-c2c381dede6da00d/out-c2c381dede6da00d-errcode\
+  ; find /target/release/build/serde_json-c2c381dede6da00d/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-c2c381dede6da00d
-COPY --link --from=dep-x-serde_json-1.0.145-c2c381dede6da00d /tmp/clis-ripgrep_15-1-0/release/build/serde_json-c2c381dede6da00d/*-c2c381dede6da00d* /
+COPY --link --from=dep-x-serde_json-1.0.145-c2c381dede6da00d /target/release/build/serde_json-c2c381dede6da00d/*-c2c381dede6da00d* /
 
 ## this = "c2c381dede6da00d"
 ## writes = [
@@ -4346,8 +4346,8 @@ COPY --link --from=dep-x-serde_json-1.0.145-c2c381dede6da00d /tmp/clis-ripgrep_1
 ##     "build_script_build-c2c381dede6da00d.d",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/build/serde_json-c2c381dede6da00d/build_script_build-c2c381dede6da00d.d","emit":"dep-info"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/build/serde_json-c2c381dede6da00d/build_script_build-c2c381dede6da00d","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/build/serde_json-c2c381dede6da00d/build_script_build-c2c381dede6da00d.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/build/serde_json-c2c381dede6da00d/build_script_build-c2c381dede6da00d","emit":"link"}',
 ## ]
 ##
 ## [[stages]]
@@ -4372,7 +4372,7 @@ COPY --link --from=dep-x-serde_json-1.0.145-c2c381dede6da00d /tmp/clis-ripgrep_1
 ## script = '''
 ## FROM rust-base AS dep-x-serde_json-1.0.145-c2c381dede6da00d
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-ripgrep_15-1-0/release/build/serde_json-c2c381dede6da00d
+## WORKDIR /target/release/build/serde_json-c2c381dede6da00d
 ## RUN \
 ##   --mount=from=cratesio-serde_json-1.0.145,source=/serde_json-1.0.145,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.145,rw \
 ##     { \
@@ -4414,11 +4414,11 @@ COPY --link --from=dep-x-serde_json-1.0.145-c2c381dede6da00d /tmp/clis-ripgrep_1
 ##         CARGO_PKG_VERSION_PATCH=145 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "arbitrary_precision", "default", "float_roundtrip", "indexmap", "preserve_order", "raw_value", "std", "unbounded_depth"))' -C metadata'=83e7231f201f3208' -C extra-filename'=-c2c381dede6da00d' --out-dir /tmp/clis-ripgrep_15-1-0/release/build/serde_json-c2c381dede6da00d -L dependency'=/tmp/clis-ripgrep_15-1-0/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.145/build.rs \
-##         1>          /tmp/clis-ripgrep_15-1-0/release/build/serde_json-c2c381dede6da00d/out-c2c381dede6da00d-stdout \
-##         2>          /tmp/clis-ripgrep_15-1-0/release/build/serde_json-c2c381dede6da00d/out-c2c381dede6da00d-stderr \
-##         || echo $? >/tmp/clis-ripgrep_15-1-0/release/build/serde_json-c2c381dede6da00d/out-c2c381dede6da00d-errcode\
-##   ; find /tmp/clis-ripgrep_15-1-0/release/build/serde_json-c2c381dede6da00d/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "arbitrary_precision", "default", "float_roundtrip", "indexmap", "preserve_order", "raw_value", "std", "unbounded_depth"))' -C metadata'=83e7231f201f3208' -C extra-filename'=-c2c381dede6da00d' --out-dir /target/release/build/serde_json-c2c381dede6da00d -L dependency'=/target/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.145/build.rs \
+##         1>          /target/release/build/serde_json-c2c381dede6da00d/out-c2c381dede6da00d-stdout \
+##         2>          /target/release/build/serde_json-c2c381dede6da00d/out-c2c381dede6da00d-stderr \
+##         || echo $? >/target/release/build/serde_json-c2c381dede6da00d/out-c2c381dede6da00d-errcode\
+##   ; find /target/release/build/serde_json-c2c381dede6da00d/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -4426,14 +4426,14 @@ COPY --link --from=dep-x-serde_json-1.0.145-c2c381dede6da00d /tmp/clis-ripgrep_1
 ## stage = "out-c2c381dede6da00d"
 ## script = """
 ## FROM scratch AS out-c2c381dede6da00d
-## COPY --link --from=dep-x-serde_json-1.0.145-c2c381dede6da00d /tmp/clis-ripgrep_15-1-0/release/build/serde_json-c2c381dede6da00d/*-c2c381dede6da00d* /"""
+## COPY --link --from=dep-x-serde_json-1.0.145-c2c381dede6da00d /target/release/build/serde_json-c2c381dede6da00d/*-c2c381dede6da00d* /"""
 
 FROM rust-base AS run-z-serde_json-1.0.145-760ed8f05f2a6d77
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-ripgrep_15-1-0/release/build/serde_json-760ed8f05f2a6d77/out
+WORKDIR /target/release/build/serde_json-760ed8f05f2a6d77/out
 WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.145
 RUN \
-  --mount=from=out-c2c381dede6da00d,source=/build_script_build-c2c381dede6da00d,dst=/tmp/clis-ripgrep_15-1-0/release/build/serde_json-c2c381dede6da00d/build-script-build \
+  --mount=from=out-c2c381dede6da00d,source=/build_script_build-c2c381dede6da00d,dst=/target/release/build/serde_json-c2c381dede6da00d/build-script-build \
   --mount=from=cratesio-serde_json-1.0.145,source=/serde_json-1.0.145,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.145 \
     env CARGO="$(which cargo)" \
         CARGO_CFG_FEATURE=default,std \
@@ -4473,23 +4473,23 @@ RUN \
         HOST=x86_64-unknown-linux-gnu \
         NUM_JOBS=4 \
         OPT_LEVEL=3 \
-        OUT_DIR=/tmp/clis-ripgrep_15-1-0/release/build/serde_json-760ed8f05f2a6d77/out \
+        OUT_DIR=/target/release/build/serde_json-760ed8f05f2a6d77/out \
         PROFILE=release \
         RUSTC=rustc \
         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
         TARGET=x86_64-unknown-linux-gnu \
         CARGOGREEN=1 \
-      CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-ripgrep_15-1-0/release/build/serde_json-c2c381dede6da00d/build-script-build \
-        1>          /tmp/clis-ripgrep_15-1-0/release/build/serde_json-760ed8f05f2a6d77/out/out-760ed8f05f2a6d77-stdout \
-        2>          /tmp/clis-ripgrep_15-1-0/release/build/serde_json-760ed8f05f2a6d77/out/out-760ed8f05f2a6d77-stderr \
-        || echo $? >/tmp/clis-ripgrep_15-1-0/release/build/serde_json-760ed8f05f2a6d77/out/out-760ed8f05f2a6d77-errcode\
-  ; find /tmp/clis-ripgrep_15-1-0/release/build/serde_json-760ed8f05f2a6d77/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      CARGOGREEN_EXECUTE_BUILDRS_= /target/release/build/serde_json-c2c381dede6da00d/build-script-build \
+        1>          /target/release/build/serde_json-760ed8f05f2a6d77/out/out-760ed8f05f2a6d77-stdout \
+        2>          /target/release/build/serde_json-760ed8f05f2a6d77/out/out-760ed8f05f2a6d77-stderr \
+        || echo $? >/target/release/build/serde_json-760ed8f05f2a6d77/out/out-760ed8f05f2a6d77-errcode\
+  ; find /target/release/build/serde_json-760ed8f05f2a6d77/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-760ed8f05f2a6d77
-COPY --link --from=run-z-serde_json-1.0.145-760ed8f05f2a6d77 /tmp/clis-ripgrep_15-1-0/release/build/serde_json-760ed8f05f2a6d77/out /
+COPY --link --from=run-z-serde_json-1.0.145-760ed8f05f2a6d77 /target/release/build/serde_json-760ed8f05f2a6d77/out /
 
 ## this = "760ed8f05f2a6d77"
 ## deps = ["c2c381dede6da00d"]
-## writes_to = "/tmp/clis-ripgrep_15-1-0/release/build/serde_json-760ed8f05f2a6d77/out"
+## writes_to = "/target/release/build/serde_json-760ed8f05f2a6d77/out"
 ## stdout = [
 ##     "cargo:rerun-if-changed=build.rs",
 ##     'cargo:rustc-check-cfg=cfg(fast_arithmetic, values("32", "64"))',
@@ -4509,10 +4509,10 @@ COPY --link --from=run-z-serde_json-1.0.145-760ed8f05f2a6d77 /tmp/clis-ripgrep_1
 ## script = '''
 ## FROM rust-base AS run-z-serde_json-1.0.145-760ed8f05f2a6d77
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-ripgrep_15-1-0/release/build/serde_json-760ed8f05f2a6d77/out
+## WORKDIR /target/release/build/serde_json-760ed8f05f2a6d77/out
 ## WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.145
 ## RUN \
-##   --mount=from=out-c2c381dede6da00d,source=/build_script_build-c2c381dede6da00d,dst=/tmp/clis-ripgrep_15-1-0/release/build/serde_json-c2c381dede6da00d/build-script-build \
+##   --mount=from=out-c2c381dede6da00d,source=/build_script_build-c2c381dede6da00d,dst=/target/release/build/serde_json-c2c381dede6da00d/build-script-build \
 ##   --mount=from=cratesio-serde_json-1.0.145,source=/serde_json-1.0.145,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.145 \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CFG_FEATURE=default,std \
@@ -4552,17 +4552,17 @@ COPY --link --from=run-z-serde_json-1.0.145-760ed8f05f2a6d77 /tmp/clis-ripgrep_1
 ##         HOST=x86_64-unknown-linux-gnu \
 ##         NUM_JOBS=4 \
 ##         OPT_LEVEL=3 \
-##         OUT_DIR=/tmp/clis-ripgrep_15-1-0/release/build/serde_json-760ed8f05f2a6d77/out \
+##         OUT_DIR=/target/release/build/serde_json-760ed8f05f2a6d77/out \
 ##         PROFILE=release \
 ##         RUSTC=rustc \
 ##         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
 ##         TARGET=x86_64-unknown-linux-gnu \
 ##         CARGOGREEN=1 \
-##       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-ripgrep_15-1-0/release/build/serde_json-c2c381dede6da00d/build-script-build \
-##         1>          /tmp/clis-ripgrep_15-1-0/release/build/serde_json-760ed8f05f2a6d77/out/out-760ed8f05f2a6d77-stdout \
-##         2>          /tmp/clis-ripgrep_15-1-0/release/build/serde_json-760ed8f05f2a6d77/out/out-760ed8f05f2a6d77-stderr \
-##         || echo $? >/tmp/clis-ripgrep_15-1-0/release/build/serde_json-760ed8f05f2a6d77/out/out-760ed8f05f2a6d77-errcode\
-##   ; find /tmp/clis-ripgrep_15-1-0/release/build/serde_json-760ed8f05f2a6d77/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       CARGOGREEN_EXECUTE_BUILDRS_= /target/release/build/serde_json-c2c381dede6da00d/build-script-build \
+##         1>          /target/release/build/serde_json-760ed8f05f2a6d77/out/out-760ed8f05f2a6d77-stdout \
+##         2>          /target/release/build/serde_json-760ed8f05f2a6d77/out/out-760ed8f05f2a6d77-stderr \
+##         || echo $? >/target/release/build/serde_json-760ed8f05f2a6d77/out/out-760ed8f05f2a6d77-errcode\
+##   ; find /target/release/build/serde_json-760ed8f05f2a6d77/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -4570,24 +4570,24 @@ COPY --link --from=run-z-serde_json-1.0.145-760ed8f05f2a6d77 /tmp/clis-ripgrep_1
 ## stage = "out-760ed8f05f2a6d77"
 ## script = """
 ## FROM scratch AS out-760ed8f05f2a6d77
-## COPY --link --from=run-z-serde_json-1.0.145-760ed8f05f2a6d77 /tmp/clis-ripgrep_15-1-0/release/build/serde_json-760ed8f05f2a6d77/out /"""
+## COPY --link --from=run-z-serde_json-1.0.145-760ed8f05f2a6d77 /target/release/build/serde_json-760ed8f05f2a6d77/out /"""
 
 
 FROM rust-base AS dep-n-serde_json-1.0.145-53d4d749d624f2e4
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-ripgrep_15-1-0/release/deps
+WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-serde_json-1.0.145,source=/serde_json-1.0.145,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.145 \
-  --mount=from=out-4ed5967b8bb80767,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libitoa-4ed5967b8bb80767.rlib,source=/libitoa-4ed5967b8bb80767.rlib \
-  --mount=from=out-4ed5967b8bb80767,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libitoa-4ed5967b8bb80767.rmeta,source=/libitoa-4ed5967b8bb80767.rmeta \
-  --mount=from=out-3a40f50ac19c9d2e,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libmemchr-3a40f50ac19c9d2e.rlib,source=/libmemchr-3a40f50ac19c9d2e.rlib \
-  --mount=from=out-3a40f50ac19c9d2e,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libmemchr-3a40f50ac19c9d2e.rmeta,source=/libmemchr-3a40f50ac19c9d2e.rmeta \
-  --mount=from=out-60ca480634bc0094,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libryu-60ca480634bc0094.rlib,source=/libryu-60ca480634bc0094.rlib \
-  --mount=from=out-60ca480634bc0094,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libryu-60ca480634bc0094.rmeta,source=/libryu-60ca480634bc0094.rmeta \
-  --mount=from=out-9c5f6198d88ce592,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libserde_core-9c5f6198d88ce592.rlib,source=/libserde_core-9c5f6198d88ce592.rlib \
-  --mount=from=out-9c5f6198d88ce592,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libserde_core-9c5f6198d88ce592.rmeta,source=/libserde_core-9c5f6198d88ce592.rmeta \
-  --mount=from=out-5f8fd3dd93685614,dst=/tmp/clis-ripgrep_15-1-0/release/build/serde_core-5f8fd3dd93685614/out,source=/ \
-  --mount=from=out-760ed8f05f2a6d77,dst=/tmp/clis-ripgrep_15-1-0/release/build/serde_json-760ed8f05f2a6d77/out,source=/ \
+  --mount=from=out-4ed5967b8bb80767,dst=/target/release/deps/libitoa-4ed5967b8bb80767.rlib,source=/libitoa-4ed5967b8bb80767.rlib \
+  --mount=from=out-4ed5967b8bb80767,dst=/target/release/deps/libitoa-4ed5967b8bb80767.rmeta,source=/libitoa-4ed5967b8bb80767.rmeta \
+  --mount=from=out-3a40f50ac19c9d2e,dst=/target/release/deps/libmemchr-3a40f50ac19c9d2e.rlib,source=/libmemchr-3a40f50ac19c9d2e.rlib \
+  --mount=from=out-3a40f50ac19c9d2e,dst=/target/release/deps/libmemchr-3a40f50ac19c9d2e.rmeta,source=/libmemchr-3a40f50ac19c9d2e.rmeta \
+  --mount=from=out-60ca480634bc0094,dst=/target/release/deps/libryu-60ca480634bc0094.rlib,source=/libryu-60ca480634bc0094.rlib \
+  --mount=from=out-60ca480634bc0094,dst=/target/release/deps/libryu-60ca480634bc0094.rmeta,source=/libryu-60ca480634bc0094.rmeta \
+  --mount=from=out-9c5f6198d88ce592,dst=/target/release/deps/libserde_core-9c5f6198d88ce592.rlib,source=/libserde_core-9c5f6198d88ce592.rlib \
+  --mount=from=out-9c5f6198d88ce592,dst=/target/release/deps/libserde_core-9c5f6198d88ce592.rmeta,source=/libserde_core-9c5f6198d88ce592.rmeta \
+  --mount=from=out-5f8fd3dd93685614,dst=/target/release/build/serde_core-5f8fd3dd93685614/out,source=/ \
+  --mount=from=out-760ed8f05f2a6d77,dst=/target/release/build/serde_json-760ed8f05f2a6d77/out,source=/ \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=serde_json \
         CARGO_INCREMENTAL=0 \
@@ -4607,15 +4607,15 @@ RUN \
         CARGO_PKG_VERSION_MINOR=0 \
         CARGO_PKG_VERSION_PATCH=145 \
         CARGO_PKG_VERSION_PRE= \
-        OUT_DIR=/tmp/clis-ripgrep_15-1-0/release/build/serde_json-760ed8f05f2a6d77/out \
+        OUT_DIR=/target/release/build/serde_json-760ed8f05f2a6d77/out \
         CARGOGREEN=1 \
-      rustc --crate-name serde_json --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "arbitrary_precision", "default", "float_roundtrip", "indexmap", "preserve_order", "raw_value", "std", "unbounded_depth"))' -C metadata'=b7d478f9358e932a' -C extra-filename'=-53d4d749d624f2e4' --out-dir /tmp/clis-ripgrep_15-1-0/release/deps -L dependency'=/tmp/clis-ripgrep_15-1-0/release/deps' --extern itoa'=/tmp/clis-ripgrep_15-1-0/release/deps/libitoa-4ed5967b8bb80767.rmeta' --extern memchr'=/tmp/clis-ripgrep_15-1-0/release/deps/libmemchr-3a40f50ac19c9d2e.rmeta' --extern ryu'=/tmp/clis-ripgrep_15-1-0/release/deps/libryu-60ca480634bc0094.rmeta' --extern serde_core'=/tmp/clis-ripgrep_15-1-0/release/deps/libserde_core-9c5f6198d88ce592.rmeta' --cap-lints warn --cfg fast_arithmetic'="64"' --check-cfg cfg'(fast_arithmetic, values("32", "64"))' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.145/src/lib.rs \
-        1>          /tmp/clis-ripgrep_15-1-0/release/deps/out-53d4d749d624f2e4-stdout \
-        2>          /tmp/clis-ripgrep_15-1-0/release/deps/out-53d4d749d624f2e4-stderr \
-        || echo $? >/tmp/clis-ripgrep_15-1-0/release/deps/out-53d4d749d624f2e4-errcode\
-  ; find /tmp/clis-ripgrep_15-1-0/release/deps/*-53d4d749d624f2e4* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      rustc --crate-name serde_json --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "arbitrary_precision", "default", "float_roundtrip", "indexmap", "preserve_order", "raw_value", "std", "unbounded_depth"))' -C metadata'=b7d478f9358e932a' -C extra-filename'=-53d4d749d624f2e4' --out-dir /target/release/deps -L dependency'=/target/release/deps' --extern itoa'=/target/release/deps/libitoa-4ed5967b8bb80767.rmeta' --extern memchr'=/target/release/deps/libmemchr-3a40f50ac19c9d2e.rmeta' --extern ryu'=/target/release/deps/libryu-60ca480634bc0094.rmeta' --extern serde_core'=/target/release/deps/libserde_core-9c5f6198d88ce592.rmeta' --cap-lints warn --cfg fast_arithmetic'="64"' --check-cfg cfg'(fast_arithmetic, values("32", "64"))' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.145/src/lib.rs \
+        1>          /target/release/deps/out-53d4d749d624f2e4-stdout \
+        2>          /target/release/deps/out-53d4d749d624f2e4-stderr \
+        || echo $? >/target/release/deps/out-53d4d749d624f2e4-errcode\
+  ; find /target/release/deps/*-53d4d749d624f2e4* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-53d4d749d624f2e4
-COPY --link --from=dep-n-serde_json-1.0.145-53d4d749d624f2e4 /tmp/clis-ripgrep_15-1-0/release/deps/*-53d4d749d624f2e4* /
+COPY --link --from=dep-n-serde_json-1.0.145-53d4d749d624f2e4 /target/release/deps/*-53d4d749d624f2e4* /
 
 ## this = "53d4d749d624f2e4"
 ## deps = [
@@ -4638,9 +4638,9 @@ COPY --link --from=dep-n-serde_json-1.0.145-53d4d749d624f2e4 /tmp/clis-ripgrep_1
 ##     "serde_json-53d4d749d624f2e4.d",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/deps/serde_json-53d4d749d624f2e4.d","emit":"dep-info"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/deps/libserde_json-53d4d749d624f2e4.rmeta","emit":"metadata"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/deps/libserde_json-53d4d749d624f2e4.rlib","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/serde_json-53d4d749d624f2e4.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libserde_json-53d4d749d624f2e4.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libserde_json-53d4d749d624f2e4.rlib","emit":"link"}',
 ## ]
 ##
 ## [[externs]]
@@ -4677,11 +4677,11 @@ COPY --link --from=dep-n-serde_json-1.0.145-53d4d749d624f2e4 /tmp/clis-ripgrep_1
 ##
 ## [[mounts]]
 ## name = "out-5f8fd3dd93685614"
-## mount = "/tmp/clis-ripgrep_15-1-0/release/build/serde_core-5f8fd3dd93685614/out"
+## mount = "/target/release/build/serde_core-5f8fd3dd93685614/out"
 ##
 ## [[mounts]]
 ## name = "out-760ed8f05f2a6d77"
-## mount = "/tmp/clis-ripgrep_15-1-0/release/build/serde_json-760ed8f05f2a6d77/out"
+## mount = "/target/release/build/serde_json-760ed8f05f2a6d77/out"
 ##
 ## [[stages]]
 ##
@@ -4705,19 +4705,19 @@ COPY --link --from=dep-n-serde_json-1.0.145-53d4d749d624f2e4 /tmp/clis-ripgrep_1
 ## script = '''
 ## FROM rust-base AS dep-n-serde_json-1.0.145-53d4d749d624f2e4
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-ripgrep_15-1-0/release/deps
+## WORKDIR /target/release/deps
 ## RUN \
 ##   --mount=from=cratesio-serde_json-1.0.145,source=/serde_json-1.0.145,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.145 \
-##   --mount=from=out-4ed5967b8bb80767,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libitoa-4ed5967b8bb80767.rlib,source=/libitoa-4ed5967b8bb80767.rlib \
-##   --mount=from=out-4ed5967b8bb80767,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libitoa-4ed5967b8bb80767.rmeta,source=/libitoa-4ed5967b8bb80767.rmeta \
-##   --mount=from=out-3a40f50ac19c9d2e,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libmemchr-3a40f50ac19c9d2e.rlib,source=/libmemchr-3a40f50ac19c9d2e.rlib \
-##   --mount=from=out-3a40f50ac19c9d2e,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libmemchr-3a40f50ac19c9d2e.rmeta,source=/libmemchr-3a40f50ac19c9d2e.rmeta \
-##   --mount=from=out-60ca480634bc0094,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libryu-60ca480634bc0094.rlib,source=/libryu-60ca480634bc0094.rlib \
-##   --mount=from=out-60ca480634bc0094,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libryu-60ca480634bc0094.rmeta,source=/libryu-60ca480634bc0094.rmeta \
-##   --mount=from=out-9c5f6198d88ce592,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libserde_core-9c5f6198d88ce592.rlib,source=/libserde_core-9c5f6198d88ce592.rlib \
-##   --mount=from=out-9c5f6198d88ce592,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libserde_core-9c5f6198d88ce592.rmeta,source=/libserde_core-9c5f6198d88ce592.rmeta \
-##   --mount=from=out-5f8fd3dd93685614,dst=/tmp/clis-ripgrep_15-1-0/release/build/serde_core-5f8fd3dd93685614/out,source=/ \
-##   --mount=from=out-760ed8f05f2a6d77,dst=/tmp/clis-ripgrep_15-1-0/release/build/serde_json-760ed8f05f2a6d77/out,source=/ \
+##   --mount=from=out-4ed5967b8bb80767,dst=/target/release/deps/libitoa-4ed5967b8bb80767.rlib,source=/libitoa-4ed5967b8bb80767.rlib \
+##   --mount=from=out-4ed5967b8bb80767,dst=/target/release/deps/libitoa-4ed5967b8bb80767.rmeta,source=/libitoa-4ed5967b8bb80767.rmeta \
+##   --mount=from=out-3a40f50ac19c9d2e,dst=/target/release/deps/libmemchr-3a40f50ac19c9d2e.rlib,source=/libmemchr-3a40f50ac19c9d2e.rlib \
+##   --mount=from=out-3a40f50ac19c9d2e,dst=/target/release/deps/libmemchr-3a40f50ac19c9d2e.rmeta,source=/libmemchr-3a40f50ac19c9d2e.rmeta \
+##   --mount=from=out-60ca480634bc0094,dst=/target/release/deps/libryu-60ca480634bc0094.rlib,source=/libryu-60ca480634bc0094.rlib \
+##   --mount=from=out-60ca480634bc0094,dst=/target/release/deps/libryu-60ca480634bc0094.rmeta,source=/libryu-60ca480634bc0094.rmeta \
+##   --mount=from=out-9c5f6198d88ce592,dst=/target/release/deps/libserde_core-9c5f6198d88ce592.rlib,source=/libserde_core-9c5f6198d88ce592.rlib \
+##   --mount=from=out-9c5f6198d88ce592,dst=/target/release/deps/libserde_core-9c5f6198d88ce592.rmeta,source=/libserde_core-9c5f6198d88ce592.rmeta \
+##   --mount=from=out-5f8fd3dd93685614,dst=/target/release/build/serde_core-5f8fd3dd93685614/out,source=/ \
+##   --mount=from=out-760ed8f05f2a6d77,dst=/target/release/build/serde_json-760ed8f05f2a6d77/out,source=/ \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=serde_json \
 ##         CARGO_INCREMENTAL=0 \
@@ -4737,13 +4737,13 @@ COPY --link --from=dep-n-serde_json-1.0.145-53d4d749d624f2e4 /tmp/clis-ripgrep_1
 ##         CARGO_PKG_VERSION_MINOR=0 \
 ##         CARGO_PKG_VERSION_PATCH=145 \
 ##         CARGO_PKG_VERSION_PRE= \
-##         OUT_DIR=/tmp/clis-ripgrep_15-1-0/release/build/serde_json-760ed8f05f2a6d77/out \
+##         OUT_DIR=/target/release/build/serde_json-760ed8f05f2a6d77/out \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name serde_json --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "arbitrary_precision", "default", "float_roundtrip", "indexmap", "preserve_order", "raw_value", "std", "unbounded_depth"))' -C metadata'=b7d478f9358e932a' -C extra-filename'=-53d4d749d624f2e4' --out-dir /tmp/clis-ripgrep_15-1-0/release/deps -L dependency'=/tmp/clis-ripgrep_15-1-0/release/deps' --extern itoa'=/tmp/clis-ripgrep_15-1-0/release/deps/libitoa-4ed5967b8bb80767.rmeta' --extern memchr'=/tmp/clis-ripgrep_15-1-0/release/deps/libmemchr-3a40f50ac19c9d2e.rmeta' --extern ryu'=/tmp/clis-ripgrep_15-1-0/release/deps/libryu-60ca480634bc0094.rmeta' --extern serde_core'=/tmp/clis-ripgrep_15-1-0/release/deps/libserde_core-9c5f6198d88ce592.rmeta' --cap-lints warn --cfg fast_arithmetic'="64"' --check-cfg cfg'(fast_arithmetic, values("32", "64"))' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.145/src/lib.rs \
-##         1>          /tmp/clis-ripgrep_15-1-0/release/deps/out-53d4d749d624f2e4-stdout \
-##         2>          /tmp/clis-ripgrep_15-1-0/release/deps/out-53d4d749d624f2e4-stderr \
-##         || echo $? >/tmp/clis-ripgrep_15-1-0/release/deps/out-53d4d749d624f2e4-errcode\
-##   ; find /tmp/clis-ripgrep_15-1-0/release/deps/*-53d4d749d624f2e4* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name serde_json --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "arbitrary_precision", "default", "float_roundtrip", "indexmap", "preserve_order", "raw_value", "std", "unbounded_depth"))' -C metadata'=b7d478f9358e932a' -C extra-filename'=-53d4d749d624f2e4' --out-dir /target/release/deps -L dependency'=/target/release/deps' --extern itoa'=/target/release/deps/libitoa-4ed5967b8bb80767.rmeta' --extern memchr'=/target/release/deps/libmemchr-3a40f50ac19c9d2e.rmeta' --extern ryu'=/target/release/deps/libryu-60ca480634bc0094.rmeta' --extern serde_core'=/target/release/deps/libserde_core-9c5f6198d88ce592.rmeta' --cap-lints warn --cfg fast_arithmetic'="64"' --check-cfg cfg'(fast_arithmetic, values("32", "64"))' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/serde_json-1.0.145/src/lib.rs \
+##         1>          /target/release/deps/out-53d4d749d624f2e4-stdout \
+##         2>          /target/release/deps/out-53d4d749d624f2e4-stderr \
+##         || echo $? >/target/release/deps/out-53d4d749d624f2e4-errcode\
+##   ; find /target/release/deps/*-53d4d749d624f2e4* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -4751,56 +4751,56 @@ COPY --link --from=dep-n-serde_json-1.0.145-53d4d749d624f2e4 /tmp/clis-ripgrep_1
 ## stage = "out-53d4d749d624f2e4"
 ## script = """
 ## FROM scratch AS out-53d4d749d624f2e4
-## COPY --link --from=dep-n-serde_json-1.0.145-53d4d749d624f2e4 /tmp/clis-ripgrep_15-1-0/release/deps/*-53d4d749d624f2e4* /"""
+## COPY --link --from=dep-n-serde_json-1.0.145-53d4d749d624f2e4 /target/release/deps/*-53d4d749d624f2e4* /"""
 
 FROM scratch AS cratesio-grep-printer-0.3.1
 ADD --chmod=0664 --unpack --checksum=sha256:fd76035e87871f51c1ee5b793e32122b3ccf9c692662d9622ef1686ff5321acb \
   https://static.crates.io/crates/grep-printer/grep-printer-0.3.1.crate /
 FROM rust-base AS dep-n-grep-printer-0.3.1-a2f81f4f0caeb673
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-ripgrep_15-1-0/release/deps
+WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-grep-printer-0.3.1,source=/grep-printer-0.3.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-printer-0.3.1 \
-  --mount=from=out-d3eea57fb24a933f,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libbstr-d3eea57fb24a933f.rlib,source=/libbstr-d3eea57fb24a933f.rlib \
-  --mount=from=out-d3eea57fb24a933f,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libbstr-d3eea57fb24a933f.rmeta,source=/libbstr-d3eea57fb24a933f.rmeta \
-  --mount=from=out-3a40f50ac19c9d2e,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libmemchr-3a40f50ac19c9d2e.rlib,source=/libmemchr-3a40f50ac19c9d2e.rlib \
-  --mount=from=out-3a40f50ac19c9d2e,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libmemchr-3a40f50ac19c9d2e.rmeta,source=/libmemchr-3a40f50ac19c9d2e.rmeta \
-  --mount=from=out-e22c3e2bd8aa6773,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libregex_automata-e22c3e2bd8aa6773.rlib,source=/libregex_automata-e22c3e2bd8aa6773.rlib \
-  --mount=from=out-e22c3e2bd8aa6773,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libregex_automata-e22c3e2bd8aa6773.rmeta,source=/libregex_automata-e22c3e2bd8aa6773.rmeta \
-  --mount=from=out-a01a7f030e27d71e,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libaho_corasick-a01a7f030e27d71e.rlib,source=/libaho_corasick-a01a7f030e27d71e.rlib \
-  --mount=from=out-a01a7f030e27d71e,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libaho_corasick-a01a7f030e27d71e.rmeta,source=/libaho_corasick-a01a7f030e27d71e.rmeta \
-  --mount=from=out-34711e95edd06069,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libregex_syntax-34711e95edd06069.rlib,source=/libregex_syntax-34711e95edd06069.rlib \
-  --mount=from=out-34711e95edd06069,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libregex_syntax-34711e95edd06069.rmeta,source=/libregex_syntax-34711e95edd06069.rmeta \
-  --mount=from=out-d59a566cc66becf8,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libgrep_matcher-d59a566cc66becf8.rlib,source=/libgrep_matcher-d59a566cc66becf8.rlib \
-  --mount=from=out-d59a566cc66becf8,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libgrep_matcher-d59a566cc66becf8.rmeta,source=/libgrep_matcher-d59a566cc66becf8.rmeta \
-  --mount=from=out-82a451c10ca406e4,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libgrep_searcher-82a451c10ca406e4.rlib,source=/libgrep_searcher-82a451c10ca406e4.rlib \
-  --mount=from=out-82a451c10ca406e4,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libgrep_searcher-82a451c10ca406e4.rmeta,source=/libgrep_searcher-82a451c10ca406e4.rmeta \
-  --mount=from=out-e0d6e4f8a8eb4371,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libencoding_rs-e0d6e4f8a8eb4371.rlib,source=/libencoding_rs-e0d6e4f8a8eb4371.rlib \
-  --mount=from=out-e0d6e4f8a8eb4371,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libencoding_rs-e0d6e4f8a8eb4371.rmeta,source=/libencoding_rs-e0d6e4f8a8eb4371.rmeta \
-  --mount=from=out-e78ec6df4b56941f,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libcfg_if-e78ec6df4b56941f.rlib,source=/libcfg_if-e78ec6df4b56941f.rlib \
-  --mount=from=out-e78ec6df4b56941f,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libcfg_if-e78ec6df4b56941f.rmeta,source=/libcfg_if-e78ec6df4b56941f.rmeta \
-  --mount=from=out-651f5691fade4e93,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libencoding_rs_io-651f5691fade4e93.rlib,source=/libencoding_rs_io-651f5691fade4e93.rlib \
-  --mount=from=out-651f5691fade4e93,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libencoding_rs_io-651f5691fade4e93.rmeta,source=/libencoding_rs_io-651f5691fade4e93.rmeta \
-  --mount=from=out-961aebfc4598d968,dst=/tmp/clis-ripgrep_15-1-0/release/deps/liblog-961aebfc4598d968.rlib,source=/liblog-961aebfc4598d968.rlib \
-  --mount=from=out-961aebfc4598d968,dst=/tmp/clis-ripgrep_15-1-0/release/deps/liblog-961aebfc4598d968.rmeta,source=/liblog-961aebfc4598d968.rmeta \
-  --mount=from=out-977b6f2f3b8d0f6b,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libmemmap2-977b6f2f3b8d0f6b.rlib,source=/libmemmap2-977b6f2f3b8d0f6b.rlib \
-  --mount=from=out-977b6f2f3b8d0f6b,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libmemmap2-977b6f2f3b8d0f6b.rmeta,source=/libmemmap2-977b6f2f3b8d0f6b.rmeta \
-  --mount=from=out-fda8220236222977,dst=/tmp/clis-ripgrep_15-1-0/release/deps/liblibc-fda8220236222977.rlib,source=/liblibc-fda8220236222977.rlib \
-  --mount=from=out-fda8220236222977,dst=/tmp/clis-ripgrep_15-1-0/release/deps/liblibc-fda8220236222977.rmeta,source=/liblibc-fda8220236222977.rmeta \
-  --mount=from=out-b2e448cd36891534,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libserde-b2e448cd36891534.rlib,source=/libserde-b2e448cd36891534.rlib \
-  --mount=from=out-b2e448cd36891534,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libserde-b2e448cd36891534.rmeta,source=/libserde-b2e448cd36891534.rmeta \
-  --mount=from=out-9c5f6198d88ce592,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libserde_core-9c5f6198d88ce592.rlib,source=/libserde_core-9c5f6198d88ce592.rlib \
-  --mount=from=out-9c5f6198d88ce592,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libserde_core-9c5f6198d88ce592.rmeta,source=/libserde_core-9c5f6198d88ce592.rmeta \
-  --mount=from=out-53d4d749d624f2e4,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libserde_json-53d4d749d624f2e4.rlib,source=/libserde_json-53d4d749d624f2e4.rlib \
-  --mount=from=out-53d4d749d624f2e4,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libserde_json-53d4d749d624f2e4.rmeta,source=/libserde_json-53d4d749d624f2e4.rmeta \
-  --mount=from=out-4ed5967b8bb80767,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libitoa-4ed5967b8bb80767.rlib,source=/libitoa-4ed5967b8bb80767.rlib \
-  --mount=from=out-4ed5967b8bb80767,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libitoa-4ed5967b8bb80767.rmeta,source=/libitoa-4ed5967b8bb80767.rmeta \
-  --mount=from=out-60ca480634bc0094,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libryu-60ca480634bc0094.rlib,source=/libryu-60ca480634bc0094.rlib \
-  --mount=from=out-60ca480634bc0094,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libryu-60ca480634bc0094.rmeta,source=/libryu-60ca480634bc0094.rmeta \
-  --mount=from=out-82ca06e8aad1563b,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libtermcolor-82ca06e8aad1563b.rlib,source=/libtermcolor-82ca06e8aad1563b.rlib \
-  --mount=from=out-82ca06e8aad1563b,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libtermcolor-82ca06e8aad1563b.rmeta,source=/libtermcolor-82ca06e8aad1563b.rmeta \
-  --mount=from=out-ba8a06e0f44b5ff8,dst=/tmp/clis-ripgrep_15-1-0/release/build/serde-ba8a06e0f44b5ff8/out,source=/ \
-  --mount=from=out-5f8fd3dd93685614,dst=/tmp/clis-ripgrep_15-1-0/release/build/serde_core-5f8fd3dd93685614/out,source=/ \
+  --mount=from=out-d3eea57fb24a933f,dst=/target/release/deps/libbstr-d3eea57fb24a933f.rlib,source=/libbstr-d3eea57fb24a933f.rlib \
+  --mount=from=out-d3eea57fb24a933f,dst=/target/release/deps/libbstr-d3eea57fb24a933f.rmeta,source=/libbstr-d3eea57fb24a933f.rmeta \
+  --mount=from=out-3a40f50ac19c9d2e,dst=/target/release/deps/libmemchr-3a40f50ac19c9d2e.rlib,source=/libmemchr-3a40f50ac19c9d2e.rlib \
+  --mount=from=out-3a40f50ac19c9d2e,dst=/target/release/deps/libmemchr-3a40f50ac19c9d2e.rmeta,source=/libmemchr-3a40f50ac19c9d2e.rmeta \
+  --mount=from=out-e22c3e2bd8aa6773,dst=/target/release/deps/libregex_automata-e22c3e2bd8aa6773.rlib,source=/libregex_automata-e22c3e2bd8aa6773.rlib \
+  --mount=from=out-e22c3e2bd8aa6773,dst=/target/release/deps/libregex_automata-e22c3e2bd8aa6773.rmeta,source=/libregex_automata-e22c3e2bd8aa6773.rmeta \
+  --mount=from=out-a01a7f030e27d71e,dst=/target/release/deps/libaho_corasick-a01a7f030e27d71e.rlib,source=/libaho_corasick-a01a7f030e27d71e.rlib \
+  --mount=from=out-a01a7f030e27d71e,dst=/target/release/deps/libaho_corasick-a01a7f030e27d71e.rmeta,source=/libaho_corasick-a01a7f030e27d71e.rmeta \
+  --mount=from=out-34711e95edd06069,dst=/target/release/deps/libregex_syntax-34711e95edd06069.rlib,source=/libregex_syntax-34711e95edd06069.rlib \
+  --mount=from=out-34711e95edd06069,dst=/target/release/deps/libregex_syntax-34711e95edd06069.rmeta,source=/libregex_syntax-34711e95edd06069.rmeta \
+  --mount=from=out-d59a566cc66becf8,dst=/target/release/deps/libgrep_matcher-d59a566cc66becf8.rlib,source=/libgrep_matcher-d59a566cc66becf8.rlib \
+  --mount=from=out-d59a566cc66becf8,dst=/target/release/deps/libgrep_matcher-d59a566cc66becf8.rmeta,source=/libgrep_matcher-d59a566cc66becf8.rmeta \
+  --mount=from=out-82a451c10ca406e4,dst=/target/release/deps/libgrep_searcher-82a451c10ca406e4.rlib,source=/libgrep_searcher-82a451c10ca406e4.rlib \
+  --mount=from=out-82a451c10ca406e4,dst=/target/release/deps/libgrep_searcher-82a451c10ca406e4.rmeta,source=/libgrep_searcher-82a451c10ca406e4.rmeta \
+  --mount=from=out-e0d6e4f8a8eb4371,dst=/target/release/deps/libencoding_rs-e0d6e4f8a8eb4371.rlib,source=/libencoding_rs-e0d6e4f8a8eb4371.rlib \
+  --mount=from=out-e0d6e4f8a8eb4371,dst=/target/release/deps/libencoding_rs-e0d6e4f8a8eb4371.rmeta,source=/libencoding_rs-e0d6e4f8a8eb4371.rmeta \
+  --mount=from=out-e78ec6df4b56941f,dst=/target/release/deps/libcfg_if-e78ec6df4b56941f.rlib,source=/libcfg_if-e78ec6df4b56941f.rlib \
+  --mount=from=out-e78ec6df4b56941f,dst=/target/release/deps/libcfg_if-e78ec6df4b56941f.rmeta,source=/libcfg_if-e78ec6df4b56941f.rmeta \
+  --mount=from=out-651f5691fade4e93,dst=/target/release/deps/libencoding_rs_io-651f5691fade4e93.rlib,source=/libencoding_rs_io-651f5691fade4e93.rlib \
+  --mount=from=out-651f5691fade4e93,dst=/target/release/deps/libencoding_rs_io-651f5691fade4e93.rmeta,source=/libencoding_rs_io-651f5691fade4e93.rmeta \
+  --mount=from=out-961aebfc4598d968,dst=/target/release/deps/liblog-961aebfc4598d968.rlib,source=/liblog-961aebfc4598d968.rlib \
+  --mount=from=out-961aebfc4598d968,dst=/target/release/deps/liblog-961aebfc4598d968.rmeta,source=/liblog-961aebfc4598d968.rmeta \
+  --mount=from=out-977b6f2f3b8d0f6b,dst=/target/release/deps/libmemmap2-977b6f2f3b8d0f6b.rlib,source=/libmemmap2-977b6f2f3b8d0f6b.rlib \
+  --mount=from=out-977b6f2f3b8d0f6b,dst=/target/release/deps/libmemmap2-977b6f2f3b8d0f6b.rmeta,source=/libmemmap2-977b6f2f3b8d0f6b.rmeta \
+  --mount=from=out-fda8220236222977,dst=/target/release/deps/liblibc-fda8220236222977.rlib,source=/liblibc-fda8220236222977.rlib \
+  --mount=from=out-fda8220236222977,dst=/target/release/deps/liblibc-fda8220236222977.rmeta,source=/liblibc-fda8220236222977.rmeta \
+  --mount=from=out-b2e448cd36891534,dst=/target/release/deps/libserde-b2e448cd36891534.rlib,source=/libserde-b2e448cd36891534.rlib \
+  --mount=from=out-b2e448cd36891534,dst=/target/release/deps/libserde-b2e448cd36891534.rmeta,source=/libserde-b2e448cd36891534.rmeta \
+  --mount=from=out-9c5f6198d88ce592,dst=/target/release/deps/libserde_core-9c5f6198d88ce592.rlib,source=/libserde_core-9c5f6198d88ce592.rlib \
+  --mount=from=out-9c5f6198d88ce592,dst=/target/release/deps/libserde_core-9c5f6198d88ce592.rmeta,source=/libserde_core-9c5f6198d88ce592.rmeta \
+  --mount=from=out-53d4d749d624f2e4,dst=/target/release/deps/libserde_json-53d4d749d624f2e4.rlib,source=/libserde_json-53d4d749d624f2e4.rlib \
+  --mount=from=out-53d4d749d624f2e4,dst=/target/release/deps/libserde_json-53d4d749d624f2e4.rmeta,source=/libserde_json-53d4d749d624f2e4.rmeta \
+  --mount=from=out-4ed5967b8bb80767,dst=/target/release/deps/libitoa-4ed5967b8bb80767.rlib,source=/libitoa-4ed5967b8bb80767.rlib \
+  --mount=from=out-4ed5967b8bb80767,dst=/target/release/deps/libitoa-4ed5967b8bb80767.rmeta,source=/libitoa-4ed5967b8bb80767.rmeta \
+  --mount=from=out-60ca480634bc0094,dst=/target/release/deps/libryu-60ca480634bc0094.rlib,source=/libryu-60ca480634bc0094.rlib \
+  --mount=from=out-60ca480634bc0094,dst=/target/release/deps/libryu-60ca480634bc0094.rmeta,source=/libryu-60ca480634bc0094.rmeta \
+  --mount=from=out-82ca06e8aad1563b,dst=/target/release/deps/libtermcolor-82ca06e8aad1563b.rlib,source=/libtermcolor-82ca06e8aad1563b.rlib \
+  --mount=from=out-82ca06e8aad1563b,dst=/target/release/deps/libtermcolor-82ca06e8aad1563b.rmeta,source=/libtermcolor-82ca06e8aad1563b.rmeta \
+  --mount=from=out-ba8a06e0f44b5ff8,dst=/target/release/build/serde-ba8a06e0f44b5ff8/out,source=/ \
+  --mount=from=out-5f8fd3dd93685614,dst=/target/release/build/serde_core-5f8fd3dd93685614/out,source=/ \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=grep_printer \
         CARGO_INCREMENTAL=0 \
@@ -4823,13 +4823,13 @@ printing of search results, similar to grep itself.\
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --crate-name grep_printer --edition 2024 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --cfg feature'="default"' --cfg feature'="serde"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "serde"))' -C metadata'=6308a7e4fd26d5a1' -C extra-filename'=-a2f81f4f0caeb673' --out-dir /tmp/clis-ripgrep_15-1-0/release/deps -L dependency'=/tmp/clis-ripgrep_15-1-0/release/deps' --extern bstr'=/tmp/clis-ripgrep_15-1-0/release/deps/libbstr-d3eea57fb24a933f.rmeta' --extern grep_matcher'=/tmp/clis-ripgrep_15-1-0/release/deps/libgrep_matcher-d59a566cc66becf8.rmeta' --extern grep_searcher'=/tmp/clis-ripgrep_15-1-0/release/deps/libgrep_searcher-82a451c10ca406e4.rmeta' --extern log'=/tmp/clis-ripgrep_15-1-0/release/deps/liblog-961aebfc4598d968.rmeta' --extern serde'=/tmp/clis-ripgrep_15-1-0/release/deps/libserde-b2e448cd36891534.rmeta' --extern serde_json'=/tmp/clis-ripgrep_15-1-0/release/deps/libserde_json-53d4d749d624f2e4.rmeta' --extern termcolor'=/tmp/clis-ripgrep_15-1-0/release/deps/libtermcolor-82ca06e8aad1563b.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-printer-0.3.1/src/lib.rs \
-        1>          /tmp/clis-ripgrep_15-1-0/release/deps/out-a2f81f4f0caeb673-stdout \
-        2>          /tmp/clis-ripgrep_15-1-0/release/deps/out-a2f81f4f0caeb673-stderr \
-        || echo $? >/tmp/clis-ripgrep_15-1-0/release/deps/out-a2f81f4f0caeb673-errcode\
-  ; find /tmp/clis-ripgrep_15-1-0/release/deps/*-a2f81f4f0caeb673* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      rustc --crate-name grep_printer --edition 2024 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --cfg feature'="default"' --cfg feature'="serde"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "serde"))' -C metadata'=6308a7e4fd26d5a1' -C extra-filename'=-a2f81f4f0caeb673' --out-dir /target/release/deps -L dependency'=/target/release/deps' --extern bstr'=/target/release/deps/libbstr-d3eea57fb24a933f.rmeta' --extern grep_matcher'=/target/release/deps/libgrep_matcher-d59a566cc66becf8.rmeta' --extern grep_searcher'=/target/release/deps/libgrep_searcher-82a451c10ca406e4.rmeta' --extern log'=/target/release/deps/liblog-961aebfc4598d968.rmeta' --extern serde'=/target/release/deps/libserde-b2e448cd36891534.rmeta' --extern serde_json'=/target/release/deps/libserde_json-53d4d749d624f2e4.rmeta' --extern termcolor'=/target/release/deps/libtermcolor-82ca06e8aad1563b.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-printer-0.3.1/src/lib.rs \
+        1>          /target/release/deps/out-a2f81f4f0caeb673-stdout \
+        2>          /target/release/deps/out-a2f81f4f0caeb673-stderr \
+        || echo $? >/target/release/deps/out-a2f81f4f0caeb673-errcode\
+  ; find /target/release/deps/*-a2f81f4f0caeb673* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-a2f81f4f0caeb673
-COPY --link --from=dep-n-grep-printer-0.3.1-a2f81f4f0caeb673 /tmp/clis-ripgrep_15-1-0/release/deps/*-a2f81f4f0caeb673* /
+COPY --link --from=dep-n-grep-printer-0.3.1-a2f81f4f0caeb673 /target/release/deps/*-a2f81f4f0caeb673* /
 
 ## this = "a2f81f4f0caeb673"
 ## deps = [
@@ -4873,9 +4873,9 @@ COPY --link --from=dep-n-grep-printer-0.3.1-a2f81f4f0caeb673 /tmp/clis-ripgrep_1
 ##     "libgrep_printer-a2f81f4f0caeb673.rmeta",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/deps/grep_printer-a2f81f4f0caeb673.d","emit":"dep-info"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/deps/libgrep_printer-a2f81f4f0caeb673.rmeta","emit":"metadata"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/deps/libgrep_printer-a2f81f4f0caeb673.rlib","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/grep_printer-a2f81f4f0caeb673.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libgrep_printer-a2f81f4f0caeb673.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libgrep_printer-a2f81f4f0caeb673.rlib","emit":"link"}',
 ## ]
 ##
 ## [[externs]]
@@ -5032,11 +5032,11 @@ COPY --link --from=dep-n-grep-printer-0.3.1-a2f81f4f0caeb673 /tmp/clis-ripgrep_1
 ##
 ## [[mounts]]
 ## name = "out-ba8a06e0f44b5ff8"
-## mount = "/tmp/clis-ripgrep_15-1-0/release/build/serde-ba8a06e0f44b5ff8/out"
+## mount = "/target/release/build/serde-ba8a06e0f44b5ff8/out"
 ##
 ## [[mounts]]
 ## name = "out-5f8fd3dd93685614"
-## mount = "/tmp/clis-ripgrep_15-1-0/release/build/serde_core-5f8fd3dd93685614/out"
+## mount = "/target/release/build/serde_core-5f8fd3dd93685614/out"
 ##
 ## [[stages]]
 ##
@@ -5060,49 +5060,49 @@ COPY --link --from=dep-n-grep-printer-0.3.1-a2f81f4f0caeb673 /tmp/clis-ripgrep_1
 ## script = '''
 ## FROM rust-base AS dep-n-grep-printer-0.3.1-a2f81f4f0caeb673
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-ripgrep_15-1-0/release/deps
+## WORKDIR /target/release/deps
 ## RUN \
 ##   --mount=from=cratesio-grep-printer-0.3.1,source=/grep-printer-0.3.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-printer-0.3.1 \
-##   --mount=from=out-d3eea57fb24a933f,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libbstr-d3eea57fb24a933f.rlib,source=/libbstr-d3eea57fb24a933f.rlib \
-##   --mount=from=out-d3eea57fb24a933f,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libbstr-d3eea57fb24a933f.rmeta,source=/libbstr-d3eea57fb24a933f.rmeta \
-##   --mount=from=out-3a40f50ac19c9d2e,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libmemchr-3a40f50ac19c9d2e.rlib,source=/libmemchr-3a40f50ac19c9d2e.rlib \
-##   --mount=from=out-3a40f50ac19c9d2e,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libmemchr-3a40f50ac19c9d2e.rmeta,source=/libmemchr-3a40f50ac19c9d2e.rmeta \
-##   --mount=from=out-e22c3e2bd8aa6773,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libregex_automata-e22c3e2bd8aa6773.rlib,source=/libregex_automata-e22c3e2bd8aa6773.rlib \
-##   --mount=from=out-e22c3e2bd8aa6773,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libregex_automata-e22c3e2bd8aa6773.rmeta,source=/libregex_automata-e22c3e2bd8aa6773.rmeta \
-##   --mount=from=out-a01a7f030e27d71e,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libaho_corasick-a01a7f030e27d71e.rlib,source=/libaho_corasick-a01a7f030e27d71e.rlib \
-##   --mount=from=out-a01a7f030e27d71e,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libaho_corasick-a01a7f030e27d71e.rmeta,source=/libaho_corasick-a01a7f030e27d71e.rmeta \
-##   --mount=from=out-34711e95edd06069,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libregex_syntax-34711e95edd06069.rlib,source=/libregex_syntax-34711e95edd06069.rlib \
-##   --mount=from=out-34711e95edd06069,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libregex_syntax-34711e95edd06069.rmeta,source=/libregex_syntax-34711e95edd06069.rmeta \
-##   --mount=from=out-d59a566cc66becf8,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libgrep_matcher-d59a566cc66becf8.rlib,source=/libgrep_matcher-d59a566cc66becf8.rlib \
-##   --mount=from=out-d59a566cc66becf8,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libgrep_matcher-d59a566cc66becf8.rmeta,source=/libgrep_matcher-d59a566cc66becf8.rmeta \
-##   --mount=from=out-82a451c10ca406e4,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libgrep_searcher-82a451c10ca406e4.rlib,source=/libgrep_searcher-82a451c10ca406e4.rlib \
-##   --mount=from=out-82a451c10ca406e4,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libgrep_searcher-82a451c10ca406e4.rmeta,source=/libgrep_searcher-82a451c10ca406e4.rmeta \
-##   --mount=from=out-e0d6e4f8a8eb4371,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libencoding_rs-e0d6e4f8a8eb4371.rlib,source=/libencoding_rs-e0d6e4f8a8eb4371.rlib \
-##   --mount=from=out-e0d6e4f8a8eb4371,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libencoding_rs-e0d6e4f8a8eb4371.rmeta,source=/libencoding_rs-e0d6e4f8a8eb4371.rmeta \
-##   --mount=from=out-e78ec6df4b56941f,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libcfg_if-e78ec6df4b56941f.rlib,source=/libcfg_if-e78ec6df4b56941f.rlib \
-##   --mount=from=out-e78ec6df4b56941f,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libcfg_if-e78ec6df4b56941f.rmeta,source=/libcfg_if-e78ec6df4b56941f.rmeta \
-##   --mount=from=out-651f5691fade4e93,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libencoding_rs_io-651f5691fade4e93.rlib,source=/libencoding_rs_io-651f5691fade4e93.rlib \
-##   --mount=from=out-651f5691fade4e93,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libencoding_rs_io-651f5691fade4e93.rmeta,source=/libencoding_rs_io-651f5691fade4e93.rmeta \
-##   --mount=from=out-961aebfc4598d968,dst=/tmp/clis-ripgrep_15-1-0/release/deps/liblog-961aebfc4598d968.rlib,source=/liblog-961aebfc4598d968.rlib \
-##   --mount=from=out-961aebfc4598d968,dst=/tmp/clis-ripgrep_15-1-0/release/deps/liblog-961aebfc4598d968.rmeta,source=/liblog-961aebfc4598d968.rmeta \
-##   --mount=from=out-977b6f2f3b8d0f6b,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libmemmap2-977b6f2f3b8d0f6b.rlib,source=/libmemmap2-977b6f2f3b8d0f6b.rlib \
-##   --mount=from=out-977b6f2f3b8d0f6b,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libmemmap2-977b6f2f3b8d0f6b.rmeta,source=/libmemmap2-977b6f2f3b8d0f6b.rmeta \
-##   --mount=from=out-fda8220236222977,dst=/tmp/clis-ripgrep_15-1-0/release/deps/liblibc-fda8220236222977.rlib,source=/liblibc-fda8220236222977.rlib \
-##   --mount=from=out-fda8220236222977,dst=/tmp/clis-ripgrep_15-1-0/release/deps/liblibc-fda8220236222977.rmeta,source=/liblibc-fda8220236222977.rmeta \
-##   --mount=from=out-b2e448cd36891534,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libserde-b2e448cd36891534.rlib,source=/libserde-b2e448cd36891534.rlib \
-##   --mount=from=out-b2e448cd36891534,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libserde-b2e448cd36891534.rmeta,source=/libserde-b2e448cd36891534.rmeta \
-##   --mount=from=out-9c5f6198d88ce592,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libserde_core-9c5f6198d88ce592.rlib,source=/libserde_core-9c5f6198d88ce592.rlib \
-##   --mount=from=out-9c5f6198d88ce592,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libserde_core-9c5f6198d88ce592.rmeta,source=/libserde_core-9c5f6198d88ce592.rmeta \
-##   --mount=from=out-53d4d749d624f2e4,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libserde_json-53d4d749d624f2e4.rlib,source=/libserde_json-53d4d749d624f2e4.rlib \
-##   --mount=from=out-53d4d749d624f2e4,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libserde_json-53d4d749d624f2e4.rmeta,source=/libserde_json-53d4d749d624f2e4.rmeta \
-##   --mount=from=out-4ed5967b8bb80767,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libitoa-4ed5967b8bb80767.rlib,source=/libitoa-4ed5967b8bb80767.rlib \
-##   --mount=from=out-4ed5967b8bb80767,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libitoa-4ed5967b8bb80767.rmeta,source=/libitoa-4ed5967b8bb80767.rmeta \
-##   --mount=from=out-60ca480634bc0094,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libryu-60ca480634bc0094.rlib,source=/libryu-60ca480634bc0094.rlib \
-##   --mount=from=out-60ca480634bc0094,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libryu-60ca480634bc0094.rmeta,source=/libryu-60ca480634bc0094.rmeta \
-##   --mount=from=out-82ca06e8aad1563b,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libtermcolor-82ca06e8aad1563b.rlib,source=/libtermcolor-82ca06e8aad1563b.rlib \
-##   --mount=from=out-82ca06e8aad1563b,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libtermcolor-82ca06e8aad1563b.rmeta,source=/libtermcolor-82ca06e8aad1563b.rmeta \
-##   --mount=from=out-ba8a06e0f44b5ff8,dst=/tmp/clis-ripgrep_15-1-0/release/build/serde-ba8a06e0f44b5ff8/out,source=/ \
-##   --mount=from=out-5f8fd3dd93685614,dst=/tmp/clis-ripgrep_15-1-0/release/build/serde_core-5f8fd3dd93685614/out,source=/ \
+##   --mount=from=out-d3eea57fb24a933f,dst=/target/release/deps/libbstr-d3eea57fb24a933f.rlib,source=/libbstr-d3eea57fb24a933f.rlib \
+##   --mount=from=out-d3eea57fb24a933f,dst=/target/release/deps/libbstr-d3eea57fb24a933f.rmeta,source=/libbstr-d3eea57fb24a933f.rmeta \
+##   --mount=from=out-3a40f50ac19c9d2e,dst=/target/release/deps/libmemchr-3a40f50ac19c9d2e.rlib,source=/libmemchr-3a40f50ac19c9d2e.rlib \
+##   --mount=from=out-3a40f50ac19c9d2e,dst=/target/release/deps/libmemchr-3a40f50ac19c9d2e.rmeta,source=/libmemchr-3a40f50ac19c9d2e.rmeta \
+##   --mount=from=out-e22c3e2bd8aa6773,dst=/target/release/deps/libregex_automata-e22c3e2bd8aa6773.rlib,source=/libregex_automata-e22c3e2bd8aa6773.rlib \
+##   --mount=from=out-e22c3e2bd8aa6773,dst=/target/release/deps/libregex_automata-e22c3e2bd8aa6773.rmeta,source=/libregex_automata-e22c3e2bd8aa6773.rmeta \
+##   --mount=from=out-a01a7f030e27d71e,dst=/target/release/deps/libaho_corasick-a01a7f030e27d71e.rlib,source=/libaho_corasick-a01a7f030e27d71e.rlib \
+##   --mount=from=out-a01a7f030e27d71e,dst=/target/release/deps/libaho_corasick-a01a7f030e27d71e.rmeta,source=/libaho_corasick-a01a7f030e27d71e.rmeta \
+##   --mount=from=out-34711e95edd06069,dst=/target/release/deps/libregex_syntax-34711e95edd06069.rlib,source=/libregex_syntax-34711e95edd06069.rlib \
+##   --mount=from=out-34711e95edd06069,dst=/target/release/deps/libregex_syntax-34711e95edd06069.rmeta,source=/libregex_syntax-34711e95edd06069.rmeta \
+##   --mount=from=out-d59a566cc66becf8,dst=/target/release/deps/libgrep_matcher-d59a566cc66becf8.rlib,source=/libgrep_matcher-d59a566cc66becf8.rlib \
+##   --mount=from=out-d59a566cc66becf8,dst=/target/release/deps/libgrep_matcher-d59a566cc66becf8.rmeta,source=/libgrep_matcher-d59a566cc66becf8.rmeta \
+##   --mount=from=out-82a451c10ca406e4,dst=/target/release/deps/libgrep_searcher-82a451c10ca406e4.rlib,source=/libgrep_searcher-82a451c10ca406e4.rlib \
+##   --mount=from=out-82a451c10ca406e4,dst=/target/release/deps/libgrep_searcher-82a451c10ca406e4.rmeta,source=/libgrep_searcher-82a451c10ca406e4.rmeta \
+##   --mount=from=out-e0d6e4f8a8eb4371,dst=/target/release/deps/libencoding_rs-e0d6e4f8a8eb4371.rlib,source=/libencoding_rs-e0d6e4f8a8eb4371.rlib \
+##   --mount=from=out-e0d6e4f8a8eb4371,dst=/target/release/deps/libencoding_rs-e0d6e4f8a8eb4371.rmeta,source=/libencoding_rs-e0d6e4f8a8eb4371.rmeta \
+##   --mount=from=out-e78ec6df4b56941f,dst=/target/release/deps/libcfg_if-e78ec6df4b56941f.rlib,source=/libcfg_if-e78ec6df4b56941f.rlib \
+##   --mount=from=out-e78ec6df4b56941f,dst=/target/release/deps/libcfg_if-e78ec6df4b56941f.rmeta,source=/libcfg_if-e78ec6df4b56941f.rmeta \
+##   --mount=from=out-651f5691fade4e93,dst=/target/release/deps/libencoding_rs_io-651f5691fade4e93.rlib,source=/libencoding_rs_io-651f5691fade4e93.rlib \
+##   --mount=from=out-651f5691fade4e93,dst=/target/release/deps/libencoding_rs_io-651f5691fade4e93.rmeta,source=/libencoding_rs_io-651f5691fade4e93.rmeta \
+##   --mount=from=out-961aebfc4598d968,dst=/target/release/deps/liblog-961aebfc4598d968.rlib,source=/liblog-961aebfc4598d968.rlib \
+##   --mount=from=out-961aebfc4598d968,dst=/target/release/deps/liblog-961aebfc4598d968.rmeta,source=/liblog-961aebfc4598d968.rmeta \
+##   --mount=from=out-977b6f2f3b8d0f6b,dst=/target/release/deps/libmemmap2-977b6f2f3b8d0f6b.rlib,source=/libmemmap2-977b6f2f3b8d0f6b.rlib \
+##   --mount=from=out-977b6f2f3b8d0f6b,dst=/target/release/deps/libmemmap2-977b6f2f3b8d0f6b.rmeta,source=/libmemmap2-977b6f2f3b8d0f6b.rmeta \
+##   --mount=from=out-fda8220236222977,dst=/target/release/deps/liblibc-fda8220236222977.rlib,source=/liblibc-fda8220236222977.rlib \
+##   --mount=from=out-fda8220236222977,dst=/target/release/deps/liblibc-fda8220236222977.rmeta,source=/liblibc-fda8220236222977.rmeta \
+##   --mount=from=out-b2e448cd36891534,dst=/target/release/deps/libserde-b2e448cd36891534.rlib,source=/libserde-b2e448cd36891534.rlib \
+##   --mount=from=out-b2e448cd36891534,dst=/target/release/deps/libserde-b2e448cd36891534.rmeta,source=/libserde-b2e448cd36891534.rmeta \
+##   --mount=from=out-9c5f6198d88ce592,dst=/target/release/deps/libserde_core-9c5f6198d88ce592.rlib,source=/libserde_core-9c5f6198d88ce592.rlib \
+##   --mount=from=out-9c5f6198d88ce592,dst=/target/release/deps/libserde_core-9c5f6198d88ce592.rmeta,source=/libserde_core-9c5f6198d88ce592.rmeta \
+##   --mount=from=out-53d4d749d624f2e4,dst=/target/release/deps/libserde_json-53d4d749d624f2e4.rlib,source=/libserde_json-53d4d749d624f2e4.rlib \
+##   --mount=from=out-53d4d749d624f2e4,dst=/target/release/deps/libserde_json-53d4d749d624f2e4.rmeta,source=/libserde_json-53d4d749d624f2e4.rmeta \
+##   --mount=from=out-4ed5967b8bb80767,dst=/target/release/deps/libitoa-4ed5967b8bb80767.rlib,source=/libitoa-4ed5967b8bb80767.rlib \
+##   --mount=from=out-4ed5967b8bb80767,dst=/target/release/deps/libitoa-4ed5967b8bb80767.rmeta,source=/libitoa-4ed5967b8bb80767.rmeta \
+##   --mount=from=out-60ca480634bc0094,dst=/target/release/deps/libryu-60ca480634bc0094.rlib,source=/libryu-60ca480634bc0094.rlib \
+##   --mount=from=out-60ca480634bc0094,dst=/target/release/deps/libryu-60ca480634bc0094.rmeta,source=/libryu-60ca480634bc0094.rmeta \
+##   --mount=from=out-82ca06e8aad1563b,dst=/target/release/deps/libtermcolor-82ca06e8aad1563b.rlib,source=/libtermcolor-82ca06e8aad1563b.rlib \
+##   --mount=from=out-82ca06e8aad1563b,dst=/target/release/deps/libtermcolor-82ca06e8aad1563b.rmeta,source=/libtermcolor-82ca06e8aad1563b.rmeta \
+##   --mount=from=out-ba8a06e0f44b5ff8,dst=/target/release/build/serde-ba8a06e0f44b5ff8/out,source=/ \
+##   --mount=from=out-5f8fd3dd93685614,dst=/target/release/build/serde_core-5f8fd3dd93685614/out,source=/ \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=grep_printer \
 ##         CARGO_INCREMENTAL=0 \
@@ -5125,11 +5125,11 @@ COPY --link --from=dep-n-grep-printer-0.3.1-a2f81f4f0caeb673 /tmp/clis-ripgrep_1
 ##         CARGO_PKG_VERSION_PATCH=1 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name grep_printer --edition 2024 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --cfg feature'="default"' --cfg feature'="serde"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "serde"))' -C metadata'=6308a7e4fd26d5a1' -C extra-filename'=-a2f81f4f0caeb673' --out-dir /tmp/clis-ripgrep_15-1-0/release/deps -L dependency'=/tmp/clis-ripgrep_15-1-0/release/deps' --extern bstr'=/tmp/clis-ripgrep_15-1-0/release/deps/libbstr-d3eea57fb24a933f.rmeta' --extern grep_matcher'=/tmp/clis-ripgrep_15-1-0/release/deps/libgrep_matcher-d59a566cc66becf8.rmeta' --extern grep_searcher'=/tmp/clis-ripgrep_15-1-0/release/deps/libgrep_searcher-82a451c10ca406e4.rmeta' --extern log'=/tmp/clis-ripgrep_15-1-0/release/deps/liblog-961aebfc4598d968.rmeta' --extern serde'=/tmp/clis-ripgrep_15-1-0/release/deps/libserde-b2e448cd36891534.rmeta' --extern serde_json'=/tmp/clis-ripgrep_15-1-0/release/deps/libserde_json-53d4d749d624f2e4.rmeta' --extern termcolor'=/tmp/clis-ripgrep_15-1-0/release/deps/libtermcolor-82ca06e8aad1563b.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-printer-0.3.1/src/lib.rs \
-##         1>          /tmp/clis-ripgrep_15-1-0/release/deps/out-a2f81f4f0caeb673-stdout \
-##         2>          /tmp/clis-ripgrep_15-1-0/release/deps/out-a2f81f4f0caeb673-stderr \
-##         || echo $? >/tmp/clis-ripgrep_15-1-0/release/deps/out-a2f81f4f0caeb673-errcode\
-##   ; find /tmp/clis-ripgrep_15-1-0/release/deps/*-a2f81f4f0caeb673* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name grep_printer --edition 2024 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --cfg feature'="default"' --cfg feature'="serde"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "serde"))' -C metadata'=6308a7e4fd26d5a1' -C extra-filename'=-a2f81f4f0caeb673' --out-dir /target/release/deps -L dependency'=/target/release/deps' --extern bstr'=/target/release/deps/libbstr-d3eea57fb24a933f.rmeta' --extern grep_matcher'=/target/release/deps/libgrep_matcher-d59a566cc66becf8.rmeta' --extern grep_searcher'=/target/release/deps/libgrep_searcher-82a451c10ca406e4.rmeta' --extern log'=/target/release/deps/liblog-961aebfc4598d968.rmeta' --extern serde'=/target/release/deps/libserde-b2e448cd36891534.rmeta' --extern serde_json'=/target/release/deps/libserde_json-53d4d749d624f2e4.rmeta' --extern termcolor'=/target/release/deps/libtermcolor-82ca06e8aad1563b.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-printer-0.3.1/src/lib.rs \
+##         1>          /target/release/deps/out-a2f81f4f0caeb673-stdout \
+##         2>          /target/release/deps/out-a2f81f4f0caeb673-stderr \
+##         || echo $? >/target/release/deps/out-a2f81f4f0caeb673-errcode\
+##   ; find /target/release/deps/*-a2f81f4f0caeb673* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -5137,30 +5137,30 @@ COPY --link --from=dep-n-grep-printer-0.3.1-a2f81f4f0caeb673 /tmp/clis-ripgrep_1
 ## stage = "out-a2f81f4f0caeb673"
 ## script = """
 ## FROM scratch AS out-a2f81f4f0caeb673
-## COPY --link --from=dep-n-grep-printer-0.3.1-a2f81f4f0caeb673 /tmp/clis-ripgrep_15-1-0/release/deps/*-a2f81f4f0caeb673* /"""
+## COPY --link --from=dep-n-grep-printer-0.3.1-a2f81f4f0caeb673 /target/release/deps/*-a2f81f4f0caeb673* /"""
 
 FROM scratch AS cratesio-grep-regex-0.1.14
 ADD --chmod=0664 --unpack --checksum=sha256:0ce0c256c3ad82bcc07b812c15a45ec1d398122e8e15124f96695234db7112ef \
   https://static.crates.io/crates/grep-regex/grep-regex-0.1.14.crate /
 FROM rust-base AS dep-n-grep-regex-0.1.14-45a71c617829751e
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-ripgrep_15-1-0/release/deps
+WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-grep-regex-0.1.14,source=/grep-regex-0.1.14,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-regex-0.1.14 \
-  --mount=from=out-d3eea57fb24a933f,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libbstr-d3eea57fb24a933f.rlib,source=/libbstr-d3eea57fb24a933f.rlib \
-  --mount=from=out-d3eea57fb24a933f,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libbstr-d3eea57fb24a933f.rmeta,source=/libbstr-d3eea57fb24a933f.rmeta \
-  --mount=from=out-3a40f50ac19c9d2e,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libmemchr-3a40f50ac19c9d2e.rlib,source=/libmemchr-3a40f50ac19c9d2e.rlib \
-  --mount=from=out-3a40f50ac19c9d2e,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libmemchr-3a40f50ac19c9d2e.rmeta,source=/libmemchr-3a40f50ac19c9d2e.rmeta \
-  --mount=from=out-e22c3e2bd8aa6773,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libregex_automata-e22c3e2bd8aa6773.rlib,source=/libregex_automata-e22c3e2bd8aa6773.rlib \
-  --mount=from=out-e22c3e2bd8aa6773,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libregex_automata-e22c3e2bd8aa6773.rmeta,source=/libregex_automata-e22c3e2bd8aa6773.rmeta \
-  --mount=from=out-a01a7f030e27d71e,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libaho_corasick-a01a7f030e27d71e.rlib,source=/libaho_corasick-a01a7f030e27d71e.rlib \
-  --mount=from=out-a01a7f030e27d71e,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libaho_corasick-a01a7f030e27d71e.rmeta,source=/libaho_corasick-a01a7f030e27d71e.rmeta \
-  --mount=from=out-34711e95edd06069,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libregex_syntax-34711e95edd06069.rlib,source=/libregex_syntax-34711e95edd06069.rlib \
-  --mount=from=out-34711e95edd06069,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libregex_syntax-34711e95edd06069.rmeta,source=/libregex_syntax-34711e95edd06069.rmeta \
-  --mount=from=out-d59a566cc66becf8,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libgrep_matcher-d59a566cc66becf8.rlib,source=/libgrep_matcher-d59a566cc66becf8.rlib \
-  --mount=from=out-d59a566cc66becf8,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libgrep_matcher-d59a566cc66becf8.rmeta,source=/libgrep_matcher-d59a566cc66becf8.rmeta \
-  --mount=from=out-961aebfc4598d968,dst=/tmp/clis-ripgrep_15-1-0/release/deps/liblog-961aebfc4598d968.rlib,source=/liblog-961aebfc4598d968.rlib \
-  --mount=from=out-961aebfc4598d968,dst=/tmp/clis-ripgrep_15-1-0/release/deps/liblog-961aebfc4598d968.rmeta,source=/liblog-961aebfc4598d968.rmeta \
+  --mount=from=out-d3eea57fb24a933f,dst=/target/release/deps/libbstr-d3eea57fb24a933f.rlib,source=/libbstr-d3eea57fb24a933f.rlib \
+  --mount=from=out-d3eea57fb24a933f,dst=/target/release/deps/libbstr-d3eea57fb24a933f.rmeta,source=/libbstr-d3eea57fb24a933f.rmeta \
+  --mount=from=out-3a40f50ac19c9d2e,dst=/target/release/deps/libmemchr-3a40f50ac19c9d2e.rlib,source=/libmemchr-3a40f50ac19c9d2e.rlib \
+  --mount=from=out-3a40f50ac19c9d2e,dst=/target/release/deps/libmemchr-3a40f50ac19c9d2e.rmeta,source=/libmemchr-3a40f50ac19c9d2e.rmeta \
+  --mount=from=out-e22c3e2bd8aa6773,dst=/target/release/deps/libregex_automata-e22c3e2bd8aa6773.rlib,source=/libregex_automata-e22c3e2bd8aa6773.rlib \
+  --mount=from=out-e22c3e2bd8aa6773,dst=/target/release/deps/libregex_automata-e22c3e2bd8aa6773.rmeta,source=/libregex_automata-e22c3e2bd8aa6773.rmeta \
+  --mount=from=out-a01a7f030e27d71e,dst=/target/release/deps/libaho_corasick-a01a7f030e27d71e.rlib,source=/libaho_corasick-a01a7f030e27d71e.rlib \
+  --mount=from=out-a01a7f030e27d71e,dst=/target/release/deps/libaho_corasick-a01a7f030e27d71e.rmeta,source=/libaho_corasick-a01a7f030e27d71e.rmeta \
+  --mount=from=out-34711e95edd06069,dst=/target/release/deps/libregex_syntax-34711e95edd06069.rlib,source=/libregex_syntax-34711e95edd06069.rlib \
+  --mount=from=out-34711e95edd06069,dst=/target/release/deps/libregex_syntax-34711e95edd06069.rmeta,source=/libregex_syntax-34711e95edd06069.rmeta \
+  --mount=from=out-d59a566cc66becf8,dst=/target/release/deps/libgrep_matcher-d59a566cc66becf8.rlib,source=/libgrep_matcher-d59a566cc66becf8.rlib \
+  --mount=from=out-d59a566cc66becf8,dst=/target/release/deps/libgrep_matcher-d59a566cc66becf8.rmeta,source=/libgrep_matcher-d59a566cc66becf8.rmeta \
+  --mount=from=out-961aebfc4598d968,dst=/target/release/deps/liblog-961aebfc4598d968.rlib,source=/liblog-961aebfc4598d968.rlib \
+  --mount=from=out-961aebfc4598d968,dst=/target/release/deps/liblog-961aebfc4598d968.rmeta,source=/liblog-961aebfc4598d968.rmeta \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=grep_regex \
         CARGO_INCREMENTAL=0 \
@@ -5182,13 +5182,13 @@ RUN \
         CARGO_PKG_VERSION_PATCH=14 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --crate-name grep_regex --edition 2024 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=e96f1c5505afcb1e' -C extra-filename'=-45a71c617829751e' --out-dir /tmp/clis-ripgrep_15-1-0/release/deps -L dependency'=/tmp/clis-ripgrep_15-1-0/release/deps' --extern bstr'=/tmp/clis-ripgrep_15-1-0/release/deps/libbstr-d3eea57fb24a933f.rmeta' --extern grep_matcher'=/tmp/clis-ripgrep_15-1-0/release/deps/libgrep_matcher-d59a566cc66becf8.rmeta' --extern log'=/tmp/clis-ripgrep_15-1-0/release/deps/liblog-961aebfc4598d968.rmeta' --extern regex_automata'=/tmp/clis-ripgrep_15-1-0/release/deps/libregex_automata-e22c3e2bd8aa6773.rmeta' --extern regex_syntax'=/tmp/clis-ripgrep_15-1-0/release/deps/libregex_syntax-34711e95edd06069.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-regex-0.1.14/src/lib.rs \
-        1>          /tmp/clis-ripgrep_15-1-0/release/deps/out-45a71c617829751e-stdout \
-        2>          /tmp/clis-ripgrep_15-1-0/release/deps/out-45a71c617829751e-stderr \
-        || echo $? >/tmp/clis-ripgrep_15-1-0/release/deps/out-45a71c617829751e-errcode\
-  ; find /tmp/clis-ripgrep_15-1-0/release/deps/*-45a71c617829751e* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      rustc --crate-name grep_regex --edition 2024 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=e96f1c5505afcb1e' -C extra-filename'=-45a71c617829751e' --out-dir /target/release/deps -L dependency'=/target/release/deps' --extern bstr'=/target/release/deps/libbstr-d3eea57fb24a933f.rmeta' --extern grep_matcher'=/target/release/deps/libgrep_matcher-d59a566cc66becf8.rmeta' --extern log'=/target/release/deps/liblog-961aebfc4598d968.rmeta' --extern regex_automata'=/target/release/deps/libregex_automata-e22c3e2bd8aa6773.rmeta' --extern regex_syntax'=/target/release/deps/libregex_syntax-34711e95edd06069.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-regex-0.1.14/src/lib.rs \
+        1>          /target/release/deps/out-45a71c617829751e-stdout \
+        2>          /target/release/deps/out-45a71c617829751e-stderr \
+        || echo $? >/target/release/deps/out-45a71c617829751e-errcode\
+  ; find /target/release/deps/*-45a71c617829751e* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-45a71c617829751e
-COPY --link --from=dep-n-grep-regex-0.1.14-45a71c617829751e /tmp/clis-ripgrep_15-1-0/release/deps/*-45a71c617829751e* /
+COPY --link --from=dep-n-grep-regex-0.1.14-45a71c617829751e /target/release/deps/*-45a71c617829751e* /
 
 ## this = "45a71c617829751e"
 ## deps = [
@@ -5206,9 +5206,9 @@ COPY --link --from=dep-n-grep-regex-0.1.14-45a71c617829751e /tmp/clis-ripgrep_15
 ##     "libgrep_regex-45a71c617829751e.rmeta",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/deps/grep_regex-45a71c617829751e.d","emit":"dep-info"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/deps/libgrep_regex-45a71c617829751e.rmeta","emit":"metadata"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/deps/libgrep_regex-45a71c617829751e.rlib","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/grep_regex-45a71c617829751e.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libgrep_regex-45a71c617829751e.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libgrep_regex-45a71c617829751e.rlib","emit":"link"}',
 ## ]
 ##
 ## [[externs]]
@@ -5289,23 +5289,23 @@ COPY --link --from=dep-n-grep-regex-0.1.14-45a71c617829751e /tmp/clis-ripgrep_15
 ## script = '''
 ## FROM rust-base AS dep-n-grep-regex-0.1.14-45a71c617829751e
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-ripgrep_15-1-0/release/deps
+## WORKDIR /target/release/deps
 ## RUN \
 ##   --mount=from=cratesio-grep-regex-0.1.14,source=/grep-regex-0.1.14,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-regex-0.1.14 \
-##   --mount=from=out-d3eea57fb24a933f,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libbstr-d3eea57fb24a933f.rlib,source=/libbstr-d3eea57fb24a933f.rlib \
-##   --mount=from=out-d3eea57fb24a933f,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libbstr-d3eea57fb24a933f.rmeta,source=/libbstr-d3eea57fb24a933f.rmeta \
-##   --mount=from=out-3a40f50ac19c9d2e,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libmemchr-3a40f50ac19c9d2e.rlib,source=/libmemchr-3a40f50ac19c9d2e.rlib \
-##   --mount=from=out-3a40f50ac19c9d2e,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libmemchr-3a40f50ac19c9d2e.rmeta,source=/libmemchr-3a40f50ac19c9d2e.rmeta \
-##   --mount=from=out-e22c3e2bd8aa6773,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libregex_automata-e22c3e2bd8aa6773.rlib,source=/libregex_automata-e22c3e2bd8aa6773.rlib \
-##   --mount=from=out-e22c3e2bd8aa6773,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libregex_automata-e22c3e2bd8aa6773.rmeta,source=/libregex_automata-e22c3e2bd8aa6773.rmeta \
-##   --mount=from=out-a01a7f030e27d71e,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libaho_corasick-a01a7f030e27d71e.rlib,source=/libaho_corasick-a01a7f030e27d71e.rlib \
-##   --mount=from=out-a01a7f030e27d71e,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libaho_corasick-a01a7f030e27d71e.rmeta,source=/libaho_corasick-a01a7f030e27d71e.rmeta \
-##   --mount=from=out-34711e95edd06069,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libregex_syntax-34711e95edd06069.rlib,source=/libregex_syntax-34711e95edd06069.rlib \
-##   --mount=from=out-34711e95edd06069,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libregex_syntax-34711e95edd06069.rmeta,source=/libregex_syntax-34711e95edd06069.rmeta \
-##   --mount=from=out-d59a566cc66becf8,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libgrep_matcher-d59a566cc66becf8.rlib,source=/libgrep_matcher-d59a566cc66becf8.rlib \
-##   --mount=from=out-d59a566cc66becf8,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libgrep_matcher-d59a566cc66becf8.rmeta,source=/libgrep_matcher-d59a566cc66becf8.rmeta \
-##   --mount=from=out-961aebfc4598d968,dst=/tmp/clis-ripgrep_15-1-0/release/deps/liblog-961aebfc4598d968.rlib,source=/liblog-961aebfc4598d968.rlib \
-##   --mount=from=out-961aebfc4598d968,dst=/tmp/clis-ripgrep_15-1-0/release/deps/liblog-961aebfc4598d968.rmeta,source=/liblog-961aebfc4598d968.rmeta \
+##   --mount=from=out-d3eea57fb24a933f,dst=/target/release/deps/libbstr-d3eea57fb24a933f.rlib,source=/libbstr-d3eea57fb24a933f.rlib \
+##   --mount=from=out-d3eea57fb24a933f,dst=/target/release/deps/libbstr-d3eea57fb24a933f.rmeta,source=/libbstr-d3eea57fb24a933f.rmeta \
+##   --mount=from=out-3a40f50ac19c9d2e,dst=/target/release/deps/libmemchr-3a40f50ac19c9d2e.rlib,source=/libmemchr-3a40f50ac19c9d2e.rlib \
+##   --mount=from=out-3a40f50ac19c9d2e,dst=/target/release/deps/libmemchr-3a40f50ac19c9d2e.rmeta,source=/libmemchr-3a40f50ac19c9d2e.rmeta \
+##   --mount=from=out-e22c3e2bd8aa6773,dst=/target/release/deps/libregex_automata-e22c3e2bd8aa6773.rlib,source=/libregex_automata-e22c3e2bd8aa6773.rlib \
+##   --mount=from=out-e22c3e2bd8aa6773,dst=/target/release/deps/libregex_automata-e22c3e2bd8aa6773.rmeta,source=/libregex_automata-e22c3e2bd8aa6773.rmeta \
+##   --mount=from=out-a01a7f030e27d71e,dst=/target/release/deps/libaho_corasick-a01a7f030e27d71e.rlib,source=/libaho_corasick-a01a7f030e27d71e.rlib \
+##   --mount=from=out-a01a7f030e27d71e,dst=/target/release/deps/libaho_corasick-a01a7f030e27d71e.rmeta,source=/libaho_corasick-a01a7f030e27d71e.rmeta \
+##   --mount=from=out-34711e95edd06069,dst=/target/release/deps/libregex_syntax-34711e95edd06069.rlib,source=/libregex_syntax-34711e95edd06069.rlib \
+##   --mount=from=out-34711e95edd06069,dst=/target/release/deps/libregex_syntax-34711e95edd06069.rmeta,source=/libregex_syntax-34711e95edd06069.rmeta \
+##   --mount=from=out-d59a566cc66becf8,dst=/target/release/deps/libgrep_matcher-d59a566cc66becf8.rlib,source=/libgrep_matcher-d59a566cc66becf8.rlib \
+##   --mount=from=out-d59a566cc66becf8,dst=/target/release/deps/libgrep_matcher-d59a566cc66becf8.rmeta,source=/libgrep_matcher-d59a566cc66becf8.rmeta \
+##   --mount=from=out-961aebfc4598d968,dst=/target/release/deps/liblog-961aebfc4598d968.rlib,source=/liblog-961aebfc4598d968.rlib \
+##   --mount=from=out-961aebfc4598d968,dst=/target/release/deps/liblog-961aebfc4598d968.rmeta,source=/liblog-961aebfc4598d968.rmeta \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=grep_regex \
 ##         CARGO_INCREMENTAL=0 \
@@ -5327,11 +5327,11 @@ COPY --link --from=dep-n-grep-regex-0.1.14-45a71c617829751e /tmp/clis-ripgrep_15
 ##         CARGO_PKG_VERSION_PATCH=14 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name grep_regex --edition 2024 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=e96f1c5505afcb1e' -C extra-filename'=-45a71c617829751e' --out-dir /tmp/clis-ripgrep_15-1-0/release/deps -L dependency'=/tmp/clis-ripgrep_15-1-0/release/deps' --extern bstr'=/tmp/clis-ripgrep_15-1-0/release/deps/libbstr-d3eea57fb24a933f.rmeta' --extern grep_matcher'=/tmp/clis-ripgrep_15-1-0/release/deps/libgrep_matcher-d59a566cc66becf8.rmeta' --extern log'=/tmp/clis-ripgrep_15-1-0/release/deps/liblog-961aebfc4598d968.rmeta' --extern regex_automata'=/tmp/clis-ripgrep_15-1-0/release/deps/libregex_automata-e22c3e2bd8aa6773.rmeta' --extern regex_syntax'=/tmp/clis-ripgrep_15-1-0/release/deps/libregex_syntax-34711e95edd06069.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-regex-0.1.14/src/lib.rs \
-##         1>          /tmp/clis-ripgrep_15-1-0/release/deps/out-45a71c617829751e-stdout \
-##         2>          /tmp/clis-ripgrep_15-1-0/release/deps/out-45a71c617829751e-stderr \
-##         || echo $? >/tmp/clis-ripgrep_15-1-0/release/deps/out-45a71c617829751e-errcode\
-##   ; find /tmp/clis-ripgrep_15-1-0/release/deps/*-45a71c617829751e* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name grep_regex --edition 2024 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=e96f1c5505afcb1e' -C extra-filename'=-45a71c617829751e' --out-dir /target/release/deps -L dependency'=/target/release/deps' --extern bstr'=/target/release/deps/libbstr-d3eea57fb24a933f.rmeta' --extern grep_matcher'=/target/release/deps/libgrep_matcher-d59a566cc66becf8.rmeta' --extern log'=/target/release/deps/liblog-961aebfc4598d968.rmeta' --extern regex_automata'=/target/release/deps/libregex_automata-e22c3e2bd8aa6773.rmeta' --extern regex_syntax'=/target/release/deps/libregex_syntax-34711e95edd06069.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-regex-0.1.14/src/lib.rs \
+##         1>          /target/release/deps/out-45a71c617829751e-stdout \
+##         2>          /target/release/deps/out-45a71c617829751e-stderr \
+##         || echo $? >/target/release/deps/out-45a71c617829751e-errcode\
+##   ; find /target/release/deps/*-45a71c617829751e* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -5339,64 +5339,64 @@ COPY --link --from=dep-n-grep-regex-0.1.14-45a71c617829751e /tmp/clis-ripgrep_15
 ## stage = "out-45a71c617829751e"
 ## script = """
 ## FROM scratch AS out-45a71c617829751e
-## COPY --link --from=dep-n-grep-regex-0.1.14-45a71c617829751e /tmp/clis-ripgrep_15-1-0/release/deps/*-45a71c617829751e* /"""
+## COPY --link --from=dep-n-grep-regex-0.1.14-45a71c617829751e /target/release/deps/*-45a71c617829751e* /"""
 
 FROM scratch AS cratesio-grep-0.4.1
 ADD --chmod=0664 --unpack --checksum=sha256:309217bc53e2c691c314389c7fa91f9cd1a998cda19e25544ea47d94103880c3 \
   https://static.crates.io/crates/grep/grep-0.4.1.crate /
 FROM rust-base AS dep-n-grep-0.4.1-90b5ae48eae28f98
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-ripgrep_15-1-0/release/deps
+WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-grep-0.4.1,source=/grep-0.4.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-0.4.1 \
-  --mount=from=out-1b7b0003cc5fcc34,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libgrep_cli-1b7b0003cc5fcc34.rlib,source=/libgrep_cli-1b7b0003cc5fcc34.rlib \
-  --mount=from=out-1b7b0003cc5fcc34,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libgrep_cli-1b7b0003cc5fcc34.rmeta,source=/libgrep_cli-1b7b0003cc5fcc34.rmeta \
-  --mount=from=out-d3eea57fb24a933f,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libbstr-d3eea57fb24a933f.rlib,source=/libbstr-d3eea57fb24a933f.rlib \
-  --mount=from=out-d3eea57fb24a933f,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libbstr-d3eea57fb24a933f.rmeta,source=/libbstr-d3eea57fb24a933f.rmeta \
-  --mount=from=out-3a40f50ac19c9d2e,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libmemchr-3a40f50ac19c9d2e.rlib,source=/libmemchr-3a40f50ac19c9d2e.rlib \
-  --mount=from=out-3a40f50ac19c9d2e,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libmemchr-3a40f50ac19c9d2e.rmeta,source=/libmemchr-3a40f50ac19c9d2e.rmeta \
-  --mount=from=out-e22c3e2bd8aa6773,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libregex_automata-e22c3e2bd8aa6773.rlib,source=/libregex_automata-e22c3e2bd8aa6773.rlib \
-  --mount=from=out-e22c3e2bd8aa6773,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libregex_automata-e22c3e2bd8aa6773.rmeta,source=/libregex_automata-e22c3e2bd8aa6773.rmeta \
-  --mount=from=out-a01a7f030e27d71e,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libaho_corasick-a01a7f030e27d71e.rlib,source=/libaho_corasick-a01a7f030e27d71e.rlib \
-  --mount=from=out-a01a7f030e27d71e,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libaho_corasick-a01a7f030e27d71e.rmeta,source=/libaho_corasick-a01a7f030e27d71e.rmeta \
-  --mount=from=out-34711e95edd06069,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libregex_syntax-34711e95edd06069.rlib,source=/libregex_syntax-34711e95edd06069.rlib \
-  --mount=from=out-34711e95edd06069,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libregex_syntax-34711e95edd06069.rmeta,source=/libregex_syntax-34711e95edd06069.rmeta \
-  --mount=from=out-626b3cb378b61839,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libglobset-626b3cb378b61839.rlib,source=/libglobset-626b3cb378b61839.rlib \
-  --mount=from=out-626b3cb378b61839,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libglobset-626b3cb378b61839.rmeta,source=/libglobset-626b3cb378b61839.rmeta \
-  --mount=from=out-961aebfc4598d968,dst=/tmp/clis-ripgrep_15-1-0/release/deps/liblog-961aebfc4598d968.rlib,source=/liblog-961aebfc4598d968.rlib \
-  --mount=from=out-961aebfc4598d968,dst=/tmp/clis-ripgrep_15-1-0/release/deps/liblog-961aebfc4598d968.rmeta,source=/liblog-961aebfc4598d968.rmeta \
-  --mount=from=out-fda8220236222977,dst=/tmp/clis-ripgrep_15-1-0/release/deps/liblibc-fda8220236222977.rlib,source=/liblibc-fda8220236222977.rlib \
-  --mount=from=out-fda8220236222977,dst=/tmp/clis-ripgrep_15-1-0/release/deps/liblibc-fda8220236222977.rmeta,source=/liblibc-fda8220236222977.rmeta \
-  --mount=from=out-82ca06e8aad1563b,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libtermcolor-82ca06e8aad1563b.rlib,source=/libtermcolor-82ca06e8aad1563b.rlib \
-  --mount=from=out-82ca06e8aad1563b,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libtermcolor-82ca06e8aad1563b.rmeta,source=/libtermcolor-82ca06e8aad1563b.rmeta \
-  --mount=from=out-d59a566cc66becf8,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libgrep_matcher-d59a566cc66becf8.rlib,source=/libgrep_matcher-d59a566cc66becf8.rlib \
-  --mount=from=out-d59a566cc66becf8,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libgrep_matcher-d59a566cc66becf8.rmeta,source=/libgrep_matcher-d59a566cc66becf8.rmeta \
-  --mount=from=out-a2f81f4f0caeb673,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libgrep_printer-a2f81f4f0caeb673.rlib,source=/libgrep_printer-a2f81f4f0caeb673.rlib \
-  --mount=from=out-a2f81f4f0caeb673,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libgrep_printer-a2f81f4f0caeb673.rmeta,source=/libgrep_printer-a2f81f4f0caeb673.rmeta \
-  --mount=from=out-82a451c10ca406e4,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libgrep_searcher-82a451c10ca406e4.rlib,source=/libgrep_searcher-82a451c10ca406e4.rlib \
-  --mount=from=out-82a451c10ca406e4,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libgrep_searcher-82a451c10ca406e4.rmeta,source=/libgrep_searcher-82a451c10ca406e4.rmeta \
-  --mount=from=out-e0d6e4f8a8eb4371,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libencoding_rs-e0d6e4f8a8eb4371.rlib,source=/libencoding_rs-e0d6e4f8a8eb4371.rlib \
-  --mount=from=out-e0d6e4f8a8eb4371,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libencoding_rs-e0d6e4f8a8eb4371.rmeta,source=/libencoding_rs-e0d6e4f8a8eb4371.rmeta \
-  --mount=from=out-e78ec6df4b56941f,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libcfg_if-e78ec6df4b56941f.rlib,source=/libcfg_if-e78ec6df4b56941f.rlib \
-  --mount=from=out-e78ec6df4b56941f,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libcfg_if-e78ec6df4b56941f.rmeta,source=/libcfg_if-e78ec6df4b56941f.rmeta \
-  --mount=from=out-651f5691fade4e93,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libencoding_rs_io-651f5691fade4e93.rlib,source=/libencoding_rs_io-651f5691fade4e93.rlib \
-  --mount=from=out-651f5691fade4e93,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libencoding_rs_io-651f5691fade4e93.rmeta,source=/libencoding_rs_io-651f5691fade4e93.rmeta \
-  --mount=from=out-977b6f2f3b8d0f6b,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libmemmap2-977b6f2f3b8d0f6b.rlib,source=/libmemmap2-977b6f2f3b8d0f6b.rlib \
-  --mount=from=out-977b6f2f3b8d0f6b,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libmemmap2-977b6f2f3b8d0f6b.rmeta,source=/libmemmap2-977b6f2f3b8d0f6b.rmeta \
-  --mount=from=out-b2e448cd36891534,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libserde-b2e448cd36891534.rlib,source=/libserde-b2e448cd36891534.rlib \
-  --mount=from=out-b2e448cd36891534,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libserde-b2e448cd36891534.rmeta,source=/libserde-b2e448cd36891534.rmeta \
-  --mount=from=out-9c5f6198d88ce592,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libserde_core-9c5f6198d88ce592.rlib,source=/libserde_core-9c5f6198d88ce592.rlib \
-  --mount=from=out-9c5f6198d88ce592,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libserde_core-9c5f6198d88ce592.rmeta,source=/libserde_core-9c5f6198d88ce592.rmeta \
-  --mount=from=out-53d4d749d624f2e4,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libserde_json-53d4d749d624f2e4.rlib,source=/libserde_json-53d4d749d624f2e4.rlib \
-  --mount=from=out-53d4d749d624f2e4,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libserde_json-53d4d749d624f2e4.rmeta,source=/libserde_json-53d4d749d624f2e4.rmeta \
-  --mount=from=out-4ed5967b8bb80767,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libitoa-4ed5967b8bb80767.rlib,source=/libitoa-4ed5967b8bb80767.rlib \
-  --mount=from=out-4ed5967b8bb80767,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libitoa-4ed5967b8bb80767.rmeta,source=/libitoa-4ed5967b8bb80767.rmeta \
-  --mount=from=out-60ca480634bc0094,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libryu-60ca480634bc0094.rlib,source=/libryu-60ca480634bc0094.rlib \
-  --mount=from=out-60ca480634bc0094,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libryu-60ca480634bc0094.rmeta,source=/libryu-60ca480634bc0094.rmeta \
-  --mount=from=out-45a71c617829751e,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libgrep_regex-45a71c617829751e.rlib,source=/libgrep_regex-45a71c617829751e.rlib \
-  --mount=from=out-45a71c617829751e,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libgrep_regex-45a71c617829751e.rmeta,source=/libgrep_regex-45a71c617829751e.rmeta \
-  --mount=from=out-5f8fd3dd93685614,dst=/tmp/clis-ripgrep_15-1-0/release/build/serde_core-5f8fd3dd93685614/out,source=/ \
-  --mount=from=out-ba8a06e0f44b5ff8,dst=/tmp/clis-ripgrep_15-1-0/release/build/serde-ba8a06e0f44b5ff8/out,source=/ \
+  --mount=from=out-1b7b0003cc5fcc34,dst=/target/release/deps/libgrep_cli-1b7b0003cc5fcc34.rlib,source=/libgrep_cli-1b7b0003cc5fcc34.rlib \
+  --mount=from=out-1b7b0003cc5fcc34,dst=/target/release/deps/libgrep_cli-1b7b0003cc5fcc34.rmeta,source=/libgrep_cli-1b7b0003cc5fcc34.rmeta \
+  --mount=from=out-d3eea57fb24a933f,dst=/target/release/deps/libbstr-d3eea57fb24a933f.rlib,source=/libbstr-d3eea57fb24a933f.rlib \
+  --mount=from=out-d3eea57fb24a933f,dst=/target/release/deps/libbstr-d3eea57fb24a933f.rmeta,source=/libbstr-d3eea57fb24a933f.rmeta \
+  --mount=from=out-3a40f50ac19c9d2e,dst=/target/release/deps/libmemchr-3a40f50ac19c9d2e.rlib,source=/libmemchr-3a40f50ac19c9d2e.rlib \
+  --mount=from=out-3a40f50ac19c9d2e,dst=/target/release/deps/libmemchr-3a40f50ac19c9d2e.rmeta,source=/libmemchr-3a40f50ac19c9d2e.rmeta \
+  --mount=from=out-e22c3e2bd8aa6773,dst=/target/release/deps/libregex_automata-e22c3e2bd8aa6773.rlib,source=/libregex_automata-e22c3e2bd8aa6773.rlib \
+  --mount=from=out-e22c3e2bd8aa6773,dst=/target/release/deps/libregex_automata-e22c3e2bd8aa6773.rmeta,source=/libregex_automata-e22c3e2bd8aa6773.rmeta \
+  --mount=from=out-a01a7f030e27d71e,dst=/target/release/deps/libaho_corasick-a01a7f030e27d71e.rlib,source=/libaho_corasick-a01a7f030e27d71e.rlib \
+  --mount=from=out-a01a7f030e27d71e,dst=/target/release/deps/libaho_corasick-a01a7f030e27d71e.rmeta,source=/libaho_corasick-a01a7f030e27d71e.rmeta \
+  --mount=from=out-34711e95edd06069,dst=/target/release/deps/libregex_syntax-34711e95edd06069.rlib,source=/libregex_syntax-34711e95edd06069.rlib \
+  --mount=from=out-34711e95edd06069,dst=/target/release/deps/libregex_syntax-34711e95edd06069.rmeta,source=/libregex_syntax-34711e95edd06069.rmeta \
+  --mount=from=out-626b3cb378b61839,dst=/target/release/deps/libglobset-626b3cb378b61839.rlib,source=/libglobset-626b3cb378b61839.rlib \
+  --mount=from=out-626b3cb378b61839,dst=/target/release/deps/libglobset-626b3cb378b61839.rmeta,source=/libglobset-626b3cb378b61839.rmeta \
+  --mount=from=out-961aebfc4598d968,dst=/target/release/deps/liblog-961aebfc4598d968.rlib,source=/liblog-961aebfc4598d968.rlib \
+  --mount=from=out-961aebfc4598d968,dst=/target/release/deps/liblog-961aebfc4598d968.rmeta,source=/liblog-961aebfc4598d968.rmeta \
+  --mount=from=out-fda8220236222977,dst=/target/release/deps/liblibc-fda8220236222977.rlib,source=/liblibc-fda8220236222977.rlib \
+  --mount=from=out-fda8220236222977,dst=/target/release/deps/liblibc-fda8220236222977.rmeta,source=/liblibc-fda8220236222977.rmeta \
+  --mount=from=out-82ca06e8aad1563b,dst=/target/release/deps/libtermcolor-82ca06e8aad1563b.rlib,source=/libtermcolor-82ca06e8aad1563b.rlib \
+  --mount=from=out-82ca06e8aad1563b,dst=/target/release/deps/libtermcolor-82ca06e8aad1563b.rmeta,source=/libtermcolor-82ca06e8aad1563b.rmeta \
+  --mount=from=out-d59a566cc66becf8,dst=/target/release/deps/libgrep_matcher-d59a566cc66becf8.rlib,source=/libgrep_matcher-d59a566cc66becf8.rlib \
+  --mount=from=out-d59a566cc66becf8,dst=/target/release/deps/libgrep_matcher-d59a566cc66becf8.rmeta,source=/libgrep_matcher-d59a566cc66becf8.rmeta \
+  --mount=from=out-a2f81f4f0caeb673,dst=/target/release/deps/libgrep_printer-a2f81f4f0caeb673.rlib,source=/libgrep_printer-a2f81f4f0caeb673.rlib \
+  --mount=from=out-a2f81f4f0caeb673,dst=/target/release/deps/libgrep_printer-a2f81f4f0caeb673.rmeta,source=/libgrep_printer-a2f81f4f0caeb673.rmeta \
+  --mount=from=out-82a451c10ca406e4,dst=/target/release/deps/libgrep_searcher-82a451c10ca406e4.rlib,source=/libgrep_searcher-82a451c10ca406e4.rlib \
+  --mount=from=out-82a451c10ca406e4,dst=/target/release/deps/libgrep_searcher-82a451c10ca406e4.rmeta,source=/libgrep_searcher-82a451c10ca406e4.rmeta \
+  --mount=from=out-e0d6e4f8a8eb4371,dst=/target/release/deps/libencoding_rs-e0d6e4f8a8eb4371.rlib,source=/libencoding_rs-e0d6e4f8a8eb4371.rlib \
+  --mount=from=out-e0d6e4f8a8eb4371,dst=/target/release/deps/libencoding_rs-e0d6e4f8a8eb4371.rmeta,source=/libencoding_rs-e0d6e4f8a8eb4371.rmeta \
+  --mount=from=out-e78ec6df4b56941f,dst=/target/release/deps/libcfg_if-e78ec6df4b56941f.rlib,source=/libcfg_if-e78ec6df4b56941f.rlib \
+  --mount=from=out-e78ec6df4b56941f,dst=/target/release/deps/libcfg_if-e78ec6df4b56941f.rmeta,source=/libcfg_if-e78ec6df4b56941f.rmeta \
+  --mount=from=out-651f5691fade4e93,dst=/target/release/deps/libencoding_rs_io-651f5691fade4e93.rlib,source=/libencoding_rs_io-651f5691fade4e93.rlib \
+  --mount=from=out-651f5691fade4e93,dst=/target/release/deps/libencoding_rs_io-651f5691fade4e93.rmeta,source=/libencoding_rs_io-651f5691fade4e93.rmeta \
+  --mount=from=out-977b6f2f3b8d0f6b,dst=/target/release/deps/libmemmap2-977b6f2f3b8d0f6b.rlib,source=/libmemmap2-977b6f2f3b8d0f6b.rlib \
+  --mount=from=out-977b6f2f3b8d0f6b,dst=/target/release/deps/libmemmap2-977b6f2f3b8d0f6b.rmeta,source=/libmemmap2-977b6f2f3b8d0f6b.rmeta \
+  --mount=from=out-b2e448cd36891534,dst=/target/release/deps/libserde-b2e448cd36891534.rlib,source=/libserde-b2e448cd36891534.rlib \
+  --mount=from=out-b2e448cd36891534,dst=/target/release/deps/libserde-b2e448cd36891534.rmeta,source=/libserde-b2e448cd36891534.rmeta \
+  --mount=from=out-9c5f6198d88ce592,dst=/target/release/deps/libserde_core-9c5f6198d88ce592.rlib,source=/libserde_core-9c5f6198d88ce592.rlib \
+  --mount=from=out-9c5f6198d88ce592,dst=/target/release/deps/libserde_core-9c5f6198d88ce592.rmeta,source=/libserde_core-9c5f6198d88ce592.rmeta \
+  --mount=from=out-53d4d749d624f2e4,dst=/target/release/deps/libserde_json-53d4d749d624f2e4.rlib,source=/libserde_json-53d4d749d624f2e4.rlib \
+  --mount=from=out-53d4d749d624f2e4,dst=/target/release/deps/libserde_json-53d4d749d624f2e4.rmeta,source=/libserde_json-53d4d749d624f2e4.rmeta \
+  --mount=from=out-4ed5967b8bb80767,dst=/target/release/deps/libitoa-4ed5967b8bb80767.rlib,source=/libitoa-4ed5967b8bb80767.rlib \
+  --mount=from=out-4ed5967b8bb80767,dst=/target/release/deps/libitoa-4ed5967b8bb80767.rmeta,source=/libitoa-4ed5967b8bb80767.rmeta \
+  --mount=from=out-60ca480634bc0094,dst=/target/release/deps/libryu-60ca480634bc0094.rlib,source=/libryu-60ca480634bc0094.rlib \
+  --mount=from=out-60ca480634bc0094,dst=/target/release/deps/libryu-60ca480634bc0094.rmeta,source=/libryu-60ca480634bc0094.rmeta \
+  --mount=from=out-45a71c617829751e,dst=/target/release/deps/libgrep_regex-45a71c617829751e.rlib,source=/libgrep_regex-45a71c617829751e.rlib \
+  --mount=from=out-45a71c617829751e,dst=/target/release/deps/libgrep_regex-45a71c617829751e.rmeta,source=/libgrep_regex-45a71c617829751e.rmeta \
+  --mount=from=out-5f8fd3dd93685614,dst=/target/release/build/serde_core-5f8fd3dd93685614/out,source=/ \
+  --mount=from=out-ba8a06e0f44b5ff8,dst=/target/release/build/serde-ba8a06e0f44b5ff8/out,source=/ \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=grep \
         CARGO_INCREMENTAL=0 \
@@ -5418,13 +5418,13 @@ RUN \
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --crate-name grep --edition 2024 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("avx-accel", "grep-pcre2", "pcre2", "simd-accel"))' -C metadata'=498166f12cc39e72' -C extra-filename'=-90b5ae48eae28f98' --out-dir /tmp/clis-ripgrep_15-1-0/release/deps -L dependency'=/tmp/clis-ripgrep_15-1-0/release/deps' --extern grep_cli'=/tmp/clis-ripgrep_15-1-0/release/deps/libgrep_cli-1b7b0003cc5fcc34.rmeta' --extern grep_matcher'=/tmp/clis-ripgrep_15-1-0/release/deps/libgrep_matcher-d59a566cc66becf8.rmeta' --extern grep_printer'=/tmp/clis-ripgrep_15-1-0/release/deps/libgrep_printer-a2f81f4f0caeb673.rmeta' --extern grep_regex'=/tmp/clis-ripgrep_15-1-0/release/deps/libgrep_regex-45a71c617829751e.rmeta' --extern grep_searcher'=/tmp/clis-ripgrep_15-1-0/release/deps/libgrep_searcher-82a451c10ca406e4.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-0.4.1/src/lib.rs \
-        1>          /tmp/clis-ripgrep_15-1-0/release/deps/out-90b5ae48eae28f98-stdout \
-        2>          /tmp/clis-ripgrep_15-1-0/release/deps/out-90b5ae48eae28f98-stderr \
-        || echo $? >/tmp/clis-ripgrep_15-1-0/release/deps/out-90b5ae48eae28f98-errcode\
-  ; find /tmp/clis-ripgrep_15-1-0/release/deps/*-90b5ae48eae28f98* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      rustc --crate-name grep --edition 2024 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("avx-accel", "grep-pcre2", "pcre2", "simd-accel"))' -C metadata'=498166f12cc39e72' -C extra-filename'=-90b5ae48eae28f98' --out-dir /target/release/deps -L dependency'=/target/release/deps' --extern grep_cli'=/target/release/deps/libgrep_cli-1b7b0003cc5fcc34.rmeta' --extern grep_matcher'=/target/release/deps/libgrep_matcher-d59a566cc66becf8.rmeta' --extern grep_printer'=/target/release/deps/libgrep_printer-a2f81f4f0caeb673.rmeta' --extern grep_regex'=/target/release/deps/libgrep_regex-45a71c617829751e.rmeta' --extern grep_searcher'=/target/release/deps/libgrep_searcher-82a451c10ca406e4.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-0.4.1/src/lib.rs \
+        1>          /target/release/deps/out-90b5ae48eae28f98-stdout \
+        2>          /target/release/deps/out-90b5ae48eae28f98-stderr \
+        || echo $? >/target/release/deps/out-90b5ae48eae28f98-errcode\
+  ; find /target/release/deps/*-90b5ae48eae28f98* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-90b5ae48eae28f98
-COPY --link --from=dep-n-grep-0.4.1-90b5ae48eae28f98 /tmp/clis-ripgrep_15-1-0/release/deps/*-90b5ae48eae28f98* /
+COPY --link --from=dep-n-grep-0.4.1-90b5ae48eae28f98 /target/release/deps/*-90b5ae48eae28f98* /
 
 ## this = "90b5ae48eae28f98"
 ## deps = [
@@ -5472,9 +5472,9 @@ COPY --link --from=dep-n-grep-0.4.1-90b5ae48eae28f98 /tmp/clis-ripgrep_15-1-0/re
 ##     "libgrep-90b5ae48eae28f98.rmeta",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/deps/grep-90b5ae48eae28f98.d","emit":"dep-info"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/deps/libgrep-90b5ae48eae28f98.rmeta","emit":"metadata"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/deps/libgrep-90b5ae48eae28f98.rlib","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/grep-90b5ae48eae28f98.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libgrep-90b5ae48eae28f98.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libgrep-90b5ae48eae28f98.rlib","emit":"link"}',
 ## ]
 ##
 ## [[externs]]
@@ -5663,11 +5663,11 @@ COPY --link --from=dep-n-grep-0.4.1-90b5ae48eae28f98 /tmp/clis-ripgrep_15-1-0/re
 ##
 ## [[mounts]]
 ## name = "out-5f8fd3dd93685614"
-## mount = "/tmp/clis-ripgrep_15-1-0/release/build/serde_core-5f8fd3dd93685614/out"
+## mount = "/target/release/build/serde_core-5f8fd3dd93685614/out"
 ##
 ## [[mounts]]
 ## name = "out-ba8a06e0f44b5ff8"
-## mount = "/tmp/clis-ripgrep_15-1-0/release/build/serde-ba8a06e0f44b5ff8/out"
+## mount = "/target/release/build/serde-ba8a06e0f44b5ff8/out"
 ##
 ## [[stages]]
 ##
@@ -5691,57 +5691,57 @@ COPY --link --from=dep-n-grep-0.4.1-90b5ae48eae28f98 /tmp/clis-ripgrep_15-1-0/re
 ## script = '''
 ## FROM rust-base AS dep-n-grep-0.4.1-90b5ae48eae28f98
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-ripgrep_15-1-0/release/deps
+## WORKDIR /target/release/deps
 ## RUN \
 ##   --mount=from=cratesio-grep-0.4.1,source=/grep-0.4.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-0.4.1 \
-##   --mount=from=out-1b7b0003cc5fcc34,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libgrep_cli-1b7b0003cc5fcc34.rlib,source=/libgrep_cli-1b7b0003cc5fcc34.rlib \
-##   --mount=from=out-1b7b0003cc5fcc34,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libgrep_cli-1b7b0003cc5fcc34.rmeta,source=/libgrep_cli-1b7b0003cc5fcc34.rmeta \
-##   --mount=from=out-d3eea57fb24a933f,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libbstr-d3eea57fb24a933f.rlib,source=/libbstr-d3eea57fb24a933f.rlib \
-##   --mount=from=out-d3eea57fb24a933f,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libbstr-d3eea57fb24a933f.rmeta,source=/libbstr-d3eea57fb24a933f.rmeta \
-##   --mount=from=out-3a40f50ac19c9d2e,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libmemchr-3a40f50ac19c9d2e.rlib,source=/libmemchr-3a40f50ac19c9d2e.rlib \
-##   --mount=from=out-3a40f50ac19c9d2e,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libmemchr-3a40f50ac19c9d2e.rmeta,source=/libmemchr-3a40f50ac19c9d2e.rmeta \
-##   --mount=from=out-e22c3e2bd8aa6773,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libregex_automata-e22c3e2bd8aa6773.rlib,source=/libregex_automata-e22c3e2bd8aa6773.rlib \
-##   --mount=from=out-e22c3e2bd8aa6773,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libregex_automata-e22c3e2bd8aa6773.rmeta,source=/libregex_automata-e22c3e2bd8aa6773.rmeta \
-##   --mount=from=out-a01a7f030e27d71e,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libaho_corasick-a01a7f030e27d71e.rlib,source=/libaho_corasick-a01a7f030e27d71e.rlib \
-##   --mount=from=out-a01a7f030e27d71e,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libaho_corasick-a01a7f030e27d71e.rmeta,source=/libaho_corasick-a01a7f030e27d71e.rmeta \
-##   --mount=from=out-34711e95edd06069,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libregex_syntax-34711e95edd06069.rlib,source=/libregex_syntax-34711e95edd06069.rlib \
-##   --mount=from=out-34711e95edd06069,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libregex_syntax-34711e95edd06069.rmeta,source=/libregex_syntax-34711e95edd06069.rmeta \
-##   --mount=from=out-626b3cb378b61839,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libglobset-626b3cb378b61839.rlib,source=/libglobset-626b3cb378b61839.rlib \
-##   --mount=from=out-626b3cb378b61839,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libglobset-626b3cb378b61839.rmeta,source=/libglobset-626b3cb378b61839.rmeta \
-##   --mount=from=out-961aebfc4598d968,dst=/tmp/clis-ripgrep_15-1-0/release/deps/liblog-961aebfc4598d968.rlib,source=/liblog-961aebfc4598d968.rlib \
-##   --mount=from=out-961aebfc4598d968,dst=/tmp/clis-ripgrep_15-1-0/release/deps/liblog-961aebfc4598d968.rmeta,source=/liblog-961aebfc4598d968.rmeta \
-##   --mount=from=out-fda8220236222977,dst=/tmp/clis-ripgrep_15-1-0/release/deps/liblibc-fda8220236222977.rlib,source=/liblibc-fda8220236222977.rlib \
-##   --mount=from=out-fda8220236222977,dst=/tmp/clis-ripgrep_15-1-0/release/deps/liblibc-fda8220236222977.rmeta,source=/liblibc-fda8220236222977.rmeta \
-##   --mount=from=out-82ca06e8aad1563b,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libtermcolor-82ca06e8aad1563b.rlib,source=/libtermcolor-82ca06e8aad1563b.rlib \
-##   --mount=from=out-82ca06e8aad1563b,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libtermcolor-82ca06e8aad1563b.rmeta,source=/libtermcolor-82ca06e8aad1563b.rmeta \
-##   --mount=from=out-d59a566cc66becf8,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libgrep_matcher-d59a566cc66becf8.rlib,source=/libgrep_matcher-d59a566cc66becf8.rlib \
-##   --mount=from=out-d59a566cc66becf8,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libgrep_matcher-d59a566cc66becf8.rmeta,source=/libgrep_matcher-d59a566cc66becf8.rmeta \
-##   --mount=from=out-a2f81f4f0caeb673,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libgrep_printer-a2f81f4f0caeb673.rlib,source=/libgrep_printer-a2f81f4f0caeb673.rlib \
-##   --mount=from=out-a2f81f4f0caeb673,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libgrep_printer-a2f81f4f0caeb673.rmeta,source=/libgrep_printer-a2f81f4f0caeb673.rmeta \
-##   --mount=from=out-82a451c10ca406e4,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libgrep_searcher-82a451c10ca406e4.rlib,source=/libgrep_searcher-82a451c10ca406e4.rlib \
-##   --mount=from=out-82a451c10ca406e4,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libgrep_searcher-82a451c10ca406e4.rmeta,source=/libgrep_searcher-82a451c10ca406e4.rmeta \
-##   --mount=from=out-e0d6e4f8a8eb4371,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libencoding_rs-e0d6e4f8a8eb4371.rlib,source=/libencoding_rs-e0d6e4f8a8eb4371.rlib \
-##   --mount=from=out-e0d6e4f8a8eb4371,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libencoding_rs-e0d6e4f8a8eb4371.rmeta,source=/libencoding_rs-e0d6e4f8a8eb4371.rmeta \
-##   --mount=from=out-e78ec6df4b56941f,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libcfg_if-e78ec6df4b56941f.rlib,source=/libcfg_if-e78ec6df4b56941f.rlib \
-##   --mount=from=out-e78ec6df4b56941f,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libcfg_if-e78ec6df4b56941f.rmeta,source=/libcfg_if-e78ec6df4b56941f.rmeta \
-##   --mount=from=out-651f5691fade4e93,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libencoding_rs_io-651f5691fade4e93.rlib,source=/libencoding_rs_io-651f5691fade4e93.rlib \
-##   --mount=from=out-651f5691fade4e93,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libencoding_rs_io-651f5691fade4e93.rmeta,source=/libencoding_rs_io-651f5691fade4e93.rmeta \
-##   --mount=from=out-977b6f2f3b8d0f6b,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libmemmap2-977b6f2f3b8d0f6b.rlib,source=/libmemmap2-977b6f2f3b8d0f6b.rlib \
-##   --mount=from=out-977b6f2f3b8d0f6b,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libmemmap2-977b6f2f3b8d0f6b.rmeta,source=/libmemmap2-977b6f2f3b8d0f6b.rmeta \
-##   --mount=from=out-b2e448cd36891534,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libserde-b2e448cd36891534.rlib,source=/libserde-b2e448cd36891534.rlib \
-##   --mount=from=out-b2e448cd36891534,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libserde-b2e448cd36891534.rmeta,source=/libserde-b2e448cd36891534.rmeta \
-##   --mount=from=out-9c5f6198d88ce592,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libserde_core-9c5f6198d88ce592.rlib,source=/libserde_core-9c5f6198d88ce592.rlib \
-##   --mount=from=out-9c5f6198d88ce592,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libserde_core-9c5f6198d88ce592.rmeta,source=/libserde_core-9c5f6198d88ce592.rmeta \
-##   --mount=from=out-53d4d749d624f2e4,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libserde_json-53d4d749d624f2e4.rlib,source=/libserde_json-53d4d749d624f2e4.rlib \
-##   --mount=from=out-53d4d749d624f2e4,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libserde_json-53d4d749d624f2e4.rmeta,source=/libserde_json-53d4d749d624f2e4.rmeta \
-##   --mount=from=out-4ed5967b8bb80767,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libitoa-4ed5967b8bb80767.rlib,source=/libitoa-4ed5967b8bb80767.rlib \
-##   --mount=from=out-4ed5967b8bb80767,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libitoa-4ed5967b8bb80767.rmeta,source=/libitoa-4ed5967b8bb80767.rmeta \
-##   --mount=from=out-60ca480634bc0094,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libryu-60ca480634bc0094.rlib,source=/libryu-60ca480634bc0094.rlib \
-##   --mount=from=out-60ca480634bc0094,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libryu-60ca480634bc0094.rmeta,source=/libryu-60ca480634bc0094.rmeta \
-##   --mount=from=out-45a71c617829751e,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libgrep_regex-45a71c617829751e.rlib,source=/libgrep_regex-45a71c617829751e.rlib \
-##   --mount=from=out-45a71c617829751e,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libgrep_regex-45a71c617829751e.rmeta,source=/libgrep_regex-45a71c617829751e.rmeta \
-##   --mount=from=out-5f8fd3dd93685614,dst=/tmp/clis-ripgrep_15-1-0/release/build/serde_core-5f8fd3dd93685614/out,source=/ \
-##   --mount=from=out-ba8a06e0f44b5ff8,dst=/tmp/clis-ripgrep_15-1-0/release/build/serde-ba8a06e0f44b5ff8/out,source=/ \
+##   --mount=from=out-1b7b0003cc5fcc34,dst=/target/release/deps/libgrep_cli-1b7b0003cc5fcc34.rlib,source=/libgrep_cli-1b7b0003cc5fcc34.rlib \
+##   --mount=from=out-1b7b0003cc5fcc34,dst=/target/release/deps/libgrep_cli-1b7b0003cc5fcc34.rmeta,source=/libgrep_cli-1b7b0003cc5fcc34.rmeta \
+##   --mount=from=out-d3eea57fb24a933f,dst=/target/release/deps/libbstr-d3eea57fb24a933f.rlib,source=/libbstr-d3eea57fb24a933f.rlib \
+##   --mount=from=out-d3eea57fb24a933f,dst=/target/release/deps/libbstr-d3eea57fb24a933f.rmeta,source=/libbstr-d3eea57fb24a933f.rmeta \
+##   --mount=from=out-3a40f50ac19c9d2e,dst=/target/release/deps/libmemchr-3a40f50ac19c9d2e.rlib,source=/libmemchr-3a40f50ac19c9d2e.rlib \
+##   --mount=from=out-3a40f50ac19c9d2e,dst=/target/release/deps/libmemchr-3a40f50ac19c9d2e.rmeta,source=/libmemchr-3a40f50ac19c9d2e.rmeta \
+##   --mount=from=out-e22c3e2bd8aa6773,dst=/target/release/deps/libregex_automata-e22c3e2bd8aa6773.rlib,source=/libregex_automata-e22c3e2bd8aa6773.rlib \
+##   --mount=from=out-e22c3e2bd8aa6773,dst=/target/release/deps/libregex_automata-e22c3e2bd8aa6773.rmeta,source=/libregex_automata-e22c3e2bd8aa6773.rmeta \
+##   --mount=from=out-a01a7f030e27d71e,dst=/target/release/deps/libaho_corasick-a01a7f030e27d71e.rlib,source=/libaho_corasick-a01a7f030e27d71e.rlib \
+##   --mount=from=out-a01a7f030e27d71e,dst=/target/release/deps/libaho_corasick-a01a7f030e27d71e.rmeta,source=/libaho_corasick-a01a7f030e27d71e.rmeta \
+##   --mount=from=out-34711e95edd06069,dst=/target/release/deps/libregex_syntax-34711e95edd06069.rlib,source=/libregex_syntax-34711e95edd06069.rlib \
+##   --mount=from=out-34711e95edd06069,dst=/target/release/deps/libregex_syntax-34711e95edd06069.rmeta,source=/libregex_syntax-34711e95edd06069.rmeta \
+##   --mount=from=out-626b3cb378b61839,dst=/target/release/deps/libglobset-626b3cb378b61839.rlib,source=/libglobset-626b3cb378b61839.rlib \
+##   --mount=from=out-626b3cb378b61839,dst=/target/release/deps/libglobset-626b3cb378b61839.rmeta,source=/libglobset-626b3cb378b61839.rmeta \
+##   --mount=from=out-961aebfc4598d968,dst=/target/release/deps/liblog-961aebfc4598d968.rlib,source=/liblog-961aebfc4598d968.rlib \
+##   --mount=from=out-961aebfc4598d968,dst=/target/release/deps/liblog-961aebfc4598d968.rmeta,source=/liblog-961aebfc4598d968.rmeta \
+##   --mount=from=out-fda8220236222977,dst=/target/release/deps/liblibc-fda8220236222977.rlib,source=/liblibc-fda8220236222977.rlib \
+##   --mount=from=out-fda8220236222977,dst=/target/release/deps/liblibc-fda8220236222977.rmeta,source=/liblibc-fda8220236222977.rmeta \
+##   --mount=from=out-82ca06e8aad1563b,dst=/target/release/deps/libtermcolor-82ca06e8aad1563b.rlib,source=/libtermcolor-82ca06e8aad1563b.rlib \
+##   --mount=from=out-82ca06e8aad1563b,dst=/target/release/deps/libtermcolor-82ca06e8aad1563b.rmeta,source=/libtermcolor-82ca06e8aad1563b.rmeta \
+##   --mount=from=out-d59a566cc66becf8,dst=/target/release/deps/libgrep_matcher-d59a566cc66becf8.rlib,source=/libgrep_matcher-d59a566cc66becf8.rlib \
+##   --mount=from=out-d59a566cc66becf8,dst=/target/release/deps/libgrep_matcher-d59a566cc66becf8.rmeta,source=/libgrep_matcher-d59a566cc66becf8.rmeta \
+##   --mount=from=out-a2f81f4f0caeb673,dst=/target/release/deps/libgrep_printer-a2f81f4f0caeb673.rlib,source=/libgrep_printer-a2f81f4f0caeb673.rlib \
+##   --mount=from=out-a2f81f4f0caeb673,dst=/target/release/deps/libgrep_printer-a2f81f4f0caeb673.rmeta,source=/libgrep_printer-a2f81f4f0caeb673.rmeta \
+##   --mount=from=out-82a451c10ca406e4,dst=/target/release/deps/libgrep_searcher-82a451c10ca406e4.rlib,source=/libgrep_searcher-82a451c10ca406e4.rlib \
+##   --mount=from=out-82a451c10ca406e4,dst=/target/release/deps/libgrep_searcher-82a451c10ca406e4.rmeta,source=/libgrep_searcher-82a451c10ca406e4.rmeta \
+##   --mount=from=out-e0d6e4f8a8eb4371,dst=/target/release/deps/libencoding_rs-e0d6e4f8a8eb4371.rlib,source=/libencoding_rs-e0d6e4f8a8eb4371.rlib \
+##   --mount=from=out-e0d6e4f8a8eb4371,dst=/target/release/deps/libencoding_rs-e0d6e4f8a8eb4371.rmeta,source=/libencoding_rs-e0d6e4f8a8eb4371.rmeta \
+##   --mount=from=out-e78ec6df4b56941f,dst=/target/release/deps/libcfg_if-e78ec6df4b56941f.rlib,source=/libcfg_if-e78ec6df4b56941f.rlib \
+##   --mount=from=out-e78ec6df4b56941f,dst=/target/release/deps/libcfg_if-e78ec6df4b56941f.rmeta,source=/libcfg_if-e78ec6df4b56941f.rmeta \
+##   --mount=from=out-651f5691fade4e93,dst=/target/release/deps/libencoding_rs_io-651f5691fade4e93.rlib,source=/libencoding_rs_io-651f5691fade4e93.rlib \
+##   --mount=from=out-651f5691fade4e93,dst=/target/release/deps/libencoding_rs_io-651f5691fade4e93.rmeta,source=/libencoding_rs_io-651f5691fade4e93.rmeta \
+##   --mount=from=out-977b6f2f3b8d0f6b,dst=/target/release/deps/libmemmap2-977b6f2f3b8d0f6b.rlib,source=/libmemmap2-977b6f2f3b8d0f6b.rlib \
+##   --mount=from=out-977b6f2f3b8d0f6b,dst=/target/release/deps/libmemmap2-977b6f2f3b8d0f6b.rmeta,source=/libmemmap2-977b6f2f3b8d0f6b.rmeta \
+##   --mount=from=out-b2e448cd36891534,dst=/target/release/deps/libserde-b2e448cd36891534.rlib,source=/libserde-b2e448cd36891534.rlib \
+##   --mount=from=out-b2e448cd36891534,dst=/target/release/deps/libserde-b2e448cd36891534.rmeta,source=/libserde-b2e448cd36891534.rmeta \
+##   --mount=from=out-9c5f6198d88ce592,dst=/target/release/deps/libserde_core-9c5f6198d88ce592.rlib,source=/libserde_core-9c5f6198d88ce592.rlib \
+##   --mount=from=out-9c5f6198d88ce592,dst=/target/release/deps/libserde_core-9c5f6198d88ce592.rmeta,source=/libserde_core-9c5f6198d88ce592.rmeta \
+##   --mount=from=out-53d4d749d624f2e4,dst=/target/release/deps/libserde_json-53d4d749d624f2e4.rlib,source=/libserde_json-53d4d749d624f2e4.rlib \
+##   --mount=from=out-53d4d749d624f2e4,dst=/target/release/deps/libserde_json-53d4d749d624f2e4.rmeta,source=/libserde_json-53d4d749d624f2e4.rmeta \
+##   --mount=from=out-4ed5967b8bb80767,dst=/target/release/deps/libitoa-4ed5967b8bb80767.rlib,source=/libitoa-4ed5967b8bb80767.rlib \
+##   --mount=from=out-4ed5967b8bb80767,dst=/target/release/deps/libitoa-4ed5967b8bb80767.rmeta,source=/libitoa-4ed5967b8bb80767.rmeta \
+##   --mount=from=out-60ca480634bc0094,dst=/target/release/deps/libryu-60ca480634bc0094.rlib,source=/libryu-60ca480634bc0094.rlib \
+##   --mount=from=out-60ca480634bc0094,dst=/target/release/deps/libryu-60ca480634bc0094.rmeta,source=/libryu-60ca480634bc0094.rmeta \
+##   --mount=from=out-45a71c617829751e,dst=/target/release/deps/libgrep_regex-45a71c617829751e.rlib,source=/libgrep_regex-45a71c617829751e.rlib \
+##   --mount=from=out-45a71c617829751e,dst=/target/release/deps/libgrep_regex-45a71c617829751e.rmeta,source=/libgrep_regex-45a71c617829751e.rmeta \
+##   --mount=from=out-5f8fd3dd93685614,dst=/target/release/build/serde_core-5f8fd3dd93685614/out,source=/ \
+##   --mount=from=out-ba8a06e0f44b5ff8,dst=/target/release/build/serde-ba8a06e0f44b5ff8/out,source=/ \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=grep \
 ##         CARGO_INCREMENTAL=0 \
@@ -5763,11 +5763,11 @@ COPY --link --from=dep-n-grep-0.4.1-90b5ae48eae28f98 /tmp/clis-ripgrep_15-1-0/re
 ##         CARGO_PKG_VERSION_PATCH=1 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name grep --edition 2024 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("avx-accel", "grep-pcre2", "pcre2", "simd-accel"))' -C metadata'=498166f12cc39e72' -C extra-filename'=-90b5ae48eae28f98' --out-dir /tmp/clis-ripgrep_15-1-0/release/deps -L dependency'=/tmp/clis-ripgrep_15-1-0/release/deps' --extern grep_cli'=/tmp/clis-ripgrep_15-1-0/release/deps/libgrep_cli-1b7b0003cc5fcc34.rmeta' --extern grep_matcher'=/tmp/clis-ripgrep_15-1-0/release/deps/libgrep_matcher-d59a566cc66becf8.rmeta' --extern grep_printer'=/tmp/clis-ripgrep_15-1-0/release/deps/libgrep_printer-a2f81f4f0caeb673.rmeta' --extern grep_regex'=/tmp/clis-ripgrep_15-1-0/release/deps/libgrep_regex-45a71c617829751e.rmeta' --extern grep_searcher'=/tmp/clis-ripgrep_15-1-0/release/deps/libgrep_searcher-82a451c10ca406e4.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-0.4.1/src/lib.rs \
-##         1>          /tmp/clis-ripgrep_15-1-0/release/deps/out-90b5ae48eae28f98-stdout \
-##         2>          /tmp/clis-ripgrep_15-1-0/release/deps/out-90b5ae48eae28f98-stderr \
-##         || echo $? >/tmp/clis-ripgrep_15-1-0/release/deps/out-90b5ae48eae28f98-errcode\
-##   ; find /tmp/clis-ripgrep_15-1-0/release/deps/*-90b5ae48eae28f98* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name grep --edition 2024 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("avx-accel", "grep-pcre2", "pcre2", "simd-accel"))' -C metadata'=498166f12cc39e72' -C extra-filename'=-90b5ae48eae28f98' --out-dir /target/release/deps -L dependency'=/target/release/deps' --extern grep_cli'=/target/release/deps/libgrep_cli-1b7b0003cc5fcc34.rmeta' --extern grep_matcher'=/target/release/deps/libgrep_matcher-d59a566cc66becf8.rmeta' --extern grep_printer'=/target/release/deps/libgrep_printer-a2f81f4f0caeb673.rmeta' --extern grep_regex'=/target/release/deps/libgrep_regex-45a71c617829751e.rmeta' --extern grep_searcher'=/target/release/deps/libgrep_searcher-82a451c10ca406e4.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/grep-0.4.1/src/lib.rs \
+##         1>          /target/release/deps/out-90b5ae48eae28f98-stdout \
+##         2>          /target/release/deps/out-90b5ae48eae28f98-stderr \
+##         || echo $? >/target/release/deps/out-90b5ae48eae28f98-errcode\
+##   ; find /target/release/deps/*-90b5ae48eae28f98* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -5775,14 +5775,14 @@ COPY --link --from=dep-n-grep-0.4.1-90b5ae48eae28f98 /tmp/clis-ripgrep_15-1-0/re
 ## stage = "out-90b5ae48eae28f98"
 ## script = """
 ## FROM scratch AS out-90b5ae48eae28f98
-## COPY --link --from=dep-n-grep-0.4.1-90b5ae48eae28f98 /tmp/clis-ripgrep_15-1-0/release/deps/*-90b5ae48eae28f98* /"""
+## COPY --link --from=dep-n-grep-0.4.1-90b5ae48eae28f98 /target/release/deps/*-90b5ae48eae28f98* /"""
 
 FROM scratch AS cratesio-crossbeam-utils-0.8.21
 ADD --chmod=0664 --unpack --checksum=sha256:d0a5c400df2834b80a4c3327b3aad3a4c4cd4de0629063962b03235697506a28 \
   https://static.crates.io/crates/crossbeam-utils/crossbeam-utils-0.8.21.crate /
 FROM rust-base AS dep-x-crossbeam-utils-0.8.21-3846bff73d194c52
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-ripgrep_15-1-0/release/build/crossbeam-utils-3846bff73d194c52
+WORKDIR /target/release/build/crossbeam-utils-3846bff73d194c52
 RUN \
   --mount=from=cratesio-crossbeam-utils-0.8.21,source=/crossbeam-utils-0.8.21,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.21,rw \
     { \
@@ -5824,13 +5824,13 @@ RUN \
         CARGO_PKG_VERSION_PATCH=21 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' --warn unexpected_cfgs --allow clippy'::lint_groups_priority' --allow clippy'::declare_interior_mutable_const' --check-cfg cfg'(crossbeam_loom)' --check-cfg cfg'(crossbeam_sanitize)' -C debug-assertions'=off' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "loom", "nightly", "std"))' -C metadata'=c37c2cc8415a7651' -C extra-filename'=-3846bff73d194c52' --out-dir /tmp/clis-ripgrep_15-1-0/release/build/crossbeam-utils-3846bff73d194c52 -L dependency'=/tmp/clis-ripgrep_15-1-0/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.21/build.rs \
-        1>          /tmp/clis-ripgrep_15-1-0/release/build/crossbeam-utils-3846bff73d194c52/out-3846bff73d194c52-stdout \
-        2>          /tmp/clis-ripgrep_15-1-0/release/build/crossbeam-utils-3846bff73d194c52/out-3846bff73d194c52-stderr \
-        || echo $? >/tmp/clis-ripgrep_15-1-0/release/build/crossbeam-utils-3846bff73d194c52/out-3846bff73d194c52-errcode\
-  ; find /tmp/clis-ripgrep_15-1-0/release/build/crossbeam-utils-3846bff73d194c52/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' --warn unexpected_cfgs --allow clippy'::lint_groups_priority' --allow clippy'::declare_interior_mutable_const' --check-cfg cfg'(crossbeam_loom)' --check-cfg cfg'(crossbeam_sanitize)' -C debug-assertions'=off' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "loom", "nightly", "std"))' -C metadata'=c37c2cc8415a7651' -C extra-filename'=-3846bff73d194c52' --out-dir /target/release/build/crossbeam-utils-3846bff73d194c52 -L dependency'=/target/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.21/build.rs \
+        1>          /target/release/build/crossbeam-utils-3846bff73d194c52/out-3846bff73d194c52-stdout \
+        2>          /target/release/build/crossbeam-utils-3846bff73d194c52/out-3846bff73d194c52-stderr \
+        || echo $? >/target/release/build/crossbeam-utils-3846bff73d194c52/out-3846bff73d194c52-errcode\
+  ; find /target/release/build/crossbeam-utils-3846bff73d194c52/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-3846bff73d194c52
-COPY --link --from=dep-x-crossbeam-utils-0.8.21-3846bff73d194c52 /tmp/clis-ripgrep_15-1-0/release/build/crossbeam-utils-3846bff73d194c52/*-3846bff73d194c52* /
+COPY --link --from=dep-x-crossbeam-utils-0.8.21-3846bff73d194c52 /target/release/build/crossbeam-utils-3846bff73d194c52/*-3846bff73d194c52* /
 
 ## this = "3846bff73d194c52"
 ## writes = [
@@ -5838,8 +5838,8 @@ COPY --link --from=dep-x-crossbeam-utils-0.8.21-3846bff73d194c52 /tmp/clis-ripgr
 ##     "build_script_build-3846bff73d194c52.d",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/build/crossbeam-utils-3846bff73d194c52/build_script_build-3846bff73d194c52.d","emit":"dep-info"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/build/crossbeam-utils-3846bff73d194c52/build_script_build-3846bff73d194c52","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/build/crossbeam-utils-3846bff73d194c52/build_script_build-3846bff73d194c52.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/build/crossbeam-utils-3846bff73d194c52/build_script_build-3846bff73d194c52","emit":"link"}',
 ## ]
 ##
 ## [[stages]]
@@ -5864,7 +5864,7 @@ COPY --link --from=dep-x-crossbeam-utils-0.8.21-3846bff73d194c52 /tmp/clis-ripgr
 ## script = '''
 ## FROM rust-base AS dep-x-crossbeam-utils-0.8.21-3846bff73d194c52
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-ripgrep_15-1-0/release/build/crossbeam-utils-3846bff73d194c52
+## WORKDIR /target/release/build/crossbeam-utils-3846bff73d194c52
 ## RUN \
 ##   --mount=from=cratesio-crossbeam-utils-0.8.21,source=/crossbeam-utils-0.8.21,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.21,rw \
 ##     { \
@@ -5906,11 +5906,11 @@ COPY --link --from=dep-x-crossbeam-utils-0.8.21-3846bff73d194c52 /tmp/clis-ripgr
 ##         CARGO_PKG_VERSION_PATCH=21 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' --warn unexpected_cfgs --allow clippy'::lint_groups_priority' --allow clippy'::declare_interior_mutable_const' --check-cfg cfg'(crossbeam_loom)' --check-cfg cfg'(crossbeam_sanitize)' -C debug-assertions'=off' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "loom", "nightly", "std"))' -C metadata'=c37c2cc8415a7651' -C extra-filename'=-3846bff73d194c52' --out-dir /tmp/clis-ripgrep_15-1-0/release/build/crossbeam-utils-3846bff73d194c52 -L dependency'=/tmp/clis-ripgrep_15-1-0/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.21/build.rs \
-##         1>          /tmp/clis-ripgrep_15-1-0/release/build/crossbeam-utils-3846bff73d194c52/out-3846bff73d194c52-stdout \
-##         2>          /tmp/clis-ripgrep_15-1-0/release/build/crossbeam-utils-3846bff73d194c52/out-3846bff73d194c52-stderr \
-##         || echo $? >/tmp/clis-ripgrep_15-1-0/release/build/crossbeam-utils-3846bff73d194c52/out-3846bff73d194c52-errcode\
-##   ; find /tmp/clis-ripgrep_15-1-0/release/build/crossbeam-utils-3846bff73d194c52/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' --warn unexpected_cfgs --allow clippy'::lint_groups_priority' --allow clippy'::declare_interior_mutable_const' --check-cfg cfg'(crossbeam_loom)' --check-cfg cfg'(crossbeam_sanitize)' -C debug-assertions'=off' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "loom", "nightly", "std"))' -C metadata'=c37c2cc8415a7651' -C extra-filename'=-3846bff73d194c52' --out-dir /target/release/build/crossbeam-utils-3846bff73d194c52 -L dependency'=/target/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.21/build.rs \
+##         1>          /target/release/build/crossbeam-utils-3846bff73d194c52/out-3846bff73d194c52-stdout \
+##         2>          /target/release/build/crossbeam-utils-3846bff73d194c52/out-3846bff73d194c52-stderr \
+##         || echo $? >/target/release/build/crossbeam-utils-3846bff73d194c52/out-3846bff73d194c52-errcode\
+##   ; find /target/release/build/crossbeam-utils-3846bff73d194c52/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -5918,14 +5918,14 @@ COPY --link --from=dep-x-crossbeam-utils-0.8.21-3846bff73d194c52 /tmp/clis-ripgr
 ## stage = "out-3846bff73d194c52"
 ## script = """
 ## FROM scratch AS out-3846bff73d194c52
-## COPY --link --from=dep-x-crossbeam-utils-0.8.21-3846bff73d194c52 /tmp/clis-ripgrep_15-1-0/release/build/crossbeam-utils-3846bff73d194c52/*-3846bff73d194c52* /"""
+## COPY --link --from=dep-x-crossbeam-utils-0.8.21-3846bff73d194c52 /target/release/build/crossbeam-utils-3846bff73d194c52/*-3846bff73d194c52* /"""
 
 FROM rust-base AS run-z-crossbeam-utils-0.8.21-9c5891e12966ae68
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-ripgrep_15-1-0/release/build/crossbeam-utils-9c5891e12966ae68/out
+WORKDIR /target/release/build/crossbeam-utils-9c5891e12966ae68/out
 WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.21
 RUN \
-  --mount=from=out-3846bff73d194c52,source=/build_script_build-3846bff73d194c52,dst=/tmp/clis-ripgrep_15-1-0/release/build/crossbeam-utils-3846bff73d194c52/build-script-build \
+  --mount=from=out-3846bff73d194c52,source=/build_script_build-3846bff73d194c52,dst=/target/release/build/crossbeam-utils-3846bff73d194c52/build-script-build \
   --mount=from=cratesio-crossbeam-utils-0.8.21,source=/crossbeam-utils-0.8.21,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.21 \
     env CARGO="$(which cargo)" \
         CARGO_CFG_FEATURE=std \
@@ -5964,23 +5964,23 @@ RUN \
         HOST=x86_64-unknown-linux-gnu \
         NUM_JOBS=4 \
         OPT_LEVEL=3 \
-        OUT_DIR=/tmp/clis-ripgrep_15-1-0/release/build/crossbeam-utils-9c5891e12966ae68/out \
+        OUT_DIR=/target/release/build/crossbeam-utils-9c5891e12966ae68/out \
         PROFILE=release \
         RUSTC=rustc \
         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
         TARGET=x86_64-unknown-linux-gnu \
         CARGOGREEN=1 \
-      CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-ripgrep_15-1-0/release/build/crossbeam-utils-3846bff73d194c52/build-script-build \
-        1>          /tmp/clis-ripgrep_15-1-0/release/build/crossbeam-utils-9c5891e12966ae68/out/out-9c5891e12966ae68-stdout \
-        2>          /tmp/clis-ripgrep_15-1-0/release/build/crossbeam-utils-9c5891e12966ae68/out/out-9c5891e12966ae68-stderr \
-        || echo $? >/tmp/clis-ripgrep_15-1-0/release/build/crossbeam-utils-9c5891e12966ae68/out/out-9c5891e12966ae68-errcode\
-  ; find /tmp/clis-ripgrep_15-1-0/release/build/crossbeam-utils-9c5891e12966ae68/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      CARGOGREEN_EXECUTE_BUILDRS_= /target/release/build/crossbeam-utils-3846bff73d194c52/build-script-build \
+        1>          /target/release/build/crossbeam-utils-9c5891e12966ae68/out/out-9c5891e12966ae68-stdout \
+        2>          /target/release/build/crossbeam-utils-9c5891e12966ae68/out/out-9c5891e12966ae68-stderr \
+        || echo $? >/target/release/build/crossbeam-utils-9c5891e12966ae68/out/out-9c5891e12966ae68-errcode\
+  ; find /target/release/build/crossbeam-utils-9c5891e12966ae68/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-9c5891e12966ae68
-COPY --link --from=run-z-crossbeam-utils-0.8.21-9c5891e12966ae68 /tmp/clis-ripgrep_15-1-0/release/build/crossbeam-utils-9c5891e12966ae68/out /
+COPY --link --from=run-z-crossbeam-utils-0.8.21-9c5891e12966ae68 /target/release/build/crossbeam-utils-9c5891e12966ae68/out /
 
 ## this = "9c5891e12966ae68"
 ## deps = ["3846bff73d194c52"]
-## writes_to = "/tmp/clis-ripgrep_15-1-0/release/build/crossbeam-utils-9c5891e12966ae68/out"
+## writes_to = "/target/release/build/crossbeam-utils-9c5891e12966ae68/out"
 ## stdout = [
 ##     "cargo:rerun-if-changed=no_atomic.rs",
 ##     "cargo:rustc-check-cfg=cfg(crossbeam_no_atomic,crossbeam_sanitize_thread)",
@@ -5999,10 +5999,10 @@ COPY --link --from=run-z-crossbeam-utils-0.8.21-9c5891e12966ae68 /tmp/clis-ripgr
 ## script = '''
 ## FROM rust-base AS run-z-crossbeam-utils-0.8.21-9c5891e12966ae68
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-ripgrep_15-1-0/release/build/crossbeam-utils-9c5891e12966ae68/out
+## WORKDIR /target/release/build/crossbeam-utils-9c5891e12966ae68/out
 ## WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.21
 ## RUN \
-##   --mount=from=out-3846bff73d194c52,source=/build_script_build-3846bff73d194c52,dst=/tmp/clis-ripgrep_15-1-0/release/build/crossbeam-utils-3846bff73d194c52/build-script-build \
+##   --mount=from=out-3846bff73d194c52,source=/build_script_build-3846bff73d194c52,dst=/target/release/build/crossbeam-utils-3846bff73d194c52/build-script-build \
 ##   --mount=from=cratesio-crossbeam-utils-0.8.21,source=/crossbeam-utils-0.8.21,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.21 \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CFG_FEATURE=std \
@@ -6041,17 +6041,17 @@ COPY --link --from=run-z-crossbeam-utils-0.8.21-9c5891e12966ae68 /tmp/clis-ripgr
 ##         HOST=x86_64-unknown-linux-gnu \
 ##         NUM_JOBS=4 \
 ##         OPT_LEVEL=3 \
-##         OUT_DIR=/tmp/clis-ripgrep_15-1-0/release/build/crossbeam-utils-9c5891e12966ae68/out \
+##         OUT_DIR=/target/release/build/crossbeam-utils-9c5891e12966ae68/out \
 ##         PROFILE=release \
 ##         RUSTC=rustc \
 ##         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
 ##         TARGET=x86_64-unknown-linux-gnu \
 ##         CARGOGREEN=1 \
-##       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-ripgrep_15-1-0/release/build/crossbeam-utils-3846bff73d194c52/build-script-build \
-##         1>          /tmp/clis-ripgrep_15-1-0/release/build/crossbeam-utils-9c5891e12966ae68/out/out-9c5891e12966ae68-stdout \
-##         2>          /tmp/clis-ripgrep_15-1-0/release/build/crossbeam-utils-9c5891e12966ae68/out/out-9c5891e12966ae68-stderr \
-##         || echo $? >/tmp/clis-ripgrep_15-1-0/release/build/crossbeam-utils-9c5891e12966ae68/out/out-9c5891e12966ae68-errcode\
-##   ; find /tmp/clis-ripgrep_15-1-0/release/build/crossbeam-utils-9c5891e12966ae68/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       CARGOGREEN_EXECUTE_BUILDRS_= /target/release/build/crossbeam-utils-3846bff73d194c52/build-script-build \
+##         1>          /target/release/build/crossbeam-utils-9c5891e12966ae68/out/out-9c5891e12966ae68-stdout \
+##         2>          /target/release/build/crossbeam-utils-9c5891e12966ae68/out/out-9c5891e12966ae68-stderr \
+##         || echo $? >/target/release/build/crossbeam-utils-9c5891e12966ae68/out/out-9c5891e12966ae68-errcode\
+##   ; find /target/release/build/crossbeam-utils-9c5891e12966ae68/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -6059,15 +6059,15 @@ COPY --link --from=run-z-crossbeam-utils-0.8.21-9c5891e12966ae68 /tmp/clis-ripgr
 ## stage = "out-9c5891e12966ae68"
 ## script = """
 ## FROM scratch AS out-9c5891e12966ae68
-## COPY --link --from=run-z-crossbeam-utils-0.8.21-9c5891e12966ae68 /tmp/clis-ripgrep_15-1-0/release/build/crossbeam-utils-9c5891e12966ae68/out /"""
+## COPY --link --from=run-z-crossbeam-utils-0.8.21-9c5891e12966ae68 /target/release/build/crossbeam-utils-9c5891e12966ae68/out /"""
 
 
 FROM rust-base AS dep-n-crossbeam-utils-0.8.21-8d39f2957943d5af
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-ripgrep_15-1-0/release/deps
+WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-crossbeam-utils-0.8.21,source=/crossbeam-utils-0.8.21,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.21 \
-  --mount=from=out-9c5891e12966ae68,dst=/tmp/clis-ripgrep_15-1-0/release/build/crossbeam-utils-9c5891e12966ae68/out,source=/ \
+  --mount=from=out-9c5891e12966ae68,dst=/target/release/build/crossbeam-utils-9c5891e12966ae68/out,source=/ \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=crossbeam_utils \
         CARGO_INCREMENTAL=0 \
@@ -6087,15 +6087,15 @@ RUN \
         CARGO_PKG_VERSION_MINOR=8 \
         CARGO_PKG_VERSION_PATCH=21 \
         CARGO_PKG_VERSION_PRE= \
-        OUT_DIR=/tmp/clis-ripgrep_15-1-0/release/build/crossbeam-utils-9c5891e12966ae68/out \
+        OUT_DIR=/target/release/build/crossbeam-utils-9c5891e12966ae68/out \
         CARGOGREEN=1 \
-      rustc --crate-name crossbeam_utils --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --warn unexpected_cfgs --allow clippy'::lint_groups_priority' --allow clippy'::declare_interior_mutable_const' --check-cfg cfg'(crossbeam_loom)' --check-cfg cfg'(crossbeam_sanitize)' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "loom", "nightly", "std"))' -C metadata'=81db509ffaafc0e1' -C extra-filename'=-8d39f2957943d5af' --out-dir /tmp/clis-ripgrep_15-1-0/release/deps -L dependency'=/tmp/clis-ripgrep_15-1-0/release/deps' --cap-lints warn --check-cfg cfg'(crossbeam_no_atomic,crossbeam_sanitize_thread)' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.21/src/lib.rs \
-        1>          /tmp/clis-ripgrep_15-1-0/release/deps/out-8d39f2957943d5af-stdout \
-        2>          /tmp/clis-ripgrep_15-1-0/release/deps/out-8d39f2957943d5af-stderr \
-        || echo $? >/tmp/clis-ripgrep_15-1-0/release/deps/out-8d39f2957943d5af-errcode\
-  ; find /tmp/clis-ripgrep_15-1-0/release/deps/*-8d39f2957943d5af* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      rustc --crate-name crossbeam_utils --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --warn unexpected_cfgs --allow clippy'::lint_groups_priority' --allow clippy'::declare_interior_mutable_const' --check-cfg cfg'(crossbeam_loom)' --check-cfg cfg'(crossbeam_sanitize)' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "loom", "nightly", "std"))' -C metadata'=81db509ffaafc0e1' -C extra-filename'=-8d39f2957943d5af' --out-dir /target/release/deps -L dependency'=/target/release/deps' --cap-lints warn --check-cfg cfg'(crossbeam_no_atomic,crossbeam_sanitize_thread)' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.21/src/lib.rs \
+        1>          /target/release/deps/out-8d39f2957943d5af-stdout \
+        2>          /target/release/deps/out-8d39f2957943d5af-stderr \
+        || echo $? >/target/release/deps/out-8d39f2957943d5af-errcode\
+  ; find /target/release/deps/*-8d39f2957943d5af* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-8d39f2957943d5af
-COPY --link --from=dep-n-crossbeam-utils-0.8.21-8d39f2957943d5af /tmp/clis-ripgrep_15-1-0/release/deps/*-8d39f2957943d5af* /
+COPY --link --from=dep-n-crossbeam-utils-0.8.21-8d39f2957943d5af /target/release/deps/*-8d39f2957943d5af* /
 
 ## this = "8d39f2957943d5af"
 ## deps = [
@@ -6109,14 +6109,14 @@ COPY --link --from=dep-n-crossbeam-utils-0.8.21-8d39f2957943d5af /tmp/clis-ripgr
 ##     "libcrossbeam_utils-8d39f2957943d5af.rmeta",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/deps/crossbeam_utils-8d39f2957943d5af.d","emit":"dep-info"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/deps/libcrossbeam_utils-8d39f2957943d5af.rmeta","emit":"metadata"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/deps/libcrossbeam_utils-8d39f2957943d5af.rlib","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/crossbeam_utils-8d39f2957943d5af.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libcrossbeam_utils-8d39f2957943d5af.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libcrossbeam_utils-8d39f2957943d5af.rlib","emit":"link"}',
 ## ]
 ##
 ## [[mounts]]
 ## name = "out-9c5891e12966ae68"
-## mount = "/tmp/clis-ripgrep_15-1-0/release/build/crossbeam-utils-9c5891e12966ae68/out"
+## mount = "/target/release/build/crossbeam-utils-9c5891e12966ae68/out"
 ##
 ## [[stages]]
 ##
@@ -6140,10 +6140,10 @@ COPY --link --from=dep-n-crossbeam-utils-0.8.21-8d39f2957943d5af /tmp/clis-ripgr
 ## script = '''
 ## FROM rust-base AS dep-n-crossbeam-utils-0.8.21-8d39f2957943d5af
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-ripgrep_15-1-0/release/deps
+## WORKDIR /target/release/deps
 ## RUN \
 ##   --mount=from=cratesio-crossbeam-utils-0.8.21,source=/crossbeam-utils-0.8.21,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.21 \
-##   --mount=from=out-9c5891e12966ae68,dst=/tmp/clis-ripgrep_15-1-0/release/build/crossbeam-utils-9c5891e12966ae68/out,source=/ \
+##   --mount=from=out-9c5891e12966ae68,dst=/target/release/build/crossbeam-utils-9c5891e12966ae68/out,source=/ \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=crossbeam_utils \
 ##         CARGO_INCREMENTAL=0 \
@@ -6163,13 +6163,13 @@ COPY --link --from=dep-n-crossbeam-utils-0.8.21-8d39f2957943d5af /tmp/clis-ripgr
 ##         CARGO_PKG_VERSION_MINOR=8 \
 ##         CARGO_PKG_VERSION_PATCH=21 \
 ##         CARGO_PKG_VERSION_PRE= \
-##         OUT_DIR=/tmp/clis-ripgrep_15-1-0/release/build/crossbeam-utils-9c5891e12966ae68/out \
+##         OUT_DIR=/target/release/build/crossbeam-utils-9c5891e12966ae68/out \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name crossbeam_utils --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --warn unexpected_cfgs --allow clippy'::lint_groups_priority' --allow clippy'::declare_interior_mutable_const' --check-cfg cfg'(crossbeam_loom)' --check-cfg cfg'(crossbeam_sanitize)' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "loom", "nightly", "std"))' -C metadata'=81db509ffaafc0e1' -C extra-filename'=-8d39f2957943d5af' --out-dir /tmp/clis-ripgrep_15-1-0/release/deps -L dependency'=/tmp/clis-ripgrep_15-1-0/release/deps' --cap-lints warn --check-cfg cfg'(crossbeam_no_atomic,crossbeam_sanitize_thread)' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.21/src/lib.rs \
-##         1>          /tmp/clis-ripgrep_15-1-0/release/deps/out-8d39f2957943d5af-stdout \
-##         2>          /tmp/clis-ripgrep_15-1-0/release/deps/out-8d39f2957943d5af-stderr \
-##         || echo $? >/tmp/clis-ripgrep_15-1-0/release/deps/out-8d39f2957943d5af-errcode\
-##   ; find /tmp/clis-ripgrep_15-1-0/release/deps/*-8d39f2957943d5af* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name crossbeam_utils --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --warn unexpected_cfgs --allow clippy'::lint_groups_priority' --allow clippy'::declare_interior_mutable_const' --check-cfg cfg'(crossbeam_loom)' --check-cfg cfg'(crossbeam_sanitize)' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "loom", "nightly", "std"))' -C metadata'=81db509ffaafc0e1' -C extra-filename'=-8d39f2957943d5af' --out-dir /target/release/deps -L dependency'=/target/release/deps' --cap-lints warn --check-cfg cfg'(crossbeam_no_atomic,crossbeam_sanitize_thread)' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.21/src/lib.rs \
+##         1>          /target/release/deps/out-8d39f2957943d5af-stdout \
+##         2>          /target/release/deps/out-8d39f2957943d5af-stderr \
+##         || echo $? >/target/release/deps/out-8d39f2957943d5af-errcode\
+##   ; find /target/release/deps/*-8d39f2957943d5af* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -6177,18 +6177,18 @@ COPY --link --from=dep-n-crossbeam-utils-0.8.21-8d39f2957943d5af /tmp/clis-ripgr
 ## stage = "out-8d39f2957943d5af"
 ## script = """
 ## FROM scratch AS out-8d39f2957943d5af
-## COPY --link --from=dep-n-crossbeam-utils-0.8.21-8d39f2957943d5af /tmp/clis-ripgrep_15-1-0/release/deps/*-8d39f2957943d5af* /"""
+## COPY --link --from=dep-n-crossbeam-utils-0.8.21-8d39f2957943d5af /target/release/deps/*-8d39f2957943d5af* /"""
 
 FROM scratch AS cratesio-crossbeam-epoch-0.9.18
 ADD --chmod=0664 --unpack --checksum=sha256:5b82ac4a3c2ca9c3460964f020e1402edd5753411d7737aa39c3714ad1b5420e \
   https://static.crates.io/crates/crossbeam-epoch/crossbeam-epoch-0.9.18.crate /
 FROM rust-base AS dep-n-crossbeam-epoch-0.9.18-6e1b12b7fe23bc4e
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-ripgrep_15-1-0/release/deps
+WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-crossbeam-epoch-0.9.18,source=/crossbeam-epoch-0.9.18,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-epoch-0.9.18 \
-  --mount=from=out-8d39f2957943d5af,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libcrossbeam_utils-8d39f2957943d5af.rlib,source=/libcrossbeam_utils-8d39f2957943d5af.rlib \
-  --mount=from=out-8d39f2957943d5af,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libcrossbeam_utils-8d39f2957943d5af.rmeta,source=/libcrossbeam_utils-8d39f2957943d5af.rmeta \
+  --mount=from=out-8d39f2957943d5af,dst=/target/release/deps/libcrossbeam_utils-8d39f2957943d5af.rlib,source=/libcrossbeam_utils-8d39f2957943d5af.rlib \
+  --mount=from=out-8d39f2957943d5af,dst=/target/release/deps/libcrossbeam_utils-8d39f2957943d5af.rmeta,source=/libcrossbeam_utils-8d39f2957943d5af.rmeta \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=crossbeam_epoch \
         CARGO_INCREMENTAL=0 \
@@ -6209,13 +6209,13 @@ RUN \
         CARGO_PKG_VERSION_PATCH=18 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --crate-name crossbeam_epoch --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --cfg feature'="alloc"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "loom", "loom-crate", "nightly", "std"))' -C metadata'=19f5cf88336f2c3c' -C extra-filename'=-6e1b12b7fe23bc4e' --out-dir /tmp/clis-ripgrep_15-1-0/release/deps -L dependency'=/tmp/clis-ripgrep_15-1-0/release/deps' --extern crossbeam_utils'=/tmp/clis-ripgrep_15-1-0/release/deps/libcrossbeam_utils-8d39f2957943d5af.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-epoch-0.9.18/src/lib.rs \
-        1>          /tmp/clis-ripgrep_15-1-0/release/deps/out-6e1b12b7fe23bc4e-stdout \
-        2>          /tmp/clis-ripgrep_15-1-0/release/deps/out-6e1b12b7fe23bc4e-stderr \
-        || echo $? >/tmp/clis-ripgrep_15-1-0/release/deps/out-6e1b12b7fe23bc4e-errcode\
-  ; find /tmp/clis-ripgrep_15-1-0/release/deps/*-6e1b12b7fe23bc4e* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      rustc --crate-name crossbeam_epoch --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --cfg feature'="alloc"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "loom", "loom-crate", "nightly", "std"))' -C metadata'=19f5cf88336f2c3c' -C extra-filename'=-6e1b12b7fe23bc4e' --out-dir /target/release/deps -L dependency'=/target/release/deps' --extern crossbeam_utils'=/target/release/deps/libcrossbeam_utils-8d39f2957943d5af.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-epoch-0.9.18/src/lib.rs \
+        1>          /target/release/deps/out-6e1b12b7fe23bc4e-stdout \
+        2>          /target/release/deps/out-6e1b12b7fe23bc4e-stderr \
+        || echo $? >/target/release/deps/out-6e1b12b7fe23bc4e-errcode\
+  ; find /target/release/deps/*-6e1b12b7fe23bc4e* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-6e1b12b7fe23bc4e
-COPY --link --from=dep-n-crossbeam-epoch-0.9.18-6e1b12b7fe23bc4e /tmp/clis-ripgrep_15-1-0/release/deps/*-6e1b12b7fe23bc4e* /
+COPY --link --from=dep-n-crossbeam-epoch-0.9.18-6e1b12b7fe23bc4e /target/release/deps/*-6e1b12b7fe23bc4e* /
 
 ## this = "6e1b12b7fe23bc4e"
 ## deps = [
@@ -6230,7 +6230,7 @@ COPY --link --from=dep-n-crossbeam-epoch-0.9.18-6e1b12b7fe23bc4e /tmp/clis-ripgr
 ##     "libcrossbeam_epoch-6e1b12b7fe23bc4e.rmeta",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/deps/crossbeam_epoch-6e1b12b7fe23bc4e.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/crossbeam_epoch-6e1b12b7fe23bc4e.d","emit":"dep-info"}',
 ##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `crossbeam_loom`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-epoch-0.9.18/src/lib.rs","byte_start":3012,"byte_end":3026,"line_start":66,"line_end":66,"column_start":7,"column_end":21,"is_primary":true,"text":[{"text":"#[cfg(crossbeam_loom)]","highlight_start":7,"highlight_end":21}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"expected names are: `docsrs`, `feature`, and `test` and 31 more","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(crossbeam_loom)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(crossbeam_loom)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"`#[warn(unexpected_cfgs)]` on by default","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `crossbeam_loom`\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-epoch-0.9.18/src/lib.rs:66:7\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m66\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m#[cfg(crossbeam_loom)]\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m       \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: expected names are: `docsrs`, `feature`, and `test` and 31 more\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m            [lints.rust]\u001b[0m\n\u001b[0m            unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(crossbeam_loom)'] }\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(crossbeam_loom)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: `#[warn(unexpected_cfgs)]` on by default\u001b[0m\n\n"}''',
 ##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `crossbeam_loom`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-epoch-0.9.18/src/lib.rs","byte_start":3069,"byte_end":3083,"line_start":69,"line_end":69,"column_start":7,"column_end":21,"is_primary":true,"text":[{"text":"#[cfg(crossbeam_loom)]","highlight_start":7,"highlight_end":21}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(crossbeam_loom)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(crossbeam_loom)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `crossbeam_loom`\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-epoch-0.9.18/src/lib.rs:69:7\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m69\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m#[cfg(crossbeam_loom)]\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m       \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m            [lints.rust]\u001b[0m\n\u001b[0m            unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(crossbeam_loom)'] }\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(crossbeam_loom)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
 ##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `crossbeam_loom`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-epoch-0.9.18/src/lib.rs","byte_start":3927,"byte_end":3941,"line_start":91,"line_end":91,"column_start":11,"column_end":25,"is_primary":true,"text":[{"text":"#[cfg(not(crossbeam_loom))]","highlight_start":11,"highlight_end":25}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(crossbeam_loom)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(crossbeam_loom)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `crossbeam_loom`\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-epoch-0.9.18/src/lib.rs:91:11\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m91\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m#[cfg(not(crossbeam_loom))]\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m           \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m            [lints.rust]\u001b[0m\n\u001b[0m            unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(crossbeam_loom)'] }\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(crossbeam_loom)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
@@ -6251,8 +6251,8 @@ COPY --link --from=dep-n-crossbeam-epoch-0.9.18-6e1b12b7fe23bc4e /tmp/clis-ripgr
 ##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `crossbeam_loom`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-epoch-0.9.18/src/default.rs","byte_start":1795,"byte_end":1809,"line_start":64,"line_end":64,"column_start":21,"column_end":35,"is_primary":true,"text":[{"text":"#[cfg(all(test, not(crossbeam_loom)))]","highlight_start":21,"highlight_end":35}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(crossbeam_loom)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(crossbeam_loom)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `crossbeam_loom`\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-epoch-0.9.18/src/default.rs:64:21\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m64\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m#[cfg(all(test, not(crossbeam_loom)))]\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                     \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m            [lints.rust]\u001b[0m\n\u001b[0m            unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(crossbeam_loom)'] }\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(crossbeam_loom)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
 ##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `crossbeam_loom`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-epoch-0.9.18/src/default.rs","byte_start":532,"byte_end":546,"line_start":14,"line_end":14,"column_start":15,"column_end":29,"is_primary":true,"text":[{"text":"    #[cfg(not(crossbeam_loom))]","highlight_start":15,"highlight_end":29}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(crossbeam_loom)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(crossbeam_loom)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `crossbeam_loom`\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-epoch-0.9.18/src/default.rs:14:15\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m14\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    #[cfg(not(crossbeam_loom))]\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m               \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m            [lints.rust]\u001b[0m\n\u001b[0m            unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(crossbeam_loom)'] }\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(crossbeam_loom)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
 ##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `crossbeam_loom`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-epoch-0.9.18/src/default.rs","byte_start":867,"byte_end":881,"line_start":22,"line_end":22,"column_start":11,"column_end":25,"is_primary":true,"text":[{"text":"    #[cfg(crossbeam_loom)]","highlight_start":11,"highlight_end":25}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(crossbeam_loom)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(crossbeam_loom)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `crossbeam_loom`\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-epoch-0.9.18/src/default.rs:22:11\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m22\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    #[cfg(crossbeam_loom)]\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m           \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m            [lints.rust]\u001b[0m\n\u001b[0m            unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(crossbeam_loom)'] }\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(crossbeam_loom)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/deps/libcrossbeam_epoch-6e1b12b7fe23bc4e.rmeta","emit":"metadata"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/deps/libcrossbeam_epoch-6e1b12b7fe23bc4e.rlib","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libcrossbeam_epoch-6e1b12b7fe23bc4e.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libcrossbeam_epoch-6e1b12b7fe23bc4e.rlib","emit":"link"}',
 ##     '{"$message_type":"diagnostic","message":"20 warnings emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 20 warnings emitted\u001b[0m\n\n"}',
 ## ]
 ##
@@ -6286,11 +6286,11 @@ COPY --link --from=dep-n-crossbeam-epoch-0.9.18-6e1b12b7fe23bc4e /tmp/clis-ripgr
 ## script = '''
 ## FROM rust-base AS dep-n-crossbeam-epoch-0.9.18-6e1b12b7fe23bc4e
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-ripgrep_15-1-0/release/deps
+## WORKDIR /target/release/deps
 ## RUN \
 ##   --mount=from=cratesio-crossbeam-epoch-0.9.18,source=/crossbeam-epoch-0.9.18,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-epoch-0.9.18 \
-##   --mount=from=out-8d39f2957943d5af,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libcrossbeam_utils-8d39f2957943d5af.rlib,source=/libcrossbeam_utils-8d39f2957943d5af.rlib \
-##   --mount=from=out-8d39f2957943d5af,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libcrossbeam_utils-8d39f2957943d5af.rmeta,source=/libcrossbeam_utils-8d39f2957943d5af.rmeta \
+##   --mount=from=out-8d39f2957943d5af,dst=/target/release/deps/libcrossbeam_utils-8d39f2957943d5af.rlib,source=/libcrossbeam_utils-8d39f2957943d5af.rlib \
+##   --mount=from=out-8d39f2957943d5af,dst=/target/release/deps/libcrossbeam_utils-8d39f2957943d5af.rmeta,source=/libcrossbeam_utils-8d39f2957943d5af.rmeta \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=crossbeam_epoch \
 ##         CARGO_INCREMENTAL=0 \
@@ -6311,11 +6311,11 @@ COPY --link --from=dep-n-crossbeam-epoch-0.9.18-6e1b12b7fe23bc4e /tmp/clis-ripgr
 ##         CARGO_PKG_VERSION_PATCH=18 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name crossbeam_epoch --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --cfg feature'="alloc"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "loom", "loom-crate", "nightly", "std"))' -C metadata'=19f5cf88336f2c3c' -C extra-filename'=-6e1b12b7fe23bc4e' --out-dir /tmp/clis-ripgrep_15-1-0/release/deps -L dependency'=/tmp/clis-ripgrep_15-1-0/release/deps' --extern crossbeam_utils'=/tmp/clis-ripgrep_15-1-0/release/deps/libcrossbeam_utils-8d39f2957943d5af.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-epoch-0.9.18/src/lib.rs \
-##         1>          /tmp/clis-ripgrep_15-1-0/release/deps/out-6e1b12b7fe23bc4e-stdout \
-##         2>          /tmp/clis-ripgrep_15-1-0/release/deps/out-6e1b12b7fe23bc4e-stderr \
-##         || echo $? >/tmp/clis-ripgrep_15-1-0/release/deps/out-6e1b12b7fe23bc4e-errcode\
-##   ; find /tmp/clis-ripgrep_15-1-0/release/deps/*-6e1b12b7fe23bc4e* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name crossbeam_epoch --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --cfg feature'="alloc"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "loom", "loom-crate", "nightly", "std"))' -C metadata'=19f5cf88336f2c3c' -C extra-filename'=-6e1b12b7fe23bc4e' --out-dir /target/release/deps -L dependency'=/target/release/deps' --extern crossbeam_utils'=/target/release/deps/libcrossbeam_utils-8d39f2957943d5af.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-epoch-0.9.18/src/lib.rs \
+##         1>          /target/release/deps/out-6e1b12b7fe23bc4e-stdout \
+##         2>          /target/release/deps/out-6e1b12b7fe23bc4e-stderr \
+##         || echo $? >/target/release/deps/out-6e1b12b7fe23bc4e-errcode\
+##   ; find /target/release/deps/*-6e1b12b7fe23bc4e* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -6323,20 +6323,20 @@ COPY --link --from=dep-n-crossbeam-epoch-0.9.18-6e1b12b7fe23bc4e /tmp/clis-ripgr
 ## stage = "out-6e1b12b7fe23bc4e"
 ## script = """
 ## FROM scratch AS out-6e1b12b7fe23bc4e
-## COPY --link --from=dep-n-crossbeam-epoch-0.9.18-6e1b12b7fe23bc4e /tmp/clis-ripgrep_15-1-0/release/deps/*-6e1b12b7fe23bc4e* /"""
+## COPY --link --from=dep-n-crossbeam-epoch-0.9.18-6e1b12b7fe23bc4e /target/release/deps/*-6e1b12b7fe23bc4e* /"""
 
 FROM scratch AS cratesio-crossbeam-deque-0.8.6
 ADD --chmod=0664 --unpack --checksum=sha256:9dd111b7b7f7d55b72c0a6ae361660ee5853c9af73f70c3c2ef6858b950e2e51 \
   https://static.crates.io/crates/crossbeam-deque/crossbeam-deque-0.8.6.crate /
 FROM rust-base AS dep-n-crossbeam-deque-0.8.6-bc8564e6a21281ae
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-ripgrep_15-1-0/release/deps
+WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-crossbeam-deque-0.8.6,source=/crossbeam-deque-0.8.6,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-deque-0.8.6 \
-  --mount=from=out-6e1b12b7fe23bc4e,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libcrossbeam_epoch-6e1b12b7fe23bc4e.rlib,source=/libcrossbeam_epoch-6e1b12b7fe23bc4e.rlib \
-  --mount=from=out-6e1b12b7fe23bc4e,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libcrossbeam_epoch-6e1b12b7fe23bc4e.rmeta,source=/libcrossbeam_epoch-6e1b12b7fe23bc4e.rmeta \
-  --mount=from=out-8d39f2957943d5af,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libcrossbeam_utils-8d39f2957943d5af.rlib,source=/libcrossbeam_utils-8d39f2957943d5af.rlib \
-  --mount=from=out-8d39f2957943d5af,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libcrossbeam_utils-8d39f2957943d5af.rmeta,source=/libcrossbeam_utils-8d39f2957943d5af.rmeta \
+  --mount=from=out-6e1b12b7fe23bc4e,dst=/target/release/deps/libcrossbeam_epoch-6e1b12b7fe23bc4e.rlib,source=/libcrossbeam_epoch-6e1b12b7fe23bc4e.rlib \
+  --mount=from=out-6e1b12b7fe23bc4e,dst=/target/release/deps/libcrossbeam_epoch-6e1b12b7fe23bc4e.rmeta,source=/libcrossbeam_epoch-6e1b12b7fe23bc4e.rmeta \
+  --mount=from=out-8d39f2957943d5af,dst=/target/release/deps/libcrossbeam_utils-8d39f2957943d5af.rlib,source=/libcrossbeam_utils-8d39f2957943d5af.rlib \
+  --mount=from=out-8d39f2957943d5af,dst=/target/release/deps/libcrossbeam_utils-8d39f2957943d5af.rmeta,source=/libcrossbeam_utils-8d39f2957943d5af.rmeta \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=crossbeam_deque \
         CARGO_INCREMENTAL=0 \
@@ -6357,13 +6357,13 @@ RUN \
         CARGO_PKG_VERSION_PATCH=6 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --crate-name crossbeam_deque --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --warn unexpected_cfgs --allow clippy'::lint_groups_priority' --allow clippy'::declare_interior_mutable_const' --check-cfg cfg'(crossbeam_loom)' --check-cfg cfg'(crossbeam_sanitize)' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "std"))' -C metadata'=773ec95169229fef' -C extra-filename'=-bc8564e6a21281ae' --out-dir /tmp/clis-ripgrep_15-1-0/release/deps -L dependency'=/tmp/clis-ripgrep_15-1-0/release/deps' --extern crossbeam_epoch'=/tmp/clis-ripgrep_15-1-0/release/deps/libcrossbeam_epoch-6e1b12b7fe23bc4e.rmeta' --extern crossbeam_utils'=/tmp/clis-ripgrep_15-1-0/release/deps/libcrossbeam_utils-8d39f2957943d5af.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-deque-0.8.6/src/lib.rs \
-        1>          /tmp/clis-ripgrep_15-1-0/release/deps/out-bc8564e6a21281ae-stdout \
-        2>          /tmp/clis-ripgrep_15-1-0/release/deps/out-bc8564e6a21281ae-stderr \
-        || echo $? >/tmp/clis-ripgrep_15-1-0/release/deps/out-bc8564e6a21281ae-errcode\
-  ; find /tmp/clis-ripgrep_15-1-0/release/deps/*-bc8564e6a21281ae* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      rustc --crate-name crossbeam_deque --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --warn unexpected_cfgs --allow clippy'::lint_groups_priority' --allow clippy'::declare_interior_mutable_const' --check-cfg cfg'(crossbeam_loom)' --check-cfg cfg'(crossbeam_sanitize)' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "std"))' -C metadata'=773ec95169229fef' -C extra-filename'=-bc8564e6a21281ae' --out-dir /target/release/deps -L dependency'=/target/release/deps' --extern crossbeam_epoch'=/target/release/deps/libcrossbeam_epoch-6e1b12b7fe23bc4e.rmeta' --extern crossbeam_utils'=/target/release/deps/libcrossbeam_utils-8d39f2957943d5af.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-deque-0.8.6/src/lib.rs \
+        1>          /target/release/deps/out-bc8564e6a21281ae-stdout \
+        2>          /target/release/deps/out-bc8564e6a21281ae-stderr \
+        || echo $? >/target/release/deps/out-bc8564e6a21281ae-errcode\
+  ; find /target/release/deps/*-bc8564e6a21281ae* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-bc8564e6a21281ae
-COPY --link --from=dep-n-crossbeam-deque-0.8.6-bc8564e6a21281ae /tmp/clis-ripgrep_15-1-0/release/deps/*-bc8564e6a21281ae* /
+COPY --link --from=dep-n-crossbeam-deque-0.8.6-bc8564e6a21281ae /target/release/deps/*-bc8564e6a21281ae* /
 
 ## this = "bc8564e6a21281ae"
 ## deps = [
@@ -6379,9 +6379,9 @@ COPY --link --from=dep-n-crossbeam-deque-0.8.6-bc8564e6a21281ae /tmp/clis-ripgre
 ##     "libcrossbeam_deque-bc8564e6a21281ae.rmeta",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/deps/crossbeam_deque-bc8564e6a21281ae.d","emit":"dep-info"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/deps/libcrossbeam_deque-bc8564e6a21281ae.rmeta","emit":"metadata"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/deps/libcrossbeam_deque-bc8564e6a21281ae.rlib","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/crossbeam_deque-bc8564e6a21281ae.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libcrossbeam_deque-bc8564e6a21281ae.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libcrossbeam_deque-bc8564e6a21281ae.rlib","emit":"link"}',
 ## ]
 ##
 ## [[externs]]
@@ -6422,13 +6422,13 @@ COPY --link --from=dep-n-crossbeam-deque-0.8.6-bc8564e6a21281ae /tmp/clis-ripgre
 ## script = '''
 ## FROM rust-base AS dep-n-crossbeam-deque-0.8.6-bc8564e6a21281ae
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-ripgrep_15-1-0/release/deps
+## WORKDIR /target/release/deps
 ## RUN \
 ##   --mount=from=cratesio-crossbeam-deque-0.8.6,source=/crossbeam-deque-0.8.6,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-deque-0.8.6 \
-##   --mount=from=out-6e1b12b7fe23bc4e,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libcrossbeam_epoch-6e1b12b7fe23bc4e.rlib,source=/libcrossbeam_epoch-6e1b12b7fe23bc4e.rlib \
-##   --mount=from=out-6e1b12b7fe23bc4e,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libcrossbeam_epoch-6e1b12b7fe23bc4e.rmeta,source=/libcrossbeam_epoch-6e1b12b7fe23bc4e.rmeta \
-##   --mount=from=out-8d39f2957943d5af,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libcrossbeam_utils-8d39f2957943d5af.rlib,source=/libcrossbeam_utils-8d39f2957943d5af.rlib \
-##   --mount=from=out-8d39f2957943d5af,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libcrossbeam_utils-8d39f2957943d5af.rmeta,source=/libcrossbeam_utils-8d39f2957943d5af.rmeta \
+##   --mount=from=out-6e1b12b7fe23bc4e,dst=/target/release/deps/libcrossbeam_epoch-6e1b12b7fe23bc4e.rlib,source=/libcrossbeam_epoch-6e1b12b7fe23bc4e.rlib \
+##   --mount=from=out-6e1b12b7fe23bc4e,dst=/target/release/deps/libcrossbeam_epoch-6e1b12b7fe23bc4e.rmeta,source=/libcrossbeam_epoch-6e1b12b7fe23bc4e.rmeta \
+##   --mount=from=out-8d39f2957943d5af,dst=/target/release/deps/libcrossbeam_utils-8d39f2957943d5af.rlib,source=/libcrossbeam_utils-8d39f2957943d5af.rlib \
+##   --mount=from=out-8d39f2957943d5af,dst=/target/release/deps/libcrossbeam_utils-8d39f2957943d5af.rmeta,source=/libcrossbeam_utils-8d39f2957943d5af.rmeta \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=crossbeam_deque \
 ##         CARGO_INCREMENTAL=0 \
@@ -6449,11 +6449,11 @@ COPY --link --from=dep-n-crossbeam-deque-0.8.6-bc8564e6a21281ae /tmp/clis-ripgre
 ##         CARGO_PKG_VERSION_PATCH=6 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name crossbeam_deque --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --warn unexpected_cfgs --allow clippy'::lint_groups_priority' --allow clippy'::declare_interior_mutable_const' --check-cfg cfg'(crossbeam_loom)' --check-cfg cfg'(crossbeam_sanitize)' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "std"))' -C metadata'=773ec95169229fef' -C extra-filename'=-bc8564e6a21281ae' --out-dir /tmp/clis-ripgrep_15-1-0/release/deps -L dependency'=/tmp/clis-ripgrep_15-1-0/release/deps' --extern crossbeam_epoch'=/tmp/clis-ripgrep_15-1-0/release/deps/libcrossbeam_epoch-6e1b12b7fe23bc4e.rmeta' --extern crossbeam_utils'=/tmp/clis-ripgrep_15-1-0/release/deps/libcrossbeam_utils-8d39f2957943d5af.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-deque-0.8.6/src/lib.rs \
-##         1>          /tmp/clis-ripgrep_15-1-0/release/deps/out-bc8564e6a21281ae-stdout \
-##         2>          /tmp/clis-ripgrep_15-1-0/release/deps/out-bc8564e6a21281ae-stderr \
-##         || echo $? >/tmp/clis-ripgrep_15-1-0/release/deps/out-bc8564e6a21281ae-errcode\
-##   ; find /tmp/clis-ripgrep_15-1-0/release/deps/*-bc8564e6a21281ae* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name crossbeam_deque --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --warn unexpected_cfgs --allow clippy'::lint_groups_priority' --allow clippy'::declare_interior_mutable_const' --check-cfg cfg'(crossbeam_loom)' --check-cfg cfg'(crossbeam_sanitize)' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "std"))' -C metadata'=773ec95169229fef' -C extra-filename'=-bc8564e6a21281ae' --out-dir /target/release/deps -L dependency'=/target/release/deps' --extern crossbeam_epoch'=/target/release/deps/libcrossbeam_epoch-6e1b12b7fe23bc4e.rmeta' --extern crossbeam_utils'=/target/release/deps/libcrossbeam_utils-8d39f2957943d5af.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-deque-0.8.6/src/lib.rs \
+##         1>          /target/release/deps/out-bc8564e6a21281ae-stdout \
+##         2>          /target/release/deps/out-bc8564e6a21281ae-stderr \
+##         || echo $? >/target/release/deps/out-bc8564e6a21281ae-errcode\
+##   ; find /target/release/deps/*-bc8564e6a21281ae* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -6461,14 +6461,14 @@ COPY --link --from=dep-n-crossbeam-deque-0.8.6-bc8564e6a21281ae /tmp/clis-ripgre
 ## stage = "out-bc8564e6a21281ae"
 ## script = """
 ## FROM scratch AS out-bc8564e6a21281ae
-## COPY --link --from=dep-n-crossbeam-deque-0.8.6-bc8564e6a21281ae /tmp/clis-ripgrep_15-1-0/release/deps/*-bc8564e6a21281ae* /"""
+## COPY --link --from=dep-n-crossbeam-deque-0.8.6-bc8564e6a21281ae /target/release/deps/*-bc8564e6a21281ae* /"""
 
 FROM scratch AS cratesio-same-file-1.0.6
 ADD --chmod=0664 --unpack --checksum=sha256:93fc1dc3aaa9bfed95e02e6eadabb4baf7e3078b0bd1b4d7b6b0b68378900502 \
   https://static.crates.io/crates/same-file/same-file-1.0.6.crate /
 FROM rust-base AS dep-n-same-file-1.0.6-dc83793791eda320
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-ripgrep_15-1-0/release/deps
+WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-same-file-1.0.6,source=/same-file-1.0.6,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/same-file-1.0.6 \
     env CARGO="$(which cargo)" \
@@ -6492,13 +6492,13 @@ RUN \
         CARGO_PKG_VERSION_PATCH=6 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --crate-name same_file --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=a9371393b249b6ad' -C extra-filename'=-dc83793791eda320' --out-dir /tmp/clis-ripgrep_15-1-0/release/deps -L dependency'=/tmp/clis-ripgrep_15-1-0/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/same-file-1.0.6/src/lib.rs \
-        1>          /tmp/clis-ripgrep_15-1-0/release/deps/out-dc83793791eda320-stdout \
-        2>          /tmp/clis-ripgrep_15-1-0/release/deps/out-dc83793791eda320-stderr \
-        || echo $? >/tmp/clis-ripgrep_15-1-0/release/deps/out-dc83793791eda320-errcode\
-  ; find /tmp/clis-ripgrep_15-1-0/release/deps/*-dc83793791eda320* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      rustc --crate-name same_file --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=a9371393b249b6ad' -C extra-filename'=-dc83793791eda320' --out-dir /target/release/deps -L dependency'=/target/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/same-file-1.0.6/src/lib.rs \
+        1>          /target/release/deps/out-dc83793791eda320-stdout \
+        2>          /target/release/deps/out-dc83793791eda320-stderr \
+        || echo $? >/target/release/deps/out-dc83793791eda320-errcode\
+  ; find /target/release/deps/*-dc83793791eda320* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-dc83793791eda320
-COPY --link --from=dep-n-same-file-1.0.6-dc83793791eda320 /tmp/clis-ripgrep_15-1-0/release/deps/*-dc83793791eda320* /
+COPY --link --from=dep-n-same-file-1.0.6-dc83793791eda320 /target/release/deps/*-dc83793791eda320* /
 
 ## this = "dc83793791eda320"
 ## writes = [
@@ -6507,10 +6507,10 @@ COPY --link --from=dep-n-same-file-1.0.6-dc83793791eda320 /tmp/clis-ripgrep_15-1
 ##     "same_file-dc83793791eda320.d",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/deps/same_file-dc83793791eda320.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/same_file-dc83793791eda320.d","emit":"dep-info"}',
 ##     '{"$message_type":"diagnostic","message":"unused return value of `into_raw_fd` that must be used","code":{"code":"unused_must_use","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/same-file-1.0.6/src/unix.rs","byte_start":650,"byte_end":689,"line_start":23,"line_end":23,"column_start":13,"column_end":52,"is_primary":true,"text":[{"text":"            self.file.take().unwrap().into_raw_fd();","highlight_start":13,"highlight_end":52}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"losing the raw file descriptor may leak resources","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"`#[warn(unused_must_use)]` on by default","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"use `let _ = ...` to ignore the resulting value","code":null,"level":"help","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/same-file-1.0.6/src/unix.rs","byte_start":650,"byte_end":650,"line_start":23,"line_end":23,"column_start":13,"column_end":13,"is_primary":true,"text":[{"text":"            self.file.take().unwrap().into_raw_fd();","highlight_start":13,"highlight_end":13}],"label":null,"suggested_replacement":"let _ = ","suggestion_applicability":"MaybeIncorrect","expansion":null}],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unused return value of `into_raw_fd` that must be used\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/same-file-1.0.6/src/unix.rs:23:13\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m23\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m            self.file.take().unwrap().into_raw_fd();\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m             \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: losing the raw file descriptor may leak resources\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: `#[warn(unused_must_use)]` on by default\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;14mhelp\u001b[0m\u001b[0m: use `let _ = ...` to ignore the resulting value\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m23\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m| \u001b[0m\u001b[0m            \u001b[0m\u001b[0m\u001b[38;5;10mlet _ = \u001b[0m\u001b[0mself.file.take().unwrap().into_raw_fd();\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m             \u001b[0m\u001b[0m\u001b[38;5;10m+++++++\u001b[0m\n\n"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/deps/libsame_file-dc83793791eda320.rmeta","emit":"metadata"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/deps/libsame_file-dc83793791eda320.rlib","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libsame_file-dc83793791eda320.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libsame_file-dc83793791eda320.rlib","emit":"link"}',
 ##     '{"$message_type":"diagnostic","message":"1 warning emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 1 warning emitted\u001b[0m\n\n"}',
 ## ]
 ##
@@ -6536,7 +6536,7 @@ COPY --link --from=dep-n-same-file-1.0.6-dc83793791eda320 /tmp/clis-ripgrep_15-1
 ## script = '''
 ## FROM rust-base AS dep-n-same-file-1.0.6-dc83793791eda320
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-ripgrep_15-1-0/release/deps
+## WORKDIR /target/release/deps
 ## RUN \
 ##   --mount=from=cratesio-same-file-1.0.6,source=/same-file-1.0.6,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/same-file-1.0.6 \
 ##     env CARGO="$(which cargo)" \
@@ -6560,11 +6560,11 @@ COPY --link --from=dep-n-same-file-1.0.6-dc83793791eda320 /tmp/clis-ripgrep_15-1
 ##         CARGO_PKG_VERSION_PATCH=6 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name same_file --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=a9371393b249b6ad' -C extra-filename'=-dc83793791eda320' --out-dir /tmp/clis-ripgrep_15-1-0/release/deps -L dependency'=/tmp/clis-ripgrep_15-1-0/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/same-file-1.0.6/src/lib.rs \
-##         1>          /tmp/clis-ripgrep_15-1-0/release/deps/out-dc83793791eda320-stdout \
-##         2>          /tmp/clis-ripgrep_15-1-0/release/deps/out-dc83793791eda320-stderr \
-##         || echo $? >/tmp/clis-ripgrep_15-1-0/release/deps/out-dc83793791eda320-errcode\
-##   ; find /tmp/clis-ripgrep_15-1-0/release/deps/*-dc83793791eda320* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name same_file --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=a9371393b249b6ad' -C extra-filename'=-dc83793791eda320' --out-dir /target/release/deps -L dependency'=/target/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/same-file-1.0.6/src/lib.rs \
+##         1>          /target/release/deps/out-dc83793791eda320-stdout \
+##         2>          /target/release/deps/out-dc83793791eda320-stderr \
+##         || echo $? >/target/release/deps/out-dc83793791eda320-errcode\
+##   ; find /target/release/deps/*-dc83793791eda320* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -6572,18 +6572,18 @@ COPY --link --from=dep-n-same-file-1.0.6-dc83793791eda320 /tmp/clis-ripgrep_15-1
 ## stage = "out-dc83793791eda320"
 ## script = """
 ## FROM scratch AS out-dc83793791eda320
-## COPY --link --from=dep-n-same-file-1.0.6-dc83793791eda320 /tmp/clis-ripgrep_15-1-0/release/deps/*-dc83793791eda320* /"""
+## COPY --link --from=dep-n-same-file-1.0.6-dc83793791eda320 /target/release/deps/*-dc83793791eda320* /"""
 
 FROM scratch AS cratesio-walkdir-2.5.0
 ADD --chmod=0664 --unpack --checksum=sha256:29790946404f91d9c5d06f9874efddea1dc06c5efe94541a7d6863108e3a5e4b \
   https://static.crates.io/crates/walkdir/walkdir-2.5.0.crate /
 FROM rust-base AS dep-n-walkdir-2.5.0-0b24d0afda3e5658
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-ripgrep_15-1-0/release/deps
+WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-walkdir-2.5.0,source=/walkdir-2.5.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/walkdir-2.5.0 \
-  --mount=from=out-dc83793791eda320,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libsame_file-dc83793791eda320.rlib,source=/libsame_file-dc83793791eda320.rlib \
-  --mount=from=out-dc83793791eda320,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libsame_file-dc83793791eda320.rmeta,source=/libsame_file-dc83793791eda320.rmeta \
+  --mount=from=out-dc83793791eda320,dst=/target/release/deps/libsame_file-dc83793791eda320.rlib,source=/libsame_file-dc83793791eda320.rlib \
+  --mount=from=out-dc83793791eda320,dst=/target/release/deps/libsame_file-dc83793791eda320.rmeta,source=/libsame_file-dc83793791eda320.rmeta \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=walkdir \
         CARGO_INCREMENTAL=0 \
@@ -6604,13 +6604,13 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --crate-name walkdir --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=cae695a35c152f6c' -C extra-filename'=-0b24d0afda3e5658' --out-dir /tmp/clis-ripgrep_15-1-0/release/deps -L dependency'=/tmp/clis-ripgrep_15-1-0/release/deps' --extern same_file'=/tmp/clis-ripgrep_15-1-0/release/deps/libsame_file-dc83793791eda320.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/walkdir-2.5.0/src/lib.rs \
-        1>          /tmp/clis-ripgrep_15-1-0/release/deps/out-0b24d0afda3e5658-stdout \
-        2>          /tmp/clis-ripgrep_15-1-0/release/deps/out-0b24d0afda3e5658-stderr \
-        || echo $? >/tmp/clis-ripgrep_15-1-0/release/deps/out-0b24d0afda3e5658-errcode\
-  ; find /tmp/clis-ripgrep_15-1-0/release/deps/*-0b24d0afda3e5658* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      rustc --crate-name walkdir --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=cae695a35c152f6c' -C extra-filename'=-0b24d0afda3e5658' --out-dir /target/release/deps -L dependency'=/target/release/deps' --extern same_file'=/target/release/deps/libsame_file-dc83793791eda320.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/walkdir-2.5.0/src/lib.rs \
+        1>          /target/release/deps/out-0b24d0afda3e5658-stdout \
+        2>          /target/release/deps/out-0b24d0afda3e5658-stderr \
+        || echo $? >/target/release/deps/out-0b24d0afda3e5658-errcode\
+  ; find /target/release/deps/*-0b24d0afda3e5658* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-0b24d0afda3e5658
-COPY --link --from=dep-n-walkdir-2.5.0-0b24d0afda3e5658 /tmp/clis-ripgrep_15-1-0/release/deps/*-0b24d0afda3e5658* /
+COPY --link --from=dep-n-walkdir-2.5.0-0b24d0afda3e5658 /target/release/deps/*-0b24d0afda3e5658* /
 
 ## this = "0b24d0afda3e5658"
 ## deps = ["dc83793791eda320"]
@@ -6620,9 +6620,9 @@ COPY --link --from=dep-n-walkdir-2.5.0-0b24d0afda3e5658 /tmp/clis-ripgrep_15-1-0
 ##     "walkdir-0b24d0afda3e5658.d",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/deps/walkdir-0b24d0afda3e5658.d","emit":"dep-info"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/deps/libwalkdir-0b24d0afda3e5658.rmeta","emit":"metadata"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/deps/libwalkdir-0b24d0afda3e5658.rlib","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/walkdir-0b24d0afda3e5658.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libwalkdir-0b24d0afda3e5658.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libwalkdir-0b24d0afda3e5658.rlib","emit":"link"}',
 ## ]
 ##
 ## [[externs]]
@@ -6655,11 +6655,11 @@ COPY --link --from=dep-n-walkdir-2.5.0-0b24d0afda3e5658 /tmp/clis-ripgrep_15-1-0
 ## script = '''
 ## FROM rust-base AS dep-n-walkdir-2.5.0-0b24d0afda3e5658
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-ripgrep_15-1-0/release/deps
+## WORKDIR /target/release/deps
 ## RUN \
 ##   --mount=from=cratesio-walkdir-2.5.0,source=/walkdir-2.5.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/walkdir-2.5.0 \
-##   --mount=from=out-dc83793791eda320,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libsame_file-dc83793791eda320.rlib,source=/libsame_file-dc83793791eda320.rlib \
-##   --mount=from=out-dc83793791eda320,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libsame_file-dc83793791eda320.rmeta,source=/libsame_file-dc83793791eda320.rmeta \
+##   --mount=from=out-dc83793791eda320,dst=/target/release/deps/libsame_file-dc83793791eda320.rlib,source=/libsame_file-dc83793791eda320.rlib \
+##   --mount=from=out-dc83793791eda320,dst=/target/release/deps/libsame_file-dc83793791eda320.rmeta,source=/libsame_file-dc83793791eda320.rmeta \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=walkdir \
 ##         CARGO_INCREMENTAL=0 \
@@ -6680,11 +6680,11 @@ COPY --link --from=dep-n-walkdir-2.5.0-0b24d0afda3e5658 /tmp/clis-ripgrep_15-1-0
 ##         CARGO_PKG_VERSION_PATCH=0 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name walkdir --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=cae695a35c152f6c' -C extra-filename'=-0b24d0afda3e5658' --out-dir /tmp/clis-ripgrep_15-1-0/release/deps -L dependency'=/tmp/clis-ripgrep_15-1-0/release/deps' --extern same_file'=/tmp/clis-ripgrep_15-1-0/release/deps/libsame_file-dc83793791eda320.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/walkdir-2.5.0/src/lib.rs \
-##         1>          /tmp/clis-ripgrep_15-1-0/release/deps/out-0b24d0afda3e5658-stdout \
-##         2>          /tmp/clis-ripgrep_15-1-0/release/deps/out-0b24d0afda3e5658-stderr \
-##         || echo $? >/tmp/clis-ripgrep_15-1-0/release/deps/out-0b24d0afda3e5658-errcode\
-##   ; find /tmp/clis-ripgrep_15-1-0/release/deps/*-0b24d0afda3e5658* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name walkdir --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=cae695a35c152f6c' -C extra-filename'=-0b24d0afda3e5658' --out-dir /target/release/deps -L dependency'=/target/release/deps' --extern same_file'=/target/release/deps/libsame_file-dc83793791eda320.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/walkdir-2.5.0/src/lib.rs \
+##         1>          /target/release/deps/out-0b24d0afda3e5658-stdout \
+##         2>          /target/release/deps/out-0b24d0afda3e5658-stderr \
+##         || echo $? >/target/release/deps/out-0b24d0afda3e5658-errcode\
+##   ; find /target/release/deps/*-0b24d0afda3e5658* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -6692,40 +6692,40 @@ COPY --link --from=dep-n-walkdir-2.5.0-0b24d0afda3e5658 /tmp/clis-ripgrep_15-1-0
 ## stage = "out-0b24d0afda3e5658"
 ## script = """
 ## FROM scratch AS out-0b24d0afda3e5658
-## COPY --link --from=dep-n-walkdir-2.5.0-0b24d0afda3e5658 /tmp/clis-ripgrep_15-1-0/release/deps/*-0b24d0afda3e5658* /"""
+## COPY --link --from=dep-n-walkdir-2.5.0-0b24d0afda3e5658 /target/release/deps/*-0b24d0afda3e5658* /"""
 
 FROM scratch AS cratesio-ignore-0.4.24
 ADD --chmod=0664 --unpack --checksum=sha256:81776e6f9464432afcc28d03e52eb101c93b6f0566f52aef2427663e700f0403 \
   https://static.crates.io/crates/ignore/ignore-0.4.24.crate /
 FROM rust-base AS dep-n-ignore-0.4.24-2cc462596c8f1df7
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-ripgrep_15-1-0/release/deps
+WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-ignore-0.4.24,source=/ignore-0.4.24,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ignore-0.4.24 \
-  --mount=from=out-bc8564e6a21281ae,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libcrossbeam_deque-bc8564e6a21281ae.rlib,source=/libcrossbeam_deque-bc8564e6a21281ae.rlib \
-  --mount=from=out-bc8564e6a21281ae,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libcrossbeam_deque-bc8564e6a21281ae.rmeta,source=/libcrossbeam_deque-bc8564e6a21281ae.rmeta \
-  --mount=from=out-6e1b12b7fe23bc4e,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libcrossbeam_epoch-6e1b12b7fe23bc4e.rlib,source=/libcrossbeam_epoch-6e1b12b7fe23bc4e.rlib \
-  --mount=from=out-6e1b12b7fe23bc4e,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libcrossbeam_epoch-6e1b12b7fe23bc4e.rmeta,source=/libcrossbeam_epoch-6e1b12b7fe23bc4e.rmeta \
-  --mount=from=out-8d39f2957943d5af,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libcrossbeam_utils-8d39f2957943d5af.rlib,source=/libcrossbeam_utils-8d39f2957943d5af.rlib \
-  --mount=from=out-8d39f2957943d5af,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libcrossbeam_utils-8d39f2957943d5af.rmeta,source=/libcrossbeam_utils-8d39f2957943d5af.rmeta \
-  --mount=from=out-626b3cb378b61839,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libglobset-626b3cb378b61839.rlib,source=/libglobset-626b3cb378b61839.rlib \
-  --mount=from=out-626b3cb378b61839,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libglobset-626b3cb378b61839.rmeta,source=/libglobset-626b3cb378b61839.rmeta \
-  --mount=from=out-a01a7f030e27d71e,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libaho_corasick-a01a7f030e27d71e.rlib,source=/libaho_corasick-a01a7f030e27d71e.rlib \
-  --mount=from=out-a01a7f030e27d71e,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libaho_corasick-a01a7f030e27d71e.rmeta,source=/libaho_corasick-a01a7f030e27d71e.rmeta \
-  --mount=from=out-3a40f50ac19c9d2e,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libmemchr-3a40f50ac19c9d2e.rlib,source=/libmemchr-3a40f50ac19c9d2e.rlib \
-  --mount=from=out-3a40f50ac19c9d2e,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libmemchr-3a40f50ac19c9d2e.rmeta,source=/libmemchr-3a40f50ac19c9d2e.rmeta \
-  --mount=from=out-d3eea57fb24a933f,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libbstr-d3eea57fb24a933f.rlib,source=/libbstr-d3eea57fb24a933f.rlib \
-  --mount=from=out-d3eea57fb24a933f,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libbstr-d3eea57fb24a933f.rmeta,source=/libbstr-d3eea57fb24a933f.rmeta \
-  --mount=from=out-e22c3e2bd8aa6773,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libregex_automata-e22c3e2bd8aa6773.rlib,source=/libregex_automata-e22c3e2bd8aa6773.rlib \
-  --mount=from=out-e22c3e2bd8aa6773,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libregex_automata-e22c3e2bd8aa6773.rmeta,source=/libregex_automata-e22c3e2bd8aa6773.rmeta \
-  --mount=from=out-34711e95edd06069,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libregex_syntax-34711e95edd06069.rlib,source=/libregex_syntax-34711e95edd06069.rlib \
-  --mount=from=out-34711e95edd06069,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libregex_syntax-34711e95edd06069.rmeta,source=/libregex_syntax-34711e95edd06069.rmeta \
-  --mount=from=out-961aebfc4598d968,dst=/tmp/clis-ripgrep_15-1-0/release/deps/liblog-961aebfc4598d968.rlib,source=/liblog-961aebfc4598d968.rlib \
-  --mount=from=out-961aebfc4598d968,dst=/tmp/clis-ripgrep_15-1-0/release/deps/liblog-961aebfc4598d968.rmeta,source=/liblog-961aebfc4598d968.rmeta \
-  --mount=from=out-dc83793791eda320,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libsame_file-dc83793791eda320.rlib,source=/libsame_file-dc83793791eda320.rlib \
-  --mount=from=out-dc83793791eda320,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libsame_file-dc83793791eda320.rmeta,source=/libsame_file-dc83793791eda320.rmeta \
-  --mount=from=out-0b24d0afda3e5658,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libwalkdir-0b24d0afda3e5658.rlib,source=/libwalkdir-0b24d0afda3e5658.rlib \
-  --mount=from=out-0b24d0afda3e5658,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libwalkdir-0b24d0afda3e5658.rmeta,source=/libwalkdir-0b24d0afda3e5658.rmeta \
+  --mount=from=out-bc8564e6a21281ae,dst=/target/release/deps/libcrossbeam_deque-bc8564e6a21281ae.rlib,source=/libcrossbeam_deque-bc8564e6a21281ae.rlib \
+  --mount=from=out-bc8564e6a21281ae,dst=/target/release/deps/libcrossbeam_deque-bc8564e6a21281ae.rmeta,source=/libcrossbeam_deque-bc8564e6a21281ae.rmeta \
+  --mount=from=out-6e1b12b7fe23bc4e,dst=/target/release/deps/libcrossbeam_epoch-6e1b12b7fe23bc4e.rlib,source=/libcrossbeam_epoch-6e1b12b7fe23bc4e.rlib \
+  --mount=from=out-6e1b12b7fe23bc4e,dst=/target/release/deps/libcrossbeam_epoch-6e1b12b7fe23bc4e.rmeta,source=/libcrossbeam_epoch-6e1b12b7fe23bc4e.rmeta \
+  --mount=from=out-8d39f2957943d5af,dst=/target/release/deps/libcrossbeam_utils-8d39f2957943d5af.rlib,source=/libcrossbeam_utils-8d39f2957943d5af.rlib \
+  --mount=from=out-8d39f2957943d5af,dst=/target/release/deps/libcrossbeam_utils-8d39f2957943d5af.rmeta,source=/libcrossbeam_utils-8d39f2957943d5af.rmeta \
+  --mount=from=out-626b3cb378b61839,dst=/target/release/deps/libglobset-626b3cb378b61839.rlib,source=/libglobset-626b3cb378b61839.rlib \
+  --mount=from=out-626b3cb378b61839,dst=/target/release/deps/libglobset-626b3cb378b61839.rmeta,source=/libglobset-626b3cb378b61839.rmeta \
+  --mount=from=out-a01a7f030e27d71e,dst=/target/release/deps/libaho_corasick-a01a7f030e27d71e.rlib,source=/libaho_corasick-a01a7f030e27d71e.rlib \
+  --mount=from=out-a01a7f030e27d71e,dst=/target/release/deps/libaho_corasick-a01a7f030e27d71e.rmeta,source=/libaho_corasick-a01a7f030e27d71e.rmeta \
+  --mount=from=out-3a40f50ac19c9d2e,dst=/target/release/deps/libmemchr-3a40f50ac19c9d2e.rlib,source=/libmemchr-3a40f50ac19c9d2e.rlib \
+  --mount=from=out-3a40f50ac19c9d2e,dst=/target/release/deps/libmemchr-3a40f50ac19c9d2e.rmeta,source=/libmemchr-3a40f50ac19c9d2e.rmeta \
+  --mount=from=out-d3eea57fb24a933f,dst=/target/release/deps/libbstr-d3eea57fb24a933f.rlib,source=/libbstr-d3eea57fb24a933f.rlib \
+  --mount=from=out-d3eea57fb24a933f,dst=/target/release/deps/libbstr-d3eea57fb24a933f.rmeta,source=/libbstr-d3eea57fb24a933f.rmeta \
+  --mount=from=out-e22c3e2bd8aa6773,dst=/target/release/deps/libregex_automata-e22c3e2bd8aa6773.rlib,source=/libregex_automata-e22c3e2bd8aa6773.rlib \
+  --mount=from=out-e22c3e2bd8aa6773,dst=/target/release/deps/libregex_automata-e22c3e2bd8aa6773.rmeta,source=/libregex_automata-e22c3e2bd8aa6773.rmeta \
+  --mount=from=out-34711e95edd06069,dst=/target/release/deps/libregex_syntax-34711e95edd06069.rlib,source=/libregex_syntax-34711e95edd06069.rlib \
+  --mount=from=out-34711e95edd06069,dst=/target/release/deps/libregex_syntax-34711e95edd06069.rmeta,source=/libregex_syntax-34711e95edd06069.rmeta \
+  --mount=from=out-961aebfc4598d968,dst=/target/release/deps/liblog-961aebfc4598d968.rlib,source=/liblog-961aebfc4598d968.rlib \
+  --mount=from=out-961aebfc4598d968,dst=/target/release/deps/liblog-961aebfc4598d968.rmeta,source=/liblog-961aebfc4598d968.rmeta \
+  --mount=from=out-dc83793791eda320,dst=/target/release/deps/libsame_file-dc83793791eda320.rlib,source=/libsame_file-dc83793791eda320.rlib \
+  --mount=from=out-dc83793791eda320,dst=/target/release/deps/libsame_file-dc83793791eda320.rmeta,source=/libsame_file-dc83793791eda320.rmeta \
+  --mount=from=out-0b24d0afda3e5658,dst=/target/release/deps/libwalkdir-0b24d0afda3e5658.rlib,source=/libwalkdir-0b24d0afda3e5658.rlib \
+  --mount=from=out-0b24d0afda3e5658,dst=/target/release/deps/libwalkdir-0b24d0afda3e5658.rmeta,source=/libwalkdir-0b24d0afda3e5658.rmeta \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=ignore \
         CARGO_INCREMENTAL=0 \
@@ -6748,13 +6748,13 @@ against file paths.\
         CARGO_PKG_VERSION_PATCH=24 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --crate-name ignore --edition 2024 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("simd-accel"))' -C metadata'=37e9389b150b1ad5' -C extra-filename'=-2cc462596c8f1df7' --out-dir /tmp/clis-ripgrep_15-1-0/release/deps -L dependency'=/tmp/clis-ripgrep_15-1-0/release/deps' --extern crossbeam_deque'=/tmp/clis-ripgrep_15-1-0/release/deps/libcrossbeam_deque-bc8564e6a21281ae.rmeta' --extern globset'=/tmp/clis-ripgrep_15-1-0/release/deps/libglobset-626b3cb378b61839.rmeta' --extern log'=/tmp/clis-ripgrep_15-1-0/release/deps/liblog-961aebfc4598d968.rmeta' --extern memchr'=/tmp/clis-ripgrep_15-1-0/release/deps/libmemchr-3a40f50ac19c9d2e.rmeta' --extern regex_automata'=/tmp/clis-ripgrep_15-1-0/release/deps/libregex_automata-e22c3e2bd8aa6773.rmeta' --extern same_file'=/tmp/clis-ripgrep_15-1-0/release/deps/libsame_file-dc83793791eda320.rmeta' --extern walkdir'=/tmp/clis-ripgrep_15-1-0/release/deps/libwalkdir-0b24d0afda3e5658.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ignore-0.4.24/src/lib.rs \
-        1>          /tmp/clis-ripgrep_15-1-0/release/deps/out-2cc462596c8f1df7-stdout \
-        2>          /tmp/clis-ripgrep_15-1-0/release/deps/out-2cc462596c8f1df7-stderr \
-        || echo $? >/tmp/clis-ripgrep_15-1-0/release/deps/out-2cc462596c8f1df7-errcode\
-  ; find /tmp/clis-ripgrep_15-1-0/release/deps/*-2cc462596c8f1df7* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      rustc --crate-name ignore --edition 2024 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("simd-accel"))' -C metadata'=37e9389b150b1ad5' -C extra-filename'=-2cc462596c8f1df7' --out-dir /target/release/deps -L dependency'=/target/release/deps' --extern crossbeam_deque'=/target/release/deps/libcrossbeam_deque-bc8564e6a21281ae.rmeta' --extern globset'=/target/release/deps/libglobset-626b3cb378b61839.rmeta' --extern log'=/target/release/deps/liblog-961aebfc4598d968.rmeta' --extern memchr'=/target/release/deps/libmemchr-3a40f50ac19c9d2e.rmeta' --extern regex_automata'=/target/release/deps/libregex_automata-e22c3e2bd8aa6773.rmeta' --extern same_file'=/target/release/deps/libsame_file-dc83793791eda320.rmeta' --extern walkdir'=/target/release/deps/libwalkdir-0b24d0afda3e5658.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ignore-0.4.24/src/lib.rs \
+        1>          /target/release/deps/out-2cc462596c8f1df7-stdout \
+        2>          /target/release/deps/out-2cc462596c8f1df7-stderr \
+        || echo $? >/target/release/deps/out-2cc462596c8f1df7-errcode\
+  ; find /target/release/deps/*-2cc462596c8f1df7* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-2cc462596c8f1df7
-COPY --link --from=dep-n-ignore-0.4.24-2cc462596c8f1df7 /tmp/clis-ripgrep_15-1-0/release/deps/*-2cc462596c8f1df7* /
+COPY --link --from=dep-n-ignore-0.4.24-2cc462596c8f1df7 /target/release/deps/*-2cc462596c8f1df7* /
 
 ## this = "2cc462596c8f1df7"
 ## deps = [
@@ -6780,9 +6780,9 @@ COPY --link --from=dep-n-ignore-0.4.24-2cc462596c8f1df7 /tmp/clis-ripgrep_15-1-0
 ##     "libignore-2cc462596c8f1df7.rmeta",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/deps/ignore-2cc462596c8f1df7.d","emit":"dep-info"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/deps/libignore-2cc462596c8f1df7.rmeta","emit":"metadata"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/deps/libignore-2cc462596c8f1df7.rlib","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/ignore-2cc462596c8f1df7.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libignore-2cc462596c8f1df7.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libignore-2cc462596c8f1df7.rlib","emit":"link"}',
 ## ]
 ##
 ## [[externs]]
@@ -6903,33 +6903,33 @@ COPY --link --from=dep-n-ignore-0.4.24-2cc462596c8f1df7 /tmp/clis-ripgrep_15-1-0
 ## script = '''
 ## FROM rust-base AS dep-n-ignore-0.4.24-2cc462596c8f1df7
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-ripgrep_15-1-0/release/deps
+## WORKDIR /target/release/deps
 ## RUN \
 ##   --mount=from=cratesio-ignore-0.4.24,source=/ignore-0.4.24,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ignore-0.4.24 \
-##   --mount=from=out-bc8564e6a21281ae,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libcrossbeam_deque-bc8564e6a21281ae.rlib,source=/libcrossbeam_deque-bc8564e6a21281ae.rlib \
-##   --mount=from=out-bc8564e6a21281ae,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libcrossbeam_deque-bc8564e6a21281ae.rmeta,source=/libcrossbeam_deque-bc8564e6a21281ae.rmeta \
-##   --mount=from=out-6e1b12b7fe23bc4e,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libcrossbeam_epoch-6e1b12b7fe23bc4e.rlib,source=/libcrossbeam_epoch-6e1b12b7fe23bc4e.rlib \
-##   --mount=from=out-6e1b12b7fe23bc4e,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libcrossbeam_epoch-6e1b12b7fe23bc4e.rmeta,source=/libcrossbeam_epoch-6e1b12b7fe23bc4e.rmeta \
-##   --mount=from=out-8d39f2957943d5af,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libcrossbeam_utils-8d39f2957943d5af.rlib,source=/libcrossbeam_utils-8d39f2957943d5af.rlib \
-##   --mount=from=out-8d39f2957943d5af,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libcrossbeam_utils-8d39f2957943d5af.rmeta,source=/libcrossbeam_utils-8d39f2957943d5af.rmeta \
-##   --mount=from=out-626b3cb378b61839,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libglobset-626b3cb378b61839.rlib,source=/libglobset-626b3cb378b61839.rlib \
-##   --mount=from=out-626b3cb378b61839,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libglobset-626b3cb378b61839.rmeta,source=/libglobset-626b3cb378b61839.rmeta \
-##   --mount=from=out-a01a7f030e27d71e,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libaho_corasick-a01a7f030e27d71e.rlib,source=/libaho_corasick-a01a7f030e27d71e.rlib \
-##   --mount=from=out-a01a7f030e27d71e,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libaho_corasick-a01a7f030e27d71e.rmeta,source=/libaho_corasick-a01a7f030e27d71e.rmeta \
-##   --mount=from=out-3a40f50ac19c9d2e,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libmemchr-3a40f50ac19c9d2e.rlib,source=/libmemchr-3a40f50ac19c9d2e.rlib \
-##   --mount=from=out-3a40f50ac19c9d2e,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libmemchr-3a40f50ac19c9d2e.rmeta,source=/libmemchr-3a40f50ac19c9d2e.rmeta \
-##   --mount=from=out-d3eea57fb24a933f,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libbstr-d3eea57fb24a933f.rlib,source=/libbstr-d3eea57fb24a933f.rlib \
-##   --mount=from=out-d3eea57fb24a933f,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libbstr-d3eea57fb24a933f.rmeta,source=/libbstr-d3eea57fb24a933f.rmeta \
-##   --mount=from=out-e22c3e2bd8aa6773,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libregex_automata-e22c3e2bd8aa6773.rlib,source=/libregex_automata-e22c3e2bd8aa6773.rlib \
-##   --mount=from=out-e22c3e2bd8aa6773,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libregex_automata-e22c3e2bd8aa6773.rmeta,source=/libregex_automata-e22c3e2bd8aa6773.rmeta \
-##   --mount=from=out-34711e95edd06069,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libregex_syntax-34711e95edd06069.rlib,source=/libregex_syntax-34711e95edd06069.rlib \
-##   --mount=from=out-34711e95edd06069,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libregex_syntax-34711e95edd06069.rmeta,source=/libregex_syntax-34711e95edd06069.rmeta \
-##   --mount=from=out-961aebfc4598d968,dst=/tmp/clis-ripgrep_15-1-0/release/deps/liblog-961aebfc4598d968.rlib,source=/liblog-961aebfc4598d968.rlib \
-##   --mount=from=out-961aebfc4598d968,dst=/tmp/clis-ripgrep_15-1-0/release/deps/liblog-961aebfc4598d968.rmeta,source=/liblog-961aebfc4598d968.rmeta \
-##   --mount=from=out-dc83793791eda320,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libsame_file-dc83793791eda320.rlib,source=/libsame_file-dc83793791eda320.rlib \
-##   --mount=from=out-dc83793791eda320,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libsame_file-dc83793791eda320.rmeta,source=/libsame_file-dc83793791eda320.rmeta \
-##   --mount=from=out-0b24d0afda3e5658,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libwalkdir-0b24d0afda3e5658.rlib,source=/libwalkdir-0b24d0afda3e5658.rlib \
-##   --mount=from=out-0b24d0afda3e5658,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libwalkdir-0b24d0afda3e5658.rmeta,source=/libwalkdir-0b24d0afda3e5658.rmeta \
+##   --mount=from=out-bc8564e6a21281ae,dst=/target/release/deps/libcrossbeam_deque-bc8564e6a21281ae.rlib,source=/libcrossbeam_deque-bc8564e6a21281ae.rlib \
+##   --mount=from=out-bc8564e6a21281ae,dst=/target/release/deps/libcrossbeam_deque-bc8564e6a21281ae.rmeta,source=/libcrossbeam_deque-bc8564e6a21281ae.rmeta \
+##   --mount=from=out-6e1b12b7fe23bc4e,dst=/target/release/deps/libcrossbeam_epoch-6e1b12b7fe23bc4e.rlib,source=/libcrossbeam_epoch-6e1b12b7fe23bc4e.rlib \
+##   --mount=from=out-6e1b12b7fe23bc4e,dst=/target/release/deps/libcrossbeam_epoch-6e1b12b7fe23bc4e.rmeta,source=/libcrossbeam_epoch-6e1b12b7fe23bc4e.rmeta \
+##   --mount=from=out-8d39f2957943d5af,dst=/target/release/deps/libcrossbeam_utils-8d39f2957943d5af.rlib,source=/libcrossbeam_utils-8d39f2957943d5af.rlib \
+##   --mount=from=out-8d39f2957943d5af,dst=/target/release/deps/libcrossbeam_utils-8d39f2957943d5af.rmeta,source=/libcrossbeam_utils-8d39f2957943d5af.rmeta \
+##   --mount=from=out-626b3cb378b61839,dst=/target/release/deps/libglobset-626b3cb378b61839.rlib,source=/libglobset-626b3cb378b61839.rlib \
+##   --mount=from=out-626b3cb378b61839,dst=/target/release/deps/libglobset-626b3cb378b61839.rmeta,source=/libglobset-626b3cb378b61839.rmeta \
+##   --mount=from=out-a01a7f030e27d71e,dst=/target/release/deps/libaho_corasick-a01a7f030e27d71e.rlib,source=/libaho_corasick-a01a7f030e27d71e.rlib \
+##   --mount=from=out-a01a7f030e27d71e,dst=/target/release/deps/libaho_corasick-a01a7f030e27d71e.rmeta,source=/libaho_corasick-a01a7f030e27d71e.rmeta \
+##   --mount=from=out-3a40f50ac19c9d2e,dst=/target/release/deps/libmemchr-3a40f50ac19c9d2e.rlib,source=/libmemchr-3a40f50ac19c9d2e.rlib \
+##   --mount=from=out-3a40f50ac19c9d2e,dst=/target/release/deps/libmemchr-3a40f50ac19c9d2e.rmeta,source=/libmemchr-3a40f50ac19c9d2e.rmeta \
+##   --mount=from=out-d3eea57fb24a933f,dst=/target/release/deps/libbstr-d3eea57fb24a933f.rlib,source=/libbstr-d3eea57fb24a933f.rlib \
+##   --mount=from=out-d3eea57fb24a933f,dst=/target/release/deps/libbstr-d3eea57fb24a933f.rmeta,source=/libbstr-d3eea57fb24a933f.rmeta \
+##   --mount=from=out-e22c3e2bd8aa6773,dst=/target/release/deps/libregex_automata-e22c3e2bd8aa6773.rlib,source=/libregex_automata-e22c3e2bd8aa6773.rlib \
+##   --mount=from=out-e22c3e2bd8aa6773,dst=/target/release/deps/libregex_automata-e22c3e2bd8aa6773.rmeta,source=/libregex_automata-e22c3e2bd8aa6773.rmeta \
+##   --mount=from=out-34711e95edd06069,dst=/target/release/deps/libregex_syntax-34711e95edd06069.rlib,source=/libregex_syntax-34711e95edd06069.rlib \
+##   --mount=from=out-34711e95edd06069,dst=/target/release/deps/libregex_syntax-34711e95edd06069.rmeta,source=/libregex_syntax-34711e95edd06069.rmeta \
+##   --mount=from=out-961aebfc4598d968,dst=/target/release/deps/liblog-961aebfc4598d968.rlib,source=/liblog-961aebfc4598d968.rlib \
+##   --mount=from=out-961aebfc4598d968,dst=/target/release/deps/liblog-961aebfc4598d968.rmeta,source=/liblog-961aebfc4598d968.rmeta \
+##   --mount=from=out-dc83793791eda320,dst=/target/release/deps/libsame_file-dc83793791eda320.rlib,source=/libsame_file-dc83793791eda320.rlib \
+##   --mount=from=out-dc83793791eda320,dst=/target/release/deps/libsame_file-dc83793791eda320.rmeta,source=/libsame_file-dc83793791eda320.rmeta \
+##   --mount=from=out-0b24d0afda3e5658,dst=/target/release/deps/libwalkdir-0b24d0afda3e5658.rlib,source=/libwalkdir-0b24d0afda3e5658.rlib \
+##   --mount=from=out-0b24d0afda3e5658,dst=/target/release/deps/libwalkdir-0b24d0afda3e5658.rmeta,source=/libwalkdir-0b24d0afda3e5658.rmeta \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=ignore \
 ##         CARGO_INCREMENTAL=0 \
@@ -6952,11 +6952,11 @@ COPY --link --from=dep-n-ignore-0.4.24-2cc462596c8f1df7 /tmp/clis-ripgrep_15-1-0
 ##         CARGO_PKG_VERSION_PATCH=24 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name ignore --edition 2024 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("simd-accel"))' -C metadata'=37e9389b150b1ad5' -C extra-filename'=-2cc462596c8f1df7' --out-dir /tmp/clis-ripgrep_15-1-0/release/deps -L dependency'=/tmp/clis-ripgrep_15-1-0/release/deps' --extern crossbeam_deque'=/tmp/clis-ripgrep_15-1-0/release/deps/libcrossbeam_deque-bc8564e6a21281ae.rmeta' --extern globset'=/tmp/clis-ripgrep_15-1-0/release/deps/libglobset-626b3cb378b61839.rmeta' --extern log'=/tmp/clis-ripgrep_15-1-0/release/deps/liblog-961aebfc4598d968.rmeta' --extern memchr'=/tmp/clis-ripgrep_15-1-0/release/deps/libmemchr-3a40f50ac19c9d2e.rmeta' --extern regex_automata'=/tmp/clis-ripgrep_15-1-0/release/deps/libregex_automata-e22c3e2bd8aa6773.rmeta' --extern same_file'=/tmp/clis-ripgrep_15-1-0/release/deps/libsame_file-dc83793791eda320.rmeta' --extern walkdir'=/tmp/clis-ripgrep_15-1-0/release/deps/libwalkdir-0b24d0afda3e5658.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ignore-0.4.24/src/lib.rs \
-##         1>          /tmp/clis-ripgrep_15-1-0/release/deps/out-2cc462596c8f1df7-stdout \
-##         2>          /tmp/clis-ripgrep_15-1-0/release/deps/out-2cc462596c8f1df7-stderr \
-##         || echo $? >/tmp/clis-ripgrep_15-1-0/release/deps/out-2cc462596c8f1df7-errcode\
-##   ; find /tmp/clis-ripgrep_15-1-0/release/deps/*-2cc462596c8f1df7* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name ignore --edition 2024 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("simd-accel"))' -C metadata'=37e9389b150b1ad5' -C extra-filename'=-2cc462596c8f1df7' --out-dir /target/release/deps -L dependency'=/target/release/deps' --extern crossbeam_deque'=/target/release/deps/libcrossbeam_deque-bc8564e6a21281ae.rmeta' --extern globset'=/target/release/deps/libglobset-626b3cb378b61839.rmeta' --extern log'=/target/release/deps/liblog-961aebfc4598d968.rmeta' --extern memchr'=/target/release/deps/libmemchr-3a40f50ac19c9d2e.rmeta' --extern regex_automata'=/target/release/deps/libregex_automata-e22c3e2bd8aa6773.rmeta' --extern same_file'=/target/release/deps/libsame_file-dc83793791eda320.rmeta' --extern walkdir'=/target/release/deps/libwalkdir-0b24d0afda3e5658.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ignore-0.4.24/src/lib.rs \
+##         1>          /target/release/deps/out-2cc462596c8f1df7-stdout \
+##         2>          /target/release/deps/out-2cc462596c8f1df7-stderr \
+##         || echo $? >/target/release/deps/out-2cc462596c8f1df7-errcode\
+##   ; find /target/release/deps/*-2cc462596c8f1df7* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -6964,14 +6964,14 @@ COPY --link --from=dep-n-ignore-0.4.24-2cc462596c8f1df7 /tmp/clis-ripgrep_15-1-0
 ## stage = "out-2cc462596c8f1df7"
 ## script = """
 ## FROM scratch AS out-2cc462596c8f1df7
-## COPY --link --from=dep-n-ignore-0.4.24-2cc462596c8f1df7 /tmp/clis-ripgrep_15-1-0/release/deps/*-2cc462596c8f1df7* /"""
+## COPY --link --from=dep-n-ignore-0.4.24-2cc462596c8f1df7 /target/release/deps/*-2cc462596c8f1df7* /"""
 
 FROM scratch AS cratesio-lexopt-0.3.1
 ADD --chmod=0664 --unpack --checksum=sha256:9fa0e2a1fcbe2f6be6c42e342259976206b383122fc152e872795338b5a3f3a7 \
   https://static.crates.io/crates/lexopt/lexopt-0.3.1.crate /
 FROM rust-base AS dep-n-lexopt-0.3.1-7a1f13bcc63da167
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-ripgrep_15-1-0/release/deps
+WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-lexopt-0.3.1,source=/lexopt-0.3.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/lexopt-0.3.1 \
     env CARGO="$(which cargo)" \
@@ -6994,13 +6994,13 @@ RUN \
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --crate-name lexopt --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=e05a87ea0f219eee' -C extra-filename'=-7a1f13bcc63da167' --out-dir /tmp/clis-ripgrep_15-1-0/release/deps -L dependency'=/tmp/clis-ripgrep_15-1-0/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/lexopt-0.3.1/src/lib.rs \
-        1>          /tmp/clis-ripgrep_15-1-0/release/deps/out-7a1f13bcc63da167-stdout \
-        2>          /tmp/clis-ripgrep_15-1-0/release/deps/out-7a1f13bcc63da167-stderr \
-        || echo $? >/tmp/clis-ripgrep_15-1-0/release/deps/out-7a1f13bcc63da167-errcode\
-  ; find /tmp/clis-ripgrep_15-1-0/release/deps/*-7a1f13bcc63da167* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      rustc --crate-name lexopt --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=e05a87ea0f219eee' -C extra-filename'=-7a1f13bcc63da167' --out-dir /target/release/deps -L dependency'=/target/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/lexopt-0.3.1/src/lib.rs \
+        1>          /target/release/deps/out-7a1f13bcc63da167-stdout \
+        2>          /target/release/deps/out-7a1f13bcc63da167-stderr \
+        || echo $? >/target/release/deps/out-7a1f13bcc63da167-errcode\
+  ; find /target/release/deps/*-7a1f13bcc63da167* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-7a1f13bcc63da167
-COPY --link --from=dep-n-lexopt-0.3.1-7a1f13bcc63da167 /tmp/clis-ripgrep_15-1-0/release/deps/*-7a1f13bcc63da167* /
+COPY --link --from=dep-n-lexopt-0.3.1-7a1f13bcc63da167 /target/release/deps/*-7a1f13bcc63da167* /
 
 ## this = "7a1f13bcc63da167"
 ## writes = [
@@ -7009,9 +7009,9 @@ COPY --link --from=dep-n-lexopt-0.3.1-7a1f13bcc63da167 /tmp/clis-ripgrep_15-1-0/
 ##     "liblexopt-7a1f13bcc63da167.rmeta",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/deps/lexopt-7a1f13bcc63da167.d","emit":"dep-info"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/deps/liblexopt-7a1f13bcc63da167.rmeta","emit":"metadata"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/deps/liblexopt-7a1f13bcc63da167.rlib","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/lexopt-7a1f13bcc63da167.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/liblexopt-7a1f13bcc63da167.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/liblexopt-7a1f13bcc63da167.rlib","emit":"link"}',
 ## ]
 ##
 ## [[stages]]
@@ -7036,7 +7036,7 @@ COPY --link --from=dep-n-lexopt-0.3.1-7a1f13bcc63da167 /tmp/clis-ripgrep_15-1-0/
 ## script = '''
 ## FROM rust-base AS dep-n-lexopt-0.3.1-7a1f13bcc63da167
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-ripgrep_15-1-0/release/deps
+## WORKDIR /target/release/deps
 ## RUN \
 ##   --mount=from=cratesio-lexopt-0.3.1,source=/lexopt-0.3.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/lexopt-0.3.1 \
 ##     env CARGO="$(which cargo)" \
@@ -7059,11 +7059,11 @@ COPY --link --from=dep-n-lexopt-0.3.1-7a1f13bcc63da167 /tmp/clis-ripgrep_15-1-0/
 ##         CARGO_PKG_VERSION_PATCH=1 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name lexopt --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=e05a87ea0f219eee' -C extra-filename'=-7a1f13bcc63da167' --out-dir /tmp/clis-ripgrep_15-1-0/release/deps -L dependency'=/tmp/clis-ripgrep_15-1-0/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/lexopt-0.3.1/src/lib.rs \
-##         1>          /tmp/clis-ripgrep_15-1-0/release/deps/out-7a1f13bcc63da167-stdout \
-##         2>          /tmp/clis-ripgrep_15-1-0/release/deps/out-7a1f13bcc63da167-stderr \
-##         || echo $? >/tmp/clis-ripgrep_15-1-0/release/deps/out-7a1f13bcc63da167-errcode\
-##   ; find /tmp/clis-ripgrep_15-1-0/release/deps/*-7a1f13bcc63da167* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name lexopt --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=e05a87ea0f219eee' -C extra-filename'=-7a1f13bcc63da167' --out-dir /target/release/deps -L dependency'=/target/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/lexopt-0.3.1/src/lib.rs \
+##         1>          /target/release/deps/out-7a1f13bcc63da167-stdout \
+##         2>          /target/release/deps/out-7a1f13bcc63da167-stderr \
+##         || echo $? >/target/release/deps/out-7a1f13bcc63da167-errcode\
+##   ; find /target/release/deps/*-7a1f13bcc63da167* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -7071,14 +7071,14 @@ COPY --link --from=dep-n-lexopt-0.3.1-7a1f13bcc63da167 /tmp/clis-ripgrep_15-1-0/
 ## stage = "out-7a1f13bcc63da167"
 ## script = """
 ## FROM scratch AS out-7a1f13bcc63da167
-## COPY --link --from=dep-n-lexopt-0.3.1-7a1f13bcc63da167 /tmp/clis-ripgrep_15-1-0/release/deps/*-7a1f13bcc63da167* /"""
+## COPY --link --from=dep-n-lexopt-0.3.1-7a1f13bcc63da167 /target/release/deps/*-7a1f13bcc63da167* /"""
 
 FROM scratch AS cratesio-textwrap-0.16.2
 ADD --chmod=0664 --unpack --checksum=sha256:c13547615a44dc9c452a8a534638acdf07120d4b6847c8178705da06306a3057 \
   https://static.crates.io/crates/textwrap/textwrap-0.16.2.crate /
 FROM rust-base AS dep-n-textwrap-0.16.2-61beeb1f0d30d2c6
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-ripgrep_15-1-0/release/deps
+WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-textwrap-0.16.2,source=/textwrap-0.16.2,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/textwrap-0.16.2 \
     env CARGO="$(which cargo)" \
@@ -7101,13 +7101,13 @@ RUN \
         CARGO_PKG_VERSION_PATCH=2 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --crate-name textwrap --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --warn unexpected_cfgs --check-cfg cfg'(fuzzing)' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "hyphenation", "smawk", "terminal_size", "unicode-linebreak", "unicode-width"))' -C metadata'=d237151602539b4c' -C extra-filename'=-61beeb1f0d30d2c6' --out-dir /tmp/clis-ripgrep_15-1-0/release/deps -L dependency'=/tmp/clis-ripgrep_15-1-0/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/textwrap-0.16.2/src/lib.rs \
-        1>          /tmp/clis-ripgrep_15-1-0/release/deps/out-61beeb1f0d30d2c6-stdout \
-        2>          /tmp/clis-ripgrep_15-1-0/release/deps/out-61beeb1f0d30d2c6-stderr \
-        || echo $? >/tmp/clis-ripgrep_15-1-0/release/deps/out-61beeb1f0d30d2c6-errcode\
-  ; find /tmp/clis-ripgrep_15-1-0/release/deps/*-61beeb1f0d30d2c6* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      rustc --crate-name textwrap --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --warn unexpected_cfgs --check-cfg cfg'(fuzzing)' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "hyphenation", "smawk", "terminal_size", "unicode-linebreak", "unicode-width"))' -C metadata'=d237151602539b4c' -C extra-filename'=-61beeb1f0d30d2c6' --out-dir /target/release/deps -L dependency'=/target/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/textwrap-0.16.2/src/lib.rs \
+        1>          /target/release/deps/out-61beeb1f0d30d2c6-stdout \
+        2>          /target/release/deps/out-61beeb1f0d30d2c6-stderr \
+        || echo $? >/target/release/deps/out-61beeb1f0d30d2c6-errcode\
+  ; find /target/release/deps/*-61beeb1f0d30d2c6* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-61beeb1f0d30d2c6
-COPY --link --from=dep-n-textwrap-0.16.2-61beeb1f0d30d2c6 /tmp/clis-ripgrep_15-1-0/release/deps/*-61beeb1f0d30d2c6* /
+COPY --link --from=dep-n-textwrap-0.16.2-61beeb1f0d30d2c6 /target/release/deps/*-61beeb1f0d30d2c6* /
 
 ## this = "61beeb1f0d30d2c6"
 ## writes = [
@@ -7116,9 +7116,9 @@ COPY --link --from=dep-n-textwrap-0.16.2-61beeb1f0d30d2c6 /tmp/clis-ripgrep_15-1
 ##     "textwrap-61beeb1f0d30d2c6.d",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/deps/textwrap-61beeb1f0d30d2c6.d","emit":"dep-info"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/deps/libtextwrap-61beeb1f0d30d2c6.rmeta","emit":"metadata"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/deps/libtextwrap-61beeb1f0d30d2c6.rlib","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/textwrap-61beeb1f0d30d2c6.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libtextwrap-61beeb1f0d30d2c6.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libtextwrap-61beeb1f0d30d2c6.rlib","emit":"link"}',
 ## ]
 ##
 ## [[stages]]
@@ -7143,7 +7143,7 @@ COPY --link --from=dep-n-textwrap-0.16.2-61beeb1f0d30d2c6 /tmp/clis-ripgrep_15-1
 ## script = '''
 ## FROM rust-base AS dep-n-textwrap-0.16.2-61beeb1f0d30d2c6
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-ripgrep_15-1-0/release/deps
+## WORKDIR /target/release/deps
 ## RUN \
 ##   --mount=from=cratesio-textwrap-0.16.2,source=/textwrap-0.16.2,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/textwrap-0.16.2 \
 ##     env CARGO="$(which cargo)" \
@@ -7166,11 +7166,11 @@ COPY --link --from=dep-n-textwrap-0.16.2-61beeb1f0d30d2c6 /tmp/clis-ripgrep_15-1
 ##         CARGO_PKG_VERSION_PATCH=2 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name textwrap --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --warn unexpected_cfgs --check-cfg cfg'(fuzzing)' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "hyphenation", "smawk", "terminal_size", "unicode-linebreak", "unicode-width"))' -C metadata'=d237151602539b4c' -C extra-filename'=-61beeb1f0d30d2c6' --out-dir /tmp/clis-ripgrep_15-1-0/release/deps -L dependency'=/tmp/clis-ripgrep_15-1-0/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/textwrap-0.16.2/src/lib.rs \
-##         1>          /tmp/clis-ripgrep_15-1-0/release/deps/out-61beeb1f0d30d2c6-stdout \
-##         2>          /tmp/clis-ripgrep_15-1-0/release/deps/out-61beeb1f0d30d2c6-stderr \
-##         || echo $? >/tmp/clis-ripgrep_15-1-0/release/deps/out-61beeb1f0d30d2c6-errcode\
-##   ; find /tmp/clis-ripgrep_15-1-0/release/deps/*-61beeb1f0d30d2c6* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name textwrap --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --warn unexpected_cfgs --check-cfg cfg'(fuzzing)' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "hyphenation", "smawk", "terminal_size", "unicode-linebreak", "unicode-width"))' -C metadata'=d237151602539b4c' -C extra-filename'=-61beeb1f0d30d2c6' --out-dir /target/release/deps -L dependency'=/target/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/textwrap-0.16.2/src/lib.rs \
+##         1>          /target/release/deps/out-61beeb1f0d30d2c6-stdout \
+##         2>          /target/release/deps/out-61beeb1f0d30d2c6-stderr \
+##         || echo $? >/target/release/deps/out-61beeb1f0d30d2c6-errcode\
+##   ; find /target/release/deps/*-61beeb1f0d30d2c6* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -7178,14 +7178,14 @@ COPY --link --from=dep-n-textwrap-0.16.2-61beeb1f0d30d2c6 /tmp/clis-ripgrep_15-1
 ## stage = "out-61beeb1f0d30d2c6"
 ## script = """
 ## FROM scratch AS out-61beeb1f0d30d2c6
-## COPY --link --from=dep-n-textwrap-0.16.2-61beeb1f0d30d2c6 /tmp/clis-ripgrep_15-1-0/release/deps/*-61beeb1f0d30d2c6* /"""
+## COPY --link --from=dep-n-textwrap-0.16.2-61beeb1f0d30d2c6 /target/release/deps/*-61beeb1f0d30d2c6* /"""
 
 FROM scratch AS cratesio-ripgrep-15.1.0
 ADD --chmod=0664 --unpack --checksum=sha256:f388c4955f85477c28a8667355819844a06614b083c23517f0e86bd1d6d82b73 \
   https://static.crates.io/crates/ripgrep/ripgrep-15.1.0.crate /
 FROM rust-base AS dep-x-ripgrep-15.1.0-fb6b9272b6cb7a5e
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-ripgrep_15-1-0/release/build/ripgrep-fb6b9272b6cb7a5e
+WORKDIR /target/release/build/ripgrep-fb6b9272b6cb7a5e
 RUN \
   --mount=from=cratesio-ripgrep-15.1.0,source=/ripgrep-15.1.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ripgrep-15.1.0,rw \
     { \
@@ -7232,13 +7232,13 @@ first class support on Windows, macOS and Linux.\
         CARGO_PRIMARY_PACKAGE=1 \
         CARGO_SBOM_PATH= \
         CARGOGREEN=1 \
-      rustc --crate-name build_script_build --edition 2024 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("pcre2"))' -C metadata'=3c01fe66c85b21c9' -C extra-filename'=-fb6b9272b6cb7a5e' --out-dir /tmp/clis-ripgrep_15-1-0/release/build/ripgrep-fb6b9272b6cb7a5e -L dependency'=/tmp/clis-ripgrep_15-1-0/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ripgrep-15.1.0/build.rs \
-        1>          /tmp/clis-ripgrep_15-1-0/release/build/ripgrep-fb6b9272b6cb7a5e/out-fb6b9272b6cb7a5e-stdout \
-        2>          /tmp/clis-ripgrep_15-1-0/release/build/ripgrep-fb6b9272b6cb7a5e/out-fb6b9272b6cb7a5e-stderr \
-        || echo $? >/tmp/clis-ripgrep_15-1-0/release/build/ripgrep-fb6b9272b6cb7a5e/out-fb6b9272b6cb7a5e-errcode\
-  ; find /tmp/clis-ripgrep_15-1-0/release/build/ripgrep-fb6b9272b6cb7a5e/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      rustc --crate-name build_script_build --edition 2024 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("pcre2"))' -C metadata'=3c01fe66c85b21c9' -C extra-filename'=-fb6b9272b6cb7a5e' --out-dir /target/release/build/ripgrep-fb6b9272b6cb7a5e -L dependency'=/target/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ripgrep-15.1.0/build.rs \
+        1>          /target/release/build/ripgrep-fb6b9272b6cb7a5e/out-fb6b9272b6cb7a5e-stdout \
+        2>          /target/release/build/ripgrep-fb6b9272b6cb7a5e/out-fb6b9272b6cb7a5e-stderr \
+        || echo $? >/target/release/build/ripgrep-fb6b9272b6cb7a5e/out-fb6b9272b6cb7a5e-errcode\
+  ; find /target/release/build/ripgrep-fb6b9272b6cb7a5e/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-fb6b9272b6cb7a5e
-COPY --link --from=dep-x-ripgrep-15.1.0-fb6b9272b6cb7a5e /tmp/clis-ripgrep_15-1-0/release/build/ripgrep-fb6b9272b6cb7a5e/*-fb6b9272b6cb7a5e* /
+COPY --link --from=dep-x-ripgrep-15.1.0-fb6b9272b6cb7a5e /target/release/build/ripgrep-fb6b9272b6cb7a5e/*-fb6b9272b6cb7a5e* /
 
 ## this = "fb6b9272b6cb7a5e"
 ## writes = [
@@ -7246,8 +7246,8 @@ COPY --link --from=dep-x-ripgrep-15.1.0-fb6b9272b6cb7a5e /tmp/clis-ripgrep_15-1-
 ##     "build_script_build-fb6b9272b6cb7a5e.d",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/build/ripgrep-fb6b9272b6cb7a5e/build_script_build-fb6b9272b6cb7a5e.d","emit":"dep-info"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/build/ripgrep-fb6b9272b6cb7a5e/build_script_build-fb6b9272b6cb7a5e","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/build/ripgrep-fb6b9272b6cb7a5e/build_script_build-fb6b9272b6cb7a5e.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/build/ripgrep-fb6b9272b6cb7a5e/build_script_build-fb6b9272b6cb7a5e","emit":"link"}',
 ## ]
 ##
 ## [[stages]]
@@ -7272,7 +7272,7 @@ COPY --link --from=dep-x-ripgrep-15.1.0-fb6b9272b6cb7a5e /tmp/clis-ripgrep_15-1-
 ## script = '''
 ## FROM rust-base AS dep-x-ripgrep-15.1.0-fb6b9272b6cb7a5e
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-ripgrep_15-1-0/release/build/ripgrep-fb6b9272b6cb7a5e
+## WORKDIR /target/release/build/ripgrep-fb6b9272b6cb7a5e
 ## RUN \
 ##   --mount=from=cratesio-ripgrep-15.1.0,source=/ripgrep-15.1.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ripgrep-15.1.0,rw \
 ##     { \
@@ -7319,11 +7319,11 @@ COPY --link --from=dep-x-ripgrep-15.1.0-fb6b9272b6cb7a5e /tmp/clis-ripgrep_15-1-
 ##         CARGO_PRIMARY_PACKAGE=1 \
 ##         CARGO_SBOM_PATH= \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name build_script_build --edition 2024 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("pcre2"))' -C metadata'=3c01fe66c85b21c9' -C extra-filename'=-fb6b9272b6cb7a5e' --out-dir /tmp/clis-ripgrep_15-1-0/release/build/ripgrep-fb6b9272b6cb7a5e -L dependency'=/tmp/clis-ripgrep_15-1-0/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ripgrep-15.1.0/build.rs \
-##         1>          /tmp/clis-ripgrep_15-1-0/release/build/ripgrep-fb6b9272b6cb7a5e/out-fb6b9272b6cb7a5e-stdout \
-##         2>          /tmp/clis-ripgrep_15-1-0/release/build/ripgrep-fb6b9272b6cb7a5e/out-fb6b9272b6cb7a5e-stderr \
-##         || echo $? >/tmp/clis-ripgrep_15-1-0/release/build/ripgrep-fb6b9272b6cb7a5e/out-fb6b9272b6cb7a5e-errcode\
-##   ; find /tmp/clis-ripgrep_15-1-0/release/build/ripgrep-fb6b9272b6cb7a5e/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name build_script_build --edition 2024 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("pcre2"))' -C metadata'=3c01fe66c85b21c9' -C extra-filename'=-fb6b9272b6cb7a5e' --out-dir /target/release/build/ripgrep-fb6b9272b6cb7a5e -L dependency'=/target/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ripgrep-15.1.0/build.rs \
+##         1>          /target/release/build/ripgrep-fb6b9272b6cb7a5e/out-fb6b9272b6cb7a5e-stdout \
+##         2>          /target/release/build/ripgrep-fb6b9272b6cb7a5e/out-fb6b9272b6cb7a5e-stderr \
+##         || echo $? >/target/release/build/ripgrep-fb6b9272b6cb7a5e/out-fb6b9272b6cb7a5e-errcode\
+##   ; find /target/release/build/ripgrep-fb6b9272b6cb7a5e/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -7331,14 +7331,14 @@ COPY --link --from=dep-x-ripgrep-15.1.0-fb6b9272b6cb7a5e /tmp/clis-ripgrep_15-1-
 ## stage = "out-fb6b9272b6cb7a5e"
 ## script = """
 ## FROM scratch AS out-fb6b9272b6cb7a5e
-## COPY --link --from=dep-x-ripgrep-15.1.0-fb6b9272b6cb7a5e /tmp/clis-ripgrep_15-1-0/release/build/ripgrep-fb6b9272b6cb7a5e/*-fb6b9272b6cb7a5e* /"""
+## COPY --link --from=dep-x-ripgrep-15.1.0-fb6b9272b6cb7a5e /target/release/build/ripgrep-fb6b9272b6cb7a5e/*-fb6b9272b6cb7a5e* /"""
 
 FROM rust-base AS run-z-ripgrep-15.1.0-76b9952f03f0a394
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-ripgrep_15-1-0/release/build/ripgrep-76b9952f03f0a394/out
+WORKDIR /target/release/build/ripgrep-76b9952f03f0a394/out
 WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ripgrep-15.1.0
 RUN \
-  --mount=from=out-fb6b9272b6cb7a5e,source=/build_script_build-fb6b9272b6cb7a5e,dst=/tmp/clis-ripgrep_15-1-0/release/build/ripgrep-fb6b9272b6cb7a5e/build-script-build \
+  --mount=from=out-fb6b9272b6cb7a5e,source=/build_script_build-fb6b9272b6cb7a5e,dst=/target/release/build/ripgrep-fb6b9272b6cb7a5e/build-script-build \
   --mount=from=cratesio-ripgrep-15.1.0,source=/ripgrep-15.1.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ripgrep-15.1.0 \
     env CARGO="$(which cargo)" \
         CARGO_CFG_FEATURE= \
@@ -7379,23 +7379,23 @@ first class support on Windows, macOS and Linux.\
         HOST=x86_64-unknown-linux-gnu \
         NUM_JOBS=4 \
         OPT_LEVEL=3 \
-        OUT_DIR=/tmp/clis-ripgrep_15-1-0/release/build/ripgrep-76b9952f03f0a394/out \
+        OUT_DIR=/target/release/build/ripgrep-76b9952f03f0a394/out \
         PROFILE=release \
         RUSTC=rustc \
         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
         TARGET=x86_64-unknown-linux-gnu \
         CARGOGREEN=1 \
-      CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-ripgrep_15-1-0/release/build/ripgrep-fb6b9272b6cb7a5e/build-script-build \
-        1>          /tmp/clis-ripgrep_15-1-0/release/build/ripgrep-76b9952f03f0a394/out/out-76b9952f03f0a394-stdout \
-        2>          /tmp/clis-ripgrep_15-1-0/release/build/ripgrep-76b9952f03f0a394/out/out-76b9952f03f0a394-stderr \
-        || echo $? >/tmp/clis-ripgrep_15-1-0/release/build/ripgrep-76b9952f03f0a394/out/out-76b9952f03f0a394-errcode\
-  ; find /tmp/clis-ripgrep_15-1-0/release/build/ripgrep-76b9952f03f0a394/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      CARGOGREEN_EXECUTE_BUILDRS_= /target/release/build/ripgrep-fb6b9272b6cb7a5e/build-script-build \
+        1>          /target/release/build/ripgrep-76b9952f03f0a394/out/out-76b9952f03f0a394-stdout \
+        2>          /target/release/build/ripgrep-76b9952f03f0a394/out/out-76b9952f03f0a394-stderr \
+        || echo $? >/target/release/build/ripgrep-76b9952f03f0a394/out/out-76b9952f03f0a394-errcode\
+  ; find /target/release/build/ripgrep-76b9952f03f0a394/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-76b9952f03f0a394
-COPY --link --from=run-z-ripgrep-15.1.0-76b9952f03f0a394 /tmp/clis-ripgrep_15-1-0/release/build/ripgrep-76b9952f03f0a394/out /
+COPY --link --from=run-z-ripgrep-15.1.0-76b9952f03f0a394 /target/release/build/ripgrep-76b9952f03f0a394/out /
 
 ## this = "76b9952f03f0a394"
 ## deps = ["fb6b9272b6cb7a5e"]
-## writes_to = "/tmp/clis-ripgrep_15-1-0/release/build/ripgrep-76b9952f03f0a394/out"
+## writes_to = "/target/release/build/ripgrep-76b9952f03f0a394/out"
 ## stdout = ["cargo:warning=failed to run `git rev-parse`, so skipping embedding of commit hash: No such file or directory (os error 2)"]
 ##
 ## [[stages]]
@@ -7411,10 +7411,10 @@ COPY --link --from=run-z-ripgrep-15.1.0-76b9952f03f0a394 /tmp/clis-ripgrep_15-1-
 ## script = '''
 ## FROM rust-base AS run-z-ripgrep-15.1.0-76b9952f03f0a394
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-ripgrep_15-1-0/release/build/ripgrep-76b9952f03f0a394/out
+## WORKDIR /target/release/build/ripgrep-76b9952f03f0a394/out
 ## WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ripgrep-15.1.0
 ## RUN \
-##   --mount=from=out-fb6b9272b6cb7a5e,source=/build_script_build-fb6b9272b6cb7a5e,dst=/tmp/clis-ripgrep_15-1-0/release/build/ripgrep-fb6b9272b6cb7a5e/build-script-build \
+##   --mount=from=out-fb6b9272b6cb7a5e,source=/build_script_build-fb6b9272b6cb7a5e,dst=/target/release/build/ripgrep-fb6b9272b6cb7a5e/build-script-build \
 ##   --mount=from=cratesio-ripgrep-15.1.0,source=/ripgrep-15.1.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ripgrep-15.1.0 \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CFG_FEATURE= \
@@ -7455,17 +7455,17 @@ COPY --link --from=run-z-ripgrep-15.1.0-76b9952f03f0a394 /tmp/clis-ripgrep_15-1-
 ##         HOST=x86_64-unknown-linux-gnu \
 ##         NUM_JOBS=4 \
 ##         OPT_LEVEL=3 \
-##         OUT_DIR=/tmp/clis-ripgrep_15-1-0/release/build/ripgrep-76b9952f03f0a394/out \
+##         OUT_DIR=/target/release/build/ripgrep-76b9952f03f0a394/out \
 ##         PROFILE=release \
 ##         RUSTC=rustc \
 ##         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
 ##         TARGET=x86_64-unknown-linux-gnu \
 ##         CARGOGREEN=1 \
-##       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-ripgrep_15-1-0/release/build/ripgrep-fb6b9272b6cb7a5e/build-script-build \
-##         1>          /tmp/clis-ripgrep_15-1-0/release/build/ripgrep-76b9952f03f0a394/out/out-76b9952f03f0a394-stdout \
-##         2>          /tmp/clis-ripgrep_15-1-0/release/build/ripgrep-76b9952f03f0a394/out/out-76b9952f03f0a394-stderr \
-##         || echo $? >/tmp/clis-ripgrep_15-1-0/release/build/ripgrep-76b9952f03f0a394/out/out-76b9952f03f0a394-errcode\
-##   ; find /tmp/clis-ripgrep_15-1-0/release/build/ripgrep-76b9952f03f0a394/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       CARGOGREEN_EXECUTE_BUILDRS_= /target/release/build/ripgrep-fb6b9272b6cb7a5e/build-script-build \
+##         1>          /target/release/build/ripgrep-76b9952f03f0a394/out/out-76b9952f03f0a394-stdout \
+##         2>          /target/release/build/ripgrep-76b9952f03f0a394/out/out-76b9952f03f0a394-stderr \
+##         || echo $? >/target/release/build/ripgrep-76b9952f03f0a394/out/out-76b9952f03f0a394-errcode\
+##   ; find /target/release/build/ripgrep-76b9952f03f0a394/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -7473,50 +7473,50 @@ COPY --link --from=run-z-ripgrep-15.1.0-76b9952f03f0a394 /tmp/clis-ripgrep_15-1-
 ## stage = "out-76b9952f03f0a394"
 ## script = """
 ## FROM scratch AS out-76b9952f03f0a394
-## COPY --link --from=run-z-ripgrep-15.1.0-76b9952f03f0a394 /tmp/clis-ripgrep_15-1-0/release/build/ripgrep-76b9952f03f0a394/out /"""
+## COPY --link --from=run-z-ripgrep-15.1.0-76b9952f03f0a394 /target/release/build/ripgrep-76b9952f03f0a394/out /"""
 
 
 FROM rust-base AS dep-n-ripgrep-15.1.0-2449a649f34fa613
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-ripgrep_15-1-0/release/deps
+WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-ripgrep-15.1.0,source=/ripgrep-15.1.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ripgrep-15.1.0 \
-  --mount=from=out-668c6ccec8f0b208,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libanyhow-668c6ccec8f0b208.rlib,source=/libanyhow-668c6ccec8f0b208.rlib \
-  --mount=from=out-d3eea57fb24a933f,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libbstr-d3eea57fb24a933f.rlib,source=/libbstr-d3eea57fb24a933f.rlib \
-  --mount=from=out-3a40f50ac19c9d2e,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libmemchr-3a40f50ac19c9d2e.rlib,source=/libmemchr-3a40f50ac19c9d2e.rlib \
-  --mount=from=out-e22c3e2bd8aa6773,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libregex_automata-e22c3e2bd8aa6773.rlib,source=/libregex_automata-e22c3e2bd8aa6773.rlib \
-  --mount=from=out-a01a7f030e27d71e,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libaho_corasick-a01a7f030e27d71e.rlib,source=/libaho_corasick-a01a7f030e27d71e.rlib \
-  --mount=from=out-34711e95edd06069,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libregex_syntax-34711e95edd06069.rlib,source=/libregex_syntax-34711e95edd06069.rlib \
-  --mount=from=out-90b5ae48eae28f98,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libgrep-90b5ae48eae28f98.rlib,source=/libgrep-90b5ae48eae28f98.rlib \
-  --mount=from=out-1b7b0003cc5fcc34,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libgrep_cli-1b7b0003cc5fcc34.rlib,source=/libgrep_cli-1b7b0003cc5fcc34.rlib \
-  --mount=from=out-626b3cb378b61839,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libglobset-626b3cb378b61839.rlib,source=/libglobset-626b3cb378b61839.rlib \
-  --mount=from=out-961aebfc4598d968,dst=/tmp/clis-ripgrep_15-1-0/release/deps/liblog-961aebfc4598d968.rlib,source=/liblog-961aebfc4598d968.rlib \
-  --mount=from=out-fda8220236222977,dst=/tmp/clis-ripgrep_15-1-0/release/deps/liblibc-fda8220236222977.rlib,source=/liblibc-fda8220236222977.rlib \
-  --mount=from=out-82ca06e8aad1563b,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libtermcolor-82ca06e8aad1563b.rlib,source=/libtermcolor-82ca06e8aad1563b.rlib \
-  --mount=from=out-d59a566cc66becf8,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libgrep_matcher-d59a566cc66becf8.rlib,source=/libgrep_matcher-d59a566cc66becf8.rlib \
-  --mount=from=out-a2f81f4f0caeb673,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libgrep_printer-a2f81f4f0caeb673.rlib,source=/libgrep_printer-a2f81f4f0caeb673.rlib \
-  --mount=from=out-82a451c10ca406e4,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libgrep_searcher-82a451c10ca406e4.rlib,source=/libgrep_searcher-82a451c10ca406e4.rlib \
-  --mount=from=out-e0d6e4f8a8eb4371,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libencoding_rs-e0d6e4f8a8eb4371.rlib,source=/libencoding_rs-e0d6e4f8a8eb4371.rlib \
-  --mount=from=out-e78ec6df4b56941f,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libcfg_if-e78ec6df4b56941f.rlib,source=/libcfg_if-e78ec6df4b56941f.rlib \
-  --mount=from=out-651f5691fade4e93,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libencoding_rs_io-651f5691fade4e93.rlib,source=/libencoding_rs_io-651f5691fade4e93.rlib \
-  --mount=from=out-977b6f2f3b8d0f6b,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libmemmap2-977b6f2f3b8d0f6b.rlib,source=/libmemmap2-977b6f2f3b8d0f6b.rlib \
-  --mount=from=out-b2e448cd36891534,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libserde-b2e448cd36891534.rlib,source=/libserde-b2e448cd36891534.rlib \
-  --mount=from=out-9c5f6198d88ce592,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libserde_core-9c5f6198d88ce592.rlib,source=/libserde_core-9c5f6198d88ce592.rlib \
-  --mount=from=out-53d4d749d624f2e4,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libserde_json-53d4d749d624f2e4.rlib,source=/libserde_json-53d4d749d624f2e4.rlib \
-  --mount=from=out-4ed5967b8bb80767,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libitoa-4ed5967b8bb80767.rlib,source=/libitoa-4ed5967b8bb80767.rlib \
-  --mount=from=out-60ca480634bc0094,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libryu-60ca480634bc0094.rlib,source=/libryu-60ca480634bc0094.rlib \
-  --mount=from=out-45a71c617829751e,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libgrep_regex-45a71c617829751e.rlib,source=/libgrep_regex-45a71c617829751e.rlib \
-  --mount=from=out-2cc462596c8f1df7,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libignore-2cc462596c8f1df7.rlib,source=/libignore-2cc462596c8f1df7.rlib \
-  --mount=from=out-bc8564e6a21281ae,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libcrossbeam_deque-bc8564e6a21281ae.rlib,source=/libcrossbeam_deque-bc8564e6a21281ae.rlib \
-  --mount=from=out-6e1b12b7fe23bc4e,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libcrossbeam_epoch-6e1b12b7fe23bc4e.rlib,source=/libcrossbeam_epoch-6e1b12b7fe23bc4e.rlib \
-  --mount=from=out-8d39f2957943d5af,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libcrossbeam_utils-8d39f2957943d5af.rlib,source=/libcrossbeam_utils-8d39f2957943d5af.rlib \
-  --mount=from=out-dc83793791eda320,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libsame_file-dc83793791eda320.rlib,source=/libsame_file-dc83793791eda320.rlib \
-  --mount=from=out-0b24d0afda3e5658,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libwalkdir-0b24d0afda3e5658.rlib,source=/libwalkdir-0b24d0afda3e5658.rlib \
-  --mount=from=out-7a1f13bcc63da167,dst=/tmp/clis-ripgrep_15-1-0/release/deps/liblexopt-7a1f13bcc63da167.rlib,source=/liblexopt-7a1f13bcc63da167.rlib \
-  --mount=from=out-61beeb1f0d30d2c6,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libtextwrap-61beeb1f0d30d2c6.rlib,source=/libtextwrap-61beeb1f0d30d2c6.rlib \
-  --mount=from=out-5f8fd3dd93685614,dst=/tmp/clis-ripgrep_15-1-0/release/build/serde_core-5f8fd3dd93685614/out,source=/ \
-  --mount=from=out-ba8a06e0f44b5ff8,dst=/tmp/clis-ripgrep_15-1-0/release/build/serde-ba8a06e0f44b5ff8/out,source=/ \
-  --mount=from=out-76b9952f03f0a394,dst=/tmp/clis-ripgrep_15-1-0/release/build/ripgrep-76b9952f03f0a394/out,source=/ \
+  --mount=from=out-668c6ccec8f0b208,dst=/target/release/deps/libanyhow-668c6ccec8f0b208.rlib,source=/libanyhow-668c6ccec8f0b208.rlib \
+  --mount=from=out-d3eea57fb24a933f,dst=/target/release/deps/libbstr-d3eea57fb24a933f.rlib,source=/libbstr-d3eea57fb24a933f.rlib \
+  --mount=from=out-3a40f50ac19c9d2e,dst=/target/release/deps/libmemchr-3a40f50ac19c9d2e.rlib,source=/libmemchr-3a40f50ac19c9d2e.rlib \
+  --mount=from=out-e22c3e2bd8aa6773,dst=/target/release/deps/libregex_automata-e22c3e2bd8aa6773.rlib,source=/libregex_automata-e22c3e2bd8aa6773.rlib \
+  --mount=from=out-a01a7f030e27d71e,dst=/target/release/deps/libaho_corasick-a01a7f030e27d71e.rlib,source=/libaho_corasick-a01a7f030e27d71e.rlib \
+  --mount=from=out-34711e95edd06069,dst=/target/release/deps/libregex_syntax-34711e95edd06069.rlib,source=/libregex_syntax-34711e95edd06069.rlib \
+  --mount=from=out-90b5ae48eae28f98,dst=/target/release/deps/libgrep-90b5ae48eae28f98.rlib,source=/libgrep-90b5ae48eae28f98.rlib \
+  --mount=from=out-1b7b0003cc5fcc34,dst=/target/release/deps/libgrep_cli-1b7b0003cc5fcc34.rlib,source=/libgrep_cli-1b7b0003cc5fcc34.rlib \
+  --mount=from=out-626b3cb378b61839,dst=/target/release/deps/libglobset-626b3cb378b61839.rlib,source=/libglobset-626b3cb378b61839.rlib \
+  --mount=from=out-961aebfc4598d968,dst=/target/release/deps/liblog-961aebfc4598d968.rlib,source=/liblog-961aebfc4598d968.rlib \
+  --mount=from=out-fda8220236222977,dst=/target/release/deps/liblibc-fda8220236222977.rlib,source=/liblibc-fda8220236222977.rlib \
+  --mount=from=out-82ca06e8aad1563b,dst=/target/release/deps/libtermcolor-82ca06e8aad1563b.rlib,source=/libtermcolor-82ca06e8aad1563b.rlib \
+  --mount=from=out-d59a566cc66becf8,dst=/target/release/deps/libgrep_matcher-d59a566cc66becf8.rlib,source=/libgrep_matcher-d59a566cc66becf8.rlib \
+  --mount=from=out-a2f81f4f0caeb673,dst=/target/release/deps/libgrep_printer-a2f81f4f0caeb673.rlib,source=/libgrep_printer-a2f81f4f0caeb673.rlib \
+  --mount=from=out-82a451c10ca406e4,dst=/target/release/deps/libgrep_searcher-82a451c10ca406e4.rlib,source=/libgrep_searcher-82a451c10ca406e4.rlib \
+  --mount=from=out-e0d6e4f8a8eb4371,dst=/target/release/deps/libencoding_rs-e0d6e4f8a8eb4371.rlib,source=/libencoding_rs-e0d6e4f8a8eb4371.rlib \
+  --mount=from=out-e78ec6df4b56941f,dst=/target/release/deps/libcfg_if-e78ec6df4b56941f.rlib,source=/libcfg_if-e78ec6df4b56941f.rlib \
+  --mount=from=out-651f5691fade4e93,dst=/target/release/deps/libencoding_rs_io-651f5691fade4e93.rlib,source=/libencoding_rs_io-651f5691fade4e93.rlib \
+  --mount=from=out-977b6f2f3b8d0f6b,dst=/target/release/deps/libmemmap2-977b6f2f3b8d0f6b.rlib,source=/libmemmap2-977b6f2f3b8d0f6b.rlib \
+  --mount=from=out-b2e448cd36891534,dst=/target/release/deps/libserde-b2e448cd36891534.rlib,source=/libserde-b2e448cd36891534.rlib \
+  --mount=from=out-9c5f6198d88ce592,dst=/target/release/deps/libserde_core-9c5f6198d88ce592.rlib,source=/libserde_core-9c5f6198d88ce592.rlib \
+  --mount=from=out-53d4d749d624f2e4,dst=/target/release/deps/libserde_json-53d4d749d624f2e4.rlib,source=/libserde_json-53d4d749d624f2e4.rlib \
+  --mount=from=out-4ed5967b8bb80767,dst=/target/release/deps/libitoa-4ed5967b8bb80767.rlib,source=/libitoa-4ed5967b8bb80767.rlib \
+  --mount=from=out-60ca480634bc0094,dst=/target/release/deps/libryu-60ca480634bc0094.rlib,source=/libryu-60ca480634bc0094.rlib \
+  --mount=from=out-45a71c617829751e,dst=/target/release/deps/libgrep_regex-45a71c617829751e.rlib,source=/libgrep_regex-45a71c617829751e.rlib \
+  --mount=from=out-2cc462596c8f1df7,dst=/target/release/deps/libignore-2cc462596c8f1df7.rlib,source=/libignore-2cc462596c8f1df7.rlib \
+  --mount=from=out-bc8564e6a21281ae,dst=/target/release/deps/libcrossbeam_deque-bc8564e6a21281ae.rlib,source=/libcrossbeam_deque-bc8564e6a21281ae.rlib \
+  --mount=from=out-6e1b12b7fe23bc4e,dst=/target/release/deps/libcrossbeam_epoch-6e1b12b7fe23bc4e.rlib,source=/libcrossbeam_epoch-6e1b12b7fe23bc4e.rlib \
+  --mount=from=out-8d39f2957943d5af,dst=/target/release/deps/libcrossbeam_utils-8d39f2957943d5af.rlib,source=/libcrossbeam_utils-8d39f2957943d5af.rlib \
+  --mount=from=out-dc83793791eda320,dst=/target/release/deps/libsame_file-dc83793791eda320.rlib,source=/libsame_file-dc83793791eda320.rlib \
+  --mount=from=out-0b24d0afda3e5658,dst=/target/release/deps/libwalkdir-0b24d0afda3e5658.rlib,source=/libwalkdir-0b24d0afda3e5658.rlib \
+  --mount=from=out-7a1f13bcc63da167,dst=/target/release/deps/liblexopt-7a1f13bcc63da167.rlib,source=/liblexopt-7a1f13bcc63da167.rlib \
+  --mount=from=out-61beeb1f0d30d2c6,dst=/target/release/deps/libtextwrap-61beeb1f0d30d2c6.rlib,source=/libtextwrap-61beeb1f0d30d2c6.rlib \
+  --mount=from=out-5f8fd3dd93685614,dst=/target/release/build/serde_core-5f8fd3dd93685614/out,source=/ \
+  --mount=from=out-ba8a06e0f44b5ff8,dst=/target/release/build/serde-ba8a06e0f44b5ff8/out,source=/ \
+  --mount=from=out-76b9952f03f0a394,dst=/target/release/build/ripgrep-76b9952f03f0a394/out,source=/ \
     env CARGO="$(which cargo)" \
         CARGO_BIN_NAME=rg \
         CARGO_CRATE_NAME=rg \
@@ -7542,15 +7542,15 @@ first class support on Windows, macOS and Linux.\
         CARGO_PKG_VERSION_PRE= \
         CARGO_PRIMARY_PACKAGE=1 \
         CARGO_SBOM_PATH= \
-        OUT_DIR=/tmp/clis-ripgrep_15-1-0/release/build/ripgrep-76b9952f03f0a394/out \
+        OUT_DIR=/target/release/build/ripgrep-76b9952f03f0a394/out \
         CARGOGREEN=1 \
-      rustc --crate-name rg --edition 2024 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("pcre2"))' -C metadata'=5a53ee39281f5533' -C extra-filename'=-2449a649f34fa613' --out-dir /tmp/clis-ripgrep_15-1-0/release/deps -L dependency'=/tmp/clis-ripgrep_15-1-0/release/deps' --extern anyhow'=/tmp/clis-ripgrep_15-1-0/release/deps/libanyhow-668c6ccec8f0b208.rlib' --extern bstr'=/tmp/clis-ripgrep_15-1-0/release/deps/libbstr-d3eea57fb24a933f.rlib' --extern grep'=/tmp/clis-ripgrep_15-1-0/release/deps/libgrep-90b5ae48eae28f98.rlib' --extern ignore'=/tmp/clis-ripgrep_15-1-0/release/deps/libignore-2cc462596c8f1df7.rlib' --extern lexopt'=/tmp/clis-ripgrep_15-1-0/release/deps/liblexopt-7a1f13bcc63da167.rlib' --extern log'=/tmp/clis-ripgrep_15-1-0/release/deps/liblog-961aebfc4598d968.rlib' --extern serde_json'=/tmp/clis-ripgrep_15-1-0/release/deps/libserde_json-53d4d749d624f2e4.rlib' --extern termcolor'=/tmp/clis-ripgrep_15-1-0/release/deps/libtermcolor-82ca06e8aad1563b.rlib' --extern textwrap'=/tmp/clis-ripgrep_15-1-0/release/deps/libtextwrap-61beeb1f0d30d2c6.rlib' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ripgrep-15.1.0/crates/core/main.rs \
-        1>          /tmp/clis-ripgrep_15-1-0/release/deps/out-2449a649f34fa613-stdout \
-        2>          /tmp/clis-ripgrep_15-1-0/release/deps/out-2449a649f34fa613-stderr \
-        || echo $? >/tmp/clis-ripgrep_15-1-0/release/deps/out-2449a649f34fa613-errcode\
-  ; find /tmp/clis-ripgrep_15-1-0/release/deps/*-2449a649f34fa613* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      rustc --crate-name rg --edition 2024 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("pcre2"))' -C metadata'=5a53ee39281f5533' -C extra-filename'=-2449a649f34fa613' --out-dir /target/release/deps -L dependency'=/target/release/deps' --extern anyhow'=/target/release/deps/libanyhow-668c6ccec8f0b208.rlib' --extern bstr'=/target/release/deps/libbstr-d3eea57fb24a933f.rlib' --extern grep'=/target/release/deps/libgrep-90b5ae48eae28f98.rlib' --extern ignore'=/target/release/deps/libignore-2cc462596c8f1df7.rlib' --extern lexopt'=/target/release/deps/liblexopt-7a1f13bcc63da167.rlib' --extern log'=/target/release/deps/liblog-961aebfc4598d968.rlib' --extern serde_json'=/target/release/deps/libserde_json-53d4d749d624f2e4.rlib' --extern termcolor'=/target/release/deps/libtermcolor-82ca06e8aad1563b.rlib' --extern textwrap'=/target/release/deps/libtextwrap-61beeb1f0d30d2c6.rlib' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ripgrep-15.1.0/crates/core/main.rs \
+        1>          /target/release/deps/out-2449a649f34fa613-stdout \
+        2>          /target/release/deps/out-2449a649f34fa613-stderr \
+        || echo $? >/target/release/deps/out-2449a649f34fa613-errcode\
+  ; find /target/release/deps/*-2449a649f34fa613* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-2449a649f34fa613
-COPY --link --from=dep-n-ripgrep-15.1.0-2449a649f34fa613 /tmp/clis-ripgrep_15-1-0/release/deps/*-2449a649f34fa613* /
+COPY --link --from=dep-n-ripgrep-15.1.0-2449a649f34fa613 /target/release/deps/*-2449a649f34fa613* /
 
 # Pipe this file to:
 # DOCKER_BUILDKIT="1" \
@@ -7620,8 +7620,8 @@ COPY --link --from=dep-n-ripgrep-15.1.0-2449a649f34fa613 /tmp/clis-ripgrep_15-1-
 ##     "rg-2449a649f34fa613.d",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/deps/rg-2449a649f34fa613.d","emit":"dep-info"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-ripgrep_15-1-0/release/deps/rg-2449a649f34fa613","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/rg-2449a649f34fa613.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/rg-2449a649f34fa613","emit":"link"}',
 ## ]
 ##
 ## [[externs]]
@@ -7758,15 +7758,15 @@ COPY --link --from=dep-n-ripgrep-15.1.0-2449a649f34fa613 /tmp/clis-ripgrep_15-1-
 ##
 ## [[mounts]]
 ## name = "out-5f8fd3dd93685614"
-## mount = "/tmp/clis-ripgrep_15-1-0/release/build/serde_core-5f8fd3dd93685614/out"
+## mount = "/target/release/build/serde_core-5f8fd3dd93685614/out"
 ##
 ## [[mounts]]
 ## name = "out-ba8a06e0f44b5ff8"
-## mount = "/tmp/clis-ripgrep_15-1-0/release/build/serde-ba8a06e0f44b5ff8/out"
+## mount = "/target/release/build/serde-ba8a06e0f44b5ff8/out"
 ##
 ## [[mounts]]
 ## name = "out-76b9952f03f0a394"
-## mount = "/tmp/clis-ripgrep_15-1-0/release/build/ripgrep-76b9952f03f0a394/out"
+## mount = "/target/release/build/ripgrep-76b9952f03f0a394/out"
 ##
 ## [[stages]]
 ##
@@ -7790,45 +7790,45 @@ COPY --link --from=dep-n-ripgrep-15.1.0-2449a649f34fa613 /tmp/clis-ripgrep_15-1-
 ## script = '''
 ## FROM rust-base AS dep-n-ripgrep-15.1.0-2449a649f34fa613
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-ripgrep_15-1-0/release/deps
+## WORKDIR /target/release/deps
 ## RUN \
 ##   --mount=from=cratesio-ripgrep-15.1.0,source=/ripgrep-15.1.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ripgrep-15.1.0 \
-##   --mount=from=out-668c6ccec8f0b208,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libanyhow-668c6ccec8f0b208.rlib,source=/libanyhow-668c6ccec8f0b208.rlib \
-##   --mount=from=out-d3eea57fb24a933f,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libbstr-d3eea57fb24a933f.rlib,source=/libbstr-d3eea57fb24a933f.rlib \
-##   --mount=from=out-3a40f50ac19c9d2e,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libmemchr-3a40f50ac19c9d2e.rlib,source=/libmemchr-3a40f50ac19c9d2e.rlib \
-##   --mount=from=out-e22c3e2bd8aa6773,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libregex_automata-e22c3e2bd8aa6773.rlib,source=/libregex_automata-e22c3e2bd8aa6773.rlib \
-##   --mount=from=out-a01a7f030e27d71e,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libaho_corasick-a01a7f030e27d71e.rlib,source=/libaho_corasick-a01a7f030e27d71e.rlib \
-##   --mount=from=out-34711e95edd06069,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libregex_syntax-34711e95edd06069.rlib,source=/libregex_syntax-34711e95edd06069.rlib \
-##   --mount=from=out-90b5ae48eae28f98,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libgrep-90b5ae48eae28f98.rlib,source=/libgrep-90b5ae48eae28f98.rlib \
-##   --mount=from=out-1b7b0003cc5fcc34,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libgrep_cli-1b7b0003cc5fcc34.rlib,source=/libgrep_cli-1b7b0003cc5fcc34.rlib \
-##   --mount=from=out-626b3cb378b61839,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libglobset-626b3cb378b61839.rlib,source=/libglobset-626b3cb378b61839.rlib \
-##   --mount=from=out-961aebfc4598d968,dst=/tmp/clis-ripgrep_15-1-0/release/deps/liblog-961aebfc4598d968.rlib,source=/liblog-961aebfc4598d968.rlib \
-##   --mount=from=out-fda8220236222977,dst=/tmp/clis-ripgrep_15-1-0/release/deps/liblibc-fda8220236222977.rlib,source=/liblibc-fda8220236222977.rlib \
-##   --mount=from=out-82ca06e8aad1563b,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libtermcolor-82ca06e8aad1563b.rlib,source=/libtermcolor-82ca06e8aad1563b.rlib \
-##   --mount=from=out-d59a566cc66becf8,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libgrep_matcher-d59a566cc66becf8.rlib,source=/libgrep_matcher-d59a566cc66becf8.rlib \
-##   --mount=from=out-a2f81f4f0caeb673,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libgrep_printer-a2f81f4f0caeb673.rlib,source=/libgrep_printer-a2f81f4f0caeb673.rlib \
-##   --mount=from=out-82a451c10ca406e4,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libgrep_searcher-82a451c10ca406e4.rlib,source=/libgrep_searcher-82a451c10ca406e4.rlib \
-##   --mount=from=out-e0d6e4f8a8eb4371,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libencoding_rs-e0d6e4f8a8eb4371.rlib,source=/libencoding_rs-e0d6e4f8a8eb4371.rlib \
-##   --mount=from=out-e78ec6df4b56941f,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libcfg_if-e78ec6df4b56941f.rlib,source=/libcfg_if-e78ec6df4b56941f.rlib \
-##   --mount=from=out-651f5691fade4e93,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libencoding_rs_io-651f5691fade4e93.rlib,source=/libencoding_rs_io-651f5691fade4e93.rlib \
-##   --mount=from=out-977b6f2f3b8d0f6b,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libmemmap2-977b6f2f3b8d0f6b.rlib,source=/libmemmap2-977b6f2f3b8d0f6b.rlib \
-##   --mount=from=out-b2e448cd36891534,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libserde-b2e448cd36891534.rlib,source=/libserde-b2e448cd36891534.rlib \
-##   --mount=from=out-9c5f6198d88ce592,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libserde_core-9c5f6198d88ce592.rlib,source=/libserde_core-9c5f6198d88ce592.rlib \
-##   --mount=from=out-53d4d749d624f2e4,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libserde_json-53d4d749d624f2e4.rlib,source=/libserde_json-53d4d749d624f2e4.rlib \
-##   --mount=from=out-4ed5967b8bb80767,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libitoa-4ed5967b8bb80767.rlib,source=/libitoa-4ed5967b8bb80767.rlib \
-##   --mount=from=out-60ca480634bc0094,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libryu-60ca480634bc0094.rlib,source=/libryu-60ca480634bc0094.rlib \
-##   --mount=from=out-45a71c617829751e,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libgrep_regex-45a71c617829751e.rlib,source=/libgrep_regex-45a71c617829751e.rlib \
-##   --mount=from=out-2cc462596c8f1df7,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libignore-2cc462596c8f1df7.rlib,source=/libignore-2cc462596c8f1df7.rlib \
-##   --mount=from=out-bc8564e6a21281ae,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libcrossbeam_deque-bc8564e6a21281ae.rlib,source=/libcrossbeam_deque-bc8564e6a21281ae.rlib \
-##   --mount=from=out-6e1b12b7fe23bc4e,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libcrossbeam_epoch-6e1b12b7fe23bc4e.rlib,source=/libcrossbeam_epoch-6e1b12b7fe23bc4e.rlib \
-##   --mount=from=out-8d39f2957943d5af,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libcrossbeam_utils-8d39f2957943d5af.rlib,source=/libcrossbeam_utils-8d39f2957943d5af.rlib \
-##   --mount=from=out-dc83793791eda320,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libsame_file-dc83793791eda320.rlib,source=/libsame_file-dc83793791eda320.rlib \
-##   --mount=from=out-0b24d0afda3e5658,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libwalkdir-0b24d0afda3e5658.rlib,source=/libwalkdir-0b24d0afda3e5658.rlib \
-##   --mount=from=out-7a1f13bcc63da167,dst=/tmp/clis-ripgrep_15-1-0/release/deps/liblexopt-7a1f13bcc63da167.rlib,source=/liblexopt-7a1f13bcc63da167.rlib \
-##   --mount=from=out-61beeb1f0d30d2c6,dst=/tmp/clis-ripgrep_15-1-0/release/deps/libtextwrap-61beeb1f0d30d2c6.rlib,source=/libtextwrap-61beeb1f0d30d2c6.rlib \
-##   --mount=from=out-5f8fd3dd93685614,dst=/tmp/clis-ripgrep_15-1-0/release/build/serde_core-5f8fd3dd93685614/out,source=/ \
-##   --mount=from=out-ba8a06e0f44b5ff8,dst=/tmp/clis-ripgrep_15-1-0/release/build/serde-ba8a06e0f44b5ff8/out,source=/ \
-##   --mount=from=out-76b9952f03f0a394,dst=/tmp/clis-ripgrep_15-1-0/release/build/ripgrep-76b9952f03f0a394/out,source=/ \
+##   --mount=from=out-668c6ccec8f0b208,dst=/target/release/deps/libanyhow-668c6ccec8f0b208.rlib,source=/libanyhow-668c6ccec8f0b208.rlib \
+##   --mount=from=out-d3eea57fb24a933f,dst=/target/release/deps/libbstr-d3eea57fb24a933f.rlib,source=/libbstr-d3eea57fb24a933f.rlib \
+##   --mount=from=out-3a40f50ac19c9d2e,dst=/target/release/deps/libmemchr-3a40f50ac19c9d2e.rlib,source=/libmemchr-3a40f50ac19c9d2e.rlib \
+##   --mount=from=out-e22c3e2bd8aa6773,dst=/target/release/deps/libregex_automata-e22c3e2bd8aa6773.rlib,source=/libregex_automata-e22c3e2bd8aa6773.rlib \
+##   --mount=from=out-a01a7f030e27d71e,dst=/target/release/deps/libaho_corasick-a01a7f030e27d71e.rlib,source=/libaho_corasick-a01a7f030e27d71e.rlib \
+##   --mount=from=out-34711e95edd06069,dst=/target/release/deps/libregex_syntax-34711e95edd06069.rlib,source=/libregex_syntax-34711e95edd06069.rlib \
+##   --mount=from=out-90b5ae48eae28f98,dst=/target/release/deps/libgrep-90b5ae48eae28f98.rlib,source=/libgrep-90b5ae48eae28f98.rlib \
+##   --mount=from=out-1b7b0003cc5fcc34,dst=/target/release/deps/libgrep_cli-1b7b0003cc5fcc34.rlib,source=/libgrep_cli-1b7b0003cc5fcc34.rlib \
+##   --mount=from=out-626b3cb378b61839,dst=/target/release/deps/libglobset-626b3cb378b61839.rlib,source=/libglobset-626b3cb378b61839.rlib \
+##   --mount=from=out-961aebfc4598d968,dst=/target/release/deps/liblog-961aebfc4598d968.rlib,source=/liblog-961aebfc4598d968.rlib \
+##   --mount=from=out-fda8220236222977,dst=/target/release/deps/liblibc-fda8220236222977.rlib,source=/liblibc-fda8220236222977.rlib \
+##   --mount=from=out-82ca06e8aad1563b,dst=/target/release/deps/libtermcolor-82ca06e8aad1563b.rlib,source=/libtermcolor-82ca06e8aad1563b.rlib \
+##   --mount=from=out-d59a566cc66becf8,dst=/target/release/deps/libgrep_matcher-d59a566cc66becf8.rlib,source=/libgrep_matcher-d59a566cc66becf8.rlib \
+##   --mount=from=out-a2f81f4f0caeb673,dst=/target/release/deps/libgrep_printer-a2f81f4f0caeb673.rlib,source=/libgrep_printer-a2f81f4f0caeb673.rlib \
+##   --mount=from=out-82a451c10ca406e4,dst=/target/release/deps/libgrep_searcher-82a451c10ca406e4.rlib,source=/libgrep_searcher-82a451c10ca406e4.rlib \
+##   --mount=from=out-e0d6e4f8a8eb4371,dst=/target/release/deps/libencoding_rs-e0d6e4f8a8eb4371.rlib,source=/libencoding_rs-e0d6e4f8a8eb4371.rlib \
+##   --mount=from=out-e78ec6df4b56941f,dst=/target/release/deps/libcfg_if-e78ec6df4b56941f.rlib,source=/libcfg_if-e78ec6df4b56941f.rlib \
+##   --mount=from=out-651f5691fade4e93,dst=/target/release/deps/libencoding_rs_io-651f5691fade4e93.rlib,source=/libencoding_rs_io-651f5691fade4e93.rlib \
+##   --mount=from=out-977b6f2f3b8d0f6b,dst=/target/release/deps/libmemmap2-977b6f2f3b8d0f6b.rlib,source=/libmemmap2-977b6f2f3b8d0f6b.rlib \
+##   --mount=from=out-b2e448cd36891534,dst=/target/release/deps/libserde-b2e448cd36891534.rlib,source=/libserde-b2e448cd36891534.rlib \
+##   --mount=from=out-9c5f6198d88ce592,dst=/target/release/deps/libserde_core-9c5f6198d88ce592.rlib,source=/libserde_core-9c5f6198d88ce592.rlib \
+##   --mount=from=out-53d4d749d624f2e4,dst=/target/release/deps/libserde_json-53d4d749d624f2e4.rlib,source=/libserde_json-53d4d749d624f2e4.rlib \
+##   --mount=from=out-4ed5967b8bb80767,dst=/target/release/deps/libitoa-4ed5967b8bb80767.rlib,source=/libitoa-4ed5967b8bb80767.rlib \
+##   --mount=from=out-60ca480634bc0094,dst=/target/release/deps/libryu-60ca480634bc0094.rlib,source=/libryu-60ca480634bc0094.rlib \
+##   --mount=from=out-45a71c617829751e,dst=/target/release/deps/libgrep_regex-45a71c617829751e.rlib,source=/libgrep_regex-45a71c617829751e.rlib \
+##   --mount=from=out-2cc462596c8f1df7,dst=/target/release/deps/libignore-2cc462596c8f1df7.rlib,source=/libignore-2cc462596c8f1df7.rlib \
+##   --mount=from=out-bc8564e6a21281ae,dst=/target/release/deps/libcrossbeam_deque-bc8564e6a21281ae.rlib,source=/libcrossbeam_deque-bc8564e6a21281ae.rlib \
+##   --mount=from=out-6e1b12b7fe23bc4e,dst=/target/release/deps/libcrossbeam_epoch-6e1b12b7fe23bc4e.rlib,source=/libcrossbeam_epoch-6e1b12b7fe23bc4e.rlib \
+##   --mount=from=out-8d39f2957943d5af,dst=/target/release/deps/libcrossbeam_utils-8d39f2957943d5af.rlib,source=/libcrossbeam_utils-8d39f2957943d5af.rlib \
+##   --mount=from=out-dc83793791eda320,dst=/target/release/deps/libsame_file-dc83793791eda320.rlib,source=/libsame_file-dc83793791eda320.rlib \
+##   --mount=from=out-0b24d0afda3e5658,dst=/target/release/deps/libwalkdir-0b24d0afda3e5658.rlib,source=/libwalkdir-0b24d0afda3e5658.rlib \
+##   --mount=from=out-7a1f13bcc63da167,dst=/target/release/deps/liblexopt-7a1f13bcc63da167.rlib,source=/liblexopt-7a1f13bcc63da167.rlib \
+##   --mount=from=out-61beeb1f0d30d2c6,dst=/target/release/deps/libtextwrap-61beeb1f0d30d2c6.rlib,source=/libtextwrap-61beeb1f0d30d2c6.rlib \
+##   --mount=from=out-5f8fd3dd93685614,dst=/target/release/build/serde_core-5f8fd3dd93685614/out,source=/ \
+##   --mount=from=out-ba8a06e0f44b5ff8,dst=/target/release/build/serde-ba8a06e0f44b5ff8/out,source=/ \
+##   --mount=from=out-76b9952f03f0a394,dst=/target/release/build/ripgrep-76b9952f03f0a394/out,source=/ \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_BIN_NAME=rg \
 ##         CARGO_CRATE_NAME=rg \
@@ -7854,13 +7854,13 @@ COPY --link --from=dep-n-ripgrep-15.1.0-2449a649f34fa613 /tmp/clis-ripgrep_15-1-
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGO_PRIMARY_PACKAGE=1 \
 ##         CARGO_SBOM_PATH= \
-##         OUT_DIR=/tmp/clis-ripgrep_15-1-0/release/build/ripgrep-76b9952f03f0a394/out \
+##         OUT_DIR=/target/release/build/ripgrep-76b9952f03f0a394/out \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name rg --edition 2024 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("pcre2"))' -C metadata'=5a53ee39281f5533' -C extra-filename'=-2449a649f34fa613' --out-dir /tmp/clis-ripgrep_15-1-0/release/deps -L dependency'=/tmp/clis-ripgrep_15-1-0/release/deps' --extern anyhow'=/tmp/clis-ripgrep_15-1-0/release/deps/libanyhow-668c6ccec8f0b208.rlib' --extern bstr'=/tmp/clis-ripgrep_15-1-0/release/deps/libbstr-d3eea57fb24a933f.rlib' --extern grep'=/tmp/clis-ripgrep_15-1-0/release/deps/libgrep-90b5ae48eae28f98.rlib' --extern ignore'=/tmp/clis-ripgrep_15-1-0/release/deps/libignore-2cc462596c8f1df7.rlib' --extern lexopt'=/tmp/clis-ripgrep_15-1-0/release/deps/liblexopt-7a1f13bcc63da167.rlib' --extern log'=/tmp/clis-ripgrep_15-1-0/release/deps/liblog-961aebfc4598d968.rlib' --extern serde_json'=/tmp/clis-ripgrep_15-1-0/release/deps/libserde_json-53d4d749d624f2e4.rlib' --extern termcolor'=/tmp/clis-ripgrep_15-1-0/release/deps/libtermcolor-82ca06e8aad1563b.rlib' --extern textwrap'=/tmp/clis-ripgrep_15-1-0/release/deps/libtextwrap-61beeb1f0d30d2c6.rlib' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ripgrep-15.1.0/crates/core/main.rs \
-##         1>          /tmp/clis-ripgrep_15-1-0/release/deps/out-2449a649f34fa613-stdout \
-##         2>          /tmp/clis-ripgrep_15-1-0/release/deps/out-2449a649f34fa613-stderr \
-##         || echo $? >/tmp/clis-ripgrep_15-1-0/release/deps/out-2449a649f34fa613-errcode\
-##   ; find /tmp/clis-ripgrep_15-1-0/release/deps/*-2449a649f34fa613* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name rg --edition 2024 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C opt-level'=3' -C embed-bitcode'=no' -C debuginfo'=1' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("pcre2"))' -C metadata'=5a53ee39281f5533' -C extra-filename'=-2449a649f34fa613' --out-dir /target/release/deps -L dependency'=/target/release/deps' --extern anyhow'=/target/release/deps/libanyhow-668c6ccec8f0b208.rlib' --extern bstr'=/target/release/deps/libbstr-d3eea57fb24a933f.rlib' --extern grep'=/target/release/deps/libgrep-90b5ae48eae28f98.rlib' --extern ignore'=/target/release/deps/libignore-2cc462596c8f1df7.rlib' --extern lexopt'=/target/release/deps/liblexopt-7a1f13bcc63da167.rlib' --extern log'=/target/release/deps/liblog-961aebfc4598d968.rlib' --extern serde_json'=/target/release/deps/libserde_json-53d4d749d624f2e4.rlib' --extern termcolor'=/target/release/deps/libtermcolor-82ca06e8aad1563b.rlib' --extern textwrap'=/target/release/deps/libtextwrap-61beeb1f0d30d2c6.rlib' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ripgrep-15.1.0/crates/core/main.rs \
+##         1>          /target/release/deps/out-2449a649f34fa613-stdout \
+##         2>          /target/release/deps/out-2449a649f34fa613-stderr \
+##         || echo $? >/target/release/deps/out-2449a649f34fa613-errcode\
+##   ; find /target/release/deps/*-2449a649f34fa613* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -7868,7 +7868,7 @@ COPY --link --from=dep-n-ripgrep-15.1.0-2449a649f34fa613 /tmp/clis-ripgrep_15-1-
 ## stage = "out-2449a649f34fa613"
 ## script = """
 ## FROM scratch AS out-2449a649f34fa613
-## COPY --link --from=dep-n-ripgrep-15.1.0-2449a649f34fa613 /tmp/clis-ripgrep_15-1-0/release/deps/*-2449a649f34fa613* /"""
+## COPY --link --from=dep-n-ripgrep-15.1.0-2449a649f34fa613 /target/release/deps/*-2449a649f34fa613* /"""
 
 FROM scratch
 COPY --link --from=out-2449a649f34fa613 /rg-2449a649f34fa613 /rg
