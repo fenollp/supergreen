@@ -8,6 +8,7 @@ use serde::{Deserialize, Serialize};
 use crate::{
     md::MdId,
     stage::{AsBlock, AsStage, NamedStage, Stage},
+    target_dir::VIRTUAL_TARGET_DIR,
 };
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash)]
@@ -76,6 +77,10 @@ pub(crate) async fn as_stage(mdid: MdId, pwd: &Utf8Path) -> Result<NamedStage> {
         entries.into_iter().partition(|fname| {
             if fname == ".dockerignore" {
                 debug!("excluding {fname}");
+                return false;
+            }
+            if fname == VIRTUAL_TARGET_DIR.trim_matches('/') {
+                debug!("excluding {fname} or it will clash with internal target dir");
                 return false;
             }
             if fname == ".git" && pwd.join(fname).is_dir() {

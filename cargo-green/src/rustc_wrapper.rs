@@ -23,6 +23,7 @@ use crate::{
     runner::Runner,
     rustc_arguments::{as_rustc, RustcArgs},
     stage::{AsStage, Stage, RST, RUST},
+    target_dir::{virtual_target_dir, virtual_target_dir_str},
     PKG, VSN,
 };
 
@@ -204,7 +205,7 @@ async fn do_wrap_rustc(
 
     let mut rustc_block = format!("FROM {RST} AS {rustc_stage}\n");
     rustc_block.push_str(&format!("SHELL {SHELL:?}\n"));
-    rustc_block.push_str(&format!("WORKDIR {out_dir}\n"));
+    rustc_block.push_str(&format!("WORKDIR {out_dir}\n", out_dir = virtual_target_dir(&out_dir)));
     if !pwd.starts_with(cargo_home.join("registry/src")) {
         // Essentially match the same-ish path that points to crates-io paths.
         // Experiment showed that git-check'ed-out crates didn't like: // if !pwd.starts_with(&cargo_home) {
@@ -237,6 +238,7 @@ async fn do_wrap_rustc(
     rustc_block.push_str("RUN \\\n");
     for (src, dst, swappity) in code_stage.mounts() {
         let name = code_stage.name();
+        let dst = virtual_target_dir(&dst);
         let src = src.as_deref().map(|src| format!(",source={src}")).unwrap_or_default();
         let mount = if swappity { format!(",dst={dst}{src}") } else { format!("{src},dst={dst}") };
         let rw = if buildrs { ",rw" } else { "" }; //FIXME
@@ -256,7 +258,7 @@ async fn do_wrap_rustc(
 
     let mds = md.assemble_build_dependencies(externs, out_dir_var, &target_path)?;
     for MountExtern { from, xtern } in md.externs() {
-        let dst = target_path.join("deps").join(xtern);
+        let dst = virtual_target_dir(&target_path).join("deps").join(xtern);
         rustc_block.push_str(&format!("  --mount=from={from},dst={dst},source=/{xtern} \\\n"));
     }
     for NamedMount { name, mount } in &md.mounts {
@@ -269,7 +271,12 @@ async fn do_wrap_rustc(
         rustc_block.push_str(&rewrite_main(mdid, &input));
     }
 
-    let args = args.into_iter().map(|arg| safeify(&arg).unwrap()).collect::<Vec<_>>().join(" ");
+    let args = args
+        .into_iter()
+        .map(|ref x| virtual_target_dir_str(x))
+        .map(|arg| safeify(&arg).unwrap())
+        .collect::<Vec<_>>()
+        .join(" ");
     md.run_block(
         &rustc_stage,
         &out_stage,
@@ -332,6 +339,7 @@ impl Md {
         let mut set = HashSet::from(["CARGO".to_owned()]);
         for (var, val) in env::vars().filter_map(|kv| fmap_env(kv, buildrs)) {
             let val = safeify(&val)?;
+            let val = virtual_target_dir_str(&val);
             block.push_str(&format!("        {var}={val} \\\n"));
             set.insert(var.clone());
         }
@@ -343,6 +351,7 @@ impl Md {
             }
             warn!("setting rustc-env: ${var}={val:?}");
             let val = safeify(val)?;
+            let val = virtual_target_dir_str(&val);
             block.push_str(&format!("        {var}={val} \\\n"));
             set.insert(var.to_owned());
         }
@@ -354,6 +363,7 @@ impl Md {
             if let Ok(val) = env::var(var) {
                 warn!("passing ${var}={val:?} env through");
                 let val = safeify(&val)?;
+                let val = virtual_target_dir_str(&val);
                 block.push_str(&format!("        {var}={val} \\\n"));
                 set.insert(var.to_owned());
             }
@@ -370,11 +380,13 @@ impl Md {
                 debug!("system env set (skipped): ${var}={val:?}");
                 if !val.is_empty() {
                     let val = safeify(&val)?;
+                    let val = virtual_target_dir_str(&val);
                     block.push_str(&format!("#       {var}={val:?} \\\n"));
                 }
             }
         }
 
+        let out_dir = virtual_target_dir(out_dir);
         block.push_str(&format!("      {call} \\\n"));
         block.push_str(&format!("        1>          {out_dir}/{out_stage}-{STDOUT} \\\n"));
         block.push_str(&format!("        2>          {out_dir}/{out_stage}-{STDERR} \\\n"));
@@ -399,6 +411,7 @@ impl Md {
         buildrs: bool,
     ) {
         let mut block = format!("FROM scratch AS {stage}\n");
+        let out_dir = virtual_target_dir(out_dir);
         if buildrs {
             block.push_str(&format!("COPY --link --from={prev} {out_dir} /\n"));
         } else {
@@ -500,16 +513,7 @@ fn fmap_env((var, val): (String, String), buildrs: bool) -> Option<(String, Stri
             }
             "TERM" => return None,
             "RUSTC" => "rustc".to_owned(), // Rewrite host rustc so the base_image one can be used
-            // "CARGO_TARGET_DIR" | "CARGO_BUILD_TARGET_DIR" => {
-            //     virtual_target_dir(Utf8Path::new(&val)).to_string()
-            // }
-            // // TODO: a constant $CARGO_TARGET_DIR possible solution is to wrap build script as it runs,
-            // // ie. controlling all outputs. This should help: https://github.com/trailofbits/build-wrap/blob/d7f43b76e655e43755f68e28e9d729b4ed1dd115/src/wrapper.rs#L29
-            // //(dbcc)=> Dirty typenum v1.12.0: stale, https://github.com/rust-lang/cargo/blob/7987d4bfe683267ba179b42af55891badde3ccbf/src/cargo/core/compiler/fingerprint/mod.rs#L2030
-            // //=> /tmp/clis-dbcc_2-2-1/release/deps/typenum-32188cb0392f25b9.d
-            // "OUT_DIR" => virtual_target_dir(Utf8Path::new(&val)).to_string(),
-            "CARGO_TARGET_DIR" | "CARGO_BUILD_TARGET_DIR" => return None,
-            "OUT_DIR" => val,
+            "OUT_DIR" => virtual_target_dir(Utf8Path::new(&val)).to_string(),
             _ => val,
         };
         return Some((var, val));

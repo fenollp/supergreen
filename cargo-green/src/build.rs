@@ -42,6 +42,7 @@ use crate::{
     rechrome,
     runner::DOCKER_HOST,
     stage::Stage,
+    target_dir::un_virtual_target_dir_str,
     ENV_LOG_PATH, PKG,
 };
 
@@ -530,8 +531,14 @@ async fn run_build(
                                 let mut file = opts
                                     .open(&fname)
                                     .map_err(|e| anyhow!("Failed opening atomic {fname}: {e}"))?;
-                                file.write_all(&buf)
-                                    .map_err(|e| anyhow!("Failed writing unTARed: {e}"))?;
+                                if name.as_str().ends_with(".d") {
+                                    let buf = str::from_utf8(&buf).expect("cargo writes utf8");
+                                    let buf = un_virtual_target_dir_str(buf);
+                                    file.write_all(buf.as_bytes())
+                                } else {
+                                    file.write_all(&buf)
+                                }
+                                .map_err(|e| anyhow!("Failed writing unTARed: {e}"))?;
                                 file.commit()
                                     .map_err(|e| anyhow!("Failed writing unTARed: {e}"))?;
                             }
@@ -710,7 +717,7 @@ fn fwd_stderr(stderr: &str, badge: &'static str) -> FromStderr {
 
             hide_credentials_on_rate_limit(&mut msg);
 
-            eprintln!("{msg}");
+            eprintln!("{}", un_virtual_target_dir_str(&msg));
             acc.stderr.push(msg);
         }
     }
@@ -789,7 +796,7 @@ fn fwd_stdout(stdout: &str, badge: &'static str) -> FromStdout {
                 }
             }
 
-            println!("{msg}");
+            println!("{}", un_virtual_target_dir_str(msg));
             acc.stdout.push(msg.to_owned());
         }
     }
@@ -820,13 +827,32 @@ fn hide_credentials_from_final_log() {
 }
 
 #[test]
+fn un_rewrites_target_dir_before_outputting_to_cargo() {
+    temp_env::with_var("CARGO_TARGET_DIR", Some("/tmp/clis-vixargs_0-1-0/"), || {
+        let msg = r#"
+    {"$message_type":"artifact","artifact":"/target/release/deps/libclap_derive-fcea659dae5440c4.so","emit":"link"}
+    {"$message_type":"diagnostic","message":"2 warnings emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"warning: 2 warnings emitted\n\n"}
+    hi!
+    "#;
+        assert_eq!(
+            un_virtual_target_dir_str(msg),
+            r#"
+    {"$message_type":"artifact","artifact":"/tmp/clis-vixargs_0-1-0/release/deps/libclap_derive-fcea659dae5440c4.so","emit":"link"}
+    {"$message_type":"diagnostic","message":"2 warnings emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"warning: 2 warnings emitted\n\n"}
+    hi!
+    "#
+        );
+    })
+}
+
+#[test]
 fn stdio_passthrough_from_runner() {
     assert_eq!(lift_stdio("#47 1.714 hi!"), Some("hi!"));
     let lines = [
         r#"#47 1.714 {"$message_type":"artifact","artifact":"/tmp/clis-vixargs_0-1-0/release/deps/libclap_derive-fcea659dae5440c4.so","emit":"link"}"#,
         r#"#47 1.714 {"$message_type":"diagnostic","message":"2 warnings emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"warning: 2 warnings emitted\n\n"}"#,
         r#"#47 1.714 hi!"#,
-    ].into_iter().map(|line| lift_stdio(line));
+    ].into_iter().map(lift_stdio);
     assert_eq!(
         lines.collect::<Vec<_>>(),
         vec![

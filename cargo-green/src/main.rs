@@ -1,7 +1,7 @@
 use std::{
     env,
     ffi::{OsStr, OsString},
-    fs::OpenOptions,
+    fs,
     path::PathBuf,
     process::exit,
 };
@@ -31,6 +31,7 @@ mod cratesio;
 mod du;
 mod ext;
 mod relative;
+mod target_dir;
 #[macro_use]
 mod r#final;
 #[macro_use]
@@ -159,7 +160,7 @@ async fn main() -> Result<()> {
             .map_err(|e| anyhow!("Failed canonicalizing ${var}: {e}"))?;
         env::set_var(var, &path);
         cmd.env(var, &path);
-        let _ = OpenOptions::new().create(true).truncate(false).append(true).open(path);
+        let _ = fs::OpenOptions::new().create(true).truncate(false).append(true).open(path);
     }
 
     assert!(env::var_os(ENV!()).is_none());
@@ -187,6 +188,25 @@ async fn main() -> Result<()> {
         return green.prebuild(true).await;
     }
     green.prebuild(false).await?;
+
+    //FIXME: check precedence
+    let target_dir = if let Ok(target_dir) = env::var("CARGO_TARGET_DIR") {
+        target_dir
+    } else if let Some(target_dir) = {
+        let mut args = pico_args::Arguments::from_env();
+        args.opt_value_from_str("--target-dir")?
+    } {
+        target_dir
+    } else if command.as_deref() == Some("install") {
+        tmp().join(hashed_args()).to_string() //FIXME also add used envs, at least some such as RUSTFLAGS
+    } else {
+        pwd().join("target").to_string()
+    };
+    fs::create_dir_all(&target_dir)?;
+    let target_dir = camino::Utf8PathBuf::from(target_dir).canonicalize_utf8().unwrap();
+    let target_dir = format!("{target_dir}/"); // Trailing slash required when replacing strings
+    cmd.env("CARGO_TARGET_DIR", &target_dir);
+    env::set_var("CARGO_TARGET_DIR", target_dir);
 
     if !cmd.status().await?.success() {
         exit(1)
