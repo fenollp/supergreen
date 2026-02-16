@@ -11,7 +11,7 @@ ADD --chmod=0664 --unpack --checksum=sha256:a23eb6b1614318a8071c9b2521f36b424b2c
   https://static.crates.io/crates/anyhow/anyhow-1.0.100.crate /
 FROM rust-base AS dep-x-anyhow-1.0.100-f9fd03f8c3c43dd1
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-kani-verifier_0-66-0/release/build/anyhow-f9fd03f8c3c43dd1
+WORKDIR /target/release/build/anyhow-f9fd03f8c3c43dd1
 RUN \
   --mount=from=cratesio-anyhow-1.0.100,source=/anyhow-1.0.100,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.100,rw \
     { \
@@ -53,13 +53,13 @@ RUN \
         CARGO_PKG_VERSION_PATCH=100 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --crate-name build_script_build --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("backtrace", "default", "std"))' -C metadata'=125a405e7435767b' -C extra-filename'=-f9fd03f8c3c43dd1' --out-dir /tmp/clis-kani-verifier_0-66-0/release/build/anyhow-f9fd03f8c3c43dd1 -C strip'=debuginfo' -L dependency'=/tmp/clis-kani-verifier_0-66-0/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.100/build.rs \
-        1>          /tmp/clis-kani-verifier_0-66-0/release/build/anyhow-f9fd03f8c3c43dd1/out-f9fd03f8c3c43dd1-stdout \
-        2>          /tmp/clis-kani-verifier_0-66-0/release/build/anyhow-f9fd03f8c3c43dd1/out-f9fd03f8c3c43dd1-stderr \
-        || echo $? >/tmp/clis-kani-verifier_0-66-0/release/build/anyhow-f9fd03f8c3c43dd1/out-f9fd03f8c3c43dd1-errcode\
-  ; find /tmp/clis-kani-verifier_0-66-0/release/build/anyhow-f9fd03f8c3c43dd1/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      rustc --crate-name build_script_build --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("backtrace", "default", "std"))' -C metadata'=125a405e7435767b' -C extra-filename'=-f9fd03f8c3c43dd1' --out-dir /target/release/build/anyhow-f9fd03f8c3c43dd1 -C strip'=debuginfo' -L dependency'=/target/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.100/build.rs \
+        1>          /target/release/build/anyhow-f9fd03f8c3c43dd1/out-f9fd03f8c3c43dd1-stdout \
+        2>          /target/release/build/anyhow-f9fd03f8c3c43dd1/out-f9fd03f8c3c43dd1-stderr \
+        || echo $? >/target/release/build/anyhow-f9fd03f8c3c43dd1/out-f9fd03f8c3c43dd1-errcode\
+  ; find /target/release/build/anyhow-f9fd03f8c3c43dd1/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-f9fd03f8c3c43dd1
-COPY --link --from=dep-x-anyhow-1.0.100-f9fd03f8c3c43dd1 /tmp/clis-kani-verifier_0-66-0/release/build/anyhow-f9fd03f8c3c43dd1/*-f9fd03f8c3c43dd1* /
+COPY --link --from=dep-x-anyhow-1.0.100-f9fd03f8c3c43dd1 /target/release/build/anyhow-f9fd03f8c3c43dd1/*-f9fd03f8c3c43dd1* /
 
 ## this = "f9fd03f8c3c43dd1"
 ## writes = [
@@ -67,8 +67,8 @@ COPY --link --from=dep-x-anyhow-1.0.100-f9fd03f8c3c43dd1 /tmp/clis-kani-verifier
 ##     "build_script_build-f9fd03f8c3c43dd1.d",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-kani-verifier_0-66-0/release/build/anyhow-f9fd03f8c3c43dd1/build_script_build-f9fd03f8c3c43dd1.d","emit":"dep-info"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-kani-verifier_0-66-0/release/build/anyhow-f9fd03f8c3c43dd1/build_script_build-f9fd03f8c3c43dd1","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/build/anyhow-f9fd03f8c3c43dd1/build_script_build-f9fd03f8c3c43dd1.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/build/anyhow-f9fd03f8c3c43dd1/build_script_build-f9fd03f8c3c43dd1","emit":"link"}',
 ## ]
 ##
 ## [[stages]]
@@ -93,7 +93,7 @@ COPY --link --from=dep-x-anyhow-1.0.100-f9fd03f8c3c43dd1 /tmp/clis-kani-verifier
 ## script = '''
 ## FROM rust-base AS dep-x-anyhow-1.0.100-f9fd03f8c3c43dd1
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-kani-verifier_0-66-0/release/build/anyhow-f9fd03f8c3c43dd1
+## WORKDIR /target/release/build/anyhow-f9fd03f8c3c43dd1
 ## RUN \
 ##   --mount=from=cratesio-anyhow-1.0.100,source=/anyhow-1.0.100,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.100,rw \
 ##     { \
@@ -135,11 +135,11 @@ COPY --link --from=dep-x-anyhow-1.0.100-f9fd03f8c3c43dd1 /tmp/clis-kani-verifier
 ##         CARGO_PKG_VERSION_PATCH=100 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name build_script_build --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("backtrace", "default", "std"))' -C metadata'=125a405e7435767b' -C extra-filename'=-f9fd03f8c3c43dd1' --out-dir /tmp/clis-kani-verifier_0-66-0/release/build/anyhow-f9fd03f8c3c43dd1 -C strip'=debuginfo' -L dependency'=/tmp/clis-kani-verifier_0-66-0/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.100/build.rs \
-##         1>          /tmp/clis-kani-verifier_0-66-0/release/build/anyhow-f9fd03f8c3c43dd1/out-f9fd03f8c3c43dd1-stdout \
-##         2>          /tmp/clis-kani-verifier_0-66-0/release/build/anyhow-f9fd03f8c3c43dd1/out-f9fd03f8c3c43dd1-stderr \
-##         || echo $? >/tmp/clis-kani-verifier_0-66-0/release/build/anyhow-f9fd03f8c3c43dd1/out-f9fd03f8c3c43dd1-errcode\
-##   ; find /tmp/clis-kani-verifier_0-66-0/release/build/anyhow-f9fd03f8c3c43dd1/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name build_script_build --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("backtrace", "default", "std"))' -C metadata'=125a405e7435767b' -C extra-filename'=-f9fd03f8c3c43dd1' --out-dir /target/release/build/anyhow-f9fd03f8c3c43dd1 -C strip'=debuginfo' -L dependency'=/target/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.100/build.rs \
+##         1>          /target/release/build/anyhow-f9fd03f8c3c43dd1/out-f9fd03f8c3c43dd1-stdout \
+##         2>          /target/release/build/anyhow-f9fd03f8c3c43dd1/out-f9fd03f8c3c43dd1-stderr \
+##         || echo $? >/target/release/build/anyhow-f9fd03f8c3c43dd1/out-f9fd03f8c3c43dd1-errcode\
+##   ; find /target/release/build/anyhow-f9fd03f8c3c43dd1/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -147,14 +147,14 @@ COPY --link --from=dep-x-anyhow-1.0.100-f9fd03f8c3c43dd1 /tmp/clis-kani-verifier
 ## stage = "out-f9fd03f8c3c43dd1"
 ## script = """
 ## FROM scratch AS out-f9fd03f8c3c43dd1
-## COPY --link --from=dep-x-anyhow-1.0.100-f9fd03f8c3c43dd1 /tmp/clis-kani-verifier_0-66-0/release/build/anyhow-f9fd03f8c3c43dd1/*-f9fd03f8c3c43dd1* /"""
+## COPY --link --from=dep-x-anyhow-1.0.100-f9fd03f8c3c43dd1 /target/release/build/anyhow-f9fd03f8c3c43dd1/*-f9fd03f8c3c43dd1* /"""
 
 FROM rust-base AS run-z-anyhow-1.0.100-d45b6249b823f856
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-kani-verifier_0-66-0/release/build/anyhow-d45b6249b823f856/out
+WORKDIR /target/release/build/anyhow-d45b6249b823f856/out
 WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.100
 RUN \
-  --mount=from=out-f9fd03f8c3c43dd1,source=/build_script_build-f9fd03f8c3c43dd1,dst=/tmp/clis-kani-verifier_0-66-0/release/build/anyhow-f9fd03f8c3c43dd1/build-script-build \
+  --mount=from=out-f9fd03f8c3c43dd1,source=/build_script_build-f9fd03f8c3c43dd1,dst=/target/release/build/anyhow-f9fd03f8c3c43dd1/build-script-build \
   --mount=from=cratesio-anyhow-1.0.100,source=/anyhow-1.0.100,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.100 \
     env CARGO="$(which cargo)" \
         CARGO_CFG_FEATURE=default,std \
@@ -194,23 +194,23 @@ RUN \
         HOST=x86_64-unknown-linux-gnu \
         NUM_JOBS=4 \
         OPT_LEVEL=3 \
-        OUT_DIR=/tmp/clis-kani-verifier_0-66-0/release/build/anyhow-d45b6249b823f856/out \
+        OUT_DIR=/target/release/build/anyhow-d45b6249b823f856/out \
         PROFILE=release \
         RUSTC=rustc \
         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
         TARGET=x86_64-unknown-linux-gnu \
         CARGOGREEN=1 \
-      CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-kani-verifier_0-66-0/release/build/anyhow-f9fd03f8c3c43dd1/build-script-build \
-        1>          /tmp/clis-kani-verifier_0-66-0/release/build/anyhow-d45b6249b823f856/out/out-d45b6249b823f856-stdout \
-        2>          /tmp/clis-kani-verifier_0-66-0/release/build/anyhow-d45b6249b823f856/out/out-d45b6249b823f856-stderr \
-        || echo $? >/tmp/clis-kani-verifier_0-66-0/release/build/anyhow-d45b6249b823f856/out/out-d45b6249b823f856-errcode\
-  ; find /tmp/clis-kani-verifier_0-66-0/release/build/anyhow-d45b6249b823f856/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      CARGOGREEN_EXECUTE_BUILDRS_= /target/release/build/anyhow-f9fd03f8c3c43dd1/build-script-build \
+        1>          /target/release/build/anyhow-d45b6249b823f856/out/out-d45b6249b823f856-stdout \
+        2>          /target/release/build/anyhow-d45b6249b823f856/out/out-d45b6249b823f856-stderr \
+        || echo $? >/target/release/build/anyhow-d45b6249b823f856/out/out-d45b6249b823f856-errcode\
+  ; find /target/release/build/anyhow-d45b6249b823f856/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-d45b6249b823f856
-COPY --link --from=run-z-anyhow-1.0.100-d45b6249b823f856 /tmp/clis-kani-verifier_0-66-0/release/build/anyhow-d45b6249b823f856/out /
+COPY --link --from=run-z-anyhow-1.0.100-d45b6249b823f856 /target/release/build/anyhow-d45b6249b823f856/out /
 
 ## this = "d45b6249b823f856"
 ## deps = ["f9fd03f8c3c43dd1"]
-## writes_to = "/tmp/clis-kani-verifier_0-66-0/release/build/anyhow-d45b6249b823f856/out"
+## writes_to = "/target/release/build/anyhow-d45b6249b823f856/out"
 ## stdout = [
 ##     "cargo:rerun-if-changed=src/nightly.rs",
 ##     "cargo:rerun-if-env-changed=RUSTC_BOOTSTRAP",
@@ -229,10 +229,10 @@ COPY --link --from=run-z-anyhow-1.0.100-d45b6249b823f856 /tmp/clis-kani-verifier
 ## script = '''
 ## FROM rust-base AS run-z-anyhow-1.0.100-d45b6249b823f856
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-kani-verifier_0-66-0/release/build/anyhow-d45b6249b823f856/out
+## WORKDIR /target/release/build/anyhow-d45b6249b823f856/out
 ## WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.100
 ## RUN \
-##   --mount=from=out-f9fd03f8c3c43dd1,source=/build_script_build-f9fd03f8c3c43dd1,dst=/tmp/clis-kani-verifier_0-66-0/release/build/anyhow-f9fd03f8c3c43dd1/build-script-build \
+##   --mount=from=out-f9fd03f8c3c43dd1,source=/build_script_build-f9fd03f8c3c43dd1,dst=/target/release/build/anyhow-f9fd03f8c3c43dd1/build-script-build \
 ##   --mount=from=cratesio-anyhow-1.0.100,source=/anyhow-1.0.100,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.100 \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CFG_FEATURE=default,std \
@@ -272,17 +272,17 @@ COPY --link --from=run-z-anyhow-1.0.100-d45b6249b823f856 /tmp/clis-kani-verifier
 ##         HOST=x86_64-unknown-linux-gnu \
 ##         NUM_JOBS=4 \
 ##         OPT_LEVEL=3 \
-##         OUT_DIR=/tmp/clis-kani-verifier_0-66-0/release/build/anyhow-d45b6249b823f856/out \
+##         OUT_DIR=/target/release/build/anyhow-d45b6249b823f856/out \
 ##         PROFILE=release \
 ##         RUSTC=rustc \
 ##         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
 ##         TARGET=x86_64-unknown-linux-gnu \
 ##         CARGOGREEN=1 \
-##       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-kani-verifier_0-66-0/release/build/anyhow-f9fd03f8c3c43dd1/build-script-build \
-##         1>          /tmp/clis-kani-verifier_0-66-0/release/build/anyhow-d45b6249b823f856/out/out-d45b6249b823f856-stdout \
-##         2>          /tmp/clis-kani-verifier_0-66-0/release/build/anyhow-d45b6249b823f856/out/out-d45b6249b823f856-stderr \
-##         || echo $? >/tmp/clis-kani-verifier_0-66-0/release/build/anyhow-d45b6249b823f856/out/out-d45b6249b823f856-errcode\
-##   ; find /tmp/clis-kani-verifier_0-66-0/release/build/anyhow-d45b6249b823f856/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       CARGOGREEN_EXECUTE_BUILDRS_= /target/release/build/anyhow-f9fd03f8c3c43dd1/build-script-build \
+##         1>          /target/release/build/anyhow-d45b6249b823f856/out/out-d45b6249b823f856-stdout \
+##         2>          /target/release/build/anyhow-d45b6249b823f856/out/out-d45b6249b823f856-stderr \
+##         || echo $? >/target/release/build/anyhow-d45b6249b823f856/out/out-d45b6249b823f856-errcode\
+##   ; find /target/release/build/anyhow-d45b6249b823f856/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -290,15 +290,15 @@ COPY --link --from=run-z-anyhow-1.0.100-d45b6249b823f856 /tmp/clis-kani-verifier
 ## stage = "out-d45b6249b823f856"
 ## script = """
 ## FROM scratch AS out-d45b6249b823f856
-## COPY --link --from=run-z-anyhow-1.0.100-d45b6249b823f856 /tmp/clis-kani-verifier_0-66-0/release/build/anyhow-d45b6249b823f856/out /"""
+## COPY --link --from=run-z-anyhow-1.0.100-d45b6249b823f856 /target/release/build/anyhow-d45b6249b823f856/out /"""
 
 
 FROM rust-base AS dep-n-anyhow-1.0.100-8d1dc5ae4f738a51
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-kani-verifier_0-66-0/release/deps
+WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-anyhow-1.0.100,source=/anyhow-1.0.100,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.100 \
-  --mount=from=out-d45b6249b823f856,dst=/tmp/clis-kani-verifier_0-66-0/release/build/anyhow-d45b6249b823f856/out,source=/ \
+  --mount=from=out-d45b6249b823f856,dst=/target/release/build/anyhow-d45b6249b823f856/out,source=/ \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=anyhow \
         CARGO_INCREMENTAL=0 \
@@ -318,15 +318,15 @@ RUN \
         CARGO_PKG_VERSION_MINOR=0 \
         CARGO_PKG_VERSION_PATCH=100 \
         CARGO_PKG_VERSION_PRE= \
-        OUT_DIR=/tmp/clis-kani-verifier_0-66-0/release/build/anyhow-d45b6249b823f856/out \
+        OUT_DIR=/target/release/build/anyhow-d45b6249b823f856/out \
         CARGOGREEN=1 \
-      rustc --crate-name anyhow --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("backtrace", "default", "std"))' -C metadata'=16b771de23ab7aa6' -C extra-filename'=-8d1dc5ae4f738a51' --out-dir /tmp/clis-kani-verifier_0-66-0/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-kani-verifier_0-66-0/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.100/src/lib.rs \
-        1>          /tmp/clis-kani-verifier_0-66-0/release/deps/out-8d1dc5ae4f738a51-stdout \
-        2>          /tmp/clis-kani-verifier_0-66-0/release/deps/out-8d1dc5ae4f738a51-stderr \
-        || echo $? >/tmp/clis-kani-verifier_0-66-0/release/deps/out-8d1dc5ae4f738a51-errcode\
-  ; find /tmp/clis-kani-verifier_0-66-0/release/deps/*-8d1dc5ae4f738a51* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      rustc --crate-name anyhow --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("backtrace", "default", "std"))' -C metadata'=16b771de23ab7aa6' -C extra-filename'=-8d1dc5ae4f738a51' --out-dir /target/release/deps -C strip'=debuginfo' -L dependency'=/target/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.100/src/lib.rs \
+        1>          /target/release/deps/out-8d1dc5ae4f738a51-stdout \
+        2>          /target/release/deps/out-8d1dc5ae4f738a51-stderr \
+        || echo $? >/target/release/deps/out-8d1dc5ae4f738a51-errcode\
+  ; find /target/release/deps/*-8d1dc5ae4f738a51* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-8d1dc5ae4f738a51
-COPY --link --from=dep-n-anyhow-1.0.100-8d1dc5ae4f738a51 /tmp/clis-kani-verifier_0-66-0/release/deps/*-8d1dc5ae4f738a51* /
+COPY --link --from=dep-n-anyhow-1.0.100-8d1dc5ae4f738a51 /target/release/deps/*-8d1dc5ae4f738a51* /
 
 ## this = "8d1dc5ae4f738a51"
 ## deps = [
@@ -340,7 +340,7 @@ COPY --link --from=dep-n-anyhow-1.0.100-8d1dc5ae4f738a51 /tmp/clis-kani-verifier
 ##     "libanyhow-8d1dc5ae4f738a51.rmeta",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-kani-verifier_0-66-0/release/deps/anyhow-8d1dc5ae4f738a51.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/anyhow-8d1dc5ae4f738a51.d","emit":"dep-info"}',
 ##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `error_generic_member_access`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.100/src/lib.rs","byte_start":6599,"byte_end":6626,"line_start":210,"line_end":210,"column_start":13,"column_end":40,"is_primary":true,"text":[{"text":"#![cfg_attr(error_generic_member_access, feature(error_generic_member_access))]","highlight_start":13,"highlight_end":40}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"expected names are: `docsrs`, `feature`, and `test` and 31 more","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(error_generic_member_access)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(error_generic_member_access)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"`#[warn(unexpected_cfgs)]` on by default","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `error_generic_member_access`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.100/src/lib.rs:210:13\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m210\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m#![cfg_attr(error_generic_member_access, feature(error_generic_member_access))]\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m             \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: expected names are: `docsrs`, `feature`, and `test` and 31 more\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(error_generic_member_access)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(error_generic_member_access)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: `#[warn(unexpected_cfgs)]` on by default\u001b[0m\n\n"}''',
 ##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_unsafe_op_in_unsafe_fn_lint`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.100/src/lib.rs","byte_start":6747,"byte_end":6784,"line_start":214,"line_end":214,"column_start":9,"column_end":46,"is_primary":true,"text":[{"text":"    not(anyhow_no_unsafe_op_in_unsafe_fn_lint),","highlight_start":9,"highlight_end":46}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_unsafe_op_in_unsafe_fn_lint)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_unsafe_op_in_unsafe_fn_lint)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_unsafe_op_in_unsafe_fn_lint`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.100/src/lib.rs:214:9\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m214\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    not(anyhow_no_unsafe_op_in_unsafe_fn_lint),\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m         \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_unsafe_op_in_unsafe_fn_lint)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_unsafe_op_in_unsafe_fn_lint)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
 ##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_unsafe_op_in_unsafe_fn_lint`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.100/src/lib.rs","byte_start":6835,"byte_end":6872,"line_start":217,"line_end":217,"column_start":13,"column_end":50,"is_primary":true,"text":[{"text":"#![cfg_attr(anyhow_no_unsafe_op_in_unsafe_fn_lint, allow(unused_unsafe))]","highlight_start":13,"highlight_end":50}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_unsafe_op_in_unsafe_fn_lint)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_unsafe_op_in_unsafe_fn_lint)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_unsafe_op_in_unsafe_fn_lint`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.100/src/lib.rs:217:13\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m217\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m#![cfg_attr(anyhow_no_unsafe_op_in_unsafe_fn_lint, allow(unused_unsafe))]\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m             \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_unsafe_op_in_unsafe_fn_lint)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_unsafe_op_in_unsafe_fn_lint)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
@@ -508,14 +508,14 @@ COPY --link --from=dep-n-anyhow-1.0.100-8d1dc5ae4f738a51 /tmp/clis-kani-verifier
 ##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_core_error`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.100/src/lib.rs","byte_start":20209,"byte_end":20229,"line_start":679,"line_end":679,"column_start":40,"column_end":60,"is_primary":true,"text":[{"text":"        #[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]","highlight_start":40,"highlight_end":60}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_core_error`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.100/src/lib.rs:679:40\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m679\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m        #[cfg(any(feature = \"std\", not(anyhow_no_core_error)))]\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                        \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_core_error)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_core_error)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
 ##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_fmt_arguments_as_str`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.100/src/lib.rs","byte_start":20413,"byte_end":20443,"line_start":688,"line_end":688,"column_start":15,"column_end":45,"is_primary":true,"text":[{"text":"        #[cfg(anyhow_no_fmt_arguments_as_str)]","highlight_start":15,"highlight_end":45}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_fmt_arguments_as_str)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_fmt_arguments_as_str)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_fmt_arguments_as_str`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.100/src/lib.rs:688:15\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m688\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m        #[cfg(anyhow_no_fmt_arguments_as_str)]\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m               \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_fmt_arguments_as_str)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_fmt_arguments_as_str)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
 ##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `anyhow_no_fmt_arguments_as_str`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.100/src/lib.rs","byte_start":20513,"byte_end":20543,"line_start":690,"line_end":690,"column_start":19,"column_end":49,"is_primary":true,"text":[{"text":"        #[cfg(not(anyhow_no_fmt_arguments_as_str))]","highlight_start":19,"highlight_end":49}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_fmt_arguments_as_str)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_fmt_arguments_as_str)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `anyhow_no_fmt_arguments_as_str`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.100/src/lib.rs:690:19\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m690\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m        #[cfg(not(anyhow_no_fmt_arguments_as_str))]\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                   \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(anyhow_no_fmt_arguments_as_str)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(anyhow_no_fmt_arguments_as_str)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-kani-verifier_0-66-0/release/deps/libanyhow-8d1dc5ae4f738a51.rmeta","emit":"metadata"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-kani-verifier_0-66-0/release/deps/libanyhow-8d1dc5ae4f738a51.rlib","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libanyhow-8d1dc5ae4f738a51.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libanyhow-8d1dc5ae4f738a51.rlib","emit":"link"}',
 ##     '{"$message_type":"diagnostic","message":"167 warnings emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 167 warnings emitted\u001b[0m\n\n"}',
 ## ]
 ##
 ## [[mounts]]
 ## name = "out-d45b6249b823f856"
-## mount = "/tmp/clis-kani-verifier_0-66-0/release/build/anyhow-d45b6249b823f856/out"
+## mount = "/target/release/build/anyhow-d45b6249b823f856/out"
 ##
 ## [[stages]]
 ##
@@ -539,10 +539,10 @@ COPY --link --from=dep-n-anyhow-1.0.100-8d1dc5ae4f738a51 /tmp/clis-kani-verifier
 ## script = '''
 ## FROM rust-base AS dep-n-anyhow-1.0.100-8d1dc5ae4f738a51
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-kani-verifier_0-66-0/release/deps
+## WORKDIR /target/release/deps
 ## RUN \
 ##   --mount=from=cratesio-anyhow-1.0.100,source=/anyhow-1.0.100,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.100 \
-##   --mount=from=out-d45b6249b823f856,dst=/tmp/clis-kani-verifier_0-66-0/release/build/anyhow-d45b6249b823f856/out,source=/ \
+##   --mount=from=out-d45b6249b823f856,dst=/target/release/build/anyhow-d45b6249b823f856/out,source=/ \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=anyhow \
 ##         CARGO_INCREMENTAL=0 \
@@ -562,13 +562,13 @@ COPY --link --from=dep-n-anyhow-1.0.100-8d1dc5ae4f738a51 /tmp/clis-kani-verifier
 ##         CARGO_PKG_VERSION_MINOR=0 \
 ##         CARGO_PKG_VERSION_PATCH=100 \
 ##         CARGO_PKG_VERSION_PRE= \
-##         OUT_DIR=/tmp/clis-kani-verifier_0-66-0/release/build/anyhow-d45b6249b823f856/out \
+##         OUT_DIR=/target/release/build/anyhow-d45b6249b823f856/out \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name anyhow --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("backtrace", "default", "std"))' -C metadata'=16b771de23ab7aa6' -C extra-filename'=-8d1dc5ae4f738a51' --out-dir /tmp/clis-kani-verifier_0-66-0/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-kani-verifier_0-66-0/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.100/src/lib.rs \
-##         1>          /tmp/clis-kani-verifier_0-66-0/release/deps/out-8d1dc5ae4f738a51-stdout \
-##         2>          /tmp/clis-kani-verifier_0-66-0/release/deps/out-8d1dc5ae4f738a51-stderr \
-##         || echo $? >/tmp/clis-kani-verifier_0-66-0/release/deps/out-8d1dc5ae4f738a51-errcode\
-##   ; find /tmp/clis-kani-verifier_0-66-0/release/deps/*-8d1dc5ae4f738a51* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name anyhow --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("backtrace", "default", "std"))' -C metadata'=16b771de23ab7aa6' -C extra-filename'=-8d1dc5ae4f738a51' --out-dir /target/release/deps -C strip'=debuginfo' -L dependency'=/target/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anyhow-1.0.100/src/lib.rs \
+##         1>          /target/release/deps/out-8d1dc5ae4f738a51-stdout \
+##         2>          /target/release/deps/out-8d1dc5ae4f738a51-stderr \
+##         || echo $? >/target/release/deps/out-8d1dc5ae4f738a51-errcode\
+##   ; find /target/release/deps/*-8d1dc5ae4f738a51* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -576,14 +576,14 @@ COPY --link --from=dep-n-anyhow-1.0.100-8d1dc5ae4f738a51 /tmp/clis-kani-verifier
 ## stage = "out-8d1dc5ae4f738a51"
 ## script = """
 ## FROM scratch AS out-8d1dc5ae4f738a51
-## COPY --link --from=dep-n-anyhow-1.0.100-8d1dc5ae4f738a51 /tmp/clis-kani-verifier_0-66-0/release/deps/*-8d1dc5ae4f738a51* /"""
+## COPY --link --from=dep-n-anyhow-1.0.100-8d1dc5ae4f738a51 /target/release/deps/*-8d1dc5ae4f738a51* /"""
 
 FROM scratch AS cratesio-home-0.5.12
 ADD --chmod=0664 --unpack --checksum=sha256:cc627f471c528ff0c4a49e1d5e60450c8f6461dd6d10ba9dcd3a61d3dff7728d \
   https://static.crates.io/crates/home/home-0.5.12.crate /
 FROM rust-base AS dep-n-home-0.5.12-46a3f77b3083d543
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-kani-verifier_0-66-0/release/deps
+WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-home-0.5.12,source=/home-0.5.12,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/home-0.5.12 \
     env CARGO="$(which cargo)" \
@@ -606,13 +606,13 @@ RUN \
         CARGO_PKG_VERSION_PATCH=12 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --crate-name home --edition 2024 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --allow clippy'::all' --warn clippy'::correctness' --warn clippy'::self_named_module_files' --warn rust_2018_idioms --allow rustdoc'::private_intra_doc_links' --warn clippy'::print_stdout' --warn clippy'::print_stderr' --warn clippy'::disallowed_methods' --warn clippy'::dbg_macro' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=c36f6c1df9683488' -C extra-filename'=-46a3f77b3083d543' --out-dir /tmp/clis-kani-verifier_0-66-0/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-kani-verifier_0-66-0/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/home-0.5.12/src/lib.rs \
-        1>          /tmp/clis-kani-verifier_0-66-0/release/deps/out-46a3f77b3083d543-stdout \
-        2>          /tmp/clis-kani-verifier_0-66-0/release/deps/out-46a3f77b3083d543-stderr \
-        || echo $? >/tmp/clis-kani-verifier_0-66-0/release/deps/out-46a3f77b3083d543-errcode\
-  ; find /tmp/clis-kani-verifier_0-66-0/release/deps/*-46a3f77b3083d543* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      rustc --crate-name home --edition 2024 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --allow clippy'::all' --warn clippy'::correctness' --warn clippy'::self_named_module_files' --warn rust_2018_idioms --allow rustdoc'::private_intra_doc_links' --warn clippy'::print_stdout' --warn clippy'::print_stderr' --warn clippy'::disallowed_methods' --warn clippy'::dbg_macro' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=c36f6c1df9683488' -C extra-filename'=-46a3f77b3083d543' --out-dir /target/release/deps -C strip'=debuginfo' -L dependency'=/target/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/home-0.5.12/src/lib.rs \
+        1>          /target/release/deps/out-46a3f77b3083d543-stdout \
+        2>          /target/release/deps/out-46a3f77b3083d543-stderr \
+        || echo $? >/target/release/deps/out-46a3f77b3083d543-errcode\
+  ; find /target/release/deps/*-46a3f77b3083d543* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-46a3f77b3083d543
-COPY --link --from=dep-n-home-0.5.12-46a3f77b3083d543 /tmp/clis-kani-verifier_0-66-0/release/deps/*-46a3f77b3083d543* /
+COPY --link --from=dep-n-home-0.5.12-46a3f77b3083d543 /target/release/deps/*-46a3f77b3083d543* /
 
 ## this = "46a3f77b3083d543"
 ## writes = [
@@ -621,9 +621,9 @@ COPY --link --from=dep-n-home-0.5.12-46a3f77b3083d543 /tmp/clis-kani-verifier_0-
 ##     "libhome-46a3f77b3083d543.rmeta",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-kani-verifier_0-66-0/release/deps/home-46a3f77b3083d543.d","emit":"dep-info"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-kani-verifier_0-66-0/release/deps/libhome-46a3f77b3083d543.rmeta","emit":"metadata"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-kani-verifier_0-66-0/release/deps/libhome-46a3f77b3083d543.rlib","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/home-46a3f77b3083d543.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libhome-46a3f77b3083d543.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libhome-46a3f77b3083d543.rlib","emit":"link"}',
 ## ]
 ##
 ## [[stages]]
@@ -648,7 +648,7 @@ COPY --link --from=dep-n-home-0.5.12-46a3f77b3083d543 /tmp/clis-kani-verifier_0-
 ## script = '''
 ## FROM rust-base AS dep-n-home-0.5.12-46a3f77b3083d543
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-kani-verifier_0-66-0/release/deps
+## WORKDIR /target/release/deps
 ## RUN \
 ##   --mount=from=cratesio-home-0.5.12,source=/home-0.5.12,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/home-0.5.12 \
 ##     env CARGO="$(which cargo)" \
@@ -671,11 +671,11 @@ COPY --link --from=dep-n-home-0.5.12-46a3f77b3083d543 /tmp/clis-kani-verifier_0-
 ##         CARGO_PKG_VERSION_PATCH=12 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name home --edition 2024 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --allow clippy'::all' --warn clippy'::correctness' --warn clippy'::self_named_module_files' --warn rust_2018_idioms --allow rustdoc'::private_intra_doc_links' --warn clippy'::print_stdout' --warn clippy'::print_stderr' --warn clippy'::disallowed_methods' --warn clippy'::dbg_macro' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=c36f6c1df9683488' -C extra-filename'=-46a3f77b3083d543' --out-dir /tmp/clis-kani-verifier_0-66-0/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-kani-verifier_0-66-0/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/home-0.5.12/src/lib.rs \
-##         1>          /tmp/clis-kani-verifier_0-66-0/release/deps/out-46a3f77b3083d543-stdout \
-##         2>          /tmp/clis-kani-verifier_0-66-0/release/deps/out-46a3f77b3083d543-stderr \
-##         || echo $? >/tmp/clis-kani-verifier_0-66-0/release/deps/out-46a3f77b3083d543-errcode\
-##   ; find /tmp/clis-kani-verifier_0-66-0/release/deps/*-46a3f77b3083d543* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name home --edition 2024 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --allow clippy'::all' --warn clippy'::correctness' --warn clippy'::self_named_module_files' --warn rust_2018_idioms --allow rustdoc'::private_intra_doc_links' --warn clippy'::print_stdout' --warn clippy'::print_stderr' --warn clippy'::disallowed_methods' --warn clippy'::dbg_macro' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=c36f6c1df9683488' -C extra-filename'=-46a3f77b3083d543' --out-dir /target/release/deps -C strip'=debuginfo' -L dependency'=/target/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/home-0.5.12/src/lib.rs \
+##         1>          /target/release/deps/out-46a3f77b3083d543-stdout \
+##         2>          /target/release/deps/out-46a3f77b3083d543-stderr \
+##         || echo $? >/target/release/deps/out-46a3f77b3083d543-errcode\
+##   ; find /target/release/deps/*-46a3f77b3083d543* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -683,14 +683,14 @@ COPY --link --from=dep-n-home-0.5.12-46a3f77b3083d543 /tmp/clis-kani-verifier_0-
 ## stage = "out-46a3f77b3083d543"
 ## script = """
 ## FROM scratch AS out-46a3f77b3083d543
-## COPY --link --from=dep-n-home-0.5.12-46a3f77b3083d543 /tmp/clis-kani-verifier_0-66-0/release/deps/*-46a3f77b3083d543* /"""
+## COPY --link --from=dep-n-home-0.5.12-46a3f77b3083d543 /target/release/deps/*-46a3f77b3083d543* /"""
 
 FROM scratch AS cratesio-log-0.4.28
 ADD --chmod=0664 --unpack --checksum=sha256:34080505efa8e45a4b816c349525ebe327ceaa8559756f0356cba97ef3bf7432 \
   https://static.crates.io/crates/log/log-0.4.28.crate /
 FROM rust-base AS dep-n-log-0.4.28-64be2e589e1b58c5
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-kani-verifier_0-66-0/release/deps
+WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-log-0.4.28,source=/log-0.4.28,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/log-0.4.28 \
     env CARGO="$(which cargo)" \
@@ -714,13 +714,13 @@ RUN \
         CARGO_PKG_VERSION_PATCH=28 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --crate-name log --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("kv", "kv_serde", "kv_std", "kv_sval", "kv_unstable", "kv_unstable_serde", "kv_unstable_std", "kv_unstable_sval", "max_level_debug", "max_level_error", "max_level_info", "max_level_off", "max_level_trace", "max_level_warn", "release_max_level_debug", "release_max_level_error", "release_max_level_info", "release_max_level_off", "release_max_level_trace", "release_max_level_warn", "serde", "std", "sval", "sval_ref", "value-bag"))' -C metadata'=211f9c4931a0fe9a' -C extra-filename'=-64be2e589e1b58c5' --out-dir /tmp/clis-kani-verifier_0-66-0/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-kani-verifier_0-66-0/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/log-0.4.28/src/lib.rs \
-        1>          /tmp/clis-kani-verifier_0-66-0/release/deps/out-64be2e589e1b58c5-stdout \
-        2>          /tmp/clis-kani-verifier_0-66-0/release/deps/out-64be2e589e1b58c5-stderr \
-        || echo $? >/tmp/clis-kani-verifier_0-66-0/release/deps/out-64be2e589e1b58c5-errcode\
-  ; find /tmp/clis-kani-verifier_0-66-0/release/deps/*-64be2e589e1b58c5* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      rustc --crate-name log --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("kv", "kv_serde", "kv_std", "kv_sval", "kv_unstable", "kv_unstable_serde", "kv_unstable_std", "kv_unstable_sval", "max_level_debug", "max_level_error", "max_level_info", "max_level_off", "max_level_trace", "max_level_warn", "release_max_level_debug", "release_max_level_error", "release_max_level_info", "release_max_level_off", "release_max_level_trace", "release_max_level_warn", "serde", "std", "sval", "sval_ref", "value-bag"))' -C metadata'=211f9c4931a0fe9a' -C extra-filename'=-64be2e589e1b58c5' --out-dir /target/release/deps -C strip'=debuginfo' -L dependency'=/target/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/log-0.4.28/src/lib.rs \
+        1>          /target/release/deps/out-64be2e589e1b58c5-stdout \
+        2>          /target/release/deps/out-64be2e589e1b58c5-stderr \
+        || echo $? >/target/release/deps/out-64be2e589e1b58c5-errcode\
+  ; find /target/release/deps/*-64be2e589e1b58c5* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-64be2e589e1b58c5
-COPY --link --from=dep-n-log-0.4.28-64be2e589e1b58c5 /tmp/clis-kani-verifier_0-66-0/release/deps/*-64be2e589e1b58c5* /
+COPY --link --from=dep-n-log-0.4.28-64be2e589e1b58c5 /target/release/deps/*-64be2e589e1b58c5* /
 
 ## this = "64be2e589e1b58c5"
 ## writes = [
@@ -729,9 +729,9 @@ COPY --link --from=dep-n-log-0.4.28-64be2e589e1b58c5 /tmp/clis-kani-verifier_0-6
 ##     "log-64be2e589e1b58c5.d",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-kani-verifier_0-66-0/release/deps/log-64be2e589e1b58c5.d","emit":"dep-info"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-kani-verifier_0-66-0/release/deps/liblog-64be2e589e1b58c5.rmeta","emit":"metadata"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-kani-verifier_0-66-0/release/deps/liblog-64be2e589e1b58c5.rlib","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/log-64be2e589e1b58c5.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/liblog-64be2e589e1b58c5.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/liblog-64be2e589e1b58c5.rlib","emit":"link"}',
 ## ]
 ##
 ## [[stages]]
@@ -756,7 +756,7 @@ COPY --link --from=dep-n-log-0.4.28-64be2e589e1b58c5 /tmp/clis-kani-verifier_0-6
 ## script = '''
 ## FROM rust-base AS dep-n-log-0.4.28-64be2e589e1b58c5
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-kani-verifier_0-66-0/release/deps
+## WORKDIR /target/release/deps
 ## RUN \
 ##   --mount=from=cratesio-log-0.4.28,source=/log-0.4.28,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/log-0.4.28 \
 ##     env CARGO="$(which cargo)" \
@@ -780,11 +780,11 @@ COPY --link --from=dep-n-log-0.4.28-64be2e589e1b58c5 /tmp/clis-kani-verifier_0-6
 ##         CARGO_PKG_VERSION_PATCH=28 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name log --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("kv", "kv_serde", "kv_std", "kv_sval", "kv_unstable", "kv_unstable_serde", "kv_unstable_std", "kv_unstable_sval", "max_level_debug", "max_level_error", "max_level_info", "max_level_off", "max_level_trace", "max_level_warn", "release_max_level_debug", "release_max_level_error", "release_max_level_info", "release_max_level_off", "release_max_level_trace", "release_max_level_warn", "serde", "std", "sval", "sval_ref", "value-bag"))' -C metadata'=211f9c4931a0fe9a' -C extra-filename'=-64be2e589e1b58c5' --out-dir /tmp/clis-kani-verifier_0-66-0/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-kani-verifier_0-66-0/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/log-0.4.28/src/lib.rs \
-##         1>          /tmp/clis-kani-verifier_0-66-0/release/deps/out-64be2e589e1b58c5-stdout \
-##         2>          /tmp/clis-kani-verifier_0-66-0/release/deps/out-64be2e589e1b58c5-stderr \
-##         || echo $? >/tmp/clis-kani-verifier_0-66-0/release/deps/out-64be2e589e1b58c5-errcode\
-##   ; find /tmp/clis-kani-verifier_0-66-0/release/deps/*-64be2e589e1b58c5* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name log --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("kv", "kv_serde", "kv_std", "kv_sval", "kv_unstable", "kv_unstable_serde", "kv_unstable_std", "kv_unstable_sval", "max_level_debug", "max_level_error", "max_level_info", "max_level_off", "max_level_trace", "max_level_warn", "release_max_level_debug", "release_max_level_error", "release_max_level_info", "release_max_level_off", "release_max_level_trace", "release_max_level_warn", "serde", "std", "sval", "sval_ref", "value-bag"))' -C metadata'=211f9c4931a0fe9a' -C extra-filename'=-64be2e589e1b58c5' --out-dir /target/release/deps -C strip'=debuginfo' -L dependency'=/target/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/log-0.4.28/src/lib.rs \
+##         1>          /target/release/deps/out-64be2e589e1b58c5-stdout \
+##         2>          /target/release/deps/out-64be2e589e1b58c5-stderr \
+##         || echo $? >/target/release/deps/out-64be2e589e1b58c5-errcode\
+##   ; find /target/release/deps/*-64be2e589e1b58c5* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -792,18 +792,18 @@ COPY --link --from=dep-n-log-0.4.28-64be2e589e1b58c5 /tmp/clis-kani-verifier_0-6
 ## stage = "out-64be2e589e1b58c5"
 ## script = """
 ## FROM scratch AS out-64be2e589e1b58c5
-## COPY --link --from=dep-n-log-0.4.28-64be2e589e1b58c5 /tmp/clis-kani-verifier_0-66-0/release/deps/*-64be2e589e1b58c5* /"""
+## COPY --link --from=dep-n-log-0.4.28-64be2e589e1b58c5 /target/release/deps/*-64be2e589e1b58c5* /"""
 
 FROM scratch AS cratesio-os_info-3.12.0
 ADD --chmod=0664 --unpack --checksum=sha256:d0e1ac5fde8d43c34139135df8ea9ee9465394b2d8d20f032d38998f64afffc3 \
   https://static.crates.io/crates/os_info/os_info-3.12.0.crate /
 FROM rust-base AS dep-n-os_info-3.12.0-2e95c4cd8dc3cea9
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-kani-verifier_0-66-0/release/deps
+WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-os_info-3.12.0,source=/os_info-3.12.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/os_info-3.12.0 \
-  --mount=from=out-64be2e589e1b58c5,dst=/tmp/clis-kani-verifier_0-66-0/release/deps/liblog-64be2e589e1b58c5.rlib,source=/liblog-64be2e589e1b58c5.rlib \
-  --mount=from=out-64be2e589e1b58c5,dst=/tmp/clis-kani-verifier_0-66-0/release/deps/liblog-64be2e589e1b58c5.rmeta,source=/liblog-64be2e589e1b58c5.rmeta \
+  --mount=from=out-64be2e589e1b58c5,dst=/target/release/deps/liblog-64be2e589e1b58c5.rlib,source=/liblog-64be2e589e1b58c5.rlib \
+  --mount=from=out-64be2e589e1b58c5,dst=/target/release/deps/liblog-64be2e589e1b58c5.rmeta,source=/liblog-64be2e589e1b58c5.rmeta \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=os_info \
         CARGO_INCREMENTAL=0 \
@@ -824,13 +824,13 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --crate-name os_info --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "serde"))' -C metadata'=3268888bab725e53' -C extra-filename'=-2e95c4cd8dc3cea9' --out-dir /tmp/clis-kani-verifier_0-66-0/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-kani-verifier_0-66-0/release/deps' --extern log'=/tmp/clis-kani-verifier_0-66-0/release/deps/liblog-64be2e589e1b58c5.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/os_info-3.12.0/src/lib.rs \
-        1>          /tmp/clis-kani-verifier_0-66-0/release/deps/out-2e95c4cd8dc3cea9-stdout \
-        2>          /tmp/clis-kani-verifier_0-66-0/release/deps/out-2e95c4cd8dc3cea9-stderr \
-        || echo $? >/tmp/clis-kani-verifier_0-66-0/release/deps/out-2e95c4cd8dc3cea9-errcode\
-  ; find /tmp/clis-kani-verifier_0-66-0/release/deps/*-2e95c4cd8dc3cea9* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      rustc --crate-name os_info --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "serde"))' -C metadata'=3268888bab725e53' -C extra-filename'=-2e95c4cd8dc3cea9' --out-dir /target/release/deps -C strip'=debuginfo' -L dependency'=/target/release/deps' --extern log'=/target/release/deps/liblog-64be2e589e1b58c5.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/os_info-3.12.0/src/lib.rs \
+        1>          /target/release/deps/out-2e95c4cd8dc3cea9-stdout \
+        2>          /target/release/deps/out-2e95c4cd8dc3cea9-stderr \
+        || echo $? >/target/release/deps/out-2e95c4cd8dc3cea9-errcode\
+  ; find /target/release/deps/*-2e95c4cd8dc3cea9* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-2e95c4cd8dc3cea9
-COPY --link --from=dep-n-os_info-3.12.0-2e95c4cd8dc3cea9 /tmp/clis-kani-verifier_0-66-0/release/deps/*-2e95c4cd8dc3cea9* /
+COPY --link --from=dep-n-os_info-3.12.0-2e95c4cd8dc3cea9 /target/release/deps/*-2e95c4cd8dc3cea9* /
 
 ## this = "2e95c4cd8dc3cea9"
 ## deps = ["64be2e589e1b58c5"]
@@ -840,9 +840,9 @@ COPY --link --from=dep-n-os_info-3.12.0-2e95c4cd8dc3cea9 /tmp/clis-kani-verifier
 ##     "os_info-2e95c4cd8dc3cea9.d",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-kani-verifier_0-66-0/release/deps/os_info-2e95c4cd8dc3cea9.d","emit":"dep-info"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-kani-verifier_0-66-0/release/deps/libos_info-2e95c4cd8dc3cea9.rmeta","emit":"metadata"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-kani-verifier_0-66-0/release/deps/libos_info-2e95c4cd8dc3cea9.rlib","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/os_info-2e95c4cd8dc3cea9.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libos_info-2e95c4cd8dc3cea9.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libos_info-2e95c4cd8dc3cea9.rlib","emit":"link"}',
 ## ]
 ##
 ## [[externs]]
@@ -875,11 +875,11 @@ COPY --link --from=dep-n-os_info-3.12.0-2e95c4cd8dc3cea9 /tmp/clis-kani-verifier
 ## script = '''
 ## FROM rust-base AS dep-n-os_info-3.12.0-2e95c4cd8dc3cea9
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-kani-verifier_0-66-0/release/deps
+## WORKDIR /target/release/deps
 ## RUN \
 ##   --mount=from=cratesio-os_info-3.12.0,source=/os_info-3.12.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/os_info-3.12.0 \
-##   --mount=from=out-64be2e589e1b58c5,dst=/tmp/clis-kani-verifier_0-66-0/release/deps/liblog-64be2e589e1b58c5.rlib,source=/liblog-64be2e589e1b58c5.rlib \
-##   --mount=from=out-64be2e589e1b58c5,dst=/tmp/clis-kani-verifier_0-66-0/release/deps/liblog-64be2e589e1b58c5.rmeta,source=/liblog-64be2e589e1b58c5.rmeta \
+##   --mount=from=out-64be2e589e1b58c5,dst=/target/release/deps/liblog-64be2e589e1b58c5.rlib,source=/liblog-64be2e589e1b58c5.rlib \
+##   --mount=from=out-64be2e589e1b58c5,dst=/target/release/deps/liblog-64be2e589e1b58c5.rmeta,source=/liblog-64be2e589e1b58c5.rmeta \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=os_info \
 ##         CARGO_INCREMENTAL=0 \
@@ -900,11 +900,11 @@ COPY --link --from=dep-n-os_info-3.12.0-2e95c4cd8dc3cea9 /tmp/clis-kani-verifier
 ##         CARGO_PKG_VERSION_PATCH=0 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name os_info --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "serde"))' -C metadata'=3268888bab725e53' -C extra-filename'=-2e95c4cd8dc3cea9' --out-dir /tmp/clis-kani-verifier_0-66-0/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-kani-verifier_0-66-0/release/deps' --extern log'=/tmp/clis-kani-verifier_0-66-0/release/deps/liblog-64be2e589e1b58c5.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/os_info-3.12.0/src/lib.rs \
-##         1>          /tmp/clis-kani-verifier_0-66-0/release/deps/out-2e95c4cd8dc3cea9-stdout \
-##         2>          /tmp/clis-kani-verifier_0-66-0/release/deps/out-2e95c4cd8dc3cea9-stderr \
-##         || echo $? >/tmp/clis-kani-verifier_0-66-0/release/deps/out-2e95c4cd8dc3cea9-errcode\
-##   ; find /tmp/clis-kani-verifier_0-66-0/release/deps/*-2e95c4cd8dc3cea9* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name os_info --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "serde"))' -C metadata'=3268888bab725e53' -C extra-filename'=-2e95c4cd8dc3cea9' --out-dir /target/release/deps -C strip'=debuginfo' -L dependency'=/target/release/deps' --extern log'=/target/release/deps/liblog-64be2e589e1b58c5.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/os_info-3.12.0/src/lib.rs \
+##         1>          /target/release/deps/out-2e95c4cd8dc3cea9-stdout \
+##         2>          /target/release/deps/out-2e95c4cd8dc3cea9-stderr \
+##         || echo $? >/target/release/deps/out-2e95c4cd8dc3cea9-errcode\
+##   ; find /target/release/deps/*-2e95c4cd8dc3cea9* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -912,14 +912,14 @@ COPY --link --from=dep-n-os_info-3.12.0-2e95c4cd8dc3cea9 /tmp/clis-kani-verifier
 ## stage = "out-2e95c4cd8dc3cea9"
 ## script = """
 ## FROM scratch AS out-2e95c4cd8dc3cea9
-## COPY --link --from=dep-n-os_info-3.12.0-2e95c4cd8dc3cea9 /tmp/clis-kani-verifier_0-66-0/release/deps/*-2e95c4cd8dc3cea9* /"""
+## COPY --link --from=dep-n-os_info-3.12.0-2e95c4cd8dc3cea9 /target/release/deps/*-2e95c4cd8dc3cea9* /"""
 
 FROM scratch AS cratesio-kani-verifier-0.66.0
 ADD --chmod=0664 --unpack --checksum=sha256:07485e9dd5ec9dfb861681b98ef64ea1593a5dc0b9f7a49a490231dfdfcc0a19 \
   https://static.crates.io/crates/kani-verifier/kani-verifier-0.66.0.crate /
 FROM rust-base AS dep-x-kani-verifier-0.66.0-0875237c4d7f2d7d
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-kani-verifier_0-66-0/release/build/kani-verifier-0875237c4d7f2d7d
+WORKDIR /target/release/build/kani-verifier-0875237c4d7f2d7d
 RUN \
   --mount=from=cratesio-kani-verifier-0.66.0,source=/kani-verifier-0.66.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/kani-verifier-0.66.0,rw \
     { \
@@ -963,13 +963,13 @@ RUN \
         CARGO_PRIMARY_PACKAGE=1 \
         CARGO_SBOM_PATH= \
         CARGOGREEN=1 \
-      rustc --crate-name build_script_build --edition 2024 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=a0cb6266ca4fd695' -C extra-filename'=-0875237c4d7f2d7d' --out-dir /tmp/clis-kani-verifier_0-66-0/release/build/kani-verifier-0875237c4d7f2d7d -C strip'=debuginfo' -L dependency'=/tmp/clis-kani-verifier_0-66-0/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/kani-verifier-0.66.0/build.rs \
-        1>          /tmp/clis-kani-verifier_0-66-0/release/build/kani-verifier-0875237c4d7f2d7d/out-0875237c4d7f2d7d-stdout \
-        2>          /tmp/clis-kani-verifier_0-66-0/release/build/kani-verifier-0875237c4d7f2d7d/out-0875237c4d7f2d7d-stderr \
-        || echo $? >/tmp/clis-kani-verifier_0-66-0/release/build/kani-verifier-0875237c4d7f2d7d/out-0875237c4d7f2d7d-errcode\
-  ; find /tmp/clis-kani-verifier_0-66-0/release/build/kani-verifier-0875237c4d7f2d7d/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      rustc --crate-name build_script_build --edition 2024 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=a0cb6266ca4fd695' -C extra-filename'=-0875237c4d7f2d7d' --out-dir /target/release/build/kani-verifier-0875237c4d7f2d7d -C strip'=debuginfo' -L dependency'=/target/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/kani-verifier-0.66.0/build.rs \
+        1>          /target/release/build/kani-verifier-0875237c4d7f2d7d/out-0875237c4d7f2d7d-stdout \
+        2>          /target/release/build/kani-verifier-0875237c4d7f2d7d/out-0875237c4d7f2d7d-stderr \
+        || echo $? >/target/release/build/kani-verifier-0875237c4d7f2d7d/out-0875237c4d7f2d7d-errcode\
+  ; find /target/release/build/kani-verifier-0875237c4d7f2d7d/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-0875237c4d7f2d7d
-COPY --link --from=dep-x-kani-verifier-0.66.0-0875237c4d7f2d7d /tmp/clis-kani-verifier_0-66-0/release/build/kani-verifier-0875237c4d7f2d7d/*-0875237c4d7f2d7d* /
+COPY --link --from=dep-x-kani-verifier-0.66.0-0875237c4d7f2d7d /target/release/build/kani-verifier-0875237c4d7f2d7d/*-0875237c4d7f2d7d* /
 
 ## this = "0875237c4d7f2d7d"
 ## writes = [
@@ -977,8 +977,8 @@ COPY --link --from=dep-x-kani-verifier-0.66.0-0875237c4d7f2d7d /tmp/clis-kani-ve
 ##     "build_script_build-0875237c4d7f2d7d.d",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-kani-verifier_0-66-0/release/build/kani-verifier-0875237c4d7f2d7d/build_script_build-0875237c4d7f2d7d.d","emit":"dep-info"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-kani-verifier_0-66-0/release/build/kani-verifier-0875237c4d7f2d7d/build_script_build-0875237c4d7f2d7d","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/build/kani-verifier-0875237c4d7f2d7d/build_script_build-0875237c4d7f2d7d.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/build/kani-verifier-0875237c4d7f2d7d/build_script_build-0875237c4d7f2d7d","emit":"link"}',
 ## ]
 ##
 ## [[stages]]
@@ -1003,7 +1003,7 @@ COPY --link --from=dep-x-kani-verifier-0.66.0-0875237c4d7f2d7d /tmp/clis-kani-ve
 ## script = '''
 ## FROM rust-base AS dep-x-kani-verifier-0.66.0-0875237c4d7f2d7d
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-kani-verifier_0-66-0/release/build/kani-verifier-0875237c4d7f2d7d
+## WORKDIR /target/release/build/kani-verifier-0875237c4d7f2d7d
 ## RUN \
 ##   --mount=from=cratesio-kani-verifier-0.66.0,source=/kani-verifier-0.66.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/kani-verifier-0.66.0,rw \
 ##     { \
@@ -1047,11 +1047,11 @@ COPY --link --from=dep-x-kani-verifier-0.66.0-0875237c4d7f2d7d /tmp/clis-kani-ve
 ##         CARGO_PRIMARY_PACKAGE=1 \
 ##         CARGO_SBOM_PATH= \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name build_script_build --edition 2024 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=a0cb6266ca4fd695' -C extra-filename'=-0875237c4d7f2d7d' --out-dir /tmp/clis-kani-verifier_0-66-0/release/build/kani-verifier-0875237c4d7f2d7d -C strip'=debuginfo' -L dependency'=/tmp/clis-kani-verifier_0-66-0/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/kani-verifier-0.66.0/build.rs \
-##         1>          /tmp/clis-kani-verifier_0-66-0/release/build/kani-verifier-0875237c4d7f2d7d/out-0875237c4d7f2d7d-stdout \
-##         2>          /tmp/clis-kani-verifier_0-66-0/release/build/kani-verifier-0875237c4d7f2d7d/out-0875237c4d7f2d7d-stderr \
-##         || echo $? >/tmp/clis-kani-verifier_0-66-0/release/build/kani-verifier-0875237c4d7f2d7d/out-0875237c4d7f2d7d-errcode\
-##   ; find /tmp/clis-kani-verifier_0-66-0/release/build/kani-verifier-0875237c4d7f2d7d/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name build_script_build --edition 2024 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=a0cb6266ca4fd695' -C extra-filename'=-0875237c4d7f2d7d' --out-dir /target/release/build/kani-verifier-0875237c4d7f2d7d -C strip'=debuginfo' -L dependency'=/target/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/kani-verifier-0.66.0/build.rs \
+##         1>          /target/release/build/kani-verifier-0875237c4d7f2d7d/out-0875237c4d7f2d7d-stdout \
+##         2>          /target/release/build/kani-verifier-0875237c4d7f2d7d/out-0875237c4d7f2d7d-stderr \
+##         || echo $? >/target/release/build/kani-verifier-0875237c4d7f2d7d/out-0875237c4d7f2d7d-errcode\
+##   ; find /target/release/build/kani-verifier-0875237c4d7f2d7d/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -1059,14 +1059,14 @@ COPY --link --from=dep-x-kani-verifier-0.66.0-0875237c4d7f2d7d /tmp/clis-kani-ve
 ## stage = "out-0875237c4d7f2d7d"
 ## script = """
 ## FROM scratch AS out-0875237c4d7f2d7d
-## COPY --link --from=dep-x-kani-verifier-0.66.0-0875237c4d7f2d7d /tmp/clis-kani-verifier_0-66-0/release/build/kani-verifier-0875237c4d7f2d7d/*-0875237c4d7f2d7d* /"""
+## COPY --link --from=dep-x-kani-verifier-0.66.0-0875237c4d7f2d7d /target/release/build/kani-verifier-0875237c4d7f2d7d/*-0875237c4d7f2d7d* /"""
 
 FROM rust-base AS run-z-kani-verifier-0.66.0-5b332a90b563b71d
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-kani-verifier_0-66-0/release/build/kani-verifier-5b332a90b563b71d/out
+WORKDIR /target/release/build/kani-verifier-5b332a90b563b71d/out
 WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/kani-verifier-0.66.0
 RUN \
-  --mount=from=out-0875237c4d7f2d7d,source=/build_script_build-0875237c4d7f2d7d,dst=/tmp/clis-kani-verifier_0-66-0/release/build/kani-verifier-0875237c4d7f2d7d/build-script-build \
+  --mount=from=out-0875237c4d7f2d7d,source=/build_script_build-0875237c4d7f2d7d,dst=/target/release/build/kani-verifier-0875237c4d7f2d7d/build-script-build \
   --mount=from=cratesio-kani-verifier-0.66.0,source=/kani-verifier-0.66.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/kani-verifier-0.66.0 \
     env CARGO="$(which cargo)" \
         CARGO_CFG_FEATURE= \
@@ -1104,23 +1104,23 @@ RUN \
         HOST=x86_64-unknown-linux-gnu \
         NUM_JOBS=4 \
         OPT_LEVEL=3 \
-        OUT_DIR=/tmp/clis-kani-verifier_0-66-0/release/build/kani-verifier-5b332a90b563b71d/out \
+        OUT_DIR=/target/release/build/kani-verifier-5b332a90b563b71d/out \
         PROFILE=release \
         RUSTC=rustc \
         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
         TARGET=x86_64-unknown-linux-gnu \
         CARGOGREEN=1 \
-      CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-kani-verifier_0-66-0/release/build/kani-verifier-0875237c4d7f2d7d/build-script-build \
-        1>          /tmp/clis-kani-verifier_0-66-0/release/build/kani-verifier-5b332a90b563b71d/out/out-5b332a90b563b71d-stdout \
-        2>          /tmp/clis-kani-verifier_0-66-0/release/build/kani-verifier-5b332a90b563b71d/out/out-5b332a90b563b71d-stderr \
-        || echo $? >/tmp/clis-kani-verifier_0-66-0/release/build/kani-verifier-5b332a90b563b71d/out/out-5b332a90b563b71d-errcode\
-  ; find /tmp/clis-kani-verifier_0-66-0/release/build/kani-verifier-5b332a90b563b71d/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      CARGOGREEN_EXECUTE_BUILDRS_= /target/release/build/kani-verifier-0875237c4d7f2d7d/build-script-build \
+        1>          /target/release/build/kani-verifier-5b332a90b563b71d/out/out-5b332a90b563b71d-stdout \
+        2>          /target/release/build/kani-verifier-5b332a90b563b71d/out/out-5b332a90b563b71d-stderr \
+        || echo $? >/target/release/build/kani-verifier-5b332a90b563b71d/out/out-5b332a90b563b71d-errcode\
+  ; find /target/release/build/kani-verifier-5b332a90b563b71d/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-5b332a90b563b71d
-COPY --link --from=run-z-kani-verifier-0.66.0-5b332a90b563b71d /tmp/clis-kani-verifier_0-66-0/release/build/kani-verifier-5b332a90b563b71d/out /
+COPY --link --from=run-z-kani-verifier-0.66.0-5b332a90b563b71d /target/release/build/kani-verifier-5b332a90b563b71d/out /
 
 ## this = "5b332a90b563b71d"
 ## deps = ["0875237c4d7f2d7d"]
-## writes_to = "/tmp/clis-kani-verifier_0-66-0/release/build/kani-verifier-5b332a90b563b71d/out"
+## writes_to = "/target/release/build/kani-verifier-5b332a90b563b71d/out"
 ## stdout = ["cargo:rustc-env=TARGET=x86_64-unknown-linux-gnu"]
 ##
 ## [[stages]]
@@ -1136,10 +1136,10 @@ COPY --link --from=run-z-kani-verifier-0.66.0-5b332a90b563b71d /tmp/clis-kani-ve
 ## script = '''
 ## FROM rust-base AS run-z-kani-verifier-0.66.0-5b332a90b563b71d
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-kani-verifier_0-66-0/release/build/kani-verifier-5b332a90b563b71d/out
+## WORKDIR /target/release/build/kani-verifier-5b332a90b563b71d/out
 ## WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/kani-verifier-0.66.0
 ## RUN \
-##   --mount=from=out-0875237c4d7f2d7d,source=/build_script_build-0875237c4d7f2d7d,dst=/tmp/clis-kani-verifier_0-66-0/release/build/kani-verifier-0875237c4d7f2d7d/build-script-build \
+##   --mount=from=out-0875237c4d7f2d7d,source=/build_script_build-0875237c4d7f2d7d,dst=/target/release/build/kani-verifier-0875237c4d7f2d7d/build-script-build \
 ##   --mount=from=cratesio-kani-verifier-0.66.0,source=/kani-verifier-0.66.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/kani-verifier-0.66.0 \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CFG_FEATURE= \
@@ -1177,17 +1177,17 @@ COPY --link --from=run-z-kani-verifier-0.66.0-5b332a90b563b71d /tmp/clis-kani-ve
 ##         HOST=x86_64-unknown-linux-gnu \
 ##         NUM_JOBS=4 \
 ##         OPT_LEVEL=3 \
-##         OUT_DIR=/tmp/clis-kani-verifier_0-66-0/release/build/kani-verifier-5b332a90b563b71d/out \
+##         OUT_DIR=/target/release/build/kani-verifier-5b332a90b563b71d/out \
 ##         PROFILE=release \
 ##         RUSTC=rustc \
 ##         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
 ##         TARGET=x86_64-unknown-linux-gnu \
 ##         CARGOGREEN=1 \
-##       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-kani-verifier_0-66-0/release/build/kani-verifier-0875237c4d7f2d7d/build-script-build \
-##         1>          /tmp/clis-kani-verifier_0-66-0/release/build/kani-verifier-5b332a90b563b71d/out/out-5b332a90b563b71d-stdout \
-##         2>          /tmp/clis-kani-verifier_0-66-0/release/build/kani-verifier-5b332a90b563b71d/out/out-5b332a90b563b71d-stderr \
-##         || echo $? >/tmp/clis-kani-verifier_0-66-0/release/build/kani-verifier-5b332a90b563b71d/out/out-5b332a90b563b71d-errcode\
-##   ; find /tmp/clis-kani-verifier_0-66-0/release/build/kani-verifier-5b332a90b563b71d/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       CARGOGREEN_EXECUTE_BUILDRS_= /target/release/build/kani-verifier-0875237c4d7f2d7d/build-script-build \
+##         1>          /target/release/build/kani-verifier-5b332a90b563b71d/out/out-5b332a90b563b71d-stdout \
+##         2>          /target/release/build/kani-verifier-5b332a90b563b71d/out/out-5b332a90b563b71d-stderr \
+##         || echo $? >/target/release/build/kani-verifier-5b332a90b563b71d/out/out-5b332a90b563b71d-errcode\
+##   ; find /target/release/build/kani-verifier-5b332a90b563b71d/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -1195,23 +1195,23 @@ COPY --link --from=run-z-kani-verifier-0.66.0-5b332a90b563b71d /tmp/clis-kani-ve
 ## stage = "out-5b332a90b563b71d"
 ## script = """
 ## FROM scratch AS out-5b332a90b563b71d
-## COPY --link --from=run-z-kani-verifier-0.66.0-5b332a90b563b71d /tmp/clis-kani-verifier_0-66-0/release/build/kani-verifier-5b332a90b563b71d/out /"""
+## COPY --link --from=run-z-kani-verifier-0.66.0-5b332a90b563b71d /target/release/build/kani-verifier-5b332a90b563b71d/out /"""
 
 
 FROM rust-base AS dep-n-kani-verifier-0.66.0-dfd373a18b646a92
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-kani-verifier_0-66-0/release/deps
+WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-kani-verifier-0.66.0,source=/kani-verifier-0.66.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/kani-verifier-0.66.0 \
-  --mount=from=out-8d1dc5ae4f738a51,dst=/tmp/clis-kani-verifier_0-66-0/release/deps/libanyhow-8d1dc5ae4f738a51.rlib,source=/libanyhow-8d1dc5ae4f738a51.rlib \
-  --mount=from=out-8d1dc5ae4f738a51,dst=/tmp/clis-kani-verifier_0-66-0/release/deps/libanyhow-8d1dc5ae4f738a51.rmeta,source=/libanyhow-8d1dc5ae4f738a51.rmeta \
-  --mount=from=out-46a3f77b3083d543,dst=/tmp/clis-kani-verifier_0-66-0/release/deps/libhome-46a3f77b3083d543.rlib,source=/libhome-46a3f77b3083d543.rlib \
-  --mount=from=out-46a3f77b3083d543,dst=/tmp/clis-kani-verifier_0-66-0/release/deps/libhome-46a3f77b3083d543.rmeta,source=/libhome-46a3f77b3083d543.rmeta \
-  --mount=from=out-2e95c4cd8dc3cea9,dst=/tmp/clis-kani-verifier_0-66-0/release/deps/libos_info-2e95c4cd8dc3cea9.rlib,source=/libos_info-2e95c4cd8dc3cea9.rlib \
-  --mount=from=out-2e95c4cd8dc3cea9,dst=/tmp/clis-kani-verifier_0-66-0/release/deps/libos_info-2e95c4cd8dc3cea9.rmeta,source=/libos_info-2e95c4cd8dc3cea9.rmeta \
-  --mount=from=out-64be2e589e1b58c5,dst=/tmp/clis-kani-verifier_0-66-0/release/deps/liblog-64be2e589e1b58c5.rlib,source=/liblog-64be2e589e1b58c5.rlib \
-  --mount=from=out-64be2e589e1b58c5,dst=/tmp/clis-kani-verifier_0-66-0/release/deps/liblog-64be2e589e1b58c5.rmeta,source=/liblog-64be2e589e1b58c5.rmeta \
-  --mount=from=out-5b332a90b563b71d,dst=/tmp/clis-kani-verifier_0-66-0/release/build/kani-verifier-5b332a90b563b71d/out,source=/ \
+  --mount=from=out-8d1dc5ae4f738a51,dst=/target/release/deps/libanyhow-8d1dc5ae4f738a51.rlib,source=/libanyhow-8d1dc5ae4f738a51.rlib \
+  --mount=from=out-8d1dc5ae4f738a51,dst=/target/release/deps/libanyhow-8d1dc5ae4f738a51.rmeta,source=/libanyhow-8d1dc5ae4f738a51.rmeta \
+  --mount=from=out-46a3f77b3083d543,dst=/target/release/deps/libhome-46a3f77b3083d543.rlib,source=/libhome-46a3f77b3083d543.rlib \
+  --mount=from=out-46a3f77b3083d543,dst=/target/release/deps/libhome-46a3f77b3083d543.rmeta,source=/libhome-46a3f77b3083d543.rmeta \
+  --mount=from=out-2e95c4cd8dc3cea9,dst=/target/release/deps/libos_info-2e95c4cd8dc3cea9.rlib,source=/libos_info-2e95c4cd8dc3cea9.rlib \
+  --mount=from=out-2e95c4cd8dc3cea9,dst=/target/release/deps/libos_info-2e95c4cd8dc3cea9.rmeta,source=/libos_info-2e95c4cd8dc3cea9.rmeta \
+  --mount=from=out-64be2e589e1b58c5,dst=/target/release/deps/liblog-64be2e589e1b58c5.rlib,source=/liblog-64be2e589e1b58c5.rlib \
+  --mount=from=out-64be2e589e1b58c5,dst=/target/release/deps/liblog-64be2e589e1b58c5.rmeta,source=/liblog-64be2e589e1b58c5.rmeta \
+  --mount=from=out-5b332a90b563b71d,dst=/target/release/build/kani-verifier-5b332a90b563b71d/out,source=/ \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=kani_verifier \
         CARGO_INCREMENTAL=0 \
@@ -1233,16 +1233,16 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         CARGO_PRIMARY_PACKAGE=1 \
         CARGO_SBOM_PATH= \
-        OUT_DIR=/tmp/clis-kani-verifier_0-66-0/release/build/kani-verifier-5b332a90b563b71d/out \
+        OUT_DIR=/target/release/build/kani-verifier-5b332a90b563b71d/out \
         CARGOGREEN=1 \
         TARGET=x86_64-unknown-linux-gnu \
-      rustc --crate-name kani_verifier --edition 2024 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=48dfd090ad0eadad' -C extra-filename'=-dfd373a18b646a92' --out-dir /tmp/clis-kani-verifier_0-66-0/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-kani-verifier_0-66-0/release/deps' --extern anyhow'=/tmp/clis-kani-verifier_0-66-0/release/deps/libanyhow-8d1dc5ae4f738a51.rmeta' --extern home'=/tmp/clis-kani-verifier_0-66-0/release/deps/libhome-46a3f77b3083d543.rmeta' --extern os_info'=/tmp/clis-kani-verifier_0-66-0/release/deps/libos_info-2e95c4cd8dc3cea9.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/kani-verifier-0.66.0/src/lib.rs \
-        1>          /tmp/clis-kani-verifier_0-66-0/release/deps/out-dfd373a18b646a92-stdout \
-        2>          /tmp/clis-kani-verifier_0-66-0/release/deps/out-dfd373a18b646a92-stderr \
-        || echo $? >/tmp/clis-kani-verifier_0-66-0/release/deps/out-dfd373a18b646a92-errcode\
-  ; find /tmp/clis-kani-verifier_0-66-0/release/deps/*-dfd373a18b646a92* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      rustc --crate-name kani_verifier --edition 2024 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=48dfd090ad0eadad' -C extra-filename'=-dfd373a18b646a92' --out-dir /target/release/deps -C strip'=debuginfo' -L dependency'=/target/release/deps' --extern anyhow'=/target/release/deps/libanyhow-8d1dc5ae4f738a51.rmeta' --extern home'=/target/release/deps/libhome-46a3f77b3083d543.rmeta' --extern os_info'=/target/release/deps/libos_info-2e95c4cd8dc3cea9.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/kani-verifier-0.66.0/src/lib.rs \
+        1>          /target/release/deps/out-dfd373a18b646a92-stdout \
+        2>          /target/release/deps/out-dfd373a18b646a92-stderr \
+        || echo $? >/target/release/deps/out-dfd373a18b646a92-errcode\
+  ; find /target/release/deps/*-dfd373a18b646a92* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-dfd373a18b646a92
-COPY --link --from=dep-n-kani-verifier-0.66.0-dfd373a18b646a92 /tmp/clis-kani-verifier_0-66-0/release/deps/*-dfd373a18b646a92* /
+COPY --link --from=dep-n-kani-verifier-0.66.0-dfd373a18b646a92 /target/release/deps/*-dfd373a18b646a92* /
 
 ## this = "dfd373a18b646a92"
 ## deps = [
@@ -1265,9 +1265,9 @@ COPY --link --from=dep-n-kani-verifier-0.66.0-dfd373a18b646a92 /tmp/clis-kani-ve
 ##     "libkani_verifier-dfd373a18b646a92.rmeta",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-kani-verifier_0-66-0/release/deps/kani_verifier-dfd373a18b646a92.d","emit":"dep-info"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-kani-verifier_0-66-0/release/deps/libkani_verifier-dfd373a18b646a92.rmeta","emit":"metadata"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-kani-verifier_0-66-0/release/deps/libkani_verifier-dfd373a18b646a92.rlib","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/kani_verifier-dfd373a18b646a92.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libkani_verifier-dfd373a18b646a92.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libkani_verifier-dfd373a18b646a92.rlib","emit":"link"}',
 ## ]
 ##
 ## [[externs]]
@@ -1304,7 +1304,7 @@ COPY --link --from=dep-n-kani-verifier-0.66.0-dfd373a18b646a92 /tmp/clis-kani-ve
 ##
 ## [[mounts]]
 ## name = "out-5b332a90b563b71d"
-## mount = "/tmp/clis-kani-verifier_0-66-0/release/build/kani-verifier-5b332a90b563b71d/out"
+## mount = "/target/release/build/kani-verifier-5b332a90b563b71d/out"
 ##
 ## [set_envs]
 ## TARGET = "x86_64-unknown-linux-gnu"
@@ -1331,18 +1331,18 @@ COPY --link --from=dep-n-kani-verifier-0.66.0-dfd373a18b646a92 /tmp/clis-kani-ve
 ## script = '''
 ## FROM rust-base AS dep-n-kani-verifier-0.66.0-dfd373a18b646a92
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-kani-verifier_0-66-0/release/deps
+## WORKDIR /target/release/deps
 ## RUN \
 ##   --mount=from=cratesio-kani-verifier-0.66.0,source=/kani-verifier-0.66.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/kani-verifier-0.66.0 \
-##   --mount=from=out-8d1dc5ae4f738a51,dst=/tmp/clis-kani-verifier_0-66-0/release/deps/libanyhow-8d1dc5ae4f738a51.rlib,source=/libanyhow-8d1dc5ae4f738a51.rlib \
-##   --mount=from=out-8d1dc5ae4f738a51,dst=/tmp/clis-kani-verifier_0-66-0/release/deps/libanyhow-8d1dc5ae4f738a51.rmeta,source=/libanyhow-8d1dc5ae4f738a51.rmeta \
-##   --mount=from=out-46a3f77b3083d543,dst=/tmp/clis-kani-verifier_0-66-0/release/deps/libhome-46a3f77b3083d543.rlib,source=/libhome-46a3f77b3083d543.rlib \
-##   --mount=from=out-46a3f77b3083d543,dst=/tmp/clis-kani-verifier_0-66-0/release/deps/libhome-46a3f77b3083d543.rmeta,source=/libhome-46a3f77b3083d543.rmeta \
-##   --mount=from=out-2e95c4cd8dc3cea9,dst=/tmp/clis-kani-verifier_0-66-0/release/deps/libos_info-2e95c4cd8dc3cea9.rlib,source=/libos_info-2e95c4cd8dc3cea9.rlib \
-##   --mount=from=out-2e95c4cd8dc3cea9,dst=/tmp/clis-kani-verifier_0-66-0/release/deps/libos_info-2e95c4cd8dc3cea9.rmeta,source=/libos_info-2e95c4cd8dc3cea9.rmeta \
-##   --mount=from=out-64be2e589e1b58c5,dst=/tmp/clis-kani-verifier_0-66-0/release/deps/liblog-64be2e589e1b58c5.rlib,source=/liblog-64be2e589e1b58c5.rlib \
-##   --mount=from=out-64be2e589e1b58c5,dst=/tmp/clis-kani-verifier_0-66-0/release/deps/liblog-64be2e589e1b58c5.rmeta,source=/liblog-64be2e589e1b58c5.rmeta \
-##   --mount=from=out-5b332a90b563b71d,dst=/tmp/clis-kani-verifier_0-66-0/release/build/kani-verifier-5b332a90b563b71d/out,source=/ \
+##   --mount=from=out-8d1dc5ae4f738a51,dst=/target/release/deps/libanyhow-8d1dc5ae4f738a51.rlib,source=/libanyhow-8d1dc5ae4f738a51.rlib \
+##   --mount=from=out-8d1dc5ae4f738a51,dst=/target/release/deps/libanyhow-8d1dc5ae4f738a51.rmeta,source=/libanyhow-8d1dc5ae4f738a51.rmeta \
+##   --mount=from=out-46a3f77b3083d543,dst=/target/release/deps/libhome-46a3f77b3083d543.rlib,source=/libhome-46a3f77b3083d543.rlib \
+##   --mount=from=out-46a3f77b3083d543,dst=/target/release/deps/libhome-46a3f77b3083d543.rmeta,source=/libhome-46a3f77b3083d543.rmeta \
+##   --mount=from=out-2e95c4cd8dc3cea9,dst=/target/release/deps/libos_info-2e95c4cd8dc3cea9.rlib,source=/libos_info-2e95c4cd8dc3cea9.rlib \
+##   --mount=from=out-2e95c4cd8dc3cea9,dst=/target/release/deps/libos_info-2e95c4cd8dc3cea9.rmeta,source=/libos_info-2e95c4cd8dc3cea9.rmeta \
+##   --mount=from=out-64be2e589e1b58c5,dst=/target/release/deps/liblog-64be2e589e1b58c5.rlib,source=/liblog-64be2e589e1b58c5.rlib \
+##   --mount=from=out-64be2e589e1b58c5,dst=/target/release/deps/liblog-64be2e589e1b58c5.rmeta,source=/liblog-64be2e589e1b58c5.rmeta \
+##   --mount=from=out-5b332a90b563b71d,dst=/target/release/build/kani-verifier-5b332a90b563b71d/out,source=/ \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=kani_verifier \
 ##         CARGO_INCREMENTAL=0 \
@@ -1364,14 +1364,14 @@ COPY --link --from=dep-n-kani-verifier-0.66.0-dfd373a18b646a92 /tmp/clis-kani-ve
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGO_PRIMARY_PACKAGE=1 \
 ##         CARGO_SBOM_PATH= \
-##         OUT_DIR=/tmp/clis-kani-verifier_0-66-0/release/build/kani-verifier-5b332a90b563b71d/out \
+##         OUT_DIR=/target/release/build/kani-verifier-5b332a90b563b71d/out \
 ##         CARGOGREEN=1 \
 ##         TARGET=x86_64-unknown-linux-gnu \
-##       rustc --crate-name kani_verifier --edition 2024 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=48dfd090ad0eadad' -C extra-filename'=-dfd373a18b646a92' --out-dir /tmp/clis-kani-verifier_0-66-0/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-kani-verifier_0-66-0/release/deps' --extern anyhow'=/tmp/clis-kani-verifier_0-66-0/release/deps/libanyhow-8d1dc5ae4f738a51.rmeta' --extern home'=/tmp/clis-kani-verifier_0-66-0/release/deps/libhome-46a3f77b3083d543.rmeta' --extern os_info'=/tmp/clis-kani-verifier_0-66-0/release/deps/libos_info-2e95c4cd8dc3cea9.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/kani-verifier-0.66.0/src/lib.rs \
-##         1>          /tmp/clis-kani-verifier_0-66-0/release/deps/out-dfd373a18b646a92-stdout \
-##         2>          /tmp/clis-kani-verifier_0-66-0/release/deps/out-dfd373a18b646a92-stderr \
-##         || echo $? >/tmp/clis-kani-verifier_0-66-0/release/deps/out-dfd373a18b646a92-errcode\
-##   ; find /tmp/clis-kani-verifier_0-66-0/release/deps/*-dfd373a18b646a92* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name kani_verifier --edition 2024 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=48dfd090ad0eadad' -C extra-filename'=-dfd373a18b646a92' --out-dir /target/release/deps -C strip'=debuginfo' -L dependency'=/target/release/deps' --extern anyhow'=/target/release/deps/libanyhow-8d1dc5ae4f738a51.rmeta' --extern home'=/target/release/deps/libhome-46a3f77b3083d543.rmeta' --extern os_info'=/target/release/deps/libos_info-2e95c4cd8dc3cea9.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/kani-verifier-0.66.0/src/lib.rs \
+##         1>          /target/release/deps/out-dfd373a18b646a92-stdout \
+##         2>          /target/release/deps/out-dfd373a18b646a92-stderr \
+##         || echo $? >/target/release/deps/out-dfd373a18b646a92-errcode\
+##   ; find /target/release/deps/*-dfd373a18b646a92* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -1379,20 +1379,20 @@ COPY --link --from=dep-n-kani-verifier-0.66.0-dfd373a18b646a92 /tmp/clis-kani-ve
 ## stage = "out-dfd373a18b646a92"
 ## script = """
 ## FROM scratch AS out-dfd373a18b646a92
-## COPY --link --from=dep-n-kani-verifier-0.66.0-dfd373a18b646a92 /tmp/clis-kani-verifier_0-66-0/release/deps/*-dfd373a18b646a92* /"""
+## COPY --link --from=dep-n-kani-verifier-0.66.0-dfd373a18b646a92 /target/release/deps/*-dfd373a18b646a92* /"""
 
 
 FROM rust-base AS dep-n-kani-verifier-0.66.0-9e144b88b270f21c
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-kani-verifier_0-66-0/release/deps
+WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-kani-verifier-0.66.0,source=/kani-verifier-0.66.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/kani-verifier-0.66.0 \
-  --mount=from=out-8d1dc5ae4f738a51,dst=/tmp/clis-kani-verifier_0-66-0/release/deps/libanyhow-8d1dc5ae4f738a51.rlib,source=/libanyhow-8d1dc5ae4f738a51.rlib \
-  --mount=from=out-46a3f77b3083d543,dst=/tmp/clis-kani-verifier_0-66-0/release/deps/libhome-46a3f77b3083d543.rlib,source=/libhome-46a3f77b3083d543.rlib \
-  --mount=from=out-dfd373a18b646a92,dst=/tmp/clis-kani-verifier_0-66-0/release/deps/libkani_verifier-dfd373a18b646a92.rlib,source=/libkani_verifier-dfd373a18b646a92.rlib \
-  --mount=from=out-2e95c4cd8dc3cea9,dst=/tmp/clis-kani-verifier_0-66-0/release/deps/libos_info-2e95c4cd8dc3cea9.rlib,source=/libos_info-2e95c4cd8dc3cea9.rlib \
-  --mount=from=out-64be2e589e1b58c5,dst=/tmp/clis-kani-verifier_0-66-0/release/deps/liblog-64be2e589e1b58c5.rlib,source=/liblog-64be2e589e1b58c5.rlib \
-  --mount=from=out-5b332a90b563b71d,dst=/tmp/clis-kani-verifier_0-66-0/release/build/kani-verifier-5b332a90b563b71d/out,source=/ \
+  --mount=from=out-8d1dc5ae4f738a51,dst=/target/release/deps/libanyhow-8d1dc5ae4f738a51.rlib,source=/libanyhow-8d1dc5ae4f738a51.rlib \
+  --mount=from=out-46a3f77b3083d543,dst=/target/release/deps/libhome-46a3f77b3083d543.rlib,source=/libhome-46a3f77b3083d543.rlib \
+  --mount=from=out-dfd373a18b646a92,dst=/target/release/deps/libkani_verifier-dfd373a18b646a92.rlib,source=/libkani_verifier-dfd373a18b646a92.rlib \
+  --mount=from=out-2e95c4cd8dc3cea9,dst=/target/release/deps/libos_info-2e95c4cd8dc3cea9.rlib,source=/libos_info-2e95c4cd8dc3cea9.rlib \
+  --mount=from=out-64be2e589e1b58c5,dst=/target/release/deps/liblog-64be2e589e1b58c5.rlib,source=/liblog-64be2e589e1b58c5.rlib \
+  --mount=from=out-5b332a90b563b71d,dst=/target/release/build/kani-verifier-5b332a90b563b71d/out,source=/ \
     env CARGO="$(which cargo)" \
         CARGO_BIN_NAME=cargo-kani \
         CARGO_CRATE_NAME=cargo_kani \
@@ -1415,16 +1415,16 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         CARGO_PRIMARY_PACKAGE=1 \
         CARGO_SBOM_PATH= \
-        OUT_DIR=/tmp/clis-kani-verifier_0-66-0/release/build/kani-verifier-5b332a90b563b71d/out \
+        OUT_DIR=/target/release/build/kani-verifier-5b332a90b563b71d/out \
         CARGOGREEN=1 \
         TARGET=x86_64-unknown-linux-gnu \
-      rustc --crate-name cargo_kani --edition 2024 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C opt-level'=3' -C embed-bitcode'=no' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=ece2504ec93054ee' -C extra-filename'=-9e144b88b270f21c' --out-dir /tmp/clis-kani-verifier_0-66-0/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-kani-verifier_0-66-0/release/deps' --extern anyhow'=/tmp/clis-kani-verifier_0-66-0/release/deps/libanyhow-8d1dc5ae4f738a51.rlib' --extern home'=/tmp/clis-kani-verifier_0-66-0/release/deps/libhome-46a3f77b3083d543.rlib' --extern kani_verifier'=/tmp/clis-kani-verifier_0-66-0/release/deps/libkani_verifier-dfd373a18b646a92.rlib' --extern os_info'=/tmp/clis-kani-verifier_0-66-0/release/deps/libos_info-2e95c4cd8dc3cea9.rlib' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/kani-verifier-0.66.0/src/bin/cargo_kani.rs \
-        1>          /tmp/clis-kani-verifier_0-66-0/release/deps/out-9e144b88b270f21c-stdout \
-        2>          /tmp/clis-kani-verifier_0-66-0/release/deps/out-9e144b88b270f21c-stderr \
-        || echo $? >/tmp/clis-kani-verifier_0-66-0/release/deps/out-9e144b88b270f21c-errcode\
-  ; find /tmp/clis-kani-verifier_0-66-0/release/deps/*-9e144b88b270f21c* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      rustc --crate-name cargo_kani --edition 2024 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C opt-level'=3' -C embed-bitcode'=no' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=ece2504ec93054ee' -C extra-filename'=-9e144b88b270f21c' --out-dir /target/release/deps -C strip'=debuginfo' -L dependency'=/target/release/deps' --extern anyhow'=/target/release/deps/libanyhow-8d1dc5ae4f738a51.rlib' --extern home'=/target/release/deps/libhome-46a3f77b3083d543.rlib' --extern kani_verifier'=/target/release/deps/libkani_verifier-dfd373a18b646a92.rlib' --extern os_info'=/target/release/deps/libos_info-2e95c4cd8dc3cea9.rlib' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/kani-verifier-0.66.0/src/bin/cargo_kani.rs \
+        1>          /target/release/deps/out-9e144b88b270f21c-stdout \
+        2>          /target/release/deps/out-9e144b88b270f21c-stderr \
+        || echo $? >/target/release/deps/out-9e144b88b270f21c-errcode\
+  ; find /target/release/deps/*-9e144b88b270f21c* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-9e144b88b270f21c
-COPY --link --from=dep-n-kani-verifier-0.66.0-9e144b88b270f21c /tmp/clis-kani-verifier_0-66-0/release/deps/*-9e144b88b270f21c* /
+COPY --link --from=dep-n-kani-verifier-0.66.0-9e144b88b270f21c /target/release/deps/*-9e144b88b270f21c* /
 
 # Pipe this file to:
 # DOCKER_BUILDKIT="1" \
@@ -1451,8 +1451,8 @@ COPY --link --from=dep-n-kani-verifier-0.66.0-9e144b88b270f21c /tmp/clis-kani-ve
 ##     "cargo_kani-9e144b88b270f21c.d",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-kani-verifier_0-66-0/release/deps/cargo_kani-9e144b88b270f21c.d","emit":"dep-info"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-kani-verifier_0-66-0/release/deps/cargo_kani-9e144b88b270f21c","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/cargo_kani-9e144b88b270f21c.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/cargo_kani-9e144b88b270f21c","emit":"link"}',
 ## ]
 ##
 ## [[externs]]
@@ -1477,7 +1477,7 @@ COPY --link --from=dep-n-kani-verifier-0.66.0-9e144b88b270f21c /tmp/clis-kani-ve
 ##
 ## [[mounts]]
 ## name = "out-5b332a90b563b71d"
-## mount = "/tmp/clis-kani-verifier_0-66-0/release/build/kani-verifier-5b332a90b563b71d/out"
+## mount = "/target/release/build/kani-verifier-5b332a90b563b71d/out"
 ##
 ## [set_envs]
 ## TARGET = "x86_64-unknown-linux-gnu"
@@ -1504,15 +1504,15 @@ COPY --link --from=dep-n-kani-verifier-0.66.0-9e144b88b270f21c /tmp/clis-kani-ve
 ## script = '''
 ## FROM rust-base AS dep-n-kani-verifier-0.66.0-9e144b88b270f21c
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-kani-verifier_0-66-0/release/deps
+## WORKDIR /target/release/deps
 ## RUN \
 ##   --mount=from=cratesio-kani-verifier-0.66.0,source=/kani-verifier-0.66.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/kani-verifier-0.66.0 \
-##   --mount=from=out-8d1dc5ae4f738a51,dst=/tmp/clis-kani-verifier_0-66-0/release/deps/libanyhow-8d1dc5ae4f738a51.rlib,source=/libanyhow-8d1dc5ae4f738a51.rlib \
-##   --mount=from=out-46a3f77b3083d543,dst=/tmp/clis-kani-verifier_0-66-0/release/deps/libhome-46a3f77b3083d543.rlib,source=/libhome-46a3f77b3083d543.rlib \
-##   --mount=from=out-dfd373a18b646a92,dst=/tmp/clis-kani-verifier_0-66-0/release/deps/libkani_verifier-dfd373a18b646a92.rlib,source=/libkani_verifier-dfd373a18b646a92.rlib \
-##   --mount=from=out-2e95c4cd8dc3cea9,dst=/tmp/clis-kani-verifier_0-66-0/release/deps/libos_info-2e95c4cd8dc3cea9.rlib,source=/libos_info-2e95c4cd8dc3cea9.rlib \
-##   --mount=from=out-64be2e589e1b58c5,dst=/tmp/clis-kani-verifier_0-66-0/release/deps/liblog-64be2e589e1b58c5.rlib,source=/liblog-64be2e589e1b58c5.rlib \
-##   --mount=from=out-5b332a90b563b71d,dst=/tmp/clis-kani-verifier_0-66-0/release/build/kani-verifier-5b332a90b563b71d/out,source=/ \
+##   --mount=from=out-8d1dc5ae4f738a51,dst=/target/release/deps/libanyhow-8d1dc5ae4f738a51.rlib,source=/libanyhow-8d1dc5ae4f738a51.rlib \
+##   --mount=from=out-46a3f77b3083d543,dst=/target/release/deps/libhome-46a3f77b3083d543.rlib,source=/libhome-46a3f77b3083d543.rlib \
+##   --mount=from=out-dfd373a18b646a92,dst=/target/release/deps/libkani_verifier-dfd373a18b646a92.rlib,source=/libkani_verifier-dfd373a18b646a92.rlib \
+##   --mount=from=out-2e95c4cd8dc3cea9,dst=/target/release/deps/libos_info-2e95c4cd8dc3cea9.rlib,source=/libos_info-2e95c4cd8dc3cea9.rlib \
+##   --mount=from=out-64be2e589e1b58c5,dst=/target/release/deps/liblog-64be2e589e1b58c5.rlib,source=/liblog-64be2e589e1b58c5.rlib \
+##   --mount=from=out-5b332a90b563b71d,dst=/target/release/build/kani-verifier-5b332a90b563b71d/out,source=/ \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_BIN_NAME=cargo-kani \
 ##         CARGO_CRATE_NAME=cargo_kani \
@@ -1535,14 +1535,14 @@ COPY --link --from=dep-n-kani-verifier-0.66.0-9e144b88b270f21c /tmp/clis-kani-ve
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGO_PRIMARY_PACKAGE=1 \
 ##         CARGO_SBOM_PATH= \
-##         OUT_DIR=/tmp/clis-kani-verifier_0-66-0/release/build/kani-verifier-5b332a90b563b71d/out \
+##         OUT_DIR=/target/release/build/kani-verifier-5b332a90b563b71d/out \
 ##         CARGOGREEN=1 \
 ##         TARGET=x86_64-unknown-linux-gnu \
-##       rustc --crate-name cargo_kani --edition 2024 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C opt-level'=3' -C embed-bitcode'=no' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=ece2504ec93054ee' -C extra-filename'=-9e144b88b270f21c' --out-dir /tmp/clis-kani-verifier_0-66-0/release/deps -C strip'=debuginfo' -L dependency'=/tmp/clis-kani-verifier_0-66-0/release/deps' --extern anyhow'=/tmp/clis-kani-verifier_0-66-0/release/deps/libanyhow-8d1dc5ae4f738a51.rlib' --extern home'=/tmp/clis-kani-verifier_0-66-0/release/deps/libhome-46a3f77b3083d543.rlib' --extern kani_verifier'=/tmp/clis-kani-verifier_0-66-0/release/deps/libkani_verifier-dfd373a18b646a92.rlib' --extern os_info'=/tmp/clis-kani-verifier_0-66-0/release/deps/libos_info-2e95c4cd8dc3cea9.rlib' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/kani-verifier-0.66.0/src/bin/cargo_kani.rs \
-##         1>          /tmp/clis-kani-verifier_0-66-0/release/deps/out-9e144b88b270f21c-stdout \
-##         2>          /tmp/clis-kani-verifier_0-66-0/release/deps/out-9e144b88b270f21c-stderr \
-##         || echo $? >/tmp/clis-kani-verifier_0-66-0/release/deps/out-9e144b88b270f21c-errcode\
-##   ; find /tmp/clis-kani-verifier_0-66-0/release/deps/*-9e144b88b270f21c* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name cargo_kani --edition 2024 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C opt-level'=3' -C embed-bitcode'=no' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=ece2504ec93054ee' -C extra-filename'=-9e144b88b270f21c' --out-dir /target/release/deps -C strip'=debuginfo' -L dependency'=/target/release/deps' --extern anyhow'=/target/release/deps/libanyhow-8d1dc5ae4f738a51.rlib' --extern home'=/target/release/deps/libhome-46a3f77b3083d543.rlib' --extern kani_verifier'=/target/release/deps/libkani_verifier-dfd373a18b646a92.rlib' --extern os_info'=/target/release/deps/libos_info-2e95c4cd8dc3cea9.rlib' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/kani-verifier-0.66.0/src/bin/cargo_kani.rs \
+##         1>          /target/release/deps/out-9e144b88b270f21c-stdout \
+##         2>          /target/release/deps/out-9e144b88b270f21c-stderr \
+##         || echo $? >/target/release/deps/out-9e144b88b270f21c-errcode\
+##   ; find /target/release/deps/*-9e144b88b270f21c* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -1550,7 +1550,7 @@ COPY --link --from=dep-n-kani-verifier-0.66.0-9e144b88b270f21c /tmp/clis-kani-ve
 ## stage = "out-9e144b88b270f21c"
 ## script = """
 ## FROM scratch AS out-9e144b88b270f21c
-## COPY --link --from=dep-n-kani-verifier-0.66.0-9e144b88b270f21c /tmp/clis-kani-verifier_0-66-0/release/deps/*-9e144b88b270f21c* /"""
+## COPY --link --from=dep-n-kani-verifier-0.66.0-9e144b88b270f21c /target/release/deps/*-9e144b88b270f21c* /"""
 
 FROM scratch
 COPY --link --from=out-9e144b88b270f21c /cargo_kani-9e144b88b270f21c /cargo_kani

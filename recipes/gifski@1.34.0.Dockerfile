@@ -11,7 +11,7 @@ ADD --chmod=0664 --unpack --checksum=sha256:862ed96ca487e809f1c8e5a8447f6ee2cf10
   https://static.crates.io/crates/anstyle/anstyle-1.0.11.crate /
 FROM rust-base AS dep-n-anstyle-1.0.11-25158921b2975a45
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-gifski_1-34-0/release/deps
+WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-anstyle-1.0.11,source=/anstyle-1.0.11,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anstyle-1.0.11 \
     env CARGO="$(which cargo)" \
@@ -34,13 +34,13 @@ RUN \
         CARGO_PKG_VERSION_PATCH=11 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --crate-name anstyle --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --warn rust_2018_idioms --warn clippy'::zero_sized_map_values' --warn clippy'::wildcard_imports' --warn clippy'::verbose_file_reads' --warn unused_qualifications --warn unused_macro_rules --warn unused_lifetimes --warn unsafe_op_in_unsafe_fn --warn unreachable_pub --warn unnameable_types --warn clippy'::uninlined_format_args' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::todo' --warn clippy'::string_to_string' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_add_assign' --warn clippy'::string_add' --warn clippy'::str_to_string' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::self_named_module_files' --warn clippy'::same_functions_in_if_condition' --allow clippy'::result_large_err' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::ref_option_ref' --warn clippy'::redundant_feature_names' --warn clippy'::rc_mutex' --warn clippy'::ptr_as_ptr' --warn clippy'::path_buf_push_overwrite' --warn clippy'::negative_feature_names' --warn clippy'::needless_for_each' --allow clippy'::needless_continue' --warn clippy'::mutex_integer' --warn clippy'::mem_forget' --warn clippy'::macro_use_imports' --warn clippy'::lossy_float_literal' --warn clippy'::linkedlist' --allow clippy'::let_and_return' --warn clippy'::large_types_passed_by_value' --warn clippy'::large_stack_arrays' --warn clippy'::large_digit_groups' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::infinite_loop' --warn clippy'::inefficient_to_string' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::imprecise_flops' --warn clippy'::implicit_clone' --allow clippy'::if_same_then_else' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::fn_params_excessive_bools' --warn clippy'::float_cmp_const' --warn clippy'::flat_map_option' --warn clippy'::filter_map_next' --warn clippy'::fallible_impl_from' --warn clippy'::explicit_into_iter_loop' --warn clippy'::explicit_deref_methods' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::enum_glob_use' --warn clippy'::empty_enum' --warn clippy'::doc_markdown' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::dbg_macro' --warn clippy'::create_dir' --allow clippy'::collapsible_else_if' --warn clippy'::checked_conversions' --allow clippy'::branches_sharing_code' --allow clippy'::bool_assert_comparison' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "std"))' -C metadata'=b3fe7df7db9b8ee0' -C extra-filename'=-25158921b2975a45' --out-dir /tmp/clis-gifski_1-34-0/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anstyle-1.0.11/src/lib.rs \
-        1>          /tmp/clis-gifski_1-34-0/release/deps/out-25158921b2975a45-stdout \
-        2>          /tmp/clis-gifski_1-34-0/release/deps/out-25158921b2975a45-stderr \
-        || echo $? >/tmp/clis-gifski_1-34-0/release/deps/out-25158921b2975a45-errcode\
-  ; find /tmp/clis-gifski_1-34-0/release/deps/*-25158921b2975a45* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      rustc --crate-name anstyle --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --warn rust_2018_idioms --warn clippy'::zero_sized_map_values' --warn clippy'::wildcard_imports' --warn clippy'::verbose_file_reads' --warn unused_qualifications --warn unused_macro_rules --warn unused_lifetimes --warn unsafe_op_in_unsafe_fn --warn unreachable_pub --warn unnameable_types --warn clippy'::uninlined_format_args' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::todo' --warn clippy'::string_to_string' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_add_assign' --warn clippy'::string_add' --warn clippy'::str_to_string' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::self_named_module_files' --warn clippy'::same_functions_in_if_condition' --allow clippy'::result_large_err' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::ref_option_ref' --warn clippy'::redundant_feature_names' --warn clippy'::rc_mutex' --warn clippy'::ptr_as_ptr' --warn clippy'::path_buf_push_overwrite' --warn clippy'::negative_feature_names' --warn clippy'::needless_for_each' --allow clippy'::needless_continue' --warn clippy'::mutex_integer' --warn clippy'::mem_forget' --warn clippy'::macro_use_imports' --warn clippy'::lossy_float_literal' --warn clippy'::linkedlist' --allow clippy'::let_and_return' --warn clippy'::large_types_passed_by_value' --warn clippy'::large_stack_arrays' --warn clippy'::large_digit_groups' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::infinite_loop' --warn clippy'::inefficient_to_string' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::imprecise_flops' --warn clippy'::implicit_clone' --allow clippy'::if_same_then_else' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::fn_params_excessive_bools' --warn clippy'::float_cmp_const' --warn clippy'::flat_map_option' --warn clippy'::filter_map_next' --warn clippy'::fallible_impl_from' --warn clippy'::explicit_into_iter_loop' --warn clippy'::explicit_deref_methods' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::enum_glob_use' --warn clippy'::empty_enum' --warn clippy'::doc_markdown' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::dbg_macro' --warn clippy'::create_dir' --allow clippy'::collapsible_else_if' --warn clippy'::checked_conversions' --allow clippy'::branches_sharing_code' --allow clippy'::bool_assert_comparison' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "std"))' -C metadata'=b3fe7df7db9b8ee0' -C extra-filename'=-25158921b2975a45' --out-dir /target/release/deps -C strip'=symbols' -L dependency'=/target/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anstyle-1.0.11/src/lib.rs \
+        1>          /target/release/deps/out-25158921b2975a45-stdout \
+        2>          /target/release/deps/out-25158921b2975a45-stderr \
+        || echo $? >/target/release/deps/out-25158921b2975a45-errcode\
+  ; find /target/release/deps/*-25158921b2975a45* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-25158921b2975a45
-COPY --link --from=dep-n-anstyle-1.0.11-25158921b2975a45 /tmp/clis-gifski_1-34-0/release/deps/*-25158921b2975a45* /
+COPY --link --from=dep-n-anstyle-1.0.11-25158921b2975a45 /target/release/deps/*-25158921b2975a45* /
 
 ## this = "25158921b2975a45"
 ## writes = [
@@ -49,9 +49,9 @@ COPY --link --from=dep-n-anstyle-1.0.11-25158921b2975a45 /tmp/clis-gifski_1-34-0
 ##     "libanstyle-25158921b2975a45.rmeta",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/anstyle-25158921b2975a45.d","emit":"dep-info"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/libanstyle-25158921b2975a45.rmeta","emit":"metadata"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/libanstyle-25158921b2975a45.rlib","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/anstyle-25158921b2975a45.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libanstyle-25158921b2975a45.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libanstyle-25158921b2975a45.rlib","emit":"link"}',
 ## ]
 ##
 ## [[stages]]
@@ -76,7 +76,7 @@ COPY --link --from=dep-n-anstyle-1.0.11-25158921b2975a45 /tmp/clis-gifski_1-34-0
 ## script = '''
 ## FROM rust-base AS dep-n-anstyle-1.0.11-25158921b2975a45
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-gifski_1-34-0/release/deps
+## WORKDIR /target/release/deps
 ## RUN \
 ##   --mount=from=cratesio-anstyle-1.0.11,source=/anstyle-1.0.11,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anstyle-1.0.11 \
 ##     env CARGO="$(which cargo)" \
@@ -99,11 +99,11 @@ COPY --link --from=dep-n-anstyle-1.0.11-25158921b2975a45 /tmp/clis-gifski_1-34-0
 ##         CARGO_PKG_VERSION_PATCH=11 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name anstyle --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --warn rust_2018_idioms --warn clippy'::zero_sized_map_values' --warn clippy'::wildcard_imports' --warn clippy'::verbose_file_reads' --warn unused_qualifications --warn unused_macro_rules --warn unused_lifetimes --warn unsafe_op_in_unsafe_fn --warn unreachable_pub --warn unnameable_types --warn clippy'::uninlined_format_args' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::todo' --warn clippy'::string_to_string' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_add_assign' --warn clippy'::string_add' --warn clippy'::str_to_string' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::self_named_module_files' --warn clippy'::same_functions_in_if_condition' --allow clippy'::result_large_err' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::ref_option_ref' --warn clippy'::redundant_feature_names' --warn clippy'::rc_mutex' --warn clippy'::ptr_as_ptr' --warn clippy'::path_buf_push_overwrite' --warn clippy'::negative_feature_names' --warn clippy'::needless_for_each' --allow clippy'::needless_continue' --warn clippy'::mutex_integer' --warn clippy'::mem_forget' --warn clippy'::macro_use_imports' --warn clippy'::lossy_float_literal' --warn clippy'::linkedlist' --allow clippy'::let_and_return' --warn clippy'::large_types_passed_by_value' --warn clippy'::large_stack_arrays' --warn clippy'::large_digit_groups' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::infinite_loop' --warn clippy'::inefficient_to_string' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::imprecise_flops' --warn clippy'::implicit_clone' --allow clippy'::if_same_then_else' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::fn_params_excessive_bools' --warn clippy'::float_cmp_const' --warn clippy'::flat_map_option' --warn clippy'::filter_map_next' --warn clippy'::fallible_impl_from' --warn clippy'::explicit_into_iter_loop' --warn clippy'::explicit_deref_methods' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::enum_glob_use' --warn clippy'::empty_enum' --warn clippy'::doc_markdown' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::dbg_macro' --warn clippy'::create_dir' --allow clippy'::collapsible_else_if' --warn clippy'::checked_conversions' --allow clippy'::branches_sharing_code' --allow clippy'::bool_assert_comparison' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "std"))' -C metadata'=b3fe7df7db9b8ee0' -C extra-filename'=-25158921b2975a45' --out-dir /tmp/clis-gifski_1-34-0/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anstyle-1.0.11/src/lib.rs \
-##         1>          /tmp/clis-gifski_1-34-0/release/deps/out-25158921b2975a45-stdout \
-##         2>          /tmp/clis-gifski_1-34-0/release/deps/out-25158921b2975a45-stderr \
-##         || echo $? >/tmp/clis-gifski_1-34-0/release/deps/out-25158921b2975a45-errcode\
-##   ; find /tmp/clis-gifski_1-34-0/release/deps/*-25158921b2975a45* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name anstyle --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --warn rust_2018_idioms --warn clippy'::zero_sized_map_values' --warn clippy'::wildcard_imports' --warn clippy'::verbose_file_reads' --warn unused_qualifications --warn unused_macro_rules --warn unused_lifetimes --warn unsafe_op_in_unsafe_fn --warn unreachable_pub --warn unnameable_types --warn clippy'::uninlined_format_args' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::todo' --warn clippy'::string_to_string' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_add_assign' --warn clippy'::string_add' --warn clippy'::str_to_string' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::self_named_module_files' --warn clippy'::same_functions_in_if_condition' --allow clippy'::result_large_err' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::ref_option_ref' --warn clippy'::redundant_feature_names' --warn clippy'::rc_mutex' --warn clippy'::ptr_as_ptr' --warn clippy'::path_buf_push_overwrite' --warn clippy'::negative_feature_names' --warn clippy'::needless_for_each' --allow clippy'::needless_continue' --warn clippy'::mutex_integer' --warn clippy'::mem_forget' --warn clippy'::macro_use_imports' --warn clippy'::lossy_float_literal' --warn clippy'::linkedlist' --allow clippy'::let_and_return' --warn clippy'::large_types_passed_by_value' --warn clippy'::large_stack_arrays' --warn clippy'::large_digit_groups' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::infinite_loop' --warn clippy'::inefficient_to_string' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::imprecise_flops' --warn clippy'::implicit_clone' --allow clippy'::if_same_then_else' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::fn_params_excessive_bools' --warn clippy'::float_cmp_const' --warn clippy'::flat_map_option' --warn clippy'::filter_map_next' --warn clippy'::fallible_impl_from' --warn clippy'::explicit_into_iter_loop' --warn clippy'::explicit_deref_methods' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::enum_glob_use' --warn clippy'::empty_enum' --warn clippy'::doc_markdown' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::dbg_macro' --warn clippy'::create_dir' --allow clippy'::collapsible_else_if' --warn clippy'::checked_conversions' --allow clippy'::branches_sharing_code' --allow clippy'::bool_assert_comparison' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "std"))' -C metadata'=b3fe7df7db9b8ee0' -C extra-filename'=-25158921b2975a45' --out-dir /target/release/deps -C strip'=symbols' -L dependency'=/target/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anstyle-1.0.11/src/lib.rs \
+##         1>          /target/release/deps/out-25158921b2975a45-stdout \
+##         2>          /target/release/deps/out-25158921b2975a45-stderr \
+##         || echo $? >/target/release/deps/out-25158921b2975a45-errcode\
+##   ; find /target/release/deps/*-25158921b2975a45* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -111,14 +111,14 @@ COPY --link --from=dep-n-anstyle-1.0.11-25158921b2975a45 /tmp/clis-gifski_1-34-0
 ## stage = "out-25158921b2975a45"
 ## script = """
 ## FROM scratch AS out-25158921b2975a45
-## COPY --link --from=dep-n-anstyle-1.0.11-25158921b2975a45 /tmp/clis-gifski_1-34-0/release/deps/*-25158921b2975a45* /"""
+## COPY --link --from=dep-n-anstyle-1.0.11-25158921b2975a45 /target/release/deps/*-25158921b2975a45* /"""
 
 FROM scratch AS cratesio-utf8parse-0.2.2
 ADD --chmod=0664 --unpack --checksum=sha256:06abde3611657adf66d383f00b093d7faecc7fa57071cce2578660c9f1010821 \
   https://static.crates.io/crates/utf8parse/utf8parse-0.2.2.crate /
 FROM rust-base AS dep-n-utf8parse-0.2.2-e99b4cd86d1b3d1a
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-gifski_1-34-0/release/deps
+WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-utf8parse-0.2.2,source=/utf8parse-0.2.2,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/utf8parse-0.2.2 \
     env CARGO="$(which cargo)" \
@@ -141,13 +141,13 @@ RUN \
         CARGO_PKG_VERSION_PATCH=2 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --crate-name utf8parse --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --cfg feature'="default"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "nightly"))' -C metadata'=db29dbe888edc49c' -C extra-filename'=-e99b4cd86d1b3d1a' --out-dir /tmp/clis-gifski_1-34-0/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/utf8parse-0.2.2/src/lib.rs \
-        1>          /tmp/clis-gifski_1-34-0/release/deps/out-e99b4cd86d1b3d1a-stdout \
-        2>          /tmp/clis-gifski_1-34-0/release/deps/out-e99b4cd86d1b3d1a-stderr \
-        || echo $? >/tmp/clis-gifski_1-34-0/release/deps/out-e99b4cd86d1b3d1a-errcode\
-  ; find /tmp/clis-gifski_1-34-0/release/deps/*-e99b4cd86d1b3d1a* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      rustc --crate-name utf8parse --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --cfg feature'="default"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "nightly"))' -C metadata'=db29dbe888edc49c' -C extra-filename'=-e99b4cd86d1b3d1a' --out-dir /target/release/deps -C strip'=symbols' -L dependency'=/target/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/utf8parse-0.2.2/src/lib.rs \
+        1>          /target/release/deps/out-e99b4cd86d1b3d1a-stdout \
+        2>          /target/release/deps/out-e99b4cd86d1b3d1a-stderr \
+        || echo $? >/target/release/deps/out-e99b4cd86d1b3d1a-errcode\
+  ; find /target/release/deps/*-e99b4cd86d1b3d1a* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-e99b4cd86d1b3d1a
-COPY --link --from=dep-n-utf8parse-0.2.2-e99b4cd86d1b3d1a /tmp/clis-gifski_1-34-0/release/deps/*-e99b4cd86d1b3d1a* /
+COPY --link --from=dep-n-utf8parse-0.2.2-e99b4cd86d1b3d1a /target/release/deps/*-e99b4cd86d1b3d1a* /
 
 ## this = "e99b4cd86d1b3d1a"
 ## writes = [
@@ -156,9 +156,9 @@ COPY --link --from=dep-n-utf8parse-0.2.2-e99b4cd86d1b3d1a /tmp/clis-gifski_1-34-
 ##     "utf8parse-e99b4cd86d1b3d1a.d",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/utf8parse-e99b4cd86d1b3d1a.d","emit":"dep-info"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/libutf8parse-e99b4cd86d1b3d1a.rmeta","emit":"metadata"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/libutf8parse-e99b4cd86d1b3d1a.rlib","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/utf8parse-e99b4cd86d1b3d1a.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libutf8parse-e99b4cd86d1b3d1a.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libutf8parse-e99b4cd86d1b3d1a.rlib","emit":"link"}',
 ## ]
 ##
 ## [[stages]]
@@ -183,7 +183,7 @@ COPY --link --from=dep-n-utf8parse-0.2.2-e99b4cd86d1b3d1a /tmp/clis-gifski_1-34-
 ## script = '''
 ## FROM rust-base AS dep-n-utf8parse-0.2.2-e99b4cd86d1b3d1a
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-gifski_1-34-0/release/deps
+## WORKDIR /target/release/deps
 ## RUN \
 ##   --mount=from=cratesio-utf8parse-0.2.2,source=/utf8parse-0.2.2,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/utf8parse-0.2.2 \
 ##     env CARGO="$(which cargo)" \
@@ -206,11 +206,11 @@ COPY --link --from=dep-n-utf8parse-0.2.2-e99b4cd86d1b3d1a /tmp/clis-gifski_1-34-
 ##         CARGO_PKG_VERSION_PATCH=2 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name utf8parse --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --cfg feature'="default"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "nightly"))' -C metadata'=db29dbe888edc49c' -C extra-filename'=-e99b4cd86d1b3d1a' --out-dir /tmp/clis-gifski_1-34-0/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/utf8parse-0.2.2/src/lib.rs \
-##         1>          /tmp/clis-gifski_1-34-0/release/deps/out-e99b4cd86d1b3d1a-stdout \
-##         2>          /tmp/clis-gifski_1-34-0/release/deps/out-e99b4cd86d1b3d1a-stderr \
-##         || echo $? >/tmp/clis-gifski_1-34-0/release/deps/out-e99b4cd86d1b3d1a-errcode\
-##   ; find /tmp/clis-gifski_1-34-0/release/deps/*-e99b4cd86d1b3d1a* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name utf8parse --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --cfg feature'="default"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "nightly"))' -C metadata'=db29dbe888edc49c' -C extra-filename'=-e99b4cd86d1b3d1a' --out-dir /target/release/deps -C strip'=symbols' -L dependency'=/target/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/utf8parse-0.2.2/src/lib.rs \
+##         1>          /target/release/deps/out-e99b4cd86d1b3d1a-stdout \
+##         2>          /target/release/deps/out-e99b4cd86d1b3d1a-stderr \
+##         || echo $? >/target/release/deps/out-e99b4cd86d1b3d1a-errcode\
+##   ; find /target/release/deps/*-e99b4cd86d1b3d1a* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -218,18 +218,18 @@ COPY --link --from=dep-n-utf8parse-0.2.2-e99b4cd86d1b3d1a /tmp/clis-gifski_1-34-
 ## stage = "out-e99b4cd86d1b3d1a"
 ## script = """
 ## FROM scratch AS out-e99b4cd86d1b3d1a
-## COPY --link --from=dep-n-utf8parse-0.2.2-e99b4cd86d1b3d1a /tmp/clis-gifski_1-34-0/release/deps/*-e99b4cd86d1b3d1a* /"""
+## COPY --link --from=dep-n-utf8parse-0.2.2-e99b4cd86d1b3d1a /target/release/deps/*-e99b4cd86d1b3d1a* /"""
 
 FROM scratch AS cratesio-anstyle-parse-0.2.7
 ADD --chmod=0664 --unpack --checksum=sha256:4e7644824f0aa2c7b9384579234ef10eb7efb6a0deb83f9630a49594dd9c15c2 \
   https://static.crates.io/crates/anstyle-parse/anstyle-parse-0.2.7.crate /
 FROM rust-base AS dep-n-anstyle-parse-0.2.7-3a154f05c18fe502
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-gifski_1-34-0/release/deps
+WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-anstyle-parse-0.2.7,source=/anstyle-parse-0.2.7,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anstyle-parse-0.2.7 \
-  --mount=from=out-e99b4cd86d1b3d1a,dst=/tmp/clis-gifski_1-34-0/release/deps/libutf8parse-e99b4cd86d1b3d1a.rlib,source=/libutf8parse-e99b4cd86d1b3d1a.rlib \
-  --mount=from=out-e99b4cd86d1b3d1a,dst=/tmp/clis-gifski_1-34-0/release/deps/libutf8parse-e99b4cd86d1b3d1a.rmeta,source=/libutf8parse-e99b4cd86d1b3d1a.rmeta \
+  --mount=from=out-e99b4cd86d1b3d1a,dst=/target/release/deps/libutf8parse-e99b4cd86d1b3d1a.rlib,source=/libutf8parse-e99b4cd86d1b3d1a.rlib \
+  --mount=from=out-e99b4cd86d1b3d1a,dst=/target/release/deps/libutf8parse-e99b4cd86d1b3d1a.rmeta,source=/libutf8parse-e99b4cd86d1b3d1a.rmeta \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=anstyle_parse \
         CARGO_INCREMENTAL=0 \
@@ -250,13 +250,13 @@ RUN \
         CARGO_PKG_VERSION_PATCH=7 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --crate-name anstyle_parse --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --warn rust_2018_idioms --warn clippy'::zero_sized_map_values' --warn clippy'::wildcard_imports' --warn clippy'::verbose_file_reads' --warn unused_qualifications --warn unused_macro_rules --warn unused_lifetimes --warn unsafe_op_in_unsafe_fn --warn unreachable_pub --warn unnameable_types --warn clippy'::uninlined_format_args' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::todo' --warn clippy'::string_to_string' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_add_assign' --warn clippy'::string_add' --warn clippy'::str_to_string' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::self_named_module_files' --warn clippy'::same_functions_in_if_condition' --allow clippy'::result_large_err' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::ref_option_ref' --warn clippy'::redundant_feature_names' --warn clippy'::rc_mutex' --warn clippy'::ptr_as_ptr' --warn clippy'::path_buf_push_overwrite' --warn clippy'::negative_feature_names' --warn clippy'::needless_for_each' --allow clippy'::needless_continue' --warn clippy'::mutex_integer' --warn clippy'::mem_forget' --warn clippy'::macro_use_imports' --warn clippy'::lossy_float_literal' --warn clippy'::linkedlist' --allow clippy'::let_and_return' --warn clippy'::large_types_passed_by_value' --warn clippy'::large_stack_arrays' --warn clippy'::large_digit_groups' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::infinite_loop' --warn clippy'::inefficient_to_string' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::imprecise_flops' --warn clippy'::implicit_clone' --allow clippy'::if_same_then_else' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::fn_params_excessive_bools' --warn clippy'::float_cmp_const' --warn clippy'::flat_map_option' --warn clippy'::filter_map_next' --warn clippy'::fallible_impl_from' --warn clippy'::explicit_into_iter_loop' --warn clippy'::explicit_deref_methods' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::enum_glob_use' --warn clippy'::empty_enum' --warn clippy'::doc_markdown' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::dbg_macro' --warn clippy'::create_dir' --allow clippy'::collapsible_else_if' --warn clippy'::checked_conversions' --allow clippy'::branches_sharing_code' --allow clippy'::bool_assert_comparison' --cfg feature'="default"' --cfg feature'="utf8"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("core", "default", "utf8"))' -C metadata'=2ee1585b89d95a65' -C extra-filename'=-3a154f05c18fe502' --out-dir /tmp/clis-gifski_1-34-0/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --extern utf8parse'=/tmp/clis-gifski_1-34-0/release/deps/libutf8parse-e99b4cd86d1b3d1a.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anstyle-parse-0.2.7/src/lib.rs \
-        1>          /tmp/clis-gifski_1-34-0/release/deps/out-3a154f05c18fe502-stdout \
-        2>          /tmp/clis-gifski_1-34-0/release/deps/out-3a154f05c18fe502-stderr \
-        || echo $? >/tmp/clis-gifski_1-34-0/release/deps/out-3a154f05c18fe502-errcode\
-  ; find /tmp/clis-gifski_1-34-0/release/deps/*-3a154f05c18fe502* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      rustc --crate-name anstyle_parse --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --warn rust_2018_idioms --warn clippy'::zero_sized_map_values' --warn clippy'::wildcard_imports' --warn clippy'::verbose_file_reads' --warn unused_qualifications --warn unused_macro_rules --warn unused_lifetimes --warn unsafe_op_in_unsafe_fn --warn unreachable_pub --warn unnameable_types --warn clippy'::uninlined_format_args' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::todo' --warn clippy'::string_to_string' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_add_assign' --warn clippy'::string_add' --warn clippy'::str_to_string' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::self_named_module_files' --warn clippy'::same_functions_in_if_condition' --allow clippy'::result_large_err' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::ref_option_ref' --warn clippy'::redundant_feature_names' --warn clippy'::rc_mutex' --warn clippy'::ptr_as_ptr' --warn clippy'::path_buf_push_overwrite' --warn clippy'::negative_feature_names' --warn clippy'::needless_for_each' --allow clippy'::needless_continue' --warn clippy'::mutex_integer' --warn clippy'::mem_forget' --warn clippy'::macro_use_imports' --warn clippy'::lossy_float_literal' --warn clippy'::linkedlist' --allow clippy'::let_and_return' --warn clippy'::large_types_passed_by_value' --warn clippy'::large_stack_arrays' --warn clippy'::large_digit_groups' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::infinite_loop' --warn clippy'::inefficient_to_string' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::imprecise_flops' --warn clippy'::implicit_clone' --allow clippy'::if_same_then_else' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::fn_params_excessive_bools' --warn clippy'::float_cmp_const' --warn clippy'::flat_map_option' --warn clippy'::filter_map_next' --warn clippy'::fallible_impl_from' --warn clippy'::explicit_into_iter_loop' --warn clippy'::explicit_deref_methods' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::enum_glob_use' --warn clippy'::empty_enum' --warn clippy'::doc_markdown' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::dbg_macro' --warn clippy'::create_dir' --allow clippy'::collapsible_else_if' --warn clippy'::checked_conversions' --allow clippy'::branches_sharing_code' --allow clippy'::bool_assert_comparison' --cfg feature'="default"' --cfg feature'="utf8"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("core", "default", "utf8"))' -C metadata'=2ee1585b89d95a65' -C extra-filename'=-3a154f05c18fe502' --out-dir /target/release/deps -C strip'=symbols' -L dependency'=/target/release/deps' --extern utf8parse'=/target/release/deps/libutf8parse-e99b4cd86d1b3d1a.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anstyle-parse-0.2.7/src/lib.rs \
+        1>          /target/release/deps/out-3a154f05c18fe502-stdout \
+        2>          /target/release/deps/out-3a154f05c18fe502-stderr \
+        || echo $? >/target/release/deps/out-3a154f05c18fe502-errcode\
+  ; find /target/release/deps/*-3a154f05c18fe502* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-3a154f05c18fe502
-COPY --link --from=dep-n-anstyle-parse-0.2.7-3a154f05c18fe502 /tmp/clis-gifski_1-34-0/release/deps/*-3a154f05c18fe502* /
+COPY --link --from=dep-n-anstyle-parse-0.2.7-3a154f05c18fe502 /target/release/deps/*-3a154f05c18fe502* /
 
 ## this = "3a154f05c18fe502"
 ## deps = ["e99b4cd86d1b3d1a"]
@@ -266,9 +266,9 @@ COPY --link --from=dep-n-anstyle-parse-0.2.7-3a154f05c18fe502 /tmp/clis-gifski_1
 ##     "libanstyle_parse-3a154f05c18fe502.rmeta",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/anstyle_parse-3a154f05c18fe502.d","emit":"dep-info"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/libanstyle_parse-3a154f05c18fe502.rmeta","emit":"metadata"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/libanstyle_parse-3a154f05c18fe502.rlib","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/anstyle_parse-3a154f05c18fe502.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libanstyle_parse-3a154f05c18fe502.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libanstyle_parse-3a154f05c18fe502.rlib","emit":"link"}',
 ## ]
 ##
 ## [[externs]]
@@ -301,11 +301,11 @@ COPY --link --from=dep-n-anstyle-parse-0.2.7-3a154f05c18fe502 /tmp/clis-gifski_1
 ## script = '''
 ## FROM rust-base AS dep-n-anstyle-parse-0.2.7-3a154f05c18fe502
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-gifski_1-34-0/release/deps
+## WORKDIR /target/release/deps
 ## RUN \
 ##   --mount=from=cratesio-anstyle-parse-0.2.7,source=/anstyle-parse-0.2.7,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anstyle-parse-0.2.7 \
-##   --mount=from=out-e99b4cd86d1b3d1a,dst=/tmp/clis-gifski_1-34-0/release/deps/libutf8parse-e99b4cd86d1b3d1a.rlib,source=/libutf8parse-e99b4cd86d1b3d1a.rlib \
-##   --mount=from=out-e99b4cd86d1b3d1a,dst=/tmp/clis-gifski_1-34-0/release/deps/libutf8parse-e99b4cd86d1b3d1a.rmeta,source=/libutf8parse-e99b4cd86d1b3d1a.rmeta \
+##   --mount=from=out-e99b4cd86d1b3d1a,dst=/target/release/deps/libutf8parse-e99b4cd86d1b3d1a.rlib,source=/libutf8parse-e99b4cd86d1b3d1a.rlib \
+##   --mount=from=out-e99b4cd86d1b3d1a,dst=/target/release/deps/libutf8parse-e99b4cd86d1b3d1a.rmeta,source=/libutf8parse-e99b4cd86d1b3d1a.rmeta \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=anstyle_parse \
 ##         CARGO_INCREMENTAL=0 \
@@ -326,11 +326,11 @@ COPY --link --from=dep-n-anstyle-parse-0.2.7-3a154f05c18fe502 /tmp/clis-gifski_1
 ##         CARGO_PKG_VERSION_PATCH=7 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name anstyle_parse --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --warn rust_2018_idioms --warn clippy'::zero_sized_map_values' --warn clippy'::wildcard_imports' --warn clippy'::verbose_file_reads' --warn unused_qualifications --warn unused_macro_rules --warn unused_lifetimes --warn unsafe_op_in_unsafe_fn --warn unreachable_pub --warn unnameable_types --warn clippy'::uninlined_format_args' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::todo' --warn clippy'::string_to_string' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_add_assign' --warn clippy'::string_add' --warn clippy'::str_to_string' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::self_named_module_files' --warn clippy'::same_functions_in_if_condition' --allow clippy'::result_large_err' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::ref_option_ref' --warn clippy'::redundant_feature_names' --warn clippy'::rc_mutex' --warn clippy'::ptr_as_ptr' --warn clippy'::path_buf_push_overwrite' --warn clippy'::negative_feature_names' --warn clippy'::needless_for_each' --allow clippy'::needless_continue' --warn clippy'::mutex_integer' --warn clippy'::mem_forget' --warn clippy'::macro_use_imports' --warn clippy'::lossy_float_literal' --warn clippy'::linkedlist' --allow clippy'::let_and_return' --warn clippy'::large_types_passed_by_value' --warn clippy'::large_stack_arrays' --warn clippy'::large_digit_groups' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::infinite_loop' --warn clippy'::inefficient_to_string' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::imprecise_flops' --warn clippy'::implicit_clone' --allow clippy'::if_same_then_else' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::fn_params_excessive_bools' --warn clippy'::float_cmp_const' --warn clippy'::flat_map_option' --warn clippy'::filter_map_next' --warn clippy'::fallible_impl_from' --warn clippy'::explicit_into_iter_loop' --warn clippy'::explicit_deref_methods' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::enum_glob_use' --warn clippy'::empty_enum' --warn clippy'::doc_markdown' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::dbg_macro' --warn clippy'::create_dir' --allow clippy'::collapsible_else_if' --warn clippy'::checked_conversions' --allow clippy'::branches_sharing_code' --allow clippy'::bool_assert_comparison' --cfg feature'="default"' --cfg feature'="utf8"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("core", "default", "utf8"))' -C metadata'=2ee1585b89d95a65' -C extra-filename'=-3a154f05c18fe502' --out-dir /tmp/clis-gifski_1-34-0/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --extern utf8parse'=/tmp/clis-gifski_1-34-0/release/deps/libutf8parse-e99b4cd86d1b3d1a.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anstyle-parse-0.2.7/src/lib.rs \
-##         1>          /tmp/clis-gifski_1-34-0/release/deps/out-3a154f05c18fe502-stdout \
-##         2>          /tmp/clis-gifski_1-34-0/release/deps/out-3a154f05c18fe502-stderr \
-##         || echo $? >/tmp/clis-gifski_1-34-0/release/deps/out-3a154f05c18fe502-errcode\
-##   ; find /tmp/clis-gifski_1-34-0/release/deps/*-3a154f05c18fe502* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name anstyle_parse --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --warn rust_2018_idioms --warn clippy'::zero_sized_map_values' --warn clippy'::wildcard_imports' --warn clippy'::verbose_file_reads' --warn unused_qualifications --warn unused_macro_rules --warn unused_lifetimes --warn unsafe_op_in_unsafe_fn --warn unreachable_pub --warn unnameable_types --warn clippy'::uninlined_format_args' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::todo' --warn clippy'::string_to_string' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_add_assign' --warn clippy'::string_add' --warn clippy'::str_to_string' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::self_named_module_files' --warn clippy'::same_functions_in_if_condition' --allow clippy'::result_large_err' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::ref_option_ref' --warn clippy'::redundant_feature_names' --warn clippy'::rc_mutex' --warn clippy'::ptr_as_ptr' --warn clippy'::path_buf_push_overwrite' --warn clippy'::negative_feature_names' --warn clippy'::needless_for_each' --allow clippy'::needless_continue' --warn clippy'::mutex_integer' --warn clippy'::mem_forget' --warn clippy'::macro_use_imports' --warn clippy'::lossy_float_literal' --warn clippy'::linkedlist' --allow clippy'::let_and_return' --warn clippy'::large_types_passed_by_value' --warn clippy'::large_stack_arrays' --warn clippy'::large_digit_groups' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::infinite_loop' --warn clippy'::inefficient_to_string' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::imprecise_flops' --warn clippy'::implicit_clone' --allow clippy'::if_same_then_else' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::fn_params_excessive_bools' --warn clippy'::float_cmp_const' --warn clippy'::flat_map_option' --warn clippy'::filter_map_next' --warn clippy'::fallible_impl_from' --warn clippy'::explicit_into_iter_loop' --warn clippy'::explicit_deref_methods' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::enum_glob_use' --warn clippy'::empty_enum' --warn clippy'::doc_markdown' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::dbg_macro' --warn clippy'::create_dir' --allow clippy'::collapsible_else_if' --warn clippy'::checked_conversions' --allow clippy'::branches_sharing_code' --allow clippy'::bool_assert_comparison' --cfg feature'="default"' --cfg feature'="utf8"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("core", "default", "utf8"))' -C metadata'=2ee1585b89d95a65' -C extra-filename'=-3a154f05c18fe502' --out-dir /target/release/deps -C strip'=symbols' -L dependency'=/target/release/deps' --extern utf8parse'=/target/release/deps/libutf8parse-e99b4cd86d1b3d1a.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anstyle-parse-0.2.7/src/lib.rs \
+##         1>          /target/release/deps/out-3a154f05c18fe502-stdout \
+##         2>          /target/release/deps/out-3a154f05c18fe502-stderr \
+##         || echo $? >/target/release/deps/out-3a154f05c18fe502-errcode\
+##   ; find /target/release/deps/*-3a154f05c18fe502* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -338,14 +338,14 @@ COPY --link --from=dep-n-anstyle-parse-0.2.7-3a154f05c18fe502 /tmp/clis-gifski_1
 ## stage = "out-3a154f05c18fe502"
 ## script = """
 ## FROM scratch AS out-3a154f05c18fe502
-## COPY --link --from=dep-n-anstyle-parse-0.2.7-3a154f05c18fe502 /tmp/clis-gifski_1-34-0/release/deps/*-3a154f05c18fe502* /"""
+## COPY --link --from=dep-n-anstyle-parse-0.2.7-3a154f05c18fe502 /target/release/deps/*-3a154f05c18fe502* /"""
 
 FROM scratch AS cratesio-anstyle-query-1.1.3
 ADD --chmod=0664 --unpack --checksum=sha256:6c8bdeb6047d8983be085bab0ba1472e6dc604e7041dbf6fcd5e71523014fae9 \
   https://static.crates.io/crates/anstyle-query/anstyle-query-1.1.3.crate /
 FROM rust-base AS dep-n-anstyle-query-1.1.3-f174fe24d94bb0d5
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-gifski_1-34-0/release/deps
+WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-anstyle-query-1.1.3,source=/anstyle-query-1.1.3,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anstyle-query-1.1.3 \
     env CARGO="$(which cargo)" \
@@ -368,13 +368,13 @@ RUN \
         CARGO_PKG_VERSION_PATCH=3 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --crate-name anstyle_query --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --warn rust_2018_idioms --warn clippy'::zero_sized_map_values' --warn clippy'::wildcard_imports' --warn clippy'::verbose_file_reads' --warn unused_qualifications --warn unused_macro_rules --warn unused_lifetimes --warn unsafe_op_in_unsafe_fn --warn unreachable_pub --warn unnameable_types --warn clippy'::uninlined_format_args' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::todo' --warn clippy'::string_to_string' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_add_assign' --warn clippy'::string_add' --warn clippy'::str_to_string' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::self_named_module_files' --warn clippy'::same_functions_in_if_condition' --allow clippy'::result_large_err' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::ref_option_ref' --warn clippy'::redundant_feature_names' --warn clippy'::rc_mutex' --warn clippy'::ptr_as_ptr' --warn clippy'::path_buf_push_overwrite' --warn clippy'::negative_feature_names' --warn clippy'::needless_for_each' --allow clippy'::needless_continue' --warn clippy'::mutex_integer' --warn clippy'::mem_forget' --warn clippy'::macro_use_imports' --warn clippy'::lossy_float_literal' --warn clippy'::linkedlist' --allow clippy'::let_and_return' --warn clippy'::large_types_passed_by_value' --warn clippy'::large_stack_arrays' --warn clippy'::large_digit_groups' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::infinite_loop' --warn clippy'::inefficient_to_string' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::imprecise_flops' --warn clippy'::implicit_clone' --allow clippy'::if_same_then_else' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::fn_params_excessive_bools' --warn clippy'::float_cmp_const' --warn clippy'::flat_map_option' --warn clippy'::filter_map_next' --warn clippy'::fallible_impl_from' --warn clippy'::explicit_into_iter_loop' --warn clippy'::explicit_deref_methods' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::enum_glob_use' --warn clippy'::empty_enum' --warn clippy'::doc_markdown' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::dbg_macro' --warn clippy'::create_dir' --allow clippy'::collapsible_else_if' --warn clippy'::checked_conversions' --allow clippy'::branches_sharing_code' --allow clippy'::bool_assert_comparison' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=4a29dc642f000856' -C extra-filename'=-f174fe24d94bb0d5' --out-dir /tmp/clis-gifski_1-34-0/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anstyle-query-1.1.3/src/lib.rs \
-        1>          /tmp/clis-gifski_1-34-0/release/deps/out-f174fe24d94bb0d5-stdout \
-        2>          /tmp/clis-gifski_1-34-0/release/deps/out-f174fe24d94bb0d5-stderr \
-        || echo $? >/tmp/clis-gifski_1-34-0/release/deps/out-f174fe24d94bb0d5-errcode\
-  ; find /tmp/clis-gifski_1-34-0/release/deps/*-f174fe24d94bb0d5* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      rustc --crate-name anstyle_query --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --warn rust_2018_idioms --warn clippy'::zero_sized_map_values' --warn clippy'::wildcard_imports' --warn clippy'::verbose_file_reads' --warn unused_qualifications --warn unused_macro_rules --warn unused_lifetimes --warn unsafe_op_in_unsafe_fn --warn unreachable_pub --warn unnameable_types --warn clippy'::uninlined_format_args' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::todo' --warn clippy'::string_to_string' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_add_assign' --warn clippy'::string_add' --warn clippy'::str_to_string' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::self_named_module_files' --warn clippy'::same_functions_in_if_condition' --allow clippy'::result_large_err' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::ref_option_ref' --warn clippy'::redundant_feature_names' --warn clippy'::rc_mutex' --warn clippy'::ptr_as_ptr' --warn clippy'::path_buf_push_overwrite' --warn clippy'::negative_feature_names' --warn clippy'::needless_for_each' --allow clippy'::needless_continue' --warn clippy'::mutex_integer' --warn clippy'::mem_forget' --warn clippy'::macro_use_imports' --warn clippy'::lossy_float_literal' --warn clippy'::linkedlist' --allow clippy'::let_and_return' --warn clippy'::large_types_passed_by_value' --warn clippy'::large_stack_arrays' --warn clippy'::large_digit_groups' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::infinite_loop' --warn clippy'::inefficient_to_string' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::imprecise_flops' --warn clippy'::implicit_clone' --allow clippy'::if_same_then_else' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::fn_params_excessive_bools' --warn clippy'::float_cmp_const' --warn clippy'::flat_map_option' --warn clippy'::filter_map_next' --warn clippy'::fallible_impl_from' --warn clippy'::explicit_into_iter_loop' --warn clippy'::explicit_deref_methods' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::enum_glob_use' --warn clippy'::empty_enum' --warn clippy'::doc_markdown' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::dbg_macro' --warn clippy'::create_dir' --allow clippy'::collapsible_else_if' --warn clippy'::checked_conversions' --allow clippy'::branches_sharing_code' --allow clippy'::bool_assert_comparison' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=4a29dc642f000856' -C extra-filename'=-f174fe24d94bb0d5' --out-dir /target/release/deps -C strip'=symbols' -L dependency'=/target/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anstyle-query-1.1.3/src/lib.rs \
+        1>          /target/release/deps/out-f174fe24d94bb0d5-stdout \
+        2>          /target/release/deps/out-f174fe24d94bb0d5-stderr \
+        || echo $? >/target/release/deps/out-f174fe24d94bb0d5-errcode\
+  ; find /target/release/deps/*-f174fe24d94bb0d5* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-f174fe24d94bb0d5
-COPY --link --from=dep-n-anstyle-query-1.1.3-f174fe24d94bb0d5 /tmp/clis-gifski_1-34-0/release/deps/*-f174fe24d94bb0d5* /
+COPY --link --from=dep-n-anstyle-query-1.1.3-f174fe24d94bb0d5 /target/release/deps/*-f174fe24d94bb0d5* /
 
 ## this = "f174fe24d94bb0d5"
 ## writes = [
@@ -383,9 +383,9 @@ COPY --link --from=dep-n-anstyle-query-1.1.3-f174fe24d94bb0d5 /tmp/clis-gifski_1
 ##     "libanstyle_query-f174fe24d94bb0d5.rmeta",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/anstyle_query-f174fe24d94bb0d5.d","emit":"dep-info"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/libanstyle_query-f174fe24d94bb0d5.rmeta","emit":"metadata"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/libanstyle_query-f174fe24d94bb0d5.rlib","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/anstyle_query-f174fe24d94bb0d5.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libanstyle_query-f174fe24d94bb0d5.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libanstyle_query-f174fe24d94bb0d5.rlib","emit":"link"}',
 ## ]
 ##
 ## [[stages]]
@@ -410,7 +410,7 @@ COPY --link --from=dep-n-anstyle-query-1.1.3-f174fe24d94bb0d5 /tmp/clis-gifski_1
 ## script = '''
 ## FROM rust-base AS dep-n-anstyle-query-1.1.3-f174fe24d94bb0d5
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-gifski_1-34-0/release/deps
+## WORKDIR /target/release/deps
 ## RUN \
 ##   --mount=from=cratesio-anstyle-query-1.1.3,source=/anstyle-query-1.1.3,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anstyle-query-1.1.3 \
 ##     env CARGO="$(which cargo)" \
@@ -433,11 +433,11 @@ COPY --link --from=dep-n-anstyle-query-1.1.3-f174fe24d94bb0d5 /tmp/clis-gifski_1
 ##         CARGO_PKG_VERSION_PATCH=3 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name anstyle_query --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --warn rust_2018_idioms --warn clippy'::zero_sized_map_values' --warn clippy'::wildcard_imports' --warn clippy'::verbose_file_reads' --warn unused_qualifications --warn unused_macro_rules --warn unused_lifetimes --warn unsafe_op_in_unsafe_fn --warn unreachable_pub --warn unnameable_types --warn clippy'::uninlined_format_args' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::todo' --warn clippy'::string_to_string' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_add_assign' --warn clippy'::string_add' --warn clippy'::str_to_string' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::self_named_module_files' --warn clippy'::same_functions_in_if_condition' --allow clippy'::result_large_err' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::ref_option_ref' --warn clippy'::redundant_feature_names' --warn clippy'::rc_mutex' --warn clippy'::ptr_as_ptr' --warn clippy'::path_buf_push_overwrite' --warn clippy'::negative_feature_names' --warn clippy'::needless_for_each' --allow clippy'::needless_continue' --warn clippy'::mutex_integer' --warn clippy'::mem_forget' --warn clippy'::macro_use_imports' --warn clippy'::lossy_float_literal' --warn clippy'::linkedlist' --allow clippy'::let_and_return' --warn clippy'::large_types_passed_by_value' --warn clippy'::large_stack_arrays' --warn clippy'::large_digit_groups' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::infinite_loop' --warn clippy'::inefficient_to_string' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::imprecise_flops' --warn clippy'::implicit_clone' --allow clippy'::if_same_then_else' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::fn_params_excessive_bools' --warn clippy'::float_cmp_const' --warn clippy'::flat_map_option' --warn clippy'::filter_map_next' --warn clippy'::fallible_impl_from' --warn clippy'::explicit_into_iter_loop' --warn clippy'::explicit_deref_methods' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::enum_glob_use' --warn clippy'::empty_enum' --warn clippy'::doc_markdown' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::dbg_macro' --warn clippy'::create_dir' --allow clippy'::collapsible_else_if' --warn clippy'::checked_conversions' --allow clippy'::branches_sharing_code' --allow clippy'::bool_assert_comparison' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=4a29dc642f000856' -C extra-filename'=-f174fe24d94bb0d5' --out-dir /tmp/clis-gifski_1-34-0/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anstyle-query-1.1.3/src/lib.rs \
-##         1>          /tmp/clis-gifski_1-34-0/release/deps/out-f174fe24d94bb0d5-stdout \
-##         2>          /tmp/clis-gifski_1-34-0/release/deps/out-f174fe24d94bb0d5-stderr \
-##         || echo $? >/tmp/clis-gifski_1-34-0/release/deps/out-f174fe24d94bb0d5-errcode\
-##   ; find /tmp/clis-gifski_1-34-0/release/deps/*-f174fe24d94bb0d5* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name anstyle_query --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --warn rust_2018_idioms --warn clippy'::zero_sized_map_values' --warn clippy'::wildcard_imports' --warn clippy'::verbose_file_reads' --warn unused_qualifications --warn unused_macro_rules --warn unused_lifetimes --warn unsafe_op_in_unsafe_fn --warn unreachable_pub --warn unnameable_types --warn clippy'::uninlined_format_args' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::todo' --warn clippy'::string_to_string' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_add_assign' --warn clippy'::string_add' --warn clippy'::str_to_string' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::self_named_module_files' --warn clippy'::same_functions_in_if_condition' --allow clippy'::result_large_err' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::ref_option_ref' --warn clippy'::redundant_feature_names' --warn clippy'::rc_mutex' --warn clippy'::ptr_as_ptr' --warn clippy'::path_buf_push_overwrite' --warn clippy'::negative_feature_names' --warn clippy'::needless_for_each' --allow clippy'::needless_continue' --warn clippy'::mutex_integer' --warn clippy'::mem_forget' --warn clippy'::macro_use_imports' --warn clippy'::lossy_float_literal' --warn clippy'::linkedlist' --allow clippy'::let_and_return' --warn clippy'::large_types_passed_by_value' --warn clippy'::large_stack_arrays' --warn clippy'::large_digit_groups' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::infinite_loop' --warn clippy'::inefficient_to_string' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::imprecise_flops' --warn clippy'::implicit_clone' --allow clippy'::if_same_then_else' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::fn_params_excessive_bools' --warn clippy'::float_cmp_const' --warn clippy'::flat_map_option' --warn clippy'::filter_map_next' --warn clippy'::fallible_impl_from' --warn clippy'::explicit_into_iter_loop' --warn clippy'::explicit_deref_methods' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::enum_glob_use' --warn clippy'::empty_enum' --warn clippy'::doc_markdown' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::dbg_macro' --warn clippy'::create_dir' --allow clippy'::collapsible_else_if' --warn clippy'::checked_conversions' --allow clippy'::branches_sharing_code' --allow clippy'::bool_assert_comparison' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=4a29dc642f000856' -C extra-filename'=-f174fe24d94bb0d5' --out-dir /target/release/deps -C strip'=symbols' -L dependency'=/target/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anstyle-query-1.1.3/src/lib.rs \
+##         1>          /target/release/deps/out-f174fe24d94bb0d5-stdout \
+##         2>          /target/release/deps/out-f174fe24d94bb0d5-stderr \
+##         || echo $? >/target/release/deps/out-f174fe24d94bb0d5-errcode\
+##   ; find /target/release/deps/*-f174fe24d94bb0d5* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -445,14 +445,14 @@ COPY --link --from=dep-n-anstyle-query-1.1.3-f174fe24d94bb0d5 /tmp/clis-gifski_1
 ## stage = "out-f174fe24d94bb0d5"
 ## script = """
 ## FROM scratch AS out-f174fe24d94bb0d5
-## COPY --link --from=dep-n-anstyle-query-1.1.3-f174fe24d94bb0d5 /tmp/clis-gifski_1-34-0/release/deps/*-f174fe24d94bb0d5* /"""
+## COPY --link --from=dep-n-anstyle-query-1.1.3-f174fe24d94bb0d5 /target/release/deps/*-f174fe24d94bb0d5* /"""
 
 FROM scratch AS cratesio-colorchoice-1.0.4
 ADD --chmod=0664 --unpack --checksum=sha256:b05b61dc5112cbb17e4b6cd61790d9845d13888356391624cbe7e41efeac1e75 \
   https://static.crates.io/crates/colorchoice/colorchoice-1.0.4.crate /
 FROM rust-base AS dep-n-colorchoice-1.0.4-b0f9d0eb7e3c5228
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-gifski_1-34-0/release/deps
+WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-colorchoice-1.0.4,source=/colorchoice-1.0.4,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/colorchoice-1.0.4 \
     env CARGO="$(which cargo)" \
@@ -475,13 +475,13 @@ RUN \
         CARGO_PKG_VERSION_PATCH=4 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --crate-name colorchoice --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --warn rust_2018_idioms --warn clippy'::zero_sized_map_values' --warn clippy'::wildcard_imports' --warn clippy'::verbose_file_reads' --warn unused_qualifications --warn unused_macro_rules --warn unused_lifetimes --warn unsafe_op_in_unsafe_fn --warn unreachable_pub --warn unnameable_types --warn clippy'::uninlined_format_args' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::todo' --warn clippy'::string_to_string' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_add_assign' --warn clippy'::string_add' --warn clippy'::str_to_string' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::self_named_module_files' --warn clippy'::same_functions_in_if_condition' --allow clippy'::result_large_err' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::ref_option_ref' --warn clippy'::redundant_feature_names' --warn clippy'::rc_mutex' --warn clippy'::ptr_as_ptr' --warn clippy'::path_buf_push_overwrite' --warn clippy'::negative_feature_names' --warn clippy'::needless_for_each' --allow clippy'::needless_continue' --warn clippy'::mutex_integer' --warn clippy'::mem_forget' --warn clippy'::macro_use_imports' --warn clippy'::lossy_float_literal' --warn clippy'::linkedlist' --allow clippy'::let_and_return' --warn clippy'::large_types_passed_by_value' --warn clippy'::large_stack_arrays' --warn clippy'::large_digit_groups' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::infinite_loop' --warn clippy'::inefficient_to_string' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::imprecise_flops' --warn clippy'::implicit_clone' --allow clippy'::if_same_then_else' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::fn_params_excessive_bools' --warn clippy'::float_cmp_const' --warn clippy'::flat_map_option' --warn clippy'::filter_map_next' --warn clippy'::fallible_impl_from' --warn clippy'::explicit_into_iter_loop' --warn clippy'::explicit_deref_methods' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::enum_glob_use' --warn clippy'::empty_enum' --warn clippy'::doc_markdown' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::dbg_macro' --warn clippy'::create_dir' --allow clippy'::collapsible_else_if' --warn clippy'::checked_conversions' --allow clippy'::branches_sharing_code' --allow clippy'::bool_assert_comparison' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=be1ceec27cea00a8' -C extra-filename'=-b0f9d0eb7e3c5228' --out-dir /tmp/clis-gifski_1-34-0/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/colorchoice-1.0.4/src/lib.rs \
-        1>          /tmp/clis-gifski_1-34-0/release/deps/out-b0f9d0eb7e3c5228-stdout \
-        2>          /tmp/clis-gifski_1-34-0/release/deps/out-b0f9d0eb7e3c5228-stderr \
-        || echo $? >/tmp/clis-gifski_1-34-0/release/deps/out-b0f9d0eb7e3c5228-errcode\
-  ; find /tmp/clis-gifski_1-34-0/release/deps/*-b0f9d0eb7e3c5228* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      rustc --crate-name colorchoice --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --warn rust_2018_idioms --warn clippy'::zero_sized_map_values' --warn clippy'::wildcard_imports' --warn clippy'::verbose_file_reads' --warn unused_qualifications --warn unused_macro_rules --warn unused_lifetimes --warn unsafe_op_in_unsafe_fn --warn unreachable_pub --warn unnameable_types --warn clippy'::uninlined_format_args' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::todo' --warn clippy'::string_to_string' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_add_assign' --warn clippy'::string_add' --warn clippy'::str_to_string' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::self_named_module_files' --warn clippy'::same_functions_in_if_condition' --allow clippy'::result_large_err' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::ref_option_ref' --warn clippy'::redundant_feature_names' --warn clippy'::rc_mutex' --warn clippy'::ptr_as_ptr' --warn clippy'::path_buf_push_overwrite' --warn clippy'::negative_feature_names' --warn clippy'::needless_for_each' --allow clippy'::needless_continue' --warn clippy'::mutex_integer' --warn clippy'::mem_forget' --warn clippy'::macro_use_imports' --warn clippy'::lossy_float_literal' --warn clippy'::linkedlist' --allow clippy'::let_and_return' --warn clippy'::large_types_passed_by_value' --warn clippy'::large_stack_arrays' --warn clippy'::large_digit_groups' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::infinite_loop' --warn clippy'::inefficient_to_string' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::imprecise_flops' --warn clippy'::implicit_clone' --allow clippy'::if_same_then_else' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::fn_params_excessive_bools' --warn clippy'::float_cmp_const' --warn clippy'::flat_map_option' --warn clippy'::filter_map_next' --warn clippy'::fallible_impl_from' --warn clippy'::explicit_into_iter_loop' --warn clippy'::explicit_deref_methods' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::enum_glob_use' --warn clippy'::empty_enum' --warn clippy'::doc_markdown' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::dbg_macro' --warn clippy'::create_dir' --allow clippy'::collapsible_else_if' --warn clippy'::checked_conversions' --allow clippy'::branches_sharing_code' --allow clippy'::bool_assert_comparison' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=be1ceec27cea00a8' -C extra-filename'=-b0f9d0eb7e3c5228' --out-dir /target/release/deps -C strip'=symbols' -L dependency'=/target/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/colorchoice-1.0.4/src/lib.rs \
+        1>          /target/release/deps/out-b0f9d0eb7e3c5228-stdout \
+        2>          /target/release/deps/out-b0f9d0eb7e3c5228-stderr \
+        || echo $? >/target/release/deps/out-b0f9d0eb7e3c5228-errcode\
+  ; find /target/release/deps/*-b0f9d0eb7e3c5228* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-b0f9d0eb7e3c5228
-COPY --link --from=dep-n-colorchoice-1.0.4-b0f9d0eb7e3c5228 /tmp/clis-gifski_1-34-0/release/deps/*-b0f9d0eb7e3c5228* /
+COPY --link --from=dep-n-colorchoice-1.0.4-b0f9d0eb7e3c5228 /target/release/deps/*-b0f9d0eb7e3c5228* /
 
 ## this = "b0f9d0eb7e3c5228"
 ## writes = [
@@ -490,9 +490,9 @@ COPY --link --from=dep-n-colorchoice-1.0.4-b0f9d0eb7e3c5228 /tmp/clis-gifski_1-3
 ##     "libcolorchoice-b0f9d0eb7e3c5228.rmeta",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/colorchoice-b0f9d0eb7e3c5228.d","emit":"dep-info"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/libcolorchoice-b0f9d0eb7e3c5228.rmeta","emit":"metadata"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/libcolorchoice-b0f9d0eb7e3c5228.rlib","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/colorchoice-b0f9d0eb7e3c5228.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libcolorchoice-b0f9d0eb7e3c5228.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libcolorchoice-b0f9d0eb7e3c5228.rlib","emit":"link"}',
 ## ]
 ##
 ## [[stages]]
@@ -517,7 +517,7 @@ COPY --link --from=dep-n-colorchoice-1.0.4-b0f9d0eb7e3c5228 /tmp/clis-gifski_1-3
 ## script = '''
 ## FROM rust-base AS dep-n-colorchoice-1.0.4-b0f9d0eb7e3c5228
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-gifski_1-34-0/release/deps
+## WORKDIR /target/release/deps
 ## RUN \
 ##   --mount=from=cratesio-colorchoice-1.0.4,source=/colorchoice-1.0.4,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/colorchoice-1.0.4 \
 ##     env CARGO="$(which cargo)" \
@@ -540,11 +540,11 @@ COPY --link --from=dep-n-colorchoice-1.0.4-b0f9d0eb7e3c5228 /tmp/clis-gifski_1-3
 ##         CARGO_PKG_VERSION_PATCH=4 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name colorchoice --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --warn rust_2018_idioms --warn clippy'::zero_sized_map_values' --warn clippy'::wildcard_imports' --warn clippy'::verbose_file_reads' --warn unused_qualifications --warn unused_macro_rules --warn unused_lifetimes --warn unsafe_op_in_unsafe_fn --warn unreachable_pub --warn unnameable_types --warn clippy'::uninlined_format_args' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::todo' --warn clippy'::string_to_string' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_add_assign' --warn clippy'::string_add' --warn clippy'::str_to_string' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::self_named_module_files' --warn clippy'::same_functions_in_if_condition' --allow clippy'::result_large_err' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::ref_option_ref' --warn clippy'::redundant_feature_names' --warn clippy'::rc_mutex' --warn clippy'::ptr_as_ptr' --warn clippy'::path_buf_push_overwrite' --warn clippy'::negative_feature_names' --warn clippy'::needless_for_each' --allow clippy'::needless_continue' --warn clippy'::mutex_integer' --warn clippy'::mem_forget' --warn clippy'::macro_use_imports' --warn clippy'::lossy_float_literal' --warn clippy'::linkedlist' --allow clippy'::let_and_return' --warn clippy'::large_types_passed_by_value' --warn clippy'::large_stack_arrays' --warn clippy'::large_digit_groups' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::infinite_loop' --warn clippy'::inefficient_to_string' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::imprecise_flops' --warn clippy'::implicit_clone' --allow clippy'::if_same_then_else' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::fn_params_excessive_bools' --warn clippy'::float_cmp_const' --warn clippy'::flat_map_option' --warn clippy'::filter_map_next' --warn clippy'::fallible_impl_from' --warn clippy'::explicit_into_iter_loop' --warn clippy'::explicit_deref_methods' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::enum_glob_use' --warn clippy'::empty_enum' --warn clippy'::doc_markdown' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::dbg_macro' --warn clippy'::create_dir' --allow clippy'::collapsible_else_if' --warn clippy'::checked_conversions' --allow clippy'::branches_sharing_code' --allow clippy'::bool_assert_comparison' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=be1ceec27cea00a8' -C extra-filename'=-b0f9d0eb7e3c5228' --out-dir /tmp/clis-gifski_1-34-0/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/colorchoice-1.0.4/src/lib.rs \
-##         1>          /tmp/clis-gifski_1-34-0/release/deps/out-b0f9d0eb7e3c5228-stdout \
-##         2>          /tmp/clis-gifski_1-34-0/release/deps/out-b0f9d0eb7e3c5228-stderr \
-##         || echo $? >/tmp/clis-gifski_1-34-0/release/deps/out-b0f9d0eb7e3c5228-errcode\
-##   ; find /tmp/clis-gifski_1-34-0/release/deps/*-b0f9d0eb7e3c5228* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name colorchoice --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --warn rust_2018_idioms --warn clippy'::zero_sized_map_values' --warn clippy'::wildcard_imports' --warn clippy'::verbose_file_reads' --warn unused_qualifications --warn unused_macro_rules --warn unused_lifetimes --warn unsafe_op_in_unsafe_fn --warn unreachable_pub --warn unnameable_types --warn clippy'::uninlined_format_args' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::todo' --warn clippy'::string_to_string' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_add_assign' --warn clippy'::string_add' --warn clippy'::str_to_string' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::self_named_module_files' --warn clippy'::same_functions_in_if_condition' --allow clippy'::result_large_err' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::ref_option_ref' --warn clippy'::redundant_feature_names' --warn clippy'::rc_mutex' --warn clippy'::ptr_as_ptr' --warn clippy'::path_buf_push_overwrite' --warn clippy'::negative_feature_names' --warn clippy'::needless_for_each' --allow clippy'::needless_continue' --warn clippy'::mutex_integer' --warn clippy'::mem_forget' --warn clippy'::macro_use_imports' --warn clippy'::lossy_float_literal' --warn clippy'::linkedlist' --allow clippy'::let_and_return' --warn clippy'::large_types_passed_by_value' --warn clippy'::large_stack_arrays' --warn clippy'::large_digit_groups' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::infinite_loop' --warn clippy'::inefficient_to_string' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::imprecise_flops' --warn clippy'::implicit_clone' --allow clippy'::if_same_then_else' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::fn_params_excessive_bools' --warn clippy'::float_cmp_const' --warn clippy'::flat_map_option' --warn clippy'::filter_map_next' --warn clippy'::fallible_impl_from' --warn clippy'::explicit_into_iter_loop' --warn clippy'::explicit_deref_methods' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::enum_glob_use' --warn clippy'::empty_enum' --warn clippy'::doc_markdown' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::dbg_macro' --warn clippy'::create_dir' --allow clippy'::collapsible_else_if' --warn clippy'::checked_conversions' --allow clippy'::branches_sharing_code' --allow clippy'::bool_assert_comparison' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=be1ceec27cea00a8' -C extra-filename'=-b0f9d0eb7e3c5228' --out-dir /target/release/deps -C strip'=symbols' -L dependency'=/target/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/colorchoice-1.0.4/src/lib.rs \
+##         1>          /target/release/deps/out-b0f9d0eb7e3c5228-stdout \
+##         2>          /target/release/deps/out-b0f9d0eb7e3c5228-stderr \
+##         || echo $? >/target/release/deps/out-b0f9d0eb7e3c5228-errcode\
+##   ; find /target/release/deps/*-b0f9d0eb7e3c5228* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -552,14 +552,14 @@ COPY --link --from=dep-n-colorchoice-1.0.4-b0f9d0eb7e3c5228 /tmp/clis-gifski_1-3
 ## stage = "out-b0f9d0eb7e3c5228"
 ## script = """
 ## FROM scratch AS out-b0f9d0eb7e3c5228
-## COPY --link --from=dep-n-colorchoice-1.0.4-b0f9d0eb7e3c5228 /tmp/clis-gifski_1-34-0/release/deps/*-b0f9d0eb7e3c5228* /"""
+## COPY --link --from=dep-n-colorchoice-1.0.4-b0f9d0eb7e3c5228 /target/release/deps/*-b0f9d0eb7e3c5228* /"""
 
 FROM scratch AS cratesio-is_terminal_polyfill-1.70.1
 ADD --chmod=0664 --unpack --checksum=sha256:7943c866cc5cd64cbc25b2e01621d07fa8eb2a1a23160ee81ce38704e97b8ecf \
   https://static.crates.io/crates/is_terminal_polyfill/is_terminal_polyfill-1.70.1.crate /
 FROM rust-base AS dep-n-is_terminal_polyfill-1.70.1-08b147e17b2f127e
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-gifski_1-34-0/release/deps
+WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-is_terminal_polyfill-1.70.1,source=/is_terminal_polyfill-1.70.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/is_terminal_polyfill-1.70.1 \
     env CARGO="$(which cargo)" \
@@ -582,13 +582,13 @@ RUN \
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --crate-name is_terminal_polyfill --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --warn clippy'::zero_sized_map_values' --warn clippy'::wildcard_imports' --warn clippy'::verbose_file_reads' --warn unused_qualifications --warn unused_macro_rules --warn unused_lifetimes --warn unsafe_op_in_unsafe_fn --warn unreachable_pub --warn clippy'::trait_duplication_in_bounds' --warn clippy'::todo' --warn clippy'::string_to_string' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_add_assign' --warn clippy'::string_add' --warn clippy'::str_to_string' --warn clippy'::single_match_else' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::self_named_module_files' --warn clippy'::same_functions_in_if_condition' --warn rust_2018_idioms --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::ref_option_ref' --warn clippy'::redundant_feature_names' --warn clippy'::rc_mutex' --warn clippy'::ptr_as_ptr' --warn clippy'::path_buf_push_overwrite' --warn clippy'::negative_feature_names' --warn clippy'::needless_for_each' --warn clippy'::needless_continue' --warn clippy'::mutex_integer' --warn clippy'::mem_forget' --warn clippy'::match_wildcard_for_single_variants' --warn clippy'::macro_use_imports' --warn clippy'::lossy_float_literal' --warn clippy'::linkedlist' --allow clippy'::let_and_return' --warn clippy'::large_types_passed_by_value' --warn clippy'::large_stack_arrays' --warn clippy'::large_digit_groups' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::infinite_loop' --warn clippy'::inefficient_to_string' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::imprecise_flops' --warn clippy'::implicit_clone' --allow clippy'::if_same_then_else' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::fn_params_excessive_bools' --warn clippy'::float_cmp_const' --warn clippy'::flat_map_option' --warn clippy'::filter_map_next' --warn clippy'::fallible_impl_from' --warn clippy'::explicit_into_iter_loop' --warn clippy'::explicit_deref_methods' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::enum_glob_use' --warn clippy'::empty_enum' --warn clippy'::doc_markdown' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::dbg_macro' --warn clippy'::create_dir' --allow clippy'::collapsible_else_if' --warn clippy'::checked_conversions' --allow clippy'::branches_sharing_code' --allow clippy'::bool_assert_comparison' --cfg feature'="default"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default"))' -C metadata'=2a65c43a8f1c571f' -C extra-filename'=-08b147e17b2f127e' --out-dir /tmp/clis-gifski_1-34-0/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/is_terminal_polyfill-1.70.1/src/lib.rs \
-        1>          /tmp/clis-gifski_1-34-0/release/deps/out-08b147e17b2f127e-stdout \
-        2>          /tmp/clis-gifski_1-34-0/release/deps/out-08b147e17b2f127e-stderr \
-        || echo $? >/tmp/clis-gifski_1-34-0/release/deps/out-08b147e17b2f127e-errcode\
-  ; find /tmp/clis-gifski_1-34-0/release/deps/*-08b147e17b2f127e* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      rustc --crate-name is_terminal_polyfill --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --warn clippy'::zero_sized_map_values' --warn clippy'::wildcard_imports' --warn clippy'::verbose_file_reads' --warn unused_qualifications --warn unused_macro_rules --warn unused_lifetimes --warn unsafe_op_in_unsafe_fn --warn unreachable_pub --warn clippy'::trait_duplication_in_bounds' --warn clippy'::todo' --warn clippy'::string_to_string' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_add_assign' --warn clippy'::string_add' --warn clippy'::str_to_string' --warn clippy'::single_match_else' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::self_named_module_files' --warn clippy'::same_functions_in_if_condition' --warn rust_2018_idioms --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::ref_option_ref' --warn clippy'::redundant_feature_names' --warn clippy'::rc_mutex' --warn clippy'::ptr_as_ptr' --warn clippy'::path_buf_push_overwrite' --warn clippy'::negative_feature_names' --warn clippy'::needless_for_each' --warn clippy'::needless_continue' --warn clippy'::mutex_integer' --warn clippy'::mem_forget' --warn clippy'::match_wildcard_for_single_variants' --warn clippy'::macro_use_imports' --warn clippy'::lossy_float_literal' --warn clippy'::linkedlist' --allow clippy'::let_and_return' --warn clippy'::large_types_passed_by_value' --warn clippy'::large_stack_arrays' --warn clippy'::large_digit_groups' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::infinite_loop' --warn clippy'::inefficient_to_string' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::imprecise_flops' --warn clippy'::implicit_clone' --allow clippy'::if_same_then_else' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::fn_params_excessive_bools' --warn clippy'::float_cmp_const' --warn clippy'::flat_map_option' --warn clippy'::filter_map_next' --warn clippy'::fallible_impl_from' --warn clippy'::explicit_into_iter_loop' --warn clippy'::explicit_deref_methods' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::enum_glob_use' --warn clippy'::empty_enum' --warn clippy'::doc_markdown' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::dbg_macro' --warn clippy'::create_dir' --allow clippy'::collapsible_else_if' --warn clippy'::checked_conversions' --allow clippy'::branches_sharing_code' --allow clippy'::bool_assert_comparison' --cfg feature'="default"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default"))' -C metadata'=2a65c43a8f1c571f' -C extra-filename'=-08b147e17b2f127e' --out-dir /target/release/deps -C strip'=symbols' -L dependency'=/target/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/is_terminal_polyfill-1.70.1/src/lib.rs \
+        1>          /target/release/deps/out-08b147e17b2f127e-stdout \
+        2>          /target/release/deps/out-08b147e17b2f127e-stderr \
+        || echo $? >/target/release/deps/out-08b147e17b2f127e-errcode\
+  ; find /target/release/deps/*-08b147e17b2f127e* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-08b147e17b2f127e
-COPY --link --from=dep-n-is_terminal_polyfill-1.70.1-08b147e17b2f127e /tmp/clis-gifski_1-34-0/release/deps/*-08b147e17b2f127e* /
+COPY --link --from=dep-n-is_terminal_polyfill-1.70.1-08b147e17b2f127e /target/release/deps/*-08b147e17b2f127e* /
 
 ## this = "08b147e17b2f127e"
 ## writes = [
@@ -597,9 +597,9 @@ COPY --link --from=dep-n-is_terminal_polyfill-1.70.1-08b147e17b2f127e /tmp/clis-
 ##     "libis_terminal_polyfill-08b147e17b2f127e.rmeta",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/is_terminal_polyfill-08b147e17b2f127e.d","emit":"dep-info"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/libis_terminal_polyfill-08b147e17b2f127e.rmeta","emit":"metadata"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/libis_terminal_polyfill-08b147e17b2f127e.rlib","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/is_terminal_polyfill-08b147e17b2f127e.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libis_terminal_polyfill-08b147e17b2f127e.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libis_terminal_polyfill-08b147e17b2f127e.rlib","emit":"link"}',
 ## ]
 ##
 ## [[stages]]
@@ -624,7 +624,7 @@ COPY --link --from=dep-n-is_terminal_polyfill-1.70.1-08b147e17b2f127e /tmp/clis-
 ## script = '''
 ## FROM rust-base AS dep-n-is_terminal_polyfill-1.70.1-08b147e17b2f127e
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-gifski_1-34-0/release/deps
+## WORKDIR /target/release/deps
 ## RUN \
 ##   --mount=from=cratesio-is_terminal_polyfill-1.70.1,source=/is_terminal_polyfill-1.70.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/is_terminal_polyfill-1.70.1 \
 ##     env CARGO="$(which cargo)" \
@@ -647,11 +647,11 @@ COPY --link --from=dep-n-is_terminal_polyfill-1.70.1-08b147e17b2f127e /tmp/clis-
 ##         CARGO_PKG_VERSION_PATCH=1 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name is_terminal_polyfill --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --warn clippy'::zero_sized_map_values' --warn clippy'::wildcard_imports' --warn clippy'::verbose_file_reads' --warn unused_qualifications --warn unused_macro_rules --warn unused_lifetimes --warn unsafe_op_in_unsafe_fn --warn unreachable_pub --warn clippy'::trait_duplication_in_bounds' --warn clippy'::todo' --warn clippy'::string_to_string' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_add_assign' --warn clippy'::string_add' --warn clippy'::str_to_string' --warn clippy'::single_match_else' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::self_named_module_files' --warn clippy'::same_functions_in_if_condition' --warn rust_2018_idioms --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::ref_option_ref' --warn clippy'::redundant_feature_names' --warn clippy'::rc_mutex' --warn clippy'::ptr_as_ptr' --warn clippy'::path_buf_push_overwrite' --warn clippy'::negative_feature_names' --warn clippy'::needless_for_each' --warn clippy'::needless_continue' --warn clippy'::mutex_integer' --warn clippy'::mem_forget' --warn clippy'::match_wildcard_for_single_variants' --warn clippy'::macro_use_imports' --warn clippy'::lossy_float_literal' --warn clippy'::linkedlist' --allow clippy'::let_and_return' --warn clippy'::large_types_passed_by_value' --warn clippy'::large_stack_arrays' --warn clippy'::large_digit_groups' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::infinite_loop' --warn clippy'::inefficient_to_string' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::imprecise_flops' --warn clippy'::implicit_clone' --allow clippy'::if_same_then_else' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::fn_params_excessive_bools' --warn clippy'::float_cmp_const' --warn clippy'::flat_map_option' --warn clippy'::filter_map_next' --warn clippy'::fallible_impl_from' --warn clippy'::explicit_into_iter_loop' --warn clippy'::explicit_deref_methods' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::enum_glob_use' --warn clippy'::empty_enum' --warn clippy'::doc_markdown' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::dbg_macro' --warn clippy'::create_dir' --allow clippy'::collapsible_else_if' --warn clippy'::checked_conversions' --allow clippy'::branches_sharing_code' --allow clippy'::bool_assert_comparison' --cfg feature'="default"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default"))' -C metadata'=2a65c43a8f1c571f' -C extra-filename'=-08b147e17b2f127e' --out-dir /tmp/clis-gifski_1-34-0/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/is_terminal_polyfill-1.70.1/src/lib.rs \
-##         1>          /tmp/clis-gifski_1-34-0/release/deps/out-08b147e17b2f127e-stdout \
-##         2>          /tmp/clis-gifski_1-34-0/release/deps/out-08b147e17b2f127e-stderr \
-##         || echo $? >/tmp/clis-gifski_1-34-0/release/deps/out-08b147e17b2f127e-errcode\
-##   ; find /tmp/clis-gifski_1-34-0/release/deps/*-08b147e17b2f127e* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name is_terminal_polyfill --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --warn clippy'::zero_sized_map_values' --warn clippy'::wildcard_imports' --warn clippy'::verbose_file_reads' --warn unused_qualifications --warn unused_macro_rules --warn unused_lifetimes --warn unsafe_op_in_unsafe_fn --warn unreachable_pub --warn clippy'::trait_duplication_in_bounds' --warn clippy'::todo' --warn clippy'::string_to_string' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_add_assign' --warn clippy'::string_add' --warn clippy'::str_to_string' --warn clippy'::single_match_else' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::self_named_module_files' --warn clippy'::same_functions_in_if_condition' --warn rust_2018_idioms --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::ref_option_ref' --warn clippy'::redundant_feature_names' --warn clippy'::rc_mutex' --warn clippy'::ptr_as_ptr' --warn clippy'::path_buf_push_overwrite' --warn clippy'::negative_feature_names' --warn clippy'::needless_for_each' --warn clippy'::needless_continue' --warn clippy'::mutex_integer' --warn clippy'::mem_forget' --warn clippy'::match_wildcard_for_single_variants' --warn clippy'::macro_use_imports' --warn clippy'::lossy_float_literal' --warn clippy'::linkedlist' --allow clippy'::let_and_return' --warn clippy'::large_types_passed_by_value' --warn clippy'::large_stack_arrays' --warn clippy'::large_digit_groups' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::infinite_loop' --warn clippy'::inefficient_to_string' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::imprecise_flops' --warn clippy'::implicit_clone' --allow clippy'::if_same_then_else' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::fn_params_excessive_bools' --warn clippy'::float_cmp_const' --warn clippy'::flat_map_option' --warn clippy'::filter_map_next' --warn clippy'::fallible_impl_from' --warn clippy'::explicit_into_iter_loop' --warn clippy'::explicit_deref_methods' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::enum_glob_use' --warn clippy'::empty_enum' --warn clippy'::doc_markdown' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::dbg_macro' --warn clippy'::create_dir' --allow clippy'::collapsible_else_if' --warn clippy'::checked_conversions' --allow clippy'::branches_sharing_code' --allow clippy'::bool_assert_comparison' --cfg feature'="default"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default"))' -C metadata'=2a65c43a8f1c571f' -C extra-filename'=-08b147e17b2f127e' --out-dir /target/release/deps -C strip'=symbols' -L dependency'=/target/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/is_terminal_polyfill-1.70.1/src/lib.rs \
+##         1>          /target/release/deps/out-08b147e17b2f127e-stdout \
+##         2>          /target/release/deps/out-08b147e17b2f127e-stderr \
+##         || echo $? >/target/release/deps/out-08b147e17b2f127e-errcode\
+##   ; find /target/release/deps/*-08b147e17b2f127e* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -659,28 +659,28 @@ COPY --link --from=dep-n-is_terminal_polyfill-1.70.1-08b147e17b2f127e /tmp/clis-
 ## stage = "out-08b147e17b2f127e"
 ## script = """
 ## FROM scratch AS out-08b147e17b2f127e
-## COPY --link --from=dep-n-is_terminal_polyfill-1.70.1-08b147e17b2f127e /tmp/clis-gifski_1-34-0/release/deps/*-08b147e17b2f127e* /"""
+## COPY --link --from=dep-n-is_terminal_polyfill-1.70.1-08b147e17b2f127e /target/release/deps/*-08b147e17b2f127e* /"""
 
 FROM scratch AS cratesio-anstream-0.6.19
 ADD --chmod=0664 --unpack --checksum=sha256:301af1932e46185686725e0fad2f8f2aa7da69dd70bf6ecc44d6b703844a3933 \
   https://static.crates.io/crates/anstream/anstream-0.6.19.crate /
 FROM rust-base AS dep-n-anstream-0.6.19-14a190e9584fadc4
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-gifski_1-34-0/release/deps
+WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-anstream-0.6.19,source=/anstream-0.6.19,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anstream-0.6.19 \
-  --mount=from=out-25158921b2975a45,dst=/tmp/clis-gifski_1-34-0/release/deps/libanstyle-25158921b2975a45.rlib,source=/libanstyle-25158921b2975a45.rlib \
-  --mount=from=out-25158921b2975a45,dst=/tmp/clis-gifski_1-34-0/release/deps/libanstyle-25158921b2975a45.rmeta,source=/libanstyle-25158921b2975a45.rmeta \
-  --mount=from=out-3a154f05c18fe502,dst=/tmp/clis-gifski_1-34-0/release/deps/libanstyle_parse-3a154f05c18fe502.rlib,source=/libanstyle_parse-3a154f05c18fe502.rlib \
-  --mount=from=out-3a154f05c18fe502,dst=/tmp/clis-gifski_1-34-0/release/deps/libanstyle_parse-3a154f05c18fe502.rmeta,source=/libanstyle_parse-3a154f05c18fe502.rmeta \
-  --mount=from=out-e99b4cd86d1b3d1a,dst=/tmp/clis-gifski_1-34-0/release/deps/libutf8parse-e99b4cd86d1b3d1a.rlib,source=/libutf8parse-e99b4cd86d1b3d1a.rlib \
-  --mount=from=out-e99b4cd86d1b3d1a,dst=/tmp/clis-gifski_1-34-0/release/deps/libutf8parse-e99b4cd86d1b3d1a.rmeta,source=/libutf8parse-e99b4cd86d1b3d1a.rmeta \
-  --mount=from=out-f174fe24d94bb0d5,dst=/tmp/clis-gifski_1-34-0/release/deps/libanstyle_query-f174fe24d94bb0d5.rlib,source=/libanstyle_query-f174fe24d94bb0d5.rlib \
-  --mount=from=out-f174fe24d94bb0d5,dst=/tmp/clis-gifski_1-34-0/release/deps/libanstyle_query-f174fe24d94bb0d5.rmeta,source=/libanstyle_query-f174fe24d94bb0d5.rmeta \
-  --mount=from=out-b0f9d0eb7e3c5228,dst=/tmp/clis-gifski_1-34-0/release/deps/libcolorchoice-b0f9d0eb7e3c5228.rlib,source=/libcolorchoice-b0f9d0eb7e3c5228.rlib \
-  --mount=from=out-b0f9d0eb7e3c5228,dst=/tmp/clis-gifski_1-34-0/release/deps/libcolorchoice-b0f9d0eb7e3c5228.rmeta,source=/libcolorchoice-b0f9d0eb7e3c5228.rmeta \
-  --mount=from=out-08b147e17b2f127e,dst=/tmp/clis-gifski_1-34-0/release/deps/libis_terminal_polyfill-08b147e17b2f127e.rlib,source=/libis_terminal_polyfill-08b147e17b2f127e.rlib \
-  --mount=from=out-08b147e17b2f127e,dst=/tmp/clis-gifski_1-34-0/release/deps/libis_terminal_polyfill-08b147e17b2f127e.rmeta,source=/libis_terminal_polyfill-08b147e17b2f127e.rmeta \
+  --mount=from=out-25158921b2975a45,dst=/target/release/deps/libanstyle-25158921b2975a45.rlib,source=/libanstyle-25158921b2975a45.rlib \
+  --mount=from=out-25158921b2975a45,dst=/target/release/deps/libanstyle-25158921b2975a45.rmeta,source=/libanstyle-25158921b2975a45.rmeta \
+  --mount=from=out-3a154f05c18fe502,dst=/target/release/deps/libanstyle_parse-3a154f05c18fe502.rlib,source=/libanstyle_parse-3a154f05c18fe502.rlib \
+  --mount=from=out-3a154f05c18fe502,dst=/target/release/deps/libanstyle_parse-3a154f05c18fe502.rmeta,source=/libanstyle_parse-3a154f05c18fe502.rmeta \
+  --mount=from=out-e99b4cd86d1b3d1a,dst=/target/release/deps/libutf8parse-e99b4cd86d1b3d1a.rlib,source=/libutf8parse-e99b4cd86d1b3d1a.rlib \
+  --mount=from=out-e99b4cd86d1b3d1a,dst=/target/release/deps/libutf8parse-e99b4cd86d1b3d1a.rmeta,source=/libutf8parse-e99b4cd86d1b3d1a.rmeta \
+  --mount=from=out-f174fe24d94bb0d5,dst=/target/release/deps/libanstyle_query-f174fe24d94bb0d5.rlib,source=/libanstyle_query-f174fe24d94bb0d5.rlib \
+  --mount=from=out-f174fe24d94bb0d5,dst=/target/release/deps/libanstyle_query-f174fe24d94bb0d5.rmeta,source=/libanstyle_query-f174fe24d94bb0d5.rmeta \
+  --mount=from=out-b0f9d0eb7e3c5228,dst=/target/release/deps/libcolorchoice-b0f9d0eb7e3c5228.rlib,source=/libcolorchoice-b0f9d0eb7e3c5228.rlib \
+  --mount=from=out-b0f9d0eb7e3c5228,dst=/target/release/deps/libcolorchoice-b0f9d0eb7e3c5228.rmeta,source=/libcolorchoice-b0f9d0eb7e3c5228.rmeta \
+  --mount=from=out-08b147e17b2f127e,dst=/target/release/deps/libis_terminal_polyfill-08b147e17b2f127e.rlib,source=/libis_terminal_polyfill-08b147e17b2f127e.rlib \
+  --mount=from=out-08b147e17b2f127e,dst=/target/release/deps/libis_terminal_polyfill-08b147e17b2f127e.rmeta,source=/libis_terminal_polyfill-08b147e17b2f127e.rmeta \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=anstream \
         CARGO_INCREMENTAL=0 \
@@ -701,13 +701,13 @@ RUN \
         CARGO_PKG_VERSION_PATCH=19 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --crate-name anstream --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --warn rust_2018_idioms --warn clippy'::zero_sized_map_values' --warn clippy'::wildcard_imports' --warn clippy'::verbose_file_reads' --warn unused_qualifications --warn unused_macro_rules --warn unused_lifetimes --warn unsafe_op_in_unsafe_fn --warn unreachable_pub --warn unnameable_types --warn clippy'::uninlined_format_args' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::todo' --warn clippy'::string_to_string' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_add_assign' --warn clippy'::string_add' --warn clippy'::str_to_string' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::self_named_module_files' --warn clippy'::same_functions_in_if_condition' --allow clippy'::result_large_err' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::ref_option_ref' --warn clippy'::redundant_feature_names' --warn clippy'::rc_mutex' --warn clippy'::ptr_as_ptr' --warn clippy'::path_buf_push_overwrite' --warn clippy'::negative_feature_names' --warn clippy'::needless_for_each' --allow clippy'::needless_continue' --warn clippy'::mutex_integer' --warn clippy'::mem_forget' --warn clippy'::macro_use_imports' --warn clippy'::lossy_float_literal' --warn clippy'::linkedlist' --allow clippy'::let_and_return' --warn clippy'::large_types_passed_by_value' --warn clippy'::large_stack_arrays' --warn clippy'::large_digit_groups' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::infinite_loop' --warn clippy'::inefficient_to_string' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::imprecise_flops' --warn clippy'::implicit_clone' --allow clippy'::if_same_then_else' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::fn_params_excessive_bools' --warn clippy'::float_cmp_const' --warn clippy'::flat_map_option' --warn clippy'::filter_map_next' --warn clippy'::fallible_impl_from' --warn clippy'::explicit_into_iter_loop' --warn clippy'::explicit_deref_methods' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::enum_glob_use' --warn clippy'::empty_enum' --warn clippy'::doc_markdown' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::dbg_macro' --warn clippy'::create_dir' --allow clippy'::collapsible_else_if' --warn clippy'::checked_conversions' --allow clippy'::branches_sharing_code' --allow clippy'::bool_assert_comparison' --cfg feature'="auto"' --cfg feature'="default"' --cfg feature'="wincon"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("auto", "default", "test", "wincon"))' -C metadata'=d2d15d4044a05091' -C extra-filename'=-14a190e9584fadc4' --out-dir /tmp/clis-gifski_1-34-0/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --extern anstyle'=/tmp/clis-gifski_1-34-0/release/deps/libanstyle-25158921b2975a45.rmeta' --extern anstyle_parse'=/tmp/clis-gifski_1-34-0/release/deps/libanstyle_parse-3a154f05c18fe502.rmeta' --extern anstyle_query'=/tmp/clis-gifski_1-34-0/release/deps/libanstyle_query-f174fe24d94bb0d5.rmeta' --extern colorchoice'=/tmp/clis-gifski_1-34-0/release/deps/libcolorchoice-b0f9d0eb7e3c5228.rmeta' --extern is_terminal_polyfill'=/tmp/clis-gifski_1-34-0/release/deps/libis_terminal_polyfill-08b147e17b2f127e.rmeta' --extern utf8parse'=/tmp/clis-gifski_1-34-0/release/deps/libutf8parse-e99b4cd86d1b3d1a.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anstream-0.6.19/src/lib.rs \
-        1>          /tmp/clis-gifski_1-34-0/release/deps/out-14a190e9584fadc4-stdout \
-        2>          /tmp/clis-gifski_1-34-0/release/deps/out-14a190e9584fadc4-stderr \
-        || echo $? >/tmp/clis-gifski_1-34-0/release/deps/out-14a190e9584fadc4-errcode\
-  ; find /tmp/clis-gifski_1-34-0/release/deps/*-14a190e9584fadc4* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      rustc --crate-name anstream --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --warn rust_2018_idioms --warn clippy'::zero_sized_map_values' --warn clippy'::wildcard_imports' --warn clippy'::verbose_file_reads' --warn unused_qualifications --warn unused_macro_rules --warn unused_lifetimes --warn unsafe_op_in_unsafe_fn --warn unreachable_pub --warn unnameable_types --warn clippy'::uninlined_format_args' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::todo' --warn clippy'::string_to_string' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_add_assign' --warn clippy'::string_add' --warn clippy'::str_to_string' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::self_named_module_files' --warn clippy'::same_functions_in_if_condition' --allow clippy'::result_large_err' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::ref_option_ref' --warn clippy'::redundant_feature_names' --warn clippy'::rc_mutex' --warn clippy'::ptr_as_ptr' --warn clippy'::path_buf_push_overwrite' --warn clippy'::negative_feature_names' --warn clippy'::needless_for_each' --allow clippy'::needless_continue' --warn clippy'::mutex_integer' --warn clippy'::mem_forget' --warn clippy'::macro_use_imports' --warn clippy'::lossy_float_literal' --warn clippy'::linkedlist' --allow clippy'::let_and_return' --warn clippy'::large_types_passed_by_value' --warn clippy'::large_stack_arrays' --warn clippy'::large_digit_groups' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::infinite_loop' --warn clippy'::inefficient_to_string' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::imprecise_flops' --warn clippy'::implicit_clone' --allow clippy'::if_same_then_else' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::fn_params_excessive_bools' --warn clippy'::float_cmp_const' --warn clippy'::flat_map_option' --warn clippy'::filter_map_next' --warn clippy'::fallible_impl_from' --warn clippy'::explicit_into_iter_loop' --warn clippy'::explicit_deref_methods' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::enum_glob_use' --warn clippy'::empty_enum' --warn clippy'::doc_markdown' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::dbg_macro' --warn clippy'::create_dir' --allow clippy'::collapsible_else_if' --warn clippy'::checked_conversions' --allow clippy'::branches_sharing_code' --allow clippy'::bool_assert_comparison' --cfg feature'="auto"' --cfg feature'="default"' --cfg feature'="wincon"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("auto", "default", "test", "wincon"))' -C metadata'=d2d15d4044a05091' -C extra-filename'=-14a190e9584fadc4' --out-dir /target/release/deps -C strip'=symbols' -L dependency'=/target/release/deps' --extern anstyle'=/target/release/deps/libanstyle-25158921b2975a45.rmeta' --extern anstyle_parse'=/target/release/deps/libanstyle_parse-3a154f05c18fe502.rmeta' --extern anstyle_query'=/target/release/deps/libanstyle_query-f174fe24d94bb0d5.rmeta' --extern colorchoice'=/target/release/deps/libcolorchoice-b0f9d0eb7e3c5228.rmeta' --extern is_terminal_polyfill'=/target/release/deps/libis_terminal_polyfill-08b147e17b2f127e.rmeta' --extern utf8parse'=/target/release/deps/libutf8parse-e99b4cd86d1b3d1a.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anstream-0.6.19/src/lib.rs \
+        1>          /target/release/deps/out-14a190e9584fadc4-stdout \
+        2>          /target/release/deps/out-14a190e9584fadc4-stderr \
+        || echo $? >/target/release/deps/out-14a190e9584fadc4-errcode\
+  ; find /target/release/deps/*-14a190e9584fadc4* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-14a190e9584fadc4
-COPY --link --from=dep-n-anstream-0.6.19-14a190e9584fadc4 /tmp/clis-gifski_1-34-0/release/deps/*-14a190e9584fadc4* /
+COPY --link --from=dep-n-anstream-0.6.19-14a190e9584fadc4 /target/release/deps/*-14a190e9584fadc4* /
 
 ## this = "14a190e9584fadc4"
 ## deps = [
@@ -724,9 +724,9 @@ COPY --link --from=dep-n-anstream-0.6.19-14a190e9584fadc4 /tmp/clis-gifski_1-34-
 ##     "libanstream-14a190e9584fadc4.rmeta",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/anstream-14a190e9584fadc4.d","emit":"dep-info"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/libanstream-14a190e9584fadc4.rmeta","emit":"metadata"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/libanstream-14a190e9584fadc4.rlib","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/anstream-14a190e9584fadc4.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libanstream-14a190e9584fadc4.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libanstream-14a190e9584fadc4.rlib","emit":"link"}',
 ## ]
 ##
 ## [[externs]]
@@ -799,21 +799,21 @@ COPY --link --from=dep-n-anstream-0.6.19-14a190e9584fadc4 /tmp/clis-gifski_1-34-
 ## script = '''
 ## FROM rust-base AS dep-n-anstream-0.6.19-14a190e9584fadc4
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-gifski_1-34-0/release/deps
+## WORKDIR /target/release/deps
 ## RUN \
 ##   --mount=from=cratesio-anstream-0.6.19,source=/anstream-0.6.19,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anstream-0.6.19 \
-##   --mount=from=out-25158921b2975a45,dst=/tmp/clis-gifski_1-34-0/release/deps/libanstyle-25158921b2975a45.rlib,source=/libanstyle-25158921b2975a45.rlib \
-##   --mount=from=out-25158921b2975a45,dst=/tmp/clis-gifski_1-34-0/release/deps/libanstyle-25158921b2975a45.rmeta,source=/libanstyle-25158921b2975a45.rmeta \
-##   --mount=from=out-3a154f05c18fe502,dst=/tmp/clis-gifski_1-34-0/release/deps/libanstyle_parse-3a154f05c18fe502.rlib,source=/libanstyle_parse-3a154f05c18fe502.rlib \
-##   --mount=from=out-3a154f05c18fe502,dst=/tmp/clis-gifski_1-34-0/release/deps/libanstyle_parse-3a154f05c18fe502.rmeta,source=/libanstyle_parse-3a154f05c18fe502.rmeta \
-##   --mount=from=out-e99b4cd86d1b3d1a,dst=/tmp/clis-gifski_1-34-0/release/deps/libutf8parse-e99b4cd86d1b3d1a.rlib,source=/libutf8parse-e99b4cd86d1b3d1a.rlib \
-##   --mount=from=out-e99b4cd86d1b3d1a,dst=/tmp/clis-gifski_1-34-0/release/deps/libutf8parse-e99b4cd86d1b3d1a.rmeta,source=/libutf8parse-e99b4cd86d1b3d1a.rmeta \
-##   --mount=from=out-f174fe24d94bb0d5,dst=/tmp/clis-gifski_1-34-0/release/deps/libanstyle_query-f174fe24d94bb0d5.rlib,source=/libanstyle_query-f174fe24d94bb0d5.rlib \
-##   --mount=from=out-f174fe24d94bb0d5,dst=/tmp/clis-gifski_1-34-0/release/deps/libanstyle_query-f174fe24d94bb0d5.rmeta,source=/libanstyle_query-f174fe24d94bb0d5.rmeta \
-##   --mount=from=out-b0f9d0eb7e3c5228,dst=/tmp/clis-gifski_1-34-0/release/deps/libcolorchoice-b0f9d0eb7e3c5228.rlib,source=/libcolorchoice-b0f9d0eb7e3c5228.rlib \
-##   --mount=from=out-b0f9d0eb7e3c5228,dst=/tmp/clis-gifski_1-34-0/release/deps/libcolorchoice-b0f9d0eb7e3c5228.rmeta,source=/libcolorchoice-b0f9d0eb7e3c5228.rmeta \
-##   --mount=from=out-08b147e17b2f127e,dst=/tmp/clis-gifski_1-34-0/release/deps/libis_terminal_polyfill-08b147e17b2f127e.rlib,source=/libis_terminal_polyfill-08b147e17b2f127e.rlib \
-##   --mount=from=out-08b147e17b2f127e,dst=/tmp/clis-gifski_1-34-0/release/deps/libis_terminal_polyfill-08b147e17b2f127e.rmeta,source=/libis_terminal_polyfill-08b147e17b2f127e.rmeta \
+##   --mount=from=out-25158921b2975a45,dst=/target/release/deps/libanstyle-25158921b2975a45.rlib,source=/libanstyle-25158921b2975a45.rlib \
+##   --mount=from=out-25158921b2975a45,dst=/target/release/deps/libanstyle-25158921b2975a45.rmeta,source=/libanstyle-25158921b2975a45.rmeta \
+##   --mount=from=out-3a154f05c18fe502,dst=/target/release/deps/libanstyle_parse-3a154f05c18fe502.rlib,source=/libanstyle_parse-3a154f05c18fe502.rlib \
+##   --mount=from=out-3a154f05c18fe502,dst=/target/release/deps/libanstyle_parse-3a154f05c18fe502.rmeta,source=/libanstyle_parse-3a154f05c18fe502.rmeta \
+##   --mount=from=out-e99b4cd86d1b3d1a,dst=/target/release/deps/libutf8parse-e99b4cd86d1b3d1a.rlib,source=/libutf8parse-e99b4cd86d1b3d1a.rlib \
+##   --mount=from=out-e99b4cd86d1b3d1a,dst=/target/release/deps/libutf8parse-e99b4cd86d1b3d1a.rmeta,source=/libutf8parse-e99b4cd86d1b3d1a.rmeta \
+##   --mount=from=out-f174fe24d94bb0d5,dst=/target/release/deps/libanstyle_query-f174fe24d94bb0d5.rlib,source=/libanstyle_query-f174fe24d94bb0d5.rlib \
+##   --mount=from=out-f174fe24d94bb0d5,dst=/target/release/deps/libanstyle_query-f174fe24d94bb0d5.rmeta,source=/libanstyle_query-f174fe24d94bb0d5.rmeta \
+##   --mount=from=out-b0f9d0eb7e3c5228,dst=/target/release/deps/libcolorchoice-b0f9d0eb7e3c5228.rlib,source=/libcolorchoice-b0f9d0eb7e3c5228.rlib \
+##   --mount=from=out-b0f9d0eb7e3c5228,dst=/target/release/deps/libcolorchoice-b0f9d0eb7e3c5228.rmeta,source=/libcolorchoice-b0f9d0eb7e3c5228.rmeta \
+##   --mount=from=out-08b147e17b2f127e,dst=/target/release/deps/libis_terminal_polyfill-08b147e17b2f127e.rlib,source=/libis_terminal_polyfill-08b147e17b2f127e.rlib \
+##   --mount=from=out-08b147e17b2f127e,dst=/target/release/deps/libis_terminal_polyfill-08b147e17b2f127e.rmeta,source=/libis_terminal_polyfill-08b147e17b2f127e.rmeta \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=anstream \
 ##         CARGO_INCREMENTAL=0 \
@@ -834,11 +834,11 @@ COPY --link --from=dep-n-anstream-0.6.19-14a190e9584fadc4 /tmp/clis-gifski_1-34-
 ##         CARGO_PKG_VERSION_PATCH=19 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name anstream --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --warn rust_2018_idioms --warn clippy'::zero_sized_map_values' --warn clippy'::wildcard_imports' --warn clippy'::verbose_file_reads' --warn unused_qualifications --warn unused_macro_rules --warn unused_lifetimes --warn unsafe_op_in_unsafe_fn --warn unreachable_pub --warn unnameable_types --warn clippy'::uninlined_format_args' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::todo' --warn clippy'::string_to_string' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_add_assign' --warn clippy'::string_add' --warn clippy'::str_to_string' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::self_named_module_files' --warn clippy'::same_functions_in_if_condition' --allow clippy'::result_large_err' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::ref_option_ref' --warn clippy'::redundant_feature_names' --warn clippy'::rc_mutex' --warn clippy'::ptr_as_ptr' --warn clippy'::path_buf_push_overwrite' --warn clippy'::negative_feature_names' --warn clippy'::needless_for_each' --allow clippy'::needless_continue' --warn clippy'::mutex_integer' --warn clippy'::mem_forget' --warn clippy'::macro_use_imports' --warn clippy'::lossy_float_literal' --warn clippy'::linkedlist' --allow clippy'::let_and_return' --warn clippy'::large_types_passed_by_value' --warn clippy'::large_stack_arrays' --warn clippy'::large_digit_groups' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::infinite_loop' --warn clippy'::inefficient_to_string' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::imprecise_flops' --warn clippy'::implicit_clone' --allow clippy'::if_same_then_else' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::fn_params_excessive_bools' --warn clippy'::float_cmp_const' --warn clippy'::flat_map_option' --warn clippy'::filter_map_next' --warn clippy'::fallible_impl_from' --warn clippy'::explicit_into_iter_loop' --warn clippy'::explicit_deref_methods' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::enum_glob_use' --warn clippy'::empty_enum' --warn clippy'::doc_markdown' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::dbg_macro' --warn clippy'::create_dir' --allow clippy'::collapsible_else_if' --warn clippy'::checked_conversions' --allow clippy'::branches_sharing_code' --allow clippy'::bool_assert_comparison' --cfg feature'="auto"' --cfg feature'="default"' --cfg feature'="wincon"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("auto", "default", "test", "wincon"))' -C metadata'=d2d15d4044a05091' -C extra-filename'=-14a190e9584fadc4' --out-dir /tmp/clis-gifski_1-34-0/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --extern anstyle'=/tmp/clis-gifski_1-34-0/release/deps/libanstyle-25158921b2975a45.rmeta' --extern anstyle_parse'=/tmp/clis-gifski_1-34-0/release/deps/libanstyle_parse-3a154f05c18fe502.rmeta' --extern anstyle_query'=/tmp/clis-gifski_1-34-0/release/deps/libanstyle_query-f174fe24d94bb0d5.rmeta' --extern colorchoice'=/tmp/clis-gifski_1-34-0/release/deps/libcolorchoice-b0f9d0eb7e3c5228.rmeta' --extern is_terminal_polyfill'=/tmp/clis-gifski_1-34-0/release/deps/libis_terminal_polyfill-08b147e17b2f127e.rmeta' --extern utf8parse'=/tmp/clis-gifski_1-34-0/release/deps/libutf8parse-e99b4cd86d1b3d1a.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anstream-0.6.19/src/lib.rs \
-##         1>          /tmp/clis-gifski_1-34-0/release/deps/out-14a190e9584fadc4-stdout \
-##         2>          /tmp/clis-gifski_1-34-0/release/deps/out-14a190e9584fadc4-stderr \
-##         || echo $? >/tmp/clis-gifski_1-34-0/release/deps/out-14a190e9584fadc4-errcode\
-##   ; find /tmp/clis-gifski_1-34-0/release/deps/*-14a190e9584fadc4* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name anstream --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --warn rust_2018_idioms --warn clippy'::zero_sized_map_values' --warn clippy'::wildcard_imports' --warn clippy'::verbose_file_reads' --warn unused_qualifications --warn unused_macro_rules --warn unused_lifetimes --warn unsafe_op_in_unsafe_fn --warn unreachable_pub --warn unnameable_types --warn clippy'::uninlined_format_args' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::todo' --warn clippy'::string_to_string' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_add_assign' --warn clippy'::string_add' --warn clippy'::str_to_string' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::self_named_module_files' --warn clippy'::same_functions_in_if_condition' --allow clippy'::result_large_err' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::ref_option_ref' --warn clippy'::redundant_feature_names' --warn clippy'::rc_mutex' --warn clippy'::ptr_as_ptr' --warn clippy'::path_buf_push_overwrite' --warn clippy'::negative_feature_names' --warn clippy'::needless_for_each' --allow clippy'::needless_continue' --warn clippy'::mutex_integer' --warn clippy'::mem_forget' --warn clippy'::macro_use_imports' --warn clippy'::lossy_float_literal' --warn clippy'::linkedlist' --allow clippy'::let_and_return' --warn clippy'::large_types_passed_by_value' --warn clippy'::large_stack_arrays' --warn clippy'::large_digit_groups' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::infinite_loop' --warn clippy'::inefficient_to_string' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::imprecise_flops' --warn clippy'::implicit_clone' --allow clippy'::if_same_then_else' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::fn_params_excessive_bools' --warn clippy'::float_cmp_const' --warn clippy'::flat_map_option' --warn clippy'::filter_map_next' --warn clippy'::fallible_impl_from' --warn clippy'::explicit_into_iter_loop' --warn clippy'::explicit_deref_methods' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::enum_glob_use' --warn clippy'::empty_enum' --warn clippy'::doc_markdown' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::dbg_macro' --warn clippy'::create_dir' --allow clippy'::collapsible_else_if' --warn clippy'::checked_conversions' --allow clippy'::branches_sharing_code' --allow clippy'::bool_assert_comparison' --cfg feature'="auto"' --cfg feature'="default"' --cfg feature'="wincon"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("auto", "default", "test", "wincon"))' -C metadata'=d2d15d4044a05091' -C extra-filename'=-14a190e9584fadc4' --out-dir /target/release/deps -C strip'=symbols' -L dependency'=/target/release/deps' --extern anstyle'=/target/release/deps/libanstyle-25158921b2975a45.rmeta' --extern anstyle_parse'=/target/release/deps/libanstyle_parse-3a154f05c18fe502.rmeta' --extern anstyle_query'=/target/release/deps/libanstyle_query-f174fe24d94bb0d5.rmeta' --extern colorchoice'=/target/release/deps/libcolorchoice-b0f9d0eb7e3c5228.rmeta' --extern is_terminal_polyfill'=/target/release/deps/libis_terminal_polyfill-08b147e17b2f127e.rmeta' --extern utf8parse'=/target/release/deps/libutf8parse-e99b4cd86d1b3d1a.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/anstream-0.6.19/src/lib.rs \
+##         1>          /target/release/deps/out-14a190e9584fadc4-stdout \
+##         2>          /target/release/deps/out-14a190e9584fadc4-stderr \
+##         || echo $? >/target/release/deps/out-14a190e9584fadc4-errcode\
+##   ; find /target/release/deps/*-14a190e9584fadc4* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -846,14 +846,14 @@ COPY --link --from=dep-n-anstream-0.6.19-14a190e9584fadc4 /tmp/clis-gifski_1-34-
 ## stage = "out-14a190e9584fadc4"
 ## script = """
 ## FROM scratch AS out-14a190e9584fadc4
-## COPY --link --from=dep-n-anstream-0.6.19-14a190e9584fadc4 /tmp/clis-gifski_1-34-0/release/deps/*-14a190e9584fadc4* /"""
+## COPY --link --from=dep-n-anstream-0.6.19-14a190e9584fadc4 /target/release/deps/*-14a190e9584fadc4* /"""
 
 FROM scratch AS cratesio-clap_lex-0.7.5
 ADD --chmod=0664 --unpack --checksum=sha256:b94f61472cee1439c0b966b47e3aca9ae07e45d070759512cd390ea2bebc6675 \
   https://static.crates.io/crates/clap_lex/clap_lex-0.7.5.crate /
 FROM rust-base AS dep-n-clap_lex-0.7.5-944acfd6f9571391
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-gifski_1-34-0/release/deps
+WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-clap_lex-0.7.5,source=/clap_lex-0.7.5,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/clap_lex-0.7.5 \
     env CARGO="$(which cargo)" \
@@ -876,13 +876,13 @@ RUN \
         CARGO_PKG_VERSION_PATCH=5 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --crate-name clap_lex --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --warn rust_2018_idioms --warn clippy'::zero_sized_map_values' --warn clippy'::verbose_file_reads' --warn unused_qualifications --warn unused_macro_rules --warn unused_lifetimes --warn unsafe_op_in_unsafe_fn --warn unreachable_pub --allow unnameable_types --warn clippy'::uninlined_format_args' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::todo' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_add_assign' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::self_named_module_files' --warn clippy'::same_functions_in_if_condition' --allow clippy'::result_large_err' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::ref_option_ref' --warn clippy'::redundant_feature_names' --warn clippy'::rc_mutex' --warn clippy'::ptr_as_ptr' --warn clippy'::path_buf_push_overwrite' --warn clippy'::negative_feature_names' --warn clippy'::needless_for_each' --allow clippy'::needless_continue' --warn clippy'::mutex_integer' --allow clippy'::multiple_bound_locations' --warn clippy'::mem_forget' --warn clippy'::macro_use_imports' --warn clippy'::lossy_float_literal' --warn clippy'::linkedlist' --allow clippy'::let_and_return' --warn clippy'::large_types_passed_by_value' --warn clippy'::large_stack_arrays' --warn clippy'::large_digit_groups' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::infinite_loop' --warn clippy'::inefficient_to_string' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::imprecise_flops' --warn clippy'::implicit_clone' --allow clippy'::if_same_then_else' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::fn_params_excessive_bools' --warn clippy'::float_cmp_const' --warn clippy'::flat_map_option' --warn clippy'::filter_map_next' --warn clippy'::fallible_impl_from' --warn clippy'::explicit_into_iter_loop' --warn clippy'::explicit_deref_methods' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::enum_glob_use' --warn clippy'::empty_enum' --warn clippy'::doc_markdown' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::dbg_macro' --warn clippy'::create_dir' --allow clippy'::collapsible_else_if' --warn clippy'::checked_conversions' --allow clippy'::branches_sharing_code' --allow clippy'::bool_assert_comparison' --allow clippy'::blocks_in_conditions' --allow clippy'::assigning_clones' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=bcaf94012b573097' -C extra-filename'=-944acfd6f9571391' --out-dir /tmp/clis-gifski_1-34-0/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/clap_lex-0.7.5/src/lib.rs \
-        1>          /tmp/clis-gifski_1-34-0/release/deps/out-944acfd6f9571391-stdout \
-        2>          /tmp/clis-gifski_1-34-0/release/deps/out-944acfd6f9571391-stderr \
-        || echo $? >/tmp/clis-gifski_1-34-0/release/deps/out-944acfd6f9571391-errcode\
-  ; find /tmp/clis-gifski_1-34-0/release/deps/*-944acfd6f9571391* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      rustc --crate-name clap_lex --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --warn rust_2018_idioms --warn clippy'::zero_sized_map_values' --warn clippy'::verbose_file_reads' --warn unused_qualifications --warn unused_macro_rules --warn unused_lifetimes --warn unsafe_op_in_unsafe_fn --warn unreachable_pub --allow unnameable_types --warn clippy'::uninlined_format_args' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::todo' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_add_assign' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::self_named_module_files' --warn clippy'::same_functions_in_if_condition' --allow clippy'::result_large_err' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::ref_option_ref' --warn clippy'::redundant_feature_names' --warn clippy'::rc_mutex' --warn clippy'::ptr_as_ptr' --warn clippy'::path_buf_push_overwrite' --warn clippy'::negative_feature_names' --warn clippy'::needless_for_each' --allow clippy'::needless_continue' --warn clippy'::mutex_integer' --allow clippy'::multiple_bound_locations' --warn clippy'::mem_forget' --warn clippy'::macro_use_imports' --warn clippy'::lossy_float_literal' --warn clippy'::linkedlist' --allow clippy'::let_and_return' --warn clippy'::large_types_passed_by_value' --warn clippy'::large_stack_arrays' --warn clippy'::large_digit_groups' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::infinite_loop' --warn clippy'::inefficient_to_string' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::imprecise_flops' --warn clippy'::implicit_clone' --allow clippy'::if_same_then_else' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::fn_params_excessive_bools' --warn clippy'::float_cmp_const' --warn clippy'::flat_map_option' --warn clippy'::filter_map_next' --warn clippy'::fallible_impl_from' --warn clippy'::explicit_into_iter_loop' --warn clippy'::explicit_deref_methods' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::enum_glob_use' --warn clippy'::empty_enum' --warn clippy'::doc_markdown' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::dbg_macro' --warn clippy'::create_dir' --allow clippy'::collapsible_else_if' --warn clippy'::checked_conversions' --allow clippy'::branches_sharing_code' --allow clippy'::bool_assert_comparison' --allow clippy'::blocks_in_conditions' --allow clippy'::assigning_clones' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=bcaf94012b573097' -C extra-filename'=-944acfd6f9571391' --out-dir /target/release/deps -C strip'=symbols' -L dependency'=/target/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/clap_lex-0.7.5/src/lib.rs \
+        1>          /target/release/deps/out-944acfd6f9571391-stdout \
+        2>          /target/release/deps/out-944acfd6f9571391-stderr \
+        || echo $? >/target/release/deps/out-944acfd6f9571391-errcode\
+  ; find /target/release/deps/*-944acfd6f9571391* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-944acfd6f9571391
-COPY --link --from=dep-n-clap_lex-0.7.5-944acfd6f9571391 /tmp/clis-gifski_1-34-0/release/deps/*-944acfd6f9571391* /
+COPY --link --from=dep-n-clap_lex-0.7.5-944acfd6f9571391 /target/release/deps/*-944acfd6f9571391* /
 
 ## this = "944acfd6f9571391"
 ## writes = [
@@ -891,9 +891,9 @@ COPY --link --from=dep-n-clap_lex-0.7.5-944acfd6f9571391 /tmp/clis-gifski_1-34-0
 ##     "libclap_lex-944acfd6f9571391.rmeta",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/clap_lex-944acfd6f9571391.d","emit":"dep-info"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/libclap_lex-944acfd6f9571391.rmeta","emit":"metadata"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/libclap_lex-944acfd6f9571391.rlib","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/clap_lex-944acfd6f9571391.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libclap_lex-944acfd6f9571391.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libclap_lex-944acfd6f9571391.rlib","emit":"link"}',
 ## ]
 ##
 ## [[stages]]
@@ -918,7 +918,7 @@ COPY --link --from=dep-n-clap_lex-0.7.5-944acfd6f9571391 /tmp/clis-gifski_1-34-0
 ## script = '''
 ## FROM rust-base AS dep-n-clap_lex-0.7.5-944acfd6f9571391
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-gifski_1-34-0/release/deps
+## WORKDIR /target/release/deps
 ## RUN \
 ##   --mount=from=cratesio-clap_lex-0.7.5,source=/clap_lex-0.7.5,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/clap_lex-0.7.5 \
 ##     env CARGO="$(which cargo)" \
@@ -941,11 +941,11 @@ COPY --link --from=dep-n-clap_lex-0.7.5-944acfd6f9571391 /tmp/clis-gifski_1-34-0
 ##         CARGO_PKG_VERSION_PATCH=5 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name clap_lex --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --warn rust_2018_idioms --warn clippy'::zero_sized_map_values' --warn clippy'::verbose_file_reads' --warn unused_qualifications --warn unused_macro_rules --warn unused_lifetimes --warn unsafe_op_in_unsafe_fn --warn unreachable_pub --allow unnameable_types --warn clippy'::uninlined_format_args' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::todo' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_add_assign' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::self_named_module_files' --warn clippy'::same_functions_in_if_condition' --allow clippy'::result_large_err' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::ref_option_ref' --warn clippy'::redundant_feature_names' --warn clippy'::rc_mutex' --warn clippy'::ptr_as_ptr' --warn clippy'::path_buf_push_overwrite' --warn clippy'::negative_feature_names' --warn clippy'::needless_for_each' --allow clippy'::needless_continue' --warn clippy'::mutex_integer' --allow clippy'::multiple_bound_locations' --warn clippy'::mem_forget' --warn clippy'::macro_use_imports' --warn clippy'::lossy_float_literal' --warn clippy'::linkedlist' --allow clippy'::let_and_return' --warn clippy'::large_types_passed_by_value' --warn clippy'::large_stack_arrays' --warn clippy'::large_digit_groups' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::infinite_loop' --warn clippy'::inefficient_to_string' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::imprecise_flops' --warn clippy'::implicit_clone' --allow clippy'::if_same_then_else' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::fn_params_excessive_bools' --warn clippy'::float_cmp_const' --warn clippy'::flat_map_option' --warn clippy'::filter_map_next' --warn clippy'::fallible_impl_from' --warn clippy'::explicit_into_iter_loop' --warn clippy'::explicit_deref_methods' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::enum_glob_use' --warn clippy'::empty_enum' --warn clippy'::doc_markdown' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::dbg_macro' --warn clippy'::create_dir' --allow clippy'::collapsible_else_if' --warn clippy'::checked_conversions' --allow clippy'::branches_sharing_code' --allow clippy'::bool_assert_comparison' --allow clippy'::blocks_in_conditions' --allow clippy'::assigning_clones' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=bcaf94012b573097' -C extra-filename'=-944acfd6f9571391' --out-dir /tmp/clis-gifski_1-34-0/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/clap_lex-0.7.5/src/lib.rs \
-##         1>          /tmp/clis-gifski_1-34-0/release/deps/out-944acfd6f9571391-stdout \
-##         2>          /tmp/clis-gifski_1-34-0/release/deps/out-944acfd6f9571391-stderr \
-##         || echo $? >/tmp/clis-gifski_1-34-0/release/deps/out-944acfd6f9571391-errcode\
-##   ; find /tmp/clis-gifski_1-34-0/release/deps/*-944acfd6f9571391* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name clap_lex --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --warn rust_2018_idioms --warn clippy'::zero_sized_map_values' --warn clippy'::verbose_file_reads' --warn unused_qualifications --warn unused_macro_rules --warn unused_lifetimes --warn unsafe_op_in_unsafe_fn --warn unreachable_pub --allow unnameable_types --warn clippy'::uninlined_format_args' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::todo' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_add_assign' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::self_named_module_files' --warn clippy'::same_functions_in_if_condition' --allow clippy'::result_large_err' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::ref_option_ref' --warn clippy'::redundant_feature_names' --warn clippy'::rc_mutex' --warn clippy'::ptr_as_ptr' --warn clippy'::path_buf_push_overwrite' --warn clippy'::negative_feature_names' --warn clippy'::needless_for_each' --allow clippy'::needless_continue' --warn clippy'::mutex_integer' --allow clippy'::multiple_bound_locations' --warn clippy'::mem_forget' --warn clippy'::macro_use_imports' --warn clippy'::lossy_float_literal' --warn clippy'::linkedlist' --allow clippy'::let_and_return' --warn clippy'::large_types_passed_by_value' --warn clippy'::large_stack_arrays' --warn clippy'::large_digit_groups' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::infinite_loop' --warn clippy'::inefficient_to_string' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::imprecise_flops' --warn clippy'::implicit_clone' --allow clippy'::if_same_then_else' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::fn_params_excessive_bools' --warn clippy'::float_cmp_const' --warn clippy'::flat_map_option' --warn clippy'::filter_map_next' --warn clippy'::fallible_impl_from' --warn clippy'::explicit_into_iter_loop' --warn clippy'::explicit_deref_methods' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::enum_glob_use' --warn clippy'::empty_enum' --warn clippy'::doc_markdown' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::dbg_macro' --warn clippy'::create_dir' --allow clippy'::collapsible_else_if' --warn clippy'::checked_conversions' --allow clippy'::branches_sharing_code' --allow clippy'::bool_assert_comparison' --allow clippy'::blocks_in_conditions' --allow clippy'::assigning_clones' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=bcaf94012b573097' -C extra-filename'=-944acfd6f9571391' --out-dir /target/release/deps -C strip'=symbols' -L dependency'=/target/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/clap_lex-0.7.5/src/lib.rs \
+##         1>          /target/release/deps/out-944acfd6f9571391-stdout \
+##         2>          /target/release/deps/out-944acfd6f9571391-stderr \
+##         || echo $? >/target/release/deps/out-944acfd6f9571391-errcode\
+##   ; find /target/release/deps/*-944acfd6f9571391* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -953,14 +953,14 @@ COPY --link --from=dep-n-clap_lex-0.7.5-944acfd6f9571391 /tmp/clis-gifski_1-34-0
 ## stage = "out-944acfd6f9571391"
 ## script = """
 ## FROM scratch AS out-944acfd6f9571391
-## COPY --link --from=dep-n-clap_lex-0.7.5-944acfd6f9571391 /tmp/clis-gifski_1-34-0/release/deps/*-944acfd6f9571391* /"""
+## COPY --link --from=dep-n-clap_lex-0.7.5-944acfd6f9571391 /target/release/deps/*-944acfd6f9571391* /"""
 
 FROM scratch AS cratesio-strsim-0.11.1
 ADD --chmod=0664 --unpack --checksum=sha256:7da8b5736845d9f2fcb837ea5d9e2628564b3b043a70948a3f0b778838c5fb4f \
   https://static.crates.io/crates/strsim/strsim-0.11.1.crate /
 FROM rust-base AS dep-n-strsim-0.11.1-87be0482eaec7565
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-gifski_1-34-0/release/deps
+WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-strsim-0.11.1,source=/strsim-0.11.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/strsim-0.11.1 \
     env CARGO="$(which cargo)" \
@@ -985,13 +985,13 @@ OSA, Damerau-Levenshtein, Jaro, Jaro-Winkler, and Sørensen-Dice.\
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --crate-name strsim --edition 2015 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=a935874606f46a4e' -C extra-filename'=-87be0482eaec7565' --out-dir /tmp/clis-gifski_1-34-0/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/strsim-0.11.1/src/lib.rs \
-        1>          /tmp/clis-gifski_1-34-0/release/deps/out-87be0482eaec7565-stdout \
-        2>          /tmp/clis-gifski_1-34-0/release/deps/out-87be0482eaec7565-stderr \
-        || echo $? >/tmp/clis-gifski_1-34-0/release/deps/out-87be0482eaec7565-errcode\
-  ; find /tmp/clis-gifski_1-34-0/release/deps/*-87be0482eaec7565* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      rustc --crate-name strsim --edition 2015 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=a935874606f46a4e' -C extra-filename'=-87be0482eaec7565' --out-dir /target/release/deps -C strip'=symbols' -L dependency'=/target/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/strsim-0.11.1/src/lib.rs \
+        1>          /target/release/deps/out-87be0482eaec7565-stdout \
+        2>          /target/release/deps/out-87be0482eaec7565-stderr \
+        || echo $? >/target/release/deps/out-87be0482eaec7565-errcode\
+  ; find /target/release/deps/*-87be0482eaec7565* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-87be0482eaec7565
-COPY --link --from=dep-n-strsim-0.11.1-87be0482eaec7565 /tmp/clis-gifski_1-34-0/release/deps/*-87be0482eaec7565* /
+COPY --link --from=dep-n-strsim-0.11.1-87be0482eaec7565 /target/release/deps/*-87be0482eaec7565* /
 
 ## this = "87be0482eaec7565"
 ## writes = [
@@ -1000,9 +1000,9 @@ COPY --link --from=dep-n-strsim-0.11.1-87be0482eaec7565 /tmp/clis-gifski_1-34-0/
 ##     "strsim-87be0482eaec7565.d",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/strsim-87be0482eaec7565.d","emit":"dep-info"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/libstrsim-87be0482eaec7565.rmeta","emit":"metadata"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/libstrsim-87be0482eaec7565.rlib","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/strsim-87be0482eaec7565.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libstrsim-87be0482eaec7565.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libstrsim-87be0482eaec7565.rlib","emit":"link"}',
 ## ]
 ##
 ## [[stages]]
@@ -1027,7 +1027,7 @@ COPY --link --from=dep-n-strsim-0.11.1-87be0482eaec7565 /tmp/clis-gifski_1-34-0/
 ## script = '''
 ## FROM rust-base AS dep-n-strsim-0.11.1-87be0482eaec7565
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-gifski_1-34-0/release/deps
+## WORKDIR /target/release/deps
 ## RUN \
 ##   --mount=from=cratesio-strsim-0.11.1,source=/strsim-0.11.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/strsim-0.11.1 \
 ##     env CARGO="$(which cargo)" \
@@ -1052,11 +1052,11 @@ COPY --link --from=dep-n-strsim-0.11.1-87be0482eaec7565 /tmp/clis-gifski_1-34-0/
 ##         CARGO_PKG_VERSION_PATCH=1 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name strsim --edition 2015 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=a935874606f46a4e' -C extra-filename'=-87be0482eaec7565' --out-dir /tmp/clis-gifski_1-34-0/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/strsim-0.11.1/src/lib.rs \
-##         1>          /tmp/clis-gifski_1-34-0/release/deps/out-87be0482eaec7565-stdout \
-##         2>          /tmp/clis-gifski_1-34-0/release/deps/out-87be0482eaec7565-stderr \
-##         || echo $? >/tmp/clis-gifski_1-34-0/release/deps/out-87be0482eaec7565-errcode\
-##   ; find /tmp/clis-gifski_1-34-0/release/deps/*-87be0482eaec7565* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name strsim --edition 2015 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=a935874606f46a4e' -C extra-filename'=-87be0482eaec7565' --out-dir /target/release/deps -C strip'=symbols' -L dependency'=/target/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/strsim-0.11.1/src/lib.rs \
+##         1>          /target/release/deps/out-87be0482eaec7565-stdout \
+##         2>          /target/release/deps/out-87be0482eaec7565-stderr \
+##         || echo $? >/target/release/deps/out-87be0482eaec7565-errcode\
+##   ; find /target/release/deps/*-87be0482eaec7565* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -1064,34 +1064,34 @@ COPY --link --from=dep-n-strsim-0.11.1-87be0482eaec7565 /tmp/clis-gifski_1-34-0/
 ## stage = "out-87be0482eaec7565"
 ## script = """
 ## FROM scratch AS out-87be0482eaec7565
-## COPY --link --from=dep-n-strsim-0.11.1-87be0482eaec7565 /tmp/clis-gifski_1-34-0/release/deps/*-87be0482eaec7565* /"""
+## COPY --link --from=dep-n-strsim-0.11.1-87be0482eaec7565 /target/release/deps/*-87be0482eaec7565* /"""
 
 FROM scratch AS cratesio-clap_builder-4.5.41
 ADD --chmod=0664 --unpack --checksum=sha256:707eab41e9622f9139419d573eca0900137718000c517d47da73045f54331c3d \
   https://static.crates.io/crates/clap_builder/clap_builder-4.5.41.crate /
 FROM rust-base AS dep-n-clap_builder-4.5.41-82004e3d29174042
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-gifski_1-34-0/release/deps
+WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-clap_builder-4.5.41,source=/clap_builder-4.5.41,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/clap_builder-4.5.41 \
-  --mount=from=out-14a190e9584fadc4,dst=/tmp/clis-gifski_1-34-0/release/deps/libanstream-14a190e9584fadc4.rlib,source=/libanstream-14a190e9584fadc4.rlib \
-  --mount=from=out-14a190e9584fadc4,dst=/tmp/clis-gifski_1-34-0/release/deps/libanstream-14a190e9584fadc4.rmeta,source=/libanstream-14a190e9584fadc4.rmeta \
-  --mount=from=out-25158921b2975a45,dst=/tmp/clis-gifski_1-34-0/release/deps/libanstyle-25158921b2975a45.rlib,source=/libanstyle-25158921b2975a45.rlib \
-  --mount=from=out-25158921b2975a45,dst=/tmp/clis-gifski_1-34-0/release/deps/libanstyle-25158921b2975a45.rmeta,source=/libanstyle-25158921b2975a45.rmeta \
-  --mount=from=out-3a154f05c18fe502,dst=/tmp/clis-gifski_1-34-0/release/deps/libanstyle_parse-3a154f05c18fe502.rlib,source=/libanstyle_parse-3a154f05c18fe502.rlib \
-  --mount=from=out-3a154f05c18fe502,dst=/tmp/clis-gifski_1-34-0/release/deps/libanstyle_parse-3a154f05c18fe502.rmeta,source=/libanstyle_parse-3a154f05c18fe502.rmeta \
-  --mount=from=out-e99b4cd86d1b3d1a,dst=/tmp/clis-gifski_1-34-0/release/deps/libutf8parse-e99b4cd86d1b3d1a.rlib,source=/libutf8parse-e99b4cd86d1b3d1a.rlib \
-  --mount=from=out-e99b4cd86d1b3d1a,dst=/tmp/clis-gifski_1-34-0/release/deps/libutf8parse-e99b4cd86d1b3d1a.rmeta,source=/libutf8parse-e99b4cd86d1b3d1a.rmeta \
-  --mount=from=out-f174fe24d94bb0d5,dst=/tmp/clis-gifski_1-34-0/release/deps/libanstyle_query-f174fe24d94bb0d5.rlib,source=/libanstyle_query-f174fe24d94bb0d5.rlib \
-  --mount=from=out-f174fe24d94bb0d5,dst=/tmp/clis-gifski_1-34-0/release/deps/libanstyle_query-f174fe24d94bb0d5.rmeta,source=/libanstyle_query-f174fe24d94bb0d5.rmeta \
-  --mount=from=out-b0f9d0eb7e3c5228,dst=/tmp/clis-gifski_1-34-0/release/deps/libcolorchoice-b0f9d0eb7e3c5228.rlib,source=/libcolorchoice-b0f9d0eb7e3c5228.rlib \
-  --mount=from=out-b0f9d0eb7e3c5228,dst=/tmp/clis-gifski_1-34-0/release/deps/libcolorchoice-b0f9d0eb7e3c5228.rmeta,source=/libcolorchoice-b0f9d0eb7e3c5228.rmeta \
-  --mount=from=out-08b147e17b2f127e,dst=/tmp/clis-gifski_1-34-0/release/deps/libis_terminal_polyfill-08b147e17b2f127e.rlib,source=/libis_terminal_polyfill-08b147e17b2f127e.rlib \
-  --mount=from=out-08b147e17b2f127e,dst=/tmp/clis-gifski_1-34-0/release/deps/libis_terminal_polyfill-08b147e17b2f127e.rmeta,source=/libis_terminal_polyfill-08b147e17b2f127e.rmeta \
-  --mount=from=out-944acfd6f9571391,dst=/tmp/clis-gifski_1-34-0/release/deps/libclap_lex-944acfd6f9571391.rlib,source=/libclap_lex-944acfd6f9571391.rlib \
-  --mount=from=out-944acfd6f9571391,dst=/tmp/clis-gifski_1-34-0/release/deps/libclap_lex-944acfd6f9571391.rmeta,source=/libclap_lex-944acfd6f9571391.rmeta \
-  --mount=from=out-87be0482eaec7565,dst=/tmp/clis-gifski_1-34-0/release/deps/libstrsim-87be0482eaec7565.rlib,source=/libstrsim-87be0482eaec7565.rlib \
-  --mount=from=out-87be0482eaec7565,dst=/tmp/clis-gifski_1-34-0/release/deps/libstrsim-87be0482eaec7565.rmeta,source=/libstrsim-87be0482eaec7565.rmeta \
+  --mount=from=out-14a190e9584fadc4,dst=/target/release/deps/libanstream-14a190e9584fadc4.rlib,source=/libanstream-14a190e9584fadc4.rlib \
+  --mount=from=out-14a190e9584fadc4,dst=/target/release/deps/libanstream-14a190e9584fadc4.rmeta,source=/libanstream-14a190e9584fadc4.rmeta \
+  --mount=from=out-25158921b2975a45,dst=/target/release/deps/libanstyle-25158921b2975a45.rlib,source=/libanstyle-25158921b2975a45.rlib \
+  --mount=from=out-25158921b2975a45,dst=/target/release/deps/libanstyle-25158921b2975a45.rmeta,source=/libanstyle-25158921b2975a45.rmeta \
+  --mount=from=out-3a154f05c18fe502,dst=/target/release/deps/libanstyle_parse-3a154f05c18fe502.rlib,source=/libanstyle_parse-3a154f05c18fe502.rlib \
+  --mount=from=out-3a154f05c18fe502,dst=/target/release/deps/libanstyle_parse-3a154f05c18fe502.rmeta,source=/libanstyle_parse-3a154f05c18fe502.rmeta \
+  --mount=from=out-e99b4cd86d1b3d1a,dst=/target/release/deps/libutf8parse-e99b4cd86d1b3d1a.rlib,source=/libutf8parse-e99b4cd86d1b3d1a.rlib \
+  --mount=from=out-e99b4cd86d1b3d1a,dst=/target/release/deps/libutf8parse-e99b4cd86d1b3d1a.rmeta,source=/libutf8parse-e99b4cd86d1b3d1a.rmeta \
+  --mount=from=out-f174fe24d94bb0d5,dst=/target/release/deps/libanstyle_query-f174fe24d94bb0d5.rlib,source=/libanstyle_query-f174fe24d94bb0d5.rlib \
+  --mount=from=out-f174fe24d94bb0d5,dst=/target/release/deps/libanstyle_query-f174fe24d94bb0d5.rmeta,source=/libanstyle_query-f174fe24d94bb0d5.rmeta \
+  --mount=from=out-b0f9d0eb7e3c5228,dst=/target/release/deps/libcolorchoice-b0f9d0eb7e3c5228.rlib,source=/libcolorchoice-b0f9d0eb7e3c5228.rlib \
+  --mount=from=out-b0f9d0eb7e3c5228,dst=/target/release/deps/libcolorchoice-b0f9d0eb7e3c5228.rmeta,source=/libcolorchoice-b0f9d0eb7e3c5228.rmeta \
+  --mount=from=out-08b147e17b2f127e,dst=/target/release/deps/libis_terminal_polyfill-08b147e17b2f127e.rlib,source=/libis_terminal_polyfill-08b147e17b2f127e.rlib \
+  --mount=from=out-08b147e17b2f127e,dst=/target/release/deps/libis_terminal_polyfill-08b147e17b2f127e.rmeta,source=/libis_terminal_polyfill-08b147e17b2f127e.rmeta \
+  --mount=from=out-944acfd6f9571391,dst=/target/release/deps/libclap_lex-944acfd6f9571391.rlib,source=/libclap_lex-944acfd6f9571391.rlib \
+  --mount=from=out-944acfd6f9571391,dst=/target/release/deps/libclap_lex-944acfd6f9571391.rmeta,source=/libclap_lex-944acfd6f9571391.rmeta \
+  --mount=from=out-87be0482eaec7565,dst=/target/release/deps/libstrsim-87be0482eaec7565.rlib,source=/libstrsim-87be0482eaec7565.rlib \
+  --mount=from=out-87be0482eaec7565,dst=/target/release/deps/libstrsim-87be0482eaec7565.rmeta,source=/libstrsim-87be0482eaec7565.rmeta \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=clap_builder \
         CARGO_INCREMENTAL=0 \
@@ -1112,13 +1112,13 @@ RUN \
         CARGO_PKG_VERSION_PATCH=41 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --crate-name clap_builder --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --warn rust_2018_idioms --warn clippy'::zero_sized_map_values' --warn clippy'::verbose_file_reads' --warn unused_qualifications --warn unused_macro_rules --warn unused_lifetimes --warn unsafe_op_in_unsafe_fn --warn unreachable_pub --allow unnameable_types --warn clippy'::uninlined_format_args' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::todo' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_add_assign' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::self_named_module_files' --warn clippy'::same_functions_in_if_condition' --allow clippy'::result_large_err' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::ref_option_ref' --warn clippy'::redundant_feature_names' --warn clippy'::rc_mutex' --warn clippy'::ptr_as_ptr' --warn clippy'::path_buf_push_overwrite' --warn clippy'::negative_feature_names' --warn clippy'::needless_for_each' --allow clippy'::needless_continue' --warn clippy'::mutex_integer' --allow clippy'::multiple_bound_locations' --warn clippy'::mem_forget' --warn clippy'::macro_use_imports' --warn clippy'::lossy_float_literal' --warn clippy'::linkedlist' --allow clippy'::let_and_return' --warn clippy'::large_types_passed_by_value' --warn clippy'::large_stack_arrays' --warn clippy'::large_digit_groups' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::infinite_loop' --warn clippy'::inefficient_to_string' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::imprecise_flops' --warn clippy'::implicit_clone' --allow clippy'::if_same_then_else' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::fn_params_excessive_bools' --warn clippy'::float_cmp_const' --warn clippy'::flat_map_option' --warn clippy'::filter_map_next' --warn clippy'::fallible_impl_from' --warn clippy'::explicit_into_iter_loop' --warn clippy'::explicit_deref_methods' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::enum_glob_use' --warn clippy'::empty_enum' --warn clippy'::doc_markdown' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::dbg_macro' --warn clippy'::create_dir' --allow clippy'::collapsible_else_if' --warn clippy'::checked_conversions' --allow clippy'::branches_sharing_code' --allow clippy'::bool_assert_comparison' --allow clippy'::blocks_in_conditions' --allow clippy'::assigning_clones' --cfg feature'="cargo"' --cfg feature'="color"' --cfg feature'="error-context"' --cfg feature'="help"' --cfg feature'="std"' --cfg feature'="suggestions"' --cfg feature'="usage"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("cargo", "color", "debug", "default", "deprecated", "env", "error-context", "help", "std", "string", "suggestions", "unicode", "unstable-doc", "unstable-ext", "unstable-styles", "unstable-v5", "usage", "wrap_help"))' -C metadata'=fb1b1f700f192185' -C extra-filename'=-82004e3d29174042' --out-dir /tmp/clis-gifski_1-34-0/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --extern anstream'=/tmp/clis-gifski_1-34-0/release/deps/libanstream-14a190e9584fadc4.rmeta' --extern anstyle'=/tmp/clis-gifski_1-34-0/release/deps/libanstyle-25158921b2975a45.rmeta' --extern clap_lex'=/tmp/clis-gifski_1-34-0/release/deps/libclap_lex-944acfd6f9571391.rmeta' --extern strsim'=/tmp/clis-gifski_1-34-0/release/deps/libstrsim-87be0482eaec7565.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/clap_builder-4.5.41/src/lib.rs \
-        1>          /tmp/clis-gifski_1-34-0/release/deps/out-82004e3d29174042-stdout \
-        2>          /tmp/clis-gifski_1-34-0/release/deps/out-82004e3d29174042-stderr \
-        || echo $? >/tmp/clis-gifski_1-34-0/release/deps/out-82004e3d29174042-errcode\
-  ; find /tmp/clis-gifski_1-34-0/release/deps/*-82004e3d29174042* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      rustc --crate-name clap_builder --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --warn rust_2018_idioms --warn clippy'::zero_sized_map_values' --warn clippy'::verbose_file_reads' --warn unused_qualifications --warn unused_macro_rules --warn unused_lifetimes --warn unsafe_op_in_unsafe_fn --warn unreachable_pub --allow unnameable_types --warn clippy'::uninlined_format_args' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::todo' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_add_assign' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::self_named_module_files' --warn clippy'::same_functions_in_if_condition' --allow clippy'::result_large_err' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::ref_option_ref' --warn clippy'::redundant_feature_names' --warn clippy'::rc_mutex' --warn clippy'::ptr_as_ptr' --warn clippy'::path_buf_push_overwrite' --warn clippy'::negative_feature_names' --warn clippy'::needless_for_each' --allow clippy'::needless_continue' --warn clippy'::mutex_integer' --allow clippy'::multiple_bound_locations' --warn clippy'::mem_forget' --warn clippy'::macro_use_imports' --warn clippy'::lossy_float_literal' --warn clippy'::linkedlist' --allow clippy'::let_and_return' --warn clippy'::large_types_passed_by_value' --warn clippy'::large_stack_arrays' --warn clippy'::large_digit_groups' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::infinite_loop' --warn clippy'::inefficient_to_string' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::imprecise_flops' --warn clippy'::implicit_clone' --allow clippy'::if_same_then_else' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::fn_params_excessive_bools' --warn clippy'::float_cmp_const' --warn clippy'::flat_map_option' --warn clippy'::filter_map_next' --warn clippy'::fallible_impl_from' --warn clippy'::explicit_into_iter_loop' --warn clippy'::explicit_deref_methods' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::enum_glob_use' --warn clippy'::empty_enum' --warn clippy'::doc_markdown' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::dbg_macro' --warn clippy'::create_dir' --allow clippy'::collapsible_else_if' --warn clippy'::checked_conversions' --allow clippy'::branches_sharing_code' --allow clippy'::bool_assert_comparison' --allow clippy'::blocks_in_conditions' --allow clippy'::assigning_clones' --cfg feature'="cargo"' --cfg feature'="color"' --cfg feature'="error-context"' --cfg feature'="help"' --cfg feature'="std"' --cfg feature'="suggestions"' --cfg feature'="usage"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("cargo", "color", "debug", "default", "deprecated", "env", "error-context", "help", "std", "string", "suggestions", "unicode", "unstable-doc", "unstable-ext", "unstable-styles", "unstable-v5", "usage", "wrap_help"))' -C metadata'=fb1b1f700f192185' -C extra-filename'=-82004e3d29174042' --out-dir /target/release/deps -C strip'=symbols' -L dependency'=/target/release/deps' --extern anstream'=/target/release/deps/libanstream-14a190e9584fadc4.rmeta' --extern anstyle'=/target/release/deps/libanstyle-25158921b2975a45.rmeta' --extern clap_lex'=/target/release/deps/libclap_lex-944acfd6f9571391.rmeta' --extern strsim'=/target/release/deps/libstrsim-87be0482eaec7565.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/clap_builder-4.5.41/src/lib.rs \
+        1>          /target/release/deps/out-82004e3d29174042-stdout \
+        2>          /target/release/deps/out-82004e3d29174042-stderr \
+        || echo $? >/target/release/deps/out-82004e3d29174042-errcode\
+  ; find /target/release/deps/*-82004e3d29174042* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-82004e3d29174042
-COPY --link --from=dep-n-clap_builder-4.5.41-82004e3d29174042 /tmp/clis-gifski_1-34-0/release/deps/*-82004e3d29174042* /
+COPY --link --from=dep-n-clap_builder-4.5.41-82004e3d29174042 /target/release/deps/*-82004e3d29174042* /
 
 ## this = "82004e3d29174042"
 ## deps = [
@@ -1138,10 +1138,10 @@ COPY --link --from=dep-n-clap_builder-4.5.41-82004e3d29174042 /tmp/clis-gifski_1
 ##     "libclap_builder-82004e3d29174042.rmeta",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/clap_builder-82004e3d29174042.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/clap_builder-82004e3d29174042.d","emit":"dep-info"}',
 ##     '''{"$message_type":"diagnostic","message":"struct `GroupedValues` is never constructed","code":{"code":"dead_code","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/clap_builder-4.5.41/src/parser/matches/arg_matches.rs","byte_start":55638,"byte_end":55651,"line_start":1622,"line_end":1622,"column_start":19,"column_end":32,"is_primary":true,"text":[{"text":"pub(crate) struct GroupedValues<'a> {","highlight_start":19,"highlight_end":32}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"`#[warn(dead_code)]` on by default","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: struct `GroupedValues` is never constructed\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/clap_builder-4.5.41/src/parser/matches/arg_matches.rs:1622:19\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m1622\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0mpub(crate) struct GroupedValues<'a> {\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                   \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: `#[warn(dead_code)]` on by default\u001b[0m\n\n"}''',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/libclap_builder-82004e3d29174042.rmeta","emit":"metadata"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/libclap_builder-82004e3d29174042.rlib","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libclap_builder-82004e3d29174042.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libclap_builder-82004e3d29174042.rlib","emit":"link"}',
 ##     '{"$message_type":"diagnostic","message":"1 warning emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 1 warning emitted\u001b[0m\n\n"}',
 ## ]
 ##
@@ -1239,27 +1239,27 @@ COPY --link --from=dep-n-clap_builder-4.5.41-82004e3d29174042 /tmp/clis-gifski_1
 ## script = '''
 ## FROM rust-base AS dep-n-clap_builder-4.5.41-82004e3d29174042
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-gifski_1-34-0/release/deps
+## WORKDIR /target/release/deps
 ## RUN \
 ##   --mount=from=cratesio-clap_builder-4.5.41,source=/clap_builder-4.5.41,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/clap_builder-4.5.41 \
-##   --mount=from=out-14a190e9584fadc4,dst=/tmp/clis-gifski_1-34-0/release/deps/libanstream-14a190e9584fadc4.rlib,source=/libanstream-14a190e9584fadc4.rlib \
-##   --mount=from=out-14a190e9584fadc4,dst=/tmp/clis-gifski_1-34-0/release/deps/libanstream-14a190e9584fadc4.rmeta,source=/libanstream-14a190e9584fadc4.rmeta \
-##   --mount=from=out-25158921b2975a45,dst=/tmp/clis-gifski_1-34-0/release/deps/libanstyle-25158921b2975a45.rlib,source=/libanstyle-25158921b2975a45.rlib \
-##   --mount=from=out-25158921b2975a45,dst=/tmp/clis-gifski_1-34-0/release/deps/libanstyle-25158921b2975a45.rmeta,source=/libanstyle-25158921b2975a45.rmeta \
-##   --mount=from=out-3a154f05c18fe502,dst=/tmp/clis-gifski_1-34-0/release/deps/libanstyle_parse-3a154f05c18fe502.rlib,source=/libanstyle_parse-3a154f05c18fe502.rlib \
-##   --mount=from=out-3a154f05c18fe502,dst=/tmp/clis-gifski_1-34-0/release/deps/libanstyle_parse-3a154f05c18fe502.rmeta,source=/libanstyle_parse-3a154f05c18fe502.rmeta \
-##   --mount=from=out-e99b4cd86d1b3d1a,dst=/tmp/clis-gifski_1-34-0/release/deps/libutf8parse-e99b4cd86d1b3d1a.rlib,source=/libutf8parse-e99b4cd86d1b3d1a.rlib \
-##   --mount=from=out-e99b4cd86d1b3d1a,dst=/tmp/clis-gifski_1-34-0/release/deps/libutf8parse-e99b4cd86d1b3d1a.rmeta,source=/libutf8parse-e99b4cd86d1b3d1a.rmeta \
-##   --mount=from=out-f174fe24d94bb0d5,dst=/tmp/clis-gifski_1-34-0/release/deps/libanstyle_query-f174fe24d94bb0d5.rlib,source=/libanstyle_query-f174fe24d94bb0d5.rlib \
-##   --mount=from=out-f174fe24d94bb0d5,dst=/tmp/clis-gifski_1-34-0/release/deps/libanstyle_query-f174fe24d94bb0d5.rmeta,source=/libanstyle_query-f174fe24d94bb0d5.rmeta \
-##   --mount=from=out-b0f9d0eb7e3c5228,dst=/tmp/clis-gifski_1-34-0/release/deps/libcolorchoice-b0f9d0eb7e3c5228.rlib,source=/libcolorchoice-b0f9d0eb7e3c5228.rlib \
-##   --mount=from=out-b0f9d0eb7e3c5228,dst=/tmp/clis-gifski_1-34-0/release/deps/libcolorchoice-b0f9d0eb7e3c5228.rmeta,source=/libcolorchoice-b0f9d0eb7e3c5228.rmeta \
-##   --mount=from=out-08b147e17b2f127e,dst=/tmp/clis-gifski_1-34-0/release/deps/libis_terminal_polyfill-08b147e17b2f127e.rlib,source=/libis_terminal_polyfill-08b147e17b2f127e.rlib \
-##   --mount=from=out-08b147e17b2f127e,dst=/tmp/clis-gifski_1-34-0/release/deps/libis_terminal_polyfill-08b147e17b2f127e.rmeta,source=/libis_terminal_polyfill-08b147e17b2f127e.rmeta \
-##   --mount=from=out-944acfd6f9571391,dst=/tmp/clis-gifski_1-34-0/release/deps/libclap_lex-944acfd6f9571391.rlib,source=/libclap_lex-944acfd6f9571391.rlib \
-##   --mount=from=out-944acfd6f9571391,dst=/tmp/clis-gifski_1-34-0/release/deps/libclap_lex-944acfd6f9571391.rmeta,source=/libclap_lex-944acfd6f9571391.rmeta \
-##   --mount=from=out-87be0482eaec7565,dst=/tmp/clis-gifski_1-34-0/release/deps/libstrsim-87be0482eaec7565.rlib,source=/libstrsim-87be0482eaec7565.rlib \
-##   --mount=from=out-87be0482eaec7565,dst=/tmp/clis-gifski_1-34-0/release/deps/libstrsim-87be0482eaec7565.rmeta,source=/libstrsim-87be0482eaec7565.rmeta \
+##   --mount=from=out-14a190e9584fadc4,dst=/target/release/deps/libanstream-14a190e9584fadc4.rlib,source=/libanstream-14a190e9584fadc4.rlib \
+##   --mount=from=out-14a190e9584fadc4,dst=/target/release/deps/libanstream-14a190e9584fadc4.rmeta,source=/libanstream-14a190e9584fadc4.rmeta \
+##   --mount=from=out-25158921b2975a45,dst=/target/release/deps/libanstyle-25158921b2975a45.rlib,source=/libanstyle-25158921b2975a45.rlib \
+##   --mount=from=out-25158921b2975a45,dst=/target/release/deps/libanstyle-25158921b2975a45.rmeta,source=/libanstyle-25158921b2975a45.rmeta \
+##   --mount=from=out-3a154f05c18fe502,dst=/target/release/deps/libanstyle_parse-3a154f05c18fe502.rlib,source=/libanstyle_parse-3a154f05c18fe502.rlib \
+##   --mount=from=out-3a154f05c18fe502,dst=/target/release/deps/libanstyle_parse-3a154f05c18fe502.rmeta,source=/libanstyle_parse-3a154f05c18fe502.rmeta \
+##   --mount=from=out-e99b4cd86d1b3d1a,dst=/target/release/deps/libutf8parse-e99b4cd86d1b3d1a.rlib,source=/libutf8parse-e99b4cd86d1b3d1a.rlib \
+##   --mount=from=out-e99b4cd86d1b3d1a,dst=/target/release/deps/libutf8parse-e99b4cd86d1b3d1a.rmeta,source=/libutf8parse-e99b4cd86d1b3d1a.rmeta \
+##   --mount=from=out-f174fe24d94bb0d5,dst=/target/release/deps/libanstyle_query-f174fe24d94bb0d5.rlib,source=/libanstyle_query-f174fe24d94bb0d5.rlib \
+##   --mount=from=out-f174fe24d94bb0d5,dst=/target/release/deps/libanstyle_query-f174fe24d94bb0d5.rmeta,source=/libanstyle_query-f174fe24d94bb0d5.rmeta \
+##   --mount=from=out-b0f9d0eb7e3c5228,dst=/target/release/deps/libcolorchoice-b0f9d0eb7e3c5228.rlib,source=/libcolorchoice-b0f9d0eb7e3c5228.rlib \
+##   --mount=from=out-b0f9d0eb7e3c5228,dst=/target/release/deps/libcolorchoice-b0f9d0eb7e3c5228.rmeta,source=/libcolorchoice-b0f9d0eb7e3c5228.rmeta \
+##   --mount=from=out-08b147e17b2f127e,dst=/target/release/deps/libis_terminal_polyfill-08b147e17b2f127e.rlib,source=/libis_terminal_polyfill-08b147e17b2f127e.rlib \
+##   --mount=from=out-08b147e17b2f127e,dst=/target/release/deps/libis_terminal_polyfill-08b147e17b2f127e.rmeta,source=/libis_terminal_polyfill-08b147e17b2f127e.rmeta \
+##   --mount=from=out-944acfd6f9571391,dst=/target/release/deps/libclap_lex-944acfd6f9571391.rlib,source=/libclap_lex-944acfd6f9571391.rlib \
+##   --mount=from=out-944acfd6f9571391,dst=/target/release/deps/libclap_lex-944acfd6f9571391.rmeta,source=/libclap_lex-944acfd6f9571391.rmeta \
+##   --mount=from=out-87be0482eaec7565,dst=/target/release/deps/libstrsim-87be0482eaec7565.rlib,source=/libstrsim-87be0482eaec7565.rlib \
+##   --mount=from=out-87be0482eaec7565,dst=/target/release/deps/libstrsim-87be0482eaec7565.rmeta,source=/libstrsim-87be0482eaec7565.rmeta \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=clap_builder \
 ##         CARGO_INCREMENTAL=0 \
@@ -1280,11 +1280,11 @@ COPY --link --from=dep-n-clap_builder-4.5.41-82004e3d29174042 /tmp/clis-gifski_1
 ##         CARGO_PKG_VERSION_PATCH=41 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name clap_builder --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --warn rust_2018_idioms --warn clippy'::zero_sized_map_values' --warn clippy'::verbose_file_reads' --warn unused_qualifications --warn unused_macro_rules --warn unused_lifetimes --warn unsafe_op_in_unsafe_fn --warn unreachable_pub --allow unnameable_types --warn clippy'::uninlined_format_args' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::todo' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_add_assign' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::self_named_module_files' --warn clippy'::same_functions_in_if_condition' --allow clippy'::result_large_err' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::ref_option_ref' --warn clippy'::redundant_feature_names' --warn clippy'::rc_mutex' --warn clippy'::ptr_as_ptr' --warn clippy'::path_buf_push_overwrite' --warn clippy'::negative_feature_names' --warn clippy'::needless_for_each' --allow clippy'::needless_continue' --warn clippy'::mutex_integer' --allow clippy'::multiple_bound_locations' --warn clippy'::mem_forget' --warn clippy'::macro_use_imports' --warn clippy'::lossy_float_literal' --warn clippy'::linkedlist' --allow clippy'::let_and_return' --warn clippy'::large_types_passed_by_value' --warn clippy'::large_stack_arrays' --warn clippy'::large_digit_groups' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::infinite_loop' --warn clippy'::inefficient_to_string' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::imprecise_flops' --warn clippy'::implicit_clone' --allow clippy'::if_same_then_else' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::fn_params_excessive_bools' --warn clippy'::float_cmp_const' --warn clippy'::flat_map_option' --warn clippy'::filter_map_next' --warn clippy'::fallible_impl_from' --warn clippy'::explicit_into_iter_loop' --warn clippy'::explicit_deref_methods' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::enum_glob_use' --warn clippy'::empty_enum' --warn clippy'::doc_markdown' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::dbg_macro' --warn clippy'::create_dir' --allow clippy'::collapsible_else_if' --warn clippy'::checked_conversions' --allow clippy'::branches_sharing_code' --allow clippy'::bool_assert_comparison' --allow clippy'::blocks_in_conditions' --allow clippy'::assigning_clones' --cfg feature'="cargo"' --cfg feature'="color"' --cfg feature'="error-context"' --cfg feature'="help"' --cfg feature'="std"' --cfg feature'="suggestions"' --cfg feature'="usage"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("cargo", "color", "debug", "default", "deprecated", "env", "error-context", "help", "std", "string", "suggestions", "unicode", "unstable-doc", "unstable-ext", "unstable-styles", "unstable-v5", "usage", "wrap_help"))' -C metadata'=fb1b1f700f192185' -C extra-filename'=-82004e3d29174042' --out-dir /tmp/clis-gifski_1-34-0/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --extern anstream'=/tmp/clis-gifski_1-34-0/release/deps/libanstream-14a190e9584fadc4.rmeta' --extern anstyle'=/tmp/clis-gifski_1-34-0/release/deps/libanstyle-25158921b2975a45.rmeta' --extern clap_lex'=/tmp/clis-gifski_1-34-0/release/deps/libclap_lex-944acfd6f9571391.rmeta' --extern strsim'=/tmp/clis-gifski_1-34-0/release/deps/libstrsim-87be0482eaec7565.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/clap_builder-4.5.41/src/lib.rs \
-##         1>          /tmp/clis-gifski_1-34-0/release/deps/out-82004e3d29174042-stdout \
-##         2>          /tmp/clis-gifski_1-34-0/release/deps/out-82004e3d29174042-stderr \
-##         || echo $? >/tmp/clis-gifski_1-34-0/release/deps/out-82004e3d29174042-errcode\
-##   ; find /tmp/clis-gifski_1-34-0/release/deps/*-82004e3d29174042* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name clap_builder --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --warn rust_2018_idioms --warn clippy'::zero_sized_map_values' --warn clippy'::verbose_file_reads' --warn unused_qualifications --warn unused_macro_rules --warn unused_lifetimes --warn unsafe_op_in_unsafe_fn --warn unreachable_pub --allow unnameable_types --warn clippy'::uninlined_format_args' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::todo' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_add_assign' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::self_named_module_files' --warn clippy'::same_functions_in_if_condition' --allow clippy'::result_large_err' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::ref_option_ref' --warn clippy'::redundant_feature_names' --warn clippy'::rc_mutex' --warn clippy'::ptr_as_ptr' --warn clippy'::path_buf_push_overwrite' --warn clippy'::negative_feature_names' --warn clippy'::needless_for_each' --allow clippy'::needless_continue' --warn clippy'::mutex_integer' --allow clippy'::multiple_bound_locations' --warn clippy'::mem_forget' --warn clippy'::macro_use_imports' --warn clippy'::lossy_float_literal' --warn clippy'::linkedlist' --allow clippy'::let_and_return' --warn clippy'::large_types_passed_by_value' --warn clippy'::large_stack_arrays' --warn clippy'::large_digit_groups' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::infinite_loop' --warn clippy'::inefficient_to_string' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::imprecise_flops' --warn clippy'::implicit_clone' --allow clippy'::if_same_then_else' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::fn_params_excessive_bools' --warn clippy'::float_cmp_const' --warn clippy'::flat_map_option' --warn clippy'::filter_map_next' --warn clippy'::fallible_impl_from' --warn clippy'::explicit_into_iter_loop' --warn clippy'::explicit_deref_methods' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::enum_glob_use' --warn clippy'::empty_enum' --warn clippy'::doc_markdown' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::dbg_macro' --warn clippy'::create_dir' --allow clippy'::collapsible_else_if' --warn clippy'::checked_conversions' --allow clippy'::branches_sharing_code' --allow clippy'::bool_assert_comparison' --allow clippy'::blocks_in_conditions' --allow clippy'::assigning_clones' --cfg feature'="cargo"' --cfg feature'="color"' --cfg feature'="error-context"' --cfg feature'="help"' --cfg feature'="std"' --cfg feature'="suggestions"' --cfg feature'="usage"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("cargo", "color", "debug", "default", "deprecated", "env", "error-context", "help", "std", "string", "suggestions", "unicode", "unstable-doc", "unstable-ext", "unstable-styles", "unstable-v5", "usage", "wrap_help"))' -C metadata'=fb1b1f700f192185' -C extra-filename'=-82004e3d29174042' --out-dir /target/release/deps -C strip'=symbols' -L dependency'=/target/release/deps' --extern anstream'=/target/release/deps/libanstream-14a190e9584fadc4.rmeta' --extern anstyle'=/target/release/deps/libanstyle-25158921b2975a45.rmeta' --extern clap_lex'=/target/release/deps/libclap_lex-944acfd6f9571391.rmeta' --extern strsim'=/target/release/deps/libstrsim-87be0482eaec7565.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/clap_builder-4.5.41/src/lib.rs \
+##         1>          /target/release/deps/out-82004e3d29174042-stdout \
+##         2>          /target/release/deps/out-82004e3d29174042-stderr \
+##         || echo $? >/target/release/deps/out-82004e3d29174042-errcode\
+##   ; find /target/release/deps/*-82004e3d29174042* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -1292,36 +1292,36 @@ COPY --link --from=dep-n-clap_builder-4.5.41-82004e3d29174042 /tmp/clis-gifski_1
 ## stage = "out-82004e3d29174042"
 ## script = """
 ## FROM scratch AS out-82004e3d29174042
-## COPY --link --from=dep-n-clap_builder-4.5.41-82004e3d29174042 /tmp/clis-gifski_1-34-0/release/deps/*-82004e3d29174042* /"""
+## COPY --link --from=dep-n-clap_builder-4.5.41-82004e3d29174042 /target/release/deps/*-82004e3d29174042* /"""
 
 FROM scratch AS cratesio-clap-4.5.41
 ADD --chmod=0664 --unpack --checksum=sha256:be92d32e80243a54711e5d7ce823c35c41c9d929dc4ab58e1276f625841aadf9 \
   https://static.crates.io/crates/clap/clap-4.5.41.crate /
 FROM rust-base AS dep-n-clap-4.5.41-67f6ec320d9c110f
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-gifski_1-34-0/release/deps
+WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-clap-4.5.41,source=/clap-4.5.41,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/clap-4.5.41 \
-  --mount=from=out-82004e3d29174042,dst=/tmp/clis-gifski_1-34-0/release/deps/libclap_builder-82004e3d29174042.rlib,source=/libclap_builder-82004e3d29174042.rlib \
-  --mount=from=out-82004e3d29174042,dst=/tmp/clis-gifski_1-34-0/release/deps/libclap_builder-82004e3d29174042.rmeta,source=/libclap_builder-82004e3d29174042.rmeta \
-  --mount=from=out-14a190e9584fadc4,dst=/tmp/clis-gifski_1-34-0/release/deps/libanstream-14a190e9584fadc4.rlib,source=/libanstream-14a190e9584fadc4.rlib \
-  --mount=from=out-14a190e9584fadc4,dst=/tmp/clis-gifski_1-34-0/release/deps/libanstream-14a190e9584fadc4.rmeta,source=/libanstream-14a190e9584fadc4.rmeta \
-  --mount=from=out-25158921b2975a45,dst=/tmp/clis-gifski_1-34-0/release/deps/libanstyle-25158921b2975a45.rlib,source=/libanstyle-25158921b2975a45.rlib \
-  --mount=from=out-25158921b2975a45,dst=/tmp/clis-gifski_1-34-0/release/deps/libanstyle-25158921b2975a45.rmeta,source=/libanstyle-25158921b2975a45.rmeta \
-  --mount=from=out-3a154f05c18fe502,dst=/tmp/clis-gifski_1-34-0/release/deps/libanstyle_parse-3a154f05c18fe502.rlib,source=/libanstyle_parse-3a154f05c18fe502.rlib \
-  --mount=from=out-3a154f05c18fe502,dst=/tmp/clis-gifski_1-34-0/release/deps/libanstyle_parse-3a154f05c18fe502.rmeta,source=/libanstyle_parse-3a154f05c18fe502.rmeta \
-  --mount=from=out-e99b4cd86d1b3d1a,dst=/tmp/clis-gifski_1-34-0/release/deps/libutf8parse-e99b4cd86d1b3d1a.rlib,source=/libutf8parse-e99b4cd86d1b3d1a.rlib \
-  --mount=from=out-e99b4cd86d1b3d1a,dst=/tmp/clis-gifski_1-34-0/release/deps/libutf8parse-e99b4cd86d1b3d1a.rmeta,source=/libutf8parse-e99b4cd86d1b3d1a.rmeta \
-  --mount=from=out-f174fe24d94bb0d5,dst=/tmp/clis-gifski_1-34-0/release/deps/libanstyle_query-f174fe24d94bb0d5.rlib,source=/libanstyle_query-f174fe24d94bb0d5.rlib \
-  --mount=from=out-f174fe24d94bb0d5,dst=/tmp/clis-gifski_1-34-0/release/deps/libanstyle_query-f174fe24d94bb0d5.rmeta,source=/libanstyle_query-f174fe24d94bb0d5.rmeta \
-  --mount=from=out-b0f9d0eb7e3c5228,dst=/tmp/clis-gifski_1-34-0/release/deps/libcolorchoice-b0f9d0eb7e3c5228.rlib,source=/libcolorchoice-b0f9d0eb7e3c5228.rlib \
-  --mount=from=out-b0f9d0eb7e3c5228,dst=/tmp/clis-gifski_1-34-0/release/deps/libcolorchoice-b0f9d0eb7e3c5228.rmeta,source=/libcolorchoice-b0f9d0eb7e3c5228.rmeta \
-  --mount=from=out-08b147e17b2f127e,dst=/tmp/clis-gifski_1-34-0/release/deps/libis_terminal_polyfill-08b147e17b2f127e.rlib,source=/libis_terminal_polyfill-08b147e17b2f127e.rlib \
-  --mount=from=out-08b147e17b2f127e,dst=/tmp/clis-gifski_1-34-0/release/deps/libis_terminal_polyfill-08b147e17b2f127e.rmeta,source=/libis_terminal_polyfill-08b147e17b2f127e.rmeta \
-  --mount=from=out-944acfd6f9571391,dst=/tmp/clis-gifski_1-34-0/release/deps/libclap_lex-944acfd6f9571391.rlib,source=/libclap_lex-944acfd6f9571391.rlib \
-  --mount=from=out-944acfd6f9571391,dst=/tmp/clis-gifski_1-34-0/release/deps/libclap_lex-944acfd6f9571391.rmeta,source=/libclap_lex-944acfd6f9571391.rmeta \
-  --mount=from=out-87be0482eaec7565,dst=/tmp/clis-gifski_1-34-0/release/deps/libstrsim-87be0482eaec7565.rlib,source=/libstrsim-87be0482eaec7565.rlib \
-  --mount=from=out-87be0482eaec7565,dst=/tmp/clis-gifski_1-34-0/release/deps/libstrsim-87be0482eaec7565.rmeta,source=/libstrsim-87be0482eaec7565.rmeta \
+  --mount=from=out-82004e3d29174042,dst=/target/release/deps/libclap_builder-82004e3d29174042.rlib,source=/libclap_builder-82004e3d29174042.rlib \
+  --mount=from=out-82004e3d29174042,dst=/target/release/deps/libclap_builder-82004e3d29174042.rmeta,source=/libclap_builder-82004e3d29174042.rmeta \
+  --mount=from=out-14a190e9584fadc4,dst=/target/release/deps/libanstream-14a190e9584fadc4.rlib,source=/libanstream-14a190e9584fadc4.rlib \
+  --mount=from=out-14a190e9584fadc4,dst=/target/release/deps/libanstream-14a190e9584fadc4.rmeta,source=/libanstream-14a190e9584fadc4.rmeta \
+  --mount=from=out-25158921b2975a45,dst=/target/release/deps/libanstyle-25158921b2975a45.rlib,source=/libanstyle-25158921b2975a45.rlib \
+  --mount=from=out-25158921b2975a45,dst=/target/release/deps/libanstyle-25158921b2975a45.rmeta,source=/libanstyle-25158921b2975a45.rmeta \
+  --mount=from=out-3a154f05c18fe502,dst=/target/release/deps/libanstyle_parse-3a154f05c18fe502.rlib,source=/libanstyle_parse-3a154f05c18fe502.rlib \
+  --mount=from=out-3a154f05c18fe502,dst=/target/release/deps/libanstyle_parse-3a154f05c18fe502.rmeta,source=/libanstyle_parse-3a154f05c18fe502.rmeta \
+  --mount=from=out-e99b4cd86d1b3d1a,dst=/target/release/deps/libutf8parse-e99b4cd86d1b3d1a.rlib,source=/libutf8parse-e99b4cd86d1b3d1a.rlib \
+  --mount=from=out-e99b4cd86d1b3d1a,dst=/target/release/deps/libutf8parse-e99b4cd86d1b3d1a.rmeta,source=/libutf8parse-e99b4cd86d1b3d1a.rmeta \
+  --mount=from=out-f174fe24d94bb0d5,dst=/target/release/deps/libanstyle_query-f174fe24d94bb0d5.rlib,source=/libanstyle_query-f174fe24d94bb0d5.rlib \
+  --mount=from=out-f174fe24d94bb0d5,dst=/target/release/deps/libanstyle_query-f174fe24d94bb0d5.rmeta,source=/libanstyle_query-f174fe24d94bb0d5.rmeta \
+  --mount=from=out-b0f9d0eb7e3c5228,dst=/target/release/deps/libcolorchoice-b0f9d0eb7e3c5228.rlib,source=/libcolorchoice-b0f9d0eb7e3c5228.rlib \
+  --mount=from=out-b0f9d0eb7e3c5228,dst=/target/release/deps/libcolorchoice-b0f9d0eb7e3c5228.rmeta,source=/libcolorchoice-b0f9d0eb7e3c5228.rmeta \
+  --mount=from=out-08b147e17b2f127e,dst=/target/release/deps/libis_terminal_polyfill-08b147e17b2f127e.rlib,source=/libis_terminal_polyfill-08b147e17b2f127e.rlib \
+  --mount=from=out-08b147e17b2f127e,dst=/target/release/deps/libis_terminal_polyfill-08b147e17b2f127e.rmeta,source=/libis_terminal_polyfill-08b147e17b2f127e.rmeta \
+  --mount=from=out-944acfd6f9571391,dst=/target/release/deps/libclap_lex-944acfd6f9571391.rlib,source=/libclap_lex-944acfd6f9571391.rlib \
+  --mount=from=out-944acfd6f9571391,dst=/target/release/deps/libclap_lex-944acfd6f9571391.rmeta,source=/libclap_lex-944acfd6f9571391.rmeta \
+  --mount=from=out-87be0482eaec7565,dst=/target/release/deps/libstrsim-87be0482eaec7565.rlib,source=/libstrsim-87be0482eaec7565.rlib \
+  --mount=from=out-87be0482eaec7565,dst=/target/release/deps/libstrsim-87be0482eaec7565.rmeta,source=/libstrsim-87be0482eaec7565.rmeta \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=clap \
         CARGO_INCREMENTAL=0 \
@@ -1342,13 +1342,13 @@ RUN \
         CARGO_PKG_VERSION_PATCH=41 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --crate-name clap --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --warn rust_2018_idioms --warn clippy'::zero_sized_map_values' --warn clippy'::verbose_file_reads' --warn unused_qualifications --warn unused_macro_rules --warn unused_lifetimes --warn unsafe_op_in_unsafe_fn --warn unreachable_pub --allow unnameable_types --warn clippy'::uninlined_format_args' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::todo' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_add_assign' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::self_named_module_files' --warn clippy'::same_functions_in_if_condition' --allow clippy'::result_large_err' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::ref_option_ref' --warn clippy'::redundant_feature_names' --warn clippy'::rc_mutex' --warn clippy'::ptr_as_ptr' --warn clippy'::path_buf_push_overwrite' --warn clippy'::negative_feature_names' --warn clippy'::needless_for_each' --allow clippy'::needless_continue' --warn clippy'::mutex_integer' --allow clippy'::multiple_bound_locations' --warn clippy'::mem_forget' --warn clippy'::macro_use_imports' --warn clippy'::lossy_float_literal' --warn clippy'::linkedlist' --allow clippy'::let_and_return' --warn clippy'::large_types_passed_by_value' --warn clippy'::large_stack_arrays' --warn clippy'::large_digit_groups' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::infinite_loop' --warn clippy'::inefficient_to_string' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::imprecise_flops' --warn clippy'::implicit_clone' --allow clippy'::if_same_then_else' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::fn_params_excessive_bools' --warn clippy'::float_cmp_const' --warn clippy'::flat_map_option' --warn clippy'::filter_map_next' --warn clippy'::fallible_impl_from' --warn clippy'::explicit_into_iter_loop' --warn clippy'::explicit_deref_methods' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::enum_glob_use' --warn clippy'::empty_enum' --warn clippy'::doc_markdown' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::dbg_macro' --warn clippy'::create_dir' --allow clippy'::collapsible_else_if' --warn clippy'::checked_conversions' --allow clippy'::branches_sharing_code' --allow clippy'::bool_assert_comparison' --allow clippy'::blocks_in_conditions' --allow clippy'::assigning_clones' --cfg feature'="cargo"' --cfg feature'="color"' --cfg feature'="default"' --cfg feature'="error-context"' --cfg feature'="help"' --cfg feature'="std"' --cfg feature'="suggestions"' --cfg feature'="usage"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("cargo", "color", "debug", "default", "deprecated", "derive", "env", "error-context", "help", "std", "string", "suggestions", "unicode", "unstable-derive-ui-tests", "unstable-doc", "unstable-ext", "unstable-markdown", "unstable-styles", "unstable-v5", "usage", "wrap_help"))' -C metadata'=cc982f64a40fe05a' -C extra-filename'=-67f6ec320d9c110f' --out-dir /tmp/clis-gifski_1-34-0/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --extern clap_builder'=/tmp/clis-gifski_1-34-0/release/deps/libclap_builder-82004e3d29174042.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/clap-4.5.41/src/lib.rs \
-        1>          /tmp/clis-gifski_1-34-0/release/deps/out-67f6ec320d9c110f-stdout \
-        2>          /tmp/clis-gifski_1-34-0/release/deps/out-67f6ec320d9c110f-stderr \
-        || echo $? >/tmp/clis-gifski_1-34-0/release/deps/out-67f6ec320d9c110f-errcode\
-  ; find /tmp/clis-gifski_1-34-0/release/deps/*-67f6ec320d9c110f* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      rustc --crate-name clap --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --warn rust_2018_idioms --warn clippy'::zero_sized_map_values' --warn clippy'::verbose_file_reads' --warn unused_qualifications --warn unused_macro_rules --warn unused_lifetimes --warn unsafe_op_in_unsafe_fn --warn unreachable_pub --allow unnameable_types --warn clippy'::uninlined_format_args' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::todo' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_add_assign' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::self_named_module_files' --warn clippy'::same_functions_in_if_condition' --allow clippy'::result_large_err' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::ref_option_ref' --warn clippy'::redundant_feature_names' --warn clippy'::rc_mutex' --warn clippy'::ptr_as_ptr' --warn clippy'::path_buf_push_overwrite' --warn clippy'::negative_feature_names' --warn clippy'::needless_for_each' --allow clippy'::needless_continue' --warn clippy'::mutex_integer' --allow clippy'::multiple_bound_locations' --warn clippy'::mem_forget' --warn clippy'::macro_use_imports' --warn clippy'::lossy_float_literal' --warn clippy'::linkedlist' --allow clippy'::let_and_return' --warn clippy'::large_types_passed_by_value' --warn clippy'::large_stack_arrays' --warn clippy'::large_digit_groups' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::infinite_loop' --warn clippy'::inefficient_to_string' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::imprecise_flops' --warn clippy'::implicit_clone' --allow clippy'::if_same_then_else' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::fn_params_excessive_bools' --warn clippy'::float_cmp_const' --warn clippy'::flat_map_option' --warn clippy'::filter_map_next' --warn clippy'::fallible_impl_from' --warn clippy'::explicit_into_iter_loop' --warn clippy'::explicit_deref_methods' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::enum_glob_use' --warn clippy'::empty_enum' --warn clippy'::doc_markdown' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::dbg_macro' --warn clippy'::create_dir' --allow clippy'::collapsible_else_if' --warn clippy'::checked_conversions' --allow clippy'::branches_sharing_code' --allow clippy'::bool_assert_comparison' --allow clippy'::blocks_in_conditions' --allow clippy'::assigning_clones' --cfg feature'="cargo"' --cfg feature'="color"' --cfg feature'="default"' --cfg feature'="error-context"' --cfg feature'="help"' --cfg feature'="std"' --cfg feature'="suggestions"' --cfg feature'="usage"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("cargo", "color", "debug", "default", "deprecated", "derive", "env", "error-context", "help", "std", "string", "suggestions", "unicode", "unstable-derive-ui-tests", "unstable-doc", "unstable-ext", "unstable-markdown", "unstable-styles", "unstable-v5", "usage", "wrap_help"))' -C metadata'=cc982f64a40fe05a' -C extra-filename'=-67f6ec320d9c110f' --out-dir /target/release/deps -C strip'=symbols' -L dependency'=/target/release/deps' --extern clap_builder'=/target/release/deps/libclap_builder-82004e3d29174042.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/clap-4.5.41/src/lib.rs \
+        1>          /target/release/deps/out-67f6ec320d9c110f-stdout \
+        2>          /target/release/deps/out-67f6ec320d9c110f-stderr \
+        || echo $? >/target/release/deps/out-67f6ec320d9c110f-errcode\
+  ; find /target/release/deps/*-67f6ec320d9c110f* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-67f6ec320d9c110f
-COPY --link --from=dep-n-clap-4.5.41-67f6ec320d9c110f /tmp/clis-gifski_1-34-0/release/deps/*-67f6ec320d9c110f* /
+COPY --link --from=dep-n-clap-4.5.41-67f6ec320d9c110f /target/release/deps/*-67f6ec320d9c110f* /
 
 ## this = "67f6ec320d9c110f"
 ## deps = [
@@ -1369,9 +1369,9 @@ COPY --link --from=dep-n-clap-4.5.41-67f6ec320d9c110f /tmp/clis-gifski_1-34-0/re
 ##     "libclap-67f6ec320d9c110f.rmeta",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/clap-67f6ec320d9c110f.d","emit":"dep-info"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/libclap-67f6ec320d9c110f.rmeta","emit":"metadata"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/libclap-67f6ec320d9c110f.rlib","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/clap-67f6ec320d9c110f.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libclap-67f6ec320d9c110f.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libclap-67f6ec320d9c110f.rlib","emit":"link"}',
 ## ]
 ##
 ## [[externs]]
@@ -1476,29 +1476,29 @@ COPY --link --from=dep-n-clap-4.5.41-67f6ec320d9c110f /tmp/clis-gifski_1-34-0/re
 ## script = '''
 ## FROM rust-base AS dep-n-clap-4.5.41-67f6ec320d9c110f
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-gifski_1-34-0/release/deps
+## WORKDIR /target/release/deps
 ## RUN \
 ##   --mount=from=cratesio-clap-4.5.41,source=/clap-4.5.41,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/clap-4.5.41 \
-##   --mount=from=out-82004e3d29174042,dst=/tmp/clis-gifski_1-34-0/release/deps/libclap_builder-82004e3d29174042.rlib,source=/libclap_builder-82004e3d29174042.rlib \
-##   --mount=from=out-82004e3d29174042,dst=/tmp/clis-gifski_1-34-0/release/deps/libclap_builder-82004e3d29174042.rmeta,source=/libclap_builder-82004e3d29174042.rmeta \
-##   --mount=from=out-14a190e9584fadc4,dst=/tmp/clis-gifski_1-34-0/release/deps/libanstream-14a190e9584fadc4.rlib,source=/libanstream-14a190e9584fadc4.rlib \
-##   --mount=from=out-14a190e9584fadc4,dst=/tmp/clis-gifski_1-34-0/release/deps/libanstream-14a190e9584fadc4.rmeta,source=/libanstream-14a190e9584fadc4.rmeta \
-##   --mount=from=out-25158921b2975a45,dst=/tmp/clis-gifski_1-34-0/release/deps/libanstyle-25158921b2975a45.rlib,source=/libanstyle-25158921b2975a45.rlib \
-##   --mount=from=out-25158921b2975a45,dst=/tmp/clis-gifski_1-34-0/release/deps/libanstyle-25158921b2975a45.rmeta,source=/libanstyle-25158921b2975a45.rmeta \
-##   --mount=from=out-3a154f05c18fe502,dst=/tmp/clis-gifski_1-34-0/release/deps/libanstyle_parse-3a154f05c18fe502.rlib,source=/libanstyle_parse-3a154f05c18fe502.rlib \
-##   --mount=from=out-3a154f05c18fe502,dst=/tmp/clis-gifski_1-34-0/release/deps/libanstyle_parse-3a154f05c18fe502.rmeta,source=/libanstyle_parse-3a154f05c18fe502.rmeta \
-##   --mount=from=out-e99b4cd86d1b3d1a,dst=/tmp/clis-gifski_1-34-0/release/deps/libutf8parse-e99b4cd86d1b3d1a.rlib,source=/libutf8parse-e99b4cd86d1b3d1a.rlib \
-##   --mount=from=out-e99b4cd86d1b3d1a,dst=/tmp/clis-gifski_1-34-0/release/deps/libutf8parse-e99b4cd86d1b3d1a.rmeta,source=/libutf8parse-e99b4cd86d1b3d1a.rmeta \
-##   --mount=from=out-f174fe24d94bb0d5,dst=/tmp/clis-gifski_1-34-0/release/deps/libanstyle_query-f174fe24d94bb0d5.rlib,source=/libanstyle_query-f174fe24d94bb0d5.rlib \
-##   --mount=from=out-f174fe24d94bb0d5,dst=/tmp/clis-gifski_1-34-0/release/deps/libanstyle_query-f174fe24d94bb0d5.rmeta,source=/libanstyle_query-f174fe24d94bb0d5.rmeta \
-##   --mount=from=out-b0f9d0eb7e3c5228,dst=/tmp/clis-gifski_1-34-0/release/deps/libcolorchoice-b0f9d0eb7e3c5228.rlib,source=/libcolorchoice-b0f9d0eb7e3c5228.rlib \
-##   --mount=from=out-b0f9d0eb7e3c5228,dst=/tmp/clis-gifski_1-34-0/release/deps/libcolorchoice-b0f9d0eb7e3c5228.rmeta,source=/libcolorchoice-b0f9d0eb7e3c5228.rmeta \
-##   --mount=from=out-08b147e17b2f127e,dst=/tmp/clis-gifski_1-34-0/release/deps/libis_terminal_polyfill-08b147e17b2f127e.rlib,source=/libis_terminal_polyfill-08b147e17b2f127e.rlib \
-##   --mount=from=out-08b147e17b2f127e,dst=/tmp/clis-gifski_1-34-0/release/deps/libis_terminal_polyfill-08b147e17b2f127e.rmeta,source=/libis_terminal_polyfill-08b147e17b2f127e.rmeta \
-##   --mount=from=out-944acfd6f9571391,dst=/tmp/clis-gifski_1-34-0/release/deps/libclap_lex-944acfd6f9571391.rlib,source=/libclap_lex-944acfd6f9571391.rlib \
-##   --mount=from=out-944acfd6f9571391,dst=/tmp/clis-gifski_1-34-0/release/deps/libclap_lex-944acfd6f9571391.rmeta,source=/libclap_lex-944acfd6f9571391.rmeta \
-##   --mount=from=out-87be0482eaec7565,dst=/tmp/clis-gifski_1-34-0/release/deps/libstrsim-87be0482eaec7565.rlib,source=/libstrsim-87be0482eaec7565.rlib \
-##   --mount=from=out-87be0482eaec7565,dst=/tmp/clis-gifski_1-34-0/release/deps/libstrsim-87be0482eaec7565.rmeta,source=/libstrsim-87be0482eaec7565.rmeta \
+##   --mount=from=out-82004e3d29174042,dst=/target/release/deps/libclap_builder-82004e3d29174042.rlib,source=/libclap_builder-82004e3d29174042.rlib \
+##   --mount=from=out-82004e3d29174042,dst=/target/release/deps/libclap_builder-82004e3d29174042.rmeta,source=/libclap_builder-82004e3d29174042.rmeta \
+##   --mount=from=out-14a190e9584fadc4,dst=/target/release/deps/libanstream-14a190e9584fadc4.rlib,source=/libanstream-14a190e9584fadc4.rlib \
+##   --mount=from=out-14a190e9584fadc4,dst=/target/release/deps/libanstream-14a190e9584fadc4.rmeta,source=/libanstream-14a190e9584fadc4.rmeta \
+##   --mount=from=out-25158921b2975a45,dst=/target/release/deps/libanstyle-25158921b2975a45.rlib,source=/libanstyle-25158921b2975a45.rlib \
+##   --mount=from=out-25158921b2975a45,dst=/target/release/deps/libanstyle-25158921b2975a45.rmeta,source=/libanstyle-25158921b2975a45.rmeta \
+##   --mount=from=out-3a154f05c18fe502,dst=/target/release/deps/libanstyle_parse-3a154f05c18fe502.rlib,source=/libanstyle_parse-3a154f05c18fe502.rlib \
+##   --mount=from=out-3a154f05c18fe502,dst=/target/release/deps/libanstyle_parse-3a154f05c18fe502.rmeta,source=/libanstyle_parse-3a154f05c18fe502.rmeta \
+##   --mount=from=out-e99b4cd86d1b3d1a,dst=/target/release/deps/libutf8parse-e99b4cd86d1b3d1a.rlib,source=/libutf8parse-e99b4cd86d1b3d1a.rlib \
+##   --mount=from=out-e99b4cd86d1b3d1a,dst=/target/release/deps/libutf8parse-e99b4cd86d1b3d1a.rmeta,source=/libutf8parse-e99b4cd86d1b3d1a.rmeta \
+##   --mount=from=out-f174fe24d94bb0d5,dst=/target/release/deps/libanstyle_query-f174fe24d94bb0d5.rlib,source=/libanstyle_query-f174fe24d94bb0d5.rlib \
+##   --mount=from=out-f174fe24d94bb0d5,dst=/target/release/deps/libanstyle_query-f174fe24d94bb0d5.rmeta,source=/libanstyle_query-f174fe24d94bb0d5.rmeta \
+##   --mount=from=out-b0f9d0eb7e3c5228,dst=/target/release/deps/libcolorchoice-b0f9d0eb7e3c5228.rlib,source=/libcolorchoice-b0f9d0eb7e3c5228.rlib \
+##   --mount=from=out-b0f9d0eb7e3c5228,dst=/target/release/deps/libcolorchoice-b0f9d0eb7e3c5228.rmeta,source=/libcolorchoice-b0f9d0eb7e3c5228.rmeta \
+##   --mount=from=out-08b147e17b2f127e,dst=/target/release/deps/libis_terminal_polyfill-08b147e17b2f127e.rlib,source=/libis_terminal_polyfill-08b147e17b2f127e.rlib \
+##   --mount=from=out-08b147e17b2f127e,dst=/target/release/deps/libis_terminal_polyfill-08b147e17b2f127e.rmeta,source=/libis_terminal_polyfill-08b147e17b2f127e.rmeta \
+##   --mount=from=out-944acfd6f9571391,dst=/target/release/deps/libclap_lex-944acfd6f9571391.rlib,source=/libclap_lex-944acfd6f9571391.rlib \
+##   --mount=from=out-944acfd6f9571391,dst=/target/release/deps/libclap_lex-944acfd6f9571391.rmeta,source=/libclap_lex-944acfd6f9571391.rmeta \
+##   --mount=from=out-87be0482eaec7565,dst=/target/release/deps/libstrsim-87be0482eaec7565.rlib,source=/libstrsim-87be0482eaec7565.rlib \
+##   --mount=from=out-87be0482eaec7565,dst=/target/release/deps/libstrsim-87be0482eaec7565.rmeta,source=/libstrsim-87be0482eaec7565.rmeta \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=clap \
 ##         CARGO_INCREMENTAL=0 \
@@ -1519,11 +1519,11 @@ COPY --link --from=dep-n-clap-4.5.41-67f6ec320d9c110f /tmp/clis-gifski_1-34-0/re
 ##         CARGO_PKG_VERSION_PATCH=41 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name clap --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --warn rust_2018_idioms --warn clippy'::zero_sized_map_values' --warn clippy'::verbose_file_reads' --warn unused_qualifications --warn unused_macro_rules --warn unused_lifetimes --warn unsafe_op_in_unsafe_fn --warn unreachable_pub --allow unnameable_types --warn clippy'::uninlined_format_args' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::todo' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_add_assign' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::self_named_module_files' --warn clippy'::same_functions_in_if_condition' --allow clippy'::result_large_err' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::ref_option_ref' --warn clippy'::redundant_feature_names' --warn clippy'::rc_mutex' --warn clippy'::ptr_as_ptr' --warn clippy'::path_buf_push_overwrite' --warn clippy'::negative_feature_names' --warn clippy'::needless_for_each' --allow clippy'::needless_continue' --warn clippy'::mutex_integer' --allow clippy'::multiple_bound_locations' --warn clippy'::mem_forget' --warn clippy'::macro_use_imports' --warn clippy'::lossy_float_literal' --warn clippy'::linkedlist' --allow clippy'::let_and_return' --warn clippy'::large_types_passed_by_value' --warn clippy'::large_stack_arrays' --warn clippy'::large_digit_groups' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::infinite_loop' --warn clippy'::inefficient_to_string' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::imprecise_flops' --warn clippy'::implicit_clone' --allow clippy'::if_same_then_else' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::fn_params_excessive_bools' --warn clippy'::float_cmp_const' --warn clippy'::flat_map_option' --warn clippy'::filter_map_next' --warn clippy'::fallible_impl_from' --warn clippy'::explicit_into_iter_loop' --warn clippy'::explicit_deref_methods' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::enum_glob_use' --warn clippy'::empty_enum' --warn clippy'::doc_markdown' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::dbg_macro' --warn clippy'::create_dir' --allow clippy'::collapsible_else_if' --warn clippy'::checked_conversions' --allow clippy'::branches_sharing_code' --allow clippy'::bool_assert_comparison' --allow clippy'::blocks_in_conditions' --allow clippy'::assigning_clones' --cfg feature'="cargo"' --cfg feature'="color"' --cfg feature'="default"' --cfg feature'="error-context"' --cfg feature'="help"' --cfg feature'="std"' --cfg feature'="suggestions"' --cfg feature'="usage"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("cargo", "color", "debug", "default", "deprecated", "derive", "env", "error-context", "help", "std", "string", "suggestions", "unicode", "unstable-derive-ui-tests", "unstable-doc", "unstable-ext", "unstable-markdown", "unstable-styles", "unstable-v5", "usage", "wrap_help"))' -C metadata'=cc982f64a40fe05a' -C extra-filename'=-67f6ec320d9c110f' --out-dir /tmp/clis-gifski_1-34-0/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --extern clap_builder'=/tmp/clis-gifski_1-34-0/release/deps/libclap_builder-82004e3d29174042.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/clap-4.5.41/src/lib.rs \
-##         1>          /tmp/clis-gifski_1-34-0/release/deps/out-67f6ec320d9c110f-stdout \
-##         2>          /tmp/clis-gifski_1-34-0/release/deps/out-67f6ec320d9c110f-stderr \
-##         || echo $? >/tmp/clis-gifski_1-34-0/release/deps/out-67f6ec320d9c110f-errcode\
-##   ; find /tmp/clis-gifski_1-34-0/release/deps/*-67f6ec320d9c110f* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name clap --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --warn rust_2018_idioms --warn clippy'::zero_sized_map_values' --warn clippy'::verbose_file_reads' --warn unused_qualifications --warn unused_macro_rules --warn unused_lifetimes --warn unsafe_op_in_unsafe_fn --warn unreachable_pub --allow unnameable_types --warn clippy'::uninlined_format_args' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::todo' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_add_assign' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::self_named_module_files' --warn clippy'::same_functions_in_if_condition' --allow clippy'::result_large_err' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::ref_option_ref' --warn clippy'::redundant_feature_names' --warn clippy'::rc_mutex' --warn clippy'::ptr_as_ptr' --warn clippy'::path_buf_push_overwrite' --warn clippy'::negative_feature_names' --warn clippy'::needless_for_each' --allow clippy'::needless_continue' --warn clippy'::mutex_integer' --allow clippy'::multiple_bound_locations' --warn clippy'::mem_forget' --warn clippy'::macro_use_imports' --warn clippy'::lossy_float_literal' --warn clippy'::linkedlist' --allow clippy'::let_and_return' --warn clippy'::large_types_passed_by_value' --warn clippy'::large_stack_arrays' --warn clippy'::large_digit_groups' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::infinite_loop' --warn clippy'::inefficient_to_string' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::imprecise_flops' --warn clippy'::implicit_clone' --allow clippy'::if_same_then_else' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::fn_params_excessive_bools' --warn clippy'::float_cmp_const' --warn clippy'::flat_map_option' --warn clippy'::filter_map_next' --warn clippy'::fallible_impl_from' --warn clippy'::explicit_into_iter_loop' --warn clippy'::explicit_deref_methods' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::enum_glob_use' --warn clippy'::empty_enum' --warn clippy'::doc_markdown' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::dbg_macro' --warn clippy'::create_dir' --allow clippy'::collapsible_else_if' --warn clippy'::checked_conversions' --allow clippy'::branches_sharing_code' --allow clippy'::bool_assert_comparison' --allow clippy'::blocks_in_conditions' --allow clippy'::assigning_clones' --cfg feature'="cargo"' --cfg feature'="color"' --cfg feature'="default"' --cfg feature'="error-context"' --cfg feature'="help"' --cfg feature'="std"' --cfg feature'="suggestions"' --cfg feature'="usage"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("cargo", "color", "debug", "default", "deprecated", "derive", "env", "error-context", "help", "std", "string", "suggestions", "unicode", "unstable-derive-ui-tests", "unstable-doc", "unstable-ext", "unstable-markdown", "unstable-styles", "unstable-v5", "usage", "wrap_help"))' -C metadata'=cc982f64a40fe05a' -C extra-filename'=-67f6ec320d9c110f' --out-dir /target/release/deps -C strip'=symbols' -L dependency'=/target/release/deps' --extern clap_builder'=/target/release/deps/libclap_builder-82004e3d29174042.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/clap-4.5.41/src/lib.rs \
+##         1>          /target/release/deps/out-67f6ec320d9c110f-stdout \
+##         2>          /target/release/deps/out-67f6ec320d9c110f-stderr \
+##         || echo $? >/target/release/deps/out-67f6ec320d9c110f-errcode\
+##   ; find /target/release/deps/*-67f6ec320d9c110f* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -1531,14 +1531,14 @@ COPY --link --from=dep-n-clap-4.5.41-67f6ec320d9c110f /tmp/clis-gifski_1-34-0/re
 ## stage = "out-67f6ec320d9c110f"
 ## script = """
 ## FROM scratch AS out-67f6ec320d9c110f
-## COPY --link --from=dep-n-clap-4.5.41-67f6ec320d9c110f /tmp/clis-gifski_1-34-0/release/deps/*-67f6ec320d9c110f* /"""
+## COPY --link --from=dep-n-clap-4.5.41-67f6ec320d9c110f /target/release/deps/*-67f6ec320d9c110f* /"""
 
 FROM scratch AS cratesio-crossbeam-utils-0.8.21
 ADD --chmod=0664 --unpack --checksum=sha256:d0a5c400df2834b80a4c3327b3aad3a4c4cd4de0629063962b03235697506a28 \
   https://static.crates.io/crates/crossbeam-utils/crossbeam-utils-0.8.21.crate /
 FROM rust-base AS dep-x-crossbeam-utils-0.8.21-43968187a3badc28
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-gifski_1-34-0/release/build/crossbeam-utils-43968187a3badc28
+WORKDIR /target/release/build/crossbeam-utils-43968187a3badc28
 RUN \
   --mount=from=cratesio-crossbeam-utils-0.8.21,source=/crossbeam-utils-0.8.21,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.21,rw \
     { \
@@ -1580,13 +1580,13 @@ RUN \
         CARGO_PKG_VERSION_PATCH=21 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' --warn unexpected_cfgs --allow clippy'::lint_groups_priority' --allow clippy'::declare_interior_mutable_const' --check-cfg cfg'(crossbeam_loom)' --check-cfg cfg'(crossbeam_sanitize)' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "loom", "nightly", "std"))' -C metadata'=6c1a1a5d619e1253' -C extra-filename'=-43968187a3badc28' --out-dir /tmp/clis-gifski_1-34-0/release/build/crossbeam-utils-43968187a3badc28 -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.21/build.rs \
-        1>          /tmp/clis-gifski_1-34-0/release/build/crossbeam-utils-43968187a3badc28/out-43968187a3badc28-stdout \
-        2>          /tmp/clis-gifski_1-34-0/release/build/crossbeam-utils-43968187a3badc28/out-43968187a3badc28-stderr \
-        || echo $? >/tmp/clis-gifski_1-34-0/release/build/crossbeam-utils-43968187a3badc28/out-43968187a3badc28-errcode\
-  ; find /tmp/clis-gifski_1-34-0/release/build/crossbeam-utils-43968187a3badc28/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' --warn unexpected_cfgs --allow clippy'::lint_groups_priority' --allow clippy'::declare_interior_mutable_const' --check-cfg cfg'(crossbeam_loom)' --check-cfg cfg'(crossbeam_sanitize)' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "loom", "nightly", "std"))' -C metadata'=6c1a1a5d619e1253' -C extra-filename'=-43968187a3badc28' --out-dir /target/release/build/crossbeam-utils-43968187a3badc28 -C strip'=symbols' -L dependency'=/target/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.21/build.rs \
+        1>          /target/release/build/crossbeam-utils-43968187a3badc28/out-43968187a3badc28-stdout \
+        2>          /target/release/build/crossbeam-utils-43968187a3badc28/out-43968187a3badc28-stderr \
+        || echo $? >/target/release/build/crossbeam-utils-43968187a3badc28/out-43968187a3badc28-errcode\
+  ; find /target/release/build/crossbeam-utils-43968187a3badc28/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-43968187a3badc28
-COPY --link --from=dep-x-crossbeam-utils-0.8.21-43968187a3badc28 /tmp/clis-gifski_1-34-0/release/build/crossbeam-utils-43968187a3badc28/*-43968187a3badc28* /
+COPY --link --from=dep-x-crossbeam-utils-0.8.21-43968187a3badc28 /target/release/build/crossbeam-utils-43968187a3badc28/*-43968187a3badc28* /
 
 ## this = "43968187a3badc28"
 ## writes = [
@@ -1594,8 +1594,8 @@ COPY --link --from=dep-x-crossbeam-utils-0.8.21-43968187a3badc28 /tmp/clis-gifsk
 ##     "build_script_build-43968187a3badc28.d",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/build/crossbeam-utils-43968187a3badc28/build_script_build-43968187a3badc28.d","emit":"dep-info"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/build/crossbeam-utils-43968187a3badc28/build_script_build-43968187a3badc28","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/build/crossbeam-utils-43968187a3badc28/build_script_build-43968187a3badc28.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/build/crossbeam-utils-43968187a3badc28/build_script_build-43968187a3badc28","emit":"link"}',
 ## ]
 ##
 ## [[stages]]
@@ -1620,7 +1620,7 @@ COPY --link --from=dep-x-crossbeam-utils-0.8.21-43968187a3badc28 /tmp/clis-gifsk
 ## script = '''
 ## FROM rust-base AS dep-x-crossbeam-utils-0.8.21-43968187a3badc28
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-gifski_1-34-0/release/build/crossbeam-utils-43968187a3badc28
+## WORKDIR /target/release/build/crossbeam-utils-43968187a3badc28
 ## RUN \
 ##   --mount=from=cratesio-crossbeam-utils-0.8.21,source=/crossbeam-utils-0.8.21,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.21,rw \
 ##     { \
@@ -1662,11 +1662,11 @@ COPY --link --from=dep-x-crossbeam-utils-0.8.21-43968187a3badc28 /tmp/clis-gifsk
 ##         CARGO_PKG_VERSION_PATCH=21 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' --warn unexpected_cfgs --allow clippy'::lint_groups_priority' --allow clippy'::declare_interior_mutable_const' --check-cfg cfg'(crossbeam_loom)' --check-cfg cfg'(crossbeam_sanitize)' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "loom", "nightly", "std"))' -C metadata'=6c1a1a5d619e1253' -C extra-filename'=-43968187a3badc28' --out-dir /tmp/clis-gifski_1-34-0/release/build/crossbeam-utils-43968187a3badc28 -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.21/build.rs \
-##         1>          /tmp/clis-gifski_1-34-0/release/build/crossbeam-utils-43968187a3badc28/out-43968187a3badc28-stdout \
-##         2>          /tmp/clis-gifski_1-34-0/release/build/crossbeam-utils-43968187a3badc28/out-43968187a3badc28-stderr \
-##         || echo $? >/tmp/clis-gifski_1-34-0/release/build/crossbeam-utils-43968187a3badc28/out-43968187a3badc28-errcode\
-##   ; find /tmp/clis-gifski_1-34-0/release/build/crossbeam-utils-43968187a3badc28/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' --warn unexpected_cfgs --allow clippy'::lint_groups_priority' --allow clippy'::declare_interior_mutable_const' --check-cfg cfg'(crossbeam_loom)' --check-cfg cfg'(crossbeam_sanitize)' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "loom", "nightly", "std"))' -C metadata'=6c1a1a5d619e1253' -C extra-filename'=-43968187a3badc28' --out-dir /target/release/build/crossbeam-utils-43968187a3badc28 -C strip'=symbols' -L dependency'=/target/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.21/build.rs \
+##         1>          /target/release/build/crossbeam-utils-43968187a3badc28/out-43968187a3badc28-stdout \
+##         2>          /target/release/build/crossbeam-utils-43968187a3badc28/out-43968187a3badc28-stderr \
+##         || echo $? >/target/release/build/crossbeam-utils-43968187a3badc28/out-43968187a3badc28-errcode\
+##   ; find /target/release/build/crossbeam-utils-43968187a3badc28/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -1674,14 +1674,14 @@ COPY --link --from=dep-x-crossbeam-utils-0.8.21-43968187a3badc28 /tmp/clis-gifsk
 ## stage = "out-43968187a3badc28"
 ## script = """
 ## FROM scratch AS out-43968187a3badc28
-## COPY --link --from=dep-x-crossbeam-utils-0.8.21-43968187a3badc28 /tmp/clis-gifski_1-34-0/release/build/crossbeam-utils-43968187a3badc28/*-43968187a3badc28* /"""
+## COPY --link --from=dep-x-crossbeam-utils-0.8.21-43968187a3badc28 /target/release/build/crossbeam-utils-43968187a3badc28/*-43968187a3badc28* /"""
 
 FROM rust-base AS run-z-crossbeam-utils-0.8.21-b948070c08a8f1cf
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-gifski_1-34-0/release/build/crossbeam-utils-b948070c08a8f1cf/out
+WORKDIR /target/release/build/crossbeam-utils-b948070c08a8f1cf/out
 WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.21
 RUN \
-  --mount=from=out-43968187a3badc28,source=/build_script_build-43968187a3badc28,dst=/tmp/clis-gifski_1-34-0/release/build/crossbeam-utils-43968187a3badc28/build-script-build \
+  --mount=from=out-43968187a3badc28,source=/build_script_build-43968187a3badc28,dst=/target/release/build/crossbeam-utils-43968187a3badc28/build-script-build \
   --mount=from=cratesio-crossbeam-utils-0.8.21,source=/crossbeam-utils-0.8.21,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.21 \
     env CARGO="$(which cargo)" \
         CARGO_CFG_FEATURE=default,std \
@@ -1721,23 +1721,23 @@ RUN \
         HOST=x86_64-unknown-linux-gnu \
         NUM_JOBS=4 \
         OPT_LEVEL=3 \
-        OUT_DIR=/tmp/clis-gifski_1-34-0/release/build/crossbeam-utils-b948070c08a8f1cf/out \
+        OUT_DIR=/target/release/build/crossbeam-utils-b948070c08a8f1cf/out \
         PROFILE=release \
         RUSTC=rustc \
         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
         TARGET=x86_64-unknown-linux-gnu \
         CARGOGREEN=1 \
-      CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-gifski_1-34-0/release/build/crossbeam-utils-43968187a3badc28/build-script-build \
-        1>          /tmp/clis-gifski_1-34-0/release/build/crossbeam-utils-b948070c08a8f1cf/out/out-b948070c08a8f1cf-stdout \
-        2>          /tmp/clis-gifski_1-34-0/release/build/crossbeam-utils-b948070c08a8f1cf/out/out-b948070c08a8f1cf-stderr \
-        || echo $? >/tmp/clis-gifski_1-34-0/release/build/crossbeam-utils-b948070c08a8f1cf/out/out-b948070c08a8f1cf-errcode\
-  ; find /tmp/clis-gifski_1-34-0/release/build/crossbeam-utils-b948070c08a8f1cf/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      CARGOGREEN_EXECUTE_BUILDRS_= /target/release/build/crossbeam-utils-43968187a3badc28/build-script-build \
+        1>          /target/release/build/crossbeam-utils-b948070c08a8f1cf/out/out-b948070c08a8f1cf-stdout \
+        2>          /target/release/build/crossbeam-utils-b948070c08a8f1cf/out/out-b948070c08a8f1cf-stderr \
+        || echo $? >/target/release/build/crossbeam-utils-b948070c08a8f1cf/out/out-b948070c08a8f1cf-errcode\
+  ; find /target/release/build/crossbeam-utils-b948070c08a8f1cf/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-b948070c08a8f1cf
-COPY --link --from=run-z-crossbeam-utils-0.8.21-b948070c08a8f1cf /tmp/clis-gifski_1-34-0/release/build/crossbeam-utils-b948070c08a8f1cf/out /
+COPY --link --from=run-z-crossbeam-utils-0.8.21-b948070c08a8f1cf /target/release/build/crossbeam-utils-b948070c08a8f1cf/out /
 
 ## this = "b948070c08a8f1cf"
 ## deps = ["43968187a3badc28"]
-## writes_to = "/tmp/clis-gifski_1-34-0/release/build/crossbeam-utils-b948070c08a8f1cf/out"
+## writes_to = "/target/release/build/crossbeam-utils-b948070c08a8f1cf/out"
 ## stdout = [
 ##     "cargo:rerun-if-changed=no_atomic.rs",
 ##     "cargo:rustc-check-cfg=cfg(crossbeam_no_atomic,crossbeam_sanitize_thread)",
@@ -1756,10 +1756,10 @@ COPY --link --from=run-z-crossbeam-utils-0.8.21-b948070c08a8f1cf /tmp/clis-gifsk
 ## script = '''
 ## FROM rust-base AS run-z-crossbeam-utils-0.8.21-b948070c08a8f1cf
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-gifski_1-34-0/release/build/crossbeam-utils-b948070c08a8f1cf/out
+## WORKDIR /target/release/build/crossbeam-utils-b948070c08a8f1cf/out
 ## WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.21
 ## RUN \
-##   --mount=from=out-43968187a3badc28,source=/build_script_build-43968187a3badc28,dst=/tmp/clis-gifski_1-34-0/release/build/crossbeam-utils-43968187a3badc28/build-script-build \
+##   --mount=from=out-43968187a3badc28,source=/build_script_build-43968187a3badc28,dst=/target/release/build/crossbeam-utils-43968187a3badc28/build-script-build \
 ##   --mount=from=cratesio-crossbeam-utils-0.8.21,source=/crossbeam-utils-0.8.21,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.21 \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CFG_FEATURE=default,std \
@@ -1799,17 +1799,17 @@ COPY --link --from=run-z-crossbeam-utils-0.8.21-b948070c08a8f1cf /tmp/clis-gifsk
 ##         HOST=x86_64-unknown-linux-gnu \
 ##         NUM_JOBS=4 \
 ##         OPT_LEVEL=3 \
-##         OUT_DIR=/tmp/clis-gifski_1-34-0/release/build/crossbeam-utils-b948070c08a8f1cf/out \
+##         OUT_DIR=/target/release/build/crossbeam-utils-b948070c08a8f1cf/out \
 ##         PROFILE=release \
 ##         RUSTC=rustc \
 ##         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
 ##         TARGET=x86_64-unknown-linux-gnu \
 ##         CARGOGREEN=1 \
-##       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-gifski_1-34-0/release/build/crossbeam-utils-43968187a3badc28/build-script-build \
-##         1>          /tmp/clis-gifski_1-34-0/release/build/crossbeam-utils-b948070c08a8f1cf/out/out-b948070c08a8f1cf-stdout \
-##         2>          /tmp/clis-gifski_1-34-0/release/build/crossbeam-utils-b948070c08a8f1cf/out/out-b948070c08a8f1cf-stderr \
-##         || echo $? >/tmp/clis-gifski_1-34-0/release/build/crossbeam-utils-b948070c08a8f1cf/out/out-b948070c08a8f1cf-errcode\
-##   ; find /tmp/clis-gifski_1-34-0/release/build/crossbeam-utils-b948070c08a8f1cf/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       CARGOGREEN_EXECUTE_BUILDRS_= /target/release/build/crossbeam-utils-43968187a3badc28/build-script-build \
+##         1>          /target/release/build/crossbeam-utils-b948070c08a8f1cf/out/out-b948070c08a8f1cf-stdout \
+##         2>          /target/release/build/crossbeam-utils-b948070c08a8f1cf/out/out-b948070c08a8f1cf-stderr \
+##         || echo $? >/target/release/build/crossbeam-utils-b948070c08a8f1cf/out/out-b948070c08a8f1cf-errcode\
+##   ; find /target/release/build/crossbeam-utils-b948070c08a8f1cf/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -1817,15 +1817,15 @@ COPY --link --from=run-z-crossbeam-utils-0.8.21-b948070c08a8f1cf /tmp/clis-gifsk
 ## stage = "out-b948070c08a8f1cf"
 ## script = """
 ## FROM scratch AS out-b948070c08a8f1cf
-## COPY --link --from=run-z-crossbeam-utils-0.8.21-b948070c08a8f1cf /tmp/clis-gifski_1-34-0/release/build/crossbeam-utils-b948070c08a8f1cf/out /"""
+## COPY --link --from=run-z-crossbeam-utils-0.8.21-b948070c08a8f1cf /target/release/build/crossbeam-utils-b948070c08a8f1cf/out /"""
 
 
 FROM rust-base AS dep-n-crossbeam-utils-0.8.21-5ac36063ddf29a62
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-gifski_1-34-0/release/deps
+WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-crossbeam-utils-0.8.21,source=/crossbeam-utils-0.8.21,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.21 \
-  --mount=from=out-b948070c08a8f1cf,dst=/tmp/clis-gifski_1-34-0/release/build/crossbeam-utils-b948070c08a8f1cf/out,source=/ \
+  --mount=from=out-b948070c08a8f1cf,dst=/target/release/build/crossbeam-utils-b948070c08a8f1cf/out,source=/ \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=crossbeam_utils \
         CARGO_INCREMENTAL=0 \
@@ -1845,15 +1845,15 @@ RUN \
         CARGO_PKG_VERSION_MINOR=8 \
         CARGO_PKG_VERSION_PATCH=21 \
         CARGO_PKG_VERSION_PRE= \
-        OUT_DIR=/tmp/clis-gifski_1-34-0/release/build/crossbeam-utils-b948070c08a8f1cf/out \
+        OUT_DIR=/target/release/build/crossbeam-utils-b948070c08a8f1cf/out \
         CARGOGREEN=1 \
-      rustc --crate-name crossbeam_utils --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --warn unexpected_cfgs --allow clippy'::lint_groups_priority' --allow clippy'::declare_interior_mutable_const' --check-cfg cfg'(crossbeam_loom)' --check-cfg cfg'(crossbeam_sanitize)' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "loom", "nightly", "std"))' -C metadata'=0b8f1d3a77bfa0f1' -C extra-filename'=-5ac36063ddf29a62' --out-dir /tmp/clis-gifski_1-34-0/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --cap-lints warn --check-cfg cfg'(crossbeam_no_atomic,crossbeam_sanitize_thread)' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.21/src/lib.rs \
-        1>          /tmp/clis-gifski_1-34-0/release/deps/out-5ac36063ddf29a62-stdout \
-        2>          /tmp/clis-gifski_1-34-0/release/deps/out-5ac36063ddf29a62-stderr \
-        || echo $? >/tmp/clis-gifski_1-34-0/release/deps/out-5ac36063ddf29a62-errcode\
-  ; find /tmp/clis-gifski_1-34-0/release/deps/*-5ac36063ddf29a62* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      rustc --crate-name crossbeam_utils --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --warn unexpected_cfgs --allow clippy'::lint_groups_priority' --allow clippy'::declare_interior_mutable_const' --check-cfg cfg'(crossbeam_loom)' --check-cfg cfg'(crossbeam_sanitize)' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "loom", "nightly", "std"))' -C metadata'=0b8f1d3a77bfa0f1' -C extra-filename'=-5ac36063ddf29a62' --out-dir /target/release/deps -C strip'=symbols' -L dependency'=/target/release/deps' --cap-lints warn --check-cfg cfg'(crossbeam_no_atomic,crossbeam_sanitize_thread)' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.21/src/lib.rs \
+        1>          /target/release/deps/out-5ac36063ddf29a62-stdout \
+        2>          /target/release/deps/out-5ac36063ddf29a62-stderr \
+        || echo $? >/target/release/deps/out-5ac36063ddf29a62-errcode\
+  ; find /target/release/deps/*-5ac36063ddf29a62* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-5ac36063ddf29a62
-COPY --link --from=dep-n-crossbeam-utils-0.8.21-5ac36063ddf29a62 /tmp/clis-gifski_1-34-0/release/deps/*-5ac36063ddf29a62* /
+COPY --link --from=dep-n-crossbeam-utils-0.8.21-5ac36063ddf29a62 /target/release/deps/*-5ac36063ddf29a62* /
 
 ## this = "5ac36063ddf29a62"
 ## deps = [
@@ -1867,14 +1867,14 @@ COPY --link --from=dep-n-crossbeam-utils-0.8.21-5ac36063ddf29a62 /tmp/clis-gifsk
 ##     "libcrossbeam_utils-5ac36063ddf29a62.rmeta",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/crossbeam_utils-5ac36063ddf29a62.d","emit":"dep-info"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rmeta","emit":"metadata"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rlib","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/crossbeam_utils-5ac36063ddf29a62.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rlib","emit":"link"}',
 ## ]
 ##
 ## [[mounts]]
 ## name = "out-b948070c08a8f1cf"
-## mount = "/tmp/clis-gifski_1-34-0/release/build/crossbeam-utils-b948070c08a8f1cf/out"
+## mount = "/target/release/build/crossbeam-utils-b948070c08a8f1cf/out"
 ##
 ## [[stages]]
 ##
@@ -1898,10 +1898,10 @@ COPY --link --from=dep-n-crossbeam-utils-0.8.21-5ac36063ddf29a62 /tmp/clis-gifsk
 ## script = '''
 ## FROM rust-base AS dep-n-crossbeam-utils-0.8.21-5ac36063ddf29a62
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-gifski_1-34-0/release/deps
+## WORKDIR /target/release/deps
 ## RUN \
 ##   --mount=from=cratesio-crossbeam-utils-0.8.21,source=/crossbeam-utils-0.8.21,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.21 \
-##   --mount=from=out-b948070c08a8f1cf,dst=/tmp/clis-gifski_1-34-0/release/build/crossbeam-utils-b948070c08a8f1cf/out,source=/ \
+##   --mount=from=out-b948070c08a8f1cf,dst=/target/release/build/crossbeam-utils-b948070c08a8f1cf/out,source=/ \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=crossbeam_utils \
 ##         CARGO_INCREMENTAL=0 \
@@ -1921,13 +1921,13 @@ COPY --link --from=dep-n-crossbeam-utils-0.8.21-5ac36063ddf29a62 /tmp/clis-gifsk
 ##         CARGO_PKG_VERSION_MINOR=8 \
 ##         CARGO_PKG_VERSION_PATCH=21 \
 ##         CARGO_PKG_VERSION_PRE= \
-##         OUT_DIR=/tmp/clis-gifski_1-34-0/release/build/crossbeam-utils-b948070c08a8f1cf/out \
+##         OUT_DIR=/target/release/build/crossbeam-utils-b948070c08a8f1cf/out \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name crossbeam_utils --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --warn unexpected_cfgs --allow clippy'::lint_groups_priority' --allow clippy'::declare_interior_mutable_const' --check-cfg cfg'(crossbeam_loom)' --check-cfg cfg'(crossbeam_sanitize)' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "loom", "nightly", "std"))' -C metadata'=0b8f1d3a77bfa0f1' -C extra-filename'=-5ac36063ddf29a62' --out-dir /tmp/clis-gifski_1-34-0/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --cap-lints warn --check-cfg cfg'(crossbeam_no_atomic,crossbeam_sanitize_thread)' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.21/src/lib.rs \
-##         1>          /tmp/clis-gifski_1-34-0/release/deps/out-5ac36063ddf29a62-stdout \
-##         2>          /tmp/clis-gifski_1-34-0/release/deps/out-5ac36063ddf29a62-stderr \
-##         || echo $? >/tmp/clis-gifski_1-34-0/release/deps/out-5ac36063ddf29a62-errcode\
-##   ; find /tmp/clis-gifski_1-34-0/release/deps/*-5ac36063ddf29a62* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name crossbeam_utils --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --warn unexpected_cfgs --allow clippy'::lint_groups_priority' --allow clippy'::declare_interior_mutable_const' --check-cfg cfg'(crossbeam_loom)' --check-cfg cfg'(crossbeam_sanitize)' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "loom", "nightly", "std"))' -C metadata'=0b8f1d3a77bfa0f1' -C extra-filename'=-5ac36063ddf29a62' --out-dir /target/release/deps -C strip'=symbols' -L dependency'=/target/release/deps' --cap-lints warn --check-cfg cfg'(crossbeam_no_atomic,crossbeam_sanitize_thread)' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-utils-0.8.21/src/lib.rs \
+##         1>          /target/release/deps/out-5ac36063ddf29a62-stdout \
+##         2>          /target/release/deps/out-5ac36063ddf29a62-stderr \
+##         || echo $? >/target/release/deps/out-5ac36063ddf29a62-errcode\
+##   ; find /target/release/deps/*-5ac36063ddf29a62* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -1935,18 +1935,18 @@ COPY --link --from=dep-n-crossbeam-utils-0.8.21-5ac36063ddf29a62 /tmp/clis-gifsk
 ## stage = "out-5ac36063ddf29a62"
 ## script = """
 ## FROM scratch AS out-5ac36063ddf29a62
-## COPY --link --from=dep-n-crossbeam-utils-0.8.21-5ac36063ddf29a62 /tmp/clis-gifski_1-34-0/release/deps/*-5ac36063ddf29a62* /"""
+## COPY --link --from=dep-n-crossbeam-utils-0.8.21-5ac36063ddf29a62 /target/release/deps/*-5ac36063ddf29a62* /"""
 
 FROM scratch AS cratesio-crossbeam-channel-0.5.15
 ADD --chmod=0664 --unpack --checksum=sha256:82b8f8f868b36967f9606790d1903570de9ceaf870a7bf9fbbd3016d636a2cb2 \
   https://static.crates.io/crates/crossbeam-channel/crossbeam-channel-0.5.15.crate /
 FROM rust-base AS dep-n-crossbeam-channel-0.5.15-724af7b5f0e810c4
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-gifski_1-34-0/release/deps
+WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-crossbeam-channel-0.5.15,source=/crossbeam-channel-0.5.15,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-channel-0.5.15 \
-  --mount=from=out-5ac36063ddf29a62,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rlib,source=/libcrossbeam_utils-5ac36063ddf29a62.rlib \
-  --mount=from=out-5ac36063ddf29a62,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rmeta,source=/libcrossbeam_utils-5ac36063ddf29a62.rmeta \
+  --mount=from=out-5ac36063ddf29a62,dst=/target/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rlib,source=/libcrossbeam_utils-5ac36063ddf29a62.rlib \
+  --mount=from=out-5ac36063ddf29a62,dst=/target/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rmeta,source=/libcrossbeam_utils-5ac36063ddf29a62.rmeta \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=crossbeam_channel \
         CARGO_INCREMENTAL=0 \
@@ -1967,13 +1967,13 @@ RUN \
         CARGO_PKG_VERSION_PATCH=15 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --crate-name crossbeam_channel --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --warn unexpected_cfgs --allow clippy'::lint_groups_priority' --allow clippy'::declare_interior_mutable_const' --check-cfg cfg'(crossbeam_loom)' --check-cfg cfg'(crossbeam_sanitize)' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "std"))' -C metadata'=6e58c0363cfe997c' -C extra-filename'=-724af7b5f0e810c4' --out-dir /tmp/clis-gifski_1-34-0/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --extern crossbeam_utils'=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-channel-0.5.15/src/lib.rs \
-        1>          /tmp/clis-gifski_1-34-0/release/deps/out-724af7b5f0e810c4-stdout \
-        2>          /tmp/clis-gifski_1-34-0/release/deps/out-724af7b5f0e810c4-stderr \
-        || echo $? >/tmp/clis-gifski_1-34-0/release/deps/out-724af7b5f0e810c4-errcode\
-  ; find /tmp/clis-gifski_1-34-0/release/deps/*-724af7b5f0e810c4* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      rustc --crate-name crossbeam_channel --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --warn unexpected_cfgs --allow clippy'::lint_groups_priority' --allow clippy'::declare_interior_mutable_const' --check-cfg cfg'(crossbeam_loom)' --check-cfg cfg'(crossbeam_sanitize)' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "std"))' -C metadata'=6e58c0363cfe997c' -C extra-filename'=-724af7b5f0e810c4' --out-dir /target/release/deps -C strip'=symbols' -L dependency'=/target/release/deps' --extern crossbeam_utils'=/target/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-channel-0.5.15/src/lib.rs \
+        1>          /target/release/deps/out-724af7b5f0e810c4-stdout \
+        2>          /target/release/deps/out-724af7b5f0e810c4-stderr \
+        || echo $? >/target/release/deps/out-724af7b5f0e810c4-errcode\
+  ; find /target/release/deps/*-724af7b5f0e810c4* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-724af7b5f0e810c4
-COPY --link --from=dep-n-crossbeam-channel-0.5.15-724af7b5f0e810c4 /tmp/clis-gifski_1-34-0/release/deps/*-724af7b5f0e810c4* /
+COPY --link --from=dep-n-crossbeam-channel-0.5.15-724af7b5f0e810c4 /target/release/deps/*-724af7b5f0e810c4* /
 
 ## this = "724af7b5f0e810c4"
 ## deps = [
@@ -1988,9 +1988,9 @@ COPY --link --from=dep-n-crossbeam-channel-0.5.15-724af7b5f0e810c4 /tmp/clis-gif
 ##     "libcrossbeam_channel-724af7b5f0e810c4.rmeta",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/crossbeam_channel-724af7b5f0e810c4.d","emit":"dep-info"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_channel-724af7b5f0e810c4.rmeta","emit":"metadata"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_channel-724af7b5f0e810c4.rlib","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/crossbeam_channel-724af7b5f0e810c4.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libcrossbeam_channel-724af7b5f0e810c4.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libcrossbeam_channel-724af7b5f0e810c4.rlib","emit":"link"}',
 ## ]
 ##
 ## [[externs]]
@@ -2023,11 +2023,11 @@ COPY --link --from=dep-n-crossbeam-channel-0.5.15-724af7b5f0e810c4 /tmp/clis-gif
 ## script = '''
 ## FROM rust-base AS dep-n-crossbeam-channel-0.5.15-724af7b5f0e810c4
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-gifski_1-34-0/release/deps
+## WORKDIR /target/release/deps
 ## RUN \
 ##   --mount=from=cratesio-crossbeam-channel-0.5.15,source=/crossbeam-channel-0.5.15,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-channel-0.5.15 \
-##   --mount=from=out-5ac36063ddf29a62,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rlib,source=/libcrossbeam_utils-5ac36063ddf29a62.rlib \
-##   --mount=from=out-5ac36063ddf29a62,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rmeta,source=/libcrossbeam_utils-5ac36063ddf29a62.rmeta \
+##   --mount=from=out-5ac36063ddf29a62,dst=/target/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rlib,source=/libcrossbeam_utils-5ac36063ddf29a62.rlib \
+##   --mount=from=out-5ac36063ddf29a62,dst=/target/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rmeta,source=/libcrossbeam_utils-5ac36063ddf29a62.rmeta \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=crossbeam_channel \
 ##         CARGO_INCREMENTAL=0 \
@@ -2048,11 +2048,11 @@ COPY --link --from=dep-n-crossbeam-channel-0.5.15-724af7b5f0e810c4 /tmp/clis-gif
 ##         CARGO_PKG_VERSION_PATCH=15 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name crossbeam_channel --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --warn unexpected_cfgs --allow clippy'::lint_groups_priority' --allow clippy'::declare_interior_mutable_const' --check-cfg cfg'(crossbeam_loom)' --check-cfg cfg'(crossbeam_sanitize)' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "std"))' -C metadata'=6e58c0363cfe997c' -C extra-filename'=-724af7b5f0e810c4' --out-dir /tmp/clis-gifski_1-34-0/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --extern crossbeam_utils'=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-channel-0.5.15/src/lib.rs \
-##         1>          /tmp/clis-gifski_1-34-0/release/deps/out-724af7b5f0e810c4-stdout \
-##         2>          /tmp/clis-gifski_1-34-0/release/deps/out-724af7b5f0e810c4-stderr \
-##         || echo $? >/tmp/clis-gifski_1-34-0/release/deps/out-724af7b5f0e810c4-errcode\
-##   ; find /tmp/clis-gifski_1-34-0/release/deps/*-724af7b5f0e810c4* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name crossbeam_channel --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --warn unexpected_cfgs --allow clippy'::lint_groups_priority' --allow clippy'::declare_interior_mutable_const' --check-cfg cfg'(crossbeam_loom)' --check-cfg cfg'(crossbeam_sanitize)' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "std"))' -C metadata'=6e58c0363cfe997c' -C extra-filename'=-724af7b5f0e810c4' --out-dir /target/release/deps -C strip'=symbols' -L dependency'=/target/release/deps' --extern crossbeam_utils'=/target/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-channel-0.5.15/src/lib.rs \
+##         1>          /target/release/deps/out-724af7b5f0e810c4-stdout \
+##         2>          /target/release/deps/out-724af7b5f0e810c4-stderr \
+##         || echo $? >/target/release/deps/out-724af7b5f0e810c4-errcode\
+##   ; find /target/release/deps/*-724af7b5f0e810c4* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -2060,14 +2060,14 @@ COPY --link --from=dep-n-crossbeam-channel-0.5.15-724af7b5f0e810c4 /tmp/clis-gif
 ## stage = "out-724af7b5f0e810c4"
 ## script = """
 ## FROM scratch AS out-724af7b5f0e810c4
-## COPY --link --from=dep-n-crossbeam-channel-0.5.15-724af7b5f0e810c4 /tmp/clis-gifski_1-34-0/release/deps/*-724af7b5f0e810c4* /"""
+## COPY --link --from=dep-n-crossbeam-channel-0.5.15-724af7b5f0e810c4 /target/release/deps/*-724af7b5f0e810c4* /"""
 
 FROM scratch AS cratesio-dunce-1.0.5
 ADD --chmod=0664 --unpack --checksum=sha256:92773504d58c093f6de2459af4af33faa518c13451eb8f2b5698ed3d36e7c813 \
   https://static.crates.io/crates/dunce/dunce-1.0.5.crate /
 FROM rust-base AS dep-n-dunce-1.0.5-00cc39e2b93187ae
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-gifski_1-34-0/release/deps
+WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-dunce-1.0.5,source=/dunce-1.0.5,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/dunce-1.0.5 \
     env CARGO="$(which cargo)" \
@@ -2090,13 +2090,13 @@ RUN \
         CARGO_PKG_VERSION_PATCH=5 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --crate-name dunce --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=99402afbded50890' -C extra-filename'=-00cc39e2b93187ae' --out-dir /tmp/clis-gifski_1-34-0/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/dunce-1.0.5/src/lib.rs \
-        1>          /tmp/clis-gifski_1-34-0/release/deps/out-00cc39e2b93187ae-stdout \
-        2>          /tmp/clis-gifski_1-34-0/release/deps/out-00cc39e2b93187ae-stderr \
-        || echo $? >/tmp/clis-gifski_1-34-0/release/deps/out-00cc39e2b93187ae-errcode\
-  ; find /tmp/clis-gifski_1-34-0/release/deps/*-00cc39e2b93187ae* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      rustc --crate-name dunce --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=99402afbded50890' -C extra-filename'=-00cc39e2b93187ae' --out-dir /target/release/deps -C strip'=symbols' -L dependency'=/target/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/dunce-1.0.5/src/lib.rs \
+        1>          /target/release/deps/out-00cc39e2b93187ae-stdout \
+        2>          /target/release/deps/out-00cc39e2b93187ae-stderr \
+        || echo $? >/target/release/deps/out-00cc39e2b93187ae-errcode\
+  ; find /target/release/deps/*-00cc39e2b93187ae* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-00cc39e2b93187ae
-COPY --link --from=dep-n-dunce-1.0.5-00cc39e2b93187ae /tmp/clis-gifski_1-34-0/release/deps/*-00cc39e2b93187ae* /
+COPY --link --from=dep-n-dunce-1.0.5-00cc39e2b93187ae /target/release/deps/*-00cc39e2b93187ae* /
 
 ## this = "00cc39e2b93187ae"
 ## writes = [
@@ -2105,9 +2105,9 @@ COPY --link --from=dep-n-dunce-1.0.5-00cc39e2b93187ae /tmp/clis-gifski_1-34-0/re
 ##     "libdunce-00cc39e2b93187ae.rmeta",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/dunce-00cc39e2b93187ae.d","emit":"dep-info"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/libdunce-00cc39e2b93187ae.rmeta","emit":"metadata"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/libdunce-00cc39e2b93187ae.rlib","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/dunce-00cc39e2b93187ae.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libdunce-00cc39e2b93187ae.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libdunce-00cc39e2b93187ae.rlib","emit":"link"}',
 ## ]
 ##
 ## [[stages]]
@@ -2132,7 +2132,7 @@ COPY --link --from=dep-n-dunce-1.0.5-00cc39e2b93187ae /tmp/clis-gifski_1-34-0/re
 ## script = '''
 ## FROM rust-base AS dep-n-dunce-1.0.5-00cc39e2b93187ae
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-gifski_1-34-0/release/deps
+## WORKDIR /target/release/deps
 ## RUN \
 ##   --mount=from=cratesio-dunce-1.0.5,source=/dunce-1.0.5,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/dunce-1.0.5 \
 ##     env CARGO="$(which cargo)" \
@@ -2155,11 +2155,11 @@ COPY --link --from=dep-n-dunce-1.0.5-00cc39e2b93187ae /tmp/clis-gifski_1-34-0/re
 ##         CARGO_PKG_VERSION_PATCH=5 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name dunce --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=99402afbded50890' -C extra-filename'=-00cc39e2b93187ae' --out-dir /tmp/clis-gifski_1-34-0/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/dunce-1.0.5/src/lib.rs \
-##         1>          /tmp/clis-gifski_1-34-0/release/deps/out-00cc39e2b93187ae-stdout \
-##         2>          /tmp/clis-gifski_1-34-0/release/deps/out-00cc39e2b93187ae-stderr \
-##         || echo $? >/tmp/clis-gifski_1-34-0/release/deps/out-00cc39e2b93187ae-errcode\
-##   ; find /tmp/clis-gifski_1-34-0/release/deps/*-00cc39e2b93187ae* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name dunce --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=99402afbded50890' -C extra-filename'=-00cc39e2b93187ae' --out-dir /target/release/deps -C strip'=symbols' -L dependency'=/target/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/dunce-1.0.5/src/lib.rs \
+##         1>          /target/release/deps/out-00cc39e2b93187ae-stdout \
+##         2>          /target/release/deps/out-00cc39e2b93187ae-stderr \
+##         || echo $? >/target/release/deps/out-00cc39e2b93187ae-errcode\
+##   ; find /target/release/deps/*-00cc39e2b93187ae* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -2167,14 +2167,14 @@ COPY --link --from=dep-n-dunce-1.0.5-00cc39e2b93187ae /tmp/clis-gifski_1-34-0/re
 ## stage = "out-00cc39e2b93187ae"
 ## script = """
 ## FROM scratch AS out-00cc39e2b93187ae
-## COPY --link --from=dep-n-dunce-1.0.5-00cc39e2b93187ae /tmp/clis-gifski_1-34-0/release/deps/*-00cc39e2b93187ae* /"""
+## COPY --link --from=dep-n-dunce-1.0.5-00cc39e2b93187ae /target/release/deps/*-00cc39e2b93187ae* /"""
 
 FROM scratch AS cratesio-weezl-0.1.10
 ADD --chmod=0664 --unpack --checksum=sha256:a751b3277700db47d3e574514de2eced5e54dc8a5436a3bf7a0b248b2cee16f3 \
   https://static.crates.io/crates/weezl/weezl-0.1.10.crate /
 FROM rust-base AS dep-n-weezl-0.1.10-92ecf42010bb6640
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-gifski_1-34-0/release/deps
+WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-weezl-0.1.10,source=/weezl-0.1.10,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/weezl-0.1.10 \
     env CARGO="$(which cargo)" \
@@ -2197,13 +2197,13 @@ RUN \
         CARGO_PKG_VERSION_PATCH=10 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --crate-name weezl --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --cfg feature'="alloc"' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "async", "default", "futures", "std"))' -C metadata'=080e1d0bf65bee60' -C extra-filename'=-92ecf42010bb6640' --out-dir /tmp/clis-gifski_1-34-0/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/weezl-0.1.10/src/lib.rs \
-        1>          /tmp/clis-gifski_1-34-0/release/deps/out-92ecf42010bb6640-stdout \
-        2>          /tmp/clis-gifski_1-34-0/release/deps/out-92ecf42010bb6640-stderr \
-        || echo $? >/tmp/clis-gifski_1-34-0/release/deps/out-92ecf42010bb6640-errcode\
-  ; find /tmp/clis-gifski_1-34-0/release/deps/*-92ecf42010bb6640* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      rustc --crate-name weezl --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --cfg feature'="alloc"' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "async", "default", "futures", "std"))' -C metadata'=080e1d0bf65bee60' -C extra-filename'=-92ecf42010bb6640' --out-dir /target/release/deps -C strip'=symbols' -L dependency'=/target/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/weezl-0.1.10/src/lib.rs \
+        1>          /target/release/deps/out-92ecf42010bb6640-stdout \
+        2>          /target/release/deps/out-92ecf42010bb6640-stderr \
+        || echo $? >/target/release/deps/out-92ecf42010bb6640-errcode\
+  ; find /target/release/deps/*-92ecf42010bb6640* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-92ecf42010bb6640
-COPY --link --from=dep-n-weezl-0.1.10-92ecf42010bb6640 /tmp/clis-gifski_1-34-0/release/deps/*-92ecf42010bb6640* /
+COPY --link --from=dep-n-weezl-0.1.10-92ecf42010bb6640 /target/release/deps/*-92ecf42010bb6640* /
 
 ## this = "92ecf42010bb6640"
 ## writes = [
@@ -2212,9 +2212,9 @@ COPY --link --from=dep-n-weezl-0.1.10-92ecf42010bb6640 /tmp/clis-gifski_1-34-0/r
 ##     "weezl-92ecf42010bb6640.d",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/weezl-92ecf42010bb6640.d","emit":"dep-info"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/libweezl-92ecf42010bb6640.rmeta","emit":"metadata"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/libweezl-92ecf42010bb6640.rlib","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/weezl-92ecf42010bb6640.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libweezl-92ecf42010bb6640.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libweezl-92ecf42010bb6640.rlib","emit":"link"}',
 ## ]
 ##
 ## [[stages]]
@@ -2239,7 +2239,7 @@ COPY --link --from=dep-n-weezl-0.1.10-92ecf42010bb6640 /tmp/clis-gifski_1-34-0/r
 ## script = '''
 ## FROM rust-base AS dep-n-weezl-0.1.10-92ecf42010bb6640
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-gifski_1-34-0/release/deps
+## WORKDIR /target/release/deps
 ## RUN \
 ##   --mount=from=cratesio-weezl-0.1.10,source=/weezl-0.1.10,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/weezl-0.1.10 \
 ##     env CARGO="$(which cargo)" \
@@ -2262,11 +2262,11 @@ COPY --link --from=dep-n-weezl-0.1.10-92ecf42010bb6640 /tmp/clis-gifski_1-34-0/r
 ##         CARGO_PKG_VERSION_PATCH=10 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name weezl --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --cfg feature'="alloc"' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "async", "default", "futures", "std"))' -C metadata'=080e1d0bf65bee60' -C extra-filename'=-92ecf42010bb6640' --out-dir /tmp/clis-gifski_1-34-0/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/weezl-0.1.10/src/lib.rs \
-##         1>          /tmp/clis-gifski_1-34-0/release/deps/out-92ecf42010bb6640-stdout \
-##         2>          /tmp/clis-gifski_1-34-0/release/deps/out-92ecf42010bb6640-stderr \
-##         || echo $? >/tmp/clis-gifski_1-34-0/release/deps/out-92ecf42010bb6640-errcode\
-##   ; find /tmp/clis-gifski_1-34-0/release/deps/*-92ecf42010bb6640* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name weezl --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --cfg feature'="alloc"' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "async", "default", "futures", "std"))' -C metadata'=080e1d0bf65bee60' -C extra-filename'=-92ecf42010bb6640' --out-dir /target/release/deps -C strip'=symbols' -L dependency'=/target/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/weezl-0.1.10/src/lib.rs \
+##         1>          /target/release/deps/out-92ecf42010bb6640-stdout \
+##         2>          /target/release/deps/out-92ecf42010bb6640-stderr \
+##         || echo $? >/target/release/deps/out-92ecf42010bb6640-errcode\
+##   ; find /target/release/deps/*-92ecf42010bb6640* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -2274,18 +2274,18 @@ COPY --link --from=dep-n-weezl-0.1.10-92ecf42010bb6640 /tmp/clis-gifski_1-34-0/r
 ## stage = "out-92ecf42010bb6640"
 ## script = """
 ## FROM scratch AS out-92ecf42010bb6640
-## COPY --link --from=dep-n-weezl-0.1.10-92ecf42010bb6640 /tmp/clis-gifski_1-34-0/release/deps/*-92ecf42010bb6640* /"""
+## COPY --link --from=dep-n-weezl-0.1.10-92ecf42010bb6640 /target/release/deps/*-92ecf42010bb6640* /"""
 
 FROM scratch AS cratesio-gif-0.13.3
 ADD --chmod=0664 --unpack --checksum=sha256:4ae047235e33e2829703574b54fdec96bfbad892062d97fed2f76022287de61b \
   https://static.crates.io/crates/gif/gif-0.13.3.crate /
 FROM rust-base AS dep-n-gif-0.13.3-6bb7dc2aa9596226
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-gifski_1-34-0/release/deps
+WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-gif-0.13.3,source=/gif-0.13.3,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/gif-0.13.3 \
-  --mount=from=out-92ecf42010bb6640,dst=/tmp/clis-gifski_1-34-0/release/deps/libweezl-92ecf42010bb6640.rlib,source=/libweezl-92ecf42010bb6640.rlib \
-  --mount=from=out-92ecf42010bb6640,dst=/tmp/clis-gifski_1-34-0/release/deps/libweezl-92ecf42010bb6640.rmeta,source=/libweezl-92ecf42010bb6640.rmeta \
+  --mount=from=out-92ecf42010bb6640,dst=/target/release/deps/libweezl-92ecf42010bb6640.rlib,source=/libweezl-92ecf42010bb6640.rlib \
+  --mount=from=out-92ecf42010bb6640,dst=/target/release/deps/libweezl-92ecf42010bb6640.rmeta,source=/libweezl-92ecf42010bb6640.rmeta \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=gif \
         CARGO_INCREMENTAL=0 \
@@ -2306,13 +2306,13 @@ RUN \
         CARGO_PKG_VERSION_PATCH=3 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --crate-name gif --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --cfg feature'="raii_no_panic"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("color_quant", "default", "raii_no_panic", "std"))' -C metadata'=ceda4ada0378de53' -C extra-filename'=-6bb7dc2aa9596226' --out-dir /tmp/clis-gifski_1-34-0/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --extern weezl'=/tmp/clis-gifski_1-34-0/release/deps/libweezl-92ecf42010bb6640.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/gif-0.13.3/src/lib.rs \
-        1>          /tmp/clis-gifski_1-34-0/release/deps/out-6bb7dc2aa9596226-stdout \
-        2>          /tmp/clis-gifski_1-34-0/release/deps/out-6bb7dc2aa9596226-stderr \
-        || echo $? >/tmp/clis-gifski_1-34-0/release/deps/out-6bb7dc2aa9596226-errcode\
-  ; find /tmp/clis-gifski_1-34-0/release/deps/*-6bb7dc2aa9596226* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      rustc --crate-name gif --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --cfg feature'="raii_no_panic"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("color_quant", "default", "raii_no_panic", "std"))' -C metadata'=ceda4ada0378de53' -C extra-filename'=-6bb7dc2aa9596226' --out-dir /target/release/deps -C strip'=symbols' -L dependency'=/target/release/deps' --extern weezl'=/target/release/deps/libweezl-92ecf42010bb6640.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/gif-0.13.3/src/lib.rs \
+        1>          /target/release/deps/out-6bb7dc2aa9596226-stdout \
+        2>          /target/release/deps/out-6bb7dc2aa9596226-stderr \
+        || echo $? >/target/release/deps/out-6bb7dc2aa9596226-errcode\
+  ; find /target/release/deps/*-6bb7dc2aa9596226* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-6bb7dc2aa9596226
-COPY --link --from=dep-n-gif-0.13.3-6bb7dc2aa9596226 /tmp/clis-gifski_1-34-0/release/deps/*-6bb7dc2aa9596226* /
+COPY --link --from=dep-n-gif-0.13.3-6bb7dc2aa9596226 /target/release/deps/*-6bb7dc2aa9596226* /
 
 ## this = "6bb7dc2aa9596226"
 ## deps = ["92ecf42010bb6640"]
@@ -2322,9 +2322,9 @@ COPY --link --from=dep-n-gif-0.13.3-6bb7dc2aa9596226 /tmp/clis-gifski_1-34-0/rel
 ##     "libgif-6bb7dc2aa9596226.rmeta",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/gif-6bb7dc2aa9596226.d","emit":"dep-info"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/libgif-6bb7dc2aa9596226.rmeta","emit":"metadata"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/libgif-6bb7dc2aa9596226.rlib","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/gif-6bb7dc2aa9596226.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libgif-6bb7dc2aa9596226.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libgif-6bb7dc2aa9596226.rlib","emit":"link"}',
 ## ]
 ##
 ## [[externs]]
@@ -2357,11 +2357,11 @@ COPY --link --from=dep-n-gif-0.13.3-6bb7dc2aa9596226 /tmp/clis-gifski_1-34-0/rel
 ## script = '''
 ## FROM rust-base AS dep-n-gif-0.13.3-6bb7dc2aa9596226
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-gifski_1-34-0/release/deps
+## WORKDIR /target/release/deps
 ## RUN \
 ##   --mount=from=cratesio-gif-0.13.3,source=/gif-0.13.3,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/gif-0.13.3 \
-##   --mount=from=out-92ecf42010bb6640,dst=/tmp/clis-gifski_1-34-0/release/deps/libweezl-92ecf42010bb6640.rlib,source=/libweezl-92ecf42010bb6640.rlib \
-##   --mount=from=out-92ecf42010bb6640,dst=/tmp/clis-gifski_1-34-0/release/deps/libweezl-92ecf42010bb6640.rmeta,source=/libweezl-92ecf42010bb6640.rmeta \
+##   --mount=from=out-92ecf42010bb6640,dst=/target/release/deps/libweezl-92ecf42010bb6640.rlib,source=/libweezl-92ecf42010bb6640.rlib \
+##   --mount=from=out-92ecf42010bb6640,dst=/target/release/deps/libweezl-92ecf42010bb6640.rmeta,source=/libweezl-92ecf42010bb6640.rmeta \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=gif \
 ##         CARGO_INCREMENTAL=0 \
@@ -2382,11 +2382,11 @@ COPY --link --from=dep-n-gif-0.13.3-6bb7dc2aa9596226 /tmp/clis-gifski_1-34-0/rel
 ##         CARGO_PKG_VERSION_PATCH=3 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name gif --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --cfg feature'="raii_no_panic"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("color_quant", "default", "raii_no_panic", "std"))' -C metadata'=ceda4ada0378de53' -C extra-filename'=-6bb7dc2aa9596226' --out-dir /tmp/clis-gifski_1-34-0/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --extern weezl'=/tmp/clis-gifski_1-34-0/release/deps/libweezl-92ecf42010bb6640.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/gif-0.13.3/src/lib.rs \
-##         1>          /tmp/clis-gifski_1-34-0/release/deps/out-6bb7dc2aa9596226-stdout \
-##         2>          /tmp/clis-gifski_1-34-0/release/deps/out-6bb7dc2aa9596226-stderr \
-##         || echo $? >/tmp/clis-gifski_1-34-0/release/deps/out-6bb7dc2aa9596226-errcode\
-##   ; find /tmp/clis-gifski_1-34-0/release/deps/*-6bb7dc2aa9596226* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name gif --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --cfg feature'="raii_no_panic"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("color_quant", "default", "raii_no_panic", "std"))' -C metadata'=ceda4ada0378de53' -C extra-filename'=-6bb7dc2aa9596226' --out-dir /target/release/deps -C strip'=symbols' -L dependency'=/target/release/deps' --extern weezl'=/target/release/deps/libweezl-92ecf42010bb6640.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/gif-0.13.3/src/lib.rs \
+##         1>          /target/release/deps/out-6bb7dc2aa9596226-stdout \
+##         2>          /target/release/deps/out-6bb7dc2aa9596226-stderr \
+##         || echo $? >/target/release/deps/out-6bb7dc2aa9596226-errcode\
+##   ; find /target/release/deps/*-6bb7dc2aa9596226* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -2394,14 +2394,14 @@ COPY --link --from=dep-n-gif-0.13.3-6bb7dc2aa9596226 /tmp/clis-gifski_1-34-0/rel
 ## stage = "out-6bb7dc2aa9596226"
 ## script = """
 ## FROM scratch AS out-6bb7dc2aa9596226
-## COPY --link --from=dep-n-gif-0.13.3-6bb7dc2aa9596226 /tmp/clis-gifski_1-34-0/release/deps/*-6bb7dc2aa9596226* /"""
+## COPY --link --from=dep-n-gif-0.13.3-6bb7dc2aa9596226 /target/release/deps/*-6bb7dc2aa9596226* /"""
 
 FROM scratch AS cratesio-imgref-1.11.0
 ADD --chmod=0664 --unpack --checksum=sha256:d0263a3d970d5c054ed9312c0057b4f3bde9c0b33836d3637361d4a9e6e7a408 \
   https://static.crates.io/crates/imgref/imgref-1.11.0.crate /
 FROM rust-base AS dep-n-imgref-1.11.0-deae4624c4370e95
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-gifski_1-34-0/release/deps
+WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-imgref-1.11.0,source=/imgref-1.11.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/imgref-1.11.0 \
     env CARGO="$(which cargo)" \
@@ -2424,13 +2424,13 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --crate-name imgref --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --cfg feature'="default"' --cfg feature'="deprecated"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "deprecated"))' -C metadata'=7355541516a1e397' -C extra-filename'=-deae4624c4370e95' --out-dir /tmp/clis-gifski_1-34-0/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/imgref-1.11.0/src/lib.rs \
-        1>          /tmp/clis-gifski_1-34-0/release/deps/out-deae4624c4370e95-stdout \
-        2>          /tmp/clis-gifski_1-34-0/release/deps/out-deae4624c4370e95-stderr \
-        || echo $? >/tmp/clis-gifski_1-34-0/release/deps/out-deae4624c4370e95-errcode\
-  ; find /tmp/clis-gifski_1-34-0/release/deps/*-deae4624c4370e95* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      rustc --crate-name imgref --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --cfg feature'="default"' --cfg feature'="deprecated"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "deprecated"))' -C metadata'=7355541516a1e397' -C extra-filename'=-deae4624c4370e95' --out-dir /target/release/deps -C strip'=symbols' -L dependency'=/target/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/imgref-1.11.0/src/lib.rs \
+        1>          /target/release/deps/out-deae4624c4370e95-stdout \
+        2>          /target/release/deps/out-deae4624c4370e95-stderr \
+        || echo $? >/target/release/deps/out-deae4624c4370e95-errcode\
+  ; find /target/release/deps/*-deae4624c4370e95* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-deae4624c4370e95
-COPY --link --from=dep-n-imgref-1.11.0-deae4624c4370e95 /tmp/clis-gifski_1-34-0/release/deps/*-deae4624c4370e95* /
+COPY --link --from=dep-n-imgref-1.11.0-deae4624c4370e95 /target/release/deps/*-deae4624c4370e95* /
 
 ## this = "deae4624c4370e95"
 ## writes = [
@@ -2439,14 +2439,14 @@ COPY --link --from=dep-n-imgref-1.11.0-deae4624c4370e95 /tmp/clis-gifski_1-34-0/
 ##     "libimgref-deae4624c4370e95.rmeta",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/imgref-deae4624c4370e95.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/imgref-deae4624c4370e95.d","emit":"dep-info"}',
 ##     '{"$message_type":"diagnostic","message":"`#[must_use]` has no effect when applied to a provided trait method","code":{"code":"unused_attributes","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/imgref-1.11.0/src/lib.rs","byte_start":10257,"byte_end":10268,"line_start":290,"line_end":290,"column_start":5,"column_end":16,"is_primary":true,"text":[{"text":"    #[must_use]","highlight_start":5,"highlight_end":16}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"`#[warn(unused_attributes)]` on by default","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: `#[must_use]` has no effect when applied to a provided trait method\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/imgref-1.11.0/src/lib.rs:290:5\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m290\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    #[must_use]\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: `#[warn(unused_attributes)]` on by default\u001b[0m\n\n"}',
 ##     '''{"$message_type":"diagnostic","message":"hiding a lifetime that's elided elsewhere is confusing","code":{"code":"mismatched_lifetime_syntaxes","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/imgref-1.11.0/src/lib.rs","byte_start":4350,"byte_end":4355,"line_start":118,"line_end":118,"column_start":15,"column_end":20,"is_primary":true,"text":[{"text":"    fn as_ref(&self) -> ImgRef<Pixel>;","highlight_start":15,"highlight_end":20}],"label":"the lifetime is elided here","suggested_replacement":null,"suggestion_applicability":null,"expansion":null},{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/imgref-1.11.0/src/lib.rs","byte_start":4360,"byte_end":4373,"line_start":118,"line_end":118,"column_start":25,"column_end":38,"is_primary":false,"text":[{"text":"    fn as_ref(&self) -> ImgRef<Pixel>;","highlight_start":25,"highlight_end":38}],"label":"the same lifetime is hidden here","suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"the same lifetime is referred to in inconsistent ways, making the signature confusing","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"`#[warn(mismatched_lifetime_syntaxes)]` on by default","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"use `'_` for type paths","code":null,"level":"help","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/imgref-1.11.0/src/lib.rs","byte_start":4367,"byte_end":4367,"line_start":118,"line_end":118,"column_start":32,"column_end":32,"is_primary":true,"text":[{"text":"    fn as_ref(&self) -> ImgRef<Pixel>;","highlight_start":32,"highlight_end":32}],"label":null,"suggested_replacement":"'_, ","suggestion_applicability":"MaybeIncorrect","expansion":null}],"children":[],"rendered":null},{"message":"consistently use `'_`","code":null,"level":"help","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/imgref-1.11.0/src/lib.rs","byte_start":4351,"byte_end":4351,"line_start":118,"line_end":118,"column_start":16,"column_end":16,"is_primary":true,"text":[{"text":"    fn as_ref(&self) -> ImgRef<Pixel>;","highlight_start":16,"highlight_end":16}],"label":null,"suggested_replacement":"'_ ","suggestion_applicability":"MaybeIncorrect","expansion":null},{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/imgref-1.11.0/src/lib.rs","byte_start":4367,"byte_end":4367,"line_start":118,"line_end":118,"column_start":32,"column_end":32,"is_primary":true,"text":[{"text":"    fn as_ref(&self) -> ImgRef<Pixel>;","highlight_start":32,"highlight_end":32}],"label":null,"suggested_replacement":"'_, ","suggestion_applicability":"MaybeIncorrect","expansion":null}],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: hiding a lifetime that's elided elsewhere is confusing\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/imgref-1.11.0/src/lib.rs:118:15\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m118\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    fn as_ref(&self) -> ImgRef<Pixel>;\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m               \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^\u001b[0m\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m-------------\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12mthe same lifetime is hidden here\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m               \u001b[0m\u001b[0m\u001b[1m\u001b[33m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m               \u001b[0m\u001b[0m\u001b[1m\u001b[33mthe lifetime is elided here\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: the same lifetime is referred to in inconsistent ways, making the signature confusing\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: `#[warn(mismatched_lifetime_syntaxes)]` on by default\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;14mhelp\u001b[0m\u001b[0m: use `'_` for type paths\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m118\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m| \u001b[0m\u001b[0m    fn as_ref(&self) -> ImgRef<\u001b[0m\u001b[0m\u001b[38;5;10m'_, \u001b[0m\u001b[0mPixel>;\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                \u001b[0m\u001b[0m\u001b[38;5;10m+++\u001b[0m\n\n"}''',
 ##     '''{"$message_type":"diagnostic","message":"hiding a lifetime that's elided elsewhere is confusing","code":{"code":"mismatched_lifetime_syntaxes","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/imgref-1.11.0/src/lib.rs","byte_start":4848,"byte_end":4857,"line_start":136,"line_end":136,"column_start":15,"column_end":24,"is_primary":true,"text":[{"text":"    fn as_mut(&mut self) -> ImgRefMut<Pixel>;","highlight_start":15,"highlight_end":24}],"label":"the lifetime is elided here","suggested_replacement":null,"suggestion_applicability":null,"expansion":null},{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/imgref-1.11.0/src/lib.rs","byte_start":4862,"byte_end":4878,"line_start":136,"line_end":136,"column_start":29,"column_end":45,"is_primary":false,"text":[{"text":"    fn as_mut(&mut self) -> ImgRefMut<Pixel>;","highlight_start":29,"highlight_end":45}],"label":"the same lifetime is hidden here","suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"the same lifetime is referred to in inconsistent ways, making the signature confusing","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"use `'_` for type paths","code":null,"level":"help","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/imgref-1.11.0/src/lib.rs","byte_start":4872,"byte_end":4872,"line_start":136,"line_end":136,"column_start":39,"column_end":39,"is_primary":true,"text":[{"text":"    fn as_mut(&mut self) -> ImgRefMut<Pixel>;","highlight_start":39,"highlight_end":39}],"label":null,"suggested_replacement":"'_, ","suggestion_applicability":"MaybeIncorrect","expansion":null}],"children":[],"rendered":null},{"message":"consistently use `'_`","code":null,"level":"help","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/imgref-1.11.0/src/lib.rs","byte_start":4849,"byte_end":4849,"line_start":136,"line_end":136,"column_start":16,"column_end":16,"is_primary":true,"text":[{"text":"    fn as_mut(&mut self) -> ImgRefMut<Pixel>;","highlight_start":16,"highlight_end":16}],"label":null,"suggested_replacement":"'_ ","suggestion_applicability":"MaybeIncorrect","expansion":null},{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/imgref-1.11.0/src/lib.rs","byte_start":4872,"byte_end":4872,"line_start":136,"line_end":136,"column_start":39,"column_end":39,"is_primary":true,"text":[{"text":"    fn as_mut(&mut self) -> ImgRefMut<Pixel>;","highlight_start":39,"highlight_end":39}],"label":null,"suggested_replacement":"'_, ","suggestion_applicability":"MaybeIncorrect","expansion":null}],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: hiding a lifetime that's elided elsewhere is confusing\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/imgref-1.11.0/src/lib.rs:136:15\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m136\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    fn as_mut(&mut self) -> ImgRefMut<Pixel>;\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m               \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^\u001b[0m\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m----------------\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12mthe same lifetime is hidden here\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m               \u001b[0m\u001b[0m\u001b[1m\u001b[33m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m               \u001b[0m\u001b[0m\u001b[1m\u001b[33mthe lifetime is elided here\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: the same lifetime is referred to in inconsistent ways, making the signature confusing\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;14mhelp\u001b[0m\u001b[0m: use `'_` for type paths\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m136\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m| \u001b[0m\u001b[0m    fn as_mut(&mut self) -> ImgRefMut<\u001b[0m\u001b[0m\u001b[38;5;10m'_, \u001b[0m\u001b[0mPixel>;\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                       \u001b[0m\u001b[0m\u001b[38;5;10m+++\u001b[0m\n\n"}''',
 ##     '''{"$message_type":"diagnostic","message":"hiding a lifetime that's elided elsewhere is confusing","code":{"code":"mismatched_lifetime_syntaxes","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/imgref-1.11.0/src/lib.rs","byte_start":9743,"byte_end":9748,"line_start":271,"line_end":271,"column_start":15,"column_end":20,"is_primary":true,"text":[{"text":"    fn as_ref(&self) -> ImgRef<Pixel> {","highlight_start":15,"highlight_end":20}],"label":"the lifetime is elided here","suggested_replacement":null,"suggestion_applicability":null,"expansion":null},{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/imgref-1.11.0/src/lib.rs","byte_start":9753,"byte_end":9766,"line_start":271,"line_end":271,"column_start":25,"column_end":38,"is_primary":false,"text":[{"text":"    fn as_ref(&self) -> ImgRef<Pixel> {","highlight_start":25,"highlight_end":38}],"label":"the same lifetime is hidden here","suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"the same lifetime is referred to in inconsistent ways, making the signature confusing","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"use `'_` for type paths","code":null,"level":"help","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/imgref-1.11.0/src/lib.rs","byte_start":9760,"byte_end":9760,"line_start":271,"line_end":271,"column_start":32,"column_end":32,"is_primary":true,"text":[{"text":"    fn as_ref(&self) -> ImgRef<Pixel> {","highlight_start":32,"highlight_end":32}],"label":null,"suggested_replacement":"'_, ","suggestion_applicability":"MaybeIncorrect","expansion":null}],"children":[],"rendered":null},{"message":"consistently use `'_`","code":null,"level":"help","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/imgref-1.11.0/src/lib.rs","byte_start":9744,"byte_end":9744,"line_start":271,"line_end":271,"column_start":16,"column_end":16,"is_primary":true,"text":[{"text":"    fn as_ref(&self) -> ImgRef<Pixel> {","highlight_start":16,"highlight_end":16}],"label":null,"suggested_replacement":"'_ ","suggestion_applicability":"MaybeIncorrect","expansion":null},{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/imgref-1.11.0/src/lib.rs","byte_start":9760,"byte_end":9760,"line_start":271,"line_end":271,"column_start":32,"column_end":32,"is_primary":true,"text":[{"text":"    fn as_ref(&self) -> ImgRef<Pixel> {","highlight_start":32,"highlight_end":32}],"label":null,"suggested_replacement":"'_, ","suggestion_applicability":"MaybeIncorrect","expansion":null}],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: hiding a lifetime that's elided elsewhere is confusing\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/imgref-1.11.0/src/lib.rs:271:15\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m271\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    fn as_ref(&self) -> ImgRef<Pixel> {\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m               \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^\u001b[0m\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m-------------\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12mthe same lifetime is hidden here\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m               \u001b[0m\u001b[0m\u001b[1m\u001b[33m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m               \u001b[0m\u001b[0m\u001b[1m\u001b[33mthe lifetime is elided here\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: the same lifetime is referred to in inconsistent ways, making the signature confusing\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;14mhelp\u001b[0m\u001b[0m: use `'_` for type paths\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m271\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m| \u001b[0m\u001b[0m    fn as_ref(&self) -> ImgRef<\u001b[0m\u001b[0m\u001b[38;5;10m'_, \u001b[0m\u001b[0mPixel> {\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                \u001b[0m\u001b[0m\u001b[38;5;10m+++\u001b[0m\n\n"}''',
 ##     '''{"$message_type":"diagnostic","message":"hiding a lifetime that's elided elsewhere is confusing","code":{"code":"mismatched_lifetime_syntaxes","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/imgref-1.11.0/src/lib.rs","byte_start":10526,"byte_end":10535,"line_start":299,"line_end":299,"column_start":15,"column_end":24,"is_primary":true,"text":[{"text":"    fn as_mut(&mut self) -> ImgRefMut<Pixel> {","highlight_start":15,"highlight_end":24}],"label":"the lifetime is elided here","suggested_replacement":null,"suggestion_applicability":null,"expansion":null},{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/imgref-1.11.0/src/lib.rs","byte_start":10540,"byte_end":10556,"line_start":299,"line_end":299,"column_start":29,"column_end":45,"is_primary":false,"text":[{"text":"    fn as_mut(&mut self) -> ImgRefMut<Pixel> {","highlight_start":29,"highlight_end":45}],"label":"the same lifetime is hidden here","suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"the same lifetime is referred to in inconsistent ways, making the signature confusing","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"use `'_` for type paths","code":null,"level":"help","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/imgref-1.11.0/src/lib.rs","byte_start":10550,"byte_end":10550,"line_start":299,"line_end":299,"column_start":39,"column_end":39,"is_primary":true,"text":[{"text":"    fn as_mut(&mut self) -> ImgRefMut<Pixel> {","highlight_start":39,"highlight_end":39}],"label":null,"suggested_replacement":"'_, ","suggestion_applicability":"MaybeIncorrect","expansion":null}],"children":[],"rendered":null},{"message":"consistently use `'_`","code":null,"level":"help","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/imgref-1.11.0/src/lib.rs","byte_start":10527,"byte_end":10527,"line_start":299,"line_end":299,"column_start":16,"column_end":16,"is_primary":true,"text":[{"text":"    fn as_mut(&mut self) -> ImgRefMut<Pixel> {","highlight_start":16,"highlight_end":16}],"label":null,"suggested_replacement":"'_ ","suggestion_applicability":"MaybeIncorrect","expansion":null},{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/imgref-1.11.0/src/lib.rs","byte_start":10550,"byte_end":10550,"line_start":299,"line_end":299,"column_start":39,"column_end":39,"is_primary":true,"text":[{"text":"    fn as_mut(&mut self) -> ImgRefMut<Pixel> {","highlight_start":39,"highlight_end":39}],"label":null,"suggested_replacement":"'_, ","suggestion_applicability":"MaybeIncorrect","expansion":null}],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: hiding a lifetime that's elided elsewhere is confusing\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/imgref-1.11.0/src/lib.rs:299:15\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m299\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    fn as_mut(&mut self) -> ImgRefMut<Pixel> {\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m               \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^\u001b[0m\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m----------------\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12mthe same lifetime is hidden here\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m               \u001b[0m\u001b[0m\u001b[1m\u001b[33m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m               \u001b[0m\u001b[0m\u001b[1m\u001b[33mthe lifetime is elided here\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: the same lifetime is referred to in inconsistent ways, making the signature confusing\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;14mhelp\u001b[0m\u001b[0m: use `'_` for type paths\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m299\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m| \u001b[0m\u001b[0m    fn as_mut(&mut self) -> ImgRefMut<\u001b[0m\u001b[0m\u001b[38;5;10m'_, \u001b[0m\u001b[0mPixel> {\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                       \u001b[0m\u001b[0m\u001b[38;5;10m+++\u001b[0m\n\n"}''',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/libimgref-deae4624c4370e95.rmeta","emit":"metadata"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/libimgref-deae4624c4370e95.rlib","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libimgref-deae4624c4370e95.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libimgref-deae4624c4370e95.rlib","emit":"link"}',
 ##     '{"$message_type":"diagnostic","message":"5 warnings emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 5 warnings emitted\u001b[0m\n\n"}',
 ## ]
 ##
@@ -2472,7 +2472,7 @@ COPY --link --from=dep-n-imgref-1.11.0-deae4624c4370e95 /tmp/clis-gifski_1-34-0/
 ## script = '''
 ## FROM rust-base AS dep-n-imgref-1.11.0-deae4624c4370e95
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-gifski_1-34-0/release/deps
+## WORKDIR /target/release/deps
 ## RUN \
 ##   --mount=from=cratesio-imgref-1.11.0,source=/imgref-1.11.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/imgref-1.11.0 \
 ##     env CARGO="$(which cargo)" \
@@ -2495,11 +2495,11 @@ COPY --link --from=dep-n-imgref-1.11.0-deae4624c4370e95 /tmp/clis-gifski_1-34-0/
 ##         CARGO_PKG_VERSION_PATCH=0 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name imgref --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --cfg feature'="default"' --cfg feature'="deprecated"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "deprecated"))' -C metadata'=7355541516a1e397' -C extra-filename'=-deae4624c4370e95' --out-dir /tmp/clis-gifski_1-34-0/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/imgref-1.11.0/src/lib.rs \
-##         1>          /tmp/clis-gifski_1-34-0/release/deps/out-deae4624c4370e95-stdout \
-##         2>          /tmp/clis-gifski_1-34-0/release/deps/out-deae4624c4370e95-stderr \
-##         || echo $? >/tmp/clis-gifski_1-34-0/release/deps/out-deae4624c4370e95-errcode\
-##   ; find /tmp/clis-gifski_1-34-0/release/deps/*-deae4624c4370e95* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name imgref --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --cfg feature'="default"' --cfg feature'="deprecated"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "deprecated"))' -C metadata'=7355541516a1e397' -C extra-filename'=-deae4624c4370e95' --out-dir /target/release/deps -C strip'=symbols' -L dependency'=/target/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/imgref-1.11.0/src/lib.rs \
+##         1>          /target/release/deps/out-deae4624c4370e95-stdout \
+##         2>          /target/release/deps/out-deae4624c4370e95-stderr \
+##         || echo $? >/target/release/deps/out-deae4624c4370e95-errcode\
+##   ; find /target/release/deps/*-deae4624c4370e95* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -2507,14 +2507,14 @@ COPY --link --from=dep-n-imgref-1.11.0-deae4624c4370e95 /tmp/clis-gifski_1-34-0/
 ## stage = "out-deae4624c4370e95"
 ## script = """
 ## FROM scratch AS out-deae4624c4370e95
-## COPY --link --from=dep-n-imgref-1.11.0-deae4624c4370e95 /tmp/clis-gifski_1-34-0/release/deps/*-deae4624c4370e95* /"""
+## COPY --link --from=dep-n-imgref-1.11.0-deae4624c4370e95 /target/release/deps/*-deae4624c4370e95* /"""
 
 FROM scratch AS cratesio-bytemuck-1.23.1
 ADD --chmod=0664 --unpack --checksum=sha256:5c76a5792e44e4abe34d3abf15636779261d45a7450612059293d1d2cfc63422 \
   https://static.crates.io/crates/bytemuck/bytemuck-1.23.1.crate /
 FROM rust-base AS dep-n-bytemuck-1.23.1-f0cdacabc0947b7b
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-gifski_1-34-0/release/deps
+WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-bytemuck-1.23.1,source=/bytemuck-1.23.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bytemuck-1.23.1 \
     env CARGO="$(which cargo)" \
@@ -2537,13 +2537,13 @@ RUN \
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --crate-name bytemuck --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --deny unexpected_cfgs --check-cfg cfg'(target_arch, values("spirv"))' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("aarch64_simd", "align_offset", "alloc_uninit", "avx512_simd", "bytemuck_derive", "const_zeroed", "derive", "extern_crate_alloc", "extern_crate_std", "impl_core_error", "latest_stable_rust", "min_const_generics", "must_cast", "must_cast_extra", "nightly_docs", "nightly_float", "nightly_portable_simd", "nightly_stdsimd", "pod_saturating", "track_caller", "transparentwrapper_extra", "unsound_ptr_pod_impl", "wasm_simd", "zeroable_atomics", "zeroable_maybe_uninit", "zeroable_unwind_fn"))' -C metadata'=54cf66cd871b46d5' -C extra-filename'=-f0cdacabc0947b7b' --out-dir /tmp/clis-gifski_1-34-0/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bytemuck-1.23.1/src/lib.rs \
-        1>          /tmp/clis-gifski_1-34-0/release/deps/out-f0cdacabc0947b7b-stdout \
-        2>          /tmp/clis-gifski_1-34-0/release/deps/out-f0cdacabc0947b7b-stderr \
-        || echo $? >/tmp/clis-gifski_1-34-0/release/deps/out-f0cdacabc0947b7b-errcode\
-  ; find /tmp/clis-gifski_1-34-0/release/deps/*-f0cdacabc0947b7b* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      rustc --crate-name bytemuck --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --deny unexpected_cfgs --check-cfg cfg'(target_arch, values("spirv"))' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("aarch64_simd", "align_offset", "alloc_uninit", "avx512_simd", "bytemuck_derive", "const_zeroed", "derive", "extern_crate_alloc", "extern_crate_std", "impl_core_error", "latest_stable_rust", "min_const_generics", "must_cast", "must_cast_extra", "nightly_docs", "nightly_float", "nightly_portable_simd", "nightly_stdsimd", "pod_saturating", "track_caller", "transparentwrapper_extra", "unsound_ptr_pod_impl", "wasm_simd", "zeroable_atomics", "zeroable_maybe_uninit", "zeroable_unwind_fn"))' -C metadata'=54cf66cd871b46d5' -C extra-filename'=-f0cdacabc0947b7b' --out-dir /target/release/deps -C strip'=symbols' -L dependency'=/target/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bytemuck-1.23.1/src/lib.rs \
+        1>          /target/release/deps/out-f0cdacabc0947b7b-stdout \
+        2>          /target/release/deps/out-f0cdacabc0947b7b-stderr \
+        || echo $? >/target/release/deps/out-f0cdacabc0947b7b-errcode\
+  ; find /target/release/deps/*-f0cdacabc0947b7b* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-f0cdacabc0947b7b
-COPY --link --from=dep-n-bytemuck-1.23.1-f0cdacabc0947b7b /tmp/clis-gifski_1-34-0/release/deps/*-f0cdacabc0947b7b* /
+COPY --link --from=dep-n-bytemuck-1.23.1-f0cdacabc0947b7b /target/release/deps/*-f0cdacabc0947b7b* /
 
 ## this = "f0cdacabc0947b7b"
 ## writes = [
@@ -2552,9 +2552,9 @@ COPY --link --from=dep-n-bytemuck-1.23.1-f0cdacabc0947b7b /tmp/clis-gifski_1-34-
 ##     "libbytemuck-f0cdacabc0947b7b.rmeta",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/bytemuck-f0cdacabc0947b7b.d","emit":"dep-info"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/libbytemuck-f0cdacabc0947b7b.rmeta","emit":"metadata"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/libbytemuck-f0cdacabc0947b7b.rlib","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/bytemuck-f0cdacabc0947b7b.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libbytemuck-f0cdacabc0947b7b.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libbytemuck-f0cdacabc0947b7b.rlib","emit":"link"}',
 ## ]
 ##
 ## [[stages]]
@@ -2579,7 +2579,7 @@ COPY --link --from=dep-n-bytemuck-1.23.1-f0cdacabc0947b7b /tmp/clis-gifski_1-34-
 ## script = '''
 ## FROM rust-base AS dep-n-bytemuck-1.23.1-f0cdacabc0947b7b
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-gifski_1-34-0/release/deps
+## WORKDIR /target/release/deps
 ## RUN \
 ##   --mount=from=cratesio-bytemuck-1.23.1,source=/bytemuck-1.23.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bytemuck-1.23.1 \
 ##     env CARGO="$(which cargo)" \
@@ -2602,11 +2602,11 @@ COPY --link --from=dep-n-bytemuck-1.23.1-f0cdacabc0947b7b /tmp/clis-gifski_1-34-
 ##         CARGO_PKG_VERSION_PATCH=1 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name bytemuck --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --deny unexpected_cfgs --check-cfg cfg'(target_arch, values("spirv"))' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("aarch64_simd", "align_offset", "alloc_uninit", "avx512_simd", "bytemuck_derive", "const_zeroed", "derive", "extern_crate_alloc", "extern_crate_std", "impl_core_error", "latest_stable_rust", "min_const_generics", "must_cast", "must_cast_extra", "nightly_docs", "nightly_float", "nightly_portable_simd", "nightly_stdsimd", "pod_saturating", "track_caller", "transparentwrapper_extra", "unsound_ptr_pod_impl", "wasm_simd", "zeroable_atomics", "zeroable_maybe_uninit", "zeroable_unwind_fn"))' -C metadata'=54cf66cd871b46d5' -C extra-filename'=-f0cdacabc0947b7b' --out-dir /tmp/clis-gifski_1-34-0/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bytemuck-1.23.1/src/lib.rs \
-##         1>          /tmp/clis-gifski_1-34-0/release/deps/out-f0cdacabc0947b7b-stdout \
-##         2>          /tmp/clis-gifski_1-34-0/release/deps/out-f0cdacabc0947b7b-stderr \
-##         || echo $? >/tmp/clis-gifski_1-34-0/release/deps/out-f0cdacabc0947b7b-errcode\
-##   ; find /tmp/clis-gifski_1-34-0/release/deps/*-f0cdacabc0947b7b* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name bytemuck --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --deny unexpected_cfgs --check-cfg cfg'(target_arch, values("spirv"))' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("aarch64_simd", "align_offset", "alloc_uninit", "avx512_simd", "bytemuck_derive", "const_zeroed", "derive", "extern_crate_alloc", "extern_crate_std", "impl_core_error", "latest_stable_rust", "min_const_generics", "must_cast", "must_cast_extra", "nightly_docs", "nightly_float", "nightly_portable_simd", "nightly_stdsimd", "pod_saturating", "track_caller", "transparentwrapper_extra", "unsound_ptr_pod_impl", "wasm_simd", "zeroable_atomics", "zeroable_maybe_uninit", "zeroable_unwind_fn"))' -C metadata'=54cf66cd871b46d5' -C extra-filename'=-f0cdacabc0947b7b' --out-dir /target/release/deps -C strip'=symbols' -L dependency'=/target/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/bytemuck-1.23.1/src/lib.rs \
+##         1>          /target/release/deps/out-f0cdacabc0947b7b-stdout \
+##         2>          /target/release/deps/out-f0cdacabc0947b7b-stderr \
+##         || echo $? >/target/release/deps/out-f0cdacabc0947b7b-errcode\
+##   ; find /target/release/deps/*-f0cdacabc0947b7b* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -2614,18 +2614,18 @@ COPY --link --from=dep-n-bytemuck-1.23.1-f0cdacabc0947b7b /tmp/clis-gifski_1-34-
 ## stage = "out-f0cdacabc0947b7b"
 ## script = """
 ## FROM scratch AS out-f0cdacabc0947b7b
-## COPY --link --from=dep-n-bytemuck-1.23.1-f0cdacabc0947b7b /tmp/clis-gifski_1-34-0/release/deps/*-f0cdacabc0947b7b* /"""
+## COPY --link --from=dep-n-bytemuck-1.23.1-f0cdacabc0947b7b /target/release/deps/*-f0cdacabc0947b7b* /"""
 
 FROM scratch AS cratesio-rgb-0.8.51
 ADD --chmod=0664 --unpack --checksum=sha256:a457e416a0f90d246a4c3288bd7a25b2304ca727f253f95be383dd17af56be8f \
   https://static.crates.io/crates/rgb/rgb-0.8.51.crate /
 FROM rust-base AS dep-n-rgb-0.8.51-b630417cd5f2024a
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-gifski_1-34-0/release/deps
+WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-rgb-0.8.51,source=/rgb-0.8.51,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rgb-0.8.51 \
-  --mount=from=out-f0cdacabc0947b7b,dst=/tmp/clis-gifski_1-34-0/release/deps/libbytemuck-f0cdacabc0947b7b.rlib,source=/libbytemuck-f0cdacabc0947b7b.rlib \
-  --mount=from=out-f0cdacabc0947b7b,dst=/tmp/clis-gifski_1-34-0/release/deps/libbytemuck-f0cdacabc0947b7b.rmeta,source=/libbytemuck-f0cdacabc0947b7b.rmeta \
+  --mount=from=out-f0cdacabc0947b7b,dst=/target/release/deps/libbytemuck-f0cdacabc0947b7b.rlib,source=/libbytemuck-f0cdacabc0947b7b.rlib \
+  --mount=from=out-f0cdacabc0947b7b,dst=/target/release/deps/libbytemuck-f0cdacabc0947b7b.rmeta,source=/libbytemuck-f0cdacabc0947b7b.rmeta \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=rgb \
         CARGO_INCREMENTAL=0 \
@@ -2647,13 +2647,13 @@ Allows no-copy high-level interoperability. Also adds common convenience methods
         CARGO_PKG_VERSION_PATCH=51 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --crate-name rgb --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --cfg feature'="bytemuck"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("argb", "as-bytes", "bytemuck", "checked_fns", "default", "defmt-03", "grb", "serde", "unstable-experimental"))' -C metadata'=0c0be7d99ea62cc5' -C extra-filename'=-b630417cd5f2024a' --out-dir /tmp/clis-gifski_1-34-0/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --extern bytemuck'=/tmp/clis-gifski_1-34-0/release/deps/libbytemuck-f0cdacabc0947b7b.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rgb-0.8.51/src/lib.rs \
-        1>          /tmp/clis-gifski_1-34-0/release/deps/out-b630417cd5f2024a-stdout \
-        2>          /tmp/clis-gifski_1-34-0/release/deps/out-b630417cd5f2024a-stderr \
-        || echo $? >/tmp/clis-gifski_1-34-0/release/deps/out-b630417cd5f2024a-errcode\
-  ; find /tmp/clis-gifski_1-34-0/release/deps/*-b630417cd5f2024a* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      rustc --crate-name rgb --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --cfg feature'="bytemuck"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("argb", "as-bytes", "bytemuck", "checked_fns", "default", "defmt-03", "grb", "serde", "unstable-experimental"))' -C metadata'=0c0be7d99ea62cc5' -C extra-filename'=-b630417cd5f2024a' --out-dir /target/release/deps -C strip'=symbols' -L dependency'=/target/release/deps' --extern bytemuck'=/target/release/deps/libbytemuck-f0cdacabc0947b7b.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rgb-0.8.51/src/lib.rs \
+        1>          /target/release/deps/out-b630417cd5f2024a-stdout \
+        2>          /target/release/deps/out-b630417cd5f2024a-stderr \
+        || echo $? >/target/release/deps/out-b630417cd5f2024a-errcode\
+  ; find /target/release/deps/*-b630417cd5f2024a* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-b630417cd5f2024a
-COPY --link --from=dep-n-rgb-0.8.51-b630417cd5f2024a /tmp/clis-gifski_1-34-0/release/deps/*-b630417cd5f2024a* /
+COPY --link --from=dep-n-rgb-0.8.51-b630417cd5f2024a /target/release/deps/*-b630417cd5f2024a* /
 
 ## this = "b630417cd5f2024a"
 ## deps = ["f0cdacabc0947b7b"]
@@ -2663,9 +2663,9 @@ COPY --link --from=dep-n-rgb-0.8.51-b630417cd5f2024a /tmp/clis-gifski_1-34-0/rel
 ##     "rgb-b630417cd5f2024a.d",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/rgb-b630417cd5f2024a.d","emit":"dep-info"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/librgb-b630417cd5f2024a.rmeta","emit":"metadata"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/librgb-b630417cd5f2024a.rlib","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/rgb-b630417cd5f2024a.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/librgb-b630417cd5f2024a.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/librgb-b630417cd5f2024a.rlib","emit":"link"}',
 ## ]
 ##
 ## [[externs]]
@@ -2698,11 +2698,11 @@ COPY --link --from=dep-n-rgb-0.8.51-b630417cd5f2024a /tmp/clis-gifski_1-34-0/rel
 ## script = '''
 ## FROM rust-base AS dep-n-rgb-0.8.51-b630417cd5f2024a
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-gifski_1-34-0/release/deps
+## WORKDIR /target/release/deps
 ## RUN \
 ##   --mount=from=cratesio-rgb-0.8.51,source=/rgb-0.8.51,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rgb-0.8.51 \
-##   --mount=from=out-f0cdacabc0947b7b,dst=/tmp/clis-gifski_1-34-0/release/deps/libbytemuck-f0cdacabc0947b7b.rlib,source=/libbytemuck-f0cdacabc0947b7b.rlib \
-##   --mount=from=out-f0cdacabc0947b7b,dst=/tmp/clis-gifski_1-34-0/release/deps/libbytemuck-f0cdacabc0947b7b.rmeta,source=/libbytemuck-f0cdacabc0947b7b.rmeta \
+##   --mount=from=out-f0cdacabc0947b7b,dst=/target/release/deps/libbytemuck-f0cdacabc0947b7b.rlib,source=/libbytemuck-f0cdacabc0947b7b.rlib \
+##   --mount=from=out-f0cdacabc0947b7b,dst=/target/release/deps/libbytemuck-f0cdacabc0947b7b.rmeta,source=/libbytemuck-f0cdacabc0947b7b.rmeta \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=rgb \
 ##         CARGO_INCREMENTAL=0 \
@@ -2724,11 +2724,11 @@ COPY --link --from=dep-n-rgb-0.8.51-b630417cd5f2024a /tmp/clis-gifski_1-34-0/rel
 ##         CARGO_PKG_VERSION_PATCH=51 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name rgb --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --cfg feature'="bytemuck"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("argb", "as-bytes", "bytemuck", "checked_fns", "default", "defmt-03", "grb", "serde", "unstable-experimental"))' -C metadata'=0c0be7d99ea62cc5' -C extra-filename'=-b630417cd5f2024a' --out-dir /tmp/clis-gifski_1-34-0/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --extern bytemuck'=/tmp/clis-gifski_1-34-0/release/deps/libbytemuck-f0cdacabc0947b7b.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rgb-0.8.51/src/lib.rs \
-##         1>          /tmp/clis-gifski_1-34-0/release/deps/out-b630417cd5f2024a-stdout \
-##         2>          /tmp/clis-gifski_1-34-0/release/deps/out-b630417cd5f2024a-stderr \
-##         || echo $? >/tmp/clis-gifski_1-34-0/release/deps/out-b630417cd5f2024a-errcode\
-##   ; find /tmp/clis-gifski_1-34-0/release/deps/*-b630417cd5f2024a* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name rgb --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --cfg feature'="bytemuck"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("argb", "as-bytes", "bytemuck", "checked_fns", "default", "defmt-03", "grb", "serde", "unstable-experimental"))' -C metadata'=0c0be7d99ea62cc5' -C extra-filename'=-b630417cd5f2024a' --out-dir /target/release/deps -C strip'=symbols' -L dependency'=/target/release/deps' --extern bytemuck'=/target/release/deps/libbytemuck-f0cdacabc0947b7b.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rgb-0.8.51/src/lib.rs \
+##         1>          /target/release/deps/out-b630417cd5f2024a-stdout \
+##         2>          /target/release/deps/out-b630417cd5f2024a-stderr \
+##         || echo $? >/target/release/deps/out-b630417cd5f2024a-errcode\
+##   ; find /target/release/deps/*-b630417cd5f2024a* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -2736,26 +2736,26 @@ COPY --link --from=dep-n-rgb-0.8.51-b630417cd5f2024a /tmp/clis-gifski_1-34-0/rel
 ## stage = "out-b630417cd5f2024a"
 ## script = """
 ## FROM scratch AS out-b630417cd5f2024a
-## COPY --link --from=dep-n-rgb-0.8.51-b630417cd5f2024a /tmp/clis-gifski_1-34-0/release/deps/*-b630417cd5f2024a* /"""
+## COPY --link --from=dep-n-rgb-0.8.51-b630417cd5f2024a /target/release/deps/*-b630417cd5f2024a* /"""
 
 FROM scratch AS cratesio-gif-dispose-5.0.1
 ADD --chmod=0664 --unpack --checksum=sha256:5e1aa07391f3d9c279f388cea6faf291555dd891df59bed01d4378583df946ac \
   https://static.crates.io/crates/gif-dispose/gif-dispose-5.0.1.crate /
 FROM rust-base AS dep-n-gif-dispose-5.0.1-a4fb05ba2aa05e69
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-gifski_1-34-0/release/deps
+WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-gif-dispose-5.0.1,source=/gif-dispose-5.0.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/gif-dispose-5.0.1 \
-  --mount=from=out-6bb7dc2aa9596226,dst=/tmp/clis-gifski_1-34-0/release/deps/libgif-6bb7dc2aa9596226.rlib,source=/libgif-6bb7dc2aa9596226.rlib \
-  --mount=from=out-6bb7dc2aa9596226,dst=/tmp/clis-gifski_1-34-0/release/deps/libgif-6bb7dc2aa9596226.rmeta,source=/libgif-6bb7dc2aa9596226.rmeta \
-  --mount=from=out-92ecf42010bb6640,dst=/tmp/clis-gifski_1-34-0/release/deps/libweezl-92ecf42010bb6640.rlib,source=/libweezl-92ecf42010bb6640.rlib \
-  --mount=from=out-92ecf42010bb6640,dst=/tmp/clis-gifski_1-34-0/release/deps/libweezl-92ecf42010bb6640.rmeta,source=/libweezl-92ecf42010bb6640.rmeta \
-  --mount=from=out-deae4624c4370e95,dst=/tmp/clis-gifski_1-34-0/release/deps/libimgref-deae4624c4370e95.rlib,source=/libimgref-deae4624c4370e95.rlib \
-  --mount=from=out-deae4624c4370e95,dst=/tmp/clis-gifski_1-34-0/release/deps/libimgref-deae4624c4370e95.rmeta,source=/libimgref-deae4624c4370e95.rmeta \
-  --mount=from=out-b630417cd5f2024a,dst=/tmp/clis-gifski_1-34-0/release/deps/librgb-b630417cd5f2024a.rlib,source=/librgb-b630417cd5f2024a.rlib \
-  --mount=from=out-b630417cd5f2024a,dst=/tmp/clis-gifski_1-34-0/release/deps/librgb-b630417cd5f2024a.rmeta,source=/librgb-b630417cd5f2024a.rmeta \
-  --mount=from=out-f0cdacabc0947b7b,dst=/tmp/clis-gifski_1-34-0/release/deps/libbytemuck-f0cdacabc0947b7b.rlib,source=/libbytemuck-f0cdacabc0947b7b.rlib \
-  --mount=from=out-f0cdacabc0947b7b,dst=/tmp/clis-gifski_1-34-0/release/deps/libbytemuck-f0cdacabc0947b7b.rmeta,source=/libbytemuck-f0cdacabc0947b7b.rmeta \
+  --mount=from=out-6bb7dc2aa9596226,dst=/target/release/deps/libgif-6bb7dc2aa9596226.rlib,source=/libgif-6bb7dc2aa9596226.rlib \
+  --mount=from=out-6bb7dc2aa9596226,dst=/target/release/deps/libgif-6bb7dc2aa9596226.rmeta,source=/libgif-6bb7dc2aa9596226.rmeta \
+  --mount=from=out-92ecf42010bb6640,dst=/target/release/deps/libweezl-92ecf42010bb6640.rlib,source=/libweezl-92ecf42010bb6640.rlib \
+  --mount=from=out-92ecf42010bb6640,dst=/target/release/deps/libweezl-92ecf42010bb6640.rmeta,source=/libweezl-92ecf42010bb6640.rmeta \
+  --mount=from=out-deae4624c4370e95,dst=/target/release/deps/libimgref-deae4624c4370e95.rlib,source=/libimgref-deae4624c4370e95.rlib \
+  --mount=from=out-deae4624c4370e95,dst=/target/release/deps/libimgref-deae4624c4370e95.rmeta,source=/libimgref-deae4624c4370e95.rmeta \
+  --mount=from=out-b630417cd5f2024a,dst=/target/release/deps/librgb-b630417cd5f2024a.rlib,source=/librgb-b630417cd5f2024a.rlib \
+  --mount=from=out-b630417cd5f2024a,dst=/target/release/deps/librgb-b630417cd5f2024a.rmeta,source=/librgb-b630417cd5f2024a.rmeta \
+  --mount=from=out-f0cdacabc0947b7b,dst=/target/release/deps/libbytemuck-f0cdacabc0947b7b.rlib,source=/libbytemuck-f0cdacabc0947b7b.rlib \
+  --mount=from=out-f0cdacabc0947b7b,dst=/target/release/deps/libbytemuck-f0cdacabc0947b7b.rmeta,source=/libbytemuck-f0cdacabc0947b7b.rmeta \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=gif_dispose \
         CARGO_INCREMENTAL=0 \
@@ -2776,13 +2776,13 @@ RUN \
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --crate-name gif_dispose --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=a68a1f494b1df0aa' -C extra-filename'=-a4fb05ba2aa05e69' --out-dir /tmp/clis-gifski_1-34-0/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --extern gif'=/tmp/clis-gifski_1-34-0/release/deps/libgif-6bb7dc2aa9596226.rmeta' --extern imgref'=/tmp/clis-gifski_1-34-0/release/deps/libimgref-deae4624c4370e95.rmeta' --extern rgb'=/tmp/clis-gifski_1-34-0/release/deps/librgb-b630417cd5f2024a.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/gif-dispose-5.0.1/src/lib.rs \
-        1>          /tmp/clis-gifski_1-34-0/release/deps/out-a4fb05ba2aa05e69-stdout \
-        2>          /tmp/clis-gifski_1-34-0/release/deps/out-a4fb05ba2aa05e69-stderr \
-        || echo $? >/tmp/clis-gifski_1-34-0/release/deps/out-a4fb05ba2aa05e69-errcode\
-  ; find /tmp/clis-gifski_1-34-0/release/deps/*-a4fb05ba2aa05e69* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      rustc --crate-name gif_dispose --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=a68a1f494b1df0aa' -C extra-filename'=-a4fb05ba2aa05e69' --out-dir /target/release/deps -C strip'=symbols' -L dependency'=/target/release/deps' --extern gif'=/target/release/deps/libgif-6bb7dc2aa9596226.rmeta' --extern imgref'=/target/release/deps/libimgref-deae4624c4370e95.rmeta' --extern rgb'=/target/release/deps/librgb-b630417cd5f2024a.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/gif-dispose-5.0.1/src/lib.rs \
+        1>          /target/release/deps/out-a4fb05ba2aa05e69-stdout \
+        2>          /target/release/deps/out-a4fb05ba2aa05e69-stderr \
+        || echo $? >/target/release/deps/out-a4fb05ba2aa05e69-errcode\
+  ; find /target/release/deps/*-a4fb05ba2aa05e69* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-a4fb05ba2aa05e69
-COPY --link --from=dep-n-gif-dispose-5.0.1-a4fb05ba2aa05e69 /tmp/clis-gifski_1-34-0/release/deps/*-a4fb05ba2aa05e69* /
+COPY --link --from=dep-n-gif-dispose-5.0.1-a4fb05ba2aa05e69 /target/release/deps/*-a4fb05ba2aa05e69* /
 
 ## this = "a4fb05ba2aa05e69"
 ## deps = [
@@ -2798,9 +2798,9 @@ COPY --link --from=dep-n-gif-dispose-5.0.1-a4fb05ba2aa05e69 /tmp/clis-gifski_1-3
 ##     "libgif_dispose-a4fb05ba2aa05e69.rmeta",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/gif_dispose-a4fb05ba2aa05e69.d","emit":"dep-info"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/libgif_dispose-a4fb05ba2aa05e69.rmeta","emit":"metadata"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/libgif_dispose-a4fb05ba2aa05e69.rlib","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/gif_dispose-a4fb05ba2aa05e69.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libgif_dispose-a4fb05ba2aa05e69.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libgif_dispose-a4fb05ba2aa05e69.rlib","emit":"link"}',
 ## ]
 ##
 ## [[externs]]
@@ -2865,19 +2865,19 @@ COPY --link --from=dep-n-gif-dispose-5.0.1-a4fb05ba2aa05e69 /tmp/clis-gifski_1-3
 ## script = '''
 ## FROM rust-base AS dep-n-gif-dispose-5.0.1-a4fb05ba2aa05e69
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-gifski_1-34-0/release/deps
+## WORKDIR /target/release/deps
 ## RUN \
 ##   --mount=from=cratesio-gif-dispose-5.0.1,source=/gif-dispose-5.0.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/gif-dispose-5.0.1 \
-##   --mount=from=out-6bb7dc2aa9596226,dst=/tmp/clis-gifski_1-34-0/release/deps/libgif-6bb7dc2aa9596226.rlib,source=/libgif-6bb7dc2aa9596226.rlib \
-##   --mount=from=out-6bb7dc2aa9596226,dst=/tmp/clis-gifski_1-34-0/release/deps/libgif-6bb7dc2aa9596226.rmeta,source=/libgif-6bb7dc2aa9596226.rmeta \
-##   --mount=from=out-92ecf42010bb6640,dst=/tmp/clis-gifski_1-34-0/release/deps/libweezl-92ecf42010bb6640.rlib,source=/libweezl-92ecf42010bb6640.rlib \
-##   --mount=from=out-92ecf42010bb6640,dst=/tmp/clis-gifski_1-34-0/release/deps/libweezl-92ecf42010bb6640.rmeta,source=/libweezl-92ecf42010bb6640.rmeta \
-##   --mount=from=out-deae4624c4370e95,dst=/tmp/clis-gifski_1-34-0/release/deps/libimgref-deae4624c4370e95.rlib,source=/libimgref-deae4624c4370e95.rlib \
-##   --mount=from=out-deae4624c4370e95,dst=/tmp/clis-gifski_1-34-0/release/deps/libimgref-deae4624c4370e95.rmeta,source=/libimgref-deae4624c4370e95.rmeta \
-##   --mount=from=out-b630417cd5f2024a,dst=/tmp/clis-gifski_1-34-0/release/deps/librgb-b630417cd5f2024a.rlib,source=/librgb-b630417cd5f2024a.rlib \
-##   --mount=from=out-b630417cd5f2024a,dst=/tmp/clis-gifski_1-34-0/release/deps/librgb-b630417cd5f2024a.rmeta,source=/librgb-b630417cd5f2024a.rmeta \
-##   --mount=from=out-f0cdacabc0947b7b,dst=/tmp/clis-gifski_1-34-0/release/deps/libbytemuck-f0cdacabc0947b7b.rlib,source=/libbytemuck-f0cdacabc0947b7b.rlib \
-##   --mount=from=out-f0cdacabc0947b7b,dst=/tmp/clis-gifski_1-34-0/release/deps/libbytemuck-f0cdacabc0947b7b.rmeta,source=/libbytemuck-f0cdacabc0947b7b.rmeta \
+##   --mount=from=out-6bb7dc2aa9596226,dst=/target/release/deps/libgif-6bb7dc2aa9596226.rlib,source=/libgif-6bb7dc2aa9596226.rlib \
+##   --mount=from=out-6bb7dc2aa9596226,dst=/target/release/deps/libgif-6bb7dc2aa9596226.rmeta,source=/libgif-6bb7dc2aa9596226.rmeta \
+##   --mount=from=out-92ecf42010bb6640,dst=/target/release/deps/libweezl-92ecf42010bb6640.rlib,source=/libweezl-92ecf42010bb6640.rlib \
+##   --mount=from=out-92ecf42010bb6640,dst=/target/release/deps/libweezl-92ecf42010bb6640.rmeta,source=/libweezl-92ecf42010bb6640.rmeta \
+##   --mount=from=out-deae4624c4370e95,dst=/target/release/deps/libimgref-deae4624c4370e95.rlib,source=/libimgref-deae4624c4370e95.rlib \
+##   --mount=from=out-deae4624c4370e95,dst=/target/release/deps/libimgref-deae4624c4370e95.rmeta,source=/libimgref-deae4624c4370e95.rmeta \
+##   --mount=from=out-b630417cd5f2024a,dst=/target/release/deps/librgb-b630417cd5f2024a.rlib,source=/librgb-b630417cd5f2024a.rlib \
+##   --mount=from=out-b630417cd5f2024a,dst=/target/release/deps/librgb-b630417cd5f2024a.rmeta,source=/librgb-b630417cd5f2024a.rmeta \
+##   --mount=from=out-f0cdacabc0947b7b,dst=/target/release/deps/libbytemuck-f0cdacabc0947b7b.rlib,source=/libbytemuck-f0cdacabc0947b7b.rlib \
+##   --mount=from=out-f0cdacabc0947b7b,dst=/target/release/deps/libbytemuck-f0cdacabc0947b7b.rmeta,source=/libbytemuck-f0cdacabc0947b7b.rmeta \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=gif_dispose \
 ##         CARGO_INCREMENTAL=0 \
@@ -2898,11 +2898,11 @@ COPY --link --from=dep-n-gif-dispose-5.0.1-a4fb05ba2aa05e69 /tmp/clis-gifski_1-3
 ##         CARGO_PKG_VERSION_PATCH=1 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name gif_dispose --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=a68a1f494b1df0aa' -C extra-filename'=-a4fb05ba2aa05e69' --out-dir /tmp/clis-gifski_1-34-0/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --extern gif'=/tmp/clis-gifski_1-34-0/release/deps/libgif-6bb7dc2aa9596226.rmeta' --extern imgref'=/tmp/clis-gifski_1-34-0/release/deps/libimgref-deae4624c4370e95.rmeta' --extern rgb'=/tmp/clis-gifski_1-34-0/release/deps/librgb-b630417cd5f2024a.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/gif-dispose-5.0.1/src/lib.rs \
-##         1>          /tmp/clis-gifski_1-34-0/release/deps/out-a4fb05ba2aa05e69-stdout \
-##         2>          /tmp/clis-gifski_1-34-0/release/deps/out-a4fb05ba2aa05e69-stderr \
-##         || echo $? >/tmp/clis-gifski_1-34-0/release/deps/out-a4fb05ba2aa05e69-errcode\
-##   ; find /tmp/clis-gifski_1-34-0/release/deps/*-a4fb05ba2aa05e69* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name gif_dispose --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=a68a1f494b1df0aa' -C extra-filename'=-a4fb05ba2aa05e69' --out-dir /target/release/deps -C strip'=symbols' -L dependency'=/target/release/deps' --extern gif'=/target/release/deps/libgif-6bb7dc2aa9596226.rmeta' --extern imgref'=/target/release/deps/libimgref-deae4624c4370e95.rmeta' --extern rgb'=/target/release/deps/librgb-b630417cd5f2024a.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/gif-dispose-5.0.1/src/lib.rs \
+##         1>          /target/release/deps/out-a4fb05ba2aa05e69-stdout \
+##         2>          /target/release/deps/out-a4fb05ba2aa05e69-stderr \
+##         || echo $? >/target/release/deps/out-a4fb05ba2aa05e69-errcode\
+##   ; find /target/release/deps/*-a4fb05ba2aa05e69* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -2910,14 +2910,14 @@ COPY --link --from=dep-n-gif-dispose-5.0.1-a4fb05ba2aa05e69 /tmp/clis-gifski_1-3
 ## stage = "out-a4fb05ba2aa05e69"
 ## script = """
 ## FROM scratch AS out-a4fb05ba2aa05e69
-## COPY --link --from=dep-n-gif-dispose-5.0.1-a4fb05ba2aa05e69 /tmp/clis-gifski_1-34-0/release/deps/*-a4fb05ba2aa05e69* /"""
+## COPY --link --from=dep-n-gif-dispose-5.0.1-a4fb05ba2aa05e69 /target/release/deps/*-a4fb05ba2aa05e69* /"""
 
 FROM scratch AS cratesio-arrayvec-0.7.6
 ADD --chmod=0664 --unpack --checksum=sha256:7c02d123df017efcdfbd739ef81735b36c5ba83ec3c59c80a9d7ecc718f92e50 \
   https://static.crates.io/crates/arrayvec/arrayvec-0.7.6.crate /
 FROM rust-base AS dep-n-arrayvec-0.7.6-9b55b30a1b85e195
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-gifski_1-34-0/release/deps
+WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-arrayvec-0.7.6,source=/arrayvec-0.7.6,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/arrayvec-0.7.6 \
     env CARGO="$(which cargo)" \
@@ -2940,13 +2940,13 @@ RUN \
         CARGO_PKG_VERSION_PATCH=6 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --crate-name arrayvec --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("borsh", "default", "serde", "std", "zeroize"))' -C metadata'=d0004e3500b9ce93' -C extra-filename'=-9b55b30a1b85e195' --out-dir /tmp/clis-gifski_1-34-0/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/arrayvec-0.7.6/src/lib.rs \
-        1>          /tmp/clis-gifski_1-34-0/release/deps/out-9b55b30a1b85e195-stdout \
-        2>          /tmp/clis-gifski_1-34-0/release/deps/out-9b55b30a1b85e195-stderr \
-        || echo $? >/tmp/clis-gifski_1-34-0/release/deps/out-9b55b30a1b85e195-errcode\
-  ; find /tmp/clis-gifski_1-34-0/release/deps/*-9b55b30a1b85e195* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      rustc --crate-name arrayvec --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("borsh", "default", "serde", "std", "zeroize"))' -C metadata'=d0004e3500b9ce93' -C extra-filename'=-9b55b30a1b85e195' --out-dir /target/release/deps -C strip'=symbols' -L dependency'=/target/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/arrayvec-0.7.6/src/lib.rs \
+        1>          /target/release/deps/out-9b55b30a1b85e195-stdout \
+        2>          /target/release/deps/out-9b55b30a1b85e195-stderr \
+        || echo $? >/target/release/deps/out-9b55b30a1b85e195-errcode\
+  ; find /target/release/deps/*-9b55b30a1b85e195* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-9b55b30a1b85e195
-COPY --link --from=dep-n-arrayvec-0.7.6-9b55b30a1b85e195 /tmp/clis-gifski_1-34-0/release/deps/*-9b55b30a1b85e195* /
+COPY --link --from=dep-n-arrayvec-0.7.6-9b55b30a1b85e195 /target/release/deps/*-9b55b30a1b85e195* /
 
 ## this = "9b55b30a1b85e195"
 ## writes = [
@@ -2955,11 +2955,11 @@ COPY --link --from=dep-n-arrayvec-0.7.6-9b55b30a1b85e195 /tmp/clis-gifski_1-34-0
 ##     "libarrayvec-9b55b30a1b85e195.rmeta",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/arrayvec-9b55b30a1b85e195.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/arrayvec-9b55b30a1b85e195.d","emit":"dep-info"}',
 ##     '''{"$message_type":"diagnostic","message":"hiding a lifetime that's elided elsewhere is confusing","code":{"code":"mismatched_lifetime_syntaxes","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/arrayvec-0.7.6/src/arrayvec.rs","byte_start":18351,"byte_end":18360,"line_start":605,"line_end":605,"column_start":21,"column_end":30,"is_primary":true,"text":[{"text":"    pub fn drain<R>(&mut self, range: R) -> Drain<T, CAP>","highlight_start":21,"highlight_end":30}],"label":"the lifetime is elided here","suggested_replacement":null,"suggestion_applicability":null,"expansion":null},{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/arrayvec-0.7.6/src/arrayvec.rs","byte_start":18375,"byte_end":18388,"line_start":605,"line_end":605,"column_start":45,"column_end":58,"is_primary":false,"text":[{"text":"    pub fn drain<R>(&mut self, range: R) -> Drain<T, CAP>","highlight_start":45,"highlight_end":58}],"label":"the same lifetime is hidden here","suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"the same lifetime is referred to in inconsistent ways, making the signature confusing","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"`#[warn(mismatched_lifetime_syntaxes)]` on by default","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"use `'_` for type paths","code":null,"level":"help","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/arrayvec-0.7.6/src/arrayvec.rs","byte_start":18381,"byte_end":18381,"line_start":605,"line_end":605,"column_start":51,"column_end":51,"is_primary":true,"text":[{"text":"    pub fn drain<R>(&mut self, range: R) -> Drain<T, CAP>","highlight_start":51,"highlight_end":51}],"label":null,"suggested_replacement":"'_, ","suggestion_applicability":"MaybeIncorrect","expansion":null}],"children":[],"rendered":null},{"message":"consistently use `'_`","code":null,"level":"help","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/arrayvec-0.7.6/src/arrayvec.rs","byte_start":18352,"byte_end":18352,"line_start":605,"line_end":605,"column_start":22,"column_end":22,"is_primary":true,"text":[{"text":"    pub fn drain<R>(&mut self, range: R) -> Drain<T, CAP>","highlight_start":22,"highlight_end":22}],"label":null,"suggested_replacement":"'_ ","suggestion_applicability":"MaybeIncorrect","expansion":null},{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/arrayvec-0.7.6/src/arrayvec.rs","byte_start":18381,"byte_end":18381,"line_start":605,"line_end":605,"column_start":51,"column_end":51,"is_primary":true,"text":[{"text":"    pub fn drain<R>(&mut self, range: R) -> Drain<T, CAP>","highlight_start":51,"highlight_end":51}],"label":null,"suggested_replacement":"'_, ","suggestion_applicability":"MaybeIncorrect","expansion":null}],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: hiding a lifetime that's elided elsewhere is confusing\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/arrayvec-0.7.6/src/arrayvec.rs:605:21\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m605\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    pub fn drain<R>(&mut self, range: R) -> Drain<T, CAP>\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                     \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^\u001b[0m\u001b[0m               \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m-------------\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12mthe same lifetime is hidden here\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                     \u001b[0m\u001b[0m\u001b[1m\u001b[33m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                     \u001b[0m\u001b[0m\u001b[1m\u001b[33mthe lifetime is elided here\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: the same lifetime is referred to in inconsistent ways, making the signature confusing\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: `#[warn(mismatched_lifetime_syntaxes)]` on by default\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;14mhelp\u001b[0m\u001b[0m: use `'_` for type paths\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m605\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m| \u001b[0m\u001b[0m    pub fn drain<R>(&mut self, range: R) -> Drain<\u001b[0m\u001b[0m\u001b[38;5;10m'_, \u001b[0m\u001b[0mT, CAP>\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                                   \u001b[0m\u001b[0m\u001b[38;5;10m+++\u001b[0m\n\n"}''',
 ##     '''{"$message_type":"diagnostic","message":"hiding a lifetime that's elided elsewhere is confusing","code":{"code":"mismatched_lifetime_syntaxes","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/arrayvec-0.7.6/src/arrayvec.rs","byte_start":19394,"byte_end":19403,"line_start":632,"line_end":632,"column_start":20,"column_end":29,"is_primary":true,"text":[{"text":"    fn drain_range(&mut self, start: usize, end: usize) -> Drain<T, CAP>","highlight_start":20,"highlight_end":29}],"label":"the lifetime is elided here","suggested_replacement":null,"suggestion_applicability":null,"expansion":null},{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/arrayvec-0.7.6/src/arrayvec.rs","byte_start":19434,"byte_end":19447,"line_start":632,"line_end":632,"column_start":60,"column_end":73,"is_primary":false,"text":[{"text":"    fn drain_range(&mut self, start: usize, end: usize) -> Drain<T, CAP>","highlight_start":60,"highlight_end":73}],"label":"the same lifetime is hidden here","suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"the same lifetime is referred to in inconsistent ways, making the signature confusing","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"use `'_` for type paths","code":null,"level":"help","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/arrayvec-0.7.6/src/arrayvec.rs","byte_start":19440,"byte_end":19440,"line_start":632,"line_end":632,"column_start":66,"column_end":66,"is_primary":true,"text":[{"text":"    fn drain_range(&mut self, start: usize, end: usize) -> Drain<T, CAP>","highlight_start":66,"highlight_end":66}],"label":null,"suggested_replacement":"'_, ","suggestion_applicability":"MaybeIncorrect","expansion":null}],"children":[],"rendered":null},{"message":"consistently use `'_`","code":null,"level":"help","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/arrayvec-0.7.6/src/arrayvec.rs","byte_start":19395,"byte_end":19395,"line_start":632,"line_end":632,"column_start":21,"column_end":21,"is_primary":true,"text":[{"text":"    fn drain_range(&mut self, start: usize, end: usize) -> Drain<T, CAP>","highlight_start":21,"highlight_end":21}],"label":null,"suggested_replacement":"'_ ","suggestion_applicability":"MaybeIncorrect","expansion":null},{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/arrayvec-0.7.6/src/arrayvec.rs","byte_start":19440,"byte_end":19440,"line_start":632,"line_end":632,"column_start":66,"column_end":66,"is_primary":true,"text":[{"text":"    fn drain_range(&mut self, start: usize, end: usize) -> Drain<T, CAP>","highlight_start":66,"highlight_end":66}],"label":null,"suggested_replacement":"'_, ","suggestion_applicability":"MaybeIncorrect","expansion":null}],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: hiding a lifetime that's elided elsewhere is confusing\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/arrayvec-0.7.6/src/arrayvec.rs:632:20\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m632\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    fn drain_range(&mut self, start: usize, end: usize) -> Drain<T, CAP>\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                    \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[33mthe lifetime is elided here\u001b[0m\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m-------------\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12mthe same lifetime is hidden here\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: the same lifetime is referred to in inconsistent ways, making the signature confusing\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;14mhelp\u001b[0m\u001b[0m: use `'_` for type paths\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m632\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m| \u001b[0m\u001b[0m    fn drain_range(&mut self, start: usize, end: usize) -> Drain<\u001b[0m\u001b[0m\u001b[38;5;10m'_, \u001b[0m\u001b[0mT, CAP>\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                                                  \u001b[0m\u001b[0m\u001b[38;5;10m+++\u001b[0m\n\n"}''',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/libarrayvec-9b55b30a1b85e195.rmeta","emit":"metadata"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/libarrayvec-9b55b30a1b85e195.rlib","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libarrayvec-9b55b30a1b85e195.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libarrayvec-9b55b30a1b85e195.rlib","emit":"link"}',
 ##     '{"$message_type":"diagnostic","message":"2 warnings emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 2 warnings emitted\u001b[0m\n\n"}',
 ## ]
 ##
@@ -2985,7 +2985,7 @@ COPY --link --from=dep-n-arrayvec-0.7.6-9b55b30a1b85e195 /tmp/clis-gifski_1-34-0
 ## script = '''
 ## FROM rust-base AS dep-n-arrayvec-0.7.6-9b55b30a1b85e195
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-gifski_1-34-0/release/deps
+## WORKDIR /target/release/deps
 ## RUN \
 ##   --mount=from=cratesio-arrayvec-0.7.6,source=/arrayvec-0.7.6,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/arrayvec-0.7.6 \
 ##     env CARGO="$(which cargo)" \
@@ -3008,11 +3008,11 @@ COPY --link --from=dep-n-arrayvec-0.7.6-9b55b30a1b85e195 /tmp/clis-gifski_1-34-0
 ##         CARGO_PKG_VERSION_PATCH=6 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name arrayvec --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("borsh", "default", "serde", "std", "zeroize"))' -C metadata'=d0004e3500b9ce93' -C extra-filename'=-9b55b30a1b85e195' --out-dir /tmp/clis-gifski_1-34-0/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/arrayvec-0.7.6/src/lib.rs \
-##         1>          /tmp/clis-gifski_1-34-0/release/deps/out-9b55b30a1b85e195-stdout \
-##         2>          /tmp/clis-gifski_1-34-0/release/deps/out-9b55b30a1b85e195-stderr \
-##         || echo $? >/tmp/clis-gifski_1-34-0/release/deps/out-9b55b30a1b85e195-errcode\
-##   ; find /tmp/clis-gifski_1-34-0/release/deps/*-9b55b30a1b85e195* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name arrayvec --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("borsh", "default", "serde", "std", "zeroize"))' -C metadata'=d0004e3500b9ce93' -C extra-filename'=-9b55b30a1b85e195' --out-dir /target/release/deps -C strip'=symbols' -L dependency'=/target/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/arrayvec-0.7.6/src/lib.rs \
+##         1>          /target/release/deps/out-9b55b30a1b85e195-stdout \
+##         2>          /target/release/deps/out-9b55b30a1b85e195-stderr \
+##         || echo $? >/target/release/deps/out-9b55b30a1b85e195-errcode\
+##   ; find /target/release/deps/*-9b55b30a1b85e195* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -3020,14 +3020,14 @@ COPY --link --from=dep-n-arrayvec-0.7.6-9b55b30a1b85e195 /tmp/clis-gifski_1-34-0
 ## stage = "out-9b55b30a1b85e195"
 ## script = """
 ## FROM scratch AS out-9b55b30a1b85e195
-## COPY --link --from=dep-n-arrayvec-0.7.6-9b55b30a1b85e195 /tmp/clis-gifski_1-34-0/release/deps/*-9b55b30a1b85e195* /"""
+## COPY --link --from=dep-n-arrayvec-0.7.6-9b55b30a1b85e195 /target/release/deps/*-9b55b30a1b85e195* /"""
 
 FROM scratch AS cratesio-once_cell-1.21.3
 ADD --chmod=0664 --unpack --checksum=sha256:42f5e15c9953c5e4ccceeb2e7382a716482c34515315f7b03532b8b4e8393d2d \
   https://static.crates.io/crates/once_cell/once_cell-1.21.3.crate /
 FROM rust-base AS dep-n-once_cell-1.21.3-0774a35541eb4e3b
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-gifski_1-34-0/release/deps
+WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-once_cell-1.21.3,source=/once_cell-1.21.3,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/once_cell-1.21.3 \
     env CARGO="$(which cargo)" \
@@ -3050,13 +3050,13 @@ RUN \
         CARGO_PKG_VERSION_PATCH=3 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --crate-name once_cell --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --cfg feature'="alloc"' --cfg feature'="default"' --cfg feature'="race"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "atomic-polyfill", "critical-section", "default", "parking_lot", "portable-atomic", "race", "std", "unstable"))' -C metadata'=9d6eb6ff34ce89b8' -C extra-filename'=-0774a35541eb4e3b' --out-dir /tmp/clis-gifski_1-34-0/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/once_cell-1.21.3/src/lib.rs \
-        1>          /tmp/clis-gifski_1-34-0/release/deps/out-0774a35541eb4e3b-stdout \
-        2>          /tmp/clis-gifski_1-34-0/release/deps/out-0774a35541eb4e3b-stderr \
-        || echo $? >/tmp/clis-gifski_1-34-0/release/deps/out-0774a35541eb4e3b-errcode\
-  ; find /tmp/clis-gifski_1-34-0/release/deps/*-0774a35541eb4e3b* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      rustc --crate-name once_cell --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --cfg feature'="alloc"' --cfg feature'="default"' --cfg feature'="race"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "atomic-polyfill", "critical-section", "default", "parking_lot", "portable-atomic", "race", "std", "unstable"))' -C metadata'=9d6eb6ff34ce89b8' -C extra-filename'=-0774a35541eb4e3b' --out-dir /target/release/deps -C strip'=symbols' -L dependency'=/target/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/once_cell-1.21.3/src/lib.rs \
+        1>          /target/release/deps/out-0774a35541eb4e3b-stdout \
+        2>          /target/release/deps/out-0774a35541eb4e3b-stderr \
+        || echo $? >/target/release/deps/out-0774a35541eb4e3b-errcode\
+  ; find /target/release/deps/*-0774a35541eb4e3b* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-0774a35541eb4e3b
-COPY --link --from=dep-n-once_cell-1.21.3-0774a35541eb4e3b /tmp/clis-gifski_1-34-0/release/deps/*-0774a35541eb4e3b* /
+COPY --link --from=dep-n-once_cell-1.21.3-0774a35541eb4e3b /target/release/deps/*-0774a35541eb4e3b* /
 
 ## this = "0774a35541eb4e3b"
 ## writes = [
@@ -3065,9 +3065,9 @@ COPY --link --from=dep-n-once_cell-1.21.3-0774a35541eb4e3b /tmp/clis-gifski_1-34
 ##     "once_cell-0774a35541eb4e3b.d",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/once_cell-0774a35541eb4e3b.d","emit":"dep-info"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/libonce_cell-0774a35541eb4e3b.rmeta","emit":"metadata"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/libonce_cell-0774a35541eb4e3b.rlib","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/once_cell-0774a35541eb4e3b.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libonce_cell-0774a35541eb4e3b.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libonce_cell-0774a35541eb4e3b.rlib","emit":"link"}',
 ## ]
 ##
 ## [[stages]]
@@ -3092,7 +3092,7 @@ COPY --link --from=dep-n-once_cell-1.21.3-0774a35541eb4e3b /tmp/clis-gifski_1-34
 ## script = '''
 ## FROM rust-base AS dep-n-once_cell-1.21.3-0774a35541eb4e3b
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-gifski_1-34-0/release/deps
+## WORKDIR /target/release/deps
 ## RUN \
 ##   --mount=from=cratesio-once_cell-1.21.3,source=/once_cell-1.21.3,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/once_cell-1.21.3 \
 ##     env CARGO="$(which cargo)" \
@@ -3115,11 +3115,11 @@ COPY --link --from=dep-n-once_cell-1.21.3-0774a35541eb4e3b /tmp/clis-gifski_1-34
 ##         CARGO_PKG_VERSION_PATCH=3 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name once_cell --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --cfg feature'="alloc"' --cfg feature'="default"' --cfg feature'="race"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "atomic-polyfill", "critical-section", "default", "parking_lot", "portable-atomic", "race", "std", "unstable"))' -C metadata'=9d6eb6ff34ce89b8' -C extra-filename'=-0774a35541eb4e3b' --out-dir /tmp/clis-gifski_1-34-0/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/once_cell-1.21.3/src/lib.rs \
-##         1>          /tmp/clis-gifski_1-34-0/release/deps/out-0774a35541eb4e3b-stdout \
-##         2>          /tmp/clis-gifski_1-34-0/release/deps/out-0774a35541eb4e3b-stderr \
-##         || echo $? >/tmp/clis-gifski_1-34-0/release/deps/out-0774a35541eb4e3b-errcode\
-##   ; find /tmp/clis-gifski_1-34-0/release/deps/*-0774a35541eb4e3b* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name once_cell --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --cfg feature'="alloc"' --cfg feature'="default"' --cfg feature'="race"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "atomic-polyfill", "critical-section", "default", "parking_lot", "portable-atomic", "race", "std", "unstable"))' -C metadata'=9d6eb6ff34ce89b8' -C extra-filename'=-0774a35541eb4e3b' --out-dir /target/release/deps -C strip'=symbols' -L dependency'=/target/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/once_cell-1.21.3/src/lib.rs \
+##         1>          /target/release/deps/out-0774a35541eb4e3b-stdout \
+##         2>          /target/release/deps/out-0774a35541eb4e3b-stderr \
+##         || echo $? >/target/release/deps/out-0774a35541eb4e3b-errcode\
+##   ; find /target/release/deps/*-0774a35541eb4e3b* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -3127,14 +3127,14 @@ COPY --link --from=dep-n-once_cell-1.21.3-0774a35541eb4e3b /tmp/clis-gifski_1-34
 ## stage = "out-0774a35541eb4e3b"
 ## script = """
 ## FROM scratch AS out-0774a35541eb4e3b
-## COPY --link --from=dep-n-once_cell-1.21.3-0774a35541eb4e3b /tmp/clis-gifski_1-34-0/release/deps/*-0774a35541eb4e3b* /"""
+## COPY --link --from=dep-n-once_cell-1.21.3-0774a35541eb4e3b /target/release/deps/*-0774a35541eb4e3b* /"""
 
 FROM scratch AS cratesio-either-1.15.0
 ADD --chmod=0664 --unpack --checksum=sha256:48c757948c5ede0e46177b7add2e67155f70e33c07fea8284df6576da70b3719 \
   https://static.crates.io/crates/either/either-1.15.0.crate /
 FROM rust-base AS dep-n-either-1.15.0-64b2ef074583e2a3
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-gifski_1-34-0/release/deps
+WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-either-1.15.0,source=/either-1.15.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/either-1.15.0 \
     env CARGO="$(which cargo)" \
@@ -3158,13 +3158,13 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --crate-name either --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "serde", "std", "use_std"))' -C metadata'=b2882954c14a6a35' -C extra-filename'=-64b2ef074583e2a3' --out-dir /tmp/clis-gifski_1-34-0/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/either-1.15.0/src/lib.rs \
-        1>          /tmp/clis-gifski_1-34-0/release/deps/out-64b2ef074583e2a3-stdout \
-        2>          /tmp/clis-gifski_1-34-0/release/deps/out-64b2ef074583e2a3-stderr \
-        || echo $? >/tmp/clis-gifski_1-34-0/release/deps/out-64b2ef074583e2a3-errcode\
-  ; find /tmp/clis-gifski_1-34-0/release/deps/*-64b2ef074583e2a3* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      rustc --crate-name either --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "serde", "std", "use_std"))' -C metadata'=b2882954c14a6a35' -C extra-filename'=-64b2ef074583e2a3' --out-dir /target/release/deps -C strip'=symbols' -L dependency'=/target/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/either-1.15.0/src/lib.rs \
+        1>          /target/release/deps/out-64b2ef074583e2a3-stdout \
+        2>          /target/release/deps/out-64b2ef074583e2a3-stderr \
+        || echo $? >/target/release/deps/out-64b2ef074583e2a3-errcode\
+  ; find /target/release/deps/*-64b2ef074583e2a3* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-64b2ef074583e2a3
-COPY --link --from=dep-n-either-1.15.0-64b2ef074583e2a3 /tmp/clis-gifski_1-34-0/release/deps/*-64b2ef074583e2a3* /
+COPY --link --from=dep-n-either-1.15.0-64b2ef074583e2a3 /target/release/deps/*-64b2ef074583e2a3* /
 
 ## this = "64b2ef074583e2a3"
 ## writes = [
@@ -3173,9 +3173,9 @@ COPY --link --from=dep-n-either-1.15.0-64b2ef074583e2a3 /tmp/clis-gifski_1-34-0/
 ##     "libeither-64b2ef074583e2a3.rmeta",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/either-64b2ef074583e2a3.d","emit":"dep-info"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/libeither-64b2ef074583e2a3.rmeta","emit":"metadata"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/libeither-64b2ef074583e2a3.rlib","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/either-64b2ef074583e2a3.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libeither-64b2ef074583e2a3.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libeither-64b2ef074583e2a3.rlib","emit":"link"}',
 ## ]
 ##
 ## [[stages]]
@@ -3200,7 +3200,7 @@ COPY --link --from=dep-n-either-1.15.0-64b2ef074583e2a3 /tmp/clis-gifski_1-34-0/
 ## script = '''
 ## FROM rust-base AS dep-n-either-1.15.0-64b2ef074583e2a3
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-gifski_1-34-0/release/deps
+## WORKDIR /target/release/deps
 ## RUN \
 ##   --mount=from=cratesio-either-1.15.0,source=/either-1.15.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/either-1.15.0 \
 ##     env CARGO="$(which cargo)" \
@@ -3224,11 +3224,11 @@ COPY --link --from=dep-n-either-1.15.0-64b2ef074583e2a3 /tmp/clis-gifski_1-34-0/
 ##         CARGO_PKG_VERSION_PATCH=0 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name either --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "serde", "std", "use_std"))' -C metadata'=b2882954c14a6a35' -C extra-filename'=-64b2ef074583e2a3' --out-dir /tmp/clis-gifski_1-34-0/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/either-1.15.0/src/lib.rs \
-##         1>          /tmp/clis-gifski_1-34-0/release/deps/out-64b2ef074583e2a3-stdout \
-##         2>          /tmp/clis-gifski_1-34-0/release/deps/out-64b2ef074583e2a3-stderr \
-##         || echo $? >/tmp/clis-gifski_1-34-0/release/deps/out-64b2ef074583e2a3-errcode\
-##   ; find /tmp/clis-gifski_1-34-0/release/deps/*-64b2ef074583e2a3* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name either --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "serde", "std", "use_std"))' -C metadata'=b2882954c14a6a35' -C extra-filename'=-64b2ef074583e2a3' --out-dir /target/release/deps -C strip'=symbols' -L dependency'=/target/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/either-1.15.0/src/lib.rs \
+##         1>          /target/release/deps/out-64b2ef074583e2a3-stdout \
+##         2>          /target/release/deps/out-64b2ef074583e2a3-stderr \
+##         || echo $? >/target/release/deps/out-64b2ef074583e2a3-errcode\
+##   ; find /target/release/deps/*-64b2ef074583e2a3* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -3236,18 +3236,18 @@ COPY --link --from=dep-n-either-1.15.0-64b2ef074583e2a3 /tmp/clis-gifski_1-34-0/
 ## stage = "out-64b2ef074583e2a3"
 ## script = """
 ## FROM scratch AS out-64b2ef074583e2a3
-## COPY --link --from=dep-n-either-1.15.0-64b2ef074583e2a3 /tmp/clis-gifski_1-34-0/release/deps/*-64b2ef074583e2a3* /"""
+## COPY --link --from=dep-n-either-1.15.0-64b2ef074583e2a3 /target/release/deps/*-64b2ef074583e2a3* /"""
 
 FROM scratch AS cratesio-crossbeam-epoch-0.9.18
 ADD --chmod=0664 --unpack --checksum=sha256:5b82ac4a3c2ca9c3460964f020e1402edd5753411d7737aa39c3714ad1b5420e \
   https://static.crates.io/crates/crossbeam-epoch/crossbeam-epoch-0.9.18.crate /
 FROM rust-base AS dep-n-crossbeam-epoch-0.9.18-c2e7f2fc3addf6be
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-gifski_1-34-0/release/deps
+WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-crossbeam-epoch-0.9.18,source=/crossbeam-epoch-0.9.18,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-epoch-0.9.18 \
-  --mount=from=out-5ac36063ddf29a62,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rlib,source=/libcrossbeam_utils-5ac36063ddf29a62.rlib \
-  --mount=from=out-5ac36063ddf29a62,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rmeta,source=/libcrossbeam_utils-5ac36063ddf29a62.rmeta \
+  --mount=from=out-5ac36063ddf29a62,dst=/target/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rlib,source=/libcrossbeam_utils-5ac36063ddf29a62.rlib \
+  --mount=from=out-5ac36063ddf29a62,dst=/target/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rmeta,source=/libcrossbeam_utils-5ac36063ddf29a62.rmeta \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=crossbeam_epoch \
         CARGO_INCREMENTAL=0 \
@@ -3268,13 +3268,13 @@ RUN \
         CARGO_PKG_VERSION_PATCH=18 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --crate-name crossbeam_epoch --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --cfg feature'="alloc"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "loom", "loom-crate", "nightly", "std"))' -C metadata'=0139cf894a1ef657' -C extra-filename'=-c2e7f2fc3addf6be' --out-dir /tmp/clis-gifski_1-34-0/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --extern crossbeam_utils'=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-epoch-0.9.18/src/lib.rs \
-        1>          /tmp/clis-gifski_1-34-0/release/deps/out-c2e7f2fc3addf6be-stdout \
-        2>          /tmp/clis-gifski_1-34-0/release/deps/out-c2e7f2fc3addf6be-stderr \
-        || echo $? >/tmp/clis-gifski_1-34-0/release/deps/out-c2e7f2fc3addf6be-errcode\
-  ; find /tmp/clis-gifski_1-34-0/release/deps/*-c2e7f2fc3addf6be* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      rustc --crate-name crossbeam_epoch --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --cfg feature'="alloc"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "loom", "loom-crate", "nightly", "std"))' -C metadata'=0139cf894a1ef657' -C extra-filename'=-c2e7f2fc3addf6be' --out-dir /target/release/deps -C strip'=symbols' -L dependency'=/target/release/deps' --extern crossbeam_utils'=/target/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-epoch-0.9.18/src/lib.rs \
+        1>          /target/release/deps/out-c2e7f2fc3addf6be-stdout \
+        2>          /target/release/deps/out-c2e7f2fc3addf6be-stderr \
+        || echo $? >/target/release/deps/out-c2e7f2fc3addf6be-errcode\
+  ; find /target/release/deps/*-c2e7f2fc3addf6be* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-c2e7f2fc3addf6be
-COPY --link --from=dep-n-crossbeam-epoch-0.9.18-c2e7f2fc3addf6be /tmp/clis-gifski_1-34-0/release/deps/*-c2e7f2fc3addf6be* /
+COPY --link --from=dep-n-crossbeam-epoch-0.9.18-c2e7f2fc3addf6be /target/release/deps/*-c2e7f2fc3addf6be* /
 
 ## this = "c2e7f2fc3addf6be"
 ## deps = [
@@ -3289,7 +3289,7 @@ COPY --link --from=dep-n-crossbeam-epoch-0.9.18-c2e7f2fc3addf6be /tmp/clis-gifsk
 ##     "libcrossbeam_epoch-c2e7f2fc3addf6be.rmeta",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/crossbeam_epoch-c2e7f2fc3addf6be.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/crossbeam_epoch-c2e7f2fc3addf6be.d","emit":"dep-info"}',
 ##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `crossbeam_loom`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-epoch-0.9.18/src/lib.rs","byte_start":3012,"byte_end":3026,"line_start":66,"line_end":66,"column_start":7,"column_end":21,"is_primary":true,"text":[{"text":"#[cfg(crossbeam_loom)]","highlight_start":7,"highlight_end":21}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"expected names are: `docsrs`, `feature`, and `test` and 31 more","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(crossbeam_loom)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(crossbeam_loom)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"`#[warn(unexpected_cfgs)]` on by default","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `crossbeam_loom`\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-epoch-0.9.18/src/lib.rs:66:7\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m66\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m#[cfg(crossbeam_loom)]\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m       \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: expected names are: `docsrs`, `feature`, and `test` and 31 more\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m            [lints.rust]\u001b[0m\n\u001b[0m            unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(crossbeam_loom)'] }\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(crossbeam_loom)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: `#[warn(unexpected_cfgs)]` on by default\u001b[0m\n\n"}''',
 ##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `crossbeam_loom`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-epoch-0.9.18/src/lib.rs","byte_start":3069,"byte_end":3083,"line_start":69,"line_end":69,"column_start":7,"column_end":21,"is_primary":true,"text":[{"text":"#[cfg(crossbeam_loom)]","highlight_start":7,"highlight_end":21}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(crossbeam_loom)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(crossbeam_loom)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `crossbeam_loom`\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-epoch-0.9.18/src/lib.rs:69:7\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m69\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m#[cfg(crossbeam_loom)]\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m       \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m            [lints.rust]\u001b[0m\n\u001b[0m            unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(crossbeam_loom)'] }\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(crossbeam_loom)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
 ##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `crossbeam_loom`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-epoch-0.9.18/src/lib.rs","byte_start":3927,"byte_end":3941,"line_start":91,"line_end":91,"column_start":11,"column_end":25,"is_primary":true,"text":[{"text":"#[cfg(not(crossbeam_loom))]","highlight_start":11,"highlight_end":25}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(crossbeam_loom)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(crossbeam_loom)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `crossbeam_loom`\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-epoch-0.9.18/src/lib.rs:91:11\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m91\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m#[cfg(not(crossbeam_loom))]\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m           \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m            [lints.rust]\u001b[0m\n\u001b[0m            unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(crossbeam_loom)'] }\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(crossbeam_loom)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
@@ -3310,8 +3310,8 @@ COPY --link --from=dep-n-crossbeam-epoch-0.9.18-c2e7f2fc3addf6be /tmp/clis-gifsk
 ##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `crossbeam_loom`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-epoch-0.9.18/src/default.rs","byte_start":1795,"byte_end":1809,"line_start":64,"line_end":64,"column_start":21,"column_end":35,"is_primary":true,"text":[{"text":"#[cfg(all(test, not(crossbeam_loom)))]","highlight_start":21,"highlight_end":35}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(crossbeam_loom)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(crossbeam_loom)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `crossbeam_loom`\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-epoch-0.9.18/src/default.rs:64:21\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m64\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m#[cfg(all(test, not(crossbeam_loom)))]\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                     \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m            [lints.rust]\u001b[0m\n\u001b[0m            unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(crossbeam_loom)'] }\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(crossbeam_loom)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
 ##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `crossbeam_loom`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-epoch-0.9.18/src/default.rs","byte_start":532,"byte_end":546,"line_start":14,"line_end":14,"column_start":15,"column_end":29,"is_primary":true,"text":[{"text":"    #[cfg(not(crossbeam_loom))]","highlight_start":15,"highlight_end":29}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(crossbeam_loom)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(crossbeam_loom)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `crossbeam_loom`\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-epoch-0.9.18/src/default.rs:14:15\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m14\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    #[cfg(not(crossbeam_loom))]\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m               \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m            [lints.rust]\u001b[0m\n\u001b[0m            unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(crossbeam_loom)'] }\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(crossbeam_loom)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
 ##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `crossbeam_loom`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-epoch-0.9.18/src/default.rs","byte_start":867,"byte_end":881,"line_start":22,"line_end":22,"column_start":11,"column_end":25,"is_primary":true,"text":[{"text":"    #[cfg(crossbeam_loom)]","highlight_start":11,"highlight_end":25}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(crossbeam_loom)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(crossbeam_loom)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `crossbeam_loom`\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-epoch-0.9.18/src/default.rs:22:11\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m22\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    #[cfg(crossbeam_loom)]\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m           \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m            [lints.rust]\u001b[0m\n\u001b[0m            unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(crossbeam_loom)'] }\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(crossbeam_loom)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\n"}''',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_epoch-c2e7f2fc3addf6be.rmeta","emit":"metadata"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_epoch-c2e7f2fc3addf6be.rlib","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libcrossbeam_epoch-c2e7f2fc3addf6be.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libcrossbeam_epoch-c2e7f2fc3addf6be.rlib","emit":"link"}',
 ##     '{"$message_type":"diagnostic","message":"20 warnings emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 20 warnings emitted\u001b[0m\n\n"}',
 ## ]
 ##
@@ -3345,11 +3345,11 @@ COPY --link --from=dep-n-crossbeam-epoch-0.9.18-c2e7f2fc3addf6be /tmp/clis-gifsk
 ## script = '''
 ## FROM rust-base AS dep-n-crossbeam-epoch-0.9.18-c2e7f2fc3addf6be
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-gifski_1-34-0/release/deps
+## WORKDIR /target/release/deps
 ## RUN \
 ##   --mount=from=cratesio-crossbeam-epoch-0.9.18,source=/crossbeam-epoch-0.9.18,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-epoch-0.9.18 \
-##   --mount=from=out-5ac36063ddf29a62,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rlib,source=/libcrossbeam_utils-5ac36063ddf29a62.rlib \
-##   --mount=from=out-5ac36063ddf29a62,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rmeta,source=/libcrossbeam_utils-5ac36063ddf29a62.rmeta \
+##   --mount=from=out-5ac36063ddf29a62,dst=/target/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rlib,source=/libcrossbeam_utils-5ac36063ddf29a62.rlib \
+##   --mount=from=out-5ac36063ddf29a62,dst=/target/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rmeta,source=/libcrossbeam_utils-5ac36063ddf29a62.rmeta \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=crossbeam_epoch \
 ##         CARGO_INCREMENTAL=0 \
@@ -3370,11 +3370,11 @@ COPY --link --from=dep-n-crossbeam-epoch-0.9.18-c2e7f2fc3addf6be /tmp/clis-gifsk
 ##         CARGO_PKG_VERSION_PATCH=18 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name crossbeam_epoch --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --cfg feature'="alloc"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "loom", "loom-crate", "nightly", "std"))' -C metadata'=0139cf894a1ef657' -C extra-filename'=-c2e7f2fc3addf6be' --out-dir /tmp/clis-gifski_1-34-0/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --extern crossbeam_utils'=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-epoch-0.9.18/src/lib.rs \
-##         1>          /tmp/clis-gifski_1-34-0/release/deps/out-c2e7f2fc3addf6be-stdout \
-##         2>          /tmp/clis-gifski_1-34-0/release/deps/out-c2e7f2fc3addf6be-stderr \
-##         || echo $? >/tmp/clis-gifski_1-34-0/release/deps/out-c2e7f2fc3addf6be-errcode\
-##   ; find /tmp/clis-gifski_1-34-0/release/deps/*-c2e7f2fc3addf6be* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name crossbeam_epoch --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --cfg feature'="alloc"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "loom", "loom-crate", "nightly", "std"))' -C metadata'=0139cf894a1ef657' -C extra-filename'=-c2e7f2fc3addf6be' --out-dir /target/release/deps -C strip'=symbols' -L dependency'=/target/release/deps' --extern crossbeam_utils'=/target/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-epoch-0.9.18/src/lib.rs \
+##         1>          /target/release/deps/out-c2e7f2fc3addf6be-stdout \
+##         2>          /target/release/deps/out-c2e7f2fc3addf6be-stderr \
+##         || echo $? >/target/release/deps/out-c2e7f2fc3addf6be-errcode\
+##   ; find /target/release/deps/*-c2e7f2fc3addf6be* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -3382,20 +3382,20 @@ COPY --link --from=dep-n-crossbeam-epoch-0.9.18-c2e7f2fc3addf6be /tmp/clis-gifsk
 ## stage = "out-c2e7f2fc3addf6be"
 ## script = """
 ## FROM scratch AS out-c2e7f2fc3addf6be
-## COPY --link --from=dep-n-crossbeam-epoch-0.9.18-c2e7f2fc3addf6be /tmp/clis-gifski_1-34-0/release/deps/*-c2e7f2fc3addf6be* /"""
+## COPY --link --from=dep-n-crossbeam-epoch-0.9.18-c2e7f2fc3addf6be /target/release/deps/*-c2e7f2fc3addf6be* /"""
 
 FROM scratch AS cratesio-crossbeam-deque-0.8.6
 ADD --chmod=0664 --unpack --checksum=sha256:9dd111b7b7f7d55b72c0a6ae361660ee5853c9af73f70c3c2ef6858b950e2e51 \
   https://static.crates.io/crates/crossbeam-deque/crossbeam-deque-0.8.6.crate /
 FROM rust-base AS dep-n-crossbeam-deque-0.8.6-cc1298b8da143bbe
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-gifski_1-34-0/release/deps
+WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-crossbeam-deque-0.8.6,source=/crossbeam-deque-0.8.6,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-deque-0.8.6 \
-  --mount=from=out-c2e7f2fc3addf6be,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_epoch-c2e7f2fc3addf6be.rlib,source=/libcrossbeam_epoch-c2e7f2fc3addf6be.rlib \
-  --mount=from=out-c2e7f2fc3addf6be,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_epoch-c2e7f2fc3addf6be.rmeta,source=/libcrossbeam_epoch-c2e7f2fc3addf6be.rmeta \
-  --mount=from=out-5ac36063ddf29a62,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rlib,source=/libcrossbeam_utils-5ac36063ddf29a62.rlib \
-  --mount=from=out-5ac36063ddf29a62,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rmeta,source=/libcrossbeam_utils-5ac36063ddf29a62.rmeta \
+  --mount=from=out-c2e7f2fc3addf6be,dst=/target/release/deps/libcrossbeam_epoch-c2e7f2fc3addf6be.rlib,source=/libcrossbeam_epoch-c2e7f2fc3addf6be.rlib \
+  --mount=from=out-c2e7f2fc3addf6be,dst=/target/release/deps/libcrossbeam_epoch-c2e7f2fc3addf6be.rmeta,source=/libcrossbeam_epoch-c2e7f2fc3addf6be.rmeta \
+  --mount=from=out-5ac36063ddf29a62,dst=/target/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rlib,source=/libcrossbeam_utils-5ac36063ddf29a62.rlib \
+  --mount=from=out-5ac36063ddf29a62,dst=/target/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rmeta,source=/libcrossbeam_utils-5ac36063ddf29a62.rmeta \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=crossbeam_deque \
         CARGO_INCREMENTAL=0 \
@@ -3416,13 +3416,13 @@ RUN \
         CARGO_PKG_VERSION_PATCH=6 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --crate-name crossbeam_deque --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --warn unexpected_cfgs --allow clippy'::lint_groups_priority' --allow clippy'::declare_interior_mutable_const' --check-cfg cfg'(crossbeam_loom)' --check-cfg cfg'(crossbeam_sanitize)' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "std"))' -C metadata'=27c43f9da993f5fc' -C extra-filename'=-cc1298b8da143bbe' --out-dir /tmp/clis-gifski_1-34-0/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --extern crossbeam_epoch'=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_epoch-c2e7f2fc3addf6be.rmeta' --extern crossbeam_utils'=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-deque-0.8.6/src/lib.rs \
-        1>          /tmp/clis-gifski_1-34-0/release/deps/out-cc1298b8da143bbe-stdout \
-        2>          /tmp/clis-gifski_1-34-0/release/deps/out-cc1298b8da143bbe-stderr \
-        || echo $? >/tmp/clis-gifski_1-34-0/release/deps/out-cc1298b8da143bbe-errcode\
-  ; find /tmp/clis-gifski_1-34-0/release/deps/*-cc1298b8da143bbe* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      rustc --crate-name crossbeam_deque --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --warn unexpected_cfgs --allow clippy'::lint_groups_priority' --allow clippy'::declare_interior_mutable_const' --check-cfg cfg'(crossbeam_loom)' --check-cfg cfg'(crossbeam_sanitize)' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "std"))' -C metadata'=27c43f9da993f5fc' -C extra-filename'=-cc1298b8da143bbe' --out-dir /target/release/deps -C strip'=symbols' -L dependency'=/target/release/deps' --extern crossbeam_epoch'=/target/release/deps/libcrossbeam_epoch-c2e7f2fc3addf6be.rmeta' --extern crossbeam_utils'=/target/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-deque-0.8.6/src/lib.rs \
+        1>          /target/release/deps/out-cc1298b8da143bbe-stdout \
+        2>          /target/release/deps/out-cc1298b8da143bbe-stderr \
+        || echo $? >/target/release/deps/out-cc1298b8da143bbe-errcode\
+  ; find /target/release/deps/*-cc1298b8da143bbe* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-cc1298b8da143bbe
-COPY --link --from=dep-n-crossbeam-deque-0.8.6-cc1298b8da143bbe /tmp/clis-gifski_1-34-0/release/deps/*-cc1298b8da143bbe* /
+COPY --link --from=dep-n-crossbeam-deque-0.8.6-cc1298b8da143bbe /target/release/deps/*-cc1298b8da143bbe* /
 
 ## this = "cc1298b8da143bbe"
 ## deps = [
@@ -3438,9 +3438,9 @@ COPY --link --from=dep-n-crossbeam-deque-0.8.6-cc1298b8da143bbe /tmp/clis-gifski
 ##     "libcrossbeam_deque-cc1298b8da143bbe.rmeta",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/crossbeam_deque-cc1298b8da143bbe.d","emit":"dep-info"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_deque-cc1298b8da143bbe.rmeta","emit":"metadata"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_deque-cc1298b8da143bbe.rlib","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/crossbeam_deque-cc1298b8da143bbe.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libcrossbeam_deque-cc1298b8da143bbe.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libcrossbeam_deque-cc1298b8da143bbe.rlib","emit":"link"}',
 ## ]
 ##
 ## [[externs]]
@@ -3481,13 +3481,13 @@ COPY --link --from=dep-n-crossbeam-deque-0.8.6-cc1298b8da143bbe /tmp/clis-gifski
 ## script = '''
 ## FROM rust-base AS dep-n-crossbeam-deque-0.8.6-cc1298b8da143bbe
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-gifski_1-34-0/release/deps
+## WORKDIR /target/release/deps
 ## RUN \
 ##   --mount=from=cratesio-crossbeam-deque-0.8.6,source=/crossbeam-deque-0.8.6,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-deque-0.8.6 \
-##   --mount=from=out-c2e7f2fc3addf6be,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_epoch-c2e7f2fc3addf6be.rlib,source=/libcrossbeam_epoch-c2e7f2fc3addf6be.rlib \
-##   --mount=from=out-c2e7f2fc3addf6be,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_epoch-c2e7f2fc3addf6be.rmeta,source=/libcrossbeam_epoch-c2e7f2fc3addf6be.rmeta \
-##   --mount=from=out-5ac36063ddf29a62,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rlib,source=/libcrossbeam_utils-5ac36063ddf29a62.rlib \
-##   --mount=from=out-5ac36063ddf29a62,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rmeta,source=/libcrossbeam_utils-5ac36063ddf29a62.rmeta \
+##   --mount=from=out-c2e7f2fc3addf6be,dst=/target/release/deps/libcrossbeam_epoch-c2e7f2fc3addf6be.rlib,source=/libcrossbeam_epoch-c2e7f2fc3addf6be.rlib \
+##   --mount=from=out-c2e7f2fc3addf6be,dst=/target/release/deps/libcrossbeam_epoch-c2e7f2fc3addf6be.rmeta,source=/libcrossbeam_epoch-c2e7f2fc3addf6be.rmeta \
+##   --mount=from=out-5ac36063ddf29a62,dst=/target/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rlib,source=/libcrossbeam_utils-5ac36063ddf29a62.rlib \
+##   --mount=from=out-5ac36063ddf29a62,dst=/target/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rmeta,source=/libcrossbeam_utils-5ac36063ddf29a62.rmeta \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=crossbeam_deque \
 ##         CARGO_INCREMENTAL=0 \
@@ -3508,11 +3508,11 @@ COPY --link --from=dep-n-crossbeam-deque-0.8.6-cc1298b8da143bbe /tmp/clis-gifski
 ##         CARGO_PKG_VERSION_PATCH=6 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name crossbeam_deque --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --warn unexpected_cfgs --allow clippy'::lint_groups_priority' --allow clippy'::declare_interior_mutable_const' --check-cfg cfg'(crossbeam_loom)' --check-cfg cfg'(crossbeam_sanitize)' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "std"))' -C metadata'=27c43f9da993f5fc' -C extra-filename'=-cc1298b8da143bbe' --out-dir /tmp/clis-gifski_1-34-0/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --extern crossbeam_epoch'=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_epoch-c2e7f2fc3addf6be.rmeta' --extern crossbeam_utils'=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-deque-0.8.6/src/lib.rs \
-##         1>          /tmp/clis-gifski_1-34-0/release/deps/out-cc1298b8da143bbe-stdout \
-##         2>          /tmp/clis-gifski_1-34-0/release/deps/out-cc1298b8da143bbe-stderr \
-##         || echo $? >/tmp/clis-gifski_1-34-0/release/deps/out-cc1298b8da143bbe-errcode\
-##   ; find /tmp/clis-gifski_1-34-0/release/deps/*-cc1298b8da143bbe* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name crossbeam_deque --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --warn unexpected_cfgs --allow clippy'::lint_groups_priority' --allow clippy'::declare_interior_mutable_const' --check-cfg cfg'(crossbeam_loom)' --check-cfg cfg'(crossbeam_sanitize)' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "std"))' -C metadata'=27c43f9da993f5fc' -C extra-filename'=-cc1298b8da143bbe' --out-dir /target/release/deps -C strip'=symbols' -L dependency'=/target/release/deps' --extern crossbeam_epoch'=/target/release/deps/libcrossbeam_epoch-c2e7f2fc3addf6be.rmeta' --extern crossbeam_utils'=/target/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crossbeam-deque-0.8.6/src/lib.rs \
+##         1>          /target/release/deps/out-cc1298b8da143bbe-stdout \
+##         2>          /target/release/deps/out-cc1298b8da143bbe-stderr \
+##         || echo $? >/target/release/deps/out-cc1298b8da143bbe-errcode\
+##   ; find /target/release/deps/*-cc1298b8da143bbe* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -3520,14 +3520,14 @@ COPY --link --from=dep-n-crossbeam-deque-0.8.6-cc1298b8da143bbe /tmp/clis-gifski
 ## stage = "out-cc1298b8da143bbe"
 ## script = """
 ## FROM scratch AS out-cc1298b8da143bbe
-## COPY --link --from=dep-n-crossbeam-deque-0.8.6-cc1298b8da143bbe /tmp/clis-gifski_1-34-0/release/deps/*-cc1298b8da143bbe* /"""
+## COPY --link --from=dep-n-crossbeam-deque-0.8.6-cc1298b8da143bbe /target/release/deps/*-cc1298b8da143bbe* /"""
 
 FROM scratch AS cratesio-rayon-core-1.12.1
 ADD --chmod=0664 --unpack --checksum=sha256:1465873a3dfdaa8ae7cb14b4383657caab0b3e8a0aa9ae8e04b044854c8dfce2 \
   https://static.crates.io/crates/rayon-core/rayon-core-1.12.1.crate /
 FROM rust-base AS dep-x-rayon-core-1.12.1-8f74c6b4e8a858d1
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-gifski_1-34-0/release/build/rayon-core-8f74c6b4e8a858d1
+WORKDIR /target/release/build/rayon-core-8f74c6b4e8a858d1
 RUN \
   --mount=from=cratesio-rayon-core-1.12.1,source=/rayon-core-1.12.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rayon-core-1.12.1,rw \
     { \
@@ -3569,13 +3569,13 @@ RUN \
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("web_spin_lock"))' -C metadata'=9f3189b315dcd2f3' -C extra-filename'=-8f74c6b4e8a858d1' --out-dir /tmp/clis-gifski_1-34-0/release/build/rayon-core-8f74c6b4e8a858d1 -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rayon-core-1.12.1/build.rs \
-        1>          /tmp/clis-gifski_1-34-0/release/build/rayon-core-8f74c6b4e8a858d1/out-8f74c6b4e8a858d1-stdout \
-        2>          /tmp/clis-gifski_1-34-0/release/build/rayon-core-8f74c6b4e8a858d1/out-8f74c6b4e8a858d1-stderr \
-        || echo $? >/tmp/clis-gifski_1-34-0/release/build/rayon-core-8f74c6b4e8a858d1/out-8f74c6b4e8a858d1-errcode\
-  ; find /tmp/clis-gifski_1-34-0/release/build/rayon-core-8f74c6b4e8a858d1/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("web_spin_lock"))' -C metadata'=9f3189b315dcd2f3' -C extra-filename'=-8f74c6b4e8a858d1' --out-dir /target/release/build/rayon-core-8f74c6b4e8a858d1 -C strip'=symbols' -L dependency'=/target/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rayon-core-1.12.1/build.rs \
+        1>          /target/release/build/rayon-core-8f74c6b4e8a858d1/out-8f74c6b4e8a858d1-stdout \
+        2>          /target/release/build/rayon-core-8f74c6b4e8a858d1/out-8f74c6b4e8a858d1-stderr \
+        || echo $? >/target/release/build/rayon-core-8f74c6b4e8a858d1/out-8f74c6b4e8a858d1-errcode\
+  ; find /target/release/build/rayon-core-8f74c6b4e8a858d1/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-8f74c6b4e8a858d1
-COPY --link --from=dep-x-rayon-core-1.12.1-8f74c6b4e8a858d1 /tmp/clis-gifski_1-34-0/release/build/rayon-core-8f74c6b4e8a858d1/*-8f74c6b4e8a858d1* /
+COPY --link --from=dep-x-rayon-core-1.12.1-8f74c6b4e8a858d1 /target/release/build/rayon-core-8f74c6b4e8a858d1/*-8f74c6b4e8a858d1* /
 
 ## this = "8f74c6b4e8a858d1"
 ## writes = [
@@ -3583,8 +3583,8 @@ COPY --link --from=dep-x-rayon-core-1.12.1-8f74c6b4e8a858d1 /tmp/clis-gifski_1-3
 ##     "build_script_build-8f74c6b4e8a858d1.d",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/build/rayon-core-8f74c6b4e8a858d1/build_script_build-8f74c6b4e8a858d1.d","emit":"dep-info"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/build/rayon-core-8f74c6b4e8a858d1/build_script_build-8f74c6b4e8a858d1","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/build/rayon-core-8f74c6b4e8a858d1/build_script_build-8f74c6b4e8a858d1.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/build/rayon-core-8f74c6b4e8a858d1/build_script_build-8f74c6b4e8a858d1","emit":"link"}',
 ## ]
 ##
 ## [[stages]]
@@ -3609,7 +3609,7 @@ COPY --link --from=dep-x-rayon-core-1.12.1-8f74c6b4e8a858d1 /tmp/clis-gifski_1-3
 ## script = '''
 ## FROM rust-base AS dep-x-rayon-core-1.12.1-8f74c6b4e8a858d1
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-gifski_1-34-0/release/build/rayon-core-8f74c6b4e8a858d1
+## WORKDIR /target/release/build/rayon-core-8f74c6b4e8a858d1
 ## RUN \
 ##   --mount=from=cratesio-rayon-core-1.12.1,source=/rayon-core-1.12.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rayon-core-1.12.1,rw \
 ##     { \
@@ -3651,11 +3651,11 @@ COPY --link --from=dep-x-rayon-core-1.12.1-8f74c6b4e8a858d1 /tmp/clis-gifski_1-3
 ##         CARGO_PKG_VERSION_PATCH=1 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("web_spin_lock"))' -C metadata'=9f3189b315dcd2f3' -C extra-filename'=-8f74c6b4e8a858d1' --out-dir /tmp/clis-gifski_1-34-0/release/build/rayon-core-8f74c6b4e8a858d1 -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rayon-core-1.12.1/build.rs \
-##         1>          /tmp/clis-gifski_1-34-0/release/build/rayon-core-8f74c6b4e8a858d1/out-8f74c6b4e8a858d1-stdout \
-##         2>          /tmp/clis-gifski_1-34-0/release/build/rayon-core-8f74c6b4e8a858d1/out-8f74c6b4e8a858d1-stderr \
-##         || echo $? >/tmp/clis-gifski_1-34-0/release/build/rayon-core-8f74c6b4e8a858d1/out-8f74c6b4e8a858d1-errcode\
-##   ; find /tmp/clis-gifski_1-34-0/release/build/rayon-core-8f74c6b4e8a858d1/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("web_spin_lock"))' -C metadata'=9f3189b315dcd2f3' -C extra-filename'=-8f74c6b4e8a858d1' --out-dir /target/release/build/rayon-core-8f74c6b4e8a858d1 -C strip'=symbols' -L dependency'=/target/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rayon-core-1.12.1/build.rs \
+##         1>          /target/release/build/rayon-core-8f74c6b4e8a858d1/out-8f74c6b4e8a858d1-stdout \
+##         2>          /target/release/build/rayon-core-8f74c6b4e8a858d1/out-8f74c6b4e8a858d1-stderr \
+##         || echo $? >/target/release/build/rayon-core-8f74c6b4e8a858d1/out-8f74c6b4e8a858d1-errcode\
+##   ; find /target/release/build/rayon-core-8f74c6b4e8a858d1/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -3663,14 +3663,14 @@ COPY --link --from=dep-x-rayon-core-1.12.1-8f74c6b4e8a858d1 /tmp/clis-gifski_1-3
 ## stage = "out-8f74c6b4e8a858d1"
 ## script = """
 ## FROM scratch AS out-8f74c6b4e8a858d1
-## COPY --link --from=dep-x-rayon-core-1.12.1-8f74c6b4e8a858d1 /tmp/clis-gifski_1-34-0/release/build/rayon-core-8f74c6b4e8a858d1/*-8f74c6b4e8a858d1* /"""
+## COPY --link --from=dep-x-rayon-core-1.12.1-8f74c6b4e8a858d1 /target/release/build/rayon-core-8f74c6b4e8a858d1/*-8f74c6b4e8a858d1* /"""
 
 FROM rust-base AS run-z-rayon-core-1.12.1-f1aa93c35dc8b5a4
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-gifski_1-34-0/release/build/rayon-core-f1aa93c35dc8b5a4/out
+WORKDIR /target/release/build/rayon-core-f1aa93c35dc8b5a4/out
 WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rayon-core-1.12.1
 RUN \
-  --mount=from=out-8f74c6b4e8a858d1,source=/build_script_build-8f74c6b4e8a858d1,dst=/tmp/clis-gifski_1-34-0/release/build/rayon-core-8f74c6b4e8a858d1/build-script-build \
+  --mount=from=out-8f74c6b4e8a858d1,source=/build_script_build-8f74c6b4e8a858d1,dst=/target/release/build/rayon-core-8f74c6b4e8a858d1/build-script-build \
   --mount=from=cratesio-rayon-core-1.12.1,source=/rayon-core-1.12.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rayon-core-1.12.1 \
     env CARGO="$(which cargo)" \
         CARGO_CFG_FEATURE= \
@@ -3709,23 +3709,23 @@ RUN \
         HOST=x86_64-unknown-linux-gnu \
         NUM_JOBS=4 \
         OPT_LEVEL=3 \
-        OUT_DIR=/tmp/clis-gifski_1-34-0/release/build/rayon-core-f1aa93c35dc8b5a4/out \
+        OUT_DIR=/target/release/build/rayon-core-f1aa93c35dc8b5a4/out \
         PROFILE=release \
         RUSTC=rustc \
         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
         TARGET=x86_64-unknown-linux-gnu \
         CARGOGREEN=1 \
-      CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-gifski_1-34-0/release/build/rayon-core-8f74c6b4e8a858d1/build-script-build \
-        1>          /tmp/clis-gifski_1-34-0/release/build/rayon-core-f1aa93c35dc8b5a4/out/out-f1aa93c35dc8b5a4-stdout \
-        2>          /tmp/clis-gifski_1-34-0/release/build/rayon-core-f1aa93c35dc8b5a4/out/out-f1aa93c35dc8b5a4-stderr \
-        || echo $? >/tmp/clis-gifski_1-34-0/release/build/rayon-core-f1aa93c35dc8b5a4/out/out-f1aa93c35dc8b5a4-errcode\
-  ; find /tmp/clis-gifski_1-34-0/release/build/rayon-core-f1aa93c35dc8b5a4/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      CARGOGREEN_EXECUTE_BUILDRS_= /target/release/build/rayon-core-8f74c6b4e8a858d1/build-script-build \
+        1>          /target/release/build/rayon-core-f1aa93c35dc8b5a4/out/out-f1aa93c35dc8b5a4-stdout \
+        2>          /target/release/build/rayon-core-f1aa93c35dc8b5a4/out/out-f1aa93c35dc8b5a4-stderr \
+        || echo $? >/target/release/build/rayon-core-f1aa93c35dc8b5a4/out/out-f1aa93c35dc8b5a4-errcode\
+  ; find /target/release/build/rayon-core-f1aa93c35dc8b5a4/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-f1aa93c35dc8b5a4
-COPY --link --from=run-z-rayon-core-1.12.1-f1aa93c35dc8b5a4 /tmp/clis-gifski_1-34-0/release/build/rayon-core-f1aa93c35dc8b5a4/out /
+COPY --link --from=run-z-rayon-core-1.12.1-f1aa93c35dc8b5a4 /target/release/build/rayon-core-f1aa93c35dc8b5a4/out /
 
 ## this = "f1aa93c35dc8b5a4"
 ## deps = ["8f74c6b4e8a858d1"]
-## writes_to = "/tmp/clis-gifski_1-34-0/release/build/rayon-core-f1aa93c35dc8b5a4/out"
+## writes_to = "/target/release/build/rayon-core-f1aa93c35dc8b5a4/out"
 ## stdout = ["cargo:rerun-if-changed=build.rs"]
 ##
 ## [[stages]]
@@ -3741,10 +3741,10 @@ COPY --link --from=run-z-rayon-core-1.12.1-f1aa93c35dc8b5a4 /tmp/clis-gifski_1-3
 ## script = '''
 ## FROM rust-base AS run-z-rayon-core-1.12.1-f1aa93c35dc8b5a4
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-gifski_1-34-0/release/build/rayon-core-f1aa93c35dc8b5a4/out
+## WORKDIR /target/release/build/rayon-core-f1aa93c35dc8b5a4/out
 ## WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rayon-core-1.12.1
 ## RUN \
-##   --mount=from=out-8f74c6b4e8a858d1,source=/build_script_build-8f74c6b4e8a858d1,dst=/tmp/clis-gifski_1-34-0/release/build/rayon-core-8f74c6b4e8a858d1/build-script-build \
+##   --mount=from=out-8f74c6b4e8a858d1,source=/build_script_build-8f74c6b4e8a858d1,dst=/target/release/build/rayon-core-8f74c6b4e8a858d1/build-script-build \
 ##   --mount=from=cratesio-rayon-core-1.12.1,source=/rayon-core-1.12.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rayon-core-1.12.1 \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CFG_FEATURE= \
@@ -3783,17 +3783,17 @@ COPY --link --from=run-z-rayon-core-1.12.1-f1aa93c35dc8b5a4 /tmp/clis-gifski_1-3
 ##         HOST=x86_64-unknown-linux-gnu \
 ##         NUM_JOBS=4 \
 ##         OPT_LEVEL=3 \
-##         OUT_DIR=/tmp/clis-gifski_1-34-0/release/build/rayon-core-f1aa93c35dc8b5a4/out \
+##         OUT_DIR=/target/release/build/rayon-core-f1aa93c35dc8b5a4/out \
 ##         PROFILE=release \
 ##         RUSTC=rustc \
 ##         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
 ##         TARGET=x86_64-unknown-linux-gnu \
 ##         CARGOGREEN=1 \
-##       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-gifski_1-34-0/release/build/rayon-core-8f74c6b4e8a858d1/build-script-build \
-##         1>          /tmp/clis-gifski_1-34-0/release/build/rayon-core-f1aa93c35dc8b5a4/out/out-f1aa93c35dc8b5a4-stdout \
-##         2>          /tmp/clis-gifski_1-34-0/release/build/rayon-core-f1aa93c35dc8b5a4/out/out-f1aa93c35dc8b5a4-stderr \
-##         || echo $? >/tmp/clis-gifski_1-34-0/release/build/rayon-core-f1aa93c35dc8b5a4/out/out-f1aa93c35dc8b5a4-errcode\
-##   ; find /tmp/clis-gifski_1-34-0/release/build/rayon-core-f1aa93c35dc8b5a4/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       CARGOGREEN_EXECUTE_BUILDRS_= /target/release/build/rayon-core-8f74c6b4e8a858d1/build-script-build \
+##         1>          /target/release/build/rayon-core-f1aa93c35dc8b5a4/out/out-f1aa93c35dc8b5a4-stdout \
+##         2>          /target/release/build/rayon-core-f1aa93c35dc8b5a4/out/out-f1aa93c35dc8b5a4-stderr \
+##         || echo $? >/target/release/build/rayon-core-f1aa93c35dc8b5a4/out/out-f1aa93c35dc8b5a4-errcode\
+##   ; find /target/release/build/rayon-core-f1aa93c35dc8b5a4/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -3801,21 +3801,21 @@ COPY --link --from=run-z-rayon-core-1.12.1-f1aa93c35dc8b5a4 /tmp/clis-gifski_1-3
 ## stage = "out-f1aa93c35dc8b5a4"
 ## script = """
 ## FROM scratch AS out-f1aa93c35dc8b5a4
-## COPY --link --from=run-z-rayon-core-1.12.1-f1aa93c35dc8b5a4 /tmp/clis-gifski_1-34-0/release/build/rayon-core-f1aa93c35dc8b5a4/out /"""
+## COPY --link --from=run-z-rayon-core-1.12.1-f1aa93c35dc8b5a4 /target/release/build/rayon-core-f1aa93c35dc8b5a4/out /"""
 
 
 FROM rust-base AS dep-n-rayon-core-1.12.1-efba4db9305abd55
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-gifski_1-34-0/release/deps
+WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-rayon-core-1.12.1,source=/rayon-core-1.12.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rayon-core-1.12.1 \
-  --mount=from=out-cc1298b8da143bbe,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_deque-cc1298b8da143bbe.rlib,source=/libcrossbeam_deque-cc1298b8da143bbe.rlib \
-  --mount=from=out-cc1298b8da143bbe,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_deque-cc1298b8da143bbe.rmeta,source=/libcrossbeam_deque-cc1298b8da143bbe.rmeta \
-  --mount=from=out-c2e7f2fc3addf6be,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_epoch-c2e7f2fc3addf6be.rlib,source=/libcrossbeam_epoch-c2e7f2fc3addf6be.rlib \
-  --mount=from=out-c2e7f2fc3addf6be,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_epoch-c2e7f2fc3addf6be.rmeta,source=/libcrossbeam_epoch-c2e7f2fc3addf6be.rmeta \
-  --mount=from=out-5ac36063ddf29a62,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rlib,source=/libcrossbeam_utils-5ac36063ddf29a62.rlib \
-  --mount=from=out-5ac36063ddf29a62,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rmeta,source=/libcrossbeam_utils-5ac36063ddf29a62.rmeta \
-  --mount=from=out-f1aa93c35dc8b5a4,dst=/tmp/clis-gifski_1-34-0/release/build/rayon-core-f1aa93c35dc8b5a4/out,source=/ \
+  --mount=from=out-cc1298b8da143bbe,dst=/target/release/deps/libcrossbeam_deque-cc1298b8da143bbe.rlib,source=/libcrossbeam_deque-cc1298b8da143bbe.rlib \
+  --mount=from=out-cc1298b8da143bbe,dst=/target/release/deps/libcrossbeam_deque-cc1298b8da143bbe.rmeta,source=/libcrossbeam_deque-cc1298b8da143bbe.rmeta \
+  --mount=from=out-c2e7f2fc3addf6be,dst=/target/release/deps/libcrossbeam_epoch-c2e7f2fc3addf6be.rlib,source=/libcrossbeam_epoch-c2e7f2fc3addf6be.rlib \
+  --mount=from=out-c2e7f2fc3addf6be,dst=/target/release/deps/libcrossbeam_epoch-c2e7f2fc3addf6be.rmeta,source=/libcrossbeam_epoch-c2e7f2fc3addf6be.rmeta \
+  --mount=from=out-5ac36063ddf29a62,dst=/target/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rlib,source=/libcrossbeam_utils-5ac36063ddf29a62.rlib \
+  --mount=from=out-5ac36063ddf29a62,dst=/target/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rmeta,source=/libcrossbeam_utils-5ac36063ddf29a62.rmeta \
+  --mount=from=out-f1aa93c35dc8b5a4,dst=/target/release/build/rayon-core-f1aa93c35dc8b5a4/out,source=/ \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=rayon_core \
         CARGO_INCREMENTAL=0 \
@@ -3835,15 +3835,15 @@ RUN \
         CARGO_PKG_VERSION_MINOR=12 \
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
-        OUT_DIR=/tmp/clis-gifski_1-34-0/release/build/rayon-core-f1aa93c35dc8b5a4/out \
+        OUT_DIR=/target/release/build/rayon-core-f1aa93c35dc8b5a4/out \
         CARGOGREEN=1 \
-      rustc --crate-name rayon_core --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("web_spin_lock"))' -C metadata'=b9ddc7f15c860e82' -C extra-filename'=-efba4db9305abd55' --out-dir /tmp/clis-gifski_1-34-0/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --extern crossbeam_deque'=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_deque-cc1298b8da143bbe.rmeta' --extern crossbeam_utils'=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rayon-core-1.12.1/src/lib.rs \
-        1>          /tmp/clis-gifski_1-34-0/release/deps/out-efba4db9305abd55-stdout \
-        2>          /tmp/clis-gifski_1-34-0/release/deps/out-efba4db9305abd55-stderr \
-        || echo $? >/tmp/clis-gifski_1-34-0/release/deps/out-efba4db9305abd55-errcode\
-  ; find /tmp/clis-gifski_1-34-0/release/deps/*-efba4db9305abd55* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      rustc --crate-name rayon_core --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("web_spin_lock"))' -C metadata'=b9ddc7f15c860e82' -C extra-filename'=-efba4db9305abd55' --out-dir /target/release/deps -C strip'=symbols' -L dependency'=/target/release/deps' --extern crossbeam_deque'=/target/release/deps/libcrossbeam_deque-cc1298b8da143bbe.rmeta' --extern crossbeam_utils'=/target/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rayon-core-1.12.1/src/lib.rs \
+        1>          /target/release/deps/out-efba4db9305abd55-stdout \
+        2>          /target/release/deps/out-efba4db9305abd55-stderr \
+        || echo $? >/target/release/deps/out-efba4db9305abd55-errcode\
+  ; find /target/release/deps/*-efba4db9305abd55* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-efba4db9305abd55
-COPY --link --from=dep-n-rayon-core-1.12.1-efba4db9305abd55 /tmp/clis-gifski_1-34-0/release/deps/*-efba4db9305abd55* /
+COPY --link --from=dep-n-rayon-core-1.12.1-efba4db9305abd55 /target/release/deps/*-efba4db9305abd55* /
 
 ## this = "efba4db9305abd55"
 ## deps = [
@@ -3865,11 +3865,11 @@ COPY --link --from=dep-n-rayon-core-1.12.1-efba4db9305abd55 /tmp/clis-gifski_1-3
 ##     "rayon_core-efba4db9305abd55.d",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/rayon_core-efba4db9305abd55.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/rayon_core-efba4db9305abd55.d","emit":"dep-info"}',
 ##     '''{"$message_type":"diagnostic","message":"creating a shared reference to mutable static","code":{"code":"static_mut_refs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rayon-core-1.12.1/src/registry.rs","byte_start":5403,"byte_end":5424,"line_start":167,"line_end":167,"column_start":33,"column_end":54,"is_primary":true,"text":[{"text":"        .or_else(|err| unsafe { THE_REGISTRY.as_ref().ok_or(err) })","highlight_start":33,"highlight_end":54}],"label":"shared reference to mutable static","suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"for more information, see <https://doc.rust-lang.org/edition-guide/rust-2024/static-mut-references.html>","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"shared references to mutable statics are dangerous; it's undefined behavior if the static is mutated or if a mutable reference is created for it while the shared reference lives","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"`#[warn(static_mut_refs)]` on by default","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: creating a shared reference to mutable static\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rayon-core-1.12.1/src/registry.rs:167:33\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m167\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m        .or_else(|err| unsafe { THE_REGISTRY.as_ref().ok_or(err) })\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                 \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[33mshared reference to mutable static\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: for more information, see <https://doc.rust-lang.org/edition-guide/rust-2024/static-mut-references.html>\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: shared references to mutable statics are dangerous; it's undefined behavior if the static is mutated or if a mutable reference is created for it while the shared reference lives\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: `#[warn(static_mut_refs)]` on by default\u001b[0m\n\n"}''',
 ##     '''{"$message_type":"diagnostic","message":"creating a mutable reference to mutable static","code":{"code":"static_mut_refs","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rayon-core-1.12.1/src/registry.rs","byte_start":6329,"byte_end":6365,"line_start":194,"line_end":194,"column_start":55,"column_end":91,"is_primary":true,"text":[{"text":"            .map(|registry: Arc<Registry>| unsafe { &*THE_REGISTRY.get_or_insert(registry) })","highlight_start":55,"highlight_end":91}],"label":"mutable reference to mutable static","suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"for more information, see <https://doc.rust-lang.org/edition-guide/rust-2024/static-mut-references.html>","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"mutable references to mutable statics are dangerous; it's undefined behavior if any other pointer to the static is used or if any other reference is created for the static while the mutable reference lives","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: creating a mutable reference to mutable static\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rayon-core-1.12.1/src/registry.rs:194:55\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m194\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m            .map(|registry: Arc<Registry>| unsafe { &*THE_REGISTRY.get_or_insert(registry) })\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                                       \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[33mmutable reference to mutable static\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: for more information, see <https://doc.rust-lang.org/edition-guide/rust-2024/static-mut-references.html>\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: mutable references to mutable statics are dangerous; it's undefined behavior if any other pointer to the static is used or if any other reference is created for the static while the mutable reference lives\u001b[0m\n\n"}''',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/librayon_core-efba4db9305abd55.rmeta","emit":"metadata"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/librayon_core-efba4db9305abd55.rlib","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/librayon_core-efba4db9305abd55.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/librayon_core-efba4db9305abd55.rlib","emit":"link"}',
 ##     '{"$message_type":"diagnostic","message":"2 warnings emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 2 warnings emitted\u001b[0m\n\n"}',
 ## ]
 ##
@@ -3899,7 +3899,7 @@ COPY --link --from=dep-n-rayon-core-1.12.1-efba4db9305abd55 /tmp/clis-gifski_1-3
 ##
 ## [[mounts]]
 ## name = "out-f1aa93c35dc8b5a4"
-## mount = "/tmp/clis-gifski_1-34-0/release/build/rayon-core-f1aa93c35dc8b5a4/out"
+## mount = "/target/release/build/rayon-core-f1aa93c35dc8b5a4/out"
 ##
 ## [[stages]]
 ##
@@ -3923,16 +3923,16 @@ COPY --link --from=dep-n-rayon-core-1.12.1-efba4db9305abd55 /tmp/clis-gifski_1-3
 ## script = '''
 ## FROM rust-base AS dep-n-rayon-core-1.12.1-efba4db9305abd55
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-gifski_1-34-0/release/deps
+## WORKDIR /target/release/deps
 ## RUN \
 ##   --mount=from=cratesio-rayon-core-1.12.1,source=/rayon-core-1.12.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rayon-core-1.12.1 \
-##   --mount=from=out-cc1298b8da143bbe,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_deque-cc1298b8da143bbe.rlib,source=/libcrossbeam_deque-cc1298b8da143bbe.rlib \
-##   --mount=from=out-cc1298b8da143bbe,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_deque-cc1298b8da143bbe.rmeta,source=/libcrossbeam_deque-cc1298b8da143bbe.rmeta \
-##   --mount=from=out-c2e7f2fc3addf6be,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_epoch-c2e7f2fc3addf6be.rlib,source=/libcrossbeam_epoch-c2e7f2fc3addf6be.rlib \
-##   --mount=from=out-c2e7f2fc3addf6be,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_epoch-c2e7f2fc3addf6be.rmeta,source=/libcrossbeam_epoch-c2e7f2fc3addf6be.rmeta \
-##   --mount=from=out-5ac36063ddf29a62,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rlib,source=/libcrossbeam_utils-5ac36063ddf29a62.rlib \
-##   --mount=from=out-5ac36063ddf29a62,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rmeta,source=/libcrossbeam_utils-5ac36063ddf29a62.rmeta \
-##   --mount=from=out-f1aa93c35dc8b5a4,dst=/tmp/clis-gifski_1-34-0/release/build/rayon-core-f1aa93c35dc8b5a4/out,source=/ \
+##   --mount=from=out-cc1298b8da143bbe,dst=/target/release/deps/libcrossbeam_deque-cc1298b8da143bbe.rlib,source=/libcrossbeam_deque-cc1298b8da143bbe.rlib \
+##   --mount=from=out-cc1298b8da143bbe,dst=/target/release/deps/libcrossbeam_deque-cc1298b8da143bbe.rmeta,source=/libcrossbeam_deque-cc1298b8da143bbe.rmeta \
+##   --mount=from=out-c2e7f2fc3addf6be,dst=/target/release/deps/libcrossbeam_epoch-c2e7f2fc3addf6be.rlib,source=/libcrossbeam_epoch-c2e7f2fc3addf6be.rlib \
+##   --mount=from=out-c2e7f2fc3addf6be,dst=/target/release/deps/libcrossbeam_epoch-c2e7f2fc3addf6be.rmeta,source=/libcrossbeam_epoch-c2e7f2fc3addf6be.rmeta \
+##   --mount=from=out-5ac36063ddf29a62,dst=/target/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rlib,source=/libcrossbeam_utils-5ac36063ddf29a62.rlib \
+##   --mount=from=out-5ac36063ddf29a62,dst=/target/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rmeta,source=/libcrossbeam_utils-5ac36063ddf29a62.rmeta \
+##   --mount=from=out-f1aa93c35dc8b5a4,dst=/target/release/build/rayon-core-f1aa93c35dc8b5a4/out,source=/ \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=rayon_core \
 ##         CARGO_INCREMENTAL=0 \
@@ -3952,13 +3952,13 @@ COPY --link --from=dep-n-rayon-core-1.12.1-efba4db9305abd55 /tmp/clis-gifski_1-3
 ##         CARGO_PKG_VERSION_MINOR=12 \
 ##         CARGO_PKG_VERSION_PATCH=1 \
 ##         CARGO_PKG_VERSION_PRE= \
-##         OUT_DIR=/tmp/clis-gifski_1-34-0/release/build/rayon-core-f1aa93c35dc8b5a4/out \
+##         OUT_DIR=/target/release/build/rayon-core-f1aa93c35dc8b5a4/out \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name rayon_core --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("web_spin_lock"))' -C metadata'=b9ddc7f15c860e82' -C extra-filename'=-efba4db9305abd55' --out-dir /tmp/clis-gifski_1-34-0/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --extern crossbeam_deque'=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_deque-cc1298b8da143bbe.rmeta' --extern crossbeam_utils'=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rayon-core-1.12.1/src/lib.rs \
-##         1>          /tmp/clis-gifski_1-34-0/release/deps/out-efba4db9305abd55-stdout \
-##         2>          /tmp/clis-gifski_1-34-0/release/deps/out-efba4db9305abd55-stderr \
-##         || echo $? >/tmp/clis-gifski_1-34-0/release/deps/out-efba4db9305abd55-errcode\
-##   ; find /tmp/clis-gifski_1-34-0/release/deps/*-efba4db9305abd55* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name rayon_core --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("web_spin_lock"))' -C metadata'=b9ddc7f15c860e82' -C extra-filename'=-efba4db9305abd55' --out-dir /target/release/deps -C strip'=symbols' -L dependency'=/target/release/deps' --extern crossbeam_deque'=/target/release/deps/libcrossbeam_deque-cc1298b8da143bbe.rmeta' --extern crossbeam_utils'=/target/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rayon-core-1.12.1/src/lib.rs \
+##         1>          /target/release/deps/out-efba4db9305abd55-stdout \
+##         2>          /target/release/deps/out-efba4db9305abd55-stderr \
+##         || echo $? >/target/release/deps/out-efba4db9305abd55-errcode\
+##   ; find /target/release/deps/*-efba4db9305abd55* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -3966,26 +3966,26 @@ COPY --link --from=dep-n-rayon-core-1.12.1-efba4db9305abd55 /tmp/clis-gifski_1-3
 ## stage = "out-efba4db9305abd55"
 ## script = """
 ## FROM scratch AS out-efba4db9305abd55
-## COPY --link --from=dep-n-rayon-core-1.12.1-efba4db9305abd55 /tmp/clis-gifski_1-34-0/release/deps/*-efba4db9305abd55* /"""
+## COPY --link --from=dep-n-rayon-core-1.12.1-efba4db9305abd55 /target/release/deps/*-efba4db9305abd55* /"""
 
 FROM scratch AS cratesio-rayon-1.10.0
 ADD --chmod=0664 --unpack --checksum=sha256:b418a60154510ca1a002a752ca9714984e21e4241e804d32555251faf8b78ffa \
   https://static.crates.io/crates/rayon/rayon-1.10.0.crate /
 FROM rust-base AS dep-n-rayon-1.10.0-53357b7dd9022303
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-gifski_1-34-0/release/deps
+WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-rayon-1.10.0,source=/rayon-1.10.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rayon-1.10.0 \
-  --mount=from=out-64b2ef074583e2a3,dst=/tmp/clis-gifski_1-34-0/release/deps/libeither-64b2ef074583e2a3.rlib,source=/libeither-64b2ef074583e2a3.rlib \
-  --mount=from=out-64b2ef074583e2a3,dst=/tmp/clis-gifski_1-34-0/release/deps/libeither-64b2ef074583e2a3.rmeta,source=/libeither-64b2ef074583e2a3.rmeta \
-  --mount=from=out-efba4db9305abd55,dst=/tmp/clis-gifski_1-34-0/release/deps/librayon_core-efba4db9305abd55.rlib,source=/librayon_core-efba4db9305abd55.rlib \
-  --mount=from=out-efba4db9305abd55,dst=/tmp/clis-gifski_1-34-0/release/deps/librayon_core-efba4db9305abd55.rmeta,source=/librayon_core-efba4db9305abd55.rmeta \
-  --mount=from=out-cc1298b8da143bbe,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_deque-cc1298b8da143bbe.rlib,source=/libcrossbeam_deque-cc1298b8da143bbe.rlib \
-  --mount=from=out-cc1298b8da143bbe,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_deque-cc1298b8da143bbe.rmeta,source=/libcrossbeam_deque-cc1298b8da143bbe.rmeta \
-  --mount=from=out-c2e7f2fc3addf6be,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_epoch-c2e7f2fc3addf6be.rlib,source=/libcrossbeam_epoch-c2e7f2fc3addf6be.rlib \
-  --mount=from=out-c2e7f2fc3addf6be,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_epoch-c2e7f2fc3addf6be.rmeta,source=/libcrossbeam_epoch-c2e7f2fc3addf6be.rmeta \
-  --mount=from=out-5ac36063ddf29a62,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rlib,source=/libcrossbeam_utils-5ac36063ddf29a62.rlib \
-  --mount=from=out-5ac36063ddf29a62,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rmeta,source=/libcrossbeam_utils-5ac36063ddf29a62.rmeta \
+  --mount=from=out-64b2ef074583e2a3,dst=/target/release/deps/libeither-64b2ef074583e2a3.rlib,source=/libeither-64b2ef074583e2a3.rlib \
+  --mount=from=out-64b2ef074583e2a3,dst=/target/release/deps/libeither-64b2ef074583e2a3.rmeta,source=/libeither-64b2ef074583e2a3.rmeta \
+  --mount=from=out-efba4db9305abd55,dst=/target/release/deps/librayon_core-efba4db9305abd55.rlib,source=/librayon_core-efba4db9305abd55.rlib \
+  --mount=from=out-efba4db9305abd55,dst=/target/release/deps/librayon_core-efba4db9305abd55.rmeta,source=/librayon_core-efba4db9305abd55.rmeta \
+  --mount=from=out-cc1298b8da143bbe,dst=/target/release/deps/libcrossbeam_deque-cc1298b8da143bbe.rlib,source=/libcrossbeam_deque-cc1298b8da143bbe.rlib \
+  --mount=from=out-cc1298b8da143bbe,dst=/target/release/deps/libcrossbeam_deque-cc1298b8da143bbe.rmeta,source=/libcrossbeam_deque-cc1298b8da143bbe.rmeta \
+  --mount=from=out-c2e7f2fc3addf6be,dst=/target/release/deps/libcrossbeam_epoch-c2e7f2fc3addf6be.rlib,source=/libcrossbeam_epoch-c2e7f2fc3addf6be.rlib \
+  --mount=from=out-c2e7f2fc3addf6be,dst=/target/release/deps/libcrossbeam_epoch-c2e7f2fc3addf6be.rmeta,source=/libcrossbeam_epoch-c2e7f2fc3addf6be.rmeta \
+  --mount=from=out-5ac36063ddf29a62,dst=/target/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rlib,source=/libcrossbeam_utils-5ac36063ddf29a62.rlib \
+  --mount=from=out-5ac36063ddf29a62,dst=/target/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rmeta,source=/libcrossbeam_utils-5ac36063ddf29a62.rmeta \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=rayon \
         CARGO_INCREMENTAL=0 \
@@ -4006,13 +4006,13 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --crate-name rayon --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("web_spin_lock"))' -C metadata'=c9b0060445531a2c' -C extra-filename'=-53357b7dd9022303' --out-dir /tmp/clis-gifski_1-34-0/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --extern either'=/tmp/clis-gifski_1-34-0/release/deps/libeither-64b2ef074583e2a3.rmeta' --extern rayon_core'=/tmp/clis-gifski_1-34-0/release/deps/librayon_core-efba4db9305abd55.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rayon-1.10.0/src/lib.rs \
-        1>          /tmp/clis-gifski_1-34-0/release/deps/out-53357b7dd9022303-stdout \
-        2>          /tmp/clis-gifski_1-34-0/release/deps/out-53357b7dd9022303-stderr \
-        || echo $? >/tmp/clis-gifski_1-34-0/release/deps/out-53357b7dd9022303-errcode\
-  ; find /tmp/clis-gifski_1-34-0/release/deps/*-53357b7dd9022303* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      rustc --crate-name rayon --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("web_spin_lock"))' -C metadata'=c9b0060445531a2c' -C extra-filename'=-53357b7dd9022303' --out-dir /target/release/deps -C strip'=symbols' -L dependency'=/target/release/deps' --extern either'=/target/release/deps/libeither-64b2ef074583e2a3.rmeta' --extern rayon_core'=/target/release/deps/librayon_core-efba4db9305abd55.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rayon-1.10.0/src/lib.rs \
+        1>          /target/release/deps/out-53357b7dd9022303-stdout \
+        2>          /target/release/deps/out-53357b7dd9022303-stderr \
+        || echo $? >/target/release/deps/out-53357b7dd9022303-errcode\
+  ; find /target/release/deps/*-53357b7dd9022303* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-53357b7dd9022303
-COPY --link --from=dep-n-rayon-1.10.0-53357b7dd9022303 /tmp/clis-gifski_1-34-0/release/deps/*-53357b7dd9022303* /
+COPY --link --from=dep-n-rayon-1.10.0-53357b7dd9022303 /target/release/deps/*-53357b7dd9022303* /
 
 ## this = "53357b7dd9022303"
 ## deps = [
@@ -4036,9 +4036,9 @@ COPY --link --from=dep-n-rayon-1.10.0-53357b7dd9022303 /tmp/clis-gifski_1-34-0/r
 ##     "rayon-53357b7dd9022303.d",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/rayon-53357b7dd9022303.d","emit":"dep-info"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/librayon-53357b7dd9022303.rmeta","emit":"metadata"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/librayon-53357b7dd9022303.rlib","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/rayon-53357b7dd9022303.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/librayon-53357b7dd9022303.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/librayon-53357b7dd9022303.rlib","emit":"link"}',
 ## ]
 ##
 ## [[externs]]
@@ -4103,19 +4103,19 @@ COPY --link --from=dep-n-rayon-1.10.0-53357b7dd9022303 /tmp/clis-gifski_1-34-0/r
 ## script = '''
 ## FROM rust-base AS dep-n-rayon-1.10.0-53357b7dd9022303
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-gifski_1-34-0/release/deps
+## WORKDIR /target/release/deps
 ## RUN \
 ##   --mount=from=cratesio-rayon-1.10.0,source=/rayon-1.10.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rayon-1.10.0 \
-##   --mount=from=out-64b2ef074583e2a3,dst=/tmp/clis-gifski_1-34-0/release/deps/libeither-64b2ef074583e2a3.rlib,source=/libeither-64b2ef074583e2a3.rlib \
-##   --mount=from=out-64b2ef074583e2a3,dst=/tmp/clis-gifski_1-34-0/release/deps/libeither-64b2ef074583e2a3.rmeta,source=/libeither-64b2ef074583e2a3.rmeta \
-##   --mount=from=out-efba4db9305abd55,dst=/tmp/clis-gifski_1-34-0/release/deps/librayon_core-efba4db9305abd55.rlib,source=/librayon_core-efba4db9305abd55.rlib \
-##   --mount=from=out-efba4db9305abd55,dst=/tmp/clis-gifski_1-34-0/release/deps/librayon_core-efba4db9305abd55.rmeta,source=/librayon_core-efba4db9305abd55.rmeta \
-##   --mount=from=out-cc1298b8da143bbe,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_deque-cc1298b8da143bbe.rlib,source=/libcrossbeam_deque-cc1298b8da143bbe.rlib \
-##   --mount=from=out-cc1298b8da143bbe,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_deque-cc1298b8da143bbe.rmeta,source=/libcrossbeam_deque-cc1298b8da143bbe.rmeta \
-##   --mount=from=out-c2e7f2fc3addf6be,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_epoch-c2e7f2fc3addf6be.rlib,source=/libcrossbeam_epoch-c2e7f2fc3addf6be.rlib \
-##   --mount=from=out-c2e7f2fc3addf6be,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_epoch-c2e7f2fc3addf6be.rmeta,source=/libcrossbeam_epoch-c2e7f2fc3addf6be.rmeta \
-##   --mount=from=out-5ac36063ddf29a62,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rlib,source=/libcrossbeam_utils-5ac36063ddf29a62.rlib \
-##   --mount=from=out-5ac36063ddf29a62,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rmeta,source=/libcrossbeam_utils-5ac36063ddf29a62.rmeta \
+##   --mount=from=out-64b2ef074583e2a3,dst=/target/release/deps/libeither-64b2ef074583e2a3.rlib,source=/libeither-64b2ef074583e2a3.rlib \
+##   --mount=from=out-64b2ef074583e2a3,dst=/target/release/deps/libeither-64b2ef074583e2a3.rmeta,source=/libeither-64b2ef074583e2a3.rmeta \
+##   --mount=from=out-efba4db9305abd55,dst=/target/release/deps/librayon_core-efba4db9305abd55.rlib,source=/librayon_core-efba4db9305abd55.rlib \
+##   --mount=from=out-efba4db9305abd55,dst=/target/release/deps/librayon_core-efba4db9305abd55.rmeta,source=/librayon_core-efba4db9305abd55.rmeta \
+##   --mount=from=out-cc1298b8da143bbe,dst=/target/release/deps/libcrossbeam_deque-cc1298b8da143bbe.rlib,source=/libcrossbeam_deque-cc1298b8da143bbe.rlib \
+##   --mount=from=out-cc1298b8da143bbe,dst=/target/release/deps/libcrossbeam_deque-cc1298b8da143bbe.rmeta,source=/libcrossbeam_deque-cc1298b8da143bbe.rmeta \
+##   --mount=from=out-c2e7f2fc3addf6be,dst=/target/release/deps/libcrossbeam_epoch-c2e7f2fc3addf6be.rlib,source=/libcrossbeam_epoch-c2e7f2fc3addf6be.rlib \
+##   --mount=from=out-c2e7f2fc3addf6be,dst=/target/release/deps/libcrossbeam_epoch-c2e7f2fc3addf6be.rmeta,source=/libcrossbeam_epoch-c2e7f2fc3addf6be.rmeta \
+##   --mount=from=out-5ac36063ddf29a62,dst=/target/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rlib,source=/libcrossbeam_utils-5ac36063ddf29a62.rlib \
+##   --mount=from=out-5ac36063ddf29a62,dst=/target/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rmeta,source=/libcrossbeam_utils-5ac36063ddf29a62.rmeta \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=rayon \
 ##         CARGO_INCREMENTAL=0 \
@@ -4136,11 +4136,11 @@ COPY --link --from=dep-n-rayon-1.10.0-53357b7dd9022303 /tmp/clis-gifski_1-34-0/r
 ##         CARGO_PKG_VERSION_PATCH=0 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name rayon --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("web_spin_lock"))' -C metadata'=c9b0060445531a2c' -C extra-filename'=-53357b7dd9022303' --out-dir /tmp/clis-gifski_1-34-0/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --extern either'=/tmp/clis-gifski_1-34-0/release/deps/libeither-64b2ef074583e2a3.rmeta' --extern rayon_core'=/tmp/clis-gifski_1-34-0/release/deps/librayon_core-efba4db9305abd55.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rayon-1.10.0/src/lib.rs \
-##         1>          /tmp/clis-gifski_1-34-0/release/deps/out-53357b7dd9022303-stdout \
-##         2>          /tmp/clis-gifski_1-34-0/release/deps/out-53357b7dd9022303-stderr \
-##         || echo $? >/tmp/clis-gifski_1-34-0/release/deps/out-53357b7dd9022303-errcode\
-##   ; find /tmp/clis-gifski_1-34-0/release/deps/*-53357b7dd9022303* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name rayon --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("web_spin_lock"))' -C metadata'=c9b0060445531a2c' -C extra-filename'=-53357b7dd9022303' --out-dir /target/release/deps -C strip'=symbols' -L dependency'=/target/release/deps' --extern either'=/target/release/deps/libeither-64b2ef074583e2a3.rmeta' --extern rayon_core'=/target/release/deps/librayon_core-efba4db9305abd55.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/rayon-1.10.0/src/lib.rs \
+##         1>          /target/release/deps/out-53357b7dd9022303-stdout \
+##         2>          /target/release/deps/out-53357b7dd9022303-stderr \
+##         || echo $? >/target/release/deps/out-53357b7dd9022303-errcode\
+##   ; find /target/release/deps/*-53357b7dd9022303* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -4148,14 +4148,14 @@ COPY --link --from=dep-n-rayon-1.10.0-53357b7dd9022303 /tmp/clis-gifski_1-34-0/r
 ## stage = "out-53357b7dd9022303"
 ## script = """
 ## FROM scratch AS out-53357b7dd9022303
-## COPY --link --from=dep-n-rayon-1.10.0-53357b7dd9022303 /tmp/clis-gifski_1-34-0/release/deps/*-53357b7dd9022303* /"""
+## COPY --link --from=dep-n-rayon-1.10.0-53357b7dd9022303 /target/release/deps/*-53357b7dd9022303* /"""
 
 FROM scratch AS cratesio-cfg-if-1.0.1
 ADD --chmod=0664 --unpack --checksum=sha256:9555578bc9e57714c812a1f84e4fc5b4d21fcb063490c624de019f7464c91268 \
   https://static.crates.io/crates/cfg-if/cfg-if-1.0.1.crate /
 FROM rust-base AS dep-n-cfg-if-1.0.1-e1f9b2ca981c3e9f
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-gifski_1-34-0/release/deps
+WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-cfg-if-1.0.1,source=/cfg-if-1.0.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/cfg-if-1.0.1 \
     env CARGO="$(which cargo)" \
@@ -4181,13 +4181,13 @@ item that gets emitted.\
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --crate-name cfg_if --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("core", "rustc-dep-of-std"))' -C metadata'=3712e0f4e5a5945d' -C extra-filename'=-e1f9b2ca981c3e9f' --out-dir /tmp/clis-gifski_1-34-0/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/cfg-if-1.0.1/src/lib.rs \
-        1>          /tmp/clis-gifski_1-34-0/release/deps/out-e1f9b2ca981c3e9f-stdout \
-        2>          /tmp/clis-gifski_1-34-0/release/deps/out-e1f9b2ca981c3e9f-stderr \
-        || echo $? >/tmp/clis-gifski_1-34-0/release/deps/out-e1f9b2ca981c3e9f-errcode\
-  ; find /tmp/clis-gifski_1-34-0/release/deps/*-e1f9b2ca981c3e9f* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      rustc --crate-name cfg_if --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("core", "rustc-dep-of-std"))' -C metadata'=3712e0f4e5a5945d' -C extra-filename'=-e1f9b2ca981c3e9f' --out-dir /target/release/deps -C strip'=symbols' -L dependency'=/target/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/cfg-if-1.0.1/src/lib.rs \
+        1>          /target/release/deps/out-e1f9b2ca981c3e9f-stdout \
+        2>          /target/release/deps/out-e1f9b2ca981c3e9f-stderr \
+        || echo $? >/target/release/deps/out-e1f9b2ca981c3e9f-errcode\
+  ; find /target/release/deps/*-e1f9b2ca981c3e9f* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-e1f9b2ca981c3e9f
-COPY --link --from=dep-n-cfg-if-1.0.1-e1f9b2ca981c3e9f /tmp/clis-gifski_1-34-0/release/deps/*-e1f9b2ca981c3e9f* /
+COPY --link --from=dep-n-cfg-if-1.0.1-e1f9b2ca981c3e9f /target/release/deps/*-e1f9b2ca981c3e9f* /
 
 ## this = "e1f9b2ca981c3e9f"
 ## writes = [
@@ -4196,9 +4196,9 @@ COPY --link --from=dep-n-cfg-if-1.0.1-e1f9b2ca981c3e9f /tmp/clis-gifski_1-34-0/r
 ##     "libcfg_if-e1f9b2ca981c3e9f.rmeta",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/cfg_if-e1f9b2ca981c3e9f.d","emit":"dep-info"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/libcfg_if-e1f9b2ca981c3e9f.rmeta","emit":"metadata"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/libcfg_if-e1f9b2ca981c3e9f.rlib","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/cfg_if-e1f9b2ca981c3e9f.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libcfg_if-e1f9b2ca981c3e9f.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libcfg_if-e1f9b2ca981c3e9f.rlib","emit":"link"}',
 ## ]
 ##
 ## [[stages]]
@@ -4223,7 +4223,7 @@ COPY --link --from=dep-n-cfg-if-1.0.1-e1f9b2ca981c3e9f /tmp/clis-gifski_1-34-0/r
 ## script = '''
 ## FROM rust-base AS dep-n-cfg-if-1.0.1-e1f9b2ca981c3e9f
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-gifski_1-34-0/release/deps
+## WORKDIR /target/release/deps
 ## RUN \
 ##   --mount=from=cratesio-cfg-if-1.0.1,source=/cfg-if-1.0.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/cfg-if-1.0.1 \
 ##     env CARGO="$(which cargo)" \
@@ -4249,11 +4249,11 @@ COPY --link --from=dep-n-cfg-if-1.0.1-e1f9b2ca981c3e9f /tmp/clis-gifski_1-34-0/r
 ##         CARGO_PKG_VERSION_PATCH=1 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name cfg_if --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("core", "rustc-dep-of-std"))' -C metadata'=3712e0f4e5a5945d' -C extra-filename'=-e1f9b2ca981c3e9f' --out-dir /tmp/clis-gifski_1-34-0/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/cfg-if-1.0.1/src/lib.rs \
-##         1>          /tmp/clis-gifski_1-34-0/release/deps/out-e1f9b2ca981c3e9f-stdout \
-##         2>          /tmp/clis-gifski_1-34-0/release/deps/out-e1f9b2ca981c3e9f-stderr \
-##         || echo $? >/tmp/clis-gifski_1-34-0/release/deps/out-e1f9b2ca981c3e9f-errcode\
-##   ; find /tmp/clis-gifski_1-34-0/release/deps/*-e1f9b2ca981c3e9f* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name cfg_if --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("core", "rustc-dep-of-std"))' -C metadata'=3712e0f4e5a5945d' -C extra-filename'=-e1f9b2ca981c3e9f' --out-dir /target/release/deps -C strip'=symbols' -L dependency'=/target/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/cfg-if-1.0.1/src/lib.rs \
+##         1>          /target/release/deps/out-e1f9b2ca981c3e9f-stdout \
+##         2>          /target/release/deps/out-e1f9b2ca981c3e9f-stderr \
+##         || echo $? >/target/release/deps/out-e1f9b2ca981c3e9f-errcode\
+##   ; find /target/release/deps/*-e1f9b2ca981c3e9f* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -4261,18 +4261,18 @@ COPY --link --from=dep-n-cfg-if-1.0.1-e1f9b2ca981c3e9f /tmp/clis-gifski_1-34-0/r
 ## stage = "out-e1f9b2ca981c3e9f"
 ## script = """
 ## FROM scratch AS out-e1f9b2ca981c3e9f
-## COPY --link --from=dep-n-cfg-if-1.0.1-e1f9b2ca981c3e9f /tmp/clis-gifski_1-34-0/release/deps/*-e1f9b2ca981c3e9f* /"""
+## COPY --link --from=dep-n-cfg-if-1.0.1-e1f9b2ca981c3e9f /target/release/deps/*-e1f9b2ca981c3e9f* /"""
 
 FROM scratch AS cratesio-thread_local-1.1.9
 ADD --chmod=0664 --unpack --checksum=sha256:f60246a4944f24f6e018aa17cdeffb7818b76356965d03b07d6a9886e8962185 \
   https://static.crates.io/crates/thread_local/thread_local-1.1.9.crate /
 FROM rust-base AS dep-n-thread_local-1.1.9-6b8c8ab37131cd0c
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-gifski_1-34-0/release/deps
+WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-thread_local-1.1.9,source=/thread_local-1.1.9,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thread_local-1.1.9 \
-  --mount=from=out-e1f9b2ca981c3e9f,dst=/tmp/clis-gifski_1-34-0/release/deps/libcfg_if-e1f9b2ca981c3e9f.rlib,source=/libcfg_if-e1f9b2ca981c3e9f.rlib \
-  --mount=from=out-e1f9b2ca981c3e9f,dst=/tmp/clis-gifski_1-34-0/release/deps/libcfg_if-e1f9b2ca981c3e9f.rmeta,source=/libcfg_if-e1f9b2ca981c3e9f.rmeta \
+  --mount=from=out-e1f9b2ca981c3e9f,dst=/target/release/deps/libcfg_if-e1f9b2ca981c3e9f.rlib,source=/libcfg_if-e1f9b2ca981c3e9f.rlib \
+  --mount=from=out-e1f9b2ca981c3e9f,dst=/target/release/deps/libcfg_if-e1f9b2ca981c3e9f.rmeta,source=/libcfg_if-e1f9b2ca981c3e9f.rmeta \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=thread_local \
         CARGO_INCREMENTAL=0 \
@@ -4293,13 +4293,13 @@ RUN \
         CARGO_PKG_VERSION_PATCH=9 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --crate-name thread_local --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("nightly"))' -C metadata'=1b33947fa08da957' -C extra-filename'=-6b8c8ab37131cd0c' --out-dir /tmp/clis-gifski_1-34-0/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --extern cfg_if'=/tmp/clis-gifski_1-34-0/release/deps/libcfg_if-e1f9b2ca981c3e9f.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thread_local-1.1.9/src/lib.rs \
-        1>          /tmp/clis-gifski_1-34-0/release/deps/out-6b8c8ab37131cd0c-stdout \
-        2>          /tmp/clis-gifski_1-34-0/release/deps/out-6b8c8ab37131cd0c-stderr \
-        || echo $? >/tmp/clis-gifski_1-34-0/release/deps/out-6b8c8ab37131cd0c-errcode\
-  ; find /tmp/clis-gifski_1-34-0/release/deps/*-6b8c8ab37131cd0c* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      rustc --crate-name thread_local --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("nightly"))' -C metadata'=1b33947fa08da957' -C extra-filename'=-6b8c8ab37131cd0c' --out-dir /target/release/deps -C strip'=symbols' -L dependency'=/target/release/deps' --extern cfg_if'=/target/release/deps/libcfg_if-e1f9b2ca981c3e9f.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thread_local-1.1.9/src/lib.rs \
+        1>          /target/release/deps/out-6b8c8ab37131cd0c-stdout \
+        2>          /target/release/deps/out-6b8c8ab37131cd0c-stderr \
+        || echo $? >/target/release/deps/out-6b8c8ab37131cd0c-errcode\
+  ; find /target/release/deps/*-6b8c8ab37131cd0c* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-6b8c8ab37131cd0c
-COPY --link --from=dep-n-thread_local-1.1.9-6b8c8ab37131cd0c /tmp/clis-gifski_1-34-0/release/deps/*-6b8c8ab37131cd0c* /
+COPY --link --from=dep-n-thread_local-1.1.9-6b8c8ab37131cd0c /target/release/deps/*-6b8c8ab37131cd0c* /
 
 ## this = "6b8c8ab37131cd0c"
 ## deps = ["e1f9b2ca981c3e9f"]
@@ -4309,13 +4309,13 @@ COPY --link --from=dep-n-thread_local-1.1.9-6b8c8ab37131cd0c /tmp/clis-gifski_1-
 ##     "thread_local-6b8c8ab37131cd0c.d",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/thread_local-6b8c8ab37131cd0c.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/thread_local-6b8c8ab37131cd0c.d","emit":"dep-info"}',
 ##     '{"$message_type":"diagnostic","message":"trait `UncheckedOptionExt` is never used","code":{"code":"dead_code","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thread_local-1.1.9/src/unreachable.rs","byte_start":461,"byte_end":479,"line_start":11,"line_end":11,"column_start":11,"column_end":29,"is_primary":true,"text":[{"text":"pub trait UncheckedOptionExt<T> {","highlight_start":11,"highlight_end":29}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"`#[warn(dead_code)]` on by default","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: trait `UncheckedOptionExt` is never used\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thread_local-1.1.9/src/unreachable.rs:11:11\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m11\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0mpub trait UncheckedOptionExt<T> {\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m           \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: `#[warn(dead_code)]` on by default\u001b[0m\n\n"}',
 ##     '{"$message_type":"diagnostic","message":"method `unchecked_unwrap_err` is never used","code":{"code":"dead_code","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thread_local-1.1.9/src/unreachable.rs","byte_start":795,"byte_end":813,"line_start":20,"line_end":20,"column_start":11,"column_end":29,"is_primary":false,"text":[{"text":"pub trait UncheckedResultExt<T, E> {","highlight_start":11,"highlight_end":29}],"label":"method in this trait","suggested_replacement":null,"suggestion_applicability":null,"expansion":null},{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thread_local-1.1.9/src/unreachable.rs","byte_start":1016,"byte_end":1036,"line_start":25,"line_end":25,"column_start":15,"column_end":35,"is_primary":true,"text":[{"text":"    unsafe fn unchecked_unwrap_err(self) -> E;","highlight_start":15,"highlight_end":35}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: method `unchecked_unwrap_err` is never used\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thread_local-1.1.9/src/unreachable.rs:25:15\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m20\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0mpub trait UncheckedResultExt<T, E> {\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m           \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m------------------\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12mmethod in this trait\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m...\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m25\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    unsafe fn unchecked_unwrap_err(self) -> E;\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m               \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\n"}',
 ##     '''{"$message_type":"diagnostic","message":"hiding a lifetime that's elided elsewhere is confusing","code":{"code":"mismatched_lifetime_syntaxes","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thread_local-1.1.9/src/lib.rs","byte_start":9617,"byte_end":9626,"line_start":290,"line_end":290,"column_start":21,"column_end":30,"is_primary":true,"text":[{"text":"    pub fn iter_mut(&mut self) -> IterMut<T> {","highlight_start":21,"highlight_end":30}],"label":"the lifetime is elided here","suggested_replacement":null,"suggestion_applicability":null,"expansion":null},{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thread_local-1.1.9/src/lib.rs","byte_start":9631,"byte_end":9641,"line_start":290,"line_end":290,"column_start":35,"column_end":45,"is_primary":false,"text":[{"text":"    pub fn iter_mut(&mut self) -> IterMut<T> {","highlight_start":35,"highlight_end":45}],"label":"the same lifetime is hidden here","suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"the same lifetime is referred to in inconsistent ways, making the signature confusing","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"`#[warn(mismatched_lifetime_syntaxes)]` on by default","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"use `'_` for type paths","code":null,"level":"help","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thread_local-1.1.9/src/lib.rs","byte_start":9639,"byte_end":9639,"line_start":290,"line_end":290,"column_start":43,"column_end":43,"is_primary":true,"text":[{"text":"    pub fn iter_mut(&mut self) -> IterMut<T> {","highlight_start":43,"highlight_end":43}],"label":null,"suggested_replacement":"'_, ","suggestion_applicability":"MaybeIncorrect","expansion":null}],"children":[],"rendered":null},{"message":"consistently use `'_`","code":null,"level":"help","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thread_local-1.1.9/src/lib.rs","byte_start":9618,"byte_end":9618,"line_start":290,"line_end":290,"column_start":22,"column_end":22,"is_primary":true,"text":[{"text":"    pub fn iter_mut(&mut self) -> IterMut<T> {","highlight_start":22,"highlight_end":22}],"label":null,"suggested_replacement":"'_ ","suggestion_applicability":"MaybeIncorrect","expansion":null},{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thread_local-1.1.9/src/lib.rs","byte_start":9639,"byte_end":9639,"line_start":290,"line_end":290,"column_start":43,"column_end":43,"is_primary":true,"text":[{"text":"    pub fn iter_mut(&mut self) -> IterMut<T> {","highlight_start":43,"highlight_end":43}],"label":null,"suggested_replacement":"'_, ","suggestion_applicability":"MaybeIncorrect","expansion":null}],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: hiding a lifetime that's elided elsewhere is confusing\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thread_local-1.1.9/src/lib.rs:290:21\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m290\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    pub fn iter_mut(&mut self) -> IterMut<T> {\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                     \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^\u001b[0m\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m----------\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12mthe same lifetime is hidden here\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                     \u001b[0m\u001b[0m\u001b[1m\u001b[33m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                     \u001b[0m\u001b[0m\u001b[1m\u001b[33mthe lifetime is elided here\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: the same lifetime is referred to in inconsistent ways, making the signature confusing\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: `#[warn(mismatched_lifetime_syntaxes)]` on by default\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;14mhelp\u001b[0m\u001b[0m: use `'_` for type paths\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m290\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m| \u001b[0m\u001b[0m    pub fn iter_mut(&mut self) -> IterMut<\u001b[0m\u001b[0m\u001b[38;5;10m'_, \u001b[0m\u001b[0mT> {\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                           \u001b[0m\u001b[0m\u001b[38;5;10m+++\u001b[0m\n\n"}''',
 ##     '''{"$message_type":"diagnostic","message":"hiding a lifetime that's elided elsewhere is confusing","code":{"code":"mismatched_lifetime_syntaxes","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thread_local-1.1.9/src/cached.rs","byte_start":1875,"byte_end":1884,"line_start":65,"line_end":65,"column_start":21,"column_end":30,"is_primary":true,"text":[{"text":"    pub fn iter_mut(&mut self) -> CachedIterMut<T> {","highlight_start":21,"highlight_end":30}],"label":"the lifetime is elided here","suggested_replacement":null,"suggestion_applicability":null,"expansion":null},{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thread_local-1.1.9/src/cached.rs","byte_start":1889,"byte_end":1905,"line_start":65,"line_end":65,"column_start":35,"column_end":51,"is_primary":false,"text":[{"text":"    pub fn iter_mut(&mut self) -> CachedIterMut<T> {","highlight_start":35,"highlight_end":51}],"label":"the same lifetime is hidden here","suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"the same lifetime is referred to in inconsistent ways, making the signature confusing","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"use `'_` for type paths","code":null,"level":"help","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thread_local-1.1.9/src/cached.rs","byte_start":1903,"byte_end":1903,"line_start":65,"line_end":65,"column_start":49,"column_end":49,"is_primary":true,"text":[{"text":"    pub fn iter_mut(&mut self) -> CachedIterMut<T> {","highlight_start":49,"highlight_end":49}],"label":null,"suggested_replacement":"'_, ","suggestion_applicability":"MaybeIncorrect","expansion":null}],"children":[],"rendered":null},{"message":"consistently use `'_`","code":null,"level":"help","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thread_local-1.1.9/src/cached.rs","byte_start":1876,"byte_end":1876,"line_start":65,"line_end":65,"column_start":22,"column_end":22,"is_primary":true,"text":[{"text":"    pub fn iter_mut(&mut self) -> CachedIterMut<T> {","highlight_start":22,"highlight_end":22}],"label":null,"suggested_replacement":"'_ ","suggestion_applicability":"MaybeIncorrect","expansion":null},{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thread_local-1.1.9/src/cached.rs","byte_start":1903,"byte_end":1903,"line_start":65,"line_end":65,"column_start":49,"column_end":49,"is_primary":true,"text":[{"text":"    pub fn iter_mut(&mut self) -> CachedIterMut<T> {","highlight_start":49,"highlight_end":49}],"label":null,"suggested_replacement":"'_, ","suggestion_applicability":"MaybeIncorrect","expansion":null}],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: hiding a lifetime that's elided elsewhere is confusing\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thread_local-1.1.9/src/cached.rs:65:21\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m65\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    pub fn iter_mut(&mut self) -> CachedIterMut<T> {\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                     \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^\u001b[0m\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m----------------\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12mthe same lifetime is hidden here\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                     \u001b[0m\u001b[0m\u001b[1m\u001b[33m|\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                     \u001b[0m\u001b[0m\u001b[1m\u001b[33mthe lifetime is elided here\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: the same lifetime is referred to in inconsistent ways, making the signature confusing\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;14mhelp\u001b[0m\u001b[0m: use `'_` for type paths\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m65\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m| \u001b[0m\u001b[0m    pub fn iter_mut(&mut self) -> CachedIterMut<\u001b[0m\u001b[0m\u001b[38;5;10m'_, \u001b[0m\u001b[0mT> {\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                                 \u001b[0m\u001b[0m\u001b[38;5;10m+++\u001b[0m\n\n"}''',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/libthread_local-6b8c8ab37131cd0c.rmeta","emit":"metadata"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/libthread_local-6b8c8ab37131cd0c.rlib","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libthread_local-6b8c8ab37131cd0c.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libthread_local-6b8c8ab37131cd0c.rlib","emit":"link"}',
 ##     '{"$message_type":"diagnostic","message":"4 warnings emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 4 warnings emitted\u001b[0m\n\n"}',
 ## ]
 ##
@@ -4349,11 +4349,11 @@ COPY --link --from=dep-n-thread_local-1.1.9-6b8c8ab37131cd0c /tmp/clis-gifski_1-
 ## script = '''
 ## FROM rust-base AS dep-n-thread_local-1.1.9-6b8c8ab37131cd0c
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-gifski_1-34-0/release/deps
+## WORKDIR /target/release/deps
 ## RUN \
 ##   --mount=from=cratesio-thread_local-1.1.9,source=/thread_local-1.1.9,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thread_local-1.1.9 \
-##   --mount=from=out-e1f9b2ca981c3e9f,dst=/tmp/clis-gifski_1-34-0/release/deps/libcfg_if-e1f9b2ca981c3e9f.rlib,source=/libcfg_if-e1f9b2ca981c3e9f.rlib \
-##   --mount=from=out-e1f9b2ca981c3e9f,dst=/tmp/clis-gifski_1-34-0/release/deps/libcfg_if-e1f9b2ca981c3e9f.rmeta,source=/libcfg_if-e1f9b2ca981c3e9f.rmeta \
+##   --mount=from=out-e1f9b2ca981c3e9f,dst=/target/release/deps/libcfg_if-e1f9b2ca981c3e9f.rlib,source=/libcfg_if-e1f9b2ca981c3e9f.rlib \
+##   --mount=from=out-e1f9b2ca981c3e9f,dst=/target/release/deps/libcfg_if-e1f9b2ca981c3e9f.rmeta,source=/libcfg_if-e1f9b2ca981c3e9f.rmeta \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=thread_local \
 ##         CARGO_INCREMENTAL=0 \
@@ -4374,11 +4374,11 @@ COPY --link --from=dep-n-thread_local-1.1.9-6b8c8ab37131cd0c /tmp/clis-gifski_1-
 ##         CARGO_PKG_VERSION_PATCH=9 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name thread_local --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("nightly"))' -C metadata'=1b33947fa08da957' -C extra-filename'=-6b8c8ab37131cd0c' --out-dir /tmp/clis-gifski_1-34-0/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --extern cfg_if'=/tmp/clis-gifski_1-34-0/release/deps/libcfg_if-e1f9b2ca981c3e9f.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thread_local-1.1.9/src/lib.rs \
-##         1>          /tmp/clis-gifski_1-34-0/release/deps/out-6b8c8ab37131cd0c-stdout \
-##         2>          /tmp/clis-gifski_1-34-0/release/deps/out-6b8c8ab37131cd0c-stderr \
-##         || echo $? >/tmp/clis-gifski_1-34-0/release/deps/out-6b8c8ab37131cd0c-errcode\
-##   ; find /tmp/clis-gifski_1-34-0/release/deps/*-6b8c8ab37131cd0c* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name thread_local --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("nightly"))' -C metadata'=1b33947fa08da957' -C extra-filename'=-6b8c8ab37131cd0c' --out-dir /target/release/deps -C strip'=symbols' -L dependency'=/target/release/deps' --extern cfg_if'=/target/release/deps/libcfg_if-e1f9b2ca981c3e9f.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/thread_local-1.1.9/src/lib.rs \
+##         1>          /target/release/deps/out-6b8c8ab37131cd0c-stdout \
+##         2>          /target/release/deps/out-6b8c8ab37131cd0c-stderr \
+##         || echo $? >/target/release/deps/out-6b8c8ab37131cd0c-errcode\
+##   ; find /target/release/deps/*-6b8c8ab37131cd0c* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -4386,40 +4386,40 @@ COPY --link --from=dep-n-thread_local-1.1.9-6b8c8ab37131cd0c /tmp/clis-gifski_1-
 ## stage = "out-6b8c8ab37131cd0c"
 ## script = """
 ## FROM scratch AS out-6b8c8ab37131cd0c
-## COPY --link --from=dep-n-thread_local-1.1.9-6b8c8ab37131cd0c /tmp/clis-gifski_1-34-0/release/deps/*-6b8c8ab37131cd0c* /"""
+## COPY --link --from=dep-n-thread_local-1.1.9-6b8c8ab37131cd0c /target/release/deps/*-6b8c8ab37131cd0c* /"""
 
 FROM scratch AS cratesio-imagequant-4.4.1
 ADD --chmod=0664 --unpack --checksum=sha256:caf5d73b959dfbe5d6b5cd3ca8de5265c7bc58297f20560a60a1d2ba6a19991f \
   https://static.crates.io/crates/imagequant/imagequant-4.4.1.crate /
 FROM rust-base AS dep-n-imagequant-4.4.1-13cdc94a2acbf464
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-gifski_1-34-0/release/deps
+WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-imagequant-4.4.1,source=/imagequant-4.4.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/imagequant-4.4.1 \
-  --mount=from=out-9b55b30a1b85e195,dst=/tmp/clis-gifski_1-34-0/release/deps/libarrayvec-9b55b30a1b85e195.rlib,source=/libarrayvec-9b55b30a1b85e195.rlib \
-  --mount=from=out-9b55b30a1b85e195,dst=/tmp/clis-gifski_1-34-0/release/deps/libarrayvec-9b55b30a1b85e195.rmeta,source=/libarrayvec-9b55b30a1b85e195.rmeta \
-  --mount=from=out-0774a35541eb4e3b,dst=/tmp/clis-gifski_1-34-0/release/deps/libonce_cell-0774a35541eb4e3b.rlib,source=/libonce_cell-0774a35541eb4e3b.rlib \
-  --mount=from=out-0774a35541eb4e3b,dst=/tmp/clis-gifski_1-34-0/release/deps/libonce_cell-0774a35541eb4e3b.rmeta,source=/libonce_cell-0774a35541eb4e3b.rmeta \
-  --mount=from=out-53357b7dd9022303,dst=/tmp/clis-gifski_1-34-0/release/deps/librayon-53357b7dd9022303.rlib,source=/librayon-53357b7dd9022303.rlib \
-  --mount=from=out-53357b7dd9022303,dst=/tmp/clis-gifski_1-34-0/release/deps/librayon-53357b7dd9022303.rmeta,source=/librayon-53357b7dd9022303.rmeta \
-  --mount=from=out-64b2ef074583e2a3,dst=/tmp/clis-gifski_1-34-0/release/deps/libeither-64b2ef074583e2a3.rlib,source=/libeither-64b2ef074583e2a3.rlib \
-  --mount=from=out-64b2ef074583e2a3,dst=/tmp/clis-gifski_1-34-0/release/deps/libeither-64b2ef074583e2a3.rmeta,source=/libeither-64b2ef074583e2a3.rmeta \
-  --mount=from=out-efba4db9305abd55,dst=/tmp/clis-gifski_1-34-0/release/deps/librayon_core-efba4db9305abd55.rlib,source=/librayon_core-efba4db9305abd55.rlib \
-  --mount=from=out-efba4db9305abd55,dst=/tmp/clis-gifski_1-34-0/release/deps/librayon_core-efba4db9305abd55.rmeta,source=/librayon_core-efba4db9305abd55.rmeta \
-  --mount=from=out-cc1298b8da143bbe,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_deque-cc1298b8da143bbe.rlib,source=/libcrossbeam_deque-cc1298b8da143bbe.rlib \
-  --mount=from=out-cc1298b8da143bbe,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_deque-cc1298b8da143bbe.rmeta,source=/libcrossbeam_deque-cc1298b8da143bbe.rmeta \
-  --mount=from=out-c2e7f2fc3addf6be,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_epoch-c2e7f2fc3addf6be.rlib,source=/libcrossbeam_epoch-c2e7f2fc3addf6be.rlib \
-  --mount=from=out-c2e7f2fc3addf6be,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_epoch-c2e7f2fc3addf6be.rmeta,source=/libcrossbeam_epoch-c2e7f2fc3addf6be.rmeta \
-  --mount=from=out-5ac36063ddf29a62,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rlib,source=/libcrossbeam_utils-5ac36063ddf29a62.rlib \
-  --mount=from=out-5ac36063ddf29a62,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rmeta,source=/libcrossbeam_utils-5ac36063ddf29a62.rmeta \
-  --mount=from=out-b630417cd5f2024a,dst=/tmp/clis-gifski_1-34-0/release/deps/librgb-b630417cd5f2024a.rlib,source=/librgb-b630417cd5f2024a.rlib \
-  --mount=from=out-b630417cd5f2024a,dst=/tmp/clis-gifski_1-34-0/release/deps/librgb-b630417cd5f2024a.rmeta,source=/librgb-b630417cd5f2024a.rmeta \
-  --mount=from=out-f0cdacabc0947b7b,dst=/tmp/clis-gifski_1-34-0/release/deps/libbytemuck-f0cdacabc0947b7b.rlib,source=/libbytemuck-f0cdacabc0947b7b.rlib \
-  --mount=from=out-f0cdacabc0947b7b,dst=/tmp/clis-gifski_1-34-0/release/deps/libbytemuck-f0cdacabc0947b7b.rmeta,source=/libbytemuck-f0cdacabc0947b7b.rmeta \
-  --mount=from=out-6b8c8ab37131cd0c,dst=/tmp/clis-gifski_1-34-0/release/deps/libthread_local-6b8c8ab37131cd0c.rlib,source=/libthread_local-6b8c8ab37131cd0c.rlib \
-  --mount=from=out-6b8c8ab37131cd0c,dst=/tmp/clis-gifski_1-34-0/release/deps/libthread_local-6b8c8ab37131cd0c.rmeta,source=/libthread_local-6b8c8ab37131cd0c.rmeta \
-  --mount=from=out-e1f9b2ca981c3e9f,dst=/tmp/clis-gifski_1-34-0/release/deps/libcfg_if-e1f9b2ca981c3e9f.rlib,source=/libcfg_if-e1f9b2ca981c3e9f.rlib \
-  --mount=from=out-e1f9b2ca981c3e9f,dst=/tmp/clis-gifski_1-34-0/release/deps/libcfg_if-e1f9b2ca981c3e9f.rmeta,source=/libcfg_if-e1f9b2ca981c3e9f.rmeta \
+  --mount=from=out-9b55b30a1b85e195,dst=/target/release/deps/libarrayvec-9b55b30a1b85e195.rlib,source=/libarrayvec-9b55b30a1b85e195.rlib \
+  --mount=from=out-9b55b30a1b85e195,dst=/target/release/deps/libarrayvec-9b55b30a1b85e195.rmeta,source=/libarrayvec-9b55b30a1b85e195.rmeta \
+  --mount=from=out-0774a35541eb4e3b,dst=/target/release/deps/libonce_cell-0774a35541eb4e3b.rlib,source=/libonce_cell-0774a35541eb4e3b.rlib \
+  --mount=from=out-0774a35541eb4e3b,dst=/target/release/deps/libonce_cell-0774a35541eb4e3b.rmeta,source=/libonce_cell-0774a35541eb4e3b.rmeta \
+  --mount=from=out-53357b7dd9022303,dst=/target/release/deps/librayon-53357b7dd9022303.rlib,source=/librayon-53357b7dd9022303.rlib \
+  --mount=from=out-53357b7dd9022303,dst=/target/release/deps/librayon-53357b7dd9022303.rmeta,source=/librayon-53357b7dd9022303.rmeta \
+  --mount=from=out-64b2ef074583e2a3,dst=/target/release/deps/libeither-64b2ef074583e2a3.rlib,source=/libeither-64b2ef074583e2a3.rlib \
+  --mount=from=out-64b2ef074583e2a3,dst=/target/release/deps/libeither-64b2ef074583e2a3.rmeta,source=/libeither-64b2ef074583e2a3.rmeta \
+  --mount=from=out-efba4db9305abd55,dst=/target/release/deps/librayon_core-efba4db9305abd55.rlib,source=/librayon_core-efba4db9305abd55.rlib \
+  --mount=from=out-efba4db9305abd55,dst=/target/release/deps/librayon_core-efba4db9305abd55.rmeta,source=/librayon_core-efba4db9305abd55.rmeta \
+  --mount=from=out-cc1298b8da143bbe,dst=/target/release/deps/libcrossbeam_deque-cc1298b8da143bbe.rlib,source=/libcrossbeam_deque-cc1298b8da143bbe.rlib \
+  --mount=from=out-cc1298b8da143bbe,dst=/target/release/deps/libcrossbeam_deque-cc1298b8da143bbe.rmeta,source=/libcrossbeam_deque-cc1298b8da143bbe.rmeta \
+  --mount=from=out-c2e7f2fc3addf6be,dst=/target/release/deps/libcrossbeam_epoch-c2e7f2fc3addf6be.rlib,source=/libcrossbeam_epoch-c2e7f2fc3addf6be.rlib \
+  --mount=from=out-c2e7f2fc3addf6be,dst=/target/release/deps/libcrossbeam_epoch-c2e7f2fc3addf6be.rmeta,source=/libcrossbeam_epoch-c2e7f2fc3addf6be.rmeta \
+  --mount=from=out-5ac36063ddf29a62,dst=/target/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rlib,source=/libcrossbeam_utils-5ac36063ddf29a62.rlib \
+  --mount=from=out-5ac36063ddf29a62,dst=/target/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rmeta,source=/libcrossbeam_utils-5ac36063ddf29a62.rmeta \
+  --mount=from=out-b630417cd5f2024a,dst=/target/release/deps/librgb-b630417cd5f2024a.rlib,source=/librgb-b630417cd5f2024a.rlib \
+  --mount=from=out-b630417cd5f2024a,dst=/target/release/deps/librgb-b630417cd5f2024a.rmeta,source=/librgb-b630417cd5f2024a.rmeta \
+  --mount=from=out-f0cdacabc0947b7b,dst=/target/release/deps/libbytemuck-f0cdacabc0947b7b.rlib,source=/libbytemuck-f0cdacabc0947b7b.rlib \
+  --mount=from=out-f0cdacabc0947b7b,dst=/target/release/deps/libbytemuck-f0cdacabc0947b7b.rmeta,source=/libbytemuck-f0cdacabc0947b7b.rmeta \
+  --mount=from=out-6b8c8ab37131cd0c,dst=/target/release/deps/libthread_local-6b8c8ab37131cd0c.rlib,source=/libthread_local-6b8c8ab37131cd0c.rlib \
+  --mount=from=out-6b8c8ab37131cd0c,dst=/target/release/deps/libthread_local-6b8c8ab37131cd0c.rmeta,source=/libthread_local-6b8c8ab37131cd0c.rmeta \
+  --mount=from=out-e1f9b2ca981c3e9f,dst=/target/release/deps/libcfg_if-e1f9b2ca981c3e9f.rlib,source=/libcfg_if-e1f9b2ca981c3e9f.rlib \
+  --mount=from=out-e1f9b2ca981c3e9f,dst=/target/release/deps/libcfg_if-e1f9b2ca981c3e9f.rmeta,source=/libcfg_if-e1f9b2ca981c3e9f.rmeta \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=imagequant \
         CARGO_INCREMENTAL=0 \
@@ -4442,13 +4442,13 @@ Dual-licensed like pngquant. See https://pngquant.org for details.' \
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --crate-name imagequant --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --cfg feature'="default"' --cfg feature'="threads"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("_internal_c_ffi", "default", "large_palettes", "threads"))' -C metadata'=754fde55dbc54bb6' -C extra-filename'=-13cdc94a2acbf464' --out-dir /tmp/clis-gifski_1-34-0/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --extern arrayvec'=/tmp/clis-gifski_1-34-0/release/deps/libarrayvec-9b55b30a1b85e195.rmeta' --extern once_cell'=/tmp/clis-gifski_1-34-0/release/deps/libonce_cell-0774a35541eb4e3b.rmeta' --extern rayon'=/tmp/clis-gifski_1-34-0/release/deps/librayon-53357b7dd9022303.rmeta' --extern rgb'=/tmp/clis-gifski_1-34-0/release/deps/librgb-b630417cd5f2024a.rmeta' --extern thread_local'=/tmp/clis-gifski_1-34-0/release/deps/libthread_local-6b8c8ab37131cd0c.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/imagequant-4.4.1/src/lib.rs \
-        1>          /tmp/clis-gifski_1-34-0/release/deps/out-13cdc94a2acbf464-stdout \
-        2>          /tmp/clis-gifski_1-34-0/release/deps/out-13cdc94a2acbf464-stderr \
-        || echo $? >/tmp/clis-gifski_1-34-0/release/deps/out-13cdc94a2acbf464-errcode\
-  ; find /tmp/clis-gifski_1-34-0/release/deps/*-13cdc94a2acbf464* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      rustc --crate-name imagequant --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --cfg feature'="default"' --cfg feature'="threads"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("_internal_c_ffi", "default", "large_palettes", "threads"))' -C metadata'=754fde55dbc54bb6' -C extra-filename'=-13cdc94a2acbf464' --out-dir /target/release/deps -C strip'=symbols' -L dependency'=/target/release/deps' --extern arrayvec'=/target/release/deps/libarrayvec-9b55b30a1b85e195.rmeta' --extern once_cell'=/target/release/deps/libonce_cell-0774a35541eb4e3b.rmeta' --extern rayon'=/target/release/deps/librayon-53357b7dd9022303.rmeta' --extern rgb'=/target/release/deps/librgb-b630417cd5f2024a.rmeta' --extern thread_local'=/target/release/deps/libthread_local-6b8c8ab37131cd0c.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/imagequant-4.4.1/src/lib.rs \
+        1>          /target/release/deps/out-13cdc94a2acbf464-stdout \
+        2>          /target/release/deps/out-13cdc94a2acbf464-stderr \
+        || echo $? >/target/release/deps/out-13cdc94a2acbf464-errcode\
+  ; find /target/release/deps/*-13cdc94a2acbf464* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-13cdc94a2acbf464
-COPY --link --from=dep-n-imagequant-4.4.1-13cdc94a2acbf464 /tmp/clis-gifski_1-34-0/release/deps/*-13cdc94a2acbf464* /
+COPY --link --from=dep-n-imagequant-4.4.1-13cdc94a2acbf464 /target/release/deps/*-13cdc94a2acbf464* /
 
 ## this = "13cdc94a2acbf464"
 ## deps = [
@@ -4479,9 +4479,9 @@ COPY --link --from=dep-n-imagequant-4.4.1-13cdc94a2acbf464 /tmp/clis-gifski_1-34
 ##     "libimagequant-13cdc94a2acbf464.rmeta",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/imagequant-13cdc94a2acbf464.d","emit":"dep-info"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/libimagequant-13cdc94a2acbf464.rmeta","emit":"metadata"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/libimagequant-13cdc94a2acbf464.rlib","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/imagequant-13cdc94a2acbf464.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libimagequant-13cdc94a2acbf464.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libimagequant-13cdc94a2acbf464.rlib","emit":"link"}',
 ## ]
 ##
 ## [[externs]]
@@ -4602,33 +4602,33 @@ COPY --link --from=dep-n-imagequant-4.4.1-13cdc94a2acbf464 /tmp/clis-gifski_1-34
 ## script = '''
 ## FROM rust-base AS dep-n-imagequant-4.4.1-13cdc94a2acbf464
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-gifski_1-34-0/release/deps
+## WORKDIR /target/release/deps
 ## RUN \
 ##   --mount=from=cratesio-imagequant-4.4.1,source=/imagequant-4.4.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/imagequant-4.4.1 \
-##   --mount=from=out-9b55b30a1b85e195,dst=/tmp/clis-gifski_1-34-0/release/deps/libarrayvec-9b55b30a1b85e195.rlib,source=/libarrayvec-9b55b30a1b85e195.rlib \
-##   --mount=from=out-9b55b30a1b85e195,dst=/tmp/clis-gifski_1-34-0/release/deps/libarrayvec-9b55b30a1b85e195.rmeta,source=/libarrayvec-9b55b30a1b85e195.rmeta \
-##   --mount=from=out-0774a35541eb4e3b,dst=/tmp/clis-gifski_1-34-0/release/deps/libonce_cell-0774a35541eb4e3b.rlib,source=/libonce_cell-0774a35541eb4e3b.rlib \
-##   --mount=from=out-0774a35541eb4e3b,dst=/tmp/clis-gifski_1-34-0/release/deps/libonce_cell-0774a35541eb4e3b.rmeta,source=/libonce_cell-0774a35541eb4e3b.rmeta \
-##   --mount=from=out-53357b7dd9022303,dst=/tmp/clis-gifski_1-34-0/release/deps/librayon-53357b7dd9022303.rlib,source=/librayon-53357b7dd9022303.rlib \
-##   --mount=from=out-53357b7dd9022303,dst=/tmp/clis-gifski_1-34-0/release/deps/librayon-53357b7dd9022303.rmeta,source=/librayon-53357b7dd9022303.rmeta \
-##   --mount=from=out-64b2ef074583e2a3,dst=/tmp/clis-gifski_1-34-0/release/deps/libeither-64b2ef074583e2a3.rlib,source=/libeither-64b2ef074583e2a3.rlib \
-##   --mount=from=out-64b2ef074583e2a3,dst=/tmp/clis-gifski_1-34-0/release/deps/libeither-64b2ef074583e2a3.rmeta,source=/libeither-64b2ef074583e2a3.rmeta \
-##   --mount=from=out-efba4db9305abd55,dst=/tmp/clis-gifski_1-34-0/release/deps/librayon_core-efba4db9305abd55.rlib,source=/librayon_core-efba4db9305abd55.rlib \
-##   --mount=from=out-efba4db9305abd55,dst=/tmp/clis-gifski_1-34-0/release/deps/librayon_core-efba4db9305abd55.rmeta,source=/librayon_core-efba4db9305abd55.rmeta \
-##   --mount=from=out-cc1298b8da143bbe,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_deque-cc1298b8da143bbe.rlib,source=/libcrossbeam_deque-cc1298b8da143bbe.rlib \
-##   --mount=from=out-cc1298b8da143bbe,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_deque-cc1298b8da143bbe.rmeta,source=/libcrossbeam_deque-cc1298b8da143bbe.rmeta \
-##   --mount=from=out-c2e7f2fc3addf6be,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_epoch-c2e7f2fc3addf6be.rlib,source=/libcrossbeam_epoch-c2e7f2fc3addf6be.rlib \
-##   --mount=from=out-c2e7f2fc3addf6be,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_epoch-c2e7f2fc3addf6be.rmeta,source=/libcrossbeam_epoch-c2e7f2fc3addf6be.rmeta \
-##   --mount=from=out-5ac36063ddf29a62,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rlib,source=/libcrossbeam_utils-5ac36063ddf29a62.rlib \
-##   --mount=from=out-5ac36063ddf29a62,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rmeta,source=/libcrossbeam_utils-5ac36063ddf29a62.rmeta \
-##   --mount=from=out-b630417cd5f2024a,dst=/tmp/clis-gifski_1-34-0/release/deps/librgb-b630417cd5f2024a.rlib,source=/librgb-b630417cd5f2024a.rlib \
-##   --mount=from=out-b630417cd5f2024a,dst=/tmp/clis-gifski_1-34-0/release/deps/librgb-b630417cd5f2024a.rmeta,source=/librgb-b630417cd5f2024a.rmeta \
-##   --mount=from=out-f0cdacabc0947b7b,dst=/tmp/clis-gifski_1-34-0/release/deps/libbytemuck-f0cdacabc0947b7b.rlib,source=/libbytemuck-f0cdacabc0947b7b.rlib \
-##   --mount=from=out-f0cdacabc0947b7b,dst=/tmp/clis-gifski_1-34-0/release/deps/libbytemuck-f0cdacabc0947b7b.rmeta,source=/libbytemuck-f0cdacabc0947b7b.rmeta \
-##   --mount=from=out-6b8c8ab37131cd0c,dst=/tmp/clis-gifski_1-34-0/release/deps/libthread_local-6b8c8ab37131cd0c.rlib,source=/libthread_local-6b8c8ab37131cd0c.rlib \
-##   --mount=from=out-6b8c8ab37131cd0c,dst=/tmp/clis-gifski_1-34-0/release/deps/libthread_local-6b8c8ab37131cd0c.rmeta,source=/libthread_local-6b8c8ab37131cd0c.rmeta \
-##   --mount=from=out-e1f9b2ca981c3e9f,dst=/tmp/clis-gifski_1-34-0/release/deps/libcfg_if-e1f9b2ca981c3e9f.rlib,source=/libcfg_if-e1f9b2ca981c3e9f.rlib \
-##   --mount=from=out-e1f9b2ca981c3e9f,dst=/tmp/clis-gifski_1-34-0/release/deps/libcfg_if-e1f9b2ca981c3e9f.rmeta,source=/libcfg_if-e1f9b2ca981c3e9f.rmeta \
+##   --mount=from=out-9b55b30a1b85e195,dst=/target/release/deps/libarrayvec-9b55b30a1b85e195.rlib,source=/libarrayvec-9b55b30a1b85e195.rlib \
+##   --mount=from=out-9b55b30a1b85e195,dst=/target/release/deps/libarrayvec-9b55b30a1b85e195.rmeta,source=/libarrayvec-9b55b30a1b85e195.rmeta \
+##   --mount=from=out-0774a35541eb4e3b,dst=/target/release/deps/libonce_cell-0774a35541eb4e3b.rlib,source=/libonce_cell-0774a35541eb4e3b.rlib \
+##   --mount=from=out-0774a35541eb4e3b,dst=/target/release/deps/libonce_cell-0774a35541eb4e3b.rmeta,source=/libonce_cell-0774a35541eb4e3b.rmeta \
+##   --mount=from=out-53357b7dd9022303,dst=/target/release/deps/librayon-53357b7dd9022303.rlib,source=/librayon-53357b7dd9022303.rlib \
+##   --mount=from=out-53357b7dd9022303,dst=/target/release/deps/librayon-53357b7dd9022303.rmeta,source=/librayon-53357b7dd9022303.rmeta \
+##   --mount=from=out-64b2ef074583e2a3,dst=/target/release/deps/libeither-64b2ef074583e2a3.rlib,source=/libeither-64b2ef074583e2a3.rlib \
+##   --mount=from=out-64b2ef074583e2a3,dst=/target/release/deps/libeither-64b2ef074583e2a3.rmeta,source=/libeither-64b2ef074583e2a3.rmeta \
+##   --mount=from=out-efba4db9305abd55,dst=/target/release/deps/librayon_core-efba4db9305abd55.rlib,source=/librayon_core-efba4db9305abd55.rlib \
+##   --mount=from=out-efba4db9305abd55,dst=/target/release/deps/librayon_core-efba4db9305abd55.rmeta,source=/librayon_core-efba4db9305abd55.rmeta \
+##   --mount=from=out-cc1298b8da143bbe,dst=/target/release/deps/libcrossbeam_deque-cc1298b8da143bbe.rlib,source=/libcrossbeam_deque-cc1298b8da143bbe.rlib \
+##   --mount=from=out-cc1298b8da143bbe,dst=/target/release/deps/libcrossbeam_deque-cc1298b8da143bbe.rmeta,source=/libcrossbeam_deque-cc1298b8da143bbe.rmeta \
+##   --mount=from=out-c2e7f2fc3addf6be,dst=/target/release/deps/libcrossbeam_epoch-c2e7f2fc3addf6be.rlib,source=/libcrossbeam_epoch-c2e7f2fc3addf6be.rlib \
+##   --mount=from=out-c2e7f2fc3addf6be,dst=/target/release/deps/libcrossbeam_epoch-c2e7f2fc3addf6be.rmeta,source=/libcrossbeam_epoch-c2e7f2fc3addf6be.rmeta \
+##   --mount=from=out-5ac36063ddf29a62,dst=/target/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rlib,source=/libcrossbeam_utils-5ac36063ddf29a62.rlib \
+##   --mount=from=out-5ac36063ddf29a62,dst=/target/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rmeta,source=/libcrossbeam_utils-5ac36063ddf29a62.rmeta \
+##   --mount=from=out-b630417cd5f2024a,dst=/target/release/deps/librgb-b630417cd5f2024a.rlib,source=/librgb-b630417cd5f2024a.rlib \
+##   --mount=from=out-b630417cd5f2024a,dst=/target/release/deps/librgb-b630417cd5f2024a.rmeta,source=/librgb-b630417cd5f2024a.rmeta \
+##   --mount=from=out-f0cdacabc0947b7b,dst=/target/release/deps/libbytemuck-f0cdacabc0947b7b.rlib,source=/libbytemuck-f0cdacabc0947b7b.rlib \
+##   --mount=from=out-f0cdacabc0947b7b,dst=/target/release/deps/libbytemuck-f0cdacabc0947b7b.rmeta,source=/libbytemuck-f0cdacabc0947b7b.rmeta \
+##   --mount=from=out-6b8c8ab37131cd0c,dst=/target/release/deps/libthread_local-6b8c8ab37131cd0c.rlib,source=/libthread_local-6b8c8ab37131cd0c.rlib \
+##   --mount=from=out-6b8c8ab37131cd0c,dst=/target/release/deps/libthread_local-6b8c8ab37131cd0c.rmeta,source=/libthread_local-6b8c8ab37131cd0c.rmeta \
+##   --mount=from=out-e1f9b2ca981c3e9f,dst=/target/release/deps/libcfg_if-e1f9b2ca981c3e9f.rlib,source=/libcfg_if-e1f9b2ca981c3e9f.rlib \
+##   --mount=from=out-e1f9b2ca981c3e9f,dst=/target/release/deps/libcfg_if-e1f9b2ca981c3e9f.rmeta,source=/libcfg_if-e1f9b2ca981c3e9f.rmeta \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=imagequant \
 ##         CARGO_INCREMENTAL=0 \
@@ -4651,11 +4651,11 @@ COPY --link --from=dep-n-imagequant-4.4.1-13cdc94a2acbf464 /tmp/clis-gifski_1-34
 ##         CARGO_PKG_VERSION_PATCH=1 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name imagequant --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --cfg feature'="default"' --cfg feature'="threads"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("_internal_c_ffi", "default", "large_palettes", "threads"))' -C metadata'=754fde55dbc54bb6' -C extra-filename'=-13cdc94a2acbf464' --out-dir /tmp/clis-gifski_1-34-0/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --extern arrayvec'=/tmp/clis-gifski_1-34-0/release/deps/libarrayvec-9b55b30a1b85e195.rmeta' --extern once_cell'=/tmp/clis-gifski_1-34-0/release/deps/libonce_cell-0774a35541eb4e3b.rmeta' --extern rayon'=/tmp/clis-gifski_1-34-0/release/deps/librayon-53357b7dd9022303.rmeta' --extern rgb'=/tmp/clis-gifski_1-34-0/release/deps/librgb-b630417cd5f2024a.rmeta' --extern thread_local'=/tmp/clis-gifski_1-34-0/release/deps/libthread_local-6b8c8ab37131cd0c.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/imagequant-4.4.1/src/lib.rs \
-##         1>          /tmp/clis-gifski_1-34-0/release/deps/out-13cdc94a2acbf464-stdout \
-##         2>          /tmp/clis-gifski_1-34-0/release/deps/out-13cdc94a2acbf464-stderr \
-##         || echo $? >/tmp/clis-gifski_1-34-0/release/deps/out-13cdc94a2acbf464-errcode\
-##   ; find /tmp/clis-gifski_1-34-0/release/deps/*-13cdc94a2acbf464* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name imagequant --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --cfg feature'="default"' --cfg feature'="threads"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("_internal_c_ffi", "default", "large_palettes", "threads"))' -C metadata'=754fde55dbc54bb6' -C extra-filename'=-13cdc94a2acbf464' --out-dir /target/release/deps -C strip'=symbols' -L dependency'=/target/release/deps' --extern arrayvec'=/target/release/deps/libarrayvec-9b55b30a1b85e195.rmeta' --extern once_cell'=/target/release/deps/libonce_cell-0774a35541eb4e3b.rmeta' --extern rayon'=/target/release/deps/librayon-53357b7dd9022303.rmeta' --extern rgb'=/target/release/deps/librgb-b630417cd5f2024a.rmeta' --extern thread_local'=/target/release/deps/libthread_local-6b8c8ab37131cd0c.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/imagequant-4.4.1/src/lib.rs \
+##         1>          /target/release/deps/out-13cdc94a2acbf464-stdout \
+##         2>          /target/release/deps/out-13cdc94a2acbf464-stderr \
+##         || echo $? >/target/release/deps/out-13cdc94a2acbf464-errcode\
+##   ; find /target/release/deps/*-13cdc94a2acbf464* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -4663,14 +4663,14 @@ COPY --link --from=dep-n-imagequant-4.4.1-13cdc94a2acbf464 /tmp/clis-gifski_1-34
 ## stage = "out-13cdc94a2acbf464"
 ## script = """
 ## FROM scratch AS out-13cdc94a2acbf464
-## COPY --link --from=dep-n-imagequant-4.4.1-13cdc94a2acbf464 /tmp/clis-gifski_1-34-0/release/deps/*-13cdc94a2acbf464* /"""
+## COPY --link --from=dep-n-imagequant-4.4.1-13cdc94a2acbf464 /target/release/deps/*-13cdc94a2acbf464* /"""
 
 FROM scratch AS cratesio-crc32fast-1.5.0
 ADD --chmod=0664 --unpack --checksum=sha256:9481c1c90cbf2ac953f07c8d4a58aa3945c425b7185c9154d67a65e4230da511 \
   https://static.crates.io/crates/crc32fast/crc32fast-1.5.0.crate /
 FROM rust-base AS dep-x-crc32fast-1.5.0-f8cc7c73f6f71403
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-gifski_1-34-0/release/build/crc32fast-f8cc7c73f6f71403
+WORKDIR /target/release/build/crc32fast-f8cc7c73f6f71403
 RUN \
   --mount=from=cratesio-crc32fast-1.5.0,source=/crc32fast-1.5.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crc32fast-1.5.0,rw \
     { \
@@ -4712,13 +4712,13 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "nightly", "std"))' -C metadata'=d74cac6f75576cfa' -C extra-filename'=-f8cc7c73f6f71403' --out-dir /tmp/clis-gifski_1-34-0/release/build/crc32fast-f8cc7c73f6f71403 -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crc32fast-1.5.0/build.rs \
-        1>          /tmp/clis-gifski_1-34-0/release/build/crc32fast-f8cc7c73f6f71403/out-f8cc7c73f6f71403-stdout \
-        2>          /tmp/clis-gifski_1-34-0/release/build/crc32fast-f8cc7c73f6f71403/out-f8cc7c73f6f71403-stderr \
-        || echo $? >/tmp/clis-gifski_1-34-0/release/build/crc32fast-f8cc7c73f6f71403/out-f8cc7c73f6f71403-errcode\
-  ; find /tmp/clis-gifski_1-34-0/release/build/crc32fast-f8cc7c73f6f71403/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "nightly", "std"))' -C metadata'=d74cac6f75576cfa' -C extra-filename'=-f8cc7c73f6f71403' --out-dir /target/release/build/crc32fast-f8cc7c73f6f71403 -C strip'=symbols' -L dependency'=/target/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crc32fast-1.5.0/build.rs \
+        1>          /target/release/build/crc32fast-f8cc7c73f6f71403/out-f8cc7c73f6f71403-stdout \
+        2>          /target/release/build/crc32fast-f8cc7c73f6f71403/out-f8cc7c73f6f71403-stderr \
+        || echo $? >/target/release/build/crc32fast-f8cc7c73f6f71403/out-f8cc7c73f6f71403-errcode\
+  ; find /target/release/build/crc32fast-f8cc7c73f6f71403/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-f8cc7c73f6f71403
-COPY --link --from=dep-x-crc32fast-1.5.0-f8cc7c73f6f71403 /tmp/clis-gifski_1-34-0/release/build/crc32fast-f8cc7c73f6f71403/*-f8cc7c73f6f71403* /
+COPY --link --from=dep-x-crc32fast-1.5.0-f8cc7c73f6f71403 /target/release/build/crc32fast-f8cc7c73f6f71403/*-f8cc7c73f6f71403* /
 
 ## this = "f8cc7c73f6f71403"
 ## writes = [
@@ -4726,8 +4726,8 @@ COPY --link --from=dep-x-crc32fast-1.5.0-f8cc7c73f6f71403 /tmp/clis-gifski_1-34-
 ##     "build_script_build-f8cc7c73f6f71403.d",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/build/crc32fast-f8cc7c73f6f71403/build_script_build-f8cc7c73f6f71403.d","emit":"dep-info"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/build/crc32fast-f8cc7c73f6f71403/build_script_build-f8cc7c73f6f71403","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/build/crc32fast-f8cc7c73f6f71403/build_script_build-f8cc7c73f6f71403.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/build/crc32fast-f8cc7c73f6f71403/build_script_build-f8cc7c73f6f71403","emit":"link"}',
 ## ]
 ##
 ## [[stages]]
@@ -4752,7 +4752,7 @@ COPY --link --from=dep-x-crc32fast-1.5.0-f8cc7c73f6f71403 /tmp/clis-gifski_1-34-
 ## script = '''
 ## FROM rust-base AS dep-x-crc32fast-1.5.0-f8cc7c73f6f71403
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-gifski_1-34-0/release/build/crc32fast-f8cc7c73f6f71403
+## WORKDIR /target/release/build/crc32fast-f8cc7c73f6f71403
 ## RUN \
 ##   --mount=from=cratesio-crc32fast-1.5.0,source=/crc32fast-1.5.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crc32fast-1.5.0,rw \
 ##     { \
@@ -4794,11 +4794,11 @@ COPY --link --from=dep-x-crc32fast-1.5.0-f8cc7c73f6f71403 /tmp/clis-gifski_1-34-
 ##         CARGO_PKG_VERSION_PATCH=0 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "nightly", "std"))' -C metadata'=d74cac6f75576cfa' -C extra-filename'=-f8cc7c73f6f71403' --out-dir /tmp/clis-gifski_1-34-0/release/build/crc32fast-f8cc7c73f6f71403 -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crc32fast-1.5.0/build.rs \
-##         1>          /tmp/clis-gifski_1-34-0/release/build/crc32fast-f8cc7c73f6f71403/out-f8cc7c73f6f71403-stdout \
-##         2>          /tmp/clis-gifski_1-34-0/release/build/crc32fast-f8cc7c73f6f71403/out-f8cc7c73f6f71403-stderr \
-##         || echo $? >/tmp/clis-gifski_1-34-0/release/build/crc32fast-f8cc7c73f6f71403/out-f8cc7c73f6f71403-errcode\
-##   ; find /tmp/clis-gifski_1-34-0/release/build/crc32fast-f8cc7c73f6f71403/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "nightly", "std"))' -C metadata'=d74cac6f75576cfa' -C extra-filename'=-f8cc7c73f6f71403' --out-dir /target/release/build/crc32fast-f8cc7c73f6f71403 -C strip'=symbols' -L dependency'=/target/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crc32fast-1.5.0/build.rs \
+##         1>          /target/release/build/crc32fast-f8cc7c73f6f71403/out-f8cc7c73f6f71403-stdout \
+##         2>          /target/release/build/crc32fast-f8cc7c73f6f71403/out-f8cc7c73f6f71403-stderr \
+##         || echo $? >/target/release/build/crc32fast-f8cc7c73f6f71403/out-f8cc7c73f6f71403-errcode\
+##   ; find /target/release/build/crc32fast-f8cc7c73f6f71403/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -4806,14 +4806,14 @@ COPY --link --from=dep-x-crc32fast-1.5.0-f8cc7c73f6f71403 /tmp/clis-gifski_1-34-
 ## stage = "out-f8cc7c73f6f71403"
 ## script = """
 ## FROM scratch AS out-f8cc7c73f6f71403
-## COPY --link --from=dep-x-crc32fast-1.5.0-f8cc7c73f6f71403 /tmp/clis-gifski_1-34-0/release/build/crc32fast-f8cc7c73f6f71403/*-f8cc7c73f6f71403* /"""
+## COPY --link --from=dep-x-crc32fast-1.5.0-f8cc7c73f6f71403 /target/release/build/crc32fast-f8cc7c73f6f71403/*-f8cc7c73f6f71403* /"""
 
 FROM rust-base AS run-z-crc32fast-1.5.0-aca03044d2384264
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-gifski_1-34-0/release/build/crc32fast-aca03044d2384264/out
+WORKDIR /target/release/build/crc32fast-aca03044d2384264/out
 WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crc32fast-1.5.0
 RUN \
-  --mount=from=out-f8cc7c73f6f71403,source=/build_script_build-f8cc7c73f6f71403,dst=/tmp/clis-gifski_1-34-0/release/build/crc32fast-f8cc7c73f6f71403/build-script-build \
+  --mount=from=out-f8cc7c73f6f71403,source=/build_script_build-f8cc7c73f6f71403,dst=/target/release/build/crc32fast-f8cc7c73f6f71403/build-script-build \
   --mount=from=cratesio-crc32fast-1.5.0,source=/crc32fast-1.5.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crc32fast-1.5.0 \
     env CARGO="$(which cargo)" \
         CARGO_CFG_FEATURE=default,std \
@@ -4853,23 +4853,23 @@ RUN \
         HOST=x86_64-unknown-linux-gnu \
         NUM_JOBS=4 \
         OPT_LEVEL=3 \
-        OUT_DIR=/tmp/clis-gifski_1-34-0/release/build/crc32fast-aca03044d2384264/out \
+        OUT_DIR=/target/release/build/crc32fast-aca03044d2384264/out \
         PROFILE=release \
         RUSTC=rustc \
         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
         TARGET=x86_64-unknown-linux-gnu \
         CARGOGREEN=1 \
-      CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-gifski_1-34-0/release/build/crc32fast-f8cc7c73f6f71403/build-script-build \
-        1>          /tmp/clis-gifski_1-34-0/release/build/crc32fast-aca03044d2384264/out/out-aca03044d2384264-stdout \
-        2>          /tmp/clis-gifski_1-34-0/release/build/crc32fast-aca03044d2384264/out/out-aca03044d2384264-stderr \
-        || echo $? >/tmp/clis-gifski_1-34-0/release/build/crc32fast-aca03044d2384264/out/out-aca03044d2384264-errcode\
-  ; find /tmp/clis-gifski_1-34-0/release/build/crc32fast-aca03044d2384264/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      CARGOGREEN_EXECUTE_BUILDRS_= /target/release/build/crc32fast-f8cc7c73f6f71403/build-script-build \
+        1>          /target/release/build/crc32fast-aca03044d2384264/out/out-aca03044d2384264-stdout \
+        2>          /target/release/build/crc32fast-aca03044d2384264/out/out-aca03044d2384264-stderr \
+        || echo $? >/target/release/build/crc32fast-aca03044d2384264/out/out-aca03044d2384264-errcode\
+  ; find /target/release/build/crc32fast-aca03044d2384264/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-aca03044d2384264
-COPY --link --from=run-z-crc32fast-1.5.0-aca03044d2384264 /tmp/clis-gifski_1-34-0/release/build/crc32fast-aca03044d2384264/out /
+COPY --link --from=run-z-crc32fast-1.5.0-aca03044d2384264 /target/release/build/crc32fast-aca03044d2384264/out /
 
 ## this = "aca03044d2384264"
 ## deps = ["f8cc7c73f6f71403"]
-## writes_to = "/tmp/clis-gifski_1-34-0/release/build/crc32fast-aca03044d2384264/out"
+## writes_to = "/target/release/build/crc32fast-aca03044d2384264/out"
 ## stdout = [
 ##     "cargo:rustc-cfg=stable_arm_crc32_intrinsics",
 ##     "cargo:rustc-check-cfg=cfg(stable_arm_crc32_intrinsics)",
@@ -4888,10 +4888,10 @@ COPY --link --from=run-z-crc32fast-1.5.0-aca03044d2384264 /tmp/clis-gifski_1-34-
 ## script = '''
 ## FROM rust-base AS run-z-crc32fast-1.5.0-aca03044d2384264
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-gifski_1-34-0/release/build/crc32fast-aca03044d2384264/out
+## WORKDIR /target/release/build/crc32fast-aca03044d2384264/out
 ## WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crc32fast-1.5.0
 ## RUN \
-##   --mount=from=out-f8cc7c73f6f71403,source=/build_script_build-f8cc7c73f6f71403,dst=/tmp/clis-gifski_1-34-0/release/build/crc32fast-f8cc7c73f6f71403/build-script-build \
+##   --mount=from=out-f8cc7c73f6f71403,source=/build_script_build-f8cc7c73f6f71403,dst=/target/release/build/crc32fast-f8cc7c73f6f71403/build-script-build \
 ##   --mount=from=cratesio-crc32fast-1.5.0,source=/crc32fast-1.5.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crc32fast-1.5.0 \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CFG_FEATURE=default,std \
@@ -4931,17 +4931,17 @@ COPY --link --from=run-z-crc32fast-1.5.0-aca03044d2384264 /tmp/clis-gifski_1-34-
 ##         HOST=x86_64-unknown-linux-gnu \
 ##         NUM_JOBS=4 \
 ##         OPT_LEVEL=3 \
-##         OUT_DIR=/tmp/clis-gifski_1-34-0/release/build/crc32fast-aca03044d2384264/out \
+##         OUT_DIR=/target/release/build/crc32fast-aca03044d2384264/out \
 ##         PROFILE=release \
 ##         RUSTC=rustc \
 ##         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
 ##         TARGET=x86_64-unknown-linux-gnu \
 ##         CARGOGREEN=1 \
-##       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-gifski_1-34-0/release/build/crc32fast-f8cc7c73f6f71403/build-script-build \
-##         1>          /tmp/clis-gifski_1-34-0/release/build/crc32fast-aca03044d2384264/out/out-aca03044d2384264-stdout \
-##         2>          /tmp/clis-gifski_1-34-0/release/build/crc32fast-aca03044d2384264/out/out-aca03044d2384264-stderr \
-##         || echo $? >/tmp/clis-gifski_1-34-0/release/build/crc32fast-aca03044d2384264/out/out-aca03044d2384264-errcode\
-##   ; find /tmp/clis-gifski_1-34-0/release/build/crc32fast-aca03044d2384264/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       CARGOGREEN_EXECUTE_BUILDRS_= /target/release/build/crc32fast-f8cc7c73f6f71403/build-script-build \
+##         1>          /target/release/build/crc32fast-aca03044d2384264/out/out-aca03044d2384264-stdout \
+##         2>          /target/release/build/crc32fast-aca03044d2384264/out/out-aca03044d2384264-stderr \
+##         || echo $? >/target/release/build/crc32fast-aca03044d2384264/out/out-aca03044d2384264-errcode\
+##   ; find /target/release/build/crc32fast-aca03044d2384264/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -4949,17 +4949,17 @@ COPY --link --from=run-z-crc32fast-1.5.0-aca03044d2384264 /tmp/clis-gifski_1-34-
 ## stage = "out-aca03044d2384264"
 ## script = """
 ## FROM scratch AS out-aca03044d2384264
-## COPY --link --from=run-z-crc32fast-1.5.0-aca03044d2384264 /tmp/clis-gifski_1-34-0/release/build/crc32fast-aca03044d2384264/out /"""
+## COPY --link --from=run-z-crc32fast-1.5.0-aca03044d2384264 /target/release/build/crc32fast-aca03044d2384264/out /"""
 
 
 FROM rust-base AS dep-n-crc32fast-1.5.0-51c01ae8d7468fb2
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-gifski_1-34-0/release/deps
+WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-crc32fast-1.5.0,source=/crc32fast-1.5.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crc32fast-1.5.0 \
-  --mount=from=out-e1f9b2ca981c3e9f,dst=/tmp/clis-gifski_1-34-0/release/deps/libcfg_if-e1f9b2ca981c3e9f.rlib,source=/libcfg_if-e1f9b2ca981c3e9f.rlib \
-  --mount=from=out-e1f9b2ca981c3e9f,dst=/tmp/clis-gifski_1-34-0/release/deps/libcfg_if-e1f9b2ca981c3e9f.rmeta,source=/libcfg_if-e1f9b2ca981c3e9f.rmeta \
-  --mount=from=out-aca03044d2384264,dst=/tmp/clis-gifski_1-34-0/release/build/crc32fast-aca03044d2384264/out,source=/ \
+  --mount=from=out-e1f9b2ca981c3e9f,dst=/target/release/deps/libcfg_if-e1f9b2ca981c3e9f.rlib,source=/libcfg_if-e1f9b2ca981c3e9f.rlib \
+  --mount=from=out-e1f9b2ca981c3e9f,dst=/target/release/deps/libcfg_if-e1f9b2ca981c3e9f.rmeta,source=/libcfg_if-e1f9b2ca981c3e9f.rmeta \
+  --mount=from=out-aca03044d2384264,dst=/target/release/build/crc32fast-aca03044d2384264/out,source=/ \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=crc32fast \
         CARGO_INCREMENTAL=0 \
@@ -4979,15 +4979,15 @@ RUN \
         CARGO_PKG_VERSION_MINOR=5 \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
-        OUT_DIR=/tmp/clis-gifski_1-34-0/release/build/crc32fast-aca03044d2384264/out \
+        OUT_DIR=/target/release/build/crc32fast-aca03044d2384264/out \
         CARGOGREEN=1 \
-      rustc --crate-name crc32fast --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "nightly", "std"))' -C metadata'=644c4aecc0be584f' -C extra-filename'=-51c01ae8d7468fb2' --out-dir /tmp/clis-gifski_1-34-0/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --extern cfg_if'=/tmp/clis-gifski_1-34-0/release/deps/libcfg_if-e1f9b2ca981c3e9f.rmeta' --cap-lints warn --cfg stable_arm_crc32_intrinsics --check-cfg cfg'(stable_arm_crc32_intrinsics)' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crc32fast-1.5.0/src/lib.rs \
-        1>          /tmp/clis-gifski_1-34-0/release/deps/out-51c01ae8d7468fb2-stdout \
-        2>          /tmp/clis-gifski_1-34-0/release/deps/out-51c01ae8d7468fb2-stderr \
-        || echo $? >/tmp/clis-gifski_1-34-0/release/deps/out-51c01ae8d7468fb2-errcode\
-  ; find /tmp/clis-gifski_1-34-0/release/deps/*-51c01ae8d7468fb2* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      rustc --crate-name crc32fast --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "nightly", "std"))' -C metadata'=644c4aecc0be584f' -C extra-filename'=-51c01ae8d7468fb2' --out-dir /target/release/deps -C strip'=symbols' -L dependency'=/target/release/deps' --extern cfg_if'=/target/release/deps/libcfg_if-e1f9b2ca981c3e9f.rmeta' --cap-lints warn --cfg stable_arm_crc32_intrinsics --check-cfg cfg'(stable_arm_crc32_intrinsics)' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crc32fast-1.5.0/src/lib.rs \
+        1>          /target/release/deps/out-51c01ae8d7468fb2-stdout \
+        2>          /target/release/deps/out-51c01ae8d7468fb2-stderr \
+        || echo $? >/target/release/deps/out-51c01ae8d7468fb2-errcode\
+  ; find /target/release/deps/*-51c01ae8d7468fb2* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-51c01ae8d7468fb2
-COPY --link --from=dep-n-crc32fast-1.5.0-51c01ae8d7468fb2 /tmp/clis-gifski_1-34-0/release/deps/*-51c01ae8d7468fb2* /
+COPY --link --from=dep-n-crc32fast-1.5.0-51c01ae8d7468fb2 /target/release/deps/*-51c01ae8d7468fb2* /
 
 ## this = "51c01ae8d7468fb2"
 ## deps = [
@@ -5002,9 +5002,9 @@ COPY --link --from=dep-n-crc32fast-1.5.0-51c01ae8d7468fb2 /tmp/clis-gifski_1-34-
 ##     "libcrc32fast-51c01ae8d7468fb2.rmeta",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/crc32fast-51c01ae8d7468fb2.d","emit":"dep-info"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/libcrc32fast-51c01ae8d7468fb2.rmeta","emit":"metadata"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/libcrc32fast-51c01ae8d7468fb2.rlib","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/crc32fast-51c01ae8d7468fb2.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libcrc32fast-51c01ae8d7468fb2.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libcrc32fast-51c01ae8d7468fb2.rlib","emit":"link"}',
 ## ]
 ##
 ## [[externs]]
@@ -5017,7 +5017,7 @@ COPY --link --from=dep-n-crc32fast-1.5.0-51c01ae8d7468fb2 /tmp/clis-gifski_1-34-
 ##
 ## [[mounts]]
 ## name = "out-aca03044d2384264"
-## mount = "/tmp/clis-gifski_1-34-0/release/build/crc32fast-aca03044d2384264/out"
+## mount = "/target/release/build/crc32fast-aca03044d2384264/out"
 ##
 ## [[stages]]
 ##
@@ -5041,12 +5041,12 @@ COPY --link --from=dep-n-crc32fast-1.5.0-51c01ae8d7468fb2 /tmp/clis-gifski_1-34-
 ## script = '''
 ## FROM rust-base AS dep-n-crc32fast-1.5.0-51c01ae8d7468fb2
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-gifski_1-34-0/release/deps
+## WORKDIR /target/release/deps
 ## RUN \
 ##   --mount=from=cratesio-crc32fast-1.5.0,source=/crc32fast-1.5.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crc32fast-1.5.0 \
-##   --mount=from=out-e1f9b2ca981c3e9f,dst=/tmp/clis-gifski_1-34-0/release/deps/libcfg_if-e1f9b2ca981c3e9f.rlib,source=/libcfg_if-e1f9b2ca981c3e9f.rlib \
-##   --mount=from=out-e1f9b2ca981c3e9f,dst=/tmp/clis-gifski_1-34-0/release/deps/libcfg_if-e1f9b2ca981c3e9f.rmeta,source=/libcfg_if-e1f9b2ca981c3e9f.rmeta \
-##   --mount=from=out-aca03044d2384264,dst=/tmp/clis-gifski_1-34-0/release/build/crc32fast-aca03044d2384264/out,source=/ \
+##   --mount=from=out-e1f9b2ca981c3e9f,dst=/target/release/deps/libcfg_if-e1f9b2ca981c3e9f.rlib,source=/libcfg_if-e1f9b2ca981c3e9f.rlib \
+##   --mount=from=out-e1f9b2ca981c3e9f,dst=/target/release/deps/libcfg_if-e1f9b2ca981c3e9f.rmeta,source=/libcfg_if-e1f9b2ca981c3e9f.rmeta \
+##   --mount=from=out-aca03044d2384264,dst=/target/release/build/crc32fast-aca03044d2384264/out,source=/ \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=crc32fast \
 ##         CARGO_INCREMENTAL=0 \
@@ -5066,13 +5066,13 @@ COPY --link --from=dep-n-crc32fast-1.5.0-51c01ae8d7468fb2 /tmp/clis-gifski_1-34-
 ##         CARGO_PKG_VERSION_MINOR=5 \
 ##         CARGO_PKG_VERSION_PATCH=0 \
 ##         CARGO_PKG_VERSION_PRE= \
-##         OUT_DIR=/tmp/clis-gifski_1-34-0/release/build/crc32fast-aca03044d2384264/out \
+##         OUT_DIR=/target/release/build/crc32fast-aca03044d2384264/out \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name crc32fast --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "nightly", "std"))' -C metadata'=644c4aecc0be584f' -C extra-filename'=-51c01ae8d7468fb2' --out-dir /tmp/clis-gifski_1-34-0/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --extern cfg_if'=/tmp/clis-gifski_1-34-0/release/deps/libcfg_if-e1f9b2ca981c3e9f.rmeta' --cap-lints warn --cfg stable_arm_crc32_intrinsics --check-cfg cfg'(stable_arm_crc32_intrinsics)' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crc32fast-1.5.0/src/lib.rs \
-##         1>          /tmp/clis-gifski_1-34-0/release/deps/out-51c01ae8d7468fb2-stdout \
-##         2>          /tmp/clis-gifski_1-34-0/release/deps/out-51c01ae8d7468fb2-stderr \
-##         || echo $? >/tmp/clis-gifski_1-34-0/release/deps/out-51c01ae8d7468fb2-errcode\
-##   ; find /tmp/clis-gifski_1-34-0/release/deps/*-51c01ae8d7468fb2* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name crc32fast --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "nightly", "std"))' -C metadata'=644c4aecc0be584f' -C extra-filename'=-51c01ae8d7468fb2' --out-dir /target/release/deps -C strip'=symbols' -L dependency'=/target/release/deps' --extern cfg_if'=/target/release/deps/libcfg_if-e1f9b2ca981c3e9f.rmeta' --cap-lints warn --cfg stable_arm_crc32_intrinsics --check-cfg cfg'(stable_arm_crc32_intrinsics)' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/crc32fast-1.5.0/src/lib.rs \
+##         1>          /target/release/deps/out-51c01ae8d7468fb2-stdout \
+##         2>          /target/release/deps/out-51c01ae8d7468fb2-stderr \
+##         || echo $? >/target/release/deps/out-51c01ae8d7468fb2-errcode\
+##   ; find /target/release/deps/*-51c01ae8d7468fb2* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -5080,14 +5080,14 @@ COPY --link --from=dep-n-crc32fast-1.5.0-51c01ae8d7468fb2 /tmp/clis-gifski_1-34-
 ## stage = "out-51c01ae8d7468fb2"
 ## script = """
 ## FROM scratch AS out-51c01ae8d7468fb2
-## COPY --link --from=dep-n-crc32fast-1.5.0-51c01ae8d7468fb2 /tmp/clis-gifski_1-34-0/release/deps/*-51c01ae8d7468fb2* /"""
+## COPY --link --from=dep-n-crc32fast-1.5.0-51c01ae8d7468fb2 /target/release/deps/*-51c01ae8d7468fb2* /"""
 
 FROM scratch AS cratesio-zlib-rs-0.5.1
 ADD --chmod=0664 --unpack --checksum=sha256:626bd9fa9734751fc50d6060752170984d7053f5a39061f524cda68023d4db8a \
   https://static.crates.io/crates/zlib-rs/zlib-rs-0.5.1.crate /
 FROM rust-base AS dep-n-zlib-rs-0.5.1-1ce6de5e74c29a43
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-gifski_1-34-0/release/deps
+WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-zlib-rs-0.5.1,source=/zlib-rs-0.5.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zlib-rs-0.5.1 \
     env CARGO="$(which cargo)" \
@@ -5110,13 +5110,13 @@ RUN \
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --crate-name zlib_rs --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --cfg feature'="rust-allocator"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("ZLIB_DEBUG", "__internal-fuzz", "__internal-fuzz-disable-checksum", "__internal-test", "arbitrary", "c-allocator", "default", "quickcheck", "rust-allocator", "std"))' -C metadata'=0f9ec20b18da201a' -C extra-filename'=-1ce6de5e74c29a43' --out-dir /tmp/clis-gifski_1-34-0/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zlib-rs-0.5.1/src/lib.rs \
-        1>          /tmp/clis-gifski_1-34-0/release/deps/out-1ce6de5e74c29a43-stdout \
-        2>          /tmp/clis-gifski_1-34-0/release/deps/out-1ce6de5e74c29a43-stderr \
-        || echo $? >/tmp/clis-gifski_1-34-0/release/deps/out-1ce6de5e74c29a43-errcode\
-  ; find /tmp/clis-gifski_1-34-0/release/deps/*-1ce6de5e74c29a43* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      rustc --crate-name zlib_rs --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --cfg feature'="rust-allocator"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("ZLIB_DEBUG", "__internal-fuzz", "__internal-fuzz-disable-checksum", "__internal-test", "arbitrary", "c-allocator", "default", "quickcheck", "rust-allocator", "std"))' -C metadata'=0f9ec20b18da201a' -C extra-filename'=-1ce6de5e74c29a43' --out-dir /target/release/deps -C strip'=symbols' -L dependency'=/target/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zlib-rs-0.5.1/src/lib.rs \
+        1>          /target/release/deps/out-1ce6de5e74c29a43-stdout \
+        2>          /target/release/deps/out-1ce6de5e74c29a43-stderr \
+        || echo $? >/target/release/deps/out-1ce6de5e74c29a43-errcode\
+  ; find /target/release/deps/*-1ce6de5e74c29a43* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-1ce6de5e74c29a43
-COPY --link --from=dep-n-zlib-rs-0.5.1-1ce6de5e74c29a43 /tmp/clis-gifski_1-34-0/release/deps/*-1ce6de5e74c29a43* /
+COPY --link --from=dep-n-zlib-rs-0.5.1-1ce6de5e74c29a43 /target/release/deps/*-1ce6de5e74c29a43* /
 
 ## this = "1ce6de5e74c29a43"
 ## writes = [
@@ -5125,7 +5125,7 @@ COPY --link --from=dep-n-zlib-rs-0.5.1-1ce6de5e74c29a43 /tmp/clis-gifski_1-34-0/
 ##     "zlib_rs-1ce6de5e74c29a43.d",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/zlib_rs-1ce6de5e74c29a43.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/zlib_rs-1ce6de5e74c29a43.d","emit":"dep-info"}',
 ##     '{"$message_type":"diagnostic","message":"type alias `size_t` is never used","code":{"code":"dead_code","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zlib-rs-0.5.1/src/allocate.rs","byte_start":298,"byte_end":304,"line_start":16,"line_end":16,"column_start":6,"column_end":12,"is_primary":true,"text":[{"text":"type size_t = usize;","highlight_start":6,"highlight_end":12}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"`#[warn(dead_code)]` on by default","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: type alias `size_t` is never used\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zlib-rs-0.5.1/src/allocate.rs:16:6\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m16\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0mtype size_t = usize;\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m      \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: `#[warn(dead_code)]` on by default\u001b[0m\n\n"}',
 ##     '{"$message_type":"diagnostic","message":"function `zalloc_c` is never used","code":{"code":"dead_code","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zlib-rs-0.5.1/src/allocate.rs","byte_start":486,"byte_end":494,"line_start":24,"line_end":24,"column_start":22,"column_end":30,"is_primary":true,"text":[{"text":"unsafe extern \"C\" fn zalloc_c(opaque: *mut c_void, items: c_uint, size: c_uint) -> *mut c_void {","highlight_start":22,"highlight_end":30}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: function `zalloc_c` is never used\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zlib-rs-0.5.1/src/allocate.rs:24:22\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m24\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0munsafe extern \"C\" fn zalloc_c(opaque: *mut c_void, items: c_uint, size: c_uint) -> *mut c_void {\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                      \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^\u001b[0m\n\n"}',
 ##     '{"$message_type":"diagnostic","message":"function `zalloc_c_calloc` is never used","code":{"code":"dead_code","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zlib-rs-0.5.1/src/allocate.rs","byte_start":1392,"byte_end":1407,"line_start":55,"line_end":55,"column_start":22,"column_end":37,"is_primary":true,"text":[{"text":"unsafe extern \"C\" fn zalloc_c_calloc(","highlight_start":22,"highlight_end":37}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: function `zalloc_c_calloc` is never used\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zlib-rs-0.5.1/src/allocate.rs:55:22\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m55\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0munsafe extern \"C\" fn zalloc_c_calloc(\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                      \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^\u001b[0m\n\n"}',
@@ -5133,8 +5133,8 @@ COPY --link --from=dep-n-zlib-rs-0.5.1-1ce6de5e74c29a43 /tmp/clis-gifski_1-34-0/
 ##     '{"$message_type":"diagnostic","message":"function `posix_memalign` is never used","code":{"code":"dead_code","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zlib-rs-0.5.1/src/allocate.rs","byte_start":611,"byte_end":625,"line_start":28,"line_end":28,"column_start":12,"column_end":26,"is_primary":true,"text":[{"text":"        fn posix_memalign(memptr: *mut *mut c_void, align: size_t, size: size_t) -> c_int;","highlight_start":12,"highlight_end":26}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: function `posix_memalign` is never used\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zlib-rs-0.5.1/src/allocate.rs:28:12\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m28\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m        fn posix_memalign(memptr: *mut *mut c_void, align: size_t, size: size_t) -> c_int;\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m            \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^\u001b[0m\n\n"}',
 ##     '{"$message_type":"diagnostic","message":"function `calloc` is never used","code":{"code":"dead_code","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zlib-rs-0.5.1/src/allocate.rs","byte_start":1539,"byte_end":1545,"line_start":63,"line_end":63,"column_start":12,"column_end":18,"is_primary":true,"text":[{"text":"        fn calloc(nitems: size_t, size: size_t) -> *mut c_void;","highlight_start":12,"highlight_end":18}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: function `calloc` is never used\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zlib-rs-0.5.1/src/allocate.rs:63:12\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m63\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m        fn calloc(nitems: size_t, size: size_t) -> *mut c_void;\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m            \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^\u001b[0m\n\n"}',
 ##     '{"$message_type":"diagnostic","message":"function `free` is never used","code":{"code":"dead_code","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zlib-rs-0.5.1/src/allocate.rs","byte_start":1869,"byte_end":1873,"line_start":76,"line_end":76,"column_start":12,"column_end":16,"is_primary":true,"text":[{"text":"        fn free(p: *mut c_void);","highlight_start":12,"highlight_end":16}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: function `free` is never used\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zlib-rs-0.5.1/src/allocate.rs:76:12\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m76\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m        fn free(p: *mut c_void);\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m            \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^\u001b[0m\n\n"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/libzlib_rs-1ce6de5e74c29a43.rmeta","emit":"metadata"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/libzlib_rs-1ce6de5e74c29a43.rlib","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libzlib_rs-1ce6de5e74c29a43.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libzlib_rs-1ce6de5e74c29a43.rlib","emit":"link"}',
 ##     '{"$message_type":"diagnostic","message":"7 warnings emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 7 warnings emitted\u001b[0m\n\n"}',
 ## ]
 ##
@@ -5160,7 +5160,7 @@ COPY --link --from=dep-n-zlib-rs-0.5.1-1ce6de5e74c29a43 /tmp/clis-gifski_1-34-0/
 ## script = '''
 ## FROM rust-base AS dep-n-zlib-rs-0.5.1-1ce6de5e74c29a43
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-gifski_1-34-0/release/deps
+## WORKDIR /target/release/deps
 ## RUN \
 ##   --mount=from=cratesio-zlib-rs-0.5.1,source=/zlib-rs-0.5.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zlib-rs-0.5.1 \
 ##     env CARGO="$(which cargo)" \
@@ -5183,11 +5183,11 @@ COPY --link --from=dep-n-zlib-rs-0.5.1-1ce6de5e74c29a43 /tmp/clis-gifski_1-34-0/
 ##         CARGO_PKG_VERSION_PATCH=1 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name zlib_rs --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --cfg feature'="rust-allocator"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("ZLIB_DEBUG", "__internal-fuzz", "__internal-fuzz-disable-checksum", "__internal-test", "arbitrary", "c-allocator", "default", "quickcheck", "rust-allocator", "std"))' -C metadata'=0f9ec20b18da201a' -C extra-filename'=-1ce6de5e74c29a43' --out-dir /tmp/clis-gifski_1-34-0/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zlib-rs-0.5.1/src/lib.rs \
-##         1>          /tmp/clis-gifski_1-34-0/release/deps/out-1ce6de5e74c29a43-stdout \
-##         2>          /tmp/clis-gifski_1-34-0/release/deps/out-1ce6de5e74c29a43-stderr \
-##         || echo $? >/tmp/clis-gifski_1-34-0/release/deps/out-1ce6de5e74c29a43-errcode\
-##   ; find /tmp/clis-gifski_1-34-0/release/deps/*-1ce6de5e74c29a43* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name zlib_rs --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --cfg feature'="rust-allocator"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("ZLIB_DEBUG", "__internal-fuzz", "__internal-fuzz-disable-checksum", "__internal-test", "arbitrary", "c-allocator", "default", "quickcheck", "rust-allocator", "std"))' -C metadata'=0f9ec20b18da201a' -C extra-filename'=-1ce6de5e74c29a43' --out-dir /target/release/deps -C strip'=symbols' -L dependency'=/target/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/zlib-rs-0.5.1/src/lib.rs \
+##         1>          /target/release/deps/out-1ce6de5e74c29a43-stdout \
+##         2>          /target/release/deps/out-1ce6de5e74c29a43-stderr \
+##         || echo $? >/target/release/deps/out-1ce6de5e74c29a43-errcode\
+##   ; find /target/release/deps/*-1ce6de5e74c29a43* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -5195,18 +5195,18 @@ COPY --link --from=dep-n-zlib-rs-0.5.1-1ce6de5e74c29a43 /tmp/clis-gifski_1-34-0/
 ## stage = "out-1ce6de5e74c29a43"
 ## script = """
 ## FROM scratch AS out-1ce6de5e74c29a43
-## COPY --link --from=dep-n-zlib-rs-0.5.1-1ce6de5e74c29a43 /tmp/clis-gifski_1-34-0/release/deps/*-1ce6de5e74c29a43* /"""
+## COPY --link --from=dep-n-zlib-rs-0.5.1-1ce6de5e74c29a43 /target/release/deps/*-1ce6de5e74c29a43* /"""
 
 FROM scratch AS cratesio-libz-rs-sys-0.5.1
 ADD --chmod=0664 --unpack --checksum=sha256:172a788537a2221661b480fee8dc5f96c580eb34fa88764d3205dc356c7e4221 \
   https://static.crates.io/crates/libz-rs-sys/libz-rs-sys-0.5.1.crate /
 FROM rust-base AS dep-n-libz-rs-sys-0.5.1-2a56889f8f4194b3
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-gifski_1-34-0/release/deps
+WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-libz-rs-sys-0.5.1,source=/libz-rs-sys-0.5.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libz-rs-sys-0.5.1 \
-  --mount=from=out-1ce6de5e74c29a43,dst=/tmp/clis-gifski_1-34-0/release/deps/libzlib_rs-1ce6de5e74c29a43.rlib,source=/libzlib_rs-1ce6de5e74c29a43.rlib \
-  --mount=from=out-1ce6de5e74c29a43,dst=/tmp/clis-gifski_1-34-0/release/deps/libzlib_rs-1ce6de5e74c29a43.rmeta,source=/libzlib_rs-1ce6de5e74c29a43.rmeta \
+  --mount=from=out-1ce6de5e74c29a43,dst=/target/release/deps/libzlib_rs-1ce6de5e74c29a43.rlib,source=/libzlib_rs-1ce6de5e74c29a43.rlib \
+  --mount=from=out-1ce6de5e74c29a43,dst=/target/release/deps/libzlib_rs-1ce6de5e74c29a43.rmeta,source=/libzlib_rs-1ce6de5e74c29a43.rmeta \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=libz_rs_sys \
         CARGO_INCREMENTAL=0 \
@@ -5227,13 +5227,13 @@ RUN \
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --crate-name libz_rs_sys --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --cfg feature'="rust-allocator"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("c-allocator", "custom-prefix", "default", "export-symbols", "rust-allocator", "semver-prefix", "std", "testing-prefix"))' -C metadata'=955662772752a069' -C extra-filename'=-2a56889f8f4194b3' --out-dir /tmp/clis-gifski_1-34-0/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --extern zlib_rs'=/tmp/clis-gifski_1-34-0/release/deps/libzlib_rs-1ce6de5e74c29a43.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libz-rs-sys-0.5.1/src/lib.rs \
-        1>          /tmp/clis-gifski_1-34-0/release/deps/out-2a56889f8f4194b3-stdout \
-        2>          /tmp/clis-gifski_1-34-0/release/deps/out-2a56889f8f4194b3-stderr \
-        || echo $? >/tmp/clis-gifski_1-34-0/release/deps/out-2a56889f8f4194b3-errcode\
-  ; find /tmp/clis-gifski_1-34-0/release/deps/*-2a56889f8f4194b3* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      rustc --crate-name libz_rs_sys --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --cfg feature'="rust-allocator"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("c-allocator", "custom-prefix", "default", "export-symbols", "rust-allocator", "semver-prefix", "std", "testing-prefix"))' -C metadata'=955662772752a069' -C extra-filename'=-2a56889f8f4194b3' --out-dir /target/release/deps -C strip'=symbols' -L dependency'=/target/release/deps' --extern zlib_rs'=/target/release/deps/libzlib_rs-1ce6de5e74c29a43.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libz-rs-sys-0.5.1/src/lib.rs \
+        1>          /target/release/deps/out-2a56889f8f4194b3-stdout \
+        2>          /target/release/deps/out-2a56889f8f4194b3-stderr \
+        || echo $? >/target/release/deps/out-2a56889f8f4194b3-errcode\
+  ; find /target/release/deps/*-2a56889f8f4194b3* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-2a56889f8f4194b3
-COPY --link --from=dep-n-libz-rs-sys-0.5.1-2a56889f8f4194b3 /tmp/clis-gifski_1-34-0/release/deps/*-2a56889f8f4194b3* /
+COPY --link --from=dep-n-libz-rs-sys-0.5.1-2a56889f8f4194b3 /target/release/deps/*-2a56889f8f4194b3* /
 
 ## this = "2a56889f8f4194b3"
 ## deps = ["1ce6de5e74c29a43"]
@@ -5243,11 +5243,11 @@ COPY --link --from=dep-n-libz-rs-sys-0.5.1-2a56889f8f4194b3 /tmp/clis-gifski_1-3
 ##     "libz_rs_sys-2a56889f8f4194b3.d",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/libz_rs_sys-2a56889f8f4194b3.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libz_rs_sys-2a56889f8f4194b3.d","emit":"dep-info"}',
 ##     '{"$message_type":"diagnostic","message":"unused macro definition: `prefix`","code":{"code":"unused_macros","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libz-rs-sys-0.5.1/src/lib.rs","byte_start":2644,"byte_end":2650,"line_start":70,"line_end":70,"column_start":14,"column_end":20,"is_primary":true,"text":[{"text":"macro_rules! prefix {","highlight_start":14,"highlight_end":20}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"`#[warn(unused_macros)]` on by default","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unused macro definition: `prefix`\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libz-rs-sys-0.5.1/src/lib.rs:70:14\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m70\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0mmacro_rules! prefix {\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m              \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: `#[warn(unused_macros)]` on by default\u001b[0m\n\n"}',
 ##     '{"$message_type":"diagnostic","message":"unused import: `prefix`","code":{"code":"unused_imports","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libz-rs-sys-0.5.1/src/lib.rs","byte_start":2965,"byte_end":2971,"line_start":87,"line_end":87,"column_start":16,"column_end":22,"is_primary":true,"text":[{"text":"pub(crate) use prefix;","highlight_start":16,"highlight_end":22}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"`#[warn(unused_imports)]` on by default","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"remove the whole `use` item","code":null,"level":"help","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libz-rs-sys-0.5.1/src/lib.rs","byte_start":2950,"byte_end":2973,"line_start":87,"line_end":88,"column_start":1,"column_end":1,"is_primary":true,"text":[{"text":"pub(crate) use prefix;","highlight_start":1,"highlight_end":23},{"text":"","highlight_start":1,"highlight_end":1}],"label":null,"suggested_replacement":"","suggestion_applicability":"MachineApplicable","expansion":null}],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unused import: `prefix`\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libz-rs-sys-0.5.1/src/lib.rs:87:16\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m87\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0mpub(crate) use prefix;\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: `#[warn(unused_imports)]` on by default\u001b[0m\n\n"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/liblibz_rs_sys-2a56889f8f4194b3.rmeta","emit":"metadata"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/liblibz_rs_sys-2a56889f8f4194b3.rlib","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/liblibz_rs_sys-2a56889f8f4194b3.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/liblibz_rs_sys-2a56889f8f4194b3.rlib","emit":"link"}',
 ##     '{"$message_type":"diagnostic","message":"2 warnings emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 2 warnings emitted\u001b[0m\n\n"}',
 ## ]
 ##
@@ -5281,11 +5281,11 @@ COPY --link --from=dep-n-libz-rs-sys-0.5.1-2a56889f8f4194b3 /tmp/clis-gifski_1-3
 ## script = '''
 ## FROM rust-base AS dep-n-libz-rs-sys-0.5.1-2a56889f8f4194b3
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-gifski_1-34-0/release/deps
+## WORKDIR /target/release/deps
 ## RUN \
 ##   --mount=from=cratesio-libz-rs-sys-0.5.1,source=/libz-rs-sys-0.5.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libz-rs-sys-0.5.1 \
-##   --mount=from=out-1ce6de5e74c29a43,dst=/tmp/clis-gifski_1-34-0/release/deps/libzlib_rs-1ce6de5e74c29a43.rlib,source=/libzlib_rs-1ce6de5e74c29a43.rlib \
-##   --mount=from=out-1ce6de5e74c29a43,dst=/tmp/clis-gifski_1-34-0/release/deps/libzlib_rs-1ce6de5e74c29a43.rmeta,source=/libzlib_rs-1ce6de5e74c29a43.rmeta \
+##   --mount=from=out-1ce6de5e74c29a43,dst=/target/release/deps/libzlib_rs-1ce6de5e74c29a43.rlib,source=/libzlib_rs-1ce6de5e74c29a43.rlib \
+##   --mount=from=out-1ce6de5e74c29a43,dst=/target/release/deps/libzlib_rs-1ce6de5e74c29a43.rmeta,source=/libzlib_rs-1ce6de5e74c29a43.rmeta \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=libz_rs_sys \
 ##         CARGO_INCREMENTAL=0 \
@@ -5306,11 +5306,11 @@ COPY --link --from=dep-n-libz-rs-sys-0.5.1-2a56889f8f4194b3 /tmp/clis-gifski_1-3
 ##         CARGO_PKG_VERSION_PATCH=1 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name libz_rs_sys --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --cfg feature'="rust-allocator"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("c-allocator", "custom-prefix", "default", "export-symbols", "rust-allocator", "semver-prefix", "std", "testing-prefix"))' -C metadata'=955662772752a069' -C extra-filename'=-2a56889f8f4194b3' --out-dir /tmp/clis-gifski_1-34-0/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --extern zlib_rs'=/tmp/clis-gifski_1-34-0/release/deps/libzlib_rs-1ce6de5e74c29a43.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libz-rs-sys-0.5.1/src/lib.rs \
-##         1>          /tmp/clis-gifski_1-34-0/release/deps/out-2a56889f8f4194b3-stdout \
-##         2>          /tmp/clis-gifski_1-34-0/release/deps/out-2a56889f8f4194b3-stderr \
-##         || echo $? >/tmp/clis-gifski_1-34-0/release/deps/out-2a56889f8f4194b3-errcode\
-##   ; find /tmp/clis-gifski_1-34-0/release/deps/*-2a56889f8f4194b3* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name libz_rs_sys --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --cfg feature'="rust-allocator"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("c-allocator", "custom-prefix", "default", "export-symbols", "rust-allocator", "semver-prefix", "std", "testing-prefix"))' -C metadata'=955662772752a069' -C extra-filename'=-2a56889f8f4194b3' --out-dir /target/release/deps -C strip'=symbols' -L dependency'=/target/release/deps' --extern zlib_rs'=/target/release/deps/libzlib_rs-1ce6de5e74c29a43.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libz-rs-sys-0.5.1/src/lib.rs \
+##         1>          /target/release/deps/out-2a56889f8f4194b3-stdout \
+##         2>          /target/release/deps/out-2a56889f8f4194b3-stderr \
+##         || echo $? >/target/release/deps/out-2a56889f8f4194b3-errcode\
+##   ; find /target/release/deps/*-2a56889f8f4194b3* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -5318,24 +5318,24 @@ COPY --link --from=dep-n-libz-rs-sys-0.5.1-2a56889f8f4194b3 /tmp/clis-gifski_1-3
 ## stage = "out-2a56889f8f4194b3"
 ## script = """
 ## FROM scratch AS out-2a56889f8f4194b3
-## COPY --link --from=dep-n-libz-rs-sys-0.5.1-2a56889f8f4194b3 /tmp/clis-gifski_1-34-0/release/deps/*-2a56889f8f4194b3* /"""
+## COPY --link --from=dep-n-libz-rs-sys-0.5.1-2a56889f8f4194b3 /target/release/deps/*-2a56889f8f4194b3* /"""
 
 FROM scratch AS cratesio-flate2-1.1.2
 ADD --chmod=0664 --unpack --checksum=sha256:4a3d7db9596fecd151c5f638c0ee5d5bd487b6e0ea232e5dc96d5250f6f94b1d \
   https://static.crates.io/crates/flate2/flate2-1.1.2.crate /
 FROM rust-base AS dep-n-flate2-1.1.2-92283f56cec7b441
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-gifski_1-34-0/release/deps
+WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-flate2-1.1.2,source=/flate2-1.1.2,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/flate2-1.1.2 \
-  --mount=from=out-51c01ae8d7468fb2,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrc32fast-51c01ae8d7468fb2.rlib,source=/libcrc32fast-51c01ae8d7468fb2.rlib \
-  --mount=from=out-51c01ae8d7468fb2,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrc32fast-51c01ae8d7468fb2.rmeta,source=/libcrc32fast-51c01ae8d7468fb2.rmeta \
-  --mount=from=out-e1f9b2ca981c3e9f,dst=/tmp/clis-gifski_1-34-0/release/deps/libcfg_if-e1f9b2ca981c3e9f.rlib,source=/libcfg_if-e1f9b2ca981c3e9f.rlib \
-  --mount=from=out-e1f9b2ca981c3e9f,dst=/tmp/clis-gifski_1-34-0/release/deps/libcfg_if-e1f9b2ca981c3e9f.rmeta,source=/libcfg_if-e1f9b2ca981c3e9f.rmeta \
-  --mount=from=out-2a56889f8f4194b3,dst=/tmp/clis-gifski_1-34-0/release/deps/liblibz_rs_sys-2a56889f8f4194b3.rlib,source=/liblibz_rs_sys-2a56889f8f4194b3.rlib \
-  --mount=from=out-2a56889f8f4194b3,dst=/tmp/clis-gifski_1-34-0/release/deps/liblibz_rs_sys-2a56889f8f4194b3.rmeta,source=/liblibz_rs_sys-2a56889f8f4194b3.rmeta \
-  --mount=from=out-1ce6de5e74c29a43,dst=/tmp/clis-gifski_1-34-0/release/deps/libzlib_rs-1ce6de5e74c29a43.rlib,source=/libzlib_rs-1ce6de5e74c29a43.rlib \
-  --mount=from=out-1ce6de5e74c29a43,dst=/tmp/clis-gifski_1-34-0/release/deps/libzlib_rs-1ce6de5e74c29a43.rmeta,source=/libzlib_rs-1ce6de5e74c29a43.rmeta \
+  --mount=from=out-51c01ae8d7468fb2,dst=/target/release/deps/libcrc32fast-51c01ae8d7468fb2.rlib,source=/libcrc32fast-51c01ae8d7468fb2.rlib \
+  --mount=from=out-51c01ae8d7468fb2,dst=/target/release/deps/libcrc32fast-51c01ae8d7468fb2.rmeta,source=/libcrc32fast-51c01ae8d7468fb2.rmeta \
+  --mount=from=out-e1f9b2ca981c3e9f,dst=/target/release/deps/libcfg_if-e1f9b2ca981c3e9f.rlib,source=/libcfg_if-e1f9b2ca981c3e9f.rlib \
+  --mount=from=out-e1f9b2ca981c3e9f,dst=/target/release/deps/libcfg_if-e1f9b2ca981c3e9f.rmeta,source=/libcfg_if-e1f9b2ca981c3e9f.rmeta \
+  --mount=from=out-2a56889f8f4194b3,dst=/target/release/deps/liblibz_rs_sys-2a56889f8f4194b3.rlib,source=/liblibz_rs_sys-2a56889f8f4194b3.rlib \
+  --mount=from=out-2a56889f8f4194b3,dst=/target/release/deps/liblibz_rs_sys-2a56889f8f4194b3.rmeta,source=/liblibz_rs_sys-2a56889f8f4194b3.rmeta \
+  --mount=from=out-1ce6de5e74c29a43,dst=/target/release/deps/libzlib_rs-1ce6de5e74c29a43.rlib,source=/libzlib_rs-1ce6de5e74c29a43.rlib \
+  --mount=from=out-1ce6de5e74c29a43,dst=/target/release/deps/libzlib_rs-1ce6de5e74c29a43.rmeta,source=/libzlib_rs-1ce6de5e74c29a43.rmeta \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=flate2 \
         CARGO_INCREMENTAL=0 \
@@ -5359,13 +5359,13 @@ and raw deflate streams.\
         CARGO_PKG_VERSION_PATCH=2 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --crate-name flate2 --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --cfg feature'="any_impl"' --cfg feature'="any_zlib"' --cfg feature'="libz-rs-sys"' --cfg feature'="zlib-rs"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("any_impl", "any_zlib", "cloudflare-zlib-sys", "cloudflare_zlib", "default", "libz-ng-sys", "libz-rs-sys", "libz-sys", "miniz-sys", "miniz_oxide", "rust_backend", "zlib", "zlib-default", "zlib-ng", "zlib-ng-compat", "zlib-rs"))' -C metadata'=938350e014bf44d4' -C extra-filename'=-92283f56cec7b441' --out-dir /tmp/clis-gifski_1-34-0/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --extern crc32fast'=/tmp/clis-gifski_1-34-0/release/deps/libcrc32fast-51c01ae8d7468fb2.rmeta' --extern libz_rs_sys'=/tmp/clis-gifski_1-34-0/release/deps/liblibz_rs_sys-2a56889f8f4194b3.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/flate2-1.1.2/src/lib.rs \
-        1>          /tmp/clis-gifski_1-34-0/release/deps/out-92283f56cec7b441-stdout \
-        2>          /tmp/clis-gifski_1-34-0/release/deps/out-92283f56cec7b441-stderr \
-        || echo $? >/tmp/clis-gifski_1-34-0/release/deps/out-92283f56cec7b441-errcode\
-  ; find /tmp/clis-gifski_1-34-0/release/deps/*-92283f56cec7b441* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      rustc --crate-name flate2 --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --cfg feature'="any_impl"' --cfg feature'="any_zlib"' --cfg feature'="libz-rs-sys"' --cfg feature'="zlib-rs"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("any_impl", "any_zlib", "cloudflare-zlib-sys", "cloudflare_zlib", "default", "libz-ng-sys", "libz-rs-sys", "libz-sys", "miniz-sys", "miniz_oxide", "rust_backend", "zlib", "zlib-default", "zlib-ng", "zlib-ng-compat", "zlib-rs"))' -C metadata'=938350e014bf44d4' -C extra-filename'=-92283f56cec7b441' --out-dir /target/release/deps -C strip'=symbols' -L dependency'=/target/release/deps' --extern crc32fast'=/target/release/deps/libcrc32fast-51c01ae8d7468fb2.rmeta' --extern libz_rs_sys'=/target/release/deps/liblibz_rs_sys-2a56889f8f4194b3.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/flate2-1.1.2/src/lib.rs \
+        1>          /target/release/deps/out-92283f56cec7b441-stdout \
+        2>          /target/release/deps/out-92283f56cec7b441-stderr \
+        || echo $? >/target/release/deps/out-92283f56cec7b441-errcode\
+  ; find /target/release/deps/*-92283f56cec7b441* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-92283f56cec7b441
-COPY --link --from=dep-n-flate2-1.1.2-92283f56cec7b441 /tmp/clis-gifski_1-34-0/release/deps/*-92283f56cec7b441* /
+COPY --link --from=dep-n-flate2-1.1.2-92283f56cec7b441 /target/release/deps/*-92283f56cec7b441* /
 
 ## this = "92283f56cec7b441"
 ## deps = [
@@ -5383,9 +5383,9 @@ COPY --link --from=dep-n-flate2-1.1.2-92283f56cec7b441 /tmp/clis-gifski_1-34-0/r
 ##     "libflate2-92283f56cec7b441.rmeta",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/flate2-92283f56cec7b441.d","emit":"dep-info"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/libflate2-92283f56cec7b441.rmeta","emit":"metadata"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/libflate2-92283f56cec7b441.rlib","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/flate2-92283f56cec7b441.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libflate2-92283f56cec7b441.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libflate2-92283f56cec7b441.rlib","emit":"link"}',
 ## ]
 ##
 ## [[externs]]
@@ -5442,17 +5442,17 @@ COPY --link --from=dep-n-flate2-1.1.2-92283f56cec7b441 /tmp/clis-gifski_1-34-0/r
 ## script = '''
 ## FROM rust-base AS dep-n-flate2-1.1.2-92283f56cec7b441
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-gifski_1-34-0/release/deps
+## WORKDIR /target/release/deps
 ## RUN \
 ##   --mount=from=cratesio-flate2-1.1.2,source=/flate2-1.1.2,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/flate2-1.1.2 \
-##   --mount=from=out-51c01ae8d7468fb2,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrc32fast-51c01ae8d7468fb2.rlib,source=/libcrc32fast-51c01ae8d7468fb2.rlib \
-##   --mount=from=out-51c01ae8d7468fb2,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrc32fast-51c01ae8d7468fb2.rmeta,source=/libcrc32fast-51c01ae8d7468fb2.rmeta \
-##   --mount=from=out-e1f9b2ca981c3e9f,dst=/tmp/clis-gifski_1-34-0/release/deps/libcfg_if-e1f9b2ca981c3e9f.rlib,source=/libcfg_if-e1f9b2ca981c3e9f.rlib \
-##   --mount=from=out-e1f9b2ca981c3e9f,dst=/tmp/clis-gifski_1-34-0/release/deps/libcfg_if-e1f9b2ca981c3e9f.rmeta,source=/libcfg_if-e1f9b2ca981c3e9f.rmeta \
-##   --mount=from=out-2a56889f8f4194b3,dst=/tmp/clis-gifski_1-34-0/release/deps/liblibz_rs_sys-2a56889f8f4194b3.rlib,source=/liblibz_rs_sys-2a56889f8f4194b3.rlib \
-##   --mount=from=out-2a56889f8f4194b3,dst=/tmp/clis-gifski_1-34-0/release/deps/liblibz_rs_sys-2a56889f8f4194b3.rmeta,source=/liblibz_rs_sys-2a56889f8f4194b3.rmeta \
-##   --mount=from=out-1ce6de5e74c29a43,dst=/tmp/clis-gifski_1-34-0/release/deps/libzlib_rs-1ce6de5e74c29a43.rlib,source=/libzlib_rs-1ce6de5e74c29a43.rlib \
-##   --mount=from=out-1ce6de5e74c29a43,dst=/tmp/clis-gifski_1-34-0/release/deps/libzlib_rs-1ce6de5e74c29a43.rmeta,source=/libzlib_rs-1ce6de5e74c29a43.rmeta \
+##   --mount=from=out-51c01ae8d7468fb2,dst=/target/release/deps/libcrc32fast-51c01ae8d7468fb2.rlib,source=/libcrc32fast-51c01ae8d7468fb2.rlib \
+##   --mount=from=out-51c01ae8d7468fb2,dst=/target/release/deps/libcrc32fast-51c01ae8d7468fb2.rmeta,source=/libcrc32fast-51c01ae8d7468fb2.rmeta \
+##   --mount=from=out-e1f9b2ca981c3e9f,dst=/target/release/deps/libcfg_if-e1f9b2ca981c3e9f.rlib,source=/libcfg_if-e1f9b2ca981c3e9f.rlib \
+##   --mount=from=out-e1f9b2ca981c3e9f,dst=/target/release/deps/libcfg_if-e1f9b2ca981c3e9f.rmeta,source=/libcfg_if-e1f9b2ca981c3e9f.rmeta \
+##   --mount=from=out-2a56889f8f4194b3,dst=/target/release/deps/liblibz_rs_sys-2a56889f8f4194b3.rlib,source=/liblibz_rs_sys-2a56889f8f4194b3.rlib \
+##   --mount=from=out-2a56889f8f4194b3,dst=/target/release/deps/liblibz_rs_sys-2a56889f8f4194b3.rmeta,source=/liblibz_rs_sys-2a56889f8f4194b3.rmeta \
+##   --mount=from=out-1ce6de5e74c29a43,dst=/target/release/deps/libzlib_rs-1ce6de5e74c29a43.rlib,source=/libzlib_rs-1ce6de5e74c29a43.rlib \
+##   --mount=from=out-1ce6de5e74c29a43,dst=/target/release/deps/libzlib_rs-1ce6de5e74c29a43.rmeta,source=/libzlib_rs-1ce6de5e74c29a43.rmeta \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=flate2 \
 ##         CARGO_INCREMENTAL=0 \
@@ -5476,11 +5476,11 @@ COPY --link --from=dep-n-flate2-1.1.2-92283f56cec7b441 /tmp/clis-gifski_1-34-0/r
 ##         CARGO_PKG_VERSION_PATCH=2 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name flate2 --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --cfg feature'="any_impl"' --cfg feature'="any_zlib"' --cfg feature'="libz-rs-sys"' --cfg feature'="zlib-rs"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("any_impl", "any_zlib", "cloudflare-zlib-sys", "cloudflare_zlib", "default", "libz-ng-sys", "libz-rs-sys", "libz-sys", "miniz-sys", "miniz_oxide", "rust_backend", "zlib", "zlib-default", "zlib-ng", "zlib-ng-compat", "zlib-rs"))' -C metadata'=938350e014bf44d4' -C extra-filename'=-92283f56cec7b441' --out-dir /tmp/clis-gifski_1-34-0/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --extern crc32fast'=/tmp/clis-gifski_1-34-0/release/deps/libcrc32fast-51c01ae8d7468fb2.rmeta' --extern libz_rs_sys'=/tmp/clis-gifski_1-34-0/release/deps/liblibz_rs_sys-2a56889f8f4194b3.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/flate2-1.1.2/src/lib.rs \
-##         1>          /tmp/clis-gifski_1-34-0/release/deps/out-92283f56cec7b441-stdout \
-##         2>          /tmp/clis-gifski_1-34-0/release/deps/out-92283f56cec7b441-stderr \
-##         || echo $? >/tmp/clis-gifski_1-34-0/release/deps/out-92283f56cec7b441-errcode\
-##   ; find /tmp/clis-gifski_1-34-0/release/deps/*-92283f56cec7b441* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name flate2 --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --cfg feature'="any_impl"' --cfg feature'="any_zlib"' --cfg feature'="libz-rs-sys"' --cfg feature'="zlib-rs"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("any_impl", "any_zlib", "cloudflare-zlib-sys", "cloudflare_zlib", "default", "libz-ng-sys", "libz-rs-sys", "libz-sys", "miniz-sys", "miniz_oxide", "rust_backend", "zlib", "zlib-default", "zlib-ng", "zlib-ng-compat", "zlib-rs"))' -C metadata'=938350e014bf44d4' -C extra-filename'=-92283f56cec7b441' --out-dir /target/release/deps -C strip'=symbols' -L dependency'=/target/release/deps' --extern crc32fast'=/target/release/deps/libcrc32fast-51c01ae8d7468fb2.rmeta' --extern libz_rs_sys'=/target/release/deps/liblibz_rs_sys-2a56889f8f4194b3.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/flate2-1.1.2/src/lib.rs \
+##         1>          /target/release/deps/out-92283f56cec7b441-stdout \
+##         2>          /target/release/deps/out-92283f56cec7b441-stderr \
+##         || echo $? >/target/release/deps/out-92283f56cec7b441-errcode\
+##   ; find /target/release/deps/*-92283f56cec7b441* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -5488,14 +5488,14 @@ COPY --link --from=dep-n-flate2-1.1.2-92283f56cec7b441 /tmp/clis-gifski_1-34-0/r
 ## stage = "out-92283f56cec7b441"
 ## script = """
 ## FROM scratch AS out-92283f56cec7b441
-## COPY --link --from=dep-n-flate2-1.1.2-92283f56cec7b441 /tmp/clis-gifski_1-34-0/release/deps/*-92283f56cec7b441* /"""
+## COPY --link --from=dep-n-flate2-1.1.2-92283f56cec7b441 /target/release/deps/*-92283f56cec7b441* /"""
 
 FROM scratch AS cratesio-libc-0.2.174
 ADD --chmod=0664 --unpack --checksum=sha256:1171693293099992e19cddea4e8b849964e9846f4acee11b3948bcc337be8776 \
   https://static.crates.io/crates/libc/libc-0.2.174.crate /
 FROM rust-base AS dep-x-libc-0.2.174-0123d3968a0ef092
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-gifski_1-34-0/release/build/libc-0123d3968a0ef092
+WORKDIR /target/release/build/libc-0123d3968a0ef092
 RUN \
   --mount=from=cratesio-libc-0.2.174,source=/libc-0.2.174,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.174,rw \
     { \
@@ -5537,13 +5537,13 @@ RUN \
         CARGO_PKG_VERSION_PATCH=174 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' --allow clippy'::used_underscore_binding' --allow unused_qualifications --warn clippy'::unnecessary_semicolon' --allow clippy'::unnecessary_cast' --allow clippy'::uninlined_format_args' --warn clippy'::ptr_as_ptr' --allow clippy'::non_minimal_cfg' --allow clippy'::missing_safety_doc' --warn clippy'::map_unwrap_or' --warn clippy'::manual_assert' --allow clippy'::identity_op' --warn clippy'::explicit_iter_loop' --allow clippy'::expl_impl_clone_on_copy' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("align", "const-extern-fn", "default", "extra_traits", "rustc-dep-of-std", "rustc-std-workspace-core", "std", "use_std"))' -C metadata'=483eb490f6612b85' -C extra-filename'=-0123d3968a0ef092' --out-dir /tmp/clis-gifski_1-34-0/release/build/libc-0123d3968a0ef092 -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.174/build.rs \
-        1>          /tmp/clis-gifski_1-34-0/release/build/libc-0123d3968a0ef092/out-0123d3968a0ef092-stdout \
-        2>          /tmp/clis-gifski_1-34-0/release/build/libc-0123d3968a0ef092/out-0123d3968a0ef092-stderr \
-        || echo $? >/tmp/clis-gifski_1-34-0/release/build/libc-0123d3968a0ef092/out-0123d3968a0ef092-errcode\
-  ; find /tmp/clis-gifski_1-34-0/release/build/libc-0123d3968a0ef092/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' --allow clippy'::used_underscore_binding' --allow unused_qualifications --warn clippy'::unnecessary_semicolon' --allow clippy'::unnecessary_cast' --allow clippy'::uninlined_format_args' --warn clippy'::ptr_as_ptr' --allow clippy'::non_minimal_cfg' --allow clippy'::missing_safety_doc' --warn clippy'::map_unwrap_or' --warn clippy'::manual_assert' --allow clippy'::identity_op' --warn clippy'::explicit_iter_loop' --allow clippy'::expl_impl_clone_on_copy' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("align", "const-extern-fn", "default", "extra_traits", "rustc-dep-of-std", "rustc-std-workspace-core", "std", "use_std"))' -C metadata'=483eb490f6612b85' -C extra-filename'=-0123d3968a0ef092' --out-dir /target/release/build/libc-0123d3968a0ef092 -C strip'=symbols' -L dependency'=/target/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.174/build.rs \
+        1>          /target/release/build/libc-0123d3968a0ef092/out-0123d3968a0ef092-stdout \
+        2>          /target/release/build/libc-0123d3968a0ef092/out-0123d3968a0ef092-stderr \
+        || echo $? >/target/release/build/libc-0123d3968a0ef092/out-0123d3968a0ef092-errcode\
+  ; find /target/release/build/libc-0123d3968a0ef092/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-0123d3968a0ef092
-COPY --link --from=dep-x-libc-0.2.174-0123d3968a0ef092 /tmp/clis-gifski_1-34-0/release/build/libc-0123d3968a0ef092/*-0123d3968a0ef092* /
+COPY --link --from=dep-x-libc-0.2.174-0123d3968a0ef092 /target/release/build/libc-0123d3968a0ef092/*-0123d3968a0ef092* /
 
 ## this = "0123d3968a0ef092"
 ## writes = [
@@ -5551,8 +5551,8 @@ COPY --link --from=dep-x-libc-0.2.174-0123d3968a0ef092 /tmp/clis-gifski_1-34-0/r
 ##     "build_script_build-0123d3968a0ef092.d",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/build/libc-0123d3968a0ef092/build_script_build-0123d3968a0ef092.d","emit":"dep-info"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/build/libc-0123d3968a0ef092/build_script_build-0123d3968a0ef092","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/build/libc-0123d3968a0ef092/build_script_build-0123d3968a0ef092.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/build/libc-0123d3968a0ef092/build_script_build-0123d3968a0ef092","emit":"link"}',
 ## ]
 ##
 ## [[stages]]
@@ -5577,7 +5577,7 @@ COPY --link --from=dep-x-libc-0.2.174-0123d3968a0ef092 /tmp/clis-gifski_1-34-0/r
 ## script = '''
 ## FROM rust-base AS dep-x-libc-0.2.174-0123d3968a0ef092
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-gifski_1-34-0/release/build/libc-0123d3968a0ef092
+## WORKDIR /target/release/build/libc-0123d3968a0ef092
 ## RUN \
 ##   --mount=from=cratesio-libc-0.2.174,source=/libc-0.2.174,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.174,rw \
 ##     { \
@@ -5619,11 +5619,11 @@ COPY --link --from=dep-x-libc-0.2.174-0123d3968a0ef092 /tmp/clis-gifski_1-34-0/r
 ##         CARGO_PKG_VERSION_PATCH=174 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' --allow clippy'::used_underscore_binding' --allow unused_qualifications --warn clippy'::unnecessary_semicolon' --allow clippy'::unnecessary_cast' --allow clippy'::uninlined_format_args' --warn clippy'::ptr_as_ptr' --allow clippy'::non_minimal_cfg' --allow clippy'::missing_safety_doc' --warn clippy'::map_unwrap_or' --warn clippy'::manual_assert' --allow clippy'::identity_op' --warn clippy'::explicit_iter_loop' --allow clippy'::expl_impl_clone_on_copy' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("align", "const-extern-fn", "default", "extra_traits", "rustc-dep-of-std", "rustc-std-workspace-core", "std", "use_std"))' -C metadata'=483eb490f6612b85' -C extra-filename'=-0123d3968a0ef092' --out-dir /tmp/clis-gifski_1-34-0/release/build/libc-0123d3968a0ef092 -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.174/build.rs \
-##         1>          /tmp/clis-gifski_1-34-0/release/build/libc-0123d3968a0ef092/out-0123d3968a0ef092-stdout \
-##         2>          /tmp/clis-gifski_1-34-0/release/build/libc-0123d3968a0ef092/out-0123d3968a0ef092-stderr \
-##         || echo $? >/tmp/clis-gifski_1-34-0/release/build/libc-0123d3968a0ef092/out-0123d3968a0ef092-errcode\
-##   ; find /tmp/clis-gifski_1-34-0/release/build/libc-0123d3968a0ef092/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' --allow clippy'::used_underscore_binding' --allow unused_qualifications --warn clippy'::unnecessary_semicolon' --allow clippy'::unnecessary_cast' --allow clippy'::uninlined_format_args' --warn clippy'::ptr_as_ptr' --allow clippy'::non_minimal_cfg' --allow clippy'::missing_safety_doc' --warn clippy'::map_unwrap_or' --warn clippy'::manual_assert' --allow clippy'::identity_op' --warn clippy'::explicit_iter_loop' --allow clippy'::expl_impl_clone_on_copy' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("align", "const-extern-fn", "default", "extra_traits", "rustc-dep-of-std", "rustc-std-workspace-core", "std", "use_std"))' -C metadata'=483eb490f6612b85' -C extra-filename'=-0123d3968a0ef092' --out-dir /target/release/build/libc-0123d3968a0ef092 -C strip'=symbols' -L dependency'=/target/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.174/build.rs \
+##         1>          /target/release/build/libc-0123d3968a0ef092/out-0123d3968a0ef092-stdout \
+##         2>          /target/release/build/libc-0123d3968a0ef092/out-0123d3968a0ef092-stderr \
+##         || echo $? >/target/release/build/libc-0123d3968a0ef092/out-0123d3968a0ef092-errcode\
+##   ; find /target/release/build/libc-0123d3968a0ef092/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -5631,14 +5631,14 @@ COPY --link --from=dep-x-libc-0.2.174-0123d3968a0ef092 /tmp/clis-gifski_1-34-0/r
 ## stage = "out-0123d3968a0ef092"
 ## script = """
 ## FROM scratch AS out-0123d3968a0ef092
-## COPY --link --from=dep-x-libc-0.2.174-0123d3968a0ef092 /tmp/clis-gifski_1-34-0/release/build/libc-0123d3968a0ef092/*-0123d3968a0ef092* /"""
+## COPY --link --from=dep-x-libc-0.2.174-0123d3968a0ef092 /target/release/build/libc-0123d3968a0ef092/*-0123d3968a0ef092* /"""
 
 FROM rust-base AS run-z-libc-0.2.174-55b2d737f3af23dc
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-gifski_1-34-0/release/build/libc-55b2d737f3af23dc/out
+WORKDIR /target/release/build/libc-55b2d737f3af23dc/out
 WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.174
 RUN \
-  --mount=from=out-0123d3968a0ef092,source=/build_script_build-0123d3968a0ef092,dst=/tmp/clis-gifski_1-34-0/release/build/libc-0123d3968a0ef092/build-script-build \
+  --mount=from=out-0123d3968a0ef092,source=/build_script_build-0123d3968a0ef092,dst=/target/release/build/libc-0123d3968a0ef092/build-script-build \
   --mount=from=cratesio-libc-0.2.174,source=/libc-0.2.174,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.174 \
     env CARGO="$(which cargo)" \
         CARGO_CFG_FEATURE=default,std \
@@ -5678,23 +5678,23 @@ RUN \
         HOST=x86_64-unknown-linux-gnu \
         NUM_JOBS=4 \
         OPT_LEVEL=3 \
-        OUT_DIR=/tmp/clis-gifski_1-34-0/release/build/libc-55b2d737f3af23dc/out \
+        OUT_DIR=/target/release/build/libc-55b2d737f3af23dc/out \
         PROFILE=release \
         RUSTC=rustc \
         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
         TARGET=x86_64-unknown-linux-gnu \
         CARGOGREEN=1 \
-      CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-gifski_1-34-0/release/build/libc-0123d3968a0ef092/build-script-build \
-        1>          /tmp/clis-gifski_1-34-0/release/build/libc-55b2d737f3af23dc/out/out-55b2d737f3af23dc-stdout \
-        2>          /tmp/clis-gifski_1-34-0/release/build/libc-55b2d737f3af23dc/out/out-55b2d737f3af23dc-stderr \
-        || echo $? >/tmp/clis-gifski_1-34-0/release/build/libc-55b2d737f3af23dc/out/out-55b2d737f3af23dc-errcode\
-  ; find /tmp/clis-gifski_1-34-0/release/build/libc-55b2d737f3af23dc/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      CARGOGREEN_EXECUTE_BUILDRS_= /target/release/build/libc-0123d3968a0ef092/build-script-build \
+        1>          /target/release/build/libc-55b2d737f3af23dc/out/out-55b2d737f3af23dc-stdout \
+        2>          /target/release/build/libc-55b2d737f3af23dc/out/out-55b2d737f3af23dc-stderr \
+        || echo $? >/target/release/build/libc-55b2d737f3af23dc/out/out-55b2d737f3af23dc-errcode\
+  ; find /target/release/build/libc-55b2d737f3af23dc/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-55b2d737f3af23dc
-COPY --link --from=run-z-libc-0.2.174-55b2d737f3af23dc /tmp/clis-gifski_1-34-0/release/build/libc-55b2d737f3af23dc/out /
+COPY --link --from=run-z-libc-0.2.174-55b2d737f3af23dc /target/release/build/libc-55b2d737f3af23dc/out /
 
 ## this = "55b2d737f3af23dc"
 ## deps = ["0123d3968a0ef092"]
-## writes_to = "/tmp/clis-gifski_1-34-0/release/build/libc-55b2d737f3af23dc/out"
+## writes_to = "/target/release/build/libc-55b2d737f3af23dc/out"
 ## stdout = [
 ##     "cargo:rerun-if-changed=build.rs",
 ##     "cargo:rerun-if-env-changed=RUST_LIBC_UNSTABLE_FREEBSD_VERSION",
@@ -5738,10 +5738,10 @@ COPY --link --from=run-z-libc-0.2.174-55b2d737f3af23dc /tmp/clis-gifski_1-34-0/r
 ## script = '''
 ## FROM rust-base AS run-z-libc-0.2.174-55b2d737f3af23dc
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-gifski_1-34-0/release/build/libc-55b2d737f3af23dc/out
+## WORKDIR /target/release/build/libc-55b2d737f3af23dc/out
 ## WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.174
 ## RUN \
-##   --mount=from=out-0123d3968a0ef092,source=/build_script_build-0123d3968a0ef092,dst=/tmp/clis-gifski_1-34-0/release/build/libc-0123d3968a0ef092/build-script-build \
+##   --mount=from=out-0123d3968a0ef092,source=/build_script_build-0123d3968a0ef092,dst=/target/release/build/libc-0123d3968a0ef092/build-script-build \
 ##   --mount=from=cratesio-libc-0.2.174,source=/libc-0.2.174,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.174 \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CFG_FEATURE=default,std \
@@ -5781,17 +5781,17 @@ COPY --link --from=run-z-libc-0.2.174-55b2d737f3af23dc /tmp/clis-gifski_1-34-0/r
 ##         HOST=x86_64-unknown-linux-gnu \
 ##         NUM_JOBS=4 \
 ##         OPT_LEVEL=3 \
-##         OUT_DIR=/tmp/clis-gifski_1-34-0/release/build/libc-55b2d737f3af23dc/out \
+##         OUT_DIR=/target/release/build/libc-55b2d737f3af23dc/out \
 ##         PROFILE=release \
 ##         RUSTC=rustc \
 ##         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
 ##         TARGET=x86_64-unknown-linux-gnu \
 ##         CARGOGREEN=1 \
-##       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-gifski_1-34-0/release/build/libc-0123d3968a0ef092/build-script-build \
-##         1>          /tmp/clis-gifski_1-34-0/release/build/libc-55b2d737f3af23dc/out/out-55b2d737f3af23dc-stdout \
-##         2>          /tmp/clis-gifski_1-34-0/release/build/libc-55b2d737f3af23dc/out/out-55b2d737f3af23dc-stderr \
-##         || echo $? >/tmp/clis-gifski_1-34-0/release/build/libc-55b2d737f3af23dc/out/out-55b2d737f3af23dc-errcode\
-##   ; find /tmp/clis-gifski_1-34-0/release/build/libc-55b2d737f3af23dc/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       CARGOGREEN_EXECUTE_BUILDRS_= /target/release/build/libc-0123d3968a0ef092/build-script-build \
+##         1>          /target/release/build/libc-55b2d737f3af23dc/out/out-55b2d737f3af23dc-stdout \
+##         2>          /target/release/build/libc-55b2d737f3af23dc/out/out-55b2d737f3af23dc-stderr \
+##         || echo $? >/target/release/build/libc-55b2d737f3af23dc/out/out-55b2d737f3af23dc-errcode\
+##   ; find /target/release/build/libc-55b2d737f3af23dc/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -5799,15 +5799,15 @@ COPY --link --from=run-z-libc-0.2.174-55b2d737f3af23dc /tmp/clis-gifski_1-34-0/r
 ## stage = "out-55b2d737f3af23dc"
 ## script = """
 ## FROM scratch AS out-55b2d737f3af23dc
-## COPY --link --from=run-z-libc-0.2.174-55b2d737f3af23dc /tmp/clis-gifski_1-34-0/release/build/libc-55b2d737f3af23dc/out /"""
+## COPY --link --from=run-z-libc-0.2.174-55b2d737f3af23dc /target/release/build/libc-55b2d737f3af23dc/out /"""
 
 
 FROM rust-base AS dep-n-libc-0.2.174-3afb72ac1310d574
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-gifski_1-34-0/release/deps
+WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-libc-0.2.174,source=/libc-0.2.174,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.174 \
-  --mount=from=out-55b2d737f3af23dc,dst=/tmp/clis-gifski_1-34-0/release/build/libc-55b2d737f3af23dc/out,source=/ \
+  --mount=from=out-55b2d737f3af23dc,dst=/target/release/build/libc-55b2d737f3af23dc/out,source=/ \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=libc \
         CARGO_INCREMENTAL=0 \
@@ -5827,15 +5827,15 @@ RUN \
         CARGO_PKG_VERSION_MINOR=2 \
         CARGO_PKG_VERSION_PATCH=174 \
         CARGO_PKG_VERSION_PRE= \
-        OUT_DIR=/tmp/clis-gifski_1-34-0/release/build/libc-55b2d737f3af23dc/out \
+        OUT_DIR=/target/release/build/libc-55b2d737f3af23dc/out \
         CARGOGREEN=1 \
-      rustc --crate-name libc --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --allow clippy'::used_underscore_binding' --allow unused_qualifications --warn clippy'::unnecessary_semicolon' --allow clippy'::unnecessary_cast' --allow clippy'::uninlined_format_args' --warn clippy'::ptr_as_ptr' --allow clippy'::non_minimal_cfg' --allow clippy'::missing_safety_doc' --warn clippy'::map_unwrap_or' --warn clippy'::manual_assert' --allow clippy'::identity_op' --warn clippy'::explicit_iter_loop' --allow clippy'::expl_impl_clone_on_copy' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("align", "const-extern-fn", "default", "extra_traits", "rustc-dep-of-std", "rustc-std-workspace-core", "std", "use_std"))' -C metadata'=6dca54bc190237ec' -C extra-filename'=-3afb72ac1310d574' --out-dir /tmp/clis-gifski_1-34-0/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --cap-lints warn --cfg freebsd11 --cfg libc_const_extern_fn --check-cfg cfg'(emscripten_old_stat_abi)' --check-cfg cfg'(espidf_time32)' --check-cfg cfg'(freebsd10)' --check-cfg cfg'(freebsd11)' --check-cfg cfg'(freebsd12)' --check-cfg cfg'(freebsd13)' --check-cfg cfg'(freebsd14)' --check-cfg cfg'(freebsd15)' --check-cfg cfg'(gnu_file_offset_bits64)' --check-cfg cfg'(gnu_time_bits64)' --check-cfg cfg'(libc_const_extern_fn)' --check-cfg cfg'(libc_deny_warnings)' --check-cfg cfg'(libc_thread_local)' --check-cfg cfg'(libc_ctest)' --check-cfg cfg'(linux_time_bits64)' --check-cfg cfg'(musl_v1_2_3)' --check-cfg cfg'(target_os,values("switch","aix","ohos","hurd","rtems","visionos","nuttx","cygwin"))' --check-cfg cfg'(target_env,values("illumos","wasi","aix","ohos","nto71_iosock","nto80"))' --check-cfg cfg'(target_arch,values("loongarch64","mips32r6","mips64r6","csky"))' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.174/src/lib.rs \
-        1>          /tmp/clis-gifski_1-34-0/release/deps/out-3afb72ac1310d574-stdout \
-        2>          /tmp/clis-gifski_1-34-0/release/deps/out-3afb72ac1310d574-stderr \
-        || echo $? >/tmp/clis-gifski_1-34-0/release/deps/out-3afb72ac1310d574-errcode\
-  ; find /tmp/clis-gifski_1-34-0/release/deps/*-3afb72ac1310d574* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      rustc --crate-name libc --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --allow clippy'::used_underscore_binding' --allow unused_qualifications --warn clippy'::unnecessary_semicolon' --allow clippy'::unnecessary_cast' --allow clippy'::uninlined_format_args' --warn clippy'::ptr_as_ptr' --allow clippy'::non_minimal_cfg' --allow clippy'::missing_safety_doc' --warn clippy'::map_unwrap_or' --warn clippy'::manual_assert' --allow clippy'::identity_op' --warn clippy'::explicit_iter_loop' --allow clippy'::expl_impl_clone_on_copy' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("align", "const-extern-fn", "default", "extra_traits", "rustc-dep-of-std", "rustc-std-workspace-core", "std", "use_std"))' -C metadata'=6dca54bc190237ec' -C extra-filename'=-3afb72ac1310d574' --out-dir /target/release/deps -C strip'=symbols' -L dependency'=/target/release/deps' --cap-lints warn --cfg freebsd11 --cfg libc_const_extern_fn --check-cfg cfg'(emscripten_old_stat_abi)' --check-cfg cfg'(espidf_time32)' --check-cfg cfg'(freebsd10)' --check-cfg cfg'(freebsd11)' --check-cfg cfg'(freebsd12)' --check-cfg cfg'(freebsd13)' --check-cfg cfg'(freebsd14)' --check-cfg cfg'(freebsd15)' --check-cfg cfg'(gnu_file_offset_bits64)' --check-cfg cfg'(gnu_time_bits64)' --check-cfg cfg'(libc_const_extern_fn)' --check-cfg cfg'(libc_deny_warnings)' --check-cfg cfg'(libc_thread_local)' --check-cfg cfg'(libc_ctest)' --check-cfg cfg'(linux_time_bits64)' --check-cfg cfg'(musl_v1_2_3)' --check-cfg cfg'(target_os,values("switch","aix","ohos","hurd","rtems","visionos","nuttx","cygwin"))' --check-cfg cfg'(target_env,values("illumos","wasi","aix","ohos","nto71_iosock","nto80"))' --check-cfg cfg'(target_arch,values("loongarch64","mips32r6","mips64r6","csky"))' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.174/src/lib.rs \
+        1>          /target/release/deps/out-3afb72ac1310d574-stdout \
+        2>          /target/release/deps/out-3afb72ac1310d574-stderr \
+        || echo $? >/target/release/deps/out-3afb72ac1310d574-errcode\
+  ; find /target/release/deps/*-3afb72ac1310d574* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-3afb72ac1310d574
-COPY --link --from=dep-n-libc-0.2.174-3afb72ac1310d574 /tmp/clis-gifski_1-34-0/release/deps/*-3afb72ac1310d574* /
+COPY --link --from=dep-n-libc-0.2.174-3afb72ac1310d574 /target/release/deps/*-3afb72ac1310d574* /
 
 ## this = "3afb72ac1310d574"
 ## deps = [
@@ -5849,14 +5849,14 @@ COPY --link --from=dep-n-libc-0.2.174-3afb72ac1310d574 /tmp/clis-gifski_1-34-0/r
 ##     "liblibc-3afb72ac1310d574.rmeta",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/libc-3afb72ac1310d574.d","emit":"dep-info"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/liblibc-3afb72ac1310d574.rmeta","emit":"metadata"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/liblibc-3afb72ac1310d574.rlib","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libc-3afb72ac1310d574.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/liblibc-3afb72ac1310d574.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/liblibc-3afb72ac1310d574.rlib","emit":"link"}',
 ## ]
 ##
 ## [[mounts]]
 ## name = "out-55b2d737f3af23dc"
-## mount = "/tmp/clis-gifski_1-34-0/release/build/libc-55b2d737f3af23dc/out"
+## mount = "/target/release/build/libc-55b2d737f3af23dc/out"
 ##
 ## [[stages]]
 ##
@@ -5880,10 +5880,10 @@ COPY --link --from=dep-n-libc-0.2.174-3afb72ac1310d574 /tmp/clis-gifski_1-34-0/r
 ## script = '''
 ## FROM rust-base AS dep-n-libc-0.2.174-3afb72ac1310d574
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-gifski_1-34-0/release/deps
+## WORKDIR /target/release/deps
 ## RUN \
 ##   --mount=from=cratesio-libc-0.2.174,source=/libc-0.2.174,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.174 \
-##   --mount=from=out-55b2d737f3af23dc,dst=/tmp/clis-gifski_1-34-0/release/build/libc-55b2d737f3af23dc/out,source=/ \
+##   --mount=from=out-55b2d737f3af23dc,dst=/target/release/build/libc-55b2d737f3af23dc/out,source=/ \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=libc \
 ##         CARGO_INCREMENTAL=0 \
@@ -5903,13 +5903,13 @@ COPY --link --from=dep-n-libc-0.2.174-3afb72ac1310d574 /tmp/clis-gifski_1-34-0/r
 ##         CARGO_PKG_VERSION_MINOR=2 \
 ##         CARGO_PKG_VERSION_PATCH=174 \
 ##         CARGO_PKG_VERSION_PRE= \
-##         OUT_DIR=/tmp/clis-gifski_1-34-0/release/build/libc-55b2d737f3af23dc/out \
+##         OUT_DIR=/target/release/build/libc-55b2d737f3af23dc/out \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name libc --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --allow clippy'::used_underscore_binding' --allow unused_qualifications --warn clippy'::unnecessary_semicolon' --allow clippy'::unnecessary_cast' --allow clippy'::uninlined_format_args' --warn clippy'::ptr_as_ptr' --allow clippy'::non_minimal_cfg' --allow clippy'::missing_safety_doc' --warn clippy'::map_unwrap_or' --warn clippy'::manual_assert' --allow clippy'::identity_op' --warn clippy'::explicit_iter_loop' --allow clippy'::expl_impl_clone_on_copy' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("align", "const-extern-fn", "default", "extra_traits", "rustc-dep-of-std", "rustc-std-workspace-core", "std", "use_std"))' -C metadata'=6dca54bc190237ec' -C extra-filename'=-3afb72ac1310d574' --out-dir /tmp/clis-gifski_1-34-0/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --cap-lints warn --cfg freebsd11 --cfg libc_const_extern_fn --check-cfg cfg'(emscripten_old_stat_abi)' --check-cfg cfg'(espidf_time32)' --check-cfg cfg'(freebsd10)' --check-cfg cfg'(freebsd11)' --check-cfg cfg'(freebsd12)' --check-cfg cfg'(freebsd13)' --check-cfg cfg'(freebsd14)' --check-cfg cfg'(freebsd15)' --check-cfg cfg'(gnu_file_offset_bits64)' --check-cfg cfg'(gnu_time_bits64)' --check-cfg cfg'(libc_const_extern_fn)' --check-cfg cfg'(libc_deny_warnings)' --check-cfg cfg'(libc_thread_local)' --check-cfg cfg'(libc_ctest)' --check-cfg cfg'(linux_time_bits64)' --check-cfg cfg'(musl_v1_2_3)' --check-cfg cfg'(target_os,values("switch","aix","ohos","hurd","rtems","visionos","nuttx","cygwin"))' --check-cfg cfg'(target_env,values("illumos","wasi","aix","ohos","nto71_iosock","nto80"))' --check-cfg cfg'(target_arch,values("loongarch64","mips32r6","mips64r6","csky"))' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.174/src/lib.rs \
-##         1>          /tmp/clis-gifski_1-34-0/release/deps/out-3afb72ac1310d574-stdout \
-##         2>          /tmp/clis-gifski_1-34-0/release/deps/out-3afb72ac1310d574-stderr \
-##         || echo $? >/tmp/clis-gifski_1-34-0/release/deps/out-3afb72ac1310d574-errcode\
-##   ; find /tmp/clis-gifski_1-34-0/release/deps/*-3afb72ac1310d574* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name libc --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --allow clippy'::used_underscore_binding' --allow unused_qualifications --warn clippy'::unnecessary_semicolon' --allow clippy'::unnecessary_cast' --allow clippy'::uninlined_format_args' --warn clippy'::ptr_as_ptr' --allow clippy'::non_minimal_cfg' --allow clippy'::missing_safety_doc' --warn clippy'::map_unwrap_or' --warn clippy'::manual_assert' --allow clippy'::identity_op' --warn clippy'::explicit_iter_loop' --allow clippy'::expl_impl_clone_on_copy' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("align", "const-extern-fn", "default", "extra_traits", "rustc-dep-of-std", "rustc-std-workspace-core", "std", "use_std"))' -C metadata'=6dca54bc190237ec' -C extra-filename'=-3afb72ac1310d574' --out-dir /target/release/deps -C strip'=symbols' -L dependency'=/target/release/deps' --cap-lints warn --cfg freebsd11 --cfg libc_const_extern_fn --check-cfg cfg'(emscripten_old_stat_abi)' --check-cfg cfg'(espidf_time32)' --check-cfg cfg'(freebsd10)' --check-cfg cfg'(freebsd11)' --check-cfg cfg'(freebsd12)' --check-cfg cfg'(freebsd13)' --check-cfg cfg'(freebsd14)' --check-cfg cfg'(freebsd15)' --check-cfg cfg'(gnu_file_offset_bits64)' --check-cfg cfg'(gnu_time_bits64)' --check-cfg cfg'(libc_const_extern_fn)' --check-cfg cfg'(libc_deny_warnings)' --check-cfg cfg'(libc_thread_local)' --check-cfg cfg'(libc_ctest)' --check-cfg cfg'(linux_time_bits64)' --check-cfg cfg'(musl_v1_2_3)' --check-cfg cfg'(target_os,values("switch","aix","ohos","hurd","rtems","visionos","nuttx","cygwin"))' --check-cfg cfg'(target_env,values("illumos","wasi","aix","ohos","nto71_iosock","nto80"))' --check-cfg cfg'(target_arch,values("loongarch64","mips32r6","mips64r6","csky"))' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/libc-0.2.174/src/lib.rs \
+##         1>          /target/release/deps/out-3afb72ac1310d574-stdout \
+##         2>          /target/release/deps/out-3afb72ac1310d574-stderr \
+##         || echo $? >/target/release/deps/out-3afb72ac1310d574-errcode\
+##   ; find /target/release/deps/*-3afb72ac1310d574* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -5917,32 +5917,32 @@ COPY --link --from=dep-n-libc-0.2.174-3afb72ac1310d574 /tmp/clis-gifski_1-34-0/r
 ## stage = "out-3afb72ac1310d574"
 ## script = """
 ## FROM scratch AS out-3afb72ac1310d574
-## COPY --link --from=dep-n-libc-0.2.174-3afb72ac1310d574 /tmp/clis-gifski_1-34-0/release/deps/*-3afb72ac1310d574* /"""
+## COPY --link --from=dep-n-libc-0.2.174-3afb72ac1310d574 /target/release/deps/*-3afb72ac1310d574* /"""
 
 FROM scratch AS cratesio-lodepng-3.12.1
 ADD --chmod=0664 --unpack --checksum=sha256:77a32335d22e44238e2bb0b4d726964d18952ce1f1279ec3305305d2c61539eb \
   https://static.crates.io/crates/lodepng/lodepng-3.12.1.crate /
 FROM rust-base AS dep-n-lodepng-3.12.1-c1608f7a6e4ba58d
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-gifski_1-34-0/release/deps
+WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-lodepng-3.12.1,source=/lodepng-3.12.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/lodepng-3.12.1 \
-  --mount=from=out-51c01ae8d7468fb2,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrc32fast-51c01ae8d7468fb2.rlib,source=/libcrc32fast-51c01ae8d7468fb2.rlib \
-  --mount=from=out-51c01ae8d7468fb2,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrc32fast-51c01ae8d7468fb2.rmeta,source=/libcrc32fast-51c01ae8d7468fb2.rmeta \
-  --mount=from=out-e1f9b2ca981c3e9f,dst=/tmp/clis-gifski_1-34-0/release/deps/libcfg_if-e1f9b2ca981c3e9f.rlib,source=/libcfg_if-e1f9b2ca981c3e9f.rlib \
-  --mount=from=out-e1f9b2ca981c3e9f,dst=/tmp/clis-gifski_1-34-0/release/deps/libcfg_if-e1f9b2ca981c3e9f.rmeta,source=/libcfg_if-e1f9b2ca981c3e9f.rmeta \
-  --mount=from=out-92283f56cec7b441,dst=/tmp/clis-gifski_1-34-0/release/deps/libflate2-92283f56cec7b441.rlib,source=/libflate2-92283f56cec7b441.rlib \
-  --mount=from=out-92283f56cec7b441,dst=/tmp/clis-gifski_1-34-0/release/deps/libflate2-92283f56cec7b441.rmeta,source=/libflate2-92283f56cec7b441.rmeta \
-  --mount=from=out-2a56889f8f4194b3,dst=/tmp/clis-gifski_1-34-0/release/deps/liblibz_rs_sys-2a56889f8f4194b3.rlib,source=/liblibz_rs_sys-2a56889f8f4194b3.rlib \
-  --mount=from=out-2a56889f8f4194b3,dst=/tmp/clis-gifski_1-34-0/release/deps/liblibz_rs_sys-2a56889f8f4194b3.rmeta,source=/liblibz_rs_sys-2a56889f8f4194b3.rmeta \
-  --mount=from=out-1ce6de5e74c29a43,dst=/tmp/clis-gifski_1-34-0/release/deps/libzlib_rs-1ce6de5e74c29a43.rlib,source=/libzlib_rs-1ce6de5e74c29a43.rlib \
-  --mount=from=out-1ce6de5e74c29a43,dst=/tmp/clis-gifski_1-34-0/release/deps/libzlib_rs-1ce6de5e74c29a43.rmeta,source=/libzlib_rs-1ce6de5e74c29a43.rmeta \
-  --mount=from=out-3afb72ac1310d574,dst=/tmp/clis-gifski_1-34-0/release/deps/liblibc-3afb72ac1310d574.rlib,source=/liblibc-3afb72ac1310d574.rlib \
-  --mount=from=out-3afb72ac1310d574,dst=/tmp/clis-gifski_1-34-0/release/deps/liblibc-3afb72ac1310d574.rmeta,source=/liblibc-3afb72ac1310d574.rmeta \
-  --mount=from=out-b630417cd5f2024a,dst=/tmp/clis-gifski_1-34-0/release/deps/librgb-b630417cd5f2024a.rlib,source=/librgb-b630417cd5f2024a.rlib \
-  --mount=from=out-b630417cd5f2024a,dst=/tmp/clis-gifski_1-34-0/release/deps/librgb-b630417cd5f2024a.rmeta,source=/librgb-b630417cd5f2024a.rmeta \
-  --mount=from=out-f0cdacabc0947b7b,dst=/tmp/clis-gifski_1-34-0/release/deps/libbytemuck-f0cdacabc0947b7b.rlib,source=/libbytemuck-f0cdacabc0947b7b.rlib \
-  --mount=from=out-f0cdacabc0947b7b,dst=/tmp/clis-gifski_1-34-0/release/deps/libbytemuck-f0cdacabc0947b7b.rmeta,source=/libbytemuck-f0cdacabc0947b7b.rmeta \
+  --mount=from=out-51c01ae8d7468fb2,dst=/target/release/deps/libcrc32fast-51c01ae8d7468fb2.rlib,source=/libcrc32fast-51c01ae8d7468fb2.rlib \
+  --mount=from=out-51c01ae8d7468fb2,dst=/target/release/deps/libcrc32fast-51c01ae8d7468fb2.rmeta,source=/libcrc32fast-51c01ae8d7468fb2.rmeta \
+  --mount=from=out-e1f9b2ca981c3e9f,dst=/target/release/deps/libcfg_if-e1f9b2ca981c3e9f.rlib,source=/libcfg_if-e1f9b2ca981c3e9f.rlib \
+  --mount=from=out-e1f9b2ca981c3e9f,dst=/target/release/deps/libcfg_if-e1f9b2ca981c3e9f.rmeta,source=/libcfg_if-e1f9b2ca981c3e9f.rmeta \
+  --mount=from=out-92283f56cec7b441,dst=/target/release/deps/libflate2-92283f56cec7b441.rlib,source=/libflate2-92283f56cec7b441.rlib \
+  --mount=from=out-92283f56cec7b441,dst=/target/release/deps/libflate2-92283f56cec7b441.rmeta,source=/libflate2-92283f56cec7b441.rmeta \
+  --mount=from=out-2a56889f8f4194b3,dst=/target/release/deps/liblibz_rs_sys-2a56889f8f4194b3.rlib,source=/liblibz_rs_sys-2a56889f8f4194b3.rlib \
+  --mount=from=out-2a56889f8f4194b3,dst=/target/release/deps/liblibz_rs_sys-2a56889f8f4194b3.rmeta,source=/liblibz_rs_sys-2a56889f8f4194b3.rmeta \
+  --mount=from=out-1ce6de5e74c29a43,dst=/target/release/deps/libzlib_rs-1ce6de5e74c29a43.rlib,source=/libzlib_rs-1ce6de5e74c29a43.rlib \
+  --mount=from=out-1ce6de5e74c29a43,dst=/target/release/deps/libzlib_rs-1ce6de5e74c29a43.rmeta,source=/libzlib_rs-1ce6de5e74c29a43.rmeta \
+  --mount=from=out-3afb72ac1310d574,dst=/target/release/deps/liblibc-3afb72ac1310d574.rlib,source=/liblibc-3afb72ac1310d574.rlib \
+  --mount=from=out-3afb72ac1310d574,dst=/target/release/deps/liblibc-3afb72ac1310d574.rmeta,source=/liblibc-3afb72ac1310d574.rmeta \
+  --mount=from=out-b630417cd5f2024a,dst=/target/release/deps/librgb-b630417cd5f2024a.rlib,source=/librgb-b630417cd5f2024a.rlib \
+  --mount=from=out-b630417cd5f2024a,dst=/target/release/deps/librgb-b630417cd5f2024a.rmeta,source=/librgb-b630417cd5f2024a.rmeta \
+  --mount=from=out-f0cdacabc0947b7b,dst=/target/release/deps/libbytemuck-f0cdacabc0947b7b.rlib,source=/libbytemuck-f0cdacabc0947b7b.rlib \
+  --mount=from=out-f0cdacabc0947b7b,dst=/target/release/deps/libbytemuck-f0cdacabc0947b7b.rmeta,source=/libbytemuck-f0cdacabc0947b7b.rmeta \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=lodepng \
         CARGO_INCREMENTAL=0 \
@@ -5963,13 +5963,13 @@ RUN \
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --crate-name lodepng --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --cfg feature'="_deprecated_c_ffi_default_"' --cfg feature'="default"' --cfg feature'="zlibrs"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("_deprecated_c_ffi_default_", "c_ffi", "cfzlib", "default", "ngzlib", "rust_backend", "zlibrs"))' -C metadata'=7e81fc2590f360b3' -C extra-filename'=-c1608f7a6e4ba58d' --out-dir /tmp/clis-gifski_1-34-0/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --extern crc32fast'=/tmp/clis-gifski_1-34-0/release/deps/libcrc32fast-51c01ae8d7468fb2.rmeta' --extern flate2'=/tmp/clis-gifski_1-34-0/release/deps/libflate2-92283f56cec7b441.rmeta' --extern libc'=/tmp/clis-gifski_1-34-0/release/deps/liblibc-3afb72ac1310d574.rmeta' --extern rgb'=/tmp/clis-gifski_1-34-0/release/deps/librgb-b630417cd5f2024a.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/lodepng-3.12.1/src/lib.rs \
-        1>          /tmp/clis-gifski_1-34-0/release/deps/out-c1608f7a6e4ba58d-stdout \
-        2>          /tmp/clis-gifski_1-34-0/release/deps/out-c1608f7a6e4ba58d-stderr \
-        || echo $? >/tmp/clis-gifski_1-34-0/release/deps/out-c1608f7a6e4ba58d-errcode\
-  ; find /tmp/clis-gifski_1-34-0/release/deps/*-c1608f7a6e4ba58d* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      rustc --crate-name lodepng --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --cfg feature'="_deprecated_c_ffi_default_"' --cfg feature'="default"' --cfg feature'="zlibrs"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("_deprecated_c_ffi_default_", "c_ffi", "cfzlib", "default", "ngzlib", "rust_backend", "zlibrs"))' -C metadata'=7e81fc2590f360b3' -C extra-filename'=-c1608f7a6e4ba58d' --out-dir /target/release/deps -C strip'=symbols' -L dependency'=/target/release/deps' --extern crc32fast'=/target/release/deps/libcrc32fast-51c01ae8d7468fb2.rmeta' --extern flate2'=/target/release/deps/libflate2-92283f56cec7b441.rmeta' --extern libc'=/target/release/deps/liblibc-3afb72ac1310d574.rmeta' --extern rgb'=/target/release/deps/librgb-b630417cd5f2024a.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/lodepng-3.12.1/src/lib.rs \
+        1>          /target/release/deps/out-c1608f7a6e4ba58d-stdout \
+        2>          /target/release/deps/out-c1608f7a6e4ba58d-stderr \
+        || echo $? >/target/release/deps/out-c1608f7a6e4ba58d-errcode\
+  ; find /target/release/deps/*-c1608f7a6e4ba58d* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-c1608f7a6e4ba58d
-COPY --link --from=dep-n-lodepng-3.12.1-c1608f7a6e4ba58d /tmp/clis-gifski_1-34-0/release/deps/*-c1608f7a6e4ba58d* /
+COPY --link --from=dep-n-lodepng-3.12.1-c1608f7a6e4ba58d /target/release/deps/*-c1608f7a6e4ba58d* /
 
 ## this = "c1608f7a6e4ba58d"
 ## deps = [
@@ -5996,9 +5996,9 @@ COPY --link --from=dep-n-lodepng-3.12.1-c1608f7a6e4ba58d /tmp/clis-gifski_1-34-0
 ##     "lodepng-c1608f7a6e4ba58d.d",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/lodepng-c1608f7a6e4ba58d.d","emit":"dep-info"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/liblodepng-c1608f7a6e4ba58d.rmeta","emit":"metadata"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/liblodepng-c1608f7a6e4ba58d.rlib","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/lodepng-c1608f7a6e4ba58d.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/liblodepng-c1608f7a6e4ba58d.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/liblodepng-c1608f7a6e4ba58d.rlib","emit":"link"}',
 ## ]
 ##
 ## [[externs]]
@@ -6087,25 +6087,25 @@ COPY --link --from=dep-n-lodepng-3.12.1-c1608f7a6e4ba58d /tmp/clis-gifski_1-34-0
 ## script = '''
 ## FROM rust-base AS dep-n-lodepng-3.12.1-c1608f7a6e4ba58d
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-gifski_1-34-0/release/deps
+## WORKDIR /target/release/deps
 ## RUN \
 ##   --mount=from=cratesio-lodepng-3.12.1,source=/lodepng-3.12.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/lodepng-3.12.1 \
-##   --mount=from=out-51c01ae8d7468fb2,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrc32fast-51c01ae8d7468fb2.rlib,source=/libcrc32fast-51c01ae8d7468fb2.rlib \
-##   --mount=from=out-51c01ae8d7468fb2,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrc32fast-51c01ae8d7468fb2.rmeta,source=/libcrc32fast-51c01ae8d7468fb2.rmeta \
-##   --mount=from=out-e1f9b2ca981c3e9f,dst=/tmp/clis-gifski_1-34-0/release/deps/libcfg_if-e1f9b2ca981c3e9f.rlib,source=/libcfg_if-e1f9b2ca981c3e9f.rlib \
-##   --mount=from=out-e1f9b2ca981c3e9f,dst=/tmp/clis-gifski_1-34-0/release/deps/libcfg_if-e1f9b2ca981c3e9f.rmeta,source=/libcfg_if-e1f9b2ca981c3e9f.rmeta \
-##   --mount=from=out-92283f56cec7b441,dst=/tmp/clis-gifski_1-34-0/release/deps/libflate2-92283f56cec7b441.rlib,source=/libflate2-92283f56cec7b441.rlib \
-##   --mount=from=out-92283f56cec7b441,dst=/tmp/clis-gifski_1-34-0/release/deps/libflate2-92283f56cec7b441.rmeta,source=/libflate2-92283f56cec7b441.rmeta \
-##   --mount=from=out-2a56889f8f4194b3,dst=/tmp/clis-gifski_1-34-0/release/deps/liblibz_rs_sys-2a56889f8f4194b3.rlib,source=/liblibz_rs_sys-2a56889f8f4194b3.rlib \
-##   --mount=from=out-2a56889f8f4194b3,dst=/tmp/clis-gifski_1-34-0/release/deps/liblibz_rs_sys-2a56889f8f4194b3.rmeta,source=/liblibz_rs_sys-2a56889f8f4194b3.rmeta \
-##   --mount=from=out-1ce6de5e74c29a43,dst=/tmp/clis-gifski_1-34-0/release/deps/libzlib_rs-1ce6de5e74c29a43.rlib,source=/libzlib_rs-1ce6de5e74c29a43.rlib \
-##   --mount=from=out-1ce6de5e74c29a43,dst=/tmp/clis-gifski_1-34-0/release/deps/libzlib_rs-1ce6de5e74c29a43.rmeta,source=/libzlib_rs-1ce6de5e74c29a43.rmeta \
-##   --mount=from=out-3afb72ac1310d574,dst=/tmp/clis-gifski_1-34-0/release/deps/liblibc-3afb72ac1310d574.rlib,source=/liblibc-3afb72ac1310d574.rlib \
-##   --mount=from=out-3afb72ac1310d574,dst=/tmp/clis-gifski_1-34-0/release/deps/liblibc-3afb72ac1310d574.rmeta,source=/liblibc-3afb72ac1310d574.rmeta \
-##   --mount=from=out-b630417cd5f2024a,dst=/tmp/clis-gifski_1-34-0/release/deps/librgb-b630417cd5f2024a.rlib,source=/librgb-b630417cd5f2024a.rlib \
-##   --mount=from=out-b630417cd5f2024a,dst=/tmp/clis-gifski_1-34-0/release/deps/librgb-b630417cd5f2024a.rmeta,source=/librgb-b630417cd5f2024a.rmeta \
-##   --mount=from=out-f0cdacabc0947b7b,dst=/tmp/clis-gifski_1-34-0/release/deps/libbytemuck-f0cdacabc0947b7b.rlib,source=/libbytemuck-f0cdacabc0947b7b.rlib \
-##   --mount=from=out-f0cdacabc0947b7b,dst=/tmp/clis-gifski_1-34-0/release/deps/libbytemuck-f0cdacabc0947b7b.rmeta,source=/libbytemuck-f0cdacabc0947b7b.rmeta \
+##   --mount=from=out-51c01ae8d7468fb2,dst=/target/release/deps/libcrc32fast-51c01ae8d7468fb2.rlib,source=/libcrc32fast-51c01ae8d7468fb2.rlib \
+##   --mount=from=out-51c01ae8d7468fb2,dst=/target/release/deps/libcrc32fast-51c01ae8d7468fb2.rmeta,source=/libcrc32fast-51c01ae8d7468fb2.rmeta \
+##   --mount=from=out-e1f9b2ca981c3e9f,dst=/target/release/deps/libcfg_if-e1f9b2ca981c3e9f.rlib,source=/libcfg_if-e1f9b2ca981c3e9f.rlib \
+##   --mount=from=out-e1f9b2ca981c3e9f,dst=/target/release/deps/libcfg_if-e1f9b2ca981c3e9f.rmeta,source=/libcfg_if-e1f9b2ca981c3e9f.rmeta \
+##   --mount=from=out-92283f56cec7b441,dst=/target/release/deps/libflate2-92283f56cec7b441.rlib,source=/libflate2-92283f56cec7b441.rlib \
+##   --mount=from=out-92283f56cec7b441,dst=/target/release/deps/libflate2-92283f56cec7b441.rmeta,source=/libflate2-92283f56cec7b441.rmeta \
+##   --mount=from=out-2a56889f8f4194b3,dst=/target/release/deps/liblibz_rs_sys-2a56889f8f4194b3.rlib,source=/liblibz_rs_sys-2a56889f8f4194b3.rlib \
+##   --mount=from=out-2a56889f8f4194b3,dst=/target/release/deps/liblibz_rs_sys-2a56889f8f4194b3.rmeta,source=/liblibz_rs_sys-2a56889f8f4194b3.rmeta \
+##   --mount=from=out-1ce6de5e74c29a43,dst=/target/release/deps/libzlib_rs-1ce6de5e74c29a43.rlib,source=/libzlib_rs-1ce6de5e74c29a43.rlib \
+##   --mount=from=out-1ce6de5e74c29a43,dst=/target/release/deps/libzlib_rs-1ce6de5e74c29a43.rmeta,source=/libzlib_rs-1ce6de5e74c29a43.rmeta \
+##   --mount=from=out-3afb72ac1310d574,dst=/target/release/deps/liblibc-3afb72ac1310d574.rlib,source=/liblibc-3afb72ac1310d574.rlib \
+##   --mount=from=out-3afb72ac1310d574,dst=/target/release/deps/liblibc-3afb72ac1310d574.rmeta,source=/liblibc-3afb72ac1310d574.rmeta \
+##   --mount=from=out-b630417cd5f2024a,dst=/target/release/deps/librgb-b630417cd5f2024a.rlib,source=/librgb-b630417cd5f2024a.rlib \
+##   --mount=from=out-b630417cd5f2024a,dst=/target/release/deps/librgb-b630417cd5f2024a.rmeta,source=/librgb-b630417cd5f2024a.rmeta \
+##   --mount=from=out-f0cdacabc0947b7b,dst=/target/release/deps/libbytemuck-f0cdacabc0947b7b.rlib,source=/libbytemuck-f0cdacabc0947b7b.rlib \
+##   --mount=from=out-f0cdacabc0947b7b,dst=/target/release/deps/libbytemuck-f0cdacabc0947b7b.rmeta,source=/libbytemuck-f0cdacabc0947b7b.rmeta \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=lodepng \
 ##         CARGO_INCREMENTAL=0 \
@@ -6126,11 +6126,11 @@ COPY --link --from=dep-n-lodepng-3.12.1-c1608f7a6e4ba58d /tmp/clis-gifski_1-34-0
 ##         CARGO_PKG_VERSION_PATCH=1 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name lodepng --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --cfg feature'="_deprecated_c_ffi_default_"' --cfg feature'="default"' --cfg feature'="zlibrs"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("_deprecated_c_ffi_default_", "c_ffi", "cfzlib", "default", "ngzlib", "rust_backend", "zlibrs"))' -C metadata'=7e81fc2590f360b3' -C extra-filename'=-c1608f7a6e4ba58d' --out-dir /tmp/clis-gifski_1-34-0/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --extern crc32fast'=/tmp/clis-gifski_1-34-0/release/deps/libcrc32fast-51c01ae8d7468fb2.rmeta' --extern flate2'=/tmp/clis-gifski_1-34-0/release/deps/libflate2-92283f56cec7b441.rmeta' --extern libc'=/tmp/clis-gifski_1-34-0/release/deps/liblibc-3afb72ac1310d574.rmeta' --extern rgb'=/tmp/clis-gifski_1-34-0/release/deps/librgb-b630417cd5f2024a.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/lodepng-3.12.1/src/lib.rs \
-##         1>          /tmp/clis-gifski_1-34-0/release/deps/out-c1608f7a6e4ba58d-stdout \
-##         2>          /tmp/clis-gifski_1-34-0/release/deps/out-c1608f7a6e4ba58d-stderr \
-##         || echo $? >/tmp/clis-gifski_1-34-0/release/deps/out-c1608f7a6e4ba58d-errcode\
-##   ; find /tmp/clis-gifski_1-34-0/release/deps/*-c1608f7a6e4ba58d* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name lodepng --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --cfg feature'="_deprecated_c_ffi_default_"' --cfg feature'="default"' --cfg feature'="zlibrs"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("_deprecated_c_ffi_default_", "c_ffi", "cfzlib", "default", "ngzlib", "rust_backend", "zlibrs"))' -C metadata'=7e81fc2590f360b3' -C extra-filename'=-c1608f7a6e4ba58d' --out-dir /target/release/deps -C strip'=symbols' -L dependency'=/target/release/deps' --extern crc32fast'=/target/release/deps/libcrc32fast-51c01ae8d7468fb2.rmeta' --extern flate2'=/target/release/deps/libflate2-92283f56cec7b441.rmeta' --extern libc'=/target/release/deps/liblibc-3afb72ac1310d574.rmeta' --extern rgb'=/target/release/deps/librgb-b630417cd5f2024a.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/lodepng-3.12.1/src/lib.rs \
+##         1>          /target/release/deps/out-c1608f7a6e4ba58d-stdout \
+##         2>          /target/release/deps/out-c1608f7a6e4ba58d-stderr \
+##         || echo $? >/target/release/deps/out-c1608f7a6e4ba58d-errcode\
+##   ; find /target/release/deps/*-c1608f7a6e4ba58d* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -6138,18 +6138,18 @@ COPY --link --from=dep-n-lodepng-3.12.1-c1608f7a6e4ba58d /tmp/clis-gifski_1-34-0
 ## stage = "out-c1608f7a6e4ba58d"
 ## script = """
 ## FROM scratch AS out-c1608f7a6e4ba58d
-## COPY --link --from=dep-n-lodepng-3.12.1-c1608f7a6e4ba58d /tmp/clis-gifski_1-34-0/release/deps/*-c1608f7a6e4ba58d* /"""
+## COPY --link --from=dep-n-lodepng-3.12.1-c1608f7a6e4ba58d /target/release/deps/*-c1608f7a6e4ba58d* /"""
 
 FROM scratch AS cratesio-loop9-0.1.5
 ADD --chmod=0664 --unpack --checksum=sha256:0fae87c125b03c1d2c0150c90365d7d6bcc53fb73a9acaef207d2d065860f062 \
   https://static.crates.io/crates/loop9/loop9-0.1.5.crate /
 FROM rust-base AS dep-n-loop9-0.1.5-4166f710ac396229
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-gifski_1-34-0/release/deps
+WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-loop9-0.1.5,source=/loop9-0.1.5,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/loop9-0.1.5 \
-  --mount=from=out-deae4624c4370e95,dst=/tmp/clis-gifski_1-34-0/release/deps/libimgref-deae4624c4370e95.rlib,source=/libimgref-deae4624c4370e95.rlib \
-  --mount=from=out-deae4624c4370e95,dst=/tmp/clis-gifski_1-34-0/release/deps/libimgref-deae4624c4370e95.rmeta,source=/libimgref-deae4624c4370e95.rmeta \
+  --mount=from=out-deae4624c4370e95,dst=/target/release/deps/libimgref-deae4624c4370e95.rlib,source=/libimgref-deae4624c4370e95.rlib \
+  --mount=from=out-deae4624c4370e95,dst=/target/release/deps/libimgref-deae4624c4370e95.rmeta,source=/libimgref-deae4624c4370e95.rmeta \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=loop9 \
         CARGO_INCREMENTAL=0 \
@@ -6170,13 +6170,13 @@ RUN \
         CARGO_PKG_VERSION_PATCH=5 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --crate-name loop9 --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=b7520f4fa0ec2718' -C extra-filename'=-4166f710ac396229' --out-dir /tmp/clis-gifski_1-34-0/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --extern imgref'=/tmp/clis-gifski_1-34-0/release/deps/libimgref-deae4624c4370e95.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/loop9-0.1.5/src/lib.rs \
-        1>          /tmp/clis-gifski_1-34-0/release/deps/out-4166f710ac396229-stdout \
-        2>          /tmp/clis-gifski_1-34-0/release/deps/out-4166f710ac396229-stderr \
-        || echo $? >/tmp/clis-gifski_1-34-0/release/deps/out-4166f710ac396229-errcode\
-  ; find /tmp/clis-gifski_1-34-0/release/deps/*-4166f710ac396229* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      rustc --crate-name loop9 --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=b7520f4fa0ec2718' -C extra-filename'=-4166f710ac396229' --out-dir /target/release/deps -C strip'=symbols' -L dependency'=/target/release/deps' --extern imgref'=/target/release/deps/libimgref-deae4624c4370e95.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/loop9-0.1.5/src/lib.rs \
+        1>          /target/release/deps/out-4166f710ac396229-stdout \
+        2>          /target/release/deps/out-4166f710ac396229-stderr \
+        || echo $? >/target/release/deps/out-4166f710ac396229-errcode\
+  ; find /target/release/deps/*-4166f710ac396229* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-4166f710ac396229
-COPY --link --from=dep-n-loop9-0.1.5-4166f710ac396229 /tmp/clis-gifski_1-34-0/release/deps/*-4166f710ac396229* /
+COPY --link --from=dep-n-loop9-0.1.5-4166f710ac396229 /target/release/deps/*-4166f710ac396229* /
 
 ## this = "4166f710ac396229"
 ## deps = ["deae4624c4370e95"]
@@ -6186,9 +6186,9 @@ COPY --link --from=dep-n-loop9-0.1.5-4166f710ac396229 /tmp/clis-gifski_1-34-0/re
 ##     "loop9-4166f710ac396229.d",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/loop9-4166f710ac396229.d","emit":"dep-info"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/libloop9-4166f710ac396229.rmeta","emit":"metadata"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/libloop9-4166f710ac396229.rlib","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/loop9-4166f710ac396229.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libloop9-4166f710ac396229.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libloop9-4166f710ac396229.rlib","emit":"link"}',
 ## ]
 ##
 ## [[externs]]
@@ -6221,11 +6221,11 @@ COPY --link --from=dep-n-loop9-0.1.5-4166f710ac396229 /tmp/clis-gifski_1-34-0/re
 ## script = '''
 ## FROM rust-base AS dep-n-loop9-0.1.5-4166f710ac396229
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-gifski_1-34-0/release/deps
+## WORKDIR /target/release/deps
 ## RUN \
 ##   --mount=from=cratesio-loop9-0.1.5,source=/loop9-0.1.5,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/loop9-0.1.5 \
-##   --mount=from=out-deae4624c4370e95,dst=/tmp/clis-gifski_1-34-0/release/deps/libimgref-deae4624c4370e95.rlib,source=/libimgref-deae4624c4370e95.rlib \
-##   --mount=from=out-deae4624c4370e95,dst=/tmp/clis-gifski_1-34-0/release/deps/libimgref-deae4624c4370e95.rmeta,source=/libimgref-deae4624c4370e95.rmeta \
+##   --mount=from=out-deae4624c4370e95,dst=/target/release/deps/libimgref-deae4624c4370e95.rlib,source=/libimgref-deae4624c4370e95.rlib \
+##   --mount=from=out-deae4624c4370e95,dst=/target/release/deps/libimgref-deae4624c4370e95.rmeta,source=/libimgref-deae4624c4370e95.rmeta \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=loop9 \
 ##         CARGO_INCREMENTAL=0 \
@@ -6246,11 +6246,11 @@ COPY --link --from=dep-n-loop9-0.1.5-4166f710ac396229 /tmp/clis-gifski_1-34-0/re
 ##         CARGO_PKG_VERSION_PATCH=5 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name loop9 --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=b7520f4fa0ec2718' -C extra-filename'=-4166f710ac396229' --out-dir /tmp/clis-gifski_1-34-0/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --extern imgref'=/tmp/clis-gifski_1-34-0/release/deps/libimgref-deae4624c4370e95.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/loop9-0.1.5/src/lib.rs \
-##         1>          /tmp/clis-gifski_1-34-0/release/deps/out-4166f710ac396229-stdout \
-##         2>          /tmp/clis-gifski_1-34-0/release/deps/out-4166f710ac396229-stderr \
-##         || echo $? >/tmp/clis-gifski_1-34-0/release/deps/out-4166f710ac396229-errcode\
-##   ; find /tmp/clis-gifski_1-34-0/release/deps/*-4166f710ac396229* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name loop9 --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=b7520f4fa0ec2718' -C extra-filename'=-4166f710ac396229' --out-dir /target/release/deps -C strip'=symbols' -L dependency'=/target/release/deps' --extern imgref'=/target/release/deps/libimgref-deae4624c4370e95.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/loop9-0.1.5/src/lib.rs \
+##         1>          /target/release/deps/out-4166f710ac396229-stdout \
+##         2>          /target/release/deps/out-4166f710ac396229-stderr \
+##         || echo $? >/target/release/deps/out-4166f710ac396229-errcode\
+##   ; find /target/release/deps/*-4166f710ac396229* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -6258,14 +6258,14 @@ COPY --link --from=dep-n-loop9-0.1.5-4166f710ac396229 /tmp/clis-gifski_1-34-0/re
 ## stage = "out-4166f710ac396229"
 ## script = """
 ## FROM scratch AS out-4166f710ac396229
-## COPY --link --from=dep-n-loop9-0.1.5-4166f710ac396229 /tmp/clis-gifski_1-34-0/release/deps/*-4166f710ac396229* /"""
+## COPY --link --from=dep-n-loop9-0.1.5-4166f710ac396229 /target/release/deps/*-4166f710ac396229* /"""
 
 FROM scratch AS cratesio-natord-1.0.9
 ADD --chmod=0664 --unpack --checksum=sha256:308d96db8debc727c3fd9744aac51751243420e46edf401010908da7f8d5e57c \
   https://static.crates.io/crates/natord/natord-1.0.9.crate /
 FROM rust-base AS dep-n-natord-1.0.9-dbbab79b50c30bb1
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-gifski_1-34-0/release/deps
+WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-natord-1.0.9,source=/natord-1.0.9,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/natord-1.0.9 \
     env CARGO="$(which cargo)" \
@@ -6288,13 +6288,13 @@ RUN \
         CARGO_PKG_VERSION_PATCH=9 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --crate-name natord --edition 2015 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=87998968a5c0b9ba' -C extra-filename'=-dbbab79b50c30bb1' --out-dir /tmp/clis-gifski_1-34-0/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/natord-1.0.9/lib.rs \
-        1>          /tmp/clis-gifski_1-34-0/release/deps/out-dbbab79b50c30bb1-stdout \
-        2>          /tmp/clis-gifski_1-34-0/release/deps/out-dbbab79b50c30bb1-stderr \
-        || echo $? >/tmp/clis-gifski_1-34-0/release/deps/out-dbbab79b50c30bb1-errcode\
-  ; find /tmp/clis-gifski_1-34-0/release/deps/*-dbbab79b50c30bb1* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      rustc --crate-name natord --edition 2015 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=87998968a5c0b9ba' -C extra-filename'=-dbbab79b50c30bb1' --out-dir /target/release/deps -C strip'=symbols' -L dependency'=/target/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/natord-1.0.9/lib.rs \
+        1>          /target/release/deps/out-dbbab79b50c30bb1-stdout \
+        2>          /target/release/deps/out-dbbab79b50c30bb1-stderr \
+        || echo $? >/target/release/deps/out-dbbab79b50c30bb1-errcode\
+  ; find /target/release/deps/*-dbbab79b50c30bb1* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-dbbab79b50c30bb1
-COPY --link --from=dep-n-natord-1.0.9-dbbab79b50c30bb1 /tmp/clis-gifski_1-34-0/release/deps/*-dbbab79b50c30bb1* /
+COPY --link --from=dep-n-natord-1.0.9-dbbab79b50c30bb1 /target/release/deps/*-dbbab79b50c30bb1* /
 
 ## this = "dbbab79b50c30bb1"
 ## writes = [
@@ -6303,9 +6303,9 @@ COPY --link --from=dep-n-natord-1.0.9-dbbab79b50c30bb1 /tmp/clis-gifski_1-34-0/r
 ##     "natord-dbbab79b50c30bb1.d",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/natord-dbbab79b50c30bb1.d","emit":"dep-info"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/libnatord-dbbab79b50c30bb1.rmeta","emit":"metadata"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/libnatord-dbbab79b50c30bb1.rlib","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/natord-dbbab79b50c30bb1.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libnatord-dbbab79b50c30bb1.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libnatord-dbbab79b50c30bb1.rlib","emit":"link"}',
 ## ]
 ##
 ## [[stages]]
@@ -6330,7 +6330,7 @@ COPY --link --from=dep-n-natord-1.0.9-dbbab79b50c30bb1 /tmp/clis-gifski_1-34-0/r
 ## script = '''
 ## FROM rust-base AS dep-n-natord-1.0.9-dbbab79b50c30bb1
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-gifski_1-34-0/release/deps
+## WORKDIR /target/release/deps
 ## RUN \
 ##   --mount=from=cratesio-natord-1.0.9,source=/natord-1.0.9,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/natord-1.0.9 \
 ##     env CARGO="$(which cargo)" \
@@ -6353,11 +6353,11 @@ COPY --link --from=dep-n-natord-1.0.9-dbbab79b50c30bb1 /tmp/clis-gifski_1-34-0/r
 ##         CARGO_PKG_VERSION_PATCH=9 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name natord --edition 2015 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=87998968a5c0b9ba' -C extra-filename'=-dbbab79b50c30bb1' --out-dir /tmp/clis-gifski_1-34-0/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/natord-1.0.9/lib.rs \
-##         1>          /tmp/clis-gifski_1-34-0/release/deps/out-dbbab79b50c30bb1-stdout \
-##         2>          /tmp/clis-gifski_1-34-0/release/deps/out-dbbab79b50c30bb1-stderr \
-##         || echo $? >/tmp/clis-gifski_1-34-0/release/deps/out-dbbab79b50c30bb1-errcode\
-##   ; find /tmp/clis-gifski_1-34-0/release/deps/*-dbbab79b50c30bb1* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name natord --edition 2015 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=87998968a5c0b9ba' -C extra-filename'=-dbbab79b50c30bb1' --out-dir /target/release/deps -C strip'=symbols' -L dependency'=/target/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/natord-1.0.9/lib.rs \
+##         1>          /target/release/deps/out-dbbab79b50c30bb1-stdout \
+##         2>          /target/release/deps/out-dbbab79b50c30bb1-stderr \
+##         || echo $? >/target/release/deps/out-dbbab79b50c30bb1-errcode\
+##   ; find /target/release/deps/*-dbbab79b50c30bb1* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -6365,14 +6365,14 @@ COPY --link --from=dep-n-natord-1.0.9-dbbab79b50c30bb1 /tmp/clis-gifski_1-34-0/r
 ## stage = "out-dbbab79b50c30bb1"
 ## script = """
 ## FROM scratch AS out-dbbab79b50c30bb1
-## COPY --link --from=dep-n-natord-1.0.9-dbbab79b50c30bb1 /tmp/clis-gifski_1-34-0/release/deps/*-dbbab79b50c30bb1* /"""
+## COPY --link --from=dep-n-natord-1.0.9-dbbab79b50c30bb1 /target/release/deps/*-dbbab79b50c30bb1* /"""
 
 FROM scratch AS cratesio-autocfg-1.5.0
 ADD --chmod=0664 --unpack --checksum=sha256:c08606f8c3cbf4ce6ec8e28fb0014a2c086708fe954eaa885384a6165172e7e8 \
   https://static.crates.io/crates/autocfg/autocfg-1.5.0.crate /
 FROM rust-base AS dep-n-autocfg-1.5.0-54801e684ac31c95
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-gifski_1-34-0/release/deps
+WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-autocfg-1.5.0,source=/autocfg-1.5.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/autocfg-1.5.0 \
     env CARGO="$(which cargo)" \
@@ -6395,13 +6395,13 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --crate-name autocfg --edition 2015 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=278d87c4de86bea7' -C extra-filename'=-54801e684ac31c95' --out-dir /tmp/clis-gifski_1-34-0/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/autocfg-1.5.0/src/lib.rs \
-        1>          /tmp/clis-gifski_1-34-0/release/deps/out-54801e684ac31c95-stdout \
-        2>          /tmp/clis-gifski_1-34-0/release/deps/out-54801e684ac31c95-stderr \
-        || echo $? >/tmp/clis-gifski_1-34-0/release/deps/out-54801e684ac31c95-errcode\
-  ; find /tmp/clis-gifski_1-34-0/release/deps/*-54801e684ac31c95* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      rustc --crate-name autocfg --edition 2015 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=278d87c4de86bea7' -C extra-filename'=-54801e684ac31c95' --out-dir /target/release/deps -C strip'=symbols' -L dependency'=/target/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/autocfg-1.5.0/src/lib.rs \
+        1>          /target/release/deps/out-54801e684ac31c95-stdout \
+        2>          /target/release/deps/out-54801e684ac31c95-stderr \
+        || echo $? >/target/release/deps/out-54801e684ac31c95-errcode\
+  ; find /target/release/deps/*-54801e684ac31c95* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-54801e684ac31c95
-COPY --link --from=dep-n-autocfg-1.5.0-54801e684ac31c95 /tmp/clis-gifski_1-34-0/release/deps/*-54801e684ac31c95* /
+COPY --link --from=dep-n-autocfg-1.5.0-54801e684ac31c95 /target/release/deps/*-54801e684ac31c95* /
 
 ## this = "54801e684ac31c95"
 ## writes = [
@@ -6410,9 +6410,9 @@ COPY --link --from=dep-n-autocfg-1.5.0-54801e684ac31c95 /tmp/clis-gifski_1-34-0/
 ##     "libautocfg-54801e684ac31c95.rmeta",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/autocfg-54801e684ac31c95.d","emit":"dep-info"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/libautocfg-54801e684ac31c95.rmeta","emit":"metadata"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/libautocfg-54801e684ac31c95.rlib","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/autocfg-54801e684ac31c95.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libautocfg-54801e684ac31c95.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libautocfg-54801e684ac31c95.rlib","emit":"link"}',
 ## ]
 ##
 ## [[stages]]
@@ -6437,7 +6437,7 @@ COPY --link --from=dep-n-autocfg-1.5.0-54801e684ac31c95 /tmp/clis-gifski_1-34-0/
 ## script = '''
 ## FROM rust-base AS dep-n-autocfg-1.5.0-54801e684ac31c95
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-gifski_1-34-0/release/deps
+## WORKDIR /target/release/deps
 ## RUN \
 ##   --mount=from=cratesio-autocfg-1.5.0,source=/autocfg-1.5.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/autocfg-1.5.0 \
 ##     env CARGO="$(which cargo)" \
@@ -6460,11 +6460,11 @@ COPY --link --from=dep-n-autocfg-1.5.0-54801e684ac31c95 /tmp/clis-gifski_1-34-0/
 ##         CARGO_PKG_VERSION_PATCH=0 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name autocfg --edition 2015 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=278d87c4de86bea7' -C extra-filename'=-54801e684ac31c95' --out-dir /tmp/clis-gifski_1-34-0/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/autocfg-1.5.0/src/lib.rs \
-##         1>          /tmp/clis-gifski_1-34-0/release/deps/out-54801e684ac31c95-stdout \
-##         2>          /tmp/clis-gifski_1-34-0/release/deps/out-54801e684ac31c95-stderr \
-##         || echo $? >/tmp/clis-gifski_1-34-0/release/deps/out-54801e684ac31c95-errcode\
-##   ; find /tmp/clis-gifski_1-34-0/release/deps/*-54801e684ac31c95* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name autocfg --edition 2015 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=278d87c4de86bea7' -C extra-filename'=-54801e684ac31c95' --out-dir /target/release/deps -C strip'=symbols' -L dependency'=/target/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/autocfg-1.5.0/src/lib.rs \
+##         1>          /target/release/deps/out-54801e684ac31c95-stdout \
+##         2>          /target/release/deps/out-54801e684ac31c95-stderr \
+##         || echo $? >/target/release/deps/out-54801e684ac31c95-errcode\
+##   ; find /target/release/deps/*-54801e684ac31c95* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -6472,17 +6472,17 @@ COPY --link --from=dep-n-autocfg-1.5.0-54801e684ac31c95 /tmp/clis-gifski_1-34-0/
 ## stage = "out-54801e684ac31c95"
 ## script = """
 ## FROM scratch AS out-54801e684ac31c95
-## COPY --link --from=dep-n-autocfg-1.5.0-54801e684ac31c95 /tmp/clis-gifski_1-34-0/release/deps/*-54801e684ac31c95* /"""
+## COPY --link --from=dep-n-autocfg-1.5.0-54801e684ac31c95 /target/release/deps/*-54801e684ac31c95* /"""
 
 FROM scratch AS cratesio-num-traits-0.2.19
 ADD --chmod=0664 --unpack --checksum=sha256:071dfc062690e90b734c0b2273ce72ad0ffa95f0c74596bc250dcfd960262841 \
   https://static.crates.io/crates/num-traits/num-traits-0.2.19.crate /
 FROM rust-base AS dep-x-num-traits-0.2.19-fc32176d5a01eb74
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-gifski_1-34-0/release/build/num-traits-fc32176d5a01eb74
+WORKDIR /target/release/build/num-traits-fc32176d5a01eb74
 RUN \
   --mount=from=cratesio-num-traits-0.2.19,source=/num-traits-0.2.19,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-traits-0.2.19,rw \
-  --mount=from=out-54801e684ac31c95,dst=/tmp/clis-gifski_1-34-0/release/deps/libautocfg-54801e684ac31c95.rlib,source=/libautocfg-54801e684ac31c95.rlib \
+  --mount=from=out-54801e684ac31c95,dst=/target/release/deps/libautocfg-54801e684ac31c95.rlib,source=/libautocfg-54801e684ac31c95.rlib \
     { \
         cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-traits-0.2.19/build.rs | sed -E 's/^(pub[()a-z]* +)?(async +)?fn +main/\1\2fn actual_fc32176d5a01eb74_main/' >/_ && mv /_ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-traits-0.2.19/build.rs ; \
         { \
@@ -6522,13 +6522,13 @@ RUN \
         CARGO_PKG_VERSION_PATCH=19 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="i128"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "i128", "libm", "std"))' -C metadata'=c7445406caf39858' -C extra-filename'=-fc32176d5a01eb74' --out-dir /tmp/clis-gifski_1-34-0/release/build/num-traits-fc32176d5a01eb74 -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --extern autocfg'=/tmp/clis-gifski_1-34-0/release/deps/libautocfg-54801e684ac31c95.rlib' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-traits-0.2.19/build.rs \
-        1>          /tmp/clis-gifski_1-34-0/release/build/num-traits-fc32176d5a01eb74/out-fc32176d5a01eb74-stdout \
-        2>          /tmp/clis-gifski_1-34-0/release/build/num-traits-fc32176d5a01eb74/out-fc32176d5a01eb74-stderr \
-        || echo $? >/tmp/clis-gifski_1-34-0/release/build/num-traits-fc32176d5a01eb74/out-fc32176d5a01eb74-errcode\
-  ; find /tmp/clis-gifski_1-34-0/release/build/num-traits-fc32176d5a01eb74/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="i128"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "i128", "libm", "std"))' -C metadata'=c7445406caf39858' -C extra-filename'=-fc32176d5a01eb74' --out-dir /target/release/build/num-traits-fc32176d5a01eb74 -C strip'=symbols' -L dependency'=/target/release/deps' --extern autocfg'=/target/release/deps/libautocfg-54801e684ac31c95.rlib' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-traits-0.2.19/build.rs \
+        1>          /target/release/build/num-traits-fc32176d5a01eb74/out-fc32176d5a01eb74-stdout \
+        2>          /target/release/build/num-traits-fc32176d5a01eb74/out-fc32176d5a01eb74-stderr \
+        || echo $? >/target/release/build/num-traits-fc32176d5a01eb74/out-fc32176d5a01eb74-errcode\
+  ; find /target/release/build/num-traits-fc32176d5a01eb74/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-fc32176d5a01eb74
-COPY --link --from=dep-x-num-traits-0.2.19-fc32176d5a01eb74 /tmp/clis-gifski_1-34-0/release/build/num-traits-fc32176d5a01eb74/*-fc32176d5a01eb74* /
+COPY --link --from=dep-x-num-traits-0.2.19-fc32176d5a01eb74 /target/release/build/num-traits-fc32176d5a01eb74/*-fc32176d5a01eb74* /
 
 ## this = "fc32176d5a01eb74"
 ## deps = ["54801e684ac31c95"]
@@ -6537,8 +6537,8 @@ COPY --link --from=dep-x-num-traits-0.2.19-fc32176d5a01eb74 /tmp/clis-gifski_1-3
 ##     "build_script_build-fc32176d5a01eb74.d",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/build/num-traits-fc32176d5a01eb74/build_script_build-fc32176d5a01eb74.d","emit":"dep-info"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/build/num-traits-fc32176d5a01eb74/build_script_build-fc32176d5a01eb74","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/build/num-traits-fc32176d5a01eb74/build_script_build-fc32176d5a01eb74.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/build/num-traits-fc32176d5a01eb74/build_script_build-fc32176d5a01eb74","emit":"link"}',
 ## ]
 ##
 ## [[externs]]
@@ -6567,10 +6567,10 @@ COPY --link --from=dep-x-num-traits-0.2.19-fc32176d5a01eb74 /tmp/clis-gifski_1-3
 ## script = '''
 ## FROM rust-base AS dep-x-num-traits-0.2.19-fc32176d5a01eb74
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-gifski_1-34-0/release/build/num-traits-fc32176d5a01eb74
+## WORKDIR /target/release/build/num-traits-fc32176d5a01eb74
 ## RUN \
 ##   --mount=from=cratesio-num-traits-0.2.19,source=/num-traits-0.2.19,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-traits-0.2.19,rw \
-##   --mount=from=out-54801e684ac31c95,dst=/tmp/clis-gifski_1-34-0/release/deps/libautocfg-54801e684ac31c95.rlib,source=/libautocfg-54801e684ac31c95.rlib \
+##   --mount=from=out-54801e684ac31c95,dst=/target/release/deps/libautocfg-54801e684ac31c95.rlib,source=/libautocfg-54801e684ac31c95.rlib \
 ##     { \
 ##         cat /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-traits-0.2.19/build.rs | sed -E 's/^(pub[()a-z]* +)?(async +)?fn +main/\1\2fn actual_fc32176d5a01eb74_main/' >/_ && mv /_ /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-traits-0.2.19/build.rs ; \
 ##         { \
@@ -6610,11 +6610,11 @@ COPY --link --from=dep-x-num-traits-0.2.19-fc32176d5a01eb74 /tmp/clis-gifski_1-3
 ##         CARGO_PKG_VERSION_PATCH=19 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="i128"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "i128", "libm", "std"))' -C metadata'=c7445406caf39858' -C extra-filename'=-fc32176d5a01eb74' --out-dir /tmp/clis-gifski_1-34-0/release/build/num-traits-fc32176d5a01eb74 -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --extern autocfg'=/tmp/clis-gifski_1-34-0/release/deps/libautocfg-54801e684ac31c95.rlib' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-traits-0.2.19/build.rs \
-##         1>          /tmp/clis-gifski_1-34-0/release/build/num-traits-fc32176d5a01eb74/out-fc32176d5a01eb74-stdout \
-##         2>          /tmp/clis-gifski_1-34-0/release/build/num-traits-fc32176d5a01eb74/out-fc32176d5a01eb74-stderr \
-##         || echo $? >/tmp/clis-gifski_1-34-0/release/build/num-traits-fc32176d5a01eb74/out-fc32176d5a01eb74-errcode\
-##   ; find /tmp/clis-gifski_1-34-0/release/build/num-traits-fc32176d5a01eb74/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="i128"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "i128", "libm", "std"))' -C metadata'=c7445406caf39858' -C extra-filename'=-fc32176d5a01eb74' --out-dir /target/release/build/num-traits-fc32176d5a01eb74 -C strip'=symbols' -L dependency'=/target/release/deps' --extern autocfg'=/target/release/deps/libautocfg-54801e684ac31c95.rlib' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-traits-0.2.19/build.rs \
+##         1>          /target/release/build/num-traits-fc32176d5a01eb74/out-fc32176d5a01eb74-stdout \
+##         2>          /target/release/build/num-traits-fc32176d5a01eb74/out-fc32176d5a01eb74-stderr \
+##         || echo $? >/target/release/build/num-traits-fc32176d5a01eb74/out-fc32176d5a01eb74-errcode\
+##   ; find /target/release/build/num-traits-fc32176d5a01eb74/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -6622,14 +6622,14 @@ COPY --link --from=dep-x-num-traits-0.2.19-fc32176d5a01eb74 /tmp/clis-gifski_1-3
 ## stage = "out-fc32176d5a01eb74"
 ## script = """
 ## FROM scratch AS out-fc32176d5a01eb74
-## COPY --link --from=dep-x-num-traits-0.2.19-fc32176d5a01eb74 /tmp/clis-gifski_1-34-0/release/build/num-traits-fc32176d5a01eb74/*-fc32176d5a01eb74* /"""
+## COPY --link --from=dep-x-num-traits-0.2.19-fc32176d5a01eb74 /target/release/build/num-traits-fc32176d5a01eb74/*-fc32176d5a01eb74* /"""
 
 FROM rust-base AS run-z-num-traits-0.2.19-591dbe4b4bcdb9a9
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-gifski_1-34-0/release/build/num-traits-591dbe4b4bcdb9a9/out
+WORKDIR /target/release/build/num-traits-591dbe4b4bcdb9a9/out
 WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-traits-0.2.19
 RUN \
-  --mount=from=out-fc32176d5a01eb74,source=/build_script_build-fc32176d5a01eb74,dst=/tmp/clis-gifski_1-34-0/release/build/num-traits-fc32176d5a01eb74/build-script-build \
+  --mount=from=out-fc32176d5a01eb74,source=/build_script_build-fc32176d5a01eb74,dst=/target/release/build/num-traits-fc32176d5a01eb74/build-script-build \
   --mount=from=cratesio-num-traits-0.2.19,source=/num-traits-0.2.19,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-traits-0.2.19 \
     env CARGO="$(which cargo)" \
         CARGO_CFG_FEATURE=default,i128,std \
@@ -6670,26 +6670,26 @@ RUN \
         HOST=x86_64-unknown-linux-gnu \
         NUM_JOBS=4 \
         OPT_LEVEL=3 \
-        OUT_DIR=/tmp/clis-gifski_1-34-0/release/build/num-traits-591dbe4b4bcdb9a9/out \
+        OUT_DIR=/target/release/build/num-traits-591dbe4b4bcdb9a9/out \
         PROFILE=release \
         RUSTC=rustc \
         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
         TARGET=x86_64-unknown-linux-gnu \
         CARGOGREEN=1 \
-      CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-gifski_1-34-0/release/build/num-traits-fc32176d5a01eb74/build-script-build \
-        1>          /tmp/clis-gifski_1-34-0/release/build/num-traits-591dbe4b4bcdb9a9/out/out-591dbe4b4bcdb9a9-stdout \
-        2>          /tmp/clis-gifski_1-34-0/release/build/num-traits-591dbe4b4bcdb9a9/out/out-591dbe4b4bcdb9a9-stderr \
-        || echo $? >/tmp/clis-gifski_1-34-0/release/build/num-traits-591dbe4b4bcdb9a9/out/out-591dbe4b4bcdb9a9-errcode\
-  ; find /tmp/clis-gifski_1-34-0/release/build/num-traits-591dbe4b4bcdb9a9/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      CARGOGREEN_EXECUTE_BUILDRS_= /target/release/build/num-traits-fc32176d5a01eb74/build-script-build \
+        1>          /target/release/build/num-traits-591dbe4b4bcdb9a9/out/out-591dbe4b4bcdb9a9-stdout \
+        2>          /target/release/build/num-traits-591dbe4b4bcdb9a9/out/out-591dbe4b4bcdb9a9-stderr \
+        || echo $? >/target/release/build/num-traits-591dbe4b4bcdb9a9/out/out-591dbe4b4bcdb9a9-errcode\
+  ; find /target/release/build/num-traits-591dbe4b4bcdb9a9/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-591dbe4b4bcdb9a9
-COPY --link --from=run-z-num-traits-0.2.19-591dbe4b4bcdb9a9 /tmp/clis-gifski_1-34-0/release/build/num-traits-591dbe4b4bcdb9a9/out /
+COPY --link --from=run-z-num-traits-0.2.19-591dbe4b4bcdb9a9 /target/release/build/num-traits-591dbe4b4bcdb9a9/out /
 
 ## this = "591dbe4b4bcdb9a9"
 ## deps = [
 ##     "54801e684ac31c95",
 ##     "fc32176d5a01eb74",
 ## ]
-## writes_to = "/tmp/clis-gifski_1-34-0/release/build/num-traits-591dbe4b4bcdb9a9/out"
+## writes_to = "/target/release/build/num-traits-591dbe4b4bcdb9a9/out"
 ## stdout = [
 ##     "cargo:rustc-check-cfg=cfg(has_total_cmp)",
 ##     "cargo:rustc-cfg=has_total_cmp",
@@ -6709,10 +6709,10 @@ COPY --link --from=run-z-num-traits-0.2.19-591dbe4b4bcdb9a9 /tmp/clis-gifski_1-3
 ## script = '''
 ## FROM rust-base AS run-z-num-traits-0.2.19-591dbe4b4bcdb9a9
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-gifski_1-34-0/release/build/num-traits-591dbe4b4bcdb9a9/out
+## WORKDIR /target/release/build/num-traits-591dbe4b4bcdb9a9/out
 ## WORKDIR /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-traits-0.2.19
 ## RUN \
-##   --mount=from=out-fc32176d5a01eb74,source=/build_script_build-fc32176d5a01eb74,dst=/tmp/clis-gifski_1-34-0/release/build/num-traits-fc32176d5a01eb74/build-script-build \
+##   --mount=from=out-fc32176d5a01eb74,source=/build_script_build-fc32176d5a01eb74,dst=/target/release/build/num-traits-fc32176d5a01eb74/build-script-build \
 ##   --mount=from=cratesio-num-traits-0.2.19,source=/num-traits-0.2.19,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-traits-0.2.19 \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CFG_FEATURE=default,i128,std \
@@ -6753,17 +6753,17 @@ COPY --link --from=run-z-num-traits-0.2.19-591dbe4b4bcdb9a9 /tmp/clis-gifski_1-3
 ##         HOST=x86_64-unknown-linux-gnu \
 ##         NUM_JOBS=4 \
 ##         OPT_LEVEL=3 \
-##         OUT_DIR=/tmp/clis-gifski_1-34-0/release/build/num-traits-591dbe4b4bcdb9a9/out \
+##         OUT_DIR=/target/release/build/num-traits-591dbe4b4bcdb9a9/out \
 ##         PROFILE=release \
 ##         RUSTC=rustc \
 ##         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
 ##         TARGET=x86_64-unknown-linux-gnu \
 ##         CARGOGREEN=1 \
-##       CARGOGREEN_EXECUTE_BUILDRS_= /tmp/clis-gifski_1-34-0/release/build/num-traits-fc32176d5a01eb74/build-script-build \
-##         1>          /tmp/clis-gifski_1-34-0/release/build/num-traits-591dbe4b4bcdb9a9/out/out-591dbe4b4bcdb9a9-stdout \
-##         2>          /tmp/clis-gifski_1-34-0/release/build/num-traits-591dbe4b4bcdb9a9/out/out-591dbe4b4bcdb9a9-stderr \
-##         || echo $? >/tmp/clis-gifski_1-34-0/release/build/num-traits-591dbe4b4bcdb9a9/out/out-591dbe4b4bcdb9a9-errcode\
-##   ; find /tmp/clis-gifski_1-34-0/release/build/num-traits-591dbe4b4bcdb9a9/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       CARGOGREEN_EXECUTE_BUILDRS_= /target/release/build/num-traits-fc32176d5a01eb74/build-script-build \
+##         1>          /target/release/build/num-traits-591dbe4b4bcdb9a9/out/out-591dbe4b4bcdb9a9-stdout \
+##         2>          /target/release/build/num-traits-591dbe4b4bcdb9a9/out/out-591dbe4b4bcdb9a9-stderr \
+##         || echo $? >/target/release/build/num-traits-591dbe4b4bcdb9a9/out/out-591dbe4b4bcdb9a9-errcode\
+##   ; find /target/release/build/num-traits-591dbe4b4bcdb9a9/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -6771,15 +6771,15 @@ COPY --link --from=run-z-num-traits-0.2.19-591dbe4b4bcdb9a9 /tmp/clis-gifski_1-3
 ## stage = "out-591dbe4b4bcdb9a9"
 ## script = """
 ## FROM scratch AS out-591dbe4b4bcdb9a9
-## COPY --link --from=run-z-num-traits-0.2.19-591dbe4b4bcdb9a9 /tmp/clis-gifski_1-34-0/release/build/num-traits-591dbe4b4bcdb9a9/out /"""
+## COPY --link --from=run-z-num-traits-0.2.19-591dbe4b4bcdb9a9 /target/release/build/num-traits-591dbe4b4bcdb9a9/out /"""
 
 
 FROM rust-base AS dep-n-num-traits-0.2.19-53c0c58048ae59b2
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-gifski_1-34-0/release/deps
+WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-num-traits-0.2.19,source=/num-traits-0.2.19,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-traits-0.2.19 \
-  --mount=from=out-591dbe4b4bcdb9a9,dst=/tmp/clis-gifski_1-34-0/release/build/num-traits-591dbe4b4bcdb9a9/out,source=/ \
+  --mount=from=out-591dbe4b4bcdb9a9,dst=/target/release/build/num-traits-591dbe4b4bcdb9a9/out,source=/ \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=num_traits \
         CARGO_INCREMENTAL=0 \
@@ -6799,15 +6799,15 @@ RUN \
         CARGO_PKG_VERSION_MINOR=2 \
         CARGO_PKG_VERSION_PATCH=19 \
         CARGO_PKG_VERSION_PRE= \
-        OUT_DIR=/tmp/clis-gifski_1-34-0/release/build/num-traits-591dbe4b4bcdb9a9/out \
+        OUT_DIR=/target/release/build/num-traits-591dbe4b4bcdb9a9/out \
         CARGOGREEN=1 \
-      rustc --crate-name num_traits --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --cfg feature'="default"' --cfg feature'="i128"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "i128", "libm", "std"))' -C metadata'=69192f8850a5b341' -C extra-filename'=-53c0c58048ae59b2' --out-dir /tmp/clis-gifski_1-34-0/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --cap-lints warn --cfg has_total_cmp --check-cfg cfg'(has_total_cmp)' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-traits-0.2.19/src/lib.rs \
-        1>          /tmp/clis-gifski_1-34-0/release/deps/out-53c0c58048ae59b2-stdout \
-        2>          /tmp/clis-gifski_1-34-0/release/deps/out-53c0c58048ae59b2-stderr \
-        || echo $? >/tmp/clis-gifski_1-34-0/release/deps/out-53c0c58048ae59b2-errcode\
-  ; find /tmp/clis-gifski_1-34-0/release/deps/*-53c0c58048ae59b2* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      rustc --crate-name num_traits --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --cfg feature'="default"' --cfg feature'="i128"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "i128", "libm", "std"))' -C metadata'=69192f8850a5b341' -C extra-filename'=-53c0c58048ae59b2' --out-dir /target/release/deps -C strip'=symbols' -L dependency'=/target/release/deps' --cap-lints warn --cfg has_total_cmp --check-cfg cfg'(has_total_cmp)' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-traits-0.2.19/src/lib.rs \
+        1>          /target/release/deps/out-53c0c58048ae59b2-stdout \
+        2>          /target/release/deps/out-53c0c58048ae59b2-stderr \
+        || echo $? >/target/release/deps/out-53c0c58048ae59b2-errcode\
+  ; find /target/release/deps/*-53c0c58048ae59b2* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-53c0c58048ae59b2
-COPY --link --from=dep-n-num-traits-0.2.19-53c0c58048ae59b2 /tmp/clis-gifski_1-34-0/release/deps/*-53c0c58048ae59b2* /
+COPY --link --from=dep-n-num-traits-0.2.19-53c0c58048ae59b2 /target/release/deps/*-53c0c58048ae59b2* /
 
 ## this = "53c0c58048ae59b2"
 ## deps = [
@@ -6822,14 +6822,14 @@ COPY --link --from=dep-n-num-traits-0.2.19-53c0c58048ae59b2 /tmp/clis-gifski_1-3
 ##     "num_traits-53c0c58048ae59b2.d",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/num_traits-53c0c58048ae59b2.d","emit":"dep-info"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/libnum_traits-53c0c58048ae59b2.rmeta","emit":"metadata"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/libnum_traits-53c0c58048ae59b2.rlib","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/num_traits-53c0c58048ae59b2.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libnum_traits-53c0c58048ae59b2.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libnum_traits-53c0c58048ae59b2.rlib","emit":"link"}',
 ## ]
 ##
 ## [[mounts]]
 ## name = "out-591dbe4b4bcdb9a9"
-## mount = "/tmp/clis-gifski_1-34-0/release/build/num-traits-591dbe4b4bcdb9a9/out"
+## mount = "/target/release/build/num-traits-591dbe4b4bcdb9a9/out"
 ##
 ## [[stages]]
 ##
@@ -6853,10 +6853,10 @@ COPY --link --from=dep-n-num-traits-0.2.19-53c0c58048ae59b2 /tmp/clis-gifski_1-3
 ## script = '''
 ## FROM rust-base AS dep-n-num-traits-0.2.19-53c0c58048ae59b2
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-gifski_1-34-0/release/deps
+## WORKDIR /target/release/deps
 ## RUN \
 ##   --mount=from=cratesio-num-traits-0.2.19,source=/num-traits-0.2.19,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-traits-0.2.19 \
-##   --mount=from=out-591dbe4b4bcdb9a9,dst=/tmp/clis-gifski_1-34-0/release/build/num-traits-591dbe4b4bcdb9a9/out,source=/ \
+##   --mount=from=out-591dbe4b4bcdb9a9,dst=/target/release/build/num-traits-591dbe4b4bcdb9a9/out,source=/ \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=num_traits \
 ##         CARGO_INCREMENTAL=0 \
@@ -6876,13 +6876,13 @@ COPY --link --from=dep-n-num-traits-0.2.19-53c0c58048ae59b2 /tmp/clis-gifski_1-3
 ##         CARGO_PKG_VERSION_MINOR=2 \
 ##         CARGO_PKG_VERSION_PATCH=19 \
 ##         CARGO_PKG_VERSION_PRE= \
-##         OUT_DIR=/tmp/clis-gifski_1-34-0/release/build/num-traits-591dbe4b4bcdb9a9/out \
+##         OUT_DIR=/target/release/build/num-traits-591dbe4b4bcdb9a9/out \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name num_traits --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --cfg feature'="default"' --cfg feature'="i128"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "i128", "libm", "std"))' -C metadata'=69192f8850a5b341' -C extra-filename'=-53c0c58048ae59b2' --out-dir /tmp/clis-gifski_1-34-0/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --cap-lints warn --cfg has_total_cmp --check-cfg cfg'(has_total_cmp)' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-traits-0.2.19/src/lib.rs \
-##         1>          /tmp/clis-gifski_1-34-0/release/deps/out-53c0c58048ae59b2-stdout \
-##         2>          /tmp/clis-gifski_1-34-0/release/deps/out-53c0c58048ae59b2-stderr \
-##         || echo $? >/tmp/clis-gifski_1-34-0/release/deps/out-53c0c58048ae59b2-errcode\
-##   ; find /tmp/clis-gifski_1-34-0/release/deps/*-53c0c58048ae59b2* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name num_traits --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --cfg feature'="default"' --cfg feature'="i128"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "i128", "libm", "std"))' -C metadata'=69192f8850a5b341' -C extra-filename'=-53c0c58048ae59b2' --out-dir /target/release/deps -C strip'=symbols' -L dependency'=/target/release/deps' --cap-lints warn --cfg has_total_cmp --check-cfg cfg'(has_total_cmp)' /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/num-traits-0.2.19/src/lib.rs \
+##         1>          /target/release/deps/out-53c0c58048ae59b2-stdout \
+##         2>          /target/release/deps/out-53c0c58048ae59b2-stderr \
+##         || echo $? >/target/release/deps/out-53c0c58048ae59b2-errcode\
+##   ; find /target/release/deps/*-53c0c58048ae59b2* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -6890,20 +6890,20 @@ COPY --link --from=dep-n-num-traits-0.2.19-53c0c58048ae59b2 /tmp/clis-gifski_1-3
 ## stage = "out-53c0c58048ae59b2"
 ## script = """
 ## FROM scratch AS out-53c0c58048ae59b2
-## COPY --link --from=dep-n-num-traits-0.2.19-53c0c58048ae59b2 /tmp/clis-gifski_1-34-0/release/deps/*-53c0c58048ae59b2* /"""
+## COPY --link --from=dep-n-num-traits-0.2.19-53c0c58048ae59b2 /target/release/deps/*-53c0c58048ae59b2* /"""
 
 FROM scratch AS cratesio-ordered-channel-1.2.0
 ADD --chmod=0664 --unpack --checksum=sha256:95be4d57809897b5a7539fc15a7dfe0e84141bc3dfaa2e9b1b27caa90acf61ab \
   https://static.crates.io/crates/ordered-channel/ordered-channel-1.2.0.crate /
 FROM rust-base AS dep-n-ordered-channel-1.2.0-d1042fb932b56ff4
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-gifski_1-34-0/release/deps
+WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-ordered-channel-1.2.0,source=/ordered-channel-1.2.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ordered-channel-1.2.0 \
-  --mount=from=out-724af7b5f0e810c4,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_channel-724af7b5f0e810c4.rlib,source=/libcrossbeam_channel-724af7b5f0e810c4.rlib \
-  --mount=from=out-724af7b5f0e810c4,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_channel-724af7b5f0e810c4.rmeta,source=/libcrossbeam_channel-724af7b5f0e810c4.rmeta \
-  --mount=from=out-5ac36063ddf29a62,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rlib,source=/libcrossbeam_utils-5ac36063ddf29a62.rlib \
-  --mount=from=out-5ac36063ddf29a62,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rmeta,source=/libcrossbeam_utils-5ac36063ddf29a62.rmeta \
+  --mount=from=out-724af7b5f0e810c4,dst=/target/release/deps/libcrossbeam_channel-724af7b5f0e810c4.rlib,source=/libcrossbeam_channel-724af7b5f0e810c4.rlib \
+  --mount=from=out-724af7b5f0e810c4,dst=/target/release/deps/libcrossbeam_channel-724af7b5f0e810c4.rmeta,source=/libcrossbeam_channel-724af7b5f0e810c4.rmeta \
+  --mount=from=out-5ac36063ddf29a62,dst=/target/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rlib,source=/libcrossbeam_utils-5ac36063ddf29a62.rlib \
+  --mount=from=out-5ac36063ddf29a62,dst=/target/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rmeta,source=/libcrossbeam_utils-5ac36063ddf29a62.rmeta \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=ordered_channel \
         CARGO_INCREMENTAL=0 \
@@ -6924,13 +6924,13 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --crate-name ordered_channel --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --cfg feature'="crossbeam-channel"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("crossbeam-channel"))' -C metadata'=04587f55615d79e8' -C extra-filename'=-d1042fb932b56ff4' --out-dir /tmp/clis-gifski_1-34-0/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --extern crossbeam_channel'=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_channel-724af7b5f0e810c4.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ordered-channel-1.2.0/src/lib.rs \
-        1>          /tmp/clis-gifski_1-34-0/release/deps/out-d1042fb932b56ff4-stdout \
-        2>          /tmp/clis-gifski_1-34-0/release/deps/out-d1042fb932b56ff4-stderr \
-        || echo $? >/tmp/clis-gifski_1-34-0/release/deps/out-d1042fb932b56ff4-errcode\
-  ; find /tmp/clis-gifski_1-34-0/release/deps/*-d1042fb932b56ff4* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      rustc --crate-name ordered_channel --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --cfg feature'="crossbeam-channel"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("crossbeam-channel"))' -C metadata'=04587f55615d79e8' -C extra-filename'=-d1042fb932b56ff4' --out-dir /target/release/deps -C strip'=symbols' -L dependency'=/target/release/deps' --extern crossbeam_channel'=/target/release/deps/libcrossbeam_channel-724af7b5f0e810c4.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ordered-channel-1.2.0/src/lib.rs \
+        1>          /target/release/deps/out-d1042fb932b56ff4-stdout \
+        2>          /target/release/deps/out-d1042fb932b56ff4-stderr \
+        || echo $? >/target/release/deps/out-d1042fb932b56ff4-errcode\
+  ; find /target/release/deps/*-d1042fb932b56ff4* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-d1042fb932b56ff4
-COPY --link --from=dep-n-ordered-channel-1.2.0-d1042fb932b56ff4 /tmp/clis-gifski_1-34-0/release/deps/*-d1042fb932b56ff4* /
+COPY --link --from=dep-n-ordered-channel-1.2.0-d1042fb932b56ff4 /target/release/deps/*-d1042fb932b56ff4* /
 
 ## this = "d1042fb932b56ff4"
 ## deps = [
@@ -6946,9 +6946,9 @@ COPY --link --from=dep-n-ordered-channel-1.2.0-d1042fb932b56ff4 /tmp/clis-gifski
 ##     "ordered_channel-d1042fb932b56ff4.d",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/ordered_channel-d1042fb932b56ff4.d","emit":"dep-info"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/libordered_channel-d1042fb932b56ff4.rmeta","emit":"metadata"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/libordered_channel-d1042fb932b56ff4.rlib","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/ordered_channel-d1042fb932b56ff4.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libordered_channel-d1042fb932b56ff4.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libordered_channel-d1042fb932b56ff4.rlib","emit":"link"}',
 ## ]
 ##
 ## [[externs]]
@@ -6989,13 +6989,13 @@ COPY --link --from=dep-n-ordered-channel-1.2.0-d1042fb932b56ff4 /tmp/clis-gifski
 ## script = '''
 ## FROM rust-base AS dep-n-ordered-channel-1.2.0-d1042fb932b56ff4
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-gifski_1-34-0/release/deps
+## WORKDIR /target/release/deps
 ## RUN \
 ##   --mount=from=cratesio-ordered-channel-1.2.0,source=/ordered-channel-1.2.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ordered-channel-1.2.0 \
-##   --mount=from=out-724af7b5f0e810c4,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_channel-724af7b5f0e810c4.rlib,source=/libcrossbeam_channel-724af7b5f0e810c4.rlib \
-##   --mount=from=out-724af7b5f0e810c4,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_channel-724af7b5f0e810c4.rmeta,source=/libcrossbeam_channel-724af7b5f0e810c4.rmeta \
-##   --mount=from=out-5ac36063ddf29a62,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rlib,source=/libcrossbeam_utils-5ac36063ddf29a62.rlib \
-##   --mount=from=out-5ac36063ddf29a62,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rmeta,source=/libcrossbeam_utils-5ac36063ddf29a62.rmeta \
+##   --mount=from=out-724af7b5f0e810c4,dst=/target/release/deps/libcrossbeam_channel-724af7b5f0e810c4.rlib,source=/libcrossbeam_channel-724af7b5f0e810c4.rlib \
+##   --mount=from=out-724af7b5f0e810c4,dst=/target/release/deps/libcrossbeam_channel-724af7b5f0e810c4.rmeta,source=/libcrossbeam_channel-724af7b5f0e810c4.rmeta \
+##   --mount=from=out-5ac36063ddf29a62,dst=/target/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rlib,source=/libcrossbeam_utils-5ac36063ddf29a62.rlib \
+##   --mount=from=out-5ac36063ddf29a62,dst=/target/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rmeta,source=/libcrossbeam_utils-5ac36063ddf29a62.rmeta \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=ordered_channel \
 ##         CARGO_INCREMENTAL=0 \
@@ -7016,11 +7016,11 @@ COPY --link --from=dep-n-ordered-channel-1.2.0-d1042fb932b56ff4 /tmp/clis-gifski
 ##         CARGO_PKG_VERSION_PATCH=0 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name ordered_channel --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --cfg feature'="crossbeam-channel"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("crossbeam-channel"))' -C metadata'=04587f55615d79e8' -C extra-filename'=-d1042fb932b56ff4' --out-dir /tmp/clis-gifski_1-34-0/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --extern crossbeam_channel'=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_channel-724af7b5f0e810c4.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ordered-channel-1.2.0/src/lib.rs \
-##         1>          /tmp/clis-gifski_1-34-0/release/deps/out-d1042fb932b56ff4-stdout \
-##         2>          /tmp/clis-gifski_1-34-0/release/deps/out-d1042fb932b56ff4-stderr \
-##         || echo $? >/tmp/clis-gifski_1-34-0/release/deps/out-d1042fb932b56ff4-errcode\
-##   ; find /tmp/clis-gifski_1-34-0/release/deps/*-d1042fb932b56ff4* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name ordered_channel --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --cfg feature'="crossbeam-channel"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("crossbeam-channel"))' -C metadata'=04587f55615d79e8' -C extra-filename'=-d1042fb932b56ff4' --out-dir /target/release/deps -C strip'=symbols' -L dependency'=/target/release/deps' --extern crossbeam_channel'=/target/release/deps/libcrossbeam_channel-724af7b5f0e810c4.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/ordered-channel-1.2.0/src/lib.rs \
+##         1>          /target/release/deps/out-d1042fb932b56ff4-stdout \
+##         2>          /target/release/deps/out-d1042fb932b56ff4-stderr \
+##         || echo $? >/target/release/deps/out-d1042fb932b56ff4-errcode\
+##   ; find /target/release/deps/*-d1042fb932b56ff4* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -7028,22 +7028,22 @@ COPY --link --from=dep-n-ordered-channel-1.2.0-d1042fb932b56ff4 /tmp/clis-gifski
 ## stage = "out-d1042fb932b56ff4"
 ## script = """
 ## FROM scratch AS out-d1042fb932b56ff4
-## COPY --link --from=dep-n-ordered-channel-1.2.0-d1042fb932b56ff4 /tmp/clis-gifski_1-34-0/release/deps/*-d1042fb932b56ff4* /"""
+## COPY --link --from=dep-n-ordered-channel-1.2.0-d1042fb932b56ff4 /target/release/deps/*-d1042fb932b56ff4* /"""
 
 FROM scratch AS cratesio-pbr-1.1.1
 ADD --chmod=0664 --unpack --checksum=sha256:ed5827dfa0d69b6c92493d6c38e633bbaa5937c153d0d7c28bf12313f8c6d514 \
   https://static.crates.io/crates/pbr/pbr-1.1.1.crate /
 FROM rust-base AS dep-n-pbr-1.1.1-791a05c54d467a7f
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-gifski_1-34-0/release/deps
+WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-pbr-1.1.1,source=/pbr-1.1.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/pbr-1.1.1 \
-  --mount=from=out-724af7b5f0e810c4,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_channel-724af7b5f0e810c4.rlib,source=/libcrossbeam_channel-724af7b5f0e810c4.rlib \
-  --mount=from=out-724af7b5f0e810c4,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_channel-724af7b5f0e810c4.rmeta,source=/libcrossbeam_channel-724af7b5f0e810c4.rmeta \
-  --mount=from=out-5ac36063ddf29a62,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rlib,source=/libcrossbeam_utils-5ac36063ddf29a62.rlib \
-  --mount=from=out-5ac36063ddf29a62,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rmeta,source=/libcrossbeam_utils-5ac36063ddf29a62.rmeta \
-  --mount=from=out-3afb72ac1310d574,dst=/tmp/clis-gifski_1-34-0/release/deps/liblibc-3afb72ac1310d574.rlib,source=/liblibc-3afb72ac1310d574.rlib \
-  --mount=from=out-3afb72ac1310d574,dst=/tmp/clis-gifski_1-34-0/release/deps/liblibc-3afb72ac1310d574.rmeta,source=/liblibc-3afb72ac1310d574.rmeta \
+  --mount=from=out-724af7b5f0e810c4,dst=/target/release/deps/libcrossbeam_channel-724af7b5f0e810c4.rlib,source=/libcrossbeam_channel-724af7b5f0e810c4.rlib \
+  --mount=from=out-724af7b5f0e810c4,dst=/target/release/deps/libcrossbeam_channel-724af7b5f0e810c4.rmeta,source=/libcrossbeam_channel-724af7b5f0e810c4.rmeta \
+  --mount=from=out-5ac36063ddf29a62,dst=/target/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rlib,source=/libcrossbeam_utils-5ac36063ddf29a62.rlib \
+  --mount=from=out-5ac36063ddf29a62,dst=/target/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rmeta,source=/libcrossbeam_utils-5ac36063ddf29a62.rmeta \
+  --mount=from=out-3afb72ac1310d574,dst=/target/release/deps/liblibc-3afb72ac1310d574.rlib,source=/liblibc-3afb72ac1310d574.rlib \
+  --mount=from=out-3afb72ac1310d574,dst=/target/release/deps/liblibc-3afb72ac1310d574.rmeta,source=/liblibc-3afb72ac1310d574.rmeta \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=pbr \
         CARGO_INCREMENTAL=0 \
@@ -7064,13 +7064,13 @@ RUN \
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --crate-name pbr --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=5a08275604f08f0b' -C extra-filename'=-791a05c54d467a7f' --out-dir /tmp/clis-gifski_1-34-0/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --extern crossbeam_channel'=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_channel-724af7b5f0e810c4.rmeta' --extern libc'=/tmp/clis-gifski_1-34-0/release/deps/liblibc-3afb72ac1310d574.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/pbr-1.1.1/src/lib.rs \
-        1>          /tmp/clis-gifski_1-34-0/release/deps/out-791a05c54d467a7f-stdout \
-        2>          /tmp/clis-gifski_1-34-0/release/deps/out-791a05c54d467a7f-stderr \
-        || echo $? >/tmp/clis-gifski_1-34-0/release/deps/out-791a05c54d467a7f-errcode\
-  ; find /tmp/clis-gifski_1-34-0/release/deps/*-791a05c54d467a7f* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      rustc --crate-name pbr --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=5a08275604f08f0b' -C extra-filename'=-791a05c54d467a7f' --out-dir /target/release/deps -C strip'=symbols' -L dependency'=/target/release/deps' --extern crossbeam_channel'=/target/release/deps/libcrossbeam_channel-724af7b5f0e810c4.rmeta' --extern libc'=/target/release/deps/liblibc-3afb72ac1310d574.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/pbr-1.1.1/src/lib.rs \
+        1>          /target/release/deps/out-791a05c54d467a7f-stdout \
+        2>          /target/release/deps/out-791a05c54d467a7f-stderr \
+        || echo $? >/target/release/deps/out-791a05c54d467a7f-errcode\
+  ; find /target/release/deps/*-791a05c54d467a7f* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-791a05c54d467a7f
-COPY --link --from=dep-n-pbr-1.1.1-791a05c54d467a7f /tmp/clis-gifski_1-34-0/release/deps/*-791a05c54d467a7f* /
+COPY --link --from=dep-n-pbr-1.1.1-791a05c54d467a7f /target/release/deps/*-791a05c54d467a7f* /
 
 ## this = "791a05c54d467a7f"
 ## deps = [
@@ -7092,10 +7092,10 @@ COPY --link --from=dep-n-pbr-1.1.1-791a05c54d467a7f /tmp/clis-gifski_1-34-0/rele
 ##     "pbr-791a05c54d467a7f.d",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/pbr-791a05c54d467a7f.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/pbr-791a05c54d467a7f.d","emit":"dep-info"}',
 ##     '{"$message_type":"diagnostic","message":"field `0` is never read","code":{"code":"dead_code","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/pbr-1.1.1/src/tty/mod.rs","byte_start":368,"byte_end":374,"line_start":13,"line_end":13,"column_start":12,"column_end":18,"is_primary":false,"text":[{"text":"pub struct Height(pub u16);","highlight_start":12,"highlight_end":18}],"label":"field in this struct","suggested_replacement":null,"suggestion_applicability":null,"expansion":null},{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/pbr-1.1.1/src/tty/mod.rs","byte_start":375,"byte_end":382,"line_start":13,"line_end":13,"column_start":19,"column_end":26,"is_primary":true,"text":[{"text":"pub struct Height(pub u16);","highlight_start":19,"highlight_end":26}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"consider removing this field","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"`Height` has a derived impl for the trait `Debug`, but this is intentionally ignored during dead code analysis","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"`#[warn(dead_code)]` on by default","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: field `0` is never read\u001b[0m\n\u001b[0m  \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/pbr-1.1.1/src/tty/mod.rs:13:19\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m13\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0mpub struct Height(pub u16);\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m            \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m------\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m            \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m            \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12mfield in this struct\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider removing this field\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: `Height` has a derived impl for the trait `Debug`, but this is intentionally ignored during dead code analysis\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: `#[warn(dead_code)]` on by default\u001b[0m\n\n"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/libpbr-791a05c54d467a7f.rmeta","emit":"metadata"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/libpbr-791a05c54d467a7f.rlib","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libpbr-791a05c54d467a7f.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libpbr-791a05c54d467a7f.rlib","emit":"link"}',
 ##     '{"$message_type":"diagnostic","message":"1 warning emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 1 warning emitted\u001b[0m\n\n"}',
 ## ]
 ##
@@ -7145,15 +7145,15 @@ COPY --link --from=dep-n-pbr-1.1.1-791a05c54d467a7f /tmp/clis-gifski_1-34-0/rele
 ## script = '''
 ## FROM rust-base AS dep-n-pbr-1.1.1-791a05c54d467a7f
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-gifski_1-34-0/release/deps
+## WORKDIR /target/release/deps
 ## RUN \
 ##   --mount=from=cratesio-pbr-1.1.1,source=/pbr-1.1.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/pbr-1.1.1 \
-##   --mount=from=out-724af7b5f0e810c4,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_channel-724af7b5f0e810c4.rlib,source=/libcrossbeam_channel-724af7b5f0e810c4.rlib \
-##   --mount=from=out-724af7b5f0e810c4,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_channel-724af7b5f0e810c4.rmeta,source=/libcrossbeam_channel-724af7b5f0e810c4.rmeta \
-##   --mount=from=out-5ac36063ddf29a62,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rlib,source=/libcrossbeam_utils-5ac36063ddf29a62.rlib \
-##   --mount=from=out-5ac36063ddf29a62,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rmeta,source=/libcrossbeam_utils-5ac36063ddf29a62.rmeta \
-##   --mount=from=out-3afb72ac1310d574,dst=/tmp/clis-gifski_1-34-0/release/deps/liblibc-3afb72ac1310d574.rlib,source=/liblibc-3afb72ac1310d574.rlib \
-##   --mount=from=out-3afb72ac1310d574,dst=/tmp/clis-gifski_1-34-0/release/deps/liblibc-3afb72ac1310d574.rmeta,source=/liblibc-3afb72ac1310d574.rmeta \
+##   --mount=from=out-724af7b5f0e810c4,dst=/target/release/deps/libcrossbeam_channel-724af7b5f0e810c4.rlib,source=/libcrossbeam_channel-724af7b5f0e810c4.rlib \
+##   --mount=from=out-724af7b5f0e810c4,dst=/target/release/deps/libcrossbeam_channel-724af7b5f0e810c4.rmeta,source=/libcrossbeam_channel-724af7b5f0e810c4.rmeta \
+##   --mount=from=out-5ac36063ddf29a62,dst=/target/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rlib,source=/libcrossbeam_utils-5ac36063ddf29a62.rlib \
+##   --mount=from=out-5ac36063ddf29a62,dst=/target/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rmeta,source=/libcrossbeam_utils-5ac36063ddf29a62.rmeta \
+##   --mount=from=out-3afb72ac1310d574,dst=/target/release/deps/liblibc-3afb72ac1310d574.rlib,source=/liblibc-3afb72ac1310d574.rlib \
+##   --mount=from=out-3afb72ac1310d574,dst=/target/release/deps/liblibc-3afb72ac1310d574.rmeta,source=/liblibc-3afb72ac1310d574.rmeta \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=pbr \
 ##         CARGO_INCREMENTAL=0 \
@@ -7174,11 +7174,11 @@ COPY --link --from=dep-n-pbr-1.1.1-791a05c54d467a7f /tmp/clis-gifski_1-34-0/rele
 ##         CARGO_PKG_VERSION_PATCH=1 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name pbr --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=5a08275604f08f0b' -C extra-filename'=-791a05c54d467a7f' --out-dir /tmp/clis-gifski_1-34-0/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --extern crossbeam_channel'=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_channel-724af7b5f0e810c4.rmeta' --extern libc'=/tmp/clis-gifski_1-34-0/release/deps/liblibc-3afb72ac1310d574.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/pbr-1.1.1/src/lib.rs \
-##         1>          /tmp/clis-gifski_1-34-0/release/deps/out-791a05c54d467a7f-stdout \
-##         2>          /tmp/clis-gifski_1-34-0/release/deps/out-791a05c54d467a7f-stderr \
-##         || echo $? >/tmp/clis-gifski_1-34-0/release/deps/out-791a05c54d467a7f-errcode\
-##   ; find /tmp/clis-gifski_1-34-0/release/deps/*-791a05c54d467a7f* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name pbr --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=5a08275604f08f0b' -C extra-filename'=-791a05c54d467a7f' --out-dir /target/release/deps -C strip'=symbols' -L dependency'=/target/release/deps' --extern crossbeam_channel'=/target/release/deps/libcrossbeam_channel-724af7b5f0e810c4.rmeta' --extern libc'=/target/release/deps/liblibc-3afb72ac1310d574.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/pbr-1.1.1/src/lib.rs \
+##         1>          /target/release/deps/out-791a05c54d467a7f-stdout \
+##         2>          /target/release/deps/out-791a05c54d467a7f-stderr \
+##         || echo $? >/target/release/deps/out-791a05c54d467a7f-errcode\
+##   ; find /target/release/deps/*-791a05c54d467a7f* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -7186,14 +7186,14 @@ COPY --link --from=dep-n-pbr-1.1.1-791a05c54d467a7f /tmp/clis-gifski_1-34-0/rele
 ## stage = "out-791a05c54d467a7f"
 ## script = """
 ## FROM scratch AS out-791a05c54d467a7f
-## COPY --link --from=dep-n-pbr-1.1.1-791a05c54d467a7f /tmp/clis-gifski_1-34-0/release/deps/*-791a05c54d467a7f* /"""
+## COPY --link --from=dep-n-pbr-1.1.1-791a05c54d467a7f /target/release/deps/*-791a05c54d467a7f* /"""
 
 FROM scratch AS cratesio-quick-error-2.0.1
 ADD --chmod=0664 --unpack --checksum=sha256:a993555f31e5a609f617c12db6250dedcac1b0a85076912c436e6fc9b2c8e6a3 \
   https://static.crates.io/crates/quick-error/quick-error-2.0.1.crate /
 FROM rust-base AS dep-n-quick-error-2.0.1-a6f6d4c5688e7cda
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-gifski_1-34-0/release/deps
+WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-quick-error-2.0.1,source=/quick-error-2.0.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quick-error-2.0.1 \
     env CARGO="$(which cargo)" \
@@ -7217,13 +7217,13 @@ RUN \
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --crate-name quick_error --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=e774b1f30d7dba23' -C extra-filename'=-a6f6d4c5688e7cda' --out-dir /tmp/clis-gifski_1-34-0/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quick-error-2.0.1/src/lib.rs \
-        1>          /tmp/clis-gifski_1-34-0/release/deps/out-a6f6d4c5688e7cda-stdout \
-        2>          /tmp/clis-gifski_1-34-0/release/deps/out-a6f6d4c5688e7cda-stderr \
-        || echo $? >/tmp/clis-gifski_1-34-0/release/deps/out-a6f6d4c5688e7cda-errcode\
-  ; find /tmp/clis-gifski_1-34-0/release/deps/*-a6f6d4c5688e7cda* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      rustc --crate-name quick_error --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=e774b1f30d7dba23' -C extra-filename'=-a6f6d4c5688e7cda' --out-dir /target/release/deps -C strip'=symbols' -L dependency'=/target/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quick-error-2.0.1/src/lib.rs \
+        1>          /target/release/deps/out-a6f6d4c5688e7cda-stdout \
+        2>          /target/release/deps/out-a6f6d4c5688e7cda-stderr \
+        || echo $? >/target/release/deps/out-a6f6d4c5688e7cda-errcode\
+  ; find /target/release/deps/*-a6f6d4c5688e7cda* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-a6f6d4c5688e7cda
-COPY --link --from=dep-n-quick-error-2.0.1-a6f6d4c5688e7cda /tmp/clis-gifski_1-34-0/release/deps/*-a6f6d4c5688e7cda* /
+COPY --link --from=dep-n-quick-error-2.0.1-a6f6d4c5688e7cda /target/release/deps/*-a6f6d4c5688e7cda* /
 
 ## this = "a6f6d4c5688e7cda"
 ## writes = [
@@ -7232,9 +7232,9 @@ COPY --link --from=dep-n-quick-error-2.0.1-a6f6d4c5688e7cda /tmp/clis-gifski_1-3
 ##     "quick_error-a6f6d4c5688e7cda.d",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/quick_error-a6f6d4c5688e7cda.d","emit":"dep-info"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/libquick_error-a6f6d4c5688e7cda.rmeta","emit":"metadata"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/libquick_error-a6f6d4c5688e7cda.rlib","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/quick_error-a6f6d4c5688e7cda.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libquick_error-a6f6d4c5688e7cda.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libquick_error-a6f6d4c5688e7cda.rlib","emit":"link"}',
 ## ]
 ##
 ## [[stages]]
@@ -7259,7 +7259,7 @@ COPY --link --from=dep-n-quick-error-2.0.1-a6f6d4c5688e7cda /tmp/clis-gifski_1-3
 ## script = '''
 ## FROM rust-base AS dep-n-quick-error-2.0.1-a6f6d4c5688e7cda
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-gifski_1-34-0/release/deps
+## WORKDIR /target/release/deps
 ## RUN \
 ##   --mount=from=cratesio-quick-error-2.0.1,source=/quick-error-2.0.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quick-error-2.0.1 \
 ##     env CARGO="$(which cargo)" \
@@ -7283,11 +7283,11 @@ COPY --link --from=dep-n-quick-error-2.0.1-a6f6d4c5688e7cda /tmp/clis-gifski_1-3
 ##         CARGO_PKG_VERSION_PATCH=1 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name quick_error --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=e774b1f30d7dba23' -C extra-filename'=-a6f6d4c5688e7cda' --out-dir /tmp/clis-gifski_1-34-0/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quick-error-2.0.1/src/lib.rs \
-##         1>          /tmp/clis-gifski_1-34-0/release/deps/out-a6f6d4c5688e7cda-stdout \
-##         2>          /tmp/clis-gifski_1-34-0/release/deps/out-a6f6d4c5688e7cda-stderr \
-##         || echo $? >/tmp/clis-gifski_1-34-0/release/deps/out-a6f6d4c5688e7cda-errcode\
-##   ; find /tmp/clis-gifski_1-34-0/release/deps/*-a6f6d4c5688e7cda* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name quick_error --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=e774b1f30d7dba23' -C extra-filename'=-a6f6d4c5688e7cda' --out-dir /target/release/deps -C strip'=symbols' -L dependency'=/target/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/quick-error-2.0.1/src/lib.rs \
+##         1>          /target/release/deps/out-a6f6d4c5688e7cda-stdout \
+##         2>          /target/release/deps/out-a6f6d4c5688e7cda-stderr \
+##         || echo $? >/target/release/deps/out-a6f6d4c5688e7cda-errcode\
+##   ; find /target/release/deps/*-a6f6d4c5688e7cda* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -7295,32 +7295,32 @@ COPY --link --from=dep-n-quick-error-2.0.1-a6f6d4c5688e7cda /tmp/clis-gifski_1-3
 ## stage = "out-a6f6d4c5688e7cda"
 ## script = """
 ## FROM scratch AS out-a6f6d4c5688e7cda
-## COPY --link --from=dep-n-quick-error-2.0.1-a6f6d4c5688e7cda /tmp/clis-gifski_1-34-0/release/deps/*-a6f6d4c5688e7cda* /"""
+## COPY --link --from=dep-n-quick-error-2.0.1-a6f6d4c5688e7cda /target/release/deps/*-a6f6d4c5688e7cda* /"""
 
 FROM scratch AS cratesio-resize-0.8.8
 ADD --chmod=0664 --unpack --checksum=sha256:87a103d0b47e783f4579149402f7499397ab25540c7a57b2f70487a5d2d20ef0 \
   https://static.crates.io/crates/resize/resize-0.8.8.crate /
 FROM rust-base AS dep-n-resize-0.8.8-925466e96a5b0042
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-gifski_1-34-0/release/deps
+WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-resize-0.8.8,source=/resize-0.8.8,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/resize-0.8.8 \
-  --mount=from=out-53357b7dd9022303,dst=/tmp/clis-gifski_1-34-0/release/deps/librayon-53357b7dd9022303.rlib,source=/librayon-53357b7dd9022303.rlib \
-  --mount=from=out-53357b7dd9022303,dst=/tmp/clis-gifski_1-34-0/release/deps/librayon-53357b7dd9022303.rmeta,source=/librayon-53357b7dd9022303.rmeta \
-  --mount=from=out-64b2ef074583e2a3,dst=/tmp/clis-gifski_1-34-0/release/deps/libeither-64b2ef074583e2a3.rlib,source=/libeither-64b2ef074583e2a3.rlib \
-  --mount=from=out-64b2ef074583e2a3,dst=/tmp/clis-gifski_1-34-0/release/deps/libeither-64b2ef074583e2a3.rmeta,source=/libeither-64b2ef074583e2a3.rmeta \
-  --mount=from=out-efba4db9305abd55,dst=/tmp/clis-gifski_1-34-0/release/deps/librayon_core-efba4db9305abd55.rlib,source=/librayon_core-efba4db9305abd55.rlib \
-  --mount=from=out-efba4db9305abd55,dst=/tmp/clis-gifski_1-34-0/release/deps/librayon_core-efba4db9305abd55.rmeta,source=/librayon_core-efba4db9305abd55.rmeta \
-  --mount=from=out-cc1298b8da143bbe,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_deque-cc1298b8da143bbe.rlib,source=/libcrossbeam_deque-cc1298b8da143bbe.rlib \
-  --mount=from=out-cc1298b8da143bbe,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_deque-cc1298b8da143bbe.rmeta,source=/libcrossbeam_deque-cc1298b8da143bbe.rmeta \
-  --mount=from=out-c2e7f2fc3addf6be,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_epoch-c2e7f2fc3addf6be.rlib,source=/libcrossbeam_epoch-c2e7f2fc3addf6be.rlib \
-  --mount=from=out-c2e7f2fc3addf6be,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_epoch-c2e7f2fc3addf6be.rmeta,source=/libcrossbeam_epoch-c2e7f2fc3addf6be.rmeta \
-  --mount=from=out-5ac36063ddf29a62,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rlib,source=/libcrossbeam_utils-5ac36063ddf29a62.rlib \
-  --mount=from=out-5ac36063ddf29a62,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rmeta,source=/libcrossbeam_utils-5ac36063ddf29a62.rmeta \
-  --mount=from=out-b630417cd5f2024a,dst=/tmp/clis-gifski_1-34-0/release/deps/librgb-b630417cd5f2024a.rlib,source=/librgb-b630417cd5f2024a.rlib \
-  --mount=from=out-b630417cd5f2024a,dst=/tmp/clis-gifski_1-34-0/release/deps/librgb-b630417cd5f2024a.rmeta,source=/librgb-b630417cd5f2024a.rmeta \
-  --mount=from=out-f0cdacabc0947b7b,dst=/tmp/clis-gifski_1-34-0/release/deps/libbytemuck-f0cdacabc0947b7b.rlib,source=/libbytemuck-f0cdacabc0947b7b.rlib \
-  --mount=from=out-f0cdacabc0947b7b,dst=/tmp/clis-gifski_1-34-0/release/deps/libbytemuck-f0cdacabc0947b7b.rmeta,source=/libbytemuck-f0cdacabc0947b7b.rmeta \
+  --mount=from=out-53357b7dd9022303,dst=/target/release/deps/librayon-53357b7dd9022303.rlib,source=/librayon-53357b7dd9022303.rlib \
+  --mount=from=out-53357b7dd9022303,dst=/target/release/deps/librayon-53357b7dd9022303.rmeta,source=/librayon-53357b7dd9022303.rmeta \
+  --mount=from=out-64b2ef074583e2a3,dst=/target/release/deps/libeither-64b2ef074583e2a3.rlib,source=/libeither-64b2ef074583e2a3.rlib \
+  --mount=from=out-64b2ef074583e2a3,dst=/target/release/deps/libeither-64b2ef074583e2a3.rmeta,source=/libeither-64b2ef074583e2a3.rmeta \
+  --mount=from=out-efba4db9305abd55,dst=/target/release/deps/librayon_core-efba4db9305abd55.rlib,source=/librayon_core-efba4db9305abd55.rlib \
+  --mount=from=out-efba4db9305abd55,dst=/target/release/deps/librayon_core-efba4db9305abd55.rmeta,source=/librayon_core-efba4db9305abd55.rmeta \
+  --mount=from=out-cc1298b8da143bbe,dst=/target/release/deps/libcrossbeam_deque-cc1298b8da143bbe.rlib,source=/libcrossbeam_deque-cc1298b8da143bbe.rlib \
+  --mount=from=out-cc1298b8da143bbe,dst=/target/release/deps/libcrossbeam_deque-cc1298b8da143bbe.rmeta,source=/libcrossbeam_deque-cc1298b8da143bbe.rmeta \
+  --mount=from=out-c2e7f2fc3addf6be,dst=/target/release/deps/libcrossbeam_epoch-c2e7f2fc3addf6be.rlib,source=/libcrossbeam_epoch-c2e7f2fc3addf6be.rlib \
+  --mount=from=out-c2e7f2fc3addf6be,dst=/target/release/deps/libcrossbeam_epoch-c2e7f2fc3addf6be.rmeta,source=/libcrossbeam_epoch-c2e7f2fc3addf6be.rmeta \
+  --mount=from=out-5ac36063ddf29a62,dst=/target/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rlib,source=/libcrossbeam_utils-5ac36063ddf29a62.rlib \
+  --mount=from=out-5ac36063ddf29a62,dst=/target/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rmeta,source=/libcrossbeam_utils-5ac36063ddf29a62.rmeta \
+  --mount=from=out-b630417cd5f2024a,dst=/target/release/deps/librgb-b630417cd5f2024a.rlib,source=/librgb-b630417cd5f2024a.rlib \
+  --mount=from=out-b630417cd5f2024a,dst=/target/release/deps/librgb-b630417cd5f2024a.rmeta,source=/librgb-b630417cd5f2024a.rmeta \
+  --mount=from=out-f0cdacabc0947b7b,dst=/target/release/deps/libbytemuck-f0cdacabc0947b7b.rlib,source=/libbytemuck-f0cdacabc0947b7b.rlib \
+  --mount=from=out-f0cdacabc0947b7b,dst=/target/release/deps/libbytemuck-f0cdacabc0947b7b.rmeta,source=/libbytemuck-f0cdacabc0947b7b.rmeta \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=resize \
         CARGO_INCREMENTAL=0 \
@@ -7341,13 +7341,13 @@ RUN \
         CARGO_PKG_VERSION_PATCH=8 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --crate-name resize --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --cfg feature'="default"' --cfg feature'="rayon"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "no_std", "rayon", "std"))' -C metadata'=7ad12e6a881aa9c4' -C extra-filename'=-925466e96a5b0042' --out-dir /tmp/clis-gifski_1-34-0/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --extern rayon'=/tmp/clis-gifski_1-34-0/release/deps/librayon-53357b7dd9022303.rmeta' --extern rgb'=/tmp/clis-gifski_1-34-0/release/deps/librgb-b630417cd5f2024a.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/resize-0.8.8/src/lib.rs \
-        1>          /tmp/clis-gifski_1-34-0/release/deps/out-925466e96a5b0042-stdout \
-        2>          /tmp/clis-gifski_1-34-0/release/deps/out-925466e96a5b0042-stderr \
-        || echo $? >/tmp/clis-gifski_1-34-0/release/deps/out-925466e96a5b0042-errcode\
-  ; find /tmp/clis-gifski_1-34-0/release/deps/*-925466e96a5b0042* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      rustc --crate-name resize --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --cfg feature'="default"' --cfg feature'="rayon"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "no_std", "rayon", "std"))' -C metadata'=7ad12e6a881aa9c4' -C extra-filename'=-925466e96a5b0042' --out-dir /target/release/deps -C strip'=symbols' -L dependency'=/target/release/deps' --extern rayon'=/target/release/deps/librayon-53357b7dd9022303.rmeta' --extern rgb'=/target/release/deps/librgb-b630417cd5f2024a.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/resize-0.8.8/src/lib.rs \
+        1>          /target/release/deps/out-925466e96a5b0042-stdout \
+        2>          /target/release/deps/out-925466e96a5b0042-stderr \
+        || echo $? >/target/release/deps/out-925466e96a5b0042-errcode\
+  ; find /target/release/deps/*-925466e96a5b0042* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-925466e96a5b0042
-COPY --link --from=dep-n-resize-0.8.8-925466e96a5b0042 /tmp/clis-gifski_1-34-0/release/deps/*-925466e96a5b0042* /
+COPY --link --from=dep-n-resize-0.8.8-925466e96a5b0042 /target/release/deps/*-925466e96a5b0042* /
 
 ## this = "925466e96a5b0042"
 ## deps = [
@@ -7374,9 +7374,9 @@ COPY --link --from=dep-n-resize-0.8.8-925466e96a5b0042 /tmp/clis-gifski_1-34-0/r
 ##     "resize-925466e96a5b0042.d",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/resize-925466e96a5b0042.d","emit":"dep-info"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/libresize-925466e96a5b0042.rmeta","emit":"metadata"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/libresize-925466e96a5b0042.rlib","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/resize-925466e96a5b0042.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libresize-925466e96a5b0042.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libresize-925466e96a5b0042.rlib","emit":"link"}',
 ## ]
 ##
 ## [[externs]]
@@ -7465,25 +7465,25 @@ COPY --link --from=dep-n-resize-0.8.8-925466e96a5b0042 /tmp/clis-gifski_1-34-0/r
 ## script = '''
 ## FROM rust-base AS dep-n-resize-0.8.8-925466e96a5b0042
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-gifski_1-34-0/release/deps
+## WORKDIR /target/release/deps
 ## RUN \
 ##   --mount=from=cratesio-resize-0.8.8,source=/resize-0.8.8,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/resize-0.8.8 \
-##   --mount=from=out-53357b7dd9022303,dst=/tmp/clis-gifski_1-34-0/release/deps/librayon-53357b7dd9022303.rlib,source=/librayon-53357b7dd9022303.rlib \
-##   --mount=from=out-53357b7dd9022303,dst=/tmp/clis-gifski_1-34-0/release/deps/librayon-53357b7dd9022303.rmeta,source=/librayon-53357b7dd9022303.rmeta \
-##   --mount=from=out-64b2ef074583e2a3,dst=/tmp/clis-gifski_1-34-0/release/deps/libeither-64b2ef074583e2a3.rlib,source=/libeither-64b2ef074583e2a3.rlib \
-##   --mount=from=out-64b2ef074583e2a3,dst=/tmp/clis-gifski_1-34-0/release/deps/libeither-64b2ef074583e2a3.rmeta,source=/libeither-64b2ef074583e2a3.rmeta \
-##   --mount=from=out-efba4db9305abd55,dst=/tmp/clis-gifski_1-34-0/release/deps/librayon_core-efba4db9305abd55.rlib,source=/librayon_core-efba4db9305abd55.rlib \
-##   --mount=from=out-efba4db9305abd55,dst=/tmp/clis-gifski_1-34-0/release/deps/librayon_core-efba4db9305abd55.rmeta,source=/librayon_core-efba4db9305abd55.rmeta \
-##   --mount=from=out-cc1298b8da143bbe,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_deque-cc1298b8da143bbe.rlib,source=/libcrossbeam_deque-cc1298b8da143bbe.rlib \
-##   --mount=from=out-cc1298b8da143bbe,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_deque-cc1298b8da143bbe.rmeta,source=/libcrossbeam_deque-cc1298b8da143bbe.rmeta \
-##   --mount=from=out-c2e7f2fc3addf6be,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_epoch-c2e7f2fc3addf6be.rlib,source=/libcrossbeam_epoch-c2e7f2fc3addf6be.rlib \
-##   --mount=from=out-c2e7f2fc3addf6be,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_epoch-c2e7f2fc3addf6be.rmeta,source=/libcrossbeam_epoch-c2e7f2fc3addf6be.rmeta \
-##   --mount=from=out-5ac36063ddf29a62,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rlib,source=/libcrossbeam_utils-5ac36063ddf29a62.rlib \
-##   --mount=from=out-5ac36063ddf29a62,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rmeta,source=/libcrossbeam_utils-5ac36063ddf29a62.rmeta \
-##   --mount=from=out-b630417cd5f2024a,dst=/tmp/clis-gifski_1-34-0/release/deps/librgb-b630417cd5f2024a.rlib,source=/librgb-b630417cd5f2024a.rlib \
-##   --mount=from=out-b630417cd5f2024a,dst=/tmp/clis-gifski_1-34-0/release/deps/librgb-b630417cd5f2024a.rmeta,source=/librgb-b630417cd5f2024a.rmeta \
-##   --mount=from=out-f0cdacabc0947b7b,dst=/tmp/clis-gifski_1-34-0/release/deps/libbytemuck-f0cdacabc0947b7b.rlib,source=/libbytemuck-f0cdacabc0947b7b.rlib \
-##   --mount=from=out-f0cdacabc0947b7b,dst=/tmp/clis-gifski_1-34-0/release/deps/libbytemuck-f0cdacabc0947b7b.rmeta,source=/libbytemuck-f0cdacabc0947b7b.rmeta \
+##   --mount=from=out-53357b7dd9022303,dst=/target/release/deps/librayon-53357b7dd9022303.rlib,source=/librayon-53357b7dd9022303.rlib \
+##   --mount=from=out-53357b7dd9022303,dst=/target/release/deps/librayon-53357b7dd9022303.rmeta,source=/librayon-53357b7dd9022303.rmeta \
+##   --mount=from=out-64b2ef074583e2a3,dst=/target/release/deps/libeither-64b2ef074583e2a3.rlib,source=/libeither-64b2ef074583e2a3.rlib \
+##   --mount=from=out-64b2ef074583e2a3,dst=/target/release/deps/libeither-64b2ef074583e2a3.rmeta,source=/libeither-64b2ef074583e2a3.rmeta \
+##   --mount=from=out-efba4db9305abd55,dst=/target/release/deps/librayon_core-efba4db9305abd55.rlib,source=/librayon_core-efba4db9305abd55.rlib \
+##   --mount=from=out-efba4db9305abd55,dst=/target/release/deps/librayon_core-efba4db9305abd55.rmeta,source=/librayon_core-efba4db9305abd55.rmeta \
+##   --mount=from=out-cc1298b8da143bbe,dst=/target/release/deps/libcrossbeam_deque-cc1298b8da143bbe.rlib,source=/libcrossbeam_deque-cc1298b8da143bbe.rlib \
+##   --mount=from=out-cc1298b8da143bbe,dst=/target/release/deps/libcrossbeam_deque-cc1298b8da143bbe.rmeta,source=/libcrossbeam_deque-cc1298b8da143bbe.rmeta \
+##   --mount=from=out-c2e7f2fc3addf6be,dst=/target/release/deps/libcrossbeam_epoch-c2e7f2fc3addf6be.rlib,source=/libcrossbeam_epoch-c2e7f2fc3addf6be.rlib \
+##   --mount=from=out-c2e7f2fc3addf6be,dst=/target/release/deps/libcrossbeam_epoch-c2e7f2fc3addf6be.rmeta,source=/libcrossbeam_epoch-c2e7f2fc3addf6be.rmeta \
+##   --mount=from=out-5ac36063ddf29a62,dst=/target/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rlib,source=/libcrossbeam_utils-5ac36063ddf29a62.rlib \
+##   --mount=from=out-5ac36063ddf29a62,dst=/target/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rmeta,source=/libcrossbeam_utils-5ac36063ddf29a62.rmeta \
+##   --mount=from=out-b630417cd5f2024a,dst=/target/release/deps/librgb-b630417cd5f2024a.rlib,source=/librgb-b630417cd5f2024a.rlib \
+##   --mount=from=out-b630417cd5f2024a,dst=/target/release/deps/librgb-b630417cd5f2024a.rmeta,source=/librgb-b630417cd5f2024a.rmeta \
+##   --mount=from=out-f0cdacabc0947b7b,dst=/target/release/deps/libbytemuck-f0cdacabc0947b7b.rlib,source=/libbytemuck-f0cdacabc0947b7b.rlib \
+##   --mount=from=out-f0cdacabc0947b7b,dst=/target/release/deps/libbytemuck-f0cdacabc0947b7b.rmeta,source=/libbytemuck-f0cdacabc0947b7b.rmeta \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=resize \
 ##         CARGO_INCREMENTAL=0 \
@@ -7504,11 +7504,11 @@ COPY --link --from=dep-n-resize-0.8.8-925466e96a5b0042 /tmp/clis-gifski_1-34-0/r
 ##         CARGO_PKG_VERSION_PATCH=8 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name resize --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --cfg feature'="default"' --cfg feature'="rayon"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "no_std", "rayon", "std"))' -C metadata'=7ad12e6a881aa9c4' -C extra-filename'=-925466e96a5b0042' --out-dir /tmp/clis-gifski_1-34-0/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --extern rayon'=/tmp/clis-gifski_1-34-0/release/deps/librayon-53357b7dd9022303.rmeta' --extern rgb'=/tmp/clis-gifski_1-34-0/release/deps/librgb-b630417cd5f2024a.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/resize-0.8.8/src/lib.rs \
-##         1>          /tmp/clis-gifski_1-34-0/release/deps/out-925466e96a5b0042-stdout \
-##         2>          /tmp/clis-gifski_1-34-0/release/deps/out-925466e96a5b0042-stderr \
-##         || echo $? >/tmp/clis-gifski_1-34-0/release/deps/out-925466e96a5b0042-errcode\
-##   ; find /tmp/clis-gifski_1-34-0/release/deps/*-925466e96a5b0042* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name resize --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --cfg feature'="default"' --cfg feature'="rayon"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "no_std", "rayon", "std"))' -C metadata'=7ad12e6a881aa9c4' -C extra-filename'=-925466e96a5b0042' --out-dir /target/release/deps -C strip'=symbols' -L dependency'=/target/release/deps' --extern rayon'=/target/release/deps/librayon-53357b7dd9022303.rmeta' --extern rgb'=/target/release/deps/librgb-b630417cd5f2024a.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/resize-0.8.8/src/lib.rs \
+##         1>          /target/release/deps/out-925466e96a5b0042-stdout \
+##         2>          /target/release/deps/out-925466e96a5b0042-stderr \
+##         || echo $? >/target/release/deps/out-925466e96a5b0042-errcode\
+##   ; find /target/release/deps/*-925466e96a5b0042* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -7516,14 +7516,14 @@ COPY --link --from=dep-n-resize-0.8.8-925466e96a5b0042 /tmp/clis-gifski_1-34-0/r
 ## stage = "out-925466e96a5b0042"
 ## script = """
 ## FROM scratch AS out-925466e96a5b0042
-## COPY --link --from=dep-n-resize-0.8.8-925466e96a5b0042 /tmp/clis-gifski_1-34-0/release/deps/*-925466e96a5b0042* /"""
+## COPY --link --from=dep-n-resize-0.8.8-925466e96a5b0042 /target/release/deps/*-925466e96a5b0042* /"""
 
 FROM scratch AS cratesio-wild-2.2.1
 ADD --chmod=0664 --unpack --checksum=sha256:a3131afc8c575281e1e80f36ed6a092aa502c08b18ed7524e86fbbb12bb410e1 \
   https://static.crates.io/crates/wild/wild-2.2.1.crate /
 FROM rust-base AS dep-n-wild-2.2.1-3fec38877dfe5eae
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-gifski_1-34-0/release/deps
+WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-wild-2.2.1,source=/wild-2.2.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/wild-2.2.1 \
     env CARGO="$(which cargo)" \
@@ -7546,13 +7546,13 @@ RUN \
         CARGO_PKG_VERSION_PATCH=1 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --crate-name wild --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --cfg feature'="glob-quoted-on-windows"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("glob-quoted-on-windows"))' -C metadata'=7099830b752c7907' -C extra-filename'=-3fec38877dfe5eae' --out-dir /tmp/clis-gifski_1-34-0/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/wild-2.2.1/src/lib.rs \
-        1>          /tmp/clis-gifski_1-34-0/release/deps/out-3fec38877dfe5eae-stdout \
-        2>          /tmp/clis-gifski_1-34-0/release/deps/out-3fec38877dfe5eae-stderr \
-        || echo $? >/tmp/clis-gifski_1-34-0/release/deps/out-3fec38877dfe5eae-errcode\
-  ; find /tmp/clis-gifski_1-34-0/release/deps/*-3fec38877dfe5eae* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      rustc --crate-name wild --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --cfg feature'="glob-quoted-on-windows"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("glob-quoted-on-windows"))' -C metadata'=7099830b752c7907' -C extra-filename'=-3fec38877dfe5eae' --out-dir /target/release/deps -C strip'=symbols' -L dependency'=/target/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/wild-2.2.1/src/lib.rs \
+        1>          /target/release/deps/out-3fec38877dfe5eae-stdout \
+        2>          /target/release/deps/out-3fec38877dfe5eae-stderr \
+        || echo $? >/target/release/deps/out-3fec38877dfe5eae-errcode\
+  ; find /target/release/deps/*-3fec38877dfe5eae* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-3fec38877dfe5eae
-COPY --link --from=dep-n-wild-2.2.1-3fec38877dfe5eae /tmp/clis-gifski_1-34-0/release/deps/*-3fec38877dfe5eae* /
+COPY --link --from=dep-n-wild-2.2.1-3fec38877dfe5eae /target/release/deps/*-3fec38877dfe5eae* /
 
 ## this = "3fec38877dfe5eae"
 ## writes = [
@@ -7561,9 +7561,9 @@ COPY --link --from=dep-n-wild-2.2.1-3fec38877dfe5eae /tmp/clis-gifski_1-34-0/rel
 ##     "wild-3fec38877dfe5eae.d",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/wild-3fec38877dfe5eae.d","emit":"dep-info"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/libwild-3fec38877dfe5eae.rmeta","emit":"metadata"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/libwild-3fec38877dfe5eae.rlib","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/wild-3fec38877dfe5eae.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libwild-3fec38877dfe5eae.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libwild-3fec38877dfe5eae.rlib","emit":"link"}',
 ## ]
 ##
 ## [[stages]]
@@ -7588,7 +7588,7 @@ COPY --link --from=dep-n-wild-2.2.1-3fec38877dfe5eae /tmp/clis-gifski_1-34-0/rel
 ## script = '''
 ## FROM rust-base AS dep-n-wild-2.2.1-3fec38877dfe5eae
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-gifski_1-34-0/release/deps
+## WORKDIR /target/release/deps
 ## RUN \
 ##   --mount=from=cratesio-wild-2.2.1,source=/wild-2.2.1,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/wild-2.2.1 \
 ##     env CARGO="$(which cargo)" \
@@ -7611,11 +7611,11 @@ COPY --link --from=dep-n-wild-2.2.1-3fec38877dfe5eae /tmp/clis-gifski_1-34-0/rel
 ##         CARGO_PKG_VERSION_PATCH=1 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name wild --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --cfg feature'="glob-quoted-on-windows"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("glob-quoted-on-windows"))' -C metadata'=7099830b752c7907' -C extra-filename'=-3fec38877dfe5eae' --out-dir /tmp/clis-gifski_1-34-0/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/wild-2.2.1/src/lib.rs \
-##         1>          /tmp/clis-gifski_1-34-0/release/deps/out-3fec38877dfe5eae-stdout \
-##         2>          /tmp/clis-gifski_1-34-0/release/deps/out-3fec38877dfe5eae-stderr \
-##         || echo $? >/tmp/clis-gifski_1-34-0/release/deps/out-3fec38877dfe5eae-errcode\
-##   ; find /tmp/clis-gifski_1-34-0/release/deps/*-3fec38877dfe5eae* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name wild --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --cfg feature'="glob-quoted-on-windows"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("glob-quoted-on-windows"))' -C metadata'=7099830b752c7907' -C extra-filename'=-3fec38877dfe5eae' --out-dir /target/release/deps -C strip'=symbols' -L dependency'=/target/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/wild-2.2.1/src/lib.rs \
+##         1>          /target/release/deps/out-3fec38877dfe5eae-stdout \
+##         2>          /target/release/deps/out-3fec38877dfe5eae-stderr \
+##         || echo $? >/target/release/deps/out-3fec38877dfe5eae-errcode\
+##   ; find /target/release/deps/*-3fec38877dfe5eae* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -7623,14 +7623,14 @@ COPY --link --from=dep-n-wild-2.2.1-3fec38877dfe5eae /tmp/clis-gifski_1-34-0/rel
 ## stage = "out-3fec38877dfe5eae"
 ## script = """
 ## FROM scratch AS out-3fec38877dfe5eae
-## COPY --link --from=dep-n-wild-2.2.1-3fec38877dfe5eae /tmp/clis-gifski_1-34-0/release/deps/*-3fec38877dfe5eae* /"""
+## COPY --link --from=dep-n-wild-2.2.1-3fec38877dfe5eae /target/release/deps/*-3fec38877dfe5eae* /"""
 
 FROM scratch AS cratesio-y4m-0.8.0
 ADD --chmod=0664 --unpack --checksum=sha256:7a5a4b21e1a62b67a2970e6831bc091d7b87e119e7f9791aef9702e3bef04448 \
   https://static.crates.io/crates/y4m/y4m-0.8.0.crate /
 FROM rust-base AS dep-n-y4m-0.8.0-88872ac441f60d2c
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-gifski_1-34-0/release/deps
+WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-y4m-0.8.0,source=/y4m-0.8.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/y4m-0.8.0 \
     env CARGO="$(which cargo)" \
@@ -7653,13 +7653,13 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --crate-name y4m --edition 2015 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=cc41d01fe9038429' -C extra-filename'=-88872ac441f60d2c' --out-dir /tmp/clis-gifski_1-34-0/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/y4m-0.8.0/src/lib.rs \
-        1>          /tmp/clis-gifski_1-34-0/release/deps/out-88872ac441f60d2c-stdout \
-        2>          /tmp/clis-gifski_1-34-0/release/deps/out-88872ac441f60d2c-stderr \
-        || echo $? >/tmp/clis-gifski_1-34-0/release/deps/out-88872ac441f60d2c-errcode\
-  ; find /tmp/clis-gifski_1-34-0/release/deps/*-88872ac441f60d2c* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      rustc --crate-name y4m --edition 2015 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=cc41d01fe9038429' -C extra-filename'=-88872ac441f60d2c' --out-dir /target/release/deps -C strip'=symbols' -L dependency'=/target/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/y4m-0.8.0/src/lib.rs \
+        1>          /target/release/deps/out-88872ac441f60d2c-stdout \
+        2>          /target/release/deps/out-88872ac441f60d2c-stderr \
+        || echo $? >/target/release/deps/out-88872ac441f60d2c-errcode\
+  ; find /target/release/deps/*-88872ac441f60d2c* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-88872ac441f60d2c
-COPY --link --from=dep-n-y4m-0.8.0-88872ac441f60d2c /tmp/clis-gifski_1-34-0/release/deps/*-88872ac441f60d2c* /
+COPY --link --from=dep-n-y4m-0.8.0-88872ac441f60d2c /target/release/deps/*-88872ac441f60d2c* /
 
 ## this = "88872ac441f60d2c"
 ## writes = [
@@ -7668,10 +7668,10 @@ COPY --link --from=dep-n-y4m-0.8.0-88872ac441f60d2c /tmp/clis-gifski_1-34-0/rele
 ##     "y4m-88872ac441f60d2c.d",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/y4m-88872ac441f60d2c.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/y4m-88872ac441f60d2c.d","emit":"dep-info"}',
 ##     '''{"$message_type":"diagnostic","message":"hiding a lifetime that's elided elsewhere is confusing","code":{"code":"mismatched_lifetime_syntaxes","explanation":null},"level":"warning","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/y4m-0.8.0/src/lib.rs","byte_start":13765,"byte_end":13774,"line_start":430,"line_end":430,"column_start":23,"column_end":32,"is_primary":true,"text":[{"text":"    pub fn read_frame(&mut self) -> Result<Frame, Error> {","highlight_start":23,"highlight_end":32}],"label":"the lifetime is elided here","suggested_replacement":null,"suggestion_applicability":null,"expansion":null},{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/y4m-0.8.0/src/lib.rs","byte_start":13786,"byte_end":13791,"line_start":430,"line_end":430,"column_start":44,"column_end":49,"is_primary":false,"text":[{"text":"    pub fn read_frame(&mut self) -> Result<Frame, Error> {","highlight_start":44,"highlight_end":49}],"label":"the same lifetime is hidden here","suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"the same lifetime is referred to in inconsistent ways, making the signature confusing","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"`#[warn(mismatched_lifetime_syntaxes)]` on by default","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"use `'_` for type paths","code":null,"level":"help","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/y4m-0.8.0/src/lib.rs","byte_start":13791,"byte_end":13791,"line_start":430,"line_end":430,"column_start":49,"column_end":49,"is_primary":true,"text":[{"text":"    pub fn read_frame(&mut self) -> Result<Frame, Error> {","highlight_start":49,"highlight_end":49}],"label":null,"suggested_replacement":"<'_>","suggestion_applicability":"MaybeIncorrect","expansion":null}],"children":[],"rendered":null},{"message":"consistently use `'_`","code":null,"level":"help","spans":[{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/y4m-0.8.0/src/lib.rs","byte_start":13766,"byte_end":13766,"line_start":430,"line_end":430,"column_start":24,"column_end":24,"is_primary":true,"text":[{"text":"    pub fn read_frame(&mut self) -> Result<Frame, Error> {","highlight_start":24,"highlight_end":24}],"label":null,"suggested_replacement":"'_ ","suggestion_applicability":"MaybeIncorrect","expansion":null},{"file_name":"/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/y4m-0.8.0/src/lib.rs","byte_start":13791,"byte_end":13791,"line_start":430,"line_end":430,"column_start":49,"column_end":49,"is_primary":true,"text":[{"text":"    pub fn read_frame(&mut self) -> Result<Frame, Error> {","highlight_start":49,"highlight_end":49}],"label":null,"suggested_replacement":"<'_>","suggestion_applicability":"MaybeIncorrect","expansion":null}],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: hiding a lifetime that's elided elsewhere is confusing\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/y4m-0.8.0/src/lib.rs:430:23\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m430\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m    pub fn read_frame(&mut self) -> Result<Frame, Error> {\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                       \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^\u001b[0m\u001b[0m            \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m-----\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12mthe same lifetime is hidden here\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                       \u001b[0m\u001b[0m\u001b[1m\u001b[33m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                       \u001b[0m\u001b[0m\u001b[1m\u001b[33mthe lifetime is elided here\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: the same lifetime is referred to in inconsistent ways, making the signature confusing\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: `#[warn(mismatched_lifetime_syntaxes)]` on by default\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;14mhelp\u001b[0m\u001b[0m: use `'_` for type paths\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m430\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m| \u001b[0m\u001b[0m    pub fn read_frame(&mut self) -> Result<Frame\u001b[0m\u001b[0m\u001b[38;5;10m<'_>\u001b[0m\u001b[0m, Error> {\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                                 \u001b[0m\u001b[0m\u001b[38;5;10m++++\u001b[0m\n\n"}''',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/liby4m-88872ac441f60d2c.rmeta","emit":"metadata"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/liby4m-88872ac441f60d2c.rlib","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/liby4m-88872ac441f60d2c.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/liby4m-88872ac441f60d2c.rlib","emit":"link"}',
 ##     '{"$message_type":"diagnostic","message":"1 warning emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 1 warning emitted\u001b[0m\n\n"}',
 ## ]
 ##
@@ -7697,7 +7697,7 @@ COPY --link --from=dep-n-y4m-0.8.0-88872ac441f60d2c /tmp/clis-gifski_1-34-0/rele
 ## script = '''
 ## FROM rust-base AS dep-n-y4m-0.8.0-88872ac441f60d2c
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-gifski_1-34-0/release/deps
+## WORKDIR /target/release/deps
 ## RUN \
 ##   --mount=from=cratesio-y4m-0.8.0,source=/y4m-0.8.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/y4m-0.8.0 \
 ##     env CARGO="$(which cargo)" \
@@ -7720,11 +7720,11 @@ COPY --link --from=dep-n-y4m-0.8.0-88872ac441f60d2c /tmp/clis-gifski_1-34-0/rele
 ##         CARGO_PKG_VERSION_PATCH=0 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name y4m --edition 2015 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=cc41d01fe9038429' -C extra-filename'=-88872ac441f60d2c' --out-dir /tmp/clis-gifski_1-34-0/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/y4m-0.8.0/src/lib.rs \
-##         1>          /tmp/clis-gifski_1-34-0/release/deps/out-88872ac441f60d2c-stdout \
-##         2>          /tmp/clis-gifski_1-34-0/release/deps/out-88872ac441f60d2c-stderr \
-##         || echo $? >/tmp/clis-gifski_1-34-0/release/deps/out-88872ac441f60d2c-errcode\
-##   ; find /tmp/clis-gifski_1-34-0/release/deps/*-88872ac441f60d2c* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name y4m --edition 2015 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=cc41d01fe9038429' -C extra-filename'=-88872ac441f60d2c' --out-dir /target/release/deps -C strip'=symbols' -L dependency'=/target/release/deps' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/y4m-0.8.0/src/lib.rs \
+##         1>          /target/release/deps/out-88872ac441f60d2c-stdout \
+##         2>          /target/release/deps/out-88872ac441f60d2c-stderr \
+##         || echo $? >/target/release/deps/out-88872ac441f60d2c-errcode\
+##   ; find /target/release/deps/*-88872ac441f60d2c* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -7732,24 +7732,24 @@ COPY --link --from=dep-n-y4m-0.8.0-88872ac441f60d2c /tmp/clis-gifski_1-34-0/rele
 ## stage = "out-88872ac441f60d2c"
 ## script = """
 ## FROM scratch AS out-88872ac441f60d2c
-## COPY --link --from=dep-n-y4m-0.8.0-88872ac441f60d2c /tmp/clis-gifski_1-34-0/release/deps/*-88872ac441f60d2c* /"""
+## COPY --link --from=dep-n-y4m-0.8.0-88872ac441f60d2c /target/release/deps/*-88872ac441f60d2c* /"""
 
 FROM scratch AS cratesio-yuv-0.1.9
 ADD --chmod=0664 --unpack --checksum=sha256:8cbe2d856acbe6d86c0fa6f458b73e962834061ca2f7f94c6e4633afc9efd4d4 \
   https://static.crates.io/crates/yuv/yuv-0.1.9.crate /
 FROM rust-base AS dep-n-yuv-0.1.9-9318e068e99f9028
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-gifski_1-34-0/release/deps
+WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-yuv-0.1.9,source=/yuv-0.1.9,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/yuv-0.1.9 \
-  --mount=from=out-53c0c58048ae59b2,dst=/tmp/clis-gifski_1-34-0/release/deps/libnum_traits-53c0c58048ae59b2.rlib,source=/libnum_traits-53c0c58048ae59b2.rlib \
-  --mount=from=out-53c0c58048ae59b2,dst=/tmp/clis-gifski_1-34-0/release/deps/libnum_traits-53c0c58048ae59b2.rmeta,source=/libnum_traits-53c0c58048ae59b2.rmeta \
-  --mount=from=out-54801e684ac31c95,dst=/tmp/clis-gifski_1-34-0/release/deps/libautocfg-54801e684ac31c95.rlib,source=/libautocfg-54801e684ac31c95.rlib \
-  --mount=from=out-54801e684ac31c95,dst=/tmp/clis-gifski_1-34-0/release/deps/libautocfg-54801e684ac31c95.rmeta,source=/libautocfg-54801e684ac31c95.rmeta \
-  --mount=from=out-b630417cd5f2024a,dst=/tmp/clis-gifski_1-34-0/release/deps/librgb-b630417cd5f2024a.rlib,source=/librgb-b630417cd5f2024a.rlib \
-  --mount=from=out-b630417cd5f2024a,dst=/tmp/clis-gifski_1-34-0/release/deps/librgb-b630417cd5f2024a.rmeta,source=/librgb-b630417cd5f2024a.rmeta \
-  --mount=from=out-f0cdacabc0947b7b,dst=/tmp/clis-gifski_1-34-0/release/deps/libbytemuck-f0cdacabc0947b7b.rlib,source=/libbytemuck-f0cdacabc0947b7b.rlib \
-  --mount=from=out-f0cdacabc0947b7b,dst=/tmp/clis-gifski_1-34-0/release/deps/libbytemuck-f0cdacabc0947b7b.rmeta,source=/libbytemuck-f0cdacabc0947b7b.rmeta \
+  --mount=from=out-53c0c58048ae59b2,dst=/target/release/deps/libnum_traits-53c0c58048ae59b2.rlib,source=/libnum_traits-53c0c58048ae59b2.rlib \
+  --mount=from=out-53c0c58048ae59b2,dst=/target/release/deps/libnum_traits-53c0c58048ae59b2.rmeta,source=/libnum_traits-53c0c58048ae59b2.rmeta \
+  --mount=from=out-54801e684ac31c95,dst=/target/release/deps/libautocfg-54801e684ac31c95.rlib,source=/libautocfg-54801e684ac31c95.rlib \
+  --mount=from=out-54801e684ac31c95,dst=/target/release/deps/libautocfg-54801e684ac31c95.rmeta,source=/libautocfg-54801e684ac31c95.rmeta \
+  --mount=from=out-b630417cd5f2024a,dst=/target/release/deps/librgb-b630417cd5f2024a.rlib,source=/librgb-b630417cd5f2024a.rlib \
+  --mount=from=out-b630417cd5f2024a,dst=/target/release/deps/librgb-b630417cd5f2024a.rmeta,source=/librgb-b630417cd5f2024a.rmeta \
+  --mount=from=out-f0cdacabc0947b7b,dst=/target/release/deps/libbytemuck-f0cdacabc0947b7b.rlib,source=/libbytemuck-f0cdacabc0947b7b.rlib \
+  --mount=from=out-f0cdacabc0947b7b,dst=/target/release/deps/libbytemuck-f0cdacabc0947b7b.rmeta,source=/libbytemuck-f0cdacabc0947b7b.rmeta \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=yuv \
         CARGO_INCREMENTAL=0 \
@@ -7770,13 +7770,13 @@ RUN \
         CARGO_PKG_VERSION_PATCH=9 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --crate-name yuv --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "no_std", "std"))' -C metadata'=3b56dd6b7b6bb4b9' -C extra-filename'=-9318e068e99f9028' --out-dir /tmp/clis-gifski_1-34-0/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --extern num_traits'=/tmp/clis-gifski_1-34-0/release/deps/libnum_traits-53c0c58048ae59b2.rmeta' --extern rgb'=/tmp/clis-gifski_1-34-0/release/deps/librgb-b630417cd5f2024a.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/yuv-0.1.9/src/lib.rs \
-        1>          /tmp/clis-gifski_1-34-0/release/deps/out-9318e068e99f9028-stdout \
-        2>          /tmp/clis-gifski_1-34-0/release/deps/out-9318e068e99f9028-stderr \
-        || echo $? >/tmp/clis-gifski_1-34-0/release/deps/out-9318e068e99f9028-errcode\
-  ; find /tmp/clis-gifski_1-34-0/release/deps/*-9318e068e99f9028* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      rustc --crate-name yuv --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "no_std", "std"))' -C metadata'=3b56dd6b7b6bb4b9' -C extra-filename'=-9318e068e99f9028' --out-dir /target/release/deps -C strip'=symbols' -L dependency'=/target/release/deps' --extern num_traits'=/target/release/deps/libnum_traits-53c0c58048ae59b2.rmeta' --extern rgb'=/target/release/deps/librgb-b630417cd5f2024a.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/yuv-0.1.9/src/lib.rs \
+        1>          /target/release/deps/out-9318e068e99f9028-stdout \
+        2>          /target/release/deps/out-9318e068e99f9028-stderr \
+        || echo $? >/target/release/deps/out-9318e068e99f9028-errcode\
+  ; find /target/release/deps/*-9318e068e99f9028* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-9318e068e99f9028
-COPY --link --from=dep-n-yuv-0.1.9-9318e068e99f9028 /tmp/clis-gifski_1-34-0/release/deps/*-9318e068e99f9028* /
+COPY --link --from=dep-n-yuv-0.1.9-9318e068e99f9028 /target/release/deps/*-9318e068e99f9028* /
 
 ## this = "9318e068e99f9028"
 ## deps = [
@@ -7794,9 +7794,9 @@ COPY --link --from=dep-n-yuv-0.1.9-9318e068e99f9028 /tmp/clis-gifski_1-34-0/rele
 ##     "yuv-9318e068e99f9028.d",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/yuv-9318e068e99f9028.d","emit":"dep-info"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/libyuv-9318e068e99f9028.rmeta","emit":"metadata"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/libyuv-9318e068e99f9028.rlib","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/yuv-9318e068e99f9028.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libyuv-9318e068e99f9028.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libyuv-9318e068e99f9028.rlib","emit":"link"}',
 ## ]
 ##
 ## [[externs]]
@@ -7853,17 +7853,17 @@ COPY --link --from=dep-n-yuv-0.1.9-9318e068e99f9028 /tmp/clis-gifski_1-34-0/rele
 ## script = '''
 ## FROM rust-base AS dep-n-yuv-0.1.9-9318e068e99f9028
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-gifski_1-34-0/release/deps
+## WORKDIR /target/release/deps
 ## RUN \
 ##   --mount=from=cratesio-yuv-0.1.9,source=/yuv-0.1.9,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/yuv-0.1.9 \
-##   --mount=from=out-53c0c58048ae59b2,dst=/tmp/clis-gifski_1-34-0/release/deps/libnum_traits-53c0c58048ae59b2.rlib,source=/libnum_traits-53c0c58048ae59b2.rlib \
-##   --mount=from=out-53c0c58048ae59b2,dst=/tmp/clis-gifski_1-34-0/release/deps/libnum_traits-53c0c58048ae59b2.rmeta,source=/libnum_traits-53c0c58048ae59b2.rmeta \
-##   --mount=from=out-54801e684ac31c95,dst=/tmp/clis-gifski_1-34-0/release/deps/libautocfg-54801e684ac31c95.rlib,source=/libautocfg-54801e684ac31c95.rlib \
-##   --mount=from=out-54801e684ac31c95,dst=/tmp/clis-gifski_1-34-0/release/deps/libautocfg-54801e684ac31c95.rmeta,source=/libautocfg-54801e684ac31c95.rmeta \
-##   --mount=from=out-b630417cd5f2024a,dst=/tmp/clis-gifski_1-34-0/release/deps/librgb-b630417cd5f2024a.rlib,source=/librgb-b630417cd5f2024a.rlib \
-##   --mount=from=out-b630417cd5f2024a,dst=/tmp/clis-gifski_1-34-0/release/deps/librgb-b630417cd5f2024a.rmeta,source=/librgb-b630417cd5f2024a.rmeta \
-##   --mount=from=out-f0cdacabc0947b7b,dst=/tmp/clis-gifski_1-34-0/release/deps/libbytemuck-f0cdacabc0947b7b.rlib,source=/libbytemuck-f0cdacabc0947b7b.rlib \
-##   --mount=from=out-f0cdacabc0947b7b,dst=/tmp/clis-gifski_1-34-0/release/deps/libbytemuck-f0cdacabc0947b7b.rmeta,source=/libbytemuck-f0cdacabc0947b7b.rmeta \
+##   --mount=from=out-53c0c58048ae59b2,dst=/target/release/deps/libnum_traits-53c0c58048ae59b2.rlib,source=/libnum_traits-53c0c58048ae59b2.rlib \
+##   --mount=from=out-53c0c58048ae59b2,dst=/target/release/deps/libnum_traits-53c0c58048ae59b2.rmeta,source=/libnum_traits-53c0c58048ae59b2.rmeta \
+##   --mount=from=out-54801e684ac31c95,dst=/target/release/deps/libautocfg-54801e684ac31c95.rlib,source=/libautocfg-54801e684ac31c95.rlib \
+##   --mount=from=out-54801e684ac31c95,dst=/target/release/deps/libautocfg-54801e684ac31c95.rmeta,source=/libautocfg-54801e684ac31c95.rmeta \
+##   --mount=from=out-b630417cd5f2024a,dst=/target/release/deps/librgb-b630417cd5f2024a.rlib,source=/librgb-b630417cd5f2024a.rlib \
+##   --mount=from=out-b630417cd5f2024a,dst=/target/release/deps/librgb-b630417cd5f2024a.rmeta,source=/librgb-b630417cd5f2024a.rmeta \
+##   --mount=from=out-f0cdacabc0947b7b,dst=/target/release/deps/libbytemuck-f0cdacabc0947b7b.rlib,source=/libbytemuck-f0cdacabc0947b7b.rlib \
+##   --mount=from=out-f0cdacabc0947b7b,dst=/target/release/deps/libbytemuck-f0cdacabc0947b7b.rmeta,source=/libbytemuck-f0cdacabc0947b7b.rmeta \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=yuv \
 ##         CARGO_INCREMENTAL=0 \
@@ -7884,11 +7884,11 @@ COPY --link --from=dep-n-yuv-0.1.9-9318e068e99f9028 /tmp/clis-gifski_1-34-0/rele
 ##         CARGO_PKG_VERSION_PATCH=9 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name yuv --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "no_std", "std"))' -C metadata'=3b56dd6b7b6bb4b9' -C extra-filename'=-9318e068e99f9028' --out-dir /tmp/clis-gifski_1-34-0/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --extern num_traits'=/tmp/clis-gifski_1-34-0/release/deps/libnum_traits-53c0c58048ae59b2.rmeta' --extern rgb'=/tmp/clis-gifski_1-34-0/release/deps/librgb-b630417cd5f2024a.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/yuv-0.1.9/src/lib.rs \
-##         1>          /tmp/clis-gifski_1-34-0/release/deps/out-9318e068e99f9028-stdout \
-##         2>          /tmp/clis-gifski_1-34-0/release/deps/out-9318e068e99f9028-stderr \
-##         || echo $? >/tmp/clis-gifski_1-34-0/release/deps/out-9318e068e99f9028-errcode\
-##   ; find /tmp/clis-gifski_1-34-0/release/deps/*-9318e068e99f9028* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name yuv --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C panic'=abort' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "no_std", "std"))' -C metadata'=3b56dd6b7b6bb4b9' -C extra-filename'=-9318e068e99f9028' --out-dir /target/release/deps -C strip'=symbols' -L dependency'=/target/release/deps' --extern num_traits'=/target/release/deps/libnum_traits-53c0c58048ae59b2.rmeta' --extern rgb'=/target/release/deps/librgb-b630417cd5f2024a.rmeta' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/yuv-0.1.9/src/lib.rs \
+##         1>          /target/release/deps/out-9318e068e99f9028-stdout \
+##         2>          /target/release/deps/out-9318e068e99f9028-stderr \
+##         || echo $? >/target/release/deps/out-9318e068e99f9028-errcode\
+##   ; find /target/release/deps/*-9318e068e99f9028* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -7896,63 +7896,63 @@ COPY --link --from=dep-n-yuv-0.1.9-9318e068e99f9028 /tmp/clis-gifski_1-34-0/rele
 ## stage = "out-9318e068e99f9028"
 ## script = """
 ## FROM scratch AS out-9318e068e99f9028
-## COPY --link --from=dep-n-yuv-0.1.9-9318e068e99f9028 /tmp/clis-gifski_1-34-0/release/deps/*-9318e068e99f9028* /"""
+## COPY --link --from=dep-n-yuv-0.1.9-9318e068e99f9028 /target/release/deps/*-9318e068e99f9028* /"""
 
 FROM scratch AS cratesio-gifski-1.34.0
 ADD --chmod=0664 --unpack --checksum=sha256:c246c795a61d4a2476fb1c8ab70bedfaa825c734882adc40e117fc837df81190 \
   https://static.crates.io/crates/gifski/gifski-1.34.0.crate /
 FROM rust-base AS dep-n-gifski-1.34.0-b9aa6f1c171c6150
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-gifski_1-34-0/release/deps
+WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-gifski-1.34.0,source=/gifski-1.34.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/gifski-1.34.0 \
-  --mount=from=out-67f6ec320d9c110f,dst=/tmp/clis-gifski_1-34-0/release/deps/libclap-67f6ec320d9c110f.rlib,source=/libclap-67f6ec320d9c110f.rlib \
-  --mount=from=out-82004e3d29174042,dst=/tmp/clis-gifski_1-34-0/release/deps/libclap_builder-82004e3d29174042.rlib,source=/libclap_builder-82004e3d29174042.rlib \
-  --mount=from=out-14a190e9584fadc4,dst=/tmp/clis-gifski_1-34-0/release/deps/libanstream-14a190e9584fadc4.rlib,source=/libanstream-14a190e9584fadc4.rlib \
-  --mount=from=out-25158921b2975a45,dst=/tmp/clis-gifski_1-34-0/release/deps/libanstyle-25158921b2975a45.rlib,source=/libanstyle-25158921b2975a45.rlib \
-  --mount=from=out-3a154f05c18fe502,dst=/tmp/clis-gifski_1-34-0/release/deps/libanstyle_parse-3a154f05c18fe502.rlib,source=/libanstyle_parse-3a154f05c18fe502.rlib \
-  --mount=from=out-e99b4cd86d1b3d1a,dst=/tmp/clis-gifski_1-34-0/release/deps/libutf8parse-e99b4cd86d1b3d1a.rlib,source=/libutf8parse-e99b4cd86d1b3d1a.rlib \
-  --mount=from=out-f174fe24d94bb0d5,dst=/tmp/clis-gifski_1-34-0/release/deps/libanstyle_query-f174fe24d94bb0d5.rlib,source=/libanstyle_query-f174fe24d94bb0d5.rlib \
-  --mount=from=out-b0f9d0eb7e3c5228,dst=/tmp/clis-gifski_1-34-0/release/deps/libcolorchoice-b0f9d0eb7e3c5228.rlib,source=/libcolorchoice-b0f9d0eb7e3c5228.rlib \
-  --mount=from=out-08b147e17b2f127e,dst=/tmp/clis-gifski_1-34-0/release/deps/libis_terminal_polyfill-08b147e17b2f127e.rlib,source=/libis_terminal_polyfill-08b147e17b2f127e.rlib \
-  --mount=from=out-944acfd6f9571391,dst=/tmp/clis-gifski_1-34-0/release/deps/libclap_lex-944acfd6f9571391.rlib,source=/libclap_lex-944acfd6f9571391.rlib \
-  --mount=from=out-87be0482eaec7565,dst=/tmp/clis-gifski_1-34-0/release/deps/libstrsim-87be0482eaec7565.rlib,source=/libstrsim-87be0482eaec7565.rlib \
-  --mount=from=out-724af7b5f0e810c4,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_channel-724af7b5f0e810c4.rlib,source=/libcrossbeam_channel-724af7b5f0e810c4.rlib \
-  --mount=from=out-5ac36063ddf29a62,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rlib,source=/libcrossbeam_utils-5ac36063ddf29a62.rlib \
-  --mount=from=out-00cc39e2b93187ae,dst=/tmp/clis-gifski_1-34-0/release/deps/libdunce-00cc39e2b93187ae.rlib,source=/libdunce-00cc39e2b93187ae.rlib \
-  --mount=from=out-6bb7dc2aa9596226,dst=/tmp/clis-gifski_1-34-0/release/deps/libgif-6bb7dc2aa9596226.rlib,source=/libgif-6bb7dc2aa9596226.rlib \
-  --mount=from=out-92ecf42010bb6640,dst=/tmp/clis-gifski_1-34-0/release/deps/libweezl-92ecf42010bb6640.rlib,source=/libweezl-92ecf42010bb6640.rlib \
-  --mount=from=out-a4fb05ba2aa05e69,dst=/tmp/clis-gifski_1-34-0/release/deps/libgif_dispose-a4fb05ba2aa05e69.rlib,source=/libgif_dispose-a4fb05ba2aa05e69.rlib \
-  --mount=from=out-deae4624c4370e95,dst=/tmp/clis-gifski_1-34-0/release/deps/libimgref-deae4624c4370e95.rlib,source=/libimgref-deae4624c4370e95.rlib \
-  --mount=from=out-b630417cd5f2024a,dst=/tmp/clis-gifski_1-34-0/release/deps/librgb-b630417cd5f2024a.rlib,source=/librgb-b630417cd5f2024a.rlib \
-  --mount=from=out-f0cdacabc0947b7b,dst=/tmp/clis-gifski_1-34-0/release/deps/libbytemuck-f0cdacabc0947b7b.rlib,source=/libbytemuck-f0cdacabc0947b7b.rlib \
-  --mount=from=out-13cdc94a2acbf464,dst=/tmp/clis-gifski_1-34-0/release/deps/libimagequant-13cdc94a2acbf464.rlib,source=/libimagequant-13cdc94a2acbf464.rlib \
-  --mount=from=out-9b55b30a1b85e195,dst=/tmp/clis-gifski_1-34-0/release/deps/libarrayvec-9b55b30a1b85e195.rlib,source=/libarrayvec-9b55b30a1b85e195.rlib \
-  --mount=from=out-0774a35541eb4e3b,dst=/tmp/clis-gifski_1-34-0/release/deps/libonce_cell-0774a35541eb4e3b.rlib,source=/libonce_cell-0774a35541eb4e3b.rlib \
-  --mount=from=out-53357b7dd9022303,dst=/tmp/clis-gifski_1-34-0/release/deps/librayon-53357b7dd9022303.rlib,source=/librayon-53357b7dd9022303.rlib \
-  --mount=from=out-64b2ef074583e2a3,dst=/tmp/clis-gifski_1-34-0/release/deps/libeither-64b2ef074583e2a3.rlib,source=/libeither-64b2ef074583e2a3.rlib \
-  --mount=from=out-efba4db9305abd55,dst=/tmp/clis-gifski_1-34-0/release/deps/librayon_core-efba4db9305abd55.rlib,source=/librayon_core-efba4db9305abd55.rlib \
-  --mount=from=out-cc1298b8da143bbe,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_deque-cc1298b8da143bbe.rlib,source=/libcrossbeam_deque-cc1298b8da143bbe.rlib \
-  --mount=from=out-c2e7f2fc3addf6be,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_epoch-c2e7f2fc3addf6be.rlib,source=/libcrossbeam_epoch-c2e7f2fc3addf6be.rlib \
-  --mount=from=out-6b8c8ab37131cd0c,dst=/tmp/clis-gifski_1-34-0/release/deps/libthread_local-6b8c8ab37131cd0c.rlib,source=/libthread_local-6b8c8ab37131cd0c.rlib \
-  --mount=from=out-e1f9b2ca981c3e9f,dst=/tmp/clis-gifski_1-34-0/release/deps/libcfg_if-e1f9b2ca981c3e9f.rlib,source=/libcfg_if-e1f9b2ca981c3e9f.rlib \
-  --mount=from=out-c1608f7a6e4ba58d,dst=/tmp/clis-gifski_1-34-0/release/deps/liblodepng-c1608f7a6e4ba58d.rlib,source=/liblodepng-c1608f7a6e4ba58d.rlib \
-  --mount=from=out-51c01ae8d7468fb2,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrc32fast-51c01ae8d7468fb2.rlib,source=/libcrc32fast-51c01ae8d7468fb2.rlib \
-  --mount=from=out-92283f56cec7b441,dst=/tmp/clis-gifski_1-34-0/release/deps/libflate2-92283f56cec7b441.rlib,source=/libflate2-92283f56cec7b441.rlib \
-  --mount=from=out-2a56889f8f4194b3,dst=/tmp/clis-gifski_1-34-0/release/deps/liblibz_rs_sys-2a56889f8f4194b3.rlib,source=/liblibz_rs_sys-2a56889f8f4194b3.rlib \
-  --mount=from=out-1ce6de5e74c29a43,dst=/tmp/clis-gifski_1-34-0/release/deps/libzlib_rs-1ce6de5e74c29a43.rlib,source=/libzlib_rs-1ce6de5e74c29a43.rlib \
-  --mount=from=out-3afb72ac1310d574,dst=/tmp/clis-gifski_1-34-0/release/deps/liblibc-3afb72ac1310d574.rlib,source=/liblibc-3afb72ac1310d574.rlib \
-  --mount=from=out-4166f710ac396229,dst=/tmp/clis-gifski_1-34-0/release/deps/libloop9-4166f710ac396229.rlib,source=/libloop9-4166f710ac396229.rlib \
-  --mount=from=out-dbbab79b50c30bb1,dst=/tmp/clis-gifski_1-34-0/release/deps/libnatord-dbbab79b50c30bb1.rlib,source=/libnatord-dbbab79b50c30bb1.rlib \
-  --mount=from=out-53c0c58048ae59b2,dst=/tmp/clis-gifski_1-34-0/release/deps/libnum_traits-53c0c58048ae59b2.rlib,source=/libnum_traits-53c0c58048ae59b2.rlib \
-  --mount=from=out-54801e684ac31c95,dst=/tmp/clis-gifski_1-34-0/release/deps/libautocfg-54801e684ac31c95.rlib,source=/libautocfg-54801e684ac31c95.rlib \
-  --mount=from=out-d1042fb932b56ff4,dst=/tmp/clis-gifski_1-34-0/release/deps/libordered_channel-d1042fb932b56ff4.rlib,source=/libordered_channel-d1042fb932b56ff4.rlib \
-  --mount=from=out-791a05c54d467a7f,dst=/tmp/clis-gifski_1-34-0/release/deps/libpbr-791a05c54d467a7f.rlib,source=/libpbr-791a05c54d467a7f.rlib \
-  --mount=from=out-a6f6d4c5688e7cda,dst=/tmp/clis-gifski_1-34-0/release/deps/libquick_error-a6f6d4c5688e7cda.rlib,source=/libquick_error-a6f6d4c5688e7cda.rlib \
-  --mount=from=out-925466e96a5b0042,dst=/tmp/clis-gifski_1-34-0/release/deps/libresize-925466e96a5b0042.rlib,source=/libresize-925466e96a5b0042.rlib \
-  --mount=from=out-3fec38877dfe5eae,dst=/tmp/clis-gifski_1-34-0/release/deps/libwild-3fec38877dfe5eae.rlib,source=/libwild-3fec38877dfe5eae.rlib \
-  --mount=from=out-88872ac441f60d2c,dst=/tmp/clis-gifski_1-34-0/release/deps/liby4m-88872ac441f60d2c.rlib,source=/liby4m-88872ac441f60d2c.rlib \
-  --mount=from=out-9318e068e99f9028,dst=/tmp/clis-gifski_1-34-0/release/deps/libyuv-9318e068e99f9028.rlib,source=/libyuv-9318e068e99f9028.rlib \
+  --mount=from=out-67f6ec320d9c110f,dst=/target/release/deps/libclap-67f6ec320d9c110f.rlib,source=/libclap-67f6ec320d9c110f.rlib \
+  --mount=from=out-82004e3d29174042,dst=/target/release/deps/libclap_builder-82004e3d29174042.rlib,source=/libclap_builder-82004e3d29174042.rlib \
+  --mount=from=out-14a190e9584fadc4,dst=/target/release/deps/libanstream-14a190e9584fadc4.rlib,source=/libanstream-14a190e9584fadc4.rlib \
+  --mount=from=out-25158921b2975a45,dst=/target/release/deps/libanstyle-25158921b2975a45.rlib,source=/libanstyle-25158921b2975a45.rlib \
+  --mount=from=out-3a154f05c18fe502,dst=/target/release/deps/libanstyle_parse-3a154f05c18fe502.rlib,source=/libanstyle_parse-3a154f05c18fe502.rlib \
+  --mount=from=out-e99b4cd86d1b3d1a,dst=/target/release/deps/libutf8parse-e99b4cd86d1b3d1a.rlib,source=/libutf8parse-e99b4cd86d1b3d1a.rlib \
+  --mount=from=out-f174fe24d94bb0d5,dst=/target/release/deps/libanstyle_query-f174fe24d94bb0d5.rlib,source=/libanstyle_query-f174fe24d94bb0d5.rlib \
+  --mount=from=out-b0f9d0eb7e3c5228,dst=/target/release/deps/libcolorchoice-b0f9d0eb7e3c5228.rlib,source=/libcolorchoice-b0f9d0eb7e3c5228.rlib \
+  --mount=from=out-08b147e17b2f127e,dst=/target/release/deps/libis_terminal_polyfill-08b147e17b2f127e.rlib,source=/libis_terminal_polyfill-08b147e17b2f127e.rlib \
+  --mount=from=out-944acfd6f9571391,dst=/target/release/deps/libclap_lex-944acfd6f9571391.rlib,source=/libclap_lex-944acfd6f9571391.rlib \
+  --mount=from=out-87be0482eaec7565,dst=/target/release/deps/libstrsim-87be0482eaec7565.rlib,source=/libstrsim-87be0482eaec7565.rlib \
+  --mount=from=out-724af7b5f0e810c4,dst=/target/release/deps/libcrossbeam_channel-724af7b5f0e810c4.rlib,source=/libcrossbeam_channel-724af7b5f0e810c4.rlib \
+  --mount=from=out-5ac36063ddf29a62,dst=/target/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rlib,source=/libcrossbeam_utils-5ac36063ddf29a62.rlib \
+  --mount=from=out-00cc39e2b93187ae,dst=/target/release/deps/libdunce-00cc39e2b93187ae.rlib,source=/libdunce-00cc39e2b93187ae.rlib \
+  --mount=from=out-6bb7dc2aa9596226,dst=/target/release/deps/libgif-6bb7dc2aa9596226.rlib,source=/libgif-6bb7dc2aa9596226.rlib \
+  --mount=from=out-92ecf42010bb6640,dst=/target/release/deps/libweezl-92ecf42010bb6640.rlib,source=/libweezl-92ecf42010bb6640.rlib \
+  --mount=from=out-a4fb05ba2aa05e69,dst=/target/release/deps/libgif_dispose-a4fb05ba2aa05e69.rlib,source=/libgif_dispose-a4fb05ba2aa05e69.rlib \
+  --mount=from=out-deae4624c4370e95,dst=/target/release/deps/libimgref-deae4624c4370e95.rlib,source=/libimgref-deae4624c4370e95.rlib \
+  --mount=from=out-b630417cd5f2024a,dst=/target/release/deps/librgb-b630417cd5f2024a.rlib,source=/librgb-b630417cd5f2024a.rlib \
+  --mount=from=out-f0cdacabc0947b7b,dst=/target/release/deps/libbytemuck-f0cdacabc0947b7b.rlib,source=/libbytemuck-f0cdacabc0947b7b.rlib \
+  --mount=from=out-13cdc94a2acbf464,dst=/target/release/deps/libimagequant-13cdc94a2acbf464.rlib,source=/libimagequant-13cdc94a2acbf464.rlib \
+  --mount=from=out-9b55b30a1b85e195,dst=/target/release/deps/libarrayvec-9b55b30a1b85e195.rlib,source=/libarrayvec-9b55b30a1b85e195.rlib \
+  --mount=from=out-0774a35541eb4e3b,dst=/target/release/deps/libonce_cell-0774a35541eb4e3b.rlib,source=/libonce_cell-0774a35541eb4e3b.rlib \
+  --mount=from=out-53357b7dd9022303,dst=/target/release/deps/librayon-53357b7dd9022303.rlib,source=/librayon-53357b7dd9022303.rlib \
+  --mount=from=out-64b2ef074583e2a3,dst=/target/release/deps/libeither-64b2ef074583e2a3.rlib,source=/libeither-64b2ef074583e2a3.rlib \
+  --mount=from=out-efba4db9305abd55,dst=/target/release/deps/librayon_core-efba4db9305abd55.rlib,source=/librayon_core-efba4db9305abd55.rlib \
+  --mount=from=out-cc1298b8da143bbe,dst=/target/release/deps/libcrossbeam_deque-cc1298b8da143bbe.rlib,source=/libcrossbeam_deque-cc1298b8da143bbe.rlib \
+  --mount=from=out-c2e7f2fc3addf6be,dst=/target/release/deps/libcrossbeam_epoch-c2e7f2fc3addf6be.rlib,source=/libcrossbeam_epoch-c2e7f2fc3addf6be.rlib \
+  --mount=from=out-6b8c8ab37131cd0c,dst=/target/release/deps/libthread_local-6b8c8ab37131cd0c.rlib,source=/libthread_local-6b8c8ab37131cd0c.rlib \
+  --mount=from=out-e1f9b2ca981c3e9f,dst=/target/release/deps/libcfg_if-e1f9b2ca981c3e9f.rlib,source=/libcfg_if-e1f9b2ca981c3e9f.rlib \
+  --mount=from=out-c1608f7a6e4ba58d,dst=/target/release/deps/liblodepng-c1608f7a6e4ba58d.rlib,source=/liblodepng-c1608f7a6e4ba58d.rlib \
+  --mount=from=out-51c01ae8d7468fb2,dst=/target/release/deps/libcrc32fast-51c01ae8d7468fb2.rlib,source=/libcrc32fast-51c01ae8d7468fb2.rlib \
+  --mount=from=out-92283f56cec7b441,dst=/target/release/deps/libflate2-92283f56cec7b441.rlib,source=/libflate2-92283f56cec7b441.rlib \
+  --mount=from=out-2a56889f8f4194b3,dst=/target/release/deps/liblibz_rs_sys-2a56889f8f4194b3.rlib,source=/liblibz_rs_sys-2a56889f8f4194b3.rlib \
+  --mount=from=out-1ce6de5e74c29a43,dst=/target/release/deps/libzlib_rs-1ce6de5e74c29a43.rlib,source=/libzlib_rs-1ce6de5e74c29a43.rlib \
+  --mount=from=out-3afb72ac1310d574,dst=/target/release/deps/liblibc-3afb72ac1310d574.rlib,source=/liblibc-3afb72ac1310d574.rlib \
+  --mount=from=out-4166f710ac396229,dst=/target/release/deps/libloop9-4166f710ac396229.rlib,source=/libloop9-4166f710ac396229.rlib \
+  --mount=from=out-dbbab79b50c30bb1,dst=/target/release/deps/libnatord-dbbab79b50c30bb1.rlib,source=/libnatord-dbbab79b50c30bb1.rlib \
+  --mount=from=out-53c0c58048ae59b2,dst=/target/release/deps/libnum_traits-53c0c58048ae59b2.rlib,source=/libnum_traits-53c0c58048ae59b2.rlib \
+  --mount=from=out-54801e684ac31c95,dst=/target/release/deps/libautocfg-54801e684ac31c95.rlib,source=/libautocfg-54801e684ac31c95.rlib \
+  --mount=from=out-d1042fb932b56ff4,dst=/target/release/deps/libordered_channel-d1042fb932b56ff4.rlib,source=/libordered_channel-d1042fb932b56ff4.rlib \
+  --mount=from=out-791a05c54d467a7f,dst=/target/release/deps/libpbr-791a05c54d467a7f.rlib,source=/libpbr-791a05c54d467a7f.rlib \
+  --mount=from=out-a6f6d4c5688e7cda,dst=/target/release/deps/libquick_error-a6f6d4c5688e7cda.rlib,source=/libquick_error-a6f6d4c5688e7cda.rlib \
+  --mount=from=out-925466e96a5b0042,dst=/target/release/deps/libresize-925466e96a5b0042.rlib,source=/libresize-925466e96a5b0042.rlib \
+  --mount=from=out-3fec38877dfe5eae,dst=/target/release/deps/libwild-3fec38877dfe5eae.rlib,source=/libwild-3fec38877dfe5eae.rlib \
+  --mount=from=out-88872ac441f60d2c,dst=/target/release/deps/liby4m-88872ac441f60d2c.rlib,source=/liby4m-88872ac441f60d2c.rlib \
+  --mount=from=out-9318e068e99f9028,dst=/target/release/deps/libyuv-9318e068e99f9028.rlib,source=/libyuv-9318e068e99f9028.rlib \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=gifski \
         CARGO_INCREMENTAL=0 \
@@ -7975,13 +7975,13 @@ RUN \
         CARGO_PRIMARY_PACKAGE=1 \
         CARGO_SBOM_PATH= \
         CARGOGREEN=1 \
-      rustc --crate-name gifski --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --crate-type staticlib --crate-type cdylib --emit dep-info,link -C opt-level'=3' -C panic'=abort' --cfg feature'="binary"' --cfg feature'="default"' --cfg feature'="gifsicle"' --cfg feature'="pbr"' --cfg feature'="png"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("binary", "capi", "default", "gifsicle", "pbr", "png", "video", "video-prebuilt-static", "video-static"))' -C metadata'=0994c85d487f5f3b' -C extra-filename'=-b9aa6f1c171c6150' --out-dir /tmp/clis-gifski_1-34-0/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --extern clap'=/tmp/clis-gifski_1-34-0/release/deps/libclap-67f6ec320d9c110f.rlib' --extern crossbeam_channel'=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_channel-724af7b5f0e810c4.rlib' --extern crossbeam_utils'=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rlib' --extern dunce'=/tmp/clis-gifski_1-34-0/release/deps/libdunce-00cc39e2b93187ae.rlib' --extern gif'=/tmp/clis-gifski_1-34-0/release/deps/libgif-6bb7dc2aa9596226.rlib' --extern gif_dispose'=/tmp/clis-gifski_1-34-0/release/deps/libgif_dispose-a4fb05ba2aa05e69.rlib' --extern imagequant'=/tmp/clis-gifski_1-34-0/release/deps/libimagequant-13cdc94a2acbf464.rlib' --extern imgref'=/tmp/clis-gifski_1-34-0/release/deps/libimgref-deae4624c4370e95.rlib' --extern lodepng'=/tmp/clis-gifski_1-34-0/release/deps/liblodepng-c1608f7a6e4ba58d.rlib' --extern loop9'=/tmp/clis-gifski_1-34-0/release/deps/libloop9-4166f710ac396229.rlib' --extern natord'=/tmp/clis-gifski_1-34-0/release/deps/libnatord-dbbab79b50c30bb1.rlib' --extern num_traits'=/tmp/clis-gifski_1-34-0/release/deps/libnum_traits-53c0c58048ae59b2.rlib' --extern ordered_channel'=/tmp/clis-gifski_1-34-0/release/deps/libordered_channel-d1042fb932b56ff4.rlib' --extern pbr'=/tmp/clis-gifski_1-34-0/release/deps/libpbr-791a05c54d467a7f.rlib' --extern quick_error'=/tmp/clis-gifski_1-34-0/release/deps/libquick_error-a6f6d4c5688e7cda.rlib' --extern resize'=/tmp/clis-gifski_1-34-0/release/deps/libresize-925466e96a5b0042.rlib' --extern rgb'=/tmp/clis-gifski_1-34-0/release/deps/librgb-b630417cd5f2024a.rlib' --extern wild'=/tmp/clis-gifski_1-34-0/release/deps/libwild-3fec38877dfe5eae.rlib' --extern y4m'=/tmp/clis-gifski_1-34-0/release/deps/liby4m-88872ac441f60d2c.rlib' --extern yuv'=/tmp/clis-gifski_1-34-0/release/deps/libyuv-9318e068e99f9028.rlib' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/gifski-1.34.0/src/lib.rs \
-        1>          /tmp/clis-gifski_1-34-0/release/deps/out-b9aa6f1c171c6150-stdout \
-        2>          /tmp/clis-gifski_1-34-0/release/deps/out-b9aa6f1c171c6150-stderr \
-        || echo $? >/tmp/clis-gifski_1-34-0/release/deps/out-b9aa6f1c171c6150-errcode\
-  ; find /tmp/clis-gifski_1-34-0/release/deps/*-b9aa6f1c171c6150* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      rustc --crate-name gifski --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --crate-type staticlib --crate-type cdylib --emit dep-info,link -C opt-level'=3' -C panic'=abort' --cfg feature'="binary"' --cfg feature'="default"' --cfg feature'="gifsicle"' --cfg feature'="pbr"' --cfg feature'="png"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("binary", "capi", "default", "gifsicle", "pbr", "png", "video", "video-prebuilt-static", "video-static"))' -C metadata'=0994c85d487f5f3b' -C extra-filename'=-b9aa6f1c171c6150' --out-dir /target/release/deps -C strip'=symbols' -L dependency'=/target/release/deps' --extern clap'=/target/release/deps/libclap-67f6ec320d9c110f.rlib' --extern crossbeam_channel'=/target/release/deps/libcrossbeam_channel-724af7b5f0e810c4.rlib' --extern crossbeam_utils'=/target/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rlib' --extern dunce'=/target/release/deps/libdunce-00cc39e2b93187ae.rlib' --extern gif'=/target/release/deps/libgif-6bb7dc2aa9596226.rlib' --extern gif_dispose'=/target/release/deps/libgif_dispose-a4fb05ba2aa05e69.rlib' --extern imagequant'=/target/release/deps/libimagequant-13cdc94a2acbf464.rlib' --extern imgref'=/target/release/deps/libimgref-deae4624c4370e95.rlib' --extern lodepng'=/target/release/deps/liblodepng-c1608f7a6e4ba58d.rlib' --extern loop9'=/target/release/deps/libloop9-4166f710ac396229.rlib' --extern natord'=/target/release/deps/libnatord-dbbab79b50c30bb1.rlib' --extern num_traits'=/target/release/deps/libnum_traits-53c0c58048ae59b2.rlib' --extern ordered_channel'=/target/release/deps/libordered_channel-d1042fb932b56ff4.rlib' --extern pbr'=/target/release/deps/libpbr-791a05c54d467a7f.rlib' --extern quick_error'=/target/release/deps/libquick_error-a6f6d4c5688e7cda.rlib' --extern resize'=/target/release/deps/libresize-925466e96a5b0042.rlib' --extern rgb'=/target/release/deps/librgb-b630417cd5f2024a.rlib' --extern wild'=/target/release/deps/libwild-3fec38877dfe5eae.rlib' --extern y4m'=/target/release/deps/liby4m-88872ac441f60d2c.rlib' --extern yuv'=/target/release/deps/libyuv-9318e068e99f9028.rlib' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/gifski-1.34.0/src/lib.rs \
+        1>          /target/release/deps/out-b9aa6f1c171c6150-stdout \
+        2>          /target/release/deps/out-b9aa6f1c171c6150-stderr \
+        || echo $? >/target/release/deps/out-b9aa6f1c171c6150-errcode\
+  ; find /target/release/deps/*-b9aa6f1c171c6150* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-b9aa6f1c171c6150
-COPY --link --from=dep-n-gifski-1.34.0-b9aa6f1c171c6150 /tmp/clis-gifski_1-34-0/release/deps/*-b9aa6f1c171c6150* /
+COPY --link --from=dep-n-gifski-1.34.0-b9aa6f1c171c6150 /target/release/deps/*-b9aa6f1c171c6150* /
 
 ## this = "b9aa6f1c171c6150"
 ## deps = [
@@ -8057,10 +8057,10 @@ COPY --link --from=dep-n-gifski-1.34.0-b9aa6f1c171c6150 /tmp/clis-gifski_1-34-0/
 ##     "libgifski-b9aa6f1c171c6150.so",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/gifski-b9aa6f1c171c6150.d","emit":"dep-info"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/libgifski-b9aa6f1c171c6150.rlib","emit":"link"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/libgifski-b9aa6f1c171c6150.a","emit":"link"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/libgifski-b9aa6f1c171c6150.so","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/gifski-b9aa6f1c171c6150.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libgifski-b9aa6f1c171c6150.rlib","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libgifski-b9aa6f1c171c6150.a","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libgifski-b9aa6f1c171c6150.so","emit":"link"}',
 ## ]
 ##
 ## [[externs]]
@@ -8273,56 +8273,56 @@ COPY --link --from=dep-n-gifski-1.34.0-b9aa6f1c171c6150 /tmp/clis-gifski_1-34-0/
 ## script = '''
 ## FROM rust-base AS dep-n-gifski-1.34.0-b9aa6f1c171c6150
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-gifski_1-34-0/release/deps
+## WORKDIR /target/release/deps
 ## RUN \
 ##   --mount=from=cratesio-gifski-1.34.0,source=/gifski-1.34.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/gifski-1.34.0 \
-##   --mount=from=out-67f6ec320d9c110f,dst=/tmp/clis-gifski_1-34-0/release/deps/libclap-67f6ec320d9c110f.rlib,source=/libclap-67f6ec320d9c110f.rlib \
-##   --mount=from=out-82004e3d29174042,dst=/tmp/clis-gifski_1-34-0/release/deps/libclap_builder-82004e3d29174042.rlib,source=/libclap_builder-82004e3d29174042.rlib \
-##   --mount=from=out-14a190e9584fadc4,dst=/tmp/clis-gifski_1-34-0/release/deps/libanstream-14a190e9584fadc4.rlib,source=/libanstream-14a190e9584fadc4.rlib \
-##   --mount=from=out-25158921b2975a45,dst=/tmp/clis-gifski_1-34-0/release/deps/libanstyle-25158921b2975a45.rlib,source=/libanstyle-25158921b2975a45.rlib \
-##   --mount=from=out-3a154f05c18fe502,dst=/tmp/clis-gifski_1-34-0/release/deps/libanstyle_parse-3a154f05c18fe502.rlib,source=/libanstyle_parse-3a154f05c18fe502.rlib \
-##   --mount=from=out-e99b4cd86d1b3d1a,dst=/tmp/clis-gifski_1-34-0/release/deps/libutf8parse-e99b4cd86d1b3d1a.rlib,source=/libutf8parse-e99b4cd86d1b3d1a.rlib \
-##   --mount=from=out-f174fe24d94bb0d5,dst=/tmp/clis-gifski_1-34-0/release/deps/libanstyle_query-f174fe24d94bb0d5.rlib,source=/libanstyle_query-f174fe24d94bb0d5.rlib \
-##   --mount=from=out-b0f9d0eb7e3c5228,dst=/tmp/clis-gifski_1-34-0/release/deps/libcolorchoice-b0f9d0eb7e3c5228.rlib,source=/libcolorchoice-b0f9d0eb7e3c5228.rlib \
-##   --mount=from=out-08b147e17b2f127e,dst=/tmp/clis-gifski_1-34-0/release/deps/libis_terminal_polyfill-08b147e17b2f127e.rlib,source=/libis_terminal_polyfill-08b147e17b2f127e.rlib \
-##   --mount=from=out-944acfd6f9571391,dst=/tmp/clis-gifski_1-34-0/release/deps/libclap_lex-944acfd6f9571391.rlib,source=/libclap_lex-944acfd6f9571391.rlib \
-##   --mount=from=out-87be0482eaec7565,dst=/tmp/clis-gifski_1-34-0/release/deps/libstrsim-87be0482eaec7565.rlib,source=/libstrsim-87be0482eaec7565.rlib \
-##   --mount=from=out-724af7b5f0e810c4,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_channel-724af7b5f0e810c4.rlib,source=/libcrossbeam_channel-724af7b5f0e810c4.rlib \
-##   --mount=from=out-5ac36063ddf29a62,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rlib,source=/libcrossbeam_utils-5ac36063ddf29a62.rlib \
-##   --mount=from=out-00cc39e2b93187ae,dst=/tmp/clis-gifski_1-34-0/release/deps/libdunce-00cc39e2b93187ae.rlib,source=/libdunce-00cc39e2b93187ae.rlib \
-##   --mount=from=out-6bb7dc2aa9596226,dst=/tmp/clis-gifski_1-34-0/release/deps/libgif-6bb7dc2aa9596226.rlib,source=/libgif-6bb7dc2aa9596226.rlib \
-##   --mount=from=out-92ecf42010bb6640,dst=/tmp/clis-gifski_1-34-0/release/deps/libweezl-92ecf42010bb6640.rlib,source=/libweezl-92ecf42010bb6640.rlib \
-##   --mount=from=out-a4fb05ba2aa05e69,dst=/tmp/clis-gifski_1-34-0/release/deps/libgif_dispose-a4fb05ba2aa05e69.rlib,source=/libgif_dispose-a4fb05ba2aa05e69.rlib \
-##   --mount=from=out-deae4624c4370e95,dst=/tmp/clis-gifski_1-34-0/release/deps/libimgref-deae4624c4370e95.rlib,source=/libimgref-deae4624c4370e95.rlib \
-##   --mount=from=out-b630417cd5f2024a,dst=/tmp/clis-gifski_1-34-0/release/deps/librgb-b630417cd5f2024a.rlib,source=/librgb-b630417cd5f2024a.rlib \
-##   --mount=from=out-f0cdacabc0947b7b,dst=/tmp/clis-gifski_1-34-0/release/deps/libbytemuck-f0cdacabc0947b7b.rlib,source=/libbytemuck-f0cdacabc0947b7b.rlib \
-##   --mount=from=out-13cdc94a2acbf464,dst=/tmp/clis-gifski_1-34-0/release/deps/libimagequant-13cdc94a2acbf464.rlib,source=/libimagequant-13cdc94a2acbf464.rlib \
-##   --mount=from=out-9b55b30a1b85e195,dst=/tmp/clis-gifski_1-34-0/release/deps/libarrayvec-9b55b30a1b85e195.rlib,source=/libarrayvec-9b55b30a1b85e195.rlib \
-##   --mount=from=out-0774a35541eb4e3b,dst=/tmp/clis-gifski_1-34-0/release/deps/libonce_cell-0774a35541eb4e3b.rlib,source=/libonce_cell-0774a35541eb4e3b.rlib \
-##   --mount=from=out-53357b7dd9022303,dst=/tmp/clis-gifski_1-34-0/release/deps/librayon-53357b7dd9022303.rlib,source=/librayon-53357b7dd9022303.rlib \
-##   --mount=from=out-64b2ef074583e2a3,dst=/tmp/clis-gifski_1-34-0/release/deps/libeither-64b2ef074583e2a3.rlib,source=/libeither-64b2ef074583e2a3.rlib \
-##   --mount=from=out-efba4db9305abd55,dst=/tmp/clis-gifski_1-34-0/release/deps/librayon_core-efba4db9305abd55.rlib,source=/librayon_core-efba4db9305abd55.rlib \
-##   --mount=from=out-cc1298b8da143bbe,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_deque-cc1298b8da143bbe.rlib,source=/libcrossbeam_deque-cc1298b8da143bbe.rlib \
-##   --mount=from=out-c2e7f2fc3addf6be,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_epoch-c2e7f2fc3addf6be.rlib,source=/libcrossbeam_epoch-c2e7f2fc3addf6be.rlib \
-##   --mount=from=out-6b8c8ab37131cd0c,dst=/tmp/clis-gifski_1-34-0/release/deps/libthread_local-6b8c8ab37131cd0c.rlib,source=/libthread_local-6b8c8ab37131cd0c.rlib \
-##   --mount=from=out-e1f9b2ca981c3e9f,dst=/tmp/clis-gifski_1-34-0/release/deps/libcfg_if-e1f9b2ca981c3e9f.rlib,source=/libcfg_if-e1f9b2ca981c3e9f.rlib \
-##   --mount=from=out-c1608f7a6e4ba58d,dst=/tmp/clis-gifski_1-34-0/release/deps/liblodepng-c1608f7a6e4ba58d.rlib,source=/liblodepng-c1608f7a6e4ba58d.rlib \
-##   --mount=from=out-51c01ae8d7468fb2,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrc32fast-51c01ae8d7468fb2.rlib,source=/libcrc32fast-51c01ae8d7468fb2.rlib \
-##   --mount=from=out-92283f56cec7b441,dst=/tmp/clis-gifski_1-34-0/release/deps/libflate2-92283f56cec7b441.rlib,source=/libflate2-92283f56cec7b441.rlib \
-##   --mount=from=out-2a56889f8f4194b3,dst=/tmp/clis-gifski_1-34-0/release/deps/liblibz_rs_sys-2a56889f8f4194b3.rlib,source=/liblibz_rs_sys-2a56889f8f4194b3.rlib \
-##   --mount=from=out-1ce6de5e74c29a43,dst=/tmp/clis-gifski_1-34-0/release/deps/libzlib_rs-1ce6de5e74c29a43.rlib,source=/libzlib_rs-1ce6de5e74c29a43.rlib \
-##   --mount=from=out-3afb72ac1310d574,dst=/tmp/clis-gifski_1-34-0/release/deps/liblibc-3afb72ac1310d574.rlib,source=/liblibc-3afb72ac1310d574.rlib \
-##   --mount=from=out-4166f710ac396229,dst=/tmp/clis-gifski_1-34-0/release/deps/libloop9-4166f710ac396229.rlib,source=/libloop9-4166f710ac396229.rlib \
-##   --mount=from=out-dbbab79b50c30bb1,dst=/tmp/clis-gifski_1-34-0/release/deps/libnatord-dbbab79b50c30bb1.rlib,source=/libnatord-dbbab79b50c30bb1.rlib \
-##   --mount=from=out-53c0c58048ae59b2,dst=/tmp/clis-gifski_1-34-0/release/deps/libnum_traits-53c0c58048ae59b2.rlib,source=/libnum_traits-53c0c58048ae59b2.rlib \
-##   --mount=from=out-54801e684ac31c95,dst=/tmp/clis-gifski_1-34-0/release/deps/libautocfg-54801e684ac31c95.rlib,source=/libautocfg-54801e684ac31c95.rlib \
-##   --mount=from=out-d1042fb932b56ff4,dst=/tmp/clis-gifski_1-34-0/release/deps/libordered_channel-d1042fb932b56ff4.rlib,source=/libordered_channel-d1042fb932b56ff4.rlib \
-##   --mount=from=out-791a05c54d467a7f,dst=/tmp/clis-gifski_1-34-0/release/deps/libpbr-791a05c54d467a7f.rlib,source=/libpbr-791a05c54d467a7f.rlib \
-##   --mount=from=out-a6f6d4c5688e7cda,dst=/tmp/clis-gifski_1-34-0/release/deps/libquick_error-a6f6d4c5688e7cda.rlib,source=/libquick_error-a6f6d4c5688e7cda.rlib \
-##   --mount=from=out-925466e96a5b0042,dst=/tmp/clis-gifski_1-34-0/release/deps/libresize-925466e96a5b0042.rlib,source=/libresize-925466e96a5b0042.rlib \
-##   --mount=from=out-3fec38877dfe5eae,dst=/tmp/clis-gifski_1-34-0/release/deps/libwild-3fec38877dfe5eae.rlib,source=/libwild-3fec38877dfe5eae.rlib \
-##   --mount=from=out-88872ac441f60d2c,dst=/tmp/clis-gifski_1-34-0/release/deps/liby4m-88872ac441f60d2c.rlib,source=/liby4m-88872ac441f60d2c.rlib \
-##   --mount=from=out-9318e068e99f9028,dst=/tmp/clis-gifski_1-34-0/release/deps/libyuv-9318e068e99f9028.rlib,source=/libyuv-9318e068e99f9028.rlib \
+##   --mount=from=out-67f6ec320d9c110f,dst=/target/release/deps/libclap-67f6ec320d9c110f.rlib,source=/libclap-67f6ec320d9c110f.rlib \
+##   --mount=from=out-82004e3d29174042,dst=/target/release/deps/libclap_builder-82004e3d29174042.rlib,source=/libclap_builder-82004e3d29174042.rlib \
+##   --mount=from=out-14a190e9584fadc4,dst=/target/release/deps/libanstream-14a190e9584fadc4.rlib,source=/libanstream-14a190e9584fadc4.rlib \
+##   --mount=from=out-25158921b2975a45,dst=/target/release/deps/libanstyle-25158921b2975a45.rlib,source=/libanstyle-25158921b2975a45.rlib \
+##   --mount=from=out-3a154f05c18fe502,dst=/target/release/deps/libanstyle_parse-3a154f05c18fe502.rlib,source=/libanstyle_parse-3a154f05c18fe502.rlib \
+##   --mount=from=out-e99b4cd86d1b3d1a,dst=/target/release/deps/libutf8parse-e99b4cd86d1b3d1a.rlib,source=/libutf8parse-e99b4cd86d1b3d1a.rlib \
+##   --mount=from=out-f174fe24d94bb0d5,dst=/target/release/deps/libanstyle_query-f174fe24d94bb0d5.rlib,source=/libanstyle_query-f174fe24d94bb0d5.rlib \
+##   --mount=from=out-b0f9d0eb7e3c5228,dst=/target/release/deps/libcolorchoice-b0f9d0eb7e3c5228.rlib,source=/libcolorchoice-b0f9d0eb7e3c5228.rlib \
+##   --mount=from=out-08b147e17b2f127e,dst=/target/release/deps/libis_terminal_polyfill-08b147e17b2f127e.rlib,source=/libis_terminal_polyfill-08b147e17b2f127e.rlib \
+##   --mount=from=out-944acfd6f9571391,dst=/target/release/deps/libclap_lex-944acfd6f9571391.rlib,source=/libclap_lex-944acfd6f9571391.rlib \
+##   --mount=from=out-87be0482eaec7565,dst=/target/release/deps/libstrsim-87be0482eaec7565.rlib,source=/libstrsim-87be0482eaec7565.rlib \
+##   --mount=from=out-724af7b5f0e810c4,dst=/target/release/deps/libcrossbeam_channel-724af7b5f0e810c4.rlib,source=/libcrossbeam_channel-724af7b5f0e810c4.rlib \
+##   --mount=from=out-5ac36063ddf29a62,dst=/target/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rlib,source=/libcrossbeam_utils-5ac36063ddf29a62.rlib \
+##   --mount=from=out-00cc39e2b93187ae,dst=/target/release/deps/libdunce-00cc39e2b93187ae.rlib,source=/libdunce-00cc39e2b93187ae.rlib \
+##   --mount=from=out-6bb7dc2aa9596226,dst=/target/release/deps/libgif-6bb7dc2aa9596226.rlib,source=/libgif-6bb7dc2aa9596226.rlib \
+##   --mount=from=out-92ecf42010bb6640,dst=/target/release/deps/libweezl-92ecf42010bb6640.rlib,source=/libweezl-92ecf42010bb6640.rlib \
+##   --mount=from=out-a4fb05ba2aa05e69,dst=/target/release/deps/libgif_dispose-a4fb05ba2aa05e69.rlib,source=/libgif_dispose-a4fb05ba2aa05e69.rlib \
+##   --mount=from=out-deae4624c4370e95,dst=/target/release/deps/libimgref-deae4624c4370e95.rlib,source=/libimgref-deae4624c4370e95.rlib \
+##   --mount=from=out-b630417cd5f2024a,dst=/target/release/deps/librgb-b630417cd5f2024a.rlib,source=/librgb-b630417cd5f2024a.rlib \
+##   --mount=from=out-f0cdacabc0947b7b,dst=/target/release/deps/libbytemuck-f0cdacabc0947b7b.rlib,source=/libbytemuck-f0cdacabc0947b7b.rlib \
+##   --mount=from=out-13cdc94a2acbf464,dst=/target/release/deps/libimagequant-13cdc94a2acbf464.rlib,source=/libimagequant-13cdc94a2acbf464.rlib \
+##   --mount=from=out-9b55b30a1b85e195,dst=/target/release/deps/libarrayvec-9b55b30a1b85e195.rlib,source=/libarrayvec-9b55b30a1b85e195.rlib \
+##   --mount=from=out-0774a35541eb4e3b,dst=/target/release/deps/libonce_cell-0774a35541eb4e3b.rlib,source=/libonce_cell-0774a35541eb4e3b.rlib \
+##   --mount=from=out-53357b7dd9022303,dst=/target/release/deps/librayon-53357b7dd9022303.rlib,source=/librayon-53357b7dd9022303.rlib \
+##   --mount=from=out-64b2ef074583e2a3,dst=/target/release/deps/libeither-64b2ef074583e2a3.rlib,source=/libeither-64b2ef074583e2a3.rlib \
+##   --mount=from=out-efba4db9305abd55,dst=/target/release/deps/librayon_core-efba4db9305abd55.rlib,source=/librayon_core-efba4db9305abd55.rlib \
+##   --mount=from=out-cc1298b8da143bbe,dst=/target/release/deps/libcrossbeam_deque-cc1298b8da143bbe.rlib,source=/libcrossbeam_deque-cc1298b8da143bbe.rlib \
+##   --mount=from=out-c2e7f2fc3addf6be,dst=/target/release/deps/libcrossbeam_epoch-c2e7f2fc3addf6be.rlib,source=/libcrossbeam_epoch-c2e7f2fc3addf6be.rlib \
+##   --mount=from=out-6b8c8ab37131cd0c,dst=/target/release/deps/libthread_local-6b8c8ab37131cd0c.rlib,source=/libthread_local-6b8c8ab37131cd0c.rlib \
+##   --mount=from=out-e1f9b2ca981c3e9f,dst=/target/release/deps/libcfg_if-e1f9b2ca981c3e9f.rlib,source=/libcfg_if-e1f9b2ca981c3e9f.rlib \
+##   --mount=from=out-c1608f7a6e4ba58d,dst=/target/release/deps/liblodepng-c1608f7a6e4ba58d.rlib,source=/liblodepng-c1608f7a6e4ba58d.rlib \
+##   --mount=from=out-51c01ae8d7468fb2,dst=/target/release/deps/libcrc32fast-51c01ae8d7468fb2.rlib,source=/libcrc32fast-51c01ae8d7468fb2.rlib \
+##   --mount=from=out-92283f56cec7b441,dst=/target/release/deps/libflate2-92283f56cec7b441.rlib,source=/libflate2-92283f56cec7b441.rlib \
+##   --mount=from=out-2a56889f8f4194b3,dst=/target/release/deps/liblibz_rs_sys-2a56889f8f4194b3.rlib,source=/liblibz_rs_sys-2a56889f8f4194b3.rlib \
+##   --mount=from=out-1ce6de5e74c29a43,dst=/target/release/deps/libzlib_rs-1ce6de5e74c29a43.rlib,source=/libzlib_rs-1ce6de5e74c29a43.rlib \
+##   --mount=from=out-3afb72ac1310d574,dst=/target/release/deps/liblibc-3afb72ac1310d574.rlib,source=/liblibc-3afb72ac1310d574.rlib \
+##   --mount=from=out-4166f710ac396229,dst=/target/release/deps/libloop9-4166f710ac396229.rlib,source=/libloop9-4166f710ac396229.rlib \
+##   --mount=from=out-dbbab79b50c30bb1,dst=/target/release/deps/libnatord-dbbab79b50c30bb1.rlib,source=/libnatord-dbbab79b50c30bb1.rlib \
+##   --mount=from=out-53c0c58048ae59b2,dst=/target/release/deps/libnum_traits-53c0c58048ae59b2.rlib,source=/libnum_traits-53c0c58048ae59b2.rlib \
+##   --mount=from=out-54801e684ac31c95,dst=/target/release/deps/libautocfg-54801e684ac31c95.rlib,source=/libautocfg-54801e684ac31c95.rlib \
+##   --mount=from=out-d1042fb932b56ff4,dst=/target/release/deps/libordered_channel-d1042fb932b56ff4.rlib,source=/libordered_channel-d1042fb932b56ff4.rlib \
+##   --mount=from=out-791a05c54d467a7f,dst=/target/release/deps/libpbr-791a05c54d467a7f.rlib,source=/libpbr-791a05c54d467a7f.rlib \
+##   --mount=from=out-a6f6d4c5688e7cda,dst=/target/release/deps/libquick_error-a6f6d4c5688e7cda.rlib,source=/libquick_error-a6f6d4c5688e7cda.rlib \
+##   --mount=from=out-925466e96a5b0042,dst=/target/release/deps/libresize-925466e96a5b0042.rlib,source=/libresize-925466e96a5b0042.rlib \
+##   --mount=from=out-3fec38877dfe5eae,dst=/target/release/deps/libwild-3fec38877dfe5eae.rlib,source=/libwild-3fec38877dfe5eae.rlib \
+##   --mount=from=out-88872ac441f60d2c,dst=/target/release/deps/liby4m-88872ac441f60d2c.rlib,source=/liby4m-88872ac441f60d2c.rlib \
+##   --mount=from=out-9318e068e99f9028,dst=/target/release/deps/libyuv-9318e068e99f9028.rlib,source=/libyuv-9318e068e99f9028.rlib \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=gifski \
 ##         CARGO_INCREMENTAL=0 \
@@ -8345,11 +8345,11 @@ COPY --link --from=dep-n-gifski-1.34.0-b9aa6f1c171c6150 /tmp/clis-gifski_1-34-0/
 ##         CARGO_PRIMARY_PACKAGE=1 \
 ##         CARGO_SBOM_PATH= \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name gifski --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --crate-type staticlib --crate-type cdylib --emit dep-info,link -C opt-level'=3' -C panic'=abort' --cfg feature'="binary"' --cfg feature'="default"' --cfg feature'="gifsicle"' --cfg feature'="pbr"' --cfg feature'="png"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("binary", "capi", "default", "gifsicle", "pbr", "png", "video", "video-prebuilt-static", "video-static"))' -C metadata'=0994c85d487f5f3b' -C extra-filename'=-b9aa6f1c171c6150' --out-dir /tmp/clis-gifski_1-34-0/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --extern clap'=/tmp/clis-gifski_1-34-0/release/deps/libclap-67f6ec320d9c110f.rlib' --extern crossbeam_channel'=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_channel-724af7b5f0e810c4.rlib' --extern crossbeam_utils'=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rlib' --extern dunce'=/tmp/clis-gifski_1-34-0/release/deps/libdunce-00cc39e2b93187ae.rlib' --extern gif'=/tmp/clis-gifski_1-34-0/release/deps/libgif-6bb7dc2aa9596226.rlib' --extern gif_dispose'=/tmp/clis-gifski_1-34-0/release/deps/libgif_dispose-a4fb05ba2aa05e69.rlib' --extern imagequant'=/tmp/clis-gifski_1-34-0/release/deps/libimagequant-13cdc94a2acbf464.rlib' --extern imgref'=/tmp/clis-gifski_1-34-0/release/deps/libimgref-deae4624c4370e95.rlib' --extern lodepng'=/tmp/clis-gifski_1-34-0/release/deps/liblodepng-c1608f7a6e4ba58d.rlib' --extern loop9'=/tmp/clis-gifski_1-34-0/release/deps/libloop9-4166f710ac396229.rlib' --extern natord'=/tmp/clis-gifski_1-34-0/release/deps/libnatord-dbbab79b50c30bb1.rlib' --extern num_traits'=/tmp/clis-gifski_1-34-0/release/deps/libnum_traits-53c0c58048ae59b2.rlib' --extern ordered_channel'=/tmp/clis-gifski_1-34-0/release/deps/libordered_channel-d1042fb932b56ff4.rlib' --extern pbr'=/tmp/clis-gifski_1-34-0/release/deps/libpbr-791a05c54d467a7f.rlib' --extern quick_error'=/tmp/clis-gifski_1-34-0/release/deps/libquick_error-a6f6d4c5688e7cda.rlib' --extern resize'=/tmp/clis-gifski_1-34-0/release/deps/libresize-925466e96a5b0042.rlib' --extern rgb'=/tmp/clis-gifski_1-34-0/release/deps/librgb-b630417cd5f2024a.rlib' --extern wild'=/tmp/clis-gifski_1-34-0/release/deps/libwild-3fec38877dfe5eae.rlib' --extern y4m'=/tmp/clis-gifski_1-34-0/release/deps/liby4m-88872ac441f60d2c.rlib' --extern yuv'=/tmp/clis-gifski_1-34-0/release/deps/libyuv-9318e068e99f9028.rlib' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/gifski-1.34.0/src/lib.rs \
-##         1>          /tmp/clis-gifski_1-34-0/release/deps/out-b9aa6f1c171c6150-stdout \
-##         2>          /tmp/clis-gifski_1-34-0/release/deps/out-b9aa6f1c171c6150-stderr \
-##         || echo $? >/tmp/clis-gifski_1-34-0/release/deps/out-b9aa6f1c171c6150-errcode\
-##   ; find /tmp/clis-gifski_1-34-0/release/deps/*-b9aa6f1c171c6150* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name gifski --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --crate-type staticlib --crate-type cdylib --emit dep-info,link -C opt-level'=3' -C panic'=abort' --cfg feature'="binary"' --cfg feature'="default"' --cfg feature'="gifsicle"' --cfg feature'="pbr"' --cfg feature'="png"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("binary", "capi", "default", "gifsicle", "pbr", "png", "video", "video-prebuilt-static", "video-static"))' -C metadata'=0994c85d487f5f3b' -C extra-filename'=-b9aa6f1c171c6150' --out-dir /target/release/deps -C strip'=symbols' -L dependency'=/target/release/deps' --extern clap'=/target/release/deps/libclap-67f6ec320d9c110f.rlib' --extern crossbeam_channel'=/target/release/deps/libcrossbeam_channel-724af7b5f0e810c4.rlib' --extern crossbeam_utils'=/target/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rlib' --extern dunce'=/target/release/deps/libdunce-00cc39e2b93187ae.rlib' --extern gif'=/target/release/deps/libgif-6bb7dc2aa9596226.rlib' --extern gif_dispose'=/target/release/deps/libgif_dispose-a4fb05ba2aa05e69.rlib' --extern imagequant'=/target/release/deps/libimagequant-13cdc94a2acbf464.rlib' --extern imgref'=/target/release/deps/libimgref-deae4624c4370e95.rlib' --extern lodepng'=/target/release/deps/liblodepng-c1608f7a6e4ba58d.rlib' --extern loop9'=/target/release/deps/libloop9-4166f710ac396229.rlib' --extern natord'=/target/release/deps/libnatord-dbbab79b50c30bb1.rlib' --extern num_traits'=/target/release/deps/libnum_traits-53c0c58048ae59b2.rlib' --extern ordered_channel'=/target/release/deps/libordered_channel-d1042fb932b56ff4.rlib' --extern pbr'=/target/release/deps/libpbr-791a05c54d467a7f.rlib' --extern quick_error'=/target/release/deps/libquick_error-a6f6d4c5688e7cda.rlib' --extern resize'=/target/release/deps/libresize-925466e96a5b0042.rlib' --extern rgb'=/target/release/deps/librgb-b630417cd5f2024a.rlib' --extern wild'=/target/release/deps/libwild-3fec38877dfe5eae.rlib' --extern y4m'=/target/release/deps/liby4m-88872ac441f60d2c.rlib' --extern yuv'=/target/release/deps/libyuv-9318e068e99f9028.rlib' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/gifski-1.34.0/src/lib.rs \
+##         1>          /target/release/deps/out-b9aa6f1c171c6150-stdout \
+##         2>          /target/release/deps/out-b9aa6f1c171c6150-stderr \
+##         || echo $? >/target/release/deps/out-b9aa6f1c171c6150-errcode\
+##   ; find /target/release/deps/*-b9aa6f1c171c6150* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -8357,64 +8357,64 @@ COPY --link --from=dep-n-gifski-1.34.0-b9aa6f1c171c6150 /tmp/clis-gifski_1-34-0/
 ## stage = "out-b9aa6f1c171c6150"
 ## script = """
 ## FROM scratch AS out-b9aa6f1c171c6150
-## COPY --link --from=dep-n-gifski-1.34.0-b9aa6f1c171c6150 /tmp/clis-gifski_1-34-0/release/deps/*-b9aa6f1c171c6150* /"""
+## COPY --link --from=dep-n-gifski-1.34.0-b9aa6f1c171c6150 /target/release/deps/*-b9aa6f1c171c6150* /"""
 
 
 FROM rust-base AS dep-n-gifski-1.34.0-2e47a233552ee146
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/clis-gifski_1-34-0/release/deps
+WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-gifski-1.34.0,source=/gifski-1.34.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/gifski-1.34.0 \
-  --mount=from=out-67f6ec320d9c110f,dst=/tmp/clis-gifski_1-34-0/release/deps/libclap-67f6ec320d9c110f.rlib,source=/libclap-67f6ec320d9c110f.rlib \
-  --mount=from=out-82004e3d29174042,dst=/tmp/clis-gifski_1-34-0/release/deps/libclap_builder-82004e3d29174042.rlib,source=/libclap_builder-82004e3d29174042.rlib \
-  --mount=from=out-14a190e9584fadc4,dst=/tmp/clis-gifski_1-34-0/release/deps/libanstream-14a190e9584fadc4.rlib,source=/libanstream-14a190e9584fadc4.rlib \
-  --mount=from=out-25158921b2975a45,dst=/tmp/clis-gifski_1-34-0/release/deps/libanstyle-25158921b2975a45.rlib,source=/libanstyle-25158921b2975a45.rlib \
-  --mount=from=out-3a154f05c18fe502,dst=/tmp/clis-gifski_1-34-0/release/deps/libanstyle_parse-3a154f05c18fe502.rlib,source=/libanstyle_parse-3a154f05c18fe502.rlib \
-  --mount=from=out-e99b4cd86d1b3d1a,dst=/tmp/clis-gifski_1-34-0/release/deps/libutf8parse-e99b4cd86d1b3d1a.rlib,source=/libutf8parse-e99b4cd86d1b3d1a.rlib \
-  --mount=from=out-f174fe24d94bb0d5,dst=/tmp/clis-gifski_1-34-0/release/deps/libanstyle_query-f174fe24d94bb0d5.rlib,source=/libanstyle_query-f174fe24d94bb0d5.rlib \
-  --mount=from=out-b0f9d0eb7e3c5228,dst=/tmp/clis-gifski_1-34-0/release/deps/libcolorchoice-b0f9d0eb7e3c5228.rlib,source=/libcolorchoice-b0f9d0eb7e3c5228.rlib \
-  --mount=from=out-08b147e17b2f127e,dst=/tmp/clis-gifski_1-34-0/release/deps/libis_terminal_polyfill-08b147e17b2f127e.rlib,source=/libis_terminal_polyfill-08b147e17b2f127e.rlib \
-  --mount=from=out-944acfd6f9571391,dst=/tmp/clis-gifski_1-34-0/release/deps/libclap_lex-944acfd6f9571391.rlib,source=/libclap_lex-944acfd6f9571391.rlib \
-  --mount=from=out-87be0482eaec7565,dst=/tmp/clis-gifski_1-34-0/release/deps/libstrsim-87be0482eaec7565.rlib,source=/libstrsim-87be0482eaec7565.rlib \
-  --mount=from=out-724af7b5f0e810c4,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_channel-724af7b5f0e810c4.rlib,source=/libcrossbeam_channel-724af7b5f0e810c4.rlib \
-  --mount=from=out-5ac36063ddf29a62,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rlib,source=/libcrossbeam_utils-5ac36063ddf29a62.rlib \
-  --mount=from=out-00cc39e2b93187ae,dst=/tmp/clis-gifski_1-34-0/release/deps/libdunce-00cc39e2b93187ae.rlib,source=/libdunce-00cc39e2b93187ae.rlib \
-  --mount=from=out-6bb7dc2aa9596226,dst=/tmp/clis-gifski_1-34-0/release/deps/libgif-6bb7dc2aa9596226.rlib,source=/libgif-6bb7dc2aa9596226.rlib \
-  --mount=from=out-92ecf42010bb6640,dst=/tmp/clis-gifski_1-34-0/release/deps/libweezl-92ecf42010bb6640.rlib,source=/libweezl-92ecf42010bb6640.rlib \
-  --mount=from=out-a4fb05ba2aa05e69,dst=/tmp/clis-gifski_1-34-0/release/deps/libgif_dispose-a4fb05ba2aa05e69.rlib,source=/libgif_dispose-a4fb05ba2aa05e69.rlib \
-  --mount=from=out-deae4624c4370e95,dst=/tmp/clis-gifski_1-34-0/release/deps/libimgref-deae4624c4370e95.rlib,source=/libimgref-deae4624c4370e95.rlib \
-  --mount=from=out-b630417cd5f2024a,dst=/tmp/clis-gifski_1-34-0/release/deps/librgb-b630417cd5f2024a.rlib,source=/librgb-b630417cd5f2024a.rlib \
-  --mount=from=out-f0cdacabc0947b7b,dst=/tmp/clis-gifski_1-34-0/release/deps/libbytemuck-f0cdacabc0947b7b.rlib,source=/libbytemuck-f0cdacabc0947b7b.rlib \
-  --mount=from=out-b9aa6f1c171c6150,dst=/tmp/clis-gifski_1-34-0/release/deps/libgifski-b9aa6f1c171c6150.a,source=/libgifski-b9aa6f1c171c6150.a \
-  --mount=from=out-b9aa6f1c171c6150,dst=/tmp/clis-gifski_1-34-0/release/deps/libgifski-b9aa6f1c171c6150.rlib,source=/libgifski-b9aa6f1c171c6150.rlib \
-  --mount=from=out-b9aa6f1c171c6150,dst=/tmp/clis-gifski_1-34-0/release/deps/libgifski-b9aa6f1c171c6150.so,source=/libgifski-b9aa6f1c171c6150.so \
-  --mount=from=out-13cdc94a2acbf464,dst=/tmp/clis-gifski_1-34-0/release/deps/libimagequant-13cdc94a2acbf464.rlib,source=/libimagequant-13cdc94a2acbf464.rlib \
-  --mount=from=out-9b55b30a1b85e195,dst=/tmp/clis-gifski_1-34-0/release/deps/libarrayvec-9b55b30a1b85e195.rlib,source=/libarrayvec-9b55b30a1b85e195.rlib \
-  --mount=from=out-0774a35541eb4e3b,dst=/tmp/clis-gifski_1-34-0/release/deps/libonce_cell-0774a35541eb4e3b.rlib,source=/libonce_cell-0774a35541eb4e3b.rlib \
-  --mount=from=out-53357b7dd9022303,dst=/tmp/clis-gifski_1-34-0/release/deps/librayon-53357b7dd9022303.rlib,source=/librayon-53357b7dd9022303.rlib \
-  --mount=from=out-64b2ef074583e2a3,dst=/tmp/clis-gifski_1-34-0/release/deps/libeither-64b2ef074583e2a3.rlib,source=/libeither-64b2ef074583e2a3.rlib \
-  --mount=from=out-efba4db9305abd55,dst=/tmp/clis-gifski_1-34-0/release/deps/librayon_core-efba4db9305abd55.rlib,source=/librayon_core-efba4db9305abd55.rlib \
-  --mount=from=out-cc1298b8da143bbe,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_deque-cc1298b8da143bbe.rlib,source=/libcrossbeam_deque-cc1298b8da143bbe.rlib \
-  --mount=from=out-c2e7f2fc3addf6be,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_epoch-c2e7f2fc3addf6be.rlib,source=/libcrossbeam_epoch-c2e7f2fc3addf6be.rlib \
-  --mount=from=out-6b8c8ab37131cd0c,dst=/tmp/clis-gifski_1-34-0/release/deps/libthread_local-6b8c8ab37131cd0c.rlib,source=/libthread_local-6b8c8ab37131cd0c.rlib \
-  --mount=from=out-e1f9b2ca981c3e9f,dst=/tmp/clis-gifski_1-34-0/release/deps/libcfg_if-e1f9b2ca981c3e9f.rlib,source=/libcfg_if-e1f9b2ca981c3e9f.rlib \
-  --mount=from=out-c1608f7a6e4ba58d,dst=/tmp/clis-gifski_1-34-0/release/deps/liblodepng-c1608f7a6e4ba58d.rlib,source=/liblodepng-c1608f7a6e4ba58d.rlib \
-  --mount=from=out-51c01ae8d7468fb2,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrc32fast-51c01ae8d7468fb2.rlib,source=/libcrc32fast-51c01ae8d7468fb2.rlib \
-  --mount=from=out-92283f56cec7b441,dst=/tmp/clis-gifski_1-34-0/release/deps/libflate2-92283f56cec7b441.rlib,source=/libflate2-92283f56cec7b441.rlib \
-  --mount=from=out-2a56889f8f4194b3,dst=/tmp/clis-gifski_1-34-0/release/deps/liblibz_rs_sys-2a56889f8f4194b3.rlib,source=/liblibz_rs_sys-2a56889f8f4194b3.rlib \
-  --mount=from=out-1ce6de5e74c29a43,dst=/tmp/clis-gifski_1-34-0/release/deps/libzlib_rs-1ce6de5e74c29a43.rlib,source=/libzlib_rs-1ce6de5e74c29a43.rlib \
-  --mount=from=out-3afb72ac1310d574,dst=/tmp/clis-gifski_1-34-0/release/deps/liblibc-3afb72ac1310d574.rlib,source=/liblibc-3afb72ac1310d574.rlib \
-  --mount=from=out-4166f710ac396229,dst=/tmp/clis-gifski_1-34-0/release/deps/libloop9-4166f710ac396229.rlib,source=/libloop9-4166f710ac396229.rlib \
-  --mount=from=out-dbbab79b50c30bb1,dst=/tmp/clis-gifski_1-34-0/release/deps/libnatord-dbbab79b50c30bb1.rlib,source=/libnatord-dbbab79b50c30bb1.rlib \
-  --mount=from=out-53c0c58048ae59b2,dst=/tmp/clis-gifski_1-34-0/release/deps/libnum_traits-53c0c58048ae59b2.rlib,source=/libnum_traits-53c0c58048ae59b2.rlib \
-  --mount=from=out-54801e684ac31c95,dst=/tmp/clis-gifski_1-34-0/release/deps/libautocfg-54801e684ac31c95.rlib,source=/libautocfg-54801e684ac31c95.rlib \
-  --mount=from=out-d1042fb932b56ff4,dst=/tmp/clis-gifski_1-34-0/release/deps/libordered_channel-d1042fb932b56ff4.rlib,source=/libordered_channel-d1042fb932b56ff4.rlib \
-  --mount=from=out-791a05c54d467a7f,dst=/tmp/clis-gifski_1-34-0/release/deps/libpbr-791a05c54d467a7f.rlib,source=/libpbr-791a05c54d467a7f.rlib \
-  --mount=from=out-a6f6d4c5688e7cda,dst=/tmp/clis-gifski_1-34-0/release/deps/libquick_error-a6f6d4c5688e7cda.rlib,source=/libquick_error-a6f6d4c5688e7cda.rlib \
-  --mount=from=out-925466e96a5b0042,dst=/tmp/clis-gifski_1-34-0/release/deps/libresize-925466e96a5b0042.rlib,source=/libresize-925466e96a5b0042.rlib \
-  --mount=from=out-3fec38877dfe5eae,dst=/tmp/clis-gifski_1-34-0/release/deps/libwild-3fec38877dfe5eae.rlib,source=/libwild-3fec38877dfe5eae.rlib \
-  --mount=from=out-88872ac441f60d2c,dst=/tmp/clis-gifski_1-34-0/release/deps/liby4m-88872ac441f60d2c.rlib,source=/liby4m-88872ac441f60d2c.rlib \
-  --mount=from=out-9318e068e99f9028,dst=/tmp/clis-gifski_1-34-0/release/deps/libyuv-9318e068e99f9028.rlib,source=/libyuv-9318e068e99f9028.rlib \
+  --mount=from=out-67f6ec320d9c110f,dst=/target/release/deps/libclap-67f6ec320d9c110f.rlib,source=/libclap-67f6ec320d9c110f.rlib \
+  --mount=from=out-82004e3d29174042,dst=/target/release/deps/libclap_builder-82004e3d29174042.rlib,source=/libclap_builder-82004e3d29174042.rlib \
+  --mount=from=out-14a190e9584fadc4,dst=/target/release/deps/libanstream-14a190e9584fadc4.rlib,source=/libanstream-14a190e9584fadc4.rlib \
+  --mount=from=out-25158921b2975a45,dst=/target/release/deps/libanstyle-25158921b2975a45.rlib,source=/libanstyle-25158921b2975a45.rlib \
+  --mount=from=out-3a154f05c18fe502,dst=/target/release/deps/libanstyle_parse-3a154f05c18fe502.rlib,source=/libanstyle_parse-3a154f05c18fe502.rlib \
+  --mount=from=out-e99b4cd86d1b3d1a,dst=/target/release/deps/libutf8parse-e99b4cd86d1b3d1a.rlib,source=/libutf8parse-e99b4cd86d1b3d1a.rlib \
+  --mount=from=out-f174fe24d94bb0d5,dst=/target/release/deps/libanstyle_query-f174fe24d94bb0d5.rlib,source=/libanstyle_query-f174fe24d94bb0d5.rlib \
+  --mount=from=out-b0f9d0eb7e3c5228,dst=/target/release/deps/libcolorchoice-b0f9d0eb7e3c5228.rlib,source=/libcolorchoice-b0f9d0eb7e3c5228.rlib \
+  --mount=from=out-08b147e17b2f127e,dst=/target/release/deps/libis_terminal_polyfill-08b147e17b2f127e.rlib,source=/libis_terminal_polyfill-08b147e17b2f127e.rlib \
+  --mount=from=out-944acfd6f9571391,dst=/target/release/deps/libclap_lex-944acfd6f9571391.rlib,source=/libclap_lex-944acfd6f9571391.rlib \
+  --mount=from=out-87be0482eaec7565,dst=/target/release/deps/libstrsim-87be0482eaec7565.rlib,source=/libstrsim-87be0482eaec7565.rlib \
+  --mount=from=out-724af7b5f0e810c4,dst=/target/release/deps/libcrossbeam_channel-724af7b5f0e810c4.rlib,source=/libcrossbeam_channel-724af7b5f0e810c4.rlib \
+  --mount=from=out-5ac36063ddf29a62,dst=/target/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rlib,source=/libcrossbeam_utils-5ac36063ddf29a62.rlib \
+  --mount=from=out-00cc39e2b93187ae,dst=/target/release/deps/libdunce-00cc39e2b93187ae.rlib,source=/libdunce-00cc39e2b93187ae.rlib \
+  --mount=from=out-6bb7dc2aa9596226,dst=/target/release/deps/libgif-6bb7dc2aa9596226.rlib,source=/libgif-6bb7dc2aa9596226.rlib \
+  --mount=from=out-92ecf42010bb6640,dst=/target/release/deps/libweezl-92ecf42010bb6640.rlib,source=/libweezl-92ecf42010bb6640.rlib \
+  --mount=from=out-a4fb05ba2aa05e69,dst=/target/release/deps/libgif_dispose-a4fb05ba2aa05e69.rlib,source=/libgif_dispose-a4fb05ba2aa05e69.rlib \
+  --mount=from=out-deae4624c4370e95,dst=/target/release/deps/libimgref-deae4624c4370e95.rlib,source=/libimgref-deae4624c4370e95.rlib \
+  --mount=from=out-b630417cd5f2024a,dst=/target/release/deps/librgb-b630417cd5f2024a.rlib,source=/librgb-b630417cd5f2024a.rlib \
+  --mount=from=out-f0cdacabc0947b7b,dst=/target/release/deps/libbytemuck-f0cdacabc0947b7b.rlib,source=/libbytemuck-f0cdacabc0947b7b.rlib \
+  --mount=from=out-b9aa6f1c171c6150,dst=/target/release/deps/libgifski-b9aa6f1c171c6150.a,source=/libgifski-b9aa6f1c171c6150.a \
+  --mount=from=out-b9aa6f1c171c6150,dst=/target/release/deps/libgifski-b9aa6f1c171c6150.rlib,source=/libgifski-b9aa6f1c171c6150.rlib \
+  --mount=from=out-b9aa6f1c171c6150,dst=/target/release/deps/libgifski-b9aa6f1c171c6150.so,source=/libgifski-b9aa6f1c171c6150.so \
+  --mount=from=out-13cdc94a2acbf464,dst=/target/release/deps/libimagequant-13cdc94a2acbf464.rlib,source=/libimagequant-13cdc94a2acbf464.rlib \
+  --mount=from=out-9b55b30a1b85e195,dst=/target/release/deps/libarrayvec-9b55b30a1b85e195.rlib,source=/libarrayvec-9b55b30a1b85e195.rlib \
+  --mount=from=out-0774a35541eb4e3b,dst=/target/release/deps/libonce_cell-0774a35541eb4e3b.rlib,source=/libonce_cell-0774a35541eb4e3b.rlib \
+  --mount=from=out-53357b7dd9022303,dst=/target/release/deps/librayon-53357b7dd9022303.rlib,source=/librayon-53357b7dd9022303.rlib \
+  --mount=from=out-64b2ef074583e2a3,dst=/target/release/deps/libeither-64b2ef074583e2a3.rlib,source=/libeither-64b2ef074583e2a3.rlib \
+  --mount=from=out-efba4db9305abd55,dst=/target/release/deps/librayon_core-efba4db9305abd55.rlib,source=/librayon_core-efba4db9305abd55.rlib \
+  --mount=from=out-cc1298b8da143bbe,dst=/target/release/deps/libcrossbeam_deque-cc1298b8da143bbe.rlib,source=/libcrossbeam_deque-cc1298b8da143bbe.rlib \
+  --mount=from=out-c2e7f2fc3addf6be,dst=/target/release/deps/libcrossbeam_epoch-c2e7f2fc3addf6be.rlib,source=/libcrossbeam_epoch-c2e7f2fc3addf6be.rlib \
+  --mount=from=out-6b8c8ab37131cd0c,dst=/target/release/deps/libthread_local-6b8c8ab37131cd0c.rlib,source=/libthread_local-6b8c8ab37131cd0c.rlib \
+  --mount=from=out-e1f9b2ca981c3e9f,dst=/target/release/deps/libcfg_if-e1f9b2ca981c3e9f.rlib,source=/libcfg_if-e1f9b2ca981c3e9f.rlib \
+  --mount=from=out-c1608f7a6e4ba58d,dst=/target/release/deps/liblodepng-c1608f7a6e4ba58d.rlib,source=/liblodepng-c1608f7a6e4ba58d.rlib \
+  --mount=from=out-51c01ae8d7468fb2,dst=/target/release/deps/libcrc32fast-51c01ae8d7468fb2.rlib,source=/libcrc32fast-51c01ae8d7468fb2.rlib \
+  --mount=from=out-92283f56cec7b441,dst=/target/release/deps/libflate2-92283f56cec7b441.rlib,source=/libflate2-92283f56cec7b441.rlib \
+  --mount=from=out-2a56889f8f4194b3,dst=/target/release/deps/liblibz_rs_sys-2a56889f8f4194b3.rlib,source=/liblibz_rs_sys-2a56889f8f4194b3.rlib \
+  --mount=from=out-1ce6de5e74c29a43,dst=/target/release/deps/libzlib_rs-1ce6de5e74c29a43.rlib,source=/libzlib_rs-1ce6de5e74c29a43.rlib \
+  --mount=from=out-3afb72ac1310d574,dst=/target/release/deps/liblibc-3afb72ac1310d574.rlib,source=/liblibc-3afb72ac1310d574.rlib \
+  --mount=from=out-4166f710ac396229,dst=/target/release/deps/libloop9-4166f710ac396229.rlib,source=/libloop9-4166f710ac396229.rlib \
+  --mount=from=out-dbbab79b50c30bb1,dst=/target/release/deps/libnatord-dbbab79b50c30bb1.rlib,source=/libnatord-dbbab79b50c30bb1.rlib \
+  --mount=from=out-53c0c58048ae59b2,dst=/target/release/deps/libnum_traits-53c0c58048ae59b2.rlib,source=/libnum_traits-53c0c58048ae59b2.rlib \
+  --mount=from=out-54801e684ac31c95,dst=/target/release/deps/libautocfg-54801e684ac31c95.rlib,source=/libautocfg-54801e684ac31c95.rlib \
+  --mount=from=out-d1042fb932b56ff4,dst=/target/release/deps/libordered_channel-d1042fb932b56ff4.rlib,source=/libordered_channel-d1042fb932b56ff4.rlib \
+  --mount=from=out-791a05c54d467a7f,dst=/target/release/deps/libpbr-791a05c54d467a7f.rlib,source=/libpbr-791a05c54d467a7f.rlib \
+  --mount=from=out-a6f6d4c5688e7cda,dst=/target/release/deps/libquick_error-a6f6d4c5688e7cda.rlib,source=/libquick_error-a6f6d4c5688e7cda.rlib \
+  --mount=from=out-925466e96a5b0042,dst=/target/release/deps/libresize-925466e96a5b0042.rlib,source=/libresize-925466e96a5b0042.rlib \
+  --mount=from=out-3fec38877dfe5eae,dst=/target/release/deps/libwild-3fec38877dfe5eae.rlib,source=/libwild-3fec38877dfe5eae.rlib \
+  --mount=from=out-88872ac441f60d2c,dst=/target/release/deps/liby4m-88872ac441f60d2c.rlib,source=/liby4m-88872ac441f60d2c.rlib \
+  --mount=from=out-9318e068e99f9028,dst=/target/release/deps/libyuv-9318e068e99f9028.rlib,source=/libyuv-9318e068e99f9028.rlib \
     env CARGO="$(which cargo)" \
         CARGO_BIN_NAME=gifski \
         CARGO_CRATE_NAME=gifski \
@@ -8438,13 +8438,13 @@ RUN \
         CARGO_PRIMARY_PACKAGE=1 \
         CARGO_SBOM_PATH= \
         CARGOGREEN=1 \
-      rustc --crate-name gifski --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C opt-level'=3' -C panic'=abort' -C lto --cfg feature'="binary"' --cfg feature'="default"' --cfg feature'="gifsicle"' --cfg feature'="pbr"' --cfg feature'="png"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("binary", "capi", "default", "gifsicle", "pbr", "png", "video", "video-prebuilt-static", "video-static"))' -C metadata'=037b104b5585d09b' -C extra-filename'=-2e47a233552ee146' --out-dir /tmp/clis-gifski_1-34-0/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --extern clap'=/tmp/clis-gifski_1-34-0/release/deps/libclap-67f6ec320d9c110f.rlib' --extern crossbeam_channel'=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_channel-724af7b5f0e810c4.rlib' --extern crossbeam_utils'=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rlib' --extern dunce'=/tmp/clis-gifski_1-34-0/release/deps/libdunce-00cc39e2b93187ae.rlib' --extern gif'=/tmp/clis-gifski_1-34-0/release/deps/libgif-6bb7dc2aa9596226.rlib' --extern gif_dispose'=/tmp/clis-gifski_1-34-0/release/deps/libgif_dispose-a4fb05ba2aa05e69.rlib' --extern gifski'=/tmp/clis-gifski_1-34-0/release/deps/libgifski-b9aa6f1c171c6150.rlib' --extern imagequant'=/tmp/clis-gifski_1-34-0/release/deps/libimagequant-13cdc94a2acbf464.rlib' --extern imgref'=/tmp/clis-gifski_1-34-0/release/deps/libimgref-deae4624c4370e95.rlib' --extern lodepng'=/tmp/clis-gifski_1-34-0/release/deps/liblodepng-c1608f7a6e4ba58d.rlib' --extern loop9'=/tmp/clis-gifski_1-34-0/release/deps/libloop9-4166f710ac396229.rlib' --extern natord'=/tmp/clis-gifski_1-34-0/release/deps/libnatord-dbbab79b50c30bb1.rlib' --extern num_traits'=/tmp/clis-gifski_1-34-0/release/deps/libnum_traits-53c0c58048ae59b2.rlib' --extern ordered_channel'=/tmp/clis-gifski_1-34-0/release/deps/libordered_channel-d1042fb932b56ff4.rlib' --extern pbr'=/tmp/clis-gifski_1-34-0/release/deps/libpbr-791a05c54d467a7f.rlib' --extern quick_error'=/tmp/clis-gifski_1-34-0/release/deps/libquick_error-a6f6d4c5688e7cda.rlib' --extern resize'=/tmp/clis-gifski_1-34-0/release/deps/libresize-925466e96a5b0042.rlib' --extern rgb'=/tmp/clis-gifski_1-34-0/release/deps/librgb-b630417cd5f2024a.rlib' --extern wild'=/tmp/clis-gifski_1-34-0/release/deps/libwild-3fec38877dfe5eae.rlib' --extern y4m'=/tmp/clis-gifski_1-34-0/release/deps/liby4m-88872ac441f60d2c.rlib' --extern yuv'=/tmp/clis-gifski_1-34-0/release/deps/libyuv-9318e068e99f9028.rlib' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/gifski-1.34.0/src/bin/gifski.rs \
-        1>          /tmp/clis-gifski_1-34-0/release/deps/out-2e47a233552ee146-stdout \
-        2>          /tmp/clis-gifski_1-34-0/release/deps/out-2e47a233552ee146-stderr \
-        || echo $? >/tmp/clis-gifski_1-34-0/release/deps/out-2e47a233552ee146-errcode\
-  ; find /tmp/clis-gifski_1-34-0/release/deps/*-2e47a233552ee146* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+      rustc --crate-name gifski --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C opt-level'=3' -C panic'=abort' -C lto --cfg feature'="binary"' --cfg feature'="default"' --cfg feature'="gifsicle"' --cfg feature'="pbr"' --cfg feature'="png"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("binary", "capi", "default", "gifsicle", "pbr", "png", "video", "video-prebuilt-static", "video-static"))' -C metadata'=037b104b5585d09b' -C extra-filename'=-2e47a233552ee146' --out-dir /target/release/deps -C strip'=symbols' -L dependency'=/target/release/deps' --extern clap'=/target/release/deps/libclap-67f6ec320d9c110f.rlib' --extern crossbeam_channel'=/target/release/deps/libcrossbeam_channel-724af7b5f0e810c4.rlib' --extern crossbeam_utils'=/target/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rlib' --extern dunce'=/target/release/deps/libdunce-00cc39e2b93187ae.rlib' --extern gif'=/target/release/deps/libgif-6bb7dc2aa9596226.rlib' --extern gif_dispose'=/target/release/deps/libgif_dispose-a4fb05ba2aa05e69.rlib' --extern gifski'=/target/release/deps/libgifski-b9aa6f1c171c6150.rlib' --extern imagequant'=/target/release/deps/libimagequant-13cdc94a2acbf464.rlib' --extern imgref'=/target/release/deps/libimgref-deae4624c4370e95.rlib' --extern lodepng'=/target/release/deps/liblodepng-c1608f7a6e4ba58d.rlib' --extern loop9'=/target/release/deps/libloop9-4166f710ac396229.rlib' --extern natord'=/target/release/deps/libnatord-dbbab79b50c30bb1.rlib' --extern num_traits'=/target/release/deps/libnum_traits-53c0c58048ae59b2.rlib' --extern ordered_channel'=/target/release/deps/libordered_channel-d1042fb932b56ff4.rlib' --extern pbr'=/target/release/deps/libpbr-791a05c54d467a7f.rlib' --extern quick_error'=/target/release/deps/libquick_error-a6f6d4c5688e7cda.rlib' --extern resize'=/target/release/deps/libresize-925466e96a5b0042.rlib' --extern rgb'=/target/release/deps/librgb-b630417cd5f2024a.rlib' --extern wild'=/target/release/deps/libwild-3fec38877dfe5eae.rlib' --extern y4m'=/target/release/deps/liby4m-88872ac441f60d2c.rlib' --extern yuv'=/target/release/deps/libyuv-9318e068e99f9028.rlib' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/gifski-1.34.0/src/bin/gifski.rs \
+        1>          /target/release/deps/out-2e47a233552ee146-stdout \
+        2>          /target/release/deps/out-2e47a233552ee146-stderr \
+        || echo $? >/target/release/deps/out-2e47a233552ee146-errcode\
+  ; find /target/release/deps/*-2e47a233552ee146* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-2e47a233552ee146
-COPY --link --from=dep-n-gifski-1.34.0-2e47a233552ee146 /tmp/clis-gifski_1-34-0/release/deps/*-2e47a233552ee146* /
+COPY --link --from=dep-n-gifski-1.34.0-2e47a233552ee146 /target/release/deps/*-2e47a233552ee146* /
 
 # Pipe this file to:
 # DOCKER_BUILDKIT="1" \
@@ -8523,8 +8523,8 @@ COPY --link --from=dep-n-gifski-1.34.0-2e47a233552ee146 /tmp/clis-gifski_1-34-0/
 ##     "gifski-2e47a233552ee146.d",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/gifski-2e47a233552ee146.d","emit":"dep-info"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/clis-gifski_1-34-0/release/deps/gifski-2e47a233552ee146","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/gifski-2e47a233552ee146.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/gifski-2e47a233552ee146","emit":"link"}',
 ## ]
 ##
 ## [[externs]]
@@ -8749,59 +8749,59 @@ COPY --link --from=dep-n-gifski-1.34.0-2e47a233552ee146 /tmp/clis-gifski_1-34-0/
 ## script = '''
 ## FROM rust-base AS dep-n-gifski-1.34.0-2e47a233552ee146
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/clis-gifski_1-34-0/release/deps
+## WORKDIR /target/release/deps
 ## RUN \
 ##   --mount=from=cratesio-gifski-1.34.0,source=/gifski-1.34.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/gifski-1.34.0 \
-##   --mount=from=out-67f6ec320d9c110f,dst=/tmp/clis-gifski_1-34-0/release/deps/libclap-67f6ec320d9c110f.rlib,source=/libclap-67f6ec320d9c110f.rlib \
-##   --mount=from=out-82004e3d29174042,dst=/tmp/clis-gifski_1-34-0/release/deps/libclap_builder-82004e3d29174042.rlib,source=/libclap_builder-82004e3d29174042.rlib \
-##   --mount=from=out-14a190e9584fadc4,dst=/tmp/clis-gifski_1-34-0/release/deps/libanstream-14a190e9584fadc4.rlib,source=/libanstream-14a190e9584fadc4.rlib \
-##   --mount=from=out-25158921b2975a45,dst=/tmp/clis-gifski_1-34-0/release/deps/libanstyle-25158921b2975a45.rlib,source=/libanstyle-25158921b2975a45.rlib \
-##   --mount=from=out-3a154f05c18fe502,dst=/tmp/clis-gifski_1-34-0/release/deps/libanstyle_parse-3a154f05c18fe502.rlib,source=/libanstyle_parse-3a154f05c18fe502.rlib \
-##   --mount=from=out-e99b4cd86d1b3d1a,dst=/tmp/clis-gifski_1-34-0/release/deps/libutf8parse-e99b4cd86d1b3d1a.rlib,source=/libutf8parse-e99b4cd86d1b3d1a.rlib \
-##   --mount=from=out-f174fe24d94bb0d5,dst=/tmp/clis-gifski_1-34-0/release/deps/libanstyle_query-f174fe24d94bb0d5.rlib,source=/libanstyle_query-f174fe24d94bb0d5.rlib \
-##   --mount=from=out-b0f9d0eb7e3c5228,dst=/tmp/clis-gifski_1-34-0/release/deps/libcolorchoice-b0f9d0eb7e3c5228.rlib,source=/libcolorchoice-b0f9d0eb7e3c5228.rlib \
-##   --mount=from=out-08b147e17b2f127e,dst=/tmp/clis-gifski_1-34-0/release/deps/libis_terminal_polyfill-08b147e17b2f127e.rlib,source=/libis_terminal_polyfill-08b147e17b2f127e.rlib \
-##   --mount=from=out-944acfd6f9571391,dst=/tmp/clis-gifski_1-34-0/release/deps/libclap_lex-944acfd6f9571391.rlib,source=/libclap_lex-944acfd6f9571391.rlib \
-##   --mount=from=out-87be0482eaec7565,dst=/tmp/clis-gifski_1-34-0/release/deps/libstrsim-87be0482eaec7565.rlib,source=/libstrsim-87be0482eaec7565.rlib \
-##   --mount=from=out-724af7b5f0e810c4,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_channel-724af7b5f0e810c4.rlib,source=/libcrossbeam_channel-724af7b5f0e810c4.rlib \
-##   --mount=from=out-5ac36063ddf29a62,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rlib,source=/libcrossbeam_utils-5ac36063ddf29a62.rlib \
-##   --mount=from=out-00cc39e2b93187ae,dst=/tmp/clis-gifski_1-34-0/release/deps/libdunce-00cc39e2b93187ae.rlib,source=/libdunce-00cc39e2b93187ae.rlib \
-##   --mount=from=out-6bb7dc2aa9596226,dst=/tmp/clis-gifski_1-34-0/release/deps/libgif-6bb7dc2aa9596226.rlib,source=/libgif-6bb7dc2aa9596226.rlib \
-##   --mount=from=out-92ecf42010bb6640,dst=/tmp/clis-gifski_1-34-0/release/deps/libweezl-92ecf42010bb6640.rlib,source=/libweezl-92ecf42010bb6640.rlib \
-##   --mount=from=out-a4fb05ba2aa05e69,dst=/tmp/clis-gifski_1-34-0/release/deps/libgif_dispose-a4fb05ba2aa05e69.rlib,source=/libgif_dispose-a4fb05ba2aa05e69.rlib \
-##   --mount=from=out-deae4624c4370e95,dst=/tmp/clis-gifski_1-34-0/release/deps/libimgref-deae4624c4370e95.rlib,source=/libimgref-deae4624c4370e95.rlib \
-##   --mount=from=out-b630417cd5f2024a,dst=/tmp/clis-gifski_1-34-0/release/deps/librgb-b630417cd5f2024a.rlib,source=/librgb-b630417cd5f2024a.rlib \
-##   --mount=from=out-f0cdacabc0947b7b,dst=/tmp/clis-gifski_1-34-0/release/deps/libbytemuck-f0cdacabc0947b7b.rlib,source=/libbytemuck-f0cdacabc0947b7b.rlib \
-##   --mount=from=out-b9aa6f1c171c6150,dst=/tmp/clis-gifski_1-34-0/release/deps/libgifski-b9aa6f1c171c6150.a,source=/libgifski-b9aa6f1c171c6150.a \
-##   --mount=from=out-b9aa6f1c171c6150,dst=/tmp/clis-gifski_1-34-0/release/deps/libgifski-b9aa6f1c171c6150.rlib,source=/libgifski-b9aa6f1c171c6150.rlib \
-##   --mount=from=out-b9aa6f1c171c6150,dst=/tmp/clis-gifski_1-34-0/release/deps/libgifski-b9aa6f1c171c6150.so,source=/libgifski-b9aa6f1c171c6150.so \
-##   --mount=from=out-13cdc94a2acbf464,dst=/tmp/clis-gifski_1-34-0/release/deps/libimagequant-13cdc94a2acbf464.rlib,source=/libimagequant-13cdc94a2acbf464.rlib \
-##   --mount=from=out-9b55b30a1b85e195,dst=/tmp/clis-gifski_1-34-0/release/deps/libarrayvec-9b55b30a1b85e195.rlib,source=/libarrayvec-9b55b30a1b85e195.rlib \
-##   --mount=from=out-0774a35541eb4e3b,dst=/tmp/clis-gifski_1-34-0/release/deps/libonce_cell-0774a35541eb4e3b.rlib,source=/libonce_cell-0774a35541eb4e3b.rlib \
-##   --mount=from=out-53357b7dd9022303,dst=/tmp/clis-gifski_1-34-0/release/deps/librayon-53357b7dd9022303.rlib,source=/librayon-53357b7dd9022303.rlib \
-##   --mount=from=out-64b2ef074583e2a3,dst=/tmp/clis-gifski_1-34-0/release/deps/libeither-64b2ef074583e2a3.rlib,source=/libeither-64b2ef074583e2a3.rlib \
-##   --mount=from=out-efba4db9305abd55,dst=/tmp/clis-gifski_1-34-0/release/deps/librayon_core-efba4db9305abd55.rlib,source=/librayon_core-efba4db9305abd55.rlib \
-##   --mount=from=out-cc1298b8da143bbe,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_deque-cc1298b8da143bbe.rlib,source=/libcrossbeam_deque-cc1298b8da143bbe.rlib \
-##   --mount=from=out-c2e7f2fc3addf6be,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_epoch-c2e7f2fc3addf6be.rlib,source=/libcrossbeam_epoch-c2e7f2fc3addf6be.rlib \
-##   --mount=from=out-6b8c8ab37131cd0c,dst=/tmp/clis-gifski_1-34-0/release/deps/libthread_local-6b8c8ab37131cd0c.rlib,source=/libthread_local-6b8c8ab37131cd0c.rlib \
-##   --mount=from=out-e1f9b2ca981c3e9f,dst=/tmp/clis-gifski_1-34-0/release/deps/libcfg_if-e1f9b2ca981c3e9f.rlib,source=/libcfg_if-e1f9b2ca981c3e9f.rlib \
-##   --mount=from=out-c1608f7a6e4ba58d,dst=/tmp/clis-gifski_1-34-0/release/deps/liblodepng-c1608f7a6e4ba58d.rlib,source=/liblodepng-c1608f7a6e4ba58d.rlib \
-##   --mount=from=out-51c01ae8d7468fb2,dst=/tmp/clis-gifski_1-34-0/release/deps/libcrc32fast-51c01ae8d7468fb2.rlib,source=/libcrc32fast-51c01ae8d7468fb2.rlib \
-##   --mount=from=out-92283f56cec7b441,dst=/tmp/clis-gifski_1-34-0/release/deps/libflate2-92283f56cec7b441.rlib,source=/libflate2-92283f56cec7b441.rlib \
-##   --mount=from=out-2a56889f8f4194b3,dst=/tmp/clis-gifski_1-34-0/release/deps/liblibz_rs_sys-2a56889f8f4194b3.rlib,source=/liblibz_rs_sys-2a56889f8f4194b3.rlib \
-##   --mount=from=out-1ce6de5e74c29a43,dst=/tmp/clis-gifski_1-34-0/release/deps/libzlib_rs-1ce6de5e74c29a43.rlib,source=/libzlib_rs-1ce6de5e74c29a43.rlib \
-##   --mount=from=out-3afb72ac1310d574,dst=/tmp/clis-gifski_1-34-0/release/deps/liblibc-3afb72ac1310d574.rlib,source=/liblibc-3afb72ac1310d574.rlib \
-##   --mount=from=out-4166f710ac396229,dst=/tmp/clis-gifski_1-34-0/release/deps/libloop9-4166f710ac396229.rlib,source=/libloop9-4166f710ac396229.rlib \
-##   --mount=from=out-dbbab79b50c30bb1,dst=/tmp/clis-gifski_1-34-0/release/deps/libnatord-dbbab79b50c30bb1.rlib,source=/libnatord-dbbab79b50c30bb1.rlib \
-##   --mount=from=out-53c0c58048ae59b2,dst=/tmp/clis-gifski_1-34-0/release/deps/libnum_traits-53c0c58048ae59b2.rlib,source=/libnum_traits-53c0c58048ae59b2.rlib \
-##   --mount=from=out-54801e684ac31c95,dst=/tmp/clis-gifski_1-34-0/release/deps/libautocfg-54801e684ac31c95.rlib,source=/libautocfg-54801e684ac31c95.rlib \
-##   --mount=from=out-d1042fb932b56ff4,dst=/tmp/clis-gifski_1-34-0/release/deps/libordered_channel-d1042fb932b56ff4.rlib,source=/libordered_channel-d1042fb932b56ff4.rlib \
-##   --mount=from=out-791a05c54d467a7f,dst=/tmp/clis-gifski_1-34-0/release/deps/libpbr-791a05c54d467a7f.rlib,source=/libpbr-791a05c54d467a7f.rlib \
-##   --mount=from=out-a6f6d4c5688e7cda,dst=/tmp/clis-gifski_1-34-0/release/deps/libquick_error-a6f6d4c5688e7cda.rlib,source=/libquick_error-a6f6d4c5688e7cda.rlib \
-##   --mount=from=out-925466e96a5b0042,dst=/tmp/clis-gifski_1-34-0/release/deps/libresize-925466e96a5b0042.rlib,source=/libresize-925466e96a5b0042.rlib \
-##   --mount=from=out-3fec38877dfe5eae,dst=/tmp/clis-gifski_1-34-0/release/deps/libwild-3fec38877dfe5eae.rlib,source=/libwild-3fec38877dfe5eae.rlib \
-##   --mount=from=out-88872ac441f60d2c,dst=/tmp/clis-gifski_1-34-0/release/deps/liby4m-88872ac441f60d2c.rlib,source=/liby4m-88872ac441f60d2c.rlib \
-##   --mount=from=out-9318e068e99f9028,dst=/tmp/clis-gifski_1-34-0/release/deps/libyuv-9318e068e99f9028.rlib,source=/libyuv-9318e068e99f9028.rlib \
+##   --mount=from=out-67f6ec320d9c110f,dst=/target/release/deps/libclap-67f6ec320d9c110f.rlib,source=/libclap-67f6ec320d9c110f.rlib \
+##   --mount=from=out-82004e3d29174042,dst=/target/release/deps/libclap_builder-82004e3d29174042.rlib,source=/libclap_builder-82004e3d29174042.rlib \
+##   --mount=from=out-14a190e9584fadc4,dst=/target/release/deps/libanstream-14a190e9584fadc4.rlib,source=/libanstream-14a190e9584fadc4.rlib \
+##   --mount=from=out-25158921b2975a45,dst=/target/release/deps/libanstyle-25158921b2975a45.rlib,source=/libanstyle-25158921b2975a45.rlib \
+##   --mount=from=out-3a154f05c18fe502,dst=/target/release/deps/libanstyle_parse-3a154f05c18fe502.rlib,source=/libanstyle_parse-3a154f05c18fe502.rlib \
+##   --mount=from=out-e99b4cd86d1b3d1a,dst=/target/release/deps/libutf8parse-e99b4cd86d1b3d1a.rlib,source=/libutf8parse-e99b4cd86d1b3d1a.rlib \
+##   --mount=from=out-f174fe24d94bb0d5,dst=/target/release/deps/libanstyle_query-f174fe24d94bb0d5.rlib,source=/libanstyle_query-f174fe24d94bb0d5.rlib \
+##   --mount=from=out-b0f9d0eb7e3c5228,dst=/target/release/deps/libcolorchoice-b0f9d0eb7e3c5228.rlib,source=/libcolorchoice-b0f9d0eb7e3c5228.rlib \
+##   --mount=from=out-08b147e17b2f127e,dst=/target/release/deps/libis_terminal_polyfill-08b147e17b2f127e.rlib,source=/libis_terminal_polyfill-08b147e17b2f127e.rlib \
+##   --mount=from=out-944acfd6f9571391,dst=/target/release/deps/libclap_lex-944acfd6f9571391.rlib,source=/libclap_lex-944acfd6f9571391.rlib \
+##   --mount=from=out-87be0482eaec7565,dst=/target/release/deps/libstrsim-87be0482eaec7565.rlib,source=/libstrsim-87be0482eaec7565.rlib \
+##   --mount=from=out-724af7b5f0e810c4,dst=/target/release/deps/libcrossbeam_channel-724af7b5f0e810c4.rlib,source=/libcrossbeam_channel-724af7b5f0e810c4.rlib \
+##   --mount=from=out-5ac36063ddf29a62,dst=/target/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rlib,source=/libcrossbeam_utils-5ac36063ddf29a62.rlib \
+##   --mount=from=out-00cc39e2b93187ae,dst=/target/release/deps/libdunce-00cc39e2b93187ae.rlib,source=/libdunce-00cc39e2b93187ae.rlib \
+##   --mount=from=out-6bb7dc2aa9596226,dst=/target/release/deps/libgif-6bb7dc2aa9596226.rlib,source=/libgif-6bb7dc2aa9596226.rlib \
+##   --mount=from=out-92ecf42010bb6640,dst=/target/release/deps/libweezl-92ecf42010bb6640.rlib,source=/libweezl-92ecf42010bb6640.rlib \
+##   --mount=from=out-a4fb05ba2aa05e69,dst=/target/release/deps/libgif_dispose-a4fb05ba2aa05e69.rlib,source=/libgif_dispose-a4fb05ba2aa05e69.rlib \
+##   --mount=from=out-deae4624c4370e95,dst=/target/release/deps/libimgref-deae4624c4370e95.rlib,source=/libimgref-deae4624c4370e95.rlib \
+##   --mount=from=out-b630417cd5f2024a,dst=/target/release/deps/librgb-b630417cd5f2024a.rlib,source=/librgb-b630417cd5f2024a.rlib \
+##   --mount=from=out-f0cdacabc0947b7b,dst=/target/release/deps/libbytemuck-f0cdacabc0947b7b.rlib,source=/libbytemuck-f0cdacabc0947b7b.rlib \
+##   --mount=from=out-b9aa6f1c171c6150,dst=/target/release/deps/libgifski-b9aa6f1c171c6150.a,source=/libgifski-b9aa6f1c171c6150.a \
+##   --mount=from=out-b9aa6f1c171c6150,dst=/target/release/deps/libgifski-b9aa6f1c171c6150.rlib,source=/libgifski-b9aa6f1c171c6150.rlib \
+##   --mount=from=out-b9aa6f1c171c6150,dst=/target/release/deps/libgifski-b9aa6f1c171c6150.so,source=/libgifski-b9aa6f1c171c6150.so \
+##   --mount=from=out-13cdc94a2acbf464,dst=/target/release/deps/libimagequant-13cdc94a2acbf464.rlib,source=/libimagequant-13cdc94a2acbf464.rlib \
+##   --mount=from=out-9b55b30a1b85e195,dst=/target/release/deps/libarrayvec-9b55b30a1b85e195.rlib,source=/libarrayvec-9b55b30a1b85e195.rlib \
+##   --mount=from=out-0774a35541eb4e3b,dst=/target/release/deps/libonce_cell-0774a35541eb4e3b.rlib,source=/libonce_cell-0774a35541eb4e3b.rlib \
+##   --mount=from=out-53357b7dd9022303,dst=/target/release/deps/librayon-53357b7dd9022303.rlib,source=/librayon-53357b7dd9022303.rlib \
+##   --mount=from=out-64b2ef074583e2a3,dst=/target/release/deps/libeither-64b2ef074583e2a3.rlib,source=/libeither-64b2ef074583e2a3.rlib \
+##   --mount=from=out-efba4db9305abd55,dst=/target/release/deps/librayon_core-efba4db9305abd55.rlib,source=/librayon_core-efba4db9305abd55.rlib \
+##   --mount=from=out-cc1298b8da143bbe,dst=/target/release/deps/libcrossbeam_deque-cc1298b8da143bbe.rlib,source=/libcrossbeam_deque-cc1298b8da143bbe.rlib \
+##   --mount=from=out-c2e7f2fc3addf6be,dst=/target/release/deps/libcrossbeam_epoch-c2e7f2fc3addf6be.rlib,source=/libcrossbeam_epoch-c2e7f2fc3addf6be.rlib \
+##   --mount=from=out-6b8c8ab37131cd0c,dst=/target/release/deps/libthread_local-6b8c8ab37131cd0c.rlib,source=/libthread_local-6b8c8ab37131cd0c.rlib \
+##   --mount=from=out-e1f9b2ca981c3e9f,dst=/target/release/deps/libcfg_if-e1f9b2ca981c3e9f.rlib,source=/libcfg_if-e1f9b2ca981c3e9f.rlib \
+##   --mount=from=out-c1608f7a6e4ba58d,dst=/target/release/deps/liblodepng-c1608f7a6e4ba58d.rlib,source=/liblodepng-c1608f7a6e4ba58d.rlib \
+##   --mount=from=out-51c01ae8d7468fb2,dst=/target/release/deps/libcrc32fast-51c01ae8d7468fb2.rlib,source=/libcrc32fast-51c01ae8d7468fb2.rlib \
+##   --mount=from=out-92283f56cec7b441,dst=/target/release/deps/libflate2-92283f56cec7b441.rlib,source=/libflate2-92283f56cec7b441.rlib \
+##   --mount=from=out-2a56889f8f4194b3,dst=/target/release/deps/liblibz_rs_sys-2a56889f8f4194b3.rlib,source=/liblibz_rs_sys-2a56889f8f4194b3.rlib \
+##   --mount=from=out-1ce6de5e74c29a43,dst=/target/release/deps/libzlib_rs-1ce6de5e74c29a43.rlib,source=/libzlib_rs-1ce6de5e74c29a43.rlib \
+##   --mount=from=out-3afb72ac1310d574,dst=/target/release/deps/liblibc-3afb72ac1310d574.rlib,source=/liblibc-3afb72ac1310d574.rlib \
+##   --mount=from=out-4166f710ac396229,dst=/target/release/deps/libloop9-4166f710ac396229.rlib,source=/libloop9-4166f710ac396229.rlib \
+##   --mount=from=out-dbbab79b50c30bb1,dst=/target/release/deps/libnatord-dbbab79b50c30bb1.rlib,source=/libnatord-dbbab79b50c30bb1.rlib \
+##   --mount=from=out-53c0c58048ae59b2,dst=/target/release/deps/libnum_traits-53c0c58048ae59b2.rlib,source=/libnum_traits-53c0c58048ae59b2.rlib \
+##   --mount=from=out-54801e684ac31c95,dst=/target/release/deps/libautocfg-54801e684ac31c95.rlib,source=/libautocfg-54801e684ac31c95.rlib \
+##   --mount=from=out-d1042fb932b56ff4,dst=/target/release/deps/libordered_channel-d1042fb932b56ff4.rlib,source=/libordered_channel-d1042fb932b56ff4.rlib \
+##   --mount=from=out-791a05c54d467a7f,dst=/target/release/deps/libpbr-791a05c54d467a7f.rlib,source=/libpbr-791a05c54d467a7f.rlib \
+##   --mount=from=out-a6f6d4c5688e7cda,dst=/target/release/deps/libquick_error-a6f6d4c5688e7cda.rlib,source=/libquick_error-a6f6d4c5688e7cda.rlib \
+##   --mount=from=out-925466e96a5b0042,dst=/target/release/deps/libresize-925466e96a5b0042.rlib,source=/libresize-925466e96a5b0042.rlib \
+##   --mount=from=out-3fec38877dfe5eae,dst=/target/release/deps/libwild-3fec38877dfe5eae.rlib,source=/libwild-3fec38877dfe5eae.rlib \
+##   --mount=from=out-88872ac441f60d2c,dst=/target/release/deps/liby4m-88872ac441f60d2c.rlib,source=/liby4m-88872ac441f60d2c.rlib \
+##   --mount=from=out-9318e068e99f9028,dst=/target/release/deps/libyuv-9318e068e99f9028.rlib,source=/libyuv-9318e068e99f9028.rlib \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_BIN_NAME=gifski \
 ##         CARGO_CRATE_NAME=gifski \
@@ -8825,11 +8825,11 @@ COPY --link --from=dep-n-gifski-1.34.0-2e47a233552ee146 /tmp/clis-gifski_1-34-0/
 ##         CARGO_PRIMARY_PACKAGE=1 \
 ##         CARGO_SBOM_PATH= \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name gifski --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C opt-level'=3' -C panic'=abort' -C lto --cfg feature'="binary"' --cfg feature'="default"' --cfg feature'="gifsicle"' --cfg feature'="pbr"' --cfg feature'="png"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("binary", "capi", "default", "gifsicle", "pbr", "png", "video", "video-prebuilt-static", "video-static"))' -C metadata'=037b104b5585d09b' -C extra-filename'=-2e47a233552ee146' --out-dir /tmp/clis-gifski_1-34-0/release/deps -C strip'=symbols' -L dependency'=/tmp/clis-gifski_1-34-0/release/deps' --extern clap'=/tmp/clis-gifski_1-34-0/release/deps/libclap-67f6ec320d9c110f.rlib' --extern crossbeam_channel'=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_channel-724af7b5f0e810c4.rlib' --extern crossbeam_utils'=/tmp/clis-gifski_1-34-0/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rlib' --extern dunce'=/tmp/clis-gifski_1-34-0/release/deps/libdunce-00cc39e2b93187ae.rlib' --extern gif'=/tmp/clis-gifski_1-34-0/release/deps/libgif-6bb7dc2aa9596226.rlib' --extern gif_dispose'=/tmp/clis-gifski_1-34-0/release/deps/libgif_dispose-a4fb05ba2aa05e69.rlib' --extern gifski'=/tmp/clis-gifski_1-34-0/release/deps/libgifski-b9aa6f1c171c6150.rlib' --extern imagequant'=/tmp/clis-gifski_1-34-0/release/deps/libimagequant-13cdc94a2acbf464.rlib' --extern imgref'=/tmp/clis-gifski_1-34-0/release/deps/libimgref-deae4624c4370e95.rlib' --extern lodepng'=/tmp/clis-gifski_1-34-0/release/deps/liblodepng-c1608f7a6e4ba58d.rlib' --extern loop9'=/tmp/clis-gifski_1-34-0/release/deps/libloop9-4166f710ac396229.rlib' --extern natord'=/tmp/clis-gifski_1-34-0/release/deps/libnatord-dbbab79b50c30bb1.rlib' --extern num_traits'=/tmp/clis-gifski_1-34-0/release/deps/libnum_traits-53c0c58048ae59b2.rlib' --extern ordered_channel'=/tmp/clis-gifski_1-34-0/release/deps/libordered_channel-d1042fb932b56ff4.rlib' --extern pbr'=/tmp/clis-gifski_1-34-0/release/deps/libpbr-791a05c54d467a7f.rlib' --extern quick_error'=/tmp/clis-gifski_1-34-0/release/deps/libquick_error-a6f6d4c5688e7cda.rlib' --extern resize'=/tmp/clis-gifski_1-34-0/release/deps/libresize-925466e96a5b0042.rlib' --extern rgb'=/tmp/clis-gifski_1-34-0/release/deps/librgb-b630417cd5f2024a.rlib' --extern wild'=/tmp/clis-gifski_1-34-0/release/deps/libwild-3fec38877dfe5eae.rlib' --extern y4m'=/tmp/clis-gifski_1-34-0/release/deps/liby4m-88872ac441f60d2c.rlib' --extern yuv'=/tmp/clis-gifski_1-34-0/release/deps/libyuv-9318e068e99f9028.rlib' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/gifski-1.34.0/src/bin/gifski.rs \
-##         1>          /tmp/clis-gifski_1-34-0/release/deps/out-2e47a233552ee146-stdout \
-##         2>          /tmp/clis-gifski_1-34-0/release/deps/out-2e47a233552ee146-stderr \
-##         || echo $? >/tmp/clis-gifski_1-34-0/release/deps/out-2e47a233552ee146-errcode\
-##   ; find /tmp/clis-gifski_1-34-0/release/deps/*-2e47a233552ee146* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name gifski --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C opt-level'=3' -C panic'=abort' -C lto --cfg feature'="binary"' --cfg feature'="default"' --cfg feature'="gifsicle"' --cfg feature'="pbr"' --cfg feature'="png"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("binary", "capi", "default", "gifsicle", "pbr", "png", "video", "video-prebuilt-static", "video-static"))' -C metadata'=037b104b5585d09b' -C extra-filename'=-2e47a233552ee146' --out-dir /target/release/deps -C strip'=symbols' -L dependency'=/target/release/deps' --extern clap'=/target/release/deps/libclap-67f6ec320d9c110f.rlib' --extern crossbeam_channel'=/target/release/deps/libcrossbeam_channel-724af7b5f0e810c4.rlib' --extern crossbeam_utils'=/target/release/deps/libcrossbeam_utils-5ac36063ddf29a62.rlib' --extern dunce'=/target/release/deps/libdunce-00cc39e2b93187ae.rlib' --extern gif'=/target/release/deps/libgif-6bb7dc2aa9596226.rlib' --extern gif_dispose'=/target/release/deps/libgif_dispose-a4fb05ba2aa05e69.rlib' --extern gifski'=/target/release/deps/libgifski-b9aa6f1c171c6150.rlib' --extern imagequant'=/target/release/deps/libimagequant-13cdc94a2acbf464.rlib' --extern imgref'=/target/release/deps/libimgref-deae4624c4370e95.rlib' --extern lodepng'=/target/release/deps/liblodepng-c1608f7a6e4ba58d.rlib' --extern loop9'=/target/release/deps/libloop9-4166f710ac396229.rlib' --extern natord'=/target/release/deps/libnatord-dbbab79b50c30bb1.rlib' --extern num_traits'=/target/release/deps/libnum_traits-53c0c58048ae59b2.rlib' --extern ordered_channel'=/target/release/deps/libordered_channel-d1042fb932b56ff4.rlib' --extern pbr'=/target/release/deps/libpbr-791a05c54d467a7f.rlib' --extern quick_error'=/target/release/deps/libquick_error-a6f6d4c5688e7cda.rlib' --extern resize'=/target/release/deps/libresize-925466e96a5b0042.rlib' --extern rgb'=/target/release/deps/librgb-b630417cd5f2024a.rlib' --extern wild'=/target/release/deps/libwild-3fec38877dfe5eae.rlib' --extern y4m'=/target/release/deps/liby4m-88872ac441f60d2c.rlib' --extern yuv'=/target/release/deps/libyuv-9318e068e99f9028.rlib' --cap-lints warn /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/gifski-1.34.0/src/bin/gifski.rs \
+##         1>          /target/release/deps/out-2e47a233552ee146-stdout \
+##         2>          /target/release/deps/out-2e47a233552ee146-stderr \
+##         || echo $? >/target/release/deps/out-2e47a233552ee146-errcode\
+##   ; find /target/release/deps/*-2e47a233552ee146* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
@@ -8837,7 +8837,7 @@ COPY --link --from=dep-n-gifski-1.34.0-2e47a233552ee146 /tmp/clis-gifski_1-34-0/
 ## stage = "out-2e47a233552ee146"
 ## script = """
 ## FROM scratch AS out-2e47a233552ee146
-## COPY --link --from=dep-n-gifski-1.34.0-2e47a233552ee146 /tmp/clis-gifski_1-34-0/release/deps/*-2e47a233552ee146* /"""
+## COPY --link --from=dep-n-gifski-1.34.0-2e47a233552ee146 /target/release/deps/*-2e47a233552ee146* /"""
 
 FROM scratch
 COPY --link --from=out-2e47a233552ee146 /gifski-2e47a233552ee146 /gifski
