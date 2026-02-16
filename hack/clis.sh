@@ -593,6 +593,8 @@ for cmd in cargo docker; do
   shortPATH="$shortPATH:"$(dirname "$(which $cmd)")""
 done
 
+# RUSTFLAGS="--remap-path-prefix=$tmptrgt="
+
 envvars=(CARGO_INCREMENTAL=0)
 envvars+=(PATH=$shortPATH)
 envvars+=(CARGOGREEN_LOG=trace)

@@ -590,7 +590,7 @@ See also this article on what `cargo-green` does (perfect layering):
 # Usage:           $0 ( <name@version> | <name> )  #=> cargo install name@version
 # Usage:           $0   ok                         #=> cargo install all working bins
 #
-# Usage:           $0 ( build | test )             #=> cargo build ./cargo-green
+# Usage:           $0 ( build | package | test )   #=> cargo build ./cargo-green
 #
 # Usage:    jobs=1 $0 ..                           #=> cargo --jobs=$jobs
 # Usage: offline=1 $0 ..                           #=> cargo --frozen (defaults to just: --locked)

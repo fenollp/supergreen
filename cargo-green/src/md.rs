@@ -13,6 +13,7 @@ use crate::{
     green::Green,
     logging::maybe_log,
     stage::{AsBlock, AsStage, NamedStage, Script, Stage, RST},
+    target_dir::virtual_target_dir,
     PKG,
 };
 
@@ -346,7 +347,10 @@ impl Md {
             let z_dep_md_path = z_dep.path(target_path);
             let z_dep_md = mds.get_or_read(&z_dep_md_path)?;
             info!("also mounting {z_dep}'s buildrs out dir {out_dir}");
-            self.mounts.insert(NamedMount { name: z_dep_md.last_stage(), mount: out_dir });
+            self.mounts.insert(NamedMount {
+                name: z_dep_md.last_stage(),
+                mount: virtual_target_dir(&out_dir),
+            });
 
             for line in &z_dep_md.stdout {
                 // > MSRV: 1.77 is required for cargo::KEY=VALUE syntax. To support older versions, use the cargo:KEY=VALUE syntax.
