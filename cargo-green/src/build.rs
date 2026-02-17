@@ -30,6 +30,7 @@ use tokio::{
     task::JoinHandle,
 };
 use tokio_stream::StreamExt;
+use tokio_tar::EntryType;
 
 use crate::{
     du::lock_from_builder_cache,
@@ -522,8 +523,8 @@ async fn run_build(
                         assert_eq!(f.header().username(), Ok(Some("")));
                         assert_eq!(f.header().groupname(), Ok(Some("")));
 
-                        match f.header().entry_type().as_byte() {
-                            0x30 => {
+                        match f.header().entry_type() {
+                            EntryType::Regular => {
                                 let mut opts = AtomicWriteFile::options();
                                 opts.mode(mode);
                                 let mut file = opts
@@ -535,7 +536,7 @@ async fn run_build(
                                     .map_err(|e| anyhow!("Failed writing unTARed: {e}"))?;
                             }
 
-                            0x35 => {
+                            EntryType::Directory => {
                                 DirBuilder::new()
                                     .mode(mode)
                                     .recursive(true) //= mkdir "-p"
@@ -543,7 +544,7 @@ async fn run_build(
                                     .map_err(|e| anyhow!("Failed `mkdir -p {fname}`: {e}"))?;
                             }
 
-                            entryty => bail!("BUG: unexpected entry type {entryty:#x}"),
+                            entryty => bail!("BUG: unexpected entry type {entryty:?}"),
                         }
 
                         assert_eq!(
