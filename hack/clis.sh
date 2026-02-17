@@ -9,7 +9,7 @@ source "$repo_root"/hack/ck.sh
 # Usage:           $0 ( <name@version> | <name> )  #=> cargo install name@version
 # Usage:           $0   ok                         #=> cargo install all working bins
 #
-# Usage:           $0 ( build | test )             #=> cargo build ./cargo-green
+# Usage:           $0 ( build | package | test )   #=> cargo build ./cargo-green
 #
 # Usage:    jobs=1 $0 ..                           #=> cargo --jobs=$jobs
 # Usage: offline=1 $0 ..                           #=> cargo --frozen (defaults to just: --locked)
@@ -504,7 +504,7 @@ case "$arg1" in
     done
     exit $? ;;
 
-  build | test)
+  build | package | test)
 set -x
     # Keep target dir within PWD so it emulates a local build somewhat
     tmptrgt=$PWD/target/tmp-$arg1
@@ -537,7 +537,7 @@ set -x
     CARGOGREEN_EXPERIMENT=finalpathnonprimary \
     PATH=$install_dir/bin:"$PATH" \
     CARGO_TARGET_DIR="$tmptrgt" \
-      $CARGO green -v $arg1 $jobs --all-targets --all-features $frozen -p cargo-green
+      $CARGO green -v $arg1 $jobs --all-features $frozen -p cargo-green
     exit ;;
 esac
 

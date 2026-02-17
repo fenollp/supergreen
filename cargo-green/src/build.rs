@@ -828,7 +828,7 @@ fn hide_credentials_from_final_log() {
 
 #[test]
 fn un_rewrites_target_dir_before_outputting_to_cargo() {
-    temp_env::with_var("CARGO_TARGET_DIR", Some("/tmp/clis-vixargs_0-1-0/"), || {
+    temp_env::with_var("CARGO_TARGET_DIR", Some("/some/path/"), || {
         let msg = r#"
     {"$message_type":"artifact","artifact":"/target/release/deps/libclap_derive-fcea659dae5440c4.so","emit":"link"}
     {"$message_type":"diagnostic","message":"2 warnings emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"warning: 2 warnings emitted\n\n"}
@@ -837,7 +837,7 @@ fn un_rewrites_target_dir_before_outputting_to_cargo() {
         assert_eq!(
             un_virtual_target_dir_str(msg),
             r#"
-    {"$message_type":"artifact","artifact":"/tmp/clis-vixargs_0-1-0/release/deps/libclap_derive-fcea659dae5440c4.so","emit":"link"}
+    {"$message_type":"artifact","artifact":"/some/path/release/deps/libclap_derive-fcea659dae5440c4.so","emit":"link"}
     {"$message_type":"diagnostic","message":"2 warnings emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"warning: 2 warnings emitted\n\n"}
     hi!
     "#
