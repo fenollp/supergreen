@@ -35,11 +35,14 @@ impl AsStage<'_> for Relative {
     fn context(&self) -> Option<(Stage, Utf8PathBuf)> {
         let Self { stage, lose, pwd, .. } = self;
         if !lose.is_empty() {
-            let lose: String = lose
+            let mut lose: Vec<String> = lose
                 .iter()
                 .chain(once(&".dockerignore".to_owned()))
                 .map(|fname| format!("/{fname}\n"))
                 .collect();
+            lose.sort();
+            lose.dedup();
+            let lose: String = lose.into_iter().collect();
             fs::write(pwd.join(".dockerignore"), lose).unwrap(); //TODO: remove created file
                                                                  //FIXME: if exists: save + extend (then restore??) .dockerignore
                                                                  //TODO? add .gitignore in there?
