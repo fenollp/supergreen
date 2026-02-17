@@ -29,6 +29,9 @@ compute_installed_bin_sha256() {
 ensure__rewrite_cratesio_index__works() {
 	! grep -F '/index.crates.io-' $CARGOGREEN_LOG_PATH | grep -vE '/index.crates.io-0{16}|original args|env is set|opening .RO. crate tarball|picked'
 }
+ensure__rewrite_target_dir__works() {
+	! grep -F "$CARGO_TARGET_DIR" $CARGOGREEN_FINAL_PATH
+}
 
 compute_produced_shas() {
 	grep -E produced.+0x $CARGOGREEN_LOG_PATH | awk '{print $8,$9}' | sort
@@ -61,6 +64,7 @@ $CARGO green install --locked                            $install_package --root
 git add $CARGOGREEN_FINAL_PATH
 ensure__produces_same_shas # => just computes shas
 ensure__rewrite_cratesio_index__works
+ensure__rewrite_target_dir__works
 $install_root/bin/${install_package%@*} --help >/dev/null
 install_sha=$(compute_installed_bin_sha256)
 
@@ -79,6 +83,7 @@ $CARGO green install --locked --frozen --offline --force $install_package --root
 git add $CARGOGREEN_FINAL_PATH
 ensure__produces_same_shas # rebuild => same shas
 ensure__rewrite_cratesio_index__works
+ensure__rewrite_target_dir__works
 $install_root/bin/${install_package%@*} --help >/dev/null
 [[ $install_sha = $(compute_installed_bin_sha256) ]] # rebuild => no change
 
@@ -104,6 +109,7 @@ $CARGO green install --locked --frozen --offline --force $install_package --root
 git add $CARGOGREEN_FINAL_PATH
 ensure__produces_same_shas # rebuild => same shas
 ensure__rewrite_cratesio_index__works
+ensure__rewrite_target_dir__works
 $install_root/bin/${install_package%@*} --help >/dev/null
 [[ $install_sha = $(compute_installed_bin_sha256) ]] # rebuild => no change
 
@@ -124,6 +130,7 @@ $CARGO green install --locked --frozen --offline --force $install_package --root
 git add $CARGOGREEN_FINAL_PATH
 ensure__produces_same_shas # rebuild without reading cache => new layers written to cache!!
 ensure__rewrite_cratesio_index__works
+ensure__rewrite_target_dir__works
 $install_root/bin/${install_package%@*} --help >/dev/null
 [[ $install_sha = $(compute_installed_bin_sha256) ]] # rebuild => no change
 
@@ -193,6 +200,7 @@ git add $CARGOGREEN_FINAL_PATH
 rm -rf $CARGOGREEN_LOG_PATH.produced >/dev/null
 ensure__produces_same_shas # (here, we just re-compute shas)
 ensure__rewrite_cratesio_index__works
+ensure__rewrite_target_dir__works
 $install_root/bin/${install_package%@*} --help >/dev/null
 [[ $install_sha != $(compute_installed_bin_sha256) ]] # change rustc => change final bin
 install_sha=$(compute_installed_bin_sha256)
@@ -236,21 +244,17 @@ rm -rf $CARGO_TARGET_DIR/* >/dev/null
 rm -rf $CARGOGREEN_LOG_PATH >/dev/null
 rm -rf $install_root/* >/dev/null
 $CARGO green install --locked --frozen --offline --force $install_package --root=$install_root
-#TODO: rewrite target dir between host and build(..) calls
-# git --no-pager diff -- $CARGOGREEN_FINAL_PATH
-# cat <<'EOF' | diff -u - <(git --no-pager diff -- $CARGOGREEN_FINAL_PATH | tail -n+7)
-#  # Pipe this file to:
-#  # DOCKER_BUILDKIT="1" \
-# -#   docker --debug build --network=none --platform=local --pull=false --target=out-68f2214769fd28b1 --output=type=local,dest=/tmp/cargo-green--hack-caching--target-dir/release/deps -
-# +#   docker --debug build --network=none --platform=local --pull=false --target=out-68f2214769fd28b1 --output=type=local,dest=/tmp/cargo-green--hack-caching/release/deps -
-# EOF
+git --no-pager diff --ignore-matching-lines='^##' -- $CARGOGREEN_FINAL_PATH
+cat <<'EOF' | diff -u - <(git --no-pager diff -- $CARGOGREEN_FINAL_PATH | tail -n+7)
+EOF
 unset old_target_dir
 ! ensure__produces_same_shas # change targetdir => changes shas (here, we just re-compute shas)
 ensure__rewrite_cratesio_index__works
+ensure__rewrite_target_dir__works
 $install_root/bin/${install_package%@*} --help >/dev/null
 [[ $install_sha = $(compute_installed_bin_sha256) ]] # change targetdir => no binary changes
-# git --no-pager diff -- $CARGOGREEN_FINAL_PATH
+git --no-pager diff --ignore-matching-lines='^##' -- $CARGOGREEN_FINAL_PATH
 git add $CARGOGREEN_FINAL_PATH
 
-echo Changing CARGO_TARGET_DIR tho.... TODO: replace target dir in final path with e.g. /target/ or '/target/$target_triple/'
+echo Changing CARGO_TARGET_DIR only changes runner call!
 echo

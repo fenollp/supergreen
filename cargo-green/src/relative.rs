@@ -8,6 +8,7 @@ use serde::{Deserialize, Serialize};
 use crate::{
     md::MdId,
     stage::{AsBlock, AsStage, NamedStage, Stage},
+    target_dir::VIRTUAL_TARGET_DIR,
 };
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash)]
@@ -35,11 +36,14 @@ impl AsStage<'_> for Relative {
     fn context(&self) -> Option<(Stage, Utf8PathBuf)> {
         let Self { stage, lose, pwd, .. } = self;
         if !lose.is_empty() {
-            let lose: String = lose
+            let mut lose: Vec<String> = lose
                 .iter()
                 .chain(once(&".dockerignore".to_owned()))
                 .map(|fname| format!("/{fname}\n"))
                 .collect();
+            lose.sort();
+            lose.dedup();
+            let lose: String = lose.into_iter().collect();
             fs::write(pwd.join(".dockerignore"), lose).unwrap(); //TODO: remove created file
                                                                  //FIXME: if exists: save + extend (then restore??) .dockerignore
                                                                  //TODO? add .gitignore in there?
@@ -73,6 +77,10 @@ pub(crate) async fn as_stage(mdid: MdId, pwd: &Utf8Path) -> Result<NamedStage> {
         entries.into_iter().partition(|fname| {
             if fname == ".dockerignore" {
                 debug!("excluding {fname}");
+                return false;
+            }
+            if fname == VIRTUAL_TARGET_DIR.trim_matches('/') {
+                debug!("excluding {fname} or it will clash with internal target dir");
                 return false;
             }
             if fname == ".git" && pwd.join(fname).is_dir() {

@@ -9,11 +9,13 @@ use log::{error, info, trace};
 use tokio::process::Command;
 
 use crate::{
+    build::SHELL,
     ext::CommandExt,
     green::Green,
     logging::{self},
     md::{Md, MdId, Mds},
     stage::{AsStage, Stage, RST, RUST},
+    target_dir::virtual_target_dir,
     ENV, PKG, VSN,
 };
 
@@ -121,7 +123,7 @@ async fn do_exec_buildrs(
     mdid: MdId,
 ) -> Result<()> {
     let mut md: Md = mdid.into();
-    md.writes_to = out_dir_var.clone();
+    md.writes_to = virtual_target_dir(&out_dir_var);
     md.push_block(&RUST, green.base.image_inline.clone().unwrap());
 
     fs::create_dir_all(&out_dir_var)
@@ -150,14 +152,16 @@ async fn do_exec_buildrs(
     };
 
     let mut run_block = format!("FROM {RST} AS {run_stage}\n");
-    run_block.push_str(&format!("SHELL {:?}\n", ["/bin/sh", "-eux", "-c"]));
-    run_block.push_str(&format!("WORKDIR {out_dir_var}\n"));
+    run_block.push_str(&format!("SHELL {SHELL:?}\n"));
+    run_block.push_str(&format!("WORKDIR {}\n", virtual_target_dir(&out_dir_var)));
     for (_, code_dst, _) in code_stage.mounts() {
+        let code_dst = virtual_target_dir(&code_dst);
         run_block.push_str(&format!("WORKDIR {code_dst}\n"));
     }
     run_block.push_str("RUN \\\n");
     run_block.push_str(&format!(
-        "  --mount=from={previous_out_stage},source={previous_out_dst},dst={exe} \\\n"
+        "  --mount=from={previous_out_stage},source={previous_out_dst},dst={exe} \\\n",
+        exe = virtual_target_dir(&exe)
     ));
     for (src, dst, swappity) in code_stage.mounts() {
         let name = code_stage.name();
@@ -197,7 +201,7 @@ async fn do_exec_buildrs(
         &run_stage,
         &out_stage,
         &out_dir_var,
-        format!("{}= {exe}", ENV_EXECUTE_BUILDRS!()),
+        format!("{env}= {exe}", env = ENV_EXECUTE_BUILDRS!(), exe = virtual_target_dir(&exe)),
         &green.set_envs,
         true, //FIXME: try "false" => Noneify?
         run_block,
