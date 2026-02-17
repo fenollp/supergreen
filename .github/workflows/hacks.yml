@@ -43,8 +43,8 @@ jobs:
         shell: bash -euo pipefail {0}
     steps:
     - uses: actions/checkout@v6
-    - run: ./hack/latest_buildkit.sh | tee cargo-green/src/latest_buildkit.txt
-    - run: git --no-pager diff --exit-code -- cargo-green/src/latest_buildkit.txt || echo "::warning file=cargo-green/src/latest_buildkit.txt,line=1,col=1::New version out"
+    - run: ./hack/latest_buildkit.sh | tee cargo-green/latest_buildkit.txt
+    - run: git --no-pager diff --exit-code -- cargo-green/latest_buildkit.txt || echo "::warning file=cargo-green/latest_buildkit.txt,line=1,col=1::New version out"
 
 
   caching:

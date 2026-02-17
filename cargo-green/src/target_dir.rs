@@ -38,15 +38,15 @@ pub(crate) fn virtual_target_dir(path: &Utf8Path) -> Utf8PathBuf {
 #[test]
 fn replace_target_dirs() {
     temp_env::with_var("CARGO_TARGET_DIR", Some("/some/path/"), || {
+        assert_eq!(TARGET_DIR.as_str(), "/some/path/");
+
         assert_eq!(
             virtual_target_dir("/some/path/release/deps/target_lexicon-8a85e67f3430b2ca.d".into()),
             "/target/release/deps/target_lexicon-8a85e67f3430b2ca.d"
         );
 
-        assert_eq!(
-            virtual_target_dir_str("/some/path/release/deps/target_lexicon-8a85e67f3430b2ca.d"),
-            "/target/release/deps/target_lexicon-8a85e67f3430b2ca.d"
-        );
+        assert_eq!(virtual_target_dir_str("/some/path/release/deps/target_lexicon-8a85e67f3430b2ca.d: /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/target-lexicon-0.12.16/src/lib.rs"),
+        "/target/release/deps/target_lexicon-8a85e67f3430b2ca.d: /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/target-lexicon-0.12.16/src/lib.rs");
 
         assert_eq!(un_virtual_target_dir_str("/target/release/deps/target_lexicon-8a85e67f3430b2ca.d: /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/target-lexicon-0.12.16/src/lib.rs"),
         "/some/path/release/deps/target_lexicon-8a85e67f3430b2ca.d: /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/target-lexicon-0.12.16/src/lib.rs");

@@ -38,7 +38,7 @@ const BUILDER_DRIVER: &str = "docker-container";
 ///
 /// <https://github.com/moby/buildkit/tags>
 static LATEST_BUILDKIT: LazyLock<Version> =
-    LazyLock::new(|| Version::from(include_str!("latest_buildkit.txt").trim()).unwrap());
+    LazyLock::new(|| Version::from(include_str!("../latest_buildkit.txt").trim()).unwrap());
 
 #[test]
 fn uses_version_newer_or_equal_to() {
