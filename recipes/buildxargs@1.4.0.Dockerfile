@@ -9,15 +9,15 @@ ARG SOURCE_DATE_EPOCH=42
 FROM scratch AS cratesio-pico-args-0.5.0
 ADD --chmod=0664 --unpack --checksum=sha256:5be167a7af36ee22fe3115051bc51f6e6c7054c9348e28deb4f49bd6f705a315 \
   https://static.crates.io/crates/pico-args/pico-args-0.5.0.crate /
-FROM rust-base AS dep-n-pico-args-0.5.0-4955be4aad7d8789
+FROM rust-base AS dep-n-pico-args-0.5.0-f4da04ff96e72eb0
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/cargo-green--hack-caching/release/deps
+WORKDIR /target/release/deps
 RUN \
-  --mount=from=cratesio-pico-args-0.5.0,source=/pico-args-0.5.0,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/pico-args-0.5.0 \
+  --mount=from=cratesio-pico-args-0.5.0,source=/pico-args-0.5.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/pico-args-0.5.0 \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=pico_args \
-        CARGO_MANIFEST_DIR=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/pico-args-0.5.0 \
-        CARGO_MANIFEST_PATH=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/pico-args-0.5.0/Cargo.toml \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/pico-args-0.5.0 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/pico-args-0.5.0/Cargo.toml \
         CARGO_PKG_AUTHORS=Yevhenii' Reizner <razrfalcon@gmail.com>' \
         CARGO_PKG_DESCRIPTION=An' ultra simple CLI arguments parser.' \
         CARGO_PKG_HOMEPAGE= \
@@ -33,24 +33,24 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --crate-name pico_args --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --cfg feature'="default"' --cfg feature'="eq-separator"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("combined-flags", "default", "eq-separator", "short-space-opt"))' -C metadata'=d988e94fb19e0d91' -C extra-filename'=-4955be4aad7d8789' --out-dir /tmp/cargo-green--hack-caching/release/deps -C strip'=debuginfo' -L dependency'=/tmp/cargo-green--hack-caching/release/deps' --cap-lints allow /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/pico-args-0.5.0/src/lib.rs \
-        1>          /tmp/cargo-green--hack-caching/release/deps/out-4955be4aad7d8789-stdout \
-        2>          /tmp/cargo-green--hack-caching/release/deps/out-4955be4aad7d8789-stderr \
-        || echo $? >/tmp/cargo-green--hack-caching/release/deps/out-4955be4aad7d8789-errcode\
-  ; find /tmp/cargo-green--hack-caching/release/deps/*-4955be4aad7d8789* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
-FROM scratch AS out-4955be4aad7d8789
-COPY --link --from=dep-n-pico-args-0.5.0-4955be4aad7d8789 /tmp/cargo-green--hack-caching/release/deps/*-4955be4aad7d8789* /
+      rustc --crate-name pico_args --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --cfg feature'="default"' --cfg feature'="eq-separator"' --check-cfg cfg'(docsrs)' --check-cfg cfg'(feature, values("combined-flags", "default", "eq-separator", "short-space-opt"))' -C metadata'=f4da04ff96e72eb0' -C extra-filename'=-f4da04ff96e72eb0' --out-dir /target/release/deps -C strip'=debuginfo' -L dependency'=/target/release/deps' --cap-lints allow /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/pico-args-0.5.0/src/lib.rs \
+        1>          /target/release/deps/out-f4da04ff96e72eb0-stdout \
+        2>          /target/release/deps/out-f4da04ff96e72eb0-stderr \
+        || echo $? >/target/release/deps/out-f4da04ff96e72eb0-errcode\
+  ; find /target/release/deps/*-f4da04ff96e72eb0* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-f4da04ff96e72eb0
+COPY --link --from=dep-n-pico-args-0.5.0-f4da04ff96e72eb0 /target/release/deps/*-f4da04ff96e72eb0* /
 
-## this = "4955be4aad7d8789"
+## this = "f4da04ff96e72eb0"
 ## writes = [
-##     "libpico_args-4955be4aad7d8789.rlib",
-##     "libpico_args-4955be4aad7d8789.rmeta",
-##     "pico_args-4955be4aad7d8789.d",
+##     "libpico_args-f4da04ff96e72eb0.rlib",
+##     "libpico_args-f4da04ff96e72eb0.rmeta",
+##     "pico_args-f4da04ff96e72eb0.d",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/cargo-green--hack-caching/release/deps/pico_args-4955be4aad7d8789.d","emit":"dep-info"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/cargo-green--hack-caching/release/deps/libpico_args-4955be4aad7d8789.rmeta","emit":"metadata"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/cargo-green--hack-caching/release/deps/libpico_args-4955be4aad7d8789.rlib","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/pico_args-f4da04ff96e72eb0.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libpico_args-f4da04ff96e72eb0.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libpico_args-f4da04ff96e72eb0.rlib","emit":"link"}',
 ## ]
 ##
 ## [[stages]]
@@ -63,7 +63,7 @@ COPY --link --from=dep-n-pico-args-0.5.0-4955be4aad7d8789 /tmp/cargo-green--hack
 ##
 ## [stages.Cratesio]
 ## stage = "cratesio-pico-args-0.5.0"
-## extracted = "/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/pico-args-0.5.0"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/pico-args-0.5.0"
 ## name = "pico-args"
 ## name_dash_version = "pico-args-0.5.0"
 ## hash = "5be167a7af36ee22fe3115051bc51f6e6c7054c9348e28deb4f49bd6f705a315"
@@ -71,17 +71,17 @@ COPY --link --from=dep-n-pico-args-0.5.0-4955be4aad7d8789 /tmp/cargo-green--hack
 ## [[stages]]
 ##
 ## [stages.Script]
-## stage = "dep-n-pico-args-0.5.0-4955be4aad7d8789"
+## stage = "dep-n-pico-args-0.5.0-f4da04ff96e72eb0"
 ## script = '''
-## FROM rust-base AS dep-n-pico-args-0.5.0-4955be4aad7d8789
+## FROM rust-base AS dep-n-pico-args-0.5.0-f4da04ff96e72eb0
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/cargo-green--hack-caching/release/deps
+## WORKDIR /target/release/deps
 ## RUN \
-##   --mount=from=cratesio-pico-args-0.5.0,source=/pico-args-0.5.0,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/pico-args-0.5.0 \
+##   --mount=from=cratesio-pico-args-0.5.0,source=/pico-args-0.5.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/pico-args-0.5.0 \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=pico_args \
-##         CARGO_MANIFEST_DIR=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/pico-args-0.5.0 \
-##         CARGO_MANIFEST_PATH=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/pico-args-0.5.0/Cargo.toml \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/pico-args-0.5.0 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/pico-args-0.5.0/Cargo.toml \
 ##         CARGO_PKG_AUTHORS=Yevhenii' Reizner <razrfalcon@gmail.com>' \
 ##         CARGO_PKG_DESCRIPTION=An' ultra simple CLI arguments parser.' \
 ##         CARGO_PKG_HOMEPAGE= \
@@ -97,32 +97,32 @@ COPY --link --from=dep-n-pico-args-0.5.0-4955be4aad7d8789 /tmp/cargo-green--hack
 ##         CARGO_PKG_VERSION_PATCH=0 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name pico_args --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --cfg feature'="default"' --cfg feature'="eq-separator"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("combined-flags", "default", "eq-separator", "short-space-opt"))' -C metadata'=d988e94fb19e0d91' -C extra-filename'=-4955be4aad7d8789' --out-dir /tmp/cargo-green--hack-caching/release/deps -C strip'=debuginfo' -L dependency'=/tmp/cargo-green--hack-caching/release/deps' --cap-lints allow /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/pico-args-0.5.0/src/lib.rs \
-##         1>          /tmp/cargo-green--hack-caching/release/deps/out-4955be4aad7d8789-stdout \
-##         2>          /tmp/cargo-green--hack-caching/release/deps/out-4955be4aad7d8789-stderr \
-##         || echo $? >/tmp/cargo-green--hack-caching/release/deps/out-4955be4aad7d8789-errcode\
-##   ; find /tmp/cargo-green--hack-caching/release/deps/*-4955be4aad7d8789* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name pico_args --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --cfg feature'="default"' --cfg feature'="eq-separator"' --check-cfg cfg'(docsrs)' --check-cfg cfg'(feature, values("combined-flags", "default", "eq-separator", "short-space-opt"))' -C metadata'=f4da04ff96e72eb0' -C extra-filename'=-f4da04ff96e72eb0' --out-dir /target/release/deps -C strip'=debuginfo' -L dependency'=/target/release/deps' --cap-lints allow /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/pico-args-0.5.0/src/lib.rs \
+##         1>          /target/release/deps/out-f4da04ff96e72eb0-stdout \
+##         2>          /target/release/deps/out-f4da04ff96e72eb0-stderr \
+##         || echo $? >/target/release/deps/out-f4da04ff96e72eb0-errcode\
+##   ; find /target/release/deps/*-f4da04ff96e72eb0* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
 ## [stages.Script]
-## stage = "out-4955be4aad7d8789"
+## stage = "out-f4da04ff96e72eb0"
 ## script = """
-## FROM scratch AS out-4955be4aad7d8789
-## COPY --link --from=dep-n-pico-args-0.5.0-4955be4aad7d8789 /tmp/cargo-green--hack-caching/release/deps/*-4955be4aad7d8789* /"""
+## FROM scratch AS out-f4da04ff96e72eb0
+## COPY --link --from=dep-n-pico-args-0.5.0-f4da04ff96e72eb0 /target/release/deps/*-f4da04ff96e72eb0* /"""
 
 FROM scratch AS cratesio-shlex-1.3.0
 ADD --chmod=0664 --unpack --checksum=sha256:0fda2ff0d084019ba4d7c6f371c95d8fd75ce3524c3cb8fb653a3023f6323e64 \
   https://static.crates.io/crates/shlex/shlex-1.3.0.crate /
-FROM rust-base AS dep-n-shlex-1.3.0-fbe271220ea80eff
+FROM rust-base AS dep-n-shlex-1.3.0-7b61911c2216006d
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/cargo-green--hack-caching/release/deps
+WORKDIR /target/release/deps
 RUN \
-  --mount=from=cratesio-shlex-1.3.0,source=/shlex-1.3.0,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0 \
+  --mount=from=cratesio-shlex-1.3.0,source=/shlex-1.3.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0 \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=shlex \
-        CARGO_MANIFEST_DIR=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0 \
-        CARGO_MANIFEST_PATH=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0/Cargo.toml \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0/Cargo.toml \
         CARGO_PKG_AUTHORS=comex' <comexk@gmail.com>:Fenhl <fenhl@fenhl.net>:Adrian Taylor <adetaylor@chromium.org>:Alex Touchet <alextouchet@outlook.com>:Daniel Parks <dp+git@oxidized.org>:Garrett Berg <googberg@gmail.com>' \
         CARGO_PKG_DESCRIPTION=Split' a string into shell words, like Python'\'s' shlex.' \
         CARGO_PKG_HOMEPAGE= \
@@ -138,24 +138,24 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --crate-name shlex --edition 2015 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "std"))' -C metadata'=01e7b963b10c019a' -C extra-filename'=-fbe271220ea80eff' --out-dir /tmp/cargo-green--hack-caching/release/deps -C strip'=debuginfo' -L dependency'=/tmp/cargo-green--hack-caching/release/deps' --cap-lints allow /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0/src/lib.rs \
-        1>          /tmp/cargo-green--hack-caching/release/deps/out-fbe271220ea80eff-stdout \
-        2>          /tmp/cargo-green--hack-caching/release/deps/out-fbe271220ea80eff-stderr \
-        || echo $? >/tmp/cargo-green--hack-caching/release/deps/out-fbe271220ea80eff-errcode\
-  ; find /tmp/cargo-green--hack-caching/release/deps/*-fbe271220ea80eff* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
-FROM scratch AS out-fbe271220ea80eff
-COPY --link --from=dep-n-shlex-1.3.0-fbe271220ea80eff /tmp/cargo-green--hack-caching/release/deps/*-fbe271220ea80eff* /
+      rustc --crate-name shlex --edition 2015 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs)' --check-cfg cfg'(feature, values("default", "std"))' -C metadata'=7b61911c2216006d' -C extra-filename'=-7b61911c2216006d' --out-dir /target/release/deps -C strip'=debuginfo' -L dependency'=/target/release/deps' --cap-lints allow /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0/src/lib.rs \
+        1>          /target/release/deps/out-7b61911c2216006d-stdout \
+        2>          /target/release/deps/out-7b61911c2216006d-stderr \
+        || echo $? >/target/release/deps/out-7b61911c2216006d-errcode\
+  ; find /target/release/deps/*-7b61911c2216006d* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-7b61911c2216006d
+COPY --link --from=dep-n-shlex-1.3.0-7b61911c2216006d /target/release/deps/*-7b61911c2216006d* /
 
-## this = "fbe271220ea80eff"
+## this = "7b61911c2216006d"
 ## writes = [
-##     "libshlex-fbe271220ea80eff.rlib",
-##     "libshlex-fbe271220ea80eff.rmeta",
-##     "shlex-fbe271220ea80eff.d",
+##     "libshlex-7b61911c2216006d.rlib",
+##     "libshlex-7b61911c2216006d.rmeta",
+##     "shlex-7b61911c2216006d.d",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/cargo-green--hack-caching/release/deps/shlex-fbe271220ea80eff.d","emit":"dep-info"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/cargo-green--hack-caching/release/deps/libshlex-fbe271220ea80eff.rmeta","emit":"metadata"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/cargo-green--hack-caching/release/deps/libshlex-fbe271220ea80eff.rlib","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/shlex-7b61911c2216006d.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libshlex-7b61911c2216006d.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libshlex-7b61911c2216006d.rlib","emit":"link"}',
 ## ]
 ##
 ## [[stages]]
@@ -168,7 +168,7 @@ COPY --link --from=dep-n-shlex-1.3.0-fbe271220ea80eff /tmp/cargo-green--hack-cac
 ##
 ## [stages.Cratesio]
 ## stage = "cratesio-shlex-1.3.0"
-## extracted = "/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0"
 ## name = "shlex"
 ## name_dash_version = "shlex-1.3.0"
 ## hash = "0fda2ff0d084019ba4d7c6f371c95d8fd75ce3524c3cb8fb653a3023f6323e64"
@@ -176,17 +176,17 @@ COPY --link --from=dep-n-shlex-1.3.0-fbe271220ea80eff /tmp/cargo-green--hack-cac
 ## [[stages]]
 ##
 ## [stages.Script]
-## stage = "dep-n-shlex-1.3.0-fbe271220ea80eff"
+## stage = "dep-n-shlex-1.3.0-7b61911c2216006d"
 ## script = '''
-## FROM rust-base AS dep-n-shlex-1.3.0-fbe271220ea80eff
+## FROM rust-base AS dep-n-shlex-1.3.0-7b61911c2216006d
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/cargo-green--hack-caching/release/deps
+## WORKDIR /target/release/deps
 ## RUN \
-##   --mount=from=cratesio-shlex-1.3.0,source=/shlex-1.3.0,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0 \
+##   --mount=from=cratesio-shlex-1.3.0,source=/shlex-1.3.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0 \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=shlex \
-##         CARGO_MANIFEST_DIR=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0 \
-##         CARGO_MANIFEST_PATH=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0/Cargo.toml \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0/Cargo.toml \
 ##         CARGO_PKG_AUTHORS=comex' <comexk@gmail.com>:Fenhl <fenhl@fenhl.net>:Adrian Taylor <adetaylor@chromium.org>:Alex Touchet <alextouchet@outlook.com>:Daniel Parks <dp+git@oxidized.org>:Garrett Berg <googberg@gmail.com>' \
 ##         CARGO_PKG_DESCRIPTION=Split' a string into shell words, like Python'\'s' shlex.' \
 ##         CARGO_PKG_HOMEPAGE= \
@@ -202,36 +202,36 @@ COPY --link --from=dep-n-shlex-1.3.0-fbe271220ea80eff /tmp/cargo-green--hack-cac
 ##         CARGO_PKG_VERSION_PATCH=0 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name shlex --edition 2015 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "std"))' -C metadata'=01e7b963b10c019a' -C extra-filename'=-fbe271220ea80eff' --out-dir /tmp/cargo-green--hack-caching/release/deps -C strip'=debuginfo' -L dependency'=/tmp/cargo-green--hack-caching/release/deps' --cap-lints allow /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0/src/lib.rs \
-##         1>          /tmp/cargo-green--hack-caching/release/deps/out-fbe271220ea80eff-stdout \
-##         2>          /tmp/cargo-green--hack-caching/release/deps/out-fbe271220ea80eff-stderr \
-##         || echo $? >/tmp/cargo-green--hack-caching/release/deps/out-fbe271220ea80eff-errcode\
-##   ; find /tmp/cargo-green--hack-caching/release/deps/*-fbe271220ea80eff* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name shlex --edition 2015 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs)' --check-cfg cfg'(feature, values("default", "std"))' -C metadata'=7b61911c2216006d' -C extra-filename'=-7b61911c2216006d' --out-dir /target/release/deps -C strip'=debuginfo' -L dependency'=/target/release/deps' --cap-lints allow /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/shlex-1.3.0/src/lib.rs \
+##         1>          /target/release/deps/out-7b61911c2216006d-stdout \
+##         2>          /target/release/deps/out-7b61911c2216006d-stderr \
+##         || echo $? >/target/release/deps/out-7b61911c2216006d-errcode\
+##   ; find /target/release/deps/*-7b61911c2216006d* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
 ## [stages.Script]
-## stage = "out-fbe271220ea80eff"
+## stage = "out-7b61911c2216006d"
 ## script = """
-## FROM scratch AS out-fbe271220ea80eff
-## COPY --link --from=dep-n-shlex-1.3.0-fbe271220ea80eff /tmp/cargo-green--hack-caching/release/deps/*-fbe271220ea80eff* /"""
+## FROM scratch AS out-7b61911c2216006d
+## COPY --link --from=dep-n-shlex-1.3.0-7b61911c2216006d /target/release/deps/*-7b61911c2216006d* /"""
 
 FROM scratch AS cratesio-buildxargs-1.4.0
 ADD --chmod=0664 --unpack --checksum=sha256:56c336e07f5bce0be9c8d586b0fd1093827363c460be439a81731a9e2c28dc3f \
   https://static.crates.io/crates/buildxargs/buildxargs-1.4.0.crate /
-FROM rust-base AS dep-n-buildxargs-1.4.0-06b11d1b122b91b3
+FROM rust-base AS dep-n-buildxargs-1.4.0-743dae7d2ec996f8
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/cargo-green--hack-caching/release/deps
+WORKDIR /target/release/deps
 RUN \
-  --mount=from=cratesio-buildxargs-1.4.0,source=/buildxargs-1.4.0,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/buildxargs-1.4.0 \
-  --mount=from=out-4955be4aad7d8789,dst=/tmp/cargo-green--hack-caching/release/deps/libpico_args-4955be4aad7d8789.rlib,source=/libpico_args-4955be4aad7d8789.rlib \
-  --mount=from=out-4955be4aad7d8789,dst=/tmp/cargo-green--hack-caching/release/deps/libpico_args-4955be4aad7d8789.rmeta,source=/libpico_args-4955be4aad7d8789.rmeta \
-  --mount=from=out-fbe271220ea80eff,dst=/tmp/cargo-green--hack-caching/release/deps/libshlex-fbe271220ea80eff.rlib,source=/libshlex-fbe271220ea80eff.rlib \
-  --mount=from=out-fbe271220ea80eff,dst=/tmp/cargo-green--hack-caching/release/deps/libshlex-fbe271220ea80eff.rmeta,source=/libshlex-fbe271220ea80eff.rmeta \
+  --mount=from=cratesio-buildxargs-1.4.0,source=/buildxargs-1.4.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/buildxargs-1.4.0 \
+  --mount=from=out-f4da04ff96e72eb0,dst=/target/release/deps/libpico_args-f4da04ff96e72eb0.rlib,source=/libpico_args-f4da04ff96e72eb0.rlib \
+  --mount=from=out-f4da04ff96e72eb0,dst=/target/release/deps/libpico_args-f4da04ff96e72eb0.rmeta,source=/libpico_args-f4da04ff96e72eb0.rmeta \
+  --mount=from=out-7b61911c2216006d,dst=/target/release/deps/libshlex-7b61911c2216006d.rlib,source=/libshlex-7b61911c2216006d.rlib \
+  --mount=from=out-7b61911c2216006d,dst=/target/release/deps/libshlex-7b61911c2216006d.rmeta,source=/libshlex-7b61911c2216006d.rmeta \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=buildxargs \
-        CARGO_MANIFEST_DIR=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/buildxargs-1.4.0 \
-        CARGO_MANIFEST_PATH=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/buildxargs-1.4.0/Cargo.toml \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/buildxargs-1.4.0 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/buildxargs-1.4.0/Cargo.toml \
         CARGO_PKG_AUTHORS=Pierre' Fenoll <pierrefenoll@gmail.com>' \
         CARGO_PKG_DESCRIPTION=xargs' for BuildKit with docker buildx bake' \
         CARGO_PKG_HOMEPAGE= \
@@ -247,47 +247,46 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGO_PRIMARY_PACKAGE=1 \
-        CARGO_SBOM_PATH= \
         CARGOGREEN=1 \
-      rustc --crate-name buildxargs --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=9ab50e0985784fbf' -C extra-filename'=-06b11d1b122b91b3' --out-dir /tmp/cargo-green--hack-caching/release/deps -C strip'=debuginfo' -L dependency'=/tmp/cargo-green--hack-caching/release/deps' --extern pico_args'=/tmp/cargo-green--hack-caching/release/deps/libpico_args-4955be4aad7d8789.rmeta' --extern shlex'=/tmp/cargo-green--hack-caching/release/deps/libshlex-fbe271220ea80eff.rmeta' --cap-lints allow /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/buildxargs-1.4.0/src/lib.rs \
-        1>          /tmp/cargo-green--hack-caching/release/deps/out-06b11d1b122b91b3-stdout \
-        2>          /tmp/cargo-green--hack-caching/release/deps/out-06b11d1b122b91b3-stderr \
-        || echo $? >/tmp/cargo-green--hack-caching/release/deps/out-06b11d1b122b91b3-errcode\
-  ; find /tmp/cargo-green--hack-caching/release/deps/*-06b11d1b122b91b3* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
-FROM scratch AS out-06b11d1b122b91b3
-COPY --link --from=dep-n-buildxargs-1.4.0-06b11d1b122b91b3 /tmp/cargo-green--hack-caching/release/deps/*-06b11d1b122b91b3* /
+      rustc --crate-name buildxargs --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --check-cfg cfg'(docsrs)' --check-cfg cfg'(feature, values())' -C metadata'=743dae7d2ec996f8' -C extra-filename'=-743dae7d2ec996f8' --out-dir /target/release/deps -C strip'=debuginfo' -L dependency'=/target/release/deps' --extern pico_args'=/target/release/deps/libpico_args-f4da04ff96e72eb0.rmeta' --extern shlex'=/target/release/deps/libshlex-7b61911c2216006d.rmeta' --cap-lints allow /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/buildxargs-1.4.0/src/lib.rs \
+        1>          /target/release/deps/out-743dae7d2ec996f8-stdout \
+        2>          /target/release/deps/out-743dae7d2ec996f8-stderr \
+        || echo $? >/target/release/deps/out-743dae7d2ec996f8-errcode\
+  ; find /target/release/deps/*-743dae7d2ec996f8* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-743dae7d2ec996f8
+COPY --link --from=dep-n-buildxargs-1.4.0-743dae7d2ec996f8 /target/release/deps/*-743dae7d2ec996f8* /
 
-## this = "06b11d1b122b91b3"
+## this = "743dae7d2ec996f8"
 ## deps = [
-##     "4955be4aad7d8789",
-##     "fbe271220ea80eff",
+##     "f4da04ff96e72eb0",
+##     "7b61911c2216006d",
 ## ]
 ## writes = [
-##     "buildxargs-06b11d1b122b91b3.d",
-##     "libbuildxargs-06b11d1b122b91b3.rlib",
-##     "libbuildxargs-06b11d1b122b91b3.rmeta",
+##     "buildxargs-743dae7d2ec996f8.d",
+##     "libbuildxargs-743dae7d2ec996f8.rlib",
+##     "libbuildxargs-743dae7d2ec996f8.rmeta",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/cargo-green--hack-caching/release/deps/buildxargs-06b11d1b122b91b3.d","emit":"dep-info"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/cargo-green--hack-caching/release/deps/libbuildxargs-06b11d1b122b91b3.rmeta","emit":"metadata"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/cargo-green--hack-caching/release/deps/libbuildxargs-06b11d1b122b91b3.rlib","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/buildxargs-743dae7d2ec996f8.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libbuildxargs-743dae7d2ec996f8.rmeta","emit":"metadata"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/libbuildxargs-743dae7d2ec996f8.rlib","emit":"link"}',
 ## ]
 ##
 ## [[externs]]
-## from = "out-4955be4aad7d8789"
-## xtern = "libpico_args-4955be4aad7d8789.rlib"
+## from = "out-f4da04ff96e72eb0"
+## xtern = "libpico_args-f4da04ff96e72eb0.rlib"
 ##
 ## [[externs]]
-## from = "out-4955be4aad7d8789"
-## xtern = "libpico_args-4955be4aad7d8789.rmeta"
+## from = "out-f4da04ff96e72eb0"
+## xtern = "libpico_args-f4da04ff96e72eb0.rmeta"
 ##
 ## [[externs]]
-## from = "out-fbe271220ea80eff"
-## xtern = "libshlex-fbe271220ea80eff.rlib"
+## from = "out-7b61911c2216006d"
+## xtern = "libshlex-7b61911c2216006d.rlib"
 ##
 ## [[externs]]
-## from = "out-fbe271220ea80eff"
-## xtern = "libshlex-fbe271220ea80eff.rmeta"
+## from = "out-7b61911c2216006d"
+## xtern = "libshlex-7b61911c2216006d.rmeta"
 ##
 ## [[stages]]
 ##
@@ -299,7 +298,7 @@ COPY --link --from=dep-n-buildxargs-1.4.0-06b11d1b122b91b3 /tmp/cargo-green--hac
 ##
 ## [stages.Cratesio]
 ## stage = "cratesio-buildxargs-1.4.0"
-## extracted = "/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/buildxargs-1.4.0"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/buildxargs-1.4.0"
 ## name = "buildxargs"
 ## name_dash_version = "buildxargs-1.4.0"
 ## hash = "56c336e07f5bce0be9c8d586b0fd1093827363c460be439a81731a9e2c28dc3f"
@@ -307,21 +306,21 @@ COPY --link --from=dep-n-buildxargs-1.4.0-06b11d1b122b91b3 /tmp/cargo-green--hac
 ## [[stages]]
 ##
 ## [stages.Script]
-## stage = "dep-n-buildxargs-1.4.0-06b11d1b122b91b3"
+## stage = "dep-n-buildxargs-1.4.0-743dae7d2ec996f8"
 ## script = '''
-## FROM rust-base AS dep-n-buildxargs-1.4.0-06b11d1b122b91b3
+## FROM rust-base AS dep-n-buildxargs-1.4.0-743dae7d2ec996f8
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/cargo-green--hack-caching/release/deps
+## WORKDIR /target/release/deps
 ## RUN \
-##   --mount=from=cratesio-buildxargs-1.4.0,source=/buildxargs-1.4.0,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/buildxargs-1.4.0 \
-##   --mount=from=out-4955be4aad7d8789,dst=/tmp/cargo-green--hack-caching/release/deps/libpico_args-4955be4aad7d8789.rlib,source=/libpico_args-4955be4aad7d8789.rlib \
-##   --mount=from=out-4955be4aad7d8789,dst=/tmp/cargo-green--hack-caching/release/deps/libpico_args-4955be4aad7d8789.rmeta,source=/libpico_args-4955be4aad7d8789.rmeta \
-##   --mount=from=out-fbe271220ea80eff,dst=/tmp/cargo-green--hack-caching/release/deps/libshlex-fbe271220ea80eff.rlib,source=/libshlex-fbe271220ea80eff.rlib \
-##   --mount=from=out-fbe271220ea80eff,dst=/tmp/cargo-green--hack-caching/release/deps/libshlex-fbe271220ea80eff.rmeta,source=/libshlex-fbe271220ea80eff.rmeta \
+##   --mount=from=cratesio-buildxargs-1.4.0,source=/buildxargs-1.4.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/buildxargs-1.4.0 \
+##   --mount=from=out-f4da04ff96e72eb0,dst=/target/release/deps/libpico_args-f4da04ff96e72eb0.rlib,source=/libpico_args-f4da04ff96e72eb0.rlib \
+##   --mount=from=out-f4da04ff96e72eb0,dst=/target/release/deps/libpico_args-f4da04ff96e72eb0.rmeta,source=/libpico_args-f4da04ff96e72eb0.rmeta \
+##   --mount=from=out-7b61911c2216006d,dst=/target/release/deps/libshlex-7b61911c2216006d.rlib,source=/libshlex-7b61911c2216006d.rlib \
+##   --mount=from=out-7b61911c2216006d,dst=/target/release/deps/libshlex-7b61911c2216006d.rmeta,source=/libshlex-7b61911c2216006d.rmeta \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=buildxargs \
-##         CARGO_MANIFEST_DIR=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/buildxargs-1.4.0 \
-##         CARGO_MANIFEST_PATH=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/buildxargs-1.4.0/Cargo.toml \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/buildxargs-1.4.0 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/buildxargs-1.4.0/Cargo.toml \
 ##         CARGO_PKG_AUTHORS=Pierre' Fenoll <pierrefenoll@gmail.com>' \
 ##         CARGO_PKG_DESCRIPTION=xargs' for BuildKit with docker buildx bake' \
 ##         CARGO_PKG_HOMEPAGE= \
@@ -337,36 +336,35 @@ COPY --link --from=dep-n-buildxargs-1.4.0-06b11d1b122b91b3 /tmp/cargo-green--hac
 ##         CARGO_PKG_VERSION_PATCH=0 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGO_PRIMARY_PACKAGE=1 \
-##         CARGO_SBOM_PATH= \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name buildxargs --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=9ab50e0985784fbf' -C extra-filename'=-06b11d1b122b91b3' --out-dir /tmp/cargo-green--hack-caching/release/deps -C strip'=debuginfo' -L dependency'=/tmp/cargo-green--hack-caching/release/deps' --extern pico_args'=/tmp/cargo-green--hack-caching/release/deps/libpico_args-4955be4aad7d8789.rmeta' --extern shlex'=/tmp/cargo-green--hack-caching/release/deps/libshlex-fbe271220ea80eff.rmeta' --cap-lints allow /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/buildxargs-1.4.0/src/lib.rs \
-##         1>          /tmp/cargo-green--hack-caching/release/deps/out-06b11d1b122b91b3-stdout \
-##         2>          /tmp/cargo-green--hack-caching/release/deps/out-06b11d1b122b91b3-stderr \
-##         || echo $? >/tmp/cargo-green--hack-caching/release/deps/out-06b11d1b122b91b3-errcode\
-##   ; find /tmp/cargo-green--hack-caching/release/deps/*-06b11d1b122b91b3* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name buildxargs --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --check-cfg cfg'(docsrs)' --check-cfg cfg'(feature, values())' -C metadata'=743dae7d2ec996f8' -C extra-filename'=-743dae7d2ec996f8' --out-dir /target/release/deps -C strip'=debuginfo' -L dependency'=/target/release/deps' --extern pico_args'=/target/release/deps/libpico_args-f4da04ff96e72eb0.rmeta' --extern shlex'=/target/release/deps/libshlex-7b61911c2216006d.rmeta' --cap-lints allow /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/buildxargs-1.4.0/src/lib.rs \
+##         1>          /target/release/deps/out-743dae7d2ec996f8-stdout \
+##         2>          /target/release/deps/out-743dae7d2ec996f8-stderr \
+##         || echo $? >/target/release/deps/out-743dae7d2ec996f8-errcode\
+##   ; find /target/release/deps/*-743dae7d2ec996f8* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
 ## [stages.Script]
-## stage = "out-06b11d1b122b91b3"
+## stage = "out-743dae7d2ec996f8"
 ## script = """
-## FROM scratch AS out-06b11d1b122b91b3
-## COPY --link --from=dep-n-buildxargs-1.4.0-06b11d1b122b91b3 /tmp/cargo-green--hack-caching/release/deps/*-06b11d1b122b91b3* /"""
+## FROM scratch AS out-743dae7d2ec996f8
+## COPY --link --from=dep-n-buildxargs-1.4.0-743dae7d2ec996f8 /target/release/deps/*-743dae7d2ec996f8* /"""
 
 
-FROM rust-base AS dep-n-buildxargs-1.4.0-6fc67b1786a33ea3
+FROM rust-base AS dep-n-buildxargs-1.4.0-1c7f7fced940a33a
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /tmp/cargo-green--hack-caching/release/deps
+WORKDIR /target/release/deps
 RUN \
-  --mount=from=cratesio-buildxargs-1.4.0,source=/buildxargs-1.4.0,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/buildxargs-1.4.0 \
-  --mount=from=out-06b11d1b122b91b3,dst=/tmp/cargo-green--hack-caching/release/deps/libbuildxargs-06b11d1b122b91b3.rlib,source=/libbuildxargs-06b11d1b122b91b3.rlib \
-  --mount=from=out-4955be4aad7d8789,dst=/tmp/cargo-green--hack-caching/release/deps/libpico_args-4955be4aad7d8789.rlib,source=/libpico_args-4955be4aad7d8789.rlib \
-  --mount=from=out-fbe271220ea80eff,dst=/tmp/cargo-green--hack-caching/release/deps/libshlex-fbe271220ea80eff.rlib,source=/libshlex-fbe271220ea80eff.rlib \
+  --mount=from=cratesio-buildxargs-1.4.0,source=/buildxargs-1.4.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/buildxargs-1.4.0 \
+  --mount=from=out-743dae7d2ec996f8,dst=/target/release/deps/libbuildxargs-743dae7d2ec996f8.rlib,source=/libbuildxargs-743dae7d2ec996f8.rlib \
+  --mount=from=out-f4da04ff96e72eb0,dst=/target/release/deps/libpico_args-f4da04ff96e72eb0.rlib,source=/libpico_args-f4da04ff96e72eb0.rlib \
+  --mount=from=out-7b61911c2216006d,dst=/target/release/deps/libshlex-7b61911c2216006d.rlib,source=/libshlex-7b61911c2216006d.rlib \
     env CARGO="$(which cargo)" \
         CARGO_BIN_NAME=buildxargs \
         CARGO_CRATE_NAME=buildxargs \
-        CARGO_MANIFEST_DIR=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/buildxargs-1.4.0 \
-        CARGO_MANIFEST_PATH=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/buildxargs-1.4.0/Cargo.toml \
+        CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/buildxargs-1.4.0 \
+        CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/buildxargs-1.4.0/Cargo.toml \
         CARGO_PKG_AUTHORS=Pierre' Fenoll <pierrefenoll@gmail.com>' \
         CARGO_PKG_DESCRIPTION=xargs' for BuildKit with docker buildx bake' \
         CARGO_PKG_HOMEPAGE= \
@@ -382,46 +380,45 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGO_PRIMARY_PACKAGE=1 \
-        CARGO_SBOM_PATH= \
         CARGOGREEN=1 \
-      rustc --crate-name buildxargs --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C opt-level'=3' -C embed-bitcode'=no' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=239a6f0efdbf3f88' -C extra-filename'=-6fc67b1786a33ea3' --out-dir /tmp/cargo-green--hack-caching/release/deps -C strip'=debuginfo' -L dependency'=/tmp/cargo-green--hack-caching/release/deps' --extern buildxargs'=/tmp/cargo-green--hack-caching/release/deps/libbuildxargs-06b11d1b122b91b3.rlib' --extern pico_args'=/tmp/cargo-green--hack-caching/release/deps/libpico_args-4955be4aad7d8789.rlib' --extern shlex'=/tmp/cargo-green--hack-caching/release/deps/libshlex-fbe271220ea80eff.rlib' --cap-lints allow /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/buildxargs-1.4.0/src/main.rs \
-        1>          /tmp/cargo-green--hack-caching/release/deps/out-6fc67b1786a33ea3-stdout \
-        2>          /tmp/cargo-green--hack-caching/release/deps/out-6fc67b1786a33ea3-stderr \
-        || echo $? >/tmp/cargo-green--hack-caching/release/deps/out-6fc67b1786a33ea3-errcode\
-  ; find /tmp/cargo-green--hack-caching/release/deps/*-6fc67b1786a33ea3* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
-FROM scratch AS out-6fc67b1786a33ea3
-COPY --link --from=dep-n-buildxargs-1.4.0-6fc67b1786a33ea3 /tmp/cargo-green--hack-caching/release/deps/*-6fc67b1786a33ea3* /
+      rustc --crate-name buildxargs --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C opt-level'=3' -C embed-bitcode'=no' --check-cfg cfg'(docsrs)' --check-cfg cfg'(feature, values())' -C metadata'=1c7f7fced940a33a' -C extra-filename'=-1c7f7fced940a33a' --out-dir /target/release/deps -C strip'=debuginfo' -L dependency'=/target/release/deps' --extern buildxargs'=/target/release/deps/libbuildxargs-743dae7d2ec996f8.rlib' --extern pico_args'=/target/release/deps/libpico_args-f4da04ff96e72eb0.rlib' --extern shlex'=/target/release/deps/libshlex-7b61911c2216006d.rlib' --cap-lints allow /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/buildxargs-1.4.0/src/main.rs \
+        1>          /target/release/deps/out-1c7f7fced940a33a-stdout \
+        2>          /target/release/deps/out-1c7f7fced940a33a-stderr \
+        || echo $? >/target/release/deps/out-1c7f7fced940a33a-errcode\
+  ; find /target/release/deps/*-1c7f7fced940a33a* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-1c7f7fced940a33a
+COPY --link --from=dep-n-buildxargs-1.4.0-1c7f7fced940a33a /target/release/deps/*-1c7f7fced940a33a* /
 
 # Pipe this file to:
 # DOCKER_BUILDKIT="1" \
 #   docker build --network=none --output=. - <THIS_FILE
 
-## this = "6fc67b1786a33ea3"
+## this = "1c7f7fced940a33a"
 ## deps = [
-##     "06b11d1b122b91b3",
-##     "4955be4aad7d8789",
-##     "fbe271220ea80eff",
+##     "743dae7d2ec996f8",
+##     "f4da04ff96e72eb0",
+##     "7b61911c2216006d",
 ## ]
 ## writes = [
-##     "buildxargs-6fc67b1786a33ea3",
-##     "buildxargs-6fc67b1786a33ea3.d",
+##     "buildxargs-1c7f7fced940a33a",
+##     "buildxargs-1c7f7fced940a33a.d",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/tmp/cargo-green--hack-caching/release/deps/buildxargs-6fc67b1786a33ea3.d","emit":"dep-info"}',
-##     '{"$message_type":"artifact","artifact":"/tmp/cargo-green--hack-caching/release/deps/buildxargs-6fc67b1786a33ea3","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/buildxargs-1c7f7fced940a33a.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/buildxargs-1c7f7fced940a33a","emit":"link"}',
 ## ]
 ##
 ## [[externs]]
-## from = "out-06b11d1b122b91b3"
-## xtern = "libbuildxargs-06b11d1b122b91b3.rlib"
+## from = "out-743dae7d2ec996f8"
+## xtern = "libbuildxargs-743dae7d2ec996f8.rlib"
 ##
 ## [[externs]]
-## from = "out-4955be4aad7d8789"
-## xtern = "libpico_args-4955be4aad7d8789.rlib"
+## from = "out-f4da04ff96e72eb0"
+## xtern = "libpico_args-f4da04ff96e72eb0.rlib"
 ##
 ## [[externs]]
-## from = "out-fbe271220ea80eff"
-## xtern = "libshlex-fbe271220ea80eff.rlib"
+## from = "out-7b61911c2216006d"
+## xtern = "libshlex-7b61911c2216006d.rlib"
 ##
 ## [[stages]]
 ##
@@ -433,7 +430,7 @@ COPY --link --from=dep-n-buildxargs-1.4.0-6fc67b1786a33ea3 /tmp/cargo-green--hac
 ##
 ## [stages.Cratesio]
 ## stage = "cratesio-buildxargs-1.4.0"
-## extracted = "/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/buildxargs-1.4.0"
+## extracted = "/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/buildxargs-1.4.0"
 ## name = "buildxargs"
 ## name_dash_version = "buildxargs-1.4.0"
 ## hash = "56c336e07f5bce0be9c8d586b0fd1093827363c460be439a81731a9e2c28dc3f"
@@ -441,21 +438,21 @@ COPY --link --from=dep-n-buildxargs-1.4.0-6fc67b1786a33ea3 /tmp/cargo-green--hac
 ## [[stages]]
 ##
 ## [stages.Script]
-## stage = "dep-n-buildxargs-1.4.0-6fc67b1786a33ea3"
+## stage = "dep-n-buildxargs-1.4.0-1c7f7fced940a33a"
 ## script = '''
-## FROM rust-base AS dep-n-buildxargs-1.4.0-6fc67b1786a33ea3
+## FROM rust-base AS dep-n-buildxargs-1.4.0-1c7f7fced940a33a
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /tmp/cargo-green--hack-caching/release/deps
+## WORKDIR /target/release/deps
 ## RUN \
-##   --mount=from=cratesio-buildxargs-1.4.0,source=/buildxargs-1.4.0,dst=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/buildxargs-1.4.0 \
-##   --mount=from=out-06b11d1b122b91b3,dst=/tmp/cargo-green--hack-caching/release/deps/libbuildxargs-06b11d1b122b91b3.rlib,source=/libbuildxargs-06b11d1b122b91b3.rlib \
-##   --mount=from=out-4955be4aad7d8789,dst=/tmp/cargo-green--hack-caching/release/deps/libpico_args-4955be4aad7d8789.rlib,source=/libpico_args-4955be4aad7d8789.rlib \
-##   --mount=from=out-fbe271220ea80eff,dst=/tmp/cargo-green--hack-caching/release/deps/libshlex-fbe271220ea80eff.rlib,source=/libshlex-fbe271220ea80eff.rlib \
+##   --mount=from=cratesio-buildxargs-1.4.0,source=/buildxargs-1.4.0,dst=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/buildxargs-1.4.0 \
+##   --mount=from=out-743dae7d2ec996f8,dst=/target/release/deps/libbuildxargs-743dae7d2ec996f8.rlib,source=/libbuildxargs-743dae7d2ec996f8.rlib \
+##   --mount=from=out-f4da04ff96e72eb0,dst=/target/release/deps/libpico_args-f4da04ff96e72eb0.rlib,source=/libpico_args-f4da04ff96e72eb0.rlib \
+##   --mount=from=out-7b61911c2216006d,dst=/target/release/deps/libshlex-7b61911c2216006d.rlib,source=/libshlex-7b61911c2216006d.rlib \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_BIN_NAME=buildxargs \
 ##         CARGO_CRATE_NAME=buildxargs \
-##         CARGO_MANIFEST_DIR=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/buildxargs-1.4.0 \
-##         CARGO_MANIFEST_PATH=/home/pete/.cargo/registry/src/index.crates.io-0000000000000000/buildxargs-1.4.0/Cargo.toml \
+##         CARGO_MANIFEST_DIR=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/buildxargs-1.4.0 \
+##         CARGO_MANIFEST_PATH=/home/runner/.cargo/registry/src/index.crates.io-0000000000000000/buildxargs-1.4.0/Cargo.toml \
 ##         CARGO_PKG_AUTHORS=Pierre' Fenoll <pierrefenoll@gmail.com>' \
 ##         CARGO_PKG_DESCRIPTION=xargs' for BuildKit with docker buildx bake' \
 ##         CARGO_PKG_HOMEPAGE= \
@@ -471,21 +468,20 @@ COPY --link --from=dep-n-buildxargs-1.4.0-6fc67b1786a33ea3 /tmp/cargo-green--hac
 ##         CARGO_PKG_VERSION_PATCH=0 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGO_PRIMARY_PACKAGE=1 \
-##         CARGO_SBOM_PATH= \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name buildxargs --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C opt-level'=3' -C embed-bitcode'=no' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=239a6f0efdbf3f88' -C extra-filename'=-6fc67b1786a33ea3' --out-dir /tmp/cargo-green--hack-caching/release/deps -C strip'=debuginfo' -L dependency'=/tmp/cargo-green--hack-caching/release/deps' --extern buildxargs'=/tmp/cargo-green--hack-caching/release/deps/libbuildxargs-06b11d1b122b91b3.rlib' --extern pico_args'=/tmp/cargo-green--hack-caching/release/deps/libpico_args-4955be4aad7d8789.rlib' --extern shlex'=/tmp/cargo-green--hack-caching/release/deps/libshlex-fbe271220ea80eff.rlib' --cap-lints allow /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/buildxargs-1.4.0/src/main.rs \
-##         1>          /tmp/cargo-green--hack-caching/release/deps/out-6fc67b1786a33ea3-stdout \
-##         2>          /tmp/cargo-green--hack-caching/release/deps/out-6fc67b1786a33ea3-stderr \
-##         || echo $? >/tmp/cargo-green--hack-caching/release/deps/out-6fc67b1786a33ea3-errcode\
-##   ; find /tmp/cargo-green--hack-caching/release/deps/*-6fc67b1786a33ea3* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name buildxargs --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C opt-level'=3' -C embed-bitcode'=no' --check-cfg cfg'(docsrs)' --check-cfg cfg'(feature, values())' -C metadata'=1c7f7fced940a33a' -C extra-filename'=-1c7f7fced940a33a' --out-dir /target/release/deps -C strip'=debuginfo' -L dependency'=/target/release/deps' --extern buildxargs'=/target/release/deps/libbuildxargs-743dae7d2ec996f8.rlib' --extern pico_args'=/target/release/deps/libpico_args-f4da04ff96e72eb0.rlib' --extern shlex'=/target/release/deps/libshlex-7b61911c2216006d.rlib' --cap-lints allow /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/buildxargs-1.4.0/src/main.rs \
+##         1>          /target/release/deps/out-1c7f7fced940a33a-stdout \
+##         2>          /target/release/deps/out-1c7f7fced940a33a-stderr \
+##         || echo $? >/target/release/deps/out-1c7f7fced940a33a-errcode\
+##   ; find /target/release/deps/*-1c7f7fced940a33a* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
 ## [stages.Script]
-## stage = "out-6fc67b1786a33ea3"
+## stage = "out-1c7f7fced940a33a"
 ## script = """
-## FROM scratch AS out-6fc67b1786a33ea3
-## COPY --link --from=dep-n-buildxargs-1.4.0-6fc67b1786a33ea3 /tmp/cargo-green--hack-caching/release/deps/*-6fc67b1786a33ea3* /"""
+## FROM scratch AS out-1c7f7fced940a33a
+## COPY --link --from=dep-n-buildxargs-1.4.0-1c7f7fced940a33a /target/release/deps/*-1c7f7fced940a33a* /"""
 
 FROM scratch
-COPY --link --from=out-6fc67b1786a33ea3 /buildxargs-6fc67b1786a33ea3 /buildxargs
+COPY --link --from=out-1c7f7fced940a33a /buildxargs-1c7f7fced940a33a /buildxargs
