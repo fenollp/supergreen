@@ -103,4 +103,4 @@ jobs:
             unset RUSTFLAGS
 
             ./hack/caching.sh
-    # - run: git --no-pager diff --cached --exit-code -- recipes/buildxargs@1.4.0.Dockerfile  #TODO: enable whence https://github.com/fenollp/supergreen/pull/151
+    - run: git --no-pager diff --cached --exit-code -- recipes/buildxargs@1.4.0.Dockerfile
