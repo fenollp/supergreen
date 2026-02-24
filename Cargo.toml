@@ -38,15 +38,11 @@ cargo-lock = { version = "11", default-features = false }
 cargo-subcommand-metadata = { version = "0, >=0.1", default-features = false }
 cargo_toml = { version = "0, >=0.21", default-features = false }
 chrono = { version = "0, >=0.4", features = [ "now" ], default-features = false }
-indexmap = { version = "2", features = [ "serde", "std" ], default-features = false }
-shell-quote = { version = "0, >=0.7", features = [ "sh" ], default-features = false }
-tokio-stream = { version = "0, >=0.1", default-features = false }
-# clap = { version = "4", features = [ "derive" ] }
-# clap-cargo = { version = "0, >=0.15", features = [ "cargo_metadata", "clap" ] }
 crc32fast = { version = "1", default-features = false }
 env_logger = { version = "0, >=0.11", default-features = false }
 futures = { version = "0, >=0.3", default-features = false }
 home = { version = "0, >=0.5", default-features = false }
+indexmap = { version = "2", features = [ "serde", "std" ], default-features = false }
 log = { version = "0, >=0.4", default-features = false }
 nutype = { version = "0, >=0.4", features = [ "serde" ], default-features = false }
 pico-args = { version = "0, >=0.5", features = [ "eq-separator" ], default-features = false }
@@ -58,11 +54,16 @@ serde = { version = "1", features = [ "derive" ], default-features = false }
 serde-jsonlines = { version = "0, >=0.6", features = [ "async" ], default-features = false }
 serde_json = { version = "1", default-features = false }
 sha256 = { version = "1", features = [ "async" ], default-features = false }
+shell-quote = { version = "0, >=0.7", features = [ "sh" ], default-features = false }
 szyk = { version = "1", default-features = false }
 temp-env = { version = "0, >=0.3", default-features = false }
 termimad = { version = "0, >=0.34", default-features = false }
 test-case = { version = "3", default-features = false }
 tokio = { version = "1", features = [ "io-util", "macros", "process", "rt-multi-thread", "time" ], default-features = false }
+tokio-stream = { version = "0, >=0.1", default-features = false }
 toml = { version = "0, >=0.8", default-features = false }
 version-compare = { version = "0, >=0.2", default-features = false }
 which = { version = "8", features = [ "real-sys" ], default-features = false }
+
+# clap = { version = "4", features = [ "derive" ] }
+# clap-cargo = { version = "0, >=0.15", features = [ "cargo_metadata", "clap" ] }
