@@ -169,13 +169,6 @@ async fn wrap_rustc(
     .inspect_err(|e| error!("Error: {e}"))
 }
 
-fn cargo_home() -> Result<Utf8PathBuf> {
-    home::cargo_home()
-        .map_err(|e| anyhow!("bad $CARGO_HOME or something: {e}"))?
-        .try_into()
-        .map_err(|e| anyhow!("corrupted $CARGO_HOME path: {e}"))
-}
-
 #[expect(clippy::too_many_arguments)]
 async fn do_wrap_rustc(
     green: Green,
@@ -199,16 +192,14 @@ async fn do_wrap_rustc(
             .map_err(|e| anyhow!("Failed to `mkdir -p {incremental}`: {e}"))?;
     }
 
-    let cargo_home = cargo_home()?;
-
     info!("picked {rustc_stage} for {input}");
 
     let mut rustc_block = format!("FROM {RST} AS {rustc_stage}\n");
     rustc_block.push_str(&format!("SHELL {SHELL:?}\n"));
     rustc_block.push_str(&format!("WORKDIR {out_dir}\n", out_dir = virtual_target_dir(&out_dir)));
-    if !pwd.starts_with(cargo_home.join("registry/src")) {
+    if !pwd.starts_with(green.cargo_home.join("registry/src")) {
         // Essentially match the same-ish path that points to crates-io paths.
-        // Experiment showed that git-check'ed-out crates didn't like: // if !pwd.starts_with(&cargo_home) {
+        // Experiment showed that git-check'ed-out crates didn't like: // if !pwd.starts_with(&green.cargo_home) {
         rustc_block.push_str(&format!("WORKDIR {pwd}\n", pwd = virtual_target_dir(&pwd)));
     }
 
@@ -218,12 +209,12 @@ async fn do_wrap_rustc(
 
     // TODO: support non-crates.io crates managers + proxies
     // TODO: use --secret mounts for private deps (and secret direct artifacts)
-    let code_stage = if input.starts_with(cargo_home.join("registry/src")) {
+    let code_stage = if input.starts_with(green.cargo_home.join("registry/src")) {
         // Input is of a crate dep (hosted at crates.io)
         // Let's optimize this case by fetching & caching crate tarball
 
         cratesio::named_stage(krate_name, krate_manifest_dir).await?
-    } else if krate_manifest_dir.starts_with(cargo_home.join("git/checkouts")) {
+    } else if krate_manifest_dir.starts_with(green.cargo_home.join("git/checkouts")) {
         // Input is of a git checked out dep
 
         checkouts::as_stage(krate_manifest_dir).await?

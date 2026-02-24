@@ -4,6 +4,7 @@ use std::{
 };
 
 use anyhow::{anyhow, bail, Result};
+use camino::Utf8PathBuf;
 use log::{debug, info, warn};
 
 use crate::{
@@ -21,6 +22,13 @@ use crate::{
     tmp, ENV_FINAL_PATH, ENV_RUNNER, ENV_SYNTAX_IMAGE, PKG, VSN,
 };
 
+fn cargo_home() -> Result<Utf8PathBuf> {
+    home::cargo_home()
+        .map_err(|e| anyhow!("bad $CARGO_HOME or something: {e}"))?
+        .try_into()
+        .map_err(|e| anyhow!("corrupted $CARGO_HOME path: {e}"))
+}
+
 pub(crate) async fn main() -> Result<Green> {
     let mut green = Green::new_from_env_then_manifest()?;
 
@@ -32,6 +40,12 @@ pub(crate) async fn main() -> Result<Green> {
     if let Ok(val) = env::var(var) {
         green.runner = val.parse().map_err(|e| anyhow!("${var}={val:?} {e}"))?;
     }
+
+    // Get $CARGO_HOME only once and disallow conf overrides
+    if green.cargo_home != "" {
+        bail!("'cargo_home' setting cannot be set")
+    }
+    green.cargo_home = cargo_home()?;
 
     // Read runner's envs only once and disallow conf overrides
     if !green.runner_envs.is_empty() {
