@@ -575,3 +575,14 @@ https://github.com/checkpoint-restore/criu-image-streamer
 
 ---
 
+Distributed build system providing cryptographic proofs-of-reproducibility via Byzantine Fault Tolerant (BFT) consensus
+https://github.com/iqlusioninc/synchronicity?tab=readme-ov-file
+
+Deploy self-contained binaries from GCP Container Registry (gcr.io) as systemd service units
+https://github.com/iqlusioninc/canister
+
+Execute your code on the Rust ecosystem.
+https://github.com/rust-lang/rustwide
+
+---
+
