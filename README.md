@@ -13,6 +13,7 @@
 
 - [Installation](#installation)
 - [Usage](#usage)
+- [How it works](#how-it-works)
 - [Remote execution](#remote-execution)
 - [Caching](#caching)
 - [Configuration](#configuration)
@@ -87,6 +88,21 @@ Minimum requirements:
   cargo fetch
   cargo test
 ```
+
+
+## How it works
+
+This encapsulates the compilation of Rust programs using Docker's build engine. In other words: this `cargo` plugin registers a `rustc` wrapper that calls to BuildKit to build crates and the execution of their build scripts.
+
+These builds use OCI images pinned to the local Rust installation version, eventually producing a single (huge) Containerfile that can then be shared around and built with eg. `docker build -o=. https://host.my/tiny/binary.Dockerfile`.
+
+Builds reproducibility or hermeticity is guaranteed via:
+* Every image is locked by its digest (`@sha256:..`)
+* Target directory paths are renamed `/target/..`
+* `crates.io` sources paths are renamed to `$CARGO_HOME/registry/src/index.crates.io/..`
+  * additionally, this path is created locally.
+* `git` dependencies are pinned to their commit hash
+* Produced files timestamps' are rewritten to some fixed epoch
 
 
 ## Remote execution
