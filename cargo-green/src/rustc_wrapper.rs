@@ -236,11 +236,6 @@ async fn do_wrap_rustc(
         rustc_block.push_str(&format!("  --mount=from={name}{mount}{rw} \\\n"));
     }
 
-    let input = rewrite_cratesio_index(&input);
-
-    let incremental_stage = Stage::incremental(mdid)?;
-    let out_stage = Stage::output(mdid)?;
-
     if let Some((name, uri)) = code_stage.context() {
         info!("loading {name:?}: {uri}");
         md.contexts = [BuildContext { name, uri }].into();
@@ -256,11 +251,15 @@ async fn do_wrap_rustc(
         rustc_block.push_str(&format!("  --mount=from={name},dst={mount},source=/ \\\n"));
     }
 
+    let input = rewrite_cratesio_index(&input);
+
     if buildrs {
         // TODO: this won't work with e.g. tokio-decorated main fns (async + decorator needs duplicating)
         // TODO: replace this Rust patching by simply shell patching ==> must work on macOS x-compiling for eg. Linux
         rustc_block.push_str(&rewrite_main(mdid, &input));
     }
+
+    let out_stage = Stage::output(mdid)?;
 
     let args = args
         .into_iter()
@@ -278,6 +277,7 @@ async fn do_wrap_rustc(
         rustc_block,
     )?;
 
+    let incremental_stage = Stage::incremental(mdid)?;
     if let Some(ref incremental) = incremental {
         let mut incremental_block = format!("FROM scratch AS {incremental_stage}\n");
         incremental_block.push_str(&format!("COPY --link --from={rustc_stage} {incremental} /\n"));
