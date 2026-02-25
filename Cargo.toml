@@ -55,6 +55,7 @@ serde-jsonlines = { version = "0, >=0.6", features = [ "async" ], default-featur
 serde_json = { version = "1", default-features = false }
 sha256 = { version = "1", features = [ "async" ], default-features = false }
 shell-quote = { version = "0, >=0.7", features = [ "sh" ], default-features = false }
+symlink = { version = "0, >=0.1", default-features = false }
 szyk = { version = "1", default-features = false }
 temp-env = { version = "0, >=0.3", default-features = false }
 termimad = { version = "0, >=0.34", default-features = false }

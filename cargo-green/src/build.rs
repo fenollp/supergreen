@@ -724,12 +724,6 @@ fn fwd_stderr(stderr: &str, badge: &'static str) -> FromStderr {
     acc
 }
 
-// //warning: panic message contains an unused formatting placeholder
-// //--> /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/proc-macro2-1.0.36/build.rs:191:17
-// TODO un-rewrite /index.crates.io-0000000000000000/ in cargo messages
-// => also in .d files
-// cache should be ok (cargo's point of view) if written right after green's build(..) call
-
 #[derive(Debug, Default)]
 struct FromStdout {
     stdout: Vec<String>,
