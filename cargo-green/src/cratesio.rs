@@ -5,6 +5,8 @@ use serde::{Deserialize, Serialize};
 
 use crate::stage::{AsBlock, AsStage, NamedStage, Stage};
 
+pub(crate) const HOME: &str = "registry/src";
+
 #[must_use]
 pub(crate) fn rewrite_cratesio_index(path: &Utf8Path) -> Utf8PathBuf {
     const CRATESIO_INDEX: &str = "index.crates.io-0000000000000000";
@@ -57,7 +59,7 @@ pub(crate) async fn named_stage<'a>(
 
     let extracted = rewrite_cratesio_index(krate_manifest_dir);
     let cached = krate_manifest_dir.to_string() + ".crate";
-    let cached = cached.replace("/registry/src/", "/registry/cache/");
+    let cached = cached.replace(&format!("/{HOME}/"), "/registry/cache/");
 
     info!("opening (RO) crate tarball {cached}");
     let hash = sha256::try_async_digest(&cached) //TODO: read from lockfile, see cargo_green::prebuild()

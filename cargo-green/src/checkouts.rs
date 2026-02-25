@@ -11,6 +11,8 @@ use crate::{
     stage::{AsBlock, AsStage, NamedStage, Stage},
 };
 
+pub(crate) const HOME: &str = "git/checkouts";
+
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash)]
 pub(crate) struct Checkouts {
     stage: Stage,
