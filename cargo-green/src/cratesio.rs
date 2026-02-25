@@ -1,18 +1,48 @@
-use anyhow::{anyhow, Result};
+use anyhow::{anyhow, bail, Result};
 use camino::{Utf8Path, Utf8PathBuf};
 use log::{debug, info};
 use serde::{Deserialize, Serialize};
 
-use crate::stage::{AsBlock, AsStage, NamedStage, Stage};
+use crate::{
+    green::Green,
+    stage::{AsBlock, AsStage, NamedStage, Stage},
+};
 
 pub(crate) const HOME: &str = "registry/src";
 
+const INDEX: &str = "index.crates.io";
+
+impl Green {
+    pub(crate) fn maybe_arrange_cratesio_index(&self) -> Result<()> {
+        let crates_home = self.cargo_home.join(HOME);
+        info!("Listing directory {crates_home}");
+        if let Some(youngest) = crates_home
+            .read_dir_utf8()
+            .map_err(|e| anyhow!("Failed `ls {crates_home}`: {e}"))?
+            .filter_map(Result::ok)
+            .inspect(|entry| info!("Found {}: {:?}", entry.path(), entry.file_type()))
+            .filter(|entry| entry.file_type().map(|f| f.is_dir()).unwrap_or(false))
+            .filter(|dir| dir.path().as_str().starts_with(INDEX))
+            .filter(|dir| dir.path().file_name() != Some(INDEX)) // Just to be sure
+            .filter_map(|dir| Some((dir.path().to_owned(), dir.metadata().ok()?.modified().ok()?)))
+            .max_by_key(|&(_, modified)| modified)
+            .map(|(path, _)| path)
+        {
+            let link = youngest.with_file_name(INDEX);
+            if let Err(e) = symlink::remove_symlink_dir(&link) {
+                info!("Failed cleaning previous symlink {link}: {e}");
+            }
+            if let Err(e) = symlink::symlink_dir(&link, &youngest) {
+                bail!("Could not symlink {link} to {youngest}: {e}")
+            }
+        }
+        Ok(())
+    }
+}
+
 #[must_use]
 pub(crate) fn rewrite_cratesio_index(path: &Utf8Path) -> Utf8PathBuf {
-    const CRATESIO_INDEX: &str = "index.crates.io-0000000000000000";
-
-    let prefix = CRATESIO_INDEX.trim_end_matches('0');
-    path.iter().map(|part| if part.starts_with(prefix) { CRATESIO_INDEX } else { part }).collect()
+    path.iter().map(|part| if part.starts_with(INDEX) { INDEX } else { part }).collect()
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash)]

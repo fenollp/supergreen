@@ -46,6 +46,7 @@ pub(crate) async fn main() -> Result<Green> {
         bail!("'cargo_home' setting cannot be set")
     }
     green.cargo_home = cargo_home()?;
+    green.maybe_arrange_cratesio_index()?;
 
     // Read runner's envs only once and disallow conf overrides
     if !green.runner_envs.is_empty() {

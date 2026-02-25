@@ -33,6 +33,7 @@ compute_installed_bin_sha256() {
 
 ensure__rewrite_cratesio_index__works() {
 	! grep -F '/index.crates.io-' $CARGOGREEN_LOG_PATH | grep -vE '/index.crates.io-0{16}|original args|env is set|opening .RO. crate tarball|picked'
+# ! grep -Erl --exclude='*.Dockerfile' --exclude='*.toml' --exclude='externs_*' '/index.crates.io-0{16}/' $CARGO_TARGET_DIR
 }
 ensure__rewrite_target_dir__works() {
 	! grep -F "$CARGO_TARGET_DIR" $CARGOGREEN_FINAL_PATH
