@@ -59,15 +59,12 @@ pub(crate) async fn as_stage(mdid: MdId, pwd: &Utf8Path) -> Result<NamedStage> {
     info!("mounting {}files under {pwd}", if pwd.join(".git").is_dir() { "git " } else { "" });
 
     let (keep, lose) = {
-        let mut entries = fs::read_dir(pwd)
+        let mut entries = pwd
+            .read_dir_utf8()
             .map_err(|e| anyhow!("Failed reading dir {pwd:?}: {e}"))?
-            .map(|entry| -> Result<_> {
+            .map(|entry| {
                 let entry = entry?;
-                let fpath = entry.path();
-                let fpath: Utf8PathBuf = fpath
-                    .try_into()
-                    .map_err(|e| anyhow!("corrupted UTF-8 encoding with {entry:?}: {e}"))?;
-                let Some(fname) = fpath.file_name() else {
+                let Some(fname) = entry.path().file_name() else {
                     bail!("unexpected root (/) for {entry:?}")
                 };
                 Ok(fname.to_owned())
