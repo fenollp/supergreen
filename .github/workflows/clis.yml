@@ -43,7 +43,7 @@ jobs:
       run: |
         CARGO_TARGET_DIR=~/instmp cargo install --locked --force --path=./cargo-green
 
-    - uses: actions/upload-artifact@v6
+    - uses: actions/upload-artifact@v7
       with:
         name: cargo-green
         path: /home/runner/.cargo/bin/cargo-green
@@ -63,7 +63,7 @@ jobs:
 #     - run: sudo chown -R $(id -u):$(id -g) /home/runner/builder-cache
 #     - run: du -sh /home/runner/builder-cache || true
 #     - run: ls -lha /home/runner/builder-cache/ || true
-#     - uses: actions/upload-artifact@v6
+#     - uses: actions/upload-artifact@v7
 #       with:
 #         name: builder-data
 #         path: /home/runner/builder-cache
@@ -106,7 +106,7 @@ jobs:
 
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: cargo-green
 
@@ -118,7 +118,7 @@ jobs:
         mv ./cargo-green ~/.cargo/bin/
     - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
       name: Retrieve saved builder data
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: builder-data
         path: /home/runner/builder-cache
@@ -203,7 +203,7 @@ jobs:
         env  \
           cargo green -vv install --jobs=1 --locked --force buildxargs --git https://github.com/fenollp/buildxargs.git |& tee _
     - if: ${{ always() && matrix.toolchain != '1.91.1' }}
-      uses: actions/upload-artifact@v6
+      uses: actions/upload-artifact@v7
       name: Upload recipe
       with:
         name: buildxargs@master.Dockerfile
@@ -426,7 +426,7 @@ jobs:
 
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: cargo-green
 
@@ -438,7 +438,7 @@ jobs:
         mv ./cargo-green ~/.cargo/bin/
     - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
       name: Retrieve saved builder data
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: builder-data
         path: /home/runner/builder-cache
@@ -523,7 +523,7 @@ jobs:
         env  \
           cargo green -vv install --jobs=1 --locked --force cargo-deny@0.18.5  |& tee _
     - if: ${{ always() && matrix.toolchain != '1.91.1' }}
-      uses: actions/upload-artifact@v6
+      uses: actions/upload-artifact@v7
       name: Upload recipe
       with:
         name: cargo-deny@0.18.5.Dockerfile
@@ -746,7 +746,7 @@ jobs:
     - run: rustup component add llvm-tools-preview
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: cargo-green
 
@@ -758,7 +758,7 @@ jobs:
         mv ./cargo-green ~/.cargo/bin/
     - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
       name: Retrieve saved builder data
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: builder-data
         path: /home/runner/builder-cache
@@ -843,7 +843,7 @@ jobs:
         env  \
           cargo green -vv install --jobs=1 --locked --force cargo-llvm-cov@0.6.21  |& tee _
     - if: ${{ always() && matrix.toolchain != '1.91.1' }}
-      uses: actions/upload-artifact@v6
+      uses: actions/upload-artifact@v7
       name: Upload recipe
       with:
         name: cargo-llvm-cov@0.6.21.Dockerfile
@@ -1066,7 +1066,7 @@ jobs:
 
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: cargo-green
 
@@ -1078,7 +1078,7 @@ jobs:
         mv ./cargo-green ~/.cargo/bin/
     - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
       name: Retrieve saved builder data
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: builder-data
         path: /home/runner/builder-cache
@@ -1163,7 +1163,7 @@ jobs:
         env  \
           cargo green -vv install --jobs=1 --locked --force cargo-nextest@0.9.114  |& tee _
     - if: ${{ always() && matrix.toolchain != '1.91.1' }}
-      uses: actions/upload-artifact@v6
+      uses: actions/upload-artifact@v7
       name: Upload recipe
       with:
         name: cargo-nextest@0.9.114.Dockerfile
@@ -1386,7 +1386,7 @@ jobs:
 
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: cargo-green
 
@@ -1398,7 +1398,7 @@ jobs:
         mv ./cargo-green ~/.cargo/bin/
     - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
       name: Retrieve saved builder data
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: builder-data
         path: /home/runner/builder-cache
@@ -1483,7 +1483,7 @@ jobs:
         env  \
           cargo green -vv install --jobs=1 --locked --force cross@0.2.5 --git https://github.com/cross-rs/cross.git --rev=49cd054de9b832dfc11a4895c72b0aef533b5c6a cross |& tee _
     - if: ${{ always() && matrix.toolchain != '1.91.1' }}
-      uses: actions/upload-artifact@v6
+      uses: actions/upload-artifact@v7
       name: Upload recipe
       with:
         name: cross@0.2.5.Dockerfile
@@ -1706,7 +1706,7 @@ jobs:
 
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: cargo-green
 
@@ -1718,7 +1718,7 @@ jobs:
         mv ./cargo-green ~/.cargo/bin/
     - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
       name: Retrieve saved builder data
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: builder-data
         path: /home/runner/builder-cache
@@ -1803,7 +1803,7 @@ jobs:
         env  \
           cargo green -vv install --jobs=1 --locked --force dbcc@2.2.1  |& tee _
     - if: ${{ always() && matrix.toolchain != '1.91.1' }}
-      uses: actions/upload-artifact@v6
+      uses: actions/upload-artifact@v7
       name: Upload recipe
       with:
         name: dbcc@2.2.1.Dockerfile
@@ -2026,7 +2026,7 @@ jobs:
 
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: cargo-green
 
@@ -2038,7 +2038,7 @@ jobs:
         mv ./cargo-green ~/.cargo/bin/
     - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
       name: Retrieve saved builder data
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: builder-data
         path: /home/runner/builder-cache
@@ -2123,7 +2123,7 @@ jobs:
         env CARGOGREEN_ADD_APT=libpq-dev \
           cargo green -vv install --jobs=1 --locked --force diesel_cli@2.3.4 --no-default-features --features=postgres |& tee _
     - if: ${{ always() && matrix.toolchain != '1.91.1' }}
-      uses: actions/upload-artifact@v6
+      uses: actions/upload-artifact@v7
       name: Upload recipe
       with:
         name: diesel_cli@2.3.4.Dockerfile
@@ -2346,7 +2346,7 @@ jobs:
 
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: cargo-green
 
@@ -2358,7 +2358,7 @@ jobs:
         mv ./cargo-green ~/.cargo/bin/
     - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
       name: Retrieve saved builder data
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: builder-data
         path: /home/runner/builder-cache
@@ -2443,7 +2443,7 @@ jobs:
         env  \
           cargo green -vv install --jobs=1 --locked --force hickory-dns@0.26.0-alpha.1  |& tee _
     - if: ${{ always() && matrix.toolchain != '1.91.1' }}
-      uses: actions/upload-artifact@v6
+      uses: actions/upload-artifact@v7
       name: Upload recipe
       with:
         name: hickory-dns@0.26.0-alpha.1.Dockerfile
@@ -2666,7 +2666,7 @@ jobs:
 
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: cargo-green
 
@@ -2678,7 +2678,7 @@ jobs:
         mv ./cargo-green ~/.cargo/bin/
     - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
       name: Retrieve saved builder data
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: builder-data
         path: /home/runner/builder-cache
@@ -2763,7 +2763,7 @@ jobs:
         env CARGOGREEN_ADD_APT=libsqlite3-dev,libssl-dev,pkg-config,zlib1g-dev \
           cargo green -vv install --jobs=1 --locked --force mussh@3.1.3  |& tee _
     - if: ${{ always() && matrix.toolchain != '1.91.1' }}
-      uses: actions/upload-artifact@v6
+      uses: actions/upload-artifact@v7
       name: Upload recipe
       with:
         name: mussh@3.1.3.Dockerfile
@@ -2987,7 +2987,7 @@ jobs:
 
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: cargo-green
 
@@ -2999,7 +2999,7 @@ jobs:
         mv ./cargo-green ~/.cargo/bin/
     - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
       name: Retrieve saved builder data
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: builder-data
         path: /home/runner/builder-cache
@@ -3084,7 +3084,7 @@ jobs:
         env  \
           cargo green -vv install --jobs=1 --locked --force ntpd@1.7.0-alpha.20251003  |& tee _
     - if: ${{ always() && matrix.toolchain != '1.91.1' }}
-      uses: actions/upload-artifact@v6
+      uses: actions/upload-artifact@v7
       name: Upload recipe
       with:
         name: ntpd@1.7.0-alpha.20251003.Dockerfile
@@ -3307,7 +3307,7 @@ jobs:
 
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: cargo-green
 
@@ -3319,7 +3319,7 @@ jobs:
         mv ./cargo-green ~/.cargo/bin/
     - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
       name: Retrieve saved builder data
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: builder-data
         path: /home/runner/builder-cache
@@ -3404,7 +3404,7 @@ jobs:
         env  \
           cargo green -vv install --jobs=1 --locked --force qcow2-rs@0.1.6  |& tee _
     - if: ${{ always() && matrix.toolchain != '1.91.1' }}
-      uses: actions/upload-artifact@v6
+      uses: actions/upload-artifact@v7
       name: Upload recipe
       with:
         name: qcow2-rs@0.1.6.Dockerfile
@@ -3627,7 +3627,7 @@ jobs:
 
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: cargo-green
 
@@ -3639,7 +3639,7 @@ jobs:
         mv ./cargo-green ~/.cargo/bin/
     - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
       name: Retrieve saved builder data
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: builder-data
         path: /home/runner/builder-cache
@@ -3724,7 +3724,7 @@ jobs:
         env  \
           cargo green -vv install --jobs=1 --locked --force ripgrep@15.1.0  |& tee _
     - if: ${{ always() && matrix.toolchain != '1.91.1' }}
-      uses: actions/upload-artifact@v6
+      uses: actions/upload-artifact@v7
       name: Upload recipe
       with:
         name: ripgrep@15.1.0.Dockerfile
@@ -3947,7 +3947,7 @@ jobs:
 
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: cargo-green
 
@@ -3959,7 +3959,7 @@ jobs:
         mv ./cargo-green ~/.cargo/bin/
     - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
       name: Retrieve saved builder data
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: builder-data
         path: /home/runner/builder-cache
@@ -4044,7 +4044,7 @@ jobs:
         env CARGOGREEN_ADD_APT=libclang-dev \
           cargo green -vv install --jobs=1 --locked --force rublk@0.2.13  |& tee _
     - if: ${{ always() && matrix.toolchain != '1.91.1' }}
-      uses: actions/upload-artifact@v6
+      uses: actions/upload-artifact@v7
       name: Upload recipe
       with:
         name: rublk@0.2.13.Dockerfile
@@ -4267,7 +4267,7 @@ jobs:
 
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: cargo-green
 
@@ -4279,7 +4279,7 @@ jobs:
         mv ./cargo-green ~/.cargo/bin/
     - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
       name: Retrieve saved builder data
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: builder-data
         path: /home/runner/builder-cache
@@ -4364,7 +4364,7 @@ jobs:
         env  \
           cargo green -vv install --jobs=1 --locked --force shpool@0.9.3  |& tee _
     - if: ${{ always() && matrix.toolchain != '1.91.1' }}
-      uses: actions/upload-artifact@v6
+      uses: actions/upload-artifact@v7
       name: Upload recipe
       with:
         name: shpool@0.9.3.Dockerfile
@@ -4587,7 +4587,7 @@ jobs:
 
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: cargo-green
 
@@ -4599,7 +4599,7 @@ jobs:
         mv ./cargo-green ~/.cargo/bin/
     - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
       name: Retrieve saved builder data
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: builder-data
         path: /home/runner/builder-cache
@@ -4684,7 +4684,7 @@ jobs:
         env  \
           cargo green -vv install --jobs=1 --locked --force stu@0.7.5  |& tee _
     - if: ${{ always() && matrix.toolchain != '1.91.1' }}
-      uses: actions/upload-artifact@v6
+      uses: actions/upload-artifact@v7
       name: Upload recipe
       with:
         name: stu@0.7.5.Dockerfile
@@ -4907,7 +4907,7 @@ jobs:
 
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: cargo-green
 
@@ -4919,7 +4919,7 @@ jobs:
         mv ./cargo-green ~/.cargo/bin/
     - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
       name: Retrieve saved builder data
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: builder-data
         path: /home/runner/builder-cache
@@ -5004,7 +5004,7 @@ jobs:
         env CARGOGREEN_ADD_APT=libcurl4-openssl-dev,pkg-config \
           cargo green -vv install --jobs=1 --locked --force cargo-authors@0.5.5  |& tee _
     - if: ${{ always() && matrix.toolchain != '1.91.1' }}
-      uses: actions/upload-artifact@v6
+      uses: actions/upload-artifact@v7
       name: Upload recipe
       with:
         name: cargo-authors@0.5.5.Dockerfile
@@ -5227,7 +5227,7 @@ jobs:
 
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: cargo-green
 
@@ -5239,7 +5239,7 @@ jobs:
         mv ./cargo-green ~/.cargo/bin/
     - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
       name: Retrieve saved builder data
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: builder-data
         path: /home/runner/builder-cache
@@ -5324,7 +5324,7 @@ jobs:
         env  \
           cargo green -vv install --jobs=1 --locked --force vixargs@0.1.0  |& tee _
     - if: ${{ always() && matrix.toolchain != '1.91.1' }}
-      uses: actions/upload-artifact@v6
+      uses: actions/upload-artifact@v7
       name: Upload recipe
       with:
         name: vixargs@0.1.0.Dockerfile
@@ -5547,7 +5547,7 @@ jobs:
 
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: cargo-green
 
@@ -5559,7 +5559,7 @@ jobs:
         mv ./cargo-green ~/.cargo/bin/
     - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
       name: Retrieve saved builder data
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: builder-data
         path: /home/runner/builder-cache
@@ -5644,7 +5644,7 @@ jobs:
         env  \
           cargo green -vv install --jobs=1 --locked --force cargo-config2@0.1.39 --example=get |& tee _
     - if: ${{ always() && matrix.toolchain != '1.91.1' }}
-      uses: actions/upload-artifact@v6
+      uses: actions/upload-artifact@v7
       name: Upload recipe
       with:
         name: cargo-config2@0.1.39.Dockerfile
@@ -5867,7 +5867,7 @@ jobs:
 
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: cargo-green
 
@@ -5879,7 +5879,7 @@ jobs:
         mv ./cargo-green ~/.cargo/bin/
     - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
       name: Retrieve saved builder data
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: builder-data
         path: /home/runner/builder-cache
@@ -5964,7 +5964,7 @@ jobs:
         env  \
           cargo green -vv install --jobs=1 --locked --force kani-verifier@0.66.0 --bin=cargo-kani |& tee _
     - if: ${{ always() && matrix.toolchain != '1.91.1' }}
-      uses: actions/upload-artifact@v6
+      uses: actions/upload-artifact@v7
       name: Upload recipe
       with:
         name: kani-verifier@0.66.0.Dockerfile
@@ -6187,7 +6187,7 @@ jobs:
 
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: cargo-green
 
@@ -6199,7 +6199,7 @@ jobs:
         mv ./cargo-green ~/.cargo/bin/
     - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
       name: Retrieve saved builder data
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: builder-data
         path: /home/runner/builder-cache
@@ -6284,7 +6284,7 @@ jobs:
         env  \
           cargo green -vv install --jobs=1 --locked --force cargo-tally@1.0.71  |& tee _
     - if: ${{ always() && matrix.toolchain != '1.91.1' }}
-      uses: actions/upload-artifact@v6
+      uses: actions/upload-artifact@v7
       name: Upload recipe
       with:
         name: cargo-tally@1.0.71.Dockerfile
@@ -6507,7 +6507,7 @@ jobs:
 
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: cargo-green
 
@@ -6519,7 +6519,7 @@ jobs:
         mv ./cargo-green ~/.cargo/bin/
     - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
       name: Retrieve saved builder data
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: builder-data
         path: /home/runner/builder-cache
@@ -6604,7 +6604,7 @@ jobs:
         env  \
           cargo green -vv install --jobs=1 --locked --force cargo-mutants@25.3.1  |& tee _
     - if: ${{ always() && matrix.toolchain != '1.91.1' }}
-      uses: actions/upload-artifact@v6
+      uses: actions/upload-artifact@v7
       name: Upload recipe
       with:
         name: cargo-mutants@25.3.1.Dockerfile
@@ -6827,7 +6827,7 @@ jobs:
 
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: cargo-green
 
@@ -6839,7 +6839,7 @@ jobs:
         mv ./cargo-green ~/.cargo/bin/
     - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
       name: Retrieve saved builder data
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: builder-data
         path: /home/runner/builder-cache
@@ -6924,7 +6924,7 @@ jobs:
         env  \
           cargo green -vv install --jobs=1 --locked --force binsider@0.3.0  |& tee _
     - if: ${{ always() && matrix.toolchain != '1.91.1' }}
-      uses: actions/upload-artifact@v6
+      uses: actions/upload-artifact@v7
       name: Upload recipe
       with:
         name: binsider@0.3.0.Dockerfile
@@ -7147,7 +7147,7 @@ jobs:
 
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: cargo-green
 
@@ -7159,7 +7159,7 @@ jobs:
         mv ./cargo-green ~/.cargo/bin/
     - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
       name: Retrieve saved builder data
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: builder-data
         path: /home/runner/builder-cache
@@ -7244,7 +7244,7 @@ jobs:
         env  \
           cargo green -vv install --jobs=1 --locked --force gifski@1.34.0  |& tee _
     - if: ${{ always() && matrix.toolchain != '1.91.1' }}
-      uses: actions/upload-artifact@v6
+      uses: actions/upload-artifact@v7
       name: Upload recipe
       with:
         name: gifski@1.34.0.Dockerfile
@@ -7467,7 +7467,7 @@ jobs:
 
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: cargo-green
 
@@ -7479,7 +7479,7 @@ jobs:
         mv ./cargo-green ~/.cargo/bin/
     - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
       name: Retrieve saved builder data
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: builder-data
         path: /home/runner/builder-cache
@@ -7564,7 +7564,7 @@ jobs:
         env  \
           cargo green -vv install --jobs=1 --locked --force flamegraph@0.6.10  |& tee _
     - if: ${{ always() && matrix.toolchain != '1.91.1' }}
-      uses: actions/upload-artifact@v6
+      uses: actions/upload-artifact@v7
       name: Upload recipe
       with:
         name: flamegraph@0.6.10.Dockerfile
@@ -7787,7 +7787,7 @@ jobs:
 
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: cargo-green
 
@@ -7799,7 +7799,7 @@ jobs:
         mv ./cargo-green ~/.cargo/bin/
     - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
       name: Retrieve saved builder data
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: builder-data
         path: /home/runner/builder-cache
@@ -7884,7 +7884,7 @@ jobs:
         env CARGOGREEN_ADD_APT=libssl-dev,pkg-config,zlib1g-dev \
           cargo green -vv install --jobs=1 --locked --force sccache@0.12.0  |& tee _
     - if: ${{ always() && matrix.toolchain != '1.91.1' }}
-      uses: actions/upload-artifact@v6
+      uses: actions/upload-artifact@v7
       name: Upload recipe
       with:
         name: sccache@0.12.0.Dockerfile
@@ -8107,7 +8107,7 @@ jobs:
 
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: cargo-green
 
@@ -8119,7 +8119,7 @@ jobs:
         mv ./cargo-green ~/.cargo/bin/
     - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
       name: Retrieve saved builder data
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: builder-data
         path: /home/runner/builder-cache
@@ -8204,7 +8204,7 @@ jobs:
         env CARGOGREEN_SET_ENVS=GITHUB_SHA GITHUB_SHA= \
           cargo green -vv install --jobs=1 --locked --force bottom@0.11.4  |& tee _
     - if: ${{ always() && matrix.toolchain != '1.91.1' }}
-      uses: actions/upload-artifact@v6
+      uses: actions/upload-artifact@v7
       name: Upload recipe
       with:
         name: bottom@0.11.4.Dockerfile

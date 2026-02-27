@@ -399,7 +399,7 @@ $(unset_action_envs)
         env ${envvars[@]} \\
           cargo green -vv install --jobs=1 --locked --force $(as_install "$name_at_version") $@ |& tee _
     - if: \${{ always() && matrix.toolchain != '$stable' }}
-      uses: actions/upload-artifact@v6
+      uses: actions/upload-artifact@v7
       name: Upload recipe
       with:
         name: $name_at_version.Dockerfile

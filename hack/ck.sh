@@ -22,7 +22,7 @@ restore_bin() {
     [[ $# -eq 0 ]]
     cat <<EOF
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: cargo-green
 
@@ -216,7 +216,7 @@ $(rundeps_versions)
       run: |
         CARGO_TARGET_DIR=~/instmp cargo install --locked --force --path=./cargo-green
 
-    - uses: actions/upload-artifact@v6
+    - uses: actions/upload-artifact@v7
       with:
         name: cargo-green
         path: /home/runner/.cargo/bin/cargo-green
@@ -236,7 +236,7 @@ $(rundeps_versions)
 #     - run: sudo chown -R \$(id -u):\$(id -g) /home/runner/builder-cache
 #     - run: du -sh /home/runner/builder-cache || true
 #     - run: ls -lha /home/runner/builder-cache/ || true
-#     - uses: actions/upload-artifact@v6
+#     - uses: actions/upload-artifact@v7
 #       with:
 #         name: builder-data
 #         path: /home/runner/builder-cache
@@ -250,7 +250,7 @@ restore_builder_data() {
     cat <<EOF
     - if: \${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
       name: Retrieve saved builder data
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: builder-data
         path: /home/runner/builder-cache
