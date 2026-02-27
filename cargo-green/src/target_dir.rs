@@ -13,17 +13,23 @@ static TARGET_DIR: LazyLock<Utf8PathBuf> = LazyLock::new(|| {
 });
 
 pub(crate) fn un_virtual_target_dir_str(txt: &str) -> String {
-    if !REWRITE_TARGETDIR {
-        return txt.to_owned();
-    }
-    txt.replace(VIRTUAL_TARGET_DIR, TARGET_DIR.as_str())
+    replace_carefully(txt, VIRTUAL_TARGET_DIR, TARGET_DIR.as_str())
 }
 
 pub(crate) fn virtual_target_dir_str(txt: &str) -> String {
+    replace_carefully(txt, TARGET_DIR.as_str(), VIRTUAL_TARGET_DIR)
+}
+
+fn replace_carefully(txt: &str, from: &str, to: &str) -> String {
     if !REWRITE_TARGETDIR {
         return txt.to_owned();
     }
-    txt.replace(TARGET_DIR.as_str(), VIRTUAL_TARGET_DIR)
+    let txt = if txt.starts_with(from) { txt.replacen(from, to, 1) } else { txt.to_owned() };
+    let txt = txt.replace(&format!(" {from}"), &format!(" {to}"));
+    let txt = txt.replace(&format!("'{from}"), &format!("'{to}"));
+    let txt = txt.replace(&format!("\"{from}"), &format!("\"{to}"));
+    let txt = txt.replace(&format!("={from}"), &format!("={to}"));
+    txt
 }
 
 pub(crate) fn virtual_target_dir(path: &Utf8Path) -> Utf8PathBuf {
@@ -48,7 +54,13 @@ fn replace_target_dirs() {
         assert_eq!(virtual_target_dir_str("/some/path/release/deps/target_lexicon-8a85e67f3430b2ca.d: /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/target-lexicon-0.12.16/src/lib.rs"),
         "/target/release/deps/target_lexicon-8a85e67f3430b2ca.d: /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/target-lexicon-0.12.16/src/lib.rs");
 
+        assert_eq!(virtual_target_dir_str("/some/path/debug/deps/cc-63321ad70751c592.d: /home/pete/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/cc-1.2.47/src/lib.rs /home/pete/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/cc-1.2.47/src/target.rs /home/pete/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/cc-1.2.47/src/target/apple.rs"),
+        "/target/debug/deps/cc-63321ad70751c592.d: /home/pete/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/cc-1.2.47/src/lib.rs /home/pete/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/cc-1.2.47/src/target.rs /home/pete/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/cc-1.2.47/src/target/apple.rs");
+
         assert_eq!(un_virtual_target_dir_str("/target/release/deps/target_lexicon-8a85e67f3430b2ca.d: /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/target-lexicon-0.12.16/src/lib.rs"),
         "/some/path/release/deps/target_lexicon-8a85e67f3430b2ca.d: /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/target-lexicon-0.12.16/src/lib.rs");
+
+        assert_eq!(un_virtual_target_dir_str("/target/debug/deps/cc-63321ad70751c592.d: /home/pete/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/cc-1.2.47/src/lib.rs /home/pete/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/cc-1.2.47/src/target.rs /home/pete/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/cc-1.2.47/src/target/apple.rs"),
+        "/some/path/debug/deps/cc-63321ad70751c592.d: /home/pete/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/cc-1.2.47/src/lib.rs /home/pete/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/cc-1.2.47/src/target.rs /home/pete/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/cc-1.2.47/src/target/apple.rs");
     });
 }

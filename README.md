@@ -100,7 +100,8 @@ Builds reproducibility or hermeticity is guaranteed via:
 * Every image is locked by its digest (`@sha256:..`)
 * Target directory paths are renamed `/target/..`
 * `crates.io` sources paths are renamed to `$CARGO_HOME/registry/src/index.crates.io/..`
-  * additionally, this path is created locally.
+  * additionally, this `index.crates.io` path is created locally.
+* `$CARGO_HOME` needs to get linked: `sudo ln -s ~/.cargo /usr/local/cargo`
 * `git` dependencies are pinned to their commit hash
 * Produced files timestamps' are rewritten to some fixed epoch
 

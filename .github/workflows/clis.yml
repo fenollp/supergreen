@@ -133,6 +133,7 @@ jobs:
     - run: docker buildx build --help
     - run: podman version || true
     - run: cargo -Vv
+    - run: sudo ln -s ~/.cargo /usr/local/cargo
 
     - name: Prepare local private registry cache
       if: ${{ env.CARGOGREEN_CACHE_FROM_IMAGES != '' || env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
@@ -444,6 +445,7 @@ jobs:
     - run: docker buildx build --help
     - run: podman version || true
     - run: cargo -Vv
+    - run: sudo ln -s ~/.cargo /usr/local/cargo
 
     - name: Prepare local private registry cache
       if: ${{ env.CARGOGREEN_CACHE_FROM_IMAGES != '' || env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
@@ -755,6 +757,7 @@ jobs:
     - run: docker buildx build --help
     - run: podman version || true
     - run: cargo -Vv
+    - run: sudo ln -s ~/.cargo /usr/local/cargo
 
     - name: Prepare local private registry cache
       if: ${{ env.CARGOGREEN_CACHE_FROM_IMAGES != '' || env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
@@ -1066,6 +1069,7 @@ jobs:
     - run: docker buildx build --help
     - run: podman version || true
     - run: cargo -Vv
+    - run: sudo ln -s ~/.cargo /usr/local/cargo
 
     - name: Prepare local private registry cache
       if: ${{ env.CARGOGREEN_CACHE_FROM_IMAGES != '' || env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
@@ -1377,6 +1381,7 @@ jobs:
     - run: docker buildx build --help
     - run: podman version || true
     - run: cargo -Vv
+    - run: sudo ln -s ~/.cargo /usr/local/cargo
 
     - name: Prepare local private registry cache
       if: ${{ env.CARGOGREEN_CACHE_FROM_IMAGES != '' || env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
@@ -1688,6 +1693,7 @@ jobs:
     - run: docker buildx build --help
     - run: podman version || true
     - run: cargo -Vv
+    - run: sudo ln -s ~/.cargo /usr/local/cargo
 
     - name: Prepare local private registry cache
       if: ${{ env.CARGOGREEN_CACHE_FROM_IMAGES != '' || env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
@@ -1999,6 +2005,7 @@ jobs:
     - run: docker buildx build --help
     - run: podman version || true
     - run: cargo -Vv
+    - run: sudo ln -s ~/.cargo /usr/local/cargo
 
     - name: Prepare local private registry cache
       if: ${{ env.CARGOGREEN_CACHE_FROM_IMAGES != '' || env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
@@ -2310,6 +2317,7 @@ jobs:
     - run: docker buildx build --help
     - run: podman version || true
     - run: cargo -Vv
+    - run: sudo ln -s ~/.cargo /usr/local/cargo
 
     - name: Prepare local private registry cache
       if: ${{ env.CARGOGREEN_CACHE_FROM_IMAGES != '' || env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
@@ -2621,6 +2629,7 @@ jobs:
     - run: docker buildx build --help
     - run: podman version || true
     - run: cargo -Vv
+    - run: sudo ln -s ~/.cargo /usr/local/cargo
 
     - name: Prepare local private registry cache
       if: ${{ env.CARGOGREEN_CACHE_FROM_IMAGES != '' || env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
@@ -2932,6 +2941,7 @@ jobs:
     - run: docker buildx build --help
     - run: podman version || true
     - run: cargo -Vv
+    - run: sudo ln -s ~/.cargo /usr/local/cargo
 
     - name: Prepare local private registry cache
       if: ${{ env.CARGOGREEN_CACHE_FROM_IMAGES != '' || env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
@@ -3243,6 +3253,7 @@ jobs:
     - run: docker buildx build --help
     - run: podman version || true
     - run: cargo -Vv
+    - run: sudo ln -s ~/.cargo /usr/local/cargo
 
     - name: Prepare local private registry cache
       if: ${{ env.CARGOGREEN_CACHE_FROM_IMAGES != '' || env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
@@ -3554,6 +3565,7 @@ jobs:
     - run: docker buildx build --help
     - run: podman version || true
     - run: cargo -Vv
+    - run: sudo ln -s ~/.cargo /usr/local/cargo
 
     - name: Prepare local private registry cache
       if: ${{ env.CARGOGREEN_CACHE_FROM_IMAGES != '' || env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
@@ -3865,6 +3877,7 @@ jobs:
     - run: docker buildx build --help
     - run: podman version || true
     - run: cargo -Vv
+    - run: sudo ln -s ~/.cargo /usr/local/cargo
 
     - name: Prepare local private registry cache
       if: ${{ env.CARGOGREEN_CACHE_FROM_IMAGES != '' || env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
@@ -4176,6 +4189,7 @@ jobs:
     - run: docker buildx build --help
     - run: podman version || true
     - run: cargo -Vv
+    - run: sudo ln -s ~/.cargo /usr/local/cargo
 
     - name: Prepare local private registry cache
       if: ${{ env.CARGOGREEN_CACHE_FROM_IMAGES != '' || env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
@@ -4487,6 +4501,7 @@ jobs:
     - run: docker buildx build --help
     - run: podman version || true
     - run: cargo -Vv
+    - run: sudo ln -s ~/.cargo /usr/local/cargo
 
     - name: Prepare local private registry cache
       if: ${{ env.CARGOGREEN_CACHE_FROM_IMAGES != '' || env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
@@ -4798,6 +4813,7 @@ jobs:
     - run: docker buildx build --help
     - run: podman version || true
     - run: cargo -Vv
+    - run: sudo ln -s ~/.cargo /usr/local/cargo
 
     - name: Prepare local private registry cache
       if: ${{ env.CARGOGREEN_CACHE_FROM_IMAGES != '' || env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
@@ -5109,6 +5125,7 @@ jobs:
     - run: docker buildx build --help
     - run: podman version || true
     - run: cargo -Vv
+    - run: sudo ln -s ~/.cargo /usr/local/cargo
 
     - name: Prepare local private registry cache
       if: ${{ env.CARGOGREEN_CACHE_FROM_IMAGES != '' || env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
@@ -5420,6 +5437,7 @@ jobs:
     - run: docker buildx build --help
     - run: podman version || true
     - run: cargo -Vv
+    - run: sudo ln -s ~/.cargo /usr/local/cargo
 
     - name: Prepare local private registry cache
       if: ${{ env.CARGOGREEN_CACHE_FROM_IMAGES != '' || env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
@@ -5731,6 +5749,7 @@ jobs:
     - run: docker buildx build --help
     - run: podman version || true
     - run: cargo -Vv
+    - run: sudo ln -s ~/.cargo /usr/local/cargo
 
     - name: Prepare local private registry cache
       if: ${{ env.CARGOGREEN_CACHE_FROM_IMAGES != '' || env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
@@ -6042,6 +6061,7 @@ jobs:
     - run: docker buildx build --help
     - run: podman version || true
     - run: cargo -Vv
+    - run: sudo ln -s ~/.cargo /usr/local/cargo
 
     - name: Prepare local private registry cache
       if: ${{ env.CARGOGREEN_CACHE_FROM_IMAGES != '' || env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
@@ -6353,6 +6373,7 @@ jobs:
     - run: docker buildx build --help
     - run: podman version || true
     - run: cargo -Vv
+    - run: sudo ln -s ~/.cargo /usr/local/cargo
 
     - name: Prepare local private registry cache
       if: ${{ env.CARGOGREEN_CACHE_FROM_IMAGES != '' || env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
@@ -6664,6 +6685,7 @@ jobs:
     - run: docker buildx build --help
     - run: podman version || true
     - run: cargo -Vv
+    - run: sudo ln -s ~/.cargo /usr/local/cargo
 
     - name: Prepare local private registry cache
       if: ${{ env.CARGOGREEN_CACHE_FROM_IMAGES != '' || env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
@@ -6975,6 +6997,7 @@ jobs:
     - run: docker buildx build --help
     - run: podman version || true
     - run: cargo -Vv
+    - run: sudo ln -s ~/.cargo /usr/local/cargo
 
     - name: Prepare local private registry cache
       if: ${{ env.CARGOGREEN_CACHE_FROM_IMAGES != '' || env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
@@ -7286,6 +7309,7 @@ jobs:
     - run: docker buildx build --help
     - run: podman version || true
     - run: cargo -Vv
+    - run: sudo ln -s ~/.cargo /usr/local/cargo
 
     - name: Prepare local private registry cache
       if: ${{ env.CARGOGREEN_CACHE_FROM_IMAGES != '' || env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
@@ -7597,6 +7621,7 @@ jobs:
     - run: docker buildx build --help
     - run: podman version || true
     - run: cargo -Vv
+    - run: sudo ln -s ~/.cargo /usr/local/cargo
 
     - name: Prepare local private registry cache
       if: ${{ env.CARGOGREEN_CACHE_FROM_IMAGES != '' || env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
@@ -7908,6 +7933,7 @@ jobs:
     - run: docker buildx build --help
     - run: podman version || true
     - run: cargo -Vv
+    - run: sudo ln -s ~/.cargo /usr/local/cargo
 
     - name: Prepare local private registry cache
       if: ${{ env.CARGOGREEN_CACHE_FROM_IMAGES != '' || env.CARGOGREEN_CACHE_TO_IMAGES != '' }}

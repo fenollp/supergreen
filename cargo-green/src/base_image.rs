@@ -1,5 +1,6 @@
 use std::sync::LazyLock;
 
+use camino::Utf8Path;
 use rustc_version::{Channel, Version, VersionMeta};
 use serde::{Deserialize, Serialize};
 
@@ -22,6 +23,9 @@ macro_rules! ENV_WITH_NETWORK {
         "CARGOGREEN_WITH_NETWORK"
     };
 }
+
+pub(crate) const CARGO_HOME: &str = "/usr/local/cargo";
+pub(crate) const RUSTUP_HOME: &str = "/usr/local/rustup";
 
 // TODO: switch to mentioning debian name: 1-slim-trixie, 1.89-slim-trixie, 1.89.0-slim-trixie, slim-trixie
 // MAY help with:
@@ -180,9 +184,9 @@ SHELL {SHELL:?}
 ADD --chmod=0144 --checksum=sha256:{rustup_checksum} \
   https://static.rust-lang.org/rustup/archive/{rustup_version}/{host}/rustup-init /rustup-init
 {packages_block}
-ENV RUSTUP_HOME=/usr/local/rustup \
-     CARGO_HOME=/usr/local/cargo \
-           PATH=/usr/local/cargo/bin:$PATH
+ENV RUSTUP_HOME={RUSTUP_HOME} \
+     CARGO_HOME={CARGO_HOME} \
+           PATH={CARGO_HOME}/bin:$PATH
 RUN \
  --mount=from=rustup-{channel}-{date},source=/rustup-init,dst=/rustup-init \
    set -eux \
@@ -197,6 +201,30 @@ RUN \
 
         BaseImage { with_network, image, image_inline: Some(block) }
     }
+}
+
+pub(crate) fn rewrite_cargo_home(cargo_home: &Utf8Path, path: &str) -> String {
+    path.replacen(CARGO_HOME, "$CARGO_HOME", 1).replacen(cargo_home.as_str(), "$CARGO_HOME", 1)
+}
+
+pub(crate) fn rewrite_rustup_home(val: String) -> String {
+    let val = val.replacen(RUSTUP_HOME, "$RUSTUP_HOME", 1);
+    const DIR: &str = ".rustup";
+    if let Some(pos) = val.find(DIR) {
+        return "$RUSTUP_HOME".to_owned() + &val[(pos + DIR.len())..];
+    }
+    val
+}
+
+#[test]
+fn test_rewrite_rustup_home() {
+    assert_eq!(
+        "$RUSTUP_HOME/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc",
+        rewrite_rustup_home(
+            "/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc"
+                .to_owned()
+        )
+    );
 }
 
 #[test]
