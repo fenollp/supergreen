@@ -7,6 +7,7 @@ use serde::{Deserialize, Serialize};
 use tokio::process::Command;
 
 use crate::{
+    cargo_green::rewrite_cargo_home,
     ext::CommandExt,
     stage::{AsBlock, AsStage, NamedStage, Stage},
 };
@@ -46,7 +47,10 @@ impl AsStage<'_> for Checkouts {
 
 /// https://docs.docker.com/reference/dockerfile/#add---keep-git-dir
 /// --build-arg BUILDKIT_CONTEXT_KEEP_GIT_DIR=0 https://docs.docker.com/engine/reference/builder/#buildkit-built-in-build-args
-pub(crate) async fn as_stage(krate_manifest_dir: &Utf8Path) -> Result<NamedStage> {
+pub(crate) async fn as_stage(
+    cargo_home: &Utf8Path,
+    krate_manifest_dir: &Utf8Path,
+) -> Result<NamedStage> {
     // TODO: replace execve with pure Rust impl, e.g. gitoxide
     let mut cmd = Command::new("git");
     cmd.kill_on_drop(true); // Underlying OS process dies with us
@@ -83,7 +87,7 @@ pub(crate) async fn as_stage(krate_manifest_dir: &Utf8Path) -> Result<NamedStage
         stage,
         repo: repo.to_owned(),
         commit: commit.to_owned(),
-        krate_manifest_dir: krate_manifest_dir.to_owned(),
+        krate_manifest_dir: rewrite_cargo_home(cargo_home, krate_manifest_dir),
     }))
 }
 

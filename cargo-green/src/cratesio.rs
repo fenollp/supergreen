@@ -4,6 +4,7 @@ use log::{debug, info};
 use serde::{Deserialize, Serialize};
 
 use crate::{
+    cargo_green::rewrite_cargo_home,
     green::Green,
     stage::{AsBlock, AsStage, NamedStage, Stage},
 };
@@ -81,13 +82,16 @@ impl AsStage<'_> for Cratesio {
 
 /// CARGO_MANIFEST_DIR="$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/pico-args-0.5.0"
 pub(crate) async fn named_stage<'a>(
+    cargo_home: &Utf8Path,
     name: &'a str,
     krate_manifest_dir: &'a Utf8Path,
 ) -> Result<NamedStage> {
     let name_dash_version = krate_manifest_dir.file_name().unwrap();
     let stage = Stage::cratesio(name_dash_version)?;
 
-    let extracted = rewrite_cratesio_index(krate_manifest_dir);
+    let krate_manifest_dir = rewrite_cargo_home(cargo_home, krate_manifest_dir);
+
+    let extracted = rewrite_cratesio_index(&krate_manifest_dir);
     let cached = krate_manifest_dir.to_string() + ".crate";
     let cached = cached.replace(&format!("/{HOME}/"), "/registry/cache/");
 

@@ -214,11 +214,11 @@ async fn do_wrap_rustc(
         // Input is of a crate dep (hosted at crates.io)
         // Let's optimize this case by fetching & caching crate tarball
 
-        cratesio::named_stage(krate_name, krate_manifest_dir).await?
+        cratesio::named_stage(&green.cargo_home, krate_name, krate_manifest_dir).await?
     } else if krate_manifest_dir.starts_with(green.cargo_home.join(checkouts::HOME)) {
         // Input is of a git checked out dep
 
-        checkouts::as_stage(krate_manifest_dir).await?
+        checkouts::as_stage(&green.cargo_home, krate_manifest_dir).await?
     } else if input.is_relative() {
         // Input is local code
 
