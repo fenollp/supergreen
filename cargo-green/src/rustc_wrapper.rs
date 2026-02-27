@@ -11,6 +11,7 @@ use log::{debug, error, info, warn};
 use tokio::process::Command;
 
 use crate::{
+    base_image::{rewrite_cargo_home, rewrite_rustup_home},
     build::{Effects, ERRCODE, SHELL, STDERR, STDOUT},
     buildrs_wrapper::rewrite_main,
     checkouts,
@@ -200,7 +201,9 @@ async fn do_wrap_rustc(
     if !pwd.starts_with(green.cargo_home.join(cratesio::HOME)) {
         // Essentially match the same-ish path that points to crates-io paths.
         // Experiment showed that git-check'ed-out crates didn't like: // if !pwd.starts_with(&green.cargo_home) {
-        rustc_block.push_str(&format!("WORKDIR {pwd}\n", pwd = virtual_target_dir(&pwd)));
+        let pwd = virtual_target_dir(&pwd);
+        let pwd = rewrite_cargo_home(&green.cargo_home, pwd.as_str());
+        rustc_block.push_str(&format!("WORKDIR {pwd}\n"));
     }
 
     if let Some(ref incremental) = incremental {
@@ -213,11 +216,11 @@ async fn do_wrap_rustc(
         // Input is of a crate dep (hosted at crates.io)
         // Let's optimize this case by fetching & caching crate tarball
 
-        cratesio::named_stage(krate_name, krate_manifest_dir).await?
+        cratesio::named_stage(&green.cargo_home, krate_name, krate_manifest_dir).await?
     } else if krate_manifest_dir.starts_with(green.cargo_home.join(checkouts::HOME)) {
         // Input is of a git checked out dep
 
-        checkouts::as_stage(krate_manifest_dir).await?
+        checkouts::as_stage(&green.cargo_home, krate_manifest_dir).await?
     } else if input.is_relative() {
         // Input is local code
 
@@ -251,7 +254,7 @@ async fn do_wrap_rustc(
         rustc_block.push_str(&format!("  --mount=from={name},dst={mount},source=/ \\\n"));
     }
 
-    let input = rewrite_cratesio_index(&input);
+    let input = rewrite_cargo_home(&green.cargo_home, &rewrite_cratesio_index(input.as_str()));
 
     if buildrs {
         // TODO: this won't work with e.g. tokio-decorated main fns (async + decorator needs duplicating)
@@ -273,6 +276,7 @@ async fn do_wrap_rustc(
         &out_dir,
         format!("rustc {args} {input}"),
         &green.set_envs,
+        &green.cargo_home,
         buildrs,
         rustc_block,
     )?;
@@ -318,6 +322,7 @@ impl Md {
         out_dir: &Utf8Path,
         call: String,
         green_set_envs: &[String],
+        cargo_home: &Utf8Path,
         buildrs: bool,
         mut block: String,
     ) -> Result<()> {
@@ -329,8 +334,7 @@ impl Md {
         block.push_str(&format!("    env CARGO={:?} \\\n", "$(which cargo)"));
         let mut set = HashSet::from(["CARGO".to_owned()]);
         for (var, val) in env::vars().filter_map(|kv| fmap_env(kv, buildrs)) {
-            let val = safeify(&val)?;
-            let val = virtual_target_dir_str(&val);
+            let val = rewrite_env(&val, cargo_home)?;
             block.push_str(&format!("        {var}={val} \\\n"));
             set.insert(var.clone());
         }
@@ -341,8 +345,7 @@ impl Md {
                 continue;
             }
             warn!("setting rustc-env: ${var}={val:?}");
-            let val = safeify(val)?;
-            let val = virtual_target_dir_str(&val);
+            let val = rewrite_env(val, cargo_home)?;
             block.push_str(&format!("        {var}={val} \\\n"));
             set.insert(var.to_owned());
         }
@@ -353,8 +356,7 @@ impl Md {
             }
             if let Ok(val) = env::var(var) {
                 warn!("passing ${var}={val:?} env through");
-                let val = safeify(&val)?;
-                let val = virtual_target_dir_str(&val);
+                let val = rewrite_env(&val, cargo_home)?;
                 block.push_str(&format!("        {var}={val} \\\n"));
                 set.insert(var.to_owned());
             }
@@ -370,8 +372,7 @@ impl Md {
                 }
                 debug!("system env set (skipped): ${var}={val:?}");
                 if !val.is_empty() {
-                    let val = safeify(&val)?;
-                    let val = virtual_target_dir_str(&val);
+                    let val = rewrite_env(&val, cargo_home)?;
                     block.push_str(&format!("#       {var}={val:?} \\\n"));
                 }
             }
@@ -498,13 +499,8 @@ fn fmap_env((var, val): (String, String), buildrs: bool) -> Option<(String, Stri
             debug!("env is set: {var}={val}");
         }
         let val = match var.as_str() {
-            // "CARGO_PKG_DESCRIPTION" => "FIXME".to_owned(),
-            "CARGO_MANIFEST_DIR" | "CARGO_MANIFEST_PATH" => {
-                rewrite_cratesio_index(Utf8Path::new(&val)).to_string()
-            }
             "TERM" => return None,
             "RUSTC" => "rustc".to_owned(), // Rewrite host rustc so the base_image one can be used
-            "OUT_DIR" => virtual_target_dir(Utf8Path::new(&val)).to_string(),
             _ => val,
         };
         return Some((var, val));
@@ -586,4 +582,24 @@ a\
 l'"#
         .to_owned()
     );
+}
+
+fn rewrite_env(val: &str, cargo_home: &Utf8Path) -> Result<String> {
+    let val = safeify(val)?;
+    let val = virtual_target_dir_str(&val);
+    let val = rewrite_rustup_home(val);
+    let val = rewrite_cratesio_index(&val);
+    let val = rewrite_cargo_home(cargo_home, &val);
+    Ok(val)
+}
+
+#[test]
+fn doesnt_mess_up_schemes() {
+    temp_env::with_var("CARGO_TARGET_DIR", Some("/some/path/"), || {
+        let cargo_home: Utf8PathBuf = "/some/other/path".into();
+        assert_eq!(
+            "https'://github.com/dtolnay/anyhow'",
+            rewrite_env("https://github.com/dtolnay/anyhow", &cargo_home).unwrap()
+        );
+    });
 }
