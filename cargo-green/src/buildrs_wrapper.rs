@@ -203,6 +203,7 @@ async fn do_exec_buildrs(
         &out_dir_var,
         format!("{env}= {exe}", env = ENV_EXECUTE_BUILDRS!(), exe = virtual_target_dir(&exe)),
         &green.set_envs,
+        &green.cargo_home,
         true, //FIXME: try "false" => Noneify?
         run_block,
     )?;

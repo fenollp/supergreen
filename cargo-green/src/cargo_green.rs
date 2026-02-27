@@ -4,7 +4,7 @@ use std::{
 };
 
 use anyhow::{anyhow, bail, Result};
-use camino::Utf8PathBuf;
+use camino::{Utf8Path, Utf8PathBuf};
 use log::{debug, info, warn};
 
 use crate::{
@@ -21,13 +21,6 @@ use crate::{
     stage::{Stage, RST},
     tmp, ENV_FINAL_PATH, ENV_RUNNER, ENV_SYNTAX_IMAGE, PKG, VSN,
 };
-
-fn cargo_home() -> Result<Utf8PathBuf> {
-    home::cargo_home()
-        .map_err(|e| anyhow!("bad $CARGO_HOME or something: {e}"))?
-        .try_into()
-        .map_err(|e| anyhow!("corrupted $CARGO_HOME path: {e}"))
-}
 
 pub(crate) async fn main() -> Result<Green> {
     let mut green = Green::new_from_env_then_manifest()?;
@@ -308,4 +301,15 @@ impl Green {
             })
             .map_err(|e| anyhow!("{path}\n\nUnable to prebuild: {e}"))
     }
+}
+
+fn cargo_home() -> Result<Utf8PathBuf> {
+    home::cargo_home()
+        .map_err(|e| anyhow!("bad $CARGO_HOME or something: {e}"))?
+        .try_into()
+        .map_err(|e| anyhow!("corrupted $CARGO_HOME path: {e}"))
+}
+
+pub(crate) fn rewrite_cargo_home(cargo_home: &Utf8Path, path: &Utf8Path) -> Utf8PathBuf {
+    path.to_string().replacen(cargo_home.as_str(), "$CARGO_HOME", 1).into()
 }

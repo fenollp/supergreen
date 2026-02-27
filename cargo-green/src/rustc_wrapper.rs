@@ -13,6 +13,7 @@ use tokio::process::Command;
 use crate::{
     build::{Effects, ERRCODE, SHELL, STDERR, STDOUT},
     buildrs_wrapper::rewrite_main,
+    cargo_green::rewrite_cargo_home,
     checkouts,
     cratesio::{self, rewrite_cratesio_index},
     ext::CommandExt,
@@ -251,7 +252,7 @@ async fn do_wrap_rustc(
         rustc_block.push_str(&format!("  --mount=from={name},dst={mount},source=/ \\\n"));
     }
 
-    let input = rewrite_cratesio_index(&input);
+    let input = rewrite_cargo_home(&green.cargo_home, &rewrite_cratesio_index(&input));
 
     if buildrs {
         // TODO: this won't work with e.g. tokio-decorated main fns (async + decorator needs duplicating)
@@ -273,6 +274,7 @@ async fn do_wrap_rustc(
         &out_dir,
         format!("rustc {args} {input}"),
         &green.set_envs,
+        &green.cargo_home,
         buildrs,
         rustc_block,
     )?;
@@ -318,6 +320,7 @@ impl Md {
         out_dir: &Utf8Path,
         call: String,
         green_set_envs: &[String],
+        cargo_home: &Utf8Path,
         buildrs: bool,
         mut block: String,
     ) -> Result<()> {
@@ -328,7 +331,7 @@ impl Md {
 
         block.push_str(&format!("    env CARGO={:?} \\\n", "$(which cargo)"));
         let mut set = HashSet::from(["CARGO".to_owned()]);
-        for (var, val) in env::vars().filter_map(|kv| fmap_env(kv, buildrs)) {
+        for (var, val) in env::vars().filter_map(|kv| fmap_env(kv, buildrs, cargo_home)) {
             let val = safeify(&val)?;
             let val = virtual_target_dir_str(&val);
             block.push_str(&format!("        {var}={val} \\\n"));
@@ -484,7 +487,11 @@ impl Md {
     }
 }
 
-fn fmap_env((var, val): (String, String), buildrs: bool) -> Option<(String, String)> {
+fn fmap_env(
+    (var, val): (String, String),
+    buildrs: bool,
+    cargo_home: &Utf8Path,
+) -> Option<(String, String)> {
     let (pass, skip, only_buildrs) = pass_env(&var);
     if pass || (buildrs && only_buildrs) {
         if skip {
@@ -500,7 +507,8 @@ fn fmap_env((var, val): (String, String), buildrs: bool) -> Option<(String, Stri
         let val = match var.as_str() {
             // "CARGO_PKG_DESCRIPTION" => "FIXME".to_owned(),
             "CARGO_MANIFEST_DIR" | "CARGO_MANIFEST_PATH" => {
-                rewrite_cratesio_index(Utf8Path::new(&val)).to_string()
+                let val = rewrite_cratesio_index(Utf8Path::new(&val));
+                rewrite_cargo_home(cargo_home, &val).to_string()
             }
             "TERM" => return None,
             "RUSTC" => "rustc".to_owned(), // Rewrite host rustc so the base_image one can be used
