@@ -16,8 +16,8 @@ RUN \
   --mount=from=cratesio-pico-args-0.5.0,source=/pico-args-0.5.0,dst=$CARGO_HOME/registry/src/index.crates.io/pico-args-0.5.0 \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=pico_args \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/pico-args-0.5.0' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/pico-args-0.5.0/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/pico-args-0.5.0 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/pico-args-0.5.0/Cargo.toml \
         CARGO_PKG_AUTHORS=Yevhenii' Reizner <razrfalcon@gmail.com>' \
         CARGO_PKG_DESCRIPTION=An' ultra simple CLI arguments parser.' \
         CARGO_PKG_HOMEPAGE= \
@@ -80,8 +80,8 @@ COPY --link --from=dep-n-pico-args-0.5.0-f4da04ff96e72eb0 /target/release/deps/*
 ##   --mount=from=cratesio-pico-args-0.5.0,source=/pico-args-0.5.0,dst=$CARGO_HOME/registry/src/index.crates.io/pico-args-0.5.0 \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=pico_args \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/pico-args-0.5.0' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/pico-args-0.5.0/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/pico-args-0.5.0 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/pico-args-0.5.0/Cargo.toml \
 ##         CARGO_PKG_AUTHORS=Yevhenii' Reizner <razrfalcon@gmail.com>' \
 ##         CARGO_PKG_DESCRIPTION=An' ultra simple CLI arguments parser.' \
 ##         CARGO_PKG_HOMEPAGE= \
@@ -121,8 +121,8 @@ RUN \
   --mount=from=cratesio-shlex-1.3.0,source=/shlex-1.3.0,dst=$CARGO_HOME/registry/src/index.crates.io/shlex-1.3.0 \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=shlex \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/shlex-1.3.0' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/shlex-1.3.0/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/shlex-1.3.0 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/shlex-1.3.0/Cargo.toml \
         CARGO_PKG_AUTHORS=comex' <comexk@gmail.com>:Fenhl <fenhl@fenhl.net>:Adrian Taylor <adetaylor@chromium.org>:Alex Touchet <alextouchet@outlook.com>:Daniel Parks <dp+git@oxidized.org>:Garrett Berg <googberg@gmail.com>' \
         CARGO_PKG_DESCRIPTION=Split' a string into shell words, like Python'\'s' shlex.' \
         CARGO_PKG_HOMEPAGE= \
@@ -185,8 +185,8 @@ COPY --link --from=dep-n-shlex-1.3.0-7b61911c2216006d /target/release/deps/*-7b6
 ##   --mount=from=cratesio-shlex-1.3.0,source=/shlex-1.3.0,dst=$CARGO_HOME/registry/src/index.crates.io/shlex-1.3.0 \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=shlex \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/shlex-1.3.0' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/shlex-1.3.0/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/shlex-1.3.0 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/shlex-1.3.0/Cargo.toml \
 ##         CARGO_PKG_AUTHORS=comex' <comexk@gmail.com>:Fenhl <fenhl@fenhl.net>:Adrian Taylor <adetaylor@chromium.org>:Alex Touchet <alextouchet@outlook.com>:Daniel Parks <dp+git@oxidized.org>:Garrett Berg <googberg@gmail.com>' \
 ##         CARGO_PKG_DESCRIPTION=Split' a string into shell words, like Python'\'s' shlex.' \
 ##         CARGO_PKG_HOMEPAGE= \
@@ -230,8 +230,8 @@ RUN \
   --mount=from=out-7b61911c2216006d,dst=/target/release/deps/libshlex-7b61911c2216006d.rmeta,source=/libshlex-7b61911c2216006d.rmeta \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=buildxargs \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/buildxargs-1.4.0' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/buildxargs-1.4.0/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/buildxargs-1.4.0 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/buildxargs-1.4.0/Cargo.toml \
         CARGO_PKG_AUTHORS=Pierre' Fenoll <pierrefenoll@gmail.com>' \
         CARGO_PKG_DESCRIPTION=xargs' for BuildKit with docker buildx bake' \
         CARGO_PKG_HOMEPAGE= \
@@ -319,8 +319,8 @@ COPY --link --from=dep-n-buildxargs-1.4.0-743dae7d2ec996f8 /target/release/deps/
 ##   --mount=from=out-7b61911c2216006d,dst=/target/release/deps/libshlex-7b61911c2216006d.rmeta,source=/libshlex-7b61911c2216006d.rmeta \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=buildxargs \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/buildxargs-1.4.0' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/buildxargs-1.4.0/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/buildxargs-1.4.0 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/buildxargs-1.4.0/Cargo.toml \
 ##         CARGO_PKG_AUTHORS=Pierre' Fenoll <pierrefenoll@gmail.com>' \
 ##         CARGO_PKG_DESCRIPTION=xargs' for BuildKit with docker buildx bake' \
 ##         CARGO_PKG_HOMEPAGE= \
@@ -363,8 +363,8 @@ RUN \
     env CARGO="$(which cargo)" \
         CARGO_BIN_NAME=buildxargs \
         CARGO_CRATE_NAME=buildxargs \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/buildxargs-1.4.0' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/buildxargs-1.4.0/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/buildxargs-1.4.0 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/buildxargs-1.4.0/Cargo.toml \
         CARGO_PKG_AUTHORS=Pierre' Fenoll <pierrefenoll@gmail.com>' \
         CARGO_PKG_DESCRIPTION=xargs' for BuildKit with docker buildx bake' \
         CARGO_PKG_HOMEPAGE= \
@@ -451,8 +451,8 @@ COPY --link --from=dep-n-buildxargs-1.4.0-1c7f7fced940a33a /target/release/deps/
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_BIN_NAME=buildxargs \
 ##         CARGO_CRATE_NAME=buildxargs \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/buildxargs-1.4.0' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/buildxargs-1.4.0/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/buildxargs-1.4.0 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/buildxargs-1.4.0/Cargo.toml \
 ##         CARGO_PKG_AUTHORS=Pierre' Fenoll <pierrefenoll@gmail.com>' \
 ##         CARGO_PKG_DESCRIPTION=xargs' for BuildKit with docker buildx bake' \
 ##         CARGO_PKG_HOMEPAGE= \
