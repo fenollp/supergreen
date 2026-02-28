@@ -89,9 +89,6 @@ pub(crate) async fn named_stage<'a>(
     let name_dash_version = krate_manifest_dir.file_name().unwrap();
     let stage = Stage::cratesio(name_dash_version)?;
 
-    let krate_manifest_dir = rewrite_cargo_home(cargo_home, krate_manifest_dir);
-
-    let extracted = rewrite_cratesio_index(&krate_manifest_dir);
     let cached = krate_manifest_dir.to_string() + ".crate";
     let cached = cached.replace(&format!("/{HOME}/"), "/registry/cache/");
 
@@ -100,6 +97,9 @@ pub(crate) async fn named_stage<'a>(
         .await
         .map_err(|e| anyhow!("Failed reading {cached}: {e}"))?;
     debug!("crate sha256 for {stage}: {hash}");
+
+    let krate_manifest_dir = rewrite_cargo_home(cargo_home, krate_manifest_dir);
+    let extracted = rewrite_cratesio_index(&krate_manifest_dir);
 
     Ok(NamedStage::Cratesio(Cratesio {
         stage,

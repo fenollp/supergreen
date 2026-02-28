@@ -201,7 +201,9 @@ async fn do_wrap_rustc(
     if !pwd.starts_with(green.cargo_home.join(cratesio::HOME)) {
         // Essentially match the same-ish path that points to crates-io paths.
         // Experiment showed that git-check'ed-out crates didn't like: // if !pwd.starts_with(&green.cargo_home) {
-        rustc_block.push_str(&format!("WORKDIR {pwd}\n", pwd = virtual_target_dir(&pwd)));
+        let pwd = virtual_target_dir(&pwd);
+        let pwd = rewrite_cargo_home(&green.cargo_home, &pwd);
+        rustc_block.push_str(&format!("WORKDIR {pwd}\n"));
     }
 
     if let Some(ref incremental) = incremental {
