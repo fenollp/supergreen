@@ -36,8 +36,8 @@ RUN \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=build_script_build \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/libc-0.2.176' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/libc-0.2.176/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/libc-0.2.176 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/libc-0.2.176/Cargo.toml \
         CARGO_PKG_AUTHORS=The' Rust Project Developers' \
         CARGO_PKG_DESCRIPTION=Raw' FFI bindings to platform libraries like libc.' \
         CARGO_PKG_HOMEPAGE= \
@@ -118,8 +118,8 @@ COPY --link --from=dep-x-libc-0.2.176-7560e7c5c88ec4c4 /target/release/build/lib
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=build_script_build \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/libc-0.2.176' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/libc-0.2.176/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/libc-0.2.176 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/libc-0.2.176/Cargo.toml \
 ##         CARGO_PKG_AUTHORS=The' Rust Project Developers' \
 ##         CARGO_PKG_DESCRIPTION=Raw' FFI bindings to platform libraries like libc.' \
 ##         CARGO_PKG_HOMEPAGE= \
@@ -174,8 +174,8 @@ RUN \
         CARGO_FEATURE_DEFAULT=1 \
         CARGO_FEATURE_STD=1 \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/libc-0.2.176' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/libc-0.2.176/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/libc-0.2.176 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/libc-0.2.176/Cargo.toml \
         CARGO_PKG_AUTHORS=The' Rust Project Developers' \
         CARGO_PKG_DESCRIPTION=Raw' FFI bindings to platform libraries like libc.' \
         CARGO_PKG_HOMEPAGE= \
@@ -197,7 +197,7 @@ RUN \
         OUT_DIR=/target/release/build/libc-d5b44a42806fd90b/out \
         PROFILE=release \
         RUSTC=rustc \
-        RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+        RUSTDOC=$RUSTUP_HOME/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
         TARGET=x86_64-unknown-linux-gnu \
         CARGOGREEN=1 \
       CARGOGREEN_EXECUTE_BUILDRS_= /target/release/build/libc-7560e7c5c88ec4c4/build-script-build \
@@ -274,8 +274,8 @@ COPY --link --from=run-z-libc-0.2.176-d5b44a42806fd90b /target/release/build/lib
 ##         CARGO_FEATURE_DEFAULT=1 \
 ##         CARGO_FEATURE_STD=1 \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/libc-0.2.176' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/libc-0.2.176/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/libc-0.2.176 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/libc-0.2.176/Cargo.toml \
 ##         CARGO_PKG_AUTHORS=The' Rust Project Developers' \
 ##         CARGO_PKG_DESCRIPTION=Raw' FFI bindings to platform libraries like libc.' \
 ##         CARGO_PKG_HOMEPAGE= \
@@ -297,7 +297,7 @@ COPY --link --from=run-z-libc-0.2.176-d5b44a42806fd90b /target/release/build/lib
 ##         OUT_DIR=/target/release/build/libc-d5b44a42806fd90b/out \
 ##         PROFILE=release \
 ##         RUSTC=rustc \
-##         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+##         RUSTDOC=$RUSTUP_HOME/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
 ##         TARGET=x86_64-unknown-linux-gnu \
 ##         CARGOGREEN=1 \
 ##       CARGOGREEN_EXECUTE_BUILDRS_= /target/release/build/libc-7560e7c5c88ec4c4/build-script-build \
@@ -324,8 +324,8 @@ RUN \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=libc \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/libc-0.2.176' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/libc-0.2.176/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/libc-0.2.176 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/libc-0.2.176/Cargo.toml \
         CARGO_PKG_AUTHORS=The' Rust Project Developers' \
         CARGO_PKG_DESCRIPTION=Raw' FFI bindings to platform libraries like libc.' \
         CARGO_PKG_HOMEPAGE= \
@@ -400,8 +400,8 @@ COPY --link --from=dep-n-libc-0.2.176-93b6478caf319772 /target/release/deps/*-93
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=libc \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/libc-0.2.176' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/libc-0.2.176/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/libc-0.2.176 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/libc-0.2.176/Cargo.toml \
 ##         CARGO_PKG_AUTHORS=The' Rust Project Developers' \
 ##         CARGO_PKG_DESCRIPTION=Raw' FFI bindings to platform libraries like libc.' \
 ##         CARGO_PKG_HOMEPAGE= \
@@ -445,8 +445,8 @@ RUN \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=clock_steering \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/clock-steering-0.2.1' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/clock-steering-0.2.1/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/clock-steering-0.2.1 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/clock-steering-0.2.1/Cargo.toml \
         CARGO_PKG_AUTHORS= \
         CARGO_PKG_DESCRIPTION=Functionality' for manual clock steering' \
         CARGO_PKG_HOMEPAGE=https'://github.com/pendulum-project/timestamped-socket' \
@@ -526,8 +526,8 @@ COPY --link --from=dep-n-clock-steering-0.2.1-9dd4b48829148398 /target/release/d
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=clock_steering \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/clock-steering-0.2.1' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/clock-steering-0.2.1/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/clock-steering-0.2.1 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/clock-steering-0.2.1/Cargo.toml \
 ##         CARGO_PKG_AUTHORS= \
 ##         CARGO_PKG_DESCRIPTION=Functionality' for manual clock steering' \
 ##         CARGO_PKG_HOMEPAGE=https'://github.com/pendulum-project/timestamped-socket' \
@@ -587,8 +587,8 @@ RUN \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=build_script_build \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/typenum-1.19.0' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/typenum-1.19.0/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/typenum-1.19.0 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/typenum-1.19.0/Cargo.toml \
         CARGO_PKG_AUTHORS=Paho' Lurie-Gregg <paho@paholg.com>:Andre Bogus <bogusandre@gmail.com>' \
         CARGO_PKG_DESCRIPTION=Typenum' is a Rust library for type-level numbers evaluated at\
     compile time. It currently supports bits, unsigned integers, and signed\
@@ -672,8 +672,8 @@ COPY --link --from=dep-x-typenum-1.19.0-a8fbaef0afd87b8e /target/release/build/t
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=build_script_build \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/typenum-1.19.0' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/typenum-1.19.0/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/typenum-1.19.0 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/typenum-1.19.0/Cargo.toml \
 ##         CARGO_PKG_AUTHORS=Paho' Lurie-Gregg <paho@paholg.com>:Andre Bogus <bogusandre@gmail.com>' \
 ##         CARGO_PKG_DESCRIPTION=Typenum' is a Rust library for type-level numbers evaluated at\
 ##     compile time. It currently supports bits, unsigned integers, and signed\
@@ -729,8 +729,8 @@ RUN \
         CARGO_CFG_UNIX= \
         CARGO_ENCODED_RUSTFLAGS= \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/typenum-1.19.0' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/typenum-1.19.0/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/typenum-1.19.0 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/typenum-1.19.0/Cargo.toml \
         CARGO_PKG_AUTHORS=Paho' Lurie-Gregg <paho@paholg.com>:Andre Bogus <bogusandre@gmail.com>' \
         CARGO_PKG_DESCRIPTION=Typenum' is a Rust library for type-level numbers evaluated at\
     compile time. It currently supports bits, unsigned integers, and signed\
@@ -755,7 +755,7 @@ RUN \
         OUT_DIR=/target/release/build/typenum-c2a85ea3d52ad392/out \
         PROFILE=release \
         RUSTC=rustc \
-        RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+        RUSTDOC=$RUSTUP_HOME/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
         TARGET=x86_64-unknown-linux-gnu \
         CARGOGREEN=1 \
       CARGOGREEN_EXECUTE_BUILDRS_= /target/release/build/typenum-a8fbaef0afd87b8e/build-script-build \
@@ -806,8 +806,8 @@ COPY --link --from=run-z-typenum-1.19.0-c2a85ea3d52ad392 /target/release/build/t
 ##         CARGO_CFG_UNIX= \
 ##         CARGO_ENCODED_RUSTFLAGS= \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/typenum-1.19.0' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/typenum-1.19.0/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/typenum-1.19.0 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/typenum-1.19.0/Cargo.toml \
 ##         CARGO_PKG_AUTHORS=Paho' Lurie-Gregg <paho@paholg.com>:Andre Bogus <bogusandre@gmail.com>' \
 ##         CARGO_PKG_DESCRIPTION=Typenum' is a Rust library for type-level numbers evaluated at\
 ##     compile time. It currently supports bits, unsigned integers, and signed\
@@ -832,7 +832,7 @@ COPY --link --from=run-z-typenum-1.19.0-c2a85ea3d52ad392 /target/release/build/t
 ##         OUT_DIR=/target/release/build/typenum-c2a85ea3d52ad392/out \
 ##         PROFILE=release \
 ##         RUSTC=rustc \
-##         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+##         RUSTDOC=$RUSTUP_HOME/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
 ##         TARGET=x86_64-unknown-linux-gnu \
 ##         CARGOGREEN=1 \
 ##       CARGOGREEN_EXECUTE_BUILDRS_= /target/release/build/typenum-a8fbaef0afd87b8e/build-script-build \
@@ -859,8 +859,8 @@ RUN \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=typenum \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/typenum-1.19.0' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/typenum-1.19.0/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/typenum-1.19.0 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/typenum-1.19.0/Cargo.toml \
         CARGO_PKG_AUTHORS=Paho' Lurie-Gregg <paho@paholg.com>:Andre Bogus <bogusandre@gmail.com>' \
         CARGO_PKG_DESCRIPTION=Typenum' is a Rust library for type-level numbers evaluated at\
     compile time. It currently supports bits, unsigned integers, and signed\
@@ -938,8 +938,8 @@ COPY --link --from=dep-n-typenum-1.19.0-7d56f2624f7fb484 /target/release/deps/*-
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=typenum \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/typenum-1.19.0' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/typenum-1.19.0/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/typenum-1.19.0 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/typenum-1.19.0/Cargo.toml \
 ##         CARGO_PKG_AUTHORS=Paho' Lurie-Gregg <paho@paholg.com>:Andre Bogus <bogusandre@gmail.com>' \
 ##         CARGO_PKG_DESCRIPTION=Typenum' is a Rust library for type-level numbers evaluated at\
 ##     compile time. It currently supports bits, unsigned integers, and signed\
@@ -984,8 +984,8 @@ RUN \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=version_check \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/version_check-0.9.5' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/version_check-0.9.5/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/version_check-0.9.5 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/version_check-0.9.5/Cargo.toml \
         CARGO_PKG_AUTHORS=Sergio' Benitez <sb@sergio.bz>' \
         CARGO_PKG_DESCRIPTION=Tiny' crate to check the version of the installed/running rustc.' \
         CARGO_PKG_HOMEPAGE= \
@@ -1049,8 +1049,8 @@ COPY --link --from=dep-n-version_check-0.9.5-23b425cce0264739 /target/release/de
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=version_check \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/version_check-0.9.5' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/version_check-0.9.5/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/version_check-0.9.5 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/version_check-0.9.5/Cargo.toml \
 ##         CARGO_PKG_AUTHORS=Sergio' Benitez <sb@sergio.bz>' \
 ##         CARGO_PKG_DESCRIPTION=Tiny' crate to check the version of the installed/running rustc.' \
 ##         CARGO_PKG_HOMEPAGE= \
@@ -1111,8 +1111,8 @@ RUN \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=build_script_build \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/generic-array-0.14.7' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/generic-array-0.14.7/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/generic-array-0.14.7 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/generic-array-0.14.7/Cargo.toml \
         CARGO_PKG_AUTHORS=Bartłomiej' Kamiński <fizyk20@gmail.com>:Aaron Trent <novacrazy@gmail.com>' \
         CARGO_PKG_DESCRIPTION=Generic' types implementing functionality of arrays' \
         CARGO_PKG_HOMEPAGE= \
@@ -1199,8 +1199,8 @@ COPY --link --from=dep-x-generic-array-0.14.7-daae1221734799f2 /target/release/b
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=build_script_build \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/generic-array-0.14.7' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/generic-array-0.14.7/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/generic-array-0.14.7 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/generic-array-0.14.7/Cargo.toml \
 ##         CARGO_PKG_AUTHORS=Bartłomiej' Kamiński <fizyk20@gmail.com>:Aaron Trent <novacrazy@gmail.com>' \
 ##         CARGO_PKG_DESCRIPTION=Generic' types implementing functionality of arrays' \
 ##         CARGO_PKG_HOMEPAGE= \
@@ -1254,8 +1254,8 @@ RUN \
         CARGO_ENCODED_RUSTFLAGS= \
         CARGO_FEATURE_MORE_LENGTHS=1 \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/generic-array-0.14.7' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/generic-array-0.14.7/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/generic-array-0.14.7 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/generic-array-0.14.7/Cargo.toml \
         CARGO_PKG_AUTHORS=Bartłomiej' Kamiński <fizyk20@gmail.com>:Aaron Trent <novacrazy@gmail.com>' \
         CARGO_PKG_DESCRIPTION=Generic' types implementing functionality of arrays' \
         CARGO_PKG_HOMEPAGE= \
@@ -1277,7 +1277,7 @@ RUN \
         OUT_DIR=/target/release/build/generic-array-6319738dfa2a85a9/out \
         PROFILE=release \
         RUSTC=rustc \
-        RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+        RUSTDOC=$RUSTUP_HOME/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
         TARGET=x86_64-unknown-linux-gnu \
         CARGOGREEN=1 \
       CARGOGREEN_EXECUTE_BUILDRS_= /target/release/build/generic-array-daae1221734799f2/build-script-build \
@@ -1331,8 +1331,8 @@ COPY --link --from=run-z-generic-array-0.14.7-6319738dfa2a85a9 /target/release/b
 ##         CARGO_ENCODED_RUSTFLAGS= \
 ##         CARGO_FEATURE_MORE_LENGTHS=1 \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/generic-array-0.14.7' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/generic-array-0.14.7/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/generic-array-0.14.7 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/generic-array-0.14.7/Cargo.toml \
 ##         CARGO_PKG_AUTHORS=Bartłomiej' Kamiński <fizyk20@gmail.com>:Aaron Trent <novacrazy@gmail.com>' \
 ##         CARGO_PKG_DESCRIPTION=Generic' types implementing functionality of arrays' \
 ##         CARGO_PKG_HOMEPAGE= \
@@ -1354,7 +1354,7 @@ COPY --link --from=run-z-generic-array-0.14.7-6319738dfa2a85a9 /target/release/b
 ##         OUT_DIR=/target/release/build/generic-array-6319738dfa2a85a9/out \
 ##         PROFILE=release \
 ##         RUSTC=rustc \
-##         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+##         RUSTDOC=$RUSTUP_HOME/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
 ##         TARGET=x86_64-unknown-linux-gnu \
 ##         CARGOGREEN=1 \
 ##       CARGOGREEN_EXECUTE_BUILDRS_= /target/release/build/generic-array-daae1221734799f2/build-script-build \
@@ -1384,8 +1384,8 @@ RUN \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=generic_array \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/generic-array-0.14.7' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/generic-array-0.14.7/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/generic-array-0.14.7 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/generic-array-0.14.7/Cargo.toml \
         CARGO_PKG_AUTHORS=Bartłomiej' Kamiński <fizyk20@gmail.com>:Aaron Trent <novacrazy@gmail.com>' \
         CARGO_PKG_DESCRIPTION=Generic' types implementing functionality of arrays' \
         CARGO_PKG_HOMEPAGE= \
@@ -1489,8 +1489,8 @@ COPY --link --from=dep-n-generic-array-0.14.7-523ed8994559e91b /target/release/d
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=generic_array \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/generic-array-0.14.7' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/generic-array-0.14.7/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/generic-array-0.14.7 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/generic-array-0.14.7/Cargo.toml \
 ##         CARGO_PKG_AUTHORS=Bartłomiej' Kamiński <fizyk20@gmail.com>:Aaron Trent <novacrazy@gmail.com>' \
 ##         CARGO_PKG_DESCRIPTION=Generic' types implementing functionality of arrays' \
 ##         CARGO_PKG_HOMEPAGE= \
@@ -1532,8 +1532,8 @@ RUN \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=cfg_if \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/cfg-if-1.0.3' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/cfg-if-1.0.3/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/cfg-if-1.0.3 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/cfg-if-1.0.3/Cargo.toml \
         CARGO_PKG_AUTHORS=Alex' Crichton <alex@alexcrichton.com>' \
         CARGO_PKG_DESCRIPTION=A' macro to ergonomically define an item depending on a large number of #[cfg]\
 parameters. Structured like an if-else chain, the first matching branch is the\
@@ -1600,8 +1600,8 @@ COPY --link --from=dep-n-cfg-if-1.0.3-5a4301c208f24f4c /target/release/deps/*-5a
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=cfg_if \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/cfg-if-1.0.3' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/cfg-if-1.0.3/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/cfg-if-1.0.3 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/cfg-if-1.0.3/Cargo.toml \
 ##         CARGO_PKG_AUTHORS=Alex' Crichton <alex@alexcrichton.com>' \
 ##         CARGO_PKG_DESCRIPTION=A' macro to ergonomically define an item depending on a large number of #[cfg]\
 ## parameters. Structured like an if-else chain, the first matching branch is the\
@@ -1649,8 +1649,8 @@ RUN \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=getrandom \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/getrandom-0.2.16' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/getrandom-0.2.16/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/getrandom-0.2.16 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/getrandom-0.2.16/Cargo.toml \
         CARGO_PKG_AUTHORS=The' Rand Project Developers' \
         CARGO_PKG_DESCRIPTION=A' small cross-platform library for retrieving random data from system source' \
         CARGO_PKG_HOMEPAGE= \
@@ -1741,8 +1741,8 @@ COPY --link --from=dep-n-getrandom-0.2.16-2ae0eb9fb2c721bb /target/release/deps/
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=getrandom \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/getrandom-0.2.16' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/getrandom-0.2.16/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/getrandom-0.2.16 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/getrandom-0.2.16/Cargo.toml \
 ##         CARGO_PKG_AUTHORS=The' Rand Project Developers' \
 ##         CARGO_PKG_DESCRIPTION=A' small cross-platform library for retrieving random data from system source' \
 ##         CARGO_PKG_HOMEPAGE= \
@@ -1789,8 +1789,8 @@ RUN \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=rand_core \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/rand_core-0.6.4' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/rand_core-0.6.4/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/rand_core-0.6.4 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/rand_core-0.6.4/Cargo.toml \
         CARGO_PKG_AUTHORS=The' Rand Project Developers:The Rust Project Developers' \
         CARGO_PKG_DESCRIPTION=Core' random number generator traits and tools for implementation.\
 ' \
@@ -1900,8 +1900,8 @@ COPY --link --from=dep-n-rand_core-0.6.4-fd7543c0686511cd /target/release/deps/*
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=rand_core \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/rand_core-0.6.4' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/rand_core-0.6.4/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/rand_core-0.6.4 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/rand_core-0.6.4/Cargo.toml \
 ##         CARGO_PKG_AUTHORS=The' Rand Project Developers:The Rust Project Developers' \
 ##         CARGO_PKG_DESCRIPTION=Core' random number generator traits and tools for implementation.\
 ## ' \
@@ -1958,8 +1958,8 @@ RUN \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=crypto_common \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/crypto-common-0.1.6' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/crypto-common-0.1.6/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/crypto-common-0.1.6 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/crypto-common-0.1.6/Cargo.toml \
         CARGO_PKG_AUTHORS=RustCrypto' Developers' \
         CARGO_PKG_DESCRIPTION=Common' cryptographic traits' \
         CARGO_PKG_HOMEPAGE= \
@@ -2118,8 +2118,8 @@ COPY --link --from=dep-n-crypto-common-0.1.6-cebe1cbff4994413 /target/release/de
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=crypto_common \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/crypto-common-0.1.6' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/crypto-common-0.1.6/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/crypto-common-0.1.6 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/crypto-common-0.1.6/Cargo.toml \
 ##         CARGO_PKG_AUTHORS=RustCrypto' Developers' \
 ##         CARGO_PKG_DESCRIPTION=Common' cryptographic traits' \
 ##         CARGO_PKG_HOMEPAGE= \
@@ -2177,8 +2177,8 @@ RUN \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=aead \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/aead-0.5.2' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/aead-0.5.2/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/aead-0.5.2 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/aead-0.5.2/Cargo.toml \
         CARGO_PKG_AUTHORS=RustCrypto' Developers' \
         CARGO_PKG_DESCRIPTION=Traits' for Authenticated Encryption with Associated Data (AEAD) algorithms,\
 such as AES-GCM as ChaCha20Poly1305, which provide a high-level API\
@@ -2350,8 +2350,8 @@ COPY --link --from=dep-n-aead-0.5.2-4b9b0df243e430b1 /target/release/deps/*-4b9b
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=aead \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/aead-0.5.2' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/aead-0.5.2/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/aead-0.5.2 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/aead-0.5.2/Cargo.toml \
 ##         CARGO_PKG_AUTHORS=RustCrypto' Developers' \
 ##         CARGO_PKG_DESCRIPTION=Traits' for Authenticated Encryption with Associated Data (AEAD) algorithms,\
 ## such as AES-GCM as ChaCha20Poly1305, which provide a high-level API\
@@ -2401,8 +2401,8 @@ RUN \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=inout \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/inout-0.1.4' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/inout-0.1.4/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/inout-0.1.4 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/inout-0.1.4/Cargo.toml \
         CARGO_PKG_AUTHORS=RustCrypto' Developers' \
         CARGO_PKG_DESCRIPTION=Custom' reference types for code generic over in-place and buffer-to-buffer modes of operation.' \
         CARGO_PKG_HOMEPAGE= \
@@ -2514,8 +2514,8 @@ COPY --link --from=dep-n-inout-0.1.4-933693afe5da87fd /target/release/deps/*-933
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=inout \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/inout-0.1.4' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/inout-0.1.4/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/inout-0.1.4 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/inout-0.1.4/Cargo.toml \
 ##         CARGO_PKG_AUTHORS=RustCrypto' Developers' \
 ##         CARGO_PKG_DESCRIPTION=Custom' reference types for code generic over in-place and buffer-to-buffer modes of operation.' \
 ##         CARGO_PKG_HOMEPAGE= \
@@ -2575,8 +2575,8 @@ RUN \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=cipher \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/cipher-0.4.4' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/cipher-0.4.4/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/cipher-0.4.4 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/cipher-0.4.4/Cargo.toml \
         CARGO_PKG_AUTHORS=RustCrypto' Developers' \
         CARGO_PKG_DESCRIPTION=Traits' for describing block ciphers and stream ciphers' \
         CARGO_PKG_HOMEPAGE= \
@@ -2757,8 +2757,8 @@ COPY --link --from=dep-n-cipher-0.4.4-8863b3b614042642 /target/release/deps/*-88
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=cipher \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/cipher-0.4.4' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/cipher-0.4.4/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/cipher-0.4.4 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/cipher-0.4.4/Cargo.toml \
 ##         CARGO_PKG_AUTHORS=RustCrypto' Developers' \
 ##         CARGO_PKG_DESCRIPTION=Traits' for describing block ciphers and stream ciphers' \
 ##         CARGO_PKG_HOMEPAGE= \
@@ -2799,8 +2799,8 @@ RUN \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=cpufeatures \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/cpufeatures-0.2.17' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/cpufeatures-0.2.17/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/cpufeatures-0.2.17 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/cpufeatures-0.2.17/Cargo.toml \
         CARGO_PKG_AUTHORS=RustCrypto' Developers' \
         CARGO_PKG_DESCRIPTION=Lightweight' runtime CPU feature detection for aarch64, loongarch64, and x86/x86_64 targets, \
 with no_std support and support for mobile targets including Android and iOS\
@@ -2866,8 +2866,8 @@ COPY --link --from=dep-n-cpufeatures-0.2.17-d0b16ab74f2da8e3 /target/release/dep
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=cpufeatures \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/cpufeatures-0.2.17' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/cpufeatures-0.2.17/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/cpufeatures-0.2.17 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/cpufeatures-0.2.17/Cargo.toml \
 ##         CARGO_PKG_AUTHORS=RustCrypto' Developers' \
 ##         CARGO_PKG_DESCRIPTION=Lightweight' runtime CPU feature detection for aarch64, loongarch64, and x86/x86_64 targets, \
 ## with no_std support and support for mobile targets including Android and iOS\
@@ -2933,8 +2933,8 @@ RUN \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=aes \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/aes-0.8.4' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/aes-0.8.4/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/aes-0.8.4 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/aes-0.8.4/Cargo.toml \
         CARGO_PKG_AUTHORS=RustCrypto' Developers' \
         CARGO_PKG_DESCRIPTION=Pure' Rust implementation of the Advanced Encryption Standard (a.k.a. Rijndael)' \
         CARGO_PKG_HOMEPAGE= \
@@ -3170,8 +3170,8 @@ COPY --link --from=dep-n-aes-0.8.4-d09eff787322ac92 /target/release/deps/*-d09ef
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=aes \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/aes-0.8.4' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/aes-0.8.4/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/aes-0.8.4 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/aes-0.8.4/Cargo.toml \
 ##         CARGO_PKG_AUTHORS=RustCrypto' Developers' \
 ##         CARGO_PKG_DESCRIPTION=Pure' Rust implementation of the Advanced Encryption Standard (a.k.a. Rijndael)' \
 ##         CARGO_PKG_HOMEPAGE= \
@@ -3219,8 +3219,8 @@ RUN \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=dbl \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/dbl-0.3.2' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/dbl-0.3.2/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/dbl-0.3.2 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/dbl-0.3.2/Cargo.toml \
         CARGO_PKG_AUTHORS=RustCrypto' Developers' \
         CARGO_PKG_DESCRIPTION=Double' operation in Galois Field (GF)' \
         CARGO_PKG_HOMEPAGE= \
@@ -3332,8 +3332,8 @@ COPY --link --from=dep-n-dbl-0.3.2-7d6eda3dd622da8e /target/release/deps/*-7d6ed
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=dbl \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/dbl-0.3.2' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/dbl-0.3.2/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/dbl-0.3.2 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/dbl-0.3.2/Cargo.toml \
 ##         CARGO_PKG_AUTHORS=RustCrypto' Developers' \
 ##         CARGO_PKG_DESCRIPTION=Double' operation in Galois Field (GF)' \
 ##         CARGO_PKG_HOMEPAGE= \
@@ -3381,8 +3381,8 @@ RUN \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=block_buffer \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/block-buffer-0.10.4' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/block-buffer-0.10.4/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/block-buffer-0.10.4 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/block-buffer-0.10.4/Cargo.toml \
         CARGO_PKG_AUTHORS=RustCrypto' Developers' \
         CARGO_PKG_DESCRIPTION=Buffer' type for block processing of data' \
         CARGO_PKG_HOMEPAGE= \
@@ -3494,8 +3494,8 @@ COPY --link --from=dep-n-block-buffer-0.10.4-be39a74c6398de96 /target/release/de
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=block_buffer \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/block-buffer-0.10.4' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/block-buffer-0.10.4/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/block-buffer-0.10.4 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/block-buffer-0.10.4/Cargo.toml \
 ##         CARGO_PKG_AUTHORS=RustCrypto' Developers' \
 ##         CARGO_PKG_DESCRIPTION=Buffer' type for block processing of data' \
 ##         CARGO_PKG_HOMEPAGE= \
@@ -3536,8 +3536,8 @@ RUN \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=subtle \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/subtle-2.6.1' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/subtle-2.6.1/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/subtle-2.6.1 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/subtle-2.6.1/Cargo.toml \
         CARGO_PKG_AUTHORS=Isis' Lovecruft <isis@patternsinthevoid.net>:Henry de Valence <hdevalence@hdevalence.ca>' \
         CARGO_PKG_DESCRIPTION=Pure-Rust' traits and utilities for constant-time cryptographic implementations.' \
         CARGO_PKG_HOMEPAGE=https'://dalek.rs/' \
@@ -3601,8 +3601,8 @@ COPY --link --from=dep-n-subtle-2.6.1-f22c7bf8d1e18975 /target/release/deps/*-f2
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=subtle \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/subtle-2.6.1' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/subtle-2.6.1/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/subtle-2.6.1 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/subtle-2.6.1/Cargo.toml \
 ##         CARGO_PKG_AUTHORS=Isis' Lovecruft <isis@patternsinthevoid.net>:Henry de Valence <hdevalence@hdevalence.ca>' \
 ##         CARGO_PKG_DESCRIPTION=Pure-Rust' traits and utilities for constant-time cryptographic implementations.' \
 ##         CARGO_PKG_HOMEPAGE=https'://dalek.rs/' \
@@ -3664,8 +3664,8 @@ RUN \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=digest \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/digest-0.10.7' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/digest-0.10.7/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/digest-0.10.7 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/digest-0.10.7/Cargo.toml \
         CARGO_PKG_AUTHORS=RustCrypto' Developers' \
         CARGO_PKG_DESCRIPTION=Traits' for cryptographic hash functions and message authentication codes' \
         CARGO_PKG_HOMEPAGE= \
@@ -3857,8 +3857,8 @@ COPY --link --from=dep-n-digest-0.10.7-aa4812039bdce888 /target/release/deps/*-a
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=digest \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/digest-0.10.7' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/digest-0.10.7/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/digest-0.10.7 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/digest-0.10.7/Cargo.toml \
 ##         CARGO_PKG_AUTHORS=RustCrypto' Developers' \
 ##         CARGO_PKG_DESCRIPTION=Traits' for cryptographic hash functions and message authentication codes' \
 ##         CARGO_PKG_HOMEPAGE= \
@@ -3928,8 +3928,8 @@ RUN \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=cmac \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/cmac-0.7.2' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/cmac-0.7.2/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/cmac-0.7.2 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/cmac-0.7.2/Cargo.toml \
         CARGO_PKG_AUTHORS=RustCrypto' Developers' \
         CARGO_PKG_DESCRIPTION=Generic' implementation of Cipher-based Message Authentication Code' \
         CARGO_PKG_HOMEPAGE= \
@@ -4165,8 +4165,8 @@ COPY --link --from=dep-n-cmac-0.7.2-6ac8d0251eb66447 /target/release/deps/*-6ac8
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=cmac \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/cmac-0.7.2' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/cmac-0.7.2/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/cmac-0.7.2 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/cmac-0.7.2/Cargo.toml \
 ##         CARGO_PKG_AUTHORS=RustCrypto' Developers' \
 ##         CARGO_PKG_DESCRIPTION=Generic' implementation of Cipher-based Message Authentication Code' \
 ##         CARGO_PKG_HOMEPAGE= \
@@ -4228,8 +4228,8 @@ RUN \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=ctr \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/ctr-0.9.2' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/ctr-0.9.2/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/ctr-0.9.2 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/ctr-0.9.2/Cargo.toml \
         CARGO_PKG_AUTHORS=RustCrypto' Developers' \
         CARGO_PKG_DESCRIPTION=CTR' block modes of operation' \
         CARGO_PKG_HOMEPAGE= \
@@ -4421,8 +4421,8 @@ COPY --link --from=dep-n-ctr-0.9.2-b05e247bd900343a /target/release/deps/*-b05e2
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=ctr \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/ctr-0.9.2' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/ctr-0.9.2/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/ctr-0.9.2 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/ctr-0.9.2/Cargo.toml \
 ##         CARGO_PKG_AUTHORS=RustCrypto' Developers' \
 ##         CARGO_PKG_DESCRIPTION=CTR' block modes of operation' \
 ##         CARGO_PKG_HOMEPAGE= \
@@ -4463,8 +4463,8 @@ RUN \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=zeroize \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/zeroize-1.8.2' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/zeroize-1.8.2/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/zeroize-1.8.2 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/zeroize-1.8.2/Cargo.toml \
         CARGO_PKG_AUTHORS=The' RustCrypto Project Developers' \
         CARGO_PKG_DESCRIPTION=Securely' clear secrets from memory with a simple trait built on\
 stable Rust primitives which guarantee memory is zeroed using an\
@@ -4533,8 +4533,8 @@ COPY --link --from=dep-n-zeroize-1.8.2-fd233fb45e407496 /target/release/deps/*-f
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=zeroize \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/zeroize-1.8.2' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/zeroize-1.8.2/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/zeroize-1.8.2 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/zeroize-1.8.2/Cargo.toml \
 ##         CARGO_PKG_AUTHORS=The' RustCrypto Project Developers' \
 ##         CARGO_PKG_DESCRIPTION=Securely' clear secrets from memory with a simple trait built on\
 ## stable Rust primitives which guarantee memory is zeroed using an\
@@ -4621,8 +4621,8 @@ RUN \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=aes_siv \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/aes-siv-0.7.0' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/aes-siv-0.7.0/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/aes-siv-0.7.0 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/aes-siv-0.7.0/Cargo.toml \
         CARGO_PKG_AUTHORS=RustCrypto' Developers' \
         CARGO_PKG_DESCRIPTION=Pure' Rust implementation of the AES-SIV Misuse-Resistant Authenticated\
 Encryption Cipher (RFC 5297) with optional architecture-specific\
@@ -4927,8 +4927,8 @@ COPY --link --from=dep-n-aes-siv-0.7.0-52d5490f955beadb /target/release/deps/*-5
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=aes_siv \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/aes-siv-0.7.0' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/aes-siv-0.7.0/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/aes-siv-0.7.0 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/aes-siv-0.7.0/Cargo.toml \
 ##         CARGO_PKG_AUTHORS=RustCrypto' Developers' \
 ##         CARGO_PKG_DESCRIPTION=Pure' Rust implementation of the AES-SIV Misuse-Resistant Authenticated\
 ## Encryption Cipher (RFC 5297) with optional architecture-specific\
@@ -4995,8 +4995,8 @@ RUN \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=md5 \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/md-5-0.10.6' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/md-5-0.10.6/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/md-5-0.10.6 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/md-5-0.10.6/Cargo.toml \
         CARGO_PKG_AUTHORS=RustCrypto' Developers' \
         CARGO_PKG_DESCRIPTION=MD5' hash function' \
         CARGO_PKG_HOMEPAGE= \
@@ -5199,8 +5199,8 @@ COPY --link --from=dep-n-md-5-0.10.6-5c47893368a03a5c /target/release/deps/*-5c4
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=md5 \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/md-5-0.10.6' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/md-5-0.10.6/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/md-5-0.10.6 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/md-5-0.10.6/Cargo.toml \
 ##         CARGO_PKG_AUTHORS=RustCrypto' Developers' \
 ##         CARGO_PKG_DESCRIPTION=MD5' hash function' \
 ##         CARGO_PKG_HOMEPAGE= \
@@ -5260,8 +5260,8 @@ RUN \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=build_script_build \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/zerocopy-0.8.27' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/zerocopy-0.8.27/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/zerocopy-0.8.27 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/zerocopy-0.8.27/Cargo.toml \
         CARGO_PKG_AUTHORS=Joshua' Liebow-Feeser <joshlf@google.com>:Jack Wrenn <jswrenn@amazon.com>' \
         CARGO_PKG_DESCRIPTION=Zerocopy' makes zero-cost memory manipulation effortless. We write "unsafe" so you don'\'t' have to.' \
         CARGO_PKG_HOMEPAGE= \
@@ -5342,8 +5342,8 @@ COPY --link --from=dep-x-zerocopy-0.8.27-5d3dfb9ebf1ffdb4 /target/release/build/
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=build_script_build \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/zerocopy-0.8.27' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/zerocopy-0.8.27/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/zerocopy-0.8.27 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/zerocopy-0.8.27/Cargo.toml \
 ##         CARGO_PKG_AUTHORS=Joshua' Liebow-Feeser <joshlf@google.com>:Jack Wrenn <jswrenn@amazon.com>' \
 ##         CARGO_PKG_DESCRIPTION=Zerocopy' makes zero-cost memory manipulation effortless. We write "unsafe" so you don'\'t' have to.' \
 ##         CARGO_PKG_HOMEPAGE= \
@@ -5397,8 +5397,8 @@ RUN \
         CARGO_ENCODED_RUSTFLAGS= \
         CARGO_FEATURE_SIMD=1 \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/zerocopy-0.8.27' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/zerocopy-0.8.27/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/zerocopy-0.8.27 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/zerocopy-0.8.27/Cargo.toml \
         CARGO_PKG_AUTHORS=Joshua' Liebow-Feeser <joshlf@google.com>:Jack Wrenn <jswrenn@amazon.com>' \
         CARGO_PKG_DESCRIPTION=Zerocopy' makes zero-cost memory manipulation effortless. We write "unsafe" so you don'\'t' have to.' \
         CARGO_PKG_HOMEPAGE= \
@@ -5420,7 +5420,7 @@ RUN \
         OUT_DIR=/target/release/build/zerocopy-d1d84d8a1ca91c51/out \
         PROFILE=release \
         RUSTC=rustc \
-        RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+        RUSTDOC=$RUSTUP_HOME/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
         TARGET=x86_64-unknown-linux-gnu \
         CARGOGREEN=1 \
       CARGOGREEN_EXECUTE_BUILDRS_= /target/release/build/zerocopy-5d3dfb9ebf1ffdb4/build-script-build \
@@ -5496,8 +5496,8 @@ COPY --link --from=run-z-zerocopy-0.8.27-d1d84d8a1ca91c51 /target/release/build/
 ##         CARGO_ENCODED_RUSTFLAGS= \
 ##         CARGO_FEATURE_SIMD=1 \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/zerocopy-0.8.27' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/zerocopy-0.8.27/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/zerocopy-0.8.27 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/zerocopy-0.8.27/Cargo.toml \
 ##         CARGO_PKG_AUTHORS=Joshua' Liebow-Feeser <joshlf@google.com>:Jack Wrenn <jswrenn@amazon.com>' \
 ##         CARGO_PKG_DESCRIPTION=Zerocopy' makes zero-cost memory manipulation effortless. We write "unsafe" so you don'\'t' have to.' \
 ##         CARGO_PKG_HOMEPAGE= \
@@ -5519,7 +5519,7 @@ COPY --link --from=run-z-zerocopy-0.8.27-d1d84d8a1ca91c51 /target/release/build/
 ##         OUT_DIR=/target/release/build/zerocopy-d1d84d8a1ca91c51/out \
 ##         PROFILE=release \
 ##         RUSTC=rustc \
-##         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+##         RUSTDOC=$RUSTUP_HOME/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
 ##         TARGET=x86_64-unknown-linux-gnu \
 ##         CARGOGREEN=1 \
 ##       CARGOGREEN_EXECUTE_BUILDRS_= /target/release/build/zerocopy-5d3dfb9ebf1ffdb4/build-script-build \
@@ -5546,8 +5546,8 @@ RUN \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=zerocopy \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/zerocopy-0.8.27' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/zerocopy-0.8.27/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/zerocopy-0.8.27 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/zerocopy-0.8.27/Cargo.toml \
         CARGO_PKG_AUTHORS=Joshua' Liebow-Feeser <joshlf@google.com>:Jack Wrenn <jswrenn@amazon.com>' \
         CARGO_PKG_DESCRIPTION=Zerocopy' makes zero-cost memory manipulation effortless. We write "unsafe" so you don'\'t' have to.' \
         CARGO_PKG_HOMEPAGE= \
@@ -5622,8 +5622,8 @@ COPY --link --from=dep-n-zerocopy-0.8.27-3c4f5c2990477ff1 /target/release/deps/*
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=zerocopy \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/zerocopy-0.8.27' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/zerocopy-0.8.27/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/zerocopy-0.8.27 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/zerocopy-0.8.27/Cargo.toml \
 ##         CARGO_PKG_AUTHORS=Joshua' Liebow-Feeser <joshlf@google.com>:Jack Wrenn <jswrenn@amazon.com>' \
 ##         CARGO_PKG_DESCRIPTION=Zerocopy' makes zero-cost memory manipulation effortless. We write "unsafe" so you don'\'t' have to.' \
 ##         CARGO_PKG_HOMEPAGE= \
@@ -5667,8 +5667,8 @@ RUN \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=ppv_lite86 \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/ppv-lite86-0.2.21' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/ppv-lite86-0.2.21/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/ppv-lite86-0.2.21 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/ppv-lite86-0.2.21/Cargo.toml \
         CARGO_PKG_AUTHORS=The' CryptoCorrosion Contributors' \
         CARGO_PKG_DESCRIPTION=Cross-platform' cryptography-oriented low-level SIMD library.' \
         CARGO_PKG_HOMEPAGE= \
@@ -5748,8 +5748,8 @@ COPY --link --from=dep-n-ppv-lite86-0.2.21-6e69d7ce14b873ac /target/release/deps
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=ppv_lite86 \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/ppv-lite86-0.2.21' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/ppv-lite86-0.2.21/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/ppv-lite86-0.2.21 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/ppv-lite86-0.2.21/Cargo.toml \
 ##         CARGO_PKG_AUTHORS=The' CryptoCorrosion Contributors' \
 ##         CARGO_PKG_DESCRIPTION=Cross-platform' cryptography-oriented low-level SIMD library.' \
 ##         CARGO_PKG_HOMEPAGE= \
@@ -5802,8 +5802,8 @@ RUN \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=rand_chacha \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/rand_chacha-0.3.1' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/rand_chacha-0.3.1/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/rand_chacha-0.3.1 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/rand_chacha-0.3.1/Cargo.toml \
         CARGO_PKG_AUTHORS=The' Rand Project Developers:The Rust Project Developers:The CryptoCorrosion Contributors' \
         CARGO_PKG_DESCRIPTION=ChaCha' random number generator\
 ' \
@@ -5944,8 +5944,8 @@ COPY --link --from=dep-n-rand_chacha-0.3.1-28f07c8df04e8bde /target/release/deps
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=rand_chacha \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/rand_chacha-0.3.1' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/rand_chacha-0.3.1/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/rand_chacha-0.3.1 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/rand_chacha-0.3.1/Cargo.toml \
 ##         CARGO_PKG_AUTHORS=The' Rand Project Developers:The Rust Project Developers:The CryptoCorrosion Contributors' \
 ##         CARGO_PKG_DESCRIPTION=ChaCha' random number generator\
 ## ' \
@@ -6001,8 +6001,8 @@ RUN \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=rand \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/rand-0.8.5' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/rand-0.8.5/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/rand-0.8.5 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/rand-0.8.5/Cargo.toml \
         CARGO_PKG_AUTHORS=The' Rand Project Developers:The Rust Project Developers' \
         CARGO_PKG_DESCRIPTION=Random' number generators and other randomness functionality.\
 ' \
@@ -6185,8 +6185,8 @@ COPY --link --from=dep-n-rand-0.8.5-b2b2029003f4f41b /target/release/deps/*-b2b2
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=rand \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/rand-0.8.5' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/rand-0.8.5/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/rand-0.8.5 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/rand-0.8.5/Cargo.toml \
 ##         CARGO_PKG_AUTHORS=The' Rand Project Developers:The Rust Project Developers' \
 ##         CARGO_PKG_DESCRIPTION=Random' number generators and other randomness functionality.\
 ## ' \
@@ -6228,8 +6228,8 @@ RUN \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=find_msvc_tools \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/find-msvc-tools-0.1.2' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/find-msvc-tools-0.1.2/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/find-msvc-tools-0.1.2 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/find-msvc-tools-0.1.2/Cargo.toml \
         CARGO_PKG_AUTHORS= \
         CARGO_PKG_DESCRIPTION=Find' windows-specific tools, read MSVC versions from the registry and from COM interfaces' \
         CARGO_PKG_HOMEPAGE= \
@@ -6293,8 +6293,8 @@ COPY --link --from=dep-n-find-msvc-tools-0.1.2-d2948f7c0c8497b1 /target/release/
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=find_msvc_tools \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/find-msvc-tools-0.1.2' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/find-msvc-tools-0.1.2/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/find-msvc-tools-0.1.2 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/find-msvc-tools-0.1.2/Cargo.toml \
 ##         CARGO_PKG_AUTHORS= \
 ##         CARGO_PKG_DESCRIPTION=Find' windows-specific tools, read MSVC versions from the registry and from COM interfaces' \
 ##         CARGO_PKG_HOMEPAGE= \
@@ -6349,8 +6349,8 @@ RUN \
         CARGO_FEATURE_DEFAULT=1 \
         CARGO_FEATURE_STD=1 \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/libc-0.2.176' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/libc-0.2.176/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/libc-0.2.176 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/libc-0.2.176/Cargo.toml \
         CARGO_PKG_AUTHORS=The' Rust Project Developers' \
         CARGO_PKG_DESCRIPTION=Raw' FFI bindings to platform libraries like libc.' \
         CARGO_PKG_HOMEPAGE= \
@@ -6372,7 +6372,7 @@ RUN \
         OUT_DIR=/target/release/build/libc-99856d878c8e44ce/out \
         PROFILE=release \
         RUSTC=rustc \
-        RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+        RUSTDOC=$RUSTUP_HOME/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
         TARGET=x86_64-unknown-linux-gnu \
         CARGOGREEN=1 \
       CARGOGREEN_EXECUTE_BUILDRS_= /target/release/build/libc-7560e7c5c88ec4c4/build-script-build \
@@ -6449,8 +6449,8 @@ COPY --link --from=run-z-libc-0.2.176-99856d878c8e44ce /target/release/build/lib
 ##         CARGO_FEATURE_DEFAULT=1 \
 ##         CARGO_FEATURE_STD=1 \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/libc-0.2.176' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/libc-0.2.176/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/libc-0.2.176 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/libc-0.2.176/Cargo.toml \
 ##         CARGO_PKG_AUTHORS=The' Rust Project Developers' \
 ##         CARGO_PKG_DESCRIPTION=Raw' FFI bindings to platform libraries like libc.' \
 ##         CARGO_PKG_HOMEPAGE= \
@@ -6472,7 +6472,7 @@ COPY --link --from=run-z-libc-0.2.176-99856d878c8e44ce /target/release/build/lib
 ##         OUT_DIR=/target/release/build/libc-99856d878c8e44ce/out \
 ##         PROFILE=release \
 ##         RUSTC=rustc \
-##         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+##         RUSTDOC=$RUSTUP_HOME/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
 ##         TARGET=x86_64-unknown-linux-gnu \
 ##         CARGOGREEN=1 \
 ##       CARGOGREEN_EXECUTE_BUILDRS_= /target/release/build/libc-7560e7c5c88ec4c4/build-script-build \
@@ -6499,8 +6499,8 @@ RUN \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=libc \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/libc-0.2.176' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/libc-0.2.176/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/libc-0.2.176 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/libc-0.2.176/Cargo.toml \
         CARGO_PKG_AUTHORS=The' Rust Project Developers' \
         CARGO_PKG_DESCRIPTION=Raw' FFI bindings to platform libraries like libc.' \
         CARGO_PKG_HOMEPAGE= \
@@ -6575,8 +6575,8 @@ COPY --link --from=dep-n-libc-0.2.176-60426161aa87c673 /target/release/deps/*-60
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=libc \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/libc-0.2.176' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/libc-0.2.176/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/libc-0.2.176 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/libc-0.2.176/Cargo.toml \
 ##         CARGO_PKG_AUTHORS=The' Rust Project Developers' \
 ##         CARGO_PKG_DESCRIPTION=Raw' FFI bindings to platform libraries like libc.' \
 ##         CARGO_PKG_HOMEPAGE= \
@@ -6620,8 +6620,8 @@ RUN \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=jobserver \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/jobserver-0.1.34' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/jobserver-0.1.34/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/jobserver-0.1.34 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/jobserver-0.1.34/Cargo.toml \
         CARGO_PKG_AUTHORS=Alex' Crichton <alex@alexcrichton.com>' \
         CARGO_PKG_DESCRIPTION=An' implementation of the GNU Make jobserver for Rust.\
 ' \
@@ -6702,8 +6702,8 @@ COPY --link --from=dep-n-jobserver-0.1.34-4dc141be22bbffce /target/release/deps/
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=jobserver \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/jobserver-0.1.34' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/jobserver-0.1.34/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/jobserver-0.1.34 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/jobserver-0.1.34/Cargo.toml \
 ##         CARGO_PKG_AUTHORS=Alex' Crichton <alex@alexcrichton.com>' \
 ##         CARGO_PKG_DESCRIPTION=An' implementation of the GNU Make jobserver for Rust.\
 ## ' \
@@ -6745,8 +6745,8 @@ RUN \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=shlex \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/shlex-1.3.0' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/shlex-1.3.0/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/shlex-1.3.0 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/shlex-1.3.0/Cargo.toml \
         CARGO_PKG_AUTHORS=comex' <comexk@gmail.com>:Fenhl <fenhl@fenhl.net>:Adrian Taylor <adetaylor@chromium.org>:Alex Touchet <alextouchet@outlook.com>:Daniel Parks <dp+git@oxidized.org>:Garrett Berg <googberg@gmail.com>' \
         CARGO_PKG_DESCRIPTION=Split' a string into shell words, like Python'\'s' shlex.' \
         CARGO_PKG_HOMEPAGE= \
@@ -6816,8 +6816,8 @@ COPY --link --from=dep-n-shlex-1.3.0-b166d1c75d83103c /target/release/deps/*-b16
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=shlex \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/shlex-1.3.0' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/shlex-1.3.0/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/shlex-1.3.0 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/shlex-1.3.0/Cargo.toml \
 ##         CARGO_PKG_AUTHORS=comex' <comexk@gmail.com>:Fenhl <fenhl@fenhl.net>:Adrian Taylor <adetaylor@chromium.org>:Alex Touchet <alextouchet@outlook.com>:Daniel Parks <dp+git@oxidized.org>:Garrett Berg <googberg@gmail.com>' \
 ##         CARGO_PKG_DESCRIPTION=Split' a string into shell words, like Python'\'s' shlex.' \
 ##         CARGO_PKG_HOMEPAGE= \
@@ -6866,8 +6866,8 @@ RUN \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=cc \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/cc-1.2.39' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/cc-1.2.39/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/cc-1.2.39 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/cc-1.2.39/Cargo.toml \
         CARGO_PKG_AUTHORS=Alex' Crichton <alex@alexcrichton.com>' \
         CARGO_PKG_DESCRIPTION=A' build-time dependency for Cargo build scripts to assist in invoking the native\
 C compiler to compile native C code into a static archive to be linked into Rust\
@@ -6983,8 +6983,8 @@ COPY --link --from=dep-n-cc-1.2.39-336c2d9100ab92f8 /target/release/deps/*-336c2
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=cc \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/cc-1.2.39' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/cc-1.2.39/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/cc-1.2.39 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/cc-1.2.39/Cargo.toml \
 ##         CARGO_PKG_AUTHORS=Alex' Crichton <alex@alexcrichton.com>' \
 ##         CARGO_PKG_DESCRIPTION=A' build-time dependency for Cargo build scripts to assist in invoking the native\
 ## C compiler to compile native C code into a static archive to be linked into Rust\
@@ -7038,8 +7038,8 @@ RUN \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=cmake \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/cmake-0.1.54' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/cmake-0.1.54/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/cmake-0.1.54 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/cmake-0.1.54/Cargo.toml \
         CARGO_PKG_AUTHORS=Alex' Crichton <alex@alexcrichton.com>' \
         CARGO_PKG_DESCRIPTION=A' build dependency for running `cmake` to build a native library\
 ' \
@@ -7164,8 +7164,8 @@ COPY --link --from=dep-n-cmake-0.1.54-3ff4fdb389eab124 /target/release/deps/*-3f
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=cmake \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/cmake-0.1.54' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/cmake-0.1.54/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/cmake-0.1.54 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/cmake-0.1.54/Cargo.toml \
 ##         CARGO_PKG_AUTHORS=Alex' Crichton <alex@alexcrichton.com>' \
 ##         CARGO_PKG_DESCRIPTION=A' build dependency for running `cmake` to build a native library\
 ## ' \
@@ -7207,8 +7207,8 @@ RUN \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=dunce \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/dunce-1.0.5' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/dunce-1.0.5/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/dunce-1.0.5 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/dunce-1.0.5/Cargo.toml \
         CARGO_PKG_AUTHORS=Kornel' <kornel@geekhood.net>' \
         CARGO_PKG_DESCRIPTION=Normalize' Windows paths to the most compatible format, avoiding UNC where possible' \
         CARGO_PKG_HOMEPAGE=https'://lib.rs/crates/dunce' \
@@ -7272,8 +7272,8 @@ COPY --link --from=dep-n-dunce-1.0.5-25a6bb4144c31f83 /target/release/deps/*-25a
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=dunce \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/dunce-1.0.5' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/dunce-1.0.5/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/dunce-1.0.5 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/dunce-1.0.5/Cargo.toml \
 ##         CARGO_PKG_AUTHORS=Kornel' <kornel@geekhood.net>' \
 ##         CARGO_PKG_DESCRIPTION=Normalize' Windows paths to the most compatible format, avoiding UNC where possible' \
 ##         CARGO_PKG_HOMEPAGE=https'://lib.rs/crates/dunce' \
@@ -7314,8 +7314,8 @@ RUN \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=fs_extra \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/fs_extra-1.3.0' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/fs_extra-1.3.0/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/fs_extra-1.3.0 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/fs_extra-1.3.0/Cargo.toml \
         CARGO_PKG_AUTHORS=Denis' Kurilenko <webdesus@gmail.com>' \
         CARGO_PKG_DESCRIPTION=Expanding' std::fs and std::io. Recursively copy folders with information about process and much more.' \
         CARGO_PKG_HOMEPAGE=https'://github.com/webdesus/fs_extra' \
@@ -7379,8 +7379,8 @@ COPY --link --from=dep-n-fs_extra-1.3.0-19400729ba85cd55 /target/release/deps/*-
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=fs_extra \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/fs_extra-1.3.0' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/fs_extra-1.3.0/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/fs_extra-1.3.0 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/fs_extra-1.3.0/Cargo.toml \
 ##         CARGO_PKG_AUTHORS=Denis' Kurilenko <webdesus@gmail.com>' \
 ##         CARGO_PKG_DESCRIPTION=Expanding' std::fs and std::io. Recursively copy folders with information about process and much more.' \
 ##         CARGO_PKG_HOMEPAGE=https'://github.com/webdesus/fs_extra' \
@@ -7419,8 +7419,8 @@ RUN \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=cfg_if \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/cfg-if-1.0.3' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/cfg-if-1.0.3/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/cfg-if-1.0.3 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/cfg-if-1.0.3/Cargo.toml \
         CARGO_PKG_AUTHORS=Alex' Crichton <alex@alexcrichton.com>' \
         CARGO_PKG_DESCRIPTION=A' macro to ergonomically define an item depending on a large number of #[cfg]\
 parameters. Structured like an if-else chain, the first matching branch is the\
@@ -7487,8 +7487,8 @@ COPY --link --from=dep-n-cfg-if-1.0.3-d905bd04d466c2b4 /target/release/deps/*-d9
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=cfg_if \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/cfg-if-1.0.3' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/cfg-if-1.0.3/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/cfg-if-1.0.3 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/cfg-if-1.0.3/Cargo.toml \
 ##         CARGO_PKG_AUTHORS=Alex' Crichton <alex@alexcrichton.com>' \
 ##         CARGO_PKG_DESCRIPTION=A' macro to ergonomically define an item depending on a large number of #[cfg]\
 ## parameters. Structured like an if-else chain, the first matching branch is the\
@@ -7534,8 +7534,8 @@ RUN \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=libloading \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/libloading-0.8.8' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/libloading-0.8.8/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/libloading-0.8.8 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/libloading-0.8.8/Cargo.toml \
         CARGO_PKG_AUTHORS=Simonas' Kazlauskas <libloading@kazlauskas.me>' \
         CARGO_PKG_DESCRIPTION=Bindings' around the platform'\'s' dynamic library loading primitives with greatly improved memory safety.' \
         CARGO_PKG_HOMEPAGE= \
@@ -7612,8 +7612,8 @@ COPY --link --from=dep-n-libloading-0.8.8-bcbfd880a9747f76 /target/release/deps/
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=libloading \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/libloading-0.8.8' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/libloading-0.8.8/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/libloading-0.8.8 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/libloading-0.8.8/Cargo.toml \
 ##         CARGO_PKG_AUTHORS=Simonas' Kazlauskas <libloading@kazlauskas.me>' \
 ##         CARGO_PKG_DESCRIPTION=Bindings' around the platform'\'s' dynamic library loading primitives with greatly improved memory safety.' \
 ##         CARGO_PKG_HOMEPAGE= \
@@ -7683,8 +7683,8 @@ RUN \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=build_script_main \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/aws-lc-sys-0.32.2' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/aws-lc-sys-0.32.2/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/aws-lc-sys-0.32.2 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/aws-lc-sys-0.32.2/Cargo.toml \
         CARGO_PKG_AUTHORS=AWS-LC \
         CARGO_PKG_DESCRIPTION=AWS-LC' is a general-purpose cryptographic library maintained by the AWS Cryptography team for AWS and their customers. It іs based on code from the Google BoringSSL project and the OpenSSL project.' \
         CARGO_PKG_HOMEPAGE= \
@@ -7830,8 +7830,8 @@ COPY --link --from=dep-x-aws-lc-sys-0.32.2-b91f62695d1e67bd /target/release/buil
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=build_script_main \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/aws-lc-sys-0.32.2' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/aws-lc-sys-0.32.2/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/aws-lc-sys-0.32.2 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/aws-lc-sys-0.32.2/Cargo.toml \
 ##         CARGO_PKG_AUTHORS=AWS-LC \
 ##         CARGO_PKG_DESCRIPTION=AWS-LC' is a general-purpose cryptographic library maintained by the AWS Cryptography team for AWS and their customers. It іs based on code from the Google BoringSSL project and the OpenSSL project.' \
 ##         CARGO_PKG_HOMEPAGE= \
@@ -7885,9 +7885,9 @@ RUN \
         CARGO_ENCODED_RUSTFLAGS= \
         CARGO_FEATURE_PREBUILT_NASM=1 \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/aws-lc-sys-0.32.2' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/aws-lc-sys-0.32.2 \
         CARGO_MANIFEST_LINKS=aws_lc_0_32_2 \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/aws-lc-sys-0.32.2/Cargo.toml' \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/aws-lc-sys-0.32.2/Cargo.toml \
         CARGO_PKG_AUTHORS=AWS-LC \
         CARGO_PKG_DESCRIPTION=AWS-LC' is a general-purpose cryptographic library maintained by the AWS Cryptography team for AWS and their customers. It іs based on code from the Google BoringSSL project and the OpenSSL project.' \
         CARGO_PKG_HOMEPAGE= \
@@ -7909,7 +7909,7 @@ RUN \
         OUT_DIR=/target/release/build/aws-lc-sys-2d875791ad1d3d18/out \
         PROFILE=release \
         RUSTC=rustc \
-        RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+        RUSTDOC=$RUSTUP_HOME/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
         TARGET=x86_64-unknown-linux-gnu \
         CARGOGREEN=1 \
       CARGOGREEN_EXECUTE_BUILDRS_= /target/release/build/aws-lc-sys-b91f62695d1e67bd/build-script-main \
@@ -7938,354 +7938,354 @@ COPY --link --from=run-z-aws-lc-sys-0.32.2-2d875791ad1d3d18 /target/release/buil
 ## ]
 ## writes_to = "/target/release/build/aws-lc-sys-2d875791ad1d3d18/out"
 ## writes = [
-##     "01b65dcae031065a-ocsp_asn.o",
-##     "01b65dcae031065a-ocsp_client.o",
-##     "01b65dcae031065a-ocsp_extension.o",
-##     "01b65dcae031065a-ocsp_http.o",
-##     "01b65dcae031065a-ocsp_lib.o",
-##     "01b65dcae031065a-ocsp_print.o",
-##     "01b65dcae031065a-ocsp_server.o",
-##     "01b65dcae031065a-ocsp_verify.o",
-##     "02f10a10324b5e01-hpke.o",
-##     "07c877ab143ae6ec-lhash.o",
-##     "087c4ffe59f3b241-pmbtoken.o",
-##     "087c4ffe59f3b241-trust_token.o",
-##     "087c4ffe59f3b241-voprf.o",
-##     "0c5f27d855b41f8d-siphash.o",
-##     "0d207495fd6377a6-jitterentropy-base.o",
-##     "0d207495fd6377a6-jitterentropy-gcd.o",
-##     "0d207495fd6377a6-jitterentropy-health.o",
-##     "0d207495fd6377a6-jitterentropy-noise.o",
-##     "0d207495fd6377a6-jitterentropy-sha3.o",
-##     "0d207495fd6377a6-jitterentropy-timer.o",
-##     "13bb24c59bfbc758-aesni-gcm-avx512.o",
-##     "13bb24c59bfbc758-aesni-gcm-x86_64.o",
-##     "13bb24c59bfbc758-aesni-x86_64.o",
-##     "13bb24c59bfbc758-aesni-xts-avx512.o",
-##     "13bb24c59bfbc758-ghash-ssse3-x86_64.o",
-##     "13bb24c59bfbc758-ghash-x86_64.o",
-##     "13bb24c59bfbc758-md5-x86_64.o",
-##     "13bb24c59bfbc758-p256-x86_64-asm.o",
-##     "13bb24c59bfbc758-p256_beeu-x86_64-asm.o",
-##     "13bb24c59bfbc758-rdrand-x86_64.o",
-##     "13bb24c59bfbc758-rsaz-2k-avx512.o",
-##     "13bb24c59bfbc758-rsaz-3k-avx512.o",
-##     "13bb24c59bfbc758-rsaz-4k-avx512.o",
-##     "13bb24c59bfbc758-rsaz-avx2.o",
-##     "13bb24c59bfbc758-sha1-x86_64.o",
-##     "13bb24c59bfbc758-sha256-x86_64.o",
-##     "13bb24c59bfbc758-sha512-x86_64.o",
-##     "13bb24c59bfbc758-vpaes-x86_64.o",
-##     "13bb24c59bfbc758-x86_64-mont.o",
-##     "13bb24c59bfbc758-x86_64-mont5.o",
-##     "1cf91a7f33e4a446-hrss.o",
-##     "1eebd303eb55be8b-buf.o",
-##     "266fa4f8d8ef671b-pool.o",
-##     "26c384558c78dce5-poly1305.o",
-##     "26c384558c78dce5-poly1305_arm.o",
-##     "26c384558c78dce5-poly1305_vec.o",
-##     "308c017042bb8edb-cipher_extra.o",
-##     "308c017042bb8edb-derive_key.o",
-##     "308c017042bb8edb-e_aes_cbc_hmac_sha1.o",
-##     "308c017042bb8edb-e_aes_cbc_hmac_sha256.o",
-##     "308c017042bb8edb-e_aesctrhmac.o",
-##     "308c017042bb8edb-e_aesgcmsiv.o",
-##     "308c017042bb8edb-e_chacha20poly1305.o",
-##     "308c017042bb8edb-e_des.o",
-##     "308c017042bb8edb-e_null.o",
-##     "308c017042bb8edb-e_rc2.o",
-##     "308c017042bb8edb-e_rc4.o",
-##     "308c017042bb8edb-e_tls.o",
-##     "308c017042bb8edb-tls_cbc.o",
-##     "357ca25a7db898c1-a_digest.o",
-##     "357ca25a7db898c1-a_sign.o",
-##     "357ca25a7db898c1-a_verify.o",
-##     "357ca25a7db898c1-algorithm.o",
-##     "357ca25a7db898c1-asn1_gen.o",
-##     "357ca25a7db898c1-by_dir.o",
-##     "357ca25a7db898c1-by_file.o",
-##     "357ca25a7db898c1-i2d_pr.o",
-##     "357ca25a7db898c1-name_print.o",
-##     "357ca25a7db898c1-policy.o",
-##     "357ca25a7db898c1-rsa_pss.o",
-##     "357ca25a7db898c1-t_crl.o",
-##     "357ca25a7db898c1-t_req.o",
-##     "357ca25a7db898c1-t_x509.o",
-##     "357ca25a7db898c1-t_x509a.o",
-##     "357ca25a7db898c1-v3_akey.o",
-##     "357ca25a7db898c1-v3_akeya.o",
-##     "357ca25a7db898c1-v3_alt.o",
-##     "357ca25a7db898c1-v3_bcons.o",
-##     "357ca25a7db898c1-v3_bitst.o",
-##     "357ca25a7db898c1-v3_conf.o",
-##     "357ca25a7db898c1-v3_cpols.o",
-##     "357ca25a7db898c1-v3_crld.o",
-##     "357ca25a7db898c1-v3_enum.o",
-##     "357ca25a7db898c1-v3_extku.o",
-##     "357ca25a7db898c1-v3_genn.o",
-##     "357ca25a7db898c1-v3_ia5.o",
-##     "357ca25a7db898c1-v3_info.o",
-##     "357ca25a7db898c1-v3_int.o",
-##     "357ca25a7db898c1-v3_lib.o",
-##     "357ca25a7db898c1-v3_ncons.o",
-##     "357ca25a7db898c1-v3_ocsp.o",
-##     "357ca25a7db898c1-v3_pcons.o",
-##     "357ca25a7db898c1-v3_pmaps.o",
-##     "357ca25a7db898c1-v3_prn.o",
-##     "357ca25a7db898c1-v3_purp.o",
-##     "357ca25a7db898c1-v3_skey.o",
-##     "357ca25a7db898c1-v3_utl.o",
-##     "357ca25a7db898c1-x509.o",
-##     "357ca25a7db898c1-x509_att.o",
-##     "357ca25a7db898c1-x509_cmp.o",
-##     "357ca25a7db898c1-x509_d2.o",
-##     "357ca25a7db898c1-x509_def.o",
-##     "357ca25a7db898c1-x509_ext.o",
-##     "357ca25a7db898c1-x509_lu.o",
-##     "357ca25a7db898c1-x509_obj.o",
-##     "357ca25a7db898c1-x509_req.o",
-##     "357ca25a7db898c1-x509_set.o",
-##     "357ca25a7db898c1-x509_trs.o",
-##     "357ca25a7db898c1-x509_txt.o",
-##     "357ca25a7db898c1-x509_v3.o",
-##     "357ca25a7db898c1-x509_vfy.o",
-##     "357ca25a7db898c1-x509_vpm.o",
-##     "357ca25a7db898c1-x509cset.o",
-##     "357ca25a7db898c1-x509name.o",
-##     "357ca25a7db898c1-x509rset.o",
-##     "357ca25a7db898c1-x509spki.o",
-##     "357ca25a7db898c1-x_algor.o",
-##     "357ca25a7db898c1-x_all.o",
-##     "357ca25a7db898c1-x_attrib.o",
-##     "357ca25a7db898c1-x_crl.o",
-##     "357ca25a7db898c1-x_exten.o",
-##     "357ca25a7db898c1-x_name.o",
-##     "357ca25a7db898c1-x_pubkey.o",
-##     "357ca25a7db898c1-x_req.o",
-##     "357ca25a7db898c1-x_sig.o",
-##     "357ca25a7db898c1-x_spki.o",
-##     "357ca25a7db898c1-x_val.o",
-##     "357ca25a7db898c1-x_x509.o",
-##     "357ca25a7db898c1-x_x509a.o",
-##     "39519f2f2f63785a-poly_rq_mul.o",
-##     "3bcd8bd6de674f49-trampoline-x86_64.o",
-##     "43f5c7b85694ef72-bignum_add_p521.o",
-##     "43f5c7b85694ef72-bignum_fromlebytes_p521.o",
-##     "43f5c7b85694ef72-bignum_inv_p521.o",
-##     "43f5c7b85694ef72-bignum_mul_p521.o",
-##     "43f5c7b85694ef72-bignum_mul_p521_alt.o",
-##     "43f5c7b85694ef72-bignum_neg_p521.o",
-##     "43f5c7b85694ef72-bignum_sqr_p521.o",
-##     "43f5c7b85694ef72-bignum_sqr_p521_alt.o",
-##     "43f5c7b85694ef72-bignum_sub_p521.o",
-##     "43f5c7b85694ef72-bignum_tolebytes_p521.o",
-##     "43f5c7b85694ef72-p521_jdouble.o",
-##     "43f5c7b85694ef72-p521_jdouble_alt.o",
-##     "43f5c7b85694ef72-p521_jscalarmul.o",
-##     "43f5c7b85694ef72-p521_jscalarmul_alt.o",
-##     "44dbd4572d41d063-ecdh_extra.o",
-##     "4622d89a7c7efcf9-bignum_montinv_p256.o",
-##     "4622d89a7c7efcf9-p256_montjscalarmul.o",
-##     "4622d89a7c7efcf9-p256_montjscalarmul_alt.o",
-##     "498153840f1c0513-p5_pbev2.o",
-##     "498153840f1c0513-pkcs8.o",
-##     "498153840f1c0513-pkcs8_x509.o",
-##     "4dbe992c7162349c-asn1_compat.o",
-##     "4dbe992c7162349c-ber.o",
-##     "4dbe992c7162349c-cbb.o",
-##     "4dbe992c7162349c-cbs.o",
-##     "4dbe992c7162349c-unicode.o",
-##     "4f3db1b136f65826-cpucap.o",
-##     "5c8e4280aa115e9e-bio.o",
-##     "5c8e4280aa115e9e-bio_addr.o",
-##     "5c8e4280aa115e9e-bio_mem.o",
-##     "5c8e4280aa115e9e-connect.o",
-##     "5c8e4280aa115e9e-dgram.o",
-##     "5c8e4280aa115e9e-errno.o",
-##     "5c8e4280aa115e9e-fd.o",
-##     "5c8e4280aa115e9e-file.o",
-##     "5c8e4280aa115e9e-hexdump.o",
-##     "5c8e4280aa115e9e-md.o",
-##     "5c8e4280aa115e9e-pair.o",
-##     "5c8e4280aa115e9e-printf.o",
-##     "5c8e4280aa115e9e-socket.o",
-##     "5c8e4280aa115e9e-socket_helper.o",
-##     "5cb164269ce177e7-base64.o",
-##     "61f3098e4f3ce45a-pem_all.o",
-##     "61f3098e4f3ce45a-pem_info.o",
-##     "61f3098e4f3ce45a-pem_lib.o",
-##     "61f3098e4f3ce45a-pem_oth.o",
-##     "61f3098e4f3ce45a-pem_pk8.o",
-##     "61f3098e4f3ce45a-pem_pkey.o",
-##     "61f3098e4f3ce45a-pem_x509.o",
-##     "61f3098e4f3ce45a-pem_xaux.o",
-##     "63a8a4e47ff1b324-base64_bio.o",
-##     "650882373eb42aec-bn_asn1.o",
-##     "650882373eb42aec-convert.o",
-##     "6548578fee0b2e49-console.o",
-##     "69762fa4b4a20a58-engine.o",
-##     "6bc4cb55185ee765-chacha-x86_64.o",
-##     "7000dccb5cbe95aa-evp_asn1.o",
-##     "7000dccb5cbe95aa-p_dh.o",
-##     "7000dccb5cbe95aa-p_dh_asn1.o",
-##     "7000dccb5cbe95aa-p_dsa.o",
-##     "7000dccb5cbe95aa-p_dsa_asn1.o",
-##     "7000dccb5cbe95aa-p_ec_asn1.o",
-##     "7000dccb5cbe95aa-p_ed25519_asn1.o",
-##     "7000dccb5cbe95aa-p_hmac_asn1.o",
-##     "7000dccb5cbe95aa-p_kem_asn1.o",
-##     "7000dccb5cbe95aa-p_methods.o",
-##     "7000dccb5cbe95aa-p_pqdsa_asn1.o",
-##     "7000dccb5cbe95aa-p_rsa_asn1.o",
-##     "7000dccb5cbe95aa-p_x25519.o",
-##     "7000dccb5cbe95aa-p_x25519_asn1.o",
-##     "7000dccb5cbe95aa-print.o",
-##     "7000dccb5cbe95aa-scrypt.o",
-##     "7000dccb5cbe95aa-sign.o",
-##     "707ce20a3807d45f-cipher.o",
-##     "7299f107f9f2b8da-fips202.o",
-##     "73584c5f96b79f41-stack.o",
-##     "798f8535f13eb2a7-chacha.o",
-##     "7fa0de590dd07443-dh_asn1.o",
-##     "7fa0de590dd07443-params.o",
-##     "85c49e43e641f619-a_bitstr.o",
-##     "85c49e43e641f619-a_bool.o",
-##     "85c49e43e641f619-a_d2i_fp.o",
-##     "85c49e43e641f619-a_dup.o",
-##     "85c49e43e641f619-a_gentm.o",
-##     "85c49e43e641f619-a_i2d_fp.o",
-##     "85c49e43e641f619-a_int.o",
-##     "85c49e43e641f619-a_mbstr.o",
-##     "85c49e43e641f619-a_object.o",
-##     "85c49e43e641f619-a_octet.o",
-##     "85c49e43e641f619-a_strex.o",
-##     "85c49e43e641f619-a_strnid.o",
-##     "85c49e43e641f619-a_time.o",
-##     "85c49e43e641f619-a_type.o",
-##     "85c49e43e641f619-a_utctm.o",
-##     "85c49e43e641f619-a_utf8.o",
-##     "85c49e43e641f619-asn1_lib.o",
-##     "85c49e43e641f619-asn1_par.o",
-##     "85c49e43e641f619-asn_pack.o",
-##     "85c49e43e641f619-f_int.o",
-##     "85c49e43e641f619-f_string.o",
-##     "85c49e43e641f619-posix_time.o",
-##     "85c49e43e641f619-tasn_dec.o",
-##     "85c49e43e641f619-tasn_enc.o",
-##     "85c49e43e641f619-tasn_fre.o",
-##     "85c49e43e641f619-tasn_new.o",
-##     "85c49e43e641f619-tasn_typ.o",
-##     "85c49e43e641f619-tasn_utl.o",
-##     "920f96e89d4a9850-ec_asn1.o",
-##     "920f96e89d4a9850-ec_derive.o",
-##     "920f96e89d4a9850-hash_to_curve.o",
-##     "974b6c4340a8a2fd-err_data.o",
-##     "977672c718f7968b-aes128gcmsiv-x86_64.o",
-##     "977672c718f7968b-aesni-sha1-x86_64.o",
-##     "977672c718f7968b-aesni-sha256-x86_64.o",
-##     "977672c718f7968b-chacha20_poly1305_x86_64.o",
-##     "a3cd1efea0c54915-cfb.o",
-##     "a6700cdc1d55731b-x509_decrepit.o",
-##     "a95e416a039fce10-bignum_add_p384.o",
-##     "a95e416a039fce10-bignum_deamont_p384.o",
-##     "a95e416a039fce10-bignum_deamont_p384_alt.o",
-##     "a95e416a039fce10-bignum_littleendian_6.o",
-##     "a95e416a039fce10-bignum_montinv_p384.o",
-##     "a95e416a039fce10-bignum_montmul_p384.o",
-##     "a95e416a039fce10-bignum_montmul_p384_alt.o",
-##     "a95e416a039fce10-bignum_montsqr_p384.o",
-##     "a95e416a039fce10-bignum_montsqr_p384_alt.o",
-##     "a95e416a039fce10-bignum_neg_p384.o",
-##     "a95e416a039fce10-bignum_nonzero_6.o",
-##     "a95e416a039fce10-bignum_sub_p384.o",
-##     "a95e416a039fce10-bignum_tomont_p384.o",
-##     "a95e416a039fce10-bignum_tomont_p384_alt.o",
-##     "a95e416a039fce10-p384_montjdouble.o",
-##     "a95e416a039fce10-p384_montjdouble_alt.o",
-##     "a95e416a039fce10-p384_montjscalarmul.o",
-##     "a95e416a039fce10-p384_montjscalarmul_alt.o",
-##     "abb4f75f1c1c3c5d-pkcs7.o",
-##     "abb4f75f1c1c3c5d-pkcs7_asn1.o",
-##     "abb4f75f1c1c3c5d-pkcs7_x509.o",
-##     "b0b3a7d746ca0cd8-spake25519.o",
-##     "b12ad84008c11040-conf.o",
-##     "b3478185922a3f71-blowfish.o",
-##     "b35fc1eace0c77fb-fork_detect.o",
-##     "b35fc1eace0c77fb-snapsafe_detect.o",
-##     "b35fc1eace0c77fb-ube.o",
-##     "b93323ae0ef43da1-obj.o",
-##     "b93323ae0ef43da1-obj_xref.o",
-##     "bc0c36fd6bea31e5-dh_decrepit.o",
-##     "beabaf0f440eebe1-cast.o",
-##     "beabaf0f440eebe1-cast_tables.o",
-##     "bfb68d707e240271-blake2.o",
-##     "c78af7aaa8b2abcd-dsa.o",
-##     "c78af7aaa8b2abcd-dsa_asn1.o",
-##     "caefcf39ebc4a21e-des.o",
-##     "d29da24d1385799a-bignum_madd_n25519.o",
-##     "d29da24d1385799a-bignum_madd_n25519_alt.o",
-##     "d29da24d1385799a-bignum_mod_n25519.o",
-##     "d29da24d1385799a-bignum_neg_p25519.o",
-##     "d29da24d1385799a-curve25519_x25519.o",
-##     "d29da24d1385799a-curve25519_x25519_alt.o",
-##     "d29da24d1385799a-curve25519_x25519base.o",
-##     "d29da24d1385799a-curve25519_x25519base_alt.o",
-##     "d29da24d1385799a-edwards25519_decode.o",
-##     "d29da24d1385799a-edwards25519_decode_alt.o",
-##     "d29da24d1385799a-edwards25519_encode.o",
-##     "d29da24d1385799a-edwards25519_scalarmulbase.o",
-##     "d29da24d1385799a-edwards25519_scalarmulbase_alt.o",
-##     "d29da24d1385799a-edwards25519_scalarmuldouble.o",
-##     "d29da24d1385799a-edwards25519_scalarmuldouble_alt.o",
-##     "d6cdeff650e0ff63-kem_kyber.o",
-##     "d6cdeff650e0ff63-kyber1024r3_ref.o",
-##     "d6cdeff650e0ff63-kyber512r3_ref.o",
-##     "d6cdeff650e0ff63-kyber768r3_ref.o",
-##     "d865bf8e979d56e4-sha3_keccak_f1600.o",
-##     "dab7adb1345b1f27-digest_extra.o",
+##     "001247bc65c2f5e5-cpucap.o",
+##     "020bc241f4dae036-bignum_madd_n25519.o",
+##     "020bc241f4dae036-bignum_madd_n25519_alt.o",
+##     "020bc241f4dae036-bignum_mod_n25519.o",
+##     "020bc241f4dae036-bignum_neg_p25519.o",
+##     "020bc241f4dae036-curve25519_x25519.o",
+##     "020bc241f4dae036-curve25519_x25519_alt.o",
+##     "020bc241f4dae036-curve25519_x25519base.o",
+##     "020bc241f4dae036-curve25519_x25519base_alt.o",
+##     "020bc241f4dae036-edwards25519_decode.o",
+##     "020bc241f4dae036-edwards25519_decode_alt.o",
+##     "020bc241f4dae036-edwards25519_encode.o",
+##     "020bc241f4dae036-edwards25519_scalarmulbase.o",
+##     "020bc241f4dae036-edwards25519_scalarmulbase_alt.o",
+##     "020bc241f4dae036-edwards25519_scalarmuldouble.o",
+##     "020bc241f4dae036-edwards25519_scalarmuldouble_alt.o",
+##     "056c1e7192c7090b-p5_pbev2.o",
+##     "056c1e7192c7090b-pkcs8.o",
+##     "056c1e7192c7090b-pkcs8_x509.o",
+##     "0c919c82d61b4518-ecdsa_asn1.o",
+##     "11289f19be935446-rsa_decrepit.o",
+##     "175e87304cd4663c-cfb.o",
+##     "199386740f3660f1-ripemd.o",
+##     "1c7e26962210e9ee-kem_kyber.o",
+##     "1c7e26962210e9ee-kyber1024r3_ref.o",
+##     "1c7e26962210e9ee-kyber512r3_ref.o",
+##     "1c7e26962210e9ee-kyber768r3_ref.o",
+##     "1eca0b6fab589d4a-chacha-x86_64.o",
+##     "27a075eab3d35364-pem_all.o",
+##     "27a075eab3d35364-pem_info.o",
+##     "27a075eab3d35364-pem_lib.o",
+##     "27a075eab3d35364-pem_oth.o",
+##     "27a075eab3d35364-pem_pk8.o",
+##     "27a075eab3d35364-pem_pkey.o",
+##     "27a075eab3d35364-pem_x509.o",
+##     "27a075eab3d35364-pem_xaux.o",
+##     "2d40dbbd793ef942-jitterentropy-base.o",
+##     "2d40dbbd793ef942-jitterentropy-gcd.o",
+##     "2d40dbbd793ef942-jitterentropy-health.o",
+##     "2d40dbbd793ef942-jitterentropy-noise.o",
+##     "2d40dbbd793ef942-jitterentropy-sha3.o",
+##     "2d40dbbd793ef942-jitterentropy-timer.o",
+##     "30a9a10d3f98970e-crypto.o",
+##     "30a9a10d3f98970e-ex_data.o",
+##     "30a9a10d3f98970e-mem.o",
+##     "30a9a10d3f98970e-refcount_c11.o",
+##     "30a9a10d3f98970e-refcount_lock.o",
+##     "30a9a10d3f98970e-refcount_win.o",
+##     "30a9a10d3f98970e-thread.o",
+##     "30a9a10d3f98970e-thread_none.o",
+##     "30a9a10d3f98970e-thread_pthread.o",
+##     "30a9a10d3f98970e-thread_win.o",
+##     "3f2f442030472042-base64_bio.o",
+##     "4433246e317b5e42-bignum_add_p384.o",
+##     "4433246e317b5e42-bignum_deamont_p384.o",
+##     "4433246e317b5e42-bignum_deamont_p384_alt.o",
+##     "4433246e317b5e42-bignum_littleendian_6.o",
+##     "4433246e317b5e42-bignum_montinv_p384.o",
+##     "4433246e317b5e42-bignum_montmul_p384.o",
+##     "4433246e317b5e42-bignum_montmul_p384_alt.o",
+##     "4433246e317b5e42-bignum_montsqr_p384.o",
+##     "4433246e317b5e42-bignum_montsqr_p384_alt.o",
+##     "4433246e317b5e42-bignum_neg_p384.o",
+##     "4433246e317b5e42-bignum_nonzero_6.o",
+##     "4433246e317b5e42-bignum_sub_p384.o",
+##     "4433246e317b5e42-bignum_tomont_p384.o",
+##     "4433246e317b5e42-bignum_tomont_p384_alt.o",
+##     "4433246e317b5e42-p384_montjdouble.o",
+##     "4433246e317b5e42-p384_montjdouble_alt.o",
+##     "4433246e317b5e42-p384_montjscalarmul.o",
+##     "4433246e317b5e42-p384_montjscalarmul_alt.o",
+##     "45070f5a112d041b-fork_detect.o",
+##     "45070f5a112d041b-snapsafe_detect.o",
+##     "45070f5a112d041b-ube.o",
+##     "4696e3d2cc941c84-pmbtoken.o",
+##     "4696e3d2cc941c84-trust_token.o",
+##     "4696e3d2cc941c84-voprf.o",
+##     "46ab76b5467ff2b0-obj_decrepit.o",
+##     "48649240ed88c783-siphash.o",
+##     "4a91b32c84b73ad7-ecdh_extra.o",
+##     "564c5311b313cdb2-aes128gcmsiv-x86_64.o",
+##     "564c5311b313cdb2-aesni-sha1-x86_64.o",
+##     "564c5311b313cdb2-aesni-sha256-x86_64.o",
+##     "564c5311b313cdb2-chacha20_poly1305_x86_64.o",
+##     "57454e98e6b3bf86-sha3_keccak_f1600.o",
+##     "5d4700fda13603f0-poly1305.o",
+##     "5d4700fda13603f0-poly1305_arm.o",
+##     "5d4700fda13603f0-poly1305_vec.o",
+##     "5da2666a73fb65eb-hrss.o",
+##     "60df219e9fcbc210-stack.o",
+##     "62e235b24f99f4ff-blake2.o",
+##     "65fbbb68d007b209-hpke.o",
+##     "6e6559d38d003e66-spake25519.o",
+##     "6e8bb48415b74ed4-dh_decrepit.o",
+##     "6f8e1f92835a38cb-x509_decrepit.o",
+##     "7510312e0f5aa0be-evp_asn1.o",
+##     "7510312e0f5aa0be-p_dh.o",
+##     "7510312e0f5aa0be-p_dh_asn1.o",
+##     "7510312e0f5aa0be-p_dsa.o",
+##     "7510312e0f5aa0be-p_dsa_asn1.o",
+##     "7510312e0f5aa0be-p_ec_asn1.o",
+##     "7510312e0f5aa0be-p_ed25519_asn1.o",
+##     "7510312e0f5aa0be-p_hmac_asn1.o",
+##     "7510312e0f5aa0be-p_kem_asn1.o",
+##     "7510312e0f5aa0be-p_methods.o",
+##     "7510312e0f5aa0be-p_pqdsa_asn1.o",
+##     "7510312e0f5aa0be-p_rsa_asn1.o",
+##     "7510312e0f5aa0be-p_x25519.o",
+##     "7510312e0f5aa0be-p_x25519_asn1.o",
+##     "7510312e0f5aa0be-print.o",
+##     "7510312e0f5aa0be-scrypt.o",
+##     "7510312e0f5aa0be-sign.o",
+##     "76322f89f5cc2d96-bio.o",
+##     "76322f89f5cc2d96-bio_addr.o",
+##     "76322f89f5cc2d96-bio_mem.o",
+##     "76322f89f5cc2d96-connect.o",
+##     "76322f89f5cc2d96-dgram.o",
+##     "76322f89f5cc2d96-errno.o",
+##     "76322f89f5cc2d96-fd.o",
+##     "76322f89f5cc2d96-file.o",
+##     "76322f89f5cc2d96-hexdump.o",
+##     "76322f89f5cc2d96-md.o",
+##     "76322f89f5cc2d96-pair.o",
+##     "76322f89f5cc2d96-printf.o",
+##     "76322f89f5cc2d96-socket.o",
+##     "76322f89f5cc2d96-socket_helper.o",
+##     "763c374fde874a6d-console.o",
+##     "7a596fe31a02c0e2-bn_asn1.o",
+##     "7a596fe31a02c0e2-convert.o",
+##     "7ac4c9359514b807-obj.o",
+##     "7ac4c9359514b807-obj_xref.o",
+##     "7bf3e571b6558a6b-ccrandomgeneratebytes.o",
+##     "7bf3e571b6558a6b-deterministic.o",
+##     "7bf3e571b6558a6b-getentropy.o",
+##     "7bf3e571b6558a6b-rand_extra.o",
+##     "7bf3e571b6558a6b-snapsafe_fallback.o",
+##     "7bf3e571b6558a6b-urandom.o",
+##     "7bf3e571b6558a6b-windows.o",
+##     "81d9a39ddc6b1c4e-aesni-gcm-avx512.o",
+##     "81d9a39ddc6b1c4e-aesni-gcm-x86_64.o",
+##     "81d9a39ddc6b1c4e-aesni-x86_64.o",
+##     "81d9a39ddc6b1c4e-aesni-xts-avx512.o",
+##     "81d9a39ddc6b1c4e-ghash-ssse3-x86_64.o",
+##     "81d9a39ddc6b1c4e-ghash-x86_64.o",
+##     "81d9a39ddc6b1c4e-md5-x86_64.o",
+##     "81d9a39ddc6b1c4e-p256-x86_64-asm.o",
+##     "81d9a39ddc6b1c4e-p256_beeu-x86_64-asm.o",
+##     "81d9a39ddc6b1c4e-rdrand-x86_64.o",
+##     "81d9a39ddc6b1c4e-rsaz-2k-avx512.o",
+##     "81d9a39ddc6b1c4e-rsaz-3k-avx512.o",
+##     "81d9a39ddc6b1c4e-rsaz-4k-avx512.o",
+##     "81d9a39ddc6b1c4e-rsaz-avx2.o",
+##     "81d9a39ddc6b1c4e-sha1-x86_64.o",
+##     "81d9a39ddc6b1c4e-sha256-x86_64.o",
+##     "81d9a39ddc6b1c4e-sha512-x86_64.o",
+##     "81d9a39ddc6b1c4e-vpaes-x86_64.o",
+##     "81d9a39ddc6b1c4e-x86_64-mont.o",
+##     "81d9a39ddc6b1c4e-x86_64-mont5.o",
+##     "86cc0a4f50e0e3bd-evp_do_all.o",
+##     "88572c8521602bd1-bignum_add_p521.o",
+##     "88572c8521602bd1-bignum_fromlebytes_p521.o",
+##     "88572c8521602bd1-bignum_inv_p521.o",
+##     "88572c8521602bd1-bignum_mul_p521.o",
+##     "88572c8521602bd1-bignum_mul_p521_alt.o",
+##     "88572c8521602bd1-bignum_neg_p521.o",
+##     "88572c8521602bd1-bignum_sqr_p521.o",
+##     "88572c8521602bd1-bignum_sqr_p521_alt.o",
+##     "88572c8521602bd1-bignum_sub_p521.o",
+##     "88572c8521602bd1-bignum_tolebytes_p521.o",
+##     "88572c8521602bd1-p521_jdouble.o",
+##     "88572c8521602bd1-p521_jdouble_alt.o",
+##     "88572c8521602bd1-p521_jscalarmul.o",
+##     "88572c8521602bd1-p521_jscalarmul_alt.o",
+##     "89981633f66afe17-cipher_extra.o",
+##     "89981633f66afe17-derive_key.o",
+##     "89981633f66afe17-e_aes_cbc_hmac_sha1.o",
+##     "89981633f66afe17-e_aes_cbc_hmac_sha256.o",
+##     "89981633f66afe17-e_aesctrhmac.o",
+##     "89981633f66afe17-e_aesgcmsiv.o",
+##     "89981633f66afe17-e_chacha20poly1305.o",
+##     "89981633f66afe17-e_des.o",
+##     "89981633f66afe17-e_null.o",
+##     "89981633f66afe17-e_rc2.o",
+##     "89981633f66afe17-e_rc4.o",
+##     "89981633f66afe17-e_tls.o",
+##     "89981633f66afe17-tls_cbc.o",
+##     "8f1694c3e3041570-bignum_montinv_p256.o",
+##     "8f1694c3e3041570-p256_montjscalarmul.o",
+##     "8f1694c3e3041570-p256_montjscalarmul_alt.o",
+##     "904ef411c1476e9d-cipher.o",
+##     "925ae38753d351a6-pool.o",
+##     "a3e95cd5f24d649a-err.o",
+##     "a4677c68e4880270-buf.o",
+##     "a4a065efb8ac7b35-cast.o",
+##     "a4a065efb8ac7b35-cast_tables.o",
+##     "a6455f51a2435c3f-chacha.o",
+##     "a8d01793eb1214d2-poly_rq_mul.o",
+##     "ad45968d24b0237e-base64.o",
+##     "b0fd2550ab09b04e-rsa_asn1.o",
+##     "b0fd2550ab09b04e-rsa_crypt.o",
+##     "b0fd2550ab09b04e-rsa_print.o",
+##     "b0fd2550ab09b04e-rsassa_pss_asn1.o",
+##     "b129d77c83f8bbf0-trampoline-x86_64.o",
+##     "bc1b343226bc6a17-a_bitstr.o",
+##     "bc1b343226bc6a17-a_bool.o",
+##     "bc1b343226bc6a17-a_d2i_fp.o",
+##     "bc1b343226bc6a17-a_dup.o",
+##     "bc1b343226bc6a17-a_gentm.o",
+##     "bc1b343226bc6a17-a_i2d_fp.o",
+##     "bc1b343226bc6a17-a_int.o",
+##     "bc1b343226bc6a17-a_mbstr.o",
+##     "bc1b343226bc6a17-a_object.o",
+##     "bc1b343226bc6a17-a_octet.o",
+##     "bc1b343226bc6a17-a_strex.o",
+##     "bc1b343226bc6a17-a_strnid.o",
+##     "bc1b343226bc6a17-a_time.o",
+##     "bc1b343226bc6a17-a_type.o",
+##     "bc1b343226bc6a17-a_utctm.o",
+##     "bc1b343226bc6a17-a_utf8.o",
+##     "bc1b343226bc6a17-asn1_lib.o",
+##     "bc1b343226bc6a17-asn1_par.o",
+##     "bc1b343226bc6a17-asn_pack.o",
+##     "bc1b343226bc6a17-f_int.o",
+##     "bc1b343226bc6a17-f_string.o",
+##     "bc1b343226bc6a17-posix_time.o",
+##     "bc1b343226bc6a17-tasn_dec.o",
+##     "bc1b343226bc6a17-tasn_enc.o",
+##     "bc1b343226bc6a17-tasn_fre.o",
+##     "bc1b343226bc6a17-tasn_new.o",
+##     "bc1b343226bc6a17-tasn_typ.o",
+##     "bc1b343226bc6a17-tasn_utl.o",
+##     "c1300545a7d60e2b-dh_asn1.o",
+##     "c1300545a7d60e2b-params.o",
+##     "c2f744a0f6403e0c-err_data.o",
+##     "c4fcddba145918af-asn1_compat.o",
+##     "c4fcddba145918af-ber.o",
+##     "c4fcddba145918af-cbb.o",
+##     "c4fcddba145918af-cbs.o",
+##     "c4fcddba145918af-unicode.o",
+##     "c7e9326d9b5d7de8-blowfish.o",
+##     "caa8b30982b4915c-ocsp_asn.o",
+##     "caa8b30982b4915c-ocsp_client.o",
+##     "caa8b30982b4915c-ocsp_extension.o",
+##     "caa8b30982b4915c-ocsp_http.o",
+##     "caa8b30982b4915c-ocsp_lib.o",
+##     "caa8b30982b4915c-ocsp_print.o",
+##     "caa8b30982b4915c-ocsp_server.o",
+##     "caa8b30982b4915c-ocsp_verify.o",
+##     "d7fed99e8aa5a9b1-rc4.o",
+##     "da5030c6f3330e8d-des.o",
 ##     "db3b6bfb95261072-rust_wrapper.o",
-##     "ddf7ae4e387594a6-rsa_decrepit.o",
-##     "e48a58c195fd4637-intt.o",
-##     "e48a58c195fd4637-mulcache_compute.o",
-##     "e48a58c195fd4637-ntt.o",
-##     "e48a58c195fd4637-nttfrombytes.o",
-##     "e48a58c195fd4637-ntttobytes.o",
-##     "e48a58c195fd4637-nttunpack.o",
-##     "e48a58c195fd4637-polyvec_basemul_acc_montgomery_cached_asm_k2.o",
-##     "e48a58c195fd4637-polyvec_basemul_acc_montgomery_cached_asm_k3.o",
-##     "e48a58c195fd4637-polyvec_basemul_acc_montgomery_cached_asm_k4.o",
-##     "e48a58c195fd4637-reduce.o",
-##     "e48a58c195fd4637-rej_uniform_asm.o",
-##     "e48a58c195fd4637-tomont.o",
-##     "e72d253e8272e0a7-ecdsa_asn1.o",
-##     "e76fb89a95d825c0-ccrandomgeneratebytes.o",
-##     "e76fb89a95d825c0-deterministic.o",
-##     "e76fb89a95d825c0-getentropy.o",
-##     "e76fb89a95d825c0-rand_extra.o",
-##     "e76fb89a95d825c0-snapsafe_fallback.o",
-##     "e76fb89a95d825c0-urandom.o",
-##     "e76fb89a95d825c0-windows.o",
-##     "e9f1eb61d503a272-rsa_asn1.o",
-##     "e9f1eb61d503a272-rsa_crypt.o",
-##     "e9f1eb61d503a272-rsa_print.o",
-##     "e9f1eb61d503a272-rsassa_pss_asn1.o",
-##     "ec1dac61f46c6b74-err.o",
-##     "ecf75477dd71cb3f-evp_do_all.o",
-##     "eefedf7312780fb2-rc4.o",
-##     "f2c3dd57cde42e9a-obj_decrepit.o",
-##     "f7b40969adf7037d-bcm.o",
-##     "f7b40969adf7037d-fips_shared_support.o",
-##     "facf5d49a7f3a0af-crypto.o",
-##     "facf5d49a7f3a0af-ex_data.o",
-##     "facf5d49a7f3a0af-mem.o",
-##     "facf5d49a7f3a0af-refcount_c11.o",
-##     "facf5d49a7f3a0af-refcount_lock.o",
-##     "facf5d49a7f3a0af-refcount_win.o",
-##     "facf5d49a7f3a0af-thread.o",
-##     "facf5d49a7f3a0af-thread_none.o",
-##     "facf5d49a7f3a0af-thread_pthread.o",
-##     "facf5d49a7f3a0af-thread_win.o",
-##     "ff7b2b73dd2b792a-ripemd.o",
+##     "dcb7d53a9be33b0c-engine.o",
+##     "dfe446faf29f8012-ec_asn1.o",
+##     "dfe446faf29f8012-ec_derive.o",
+##     "dfe446faf29f8012-hash_to_curve.o",
+##     "e3caa0b8b118742c-pkcs7.o",
+##     "e3caa0b8b118742c-pkcs7_asn1.o",
+##     "e3caa0b8b118742c-pkcs7_x509.o",
+##     "e4ecb171c489b811-conf.o",
+##     "e616dc00b7af72b9-intt.o",
+##     "e616dc00b7af72b9-mulcache_compute.o",
+##     "e616dc00b7af72b9-ntt.o",
+##     "e616dc00b7af72b9-nttfrombytes.o",
+##     "e616dc00b7af72b9-ntttobytes.o",
+##     "e616dc00b7af72b9-nttunpack.o",
+##     "e616dc00b7af72b9-polyvec_basemul_acc_montgomery_cached_asm_k2.o",
+##     "e616dc00b7af72b9-polyvec_basemul_acc_montgomery_cached_asm_k3.o",
+##     "e616dc00b7af72b9-polyvec_basemul_acc_montgomery_cached_asm_k4.o",
+##     "e616dc00b7af72b9-reduce.o",
+##     "e616dc00b7af72b9-rej_uniform_asm.o",
+##     "e616dc00b7af72b9-tomont.o",
+##     "e71c6558e17b1ce7-digest_extra.o",
+##     "ea2b51a0b6630529-lhash.o",
+##     "ebcd52e9457b6221-a_digest.o",
+##     "ebcd52e9457b6221-a_sign.o",
+##     "ebcd52e9457b6221-a_verify.o",
+##     "ebcd52e9457b6221-algorithm.o",
+##     "ebcd52e9457b6221-asn1_gen.o",
+##     "ebcd52e9457b6221-by_dir.o",
+##     "ebcd52e9457b6221-by_file.o",
+##     "ebcd52e9457b6221-i2d_pr.o",
+##     "ebcd52e9457b6221-name_print.o",
+##     "ebcd52e9457b6221-policy.o",
+##     "ebcd52e9457b6221-rsa_pss.o",
+##     "ebcd52e9457b6221-t_crl.o",
+##     "ebcd52e9457b6221-t_req.o",
+##     "ebcd52e9457b6221-t_x509.o",
+##     "ebcd52e9457b6221-t_x509a.o",
+##     "ebcd52e9457b6221-v3_akey.o",
+##     "ebcd52e9457b6221-v3_akeya.o",
+##     "ebcd52e9457b6221-v3_alt.o",
+##     "ebcd52e9457b6221-v3_bcons.o",
+##     "ebcd52e9457b6221-v3_bitst.o",
+##     "ebcd52e9457b6221-v3_conf.o",
+##     "ebcd52e9457b6221-v3_cpols.o",
+##     "ebcd52e9457b6221-v3_crld.o",
+##     "ebcd52e9457b6221-v3_enum.o",
+##     "ebcd52e9457b6221-v3_extku.o",
+##     "ebcd52e9457b6221-v3_genn.o",
+##     "ebcd52e9457b6221-v3_ia5.o",
+##     "ebcd52e9457b6221-v3_info.o",
+##     "ebcd52e9457b6221-v3_int.o",
+##     "ebcd52e9457b6221-v3_lib.o",
+##     "ebcd52e9457b6221-v3_ncons.o",
+##     "ebcd52e9457b6221-v3_ocsp.o",
+##     "ebcd52e9457b6221-v3_pcons.o",
+##     "ebcd52e9457b6221-v3_pmaps.o",
+##     "ebcd52e9457b6221-v3_prn.o",
+##     "ebcd52e9457b6221-v3_purp.o",
+##     "ebcd52e9457b6221-v3_skey.o",
+##     "ebcd52e9457b6221-v3_utl.o",
+##     "ebcd52e9457b6221-x509.o",
+##     "ebcd52e9457b6221-x509_att.o",
+##     "ebcd52e9457b6221-x509_cmp.o",
+##     "ebcd52e9457b6221-x509_d2.o",
+##     "ebcd52e9457b6221-x509_def.o",
+##     "ebcd52e9457b6221-x509_ext.o",
+##     "ebcd52e9457b6221-x509_lu.o",
+##     "ebcd52e9457b6221-x509_obj.o",
+##     "ebcd52e9457b6221-x509_req.o",
+##     "ebcd52e9457b6221-x509_set.o",
+##     "ebcd52e9457b6221-x509_trs.o",
+##     "ebcd52e9457b6221-x509_txt.o",
+##     "ebcd52e9457b6221-x509_v3.o",
+##     "ebcd52e9457b6221-x509_vfy.o",
+##     "ebcd52e9457b6221-x509_vpm.o",
+##     "ebcd52e9457b6221-x509cset.o",
+##     "ebcd52e9457b6221-x509name.o",
+##     "ebcd52e9457b6221-x509rset.o",
+##     "ebcd52e9457b6221-x509spki.o",
+##     "ebcd52e9457b6221-x_algor.o",
+##     "ebcd52e9457b6221-x_all.o",
+##     "ebcd52e9457b6221-x_attrib.o",
+##     "ebcd52e9457b6221-x_crl.o",
+##     "ebcd52e9457b6221-x_exten.o",
+##     "ebcd52e9457b6221-x_name.o",
+##     "ebcd52e9457b6221-x_pubkey.o",
+##     "ebcd52e9457b6221-x_req.o",
+##     "ebcd52e9457b6221-x_sig.o",
+##     "ebcd52e9457b6221-x_spki.o",
+##     "ebcd52e9457b6221-x_val.o",
+##     "ebcd52e9457b6221-x_x509.o",
+##     "ebcd52e9457b6221-x_x509a.o",
+##     "f8e4fd781484bd36-bcm.o",
+##     "f8e4fd781484bd36-fips_shared_support.o",
+##     "fb1f39df2ea6f08f-dsa.o",
+##     "fb1f39df2ea6f08f-dsa_asn1.o",
+##     "fe5b6d61933e4a91-fips202.o",
 ##     "flag_check",
 ##     "flag_check.c",
 ##     "include/",
@@ -8475,7 +8475,7 @@ COPY --link --from=run-z-aws-lc-sys-0.32.2-2d875791ad1d3d18 /target/release/buil
 ##     "cargo:rerun-if-env-changed=CFLAGS_x86_64-unknown-linux-gnu",
 ##     "CFLAGS_x86_64-unknown-linux-gnu = None",
 ##     "CARGO_ENCODED_RUSTFLAGS = Some()",
-##     """cargo:warning=Compilation of 'c11.c' succeeded - Ok(["/target/release/build/aws-lc-sys-2d875791ad1d3d18/out/out-c11/84886e1dc28b5b1c-c11.o"]).""",
+##     """cargo:warning=Compilation of 'c11.c' succeeded - Ok(["/target/release/build/aws-lc-sys-2d875791ad1d3d18/out/out-c11/7dfda64fdf5a526c-c11.o"]).""",
 ##     "cargo:rerun-if-env-changed=AWS_LC_SYS_CC_x86_64_unknown_linux_gnu",
 ##     "cargo:rerun-if-env-changed=AWS_LC_SYS_CC",
 ##     "cargo:rerun-if-env-changed=CC_x86_64_unknown_linux_gnu",
@@ -8526,7 +8526,7 @@ COPY --link --from=run-z-aws-lc-sys-0.32.2-2d875791ad1d3d18 /target/release/buil
 ##     "cargo:rerun-if-env-changed=CFLAGS_x86_64-unknown-linux-gnu",
 ##     "CFLAGS_x86_64-unknown-linux-gnu = None",
 ##     "CARGO_ENCODED_RUSTFLAGS = Some()",
-##     """cargo:warning=Compilation of 'stdalign_check.c' succeeded - Ok(["/target/release/build/aws-lc-sys-2d875791ad1d3d18/out/out-stdalign_check/84886e1dc28b5b1c-stdalign_check.o"]).""",
+##     """cargo:warning=Compilation of 'stdalign_check.c' succeeded - Ok(["/target/release/build/aws-lc-sys-2d875791ad1d3d18/out/out-stdalign_check/7dfda64fdf5a526c-stdalign_check.o"]).""",
 ##     "OPT_LEVEL = Some(3)",
 ##     "TARGET = Some(x86_64-unknown-linux-gnu)",
 ##     "HOST = Some(x86_64-unknown-linux-gnu)",
@@ -8553,7 +8553,7 @@ COPY --link --from=run-z-aws-lc-sys-0.32.2-2d875791ad1d3d18 /target/release/buil
 ##     "cargo:rerun-if-env-changed=CFLAGS_x86_64-unknown-linux-gnu",
 ##     "CFLAGS_x86_64-unknown-linux-gnu = None",
 ##     "CARGO_ENCODED_RUSTFLAGS = Some()",
-##     """cargo:warning=Compilation of 'builtin_swap_check.c' succeeded - Ok(["/target/release/build/aws-lc-sys-2d875791ad1d3d18/out/out-builtin_swap_check/84886e1dc28b5b1c-builtin_swap_check.o"]).""",
+##     """cargo:warning=Compilation of 'builtin_swap_check.c' succeeded - Ok(["/target/release/build/aws-lc-sys-2d875791ad1d3d18/out/out-builtin_swap_check/7dfda64fdf5a526c-builtin_swap_check.o"]).""",
 ##     "OPT_LEVEL = Some(3)",
 ##     "TARGET = Some(x86_64-unknown-linux-gnu)",
 ##     "HOST = Some(x86_64-unknown-linux-gnu)",
@@ -8580,7 +8580,7 @@ COPY --link --from=run-z-aws-lc-sys-0.32.2-2d875791ad1d3d18 /target/release/buil
 ##     "cargo:rerun-if-env-changed=CFLAGS_x86_64-unknown-linux-gnu",
 ##     "CFLAGS_x86_64-unknown-linux-gnu = None",
 ##     "CARGO_ENCODED_RUSTFLAGS = Some()",
-##     """cargo:warning=Compilation of 'linux_random_h.c' succeeded - Ok(["/target/release/build/aws-lc-sys-2d875791ad1d3d18/out/out-linux_random_h/84886e1dc28b5b1c-linux_random_h.o"]).""",
+##     """cargo:warning=Compilation of 'linux_random_h.c' succeeded - Ok(["/target/release/build/aws-lc-sys-2d875791ad1d3d18/out/out-linux_random_h/7dfda64fdf5a526c-linux_random_h.o"]).""",
 ##     "OPT_LEVEL = Some(3)",
 ##     "OUT_DIR = Some(/target/release/build/aws-lc-sys-2d875791ad1d3d18/out)",
 ##     "TARGET = Some(x86_64-unknown-linux-gnu)",
@@ -9047,9 +9047,9 @@ COPY --link --from=run-z-aws-lc-sys-0.32.2-2d875791ad1d3d18 /target/release/buil
 ##         CARGO_ENCODED_RUSTFLAGS= \
 ##         CARGO_FEATURE_PREBUILT_NASM=1 \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/aws-lc-sys-0.32.2' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/aws-lc-sys-0.32.2 \
 ##         CARGO_MANIFEST_LINKS=aws_lc_0_32_2 \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/aws-lc-sys-0.32.2/Cargo.toml' \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/aws-lc-sys-0.32.2/Cargo.toml \
 ##         CARGO_PKG_AUTHORS=AWS-LC \
 ##         CARGO_PKG_DESCRIPTION=AWS-LC' is a general-purpose cryptographic library maintained by the AWS Cryptography team for AWS and their customers. It іs based on code from the Google BoringSSL project and the OpenSSL project.' \
 ##         CARGO_PKG_HOMEPAGE= \
@@ -9071,7 +9071,7 @@ COPY --link --from=run-z-aws-lc-sys-0.32.2-2d875791ad1d3d18 /target/release/buil
 ##         OUT_DIR=/target/release/build/aws-lc-sys-2d875791ad1d3d18/out \
 ##         PROFILE=release \
 ##         RUSTC=rustc \
-##         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+##         RUSTDOC=$RUSTUP_HOME/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
 ##         TARGET=x86_64-unknown-linux-gnu \
 ##         CARGOGREEN=1 \
 ##       CARGOGREEN_EXECUTE_BUILDRS_= /target/release/build/aws-lc-sys-b91f62695d1e67bd/build-script-main \
@@ -9098,8 +9098,8 @@ RUN \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=aws_lc_sys \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/aws-lc-sys-0.32.2' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/aws-lc-sys-0.32.2/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/aws-lc-sys-0.32.2 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/aws-lc-sys-0.32.2/Cargo.toml \
         CARGO_PKG_AUTHORS=AWS-LC \
         CARGO_PKG_DESCRIPTION=AWS-LC' is a general-purpose cryptographic library maintained by the AWS Cryptography team for AWS and their customers. It іs based on code from the Google BoringSSL project and the OpenSSL project.' \
         CARGO_PKG_HOMEPAGE= \
@@ -9186,8 +9186,8 @@ COPY --link --from=dep-n-aws-lc-sys-0.32.2-135dbb753da3a4f4 /target/release/deps
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=aws_lc_sys \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/aws-lc-sys-0.32.2' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/aws-lc-sys-0.32.2/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/aws-lc-sys-0.32.2 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/aws-lc-sys-0.32.2/Cargo.toml \
 ##         CARGO_PKG_AUTHORS=AWS-LC \
 ##         CARGO_PKG_DESCRIPTION=AWS-LC' is a general-purpose cryptographic library maintained by the AWS Cryptography team for AWS and their customers. It іs based on code from the Google BoringSSL project and the OpenSSL project.' \
 ##         CARGO_PKG_HOMEPAGE= \
@@ -9248,8 +9248,8 @@ RUN \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=build_script_build \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/aws-lc-rs-1.14.1' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/aws-lc-rs-1.14.1/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/aws-lc-rs-1.14.1 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/aws-lc-rs-1.14.1/Cargo.toml \
         CARGO_PKG_AUTHORS=AWS-LibCrypto \
         CARGO_PKG_DESCRIPTION=aws-lc-rs' is a cryptographic library using AWS-LC for its cryptographic operations. This library strives to be API-compatible with the popular Rust library named ring.' \
         CARGO_PKG_HOMEPAGE=https'://github.com/aws/aws-lc-rs' \
@@ -9330,8 +9330,8 @@ COPY --link --from=dep-x-aws-lc-rs-1.14.1-6215be1cd523c855 /target/release/build
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=build_script_build \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/aws-lc-rs-1.14.1' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/aws-lc-rs-1.14.1/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/aws-lc-rs-1.14.1 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/aws-lc-rs-1.14.1/Cargo.toml \
 ##         CARGO_PKG_AUTHORS=AWS-LibCrypto \
 ##         CARGO_PKG_DESCRIPTION=aws-lc-rs' is a cryptographic library using AWS-LC for its cryptographic operations. This library strives to be API-compatible with the popular Rust library named ring.' \
 ##         CARGO_PKG_HOMEPAGE=https'://github.com/aws/aws-lc-rs' \
@@ -9386,9 +9386,9 @@ RUN \
         CARGO_FEATURE_AWS_LC_SYS=1 \
         CARGO_FEATURE_PREBUILT_NASM=1 \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/aws-lc-rs-1.14.1' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/aws-lc-rs-1.14.1 \
         CARGO_MANIFEST_LINKS=aws_lc_rs_1_14_1_sys \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/aws-lc-rs-1.14.1/Cargo.toml' \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/aws-lc-rs-1.14.1/Cargo.toml \
         CARGO_PKG_AUTHORS=AWS-LibCrypto \
         CARGO_PKG_DESCRIPTION=aws-lc-rs' is a cryptographic library using AWS-LC for its cryptographic operations. This library strives to be API-compatible with the popular Rust library named ring.' \
         CARGO_PKG_HOMEPAGE=https'://github.com/aws/aws-lc-rs' \
@@ -9414,7 +9414,7 @@ RUN \
         OUT_DIR=/target/release/build/aws-lc-rs-7ef21a73dd92a44b/out \
         PROFILE=release \
         RUSTC=rustc \
-        RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+        RUSTDOC=$RUSTUP_HOME/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
         TARGET=x86_64-unknown-linux-gnu \
         CARGOGREEN=1 \
       CARGOGREEN_EXECUTE_BUILDRS_= /target/release/build/aws-lc-rs-6215be1cd523c855/build-script-build \
@@ -9479,9 +9479,9 @@ COPY --link --from=run-z-aws-lc-rs-1.14.1-7ef21a73dd92a44b /target/release/build
 ##         CARGO_FEATURE_AWS_LC_SYS=1 \
 ##         CARGO_FEATURE_PREBUILT_NASM=1 \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/aws-lc-rs-1.14.1' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/aws-lc-rs-1.14.1 \
 ##         CARGO_MANIFEST_LINKS=aws_lc_rs_1_14_1_sys \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/aws-lc-rs-1.14.1/Cargo.toml' \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/aws-lc-rs-1.14.1/Cargo.toml \
 ##         CARGO_PKG_AUTHORS=AWS-LibCrypto \
 ##         CARGO_PKG_DESCRIPTION=aws-lc-rs' is a cryptographic library using AWS-LC for its cryptographic operations. This library strives to be API-compatible with the popular Rust library named ring.' \
 ##         CARGO_PKG_HOMEPAGE=https'://github.com/aws/aws-lc-rs' \
@@ -9507,7 +9507,7 @@ COPY --link --from=run-z-aws-lc-rs-1.14.1-7ef21a73dd92a44b /target/release/build
 ##         OUT_DIR=/target/release/build/aws-lc-rs-7ef21a73dd92a44b/out \
 ##         PROFILE=release \
 ##         RUSTC=rustc \
-##         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+##         RUSTDOC=$RUSTUP_HOME/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
 ##         TARGET=x86_64-unknown-linux-gnu \
 ##         CARGOGREEN=1 \
 ##       CARGOGREEN_EXECUTE_BUILDRS_= /target/release/build/aws-lc-rs-6215be1cd523c855/build-script-build \
@@ -9559,8 +9559,8 @@ RUN \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=aws_lc_rs \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/aws-lc-rs-1.14.1' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/aws-lc-rs-1.14.1/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/aws-lc-rs-1.14.1 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/aws-lc-rs-1.14.1/Cargo.toml \
         CARGO_PKG_AUTHORS=AWS-LibCrypto \
         CARGO_PKG_DESCRIPTION=aws-lc-rs' is a cryptographic library using AWS-LC for its cryptographic operations. This library strives to be API-compatible with the popular Rust library named ring.' \
         CARGO_PKG_HOMEPAGE=https'://github.com/aws/aws-lc-rs' \
@@ -9779,8 +9779,8 @@ COPY --link --from=dep-n-aws-lc-rs-1.14.1-90227bfec647f88b /target/release/deps/
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=aws_lc_rs \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/aws-lc-rs-1.14.1' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/aws-lc-rs-1.14.1/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/aws-lc-rs-1.14.1 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/aws-lc-rs-1.14.1/Cargo.toml \
 ##         CARGO_PKG_AUTHORS=AWS-LibCrypto \
 ##         CARGO_PKG_DESCRIPTION=aws-lc-rs' is a cryptographic library using AWS-LC for its cryptographic operations. This library strives to be API-compatible with the popular Rust library named ring.' \
 ##         CARGO_PKG_HOMEPAGE=https'://github.com/aws/aws-lc-rs' \
@@ -9822,8 +9822,8 @@ RUN \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=log \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/log-0.4.28' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/log-0.4.28/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/log-0.4.28 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/log-0.4.28/Cargo.toml \
         CARGO_PKG_AUTHORS=The' Rust Project Developers' \
         CARGO_PKG_DESCRIPTION=A' lightweight logging facade for Rust\
 ' \
@@ -9888,8 +9888,8 @@ COPY --link --from=dep-n-log-0.4.28-64be2e589e1b58c5 /target/release/deps/*-64be
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=log \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/log-0.4.28' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/log-0.4.28/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/log-0.4.28 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/log-0.4.28/Cargo.toml \
 ##         CARGO_PKG_AUTHORS=The' Rust Project Developers' \
 ##         CARGO_PKG_DESCRIPTION=A' lightweight logging facade for Rust\
 ## ' \
@@ -9931,8 +9931,8 @@ RUN \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=once_cell \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/once_cell-1.21.3' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/once_cell-1.21.3/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/once_cell-1.21.3 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/once_cell-1.21.3/Cargo.toml \
         CARGO_PKG_AUTHORS=Aleksey' Kladov <aleksey.kladov@gmail.com>' \
         CARGO_PKG_DESCRIPTION=Single' assignment cells and lazy values.' \
         CARGO_PKG_HOMEPAGE= \
@@ -9996,8 +9996,8 @@ COPY --link --from=dep-n-once_cell-1.21.3-d2455ec75a446def /target/release/deps/
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=once_cell \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/once_cell-1.21.3' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/once_cell-1.21.3/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/once_cell-1.21.3 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/once_cell-1.21.3/Cargo.toml \
 ##         CARGO_PKG_AUTHORS=Aleksey' Kladov <aleksey.kladov@gmail.com>' \
 ##         CARGO_PKG_DESCRIPTION=Single' assignment cells and lazy values.' \
 ##         CARGO_PKG_HOMEPAGE= \
@@ -10040,8 +10040,8 @@ RUN \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=rustls_pki_types \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/rustls-pki-types-1.12.0' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/rustls-pki-types-1.12.0/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/rustls-pki-types-1.12.0 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/rustls-pki-types-1.12.0/Cargo.toml \
         CARGO_PKG_AUTHORS= \
         CARGO_PKG_DESCRIPTION=Shared' types for the rustls PKI ecosystem' \
         CARGO_PKG_HOMEPAGE=https'://github.com/rustls/pki-types' \
@@ -10116,8 +10116,8 @@ COPY --link --from=dep-n-rustls-pki-types-1.12.0-88022d560b8b0ce0 /target/releas
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=rustls_pki_types \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/rustls-pki-types-1.12.0' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/rustls-pki-types-1.12.0/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/rustls-pki-types-1.12.0 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/rustls-pki-types-1.12.0/Cargo.toml \
 ##         CARGO_PKG_AUTHORS= \
 ##         CARGO_PKG_DESCRIPTION=Shared' types for the rustls PKI ecosystem' \
 ##         CARGO_PKG_HOMEPAGE=https'://github.com/rustls/pki-types' \
@@ -10158,8 +10158,8 @@ RUN \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=untrusted \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/untrusted-0.9.0' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/untrusted-0.9.0/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/untrusted-0.9.0 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/untrusted-0.9.0/Cargo.toml \
         CARGO_PKG_AUTHORS=Brian' Smith <brian@briansmith.org>' \
         CARGO_PKG_DESCRIPTION=Safe,' fast, zero-panic, zero-crashing, zero-allocation parsing of untrusted inputs in Rust.' \
         CARGO_PKG_HOMEPAGE= \
@@ -10223,8 +10223,8 @@ COPY --link --from=dep-n-untrusted-0.9.0-2d8d07531d218763 /target/release/deps/*
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=untrusted \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/untrusted-0.9.0' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/untrusted-0.9.0/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/untrusted-0.9.0 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/untrusted-0.9.0/Cargo.toml \
 ##         CARGO_PKG_AUTHORS=Brian' Smith <brian@briansmith.org>' \
 ##         CARGO_PKG_DESCRIPTION=Safe,' fast, zero-panic, zero-crashing, zero-allocation parsing of untrusted inputs in Rust.' \
 ##         CARGO_PKG_HOMEPAGE= \
@@ -10296,8 +10296,8 @@ RUN \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=webpki \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/rustls-webpki-0.103.7' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/rustls-webpki-0.103.7/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/rustls-webpki-0.103.7 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/rustls-webpki-0.103.7/Cargo.toml \
         CARGO_PKG_AUTHORS= \
         CARGO_PKG_DESCRIPTION=Web' PKI X.509 Certificate Verification.' \
         CARGO_PKG_HOMEPAGE= \
@@ -10543,8 +10543,8 @@ COPY --link --from=dep-n-rustls-webpki-0.103.7-6da74749e9752714 /target/release/
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=webpki \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/rustls-webpki-0.103.7' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/rustls-webpki-0.103.7/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/rustls-webpki-0.103.7 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/rustls-webpki-0.103.7/Cargo.toml \
 ##         CARGO_PKG_AUTHORS= \
 ##         CARGO_PKG_DESCRIPTION=Web' PKI X.509 Certificate Verification.' \
 ##         CARGO_PKG_HOMEPAGE= \
@@ -10604,8 +10604,8 @@ RUN \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=build_script_build \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/rustls-0.23.32' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/rustls-0.23.32/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/rustls-0.23.32 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/rustls-0.23.32/Cargo.toml \
         CARGO_PKG_AUTHORS= \
         CARGO_PKG_DESCRIPTION=Rustls' is a modern TLS library written in Rust.' \
         CARGO_PKG_HOMEPAGE=https'://github.com/rustls/rustls' \
@@ -10686,8 +10686,8 @@ COPY --link --from=dep-x-rustls-0.23.32-8ec054074e55cb28 /target/release/build/r
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=build_script_build \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/rustls-0.23.32' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/rustls-0.23.32/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/rustls-0.23.32 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/rustls-0.23.32/Cargo.toml \
 ##         CARGO_PKG_AUTHORS= \
 ##         CARGO_PKG_DESCRIPTION=Rustls' is a modern TLS library written in Rust.' \
 ##         CARGO_PKG_HOMEPAGE=https'://github.com/rustls/rustls' \
@@ -10747,8 +10747,8 @@ RUN \
         CARGO_FEATURE_STD=1 \
         CARGO_FEATURE_TLS12=1 \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/rustls-0.23.32' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/rustls-0.23.32/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/rustls-0.23.32 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/rustls-0.23.32/Cargo.toml \
         CARGO_PKG_AUTHORS= \
         CARGO_PKG_DESCRIPTION=Rustls' is a modern TLS library written in Rust.' \
         CARGO_PKG_HOMEPAGE=https'://github.com/rustls/rustls' \
@@ -10774,7 +10774,7 @@ RUN \
         OUT_DIR=/target/release/build/rustls-8b3d3020feb33fc9/out \
         PROFILE=release \
         RUSTC=rustc \
-        RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+        RUSTDOC=$RUSTUP_HOME/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
         TARGET=x86_64-unknown-linux-gnu \
         CARGOGREEN=1 \
       CARGOGREEN_EXECUTE_BUILDRS_= /target/release/build/rustls-8ec054074e55cb28/build-script-build \
@@ -10830,8 +10830,8 @@ COPY --link --from=run-z-rustls-0.23.32-8b3d3020feb33fc9 /target/release/build/r
 ##         CARGO_FEATURE_STD=1 \
 ##         CARGO_FEATURE_TLS12=1 \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/rustls-0.23.32' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/rustls-0.23.32/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/rustls-0.23.32 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/rustls-0.23.32/Cargo.toml \
 ##         CARGO_PKG_AUTHORS= \
 ##         CARGO_PKG_DESCRIPTION=Rustls' is a modern TLS library written in Rust.' \
 ##         CARGO_PKG_HOMEPAGE=https'://github.com/rustls/rustls' \
@@ -10857,7 +10857,7 @@ COPY --link --from=run-z-rustls-0.23.32-8b3d3020feb33fc9 /target/release/build/r
 ##         OUT_DIR=/target/release/build/rustls-8b3d3020feb33fc9/out \
 ##         PROFILE=release \
 ##         RUSTC=rustc \
-##         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+##         RUSTDOC=$RUSTUP_HOME/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
 ##         TARGET=x86_64-unknown-linux-gnu \
 ##         CARGOGREEN=1 \
 ##       CARGOGREEN_EXECUTE_BUILDRS_= /target/release/build/rustls-8ec054074e55cb28/build-script-build \
@@ -10923,8 +10923,8 @@ RUN \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=rustls \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/rustls-0.23.32' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/rustls-0.23.32/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/rustls-0.23.32 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/rustls-0.23.32/Cargo.toml \
         CARGO_PKG_AUTHORS= \
         CARGO_PKG_DESCRIPTION=Rustls' is a modern TLS library written in Rust.' \
         CARGO_PKG_HOMEPAGE=https'://github.com/rustls/rustls' \
@@ -11223,8 +11223,8 @@ COPY --link --from=dep-n-rustls-0.23.32-79af5f0cc8b8fe11 /target/release/deps/*-
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=rustls \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/rustls-0.23.32' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/rustls-0.23.32/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/rustls-0.23.32 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/rustls-0.23.32/Cargo.toml \
 ##         CARGO_PKG_AUTHORS= \
 ##         CARGO_PKG_DESCRIPTION=Rustls' is a modern TLS library written in Rust.' \
 ##         CARGO_PKG_HOMEPAGE=https'://github.com/rustls/rustls' \
@@ -11266,8 +11266,8 @@ RUN \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=openssl_probe \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/openssl-probe-0.1.6' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/openssl-probe-0.1.6/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/openssl-probe-0.1.6 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/openssl-probe-0.1.6/Cargo.toml \
         CARGO_PKG_AUTHORS=Alex' Crichton <alex@alexcrichton.com>' \
         CARGO_PKG_DESCRIPTION=Tool' for helping to find SSL certificate locations on the system for OpenSSL\
 ' \
@@ -11332,8 +11332,8 @@ COPY --link --from=dep-n-openssl-probe-0.1.6-2ff594c6e039dec5 /target/release/de
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=openssl_probe \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/openssl-probe-0.1.6' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/openssl-probe-0.1.6/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/openssl-probe-0.1.6 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/openssl-probe-0.1.6/Cargo.toml \
 ##         CARGO_PKG_AUTHORS=Alex' Crichton <alex@alexcrichton.com>' \
 ##         CARGO_PKG_DESCRIPTION=Tool' for helping to find SSL certificate locations on the system for OpenSSL\
 ## ' \
@@ -11381,8 +11381,8 @@ RUN \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=rustls_native_certs \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/rustls-native-certs-0.8.1' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/rustls-native-certs-0.8.1/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/rustls-native-certs-0.8.1 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/rustls-native-certs-0.8.1/Cargo.toml \
         CARGO_PKG_AUTHORS= \
         CARGO_PKG_DESCRIPTION=rustls-native-certs' allows rustls to use the platform native certificate store' \
         CARGO_PKG_HOMEPAGE=https'://github.com/rustls/rustls-native-certs' \
@@ -11481,8 +11481,8 @@ COPY --link --from=dep-n-rustls-native-certs-0.8.1-9227835a4d59a1b8 /target/rele
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=rustls_native_certs \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/rustls-native-certs-0.8.1' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/rustls-native-certs-0.8.1/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/rustls-native-certs-0.8.1 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/rustls-native-certs-0.8.1/Cargo.toml \
 ##         CARGO_PKG_AUTHORS= \
 ##         CARGO_PKG_DESCRIPTION=rustls-native-certs' allows rustls to use the platform native certificate store' \
 ##         CARGO_PKG_HOMEPAGE=https'://github.com/rustls/rustls-native-certs' \
@@ -11546,8 +11546,8 @@ RUN \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=rustls_platform_verifier \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/rustls-platform-verifier-0.5.3' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/rustls-platform-verifier-0.5.3/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/rustls-platform-verifier-0.5.3 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/rustls-platform-verifier-0.5.3/Cargo.toml \
         CARGO_PKG_AUTHORS=ComplexSpaces' <complexspacescode@gmail.com>:1Password' \
         CARGO_PKG_DESCRIPTION=rustls-platform-verifier' supports verifying TLS certificates in rustls with the operating system verifier' \
         CARGO_PKG_HOMEPAGE= \
@@ -11763,8 +11763,8 @@ COPY --link --from=dep-n-rustls-platform-verifier-0.5.3-db666fad349f8ca6 /target
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=rustls_platform_verifier \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/rustls-platform-verifier-0.5.3' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/rustls-platform-verifier-0.5.3/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/rustls-platform-verifier-0.5.3 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/rustls-platform-verifier-0.5.3/Cargo.toml \
 ##         CARGO_PKG_AUTHORS=ComplexSpaces' <complexspacescode@gmail.com>:1Password' \
 ##         CARGO_PKG_DESCRIPTION=rustls-platform-verifier' supports verifying TLS certificates in rustls with the operating system verifier' \
 ##         CARGO_PKG_HOMEPAGE= \
@@ -11824,8 +11824,8 @@ RUN \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=build_script_build \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/serde_core-1.0.228' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/serde_core-1.0.228/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/serde_core-1.0.228 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/serde_core-1.0.228/Cargo.toml \
         CARGO_PKG_AUTHORS=Erick' Tryzelaar <erick.tryzelaar@gmail.com>:David Tolnay <dtolnay@gmail.com>' \
         CARGO_PKG_DESCRIPTION=Serde' traits only, with no support for derive -- use the `serde` crate instead' \
         CARGO_PKG_HOMEPAGE=https'://serde.rs' \
@@ -11906,8 +11906,8 @@ COPY --link --from=dep-x-serde_core-1.0.228-51979789556dbb03 /target/release/bui
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=build_script_build \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/serde_core-1.0.228' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/serde_core-1.0.228/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/serde_core-1.0.228 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/serde_core-1.0.228/Cargo.toml \
 ##         CARGO_PKG_AUTHORS=Erick' Tryzelaar <erick.tryzelaar@gmail.com>:David Tolnay <dtolnay@gmail.com>' \
 ##         CARGO_PKG_DESCRIPTION=Serde' traits only, with no support for derive -- use the `serde` crate instead' \
 ##         CARGO_PKG_HOMEPAGE=https'://serde.rs' \
@@ -11962,8 +11962,8 @@ RUN \
         CARGO_FEATURE_RESULT=1 \
         CARGO_FEATURE_STD=1 \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/serde_core-1.0.228' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/serde_core-1.0.228/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/serde_core-1.0.228 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/serde_core-1.0.228/Cargo.toml \
         CARGO_PKG_AUTHORS=Erick' Tryzelaar <erick.tryzelaar@gmail.com>:David Tolnay <dtolnay@gmail.com>' \
         CARGO_PKG_DESCRIPTION=Serde' traits only, with no support for derive -- use the `serde` crate instead' \
         CARGO_PKG_HOMEPAGE=https'://serde.rs' \
@@ -11985,7 +11985,7 @@ RUN \
         OUT_DIR=/target/release/build/serde_core-badeea6458a799e8/out \
         PROFILE=release \
         RUSTC=rustc \
-        RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+        RUSTDOC=$RUSTUP_HOME/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
         TARGET=x86_64-unknown-linux-gnu \
         CARGOGREEN=1 \
       CARGOGREEN_EXECUTE_BUILDRS_= /target/release/build/serde_core-51979789556dbb03/build-script-build \
@@ -12050,8 +12050,8 @@ COPY --link --from=run-z-serde_core-1.0.228-badeea6458a799e8 /target/release/bui
 ##         CARGO_FEATURE_RESULT=1 \
 ##         CARGO_FEATURE_STD=1 \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/serde_core-1.0.228' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/serde_core-1.0.228/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/serde_core-1.0.228 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/serde_core-1.0.228/Cargo.toml \
 ##         CARGO_PKG_AUTHORS=Erick' Tryzelaar <erick.tryzelaar@gmail.com>:David Tolnay <dtolnay@gmail.com>' \
 ##         CARGO_PKG_DESCRIPTION=Serde' traits only, with no support for derive -- use the `serde` crate instead' \
 ##         CARGO_PKG_HOMEPAGE=https'://serde.rs' \
@@ -12073,7 +12073,7 @@ COPY --link --from=run-z-serde_core-1.0.228-badeea6458a799e8 /target/release/bui
 ##         OUT_DIR=/target/release/build/serde_core-badeea6458a799e8/out \
 ##         PROFILE=release \
 ##         RUSTC=rustc \
-##         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+##         RUSTDOC=$RUSTUP_HOME/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
 ##         TARGET=x86_64-unknown-linux-gnu \
 ##         CARGOGREEN=1 \
 ##       CARGOGREEN_EXECUTE_BUILDRS_= /target/release/build/serde_core-51979789556dbb03/build-script-build \
@@ -12100,8 +12100,8 @@ RUN \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=serde_core \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/serde_core-1.0.228' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/serde_core-1.0.228/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/serde_core-1.0.228 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/serde_core-1.0.228/Cargo.toml \
         CARGO_PKG_AUTHORS=Erick' Tryzelaar <erick.tryzelaar@gmail.com>:David Tolnay <dtolnay@gmail.com>' \
         CARGO_PKG_DESCRIPTION=Serde' traits only, with no support for derive -- use the `serde` crate instead' \
         CARGO_PKG_HOMEPAGE=https'://serde.rs' \
@@ -12176,8 +12176,8 @@ COPY --link --from=dep-n-serde_core-1.0.228-1bc4bef1fdca14c4 /target/release/dep
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=serde_core \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/serde_core-1.0.228' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/serde_core-1.0.228/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/serde_core-1.0.228 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/serde_core-1.0.228/Cargo.toml \
 ##         CARGO_PKG_AUTHORS=Erick' Tryzelaar <erick.tryzelaar@gmail.com>:David Tolnay <dtolnay@gmail.com>' \
 ##         CARGO_PKG_DESCRIPTION=Serde' traits only, with no support for derive -- use the `serde` crate instead' \
 ##         CARGO_PKG_HOMEPAGE=https'://serde.rs' \
@@ -12219,8 +12219,8 @@ RUN \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=unicode_ident \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/unicode-ident-1.0.19' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/unicode-ident-1.0.19/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/unicode-ident-1.0.19 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/unicode-ident-1.0.19/Cargo.toml \
         CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>' \
         CARGO_PKG_DESCRIPTION=Determine' whether characters have the XID_Start or XID_Continue properties according to Unicode Standard Annex #31' \
         CARGO_PKG_HOMEPAGE= \
@@ -12284,8 +12284,8 @@ COPY --link --from=dep-n-unicode-ident-1.0.19-d90ab847601a2565 /target/release/d
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=unicode_ident \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/unicode-ident-1.0.19' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/unicode-ident-1.0.19/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/unicode-ident-1.0.19 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/unicode-ident-1.0.19/Cargo.toml \
 ##         CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>' \
 ##         CARGO_PKG_DESCRIPTION=Determine' whether characters have the XID_Start or XID_Continue properties according to Unicode Standard Annex #31' \
 ##         CARGO_PKG_HOMEPAGE= \
@@ -12345,8 +12345,8 @@ RUN \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=build_script_build \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/proc-macro2-1.0.101' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/proc-macro2-1.0.101/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/proc-macro2-1.0.101 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/proc-macro2-1.0.101/Cargo.toml \
         CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>:Alex Crichton <alex@alexcrichton.com>' \
         CARGO_PKG_DESCRIPTION=A' substitute implementation of the compiler'\'s' `proc_macro` API to decouple token-based libraries from the procedural macro use case.' \
         CARGO_PKG_HOMEPAGE= \
@@ -12427,8 +12427,8 @@ COPY --link --from=dep-x-proc-macro2-1.0.101-ab9829a4a8b7788d /target/release/bu
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=build_script_build \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/proc-macro2-1.0.101' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/proc-macro2-1.0.101/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/proc-macro2-1.0.101 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/proc-macro2-1.0.101/Cargo.toml \
 ##         CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>:Alex Crichton <alex@alexcrichton.com>' \
 ##         CARGO_PKG_DESCRIPTION=A' substitute implementation of the compiler'\'s' `proc_macro` API to decouple token-based libraries from the procedural macro use case.' \
 ##         CARGO_PKG_HOMEPAGE= \
@@ -12483,8 +12483,8 @@ RUN \
         CARGO_FEATURE_DEFAULT=1 \
         CARGO_FEATURE_PROC_MACRO=1 \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/proc-macro2-1.0.101' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/proc-macro2-1.0.101/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/proc-macro2-1.0.101 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/proc-macro2-1.0.101/Cargo.toml \
         CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>:Alex Crichton <alex@alexcrichton.com>' \
         CARGO_PKG_DESCRIPTION=A' substitute implementation of the compiler'\'s' `proc_macro` API to decouple token-based libraries from the procedural macro use case.' \
         CARGO_PKG_HOMEPAGE= \
@@ -12506,7 +12506,7 @@ RUN \
         OUT_DIR=/target/release/build/proc-macro2-9a025c1b756d91f9/out \
         PROFILE=release \
         RUSTC=rustc \
-        RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+        RUSTDOC=$RUSTUP_HOME/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
         TARGET=x86_64-unknown-linux-gnu \
         CARGOGREEN=1 \
       CARGOGREEN_EXECUTE_BUILDRS_= /target/release/build/proc-macro2-ab9829a4a8b7788d/build-script-build \
@@ -12580,8 +12580,8 @@ COPY --link --from=run-z-proc-macro2-1.0.101-9a025c1b756d91f9 /target/release/bu
 ##         CARGO_FEATURE_DEFAULT=1 \
 ##         CARGO_FEATURE_PROC_MACRO=1 \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/proc-macro2-1.0.101' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/proc-macro2-1.0.101/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/proc-macro2-1.0.101 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/proc-macro2-1.0.101/Cargo.toml \
 ##         CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>:Alex Crichton <alex@alexcrichton.com>' \
 ##         CARGO_PKG_DESCRIPTION=A' substitute implementation of the compiler'\'s' `proc_macro` API to decouple token-based libraries from the procedural macro use case.' \
 ##         CARGO_PKG_HOMEPAGE= \
@@ -12603,7 +12603,7 @@ COPY --link --from=run-z-proc-macro2-1.0.101-9a025c1b756d91f9 /target/release/bu
 ##         OUT_DIR=/target/release/build/proc-macro2-9a025c1b756d91f9/out \
 ##         PROFILE=release \
 ##         RUSTC=rustc \
-##         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+##         RUSTDOC=$RUSTUP_HOME/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
 ##         TARGET=x86_64-unknown-linux-gnu \
 ##         CARGOGREEN=1 \
 ##       CARGOGREEN_EXECUTE_BUILDRS_= /target/release/build/proc-macro2-ab9829a4a8b7788d/build-script-build \
@@ -12632,8 +12632,8 @@ RUN \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=proc_macro2 \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/proc-macro2-1.0.101' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/proc-macro2-1.0.101/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/proc-macro2-1.0.101 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/proc-macro2-1.0.101/Cargo.toml \
         CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>:Alex Crichton <alex@alexcrichton.com>' \
         CARGO_PKG_DESCRIPTION=A' substitute implementation of the compiler'\'s' `proc_macro` API to decouple token-based libraries from the procedural macro use case.' \
         CARGO_PKG_HOMEPAGE= \
@@ -12719,8 +12719,8 @@ COPY --link --from=dep-n-proc-macro2-1.0.101-30dd1c0184916507 /target/release/de
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=proc_macro2 \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/proc-macro2-1.0.101' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/proc-macro2-1.0.101/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/proc-macro2-1.0.101 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/proc-macro2-1.0.101/Cargo.toml \
 ##         CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>:Alex Crichton <alex@alexcrichton.com>' \
 ##         CARGO_PKG_DESCRIPTION=A' substitute implementation of the compiler'\'s' `proc_macro` API to decouple token-based libraries from the procedural macro use case.' \
 ##         CARGO_PKG_HOMEPAGE= \
@@ -12781,8 +12781,8 @@ RUN \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=build_script_build \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/quote-1.0.41' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/quote-1.0.41/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/quote-1.0.41 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/quote-1.0.41/Cargo.toml \
         CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>' \
         CARGO_PKG_DESCRIPTION=Quasi-quoting' macro quote!(...)' \
         CARGO_PKG_HOMEPAGE= \
@@ -12863,8 +12863,8 @@ COPY --link --from=dep-x-quote-1.0.41-c63aae50eb6f480a /target/release/build/quo
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=build_script_build \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/quote-1.0.41' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/quote-1.0.41/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/quote-1.0.41 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/quote-1.0.41/Cargo.toml \
 ##         CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>' \
 ##         CARGO_PKG_DESCRIPTION=Quasi-quoting' macro quote!(...)' \
 ##         CARGO_PKG_HOMEPAGE= \
@@ -12919,8 +12919,8 @@ RUN \
         CARGO_FEATURE_DEFAULT=1 \
         CARGO_FEATURE_PROC_MACRO=1 \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/quote-1.0.41' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/quote-1.0.41/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/quote-1.0.41 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/quote-1.0.41/Cargo.toml \
         CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>' \
         CARGO_PKG_DESCRIPTION=Quasi-quoting' macro quote!(...)' \
         CARGO_PKG_HOMEPAGE= \
@@ -12942,7 +12942,7 @@ RUN \
         OUT_DIR=/target/release/build/quote-edf8f660a3d601cc/out \
         PROFILE=release \
         RUSTC=rustc \
-        RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+        RUSTDOC=$RUSTUP_HOME/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
         TARGET=x86_64-unknown-linux-gnu \
         CARGOGREEN=1 \
       CARGOGREEN_EXECUTE_BUILDRS_= /target/release/build/quote-c63aae50eb6f480a/build-script-build \
@@ -12994,8 +12994,8 @@ COPY --link --from=run-z-quote-1.0.41-edf8f660a3d601cc /target/release/build/quo
 ##         CARGO_FEATURE_DEFAULT=1 \
 ##         CARGO_FEATURE_PROC_MACRO=1 \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/quote-1.0.41' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/quote-1.0.41/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/quote-1.0.41 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/quote-1.0.41/Cargo.toml \
 ##         CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>' \
 ##         CARGO_PKG_DESCRIPTION=Quasi-quoting' macro quote!(...)' \
 ##         CARGO_PKG_HOMEPAGE= \
@@ -13017,7 +13017,7 @@ COPY --link --from=run-z-quote-1.0.41-edf8f660a3d601cc /target/release/build/quo
 ##         OUT_DIR=/target/release/build/quote-edf8f660a3d601cc/out \
 ##         PROFILE=release \
 ##         RUSTC=rustc \
-##         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+##         RUSTDOC=$RUSTUP_HOME/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
 ##         TARGET=x86_64-unknown-linux-gnu \
 ##         CARGOGREEN=1 \
 ##       CARGOGREEN_EXECUTE_BUILDRS_= /target/release/build/quote-c63aae50eb6f480a/build-script-build \
@@ -13048,8 +13048,8 @@ RUN \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=quote \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/quote-1.0.41' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/quote-1.0.41/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/quote-1.0.41 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/quote-1.0.41/Cargo.toml \
         CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>' \
         CARGO_PKG_DESCRIPTION=Quasi-quoting' macro quote!(...)' \
         CARGO_PKG_HOMEPAGE= \
@@ -13153,8 +13153,8 @@ COPY --link --from=dep-n-quote-1.0.41-41756a17d2ad9431 /target/release/deps/*-41
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=quote \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/quote-1.0.41' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/quote-1.0.41/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/quote-1.0.41 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/quote-1.0.41/Cargo.toml \
 ##         CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>' \
 ##         CARGO_PKG_DESCRIPTION=Quasi-quoting' macro quote!(...)' \
 ##         CARGO_PKG_HOMEPAGE= \
@@ -13202,8 +13202,8 @@ RUN \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=syn \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/syn-2.0.106' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/syn-2.0.106/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/syn-2.0.106 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/syn-2.0.106/Cargo.toml \
         CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>' \
         CARGO_PKG_DESCRIPTION=Parser' for Rust source code' \
         CARGO_PKG_HOMEPAGE= \
@@ -13310,8 +13310,8 @@ COPY --link --from=dep-n-syn-2.0.106-8f37513da063fb69 /target/release/deps/*-8f3
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=syn \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/syn-2.0.106' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/syn-2.0.106/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/syn-2.0.106 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/syn-2.0.106/Cargo.toml \
 ##         CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>' \
 ##         CARGO_PKG_DESCRIPTION=Parser' for Rust source code' \
 ##         CARGO_PKG_HOMEPAGE= \
@@ -13356,8 +13356,8 @@ RUN \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=serde_derive \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/serde_derive-1.0.228' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/serde_derive-1.0.228/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/serde_derive-1.0.228 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/serde_derive-1.0.228/Cargo.toml \
         CARGO_PKG_AUTHORS=Erick' Tryzelaar <erick.tryzelaar@gmail.com>:David Tolnay <dtolnay@gmail.com>' \
         CARGO_PKG_DESCRIPTION=Macros' 1.1 implementation of #[derive(Serialize, Deserialize)]' \
         CARGO_PKG_HOMEPAGE=https'://serde.rs' \
@@ -13453,8 +13453,8 @@ COPY --link --from=dep-n-serde_derive-1.0.228-b925936788ba7057 /target/release/d
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=serde_derive \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/serde_derive-1.0.228' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/serde_derive-1.0.228/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/serde_derive-1.0.228 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/serde_derive-1.0.228/Cargo.toml \
 ##         CARGO_PKG_AUTHORS=Erick' Tryzelaar <erick.tryzelaar@gmail.com>:David Tolnay <dtolnay@gmail.com>' \
 ##         CARGO_PKG_DESCRIPTION=Macros' 1.1 implementation of #[derive(Serialize, Deserialize)]' \
 ##         CARGO_PKG_HOMEPAGE=https'://serde.rs' \
@@ -13514,8 +13514,8 @@ RUN \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=build_script_build \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/serde-1.0.228' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/serde-1.0.228/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/serde-1.0.228 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/serde-1.0.228/Cargo.toml \
         CARGO_PKG_AUTHORS=Erick' Tryzelaar <erick.tryzelaar@gmail.com>:David Tolnay <dtolnay@gmail.com>' \
         CARGO_PKG_DESCRIPTION=A' generic serialization/deserialization framework' \
         CARGO_PKG_HOMEPAGE=https'://serde.rs' \
@@ -13596,8 +13596,8 @@ COPY --link --from=dep-x-serde-1.0.228-9e59eb4de4feaddb /target/release/build/se
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=build_script_build \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/serde-1.0.228' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/serde-1.0.228/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/serde-1.0.228 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/serde-1.0.228/Cargo.toml \
 ##         CARGO_PKG_AUTHORS=Erick' Tryzelaar <erick.tryzelaar@gmail.com>:David Tolnay <dtolnay@gmail.com>' \
 ##         CARGO_PKG_DESCRIPTION=A' generic serialization/deserialization framework' \
 ##         CARGO_PKG_HOMEPAGE=https'://serde.rs' \
@@ -13654,8 +13654,8 @@ RUN \
         CARGO_FEATURE_SERDE_DERIVE=1 \
         CARGO_FEATURE_STD=1 \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/serde-1.0.228' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/serde-1.0.228/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/serde-1.0.228 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/serde-1.0.228/Cargo.toml \
         CARGO_PKG_AUTHORS=Erick' Tryzelaar <erick.tryzelaar@gmail.com>:David Tolnay <dtolnay@gmail.com>' \
         CARGO_PKG_DESCRIPTION=A' generic serialization/deserialization framework' \
         CARGO_PKG_HOMEPAGE=https'://serde.rs' \
@@ -13677,7 +13677,7 @@ RUN \
         OUT_DIR=/target/release/build/serde-cfe125327cacaf16/out \
         PROFILE=release \
         RUSTC=rustc \
-        RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+        RUSTDOC=$RUSTUP_HOME/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
         TARGET=x86_64-unknown-linux-gnu \
         CARGOGREEN=1 \
       CARGOGREEN_EXECUTE_BUILDRS_= /target/release/build/serde-9e59eb4de4feaddb/build-script-build \
@@ -13746,8 +13746,8 @@ COPY --link --from=run-z-serde-1.0.228-cfe125327cacaf16 /target/release/build/se
 ##         CARGO_FEATURE_SERDE_DERIVE=1 \
 ##         CARGO_FEATURE_STD=1 \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/serde-1.0.228' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/serde-1.0.228/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/serde-1.0.228 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/serde-1.0.228/Cargo.toml \
 ##         CARGO_PKG_AUTHORS=Erick' Tryzelaar <erick.tryzelaar@gmail.com>:David Tolnay <dtolnay@gmail.com>' \
 ##         CARGO_PKG_DESCRIPTION=A' generic serialization/deserialization framework' \
 ##         CARGO_PKG_HOMEPAGE=https'://serde.rs' \
@@ -13769,7 +13769,7 @@ COPY --link --from=run-z-serde-1.0.228-cfe125327cacaf16 /target/release/build/se
 ##         OUT_DIR=/target/release/build/serde-cfe125327cacaf16/out \
 ##         PROFILE=release \
 ##         RUSTC=rustc \
-##         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+##         RUSTDOC=$RUSTUP_HOME/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
 ##         TARGET=x86_64-unknown-linux-gnu \
 ##         CARGOGREEN=1 \
 ##       CARGOGREEN_EXECUTE_BUILDRS_= /target/release/build/serde-9e59eb4de4feaddb/build-script-build \
@@ -13808,8 +13808,8 @@ RUN \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=serde \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/serde-1.0.228' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/serde-1.0.228/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/serde-1.0.228 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/serde-1.0.228/Cargo.toml \
         CARGO_PKG_AUTHORS=Erick' Tryzelaar <erick.tryzelaar@gmail.com>:David Tolnay <dtolnay@gmail.com>' \
         CARGO_PKG_DESCRIPTION=A' generic serialization/deserialization framework' \
         CARGO_PKG_HOMEPAGE=https'://serde.rs' \
@@ -13961,8 +13961,8 @@ COPY --link --from=dep-n-serde-1.0.228-d9535ff1afbc9e07 /target/release/deps/*-d
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=serde \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/serde-1.0.228' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/serde-1.0.228/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/serde-1.0.228 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/serde-1.0.228/Cargo.toml \
 ##         CARGO_PKG_AUTHORS=Erick' Tryzelaar <erick.tryzelaar@gmail.com>:David Tolnay <dtolnay@gmail.com>' \
 ##         CARGO_PKG_DESCRIPTION=A' generic serialization/deserialization framework' \
 ##         CARGO_PKG_HOMEPAGE=https'://serde.rs' \
@@ -14004,8 +14004,8 @@ RUN \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=bytes \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/bytes-1.10.1' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/bytes-1.10.1/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/bytes-1.10.1 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/bytes-1.10.1/Cargo.toml \
         CARGO_PKG_AUTHORS=Carl' Lerche <me@carllerche.com>:Sean McArthur <sean@seanmonstar.com>' \
         CARGO_PKG_DESCRIPTION=Types' and traits for working with bytes' \
         CARGO_PKG_HOMEPAGE= \
@@ -14069,8 +14069,8 @@ COPY --link --from=dep-n-bytes-1.10.1-bf097c132b6f21a4 /target/release/deps/*-bf
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=bytes \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/bytes-1.10.1' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/bytes-1.10.1/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/bytes-1.10.1 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/bytes-1.10.1/Cargo.toml \
 ##         CARGO_PKG_AUTHORS=Carl' Lerche <me@carllerche.com>:Sean McArthur <sean@seanmonstar.com>' \
 ##         CARGO_PKG_DESCRIPTION=Types' and traits for working with bytes' \
 ##         CARGO_PKG_HOMEPAGE= \
@@ -14113,8 +14113,8 @@ RUN \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=mio \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/mio-1.0.4' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/mio-1.0.4/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/mio-1.0.4 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/mio-1.0.4/Cargo.toml \
         CARGO_PKG_AUTHORS=Carl' Lerche <me@carllerche.com>:Thomas de Zeeuw <thomasdezeeuw@gmail.com>:Tokio Contributors <team@tokio.rs>' \
         CARGO_PKG_DESCRIPTION=Lightweight' non-blocking I/O.' \
         CARGO_PKG_HOMEPAGE=https'://github.com/tokio-rs/mio' \
@@ -14194,8 +14194,8 @@ COPY --link --from=dep-n-mio-1.0.4-8a04991c75463c17 /target/release/deps/*-8a049
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=mio \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/mio-1.0.4' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/mio-1.0.4/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/mio-1.0.4 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/mio-1.0.4/Cargo.toml \
 ##         CARGO_PKG_AUTHORS=Carl' Lerche <me@carllerche.com>:Thomas de Zeeuw <thomasdezeeuw@gmail.com>:Tokio Contributors <team@tokio.rs>' \
 ##         CARGO_PKG_DESCRIPTION=Lightweight' non-blocking I/O.' \
 ##         CARGO_PKG_HOMEPAGE=https'://github.com/tokio-rs/mio' \
@@ -14236,8 +14236,8 @@ RUN \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=pin_project_lite \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/pin-project-lite-0.2.16' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/pin-project-lite-0.2.16/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/pin-project-lite-0.2.16 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/pin-project-lite-0.2.16/Cargo.toml \
         CARGO_PKG_AUTHORS= \
         CARGO_PKG_DESCRIPTION=A' lightweight version of pin-project written with declarative macros.\
 ' \
@@ -14302,8 +14302,8 @@ COPY --link --from=dep-n-pin-project-lite-0.2.16-a22006e28be69faf /target/releas
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=pin_project_lite \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/pin-project-lite-0.2.16' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/pin-project-lite-0.2.16/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/pin-project-lite-0.2.16 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/pin-project-lite-0.2.16/Cargo.toml \
 ##         CARGO_PKG_AUTHORS= \
 ##         CARGO_PKG_DESCRIPTION=A' lightweight version of pin-project written with declarative macros.\
 ## ' \
@@ -14347,8 +14347,8 @@ RUN \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=socket2 \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/socket2-0.6.0' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/socket2-0.6.0/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/socket2-0.6.0 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/socket2-0.6.0/Cargo.toml \
         CARGO_PKG_AUTHORS=Alex' Crichton <alex@alexcrichton.com>:Thomas de Zeeuw <thomasdezeeuw@gmail.com>' \
         CARGO_PKG_DESCRIPTION=Utilities' for handling networking sockets with a maximal amount of configuration\
 possible intended.\
@@ -14430,8 +14430,8 @@ COPY --link --from=dep-n-socket2-0.6.0-332f7f94bdc8a158 /target/release/deps/*-3
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=socket2 \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/socket2-0.6.0' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/socket2-0.6.0/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/socket2-0.6.0 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/socket2-0.6.0/Cargo.toml \
 ##         CARGO_PKG_AUTHORS=Alex' Crichton <alex@alexcrichton.com>:Thomas de Zeeuw <thomasdezeeuw@gmail.com>' \
 ##         CARGO_PKG_DESCRIPTION=Utilities' for handling networking sockets with a maximal amount of configuration\
 ## possible intended.\
@@ -14478,8 +14478,8 @@ RUN \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=tokio_macros \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/tokio-macros-2.5.0' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/tokio-macros-2.5.0/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/tokio-macros-2.5.0 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/tokio-macros-2.5.0/Cargo.toml \
         CARGO_PKG_AUTHORS=Tokio' Contributors <team@tokio.rs>' \
         CARGO_PKG_DESCRIPTION=Tokio\'s' proc macros.\
 ' \
@@ -14576,8 +14576,8 @@ COPY --link --from=dep-n-tokio-macros-2.5.0-a43fab541260b57a /target/release/dep
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=tokio_macros \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/tokio-macros-2.5.0' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/tokio-macros-2.5.0/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/tokio-macros-2.5.0 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/tokio-macros-2.5.0/Cargo.toml \
 ##         CARGO_PKG_AUTHORS=Tokio' Contributors <team@tokio.rs>' \
 ##         CARGO_PKG_DESCRIPTION=Tokio\'s' proc macros.\
 ## ' \
@@ -14638,8 +14638,8 @@ RUN \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=tokio \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/tokio-1.47.1' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/tokio-1.47.1/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/tokio-1.47.1 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/tokio-1.47.1/Cargo.toml \
         CARGO_PKG_AUTHORS=Tokio' Contributors <team@tokio.rs>' \
         CARGO_PKG_DESCRIPTION=An' event-driven, non-blocking I/O platform for writing asynchronous I/O\
 backed applications.\
@@ -14823,8 +14823,8 @@ COPY --link --from=dep-n-tokio-1.47.1-c395c10495b0b3f9 /target/release/deps/*-c3
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=tokio \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/tokio-1.47.1' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/tokio-1.47.1/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/tokio-1.47.1 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/tokio-1.47.1/Cargo.toml \
 ##         CARGO_PKG_AUTHORS=Tokio' Contributors <team@tokio.rs>' \
 ##         CARGO_PKG_DESCRIPTION=An' event-driven, non-blocking I/O platform for writing asynchronous I/O\
 ## backed applications.\
@@ -14929,8 +14929,8 @@ RUN \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=tokio_rustls \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/tokio-rustls-0.26.4' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/tokio-rustls-0.26.4/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/tokio-rustls-0.26.4 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/tokio-rustls-0.26.4/Cargo.toml \
         CARGO_PKG_AUTHORS= \
         CARGO_PKG_DESCRIPTION=Asynchronous' TLS/SSL streams for Tokio using Rustls.' \
         CARGO_PKG_HOMEPAGE=https'://github.com/rustls/tokio-rustls' \
@@ -15358,8 +15358,8 @@ COPY --link --from=dep-n-tokio-rustls-0.26.4-1d9512fc7c74ae08 /target/release/de
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=tokio_rustls \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/tokio-rustls-0.26.4' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/tokio-rustls-0.26.4/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/tokio-rustls-0.26.4 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/tokio-rustls-0.26.4/Cargo.toml \
 ##         CARGO_PKG_AUTHORS= \
 ##         CARGO_PKG_DESCRIPTION=Asynchronous' TLS/SSL streams for Tokio using Rustls.' \
 ##         CARGO_PKG_HOMEPAGE=https'://github.com/rustls/tokio-rustls' \
@@ -15404,8 +15404,8 @@ RUN \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=tracing_attributes \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/tracing-attributes-0.1.30' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/tracing-attributes-0.1.30/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/tracing-attributes-0.1.30 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/tracing-attributes-0.1.30/Cargo.toml \
         CARGO_PKG_AUTHORS=Tokio' Contributors <team@tokio.rs>:Eliza Weisman <eliza@buoyant.io>:David Barsky <dbarsky@amazon.com>' \
         CARGO_PKG_DESCRIPTION=Procedural' macro attributes for automatically instrumenting functions.\
 ' \
@@ -15502,8 +15502,8 @@ COPY --link --from=dep-n-tracing-attributes-0.1.30-503f6bcf688b11a3 /target/rele
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=tracing_attributes \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/tracing-attributes-0.1.30' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/tracing-attributes-0.1.30/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/tracing-attributes-0.1.30 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/tracing-attributes-0.1.30/Cargo.toml \
 ##         CARGO_PKG_AUTHORS=Tokio' Contributors <team@tokio.rs>:Eliza Weisman <eliza@buoyant.io>:David Barsky <dbarsky@amazon.com>' \
 ##         CARGO_PKG_DESCRIPTION=Procedural' macro attributes for automatically instrumenting functions.\
 ## ' \
@@ -15547,8 +15547,8 @@ RUN \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=tracing_core \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/tracing-core-0.1.34' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/tracing-core-0.1.34/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/tracing-core-0.1.34 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/tracing-core-0.1.34/Cargo.toml \
         CARGO_PKG_AUTHORS=Tokio' Contributors <team@tokio.rs>' \
         CARGO_PKG_DESCRIPTION=Core' primitives for application-level tracing.\
 ' \
@@ -15624,8 +15624,8 @@ COPY --link --from=dep-n-tracing-core-0.1.34-2bf32bfc77d4a425 /target/release/de
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=tracing_core \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/tracing-core-0.1.34' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/tracing-core-0.1.34/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/tracing-core-0.1.34 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/tracing-core-0.1.34/Cargo.toml \
 ##         CARGO_PKG_AUTHORS=Tokio' Contributors <team@tokio.rs>' \
 ##         CARGO_PKG_DESCRIPTION=Core' primitives for application-level tracing.\
 ## ' \
@@ -15684,8 +15684,8 @@ RUN \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=tracing \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/tracing-0.1.41' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/tracing-0.1.41/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/tracing-0.1.41 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/tracing-0.1.41/Cargo.toml \
         CARGO_PKG_AUTHORS=Eliza' Weisman <eliza@buoyant.io>:Tokio Contributors <team@tokio.rs>' \
         CARGO_PKG_DESCRIPTION=Application-level' tracing for Rust.\
 ' \
@@ -15854,8 +15854,8 @@ COPY --link --from=dep-n-tracing-0.1.41-075e13f932ee5314 /target/release/deps/*-
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=tracing \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/tracing-0.1.41' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/tracing-0.1.41/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/tracing-0.1.41 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/tracing-0.1.41/Cargo.toml \
 ##         CARGO_PKG_AUTHORS=Eliza' Weisman <eliza@buoyant.io>:Tokio Contributors <team@tokio.rs>' \
 ##         CARGO_PKG_DESCRIPTION=Application-level' tracing for Rust.\
 ## ' \
@@ -16026,8 +16026,8 @@ RUN \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=ntp_proto \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/ntp-proto-1.7.0-alpha.20251003' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/ntp-proto-1.7.0-alpha.20251003/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/ntp-proto-1.7.0-alpha.20251003 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/ntp-proto-1.7.0-alpha.20251003/Cargo.toml \
         CARGO_PKG_AUTHORS= \
         CARGO_PKG_DESCRIPTION=ntpd-rs' packet parsing and algorithms' \
         CARGO_PKG_HOMEPAGE=https'://github.com/pendulum-project/ntpd-rs' \
@@ -16838,8 +16838,8 @@ COPY --link --from=dep-n-ntp-proto-1.7.0-alpha.20251003-b5f6bfad0d8f8471 /target
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=ntp_proto \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/ntp-proto-1.7.0-alpha.20251003' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/ntp-proto-1.7.0-alpha.20251003/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/ntp-proto-1.7.0-alpha.20251003 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/ntp-proto-1.7.0-alpha.20251003/Cargo.toml \
 ##         CARGO_PKG_AUTHORS= \
 ##         CARGO_PKG_DESCRIPTION=ntpd-rs' packet parsing and algorithms' \
 ##         CARGO_PKG_HOMEPAGE=https'://github.com/pendulum-project/ntpd-rs' \
@@ -16882,8 +16882,8 @@ RUN \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=pps_time \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/pps-time-0.2.3' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/pps-time-0.2.3/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/pps-time-0.2.3 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/pps-time-0.2.3/Cargo.toml \
         CARGO_PKG_AUTHORS= \
         CARGO_PKG_DESCRIPTION=A' Rust interface for PPS devices' \
         CARGO_PKG_HOMEPAGE=https'://github.com/pendulum-project/pps-time' \
@@ -16963,8 +16963,8 @@ COPY --link --from=dep-n-pps-time-0.2.3-eb10259898586549 /target/release/deps/*-
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=pps_time \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/pps-time-0.2.3' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/pps-time-0.2.3/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/pps-time-0.2.3 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/pps-time-0.2.3/Cargo.toml \
 ##         CARGO_PKG_AUTHORS= \
 ##         CARGO_PKG_DESCRIPTION=A' Rust interface for PPS devices' \
 ##         CARGO_PKG_HOMEPAGE=https'://github.com/pendulum-project/pps-time' \
@@ -17005,8 +17005,8 @@ RUN \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=itoa \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/itoa-1.0.15' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/itoa-1.0.15/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/itoa-1.0.15 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/itoa-1.0.15/Cargo.toml \
         CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>' \
         CARGO_PKG_DESCRIPTION=Fast' integer primitive to string conversion' \
         CARGO_PKG_HOMEPAGE= \
@@ -17070,8 +17070,8 @@ COPY --link --from=dep-n-itoa-1.0.15-810c45601233a792 /target/release/deps/*-810
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=itoa \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/itoa-1.0.15' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/itoa-1.0.15/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/itoa-1.0.15 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/itoa-1.0.15/Cargo.toml \
 ##         CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>' \
 ##         CARGO_PKG_DESCRIPTION=Fast' integer primitive to string conversion' \
 ##         CARGO_PKG_HOMEPAGE= \
@@ -17112,8 +17112,8 @@ RUN \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=memchr \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/memchr-2.7.6' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/memchr-2.7.6/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/memchr-2.7.6 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/memchr-2.7.6/Cargo.toml \
         CARGO_PKG_AUTHORS=Andrew' Gallant <jamslam@gmail.com>:bluss' \
         CARGO_PKG_DESCRIPTION=Provides' extremely fast (uses SIMD on x86_64, aarch64 and wasm32) routines for\
 1, 2 or 3 byte search and single substring search.\
@@ -17179,8 +17179,8 @@ COPY --link --from=dep-n-memchr-2.7.6-1bf2d419b0e312f0 /target/release/deps/*-1b
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=memchr \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/memchr-2.7.6' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/memchr-2.7.6/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/memchr-2.7.6 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/memchr-2.7.6/Cargo.toml \
 ##         CARGO_PKG_AUTHORS=Andrew' Gallant <jamslam@gmail.com>:bluss' \
 ##         CARGO_PKG_DESCRIPTION=Provides' extremely fast (uses SIMD on x86_64, aarch64 and wasm32) routines for\
 ## 1, 2 or 3 byte search and single substring search.\
@@ -17223,8 +17223,8 @@ RUN \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=ryu \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/ryu-1.0.20' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/ryu-1.0.20/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/ryu-1.0.20 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/ryu-1.0.20/Cargo.toml \
         CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>' \
         CARGO_PKG_DESCRIPTION=Fast' floating point to string conversion' \
         CARGO_PKG_HOMEPAGE= \
@@ -17288,8 +17288,8 @@ COPY --link --from=dep-n-ryu-1.0.20-89e84ce63cef1c32 /target/release/deps/*-89e8
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=ryu \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/ryu-1.0.20' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/ryu-1.0.20/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/ryu-1.0.20 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/ryu-1.0.20/Cargo.toml \
 ##         CARGO_PKG_AUTHORS=David' Tolnay <dtolnay@gmail.com>' \
 ##         CARGO_PKG_DESCRIPTION=Fast' floating point to string conversion' \
 ##         CARGO_PKG_HOMEPAGE= \
@@ -17349,8 +17349,8 @@ RUN \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=build_script_build \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/serde_json-1.0.145' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/serde_json-1.0.145/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/serde_json-1.0.145 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/serde_json-1.0.145/Cargo.toml \
         CARGO_PKG_AUTHORS=Erick' Tryzelaar <erick.tryzelaar@gmail.com>:David Tolnay <dtolnay@gmail.com>' \
         CARGO_PKG_DESCRIPTION=A' JSON serialization file format' \
         CARGO_PKG_HOMEPAGE= \
@@ -17431,8 +17431,8 @@ COPY --link --from=dep-x-serde_json-1.0.145-8b3de377bc751c67 /target/release/bui
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=build_script_build \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/serde_json-1.0.145' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/serde_json-1.0.145/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/serde_json-1.0.145 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/serde_json-1.0.145/Cargo.toml \
 ##         CARGO_PKG_AUTHORS=Erick' Tryzelaar <erick.tryzelaar@gmail.com>:David Tolnay <dtolnay@gmail.com>' \
 ##         CARGO_PKG_DESCRIPTION=A' JSON serialization file format' \
 ##         CARGO_PKG_HOMEPAGE= \
@@ -17487,8 +17487,8 @@ RUN \
         CARGO_FEATURE_DEFAULT=1 \
         CARGO_FEATURE_STD=1 \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/serde_json-1.0.145' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/serde_json-1.0.145/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/serde_json-1.0.145 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/serde_json-1.0.145/Cargo.toml \
         CARGO_PKG_AUTHORS=Erick' Tryzelaar <erick.tryzelaar@gmail.com>:David Tolnay <dtolnay@gmail.com>' \
         CARGO_PKG_DESCRIPTION=A' JSON serialization file format' \
         CARGO_PKG_HOMEPAGE= \
@@ -17510,7 +17510,7 @@ RUN \
         OUT_DIR=/target/release/build/serde_json-3d3221a83b9a3fdf/out \
         PROFILE=release \
         RUSTC=rustc \
-        RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+        RUSTDOC=$RUSTUP_HOME/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
         TARGET=x86_64-unknown-linux-gnu \
         CARGOGREEN=1 \
       CARGOGREEN_EXECUTE_BUILDRS_= /target/release/build/serde_json-8b3de377bc751c67/build-script-build \
@@ -17566,8 +17566,8 @@ COPY --link --from=run-z-serde_json-1.0.145-3d3221a83b9a3fdf /target/release/bui
 ##         CARGO_FEATURE_DEFAULT=1 \
 ##         CARGO_FEATURE_STD=1 \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/serde_json-1.0.145' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/serde_json-1.0.145/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/serde_json-1.0.145 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/serde_json-1.0.145/Cargo.toml \
 ##         CARGO_PKG_AUTHORS=Erick' Tryzelaar <erick.tryzelaar@gmail.com>:David Tolnay <dtolnay@gmail.com>' \
 ##         CARGO_PKG_DESCRIPTION=A' JSON serialization file format' \
 ##         CARGO_PKG_HOMEPAGE= \
@@ -17589,7 +17589,7 @@ COPY --link --from=run-z-serde_json-1.0.145-3d3221a83b9a3fdf /target/release/bui
 ##         OUT_DIR=/target/release/build/serde_json-3d3221a83b9a3fdf/out \
 ##         PROFILE=release \
 ##         RUSTC=rustc \
-##         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+##         RUSTDOC=$RUSTUP_HOME/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
 ##         TARGET=x86_64-unknown-linux-gnu \
 ##         CARGOGREEN=1 \
 ##       CARGOGREEN_EXECUTE_BUILDRS_= /target/release/build/serde_json-8b3de377bc751c67/build-script-build \
@@ -17625,8 +17625,8 @@ RUN \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=serde_json \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/serde_json-1.0.145' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/serde_json-1.0.145/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/serde_json-1.0.145 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/serde_json-1.0.145/Cargo.toml \
         CARGO_PKG_AUTHORS=Erick' Tryzelaar <erick.tryzelaar@gmail.com>:David Tolnay <dtolnay@gmail.com>' \
         CARGO_PKG_DESCRIPTION=A' JSON serialization file format' \
         CARGO_PKG_HOMEPAGE= \
@@ -17755,8 +17755,8 @@ COPY --link --from=dep-n-serde_json-1.0.145-3956e8613ae2191d /target/release/dep
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=serde_json \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/serde_json-1.0.145' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/serde_json-1.0.145/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/serde_json-1.0.145 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/serde_json-1.0.145/Cargo.toml \
 ##         CARGO_PKG_AUTHORS=Erick' Tryzelaar <erick.tryzelaar@gmail.com>:David Tolnay <dtolnay@gmail.com>' \
 ##         CARGO_PKG_DESCRIPTION=A' JSON serialization file format' \
 ##         CARGO_PKG_HOMEPAGE= \
@@ -17835,8 +17835,8 @@ RUN \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=timestamped_socket \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/timestamped-socket-0.2.7' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/timestamped-socket-0.2.7/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/timestamped-socket-0.2.7 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/timestamped-socket-0.2.7/Cargo.toml \
         CARGO_PKG_AUTHORS= \
         CARGO_PKG_DESCRIPTION=Implementation' of async UDP and raw ethernet sockets with timestamping' \
         CARGO_PKG_HOMEPAGE=https'://github.com/pendulum-project/timestamped-socket' \
@@ -18123,8 +18123,8 @@ COPY --link --from=dep-n-timestamped-socket-0.2.7-e18c08f3473fbbaf /target/relea
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=timestamped_socket \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/timestamped-socket-0.2.7' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/timestamped-socket-0.2.7/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/timestamped-socket-0.2.7 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/timestamped-socket-0.2.7/Cargo.toml \
 ##         CARGO_PKG_AUTHORS= \
 ##         CARGO_PKG_DESCRIPTION=Implementation' of async UDP and raw ethernet sockets with timestamping' \
 ##         CARGO_PKG_HOMEPAGE=https'://github.com/pendulum-project/timestamped-socket' \
@@ -18180,8 +18180,8 @@ RUN \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=serde_spanned \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/serde_spanned-0.6.9' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/serde_spanned-0.6.9/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/serde_spanned-0.6.9 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/serde_spanned-0.6.9/Cargo.toml \
         CARGO_PKG_AUTHORS= \
         CARGO_PKG_DESCRIPTION=Serde-compatible' spanned Value' \
         CARGO_PKG_HOMEPAGE= \
@@ -18343,8 +18343,8 @@ COPY --link --from=dep-n-serde_spanned-0.6.9-9efeb8ba5429dc73 /target/release/de
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=serde_spanned \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/serde_spanned-0.6.9' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/serde_spanned-0.6.9/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/serde_spanned-0.6.9 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/serde_spanned-0.6.9/Cargo.toml \
 ##         CARGO_PKG_AUTHORS= \
 ##         CARGO_PKG_DESCRIPTION=Serde-compatible' spanned Value' \
 ##         CARGO_PKG_HOMEPAGE= \
@@ -18400,8 +18400,8 @@ RUN \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=toml_datetime \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/toml_datetime-0.6.11' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/toml_datetime-0.6.11/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/toml_datetime-0.6.11 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/toml_datetime-0.6.11/Cargo.toml \
         CARGO_PKG_AUTHORS= \
         CARGO_PKG_DESCRIPTION=A' TOML-compatible datetime type' \
         CARGO_PKG_HOMEPAGE= \
@@ -18563,8 +18563,8 @@ COPY --link --from=dep-n-toml_datetime-0.6.11-ba469190e2df5ae2 /target/release/d
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=toml_datetime \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/toml_datetime-0.6.11' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/toml_datetime-0.6.11/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/toml_datetime-0.6.11 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/toml_datetime-0.6.11/Cargo.toml \
 ##         CARGO_PKG_AUTHORS= \
 ##         CARGO_PKG_DESCRIPTION=A' TOML-compatible datetime type' \
 ##         CARGO_PKG_HOMEPAGE= \
@@ -18605,8 +18605,8 @@ RUN \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=equivalent \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/equivalent-1.0.2' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/equivalent-1.0.2/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/equivalent-1.0.2 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/equivalent-1.0.2/Cargo.toml \
         CARGO_PKG_AUTHORS= \
         CARGO_PKG_DESCRIPTION=Traits' for key comparison in maps.' \
         CARGO_PKG_HOMEPAGE= \
@@ -18670,8 +18670,8 @@ COPY --link --from=dep-n-equivalent-1.0.2-4ab91e794913659c /target/release/deps/
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=equivalent \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/equivalent-1.0.2' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/equivalent-1.0.2/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/equivalent-1.0.2 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/equivalent-1.0.2/Cargo.toml \
 ##         CARGO_PKG_AUTHORS= \
 ##         CARGO_PKG_DESCRIPTION=Traits' for key comparison in maps.' \
 ##         CARGO_PKG_HOMEPAGE= \
@@ -18712,8 +18712,8 @@ RUN \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=hashbrown \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/hashbrown-0.16.0' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/hashbrown-0.16.0/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/hashbrown-0.16.0 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/hashbrown-0.16.0/Cargo.toml \
         CARGO_PKG_AUTHORS=Amanieu' d'\'Antras' <amanieu@gmail.com>' \
         CARGO_PKG_DESCRIPTION=A' Rust port of Google'\'s' SwissTable hash map' \
         CARGO_PKG_HOMEPAGE= \
@@ -18777,8 +18777,8 @@ COPY --link --from=dep-n-hashbrown-0.16.0-f3886a4b366ef278 /target/release/deps/
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=hashbrown \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/hashbrown-0.16.0' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/hashbrown-0.16.0/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/hashbrown-0.16.0 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/hashbrown-0.16.0/Cargo.toml \
 ##         CARGO_PKG_AUTHORS=Amanieu' d'\'Antras' <amanieu@gmail.com>' \
 ##         CARGO_PKG_DESCRIPTION=A' Rust port of Google'\'s' SwissTable hash map' \
 ##         CARGO_PKG_HOMEPAGE= \
@@ -18823,8 +18823,8 @@ RUN \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=indexmap \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/indexmap-2.11.4' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/indexmap-2.11.4/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/indexmap-2.11.4 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/indexmap-2.11.4/Cargo.toml \
         CARGO_PKG_AUTHORS= \
         CARGO_PKG_DESCRIPTION=A' hash table with consistent order and fast iteration.' \
         CARGO_PKG_HOMEPAGE= \
@@ -18912,8 +18912,8 @@ COPY --link --from=dep-n-indexmap-2.11.4-a726055e510b5710 /target/release/deps/*
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=indexmap \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/indexmap-2.11.4' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/indexmap-2.11.4/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/indexmap-2.11.4 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/indexmap-2.11.4/Cargo.toml \
 ##         CARGO_PKG_AUTHORS= \
 ##         CARGO_PKG_DESCRIPTION=A' hash table with consistent order and fast iteration.' \
 ##         CARGO_PKG_HOMEPAGE= \
@@ -18954,8 +18954,8 @@ RUN \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=winnow \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/winnow-0.7.13' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/winnow-0.7.13/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/winnow-0.7.13 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/winnow-0.7.13/Cargo.toml \
         CARGO_PKG_AUTHORS= \
         CARGO_PKG_DESCRIPTION=A' byte-oriented, zero-copy, parser combinators library' \
         CARGO_PKG_HOMEPAGE= \
@@ -19019,8 +19019,8 @@ COPY --link --from=dep-n-winnow-0.7.13-876f7323b6273c7b /target/release/deps/*-8
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=winnow \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/winnow-0.7.13' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/winnow-0.7.13/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/winnow-0.7.13 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/winnow-0.7.13/Cargo.toml \
 ##         CARGO_PKG_AUTHORS= \
 ##         CARGO_PKG_DESCRIPTION=A' byte-oriented, zero-copy, parser combinators library' \
 ##         CARGO_PKG_HOMEPAGE= \
@@ -19088,8 +19088,8 @@ RUN \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=toml_edit \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/toml_edit-0.22.27' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/toml_edit-0.22.27/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/toml_edit-0.22.27 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/toml_edit-0.22.27/Cargo.toml \
         CARGO_PKG_AUTHORS= \
         CARGO_PKG_DESCRIPTION=Yet' another format-preserving TOML parser.' \
         CARGO_PKG_HOMEPAGE= \
@@ -19331,8 +19331,8 @@ COPY --link --from=dep-n-toml_edit-0.22.27-960c257e979200c0 /target/release/deps
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=toml_edit \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/toml_edit-0.22.27' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/toml_edit-0.22.27/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/toml_edit-0.22.27 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/toml_edit-0.22.27/Cargo.toml \
 ##         CARGO_PKG_AUTHORS= \
 ##         CARGO_PKG_DESCRIPTION=Yet' another format-preserving TOML parser.' \
 ##         CARGO_PKG_HOMEPAGE= \
@@ -19402,8 +19402,8 @@ RUN \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=toml \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/toml-0.8.23' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/toml-0.8.23/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/toml-0.8.23 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/toml-0.8.23/Cargo.toml \
         CARGO_PKG_AUTHORS= \
         CARGO_PKG_DESCRIPTION=A' native Rust encoder and decoder of TOML-formatted files and streams. Provides\
 implementations of the standard Serialize/Deserialize traits for TOML data to\
@@ -19645,8 +19645,8 @@ COPY --link --from=dep-n-toml-0.8.23-d7e70c2bc4581f22 /target/release/deps/*-d7e
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=toml \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/toml-0.8.23' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/toml-0.8.23/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/toml-0.8.23 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/toml-0.8.23/Cargo.toml \
 ##         CARGO_PKG_AUTHORS= \
 ##         CARGO_PKG_DESCRIPTION=A' native Rust encoder and decoder of TOML-formatted files and streams. Provides\
 ## implementations of the standard Serialize/Deserialize traits for TOML data to\
@@ -19690,8 +19690,8 @@ RUN \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=nu_ansi_term \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/nu-ansi-term-0.50.1' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/nu-ansi-term-0.50.1/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/nu-ansi-term-0.50.1 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/nu-ansi-term-0.50.1/Cargo.toml \
         CARGO_PKG_AUTHORS=ogham'@bsago.me:Ryan Scheel (Havvy) <ryan.havvy@gmail.com>:Josh Triplett <josh@joshtriplett.org>:The Nushell Project Developers' \
         CARGO_PKG_DESCRIPTION=Library' for ANSI terminal colors and styles (bold, underline)' \
         CARGO_PKG_HOMEPAGE= \
@@ -19755,8 +19755,8 @@ COPY --link --from=dep-n-nu-ansi-term-0.50.1-6610440eb99272a1 /target/release/de
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=nu_ansi_term \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/nu-ansi-term-0.50.1' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/nu-ansi-term-0.50.1/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/nu-ansi-term-0.50.1 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/nu-ansi-term-0.50.1/Cargo.toml \
 ##         CARGO_PKG_AUTHORS=ogham'@bsago.me:Ryan Scheel (Havvy) <ryan.havvy@gmail.com>:Josh Triplett <josh@joshtriplett.org>:The Nushell Project Developers' \
 ##         CARGO_PKG_DESCRIPTION=Library' for ANSI terminal colors and styles (bold, underline)' \
 ##         CARGO_PKG_HOMEPAGE= \
@@ -19797,8 +19797,8 @@ RUN \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=lazy_static \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/lazy_static-1.5.0' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/lazy_static-1.5.0/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/lazy_static-1.5.0 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/lazy_static-1.5.0/Cargo.toml \
         CARGO_PKG_AUTHORS=Marvin' Löbel <loebel.marvin@gmail.com>' \
         CARGO_PKG_DESCRIPTION=A' macro for declaring lazily evaluated statics in Rust.' \
         CARGO_PKG_HOMEPAGE= \
@@ -19864,8 +19864,8 @@ COPY --link --from=dep-n-lazy_static-1.5.0-7475590c5cec2ded /target/release/deps
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=lazy_static \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/lazy_static-1.5.0' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/lazy_static-1.5.0/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/lazy_static-1.5.0 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/lazy_static-1.5.0/Cargo.toml \
 ##         CARGO_PKG_AUTHORS=Marvin' Löbel <loebel.marvin@gmail.com>' \
 ##         CARGO_PKG_DESCRIPTION=A' macro for declaring lazily evaluated statics in Rust.' \
 ##         CARGO_PKG_HOMEPAGE= \
@@ -19908,8 +19908,8 @@ RUN \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=sharded_slab \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/sharded-slab-0.1.7' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/sharded-slab-0.1.7/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/sharded-slab-0.1.7 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/sharded-slab-0.1.7/Cargo.toml \
         CARGO_PKG_AUTHORS=Eliza' Weisman <eliza@buoyant.io>' \
         CARGO_PKG_DESCRIPTION=A' lock-free concurrent slab.\
 ' \
@@ -20091,8 +20091,8 @@ COPY --link --from=dep-n-sharded-slab-0.1.7-4d66c3c554384830 /target/release/dep
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=sharded_slab \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/sharded-slab-0.1.7' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/sharded-slab-0.1.7/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/sharded-slab-0.1.7 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/sharded-slab-0.1.7/Cargo.toml \
 ##         CARGO_PKG_AUTHORS=Eliza' Weisman <eliza@buoyant.io>' \
 ##         CARGO_PKG_DESCRIPTION=A' lock-free concurrent slab.\
 ## ' \
@@ -20136,8 +20136,8 @@ RUN \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=thread_local \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/thread_local-1.1.9' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/thread_local-1.1.9/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/thread_local-1.1.9 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/thread_local-1.1.9/Cargo.toml \
         CARGO_PKG_AUTHORS=Amanieu' d'\'Antras' <amanieu@gmail.com>' \
         CARGO_PKG_DESCRIPTION=Per-object' thread-local storage' \
         CARGO_PKG_HOMEPAGE= \
@@ -20217,8 +20217,8 @@ COPY --link --from=dep-n-thread_local-1.1.9-42c7ea5a78f3c604 /target/release/dep
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=thread_local \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/thread_local-1.1.9' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/thread_local-1.1.9/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/thread_local-1.1.9 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/thread_local-1.1.9/Cargo.toml \
 ##         CARGO_PKG_AUTHORS=Amanieu' d'\'Antras' <amanieu@gmail.com>' \
 ##         CARGO_PKG_DESCRIPTION=Per-object' thread-local storage' \
 ##         CARGO_PKG_HOMEPAGE= \
@@ -20273,8 +20273,8 @@ RUN \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=tracing_subscriber \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/tracing-subscriber-0.3.20' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/tracing-subscriber-0.3.20/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/tracing-subscriber-0.3.20 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/tracing-subscriber-0.3.20/Cargo.toml \
         CARGO_PKG_AUTHORS=Eliza' Weisman <eliza@buoyant.io>:David Barsky <me@davidbarsky.com>:Tokio Contributors <team@tokio.rs>' \
         CARGO_PKG_DESCRIPTION=Utilities' for implementing and composing `tracing` subscribers.\
 ' \
@@ -20418,8 +20418,8 @@ COPY --link --from=dep-n-tracing-subscriber-0.3.20-b671934748d136d0 /target/rele
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=tracing_subscriber \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/tracing-subscriber-0.3.20' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/tracing-subscriber-0.3.20/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/tracing-subscriber-0.3.20 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/tracing-subscriber-0.3.20/Cargo.toml \
 ##         CARGO_PKG_AUTHORS=Eliza' Weisman <eliza@buoyant.io>:David Barsky <me@davidbarsky.com>:Tokio Contributors <team@tokio.rs>' \
 ##         CARGO_PKG_DESCRIPTION=Utilities' for implementing and composing `tracing` subscribers.\
 ## ' \
@@ -20480,8 +20480,8 @@ RUN \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=build_script_build \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/ntpd-1.7.0-alpha.20251003' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/ntpd-1.7.0-alpha.20251003/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/ntpd-1.7.0-alpha.20251003 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/ntpd-1.7.0-alpha.20251003/Cargo.toml \
         CARGO_PKG_AUTHORS= \
         CARGO_PKG_DESCRIPTION=Full-featured' implementation of NTP with NTS support' \
         CARGO_PKG_HOMEPAGE=https'://github.com/pendulum-project/ntpd-rs' \
@@ -20564,8 +20564,8 @@ COPY --link --from=dep-x-ntpd-1.7.0-alpha.20251003-dc337ad90b4ca097 /target/rele
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=build_script_build \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/ntpd-1.7.0-alpha.20251003' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/ntpd-1.7.0-alpha.20251003/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/ntpd-1.7.0-alpha.20251003 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/ntpd-1.7.0-alpha.20251003/Cargo.toml \
 ##         CARGO_PKG_AUTHORS= \
 ##         CARGO_PKG_DESCRIPTION=Full-featured' implementation of NTP with NTS support' \
 ##         CARGO_PKG_HOMEPAGE=https'://github.com/pendulum-project/ntpd-rs' \
@@ -20622,8 +20622,8 @@ RUN \
         CARGO_FEATURE_DEFAULT=1 \
         CARGO_FEATURE_PPS=1 \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/ntpd-1.7.0-alpha.20251003' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/ntpd-1.7.0-alpha.20251003/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/ntpd-1.7.0-alpha.20251003 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/ntpd-1.7.0-alpha.20251003/Cargo.toml \
         CARGO_PKG_AUTHORS= \
         CARGO_PKG_DESCRIPTION=Full-featured' implementation of NTP with NTS support' \
         CARGO_PKG_HOMEPAGE=https'://github.com/pendulum-project/ntpd-rs' \
@@ -20645,7 +20645,7 @@ RUN \
         OUT_DIR=/target/release/build/ntpd-ddda28ab8da26074/out \
         PROFILE=release \
         RUSTC=rustc \
-        RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+        RUSTDOC=$RUSTUP_HOME/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
         TARGET=x86_64-unknown-linux-gnu \
         CARGOGREEN=1 \
       CARGOGREEN_EXECUTE_BUILDRS_= /target/release/build/ntpd-dc337ad90b4ca097/build-script-build \
@@ -20701,8 +20701,8 @@ COPY --link --from=run-z-ntpd-1.7.0-alpha.20251003-ddda28ab8da26074 /target/rele
 ##         CARGO_FEATURE_DEFAULT=1 \
 ##         CARGO_FEATURE_PPS=1 \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/ntpd-1.7.0-alpha.20251003' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/ntpd-1.7.0-alpha.20251003/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/ntpd-1.7.0-alpha.20251003 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/ntpd-1.7.0-alpha.20251003/Cargo.toml \
 ##         CARGO_PKG_AUTHORS= \
 ##         CARGO_PKG_DESCRIPTION=Full-featured' implementation of NTP with NTS support' \
 ##         CARGO_PKG_HOMEPAGE=https'://github.com/pendulum-project/ntpd-rs' \
@@ -20724,7 +20724,7 @@ COPY --link --from=run-z-ntpd-1.7.0-alpha.20251003-ddda28ab8da26074 /target/rele
 ##         OUT_DIR=/target/release/build/ntpd-ddda28ab8da26074/out \
 ##         PROFILE=release \
 ##         RUSTC=rustc \
-##         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+##         RUSTDOC=$RUSTUP_HOME/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
 ##         TARGET=x86_64-unknown-linux-gnu \
 ##         CARGOGREEN=1 \
 ##       CARGOGREEN_EXECUTE_BUILDRS_= /target/release/build/ntpd-dc337ad90b4ca097/build-script-build \
@@ -20922,8 +20922,8 @@ RUN \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=ntpd \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/ntpd-1.7.0-alpha.20251003' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/ntpd-1.7.0-alpha.20251003/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/ntpd-1.7.0-alpha.20251003 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/ntpd-1.7.0-alpha.20251003/Cargo.toml \
         CARGO_PKG_AUTHORS= \
         CARGO_PKG_DESCRIPTION=Full-featured' implementation of NTP with NTS support' \
         CARGO_PKG_HOMEPAGE=https'://github.com/pendulum-project/ntpd-rs' \
@@ -21985,8 +21985,8 @@ COPY --link --from=dep-n-ntpd-1.7.0-alpha.20251003-27edfaa695fb596f /target/rele
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=ntpd \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/ntpd-1.7.0-alpha.20251003' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/ntpd-1.7.0-alpha.20251003/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/ntpd-1.7.0-alpha.20251003 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/ntpd-1.7.0-alpha.20251003/Cargo.toml \
 ##         CARGO_PKG_AUTHORS= \
 ##         CARGO_PKG_DESCRIPTION=Full-featured' implementation of NTP with NTS support' \
 ##         CARGO_PKG_HOMEPAGE=https'://github.com/pendulum-project/ntpd-rs' \
@@ -22022,7 +22022,7 @@ COPY --link --from=dep-n-ntpd-1.7.0-alpha.20251003-27edfaa695fb596f /target/rele
 ## COPY --link --from=dep-n-ntpd-1.7.0-alpha.20251003-27edfaa695fb596f /target/release/deps/*-27edfaa695fb596f* /"""
 
 
-FROM rust-base AS dep-n-ntpd-1.7.0-alpha.20251003-608d6f568e30b338
+FROM rust-base AS dep-n-ntpd-1.7.0-alpha.20251003-8263de81f7228f9d
 SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /target/release/deps
 RUN \
@@ -22120,11 +22120,11 @@ RUN \
   --mount=from=out-cfe125327cacaf16,dst=/target/release/build/serde-cfe125327cacaf16/out,source=/ \
   --mount=from=out-ddda28ab8da26074,dst=/target/release/build/ntpd-ddda28ab8da26074/out,source=/ \
     env CARGO="$(which cargo)" \
-        CARGO_BIN_NAME=ntp-metrics-exporter \
-        CARGO_CRATE_NAME=ntp_metrics_exporter \
+        CARGO_BIN_NAME=ntp-daemon \
+        CARGO_CRATE_NAME=ntp_daemon \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/ntpd-1.7.0-alpha.20251003' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/ntpd-1.7.0-alpha.20251003/Cargo.toml' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/ntpd-1.7.0-alpha.20251003 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/ntpd-1.7.0-alpha.20251003/Cargo.toml \
         CARGO_PKG_AUTHORS= \
         CARGO_PKG_DESCRIPTION=Full-featured' implementation of NTP with NTS support' \
         CARGO_PKG_HOMEPAGE=https'://github.com/pendulum-project/ntpd-rs' \
@@ -22145,19 +22145,19 @@ RUN \
         CARGOGREEN=1 \
         NTPD_RS_GIT_REV=- \
         NTPD_RS_GIT_DATE=- \
-      rustc --crate-name ntp_metrics_exporter --edition 2024 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C opt-level'=3' -C embed-bitcode'=no' --cfg feature'="default"' --cfg feature'="pps"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "hardware-timestamping", "pps"))' -C metadata'=fe91005e497e1f05' -C extra-filename'=-608d6f568e30b338' --out-dir /target/release/deps -C strip'=debuginfo' -L dependency'=/target/release/deps' --extern clock_steering'=/target/release/deps/libclock_steering-9dd4b48829148398.rlib' --extern libc'=/target/release/deps/liblibc-93b6478caf319772.rlib' --extern ntp_proto'=/target/release/deps/libntp_proto-b5f6bfad0d8f8471.rlib' --extern ntpd'=/target/release/deps/libntpd-27edfaa695fb596f.rlib' --extern pps_time'=/target/release/deps/libpps_time-eb10259898586549.rlib' --extern rand'=/target/release/deps/librand-b2b2029003f4f41b.rlib' --extern rustls23'=/target/release/deps/librustls-79af5f0cc8b8fe11.rlib' --extern serde'=/target/release/deps/libserde-d9535ff1afbc9e07.rlib' --extern serde_json'=/target/release/deps/libserde_json-3956e8613ae2191d.rlib' --extern timestamped_socket'=/target/release/deps/libtimestamped_socket-e18c08f3473fbbaf.rlib' --extern tokio'=/target/release/deps/libtokio-c395c10495b0b3f9.rlib' --extern toml'=/target/release/deps/libtoml-d7e70c2bc4581f22.rlib' --extern tracing'=/target/release/deps/libtracing-075e13f932ee5314.rlib' --extern tracing_subscriber'=/target/release/deps/libtracing_subscriber-b671934748d136d0.rlib' --cap-lints warn -L native'=/target/release/build/aws-lc-sys-2d875791ad1d3d18/out' $CARGO_HOME/registry/src/index.crates.io/ntpd-1.7.0-alpha.20251003/bin/ntp-metrics-exporter.rs \
-        1>          /target/release/deps/out-608d6f568e30b338-stdout \
-        2>          /target/release/deps/out-608d6f568e30b338-stderr \
-        || echo $? >/target/release/deps/out-608d6f568e30b338-errcode\
-  ; find /target/release/deps/*-608d6f568e30b338* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
-FROM scratch AS out-608d6f568e30b338
-COPY --link --from=dep-n-ntpd-1.7.0-alpha.20251003-608d6f568e30b338 /target/release/deps/*-608d6f568e30b338* /
+      rustc --crate-name ntp_daemon --edition 2024 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C opt-level'=3' -C embed-bitcode'=no' --cfg feature'="default"' --cfg feature'="pps"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "hardware-timestamping", "pps"))' -C metadata'=8eb43aa219f24be4' -C extra-filename'=-8263de81f7228f9d' --out-dir /target/release/deps -C strip'=debuginfo' -L dependency'=/target/release/deps' --extern clock_steering'=/target/release/deps/libclock_steering-9dd4b48829148398.rlib' --extern libc'=/target/release/deps/liblibc-93b6478caf319772.rlib' --extern ntp_proto'=/target/release/deps/libntp_proto-b5f6bfad0d8f8471.rlib' --extern ntpd'=/target/release/deps/libntpd-27edfaa695fb596f.rlib' --extern pps_time'=/target/release/deps/libpps_time-eb10259898586549.rlib' --extern rand'=/target/release/deps/librand-b2b2029003f4f41b.rlib' --extern rustls23'=/target/release/deps/librustls-79af5f0cc8b8fe11.rlib' --extern serde'=/target/release/deps/libserde-d9535ff1afbc9e07.rlib' --extern serde_json'=/target/release/deps/libserde_json-3956e8613ae2191d.rlib' --extern timestamped_socket'=/target/release/deps/libtimestamped_socket-e18c08f3473fbbaf.rlib' --extern tokio'=/target/release/deps/libtokio-c395c10495b0b3f9.rlib' --extern toml'=/target/release/deps/libtoml-d7e70c2bc4581f22.rlib' --extern tracing'=/target/release/deps/libtracing-075e13f932ee5314.rlib' --extern tracing_subscriber'=/target/release/deps/libtracing_subscriber-b671934748d136d0.rlib' --cap-lints warn -L native'=/target/release/build/aws-lc-sys-2d875791ad1d3d18/out' $CARGO_HOME/registry/src/index.crates.io/ntpd-1.7.0-alpha.20251003/bin/ntp-daemon.rs \
+        1>          /target/release/deps/out-8263de81f7228f9d-stdout \
+        2>          /target/release/deps/out-8263de81f7228f9d-stderr \
+        || echo $? >/target/release/deps/out-8263de81f7228f9d-errcode\
+  ; find /target/release/deps/*-8263de81f7228f9d* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-8263de81f7228f9d
+COPY --link --from=dep-n-ntpd-1.7.0-alpha.20251003-8263de81f7228f9d /target/release/deps/*-8263de81f7228f9d* /
 
 # Pipe this file to:
 # DOCKER_BUILDKIT="1" \
 #   docker build --network=none --output=. - <THIS_FILE
 
-## this = "608d6f568e30b338"
+## this = "8263de81f7228f9d"
 ## deps = [
 ##     "9dd4b48829148398",
 ##     "93b6478caf319772",
@@ -22289,12 +22289,12 @@ COPY --link --from=dep-n-ntpd-1.7.0-alpha.20251003-608d6f568e30b338 /target/rele
 ##     "ddda28ab8da26074",
 ## ]
 ## writes = [
-##     "ntp_metrics_exporter-608d6f568e30b338",
-##     "ntp_metrics_exporter-608d6f568e30b338.d",
+##     "ntp_daemon-8263de81f7228f9d",
+##     "ntp_daemon-8263de81f7228f9d.d",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/target/release/deps/ntp_metrics_exporter-608d6f568e30b338.d","emit":"dep-info"}',
-##     '{"$message_type":"artifact","artifact":"/target/release/deps/ntp_metrics_exporter-608d6f568e30b338","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/ntp_daemon-8263de81f7228f9d.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/deps/ntp_daemon-8263de81f7228f9d","emit":"link"}',
 ## ]
 ##
 ## [[externs]]
@@ -22687,9 +22687,9 @@ COPY --link --from=dep-n-ntpd-1.7.0-alpha.20251003-608d6f568e30b338 /target/rele
 ## [[stages]]
 ##
 ## [stages.Script]
-## stage = "dep-n-ntpd-1.7.0-alpha.20251003-608d6f568e30b338"
+## stage = "dep-n-ntpd-1.7.0-alpha.20251003-8263de81f7228f9d"
 ## script = '''
-## FROM rust-base AS dep-n-ntpd-1.7.0-alpha.20251003-608d6f568e30b338
+## FROM rust-base AS dep-n-ntpd-1.7.0-alpha.20251003-8263de81f7228f9d
 ## SHELL ["/bin/sh", "-eux", "-c"]
 ## WORKDIR /target/release/deps
 ## RUN \
@@ -22787,11 +22787,11 @@ COPY --link --from=dep-n-ntpd-1.7.0-alpha.20251003-608d6f568e30b338 /target/rele
 ##   --mount=from=out-cfe125327cacaf16,dst=/target/release/build/serde-cfe125327cacaf16/out,source=/ \
 ##   --mount=from=out-ddda28ab8da26074,dst=/target/release/build/ntpd-ddda28ab8da26074/out,source=/ \
 ##     env CARGO="$(which cargo)" \
-##         CARGO_BIN_NAME=ntp-metrics-exporter \
-##         CARGO_CRATE_NAME=ntp_metrics_exporter \
+##         CARGO_BIN_NAME=ntp-daemon \
+##         CARGO_CRATE_NAME=ntp_daemon \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/ntpd-1.7.0-alpha.20251003' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/ntpd-1.7.0-alpha.20251003/Cargo.toml' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/ntpd-1.7.0-alpha.20251003 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/ntpd-1.7.0-alpha.20251003/Cargo.toml \
 ##         CARGO_PKG_AUTHORS= \
 ##         CARGO_PKG_DESCRIPTION=Full-featured' implementation of NTP with NTS support' \
 ##         CARGO_PKG_HOMEPAGE=https'://github.com/pendulum-project/ntpd-rs' \
@@ -22812,19 +22812,19 @@ COPY --link --from=dep-n-ntpd-1.7.0-alpha.20251003-608d6f568e30b338 /target/rele
 ##         CARGOGREEN=1 \
 ##         NTPD_RS_GIT_REV=- \
 ##         NTPD_RS_GIT_DATE=- \
-##       rustc --crate-name ntp_metrics_exporter --edition 2024 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C opt-level'=3' -C embed-bitcode'=no' --cfg feature'="default"' --cfg feature'="pps"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "hardware-timestamping", "pps"))' -C metadata'=fe91005e497e1f05' -C extra-filename'=-608d6f568e30b338' --out-dir /target/release/deps -C strip'=debuginfo' -L dependency'=/target/release/deps' --extern clock_steering'=/target/release/deps/libclock_steering-9dd4b48829148398.rlib' --extern libc'=/target/release/deps/liblibc-93b6478caf319772.rlib' --extern ntp_proto'=/target/release/deps/libntp_proto-b5f6bfad0d8f8471.rlib' --extern ntpd'=/target/release/deps/libntpd-27edfaa695fb596f.rlib' --extern pps_time'=/target/release/deps/libpps_time-eb10259898586549.rlib' --extern rand'=/target/release/deps/librand-b2b2029003f4f41b.rlib' --extern rustls23'=/target/release/deps/librustls-79af5f0cc8b8fe11.rlib' --extern serde'=/target/release/deps/libserde-d9535ff1afbc9e07.rlib' --extern serde_json'=/target/release/deps/libserde_json-3956e8613ae2191d.rlib' --extern timestamped_socket'=/target/release/deps/libtimestamped_socket-e18c08f3473fbbaf.rlib' --extern tokio'=/target/release/deps/libtokio-c395c10495b0b3f9.rlib' --extern toml'=/target/release/deps/libtoml-d7e70c2bc4581f22.rlib' --extern tracing'=/target/release/deps/libtracing-075e13f932ee5314.rlib' --extern tracing_subscriber'=/target/release/deps/libtracing_subscriber-b671934748d136d0.rlib' --cap-lints warn -L native'=/target/release/build/aws-lc-sys-2d875791ad1d3d18/out' $CARGO_HOME/registry/src/index.crates.io/ntpd-1.7.0-alpha.20251003/bin/ntp-metrics-exporter.rs \
-##         1>          /target/release/deps/out-608d6f568e30b338-stdout \
-##         2>          /target/release/deps/out-608d6f568e30b338-stderr \
-##         || echo $? >/target/release/deps/out-608d6f568e30b338-errcode\
-##   ; find /target/release/deps/*-608d6f568e30b338* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name ntp_daemon --edition 2024 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C opt-level'=3' -C embed-bitcode'=no' --cfg feature'="default"' --cfg feature'="pps"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "hardware-timestamping", "pps"))' -C metadata'=8eb43aa219f24be4' -C extra-filename'=-8263de81f7228f9d' --out-dir /target/release/deps -C strip'=debuginfo' -L dependency'=/target/release/deps' --extern clock_steering'=/target/release/deps/libclock_steering-9dd4b48829148398.rlib' --extern libc'=/target/release/deps/liblibc-93b6478caf319772.rlib' --extern ntp_proto'=/target/release/deps/libntp_proto-b5f6bfad0d8f8471.rlib' --extern ntpd'=/target/release/deps/libntpd-27edfaa695fb596f.rlib' --extern pps_time'=/target/release/deps/libpps_time-eb10259898586549.rlib' --extern rand'=/target/release/deps/librand-b2b2029003f4f41b.rlib' --extern rustls23'=/target/release/deps/librustls-79af5f0cc8b8fe11.rlib' --extern serde'=/target/release/deps/libserde-d9535ff1afbc9e07.rlib' --extern serde_json'=/target/release/deps/libserde_json-3956e8613ae2191d.rlib' --extern timestamped_socket'=/target/release/deps/libtimestamped_socket-e18c08f3473fbbaf.rlib' --extern tokio'=/target/release/deps/libtokio-c395c10495b0b3f9.rlib' --extern toml'=/target/release/deps/libtoml-d7e70c2bc4581f22.rlib' --extern tracing'=/target/release/deps/libtracing-075e13f932ee5314.rlib' --extern tracing_subscriber'=/target/release/deps/libtracing_subscriber-b671934748d136d0.rlib' --cap-lints warn -L native'=/target/release/build/aws-lc-sys-2d875791ad1d3d18/out' $CARGO_HOME/registry/src/index.crates.io/ntpd-1.7.0-alpha.20251003/bin/ntp-daemon.rs \
+##         1>          /target/release/deps/out-8263de81f7228f9d-stdout \
+##         2>          /target/release/deps/out-8263de81f7228f9d-stderr \
+##         || echo $? >/target/release/deps/out-8263de81f7228f9d-errcode\
+##   ; find /target/release/deps/*-8263de81f7228f9d* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
 ## [stages.Script]
-## stage = "out-608d6f568e30b338"
+## stage = "out-8263de81f7228f9d"
 ## script = """
-## FROM scratch AS out-608d6f568e30b338
-## COPY --link --from=dep-n-ntpd-1.7.0-alpha.20251003-608d6f568e30b338 /target/release/deps/*-608d6f568e30b338* /"""
+## FROM scratch AS out-8263de81f7228f9d
+## COPY --link --from=dep-n-ntpd-1.7.0-alpha.20251003-8263de81f7228f9d /target/release/deps/*-8263de81f7228f9d* /"""
 
 FROM scratch
-COPY --link --from=out-608d6f568e30b338 /ntp_metrics_exporter-608d6f568e30b338 /ntp_metrics_exporter
+COPY --link --from=out-8263de81f7228f9d /ntp_daemon-8263de81f7228f9d /ntp_daemon

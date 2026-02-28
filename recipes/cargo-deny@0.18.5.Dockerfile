@@ -6,123 +6,16 @@ FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f
 ARG SOURCE_DATE_EPOCH=42
 
 
-FROM scratch AS cratesio-find-msvc-tools-0.1.2
-ADD --chmod=0664 --unpack --checksum=sha256:1ced73b1dacfc750a6db6c0a0c3a3853c8b41997e2e2c563dc90804ae6867959 \
-  https://static.crates.io/crates/find-msvc-tools/find-msvc-tools-0.1.2.crate /
-FROM rust-base AS dep-n-find-msvc-tools-0.1.2-3786b9a234187db9
+FROM scratch AS cratesio-zstd-safe-7.2.4
+ADD --chmod=0664 --unpack --checksum=sha256:8f49c4d5f0abb602a93fb8736af2a4f4dd9512e36f7f570d66e65ff867ed3b9d \
+  https://static.crates.io/crates/zstd-safe/zstd-safe-7.2.4.crate /
+FROM rust-base AS dep-x-zstd-safe-7.2.4-4bdb6f5aca0f7aed
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /target/release/deps
+WORKDIR /target/release/build/zstd-safe-4bdb6f5aca0f7aed
 RUN \
-  --mount=from=cratesio-find-msvc-tools-0.1.2,source=/find-msvc-tools-0.1.2,dst=$CARGO_HOME/registry/src/index.crates.io/find-msvc-tools-0.1.2 \
-    env CARGO="$(which cargo)" \
-        CARGO_CRATE_NAME=find_msvc_tools \
-        CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/find-msvc-tools-0.1.2' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/find-msvc-tools-0.1.2/Cargo.toml' \
-        CARGO_PKG_AUTHORS= \
-        CARGO_PKG_DESCRIPTION=Find' windows-specific tools, read MSVC versions from the registry and from COM interfaces' \
-        CARGO_PKG_HOMEPAGE= \
-        CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
-        CARGO_PKG_LICENSE_FILE= \
-        CARGO_PKG_NAME=find-msvc-tools \
-        CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/cc-rs' \
-        CARGO_PKG_RUST_VERSION=1.63 \
-        CARGO_PKG_VERSION=0.1.2 \
-        CARGO_PKG_VERSION_MAJOR=0 \
-        CARGO_PKG_VERSION_MINOR=1 \
-        CARGO_PKG_VERSION_PATCH=2 \
-        CARGO_PKG_VERSION_PRE= \
-        CARGOGREEN=1 \
-      rustc --crate-name find_msvc_tools --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' --allow unexpected_cfgs --check-cfg cfg'(disable_clang_cl_tests)' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=9e7ed3dc9cf10812' -C extra-filename'=-3786b9a234187db9' --out-dir /target/release/deps -C strip'=symbols' -L dependency'=/target/release/deps' --cap-lints warn $CARGO_HOME/registry/src/index.crates.io/find-msvc-tools-0.1.2/src/lib.rs \
-        1>          /target/release/deps/out-3786b9a234187db9-stdout \
-        2>          /target/release/deps/out-3786b9a234187db9-stderr \
-        || echo $? >/target/release/deps/out-3786b9a234187db9-errcode\
-  ; find /target/release/deps/*-3786b9a234187db9* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
-FROM scratch AS out-3786b9a234187db9
-COPY --link --from=dep-n-find-msvc-tools-0.1.2-3786b9a234187db9 /target/release/deps/*-3786b9a234187db9* /
-
-## this = "3786b9a234187db9"
-## writes = [
-##     "find_msvc_tools-3786b9a234187db9.d",
-##     "libfind_msvc_tools-3786b9a234187db9.rlib",
-##     "libfind_msvc_tools-3786b9a234187db9.rmeta",
-## ]
-## stderr = [
-##     '{"$message_type":"artifact","artifact":"/target/release/deps/find_msvc_tools-3786b9a234187db9.d","emit":"dep-info"}',
-##     '{"$message_type":"artifact","artifact":"/target/release/deps/libfind_msvc_tools-3786b9a234187db9.rmeta","emit":"metadata"}',
-##     '{"$message_type":"artifact","artifact":"/target/release/deps/libfind_msvc_tools-3786b9a234187db9.rlib","emit":"link"}',
-## ]
-##
-## [[stages]]
-##
-## [stages.Script]
-## stage = "rust-base"
-## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
-##
-## [[stages]]
-##
-## [stages.Cratesio]
-## stage = "cratesio-find-msvc-tools-0.1.2"
-## extracted = "$CARGO_HOME/registry/src/index.crates.io/find-msvc-tools-0.1.2"
-## name = "find-msvc-tools"
-## name_dash_version = "find-msvc-tools-0.1.2"
-## hash = "1ced73b1dacfc750a6db6c0a0c3a3853c8b41997e2e2c563dc90804ae6867959"
-##
-## [[stages]]
-##
-## [stages.Script]
-## stage = "dep-n-find-msvc-tools-0.1.2-3786b9a234187db9"
-## script = '''
-## FROM rust-base AS dep-n-find-msvc-tools-0.1.2-3786b9a234187db9
-## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /target/release/deps
-## RUN \
-##   --mount=from=cratesio-find-msvc-tools-0.1.2,source=/find-msvc-tools-0.1.2,dst=$CARGO_HOME/registry/src/index.crates.io/find-msvc-tools-0.1.2 \
-##     env CARGO="$(which cargo)" \
-##         CARGO_CRATE_NAME=find_msvc_tools \
-##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/find-msvc-tools-0.1.2' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/find-msvc-tools-0.1.2/Cargo.toml' \
-##         CARGO_PKG_AUTHORS= \
-##         CARGO_PKG_DESCRIPTION=Find' windows-specific tools, read MSVC versions from the registry and from COM interfaces' \
-##         CARGO_PKG_HOMEPAGE= \
-##         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
-##         CARGO_PKG_LICENSE_FILE= \
-##         CARGO_PKG_NAME=find-msvc-tools \
-##         CARGO_PKG_README=README.md \
-##         CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/cc-rs' \
-##         CARGO_PKG_RUST_VERSION=1.63 \
-##         CARGO_PKG_VERSION=0.1.2 \
-##         CARGO_PKG_VERSION_MAJOR=0 \
-##         CARGO_PKG_VERSION_MINOR=1 \
-##         CARGO_PKG_VERSION_PATCH=2 \
-##         CARGO_PKG_VERSION_PRE= \
-##         CARGOGREEN=1 \
-##       rustc --crate-name find_msvc_tools --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' --allow unexpected_cfgs --check-cfg cfg'(disable_clang_cl_tests)' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=9e7ed3dc9cf10812' -C extra-filename'=-3786b9a234187db9' --out-dir /target/release/deps -C strip'=symbols' -L dependency'=/target/release/deps' --cap-lints warn $CARGO_HOME/registry/src/index.crates.io/find-msvc-tools-0.1.2/src/lib.rs \
-##         1>          /target/release/deps/out-3786b9a234187db9-stdout \
-##         2>          /target/release/deps/out-3786b9a234187db9-stderr \
-##         || echo $? >/target/release/deps/out-3786b9a234187db9-errcode\
-##   ; find /target/release/deps/*-3786b9a234187db9* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-##
-## [[stages]]
-##
-## [stages.Script]
-## stage = "out-3786b9a234187db9"
-## script = """
-## FROM scratch AS out-3786b9a234187db9
-## COPY --link --from=dep-n-find-msvc-tools-0.1.2-3786b9a234187db9 /target/release/deps/*-3786b9a234187db9* /"""
-
-FROM scratch AS cratesio-libc-0.2.175
-ADD --chmod=0664 --unpack --checksum=sha256:6a82ae493e598baaea5209805c49bbf2ea7de956d50d7da0da1164f9c6d28543 \
-  https://static.crates.io/crates/libc/libc-0.2.175.crate /
-FROM rust-base AS dep-x-libc-0.2.175-860a447846075288
-SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /target/release/build/libc-860a447846075288
-RUN \
-  --mount=from=cratesio-libc-0.2.175,source=/libc-0.2.175,dst=$CARGO_HOME/registry/src/index.crates.io/libc-0.2.175,rw \
+  --mount=from=cratesio-zstd-safe-7.2.4,source=/zstd-safe-7.2.4,dst=$CARGO_HOME/registry/src/index.crates.io/zstd-safe-7.2.4,rw \
     { \
-        cat $CARGO_HOME/registry/src/index.crates.io/libc-0.2.175/build.rs | sed -E 's/^(pub[()a-z]* +)?(async +)?fn +main/\1\2fn actual_860a447846075288_main/' >/_ && mv /_ $CARGO_HOME/registry/src/index.crates.io/libc-0.2.175/build.rs ; \
+        cat $CARGO_HOME/registry/src/index.crates.io/zstd-safe-7.2.4/build.rs | sed -E 's/^(pub[()a-z]* +)?(async +)?fn +main/\1\2fn actual_4bdb6f5aca0f7aed_main/' >/_ && mv /_ $CARGO_HOME/registry/src/index.crates.io/zstd-safe-7.2.4/build.rs ; \
         { \
           echo ; \
           echo 'fn main() {' ; \
@@ -135,47 +28,47 @@ RUN \
           echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
           echo '        assert!(res.success());' ; \
           echo '    } else {' ; \
-          echo '        actual_860a447846075288_main();' ; \
+          echo '        actual_4bdb6f5aca0f7aed_main();' ; \
           echo '    }' ; \
           echo '}' ; \
-        } >>$CARGO_HOME/registry/src/index.crates.io/libc-0.2.175/build.rs ; \
+        } >>$CARGO_HOME/registry/src/index.crates.io/zstd-safe-7.2.4/build.rs ; \
     } && \
     env CARGO="$(which cargo)" \
         CARGO_CRATE_NAME=build_script_build \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/libc-0.2.175' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/libc-0.2.175/Cargo.toml' \
-        CARGO_PKG_AUTHORS=The' Rust Project Developers' \
-        CARGO_PKG_DESCRIPTION=Raw' FFI bindings to platform libraries like libc.' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/zstd-safe-7.2.4 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/zstd-safe-7.2.4/Cargo.toml \
+        CARGO_PKG_AUTHORS=Alexandre' Bury <alexandre.bury@gmail.com>' \
+        CARGO_PKG_DESCRIPTION=Safe' low-level bindings for the zstd compression library.' \
         CARGO_PKG_HOMEPAGE= \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
-        CARGO_PKG_NAME=libc \
-        CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/libc' \
-        CARGO_PKG_RUST_VERSION=1.63 \
-        CARGO_PKG_VERSION=0.2.175 \
-        CARGO_PKG_VERSION_MAJOR=0 \
+        CARGO_PKG_NAME=zstd-safe \
+        CARGO_PKG_README=Readme.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/gyscos/zstd-rs' \
+        CARGO_PKG_RUST_VERSION=1.64 \
+        CARGO_PKG_VERSION=7.2.4 \
+        CARGO_PKG_VERSION_MAJOR=7 \
         CARGO_PKG_VERSION_MINOR=2 \
-        CARGO_PKG_VERSION_PATCH=175 \
+        CARGO_PKG_VERSION_PATCH=4 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' --allow clippy'::used_underscore_binding' --allow unused_qualifications --warn clippy'::unnecessary_semicolon' --allow clippy'::unnecessary_cast' --allow clippy'::uninlined_format_args' --warn clippy'::ptr_as_ptr' --allow clippy'::non_minimal_cfg' --allow clippy'::missing_safety_doc' --warn clippy'::map_unwrap_or' --warn clippy'::manual_assert' --allow clippy'::identity_op' --warn clippy'::explicit_iter_loop' --allow clippy'::expl_impl_clone_on_copy' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("align", "const-extern-fn", "default", "extra_traits", "rustc-dep-of-std", "rustc-std-workspace-core", "std", "use_std"))' -C metadata'=69d7e96f9d8c7501' -C extra-filename'=-860a447846075288' --out-dir /target/release/build/libc-860a447846075288 -C strip'=symbols' -L dependency'=/target/release/deps' --cap-lints warn $CARGO_HOME/registry/src/index.crates.io/libc-0.2.175/build.rs \
-        1>          /target/release/build/libc-860a447846075288/out-860a447846075288-stdout \
-        2>          /target/release/build/libc-860a447846075288/out-860a447846075288-stderr \
-        || echo $? >/target/release/build/libc-860a447846075288/out-860a447846075288-errcode\
-  ; find /target/release/build/libc-860a447846075288/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
-FROM scratch AS out-860a447846075288
-COPY --link --from=dep-x-libc-0.2.175-860a447846075288 /target/release/build/libc-860a447846075288/*-860a447846075288* /
+      rustc --crate-name build_script_build --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' --allow non_upper_case_globals -C debug-assertions'=off' --cfg feature'="arrays"' --cfg feature'="legacy"' --cfg feature'="std"' --cfg feature'="zdict_builder"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("arrays", "bindgen", "debug", "default", "doc-cfg", "experimental", "fat-lto", "legacy", "no_asm", "pkg-config", "seekable", "std", "thin", "thin-lto", "zdict_builder", "zstdmt"))' -C metadata'=8ad5eb1092270b9d' -C extra-filename'=-4bdb6f5aca0f7aed' --out-dir /target/release/build/zstd-safe-4bdb6f5aca0f7aed -C strip'=symbols' -L dependency'=/target/release/deps' --cap-lints warn $CARGO_HOME/registry/src/index.crates.io/zstd-safe-7.2.4/build.rs \
+        1>          /target/release/build/zstd-safe-4bdb6f5aca0f7aed/out-4bdb6f5aca0f7aed-stdout \
+        2>          /target/release/build/zstd-safe-4bdb6f5aca0f7aed/out-4bdb6f5aca0f7aed-stderr \
+        || echo $? >/target/release/build/zstd-safe-4bdb6f5aca0f7aed/out-4bdb6f5aca0f7aed-errcode\
+  ; find /target/release/build/zstd-safe-4bdb6f5aca0f7aed/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-4bdb6f5aca0f7aed
+COPY --link --from=dep-x-zstd-safe-7.2.4-4bdb6f5aca0f7aed /target/release/build/zstd-safe-4bdb6f5aca0f7aed/*-4bdb6f5aca0f7aed* /
 
-## this = "860a447846075288"
+## this = "4bdb6f5aca0f7aed"
 ## writes = [
-##     "build_script_build-860a447846075288",
-##     "build_script_build-860a447846075288.d",
+##     "build_script_build-4bdb6f5aca0f7aed",
+##     "build_script_build-4bdb6f5aca0f7aed.d",
 ## ]
 ## stderr = [
-##     '{"$message_type":"artifact","artifact":"/target/release/build/libc-860a447846075288/build_script_build-860a447846075288.d","emit":"dep-info"}',
-##     '{"$message_type":"artifact","artifact":"/target/release/build/libc-860a447846075288/build_script_build-860a447846075288","emit":"link"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/build/zstd-safe-4bdb6f5aca0f7aed/build_script_build-4bdb6f5aca0f7aed.d","emit":"dep-info"}',
+##     '{"$message_type":"artifact","artifact":"/target/release/build/zstd-safe-4bdb6f5aca0f7aed/build_script_build-4bdb6f5aca0f7aed","emit":"link"}',
 ## ]
 ##
 ## [[stages]]
@@ -187,24 +80,24 @@ COPY --link --from=dep-x-libc-0.2.175-860a447846075288 /target/release/build/lib
 ## [[stages]]
 ##
 ## [stages.Cratesio]
-## stage = "cratesio-libc-0.2.175"
-## extracted = "$CARGO_HOME/registry/src/index.crates.io/libc-0.2.175"
-## name = "libc"
-## name_dash_version = "libc-0.2.175"
-## hash = "6a82ae493e598baaea5209805c49bbf2ea7de956d50d7da0da1164f9c6d28543"
+## stage = "cratesio-zstd-safe-7.2.4"
+## extracted = "$CARGO_HOME/registry/src/index.crates.io/zstd-safe-7.2.4"
+## name = "zstd-safe"
+## name_dash_version = "zstd-safe-7.2.4"
+## hash = "8f49c4d5f0abb602a93fb8736af2a4f4dd9512e36f7f570d66e65ff867ed3b9d"
 ##
 ## [[stages]]
 ##
 ## [stages.Script]
-## stage = "dep-x-libc-0.2.175-860a447846075288"
+## stage = "dep-x-zstd-safe-7.2.4-4bdb6f5aca0f7aed"
 ## script = '''
-## FROM rust-base AS dep-x-libc-0.2.175-860a447846075288
+## FROM rust-base AS dep-x-zstd-safe-7.2.4-4bdb6f5aca0f7aed
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /target/release/build/libc-860a447846075288
+## WORKDIR /target/release/build/zstd-safe-4bdb6f5aca0f7aed
 ## RUN \
-##   --mount=from=cratesio-libc-0.2.175,source=/libc-0.2.175,dst=$CARGO_HOME/registry/src/index.crates.io/libc-0.2.175,rw \
+##   --mount=from=cratesio-zstd-safe-7.2.4,source=/zstd-safe-7.2.4,dst=$CARGO_HOME/registry/src/index.crates.io/zstd-safe-7.2.4,rw \
 ##     { \
-##         cat $CARGO_HOME/registry/src/index.crates.io/libc-0.2.175/build.rs | sed -E 's/^(pub[()a-z]* +)?(async +)?fn +main/\1\2fn actual_860a447846075288_main/' >/_ && mv /_ $CARGO_HOME/registry/src/index.crates.io/libc-0.2.175/build.rs ; \
+##         cat $CARGO_HOME/registry/src/index.crates.io/zstd-safe-7.2.4/build.rs | sed -E 's/^(pub[()a-z]* +)?(async +)?fn +main/\1\2fn actual_4bdb6f5aca0f7aed_main/' >/_ && mv /_ $CARGO_HOME/registry/src/index.crates.io/zstd-safe-7.2.4/build.rs ; \
 ##         { \
 ##           echo ; \
 ##           echo 'fn main() {' ; \
@@ -217,54 +110,54 @@ COPY --link --from=dep-x-libc-0.2.175-860a447846075288 /target/release/build/lib
 ##           echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
 ##           echo '        assert!(res.success());' ; \
 ##           echo '    } else {' ; \
-##           echo '        actual_860a447846075288_main();' ; \
+##           echo '        actual_4bdb6f5aca0f7aed_main();' ; \
 ##           echo '    }' ; \
 ##           echo '}' ; \
-##         } >>$CARGO_HOME/registry/src/index.crates.io/libc-0.2.175/build.rs ; \
+##         } >>$CARGO_HOME/registry/src/index.crates.io/zstd-safe-7.2.4/build.rs ; \
 ##     } && \
 ##     env CARGO="$(which cargo)" \
 ##         CARGO_CRATE_NAME=build_script_build \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/libc-0.2.175' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/libc-0.2.175/Cargo.toml' \
-##         CARGO_PKG_AUTHORS=The' Rust Project Developers' \
-##         CARGO_PKG_DESCRIPTION=Raw' FFI bindings to platform libraries like libc.' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/zstd-safe-7.2.4 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/zstd-safe-7.2.4/Cargo.toml \
+##         CARGO_PKG_AUTHORS=Alexandre' Bury <alexandre.bury@gmail.com>' \
+##         CARGO_PKG_DESCRIPTION=Safe' low-level bindings for the zstd compression library.' \
 ##         CARGO_PKG_HOMEPAGE= \
 ##         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
 ##         CARGO_PKG_LICENSE_FILE= \
-##         CARGO_PKG_NAME=libc \
-##         CARGO_PKG_README=README.md \
-##         CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/libc' \
-##         CARGO_PKG_RUST_VERSION=1.63 \
-##         CARGO_PKG_VERSION=0.2.175 \
-##         CARGO_PKG_VERSION_MAJOR=0 \
+##         CARGO_PKG_NAME=zstd-safe \
+##         CARGO_PKG_README=Readme.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/gyscos/zstd-rs' \
+##         CARGO_PKG_RUST_VERSION=1.64 \
+##         CARGO_PKG_VERSION=7.2.4 \
+##         CARGO_PKG_VERSION_MAJOR=7 \
 ##         CARGO_PKG_VERSION_MINOR=2 \
-##         CARGO_PKG_VERSION_PATCH=175 \
+##         CARGO_PKG_VERSION_PATCH=4 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' --allow clippy'::used_underscore_binding' --allow unused_qualifications --warn clippy'::unnecessary_semicolon' --allow clippy'::unnecessary_cast' --allow clippy'::uninlined_format_args' --warn clippy'::ptr_as_ptr' --allow clippy'::non_minimal_cfg' --allow clippy'::missing_safety_doc' --warn clippy'::map_unwrap_or' --warn clippy'::manual_assert' --allow clippy'::identity_op' --warn clippy'::explicit_iter_loop' --allow clippy'::expl_impl_clone_on_copy' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("align", "const-extern-fn", "default", "extra_traits", "rustc-dep-of-std", "rustc-std-workspace-core", "std", "use_std"))' -C metadata'=69d7e96f9d8c7501' -C extra-filename'=-860a447846075288' --out-dir /target/release/build/libc-860a447846075288 -C strip'=symbols' -L dependency'=/target/release/deps' --cap-lints warn $CARGO_HOME/registry/src/index.crates.io/libc-0.2.175/build.rs \
-##         1>          /target/release/build/libc-860a447846075288/out-860a447846075288-stdout \
-##         2>          /target/release/build/libc-860a447846075288/out-860a447846075288-stderr \
-##         || echo $? >/target/release/build/libc-860a447846075288/out-860a447846075288-errcode\
-##   ; find /target/release/build/libc-860a447846075288/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       rustc --crate-name build_script_build --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' --allow non_upper_case_globals -C debug-assertions'=off' --cfg feature'="arrays"' --cfg feature'="legacy"' --cfg feature'="std"' --cfg feature'="zdict_builder"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("arrays", "bindgen", "debug", "default", "doc-cfg", "experimental", "fat-lto", "legacy", "no_asm", "pkg-config", "seekable", "std", "thin", "thin-lto", "zdict_builder", "zstdmt"))' -C metadata'=8ad5eb1092270b9d' -C extra-filename'=-4bdb6f5aca0f7aed' --out-dir /target/release/build/zstd-safe-4bdb6f5aca0f7aed -C strip'=symbols' -L dependency'=/target/release/deps' --cap-lints warn $CARGO_HOME/registry/src/index.crates.io/zstd-safe-7.2.4/build.rs \
+##         1>          /target/release/build/zstd-safe-4bdb6f5aca0f7aed/out-4bdb6f5aca0f7aed-stdout \
+##         2>          /target/release/build/zstd-safe-4bdb6f5aca0f7aed/out-4bdb6f5aca0f7aed-stderr \
+##         || echo $? >/target/release/build/zstd-safe-4bdb6f5aca0f7aed/out-4bdb6f5aca0f7aed-errcode\
+##   ; find /target/release/build/zstd-safe-4bdb6f5aca0f7aed/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
 ## [stages.Script]
-## stage = "out-860a447846075288"
+## stage = "out-4bdb6f5aca0f7aed"
 ## script = """
-## FROM scratch AS out-860a447846075288
-## COPY --link --from=dep-x-libc-0.2.175-860a447846075288 /target/release/build/libc-860a447846075288/*-860a447846075288* /"""
+## FROM scratch AS out-4bdb6f5aca0f7aed
+## COPY --link --from=dep-x-zstd-safe-7.2.4-4bdb6f5aca0f7aed /target/release/build/zstd-safe-4bdb6f5aca0f7aed/*-4bdb6f5aca0f7aed* /"""
 
-FROM rust-base AS run-z-libc-0.2.175-4195be2b87650b4a
+FROM rust-base AS run-z-zstd-safe-7.2.4-0666a2fc025e1dcc
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /target/release/build/libc-4195be2b87650b4a/out
-WORKDIR $CARGO_HOME/registry/src/index.crates.io/libc-0.2.175
+WORKDIR /target/release/build/zstd-safe-0666a2fc025e1dcc/out
+WORKDIR $CARGO_HOME/registry/src/index.crates.io/zstd-safe-7.2.4
 RUN \
-  --mount=from=out-860a447846075288,source=/build_script_build-860a447846075288,dst=/target/release/build/libc-860a447846075288/build-script-build \
-  --mount=from=cratesio-libc-0.2.175,source=/libc-0.2.175,dst=$CARGO_HOME/registry/src/index.crates.io/libc-0.2.175 \
+  --mount=from=out-4bdb6f5aca0f7aed,source=/build_script_build-4bdb6f5aca0f7aed,dst=/target/release/build/zstd-safe-4bdb6f5aca0f7aed/build-script-build \
+  --mount=from=cratesio-zstd-safe-7.2.4,source=/zstd-safe-7.2.4,dst=$CARGO_HOME/registry/src/index.crates.io/zstd-safe-7.2.4 \
     env CARGO="$(which cargo)" \
-        CARGO_CFG_FEATURE=default,std \
+        CARGO_CFG_FEATURE=arrays,legacy,std,zdict_builder \
         CARGO_CFG_PANIC=unwind \
         CARGO_CFG_TARGET_ABI= \
         CARGO_CFG_TARGET_ARCH=x86_64 \
@@ -278,1129 +171,54 @@ RUN \
         CARGO_CFG_TARGET_VENDOR=unknown \
         CARGO_CFG_UNIX= \
         CARGO_ENCODED_RUSTFLAGS= \
-        CARGO_FEATURE_DEFAULT=1 \
+        CARGO_FEATURE_ARRAYS=1 \
+        CARGO_FEATURE_LEGACY=1 \
         CARGO_FEATURE_STD=1 \
+        CARGO_FEATURE_ZDICT_BUILDER=1 \
         CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/libc-0.2.175' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/libc-0.2.175/Cargo.toml' \
-        CARGO_PKG_AUTHORS=The' Rust Project Developers' \
-        CARGO_PKG_DESCRIPTION=Raw' FFI bindings to platform libraries like libc.' \
+        CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/zstd-safe-7.2.4 \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/zstd-safe-7.2.4/Cargo.toml \
+        CARGO_PKG_AUTHORS=Alexandre' Bury <alexandre.bury@gmail.com>' \
+        CARGO_PKG_DESCRIPTION=Safe' low-level bindings for the zstd compression library.' \
         CARGO_PKG_HOMEPAGE= \
         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
         CARGO_PKG_LICENSE_FILE= \
-        CARGO_PKG_NAME=libc \
-        CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/libc' \
-        CARGO_PKG_RUST_VERSION=1.63 \
-        CARGO_PKG_VERSION=0.2.175 \
-        CARGO_PKG_VERSION_MAJOR=0 \
+        CARGO_PKG_NAME=zstd-safe \
+        CARGO_PKG_README=Readme.md \
+        CARGO_PKG_REPOSITORY=https'://github.com/gyscos/zstd-rs' \
+        CARGO_PKG_RUST_VERSION=1.64 \
+        CARGO_PKG_VERSION=7.2.4 \
+        CARGO_PKG_VERSION_MAJOR=7 \
         CARGO_PKG_VERSION_MINOR=2 \
-        CARGO_PKG_VERSION_PATCH=175 \
+        CARGO_PKG_VERSION_PATCH=4 \
         CARGO_PKG_VERSION_PRE= \
         DEBUG=false \
-        HOST=x86_64-unknown-linux-gnu \
-        NUM_JOBS=1 \
-        OPT_LEVEL=0 \
-        OUT_DIR=/target/release/build/libc-4195be2b87650b4a/out \
-        PROFILE=release \
-        RUSTC=rustc \
-        RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
-        TARGET=x86_64-unknown-linux-gnu \
-        CARGOGREEN=1 \
-      CARGOGREEN_EXECUTE_BUILDRS_= /target/release/build/libc-860a447846075288/build-script-build \
-        1>          /target/release/build/libc-4195be2b87650b4a/out/out-4195be2b87650b4a-stdout \
-        2>          /target/release/build/libc-4195be2b87650b4a/out/out-4195be2b87650b4a-stderr \
-        || echo $? >/target/release/build/libc-4195be2b87650b4a/out/out-4195be2b87650b4a-errcode\
-  ; find /target/release/build/libc-4195be2b87650b4a/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
-FROM scratch AS out-4195be2b87650b4a
-COPY --link --from=run-z-libc-0.2.175-4195be2b87650b4a /target/release/build/libc-4195be2b87650b4a/out /
-
-## this = "4195be2b87650b4a"
-## deps = ["860a447846075288"]
-## writes_to = "/target/release/build/libc-4195be2b87650b4a/out"
-## stdout = [
-##     "cargo:rerun-if-changed=build.rs",
-##     "cargo:rerun-if-env-changed=RUST_LIBC_UNSTABLE_FREEBSD_VERSION",
-##     "cargo:rustc-cfg=freebsd11",
-##     "cargo:rerun-if-env-changed=RUST_LIBC_UNSTABLE_MUSL_V1_2_3",
-##     "cargo:rerun-if-env-changed=RUST_LIBC_UNSTABLE_LINUX_TIME_BITS64",
-##     "cargo:rerun-if-env-changed=RUST_LIBC_UNSTABLE_GNU_FILE_OFFSET_BITS",
-##     "cargo:rerun-if-env-changed=RUST_LIBC_UNSTABLE_GNU_TIME_BITS",
-##     "cargo:rustc-cfg=libc_const_extern_fn",
-##     "cargo:rustc-check-cfg=cfg(emscripten_old_stat_abi)",
-##     "cargo:rustc-check-cfg=cfg(espidf_time32)",
-##     "cargo:rustc-check-cfg=cfg(freebsd10)",
-##     "cargo:rustc-check-cfg=cfg(freebsd11)",
-##     "cargo:rustc-check-cfg=cfg(freebsd12)",
-##     "cargo:rustc-check-cfg=cfg(freebsd13)",
-##     "cargo:rustc-check-cfg=cfg(freebsd14)",
-##     "cargo:rustc-check-cfg=cfg(freebsd15)",
-##     "cargo:rustc-check-cfg=cfg(gnu_file_offset_bits64)",
-##     "cargo:rustc-check-cfg=cfg(gnu_time_bits64)",
-##     "cargo:rustc-check-cfg=cfg(libc_const_extern_fn)",
-##     "cargo:rustc-check-cfg=cfg(libc_deny_warnings)",
-##     "cargo:rustc-check-cfg=cfg(libc_thread_local)",
-##     "cargo:rustc-check-cfg=cfg(libc_ctest)",
-##     "cargo:rustc-check-cfg=cfg(linux_time_bits64)",
-##     "cargo:rustc-check-cfg=cfg(musl_v1_2_3)",
-##     'cargo:rustc-check-cfg=cfg(target_os,values("switch","aix","ohos","hurd","rtems","visionos","nuttx","cygwin"))',
-##     'cargo:rustc-check-cfg=cfg(target_env,values("illumos","wasi","aix","ohos","nto71_iosock","nto80"))',
-##     'cargo:rustc-check-cfg=cfg(target_arch,values("loongarch64","mips32r6","mips64r6","csky"))',
-## ]
-##
-## [[stages]]
-##
-## [stages.Script]
-## stage = "rust-base"
-## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
-##
-## [[stages]]
-##
-## [stages.Script]
-## stage = "run-z-libc-0.2.175-4195be2b87650b4a"
-## script = '''
-## FROM rust-base AS run-z-libc-0.2.175-4195be2b87650b4a
-## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /target/release/build/libc-4195be2b87650b4a/out
-## WORKDIR $CARGO_HOME/registry/src/index.crates.io/libc-0.2.175
-## RUN \
-##   --mount=from=out-860a447846075288,source=/build_script_build-860a447846075288,dst=/target/release/build/libc-860a447846075288/build-script-build \
-##   --mount=from=cratesio-libc-0.2.175,source=/libc-0.2.175,dst=$CARGO_HOME/registry/src/index.crates.io/libc-0.2.175 \
-##     env CARGO="$(which cargo)" \
-##         CARGO_CFG_FEATURE=default,std \
-##         CARGO_CFG_PANIC=unwind \
-##         CARGO_CFG_TARGET_ABI= \
-##         CARGO_CFG_TARGET_ARCH=x86_64 \
-##         CARGO_CFG_TARGET_ENDIAN=little \
-##         CARGO_CFG_TARGET_ENV=gnu \
-##         CARGO_CFG_TARGET_FAMILY=unix \
-##         CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
-##         CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
-##         CARGO_CFG_TARGET_OS=linux \
-##         CARGO_CFG_TARGET_POINTER_WIDTH=64 \
-##         CARGO_CFG_TARGET_VENDOR=unknown \
-##         CARGO_CFG_UNIX= \
-##         CARGO_ENCODED_RUSTFLAGS= \
-##         CARGO_FEATURE_DEFAULT=1 \
-##         CARGO_FEATURE_STD=1 \
-##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/libc-0.2.175' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/libc-0.2.175/Cargo.toml' \
-##         CARGO_PKG_AUTHORS=The' Rust Project Developers' \
-##         CARGO_PKG_DESCRIPTION=Raw' FFI bindings to platform libraries like libc.' \
-##         CARGO_PKG_HOMEPAGE= \
-##         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
-##         CARGO_PKG_LICENSE_FILE= \
-##         CARGO_PKG_NAME=libc \
-##         CARGO_PKG_README=README.md \
-##         CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/libc' \
-##         CARGO_PKG_RUST_VERSION=1.63 \
-##         CARGO_PKG_VERSION=0.2.175 \
-##         CARGO_PKG_VERSION_MAJOR=0 \
-##         CARGO_PKG_VERSION_MINOR=2 \
-##         CARGO_PKG_VERSION_PATCH=175 \
-##         CARGO_PKG_VERSION_PRE= \
-##         DEBUG=false \
-##         HOST=x86_64-unknown-linux-gnu \
-##         NUM_JOBS=1 \
-##         OPT_LEVEL=0 \
-##         OUT_DIR=/target/release/build/libc-4195be2b87650b4a/out \
-##         PROFILE=release \
-##         RUSTC=rustc \
-##         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
-##         TARGET=x86_64-unknown-linux-gnu \
-##         CARGOGREEN=1 \
-##       CARGOGREEN_EXECUTE_BUILDRS_= /target/release/build/libc-860a447846075288/build-script-build \
-##         1>          /target/release/build/libc-4195be2b87650b4a/out/out-4195be2b87650b4a-stdout \
-##         2>          /target/release/build/libc-4195be2b87650b4a/out/out-4195be2b87650b4a-stderr \
-##         || echo $? >/target/release/build/libc-4195be2b87650b4a/out/out-4195be2b87650b4a-errcode\
-##   ; find /target/release/build/libc-4195be2b87650b4a/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-##
-## [[stages]]
-##
-## [stages.Script]
-## stage = "out-4195be2b87650b4a"
-## script = """
-## FROM scratch AS out-4195be2b87650b4a
-## COPY --link --from=run-z-libc-0.2.175-4195be2b87650b4a /target/release/build/libc-4195be2b87650b4a/out /"""
-
-
-FROM rust-base AS dep-n-libc-0.2.175-95f620d42ee03805
-SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /target/release/deps
-RUN \
-  --mount=from=cratesio-libc-0.2.175,source=/libc-0.2.175,dst=$CARGO_HOME/registry/src/index.crates.io/libc-0.2.175 \
-  --mount=from=out-4195be2b87650b4a,dst=/target/release/build/libc-4195be2b87650b4a/out,source=/ \
-    env CARGO="$(which cargo)" \
-        CARGO_CRATE_NAME=libc \
-        CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/libc-0.2.175' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/libc-0.2.175/Cargo.toml' \
-        CARGO_PKG_AUTHORS=The' Rust Project Developers' \
-        CARGO_PKG_DESCRIPTION=Raw' FFI bindings to platform libraries like libc.' \
-        CARGO_PKG_HOMEPAGE= \
-        CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
-        CARGO_PKG_LICENSE_FILE= \
-        CARGO_PKG_NAME=libc \
-        CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/libc' \
-        CARGO_PKG_RUST_VERSION=1.63 \
-        CARGO_PKG_VERSION=0.2.175 \
-        CARGO_PKG_VERSION_MAJOR=0 \
-        CARGO_PKG_VERSION_MINOR=2 \
-        CARGO_PKG_VERSION_PATCH=175 \
-        CARGO_PKG_VERSION_PRE= \
-        OUT_DIR=/target/release/build/libc-4195be2b87650b4a/out \
-        CARGOGREEN=1 \
-      rustc --crate-name libc --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' --allow clippy'::used_underscore_binding' --allow unused_qualifications --warn clippy'::unnecessary_semicolon' --allow clippy'::unnecessary_cast' --allow clippy'::uninlined_format_args' --warn clippy'::ptr_as_ptr' --allow clippy'::non_minimal_cfg' --allow clippy'::missing_safety_doc' --warn clippy'::map_unwrap_or' --warn clippy'::manual_assert' --allow clippy'::identity_op' --warn clippy'::explicit_iter_loop' --allow clippy'::expl_impl_clone_on_copy' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("align", "const-extern-fn", "default", "extra_traits", "rustc-dep-of-std", "rustc-std-workspace-core", "std", "use_std"))' -C metadata'=047b67eaf1f91973' -C extra-filename'=-95f620d42ee03805' --out-dir /target/release/deps -C strip'=symbols' -L dependency'=/target/release/deps' --cap-lints warn --cfg freebsd11 --cfg libc_const_extern_fn --check-cfg cfg'(emscripten_old_stat_abi)' --check-cfg cfg'(espidf_time32)' --check-cfg cfg'(freebsd10)' --check-cfg cfg'(freebsd11)' --check-cfg cfg'(freebsd12)' --check-cfg cfg'(freebsd13)' --check-cfg cfg'(freebsd14)' --check-cfg cfg'(freebsd15)' --check-cfg cfg'(gnu_file_offset_bits64)' --check-cfg cfg'(gnu_time_bits64)' --check-cfg cfg'(libc_const_extern_fn)' --check-cfg cfg'(libc_deny_warnings)' --check-cfg cfg'(libc_thread_local)' --check-cfg cfg'(libc_ctest)' --check-cfg cfg'(linux_time_bits64)' --check-cfg cfg'(musl_v1_2_3)' --check-cfg cfg'(target_os,values("switch","aix","ohos","hurd","rtems","visionos","nuttx","cygwin"))' --check-cfg cfg'(target_env,values("illumos","wasi","aix","ohos","nto71_iosock","nto80"))' --check-cfg cfg'(target_arch,values("loongarch64","mips32r6","mips64r6","csky"))' $CARGO_HOME/registry/src/index.crates.io/libc-0.2.175/src/lib.rs \
-        1>          /target/release/deps/out-95f620d42ee03805-stdout \
-        2>          /target/release/deps/out-95f620d42ee03805-stderr \
-        || echo $? >/target/release/deps/out-95f620d42ee03805-errcode\
-  ; find /target/release/deps/*-95f620d42ee03805* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
-FROM scratch AS out-95f620d42ee03805
-COPY --link --from=dep-n-libc-0.2.175-95f620d42ee03805 /target/release/deps/*-95f620d42ee03805* /
-
-## this = "95f620d42ee03805"
-## deps = [
-##     "4195be2b87650b4a",
-##     "860a447846075288",
-## ]
-## buildrs_results = ["4195be2b87650b4a"]
-## writes = [
-##     "libc-95f620d42ee03805.d",
-##     "liblibc-95f620d42ee03805.rlib",
-##     "liblibc-95f620d42ee03805.rmeta",
-## ]
-## stderr = [
-##     '{"$message_type":"artifact","artifact":"/target/release/deps/libc-95f620d42ee03805.d","emit":"dep-info"}',
-##     '{"$message_type":"artifact","artifact":"/target/release/deps/liblibc-95f620d42ee03805.rmeta","emit":"metadata"}',
-##     '{"$message_type":"artifact","artifact":"/target/release/deps/liblibc-95f620d42ee03805.rlib","emit":"link"}',
-## ]
-##
-## [[mounts]]
-## name = "out-4195be2b87650b4a"
-## mount = "/target/release/build/libc-4195be2b87650b4a/out"
-##
-## [[stages]]
-##
-## [stages.Script]
-## stage = "rust-base"
-## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
-##
-## [[stages]]
-##
-## [stages.Cratesio]
-## stage = "cratesio-libc-0.2.175"
-## extracted = "$CARGO_HOME/registry/src/index.crates.io/libc-0.2.175"
-## name = "libc"
-## name_dash_version = "libc-0.2.175"
-## hash = "6a82ae493e598baaea5209805c49bbf2ea7de956d50d7da0da1164f9c6d28543"
-##
-## [[stages]]
-##
-## [stages.Script]
-## stage = "dep-n-libc-0.2.175-95f620d42ee03805"
-## script = '''
-## FROM rust-base AS dep-n-libc-0.2.175-95f620d42ee03805
-## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /target/release/deps
-## RUN \
-##   --mount=from=cratesio-libc-0.2.175,source=/libc-0.2.175,dst=$CARGO_HOME/registry/src/index.crates.io/libc-0.2.175 \
-##   --mount=from=out-4195be2b87650b4a,dst=/target/release/build/libc-4195be2b87650b4a/out,source=/ \
-##     env CARGO="$(which cargo)" \
-##         CARGO_CRATE_NAME=libc \
-##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/libc-0.2.175' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/libc-0.2.175/Cargo.toml' \
-##         CARGO_PKG_AUTHORS=The' Rust Project Developers' \
-##         CARGO_PKG_DESCRIPTION=Raw' FFI bindings to platform libraries like libc.' \
-##         CARGO_PKG_HOMEPAGE= \
-##         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
-##         CARGO_PKG_LICENSE_FILE= \
-##         CARGO_PKG_NAME=libc \
-##         CARGO_PKG_README=README.md \
-##         CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/libc' \
-##         CARGO_PKG_RUST_VERSION=1.63 \
-##         CARGO_PKG_VERSION=0.2.175 \
-##         CARGO_PKG_VERSION_MAJOR=0 \
-##         CARGO_PKG_VERSION_MINOR=2 \
-##         CARGO_PKG_VERSION_PATCH=175 \
-##         CARGO_PKG_VERSION_PRE= \
-##         OUT_DIR=/target/release/build/libc-4195be2b87650b4a/out \
-##         CARGOGREEN=1 \
-##       rustc --crate-name libc --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' --allow clippy'::used_underscore_binding' --allow unused_qualifications --warn clippy'::unnecessary_semicolon' --allow clippy'::unnecessary_cast' --allow clippy'::uninlined_format_args' --warn clippy'::ptr_as_ptr' --allow clippy'::non_minimal_cfg' --allow clippy'::missing_safety_doc' --warn clippy'::map_unwrap_or' --warn clippy'::manual_assert' --allow clippy'::identity_op' --warn clippy'::explicit_iter_loop' --allow clippy'::expl_impl_clone_on_copy' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("align", "const-extern-fn", "default", "extra_traits", "rustc-dep-of-std", "rustc-std-workspace-core", "std", "use_std"))' -C metadata'=047b67eaf1f91973' -C extra-filename'=-95f620d42ee03805' --out-dir /target/release/deps -C strip'=symbols' -L dependency'=/target/release/deps' --cap-lints warn --cfg freebsd11 --cfg libc_const_extern_fn --check-cfg cfg'(emscripten_old_stat_abi)' --check-cfg cfg'(espidf_time32)' --check-cfg cfg'(freebsd10)' --check-cfg cfg'(freebsd11)' --check-cfg cfg'(freebsd12)' --check-cfg cfg'(freebsd13)' --check-cfg cfg'(freebsd14)' --check-cfg cfg'(freebsd15)' --check-cfg cfg'(gnu_file_offset_bits64)' --check-cfg cfg'(gnu_time_bits64)' --check-cfg cfg'(libc_const_extern_fn)' --check-cfg cfg'(libc_deny_warnings)' --check-cfg cfg'(libc_thread_local)' --check-cfg cfg'(libc_ctest)' --check-cfg cfg'(linux_time_bits64)' --check-cfg cfg'(musl_v1_2_3)' --check-cfg cfg'(target_os,values("switch","aix","ohos","hurd","rtems","visionos","nuttx","cygwin"))' --check-cfg cfg'(target_env,values("illumos","wasi","aix","ohos","nto71_iosock","nto80"))' --check-cfg cfg'(target_arch,values("loongarch64","mips32r6","mips64r6","csky"))' $CARGO_HOME/registry/src/index.crates.io/libc-0.2.175/src/lib.rs \
-##         1>          /target/release/deps/out-95f620d42ee03805-stdout \
-##         2>          /target/release/deps/out-95f620d42ee03805-stderr \
-##         || echo $? >/target/release/deps/out-95f620d42ee03805-errcode\
-##   ; find /target/release/deps/*-95f620d42ee03805* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-##
-## [[stages]]
-##
-## [stages.Script]
-## stage = "out-95f620d42ee03805"
-## script = """
-## FROM scratch AS out-95f620d42ee03805
-## COPY --link --from=dep-n-libc-0.2.175-95f620d42ee03805 /target/release/deps/*-95f620d42ee03805* /"""
-
-FROM scratch AS cratesio-jobserver-0.1.34
-ADD --chmod=0664 --unpack --checksum=sha256:9afb3de4395d6b3e67a780b6de64b51c978ecf11cb9a462c66be7d4ca9039d33 \
-  https://static.crates.io/crates/jobserver/jobserver-0.1.34.crate /
-FROM rust-base AS dep-n-jobserver-0.1.34-fc2a8b0aec1ccc2a
-SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /target/release/deps
-RUN \
-  --mount=from=cratesio-jobserver-0.1.34,source=/jobserver-0.1.34,dst=$CARGO_HOME/registry/src/index.crates.io/jobserver-0.1.34 \
-  --mount=from=out-95f620d42ee03805,dst=/target/release/deps/liblibc-95f620d42ee03805.rlib,source=/liblibc-95f620d42ee03805.rlib \
-  --mount=from=out-95f620d42ee03805,dst=/target/release/deps/liblibc-95f620d42ee03805.rmeta,source=/liblibc-95f620d42ee03805.rmeta \
-    env CARGO="$(which cargo)" \
-        CARGO_CRATE_NAME=jobserver \
-        CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/jobserver-0.1.34' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/jobserver-0.1.34/Cargo.toml' \
-        CARGO_PKG_AUTHORS=Alex' Crichton <alex@alexcrichton.com>' \
-        CARGO_PKG_DESCRIPTION=An' implementation of the GNU Make jobserver for Rust.\
-' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/rust-lang/jobserver-rs' \
-        CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
-        CARGO_PKG_LICENSE_FILE= \
-        CARGO_PKG_NAME=jobserver \
-        CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/jobserver-rs' \
-        CARGO_PKG_RUST_VERSION=1.63 \
-        CARGO_PKG_VERSION=0.1.34 \
-        CARGO_PKG_VERSION_MAJOR=0 \
-        CARGO_PKG_VERSION_MINOR=1 \
-        CARGO_PKG_VERSION_PATCH=34 \
-        CARGO_PKG_VERSION_PRE= \
-        CARGOGREEN=1 \
-      rustc --crate-name jobserver --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=ec8a5fb77ce0e460' -C extra-filename'=-fc2a8b0aec1ccc2a' --out-dir /target/release/deps -C strip'=symbols' -L dependency'=/target/release/deps' --extern libc'=/target/release/deps/liblibc-95f620d42ee03805.rmeta' --cap-lints warn $CARGO_HOME/registry/src/index.crates.io/jobserver-0.1.34/src/lib.rs \
-        1>          /target/release/deps/out-fc2a8b0aec1ccc2a-stdout \
-        2>          /target/release/deps/out-fc2a8b0aec1ccc2a-stderr \
-        || echo $? >/target/release/deps/out-fc2a8b0aec1ccc2a-errcode\
-  ; find /target/release/deps/*-fc2a8b0aec1ccc2a* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
-FROM scratch AS out-fc2a8b0aec1ccc2a
-COPY --link --from=dep-n-jobserver-0.1.34-fc2a8b0aec1ccc2a /target/release/deps/*-fc2a8b0aec1ccc2a* /
-
-## this = "fc2a8b0aec1ccc2a"
-## deps = [
-##     "95f620d42ee03805",
-##     "860a447846075288",
-##     "4195be2b87650b4a",
-## ]
-## buildrs_results = ["4195be2b87650b4a"]
-## writes = [
-##     "jobserver-fc2a8b0aec1ccc2a.d",
-##     "libjobserver-fc2a8b0aec1ccc2a.rlib",
-##     "libjobserver-fc2a8b0aec1ccc2a.rmeta",
-## ]
-## stderr = [
-##     '{"$message_type":"artifact","artifact":"/target/release/deps/jobserver-fc2a8b0aec1ccc2a.d","emit":"dep-info"}',
-##     '{"$message_type":"artifact","artifact":"/target/release/deps/libjobserver-fc2a8b0aec1ccc2a.rmeta","emit":"metadata"}',
-##     '{"$message_type":"artifact","artifact":"/target/release/deps/libjobserver-fc2a8b0aec1ccc2a.rlib","emit":"link"}',
-## ]
-##
-## [[externs]]
-## from = "out-95f620d42ee03805"
-## xtern = "liblibc-95f620d42ee03805.rlib"
-##
-## [[externs]]
-## from = "out-95f620d42ee03805"
-## xtern = "liblibc-95f620d42ee03805.rmeta"
-##
-## [[stages]]
-##
-## [stages.Script]
-## stage = "rust-base"
-## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
-##
-## [[stages]]
-##
-## [stages.Cratesio]
-## stage = "cratesio-jobserver-0.1.34"
-## extracted = "$CARGO_HOME/registry/src/index.crates.io/jobserver-0.1.34"
-## name = "jobserver"
-## name_dash_version = "jobserver-0.1.34"
-## hash = "9afb3de4395d6b3e67a780b6de64b51c978ecf11cb9a462c66be7d4ca9039d33"
-##
-## [[stages]]
-##
-## [stages.Script]
-## stage = "dep-n-jobserver-0.1.34-fc2a8b0aec1ccc2a"
-## script = '''
-## FROM rust-base AS dep-n-jobserver-0.1.34-fc2a8b0aec1ccc2a
-## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /target/release/deps
-## RUN \
-##   --mount=from=cratesio-jobserver-0.1.34,source=/jobserver-0.1.34,dst=$CARGO_HOME/registry/src/index.crates.io/jobserver-0.1.34 \
-##   --mount=from=out-95f620d42ee03805,dst=/target/release/deps/liblibc-95f620d42ee03805.rlib,source=/liblibc-95f620d42ee03805.rlib \
-##   --mount=from=out-95f620d42ee03805,dst=/target/release/deps/liblibc-95f620d42ee03805.rmeta,source=/liblibc-95f620d42ee03805.rmeta \
-##     env CARGO="$(which cargo)" \
-##         CARGO_CRATE_NAME=jobserver \
-##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/jobserver-0.1.34' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/jobserver-0.1.34/Cargo.toml' \
-##         CARGO_PKG_AUTHORS=Alex' Crichton <alex@alexcrichton.com>' \
-##         CARGO_PKG_DESCRIPTION=An' implementation of the GNU Make jobserver for Rust.\
-## ' \
-##         CARGO_PKG_HOMEPAGE=https'://github.com/rust-lang/jobserver-rs' \
-##         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
-##         CARGO_PKG_LICENSE_FILE= \
-##         CARGO_PKG_NAME=jobserver \
-##         CARGO_PKG_README=README.md \
-##         CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/jobserver-rs' \
-##         CARGO_PKG_RUST_VERSION=1.63 \
-##         CARGO_PKG_VERSION=0.1.34 \
-##         CARGO_PKG_VERSION_MAJOR=0 \
-##         CARGO_PKG_VERSION_MINOR=1 \
-##         CARGO_PKG_VERSION_PATCH=34 \
-##         CARGO_PKG_VERSION_PRE= \
-##         CARGOGREEN=1 \
-##       rustc --crate-name jobserver --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' -C debug-assertions'=off' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=ec8a5fb77ce0e460' -C extra-filename'=-fc2a8b0aec1ccc2a' --out-dir /target/release/deps -C strip'=symbols' -L dependency'=/target/release/deps' --extern libc'=/target/release/deps/liblibc-95f620d42ee03805.rmeta' --cap-lints warn $CARGO_HOME/registry/src/index.crates.io/jobserver-0.1.34/src/lib.rs \
-##         1>          /target/release/deps/out-fc2a8b0aec1ccc2a-stdout \
-##         2>          /target/release/deps/out-fc2a8b0aec1ccc2a-stderr \
-##         || echo $? >/target/release/deps/out-fc2a8b0aec1ccc2a-errcode\
-##   ; find /target/release/deps/*-fc2a8b0aec1ccc2a* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-##
-## [[stages]]
-##
-## [stages.Script]
-## stage = "out-fc2a8b0aec1ccc2a"
-## script = """
-## FROM scratch AS out-fc2a8b0aec1ccc2a
-## COPY --link --from=dep-n-jobserver-0.1.34-fc2a8b0aec1ccc2a /target/release/deps/*-fc2a8b0aec1ccc2a* /"""
-
-FROM scratch AS cratesio-shlex-1.3.0
-ADD --chmod=0664 --unpack --checksum=sha256:0fda2ff0d084019ba4d7c6f371c95d8fd75ce3524c3cb8fb653a3023f6323e64 \
-  https://static.crates.io/crates/shlex/shlex-1.3.0.crate /
-FROM rust-base AS dep-n-shlex-1.3.0-7383c9111298cbe9
-SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /target/release/deps
-RUN \
-  --mount=from=cratesio-shlex-1.3.0,source=/shlex-1.3.0,dst=$CARGO_HOME/registry/src/index.crates.io/shlex-1.3.0 \
-    env CARGO="$(which cargo)" \
-        CARGO_CRATE_NAME=shlex \
-        CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/shlex-1.3.0' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/shlex-1.3.0/Cargo.toml' \
-        CARGO_PKG_AUTHORS=comex' <comexk@gmail.com>:Fenhl <fenhl@fenhl.net>:Adrian Taylor <adetaylor@chromium.org>:Alex Touchet <alextouchet@outlook.com>:Daniel Parks <dp+git@oxidized.org>:Garrett Berg <googberg@gmail.com>' \
-        CARGO_PKG_DESCRIPTION=Split' a string into shell words, like Python'\'s' shlex.' \
-        CARGO_PKG_HOMEPAGE= \
-        CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
-        CARGO_PKG_LICENSE_FILE= \
-        CARGO_PKG_NAME=shlex \
-        CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/comex/rust-shlex' \
-        CARGO_PKG_RUST_VERSION=1.46.0 \
-        CARGO_PKG_VERSION=1.3.0 \
-        CARGO_PKG_VERSION_MAJOR=1 \
-        CARGO_PKG_VERSION_MINOR=3 \
-        CARGO_PKG_VERSION_PATCH=0 \
-        CARGO_PKG_VERSION_PRE= \
-        CARGOGREEN=1 \
-      rustc --crate-name shlex --edition 2015 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "std"))' -C metadata'=816d82f5156e12e4' -C extra-filename'=-7383c9111298cbe9' --out-dir /target/release/deps -C strip'=symbols' -L dependency'=/target/release/deps' --cap-lints warn $CARGO_HOME/registry/src/index.crates.io/shlex-1.3.0/src/lib.rs \
-        1>          /target/release/deps/out-7383c9111298cbe9-stdout \
-        2>          /target/release/deps/out-7383c9111298cbe9-stderr \
-        || echo $? >/target/release/deps/out-7383c9111298cbe9-errcode\
-  ; find /target/release/deps/*-7383c9111298cbe9* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
-FROM scratch AS out-7383c9111298cbe9
-COPY --link --from=dep-n-shlex-1.3.0-7383c9111298cbe9 /target/release/deps/*-7383c9111298cbe9* /
-
-## this = "7383c9111298cbe9"
-## writes = [
-##     "libshlex-7383c9111298cbe9.rlib",
-##     "libshlex-7383c9111298cbe9.rmeta",
-##     "shlex-7383c9111298cbe9.d",
-## ]
-## stderr = [
-##     '{"$message_type":"artifact","artifact":"/target/release/deps/shlex-7383c9111298cbe9.d","emit":"dep-info"}',
-##     '''{"$message_type":"diagnostic","message":"unexpected `cfg` condition name: `manual_codegen_check`","code":{"code":"unexpected_cfgs","explanation":null},"level":"warning","spans":[{"file_name":"/usr/local/cargo/registry/src/index.crates.io/shlex-1.3.0/src/bytes.rs","byte_start":13988,"byte_end":14008,"line_start":353,"line_end":353,"column_start":12,"column_end":32,"is_primary":true,"text":[{"text":"#[cfg_attr(manual_codegen_check, inline(never))]","highlight_start":12,"highlight_end":32}],"label":null,"suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"expected names are: `docsrs`, `feature`, and `test` and 31 more","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"consider using a Cargo feature instead","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\n [lints.rust]\n unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(manual_codegen_check)'] }","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"or consider adding `println!(\"cargo::rustc-check-cfg=cfg(manual_codegen_check)\");` to the top of the `build.rs`","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"`#[warn(unexpected_cfgs)]` on by default","code":null,"level":"note","spans":[],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: unexpected `cfg` condition name: `manual_codegen_check`\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/usr/local/cargo/registry/src/index.crates.io/shlex-1.3.0/src/bytes.rs:353:12\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m353\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0m#[cfg_attr(manual_codegen_check, inline(never))]\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m            \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^^^^^^^^^^^^^^^^\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: expected names are: `docsrs`, `feature`, and `test` and 31 more\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: consider using a Cargo feature instead\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding in `Cargo.toml` the `check-cfg` lint config for the lint:\u001b[0m\n\u001b[0m             [lints.rust]\u001b[0m\n\u001b[0m             unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(manual_codegen_check)'] }\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: or consider adding `println!(\"cargo::rustc-check-cfg=cfg(manual_codegen_check)\");` to the top of the `build.rs`\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: see <https://doc.rust-lang.org/nightly/rustc/check-cfg/cargo-specifics.html> for more information about checking conditional configuration\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: `#[warn(unexpected_cfgs)]` on by default\u001b[0m\n\n"}''',
-##     '''{"$message_type":"diagnostic","message":"hiding a lifetime that's elided elsewhere is confusing","code":{"code":"mismatched_lifetime_syntaxes","explanation":null},"level":"warning","spans":[{"file_name":"/usr/local/cargo/registry/src/index.crates.io/shlex-1.3.0/src/lib.rs","byte_start":8833,"byte_end":8837,"line_start":228,"line_end":228,"column_start":22,"column_end":26,"is_primary":true,"text":[{"text":"pub fn quote(in_str: &str) -> Cow<str> {","highlight_start":22,"highlight_end":26}],"label":"the lifetime is elided here","suggested_replacement":null,"suggestion_applicability":null,"expansion":null},{"file_name":"/usr/local/cargo/registry/src/index.crates.io/shlex-1.3.0/src/lib.rs","byte_start":8842,"byte_end":8850,"line_start":228,"line_end":228,"column_start":31,"column_end":39,"is_primary":false,"text":[{"text":"pub fn quote(in_str: &str) -> Cow<str> {","highlight_start":31,"highlight_end":39}],"label":"the same lifetime is hidden here","suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"the same lifetime is referred to in inconsistent ways, making the signature confusing","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"`#[warn(mismatched_lifetime_syntaxes)]` on by default","code":null,"level":"note","spans":[],"children":[],"rendered":null},{"message":"use `'_` for type paths","code":null,"level":"help","spans":[{"file_name":"/usr/local/cargo/registry/src/index.crates.io/shlex-1.3.0/src/lib.rs","byte_start":8846,"byte_end":8846,"line_start":228,"line_end":228,"column_start":35,"column_end":35,"is_primary":true,"text":[{"text":"pub fn quote(in_str: &str) -> Cow<str> {","highlight_start":35,"highlight_end":35}],"label":null,"suggested_replacement":"'_, ","suggestion_applicability":"MaybeIncorrect","expansion":null}],"children":[],"rendered":null},{"message":"consistently use `'_`","code":null,"level":"help","spans":[{"file_name":"/usr/local/cargo/registry/src/index.crates.io/shlex-1.3.0/src/lib.rs","byte_start":8834,"byte_end":8834,"line_start":228,"line_end":228,"column_start":23,"column_end":23,"is_primary":true,"text":[{"text":"pub fn quote(in_str: &str) -> Cow<str> {","highlight_start":23,"highlight_end":23}],"label":null,"suggested_replacement":"'_ ","suggestion_applicability":"MaybeIncorrect","expansion":null},{"file_name":"/usr/local/cargo/registry/src/index.crates.io/shlex-1.3.0/src/lib.rs","byte_start":8846,"byte_end":8846,"line_start":228,"line_end":228,"column_start":35,"column_end":35,"is_primary":true,"text":[{"text":"pub fn quote(in_str: &str) -> Cow<str> {","highlight_start":35,"highlight_end":35}],"label":null,"suggested_replacement":"'_, ","suggestion_applicability":"MaybeIncorrect","expansion":null}],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: hiding a lifetime that's elided elsewhere is confusing\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/usr/local/cargo/registry/src/index.crates.io/shlex-1.3.0/src/lib.rs:228:22\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m228\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0mpub fn quote(in_str: &str) -> Cow<str> {\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                      \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^\u001b[0m\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--------\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12mthe same lifetime is hidden here\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                      \u001b[0m\u001b[0m\u001b[1m\u001b[33m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                      \u001b[0m\u001b[0m\u001b[1m\u001b[33mthe lifetime is elided here\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: the same lifetime is referred to in inconsistent ways, making the signature confusing\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mnote\u001b[0m\u001b[0m: `#[warn(mismatched_lifetime_syntaxes)]` on by default\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;14mhelp\u001b[0m\u001b[0m: use `'_` for type paths\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m228\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m| \u001b[0m\u001b[0mpub fn quote(in_str: &str) -> Cow<\u001b[0m\u001b[0m\u001b[38;5;10m'_, \u001b[0m\u001b[0mstr> {\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                   \u001b[0m\u001b[0m\u001b[38;5;10m+++\u001b[0m\n\n"}''',
-##     '''{"$message_type":"diagnostic","message":"hiding a lifetime that's elided elsewhere is confusing","code":{"code":"mismatched_lifetime_syntaxes","explanation":null},"level":"warning","spans":[{"file_name":"/usr/local/cargo/registry/src/index.crates.io/shlex-1.3.0/src/lib.rs","byte_start":9312,"byte_end":9316,"line_start":241,"line_end":241,"column_start":26,"column_end":30,"is_primary":true,"text":[{"text":"pub fn try_quote(in_str: &str) -> Result<Cow<str>, QuoteError> {","highlight_start":26,"highlight_end":30}],"label":"the lifetime is elided here","suggested_replacement":null,"suggestion_applicability":null,"expansion":null},{"file_name":"/usr/local/cargo/registry/src/index.crates.io/shlex-1.3.0/src/lib.rs","byte_start":9328,"byte_end":9336,"line_start":241,"line_end":241,"column_start":42,"column_end":50,"is_primary":false,"text":[{"text":"pub fn try_quote(in_str: &str) -> Result<Cow<str>, QuoteError> {","highlight_start":42,"highlight_end":50}],"label":"the same lifetime is hidden here","suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"the same lifetime is referred to in inconsistent ways, making the signature confusing","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"use `'_` for type paths","code":null,"level":"help","spans":[{"file_name":"/usr/local/cargo/registry/src/index.crates.io/shlex-1.3.0/src/lib.rs","byte_start":9332,"byte_end":9332,"line_start":241,"line_end":241,"column_start":46,"column_end":46,"is_primary":true,"text":[{"text":"pub fn try_quote(in_str: &str) -> Result<Cow<str>, QuoteError> {","highlight_start":46,"highlight_end":46}],"label":null,"suggested_replacement":"'_, ","suggestion_applicability":"MaybeIncorrect","expansion":null}],"children":[],"rendered":null},{"message":"consistently use `'_`","code":null,"level":"help","spans":[{"file_name":"/usr/local/cargo/registry/src/index.crates.io/shlex-1.3.0/src/lib.rs","byte_start":9313,"byte_end":9313,"line_start":241,"line_end":241,"column_start":27,"column_end":27,"is_primary":true,"text":[{"text":"pub fn try_quote(in_str: &str) -> Result<Cow<str>, QuoteError> {","highlight_start":27,"highlight_end":27}],"label":null,"suggested_replacement":"'_ ","suggestion_applicability":"MaybeIncorrect","expansion":null},{"file_name":"/usr/local/cargo/registry/src/index.crates.io/shlex-1.3.0/src/lib.rs","byte_start":9332,"byte_end":9332,"line_start":241,"line_end":241,"column_start":46,"column_end":46,"is_primary":true,"text":[{"text":"pub fn try_quote(in_str: &str) -> Result<Cow<str>, QuoteError> {","highlight_start":46,"highlight_end":46}],"label":null,"suggested_replacement":"'_, ","suggestion_applicability":"MaybeIncorrect","expansion":null}],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: hiding a lifetime that's elided elsewhere is confusing\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/usr/local/cargo/registry/src/index.crates.io/shlex-1.3.0/src/lib.rs:241:26\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m241\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0mpub fn try_quote(in_str: &str) -> Result<Cow<str>, QuoteError> {\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                          \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^\u001b[0m\u001b[0m            \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--------\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12mthe same lifetime is hidden here\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                          \u001b[0m\u001b[0m\u001b[1m\u001b[33m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                          \u001b[0m\u001b[0m\u001b[1m\u001b[33mthe lifetime is elided here\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: the same lifetime is referred to in inconsistent ways, making the signature confusing\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;14mhelp\u001b[0m\u001b[0m: use `'_` for type paths\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m241\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m| \u001b[0m\u001b[0mpub fn try_quote(in_str: &str) -> Result<Cow<\u001b[0m\u001b[0m\u001b[38;5;10m'_, \u001b[0m\u001b[0mstr>, QuoteError> {\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                              \u001b[0m\u001b[0m\u001b[38;5;10m+++\u001b[0m\n\n"}''',
-##     '''{"$message_type":"diagnostic","message":"hiding a lifetime that's elided elsewhere is confusing","code":{"code":"mismatched_lifetime_syntaxes","explanation":null},"level":"warning","spans":[{"file_name":"/usr/local/cargo/registry/src/index.crates.io/shlex-1.3.0/src/bytes.rs","byte_start":19037,"byte_end":19042,"line_start":484,"line_end":484,"column_start":24,"column_end":29,"is_primary":true,"text":[{"text":"pub fn quote(in_bytes: &[u8]) -> Cow<[u8]> {","highlight_start":24,"highlight_end":29}],"label":"the lifetime is elided here","suggested_replacement":null,"suggestion_applicability":null,"expansion":null},{"file_name":"/usr/local/cargo/registry/src/index.crates.io/shlex-1.3.0/src/bytes.rs","byte_start":19047,"byte_end":19056,"line_start":484,"line_end":484,"column_start":34,"column_end":43,"is_primary":false,"text":[{"text":"pub fn quote(in_bytes: &[u8]) -> Cow<[u8]> {","highlight_start":34,"highlight_end":43}],"label":"the same lifetime is hidden here","suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"the same lifetime is referred to in inconsistent ways, making the signature confusing","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"use `'_` for type paths","code":null,"level":"help","spans":[{"file_name":"/usr/local/cargo/registry/src/index.crates.io/shlex-1.3.0/src/bytes.rs","byte_start":19051,"byte_end":19051,"line_start":484,"line_end":484,"column_start":38,"column_end":38,"is_primary":true,"text":[{"text":"pub fn quote(in_bytes: &[u8]) -> Cow<[u8]> {","highlight_start":38,"highlight_end":38}],"label":null,"suggested_replacement":"'_, ","suggestion_applicability":"MaybeIncorrect","expansion":null}],"children":[],"rendered":null},{"message":"consistently use `'_`","code":null,"level":"help","spans":[{"file_name":"/usr/local/cargo/registry/src/index.crates.io/shlex-1.3.0/src/bytes.rs","byte_start":19038,"byte_end":19038,"line_start":484,"line_end":484,"column_start":25,"column_end":25,"is_primary":true,"text":[{"text":"pub fn quote(in_bytes: &[u8]) -> Cow<[u8]> {","highlight_start":25,"highlight_end":25}],"label":null,"suggested_replacement":"'_ ","suggestion_applicability":"MaybeIncorrect","expansion":null},{"file_name":"/usr/local/cargo/registry/src/index.crates.io/shlex-1.3.0/src/bytes.rs","byte_start":19051,"byte_end":19051,"line_start":484,"line_end":484,"column_start":38,"column_end":38,"is_primary":true,"text":[{"text":"pub fn quote(in_bytes: &[u8]) -> Cow<[u8]> {","highlight_start":38,"highlight_end":38}],"label":null,"suggested_replacement":"'_, ","suggestion_applicability":"MaybeIncorrect","expansion":null}],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: hiding a lifetime that's elided elsewhere is confusing\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/usr/local/cargo/registry/src/index.crates.io/shlex-1.3.0/src/bytes.rs:484:24\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m484\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0mpub fn quote(in_bytes: &[u8]) -> Cow<[u8]> {\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                        \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^\u001b[0m\u001b[0m     \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m---------\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12mthe same lifetime is hidden here\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                        \u001b[0m\u001b[0m\u001b[1m\u001b[33m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                        \u001b[0m\u001b[0m\u001b[1m\u001b[33mthe lifetime is elided here\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: the same lifetime is referred to in inconsistent ways, making the signature confusing\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;14mhelp\u001b[0m\u001b[0m: use `'_` for type paths\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m484\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m| \u001b[0m\u001b[0mpub fn quote(in_bytes: &[u8]) -> Cow<\u001b[0m\u001b[0m\u001b[38;5;10m'_, \u001b[0m\u001b[0m[u8]> {\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                      \u001b[0m\u001b[0m\u001b[38;5;10m+++\u001b[0m\n\n"}''',
-##     '''{"$message_type":"diagnostic","message":"hiding a lifetime that's elided elsewhere is confusing","code":{"code":"mismatched_lifetime_syntaxes","explanation":null},"level":"warning","spans":[{"file_name":"/usr/local/cargo/registry/src/index.crates.io/shlex-1.3.0/src/bytes.rs","byte_start":19525,"byte_end":19530,"line_start":497,"line_end":497,"column_start":28,"column_end":33,"is_primary":true,"text":[{"text":"pub fn try_quote(in_bytes: &[u8]) -> Result<Cow<[u8]>, QuoteError> {","highlight_start":28,"highlight_end":33}],"label":"the lifetime is elided here","suggested_replacement":null,"suggestion_applicability":null,"expansion":null},{"file_name":"/usr/local/cargo/registry/src/index.crates.io/shlex-1.3.0/src/bytes.rs","byte_start":19542,"byte_end":19551,"line_start":497,"line_end":497,"column_start":45,"column_end":54,"is_primary":false,"text":[{"text":"pub fn try_quote(in_bytes: &[u8]) -> Result<Cow<[u8]>, QuoteError> {","highlight_start":45,"highlight_end":54}],"label":"the same lifetime is hidden here","suggested_replacement":null,"suggestion_applicability":null,"expansion":null}],"children":[{"message":"the same lifetime is referred to in inconsistent ways, making the signature confusing","code":null,"level":"help","spans":[],"children":[],"rendered":null},{"message":"use `'_` for type paths","code":null,"level":"help","spans":[{"file_name":"/usr/local/cargo/registry/src/index.crates.io/shlex-1.3.0/src/bytes.rs","byte_start":19546,"byte_end":19546,"line_start":497,"line_end":497,"column_start":49,"column_end":49,"is_primary":true,"text":[{"text":"pub fn try_quote(in_bytes: &[u8]) -> Result<Cow<[u8]>, QuoteError> {","highlight_start":49,"highlight_end":49}],"label":null,"suggested_replacement":"'_, ","suggestion_applicability":"MaybeIncorrect","expansion":null}],"children":[],"rendered":null},{"message":"consistently use `'_`","code":null,"level":"help","spans":[{"file_name":"/usr/local/cargo/registry/src/index.crates.io/shlex-1.3.0/src/bytes.rs","byte_start":19526,"byte_end":19526,"line_start":497,"line_end":497,"column_start":29,"column_end":29,"is_primary":true,"text":[{"text":"pub fn try_quote(in_bytes: &[u8]) -> Result<Cow<[u8]>, QuoteError> {","highlight_start":29,"highlight_end":29}],"label":null,"suggested_replacement":"'_ ","suggestion_applicability":"MaybeIncorrect","expansion":null},{"file_name":"/usr/local/cargo/registry/src/index.crates.io/shlex-1.3.0/src/bytes.rs","byte_start":19546,"byte_end":19546,"line_start":497,"line_end":497,"column_start":49,"column_end":49,"is_primary":true,"text":[{"text":"pub fn try_quote(in_bytes: &[u8]) -> Result<Cow<[u8]>, QuoteError> {","highlight_start":49,"highlight_end":49}],"label":null,"suggested_replacement":"'_, ","suggestion_applicability":"MaybeIncorrect","expansion":null}],"children":[],"rendered":null}],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: hiding a lifetime that's elided elsewhere is confusing\u001b[0m\n\u001b[0m   \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m--> \u001b[0m\u001b[0m/usr/local/cargo/registry/src/index.crates.io/shlex-1.3.0/src/bytes.rs:497:28\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m497\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m \u001b[0m\u001b[0mpub fn try_quote(in_bytes: &[u8]) -> Result<Cow<[u8]>, QuoteError> {\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                            \u001b[0m\u001b[0m\u001b[1m\u001b[33m^^^^^\u001b[0m\u001b[0m            \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m---------\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12mthe same lifetime is hidden here\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                            \u001b[0m\u001b[0m\u001b[1m\u001b[33m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                            \u001b[0m\u001b[0m\u001b[1m\u001b[33mthe lifetime is elided here\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m= \u001b[0m\u001b[0m\u001b[1mhelp\u001b[0m\u001b[0m: the same lifetime is referred to in inconsistent ways, making the signature confusing\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;14mhelp\u001b[0m\u001b[0m: use `'_` for type paths\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\n\u001b[0m\u001b[1m\u001b[38;5;12m497\u001b[0m\u001b[0m \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m| \u001b[0m\u001b[0mpub fn try_quote(in_bytes: &[u8]) -> Result<Cow<\u001b[0m\u001b[0m\u001b[38;5;10m'_, \u001b[0m\u001b[0m[u8]>, QuoteError> {\u001b[0m\n\u001b[0m    \u001b[0m\u001b[0m\u001b[1m\u001b[38;5;12m|\u001b[0m\u001b[0m                                                 \u001b[0m\u001b[0m\u001b[38;5;10m+++\u001b[0m\n\n"}''',
-##     '{"$message_type":"artifact","artifact":"/target/release/deps/libshlex-7383c9111298cbe9.rmeta","emit":"metadata"}',
-##     '{"$message_type":"artifact","artifact":"/target/release/deps/libshlex-7383c9111298cbe9.rlib","emit":"link"}',
-##     '{"$message_type":"diagnostic","message":"5 warnings emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"\u001b[0m\u001b[1m\u001b[33mwarning\u001b[0m\u001b[0m\u001b[1m: 5 warnings emitted\u001b[0m\n\n"}',
-## ]
-##
-## [[stages]]
-##
-## [stages.Script]
-## stage = "rust-base"
-## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
-##
-## [[stages]]
-##
-## [stages.Cratesio]
-## stage = "cratesio-shlex-1.3.0"
-## extracted = "$CARGO_HOME/registry/src/index.crates.io/shlex-1.3.0"
-## name = "shlex"
-## name_dash_version = "shlex-1.3.0"
-## hash = "0fda2ff0d084019ba4d7c6f371c95d8fd75ce3524c3cb8fb653a3023f6323e64"
-##
-## [[stages]]
-##
-## [stages.Script]
-## stage = "dep-n-shlex-1.3.0-7383c9111298cbe9"
-## script = '''
-## FROM rust-base AS dep-n-shlex-1.3.0-7383c9111298cbe9
-## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /target/release/deps
-## RUN \
-##   --mount=from=cratesio-shlex-1.3.0,source=/shlex-1.3.0,dst=$CARGO_HOME/registry/src/index.crates.io/shlex-1.3.0 \
-##     env CARGO="$(which cargo)" \
-##         CARGO_CRATE_NAME=shlex \
-##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/shlex-1.3.0' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/shlex-1.3.0/Cargo.toml' \
-##         CARGO_PKG_AUTHORS=comex' <comexk@gmail.com>:Fenhl <fenhl@fenhl.net>:Adrian Taylor <adetaylor@chromium.org>:Alex Touchet <alextouchet@outlook.com>:Daniel Parks <dp+git@oxidized.org>:Garrett Berg <googberg@gmail.com>' \
-##         CARGO_PKG_DESCRIPTION=Split' a string into shell words, like Python'\'s' shlex.' \
-##         CARGO_PKG_HOMEPAGE= \
-##         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
-##         CARGO_PKG_LICENSE_FILE= \
-##         CARGO_PKG_NAME=shlex \
-##         CARGO_PKG_README=README.md \
-##         CARGO_PKG_REPOSITORY=https'://github.com/comex/rust-shlex' \
-##         CARGO_PKG_RUST_VERSION=1.46.0 \
-##         CARGO_PKG_VERSION=1.3.0 \
-##         CARGO_PKG_VERSION_MAJOR=1 \
-##         CARGO_PKG_VERSION_MINOR=3 \
-##         CARGO_PKG_VERSION_PATCH=0 \
-##         CARGO_PKG_VERSION_PRE= \
-##         CARGOGREEN=1 \
-##       rustc --crate-name shlex --edition 2015 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "std"))' -C metadata'=816d82f5156e12e4' -C extra-filename'=-7383c9111298cbe9' --out-dir /target/release/deps -C strip'=symbols' -L dependency'=/target/release/deps' --cap-lints warn $CARGO_HOME/registry/src/index.crates.io/shlex-1.3.0/src/lib.rs \
-##         1>          /target/release/deps/out-7383c9111298cbe9-stdout \
-##         2>          /target/release/deps/out-7383c9111298cbe9-stderr \
-##         || echo $? >/target/release/deps/out-7383c9111298cbe9-errcode\
-##   ; find /target/release/deps/*-7383c9111298cbe9* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-##
-## [[stages]]
-##
-## [stages.Script]
-## stage = "out-7383c9111298cbe9"
-## script = """
-## FROM scratch AS out-7383c9111298cbe9
-## COPY --link --from=dep-n-shlex-1.3.0-7383c9111298cbe9 /target/release/deps/*-7383c9111298cbe9* /"""
-
-FROM scratch AS cratesio-cc-1.2.38
-ADD --chmod=0664 --unpack --checksum=sha256:80f41ae168f955c12fb8960b057d70d0ca153fb83182b57d86380443527be7e9 \
-  https://static.crates.io/crates/cc/cc-1.2.38.crate /
-FROM rust-base AS dep-n-cc-1.2.38-c3a105b00b2261c2
-SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /target/release/deps
-RUN \
-  --mount=from=cratesio-cc-1.2.38,source=/cc-1.2.38,dst=$CARGO_HOME/registry/src/index.crates.io/cc-1.2.38 \
-  --mount=from=out-3786b9a234187db9,dst=/target/release/deps/libfind_msvc_tools-3786b9a234187db9.rlib,source=/libfind_msvc_tools-3786b9a234187db9.rlib \
-  --mount=from=out-3786b9a234187db9,dst=/target/release/deps/libfind_msvc_tools-3786b9a234187db9.rmeta,source=/libfind_msvc_tools-3786b9a234187db9.rmeta \
-  --mount=from=out-fc2a8b0aec1ccc2a,dst=/target/release/deps/libjobserver-fc2a8b0aec1ccc2a.rlib,source=/libjobserver-fc2a8b0aec1ccc2a.rlib \
-  --mount=from=out-fc2a8b0aec1ccc2a,dst=/target/release/deps/libjobserver-fc2a8b0aec1ccc2a.rmeta,source=/libjobserver-fc2a8b0aec1ccc2a.rmeta \
-  --mount=from=out-95f620d42ee03805,dst=/target/release/deps/liblibc-95f620d42ee03805.rlib,source=/liblibc-95f620d42ee03805.rlib \
-  --mount=from=out-95f620d42ee03805,dst=/target/release/deps/liblibc-95f620d42ee03805.rmeta,source=/liblibc-95f620d42ee03805.rmeta \
-  --mount=from=out-7383c9111298cbe9,dst=/target/release/deps/libshlex-7383c9111298cbe9.rlib,source=/libshlex-7383c9111298cbe9.rlib \
-  --mount=from=out-7383c9111298cbe9,dst=/target/release/deps/libshlex-7383c9111298cbe9.rmeta,source=/libshlex-7383c9111298cbe9.rmeta \
-    env CARGO="$(which cargo)" \
-        CARGO_CRATE_NAME=cc \
-        CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/cc-1.2.38' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/cc-1.2.38/Cargo.toml' \
-        CARGO_PKG_AUTHORS=Alex' Crichton <alex@alexcrichton.com>' \
-        CARGO_PKG_DESCRIPTION=A' build-time dependency for Cargo build scripts to assist in invoking the native\
-C compiler to compile native C code into a static archive to be linked into Rust\
-code.\
-' \
-        CARGO_PKG_HOMEPAGE=https'://github.com/rust-lang/cc-rs' \
-        CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
-        CARGO_PKG_LICENSE_FILE= \
-        CARGO_PKG_NAME=cc \
-        CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/cc-rs' \
-        CARGO_PKG_RUST_VERSION=1.63 \
-        CARGO_PKG_VERSION=1.2.38 \
-        CARGO_PKG_VERSION_MAJOR=1 \
-        CARGO_PKG_VERSION_MINOR=2 \
-        CARGO_PKG_VERSION_PATCH=38 \
-        CARGO_PKG_VERSION_PRE= \
-        CARGOGREEN=1 \
-      rustc --crate-name cc --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' --allow unexpected_cfgs --check-cfg cfg'(disable_clang_cl_tests)' -C debug-assertions'=off' --cfg feature'="parallel"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("jobserver", "parallel"))' -C metadata'=0816a8bc535afbd8' -C extra-filename'=-c3a105b00b2261c2' --out-dir /target/release/deps -C strip'=symbols' -L dependency'=/target/release/deps' --extern find_msvc_tools'=/target/release/deps/libfind_msvc_tools-3786b9a234187db9.rmeta' --extern jobserver'=/target/release/deps/libjobserver-fc2a8b0aec1ccc2a.rmeta' --extern libc'=/target/release/deps/liblibc-95f620d42ee03805.rmeta' --extern shlex'=/target/release/deps/libshlex-7383c9111298cbe9.rmeta' --cap-lints warn $CARGO_HOME/registry/src/index.crates.io/cc-1.2.38/src/lib.rs \
-        1>          /target/release/deps/out-c3a105b00b2261c2-stdout \
-        2>          /target/release/deps/out-c3a105b00b2261c2-stderr \
-        || echo $? >/target/release/deps/out-c3a105b00b2261c2-errcode\
-  ; find /target/release/deps/*-c3a105b00b2261c2* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
-FROM scratch AS out-c3a105b00b2261c2
-COPY --link --from=dep-n-cc-1.2.38-c3a105b00b2261c2 /target/release/deps/*-c3a105b00b2261c2* /
-
-## this = "c3a105b00b2261c2"
-## deps = [
-##     "3786b9a234187db9",
-##     "fc2a8b0aec1ccc2a",
-##     "95f620d42ee03805",
-##     "860a447846075288",
-##     "7383c9111298cbe9",
-##     "4195be2b87650b4a",
-## ]
-## buildrs_results = ["4195be2b87650b4a"]
-## writes = [
-##     "cc-c3a105b00b2261c2.d",
-##     "libcc-c3a105b00b2261c2.rlib",
-##     "libcc-c3a105b00b2261c2.rmeta",
-## ]
-## stderr = [
-##     '{"$message_type":"artifact","artifact":"/target/release/deps/cc-c3a105b00b2261c2.d","emit":"dep-info"}',
-##     '{"$message_type":"artifact","artifact":"/target/release/deps/libcc-c3a105b00b2261c2.rmeta","emit":"metadata"}',
-##     '{"$message_type":"artifact","artifact":"/target/release/deps/libcc-c3a105b00b2261c2.rlib","emit":"link"}',
-## ]
-##
-## [[externs]]
-## from = "out-3786b9a234187db9"
-## xtern = "libfind_msvc_tools-3786b9a234187db9.rlib"
-##
-## [[externs]]
-## from = "out-3786b9a234187db9"
-## xtern = "libfind_msvc_tools-3786b9a234187db9.rmeta"
-##
-## [[externs]]
-## from = "out-fc2a8b0aec1ccc2a"
-## xtern = "libjobserver-fc2a8b0aec1ccc2a.rlib"
-##
-## [[externs]]
-## from = "out-fc2a8b0aec1ccc2a"
-## xtern = "libjobserver-fc2a8b0aec1ccc2a.rmeta"
-##
-## [[externs]]
-## from = "out-95f620d42ee03805"
-## xtern = "liblibc-95f620d42ee03805.rlib"
-##
-## [[externs]]
-## from = "out-95f620d42ee03805"
-## xtern = "liblibc-95f620d42ee03805.rmeta"
-##
-## [[externs]]
-## from = "out-7383c9111298cbe9"
-## xtern = "libshlex-7383c9111298cbe9.rlib"
-##
-## [[externs]]
-## from = "out-7383c9111298cbe9"
-## xtern = "libshlex-7383c9111298cbe9.rmeta"
-##
-## [[stages]]
-##
-## [stages.Script]
-## stage = "rust-base"
-## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
-##
-## [[stages]]
-##
-## [stages.Cratesio]
-## stage = "cratesio-cc-1.2.38"
-## extracted = "$CARGO_HOME/registry/src/index.crates.io/cc-1.2.38"
-## name = "cc"
-## name_dash_version = "cc-1.2.38"
-## hash = "80f41ae168f955c12fb8960b057d70d0ca153fb83182b57d86380443527be7e9"
-##
-## [[stages]]
-##
-## [stages.Script]
-## stage = "dep-n-cc-1.2.38-c3a105b00b2261c2"
-## script = '''
-## FROM rust-base AS dep-n-cc-1.2.38-c3a105b00b2261c2
-## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /target/release/deps
-## RUN \
-##   --mount=from=cratesio-cc-1.2.38,source=/cc-1.2.38,dst=$CARGO_HOME/registry/src/index.crates.io/cc-1.2.38 \
-##   --mount=from=out-3786b9a234187db9,dst=/target/release/deps/libfind_msvc_tools-3786b9a234187db9.rlib,source=/libfind_msvc_tools-3786b9a234187db9.rlib \
-##   --mount=from=out-3786b9a234187db9,dst=/target/release/deps/libfind_msvc_tools-3786b9a234187db9.rmeta,source=/libfind_msvc_tools-3786b9a234187db9.rmeta \
-##   --mount=from=out-fc2a8b0aec1ccc2a,dst=/target/release/deps/libjobserver-fc2a8b0aec1ccc2a.rlib,source=/libjobserver-fc2a8b0aec1ccc2a.rlib \
-##   --mount=from=out-fc2a8b0aec1ccc2a,dst=/target/release/deps/libjobserver-fc2a8b0aec1ccc2a.rmeta,source=/libjobserver-fc2a8b0aec1ccc2a.rmeta \
-##   --mount=from=out-95f620d42ee03805,dst=/target/release/deps/liblibc-95f620d42ee03805.rlib,source=/liblibc-95f620d42ee03805.rlib \
-##   --mount=from=out-95f620d42ee03805,dst=/target/release/deps/liblibc-95f620d42ee03805.rmeta,source=/liblibc-95f620d42ee03805.rmeta \
-##   --mount=from=out-7383c9111298cbe9,dst=/target/release/deps/libshlex-7383c9111298cbe9.rlib,source=/libshlex-7383c9111298cbe9.rlib \
-##   --mount=from=out-7383c9111298cbe9,dst=/target/release/deps/libshlex-7383c9111298cbe9.rmeta,source=/libshlex-7383c9111298cbe9.rmeta \
-##     env CARGO="$(which cargo)" \
-##         CARGO_CRATE_NAME=cc \
-##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/cc-1.2.38' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/cc-1.2.38/Cargo.toml' \
-##         CARGO_PKG_AUTHORS=Alex' Crichton <alex@alexcrichton.com>' \
-##         CARGO_PKG_DESCRIPTION=A' build-time dependency for Cargo build scripts to assist in invoking the native\
-## C compiler to compile native C code into a static archive to be linked into Rust\
-## code.\
-## ' \
-##         CARGO_PKG_HOMEPAGE=https'://github.com/rust-lang/cc-rs' \
-##         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
-##         CARGO_PKG_LICENSE_FILE= \
-##         CARGO_PKG_NAME=cc \
-##         CARGO_PKG_README=README.md \
-##         CARGO_PKG_REPOSITORY=https'://github.com/rust-lang/cc-rs' \
-##         CARGO_PKG_RUST_VERSION=1.63 \
-##         CARGO_PKG_VERSION=1.2.38 \
-##         CARGO_PKG_VERSION_MAJOR=1 \
-##         CARGO_PKG_VERSION_MINOR=2 \
-##         CARGO_PKG_VERSION_PATCH=38 \
-##         CARGO_PKG_VERSION_PRE= \
-##         CARGOGREEN=1 \
-##       rustc --crate-name cc --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C embed-bitcode'=no' --allow unexpected_cfgs --check-cfg cfg'(disable_clang_cl_tests)' -C debug-assertions'=off' --cfg feature'="parallel"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("jobserver", "parallel"))' -C metadata'=0816a8bc535afbd8' -C extra-filename'=-c3a105b00b2261c2' --out-dir /target/release/deps -C strip'=symbols' -L dependency'=/target/release/deps' --extern find_msvc_tools'=/target/release/deps/libfind_msvc_tools-3786b9a234187db9.rmeta' --extern jobserver'=/target/release/deps/libjobserver-fc2a8b0aec1ccc2a.rmeta' --extern libc'=/target/release/deps/liblibc-95f620d42ee03805.rmeta' --extern shlex'=/target/release/deps/libshlex-7383c9111298cbe9.rmeta' --cap-lints warn $CARGO_HOME/registry/src/index.crates.io/cc-1.2.38/src/lib.rs \
-##         1>          /target/release/deps/out-c3a105b00b2261c2-stdout \
-##         2>          /target/release/deps/out-c3a105b00b2261c2-stderr \
-##         || echo $? >/target/release/deps/out-c3a105b00b2261c2-errcode\
-##   ; find /target/release/deps/*-c3a105b00b2261c2* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-##
-## [[stages]]
-##
-## [stages.Script]
-## stage = "out-c3a105b00b2261c2"
-## script = """
-## FROM scratch AS out-c3a105b00b2261c2
-## COPY --link --from=dep-n-cc-1.2.38-c3a105b00b2261c2 /target/release/deps/*-c3a105b00b2261c2* /"""
-
-FROM scratch AS cratesio-ring-0.17.14
-ADD --chmod=0664 --unpack --checksum=sha256:a4689e6c2294d81e88dc6261c768b63bc4fcdb852be6d1352498b114f61383b7 \
-  https://static.crates.io/crates/ring/ring-0.17.14.crate /
-FROM rust-base AS dep-x-ring-0.17.14-a6878063ae92e26f
-SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /target/release/build/ring-a6878063ae92e26f
-RUN \
-  --mount=from=cratesio-ring-0.17.14,source=/ring-0.17.14,dst=$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14,rw \
-  --mount=from=out-c3a105b00b2261c2,dst=/target/release/deps/libcc-c3a105b00b2261c2.rlib,source=/libcc-c3a105b00b2261c2.rlib \
-  --mount=from=out-3786b9a234187db9,dst=/target/release/deps/libfind_msvc_tools-3786b9a234187db9.rlib,source=/libfind_msvc_tools-3786b9a234187db9.rlib \
-  --mount=from=out-fc2a8b0aec1ccc2a,dst=/target/release/deps/libjobserver-fc2a8b0aec1ccc2a.rlib,source=/libjobserver-fc2a8b0aec1ccc2a.rlib \
-  --mount=from=out-95f620d42ee03805,dst=/target/release/deps/liblibc-95f620d42ee03805.rlib,source=/liblibc-95f620d42ee03805.rlib \
-  --mount=from=out-7383c9111298cbe9,dst=/target/release/deps/libshlex-7383c9111298cbe9.rlib,source=/libshlex-7383c9111298cbe9.rlib \
-    { \
-        cat $CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/build.rs | sed -E 's/^(pub[()a-z]* +)?(async +)?fn +main/\1\2fn actual_a6878063ae92e26f_main/' >/_ && mv /_ $CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/build.rs ; \
-        { \
-          echo ; \
-          echo 'fn main() {' ; \
-          echo '    use std::env::{args_os, var_os};' ; \
-          echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
-          echo '        use std::process::{Command, Stdio};' ; \
-          echo '        let mut cmd = Command::new("cargo-green");' ; \
-          echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
-          echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
-          echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
-          echo '        assert!(res.success());' ; \
-          echo '    } else {' ; \
-          echo '        actual_a6878063ae92e26f_main();' ; \
-          echo '    }' ; \
-          echo '}' ; \
-        } >>$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/build.rs ; \
-    } && \
-    env CARGO="$(which cargo)" \
-        CARGO_CRATE_NAME=build_script_build \
-        CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14' \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/Cargo.toml' \
-        CARGO_PKG_AUTHORS= \
-        CARGO_PKG_DESCRIPTION=An' experiment.' \
-        CARGO_PKG_HOMEPAGE= \
-        CARGO_PKG_LICENSE=Apache-2.0' AND ISC' \
-        CARGO_PKG_LICENSE_FILE= \
-        CARGO_PKG_NAME=ring \
-        CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/briansmith/ring' \
-        CARGO_PKG_RUST_VERSION=1.66.0 \
-        CARGO_PKG_VERSION=0.17.14 \
-        CARGO_PKG_VERSION_MAJOR=0 \
-        CARGO_PKG_VERSION_MINOR=17 \
-        CARGO_PKG_VERSION_PATCH=14 \
-        CARGO_PKG_VERSION_PRE= \
-        CARGOGREEN=1 \
-      rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="alloc"' --cfg feature'="default"' --cfg feature'="dev_urandom_fallback"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "dev_urandom_fallback", "less-safe-getrandom-custom-or-rdrand", "less-safe-getrandom-espidf", "slow_tests", "std", "test_logging", "unstable-testing-arm-no-hw", "unstable-testing-arm-no-neon", "wasm32_unknown_unknown_js"))' -C metadata'=93224b3765b36e69' -C extra-filename'=-a6878063ae92e26f' --out-dir /target/release/build/ring-a6878063ae92e26f -C strip'=symbols' -L dependency'=/target/release/deps' --extern cc'=/target/release/deps/libcc-c3a105b00b2261c2.rlib' --cap-lints warn $CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/build.rs \
-        1>          /target/release/build/ring-a6878063ae92e26f/out-a6878063ae92e26f-stdout \
-        2>          /target/release/build/ring-a6878063ae92e26f/out-a6878063ae92e26f-stderr \
-        || echo $? >/target/release/build/ring-a6878063ae92e26f/out-a6878063ae92e26f-errcode\
-  ; find /target/release/build/ring-a6878063ae92e26f/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
-FROM scratch AS out-a6878063ae92e26f
-COPY --link --from=dep-x-ring-0.17.14-a6878063ae92e26f /target/release/build/ring-a6878063ae92e26f/*-a6878063ae92e26f* /
-
-## this = "a6878063ae92e26f"
-## deps = [
-##     "c3a105b00b2261c2",
-##     "3786b9a234187db9",
-##     "fc2a8b0aec1ccc2a",
-##     "95f620d42ee03805",
-##     "860a447846075288",
-##     "7383c9111298cbe9",
-##     "4195be2b87650b4a",
-## ]
-## buildrs_results = ["4195be2b87650b4a"]
-## writes = [
-##     "build_script_build-a6878063ae92e26f",
-##     "build_script_build-a6878063ae92e26f.d",
-## ]
-## stderr = [
-##     '{"$message_type":"artifact","artifact":"/target/release/build/ring-a6878063ae92e26f/build_script_build-a6878063ae92e26f.d","emit":"dep-info"}',
-##     '{"$message_type":"artifact","artifact":"/target/release/build/ring-a6878063ae92e26f/build_script_build-a6878063ae92e26f","emit":"link"}',
-## ]
-##
-## [[externs]]
-## from = "out-c3a105b00b2261c2"
-## xtern = "libcc-c3a105b00b2261c2.rlib"
-##
-## [[externs]]
-## from = "out-3786b9a234187db9"
-## xtern = "libfind_msvc_tools-3786b9a234187db9.rlib"
-##
-## [[externs]]
-## from = "out-fc2a8b0aec1ccc2a"
-## xtern = "libjobserver-fc2a8b0aec1ccc2a.rlib"
-##
-## [[externs]]
-## from = "out-95f620d42ee03805"
-## xtern = "liblibc-95f620d42ee03805.rlib"
-##
-## [[externs]]
-## from = "out-7383c9111298cbe9"
-## xtern = "libshlex-7383c9111298cbe9.rlib"
-##
-## [[stages]]
-##
-## [stages.Script]
-## stage = "rust-base"
-## script = "FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:7fa728f3678acf5980d5db70960cf8491aff9411976789086676bdf0c19db39e AS rust-base"
-##
-## [[stages]]
-##
-## [stages.Cratesio]
-## stage = "cratesio-ring-0.17.14"
-## extracted = "$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14"
-## name = "ring"
-## name_dash_version = "ring-0.17.14"
-## hash = "a4689e6c2294d81e88dc6261c768b63bc4fcdb852be6d1352498b114f61383b7"
-##
-## [[stages]]
-##
-## [stages.Script]
-## stage = "dep-x-ring-0.17.14-a6878063ae92e26f"
-## script = '''
-## FROM rust-base AS dep-x-ring-0.17.14-a6878063ae92e26f
-## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /target/release/build/ring-a6878063ae92e26f
-## RUN \
-##   --mount=from=cratesio-ring-0.17.14,source=/ring-0.17.14,dst=$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14,rw \
-##   --mount=from=out-c3a105b00b2261c2,dst=/target/release/deps/libcc-c3a105b00b2261c2.rlib,source=/libcc-c3a105b00b2261c2.rlib \
-##   --mount=from=out-3786b9a234187db9,dst=/target/release/deps/libfind_msvc_tools-3786b9a234187db9.rlib,source=/libfind_msvc_tools-3786b9a234187db9.rlib \
-##   --mount=from=out-fc2a8b0aec1ccc2a,dst=/target/release/deps/libjobserver-fc2a8b0aec1ccc2a.rlib,source=/libjobserver-fc2a8b0aec1ccc2a.rlib \
-##   --mount=from=out-95f620d42ee03805,dst=/target/release/deps/liblibc-95f620d42ee03805.rlib,source=/liblibc-95f620d42ee03805.rlib \
-##   --mount=from=out-7383c9111298cbe9,dst=/target/release/deps/libshlex-7383c9111298cbe9.rlib,source=/libshlex-7383c9111298cbe9.rlib \
-##     { \
-##         cat $CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/build.rs | sed -E 's/^(pub[()a-z]* +)?(async +)?fn +main/\1\2fn actual_a6878063ae92e26f_main/' >/_ && mv /_ $CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/build.rs ; \
-##         { \
-##           echo ; \
-##           echo 'fn main() {' ; \
-##           echo '    use std::env::{args_os, var_os};' ; \
-##           echo '    if var_os("CARGOGREEN_EXECUTE_BUILDRS_").is_none() {' ; \
-##           echo '        use std::process::{Command, Stdio};' ; \
-##           echo '        let mut cmd = Command::new("cargo-green");' ; \
-##           echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
-##           echo '        cmd.env("CARGOGREEN_EXECUTE_BUILDRS_", args_os().next().expect("cargo-green: getting buildrs arg0"));' ; \
-##           echo '        let res = cmd.spawn().expect("cargo-green: spawning buildrs").wait().expect("cargo-green: running builds");' ; \
-##           echo '        assert!(res.success());' ; \
-##           echo '    } else {' ; \
-##           echo '        actual_a6878063ae92e26f_main();' ; \
-##           echo '    }' ; \
-##           echo '}' ; \
-##         } >>$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/build.rs ; \
-##     } && \
-##     env CARGO="$(which cargo)" \
-##         CARGO_CRATE_NAME=build_script_build \
-##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14' \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/Cargo.toml' \
-##         CARGO_PKG_AUTHORS= \
-##         CARGO_PKG_DESCRIPTION=An' experiment.' \
-##         CARGO_PKG_HOMEPAGE= \
-##         CARGO_PKG_LICENSE=Apache-2.0' AND ISC' \
-##         CARGO_PKG_LICENSE_FILE= \
-##         CARGO_PKG_NAME=ring \
-##         CARGO_PKG_README=README.md \
-##         CARGO_PKG_REPOSITORY=https'://github.com/briansmith/ring' \
-##         CARGO_PKG_RUST_VERSION=1.66.0 \
-##         CARGO_PKG_VERSION=0.17.14 \
-##         CARGO_PKG_VERSION_MAJOR=0 \
-##         CARGO_PKG_VERSION_MINOR=17 \
-##         CARGO_PKG_VERSION_PATCH=14 \
-##         CARGO_PKG_VERSION_PRE= \
-##         CARGOGREEN=1 \
-##       rustc --crate-name build_script_build --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C embed-bitcode'=no' -C debug-assertions'=off' --cfg feature'="alloc"' --cfg feature'="default"' --cfg feature'="dev_urandom_fallback"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "dev_urandom_fallback", "less-safe-getrandom-custom-or-rdrand", "less-safe-getrandom-espidf", "slow_tests", "std", "test_logging", "unstable-testing-arm-no-hw", "unstable-testing-arm-no-neon", "wasm32_unknown_unknown_js"))' -C metadata'=93224b3765b36e69' -C extra-filename'=-a6878063ae92e26f' --out-dir /target/release/build/ring-a6878063ae92e26f -C strip'=symbols' -L dependency'=/target/release/deps' --extern cc'=/target/release/deps/libcc-c3a105b00b2261c2.rlib' --cap-lints warn $CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/build.rs \
-##         1>          /target/release/build/ring-a6878063ae92e26f/out-a6878063ae92e26f-stdout \
-##         2>          /target/release/build/ring-a6878063ae92e26f/out-a6878063ae92e26f-stderr \
-##         || echo $? >/target/release/build/ring-a6878063ae92e26f/out-a6878063ae92e26f-errcode\
-##   ; find /target/release/build/ring-a6878063ae92e26f/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
-##
-## [[stages]]
-##
-## [stages.Script]
-## stage = "out-a6878063ae92e26f"
-## script = """
-## FROM scratch AS out-a6878063ae92e26f
-## COPY --link --from=dep-x-ring-0.17.14-a6878063ae92e26f /target/release/build/ring-a6878063ae92e26f/*-a6878063ae92e26f* /"""
-
-FROM rust-base AS run-z-ring-0.17.14-331ad36d05cb7396
-SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /target/release/build/ring-331ad36d05cb7396/out
-WORKDIR $CARGO_HOME/registry/src/index.crates.io/ring-0.17.14
-RUN \
-  --mount=from=out-a6878063ae92e26f,source=/build_script_build-a6878063ae92e26f,dst=/target/release/build/ring-a6878063ae92e26f/build-script-build \
-  --mount=from=cratesio-ring-0.17.14,source=/ring-0.17.14,dst=$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14 \
-    env CARGO="$(which cargo)" \
-        CARGO_CFG_FEATURE=alloc,default,dev_urandom_fallback \
-        CARGO_CFG_PANIC=unwind \
-        CARGO_CFG_TARGET_ABI= \
-        CARGO_CFG_TARGET_ARCH=x86_64 \
-        CARGO_CFG_TARGET_ENDIAN=little \
-        CARGO_CFG_TARGET_ENV=gnu \
-        CARGO_CFG_TARGET_FAMILY=unix \
-        CARGO_CFG_TARGET_FEATURE=fxsr,sse,sse2 \
-        CARGO_CFG_TARGET_HAS_ATOMIC=16,32,64,8,ptr \
-        CARGO_CFG_TARGET_OS=linux \
-        CARGO_CFG_TARGET_POINTER_WIDTH=64 \
-        CARGO_CFG_TARGET_VENDOR=unknown \
-        CARGO_CFG_UNIX= \
-        CARGO_ENCODED_RUSTFLAGS= \
-        CARGO_FEATURE_ALLOC=1 \
-        CARGO_FEATURE_DEFAULT=1 \
-        CARGO_FEATURE_DEV_URANDOM_FALLBACK=1 \
-        CARGO_INCREMENTAL=0 \
-        CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14' \
-        CARGO_MANIFEST_LINKS=ring_core_0_17_14_ \
-        CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/Cargo.toml' \
-        CARGO_PKG_AUTHORS= \
-        CARGO_PKG_DESCRIPTION=An' experiment.' \
-        CARGO_PKG_HOMEPAGE= \
-        CARGO_PKG_LICENSE=Apache-2.0' AND ISC' \
-        CARGO_PKG_LICENSE_FILE= \
-        CARGO_PKG_NAME=ring \
-        CARGO_PKG_README=README.md \
-        CARGO_PKG_REPOSITORY=https'://github.com/briansmith/ring' \
-        CARGO_PKG_RUST_VERSION=1.66.0 \
-        CARGO_PKG_VERSION=0.17.14 \
-        CARGO_PKG_VERSION_MAJOR=0 \
-        CARGO_PKG_VERSION_MINOR=17 \
-        CARGO_PKG_VERSION_PATCH=14 \
-        CARGO_PKG_VERSION_PRE= \
-        DEBUG=false \
+        DEP_ZSTD_INCLUDE=/usr/local/cargo/registry/src/index.crates.io+zstd.1.5.7/zstd/lib' \
+        DEP_ZSTD_ROOT=/target/release/build/zstd-sys-a922420c3c26ba57/out \
         HOST=x86_64-unknown-linux-gnu \
         NUM_JOBS=1 \
         OPT_LEVEL=3 \
-        OUT_DIR=/target/release/build/ring-331ad36d05cb7396/out \
+        OUT_DIR=/target/release/build/zstd-safe-0666a2fc025e1dcc/out \
         PROFILE=release \
         RUSTC=rustc \
-        RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+        RUSTDOC=$RUSTUP_HOME/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
         TARGET=x86_64-unknown-linux-gnu \
         CARGOGREEN=1 \
-      CARGOGREEN_EXECUTE_BUILDRS_= /target/release/build/ring-a6878063ae92e26f/build-script-build \
-        1>          /target/release/build/ring-331ad36d05cb7396/out/out-331ad36d05cb7396-stdout \
-        2>          /target/release/build/ring-331ad36d05cb7396/out/out-331ad36d05cb7396-stderr \
-        || echo $? >/target/release/build/ring-331ad36d05cb7396/out/out-331ad36d05cb7396-errcode\
-  ; find /target/release/build/ring-331ad36d05cb7396/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
-FROM scratch AS out-331ad36d05cb7396
-COPY --link --from=run-z-ring-0.17.14-331ad36d05cb7396 /target/release/build/ring-331ad36d05cb7396/out /
+      CARGOGREEN_EXECUTE_BUILDRS_= /target/release/build/zstd-safe-4bdb6f5aca0f7aed/build-script-build \
+        1>          /target/release/build/zstd-safe-0666a2fc025e1dcc/out/out-0666a2fc025e1dcc-stdout \
+        2>          /target/release/build/zstd-safe-0666a2fc025e1dcc/out/out-0666a2fc025e1dcc-stderr \
+        || echo $? >/target/release/build/zstd-safe-0666a2fc025e1dcc/out/out-0666a2fc025e1dcc-errcode\
+  ; find /target/release/build/zstd-safe-0666a2fc025e1dcc/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-0666a2fc025e1dcc
+COPY --link --from=run-z-zstd-safe-7.2.4-0666a2fc025e1dcc /target/release/build/zstd-safe-0666a2fc025e1dcc/out /
 
 # Pipe this file to:
 #  \
 #    <THIS_FILE
 
-## this = "331ad36d05cb7396"
-## deps = [
-##     "c3a105b00b2261c2",
-##     "3786b9a234187db9",
-##     "fc2a8b0aec1ccc2a",
-##     "95f620d42ee03805",
-##     "860a447846075288",
-##     "7383c9111298cbe9",
-##     "4195be2b87650b4a",
-##     "a6878063ae92e26f",
-## ]
-## writes_to = "/target/release/build/ring-331ad36d05cb7396/out"
-## stdout = [
-##     "cargo:rerun-if-env-changed=CARGO_MANIFEST_DIR",
-##     "cargo:rerun-if-env-changed=CARGO_PKG_NAME",
-##     "cargo:rerun-if-env-changed=CARGO_PKG_VERSION_MAJOR",
-##     "cargo:rerun-if-env-changed=CARGO_PKG_VERSION_MINOR",
-##     "cargo:rerun-if-env-changed=CARGO_PKG_VERSION_PATCH",
-##     "cargo:rerun-if-env-changed=CARGO_PKG_VERSION_PRE",
-##     "cargo:rerun-if-env-changed=CARGO_MANIFEST_LINKS",
-##     "cargo:rerun-if-env-changed=RING_PREGENERATE_ASM",
-##     "cargo:rerun-if-env-changed=OUT_DIR",
-##     "cargo:rerun-if-env-changed=CARGO_CFG_TARGET_ARCH",
-##     "cargo:rerun-if-env-changed=CARGO_CFG_TARGET_OS",
-##     "cargo:rerun-if-env-changed=CARGO_CFG_TARGET_ENV",
-##     "cargo:rerun-if-env-changed=CARGO_CFG_TARGET_ENDIAN",
-##     "OPT_LEVEL = Some(3)",
-##     "OUT_DIR = Some(/target/release/build/ring-331ad36d05cb7396/out)",
-##     "TARGET = Some(x86_64-unknown-linux-gnu)",
-##     "HOST = Some(x86_64-unknown-linux-gnu)",
-##     "cargo:rerun-if-env-changed=CC_x86_64-unknown-linux-gnu",
-##     "CC_x86_64-unknown-linux-gnu = None",
-##     "cargo:rerun-if-env-changed=CC_x86_64_unknown_linux_gnu",
-##     "CC_x86_64_unknown_linux_gnu = None",
-##     "cargo:rerun-if-env-changed=HOST_CC",
-##     "HOST_CC = None",
-##     "cargo:rerun-if-env-changed=CC",
-##     "CC = None",
-##     "cargo:rerun-if-env-changed=CC_ENABLE_DEBUG_OUTPUT",
-##     "RUSTC_WRAPPER = None",
-##     "cargo:rerun-if-env-changed=CRATE_CC_NO_DEFAULTS",
-##     "CRATE_CC_NO_DEFAULTS = None",
-##     "DEBUG = Some(false)",
-##     "CARGO_CFG_TARGET_FEATURE = Some(fxsr,sse,sse2)",
-##     "cargo:rerun-if-env-changed=CFLAGS",
-##     "CFLAGS = None",
-##     "cargo:rerun-if-env-changed=HOST_CFLAGS",
-##     "HOST_CFLAGS = None",
-##     "cargo:rerun-if-env-changed=CFLAGS_x86_64_unknown_linux_gnu",
-##     "CFLAGS_x86_64_unknown_linux_gnu = None",
-##     "cargo:rerun-if-env-changed=CFLAGS_x86_64-unknown-linux-gnu",
-##     "CFLAGS_x86_64-unknown-linux-gnu = None",
-##     "CARGO_ENCODED_RUSTFLAGS = Some()",
-##     "cargo:warning=cc1: warning: $CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/include: No such file or directory [-Wmissing-include-dirs]",
-##     "cargo:warning=cc1: warning: $CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/pregenerated: No such file or directory [-Wmissing-include-dirs]",
-##     "cargo:warning=cc1: fatal error: $CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/crypto/curve25519/curve25519.c: No such file or directory",
-##     "cargo:warning=compilation terminated.",
-##     "exit status: 1",
-##     'cargo:warning=ToolExecError: command did not execute successfully (status code exit status: 1): LC_ALL="C" "cc" "-O3" "-ffunction-sections" "-fdata-sections" "-fPIC" "-m64" "-I" "$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/include" "-I" "$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/pregenerated" "-Wall" "-Wextra" "-fvisibility=hidden" "-std=c1x" "-Wall" "-Wbad-function-cast" "-Wcast-align" "-Wcast-qual" "-Wconversion" "-Wmissing-field-initializers" "-Wmissing-include-dirs" "-Wnested-externs" "-Wredundant-decls" "-Wshadow" "-Wsign-compare" "-Wsign-conversion" "-Wstrict-prototypes" "-Wundef" "-Wuninitialized" "-g3" "-DNDEBUG" "-o" "/target/release/build/ring-331ad36d05cb7396/out/25ac62e5b3c53843-curve25519.o" "-c" "$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/crypto/curve25519/curve25519.c"cargo:warning=cc1: warning: $CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/include: No such file or directory [-Wmissing-include-dirs]',
-##     "cargo:warning=cc1: warning: $CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/pregenerated: No such file or directory [-Wmissing-include-dirs]",
-##     "cargo:warning=cc1: fatal error: $CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/crypto/fipsmodule/aes/aes_nohw.c: No such file or directory",
-##     "cargo:warning=compilation terminated.",
-##     "exit status: 1",
-##     'cargo:warning=ToolExecError: command did not execute successfully (status code exit status: 1): LC_ALL="C" "cc" "-O3" "-ffunction-sections" "-fdata-sections" "-fPIC" "-m64" "-I" "$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/include" "-I" "$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/pregenerated" "-Wall" "-Wextra" "-fvisibility=hidden" "-std=c1x" "-Wall" "-Wbad-function-cast" "-Wcast-align" "-Wcast-qual" "-Wconversion" "-Wmissing-field-initializers" "-Wmissing-include-dirs" "-Wnested-externs" "-Wredundant-decls" "-Wshadow" "-Wsign-compare" "-Wsign-conversion" "-Wstrict-prototypes" "-Wundef" "-Wuninitialized" "-g3" "-DNDEBUG" "-o" "/target/release/build/ring-331ad36d05cb7396/out/0bbbd18bda93c05b-aes_nohw.o" "-c" "$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/crypto/fipsmodule/aes/aes_nohw.c"cargo:warning=cc1: warning: $CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/include: No such file or directory [-Wmissing-include-dirs]',
-##     "cargo:warning=cc1: warning: $CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/pregenerated: No such file or directory [-Wmissing-include-dirs]",
-##     "cargo:warning=cc1: fatal error: $CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/crypto/fipsmodule/bn/montgomery.c: No such file or directory",
-##     "cargo:warning=compilation terminated.",
-##     "exit status: 1",
-##     'cargo:warning=ToolExecError: command did not execute successfully (status code exit status: 1): LC_ALL="C" "cc" "-O3" "-ffunction-sections" "-fdata-sections" "-fPIC" "-m64" "-I" "$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/include" "-I" "$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/pregenerated" "-Wall" "-Wextra" "-fvisibility=hidden" "-std=c1x" "-Wall" "-Wbad-function-cast" "-Wcast-align" "-Wcast-qual" "-Wconversion" "-Wmissing-field-initializers" "-Wmissing-include-dirs" "-Wnested-externs" "-Wredundant-decls" "-Wshadow" "-Wsign-compare" "-Wsign-conversion" "-Wstrict-prototypes" "-Wundef" "-Wuninitialized" "-g3" "-DNDEBUG" "-o" "/target/release/build/ring-331ad36d05cb7396/out/00c879ee3285a50d-montgomery.o" "-c" "$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/crypto/fipsmodule/bn/montgomery.c"cargo:warning=cc1: warning: $CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/include: No such file or directory [-Wmissing-include-dirs]',
-##     "cargo:warning=cc1: warning: $CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/pregenerated: No such file or directory [-Wmissing-include-dirs]",
-##     "cargo:warning=cc1: fatal error: $CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/crypto/fipsmodule/bn/montgomery_inv.c: No such file or directory",
-##     "cargo:warning=compilation terminated.",
-##     "exit status: 1",
-##     'cargo:warning=ToolExecError: command did not execute successfully (status code exit status: 1): LC_ALL="C" "cc" "-O3" "-ffunction-sections" "-fdata-sections" "-fPIC" "-m64" "-I" "$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/include" "-I" "$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/pregenerated" "-Wall" "-Wextra" "-fvisibility=hidden" "-std=c1x" "-Wall" "-Wbad-function-cast" "-Wcast-align" "-Wcast-qual" "-Wconversion" "-Wmissing-field-initializers" "-Wmissing-include-dirs" "-Wnested-externs" "-Wredundant-decls" "-Wshadow" "-Wsign-compare" "-Wsign-conversion" "-Wstrict-prototypes" "-Wundef" "-Wuninitialized" "-g3" "-DNDEBUG" "-o" "/target/release/build/ring-331ad36d05cb7396/out/00c879ee3285a50d-montgomery_inv.o" "-c" "$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/crypto/fipsmodule/bn/montgomery_inv.c"cargo:warning=cc1: warning: $CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/include: No such file or directory [-Wmissing-include-dirs]',
-##     "cargo:warning=cc1: warning: $CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/pregenerated: No such file or directory [-Wmissing-include-dirs]",
-##     "cargo:warning=cc1: fatal error: $CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/crypto/fipsmodule/ec/ecp_nistz.c: No such file or directory",
-##     "cargo:warning=compilation terminated.",
-##     "exit status: 1",
-##     'cargo:warning=ToolExecError: command did not execute successfully (status code exit status: 1): LC_ALL="C" "cc" "-O3" "-ffunction-sections" "-fdata-sections" "-fPIC" "-m64" "-I" "$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/include" "-I" "$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/pregenerated" "-Wall" "-Wextra" "-fvisibility=hidden" "-std=c1x" "-Wall" "-Wbad-function-cast" "-Wcast-align" "-Wcast-qual" "-Wconversion" "-Wmissing-field-initializers" "-Wmissing-include-dirs" "-Wnested-externs" "-Wredundant-decls" "-Wshadow" "-Wsign-compare" "-Wsign-conversion" "-Wstrict-prototypes" "-Wundef" "-Wuninitialized" "-g3" "-DNDEBUG" "-o" "/target/release/build/ring-331ad36d05cb7396/out/a0330e891e733f4e-ecp_nistz.o" "-c" "$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/crypto/fipsmodule/ec/ecp_nistz.c"cargo:warning=cc1: warning: $CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/include: No such file or directory [-Wmissing-include-dirs]',
-##     "cargo:warning=cc1: warning: $CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/pregenerated: No such file or directory [-Wmissing-include-dirs]",
-##     "cargo:warning=cc1: fatal error: $CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/crypto/fipsmodule/ec/gfp_p256.c: No such file or directory",
-##     "cargo:warning=compilation terminated.",
-##     "exit status: 1",
-##     'cargo:warning=ToolExecError: command did not execute successfully (status code exit status: 1): LC_ALL="C" "cc" "-O3" "-ffunction-sections" "-fdata-sections" "-fPIC" "-m64" "-I" "$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/include" "-I" "$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/pregenerated" "-Wall" "-Wextra" "-fvisibility=hidden" "-std=c1x" "-Wall" "-Wbad-function-cast" "-Wcast-align" "-Wcast-qual" "-Wconversion" "-Wmissing-field-initializers" "-Wmissing-include-dirs" "-Wnested-externs" "-Wredundant-decls" "-Wshadow" "-Wsign-compare" "-Wsign-conversion" "-Wstrict-prototypes" "-Wundef" "-Wuninitialized" "-g3" "-DNDEBUG" "-o" "/target/release/build/ring-331ad36d05cb7396/out/a0330e891e733f4e-gfp_p256.o" "-c" "$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/crypto/fipsmodule/ec/gfp_p256.c"cargo:warning=cc1: warning: $CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/include: No such file or directory [-Wmissing-include-dirs]',
-##     "cargo:warning=cc1: warning: $CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/pregenerated: No such file or directory [-Wmissing-include-dirs]",
-##     "cargo:warning=cc1: fatal error: $CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/crypto/fipsmodule/ec/gfp_p384.c: No such file or directory",
-##     "cargo:warning=compilation terminated.",
-##     "exit status: 1",
-##     'cargo:warning=ToolExecError: command did not execute successfully (status code exit status: 1): LC_ALL="C" "cc" "-O3" "-ffunction-sections" "-fdata-sections" "-fPIC" "-m64" "-I" "$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/include" "-I" "$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/pregenerated" "-Wall" "-Wextra" "-fvisibility=hidden" "-std=c1x" "-Wall" "-Wbad-function-cast" "-Wcast-align" "-Wcast-qual" "-Wconversion" "-Wmissing-field-initializers" "-Wmissing-include-dirs" "-Wnested-externs" "-Wredundant-decls" "-Wshadow" "-Wsign-compare" "-Wsign-conversion" "-Wstrict-prototypes" "-Wundef" "-Wuninitialized" "-g3" "-DNDEBUG" "-o" "/target/release/build/ring-331ad36d05cb7396/out/a0330e891e733f4e-gfp_p384.o" "-c" "$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/crypto/fipsmodule/ec/gfp_p384.c"cargo:warning=cc1: warning: $CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/include: No such file or directory [-Wmissing-include-dirs]',
-##     "cargo:warning=cc1: warning: $CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/pregenerated: No such file or directory [-Wmissing-include-dirs]",
-##     "cargo:warning=cc1: fatal error: $CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/crypto/fipsmodule/ec/p256.c: No such file or directory",
-##     "cargo:warning=compilation terminated.",
-##     "exit status: 1",
-##     'cargo:warning=ToolExecError: command did not execute successfully (status code exit status: 1): LC_ALL="C" "cc" "-O3" "-ffunction-sections" "-fdata-sections" "-fPIC" "-m64" "-I" "$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/include" "-I" "$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/pregenerated" "-Wall" "-Wextra" "-fvisibility=hidden" "-std=c1x" "-Wall" "-Wbad-function-cast" "-Wcast-align" "-Wcast-qual" "-Wconversion" "-Wmissing-field-initializers" "-Wmissing-include-dirs" "-Wnested-externs" "-Wredundant-decls" "-Wshadow" "-Wsign-compare" "-Wsign-conversion" "-Wstrict-prototypes" "-Wundef" "-Wuninitialized" "-g3" "-DNDEBUG" "-o" "/target/release/build/ring-331ad36d05cb7396/out/a0330e891e733f4e-p256.o" "-c" "$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/crypto/fipsmodule/ec/p256.c"cargo:warning=cc1: warning: $CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/include: No such file or directory [-Wmissing-include-dirs]',
-##     "cargo:warning=cc1: warning: $CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/pregenerated: No such file or directory [-Wmissing-include-dirs]",
-##     "cargo:warning=cc1: fatal error: $CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/crypto/limbs/limbs.c: No such file or directory",
-##     "cargo:warning=compilation terminated.",
-##     "exit status: 1",
-##     'cargo:warning=ToolExecError: command did not execute successfully (status code exit status: 1): LC_ALL="C" "cc" "-O3" "-ffunction-sections" "-fdata-sections" "-fPIC" "-m64" "-I" "$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/include" "-I" "$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/pregenerated" "-Wall" "-Wextra" "-fvisibility=hidden" "-std=c1x" "-Wall" "-Wbad-function-cast" "-Wcast-align" "-Wcast-qual" "-Wconversion" "-Wmissing-field-initializers" "-Wmissing-include-dirs" "-Wnested-externs" "-Wredundant-decls" "-Wshadow" "-Wsign-compare" "-Wsign-conversion" "-Wstrict-prototypes" "-Wundef" "-Wuninitialized" "-g3" "-DNDEBUG" "-o" "/target/release/build/ring-331ad36d05cb7396/out/aaa1ba3e455ee2e1-limbs.o" "-c" "$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/crypto/limbs/limbs.c"cargo:warning=cc1: warning: $CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/include: No such file or directory [-Wmissing-include-dirs]',
-##     "cargo:warning=cc1: warning: $CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/pregenerated: No such file or directory [-Wmissing-include-dirs]",
-##     "cargo:warning=cc1: fatal error: $CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/crypto/mem.c: No such file or directory",
-##     "cargo:warning=compilation terminated.",
-##     "exit status: 1",
-##     'cargo:warning=ToolExecError: command did not execute successfully (status code exit status: 1): LC_ALL="C" "cc" "-O3" "-ffunction-sections" "-fdata-sections" "-fPIC" "-m64" "-I" "$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/include" "-I" "$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/pregenerated" "-Wall" "-Wextra" "-fvisibility=hidden" "-std=c1x" "-Wall" "-Wbad-function-cast" "-Wcast-align" "-Wcast-qual" "-Wconversion" "-Wmissing-field-initializers" "-Wmissing-include-dirs" "-Wnested-externs" "-Wredundant-decls" "-Wshadow" "-Wsign-compare" "-Wsign-conversion" "-Wstrict-prototypes" "-Wundef" "-Wuninitialized" "-g3" "-DNDEBUG" "-o" "/target/release/build/ring-331ad36d05cb7396/out/a4019cc0736b0423-mem.o" "-c" "$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/crypto/mem.c"cargo:warning=cc1: warning: $CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/include: No such file or directory [-Wmissing-include-dirs]',
-##     "cargo:warning=cc1: warning: $CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/pregenerated: No such file or directory [-Wmissing-include-dirs]",
-##     "cargo:warning=cc1: fatal error: $CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/crypto/poly1305/poly1305.c: No such file or directory",
-##     "cargo:warning=compilation terminated.",
-##     "exit status: 1",
-##     'cargo:warning=ToolExecError: command did not execute successfully (status code exit status: 1): LC_ALL="C" "cc" "-O3" "-ffunction-sections" "-fdata-sections" "-fPIC" "-m64" "-I" "$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/include" "-I" "$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/pregenerated" "-Wall" "-Wextra" "-fvisibility=hidden" "-std=c1x" "-Wall" "-Wbad-function-cast" "-Wcast-align" "-Wcast-qual" "-Wconversion" "-Wmissing-field-initializers" "-Wmissing-include-dirs" "-Wnested-externs" "-Wredundant-decls" "-Wshadow" "-Wsign-compare" "-Wsign-conversion" "-Wstrict-prototypes" "-Wundef" "-Wuninitialized" "-g3" "-DNDEBUG" "-o" "/target/release/build/ring-331ad36d05cb7396/out/d5a9841f3dc6e253-poly1305.o" "-c" "$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/crypto/poly1305/poly1305.c"cargo:warning=cc1: warning: $CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/include: No such file or directory [-Wmissing-include-dirs]',
-##     "cargo:warning=cc1: warning: $CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/pregenerated: No such file or directory [-Wmissing-include-dirs]",
-##     "cargo:warning=cc1: fatal error: $CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/crypto/crypto.c: No such file or directory",
-##     "cargo:warning=compilation terminated.",
-##     "exit status: 1",
-##     'cargo:warning=ToolExecError: command did not execute successfully (status code exit status: 1): LC_ALL="C" "cc" "-O3" "-ffunction-sections" "-fdata-sections" "-fPIC" "-m64" "-I" "$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/include" "-I" "$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/pregenerated" "-Wall" "-Wextra" "-fvisibility=hidden" "-std=c1x" "-Wall" "-Wbad-function-cast" "-Wcast-align" "-Wcast-qual" "-Wconversion" "-Wmissing-field-initializers" "-Wmissing-include-dirs" "-Wnested-externs" "-Wredundant-decls" "-Wshadow" "-Wsign-compare" "-Wsign-conversion" "-Wstrict-prototypes" "-Wundef" "-Wuninitialized" "-g3" "-DNDEBUG" "-o" "/target/release/build/ring-331ad36d05cb7396/out/a4019cc0736b0423-crypto.o" "-c" "$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/crypto/crypto.c"cargo:warning=cc1: warning: $CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/include: No such file or directory [-Wmissing-include-dirs]',
-##     "cargo:warning=cc1: warning: $CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/pregenerated: No such file or directory [-Wmissing-include-dirs]",
-##     "cargo:warning=cc1: fatal error: $CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/crypto/cpu_intel.c: No such file or directory",
-##     "cargo:warning=compilation terminated.",
-##     "exit status: 1",
-##     'cargo:warning=ToolExecError: command did not execute successfully (status code exit status: 1): LC_ALL="C" "cc" "-O3" "-ffunction-sections" "-fdata-sections" "-fPIC" "-m64" "-I" "$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/include" "-I" "$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/pregenerated" "-Wall" "-Wextra" "-fvisibility=hidden" "-std=c1x" "-Wall" "-Wbad-function-cast" "-Wcast-align" "-Wcast-qual" "-Wconversion" "-Wmissing-field-initializers" "-Wmissing-include-dirs" "-Wnested-externs" "-Wredundant-decls" "-Wshadow" "-Wsign-compare" "-Wsign-conversion" "-Wstrict-prototypes" "-Wundef" "-Wuninitialized" "-g3" "-DNDEBUG" "-o" "/target/release/build/ring-331ad36d05cb7396/out/a4019cc0736b0423-cpu_intel.o" "-c" "$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/crypto/cpu_intel.c"cargo:warning=cc1: warning: $CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/include: No such file or directory [-Wmissing-include-dirs]',
-##     "cargo:warning=cc1: warning: $CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/pregenerated: No such file or directory [-Wmissing-include-dirs]",
-##     "cargo:warning=cc1: fatal error: $CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/crypto/curve25519/curve25519_64_adx.c: No such file or directory",
-##     "cargo:warning=compilation terminated.",
-##     "exit status: 1",
-##     'cargo:warning=ToolExecError: command did not execute successfully (status code exit status: 1): LC_ALL="C" "cc" "-O3" "-ffunction-sections" "-fdata-sections" "-fPIC" "-m64" "-I" "$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/include" "-I" "$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/pregenerated" "-Wall" "-Wextra" "-fvisibility=hidden" "-std=c1x" "-Wall" "-Wbad-function-cast" "-Wcast-align" "-Wcast-qual" "-Wconversion" "-Wmissing-field-initializers" "-Wmissing-include-dirs" "-Wnested-externs" "-Wredundant-decls" "-Wshadow" "-Wsign-compare" "-Wsign-conversion" "-Wstrict-prototypes" "-Wundef" "-Wuninitialized" "-g3" "-DNDEBUG" "-o" "/target/release/build/ring-331ad36d05cb7396/out/25ac62e5b3c53843-curve25519_64_adx.o" "-c" "$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/crypto/curve25519/curve25519_64_adx.c"cargo:warning=cc1: warning: $CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/include: No such file or directory [-Wmissing-include-dirs]',
-##     "cargo:warning=cc1: warning: $CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/pregenerated: No such file or directory [-Wmissing-include-dirs]",
-##     "cargo:warning=cc1: fatal error: $CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/third_party/fiat/asm/fiat_curve25519_adx_mul.S: No such file or directory",
-##     "cargo:warning=compilation terminated.",
-##     "exit status: 1",
-##     'cargo:warning=ToolExecError: command did not execute successfully (status code exit status: 1): LC_ALL="C" "cc" "-O3" "-ffunction-sections" "-fdata-sections" "-fPIC" "-m64" "-I" "$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/include" "-I" "$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/pregenerated" "-Wall" "-Wextra" "-fvisibility=hidden" "-std=c1x" "-Wall" "-Wbad-function-cast" "-Wcast-align" "-Wcast-qual" "-Wconversion" "-Wmissing-field-initializers" "-Wmissing-include-dirs" "-Wnested-externs" "-Wredundant-decls" "-Wshadow" "-Wsign-compare" "-Wsign-conversion" "-Wstrict-prototypes" "-Wundef" "-Wuninitialized" "-g3" "-DNDEBUG" "-o" "/target/release/build/ring-331ad36d05cb7396/out/e165cd818145c705-fiat_curve25519_adx_mul.o" "-c" "$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/third_party/fiat/asm/fiat_curve25519_adx_mul.S"cargo:warning=cc1: warning: $CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/include: No such file or directory [-Wmissing-include-dirs]',
-##     "cargo:warning=cc1: warning: $CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/pregenerated: No such file or directory [-Wmissing-include-dirs]",
-##     "cargo:warning=cc1: fatal error: $CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/third_party/fiat/asm/fiat_curve25519_adx_square.S: No such file or directory",
-##     "cargo:warning=compilation terminated.",
-##     "exit status: 1",
-##     'cargo:warning=ToolExecError: command did not execute successfully (status code exit status: 1): LC_ALL="C" "cc" "-O3" "-ffunction-sections" "-fdata-sections" "-fPIC" "-m64" "-I" "$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/include" "-I" "$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/pregenerated" "-Wall" "-Wextra" "-fvisibility=hidden" "-std=c1x" "-Wall" "-Wbad-function-cast" "-Wcast-align" "-Wcast-qual" "-Wconversion" "-Wmissing-field-initializers" "-Wmissing-include-dirs" "-Wnested-externs" "-Wredundant-decls" "-Wshadow" "-Wsign-compare" "-Wsign-conversion" "-Wstrict-prototypes" "-Wundef" "-Wuninitialized" "-g3" "-DNDEBUG" "-o" "/target/release/build/ring-331ad36d05cb7396/out/e165cd818145c705-fiat_curve25519_adx_square.o" "-c" "$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/third_party/fiat/asm/fiat_curve25519_adx_square.S"cargo:warning=cc1: warning: $CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/include: No such file or directory [-Wmissing-include-dirs]',
-##     "cargo:warning=cc1: warning: $CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/pregenerated: No such file or directory [-Wmissing-include-dirs]",
-##     "cargo:warning=cc1: fatal error: $CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/crypto/fipsmodule/ec/p256-nistz.c: No such file or directory",
-##     "cargo:warning=compilation terminated.",
-##     "exit status: 1",
-##     'cargo:warning=ToolExecError: command did not execute successfully (status code exit status: 1): LC_ALL="C" "cc" "-O3" "-ffunction-sections" "-fdata-sections" "-fPIC" "-m64" "-I" "$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/include" "-I" "$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/pregenerated" "-Wall" "-Wextra" "-fvisibility=hidden" "-std=c1x" "-Wall" "-Wbad-function-cast" "-Wcast-align" "-Wcast-qual" "-Wconversion" "-Wmissing-field-initializers" "-Wmissing-include-dirs" "-Wnested-externs" "-Wredundant-decls" "-Wshadow" "-Wsign-compare" "-Wsign-conversion" "-Wstrict-prototypes" "-Wundef" "-Wuninitialized" "-g3" "-DNDEBUG" "-o" "/target/release/build/ring-331ad36d05cb7396/out/a0330e891e733f4e-p256-nistz.o" "-c" "$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/crypto/fipsmodule/ec/p256-nistz.c"cargo:warning=cc1: warning: $CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/include: No such file or directory [-Wmissing-include-dirs]',
-##     "cargo:warning=cc1: warning: $CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/pregenerated: No such file or directory [-Wmissing-include-dirs]",
-##     "cargo:warning=cc1: fatal error: $CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/pregenerated/chacha-x86_64-elf.S: No such file or directory",
-##     "cargo:warning=compilation terminated.",
-##     "exit status: 1",
-##     'cargo:warning=ToolExecError: command did not execute successfully (status code exit status: 1): LC_ALL="C" "cc" "-O3" "-ffunction-sections" "-fdata-sections" "-fPIC" "-m64" "-I" "$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/include" "-I" "$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/pregenerated" "-Wall" "-Wextra" "-fvisibility=hidden" "-std=c1x" "-Wall" "-Wbad-function-cast" "-Wcast-align" "-Wcast-qual" "-Wconversion" "-Wmissing-field-initializers" "-Wmissing-include-dirs" "-Wnested-externs" "-Wredundant-decls" "-Wshadow" "-Wsign-compare" "-Wsign-conversion" "-Wstrict-prototypes" "-Wundef" "-Wuninitialized" "-g3" "-DNDEBUG" "-o" "/target/release/build/ring-331ad36d05cb7396/out/510c001c24b80416-chacha-x86_64-elf.o" "-c" "$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/pregenerated/chacha-x86_64-elf.S"cargo:warning=cc1: warning: $CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/include: No such file or directory [-Wmissing-include-dirs]',
-##     "cargo:warning=cc1: warning: $CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/pregenerated: No such file or directory [-Wmissing-include-dirs]",
-##     "cargo:warning=cc1: fatal error: $CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/pregenerated/aes-gcm-avx2-x86_64-elf.S: No such file or directory",
-##     "cargo:warning=compilation terminated.",
-##     "exit status: 1",
-##     'cargo:warning=ToolExecError: command did not execute successfully (status code exit status: 1): LC_ALL="C" "cc" "-O3" "-ffunction-sections" "-fdata-sections" "-fPIC" "-m64" "-I" "$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/include" "-I" "$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/pregenerated" "-Wall" "-Wextra" "-fvisibility=hidden" "-std=c1x" "-Wall" "-Wbad-function-cast" "-Wcast-align" "-Wcast-qual" "-Wconversion" "-Wmissing-field-initializers" "-Wmissing-include-dirs" "-Wnested-externs" "-Wredundant-decls" "-Wshadow" "-Wsign-compare" "-Wsign-conversion" "-Wstrict-prototypes" "-Wundef" "-Wuninitialized" "-g3" "-DNDEBUG" "-o" "/target/release/build/ring-331ad36d05cb7396/out/510c001c24b80416-aes-gcm-avx2-x86_64-elf.o" "-c" "$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/pregenerated/aes-gcm-avx2-x86_64-elf.S"cargo:warning=cc1: warning: $CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/include: No such file or directory [-Wmissing-include-dirs]',
-##     "cargo:warning=cc1: warning: $CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/pregenerated: No such file or directory [-Wmissing-include-dirs]",
-##     "cargo:warning=cc1: fatal error: $CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/pregenerated/aesni-gcm-x86_64-elf.S: No such file or directory",
-##     "cargo:warning=compilation terminated.",
-##     "exit status: 1",
-##     'cargo:warning=ToolExecError: command did not execute successfully (status code exit status: 1): LC_ALL="C" "cc" "-O3" "-ffunction-sections" "-fdata-sections" "-fPIC" "-m64" "-I" "$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/include" "-I" "$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/pregenerated" "-Wall" "-Wextra" "-fvisibility=hidden" "-std=c1x" "-Wall" "-Wbad-function-cast" "-Wcast-align" "-Wcast-qual" "-Wconversion" "-Wmissing-field-initializers" "-Wmissing-include-dirs" "-Wnested-externs" "-Wredundant-decls" "-Wshadow" "-Wsign-compare" "-Wsign-conversion" "-Wstrict-prototypes" "-Wundef" "-Wuninitialized" "-g3" "-DNDEBUG" "-o" "/target/release/build/ring-331ad36d05cb7396/out/510c001c24b80416-aesni-gcm-x86_64-elf.o" "-c" "$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/pregenerated/aesni-gcm-x86_64-elf.S"cargo:warning=cc1: warning: $CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/include: No such file or directory [-Wmissing-include-dirs]',
-##     "cargo:warning=cc1: warning: $CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/pregenerated: No such file or directory [-Wmissing-include-dirs]",
-##     "cargo:warning=cc1: fatal error: $CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/pregenerated/aesni-x86_64-elf.S: No such file or directory",
-##     "cargo:warning=compilation terminated.",
-##     "exit status: 1",
-##     'cargo:warning=ToolExecError: command did not execute successfully (status code exit status: 1): LC_ALL="C" "cc" "-O3" "-ffunction-sections" "-fdata-sections" "-fPIC" "-m64" "-I" "$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/include" "-I" "$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/pregenerated" "-Wall" "-Wextra" "-fvisibility=hidden" "-std=c1x" "-Wall" "-Wbad-function-cast" "-Wcast-align" "-Wcast-qual" "-Wconversion" "-Wmissing-field-initializers" "-Wmissing-include-dirs" "-Wnested-externs" "-Wredundant-decls" "-Wshadow" "-Wsign-compare" "-Wsign-conversion" "-Wstrict-prototypes" "-Wundef" "-Wuninitialized" "-g3" "-DNDEBUG" "-o" "/target/release/build/ring-331ad36d05cb7396/out/510c001c24b80416-aesni-x86_64-elf.o" "-c" "$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/pregenerated/aesni-x86_64-elf.S"cargo:warning=cc1: warning: $CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/include: No such file or directory [-Wmissing-include-dirs]',
-##     "cargo:warning=cc1: warning: $CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/pregenerated: No such file or directory [-Wmissing-include-dirs]",
-##     "cargo:warning=cc1: fatal error: $CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/pregenerated/ghash-x86_64-elf.S: No such file or directory",
-##     "cargo:warning=compilation terminated.",
-##     "exit status: 1",
-##     'cargo:warning=ToolExecError: command did not execute successfully (status code exit status: 1): LC_ALL="C" "cc" "-O3" "-ffunction-sections" "-fdata-sections" "-fPIC" "-m64" "-I" "$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/include" "-I" "$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/pregenerated" "-Wall" "-Wextra" "-fvisibility=hidden" "-std=c1x" "-Wall" "-Wbad-function-cast" "-Wcast-align" "-Wcast-qual" "-Wconversion" "-Wmissing-field-initializers" "-Wmissing-include-dirs" "-Wnested-externs" "-Wredundant-decls" "-Wshadow" "-Wsign-compare" "-Wsign-conversion" "-Wstrict-prototypes" "-Wundef" "-Wuninitialized" "-g3" "-DNDEBUG" "-o" "/target/release/build/ring-331ad36d05cb7396/out/510c001c24b80416-ghash-x86_64-elf.o" "-c" "$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/pregenerated/ghash-x86_64-elf.S"cargo:warning=cc1: warning: $CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/include: No such file or directory [-Wmissing-include-dirs]',
-##     "cargo:warning=cc1: warning: $CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/pregenerated: No such file or directory [-Wmissing-include-dirs]",
-##     "cargo:warning=cc1: fatal error: $CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/pregenerated/vpaes-x86_64-elf.S: No such file or directory",
-##     "cargo:warning=compilation terminated.",
-##     "exit status: 1",
-##     'cargo:warning=ToolExecError: command did not execute successfully (status code exit status: 1): LC_ALL="C" "cc" "-O3" "-ffunction-sections" "-fdata-sections" "-fPIC" "-m64" "-I" "$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/include" "-I" "$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/pregenerated" "-Wall" "-Wextra" "-fvisibility=hidden" "-std=c1x" "-Wall" "-Wbad-function-cast" "-Wcast-align" "-Wcast-qual" "-Wconversion" "-Wmissing-field-initializers" "-Wmissing-include-dirs" "-Wnested-externs" "-Wredundant-decls" "-Wshadow" "-Wsign-compare" "-Wsign-conversion" "-Wstrict-prototypes" "-Wundef" "-Wuninitialized" "-g3" "-DNDEBUG" "-o" "/target/release/build/ring-331ad36d05cb7396/out/510c001c24b80416-vpaes-x86_64-elf.o" "-c" "$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/pregenerated/vpaes-x86_64-elf.S"cargo:warning=cc1: warning: $CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/include: No such file or directory [-Wmissing-include-dirs]',
-##     "cargo:warning=cc1: warning: $CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/pregenerated: No such file or directory [-Wmissing-include-dirs]",
-##     "cargo:warning=cc1: fatal error: $CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/pregenerated/x86_64-mont-elf.S: No such file or directory",
-##     "cargo:warning=compilation terminated.",
-##     "exit status: 1",
-##     'cargo:warning=ToolExecError: command did not execute successfully (status code exit status: 1): LC_ALL="C" "cc" "-O3" "-ffunction-sections" "-fdata-sections" "-fPIC" "-m64" "-I" "$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/include" "-I" "$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/pregenerated" "-Wall" "-Wextra" "-fvisibility=hidden" "-std=c1x" "-Wall" "-Wbad-function-cast" "-Wcast-align" "-Wcast-qual" "-Wconversion" "-Wmissing-field-initializers" "-Wmissing-include-dirs" "-Wnested-externs" "-Wredundant-decls" "-Wshadow" "-Wsign-compare" "-Wsign-conversion" "-Wstrict-prototypes" "-Wundef" "-Wuninitialized" "-g3" "-DNDEBUG" "-o" "/target/release/build/ring-331ad36d05cb7396/out/510c001c24b80416-x86_64-mont-elf.o" "-c" "$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/pregenerated/x86_64-mont-elf.S"cargo:warning=cc1: warning: $CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/include: No such file or directory [-Wmissing-include-dirs]',
-##     "cargo:warning=cc1: warning: $CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/pregenerated: No such file or directory [-Wmissing-include-dirs]",
-##     "cargo:warning=cc1: fatal error: $CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/pregenerated/x86_64-mont5-elf.S: No such file or directory",
-##     "cargo:warning=compilation terminated.",
-##     "exit status: 1",
-##     'cargo:warning=ToolExecError: command did not execute successfully (status code exit status: 1): LC_ALL="C" "cc" "-O3" "-ffunction-sections" "-fdata-sections" "-fPIC" "-m64" "-I" "$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/include" "-I" "$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/pregenerated" "-Wall" "-Wextra" "-fvisibility=hidden" "-std=c1x" "-Wall" "-Wbad-function-cast" "-Wcast-align" "-Wcast-qual" "-Wconversion" "-Wmissing-field-initializers" "-Wmissing-include-dirs" "-Wnested-externs" "-Wredundant-decls" "-Wshadow" "-Wsign-compare" "-Wsign-conversion" "-Wstrict-prototypes" "-Wundef" "-Wuninitialized" "-g3" "-DNDEBUG" "-o" "/target/release/build/ring-331ad36d05cb7396/out/510c001c24b80416-x86_64-mont5-elf.o" "-c" "$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/pregenerated/x86_64-mont5-elf.S"cargo:warning=cc1: warning: $CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/include: No such file or directory [-Wmissing-include-dirs]',
-##     "cargo:warning=cc1: warning: $CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/pregenerated: No such file or directory [-Wmissing-include-dirs]",
-##     "cargo:warning=cc1: fatal error: $CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/pregenerated/p256-x86_64-asm-elf.S: No such file or directory",
-##     "cargo:warning=compilation terminated.",
-##     "exit status: 1",
-##     'cargo:warning=ToolExecError: command did not execute successfully (status code exit status: 1): LC_ALL="C" "cc" "-O3" "-ffunction-sections" "-fdata-sections" "-fPIC" "-m64" "-I" "$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/include" "-I" "$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/pregenerated" "-Wall" "-Wextra" "-fvisibility=hidden" "-std=c1x" "-Wall" "-Wbad-function-cast" "-Wcast-align" "-Wcast-qual" "-Wconversion" "-Wmissing-field-initializers" "-Wmissing-include-dirs" "-Wnested-externs" "-Wredundant-decls" "-Wshadow" "-Wsign-compare" "-Wsign-conversion" "-Wstrict-prototypes" "-Wundef" "-Wuninitialized" "-g3" "-DNDEBUG" "-o" "/target/release/build/ring-331ad36d05cb7396/out/510c001c24b80416-p256-x86_64-asm-elf.o" "-c" "$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/pregenerated/p256-x86_64-asm-elf.S"cargo:warning=cc1: warning: $CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/include: No such file or directory [-Wmissing-include-dirs]',
-##     "cargo:warning=cc1: warning: $CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/pregenerated: No such file or directory [-Wmissing-include-dirs]",
-##     "cargo:warning=cc1: fatal error: $CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/pregenerated/sha512-x86_64-elf.S: No such file or directory",
-##     "cargo:warning=compilation terminated.",
-##     "exit status: 1",
-##     'cargo:warning=ToolExecError: command did not execute successfully (status code exit status: 1): LC_ALL="C" "cc" "-O3" "-ffunction-sections" "-fdata-sections" "-fPIC" "-m64" "-I" "$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/include" "-I" "$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/pregenerated" "-Wall" "-Wextra" "-fvisibility=hidden" "-std=c1x" "-Wall" "-Wbad-function-cast" "-Wcast-align" "-Wcast-qual" "-Wconversion" "-Wmissing-field-initializers" "-Wmissing-include-dirs" "-Wnested-externs" "-Wredundant-decls" "-Wshadow" "-Wsign-compare" "-Wsign-conversion" "-Wstrict-prototypes" "-Wundef" "-Wuninitialized" "-g3" "-DNDEBUG" "-o" "/target/release/build/ring-331ad36d05cb7396/out/510c001c24b80416-sha512-x86_64-elf.o" "-c" "$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/pregenerated/sha512-x86_64-elf.S"cargo:warning=cc1: warning: $CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/include: No such file or directory [-Wmissing-include-dirs]',
-##     "cargo:warning=cc1: warning: $CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/pregenerated: No such file or directory [-Wmissing-include-dirs]",
-##     "cargo:warning=cc1: fatal error: $CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/pregenerated/chacha20_poly1305_x86_64-elf.S: No such file or directory",
-##     "cargo:warning=compilation terminated.",
-##     "exit status: 1",
-##     'cargo:warning=ToolExecError: command did not execute successfully (status code exit status: 1): LC_ALL="C" "cc" "-O3" "-ffunction-sections" "-fdata-sections" "-fPIC" "-m64" "-I" "$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/include" "-I" "$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/pregenerated" "-Wall" "-Wextra" "-fvisibility=hidden" "-std=c1x" "-Wall" "-Wbad-function-cast" "-Wcast-align" "-Wcast-qual" "-Wconversion" "-Wmissing-field-initializers" "-Wmissing-include-dirs" "-Wnested-externs" "-Wredundant-decls" "-Wshadow" "-Wsign-compare" "-Wsign-conversion" "-Wstrict-prototypes" "-Wundef" "-Wuninitialized" "-g3" "-DNDEBUG" "-o" "/target/release/build/ring-331ad36d05cb7396/out/510c001c24b80416-chacha20_poly1305_x86_64-elf.o" "-c" "$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/pregenerated/chacha20_poly1305_x86_64-elf.S"cargo:warning=cc1: warning: $CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/include: No such file or directory [-Wmissing-include-dirs]',
-##     "cargo:warning=cc1: warning: $CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/pregenerated: No such file or directory [-Wmissing-include-dirs]",
-##     "cargo:warning=cc1: fatal error: $CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/pregenerated/sha256-x86_64-elf.S: No such file or directory",
-##     "cargo:warning=compilation terminated.",
-##     "exit status: 1",
-##     'cargo:warning=ToolExecError: command did not execute successfully (status code exit status: 1): LC_ALL="C" "cc" "-O3" "-ffunction-sections" "-fdata-sections" "-fPIC" "-m64" "-I" "$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/include" "-I" "$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/pregenerated" "-Wall" "-Wextra" "-fvisibility=hidden" "-std=c1x" "-Wall" "-Wbad-function-cast" "-Wcast-align" "-Wcast-qual" "-Wconversion" "-Wmissing-field-initializers" "-Wmissing-include-dirs" "-Wnested-externs" "-Wredundant-decls" "-Wshadow" "-Wsign-compare" "-Wsign-conversion" "-Wstrict-prototypes" "-Wundef" "-Wuninitialized" "-g3" "-DNDEBUG" "-o" "/target/release/build/ring-331ad36d05cb7396/out/510c001c24b80416-sha256-x86_64-elf.o" "-c" "$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/pregenerated/sha256-x86_64-elf.S"',
-## ]
-## stderr = ['error occurred in cc-rs: command did not execute successfully (status code exit status: 1): LC_ALL="C" "cc" "-O3" "-ffunction-sections" "-fdata-sections" "-fPIC" "-m64" "-I" "$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/include" "-I" "$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/pregenerated" "-Wall" "-Wextra" "-fvisibility=hidden" "-std=c1x" "-Wall" "-Wbad-function-cast" "-Wcast-align" "-Wcast-qual" "-Wconversion" "-Wmissing-field-initializers" "-Wmissing-include-dirs" "-Wnested-externs" "-Wredundant-decls" "-Wshadow" "-Wsign-compare" "-Wsign-conversion" "-Wstrict-prototypes" "-Wundef" "-Wuninitialized" "-g3" "-DNDEBUG" "-o" "/target/release/build/ring-331ad36d05cb7396/out/510c001c24b80416-sha256-x86_64-elf.o" "-c" "$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/pregenerated/sha256-x86_64-elf.S"']
+## this = "0666a2fc025e1dcc"
+## deps = ["4bdb6f5aca0f7aed"]
+## writes_to = "/target/release/build/zstd-safe-0666a2fc025e1dcc/out"
 ##
 ## [[stages]]
 ##
@@ -1411,17 +229,17 @@ COPY --link --from=run-z-ring-0.17.14-331ad36d05cb7396 /target/release/build/rin
 ## [[stages]]
 ##
 ## [stages.Script]
-## stage = "run-z-ring-0.17.14-331ad36d05cb7396"
+## stage = "run-z-zstd-safe-7.2.4-0666a2fc025e1dcc"
 ## script = '''
-## FROM rust-base AS run-z-ring-0.17.14-331ad36d05cb7396
+## FROM rust-base AS run-z-zstd-safe-7.2.4-0666a2fc025e1dcc
 ## SHELL ["/bin/sh", "-eux", "-c"]
-## WORKDIR /target/release/build/ring-331ad36d05cb7396/out
-## WORKDIR $CARGO_HOME/registry/src/index.crates.io/ring-0.17.14
+## WORKDIR /target/release/build/zstd-safe-0666a2fc025e1dcc/out
+## WORKDIR $CARGO_HOME/registry/src/index.crates.io/zstd-safe-7.2.4
 ## RUN \
-##   --mount=from=out-a6878063ae92e26f,source=/build_script_build-a6878063ae92e26f,dst=/target/release/build/ring-a6878063ae92e26f/build-script-build \
-##   --mount=from=cratesio-ring-0.17.14,source=/ring-0.17.14,dst=$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14 \
+##   --mount=from=out-4bdb6f5aca0f7aed,source=/build_script_build-4bdb6f5aca0f7aed,dst=/target/release/build/zstd-safe-4bdb6f5aca0f7aed/build-script-build \
+##   --mount=from=cratesio-zstd-safe-7.2.4,source=/zstd-safe-7.2.4,dst=$CARGO_HOME/registry/src/index.crates.io/zstd-safe-7.2.4 \
 ##     env CARGO="$(which cargo)" \
-##         CARGO_CFG_FEATURE=alloc,default,dev_urandom_fallback \
+##         CARGO_CFG_FEATURE=arrays,legacy,std,zdict_builder \
 ##         CARGO_CFG_PANIC=unwind \
 ##         CARGO_CFG_TARGET_ABI= \
 ##         CARGO_CFG_TARGET_ARCH=x86_64 \
@@ -1435,50 +253,52 @@ COPY --link --from=run-z-ring-0.17.14-331ad36d05cb7396 /target/release/build/rin
 ##         CARGO_CFG_TARGET_VENDOR=unknown \
 ##         CARGO_CFG_UNIX= \
 ##         CARGO_ENCODED_RUSTFLAGS= \
-##         CARGO_FEATURE_ALLOC=1 \
-##         CARGO_FEATURE_DEFAULT=1 \
-##         CARGO_FEATURE_DEV_URANDOM_FALLBACK=1 \
+##         CARGO_FEATURE_ARRAYS=1 \
+##         CARGO_FEATURE_LEGACY=1 \
+##         CARGO_FEATURE_STD=1 \
+##         CARGO_FEATURE_ZDICT_BUILDER=1 \
 ##         CARGO_INCREMENTAL=0 \
-##         CARGO_MANIFEST_DIR='$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14' \
-##         CARGO_MANIFEST_LINKS=ring_core_0_17_14_ \
-##         CARGO_MANIFEST_PATH='$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14/Cargo.toml' \
-##         CARGO_PKG_AUTHORS= \
-##         CARGO_PKG_DESCRIPTION=An' experiment.' \
+##         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/zstd-safe-7.2.4 \
+##         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/zstd-safe-7.2.4/Cargo.toml \
+##         CARGO_PKG_AUTHORS=Alexandre' Bury <alexandre.bury@gmail.com>' \
+##         CARGO_PKG_DESCRIPTION=Safe' low-level bindings for the zstd compression library.' \
 ##         CARGO_PKG_HOMEPAGE= \
-##         CARGO_PKG_LICENSE=Apache-2.0' AND ISC' \
+##         CARGO_PKG_LICENSE=MIT' OR Apache-2.0' \
 ##         CARGO_PKG_LICENSE_FILE= \
-##         CARGO_PKG_NAME=ring \
-##         CARGO_PKG_README=README.md \
-##         CARGO_PKG_REPOSITORY=https'://github.com/briansmith/ring' \
-##         CARGO_PKG_RUST_VERSION=1.66.0 \
-##         CARGO_PKG_VERSION=0.17.14 \
-##         CARGO_PKG_VERSION_MAJOR=0 \
-##         CARGO_PKG_VERSION_MINOR=17 \
-##         CARGO_PKG_VERSION_PATCH=14 \
+##         CARGO_PKG_NAME=zstd-safe \
+##         CARGO_PKG_README=Readme.md \
+##         CARGO_PKG_REPOSITORY=https'://github.com/gyscos/zstd-rs' \
+##         CARGO_PKG_RUST_VERSION=1.64 \
+##         CARGO_PKG_VERSION=7.2.4 \
+##         CARGO_PKG_VERSION_MAJOR=7 \
+##         CARGO_PKG_VERSION_MINOR=2 \
+##         CARGO_PKG_VERSION_PATCH=4 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         DEBUG=false \
+##         DEP_ZSTD_INCLUDE=/usr/local/cargo/registry/src/index.crates.io+zstd.1.5.7/zstd/lib' \
+##         DEP_ZSTD_ROOT=/target/release/build/zstd-sys-a922420c3c26ba57/out \
 ##         HOST=x86_64-unknown-linux-gnu \
 ##         NUM_JOBS=1 \
 ##         OPT_LEVEL=3 \
-##         OUT_DIR=/target/release/build/ring-331ad36d05cb7396/out \
+##         OUT_DIR=/target/release/build/zstd-safe-0666a2fc025e1dcc/out \
 ##         PROFILE=release \
 ##         RUSTC=rustc \
-##         RUSTDOC=/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
+##         RUSTDOC=$RUSTUP_HOME/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc \
 ##         TARGET=x86_64-unknown-linux-gnu \
 ##         CARGOGREEN=1 \
-##       CARGOGREEN_EXECUTE_BUILDRS_= /target/release/build/ring-a6878063ae92e26f/build-script-build \
-##         1>          /target/release/build/ring-331ad36d05cb7396/out/out-331ad36d05cb7396-stdout \
-##         2>          /target/release/build/ring-331ad36d05cb7396/out/out-331ad36d05cb7396-stderr \
-##         || echo $? >/target/release/build/ring-331ad36d05cb7396/out/out-331ad36d05cb7396-errcode\
-##   ; find /target/release/build/ring-331ad36d05cb7396/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##       CARGOGREEN_EXECUTE_BUILDRS_= /target/release/build/zstd-safe-4bdb6f5aca0f7aed/build-script-build \
+##         1>          /target/release/build/zstd-safe-0666a2fc025e1dcc/out/out-0666a2fc025e1dcc-stdout \
+##         2>          /target/release/build/zstd-safe-0666a2fc025e1dcc/out/out-0666a2fc025e1dcc-stderr \
+##         || echo $? >/target/release/build/zstd-safe-0666a2fc025e1dcc/out/out-0666a2fc025e1dcc-errcode\
+##   ; find /target/release/build/zstd-safe-0666a2fc025e1dcc/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
 ##
 ## [[stages]]
 ##
 ## [stages.Script]
-## stage = "out-331ad36d05cb7396"
+## stage = "out-0666a2fc025e1dcc"
 ## script = """
-## FROM scratch AS out-331ad36d05cb7396
-## COPY --link --from=run-z-ring-0.17.14-331ad36d05cb7396 /target/release/build/ring-331ad36d05cb7396/out /"""
+## FROM scratch AS out-0666a2fc025e1dcc
+## COPY --link --from=run-z-zstd-safe-7.2.4-0666a2fc025e1dcc /target/release/build/zstd-safe-0666a2fc025e1dcc/out /"""
 
 FROM scratch
 
