@@ -87,7 +87,7 @@ pub(crate) async fn as_stage(
         stage,
         repo: repo.to_owned(),
         commit: commit.to_owned(),
-        krate_manifest_dir: rewrite_cargo_home(cargo_home, krate_manifest_dir),
+        krate_manifest_dir: rewrite_cargo_home(cargo_home, krate_manifest_dir.as_str()).into(),
     }))
 }
 

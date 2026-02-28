@@ -42,8 +42,21 @@ impl Green {
 }
 
 #[must_use]
-pub(crate) fn rewrite_cratesio_index(path: &Utf8Path) -> Utf8PathBuf {
-    path.iter().map(|part| if part.starts_with(INDEX) { INDEX } else { part }).collect()
+pub(crate) fn rewrite_cratesio_index(path: &str) -> String {
+    if let Some(pos) = path.find(INDEX) {
+        return path[..pos].to_owned() + INDEX + &path[(pos + INDEX.len() + 1 + 16)..];
+    }
+    path.to_owned()
+}
+
+#[test]
+fn test_rewrite_cratesio_index() {
+    assert_eq!(
+        format!("$CARGO_HOME/{HOME}/index.crates.io/anyhow-1.0.100"),
+        rewrite_cratesio_index(&format!(
+            "$CARGO_HOME/{HOME}/index.crates.io-f9fd03f8c3c43dd1/anyhow-1.0.100"
+        ))
+    );
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash)]
@@ -98,12 +111,12 @@ pub(crate) async fn named_stage<'a>(
         .map_err(|e| anyhow!("Failed reading {cached}: {e}"))?;
     debug!("crate sha256 for {stage}: {hash}");
 
-    let krate_manifest_dir = rewrite_cargo_home(cargo_home, krate_manifest_dir);
+    let krate_manifest_dir = rewrite_cargo_home(cargo_home, krate_manifest_dir.as_str());
     let extracted = rewrite_cratesio_index(&krate_manifest_dir);
 
     Ok(NamedStage::Cratesio(Cratesio {
         stage,
-        extracted,
+        extracted: extracted.into(),
         name: name.to_owned(),
         name_dash_version: name_dash_version.to_owned(),
         hash,

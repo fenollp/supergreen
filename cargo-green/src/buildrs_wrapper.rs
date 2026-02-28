@@ -4,7 +4,7 @@ use std::{
 };
 
 use anyhow::{anyhow, bail, Result};
-use camino::{Utf8Path, Utf8PathBuf};
+use camino::Utf8PathBuf;
 use log::{error, info, trace};
 use tokio::process::Command;
 
@@ -26,7 +26,7 @@ macro_rules! ENV_EXECUTE_BUILDRS {
     };
 }
 
-pub(crate) fn rewrite_main(mdid: MdId, input: &Utf8Path) -> String {
+pub(crate) fn rewrite_main(mdid: MdId, input: &str) -> String {
     format!(
         r#"    {{ \
         cat {input} | sed -E 's/^(pub[()a-z]* +)?(async +)?fn +main/\1\2fn actual_{mdid}_main/' >/_ && mv /_ {input} ; \

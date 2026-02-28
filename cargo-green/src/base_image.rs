@@ -1,6 +1,6 @@
 use std::sync::LazyLock;
 
-use camino::{Utf8Path, Utf8PathBuf};
+use camino::Utf8Path;
 use rustc_version::{Channel, Version, VersionMeta};
 use serde::{Deserialize, Serialize};
 
@@ -200,13 +200,11 @@ RUN \
     }
 }
 
-pub(crate) fn rewrite_cargo_home(cargo_home: &Utf8Path, path: &Utf8Path) -> Utf8PathBuf {
-    path.to_string().replacen(cargo_home.as_str(), "$CARGO_HOME", 1).into()
+pub(crate) fn rewrite_cargo_home(cargo_home: &Utf8Path, path: &str) -> String {
+    path.replacen(cargo_home.as_str(), "$CARGO_HOME", 1)
 }
 
 pub(crate) fn rewrite_rustup_home(val: String) -> String {
-    // let val:Utf8PathBuf=val.into();
-    // if let Some(pos) = val.iter().position(|part|part==".rustup") {
     const DIR: &str = ".rustup";
     if let Some(pos) = val.find(DIR) {
         return "$RUSTUP_HOME".to_owned() + &val[(pos + DIR.len())..];
