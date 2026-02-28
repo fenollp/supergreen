@@ -7,7 +7,7 @@ use serde::{Deserialize, Serialize};
 use tokio::process::Command;
 
 use crate::{
-    cargo_green::rewrite_cargo_home,
+    base_image::rewrite_cargo_home,
     ext::CommandExt,
     stage::{AsBlock, AsStage, NamedStage, Stage},
 };

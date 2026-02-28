@@ -4,7 +4,7 @@ use log::{debug, info};
 use serde::{Deserialize, Serialize};
 
 use crate::{
-    cargo_green::rewrite_cargo_home,
+    base_image::rewrite_cargo_home,
     green::Green,
     stage::{AsBlock, AsStage, NamedStage, Stage},
 };

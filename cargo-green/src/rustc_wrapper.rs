@@ -11,9 +11,9 @@ use log::{debug, error, info, warn};
 use tokio::process::Command;
 
 use crate::{
+    base_image::{rewrite_cargo_home, rewrite_rustup_home},
     build::{Effects, ERRCODE, SHELL, STDERR, STDOUT},
     buildrs_wrapper::rewrite_main,
-    cargo_green::rewrite_cargo_home,
     checkouts,
     cratesio::{self, rewrite_cratesio_index},
     ext::CommandExt,
@@ -515,6 +515,7 @@ fn fmap_env(
             "TERM" => return None,
             "RUSTC" => "rustc".to_owned(), // Rewrite host rustc so the base_image one can be used
             "OUT_DIR" => virtual_target_dir(Utf8Path::new(&val)).to_string(),
+            "RUSTDOC" => rewrite_rustup_home(val),
             _ => val,
         };
         return Some((var, val));

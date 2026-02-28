@@ -1,5 +1,6 @@
 use std::sync::LazyLock;
 
+use camino::{Utf8Path, Utf8PathBuf};
 use rustc_version::{Channel, Version, VersionMeta};
 use serde::{Deserialize, Serialize};
 
@@ -197,6 +198,31 @@ RUN \
 
         BaseImage { with_network, image, image_inline: Some(block) }
     }
+}
+
+pub(crate) fn rewrite_cargo_home(cargo_home: &Utf8Path, path: &Utf8Path) -> Utf8PathBuf {
+    path.to_string().replacen(cargo_home.as_str(), "$CARGO_HOME", 1).into()
+}
+
+pub(crate) fn rewrite_rustup_home(val: String) -> String {
+    // let val:Utf8PathBuf=val.into();
+    // if let Some(pos) = val.iter().position(|part|part==".rustup") {
+    const DIR: &str = ".rustup";
+    if let Some(pos) = val.find(DIR) {
+        return "$RUSTUP_HOME".to_owned() + &val[(pos + DIR.len())..];
+    }
+    val
+}
+
+#[test]
+fn test_rewrite_rustup_home() {
+    assert_eq!(
+        "$RUSTUP_HOME/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc",
+        rewrite_rustup_home(
+            "/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc"
+                .to_owned()
+        )
+    );
 }
 
 #[test]
