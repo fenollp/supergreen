@@ -3,6 +3,7 @@ use std::{
     env,
     fs::{self},
     future::Future,
+    io::ErrorKind,
 };
 
 use anyhow::{anyhow, bail, Result};
@@ -194,6 +195,16 @@ async fn do_wrap_rustc(
     }
 
     info!("picked {rustc_stage} for {input}");
+
+    if pwd.starts_with(&green.cargo_home) {
+        info!("ensure guest $CARGO_HOME is followable from host");
+        let (guest, host) = ("/usr/local/cargo", &green.cargo_home);
+        if let Err(e) = symlink::symlink_dir(host, guest) {
+            if e.kind() != ErrorKind::AlreadyExists {
+                bail!("Could not `ln -s {host} {guest}`: {e}")
+            }
+        }
+    }
 
     let mut rustc_block = format!("FROM {RST} AS {rustc_stage}\n");
     rustc_block.push_str(&format!("SHELL {SHELL:?}\n"));
