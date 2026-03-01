@@ -341,6 +341,7 @@ $(restore_bin)
 $(restore_builder_data)
     - uses: actions/checkout@v6
 $(rundeps_versions)
+    - run: sudo ln -s ~/.cargo /usr/local/cargo
 
     - name: Prepare local private registry cache
       if: \${{ env.CARGOGREEN_CACHE_FROM_IMAGES != '' || env.CARGOGREEN_CACHE_TO_IMAGES != '' }}

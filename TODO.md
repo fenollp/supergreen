@@ -586,3 +586,7 @@ https://github.com/rust-lang/rustwide
 
 ---
 
+https://github.com/uandere/semwave
+
+---
+

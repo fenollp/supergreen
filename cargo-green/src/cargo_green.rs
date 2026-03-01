@@ -1,6 +1,7 @@
 use std::{
     env,
     fs::{self},
+    io::ErrorKind,
 };
 
 use anyhow::{anyhow, bail, Result};
@@ -46,6 +47,22 @@ pub(crate) async fn main() -> Result<Green> {
         bail!("'cargo_home' setting cannot be set")
     }
     green.cargo_home = cargo_home()?;
+    if true {
+        let (guest, host) = ("/usr/local/cargo", &green.cargo_home);
+        if let Err(e) = symlink::symlink_dir(host, guest) {
+            if e.kind() != ErrorKind::AlreadyExists {
+                bail!(
+                    "
+Trying to ensure guest $CARGO_HOME is followable from host...
+Could not `ln -s {host} {guest}`: {e}
+
+Please try:
+    sudo ln -s {host} {guest}
+"
+                )
+            }
+        }
+    }
     green.maybe_arrange_cratesio_index()?;
 
     // Read runner's envs only once and disallow conf overrides
