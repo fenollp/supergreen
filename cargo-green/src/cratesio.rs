@@ -51,7 +51,7 @@ impl Green {
 
 #[must_use]
 pub(crate) fn rewrite_cratesio_index(path: &str) -> String {
-    if let Some(pos) = path.find(INDEX) {
+    if let Some(pos) = path.find(&format!("{INDEX}-")) {
         return path[..pos].to_owned() + INDEX + &path[(pos + INDEX.len() + 1 + 16)..];
     }
     path.to_owned()
