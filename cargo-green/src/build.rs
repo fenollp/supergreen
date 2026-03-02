@@ -37,7 +37,7 @@ use crate::{
     ext::{timeout, CommandExt},
     green::Green,
     image_uri::ImageUri,
-    md::BuildContext,
+    md::{BuildContext, DIESES},
     r#final::is_primary,
     rechrome,
     runner::DOCKER_HOST,
@@ -433,7 +433,7 @@ async fn run_build(
                 .map_err(|e| anyhow!("Failed opening (RO) {containerfile}: {e}"))?;
             let mut lines = TokioBufReader::new(reader).lines();
             while let Ok(Some(line)) = lines.next_line().await {
-                if line.starts_with("## ") {
+                if line.starts_with(DIESES) {
                     continue;
                 }
                 stdin

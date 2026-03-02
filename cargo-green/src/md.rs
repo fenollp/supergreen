@@ -17,6 +17,8 @@ use crate::{
     PKG,
 };
 
+pub(crate) const DIESES: &str = "##";
+
 //FIXME unpub?
 #[derive(Debug, Clone, Deserialize, Serialize, Eq)]
 pub(crate) struct NamedMount {
@@ -438,15 +440,17 @@ impl Md {
     }
 
     pub(crate) fn comment_pretty(line: &str, buf: &mut String) {
-        const MAX: usize = u16::MAX as usize - ("## ".len() + '\n'.len_utf8());
+        const MAX: usize = u16::MAX as usize - (DIESES.len() + 1 + '\n'.len_utf8());
         let max = MAX.min(line.len());
         //> dockerfile line greater than max allowed size of 65535
         let line = &line[..max];
         if line.is_empty() {
-            buf.push_str("##\n");
+            buf.push_str(DIESES);
+            buf.push('\n');
             return;
         }
-        buf.push_str("## ");
+        buf.push_str(DIESES);
+        buf.push(' ');
         buf.push_str(line);
         buf.push('\n');
     }
