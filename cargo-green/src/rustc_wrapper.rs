@@ -594,12 +594,28 @@ fn rewrite_env(val: &str, cargo_home: &Utf8Path) -> Result<String> {
 }
 
 #[test]
-fn doesnt_mess_up_schemes() {
+fn test_rewrite_env() {
     temp_env::with_var("CARGO_TARGET_DIR", Some("/some/path/"), || {
         let cargo_home: Utf8PathBuf = "/some/other/path".into();
+
         assert_eq!(
             "https'://github.com/dtolnay/anyhow'",
             rewrite_env("https://github.com/dtolnay/anyhow", &cargo_home).unwrap()
+        );
+
+        assert_eq!(
+            "$CARGO_HOME/registry/src/index.crates.io'+zstd.1.5.7/zstd/lib'",
+            rewrite_env(
+                "/some/other/path/registry/src/index.crates.io+zstd.1.5.7/zstd/lib",
+                &cargo_home
+            )
+            .unwrap()
+        );
+
+        assert_eq!(
+            "/target/release/build/zstd-safe-f387b30b22c9cb23/out",
+            rewrite_env("/some/path/release/build/zstd-safe-f387b30b22c9cb23/out", &cargo_home)
+                .unwrap()
         );
     });
 }
