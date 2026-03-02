@@ -27,8 +27,12 @@ impl Green {
             .filter_map(Result::ok)
             .inspect(|entry| info!("Found {}: {:?}", entry.path(), entry.file_type()))
             .filter(|entry| entry.file_type().map(|f| f.is_dir()).unwrap_or(false))
-            .filter(|dir| dir.path().as_str().starts_with(INDEX))
-            .filter(|dir| dir.path().file_name() != Some(INDEX)) // Just to be sure
+            .filter(|dir| {
+                dir.path()
+                    .file_name()
+                    .map(|name| name.starts_with(INDEX) && name != INDEX)
+                    .unwrap_or(false)
+            })
             .filter_map(|dir| Some((dir.path().to_owned(), dir.metadata().ok()?.modified().ok()?)))
             .max_by_key(|&(_, modified)| modified)
             .map(|(path, _)| path)
@@ -37,7 +41,7 @@ impl Green {
             if let Err(e) = symlink::remove_symlink_dir(&link) {
                 info!("Failed cleaning previous symlink {link}: {e}");
             }
-            if let Err(e) = symlink::symlink_dir(&link, &youngest) {
+            if let Err(e) = symlink::symlink_dir(&youngest, &link) {
                 bail!("Could not symlink {link} to {youngest}: {e}")
             }
         }
