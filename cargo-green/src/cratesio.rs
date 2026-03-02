@@ -1,6 +1,6 @@
 use anyhow::{anyhow, bail, Result};
 use camino::{Utf8Path, Utf8PathBuf};
-use log::{debug, info};
+use log::{debug, info, warn};
 use serde::{Deserialize, Serialize};
 
 use crate::{
@@ -16,6 +16,10 @@ impl Green {
     pub(crate) fn maybe_arrange_cratesio_index(&self) -> Result<()> {
         let crates_home = self.cargo_home.join(HOME);
         info!("Listing directory {crates_home}");
+        if !crates_home.exists() {
+            warn!("no crates' home yet! {crates_home:?}");
+            return Ok(());
+        }
         if let Some(youngest) = crates_home
             .read_dir_utf8()
             .map_err(|e| anyhow!("Failed `ls {crates_home}`: {e}"))?
