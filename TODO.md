@@ -589,3 +589,10 @@ https://github.com/rust-lang/rustwide
 
 ---
 
+https://github.com/rust-lang/cargo/issues/5931#issuecomment-3482870594
+> some foundation crates bump versions a lot and projects are unlikely to be on a coordinated set of those packages
+
+==> cache-aware deps locking
+====> ask cache with a dep version range, get back most used / most hit version
+
+---
