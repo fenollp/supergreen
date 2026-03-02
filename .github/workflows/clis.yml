@@ -90,7 +90,6 @@ jobs:
       CARGOGREEN_EXPERIMENT: finalpathnonprimary # dumps on each build call
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
-
     needs: bin
     steps:
     - uses: docker/login-action@v3
@@ -252,10 +251,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -339,10 +334,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -410,7 +401,6 @@ jobs:
       CARGOGREEN_EXPERIMENT: finalpathnonprimary # dumps on each build call
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
-
     needs: bin
     steps:
     - uses: docker/login-action@v3
@@ -572,10 +562,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -659,10 +645,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -730,7 +712,6 @@ jobs:
       CARGOGREEN_EXPERIMENT: finalpathnonprimary # dumps on each build call
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
-
     needs: bin
     steps:
     - uses: docker/login-action@v3
@@ -892,10 +873,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -979,10 +956,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -1050,7 +1023,6 @@ jobs:
       CARGOGREEN_EXPERIMENT: finalpathnonprimary # dumps on each build call
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
-
     needs: bin
     steps:
     - uses: docker/login-action@v3
@@ -1212,10 +1184,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -1299,10 +1267,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -1370,7 +1334,6 @@ jobs:
       CARGOGREEN_EXPERIMENT: finalpathnonprimary # dumps on each build call
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
-
     needs: bin
     steps:
     - uses: docker/login-action@v3
@@ -1472,7 +1435,7 @@ jobs:
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env  \
-          cargo green -vv install --locked --force cross@0.2.5 --git https://github.com/cross-rs/cross.git --rev=49cd054de9b832dfc11a4895c72b0aef533b5c6a cross |& tee _
+          cargo green -vv install --locked --force cross@0.2.5 --git https://github.com/cross-rs/cross.git --rev=49cd054de9b832dfc11a4895c72b0aef533b5c6a --bin=cross |& tee _
     - name: 🔵 cargo install jobs=1
       #if: ${{ job.steps.cargo-install.outcome == 'failure' }} this actually hides failure of cargo-install step
       run: |
@@ -1481,7 +1444,7 @@ jobs:
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env  \
-          cargo green -vv install --jobs=1 --locked --force cross@0.2.5 --git https://github.com/cross-rs/cross.git --rev=49cd054de9b832dfc11a4895c72b0aef533b5c6a cross |& tee _
+          cargo green -vv install --jobs=1 --locked --force cross@0.2.5 --git https://github.com/cross-rs/cross.git --rev=49cd054de9b832dfc11a4895c72b0aef533b5c6a --bin=cross |& tee _
     - if: ${{ always() && matrix.toolchain != '1.91.1' }}
       uses: actions/upload-artifact@v7
       name: Upload recipe
@@ -1532,10 +1495,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -1567,7 +1526,7 @@ jobs:
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env  \
-          cargo green -vv install --locked --force cross@0.2.5 --git https://github.com/cross-rs/cross.git --rev=49cd054de9b832dfc11a4895c72b0aef533b5c6a cross |& tee _
+          cargo green -vv install --locked --force cross@0.2.5 --git https://github.com/cross-rs/cross.git --rev=49cd054de9b832dfc11a4895c72b0aef533b5c6a --bin=cross |& tee _
     - name: ...doesn't recompile anything
       run: |
         err=0
@@ -1619,10 +1578,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -1690,7 +1645,6 @@ jobs:
       CARGOGREEN_EXPERIMENT: finalpathnonprimary # dumps on each build call
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
-
     needs: bin
     steps:
     - uses: docker/login-action@v3
@@ -1852,10 +1806,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -1939,10 +1889,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -2010,7 +1956,6 @@ jobs:
       CARGOGREEN_EXPERIMENT: finalpathnonprimary # dumps on each build call
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
-
     needs: bin
     steps:
     - uses: docker/login-action@v3
@@ -2172,10 +2117,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -2259,10 +2200,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -2330,7 +2267,6 @@ jobs:
       CARGOGREEN_EXPERIMENT: finalpathnonprimary # dumps on each build call
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
-
     needs: bin
     steps:
     - uses: docker/login-action@v3
@@ -2492,10 +2428,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -2579,10 +2511,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -2650,7 +2578,6 @@ jobs:
       CARGOGREEN_EXPERIMENT: finalpathnonprimary # dumps on each build call
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
-
     needs: bin
     steps:
     - uses: docker/login-action@v3
@@ -2812,10 +2739,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -2899,10 +2822,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -2949,7 +2868,7 @@ jobs:
       if: ${{ always() }}
       run: du -sh $CARGO_TARGET_DIR || true
 
-  ntpd_1-7-0-alpha-20251003:
+  ntpd_1-7-1:
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -2963,15 +2882,13 @@ jobs:
         exclude:
         - toolchain: ${{ github.ref != 'refs/heads/main' && '1.91.1' }}
     env:
-      CARGO_TARGET_DIR: /tmp/clis-ntpd_1-7-0-alpha-20251003
+      CARGO_TARGET_DIR: /tmp/clis-ntpd_1-7-1
     # CARGOGREEN_CACHE_FROM_IMAGES: docker-image://localhost:12345/${{ github.repository }}
     # CARGOGREEN_CACHE_TO_IMAGES: docker-image://localhost:23456/${{ github.repository }}
-      CARGOGREEN_FINAL_PATH: recipes/ntpd@1.7.0-alpha.20251003.Dockerfile
+      CARGOGREEN_FINAL_PATH: recipes/ntpd@1.7.1.Dockerfile
       CARGOGREEN_EXPERIMENT: finalpathnonprimary # dumps on each build call
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
-      NTPD_RS_GIT_REV: c7945250c378f65f65b2a75748132edf75063b3b
-      NTPD_RS_GIT_DATE: 2025-05-09
     needs: bin
     steps:
     - uses: docker/login-action@v3
@@ -3072,8 +2989,8 @@ jobs:
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
-        env  \
-          cargo green -vv install --locked --force ntpd@1.7.0-alpha.20251003  |& tee _
+        env NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b NTPD_RS_GIT_DATE=2025-05-09 \
+          cargo green -vv install --locked --force ntpd@1.7.1 --bin=ntp-daemon |& tee _
     - name: 🔵 cargo install jobs=1
       #if: ${{ job.steps.cargo-install.outcome == 'failure' }} this actually hides failure of cargo-install step
       run: |
@@ -3081,13 +2998,13 @@ jobs:
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
-        env  \
-          cargo green -vv install --jobs=1 --locked --force ntpd@1.7.0-alpha.20251003  |& tee _
+        env NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b NTPD_RS_GIT_DATE=2025-05-09 \
+          cargo green -vv install --jobs=1 --locked --force ntpd@1.7.1 --bin=ntp-daemon |& tee _
     - if: ${{ always() && matrix.toolchain != '1.91.1' }}
       uses: actions/upload-artifact@v7
       name: Upload recipe
       with:
-        name: ntpd@1.7.0-alpha.20251003.Dockerfile
+        name: ntpd@1.7.1.Dockerfile
         path: ${{ env.CARGOGREEN_FINAL_PATH }}
         if-no-files-found: error
     - if: ${{ always() }}
@@ -3133,10 +3050,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -3167,8 +3080,8 @@ jobs:
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
-        env  \
-          cargo green -vv install --locked --force ntpd@1.7.0-alpha.20251003  |& tee _
+        env NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b NTPD_RS_GIT_DATE=2025-05-09 \
+          cargo green -vv install --locked --force ntpd@1.7.1 --bin=ntp-daemon |& tee _
     - name: ...doesn't recompile anything
       run: |
         err=0
@@ -3220,10 +3133,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -3291,7 +3200,6 @@ jobs:
       CARGOGREEN_EXPERIMENT: finalpathnonprimary # dumps on each build call
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
-
     needs: bin
     steps:
     - uses: docker/login-action@v3
@@ -3453,10 +3361,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -3540,10 +3444,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -3611,7 +3511,6 @@ jobs:
       CARGOGREEN_EXPERIMENT: finalpathnonprimary # dumps on each build call
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
-
     needs: bin
     steps:
     - uses: docker/login-action@v3
@@ -3773,10 +3672,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -3860,10 +3755,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -3931,7 +3822,6 @@ jobs:
       CARGOGREEN_EXPERIMENT: finalpathnonprimary # dumps on each build call
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
-
     needs: bin
     steps:
     - uses: docker/login-action@v3
@@ -4093,10 +3983,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -4180,10 +4066,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -4251,7 +4133,6 @@ jobs:
       CARGOGREEN_EXPERIMENT: finalpathnonprimary # dumps on each build call
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
-
     needs: bin
     steps:
     - uses: docker/login-action@v3
@@ -4413,10 +4294,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -4500,10 +4377,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -4571,7 +4444,6 @@ jobs:
       CARGOGREEN_EXPERIMENT: finalpathnonprimary # dumps on each build call
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
-
     needs: bin
     steps:
     - uses: docker/login-action@v3
@@ -4733,10 +4605,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -4820,10 +4688,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -4891,7 +4755,6 @@ jobs:
       CARGOGREEN_EXPERIMENT: finalpathnonprimary # dumps on each build call
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
-
     needs: bin
     steps:
     - uses: docker/login-action@v3
@@ -5053,10 +4916,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -5140,10 +4999,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -5211,7 +5066,6 @@ jobs:
       CARGOGREEN_EXPERIMENT: finalpathnonprimary # dumps on each build call
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
-
     needs: bin
     steps:
     - uses: docker/login-action@v3
@@ -5373,10 +5227,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -5460,10 +5310,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -5531,7 +5377,6 @@ jobs:
       CARGOGREEN_EXPERIMENT: finalpathnonprimary # dumps on each build call
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
-
     needs: bin
     steps:
     - uses: docker/login-action@v3
@@ -5693,10 +5538,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -5780,10 +5621,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -5851,7 +5688,6 @@ jobs:
       CARGOGREEN_EXPERIMENT: finalpathnonprimary # dumps on each build call
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
-
     needs: bin
     steps:
     - uses: docker/login-action@v3
@@ -6013,10 +5849,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -6100,10 +5932,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -6171,7 +5999,6 @@ jobs:
       CARGOGREEN_EXPERIMENT: finalpathnonprimary # dumps on each build call
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
-
     needs: bin
     steps:
     - uses: docker/login-action@v3
@@ -6333,10 +6160,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -6420,10 +6243,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -6491,7 +6310,6 @@ jobs:
       CARGOGREEN_EXPERIMENT: finalpathnonprimary # dumps on each build call
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
-
     needs: bin
     steps:
     - uses: docker/login-action@v3
@@ -6653,10 +6471,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -6740,10 +6554,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -6811,7 +6621,6 @@ jobs:
       CARGOGREEN_EXPERIMENT: finalpathnonprimary # dumps on each build call
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
-
     needs: bin
     steps:
     - uses: docker/login-action@v3
@@ -6973,10 +6782,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -7060,10 +6865,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -7131,7 +6932,6 @@ jobs:
       CARGOGREEN_EXPERIMENT: finalpathnonprimary # dumps on each build call
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
-
     needs: bin
     steps:
     - uses: docker/login-action@v3
@@ -7293,10 +7093,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -7380,10 +7176,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -7451,7 +7243,6 @@ jobs:
       CARGOGREEN_EXPERIMENT: finalpathnonprimary # dumps on each build call
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
-
     needs: bin
     steps:
     - uses: docker/login-action@v3
@@ -7613,10 +7404,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -7700,10 +7487,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -7771,7 +7554,6 @@ jobs:
       CARGOGREEN_EXPERIMENT: finalpathnonprimary # dumps on each build call
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
-
     needs: bin
     steps:
     - uses: docker/login-action@v3
@@ -7933,10 +7715,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -8020,10 +7798,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -8091,7 +7865,6 @@ jobs:
       CARGOGREEN_EXPERIMENT: finalpathnonprimary # dumps on each build call
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
-
     needs: bin
     steps:
     - uses: docker/login-action@v3
@@ -8253,10 +8026,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -8340,10 +8109,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)

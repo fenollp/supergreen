@@ -168,6 +168,9 @@ esp. when building on remote machine(s)
 
 ---
 
+-#((i+=1)); nvs[i]=kani-verifier@0.66.0;       oks[i]=ok; nvs_args[i]='--bin=cargo-kani --bin=kani'
+- ((i+=1)); nvs[i]=kani-verifier@0.66.0;       oks[i]=ok; nvs_args[i]='--bin=cargo-kani'
+
 non-determinism in generated Dockerfile
 ```
 repro:

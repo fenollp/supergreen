@@ -40,12 +40,12 @@ declare -a nvs nvs_args
 ((i+=1)); nvs[i]=cargo-green@main;            oks[i]=ko; nvs_args[i]='--git https://github.com/fenollp/supergreen.git --branch=main cargo-green' # BUG: couldn't read `cargo-green/src/main.rs`: No such file or directory (os error 2)
 ((i+=1)); nvs[i]=cargo-llvm-cov@0.6.21;       oks[i]=ok; nvs_args[i]=''
 ((i+=1)); nvs[i]=cargo-nextest@0.9.114;       oks[i]=ok; nvs_args[i]=''
-((i+=1)); nvs[i]=cross@0.2.5;                 oks[i]=ok; nvs_args[i]='--git https://github.com/cross-rs/cross.git --rev=49cd054de9b832dfc11a4895c72b0aef533b5c6a cross' # Pinned on 2025/12/03
+((i+=1)); nvs[i]=cross@0.2.5;                 oks[i]=ok; nvs_args[i]='--git https://github.com/cross-rs/cross.git --rev=49cd054de9b832dfc11a4895c72b0aef533b5c6a --bin=cross' # Pinned on 2025/12/03
 ((i+=1)); nvs[i]=dbcc@2.2.1;                  oks[i]=oD; nvs_args[i]=''
 ((i+=1)); nvs[i]=diesel_cli@2.3.4;            oks[i]=ok; nvs_args[i]='--no-default-features --features=postgres'
 ((i+=1)); nvs[i]=hickory-dns@0.26.0-alpha.1;  oks[i]=ok; nvs_args[i]=''
 ((i+=1)); nvs[i]=mussh@3.1.3;                 oks[i]=oD; nvs_args[i]=''
-((i+=1)); nvs[i]=ntpd@1.7.0-alpha.20251003;   oks[i]=ok; nvs_args[i]=''
+((i+=1)); nvs[i]=ntpd@1.7.1;                  oks[i]=ok; nvs_args[i]='--bin=ntp-daemon'
 ((i+=1)); nvs[i]=qcow2-rs@0.1.6;              oks[i]=ok; nvs_args[i]=''
 ((i+=1)); nvs[i]=ripgrep@15.1.0;              oks[i]=ok; nvs_args[i]=''
 ((i+=1)); nvs[i]=rublk@0.2.13;                oks[i]=ok; nvs_args[i]=''
@@ -83,8 +83,7 @@ declare -a nvs nvs_args
 
 ((i+=1)); nvs[i]=a-mir-formality@main;        oks[i]=kD; nvs_args[i]='--git https://github.com/rust-lang/a-mir-formality.git --rev=3fc2f38319bb729fbf2f59c38e15e23a9b774716 a-mir-formality' # Pinned 2025/12/03 # error: cannot export macro_rules! macros from a `proc-macro` crate type currently
 
-#((i+=1)); nvs[i]=kani-verifier@0.66.0;       oks[i]=ok; nvs_args[i]='--bin=cargo-kani --bin=kani'
- ((i+=1)); nvs[i]=kani-verifier@0.66.0;       oks[i]=ok; nvs_args[i]='--bin=cargo-kani'
+((i+=1)); nvs[i]=kani-verifier@0.66.0;        oks[i]=ok; nvs_args[i]='--bin=cargo-kani'
 
 ((i+=1)); nvs[i]=creusat@master;              oks[i]=ko; nvs_args[i]='--git https://github.com/sarsko/creusat.git --rev=0758fe729d52d8289f3db3508940662e2969ec97 CreuSAT' # Pinned on 2025/12/03 # error: couldn't read `CreuSAT/src/lib.rs`: No such file or directory (os error 2)
 #80 [checkout-0758fe7-0758fe729d52d8289f3db3508940662e2969ec97 1/1] ADD --keep-git-dir=false   https://github.com/sarsko/creusat.git#0758fe729d52d8289f3db3508940662e2969ec97 /
@@ -185,6 +184,7 @@ as_env() {
     diesel_cli@*) envvars+=(CARGOGREEN_ADD_APT='libpq-dev') ;;
     mussh@*) envvars+=(CARGOGREEN_ADD_APT='libsqlite3-dev,libssl-dev,pkg-config,zlib1g-dev') ;;
     nanometers@*) envvars+=(CARGOGREEN_ADD_APT='libcairo2-dev,libpango-1.0-0,libpango1.0-dev,libssl-dev,libxcb-render0-dev,libxcb-shape0-dev,libxcb-xfixes0-dev,libxkbcommon-dev') ;;
+    ntpd@*) envvars+=(NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b); envvars+=(NTPD_RS_GIT_DATE=2025-05-09) ;; # Any commit, just fixed + Time of commit
     privaxy@*) envvars+=(CARGOGREEN_ADD_APT='libssl-dev') ;;
     rublk@*) envvars+=(CARGOGREEN_ADD_APT='libclang-dev') ;;
     sccache@*) envvars+=(CARGOGREEN_ADD_APT='libssl-dev,pkg-config,zlib1g-dev') ;;
@@ -285,9 +285,6 @@ slugify() {
   sed 's%@%_%g;s%\.%-%g;s%/%%g;s%:%%g' <<<"$name_at_version"
 }
 
-ntpd_locked_commit=c7945250c378f65f65b2a75748132edf75063b3b  # Any value, just fixed.
-ntpd_locked_date=2025-05-09                                  # Time of commit
-
 cli() {
   local name_at_version=$1; shift
   local registry=/tmp/.local-registry
@@ -313,15 +310,6 @@ $(jobdef "$(slugify "$name_at_version")")
       CARGOGREEN_EXPERIMENT: finalpathnonprimary # dumps on each build call
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
-$(
-  case "$name_at_version" in
-    ntpd@*)
-      printf '      NTPD_RS_GIT_REV: %s\n' "$ntpd_locked_commit"
-      printf '      NTPD_RS_GIT_DATE: %s\n' "$ntpd_locked_date"
-      ;;
-    *) ;;
-  esac
-)
     needs: bin
     steps:
 $(login_to_readonly_hub)
@@ -610,7 +598,6 @@ as_env "$name_at_version"
 send \
   'until' '[[' -f "$tmpgooo".installed ']];' 'do' sleep '.1;' 'done' '&&' rm "$tmpgooo".* \
   '&&' 'if' '[[' "$reset" '=' '1' ']];' 'then' docker buildx rm "$BUILDX_BUILDER" --force '||' 'exit' '1;' 'fi' \
-  '&&' 'case' "$name_at_version" 'in' ntpd'@*)' export NTPD_RS_GIT_REV=$ntpd_locked_commit '&&' export NTPD_RS_GIT_DATE=$ntpd_locked_date ';;' '*)' ';;' 'esac' \
   '&&' "${envvars[@]}" $CARGO green -vv install --timings $jobs --root=$tmpbins $frozen --force "$(as_install "$name_at_version")" "$args" \
   '&&' tmux kill-session -t "$session_name"
 tmux select-layout even-vertical
