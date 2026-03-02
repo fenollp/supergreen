@@ -124,10 +124,6 @@ cat <<EOF
     - if: \${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "\$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ \${{ matrix.toolchain }} != $stable ]]; then
           final_diff+=(--exit-code)
