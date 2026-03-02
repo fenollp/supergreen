@@ -12,7 +12,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::{
     green::Green,
-    md::{BuildContext, Md},
+    md::{BuildContext, Md, DIESES},
 };
 
 #[macro_export]
@@ -55,11 +55,26 @@ impl Green {
         envs: &str,
     ) -> Result<()> {
         if let Some(path) = self.should_write_final_path() {
-            info!("writing (RW) final path {path}");
-
-            let _ = fs::copy(containerfile, path)?;
-
             let mut fbuf = String::new();
+
+            info!("reading (RO) containerfile {containerfile}");
+            let mut opts = OpenOptions::new();
+            if self.finalpathnocomment() {
+                for line in fs::read_to_string(containerfile)?.lines() {
+                    if !line.starts_with(DIESES) {
+                        fbuf.push_str(line);
+                        fbuf.push('\n');
+                    }
+                }
+
+                info!("writing (TW) final path {path}");
+                opts.write(true).truncate(true);
+            } else {
+                let _ = fs::copy(containerfile, path)?;
+
+                info!("writing (AW) final path {path}");
+                opts.append(true);
+            }
 
             fbuf.push('\n');
             fbuf.push_str("# Pipe this file to");
@@ -70,7 +85,7 @@ impl Green {
             fbuf.push_str(&format!(":\n# {envs} \\\n"));
             fbuf.push_str(&format!("#   {call} <THIS_FILE\n"));
 
-            let mut file = OpenOptions::new().append(true).open(path)?;
+            let mut file = opts.open(path)?;
             write!(file, "{fbuf}")?;
         }
         Ok(())
@@ -86,9 +101,11 @@ impl Green {
 
             let mut fbuf = String::new();
 
-            fbuf.push('\n');
-            for md_line in fs::read_to_string(md_path)?.lines() {
-                Md::comment_pretty(md_line, &mut fbuf);
+            if !self.finalpathnocomment() {
+                fbuf.push('\n');
+                for md_line in fs::read_to_string(md_path)?.lines() {
+                    Md::comment_pretty(md_line, &mut fbuf);
+                }
             }
 
             fbuf.push('\n');

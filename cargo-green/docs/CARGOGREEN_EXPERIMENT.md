@@ -2,8 +2,14 @@ A comma-separated list of names of features to activate.
 
 A name that does not match exactly is an error.
 
+* `finalpathnocomment`:
+  - Write final containerfile on every rustc call.
+  - Does not contain internal debugging structs: perfect format to share the file.
+  - Helps e.g. debug builds failing too early.
+
 * `finalpathnonprimary`:
   - Write final containerfile on every rustc call.
+  - Contains internal debugging structs
   - Helps e.g. debug builds failing too early.
 
 * `incremental`:
