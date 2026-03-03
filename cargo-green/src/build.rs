@@ -33,6 +33,7 @@ use tokio_stream::StreamExt;
 use tokio_tar::EntryType;
 
 use crate::{
+    base_image::un_rewrite_cargo_home,
     du::lock_from_builder_cache,
     ext::{timeout, CommandExt},
     green::Green,
@@ -331,7 +332,16 @@ impl Green {
             .replace(cmd.as_std().get_program().to_str().unwrap(), &self.runner.to_string());
         let envs = cmd.envs_string(&self.runner.buildnoop_envs());
 
-        let status = match run_build(&mut effects, cmd, &call, containerfile, target, out_dir).await
+        let status = match run_build(
+            &mut effects,
+            cmd,
+            &call,
+            containerfile,
+            target,
+            out_dir,
+            &self.cargo_home,
+        )
+        .await
         {
             Ok(status) => status,
             Err(e) => return rtrn(e, effects),
@@ -420,6 +430,7 @@ async fn run_build(
     containerfile: &Utf8Path,
     target: &Stage,
     out_dir: Option<&Utf8Path>,
+    cargo_home: &Utf8Path,
 ) -> Result<ExitStatus> {
     let start = Instant::now();
     let mut child = cmd.spawn().map_err(|e| anyhow!("Failed starting `{call}`: {e}"))?;
@@ -459,6 +470,7 @@ async fn run_build(
             let mut out = TokioBufReader::new(child.stdout.take().expect("started"));
             let target = target.to_owned();
             let out_dir = out_dir.to_owned();
+            let cargo_home = cargo_home.to_string();
             let mut err_handle = None;
             let mut out_handle = None;
             let mut rcd = None;
@@ -533,7 +545,10 @@ async fn run_build(
                                     .map_err(|e| anyhow!("Failed opening atomic {fname}: {e}"))?;
                                 if name.as_str().ends_with(".d") {
                                     let buf = str::from_utf8(&buf).expect("cargo writes utf8");
+                                    // NOTE: rewrite text here so cargo shows host paths and keeps the illusion
+                                    // but really binaries (rlib, rmeta and such) cannot be modified.
                                     let buf = un_virtual_target_dir_str(buf);
+                                    let buf = un_rewrite_cargo_home(&buf, &cargo_home);
                                     file.write_all(buf.as_bytes())
                                 } else {
                                     file.write_all(&buf)
@@ -645,11 +660,11 @@ async fn run_build(
         match join!(timeout(dbg_out), timeout(dbg_err)) {
             (Ok(Ok(Err(e))), _) => bail!("Something went wrong (maybe retry?): {e}"),
             (Ok(Ok(Ok((Some(out_buf), Some(err_buf), errcode, written)))), _) => {
-                let FromStdout { stdout, rustc_envs } = fwd_stdout(&out_buf, "➤");
+                let FromStdout { stdout, rustc_envs } = fwd_stdout(&out_buf, "➤", cargo_home);
                 info!("Buildscript {PKG}-specific config: envs:{}", rustc_envs.len());
                 effects.cargo_rustc_env = rustc_envs;
 
-                let FromStderr { stderr, envs, libs } = fwd_stderr(&err_buf, "✖");
+                let FromStderr { stderr, envs, libs } = fwd_stderr(&err_buf, "✖", cargo_home);
                 info!("Suggested {PKG}-specific config: envs:{} libs:{}", envs.len(), libs.len());
                 effects.stdout = stdout;
                 effects.stderr = stderr;
@@ -687,7 +702,7 @@ struct FromStderr {
     libs: IndexSet<String>,
 }
 
-fn fwd_stderr(stderr: &str, badge: &'static str) -> FromStderr {
+fn fwd_stderr(stderr: &str, badge: &'static str, cargo_home: &Utf8Path) -> FromStderr {
     let mut acc = FromStderr::default();
     for line in stderr.lines() {
         if line.is_empty() {
@@ -717,8 +732,10 @@ fn fwd_stderr(stderr: &str, badge: &'static str) -> FromStderr {
 
             hide_credentials_on_rate_limit(&mut msg);
 
-            eprintln!("{}", un_virtual_target_dir_str(&msg));
-            acc.stderr.push(msg);
+            acc.stderr.push(msg.clone());
+            let msg = un_virtual_target_dir_str(&msg);
+            let msg = un_rewrite_cargo_home(&msg, cargo_home.as_str());
+            eprintln!("{msg}");
         }
     }
     acc
@@ -730,7 +747,7 @@ struct FromStdout {
     rustc_envs: IndexSet<String>,
 }
 
-fn fwd_stdout(stdout: &str, badge: &'static str) -> FromStdout {
+fn fwd_stdout(stdout: &str, badge: &'static str, cargo_home: &Utf8Path) -> FromStdout {
     let mut acc = FromStdout::default();
     for line in stdout.lines() {
         if line.is_empty() {
@@ -795,8 +812,10 @@ fn fwd_stdout(stdout: &str, badge: &'static str) -> FromStdout {
                 }
             }
 
-            println!("{}", un_virtual_target_dir_str(msg));
             acc.stdout.push(msg.to_owned());
+            let msg = un_virtual_target_dir_str(msg);
+            let msg = un_rewrite_cargo_home(&msg, cargo_home.as_str());
+            println!("{msg}");
         }
     }
     acc

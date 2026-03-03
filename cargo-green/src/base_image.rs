@@ -4,7 +4,10 @@ use camino::Utf8Path;
 use rustc_version::{Channel, Version, VersionMeta};
 use serde::{Deserialize, Serialize};
 
-use crate::{add::Add, build::SHELL, image_uri::ImageUri, network::Network, stage::RST};
+use crate::{
+    add::Add, build::SHELL, image_uri::ImageUri, network::Network, stage::RST,
+    target_dir::replace_carefully,
+};
 
 macro_rules! ENV_BASE_IMAGE {
     () => {
@@ -205,6 +208,10 @@ RUN \
 
 pub(crate) fn rewrite_cargo_home(cargo_home: &Utf8Path, path: &str) -> String {
     path.replacen(CARGO_HOME, "$CARGO_HOME", 1).replacen(cargo_home.as_str(), "$CARGO_HOME", 1)
+}
+
+pub(crate) fn un_rewrite_cargo_home(txt: &str, to: &str) -> String {
+    replace_carefully(txt, CARGO_HOME, to)
 }
 
 pub(crate) fn rewrite_rustup_home(val: String) -> String {

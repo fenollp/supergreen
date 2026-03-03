@@ -13,18 +13,22 @@ static TARGET_DIR: LazyLock<Utf8PathBuf> = LazyLock::new(|| {
 });
 
 pub(crate) fn un_virtual_target_dir_str(txt: &str) -> String {
+    if !REWRITE_TARGETDIR {
+        return txt.to_owned();
+    }
     replace_carefully(txt, VIRTUAL_TARGET_DIR, TARGET_DIR.as_str())
 }
 
 pub(crate) fn virtual_target_dir_str(txt: &str) -> String {
-    replace_carefully(txt, TARGET_DIR.as_str(), VIRTUAL_TARGET_DIR)
-}
-
-fn replace_carefully(txt: &str, from: &str, to: &str) -> String {
     if !REWRITE_TARGETDIR {
         return txt.to_owned();
     }
+    replace_carefully(txt, TARGET_DIR.as_str(), VIRTUAL_TARGET_DIR)
+}
+
+pub(crate) fn replace_carefully(txt: &str, from: &str, to: &str) -> String {
     let txt = if txt.starts_with(from) { txt.replacen(from, to, 1) } else { txt.to_owned() };
+    let txt = txt.replace(&format!("\n{from}"), &format!("\n{to}"));
     let txt = txt.replace(&format!(" {from}"), &format!(" {to}"));
     let txt = txt.replace(&format!("'{from}"), &format!("'{to}"));
     let txt = txt.replace(&format!("\"{from}"), &format!("\"{to}"));
