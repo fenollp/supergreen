@@ -596,3 +596,32 @@ https://github.com/rust-lang/cargo/issues/5931#issuecomment-3482870594
 ====> ask cache with a dep version range, get back most used / most hit version
 
 ---
+
+https://github.com/uandere/semwave
+
+---
+
+-      rustc --crate-name curl_sys --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --cfg feature'="default"' --cfg feature'="http2"' --cfg feature'="libnghttp2-sys"' --cfg feature'="openssl-sys"' --cfg feature'="ssl"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "force-system-lib-on-osx", "http2", "libnghttp2-sys", "mesalink", "ntlm", "openssl-sys", "poll_7_68_0", "protocol-ftp", "rustls", "rustls-ffi", "spnego", "ssl", "static-curl", "static-ssl", "upkeep_7_62_0", "windows-static-ssl", "zlib-ng-compat"))' -C metadata'=95080d03a874f807' -C extra-filename'=-7d0776daa7ee0f8f' --out-dir /target/release/deps -C strip'=debuginfo' -L dependency'=/target/release/deps' --extern libc'=/target/release/deps/liblibc-b0efe3d2a1eac0a6.rmeta' --extern libnghttp2_sys'=/target/release/deps/liblibnghttp2_sys-3fa81cadfce83e62.rmeta' --extern libz_sys'=/target/release/deps/liblibz_sys-7244fb322cd70024.rmeta' --extern openssl_sys'=/target/release/deps/libopenssl_sys-6748b565adbe8098.rmeta' --cap-lints warn -L native'=/usr/lib/x86_64-linux-gnu' -L native'=/target/release/build/libnghttp2-sys-fcd3e71350de5b70/out/i/lib' -l curl /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/curl-sys-0.4.75+curl-8.10.0/lib.rs \
++      rustc --crate-name curl_sys --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --cfg feature'="default"' --cfg feature'="http2"' --cfg feature'="libnghttp2-sys"' --cfg feature'="openssl-sys"' --cfg feature'="ssl"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "force-system-lib-on-osx", "http2", "libnghttp2-sys", "mesalink", "ntlm", "openssl-sys", "poll_7_68_0", "protocol-ftp", "rustls", "rustls-ffi", "spnego", "ssl", "static-curl", "static-ssl", "upkeep_7_62_0", "windows-static-ssl", "zlib-ng-compat"))' -C metadata'=95080d03a874f807' -C extra-filename'=-7d0776daa7ee0f8f' --out-dir /target/release/deps -C strip'=debuginfo' -L dependency'=/target/release/deps' --extern libc'=/target/release/deps/liblibc-b0efe3d2a1eac0a6.rmeta' --extern libnghttp2_sys'=/target/release/deps/liblibnghttp2_sys-3fa81cadfce83e62.rmeta' --extern libz_sys'=/target/release/deps/liblibz_sys-7244fb322cd70024.rmeta' --extern openssl_sys'=/target/release/deps/libopenssl_sys-6748b565adbe8098.rmeta' --cap-lints warn -L native'=/target/release/build/libnghttp2-sys-fcd3e71350de5b70/out/i/lib' -L native'=/usr/lib/x86_64-linux-gnu' -l curl /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/curl-sys-0.4.75+curl-8.10.0/lib.rs \
+
+===> sort rustc args
+
+---
+
+I 26/02/18 12:57:00.113 N kani-verifier 0.66.0 9e144b88b270f21c ✖ #32 [run-z-anyhow-1.0.100-d45b6249b823f856 1/3] WORKDIR /target/release/build/anyhow-d45b6249b823f856/out
+I 26/02/18 12:57:00.113 N kani-verifier 0.66.0 9e144b88b270f21c ✖ #32 CACHED
+I 26/02/18 12:57:00.113 N kani-verifier 0.66.0 9e144b88b270f21c ✖ #33 [run-z-kani-verifier-0.66.0-5b332a90b563b71d 1/3] WORKDIR /target/release/build/kani-verifier-5b332a90b563b71d/out
+I 26/02/18 12:57:00.113 N kani-verifier 0.66.0 9e144b88b270f21c ✖ #33 CACHED
+I 26/02/18 12:57:00.113 N kani-verifier 0.66.0 9e144b88b270f21c ✖ #34 exporting to client tarball
+I 26/02/18 12:57:00.113 N kani-verifier 0.66.0 9e144b88b270f21c ✖ #34 sending tarball 0.0s done
+I 26/02/18 12:57:00.167 N kani-verifier 0.66.0 9e144b88b270f21c ✖ #34 DONE 0.0s
+I 26/02/18 12:57:00.175 N kani-verifier 0.66.0 9e144b88b270f21c Terminating task CACHED:23 DONE:11 {"context": " 2B", "dockerfile": " 33.56kB"}
+T 26/02/18 12:57:00.175 N kani-verifier 0.66.0 9e144b88b270f21c deregistering event source from poller
+
+==> acc "sending tarball 0.0s"
+
+---
+
+salti@0.5.1
+
+---
