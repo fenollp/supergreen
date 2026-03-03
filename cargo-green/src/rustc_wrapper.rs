@@ -326,14 +326,22 @@ impl Md {
         buildrs: bool,
         mut block: String,
     ) -> Result<()> {
+        let out_dir = virtual_target_dir(out_dir);
+
         // Log a possible toolchain file contents (TODO: make per-crate base.image out of this)
         if false {
             block.push_str("    { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \\\n");
         }
 
-        block.push_str(&format!("    env CARGO={:?} \\\n", "$(which cargo)"));
-        let mut set = HashSet::from(["CARGO".to_owned()]);
+        // Rewrite host cargo/rustc so the base_image ones can be used
+        block.push_str("    env CARGO=$CARGO_HOME/bin/cargo \\\n");
+        block.push_str("        RUSTC=$CARGO_HOME/bin/rustc \\\n");
+        // TODO: move these 2 to base image when possible
+        let mut set = HashSet::from(["CARGO".to_owned(), "RUSTC".to_owned()]);
         for (var, val) in env::vars().filter_map(|kv| fmap_env(kv, buildrs)) {
+            if set.contains(&var) {
+                continue;
+            }
             let val = rewrite_env(&val, cargo_home)?;
             block.push_str(&format!("        {var}={val} \\\n"));
             set.insert(var.clone());
@@ -378,7 +386,6 @@ impl Md {
             }
         }
 
-        let out_dir = virtual_target_dir(out_dir);
         block.push_str(&format!("      {call} \\\n"));
         block.push_str(&format!("        1>          {out_dir}/{out_stage}-{STDOUT} \\\n"));
         block.push_str(&format!("        2>          {out_dir}/{out_stage}-{STDERR} \\\n"));
@@ -492,19 +499,21 @@ fn fmap_env((var, val): (String, String), buildrs: bool) -> Option<(String, Stri
             debug!("not forwarding env: {var}={val}");
             return None;
         }
-        if var == "CARGO_ENCODED_RUSTFLAGS" {
-            let dec: Vec<_> = rustflags::from_env().collect();
-            debug!("env is set: {var}={val} ({dec:?})");
-        } else {
-            debug!("env is set: {var}={val}");
+        debug!(
+            "env is set: {var}={val} {:?}",
+            if var == "CARGO_ENCODED_RUSTFLAGS" {
+                rustflags::from_env().collect::<Vec<_>>()
+            } else {
+                vec![]
+            }
+        );
+        if var == "TERM" {
+            debug!("not forwarding {var} ({val})");
+            return None;
         }
-        let val = match var.as_str() {
-            "TERM" => return None,
-            "RUSTC" => "rustc".to_owned(), // Rewrite host rustc so the base_image one can be used
-            _ => val,
-        };
         return Some((var, val));
     }
+    debug!("not passing env: {var}={val}");
     None
 }
 
@@ -513,32 +522,31 @@ fn fmap_env((var, val): (String, String), buildrs: bool) -> Option<(String, Stri
 fn pass_env(var: &str) -> (bool, bool, bool) {
     // Thanks https://github.com/cross-rs/cross/blob/44011c8854cb2eaac83b173cc323220ccdff18ea/src/docker/shared.rs#L969
     let passthrough = [
+        "BROWSER",
         "http_proxy",
-        "TERM",
+        "HTTP_TIMEOUT",
+        "HTTPS_PROXY",
+        "https_proxy",
+        "OUT_DIR", // (Only set during compilation.)
+        "QEMU_STRACE",
         "RUSTDOCFLAGS",
         "RUSTFLAGS",
-        "BROWSER",
-        "HTTPS_PROXY",
-        "HTTP_TIMEOUT",
-        "https_proxy",
-        "QEMU_STRACE",
-        // Not here but set in RUN script: CARGO, PATH, ...
-        "OUT_DIR", // (Only set during compilation.)
+        "TERM", // Actually gets skipped later on
     ];
-    // TODO: vvv drop what can be dropped vvv
     let skiplist = [
-        "CARGO_BUILD_JOBS",
-        "CARGO_BUILD_RUSTC",
-        "CARGO_BUILD_RUSTC_WORKSPACE_WRAPPER",
-        "CARGO_BUILD_RUSTC_WRAPPER",
-        "CARGO_BUILD_RUSTDOC",
-        "CARGO_BUILD_TARGET_DIR",
-        "CARGO_HOME",      // TODO? drop
-        "CARGO_MAKEFLAGS", // TODO: probably drop
-        "CARGO_TARGET_DIR",
-        "LD_LIBRARY_PATH", // TODO: probably drop
-        "RUSTC_WRAPPER",
-        "RUSTC_WORKSPACE_WRAPPER",
+        "CARGO_BUILD_JOBS",                    // TODO? drop
+        "CARGO_BUILD_RUSTC",                   // TODO? drop
+        "CARGO_BUILD_RUSTC_WORKSPACE_WRAPPER", // TODO? drop
+        "CARGO_BUILD_RUSTC_WRAPPER",           // TODO? drop
+        "CARGO_BUILD_RUSTDOC",                 // TODO? drop
+        "CARGO_BUILD_TARGET_DIR",              // TODO? drop
+        "CARGO_HOME",                          // Set in base image
+        "CARGO_MAKEFLAGS",                     // TODO: probably drop
+        "CARGO_TARGET_DIR",                    // TODO? drop
+        "LD_LIBRARY_PATH",                     // TODO: probably drop
+        "RUSTC_WORKSPACE_WRAPPER",             // TODO? drop
+        "RUSTC_WRAPPER",                       // TODO? drop
+        "RUSTUP_HOME",                         // Set in base image
     ];
     let buildrs_only = [
         "DEBUG",
@@ -547,7 +555,7 @@ fn pass_env(var: &str) -> (bool, bool, bool) {
         "OPT_LEVEL",
         "OUT_DIR",
         "PROFILE",
-        "RUSTC",
+        "RUSTC", // Will be skipped as it's already set, along with $CARGO
         "RUSTC_LINKER",
         "RUSTC_WRAPPER",
         "RUSTC_WORKSPACE_WRAPPER",
