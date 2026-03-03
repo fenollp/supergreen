@@ -62,16 +62,17 @@ jobs:
     - run: docker buildx version
     - run: docker buildx build --help
     - run: podman version || true
-    - run: cargo -Vv
     - run: docker buildx prune --all --force
+    - uses: actions/checkout@v6
     - uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
         toolchain: stable
         rustflags: ''
         cache-all-crates: true
         cache-workspace-crates: true
-
-    - uses: actions/checkout@v6
+    - run: which cargo && cargo -Vv
+    - run: which rustc && rustc -Vv
+    - run: rustup show
 
     - name: Cache `cargo fetch`
       uses: actions/cache@v5
@@ -91,7 +92,6 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-cargo-install-
 
-    - run: sudo ln -s ~/.cargo /usr/local/cargo
     - run: |
             # Usually auto-set by actions-rust-lang/setup-rust-toolchain@v1
             # https://github.com/actions-rust-lang/setup-rust-toolchain/blob/fb51252c7ba57d633bc668f941da052e410add48/action.yml#L105

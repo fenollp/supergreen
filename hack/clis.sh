@@ -342,7 +342,6 @@ $(restore_bin)
 $(restore_builder_data)
     - uses: actions/checkout@v6
 $(rundeps_versions)
-    - run: sudo ln -s ~/.cargo /usr/local/cargo
 
     - name: Prepare local private registry cache
       if: \${{ env.CARGOGREEN_CACHE_FROM_IMAGES != '' || env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
@@ -378,6 +377,10 @@ $(rundeps_versions)
       if: \${{ env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
       run: docker run --name=reg-to   --rm --detach -p 23456:5000 --user \$(id -u):\$(id -g) -v $registry_new:/var/lib/registry regist3
 
+    - name: Setup
+      run: |
+        ~/.cargo/bin/cargo-green green supergreen setup || true
+        { ~/.cargo/bin/cargo-green green supergreen setup 2>/dev/null || true; } | sudo /bin/sh -xe
     - name: 🔵 Envs
       run: ~/.cargo/bin/cargo-green green supergreen env
     - if: \${{ matrix.toolchain != '$stable' }}

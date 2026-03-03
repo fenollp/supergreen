@@ -37,7 +37,6 @@ $(login_to_readonly_hub)
         rustflags: ''
         cache-on-failure: true
 $(rundeps_versions)
-
 $(restore_bin)
 $(restore_builder_data)
     - uses: actions/checkout@v6
@@ -52,7 +51,9 @@ $(restore_builder_data)
         key: \${{ github.job }}-\${{ runner.os }}-cargo-deps-\${{ hashFiles('**/Cargo.lock') }}
         restore-keys: \${{ github.job }}-\${{ runner.os }}-cargo-deps-
 
-    - run: sudo ln -s ~/.cargo /usr/local/cargo
+    - run: |
+        cargo green supergreen setup || true
+        { cargo green supergreen setup 2>/dev/null || true; } | sudo /bin/sh -xe
     - run: cargo fetch
     - run: cargo green supergreen env
 EOF

@@ -254,7 +254,8 @@ async fn do_wrap_rustc(
         rustc_block.push_str(&format!("  --mount=from={name},dst={mount},source=/ \\\n"));
     }
 
-    let input = rewrite_cargo_home(&green.cargo_home, &rewrite_cratesio_index(input.as_str()));
+    let input = rewrite_cratesio_index(input.as_str());
+    let input = rewrite_cargo_home(&green.cargo_home, &input);
 
     if buildrs {
         // TODO: this won't work with e.g. tokio-decorated main fns (async + decorator needs duplicating)

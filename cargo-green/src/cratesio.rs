@@ -1,6 +1,8 @@
+use std::fs;
+
 use anyhow::{anyhow, bail, Result};
 use camino::{Utf8Path, Utf8PathBuf};
-use log::{debug, info, warn};
+use log::{debug, info};
 use serde::{Deserialize, Serialize};
 
 use crate::{
@@ -18,8 +20,10 @@ impl Green {
         let crates_home = self.cargo_home.join(HOME);
         info!("Listing directory {crates_home}");
         if !crates_home.exists() {
-            warn!("no crates' home yet! {crates_home:?}");
-            return Ok(());
+            info!("making usre {crates_home} exists...");
+            // No root rights needed here
+            fs::create_dir_all(&crates_home)
+                .map_err(|e| anyhow!("Failed to `mkdir -p {crates_home}`: {e}"))?;
         }
         if let Some(youngest) = crates_home
             .read_dir_utf8()

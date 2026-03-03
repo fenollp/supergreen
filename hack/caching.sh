@@ -17,6 +17,9 @@ export CARGO_TARGET_DIR=/tmp/cargo-green--hack-caching--target-dir
 mkdir -p $CARGO_TARGET_DIR
 rm -rf $CARGO_TARGET_DIR/* $CARGOGREEN_LOG_PATH* >/dev/null
 
+if [[ ! -L /usr/local/cargo ]]; then
+	{ $CARGO green supergreen setup 2>/dev/null || true; } | sudo /bin/sh -xe
+fi
 $CARGO green supergreen env
 
 compute_installed_bin_sha256() {
