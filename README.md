@@ -66,6 +66,7 @@ Minimum requirements:
 
 ```shell
 # Usage:
+  cargo green supergreen setup                                   Create required symlinks
   cargo green supergreen env [ENV ...]                           Show used values
   cargo green supergreen doc [ENV ...]                           Documentation of said values
   cargo green fetch                                              Pulls images and crates
@@ -81,6 +82,7 @@ Minimum requirements:
   cargo green build
   cargo supergreen env CARGOGREEN_BASE_IMAGE 2>/dev/null
   cargo supergreen help
+  { cargo green supergreen setup 2>/dev/null || true; } | sudo /bin/sh -xe
 
 # Suggestion:
   alias cargo='cargo green'
@@ -101,9 +103,9 @@ Builds reproducibility or hermeticity is guaranteed via:
 * Target directory paths are renamed `/target/..`
 * `crates.io` sources paths are renamed to `$CARGO_HOME/registry/src/index.crates.io/..`
   * additionally, this `index.crates.io` path is created locally.
-* `$CARGO_HOME` needs to get linked: `sudo ln -s ~/.cargo /usr/local/cargo`
+* `$CARGO_HOME` has to get linked to the one used inside the image (`/usr/local/cargo`): `sudo ln -s ~/.cargo /usr/local/cargo`
 * `git` dependencies are pinned to their commit hash
-* Produced files timestamps' are rewritten to some fixed epoch
+* Produced files timestamps' are rewritten to some fixed epoch (`SOURCE_DATE_EPOCH`)
 
 
 ## Remote execution

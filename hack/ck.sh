@@ -43,7 +43,9 @@ rundeps_versions() {
     - run: docker buildx version
     - run: docker buildx build --help
     - run: podman version || true
-    - run: cargo -Vv
+    - run: which cargo && cargo -Vv
+    - run: which rustc && rustc -Vv
+    - run: rustup show
 EOF
 }
 

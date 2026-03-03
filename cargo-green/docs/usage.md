@@ -1,5 +1,6 @@
 ```shell
 # Usage:
+  cargo green supergreen setup                                   Create required symlinks
   cargo green supergreen env [ENV ...]                           Show used values
   cargo green supergreen doc [ENV ...]                           Documentation of said values
   cargo green fetch                                              Pulls images and crates
@@ -15,6 +16,7 @@
   cargo green build
   cargo supergreen env CARGOGREEN_BASE_IMAGE 2>/dev/null
   cargo supergreen help
+  { cargo green supergreen setup 2>/dev/null || true; } | sudo /bin/sh -xe
 
 # Suggestion:
   alias cargo='cargo green'
