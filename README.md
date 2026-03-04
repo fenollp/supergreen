@@ -13,6 +13,7 @@
 
 - [Installation](#installation)
 - [Usage](#usage)
+- [How it works](#how-it-works)
 - [Remote execution](#remote-execution)
 - [Caching](#caching)
 - [Configuration](#configuration)
@@ -65,6 +66,7 @@ Minimum requirements:
 
 ```shell
 # Usage:
+  cargo green supergreen setup                                   Create required symlinks
   cargo green supergreen env [ENV ...]                           Show used values
   cargo green supergreen doc [ENV ...]                           Documentation of said values
   cargo green fetch                                              Pulls images and crates
@@ -80,6 +82,7 @@ Minimum requirements:
   cargo green build
   cargo supergreen env CARGOGREEN_BASE_IMAGE 2>/dev/null
   cargo supergreen help
+  { cargo green supergreen setup 2>/dev/null || true; } | sudo /bin/sh -xe
 
 # Suggestion:
   alias cargo='cargo green'
@@ -87,6 +90,22 @@ Minimum requirements:
   cargo fetch
   cargo test
 ```
+
+
+## How it works
+
+This encapsulates the compilation of Rust programs using Docker's build engine. In other words: this `cargo` plugin registers a `rustc` wrapper that calls to BuildKit to build crates and the execution of their build scripts.
+
+These builds use OCI images pinned to the local Rust installation version, eventually producing a single (huge) Containerfile that can then be shared around and built with eg. `docker build -o=. https://host.my/tiny/binary.Dockerfile`.
+
+Builds reproducibility or hermeticity is guaranteed via:
+* Every image is locked by its digest (`@sha256:..`)
+* Target directory paths are renamed `/target/..`
+* `crates.io` sources paths are renamed to `$CARGO_HOME/registry/src/index.crates.io/..`
+  * additionally, this `index.crates.io` path is created locally.
+* `$CARGO_HOME` has to get linked to the one used inside the image (`/usr/local/cargo`): `sudo ln -s ~/.cargo /usr/local/cargo`
+* `git` dependencies are pinned to their commit hash
+* Produced files timestamps' are rewritten to some fixed epoch (`SOURCE_DATE_EPOCH`)
 
 
 ## Remote execution
@@ -529,8 +548,14 @@ A comma-separated list of names of features to activate.
 
 A name that does not match exactly is an error.
 
+* `finalpathnocomment`:
+  - Write final containerfile on every rustc call.
+  - Does not contain internal debugging structs: perfect format to share the file.
+  - Helps e.g. debug builds failing too early.
+
 * `finalpathnonprimary`:
   - Write final containerfile on every rustc call.
+  - Contains internal debugging structs
   - Helps e.g. debug builds failing too early.
 
 * `incremental`:

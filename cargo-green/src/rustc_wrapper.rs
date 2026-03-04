@@ -11,6 +11,7 @@ use log::{debug, error, info, warn};
 use tokio::process::Command;
 
 use crate::{
+    base_image::{rewrite_cargo_home, rewrite_rustup_home},
     build::{Effects, ERRCODE, SHELL, STDERR, STDOUT},
     buildrs_wrapper::rewrite_main,
     checkouts,
@@ -169,13 +170,6 @@ async fn wrap_rustc(
     .inspect_err(|e| error!("Error: {e}"))
 }
 
-fn cargo_home() -> Result<Utf8PathBuf> {
-    home::cargo_home()
-        .map_err(|e| anyhow!("bad $CARGO_HOME or something: {e}"))?
-        .try_into()
-        .map_err(|e| anyhow!("corrupted $CARGO_HOME path: {e}"))
-}
-
 #[expect(clippy::too_many_arguments)]
 async fn do_wrap_rustc(
     green: Green,
@@ -199,17 +193,17 @@ async fn do_wrap_rustc(
             .map_err(|e| anyhow!("Failed to `mkdir -p {incremental}`: {e}"))?;
     }
 
-    let cargo_home = cargo_home()?;
-
     info!("picked {rustc_stage} for {input}");
 
     let mut rustc_block = format!("FROM {RST} AS {rustc_stage}\n");
     rustc_block.push_str(&format!("SHELL {SHELL:?}\n"));
     rustc_block.push_str(&format!("WORKDIR {out_dir}\n", out_dir = virtual_target_dir(&out_dir)));
-    if !pwd.starts_with(cargo_home.join("registry/src")) {
+    if !pwd.starts_with(green.cargo_home.join(cratesio::HOME)) {
         // Essentially match the same-ish path that points to crates-io paths.
-        // Experiment showed that git-check'ed-out crates didn't like: // if !pwd.starts_with(&cargo_home) {
-        rustc_block.push_str(&format!("WORKDIR {pwd}\n", pwd = virtual_target_dir(&pwd)));
+        // Experiment showed that git-check'ed-out crates didn't like: // if !pwd.starts_with(&green.cargo_home) {
+        let pwd = virtual_target_dir(&pwd);
+        let pwd = rewrite_cargo_home(&green.cargo_home, pwd.as_str());
+        rustc_block.push_str(&format!("WORKDIR {pwd}\n"));
     }
 
     if let Some(ref incremental) = incremental {
@@ -218,15 +212,15 @@ async fn do_wrap_rustc(
 
     // TODO: support non-crates.io crates managers + proxies
     // TODO: use --secret mounts for private deps (and secret direct artifacts)
-    let code_stage = if input.starts_with(cargo_home.join("registry/src")) {
+    let code_stage = if input.starts_with(green.cargo_home.join(cratesio::HOME)) {
         // Input is of a crate dep (hosted at crates.io)
         // Let's optimize this case by fetching & caching crate tarball
 
-        cratesio::named_stage(krate_name, krate_manifest_dir).await?
-    } else if krate_manifest_dir.starts_with(cargo_home.join("git/checkouts")) {
+        cratesio::named_stage(&green.cargo_home, krate_name, krate_manifest_dir).await?
+    } else if krate_manifest_dir.starts_with(green.cargo_home.join(checkouts::HOME)) {
         // Input is of a git checked out dep
 
-        checkouts::as_stage(krate_manifest_dir).await?
+        checkouts::as_stage(&green.cargo_home, krate_manifest_dir).await?
     } else if input.is_relative() {
         // Input is local code
 
@@ -245,11 +239,6 @@ async fn do_wrap_rustc(
         rustc_block.push_str(&format!("  --mount=from={name}{mount}{rw} \\\n"));
     }
 
-    let input = rewrite_cratesio_index(&input);
-
-    let incremental_stage = Stage::incremental(mdid)?;
-    let out_stage = Stage::output(mdid)?;
-
     if let Some((name, uri)) = code_stage.context() {
         info!("loading {name:?}: {uri}");
         md.contexts = [BuildContext { name, uri }].into();
@@ -265,11 +254,16 @@ async fn do_wrap_rustc(
         rustc_block.push_str(&format!("  --mount=from={name},dst={mount},source=/ \\\n"));
     }
 
+    let input = rewrite_cratesio_index(input.as_str());
+    let input = rewrite_cargo_home(&green.cargo_home, &input);
+
     if buildrs {
         // TODO: this won't work with e.g. tokio-decorated main fns (async + decorator needs duplicating)
         // TODO: replace this Rust patching by simply shell patching ==> must work on macOS x-compiling for eg. Linux
         rustc_block.push_str(&rewrite_main(mdid, &input));
     }
+
+    let out_stage = Stage::output(mdid)?;
 
     let args = args
         .into_iter()
@@ -283,10 +277,12 @@ async fn do_wrap_rustc(
         &out_dir,
         format!("rustc {args} {input}"),
         &green.set_envs,
+        &green.cargo_home,
         buildrs,
         rustc_block,
     )?;
 
+    let incremental_stage = Stage::incremental(mdid)?;
     if let Some(ref incremental) = incremental {
         let mut incremental_block = format!("FROM scratch AS {incremental_stage}\n");
         incremental_block.push_str(&format!("COPY --link --from={rustc_stage} {incremental} /\n"));
@@ -327,19 +323,27 @@ impl Md {
         out_dir: &Utf8Path,
         call: String,
         green_set_envs: &[String],
+        cargo_home: &Utf8Path,
         buildrs: bool,
         mut block: String,
     ) -> Result<()> {
+        let out_dir = virtual_target_dir(out_dir);
+
         // Log a possible toolchain file contents (TODO: make per-crate base.image out of this)
         if false {
             block.push_str("    { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \\\n");
         }
 
-        block.push_str(&format!("    env CARGO={:?} \\\n", "$(which cargo)"));
-        let mut set = HashSet::from(["CARGO".to_owned()]);
+        // Rewrite host cargo/rustc so the base_image ones can be used
+        block.push_str("    env CARGO=$CARGO_HOME/bin/cargo \\\n");
+        block.push_str("        RUSTC=$CARGO_HOME/bin/rustc \\\n");
+        // TODO: move these 2 to base image when possible
+        let mut set = HashSet::from(["CARGO".to_owned(), "RUSTC".to_owned()]);
         for (var, val) in env::vars().filter_map(|kv| fmap_env(kv, buildrs)) {
-            let val = safeify(&val)?;
-            let val = virtual_target_dir_str(&val);
+            if set.contains(&var) {
+                continue;
+            }
+            let val = rewrite_env(&val, cargo_home)?;
             block.push_str(&format!("        {var}={val} \\\n"));
             set.insert(var.clone());
         }
@@ -350,8 +354,7 @@ impl Md {
                 continue;
             }
             warn!("setting rustc-env: ${var}={val:?}");
-            let val = safeify(val)?;
-            let val = virtual_target_dir_str(&val);
+            let val = rewrite_env(val, cargo_home)?;
             block.push_str(&format!("        {var}={val} \\\n"));
             set.insert(var.to_owned());
         }
@@ -362,8 +365,7 @@ impl Md {
             }
             if let Ok(val) = env::var(var) {
                 warn!("passing ${var}={val:?} env through");
-                let val = safeify(&val)?;
-                let val = virtual_target_dir_str(&val);
+                let val = rewrite_env(&val, cargo_home)?;
                 block.push_str(&format!("        {var}={val} \\\n"));
                 set.insert(var.to_owned());
             }
@@ -379,14 +381,12 @@ impl Md {
                 }
                 debug!("system env set (skipped): ${var}={val:?}");
                 if !val.is_empty() {
-                    let val = safeify(&val)?;
-                    let val = virtual_target_dir_str(&val);
+                    let val = rewrite_env(&val, cargo_home)?;
                     block.push_str(&format!("#       {var}={val:?} \\\n"));
                 }
             }
         }
 
-        let out_dir = virtual_target_dir(out_dir);
         block.push_str(&format!("      {call} \\\n"));
         block.push_str(&format!("        1>          {out_dir}/{out_stage}-{STDOUT} \\\n"));
         block.push_str(&format!("        2>          {out_dir}/{out_stage}-{STDERR} \\\n"));
@@ -500,24 +500,21 @@ fn fmap_env((var, val): (String, String), buildrs: bool) -> Option<(String, Stri
             debug!("not forwarding env: {var}={val}");
             return None;
         }
-        if var == "CARGO_ENCODED_RUSTFLAGS" {
-            let dec: Vec<_> = rustflags::from_env().collect();
-            debug!("env is set: {var}={val} ({dec:?})");
-        } else {
-            debug!("env is set: {var}={val}");
-        }
-        let val = match var.as_str() {
-            // "CARGO_PKG_DESCRIPTION" => "FIXME".to_owned(),
-            "CARGO_MANIFEST_DIR" | "CARGO_MANIFEST_PATH" => {
-                rewrite_cratesio_index(Utf8Path::new(&val)).to_string()
+        debug!(
+            "env is set: {var}={val} {:?}",
+            if var == "CARGO_ENCODED_RUSTFLAGS" {
+                rustflags::from_env().collect::<Vec<_>>()
+            } else {
+                vec![]
             }
-            "TERM" => return None,
-            "RUSTC" => "rustc".to_owned(), // Rewrite host rustc so the base_image one can be used
-            "OUT_DIR" => virtual_target_dir(Utf8Path::new(&val)).to_string(),
-            _ => val,
-        };
+        );
+        if var == "TERM" {
+            debug!("not forwarding {var} ({val})");
+            return None;
+        }
         return Some((var, val));
     }
+    debug!("not passing env: {var}={val}");
     None
 }
 
@@ -526,32 +523,31 @@ fn fmap_env((var, val): (String, String), buildrs: bool) -> Option<(String, Stri
 fn pass_env(var: &str) -> (bool, bool, bool) {
     // Thanks https://github.com/cross-rs/cross/blob/44011c8854cb2eaac83b173cc323220ccdff18ea/src/docker/shared.rs#L969
     let passthrough = [
+        "BROWSER",
         "http_proxy",
-        "TERM",
+        "HTTP_TIMEOUT",
+        "HTTPS_PROXY",
+        "https_proxy",
+        "OUT_DIR", // (Only set during compilation.)
+        "QEMU_STRACE",
         "RUSTDOCFLAGS",
         "RUSTFLAGS",
-        "BROWSER",
-        "HTTPS_PROXY",
-        "HTTP_TIMEOUT",
-        "https_proxy",
-        "QEMU_STRACE",
-        // Not here but set in RUN script: CARGO, PATH, ...
-        "OUT_DIR", // (Only set during compilation.)
+        "TERM", // Actually gets skipped later on
     ];
-    // TODO: vvv drop what can be dropped vvv
     let skiplist = [
-        "CARGO_BUILD_JOBS",
-        "CARGO_BUILD_RUSTC",
-        "CARGO_BUILD_RUSTC_WORKSPACE_WRAPPER",
-        "CARGO_BUILD_RUSTC_WRAPPER",
-        "CARGO_BUILD_RUSTDOC",
-        "CARGO_BUILD_TARGET_DIR",
-        "CARGO_HOME",      // TODO? drop
-        "CARGO_MAKEFLAGS", // TODO: probably drop
-        "CARGO_TARGET_DIR",
-        "LD_LIBRARY_PATH", // TODO: probably drop
-        "RUSTC_WRAPPER",
-        "RUSTC_WORKSPACE_WRAPPER",
+        "CARGO_BUILD_JOBS",                    // TODO? drop
+        "CARGO_BUILD_RUSTC",                   // TODO? drop
+        "CARGO_BUILD_RUSTC_WORKSPACE_WRAPPER", // TODO? drop
+        "CARGO_BUILD_RUSTC_WRAPPER",           // TODO? drop
+        "CARGO_BUILD_RUSTDOC",                 // TODO? drop
+        "CARGO_BUILD_TARGET_DIR",              // TODO? drop
+        "CARGO_HOME",                          // Set in base image
+        "CARGO_MAKEFLAGS",                     // TODO: probably drop
+        "CARGO_TARGET_DIR",                    // TODO? drop
+        "LD_LIBRARY_PATH",                     // TODO: probably drop
+        "RUSTC_WORKSPACE_WRAPPER",             // TODO? drop
+        "RUSTC_WRAPPER",                       // TODO? drop
+        "RUSTUP_HOME",                         // Set in base image
     ];
     let buildrs_only = [
         "DEBUG",
@@ -560,7 +556,7 @@ fn pass_env(var: &str) -> (bool, bool, bool) {
         "OPT_LEVEL",
         "OUT_DIR",
         "PROFILE",
-        "RUSTC",
+        "RUSTC", // Will be skipped as it's already set, along with $CARGO
         "RUSTC_LINKER",
         "RUSTC_WRAPPER",
         "RUSTC_WORKSPACE_WRAPPER",
@@ -595,4 +591,40 @@ a\
 l'"#
         .to_owned()
     );
+}
+
+fn rewrite_env(val: &str, cargo_home: &Utf8Path) -> Result<String> {
+    let val = safeify(val)?;
+    let val = virtual_target_dir_str(&val);
+    let val = rewrite_rustup_home(val);
+    let val = rewrite_cratesio_index(&val);
+    let val = rewrite_cargo_home(cargo_home, &val);
+    Ok(val)
+}
+
+#[test]
+fn test_rewrite_env() {
+    temp_env::with_var("CARGO_TARGET_DIR", Some("/some/path/"), || {
+        let cargo_home: Utf8PathBuf = "/some/other/path".into();
+
+        assert_eq!(
+            "https'://github.com/dtolnay/anyhow'",
+            rewrite_env("https://github.com/dtolnay/anyhow", &cargo_home).unwrap()
+        );
+
+        assert_eq!(
+            "$CARGO_HOME/registry/src/index.crates.io'+zstd.1.5.7/zstd/lib'",
+            rewrite_env(
+                "/some/other/path/registry/src/index.crates.io+zstd.1.5.7/zstd/lib",
+                &cargo_home
+            )
+            .unwrap()
+        );
+
+        assert_eq!(
+            "/target/release/build/zstd-safe-f387b30b22c9cb23/out",
+            rewrite_env("/some/path/release/build/zstd-safe-f387b30b22c9cb23/out", &cargo_home)
+                .unwrap()
+        );
+    });
 }

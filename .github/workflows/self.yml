@@ -19,7 +19,9 @@ jobs:
     - run: docker buildx version
     - run: docker buildx build --help
     - run: podman version || true
-    - run: cargo -Vv
+    - run: which cargo && cargo -Vv
+    - run: which rustc && rustc -Vv
+    - run: rustup show
 
     - name: Cache `cargo fetch`
       uses: actions/cache@v5
@@ -43,7 +45,7 @@ jobs:
       run: |
         CARGO_TARGET_DIR=~/instmp cargo install --locked --force --path=./cargo-green
 
-    - uses: actions/upload-artifact@v6
+    - uses: actions/upload-artifact@v7
       with:
         name: cargo-green
         path: /home/runner/.cargo/bin/cargo-green
@@ -63,7 +65,7 @@ jobs:
 #     - run: sudo chown -R $(id -u):$(id -g) /home/runner/builder-cache
 #     - run: du -sh /home/runner/builder-cache || true
 #     - run: ls -lha /home/runner/builder-cache/ || true
-#     - uses: actions/upload-artifact@v6
+#     - uses: actions/upload-artifact@v7
 #       with:
 #         name: builder-data
 #         path: /home/runner/builder-cache
@@ -94,10 +96,11 @@ jobs:
     - run: docker buildx version
     - run: docker buildx build --help
     - run: podman version || true
-    - run: cargo -Vv
-
+    - run: which cargo && cargo -Vv
+    - run: which rustc && rustc -Vv
+    - run: rustup show
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: cargo-green
 
@@ -109,7 +112,7 @@ jobs:
         mv ./cargo-green ~/.cargo/bin/
     - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
       name: Retrieve saved builder data
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: builder-data
         path: /home/runner/builder-cache
@@ -131,6 +134,9 @@ jobs:
         key: ${{ github.job }}-${{ runner.os }}-cargo-deps-${{ hashFiles('**/Cargo.lock') }}
         restore-keys: ${{ github.job }}-${{ runner.os }}-cargo-deps-
 
+    - run: |
+        cargo green supergreen setup || true
+        { cargo green supergreen setup 2>/dev/null || true; } | sudo /bin/sh -xe
     - run: cargo fetch
     - run: cargo green supergreen env
     - run: sudo du -sh /var/lib/docker || true
@@ -197,10 +203,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -247,10 +249,11 @@ jobs:
     - run: docker buildx version
     - run: docker buildx build --help
     - run: podman version || true
-    - run: cargo -Vv
-
+    - run: which cargo && cargo -Vv
+    - run: which rustc && rustc -Vv
+    - run: rustup show
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: cargo-green
 
@@ -262,7 +265,7 @@ jobs:
         mv ./cargo-green ~/.cargo/bin/
     - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
       name: Retrieve saved builder data
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: builder-data
         path: /home/runner/builder-cache
@@ -284,6 +287,9 @@ jobs:
         key: ${{ github.job }}-${{ runner.os }}-cargo-deps-${{ hashFiles('**/Cargo.lock') }}
         restore-keys: ${{ github.job }}-${{ runner.os }}-cargo-deps-
 
+    - run: |
+        cargo green supergreen setup || true
+        { cargo green supergreen setup 2>/dev/null || true; } | sudo /bin/sh -xe
     - run: cargo fetch
     - run: cargo green supergreen env
     - uses: taiki-e/install-action@v2
@@ -345,10 +351,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -385,7 +387,9 @@ jobs:
     - run: docker buildx version
     - run: docker buildx build --help
     - run: podman version || true
-    - run: cargo -Vv
+    - run: which cargo && cargo -Vv
+    - run: which rustc && rustc -Vv
+    - run: rustup show
     - uses: docker/login-action@v3
       if: ${{ ! startsWith(github.ref, 'refs/heads/dependabot/') }}
       with:
@@ -400,10 +404,11 @@ jobs:
     - run: docker buildx version
     - run: docker buildx build --help
     - run: podman version || true
-    - run: cargo -Vv
-
+    - run: which cargo && cargo -Vv
+    - run: which rustc && rustc -Vv
+    - run: rustup show
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: cargo-green
 
@@ -415,7 +420,7 @@ jobs:
         mv ./cargo-green ~/.cargo/bin/
     - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
       name: Retrieve saved builder data
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: builder-data
         path: /home/runner/builder-cache
@@ -437,6 +442,9 @@ jobs:
         key: ${{ github.job }}-${{ runner.os }}-cargo-deps-${{ hashFiles('**/Cargo.lock') }}
         restore-keys: ${{ github.job }}-${{ runner.os }}-cargo-deps-
 
+    - run: |
+        cargo green supergreen setup || true
+        { cargo green supergreen setup 2>/dev/null || true; } | sudo /bin/sh -xe
     - run: cargo fetch
     - run: cargo green supergreen env
     - uses: taiki-e/install-action@v2
@@ -506,10 +514,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -587,10 +591,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -637,10 +637,11 @@ jobs:
     - run: docker buildx version
     - run: docker buildx build --help
     - run: podman version || true
-    - run: cargo -Vv
-
+    - run: which cargo && cargo -Vv
+    - run: which rustc && rustc -Vv
+    - run: rustup show
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: cargo-green
 
@@ -652,7 +653,7 @@ jobs:
         mv ./cargo-green ~/.cargo/bin/
     - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
       name: Retrieve saved builder data
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: builder-data
         path: /home/runner/builder-cache
@@ -674,6 +675,9 @@ jobs:
         key: ${{ github.job }}-${{ runner.os }}-cargo-deps-${{ hashFiles('**/Cargo.lock') }}
         restore-keys: ${{ github.job }}-${{ runner.os }}-cargo-deps-
 
+    - run: |
+        cargo green supergreen setup || true
+        { cargo green supergreen setup 2>/dev/null || true; } | sudo /bin/sh -xe
     - run: cargo fetch
     - run: cargo green supergreen env
     - run: sudo du -sh /var/lib/docker || true
@@ -732,10 +736,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -807,10 +807,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -888,10 +884,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -938,10 +930,11 @@ jobs:
     - run: docker buildx version
     - run: docker buildx build --help
     - run: podman version || true
-    - run: cargo -Vv
-
+    - run: which cargo && cargo -Vv
+    - run: which rustc && rustc -Vv
+    - run: rustup show
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: cargo-green
 
@@ -953,7 +946,7 @@ jobs:
         mv ./cargo-green ~/.cargo/bin/
     - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
       name: Retrieve saved builder data
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: builder-data
         path: /home/runner/builder-cache
@@ -975,6 +968,9 @@ jobs:
         key: ${{ github.job }}-${{ runner.os }}-cargo-deps-${{ hashFiles('**/Cargo.lock') }}
         restore-keys: ${{ github.job }}-${{ runner.os }}-cargo-deps-
 
+    - run: |
+        cargo green supergreen setup || true
+        { cargo green supergreen setup 2>/dev/null || true; } | sudo /bin/sh -xe
     - run: cargo fetch
     - run: cargo green supergreen env
     - run: sudo du -sh /var/lib/docker || true
@@ -1033,10 +1029,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -1108,10 +1100,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -1189,10 +1177,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -1239,10 +1223,11 @@ jobs:
     - run: docker buildx version
     - run: docker buildx build --help
     - run: podman version || true
-    - run: cargo -Vv
-
+    - run: which cargo && cargo -Vv
+    - run: which rustc && rustc -Vv
+    - run: rustup show
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: cargo-green
 
@@ -1254,7 +1239,7 @@ jobs:
         mv ./cargo-green ~/.cargo/bin/
     - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
       name: Retrieve saved builder data
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: builder-data
         path: /home/runner/builder-cache
@@ -1276,6 +1261,9 @@ jobs:
         key: ${{ github.job }}-${{ runner.os }}-cargo-deps-${{ hashFiles('**/Cargo.lock') }}
         restore-keys: ${{ github.job }}-${{ runner.os }}-cargo-deps-
 
+    - run: |
+        cargo green supergreen setup || true
+        { cargo green supergreen setup 2>/dev/null || true; } | sudo /bin/sh -xe
     - run: cargo fetch
     - run: cargo green supergreen env
     - run: sudo du -sh /var/lib/docker || true
@@ -1334,10 +1322,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -1409,10 +1393,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -1490,10 +1470,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -1540,10 +1516,11 @@ jobs:
     - run: docker buildx version
     - run: docker buildx build --help
     - run: podman version || true
-    - run: cargo -Vv
-
+    - run: which cargo && cargo -Vv
+    - run: which rustc && rustc -Vv
+    - run: rustup show
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: cargo-green
 
@@ -1555,7 +1532,7 @@ jobs:
         mv ./cargo-green ~/.cargo/bin/
     - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
       name: Retrieve saved builder data
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: builder-data
         path: /home/runner/builder-cache
@@ -1577,6 +1554,9 @@ jobs:
         key: ${{ github.job }}-${{ runner.os }}-cargo-deps-${{ hashFiles('**/Cargo.lock') }}
         restore-keys: ${{ github.job }}-${{ runner.os }}-cargo-deps-
 
+    - run: |
+        cargo green supergreen setup || true
+        { cargo green supergreen setup 2>/dev/null || true; } | sudo /bin/sh -xe
     - run: cargo fetch
     - run: cargo green supergreen env
     - run: sudo du -sh /var/lib/docker || true
@@ -1635,10 +1615,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -1710,10 +1686,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -1760,10 +1732,11 @@ jobs:
     - run: docker buildx version
     - run: docker buildx build --help
     - run: podman version || true
-    - run: cargo -Vv
-
+    - run: which cargo && cargo -Vv
+    - run: which rustc && rustc -Vv
+    - run: rustup show
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: cargo-green
 
@@ -1775,7 +1748,7 @@ jobs:
         mv ./cargo-green ~/.cargo/bin/
     - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
       name: Retrieve saved builder data
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: builder-data
         path: /home/runner/builder-cache
@@ -1797,6 +1770,9 @@ jobs:
         key: ${{ github.job }}-${{ runner.os }}-cargo-deps-${{ hashFiles('**/Cargo.lock') }}
         restore-keys: ${{ github.job }}-${{ runner.os }}-cargo-deps-
 
+    - run: |
+        cargo green supergreen setup || true
+        { cargo green supergreen setup 2>/dev/null || true; } | sudo /bin/sh -xe
     - run: cargo fetch
     - run: cargo green supergreen env
     - run: rustup component add clippy
@@ -1856,10 +1832,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -1931,10 +1903,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -2012,10 +1980,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)

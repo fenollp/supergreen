@@ -19,7 +19,9 @@ jobs:
     - run: docker buildx version
     - run: docker buildx build --help
     - run: podman version || true
-    - run: cargo -Vv
+    - run: which cargo && cargo -Vv
+    - run: which rustc && rustc -Vv
+    - run: rustup show
 
     - name: Cache `cargo fetch`
       uses: actions/cache@v5
@@ -43,7 +45,7 @@ jobs:
       run: |
         CARGO_TARGET_DIR=~/instmp cargo install --locked --force --path=./cargo-green
 
-    - uses: actions/upload-artifact@v6
+    - uses: actions/upload-artifact@v7
       with:
         name: cargo-green
         path: /home/runner/.cargo/bin/cargo-green
@@ -63,7 +65,7 @@ jobs:
 #     - run: sudo chown -R $(id -u):$(id -g) /home/runner/builder-cache
 #     - run: du -sh /home/runner/builder-cache || true
 #     - run: ls -lha /home/runner/builder-cache/ || true
-#     - uses: actions/upload-artifact@v6
+#     - uses: actions/upload-artifact@v7
 #       with:
 #         name: builder-data
 #         path: /home/runner/builder-cache
@@ -90,7 +92,6 @@ jobs:
       CARGOGREEN_EXPERIMENT: finalpathnonprimary # dumps on each build call
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
-
     needs: bin
     steps:
     - uses: docker/login-action@v3
@@ -106,7 +107,7 @@ jobs:
 
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: cargo-green
 
@@ -118,7 +119,7 @@ jobs:
         mv ./cargo-green ~/.cargo/bin/
     - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
       name: Retrieve saved builder data
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: builder-data
         path: /home/runner/builder-cache
@@ -133,7 +134,9 @@ jobs:
     - run: docker buildx version
     - run: docker buildx build --help
     - run: podman version || true
-    - run: cargo -Vv
+    - run: which cargo && cargo -Vv
+    - run: which rustc && rustc -Vv
+    - run: rustup show
 
     - name: Prepare local private registry cache
       if: ${{ env.CARGOGREEN_CACHE_FROM_IMAGES != '' || env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
@@ -169,6 +172,10 @@ jobs:
       if: ${{ env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
       run: docker run --name=reg-to   --rm --detach -p 23456:5000 --user $(id -u):$(id -g) -v /tmp/.local-registry-new:/var/lib/registry regist3
 
+    - name: Setup
+      run: |
+        ~/.cargo/bin/cargo-green green supergreen setup || true
+        { ~/.cargo/bin/cargo-green green supergreen setup 2>/dev/null || true; } | sudo /bin/sh -xe
     - name: 🔵 Envs
       run: ~/.cargo/bin/cargo-green green supergreen env
     - if: ${{ matrix.toolchain != '1.91.1' }}
@@ -203,7 +210,7 @@ jobs:
         env  \
           cargo green -vv install --jobs=1 --locked --force buildxargs --git https://github.com/fenollp/buildxargs.git |& tee _
     - if: ${{ always() && matrix.toolchain != '1.91.1' }}
-      uses: actions/upload-artifact@v6
+      uses: actions/upload-artifact@v7
       name: Upload recipe
       with:
         name: buildxargs@master.Dockerfile
@@ -252,10 +259,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -339,10 +342,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -407,10 +406,9 @@ jobs:
     # CARGOGREEN_CACHE_FROM_IMAGES: docker-image://localhost:12345/${{ github.repository }}
     # CARGOGREEN_CACHE_TO_IMAGES: docker-image://localhost:23456/${{ github.repository }}
       CARGOGREEN_FINAL_PATH: recipes/cargo-deny@0.18.5.Dockerfile
-      CARGOGREEN_EXPERIMENT: finalpathnonprimary # dumps on each build call
+      CARGOGREEN_EXPERIMENT: finalpathnonprimary,finalpathnocomment # dumps on each build call
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
-
     needs: bin
     steps:
     - uses: docker/login-action@v3
@@ -426,7 +424,7 @@ jobs:
 
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: cargo-green
 
@@ -438,7 +436,7 @@ jobs:
         mv ./cargo-green ~/.cargo/bin/
     - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
       name: Retrieve saved builder data
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: builder-data
         path: /home/runner/builder-cache
@@ -453,7 +451,9 @@ jobs:
     - run: docker buildx version
     - run: docker buildx build --help
     - run: podman version || true
-    - run: cargo -Vv
+    - run: which cargo && cargo -Vv
+    - run: which rustc && rustc -Vv
+    - run: rustup show
 
     - name: Prepare local private registry cache
       if: ${{ env.CARGOGREEN_CACHE_FROM_IMAGES != '' || env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
@@ -489,6 +489,10 @@ jobs:
       if: ${{ env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
       run: docker run --name=reg-to   --rm --detach -p 23456:5000 --user $(id -u):$(id -g) -v /tmp/.local-registry-new:/var/lib/registry regist3
 
+    - name: Setup
+      run: |
+        ~/.cargo/bin/cargo-green green supergreen setup || true
+        { ~/.cargo/bin/cargo-green green supergreen setup 2>/dev/null || true; } | sudo /bin/sh -xe
     - name: 🔵 Envs
       run: ~/.cargo/bin/cargo-green green supergreen env
     - if: ${{ matrix.toolchain != '1.91.1' }}
@@ -523,7 +527,7 @@ jobs:
         env  \
           cargo green -vv install --jobs=1 --locked --force cargo-deny@0.18.5  |& tee _
     - if: ${{ always() && matrix.toolchain != '1.91.1' }}
-      uses: actions/upload-artifact@v6
+      uses: actions/upload-artifact@v7
       name: Upload recipe
       with:
         name: cargo-deny@0.18.5.Dockerfile
@@ -572,10 +576,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -659,10 +659,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -730,7 +726,6 @@ jobs:
       CARGOGREEN_EXPERIMENT: finalpathnonprimary # dumps on each build call
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
-
     needs: bin
     steps:
     - uses: docker/login-action@v3
@@ -746,7 +741,7 @@ jobs:
     - run: rustup component add llvm-tools-preview
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: cargo-green
 
@@ -758,7 +753,7 @@ jobs:
         mv ./cargo-green ~/.cargo/bin/
     - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
       name: Retrieve saved builder data
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: builder-data
         path: /home/runner/builder-cache
@@ -773,7 +768,9 @@ jobs:
     - run: docker buildx version
     - run: docker buildx build --help
     - run: podman version || true
-    - run: cargo -Vv
+    - run: which cargo && cargo -Vv
+    - run: which rustc && rustc -Vv
+    - run: rustup show
 
     - name: Prepare local private registry cache
       if: ${{ env.CARGOGREEN_CACHE_FROM_IMAGES != '' || env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
@@ -809,6 +806,10 @@ jobs:
       if: ${{ env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
       run: docker run --name=reg-to   --rm --detach -p 23456:5000 --user $(id -u):$(id -g) -v /tmp/.local-registry-new:/var/lib/registry regist3
 
+    - name: Setup
+      run: |
+        ~/.cargo/bin/cargo-green green supergreen setup || true
+        { ~/.cargo/bin/cargo-green green supergreen setup 2>/dev/null || true; } | sudo /bin/sh -xe
     - name: 🔵 Envs
       run: ~/.cargo/bin/cargo-green green supergreen env
     - if: ${{ matrix.toolchain != '1.91.1' }}
@@ -843,7 +844,7 @@ jobs:
         env  \
           cargo green -vv install --jobs=1 --locked --force cargo-llvm-cov@0.6.21  |& tee _
     - if: ${{ always() && matrix.toolchain != '1.91.1' }}
-      uses: actions/upload-artifact@v6
+      uses: actions/upload-artifact@v7
       name: Upload recipe
       with:
         name: cargo-llvm-cov@0.6.21.Dockerfile
@@ -892,10 +893,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -979,10 +976,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -1050,7 +1043,6 @@ jobs:
       CARGOGREEN_EXPERIMENT: finalpathnonprimary # dumps on each build call
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
-
     needs: bin
     steps:
     - uses: docker/login-action@v3
@@ -1066,7 +1058,7 @@ jobs:
 
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: cargo-green
 
@@ -1078,7 +1070,7 @@ jobs:
         mv ./cargo-green ~/.cargo/bin/
     - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
       name: Retrieve saved builder data
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: builder-data
         path: /home/runner/builder-cache
@@ -1093,7 +1085,9 @@ jobs:
     - run: docker buildx version
     - run: docker buildx build --help
     - run: podman version || true
-    - run: cargo -Vv
+    - run: which cargo && cargo -Vv
+    - run: which rustc && rustc -Vv
+    - run: rustup show
 
     - name: Prepare local private registry cache
       if: ${{ env.CARGOGREEN_CACHE_FROM_IMAGES != '' || env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
@@ -1129,6 +1123,10 @@ jobs:
       if: ${{ env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
       run: docker run --name=reg-to   --rm --detach -p 23456:5000 --user $(id -u):$(id -g) -v /tmp/.local-registry-new:/var/lib/registry regist3
 
+    - name: Setup
+      run: |
+        ~/.cargo/bin/cargo-green green supergreen setup || true
+        { ~/.cargo/bin/cargo-green green supergreen setup 2>/dev/null || true; } | sudo /bin/sh -xe
     - name: 🔵 Envs
       run: ~/.cargo/bin/cargo-green green supergreen env
     - if: ${{ matrix.toolchain != '1.91.1' }}
@@ -1163,7 +1161,7 @@ jobs:
         env  \
           cargo green -vv install --jobs=1 --locked --force cargo-nextest@0.9.114  |& tee _
     - if: ${{ always() && matrix.toolchain != '1.91.1' }}
-      uses: actions/upload-artifact@v6
+      uses: actions/upload-artifact@v7
       name: Upload recipe
       with:
         name: cargo-nextest@0.9.114.Dockerfile
@@ -1212,10 +1210,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -1299,10 +1293,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -1370,7 +1360,6 @@ jobs:
       CARGOGREEN_EXPERIMENT: finalpathnonprimary # dumps on each build call
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
-
     needs: bin
     steps:
     - uses: docker/login-action@v3
@@ -1386,7 +1375,7 @@ jobs:
 
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: cargo-green
 
@@ -1398,7 +1387,7 @@ jobs:
         mv ./cargo-green ~/.cargo/bin/
     - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
       name: Retrieve saved builder data
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: builder-data
         path: /home/runner/builder-cache
@@ -1413,7 +1402,9 @@ jobs:
     - run: docker buildx version
     - run: docker buildx build --help
     - run: podman version || true
-    - run: cargo -Vv
+    - run: which cargo && cargo -Vv
+    - run: which rustc && rustc -Vv
+    - run: rustup show
 
     - name: Prepare local private registry cache
       if: ${{ env.CARGOGREEN_CACHE_FROM_IMAGES != '' || env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
@@ -1449,6 +1440,10 @@ jobs:
       if: ${{ env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
       run: docker run --name=reg-to   --rm --detach -p 23456:5000 --user $(id -u):$(id -g) -v /tmp/.local-registry-new:/var/lib/registry regist3
 
+    - name: Setup
+      run: |
+        ~/.cargo/bin/cargo-green green supergreen setup || true
+        { ~/.cargo/bin/cargo-green green supergreen setup 2>/dev/null || true; } | sudo /bin/sh -xe
     - name: 🔵 Envs
       run: ~/.cargo/bin/cargo-green green supergreen env
     - if: ${{ matrix.toolchain != '1.91.1' }}
@@ -1472,7 +1467,7 @@ jobs:
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env  \
-          cargo green -vv install --locked --force cross@0.2.5 --git https://github.com/cross-rs/cross.git --rev=49cd054de9b832dfc11a4895c72b0aef533b5c6a cross |& tee _
+          cargo green -vv install --locked --force cross@0.2.5 --git https://github.com/cross-rs/cross.git --rev=49cd054de9b832dfc11a4895c72b0aef533b5c6a --bin=cross |& tee _
     - name: 🔵 cargo install jobs=1
       #if: ${{ job.steps.cargo-install.outcome == 'failure' }} this actually hides failure of cargo-install step
       run: |
@@ -1481,9 +1476,9 @@ jobs:
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env  \
-          cargo green -vv install --jobs=1 --locked --force cross@0.2.5 --git https://github.com/cross-rs/cross.git --rev=49cd054de9b832dfc11a4895c72b0aef533b5c6a cross |& tee _
+          cargo green -vv install --jobs=1 --locked --force cross@0.2.5 --git https://github.com/cross-rs/cross.git --rev=49cd054de9b832dfc11a4895c72b0aef533b5c6a --bin=cross |& tee _
     - if: ${{ always() && matrix.toolchain != '1.91.1' }}
-      uses: actions/upload-artifact@v6
+      uses: actions/upload-artifact@v7
       name: Upload recipe
       with:
         name: cross@0.2.5.Dockerfile
@@ -1532,10 +1527,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -1567,7 +1558,7 @@ jobs:
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env  \
-          cargo green -vv install --locked --force cross@0.2.5 --git https://github.com/cross-rs/cross.git --rev=49cd054de9b832dfc11a4895c72b0aef533b5c6a cross |& tee _
+          cargo green -vv install --locked --force cross@0.2.5 --git https://github.com/cross-rs/cross.git --rev=49cd054de9b832dfc11a4895c72b0aef533b5c6a --bin=cross |& tee _
     - name: ...doesn't recompile anything
       run: |
         err=0
@@ -1619,10 +1610,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -1690,7 +1677,6 @@ jobs:
       CARGOGREEN_EXPERIMENT: finalpathnonprimary # dumps on each build call
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
-
     needs: bin
     steps:
     - uses: docker/login-action@v3
@@ -1706,7 +1692,7 @@ jobs:
 
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: cargo-green
 
@@ -1718,7 +1704,7 @@ jobs:
         mv ./cargo-green ~/.cargo/bin/
     - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
       name: Retrieve saved builder data
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: builder-data
         path: /home/runner/builder-cache
@@ -1733,7 +1719,9 @@ jobs:
     - run: docker buildx version
     - run: docker buildx build --help
     - run: podman version || true
-    - run: cargo -Vv
+    - run: which cargo && cargo -Vv
+    - run: which rustc && rustc -Vv
+    - run: rustup show
 
     - name: Prepare local private registry cache
       if: ${{ env.CARGOGREEN_CACHE_FROM_IMAGES != '' || env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
@@ -1769,6 +1757,10 @@ jobs:
       if: ${{ env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
       run: docker run --name=reg-to   --rm --detach -p 23456:5000 --user $(id -u):$(id -g) -v /tmp/.local-registry-new:/var/lib/registry regist3
 
+    - name: Setup
+      run: |
+        ~/.cargo/bin/cargo-green green supergreen setup || true
+        { ~/.cargo/bin/cargo-green green supergreen setup 2>/dev/null || true; } | sudo /bin/sh -xe
     - name: 🔵 Envs
       run: ~/.cargo/bin/cargo-green green supergreen env
     - if: ${{ matrix.toolchain != '1.91.1' }}
@@ -1803,7 +1795,7 @@ jobs:
         env  \
           cargo green -vv install --jobs=1 --locked --force dbcc@2.2.1  |& tee _
     - if: ${{ always() && matrix.toolchain != '1.91.1' }}
-      uses: actions/upload-artifact@v6
+      uses: actions/upload-artifact@v7
       name: Upload recipe
       with:
         name: dbcc@2.2.1.Dockerfile
@@ -1852,10 +1844,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -1939,10 +1927,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -2010,7 +1994,6 @@ jobs:
       CARGOGREEN_EXPERIMENT: finalpathnonprimary # dumps on each build call
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
-
     needs: bin
     steps:
     - uses: docker/login-action@v3
@@ -2026,7 +2009,7 @@ jobs:
 
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: cargo-green
 
@@ -2038,7 +2021,7 @@ jobs:
         mv ./cargo-green ~/.cargo/bin/
     - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
       name: Retrieve saved builder data
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: builder-data
         path: /home/runner/builder-cache
@@ -2053,7 +2036,9 @@ jobs:
     - run: docker buildx version
     - run: docker buildx build --help
     - run: podman version || true
-    - run: cargo -Vv
+    - run: which cargo && cargo -Vv
+    - run: which rustc && rustc -Vv
+    - run: rustup show
 
     - name: Prepare local private registry cache
       if: ${{ env.CARGOGREEN_CACHE_FROM_IMAGES != '' || env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
@@ -2089,6 +2074,10 @@ jobs:
       if: ${{ env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
       run: docker run --name=reg-to   --rm --detach -p 23456:5000 --user $(id -u):$(id -g) -v /tmp/.local-registry-new:/var/lib/registry regist3
 
+    - name: Setup
+      run: |
+        ~/.cargo/bin/cargo-green green supergreen setup || true
+        { ~/.cargo/bin/cargo-green green supergreen setup 2>/dev/null || true; } | sudo /bin/sh -xe
     - name: 🔵 Envs
       run: ~/.cargo/bin/cargo-green green supergreen env
     - if: ${{ matrix.toolchain != '1.91.1' }}
@@ -2123,7 +2112,7 @@ jobs:
         env CARGOGREEN_ADD_APT=libpq-dev \
           cargo green -vv install --jobs=1 --locked --force diesel_cli@2.3.4 --no-default-features --features=postgres |& tee _
     - if: ${{ always() && matrix.toolchain != '1.91.1' }}
-      uses: actions/upload-artifact@v6
+      uses: actions/upload-artifact@v7
       name: Upload recipe
       with:
         name: diesel_cli@2.3.4.Dockerfile
@@ -2172,10 +2161,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -2259,10 +2244,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -2330,7 +2311,6 @@ jobs:
       CARGOGREEN_EXPERIMENT: finalpathnonprimary # dumps on each build call
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
-
     needs: bin
     steps:
     - uses: docker/login-action@v3
@@ -2346,7 +2326,7 @@ jobs:
 
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: cargo-green
 
@@ -2358,7 +2338,7 @@ jobs:
         mv ./cargo-green ~/.cargo/bin/
     - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
       name: Retrieve saved builder data
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: builder-data
         path: /home/runner/builder-cache
@@ -2373,7 +2353,9 @@ jobs:
     - run: docker buildx version
     - run: docker buildx build --help
     - run: podman version || true
-    - run: cargo -Vv
+    - run: which cargo && cargo -Vv
+    - run: which rustc && rustc -Vv
+    - run: rustup show
 
     - name: Prepare local private registry cache
       if: ${{ env.CARGOGREEN_CACHE_FROM_IMAGES != '' || env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
@@ -2409,6 +2391,10 @@ jobs:
       if: ${{ env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
       run: docker run --name=reg-to   --rm --detach -p 23456:5000 --user $(id -u):$(id -g) -v /tmp/.local-registry-new:/var/lib/registry regist3
 
+    - name: Setup
+      run: |
+        ~/.cargo/bin/cargo-green green supergreen setup || true
+        { ~/.cargo/bin/cargo-green green supergreen setup 2>/dev/null || true; } | sudo /bin/sh -xe
     - name: 🔵 Envs
       run: ~/.cargo/bin/cargo-green green supergreen env
     - if: ${{ matrix.toolchain != '1.91.1' }}
@@ -2443,7 +2429,7 @@ jobs:
         env  \
           cargo green -vv install --jobs=1 --locked --force hickory-dns@0.26.0-alpha.1  |& tee _
     - if: ${{ always() && matrix.toolchain != '1.91.1' }}
-      uses: actions/upload-artifact@v6
+      uses: actions/upload-artifact@v7
       name: Upload recipe
       with:
         name: hickory-dns@0.26.0-alpha.1.Dockerfile
@@ -2492,10 +2478,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -2579,10 +2561,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -2650,7 +2628,6 @@ jobs:
       CARGOGREEN_EXPERIMENT: finalpathnonprimary # dumps on each build call
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
-
     needs: bin
     steps:
     - uses: docker/login-action@v3
@@ -2666,7 +2643,7 @@ jobs:
 
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: cargo-green
 
@@ -2678,7 +2655,7 @@ jobs:
         mv ./cargo-green ~/.cargo/bin/
     - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
       name: Retrieve saved builder data
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: builder-data
         path: /home/runner/builder-cache
@@ -2693,7 +2670,9 @@ jobs:
     - run: docker buildx version
     - run: docker buildx build --help
     - run: podman version || true
-    - run: cargo -Vv
+    - run: which cargo && cargo -Vv
+    - run: which rustc && rustc -Vv
+    - run: rustup show
 
     - name: Prepare local private registry cache
       if: ${{ env.CARGOGREEN_CACHE_FROM_IMAGES != '' || env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
@@ -2729,6 +2708,10 @@ jobs:
       if: ${{ env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
       run: docker run --name=reg-to   --rm --detach -p 23456:5000 --user $(id -u):$(id -g) -v /tmp/.local-registry-new:/var/lib/registry regist3
 
+    - name: Setup
+      run: |
+        ~/.cargo/bin/cargo-green green supergreen setup || true
+        { ~/.cargo/bin/cargo-green green supergreen setup 2>/dev/null || true; } | sudo /bin/sh -xe
     - name: 🔵 Envs
       run: ~/.cargo/bin/cargo-green green supergreen env
     - if: ${{ matrix.toolchain != '1.91.1' }}
@@ -2763,7 +2746,7 @@ jobs:
         env CARGOGREEN_ADD_APT=libsqlite3-dev,libssl-dev,pkg-config,zlib1g-dev \
           cargo green -vv install --jobs=1 --locked --force mussh@3.1.3  |& tee _
     - if: ${{ always() && matrix.toolchain != '1.91.1' }}
-      uses: actions/upload-artifact@v6
+      uses: actions/upload-artifact@v7
       name: Upload recipe
       with:
         name: mussh@3.1.3.Dockerfile
@@ -2812,10 +2795,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -2899,10 +2878,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -2949,7 +2924,7 @@ jobs:
       if: ${{ always() }}
       run: du -sh $CARGO_TARGET_DIR || true
 
-  ntpd_1-7-0-alpha-20251003:
+  ntpd_1-7-1:
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -2963,15 +2938,13 @@ jobs:
         exclude:
         - toolchain: ${{ github.ref != 'refs/heads/main' && '1.91.1' }}
     env:
-      CARGO_TARGET_DIR: /tmp/clis-ntpd_1-7-0-alpha-20251003
+      CARGO_TARGET_DIR: /tmp/clis-ntpd_1-7-1
     # CARGOGREEN_CACHE_FROM_IMAGES: docker-image://localhost:12345/${{ github.repository }}
     # CARGOGREEN_CACHE_TO_IMAGES: docker-image://localhost:23456/${{ github.repository }}
-      CARGOGREEN_FINAL_PATH: recipes/ntpd@1.7.0-alpha.20251003.Dockerfile
+      CARGOGREEN_FINAL_PATH: recipes/ntpd@1.7.1.Dockerfile
       CARGOGREEN_EXPERIMENT: finalpathnonprimary # dumps on each build call
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
-      NTPD_RS_GIT_REV: c7945250c378f65f65b2a75748132edf75063b3b
-      NTPD_RS_GIT_DATE: 2025-05-09
     needs: bin
     steps:
     - uses: docker/login-action@v3
@@ -2987,7 +2960,7 @@ jobs:
 
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: cargo-green
 
@@ -2999,7 +2972,7 @@ jobs:
         mv ./cargo-green ~/.cargo/bin/
     - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
       name: Retrieve saved builder data
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: builder-data
         path: /home/runner/builder-cache
@@ -3014,7 +2987,9 @@ jobs:
     - run: docker buildx version
     - run: docker buildx build --help
     - run: podman version || true
-    - run: cargo -Vv
+    - run: which cargo && cargo -Vv
+    - run: which rustc && rustc -Vv
+    - run: rustup show
 
     - name: Prepare local private registry cache
       if: ${{ env.CARGOGREEN_CACHE_FROM_IMAGES != '' || env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
@@ -3050,6 +3025,10 @@ jobs:
       if: ${{ env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
       run: docker run --name=reg-to   --rm --detach -p 23456:5000 --user $(id -u):$(id -g) -v /tmp/.local-registry-new:/var/lib/registry regist3
 
+    - name: Setup
+      run: |
+        ~/.cargo/bin/cargo-green green supergreen setup || true
+        { ~/.cargo/bin/cargo-green green supergreen setup 2>/dev/null || true; } | sudo /bin/sh -xe
     - name: 🔵 Envs
       run: ~/.cargo/bin/cargo-green green supergreen env
     - if: ${{ matrix.toolchain != '1.91.1' }}
@@ -3072,8 +3051,8 @@ jobs:
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
-        env  \
-          cargo green -vv install --locked --force ntpd@1.7.0-alpha.20251003  |& tee _
+        env NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b NTPD_RS_GIT_DATE=2025-05-09 \
+          cargo green -vv install --locked --force ntpd@1.7.1 --bin=ntp-daemon |& tee _
     - name: 🔵 cargo install jobs=1
       #if: ${{ job.steps.cargo-install.outcome == 'failure' }} this actually hides failure of cargo-install step
       run: |
@@ -3081,13 +3060,13 @@ jobs:
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
-        env  \
-          cargo green -vv install --jobs=1 --locked --force ntpd@1.7.0-alpha.20251003  |& tee _
+        env NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b NTPD_RS_GIT_DATE=2025-05-09 \
+          cargo green -vv install --jobs=1 --locked --force ntpd@1.7.1 --bin=ntp-daemon |& tee _
     - if: ${{ always() && matrix.toolchain != '1.91.1' }}
-      uses: actions/upload-artifact@v6
+      uses: actions/upload-artifact@v7
       name: Upload recipe
       with:
-        name: ntpd@1.7.0-alpha.20251003.Dockerfile
+        name: ntpd@1.7.1.Dockerfile
         path: ${{ env.CARGOGREEN_FINAL_PATH }}
         if-no-files-found: error
     - if: ${{ always() }}
@@ -3133,10 +3112,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -3167,8 +3142,8 @@ jobs:
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
-        env  \
-          cargo green -vv install --locked --force ntpd@1.7.0-alpha.20251003  |& tee _
+        env NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b NTPD_RS_GIT_DATE=2025-05-09 \
+          cargo green -vv install --locked --force ntpd@1.7.1 --bin=ntp-daemon |& tee _
     - name: ...doesn't recompile anything
       run: |
         err=0
@@ -3220,10 +3195,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -3291,7 +3262,6 @@ jobs:
       CARGOGREEN_EXPERIMENT: finalpathnonprimary # dumps on each build call
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
-
     needs: bin
     steps:
     - uses: docker/login-action@v3
@@ -3307,7 +3277,7 @@ jobs:
 
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: cargo-green
 
@@ -3319,7 +3289,7 @@ jobs:
         mv ./cargo-green ~/.cargo/bin/
     - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
       name: Retrieve saved builder data
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: builder-data
         path: /home/runner/builder-cache
@@ -3334,7 +3304,9 @@ jobs:
     - run: docker buildx version
     - run: docker buildx build --help
     - run: podman version || true
-    - run: cargo -Vv
+    - run: which cargo && cargo -Vv
+    - run: which rustc && rustc -Vv
+    - run: rustup show
 
     - name: Prepare local private registry cache
       if: ${{ env.CARGOGREEN_CACHE_FROM_IMAGES != '' || env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
@@ -3370,6 +3342,10 @@ jobs:
       if: ${{ env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
       run: docker run --name=reg-to   --rm --detach -p 23456:5000 --user $(id -u):$(id -g) -v /tmp/.local-registry-new:/var/lib/registry regist3
 
+    - name: Setup
+      run: |
+        ~/.cargo/bin/cargo-green green supergreen setup || true
+        { ~/.cargo/bin/cargo-green green supergreen setup 2>/dev/null || true; } | sudo /bin/sh -xe
     - name: 🔵 Envs
       run: ~/.cargo/bin/cargo-green green supergreen env
     - if: ${{ matrix.toolchain != '1.91.1' }}
@@ -3404,7 +3380,7 @@ jobs:
         env  \
           cargo green -vv install --jobs=1 --locked --force qcow2-rs@0.1.6  |& tee _
     - if: ${{ always() && matrix.toolchain != '1.91.1' }}
-      uses: actions/upload-artifact@v6
+      uses: actions/upload-artifact@v7
       name: Upload recipe
       with:
         name: qcow2-rs@0.1.6.Dockerfile
@@ -3453,10 +3429,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -3540,10 +3512,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -3611,7 +3579,6 @@ jobs:
       CARGOGREEN_EXPERIMENT: finalpathnonprimary # dumps on each build call
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
-
     needs: bin
     steps:
     - uses: docker/login-action@v3
@@ -3627,7 +3594,7 @@ jobs:
 
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: cargo-green
 
@@ -3639,7 +3606,7 @@ jobs:
         mv ./cargo-green ~/.cargo/bin/
     - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
       name: Retrieve saved builder data
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: builder-data
         path: /home/runner/builder-cache
@@ -3654,7 +3621,9 @@ jobs:
     - run: docker buildx version
     - run: docker buildx build --help
     - run: podman version || true
-    - run: cargo -Vv
+    - run: which cargo && cargo -Vv
+    - run: which rustc && rustc -Vv
+    - run: rustup show
 
     - name: Prepare local private registry cache
       if: ${{ env.CARGOGREEN_CACHE_FROM_IMAGES != '' || env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
@@ -3690,6 +3659,10 @@ jobs:
       if: ${{ env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
       run: docker run --name=reg-to   --rm --detach -p 23456:5000 --user $(id -u):$(id -g) -v /tmp/.local-registry-new:/var/lib/registry regist3
 
+    - name: Setup
+      run: |
+        ~/.cargo/bin/cargo-green green supergreen setup || true
+        { ~/.cargo/bin/cargo-green green supergreen setup 2>/dev/null || true; } | sudo /bin/sh -xe
     - name: 🔵 Envs
       run: ~/.cargo/bin/cargo-green green supergreen env
     - if: ${{ matrix.toolchain != '1.91.1' }}
@@ -3724,7 +3697,7 @@ jobs:
         env  \
           cargo green -vv install --jobs=1 --locked --force ripgrep@15.1.0  |& tee _
     - if: ${{ always() && matrix.toolchain != '1.91.1' }}
-      uses: actions/upload-artifact@v6
+      uses: actions/upload-artifact@v7
       name: Upload recipe
       with:
         name: ripgrep@15.1.0.Dockerfile
@@ -3773,10 +3746,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -3860,10 +3829,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -3931,7 +3896,6 @@ jobs:
       CARGOGREEN_EXPERIMENT: finalpathnonprimary # dumps on each build call
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
-
     needs: bin
     steps:
     - uses: docker/login-action@v3
@@ -3947,7 +3911,7 @@ jobs:
 
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: cargo-green
 
@@ -3959,7 +3923,7 @@ jobs:
         mv ./cargo-green ~/.cargo/bin/
     - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
       name: Retrieve saved builder data
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: builder-data
         path: /home/runner/builder-cache
@@ -3974,7 +3938,9 @@ jobs:
     - run: docker buildx version
     - run: docker buildx build --help
     - run: podman version || true
-    - run: cargo -Vv
+    - run: which cargo && cargo -Vv
+    - run: which rustc && rustc -Vv
+    - run: rustup show
 
     - name: Prepare local private registry cache
       if: ${{ env.CARGOGREEN_CACHE_FROM_IMAGES != '' || env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
@@ -4010,6 +3976,10 @@ jobs:
       if: ${{ env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
       run: docker run --name=reg-to   --rm --detach -p 23456:5000 --user $(id -u):$(id -g) -v /tmp/.local-registry-new:/var/lib/registry regist3
 
+    - name: Setup
+      run: |
+        ~/.cargo/bin/cargo-green green supergreen setup || true
+        { ~/.cargo/bin/cargo-green green supergreen setup 2>/dev/null || true; } | sudo /bin/sh -xe
     - name: 🔵 Envs
       run: ~/.cargo/bin/cargo-green green supergreen env
     - if: ${{ matrix.toolchain != '1.91.1' }}
@@ -4044,7 +4014,7 @@ jobs:
         env CARGOGREEN_ADD_APT=libclang-dev \
           cargo green -vv install --jobs=1 --locked --force rublk@0.2.13  |& tee _
     - if: ${{ always() && matrix.toolchain != '1.91.1' }}
-      uses: actions/upload-artifact@v6
+      uses: actions/upload-artifact@v7
       name: Upload recipe
       with:
         name: rublk@0.2.13.Dockerfile
@@ -4093,10 +4063,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -4180,10 +4146,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -4248,10 +4210,9 @@ jobs:
     # CARGOGREEN_CACHE_FROM_IMAGES: docker-image://localhost:12345/${{ github.repository }}
     # CARGOGREEN_CACHE_TO_IMAGES: docker-image://localhost:23456/${{ github.repository }}
       CARGOGREEN_FINAL_PATH: recipes/shpool@0.9.3.Dockerfile
-      CARGOGREEN_EXPERIMENT: finalpathnonprimary # dumps on each build call
+      CARGOGREEN_EXPERIMENT: finalpathnonprimary,finalpathnocomment # dumps on each build call
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
-
     needs: bin
     steps:
     - uses: docker/login-action@v3
@@ -4267,7 +4228,7 @@ jobs:
 
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: cargo-green
 
@@ -4279,7 +4240,7 @@ jobs:
         mv ./cargo-green ~/.cargo/bin/
     - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
       name: Retrieve saved builder data
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: builder-data
         path: /home/runner/builder-cache
@@ -4294,7 +4255,9 @@ jobs:
     - run: docker buildx version
     - run: docker buildx build --help
     - run: podman version || true
-    - run: cargo -Vv
+    - run: which cargo && cargo -Vv
+    - run: which rustc && rustc -Vv
+    - run: rustup show
 
     - name: Prepare local private registry cache
       if: ${{ env.CARGOGREEN_CACHE_FROM_IMAGES != '' || env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
@@ -4330,6 +4293,10 @@ jobs:
       if: ${{ env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
       run: docker run --name=reg-to   --rm --detach -p 23456:5000 --user $(id -u):$(id -g) -v /tmp/.local-registry-new:/var/lib/registry regist3
 
+    - name: Setup
+      run: |
+        ~/.cargo/bin/cargo-green green supergreen setup || true
+        { ~/.cargo/bin/cargo-green green supergreen setup 2>/dev/null || true; } | sudo /bin/sh -xe
     - name: 🔵 Envs
       run: ~/.cargo/bin/cargo-green green supergreen env
     - if: ${{ matrix.toolchain != '1.91.1' }}
@@ -4364,7 +4331,7 @@ jobs:
         env  \
           cargo green -vv install --jobs=1 --locked --force shpool@0.9.3  |& tee _
     - if: ${{ always() && matrix.toolchain != '1.91.1' }}
-      uses: actions/upload-artifact@v6
+      uses: actions/upload-artifact@v7
       name: Upload recipe
       with:
         name: shpool@0.9.3.Dockerfile
@@ -4413,10 +4380,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -4500,10 +4463,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -4568,10 +4527,9 @@ jobs:
     # CARGOGREEN_CACHE_FROM_IMAGES: docker-image://localhost:12345/${{ github.repository }}
     # CARGOGREEN_CACHE_TO_IMAGES: docker-image://localhost:23456/${{ github.repository }}
       CARGOGREEN_FINAL_PATH: recipes/stu@0.7.5.Dockerfile
-      CARGOGREEN_EXPERIMENT: finalpathnonprimary # dumps on each build call
+      CARGOGREEN_EXPERIMENT: finalpathnonprimary,finalpathnocomment # dumps on each build call
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
-
     needs: bin
     steps:
     - uses: docker/login-action@v3
@@ -4587,7 +4545,7 @@ jobs:
 
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: cargo-green
 
@@ -4599,7 +4557,7 @@ jobs:
         mv ./cargo-green ~/.cargo/bin/
     - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
       name: Retrieve saved builder data
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: builder-data
         path: /home/runner/builder-cache
@@ -4614,7 +4572,9 @@ jobs:
     - run: docker buildx version
     - run: docker buildx build --help
     - run: podman version || true
-    - run: cargo -Vv
+    - run: which cargo && cargo -Vv
+    - run: which rustc && rustc -Vv
+    - run: rustup show
 
     - name: Prepare local private registry cache
       if: ${{ env.CARGOGREEN_CACHE_FROM_IMAGES != '' || env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
@@ -4650,6 +4610,10 @@ jobs:
       if: ${{ env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
       run: docker run --name=reg-to   --rm --detach -p 23456:5000 --user $(id -u):$(id -g) -v /tmp/.local-registry-new:/var/lib/registry regist3
 
+    - name: Setup
+      run: |
+        ~/.cargo/bin/cargo-green green supergreen setup || true
+        { ~/.cargo/bin/cargo-green green supergreen setup 2>/dev/null || true; } | sudo /bin/sh -xe
     - name: 🔵 Envs
       run: ~/.cargo/bin/cargo-green green supergreen env
     - if: ${{ matrix.toolchain != '1.91.1' }}
@@ -4684,7 +4648,7 @@ jobs:
         env  \
           cargo green -vv install --jobs=1 --locked --force stu@0.7.5  |& tee _
     - if: ${{ always() && matrix.toolchain != '1.91.1' }}
-      uses: actions/upload-artifact@v6
+      uses: actions/upload-artifact@v7
       name: Upload recipe
       with:
         name: stu@0.7.5.Dockerfile
@@ -4733,10 +4697,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -4820,10 +4780,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -4888,10 +4844,9 @@ jobs:
     # CARGOGREEN_CACHE_FROM_IMAGES: docker-image://localhost:12345/${{ github.repository }}
     # CARGOGREEN_CACHE_TO_IMAGES: docker-image://localhost:23456/${{ github.repository }}
       CARGOGREEN_FINAL_PATH: recipes/cargo-authors@0.5.5.Dockerfile
-      CARGOGREEN_EXPERIMENT: finalpathnonprimary # dumps on each build call
+      CARGOGREEN_EXPERIMENT: finalpathnonprimary,finalpathnocomment # dumps on each build call
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
-
     needs: bin
     steps:
     - uses: docker/login-action@v3
@@ -4907,7 +4862,7 @@ jobs:
 
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: cargo-green
 
@@ -4919,7 +4874,7 @@ jobs:
         mv ./cargo-green ~/.cargo/bin/
     - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
       name: Retrieve saved builder data
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: builder-data
         path: /home/runner/builder-cache
@@ -4934,7 +4889,9 @@ jobs:
     - run: docker buildx version
     - run: docker buildx build --help
     - run: podman version || true
-    - run: cargo -Vv
+    - run: which cargo && cargo -Vv
+    - run: which rustc && rustc -Vv
+    - run: rustup show
 
     - name: Prepare local private registry cache
       if: ${{ env.CARGOGREEN_CACHE_FROM_IMAGES != '' || env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
@@ -4970,6 +4927,10 @@ jobs:
       if: ${{ env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
       run: docker run --name=reg-to   --rm --detach -p 23456:5000 --user $(id -u):$(id -g) -v /tmp/.local-registry-new:/var/lib/registry regist3
 
+    - name: Setup
+      run: |
+        ~/.cargo/bin/cargo-green green supergreen setup || true
+        { ~/.cargo/bin/cargo-green green supergreen setup 2>/dev/null || true; } | sudo /bin/sh -xe
     - name: 🔵 Envs
       run: ~/.cargo/bin/cargo-green green supergreen env
     - if: ${{ matrix.toolchain != '1.91.1' }}
@@ -5004,7 +4965,7 @@ jobs:
         env CARGOGREEN_ADD_APT=libcurl4-openssl-dev,pkg-config \
           cargo green -vv install --jobs=1 --locked --force cargo-authors@0.5.5  |& tee _
     - if: ${{ always() && matrix.toolchain != '1.91.1' }}
-      uses: actions/upload-artifact@v6
+      uses: actions/upload-artifact@v7
       name: Upload recipe
       with:
         name: cargo-authors@0.5.5.Dockerfile
@@ -5053,10 +5014,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -5140,10 +5097,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -5211,7 +5164,6 @@ jobs:
       CARGOGREEN_EXPERIMENT: finalpathnonprimary # dumps on each build call
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
-
     needs: bin
     steps:
     - uses: docker/login-action@v3
@@ -5227,7 +5179,7 @@ jobs:
 
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: cargo-green
 
@@ -5239,7 +5191,7 @@ jobs:
         mv ./cargo-green ~/.cargo/bin/
     - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
       name: Retrieve saved builder data
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: builder-data
         path: /home/runner/builder-cache
@@ -5254,7 +5206,9 @@ jobs:
     - run: docker buildx version
     - run: docker buildx build --help
     - run: podman version || true
-    - run: cargo -Vv
+    - run: which cargo && cargo -Vv
+    - run: which rustc && rustc -Vv
+    - run: rustup show
 
     - name: Prepare local private registry cache
       if: ${{ env.CARGOGREEN_CACHE_FROM_IMAGES != '' || env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
@@ -5290,6 +5244,10 @@ jobs:
       if: ${{ env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
       run: docker run --name=reg-to   --rm --detach -p 23456:5000 --user $(id -u):$(id -g) -v /tmp/.local-registry-new:/var/lib/registry regist3
 
+    - name: Setup
+      run: |
+        ~/.cargo/bin/cargo-green green supergreen setup || true
+        { ~/.cargo/bin/cargo-green green supergreen setup 2>/dev/null || true; } | sudo /bin/sh -xe
     - name: 🔵 Envs
       run: ~/.cargo/bin/cargo-green green supergreen env
     - if: ${{ matrix.toolchain != '1.91.1' }}
@@ -5324,7 +5282,7 @@ jobs:
         env  \
           cargo green -vv install --jobs=1 --locked --force vixargs@0.1.0  |& tee _
     - if: ${{ always() && matrix.toolchain != '1.91.1' }}
-      uses: actions/upload-artifact@v6
+      uses: actions/upload-artifact@v7
       name: Upload recipe
       with:
         name: vixargs@0.1.0.Dockerfile
@@ -5373,10 +5331,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -5460,10 +5414,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -5531,7 +5481,6 @@ jobs:
       CARGOGREEN_EXPERIMENT: finalpathnonprimary # dumps on each build call
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
-
     needs: bin
     steps:
     - uses: docker/login-action@v3
@@ -5547,7 +5496,7 @@ jobs:
 
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: cargo-green
 
@@ -5559,7 +5508,7 @@ jobs:
         mv ./cargo-green ~/.cargo/bin/
     - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
       name: Retrieve saved builder data
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: builder-data
         path: /home/runner/builder-cache
@@ -5574,7 +5523,9 @@ jobs:
     - run: docker buildx version
     - run: docker buildx build --help
     - run: podman version || true
-    - run: cargo -Vv
+    - run: which cargo && cargo -Vv
+    - run: which rustc && rustc -Vv
+    - run: rustup show
 
     - name: Prepare local private registry cache
       if: ${{ env.CARGOGREEN_CACHE_FROM_IMAGES != '' || env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
@@ -5610,6 +5561,10 @@ jobs:
       if: ${{ env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
       run: docker run --name=reg-to   --rm --detach -p 23456:5000 --user $(id -u):$(id -g) -v /tmp/.local-registry-new:/var/lib/registry regist3
 
+    - name: Setup
+      run: |
+        ~/.cargo/bin/cargo-green green supergreen setup || true
+        { ~/.cargo/bin/cargo-green green supergreen setup 2>/dev/null || true; } | sudo /bin/sh -xe
     - name: 🔵 Envs
       run: ~/.cargo/bin/cargo-green green supergreen env
     - if: ${{ matrix.toolchain != '1.91.1' }}
@@ -5644,7 +5599,7 @@ jobs:
         env  \
           cargo green -vv install --jobs=1 --locked --force cargo-config2@0.1.39 --example=get |& tee _
     - if: ${{ always() && matrix.toolchain != '1.91.1' }}
-      uses: actions/upload-artifact@v6
+      uses: actions/upload-artifact@v7
       name: Upload recipe
       with:
         name: cargo-config2@0.1.39.Dockerfile
@@ -5693,10 +5648,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -5780,10 +5731,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -5851,7 +5798,6 @@ jobs:
       CARGOGREEN_EXPERIMENT: finalpathnonprimary # dumps on each build call
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
-
     needs: bin
     steps:
     - uses: docker/login-action@v3
@@ -5867,7 +5813,7 @@ jobs:
 
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: cargo-green
 
@@ -5879,7 +5825,7 @@ jobs:
         mv ./cargo-green ~/.cargo/bin/
     - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
       name: Retrieve saved builder data
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: builder-data
         path: /home/runner/builder-cache
@@ -5894,7 +5840,9 @@ jobs:
     - run: docker buildx version
     - run: docker buildx build --help
     - run: podman version || true
-    - run: cargo -Vv
+    - run: which cargo && cargo -Vv
+    - run: which rustc && rustc -Vv
+    - run: rustup show
 
     - name: Prepare local private registry cache
       if: ${{ env.CARGOGREEN_CACHE_FROM_IMAGES != '' || env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
@@ -5930,6 +5878,10 @@ jobs:
       if: ${{ env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
       run: docker run --name=reg-to   --rm --detach -p 23456:5000 --user $(id -u):$(id -g) -v /tmp/.local-registry-new:/var/lib/registry regist3
 
+    - name: Setup
+      run: |
+        ~/.cargo/bin/cargo-green green supergreen setup || true
+        { ~/.cargo/bin/cargo-green green supergreen setup 2>/dev/null || true; } | sudo /bin/sh -xe
     - name: 🔵 Envs
       run: ~/.cargo/bin/cargo-green green supergreen env
     - if: ${{ matrix.toolchain != '1.91.1' }}
@@ -5964,7 +5916,7 @@ jobs:
         env  \
           cargo green -vv install --jobs=1 --locked --force kani-verifier@0.66.0 --bin=cargo-kani |& tee _
     - if: ${{ always() && matrix.toolchain != '1.91.1' }}
-      uses: actions/upload-artifact@v6
+      uses: actions/upload-artifact@v7
       name: Upload recipe
       with:
         name: kani-verifier@0.66.0.Dockerfile
@@ -6013,10 +5965,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -6100,10 +6048,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -6171,7 +6115,6 @@ jobs:
       CARGOGREEN_EXPERIMENT: finalpathnonprimary # dumps on each build call
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
-
     needs: bin
     steps:
     - uses: docker/login-action@v3
@@ -6187,7 +6130,7 @@ jobs:
 
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: cargo-green
 
@@ -6199,7 +6142,7 @@ jobs:
         mv ./cargo-green ~/.cargo/bin/
     - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
       name: Retrieve saved builder data
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: builder-data
         path: /home/runner/builder-cache
@@ -6214,7 +6157,9 @@ jobs:
     - run: docker buildx version
     - run: docker buildx build --help
     - run: podman version || true
-    - run: cargo -Vv
+    - run: which cargo && cargo -Vv
+    - run: which rustc && rustc -Vv
+    - run: rustup show
 
     - name: Prepare local private registry cache
       if: ${{ env.CARGOGREEN_CACHE_FROM_IMAGES != '' || env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
@@ -6250,6 +6195,10 @@ jobs:
       if: ${{ env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
       run: docker run --name=reg-to   --rm --detach -p 23456:5000 --user $(id -u):$(id -g) -v /tmp/.local-registry-new:/var/lib/registry regist3
 
+    - name: Setup
+      run: |
+        ~/.cargo/bin/cargo-green green supergreen setup || true
+        { ~/.cargo/bin/cargo-green green supergreen setup 2>/dev/null || true; } | sudo /bin/sh -xe
     - name: 🔵 Envs
       run: ~/.cargo/bin/cargo-green green supergreen env
     - if: ${{ matrix.toolchain != '1.91.1' }}
@@ -6284,7 +6233,7 @@ jobs:
         env  \
           cargo green -vv install --jobs=1 --locked --force cargo-tally@1.0.71  |& tee _
     - if: ${{ always() && matrix.toolchain != '1.91.1' }}
-      uses: actions/upload-artifact@v6
+      uses: actions/upload-artifact@v7
       name: Upload recipe
       with:
         name: cargo-tally@1.0.71.Dockerfile
@@ -6333,10 +6282,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -6420,10 +6365,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -6491,7 +6432,6 @@ jobs:
       CARGOGREEN_EXPERIMENT: finalpathnonprimary # dumps on each build call
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
-
     needs: bin
     steps:
     - uses: docker/login-action@v3
@@ -6507,7 +6447,7 @@ jobs:
 
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: cargo-green
 
@@ -6519,7 +6459,7 @@ jobs:
         mv ./cargo-green ~/.cargo/bin/
     - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
       name: Retrieve saved builder data
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: builder-data
         path: /home/runner/builder-cache
@@ -6534,7 +6474,9 @@ jobs:
     - run: docker buildx version
     - run: docker buildx build --help
     - run: podman version || true
-    - run: cargo -Vv
+    - run: which cargo && cargo -Vv
+    - run: which rustc && rustc -Vv
+    - run: rustup show
 
     - name: Prepare local private registry cache
       if: ${{ env.CARGOGREEN_CACHE_FROM_IMAGES != '' || env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
@@ -6570,6 +6512,10 @@ jobs:
       if: ${{ env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
       run: docker run --name=reg-to   --rm --detach -p 23456:5000 --user $(id -u):$(id -g) -v /tmp/.local-registry-new:/var/lib/registry regist3
 
+    - name: Setup
+      run: |
+        ~/.cargo/bin/cargo-green green supergreen setup || true
+        { ~/.cargo/bin/cargo-green green supergreen setup 2>/dev/null || true; } | sudo /bin/sh -xe
     - name: 🔵 Envs
       run: ~/.cargo/bin/cargo-green green supergreen env
     - if: ${{ matrix.toolchain != '1.91.1' }}
@@ -6604,7 +6550,7 @@ jobs:
         env  \
           cargo green -vv install --jobs=1 --locked --force cargo-mutants@25.3.1  |& tee _
     - if: ${{ always() && matrix.toolchain != '1.91.1' }}
-      uses: actions/upload-artifact@v6
+      uses: actions/upload-artifact@v7
       name: Upload recipe
       with:
         name: cargo-mutants@25.3.1.Dockerfile
@@ -6653,10 +6599,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -6740,10 +6682,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -6811,7 +6749,6 @@ jobs:
       CARGOGREEN_EXPERIMENT: finalpathnonprimary # dumps on each build call
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
-
     needs: bin
     steps:
     - uses: docker/login-action@v3
@@ -6827,7 +6764,7 @@ jobs:
 
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: cargo-green
 
@@ -6839,7 +6776,7 @@ jobs:
         mv ./cargo-green ~/.cargo/bin/
     - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
       name: Retrieve saved builder data
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: builder-data
         path: /home/runner/builder-cache
@@ -6854,7 +6791,9 @@ jobs:
     - run: docker buildx version
     - run: docker buildx build --help
     - run: podman version || true
-    - run: cargo -Vv
+    - run: which cargo && cargo -Vv
+    - run: which rustc && rustc -Vv
+    - run: rustup show
 
     - name: Prepare local private registry cache
       if: ${{ env.CARGOGREEN_CACHE_FROM_IMAGES != '' || env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
@@ -6890,6 +6829,10 @@ jobs:
       if: ${{ env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
       run: docker run --name=reg-to   --rm --detach -p 23456:5000 --user $(id -u):$(id -g) -v /tmp/.local-registry-new:/var/lib/registry regist3
 
+    - name: Setup
+      run: |
+        ~/.cargo/bin/cargo-green green supergreen setup || true
+        { ~/.cargo/bin/cargo-green green supergreen setup 2>/dev/null || true; } | sudo /bin/sh -xe
     - name: 🔵 Envs
       run: ~/.cargo/bin/cargo-green green supergreen env
     - if: ${{ matrix.toolchain != '1.91.1' }}
@@ -6924,7 +6867,7 @@ jobs:
         env  \
           cargo green -vv install --jobs=1 --locked --force binsider@0.3.0  |& tee _
     - if: ${{ always() && matrix.toolchain != '1.91.1' }}
-      uses: actions/upload-artifact@v6
+      uses: actions/upload-artifact@v7
       name: Upload recipe
       with:
         name: binsider@0.3.0.Dockerfile
@@ -6973,10 +6916,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -7060,10 +6999,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -7131,7 +7066,6 @@ jobs:
       CARGOGREEN_EXPERIMENT: finalpathnonprimary # dumps on each build call
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
-
     needs: bin
     steps:
     - uses: docker/login-action@v3
@@ -7147,7 +7081,7 @@ jobs:
 
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: cargo-green
 
@@ -7159,7 +7093,7 @@ jobs:
         mv ./cargo-green ~/.cargo/bin/
     - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
       name: Retrieve saved builder data
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: builder-data
         path: /home/runner/builder-cache
@@ -7174,7 +7108,9 @@ jobs:
     - run: docker buildx version
     - run: docker buildx build --help
     - run: podman version || true
-    - run: cargo -Vv
+    - run: which cargo && cargo -Vv
+    - run: which rustc && rustc -Vv
+    - run: rustup show
 
     - name: Prepare local private registry cache
       if: ${{ env.CARGOGREEN_CACHE_FROM_IMAGES != '' || env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
@@ -7210,6 +7146,10 @@ jobs:
       if: ${{ env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
       run: docker run --name=reg-to   --rm --detach -p 23456:5000 --user $(id -u):$(id -g) -v /tmp/.local-registry-new:/var/lib/registry regist3
 
+    - name: Setup
+      run: |
+        ~/.cargo/bin/cargo-green green supergreen setup || true
+        { ~/.cargo/bin/cargo-green green supergreen setup 2>/dev/null || true; } | sudo /bin/sh -xe
     - name: 🔵 Envs
       run: ~/.cargo/bin/cargo-green green supergreen env
     - if: ${{ matrix.toolchain != '1.91.1' }}
@@ -7244,7 +7184,7 @@ jobs:
         env  \
           cargo green -vv install --jobs=1 --locked --force gifski@1.34.0  |& tee _
     - if: ${{ always() && matrix.toolchain != '1.91.1' }}
-      uses: actions/upload-artifact@v6
+      uses: actions/upload-artifact@v7
       name: Upload recipe
       with:
         name: gifski@1.34.0.Dockerfile
@@ -7293,10 +7233,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -7380,10 +7316,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -7451,7 +7383,6 @@ jobs:
       CARGOGREEN_EXPERIMENT: finalpathnonprimary # dumps on each build call
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
-
     needs: bin
     steps:
     - uses: docker/login-action@v3
@@ -7467,7 +7398,7 @@ jobs:
 
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: cargo-green
 
@@ -7479,7 +7410,7 @@ jobs:
         mv ./cargo-green ~/.cargo/bin/
     - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
       name: Retrieve saved builder data
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: builder-data
         path: /home/runner/builder-cache
@@ -7494,7 +7425,9 @@ jobs:
     - run: docker buildx version
     - run: docker buildx build --help
     - run: podman version || true
-    - run: cargo -Vv
+    - run: which cargo && cargo -Vv
+    - run: which rustc && rustc -Vv
+    - run: rustup show
 
     - name: Prepare local private registry cache
       if: ${{ env.CARGOGREEN_CACHE_FROM_IMAGES != '' || env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
@@ -7530,6 +7463,10 @@ jobs:
       if: ${{ env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
       run: docker run --name=reg-to   --rm --detach -p 23456:5000 --user $(id -u):$(id -g) -v /tmp/.local-registry-new:/var/lib/registry regist3
 
+    - name: Setup
+      run: |
+        ~/.cargo/bin/cargo-green green supergreen setup || true
+        { ~/.cargo/bin/cargo-green green supergreen setup 2>/dev/null || true; } | sudo /bin/sh -xe
     - name: 🔵 Envs
       run: ~/.cargo/bin/cargo-green green supergreen env
     - if: ${{ matrix.toolchain != '1.91.1' }}
@@ -7564,7 +7501,7 @@ jobs:
         env  \
           cargo green -vv install --jobs=1 --locked --force flamegraph@0.6.10  |& tee _
     - if: ${{ always() && matrix.toolchain != '1.91.1' }}
-      uses: actions/upload-artifact@v6
+      uses: actions/upload-artifact@v7
       name: Upload recipe
       with:
         name: flamegraph@0.6.10.Dockerfile
@@ -7613,10 +7550,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -7700,10 +7633,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -7768,10 +7697,9 @@ jobs:
     # CARGOGREEN_CACHE_FROM_IMAGES: docker-image://localhost:12345/${{ github.repository }}
     # CARGOGREEN_CACHE_TO_IMAGES: docker-image://localhost:23456/${{ github.repository }}
       CARGOGREEN_FINAL_PATH: recipes/sccache@0.12.0.Dockerfile
-      CARGOGREEN_EXPERIMENT: finalpathnonprimary # dumps on each build call
+      CARGOGREEN_EXPERIMENT: finalpathnonprimary,finalpathnocomment # dumps on each build call
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
-
     needs: bin
     steps:
     - uses: docker/login-action@v3
@@ -7787,7 +7715,7 @@ jobs:
 
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: cargo-green
 
@@ -7799,7 +7727,7 @@ jobs:
         mv ./cargo-green ~/.cargo/bin/
     - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
       name: Retrieve saved builder data
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: builder-data
         path: /home/runner/builder-cache
@@ -7814,7 +7742,9 @@ jobs:
     - run: docker buildx version
     - run: docker buildx build --help
     - run: podman version || true
-    - run: cargo -Vv
+    - run: which cargo && cargo -Vv
+    - run: which rustc && rustc -Vv
+    - run: rustup show
 
     - name: Prepare local private registry cache
       if: ${{ env.CARGOGREEN_CACHE_FROM_IMAGES != '' || env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
@@ -7850,6 +7780,10 @@ jobs:
       if: ${{ env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
       run: docker run --name=reg-to   --rm --detach -p 23456:5000 --user $(id -u):$(id -g) -v /tmp/.local-registry-new:/var/lib/registry regist3
 
+    - name: Setup
+      run: |
+        ~/.cargo/bin/cargo-green green supergreen setup || true
+        { ~/.cargo/bin/cargo-green green supergreen setup 2>/dev/null || true; } | sudo /bin/sh -xe
     - name: 🔵 Envs
       run: ~/.cargo/bin/cargo-green green supergreen env
     - if: ${{ matrix.toolchain != '1.91.1' }}
@@ -7884,7 +7818,7 @@ jobs:
         env CARGOGREEN_ADD_APT=libssl-dev,pkg-config,zlib1g-dev \
           cargo green -vv install --jobs=1 --locked --force sccache@0.12.0  |& tee _
     - if: ${{ always() && matrix.toolchain != '1.91.1' }}
-      uses: actions/upload-artifact@v6
+      uses: actions/upload-artifact@v7
       name: Upload recipe
       with:
         name: sccache@0.12.0.Dockerfile
@@ -7933,10 +7867,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -8020,10 +7950,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -8091,7 +8017,6 @@ jobs:
       CARGOGREEN_EXPERIMENT: finalpathnonprimary # dumps on each build call
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
-
     needs: bin
     steps:
     - uses: docker/login-action@v3
@@ -8107,7 +8032,7 @@ jobs:
 
 
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: cargo-green
 
@@ -8119,7 +8044,7 @@ jobs:
         mv ./cargo-green ~/.cargo/bin/
     - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
       name: Retrieve saved builder data
-      uses: actions/download-artifact@v7
+      uses: actions/download-artifact@v8
       with:
         name: builder-data
         path: /home/runner/builder-cache
@@ -8134,7 +8059,9 @@ jobs:
     - run: docker buildx version
     - run: docker buildx build --help
     - run: podman version || true
-    - run: cargo -Vv
+    - run: which cargo && cargo -Vv
+    - run: which rustc && rustc -Vv
+    - run: rustup show
 
     - name: Prepare local private registry cache
       if: ${{ env.CARGOGREEN_CACHE_FROM_IMAGES != '' || env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
@@ -8170,6 +8097,10 @@ jobs:
       if: ${{ env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
       run: docker run --name=reg-to   --rm --detach -p 23456:5000 --user $(id -u):$(id -g) -v /tmp/.local-registry-new:/var/lib/registry regist3
 
+    - name: Setup
+      run: |
+        ~/.cargo/bin/cargo-green green supergreen setup || true
+        { ~/.cargo/bin/cargo-green green supergreen setup 2>/dev/null || true; } | sudo /bin/sh -xe
     - name: 🔵 Envs
       run: ~/.cargo/bin/cargo-green green supergreen env
     - if: ${{ matrix.toolchain != '1.91.1' }}
@@ -8204,7 +8135,7 @@ jobs:
         env CARGOGREEN_SET_ENVS=GITHUB_SHA GITHUB_SHA= \
           cargo green -vv install --jobs=1 --locked --force bottom@0.11.4  |& tee _
     - if: ${{ always() && matrix.toolchain != '1.91.1' }}
-      uses: actions/upload-artifact@v6
+      uses: actions/upload-artifact@v7
       name: Upload recipe
       with:
         name: bottom@0.11.4.Dockerfile
@@ -8253,10 +8184,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)
@@ -8340,10 +8267,6 @@ jobs:
     - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
       name: 🌀 Maybe show final path diff
       run: |
-        case "$GITHUB_JOB" in
-          cross*|ntpd*) exit 0 ;; # TODO: fix undeterministic final paths for git crates
-          *) ;;
-        esac
         final_diff=(git --no-pager diff)
         if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
           final_diff+=(--exit-code)

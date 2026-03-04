@@ -1,16 +1,74 @@
-use anyhow::{anyhow, Result};
+use std::fs;
+
+use anyhow::{anyhow, bail, Result};
 use camino::{Utf8Path, Utf8PathBuf};
 use log::{debug, info};
 use serde::{Deserialize, Serialize};
 
-use crate::stage::{AsBlock, AsStage, NamedStage, Stage};
+use crate::{
+    base_image::rewrite_cargo_home,
+    green::Green,
+    stage::{AsBlock, AsStage, NamedStage, Stage},
+};
+
+pub(crate) const HOME: &str = "registry/src";
+
+const INDEX: &str = "index.crates.io";
+
+impl Green {
+    pub(crate) fn maybe_arrange_cratesio_index(&self) -> Result<()> {
+        let crates_home = self.cargo_home.join(HOME);
+        info!("Listing directory {crates_home}");
+        if !crates_home.exists() {
+            info!("making usre {crates_home} exists...");
+            // No root rights needed here
+            fs::create_dir_all(&crates_home)
+                .map_err(|e| anyhow!("Failed to `mkdir -p {crates_home}`: {e}"))?;
+        }
+        if let Some(youngest) = crates_home
+            .read_dir_utf8()
+            .map_err(|e| anyhow!("Failed `ls {crates_home}`: {e}"))?
+            .filter_map(Result::ok)
+            .inspect(|entry| info!("Found {}: {:?}", entry.path(), entry.file_type()))
+            .filter(|entry| entry.file_type().map(|f| f.is_dir()).unwrap_or(false))
+            .filter(|dir| {
+                dir.path()
+                    .file_name()
+                    .map(|name| name.starts_with(INDEX) && name != INDEX)
+                    .unwrap_or(false)
+            })
+            .filter_map(|dir| Some((dir.path().to_owned(), dir.metadata().ok()?.modified().ok()?)))
+            .max_by_key(|&(_, modified)| modified)
+            .map(|(path, _)| path)
+        {
+            let link = youngest.with_file_name(INDEX);
+            if let Err(e) = symlink::remove_symlink_dir(&link) {
+                info!("Failed cleaning previous symlink {link}: {e}");
+            }
+            if let Err(e) = symlink::symlink_dir(&youngest, &link) {
+                bail!("Could not symlink {link} to {youngest}: {e}")
+            }
+        }
+        Ok(())
+    }
+}
 
 #[must_use]
-pub(crate) fn rewrite_cratesio_index(path: &Utf8Path) -> Utf8PathBuf {
-    const CRATESIO_INDEX: &str = "index.crates.io-0000000000000000";
+pub(crate) fn rewrite_cratesio_index(path: &str) -> String {
+    if let Some(pos) = path.find(&format!("{INDEX}-")) {
+        return path[..pos].to_owned() + INDEX + &path[(pos + INDEX.len() + 1 + 16)..];
+    }
+    path.to_owned()
+}
 
-    let prefix = CRATESIO_INDEX.trim_end_matches('0');
-    path.iter().map(|part| if part.starts_with(prefix) { CRATESIO_INDEX } else { part }).collect()
+#[test]
+fn test_rewrite_cratesio_index() {
+    assert_eq!(
+        format!("$CARGO_HOME/{HOME}/index.crates.io/anyhow-1.0.100"),
+        rewrite_cratesio_index(&format!(
+            "$CARGO_HOME/{HOME}/index.crates.io-f9fd03f8c3c43dd1/anyhow-1.0.100"
+        ))
+    );
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash)]
@@ -49,15 +107,15 @@ impl AsStage<'_> for Cratesio {
 
 /// CARGO_MANIFEST_DIR="$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/pico-args-0.5.0"
 pub(crate) async fn named_stage<'a>(
+    cargo_home: &Utf8Path,
     name: &'a str,
     krate_manifest_dir: &'a Utf8Path,
 ) -> Result<NamedStage> {
     let name_dash_version = krate_manifest_dir.file_name().unwrap();
     let stage = Stage::cratesio(name_dash_version)?;
 
-    let extracted = rewrite_cratesio_index(krate_manifest_dir);
     let cached = krate_manifest_dir.to_string() + ".crate";
-    let cached = cached.replace("/registry/src/", "/registry/cache/");
+    let cached = cached.replace(&format!("/{HOME}/"), "/registry/cache/");
 
     info!("opening (RO) crate tarball {cached}");
     let hash = sha256::try_async_digest(&cached) //TODO: read from lockfile, see cargo_green::prebuild()
@@ -65,9 +123,12 @@ pub(crate) async fn named_stage<'a>(
         .map_err(|e| anyhow!("Failed reading {cached}: {e}"))?;
     debug!("crate sha256 for {stage}: {hash}");
 
+    let krate_manifest_dir = rewrite_cargo_home(cargo_home, krate_manifest_dir.as_str());
+    let extracted = rewrite_cratesio_index(&krate_manifest_dir);
+
     Ok(NamedStage::Cratesio(Cratesio {
         stage,
-        extracted,
+        extracted: extracted.into(),
         name: name.to_owned(),
         name_dash_version: name_dash_version.to_owned(),
         hash,

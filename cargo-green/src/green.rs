@@ -4,6 +4,7 @@ use std::{
 };
 
 use anyhow::{anyhow, bail, Result};
+use camino::Utf8PathBuf;
 use cargo_toml::Manifest;
 use serde::{Deserialize, Serialize};
 
@@ -42,6 +43,10 @@ macro_rules! ENV_SYNTAX_IMAGE {
 pub(crate) struct Green {
     #[doc = include_str!(concat!("../docs/",ENV_RUNNER!(),".md"))]
     pub(crate) runner: Runner,
+
+    /// Memoized $CARGO_HOME
+    #[doc(hidden)]
+    pub(crate) cargo_home: Utf8PathBuf,
 
     /// Snapshot of runner's envs. Not user-settable.
     #[doc(hidden)]
