@@ -182,14 +182,6 @@ pub(crate) async fn fetch_digest(img: &ImageUri) -> Result<ImageUri> {
     actual(img).await.map_err(|e| anyhow!("Failed getting digest for {img}: {e}"))
 }
 
-#[derive(Debug, Default)]
-pub(crate) struct Effects {
-    pub(crate) written: Vec<Utf8PathBuf>,
-    pub(crate) stdout: Vec<String>,
-    pub(crate) stderr: Vec<String>,
-    pub(crate) cargo_rustc_env: IndexSet<String>,
-}
-
 impl Green {
     pub(crate) async fn build_cacheonly(
         &self,
@@ -332,16 +324,9 @@ impl Green {
             .replace(cmd.as_std().get_program().to_str().unwrap(), &self.runner.to_string());
         let envs = cmd.envs_string(&self.runner.buildnoop_envs());
 
-        let status = match run_build(
-            &mut effects,
-            cmd,
-            &call,
-            containerfile,
-            target,
-            out_dir,
-            &self.cargo_home,
-        )
-        .await
+        let status = match effects
+            .run_build(cmd, &call, containerfile, target, out_dir, &self.cargo_home)
+            .await
         {
             Ok(status) => status,
             Err(e) => return rtrn(e, effects),
@@ -423,266 +408,283 @@ Please report an issue along with information from the following:
 // FROM --platform=$BUILDPLATFORM docker.io/library/rust:1.90.0-slim@sha256:e4ae8ab67883487c5545884d5aa5ebbe86b5f13c6df4a8e3e2f34c89cedb9f54 AS rust-base
 // Unable to build rust-base: Runner failed.
 
-async fn run_build(
-    effects: &mut Effects,
-    mut cmd: Command,
-    call: &str,
-    containerfile: &Utf8Path,
-    target: &Stage,
-    out_dir: Option<&Utf8Path>,
-    cargo_home: &Utf8Path,
-) -> Result<ExitStatus> {
-    let start = Instant::now();
-    let mut child = cmd.spawn().map_err(|e| anyhow!("Failed starting `{call}`: {e}"))?;
+#[derive(Debug, Default)]
+pub(crate) struct Effects {
+    pub(crate) written: Vec<Utf8PathBuf>,
+    pub(crate) stdout: Vec<String>,
+    pub(crate) stderr: Vec<String>,
+    pub(crate) cargo_rustc_env: IndexSet<String>,
+}
 
-    spawn({
-        let containerfile = containerfile.to_owned();
-        let mut stdin = child.stdin.take().expect("started");
-        async move {
-            let reader = TokioFile::open(&containerfile)
-                .await
-                .map_err(|e| anyhow!("Failed opening (RO) {containerfile}: {e}"))?;
-            let mut lines = TokioBufReader::new(reader).lines();
-            while let Ok(Some(line)) = lines.next_line().await {
-                if line.starts_with(DIESES) {
-                    continue;
-                }
-                stdin
-                    .write_all(line.as_bytes())
-                    .await
-                    .map_err(|e| anyhow!("Failed piping {containerfile}: {e}"))?;
-                let _ = stdin.write_u8(b'\n').await;
-            }
-            Ok::<_, anyhow::Error>(())
-        }
-    });
+impl Effects {
+    async fn run_build(
+        &mut self,
+        mut cmd: Command,
+        call: &str,
+        containerfile: &Utf8Path,
+        target: &Stage,
+        out_dir: Option<&Utf8Path>,
+        cargo_home: &Utf8Path,
+    ) -> Result<ExitStatus> {
+        let start = Instant::now();
+        let mut child = cmd.spawn().map_err(|e| anyhow!("Failed starting `{call}`: {e}"))?;
 
-    // ---
-
-    let pid = child.id().unwrap_or_default();
-    info!("Started as pid={pid} in {:?}", start.elapsed());
-
-    let (tx_err, mut rx_err) = oneshot::channel();
-    let mut tx_err = Some(tx_err);
-
-    let handles = if let Some(out_dir) = out_dir {
-        let dbg_out: JoinHandle<Result<_>> = spawn({
-            let mut out = TokioBufReader::new(child.stdout.take().expect("started"));
-            let target = target.to_owned();
-            let out_dir = out_dir.to_owned();
-            let cargo_home = cargo_home.to_string();
-            let mut err_handle = None;
-            let mut out_handle = None;
-            let mut rcd = None;
-            let mut written = vec![];
+        spawn({
+            let containerfile = containerfile.to_owned();
+            let mut stdin = child.stdin.take().expect("started");
             async move {
-                let mut buf = Vec::new();
-                out.read_to_end(&mut buf)
+                let reader = TokioFile::open(&containerfile)
                     .await
-                    .map_err(|e| anyhow!("Failed getting all the buffer: {e}"))?;
-                debug!("produced {target} 0x{}", sha256::digest(&buf));
-                let out = TokioBufReader::new(buf.as_slice());
-                let out_path = format!("{target}-{STDOUT}");
-                let err_path = format!("{target}-{STDERR}");
-                let rcd_path = format!("{target}-{ERRCODE}");
+                    .map_err(|e| anyhow!("Failed opening (RO) {containerfile}: {e}"))?;
+                let mut lines = TokioBufReader::new(reader).lines();
+                while let Ok(Some(line)) = lines.next_line().await {
+                    if line.starts_with(DIESES) {
+                        continue;
+                    }
+                    stdin
+                        .write_all(line.as_bytes())
+                        .await
+                        .map_err(|e| anyhow!("Failed piping {containerfile}: {e}"))?;
+                    let _ = stdin.write_u8(b'\n').await;
+                }
+                Ok::<_, anyhow::Error>(())
+            }
+        });
 
-                info!("running untar on STDOUT");
-                let mut ar = tokio_tar::Archive::new(out);
-                let mut entries = ar.entries().map_err(|e| anyhow!("Failed reading TAR: {e}"))?;
-                while let Some(Ok(mut f)) = entries.next().await {
-                    let name: Utf8PathBuf = f
-                        .path()
-                        .map_err(|e| anyhow!("Failed decoding TAR entry name: {e}"))?
-                        .to_string_lossy()
-                        .to_string()
-                        .into();
+        // ---
 
-                    if name == out_path {
-                        let mut buf = String::new();
-                        f.read_to_string(&mut buf)
-                            .await
-                            .map_err(|e| anyhow!("Failed unTARing buffer: {e}"))?;
-                        debug!("produced {name} 0x{}", sha256::digest(&buf));
-                        out_handle = Some(buf);
-                    } else if name == err_path {
-                        let mut buf = String::new();
-                        f.read_to_string(&mut buf)
-                            .await
-                            .map_err(|e| anyhow!("Failed unTARing buffer: {e}"))?;
-                        debug!("produced {name} 0x{}", sha256::digest(&buf));
-                        err_handle = Some(buf);
-                    } else if name == rcd_path {
-                        let line = TokioBufReader::new(f).lines().next_line().await;
-                        rcd = line.ok().flatten().and_then(|x| x.parse::<i32>().ok());
-                    } else {
-                        written.push(name.clone());
-                        info!("creating (RW) {name:?}");
-                        let fname = out_dir.join(&name);
-                        let mode =
-                            f.header().mode().map_err(|e| anyhow!("Failed decoding mode: {e}"))?;
+        let pid = child.id().unwrap_or_default();
+        info!("Started as pid={pid} in {:?}", start.elapsed());
 
-                        // Let's drop async for FS operations: we're not writing gigabytes!
-                        // Also: entries MUST be consumed in sequence anyway.
-                        let mut buf = Vec::new();
-                        f.read_to_end(&mut buf)
-                            .await
-                            .map_err(|e| anyhow!("Failed unTARing buffer: {e}"))?;
-                        debug!("produced {}B {name} 0x{}", buf.len(), sha256::digest(&buf));
+        let (tx_err, mut rx_err) = oneshot::channel();
+        let mut tx_err = Some(tx_err);
 
-                        assert_eq!(f.link_name().unwrap(), None);
-                        assert_eq!(f.header().uid().unwrap(), 0);
-                        assert_eq!(f.header().gid().unwrap(), 0);
-                        //assert_eq!(f.header().mtime().unwrap(), 42);
-                        assert_eq!(f.header().username(), Ok(Some("")));
-                        assert_eq!(f.header().groupname(), Ok(Some("")));
+        let handles = if let Some(out_dir) = out_dir {
+            let dbg_out: JoinHandle<Result<_>> = spawn({
+                let mut out = TokioBufReader::new(child.stdout.take().expect("started"));
+                let target = target.to_owned();
+                let out_dir = out_dir.to_owned();
+                let cargo_home = cargo_home.to_string();
+                let mut err_handle = None;
+                let mut out_handle = None;
+                let mut rcd = None;
+                let mut written = vec![];
+                async move {
+                    let mut buf = Vec::new();
+                    out.read_to_end(&mut buf)
+                        .await
+                        .map_err(|e| anyhow!("Failed getting all the buffer: {e}"))?;
+                    debug!("produced {target} 0x{}", sha256::digest(&buf));
+                    let out = TokioBufReader::new(buf.as_slice());
+                    let out_path = format!("{target}-{STDOUT}");
+                    let err_path = format!("{target}-{STDERR}");
+                    let rcd_path = format!("{target}-{ERRCODE}");
 
-                        match f.header().entry_type() {
-                            EntryType::Regular => {
-                                let mut opts = AtomicWriteFile::options();
-                                opts.mode(mode);
-                                let mut file = opts
-                                    .open(&fname)
-                                    .map_err(|e| anyhow!("Failed opening atomic {fname}: {e}"))?;
-                                if name.as_str().ends_with(".d") {
-                                    let buf = str::from_utf8(&buf).expect("cargo writes utf8");
-                                    // NOTE: rewrite text here so cargo shows host paths and keeps the illusion
-                                    // but really binaries (rlib, rmeta and such) cannot be modified.
-                                    let buf = un_virtual_target_dir_str(buf);
-                                    let buf = un_rewrite_cargo_home(&buf, &cargo_home);
-                                    file.write_all(buf.as_bytes())
-                                } else {
-                                    file.write_all(&buf)
-                                }
-                                .map_err(|e| anyhow!("Failed writing unTARed: {e}"))?;
-                                file.commit()
+                    info!("running untar on STDOUT");
+                    let mut ar = tokio_tar::Archive::new(out);
+                    let mut entries =
+                        ar.entries().map_err(|e| anyhow!("Failed reading TAR: {e}"))?;
+                    while let Some(Ok(mut f)) = entries.next().await {
+                        let name: Utf8PathBuf = f
+                            .path()
+                            .map_err(|e| anyhow!("Failed decoding TAR entry name: {e}"))?
+                            .to_string_lossy()
+                            .to_string()
+                            .into();
+
+                        if name == out_path {
+                            let mut buf = String::new();
+                            f.read_to_string(&mut buf)
+                                .await
+                                .map_err(|e| anyhow!("Failed unTARing buffer: {e}"))?;
+                            debug!("produced {name} 0x{}", sha256::digest(&buf));
+                            out_handle = Some(buf);
+                        } else if name == err_path {
+                            let mut buf = String::new();
+                            f.read_to_string(&mut buf)
+                                .await
+                                .map_err(|e| anyhow!("Failed unTARing buffer: {e}"))?;
+                            debug!("produced {name} 0x{}", sha256::digest(&buf));
+                            err_handle = Some(buf);
+                        } else if name == rcd_path {
+                            let line = TokioBufReader::new(f).lines().next_line().await;
+                            rcd = line.ok().flatten().and_then(|x| x.parse::<i32>().ok());
+                        } else {
+                            written.push(name.clone());
+                            info!("creating (RW) {name:?}");
+                            let fname = out_dir.join(&name);
+                            let mode = f
+                                .header()
+                                .mode()
+                                .map_err(|e| anyhow!("Failed decoding mode: {e}"))?;
+
+                            // Let's drop async for FS operations: we're not writing gigabytes!
+                            // Also: entries MUST be consumed in sequence anyway.
+                            let mut buf = Vec::new();
+                            f.read_to_end(&mut buf)
+                                .await
+                                .map_err(|e| anyhow!("Failed unTARing buffer: {e}"))?;
+                            debug!("produced {}B {name} 0x{}", buf.len(), sha256::digest(&buf));
+
+                            assert_eq!(f.link_name().unwrap(), None);
+                            assert_eq!(f.header().uid().unwrap(), 0);
+                            assert_eq!(f.header().gid().unwrap(), 0);
+                            //assert_eq!(f.header().mtime().unwrap(), 42);
+                            assert_eq!(f.header().username(), Ok(Some("")));
+                            assert_eq!(f.header().groupname(), Ok(Some("")));
+
+                            match f.header().entry_type() {
+                                EntryType::Regular => {
+                                    let mut opts = AtomicWriteFile::options();
+                                    opts.mode(mode);
+                                    let mut file = opts.open(&fname).map_err(|e| {
+                                        anyhow!("Failed opening atomic {fname}: {e}")
+                                    })?;
+                                    if name.as_str().ends_with(".d") {
+                                        let buf = str::from_utf8(&buf).expect("cargo writes utf8");
+                                        // NOTE: rewrite text here so cargo shows host paths and keeps the illusion
+                                        // but really binaries (rlib, rmeta and such) cannot be modified.
+                                        let buf = un_virtual_target_dir_str(buf);
+                                        let buf = un_rewrite_cargo_home(&buf, &cargo_home);
+                                        file.write_all(buf.as_bytes())
+                                    } else {
+                                        file.write_all(&buf)
+                                    }
                                     .map_err(|e| anyhow!("Failed writing unTARed: {e}"))?;
+                                    file.commit()
+                                        .map_err(|e| anyhow!("Failed writing unTARed: {e}"))?;
+                                }
+
+                                EntryType::Directory => {
+                                    DirBuilder::new()
+                                        .mode(mode)
+                                        .recursive(true) //= mkdir "-p"
+                                        .create(&fname)
+                                        .map_err(|e| anyhow!("Failed `mkdir -p {fname}`: {e}"))?;
+                                }
+
+                                entryty => bail!("BUG: unexpected entry type {entryty:?}"),
                             }
 
-                            EntryType::Directory => {
-                                DirBuilder::new()
-                                    .mode(mode)
-                                    .recursive(true) //= mkdir "-p"
-                                    .create(&fname)
-                                    .map_err(|e| anyhow!("Failed `mkdir -p {fname}`: {e}"))?;
-                            }
-
-                            entryty => bail!("BUG: unexpected entry type {entryty:?}"),
-                        }
-
-                        assert_eq!(
+                            assert_eq!(
                             fname.metadata().unwrap().mode() & 0o777,
                             mode,
                             "Unexpected untared-then-written file mode {:#o} vs: {mode:#o} {:?}",
                             fname.metadata().unwrap().mode(),
                             fname.metadata()
                         );
-                    }
-                }
-                info!("rustc wrote {} files:", written.len());
-                written.sort();
-                Ok((out_handle, err_handle, rcd, written))
-            }
-        });
-
-        let dbg_err = spawn({
-            let mut lines = TokioBufReader::new(child.stderr.take().expect("started")).lines();
-            async move {
-                let mut details: BTreeMap<String, String> = [].into();
-                let mut dones = 0;
-                let mut cacheds = 0;
-                while let Ok(Some(line)) = lines.next_line().await {
-                    let line = strip_ansi_escapes(&line);
-                    if line.is_empty() {
-                        continue;
-                    }
-                    info!("✖ {line}");
-
-                    // Capture some approximate stats the runner gives us
-
-                    if line.starts_with("ERROR: ") {
-                        if let Some(tx_err) = tx_err.take() {
-                            let _ = tx_err.send(line.trim_start_matches("ERROR: ").to_owned());
                         }
                     }
+                    info!("rustc wrote {} files:", written.len());
+                    written.sort();
+                    Ok((out_handle, err_handle, rcd, written))
+                }
+            });
 
-                    // Show data transfers (Bytes, maybe also timings?)
-                    for (idx, pattern) in line.as_str().match_indices(" transferring ") {
-                        let detail = line[(pattern.len() + idx)..].trim_end_matches(" done");
-                        let Some((ctx, value)) = detail.split_once(':') else { continue };
-                        details
-                            .entry(ctx.to_owned())
-                            .and_modify(|v| *v = value.to_owned())
-                            .or_insert(value.to_owned());
+            let dbg_err = spawn({
+                let mut lines = TokioBufReader::new(child.stderr.take().expect("started")).lines();
+                async move {
+                    let mut details: BTreeMap<String, String> = [].into();
+                    let mut dones = 0;
+                    let mut cacheds = 0;
+                    while let Ok(Some(line)) = lines.next_line().await {
+                        let line = strip_ansi_escapes(&line);
+                        if line.is_empty() {
+                            continue;
+                        }
+                        info!("✖ {line}");
+
+                        // Capture some approximate stats the runner gives us
+
+                        if line.starts_with("ERROR: ") {
+                            if let Some(tx_err) = tx_err.take() {
+                                let _ = tx_err.send(line.trim_start_matches("ERROR: ").to_owned());
+                            }
+                        }
+
+                        // Show data transfers (Bytes, maybe also timings?)
+                        for (idx, pattern) in line.as_str().match_indices(" transferring ") {
+                            let detail = line[(pattern.len() + idx)..].trim_end_matches(" done");
+                            let Some((ctx, value)) = detail.split_once(':') else { continue };
+                            details
+                                .entry(ctx.to_owned())
+                                .and_modify(|v| *v = value.to_owned())
+                                .or_insert(value.to_owned());
+                        }
+
+                        // Count DONEs and CACHEDs
+                        if line.contains(" DONE ") {
+                            dones += 1;
+                        } else if line.ends_with(" CACHED") {
+                            cacheds += 1;
+                        }
                     }
+                    info!("Terminating task CACHED:{cacheds} DONE:{dones} {details:?}");
+                }
+            });
 
-                    // Count DONEs and CACHEDs
-                    if line.contains(" DONE ") {
-                        dones += 1;
-                    } else if line.ends_with(" CACHED") {
-                        cacheds += 1;
+            Some((dbg_out, dbg_err))
+        } else {
+            None
+        };
+
+        // NOTE: storing STDOUT+STDERR within output stage,
+        //   as `cargo` relies on messages given through STDERR.
+        //     Reading stdio as it comes through via the runner's logging is indeed the faster solution,
+        //   however, it appears non-deterministic (cargo 1.87). Or maybe it's only due
+        //   to the runner clipping log output (see https://stackoverflow.com/a/75632518/1418165
+        //   and https://github.com/moby/buildkit/pull/1754/files on how `--builder` may help).
+        //   Also, the `rawjson` "progress mode" may be a simpler log-output to rely on. But then, what about `podman`?
+
+        let (secs, res) = {
+            let start = Instant::now();
+            let res = child.wait().await;
+            (start.elapsed(), res)
+        };
+        let mut status = res.map_err(|e| anyhow!("Failed calling `{call}`: {e}"))?;
+        info!("build ran in {secs:?}");
+
+        if let Ok(e) = rx_err.try_recv() {
+            bail!("Runner BUG: {e}")
+        }
+
+        // NOTE:
+        // * if call to rustc fails, errcode file will exist but the build will complete.
+        // * if the call doesn't fail, the file isn't created.
+        // * if the build fails that's a bug, and no files will be outputed.
+
+        if let Some((dbg_out, dbg_err)) = handles {
+            match join!(timeout(dbg_out), timeout(dbg_err)) {
+                (Ok(Ok(Err(e))), _) => bail!("Something went wrong (maybe retry?): {e}"),
+                (Ok(Ok(Ok((Some(out_buf), Some(err_buf), errcode, written)))), _) => {
+                    let FromStdout { stdout, rustc_envs } = fwd_stdout(&out_buf, "➤", cargo_home);
+                    info!("Buildscript {PKG}-specific config: envs:{}", rustc_envs.len());
+                    self.cargo_rustc_env = rustc_envs;
+
+                    let FromStderr { stderr, envs, libs } = fwd_stderr(&err_buf, "✖", cargo_home);
+                    info!(
+                        "Suggested {PKG}-specific config: envs:{} libs:{}",
+                        envs.len(),
+                        libs.len()
+                    );
+                    self.stdout = stdout;
+                    self.stderr = stderr;
+                    self.written = written;
+
+                    if let Some(errcode) = errcode.map(ExitStatus::from_raw) {
+                        if !errcode.success() {
+                            status = errcode;
+                        }
                     }
                 }
-                info!("Terminating task CACHED:{cacheds} DONE:{dones} {details:?}");
-            }
-        });
-
-        Some((dbg_out, dbg_err))
-    } else {
-        None
-    };
-
-    // NOTE: storing STDOUT+STDERR within output stage,
-    //   as `cargo` relies on messages given through STDERR.
-    //     Reading stdio as it comes through via the runner's logging is indeed the faster solution,
-    //   however, it appears non-deterministic (cargo 1.87). Or maybe it's only due
-    //   to the runner clipping log output (see https://stackoverflow.com/a/75632518/1418165
-    //   and https://github.com/moby/buildkit/pull/1754/files on how `--builder` may help).
-    //   Also, the `rawjson` "progress mode" may be a simpler log-output to rely on. But then, what about `podman`?
-
-    let (secs, res) = {
-        let start = Instant::now();
-        let res = child.wait().await;
-        (start.elapsed(), res)
-    };
-    let mut status = res.map_err(|e| anyhow!("Failed calling `{call}`: {e}"))?;
-    info!("build ran in {secs:?}");
-
-    if let Ok(e) = rx_err.try_recv() {
-        bail!("Runner BUG: {e}")
-    }
-
-    // NOTE:
-    // * if call to rustc fails, errcode file will exist but the build will complete.
-    // * if the call doesn't fail, the file isn't created.
-    // * if the build fails that's a bug, and no files will be outputed.
-
-    if let Some((dbg_out, dbg_err)) = handles {
-        match join!(timeout(dbg_out), timeout(dbg_err)) {
-            (Ok(Ok(Err(e))), _) => bail!("Something went wrong (maybe retry?): {e}"),
-            (Ok(Ok(Ok((Some(out_buf), Some(err_buf), errcode, written)))), _) => {
-                let FromStdout { stdout, rustc_envs } = fwd_stdout(&out_buf, "➤", cargo_home);
-                info!("Buildscript {PKG}-specific config: envs:{}", rustc_envs.len());
-                effects.cargo_rustc_env = rustc_envs;
-
-                let FromStderr { stderr, envs, libs } = fwd_stderr(&err_buf, "✖", cargo_home);
-                info!("Suggested {PKG}-specific config: envs:{} libs:{}", envs.len(), libs.len());
-                effects.stdout = stdout;
-                effects.stderr = stderr;
-                effects.written = written;
-
-                if let Some(errcode) = errcode.map(ExitStatus::from_raw) {
-                    if !errcode.success() {
-                        status = errcode;
-                    }
+                (e1, e2) => {
+                    bail!("BUG: STDIO forwarding crashed: {e1:?} | {e2:?}")
                 }
-            }
-            (e1, e2) => {
-                bail!("BUG: STDIO forwarding crashed: {e1:?} | {e2:?}")
             }
         }
+        drop(child);
+        Ok(status)
     }
-    drop(child);
-    Ok(status)
 }
 
 #[inline]
