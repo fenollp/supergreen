@@ -47,11 +47,6 @@ pub(crate) fn as_rustc(
     let mut s_e = true;
     let mut key = arguments.first().expect("PROOF: defo not empty").clone();
 
-    // // e.g. $HOME/work/supergreen/supergreen/target/debug/build/lock_api-a60f4042e32867e8/build-script-build
-    // if arguments.len() == 1 && key.ends_with("build-script-build") {
-    //     state.input = key.as_str().into();
-    // }
-
     let mut val: String;
     for arg in arguments.iter().skip(1) {
         (s_e, key, val) = if s_e {
@@ -74,7 +69,7 @@ pub(crate) fn as_rustc(
 
         if s_e && key == "--test" && val.is_empty() {
             (s_e, key) = (false, "".to_owned());
-            args.push("--test".to_owned());
+            args.push(vec!["--test".to_owned()]);
             continue;
         }
 
@@ -123,8 +118,7 @@ pub(crate) fn as_rustc(
             }
             "--extern" => {
                 if SYSROOT_CRATES.contains(&val.as_str()) {
-                    args.push(key.clone());
-                    args.push(val);
+                    args.push(vec![key.clone(), val]);
                     continue; // Sysroot crates (e.g. https://doc.rust-lang.org/proc_macro)
                 }
 
@@ -159,8 +153,7 @@ pub(crate) fn as_rustc(
             _ => {}
         }
 
-        args.push(key.clone());
-        args.push(val);
+        args.push(vec![key.clone(), val]);
     }
 
     // Can't rely on $PWD nor $CARGO_TARGET_DIR because `cargo` changes them.
@@ -196,7 +189,8 @@ pub(crate) fn as_rustc(
     };
 
     assert_ne!(state.mdid, "0".repeat(16).into());
-    Ok((state, args))
+    args.sort();
+    Ok((state, args.into_iter().flatten().collect()))
 }
 
 #[must_use]
@@ -296,27 +290,27 @@ mod tests {
 
         #[rustfmt::skip]
         assert_eq!(args,  as_arguments(&[
-                "$PWD/./dbg/debug/rustcbuildx",
-                "$HOME/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/rustc",
                 "--crate-name", "rustcbuildx",
-                "--edition", "2021",
-                "--error-format", "json",
-                "--json", "diagnostic-rendered-ansi,artifacts,future-incompat",
-                // "--diagnostic-width", "211",
                 "--crate-type", "bin",
+             // "--diagnostic-width", "211",
+                "--edition", "2021",
                 "--emit", "dep-info,link",
-                "-C", "embed-bitcode=no",
-                "-C", "debuginfo=2",
-                "-C", "metadata=710b4516f388a5e4",
-                "-C", "extra-filename=-710b4516f388a5e4",
-                "--out-dir", "$PWD/target/debug/deps",
-                "-C", "incremental=$PWD/target/debug/incremental",
-                "-L", "dependency=$PWD/target/debug/deps",
+                "--error-format", "json",
                 "--extern", "anyhow=$PWD/target/debug/deps/libanyhow-f96497119bad6f50.rlib",
                 "--extern", "env_logger=$PWD/target/debug/deps/libenv_logger-7e2d283f6e473671.rlib",
                 "--extern", "log=$PWD/target/debug/deps/liblog-27d1dc50ab631e5f.rlib",
                 "--extern", "mktemp=$PWD/target/debug/deps/libmktemp-b84fe47f0a44f88d.rlib",
                 "--extern", "os_pipe=$PWD/target/debug/deps/libos_pipe-f344e452b9bd1c5e.rlib",
+                "--json", "diagnostic-rendered-ansi,artifacts,future-incompat",
+                "--out-dir", "$PWD/target/debug/deps",
+                "-C", "debuginfo=2",
+                "-C", "embed-bitcode=no",
+                "-C", "extra-filename=-710b4516f388a5e4",
+                "-C", "incremental=$PWD/target/debug/incremental",
+                "-C", "metadata=710b4516f388a5e4",
+                "-L", "dependency=$PWD/target/debug/deps",
+                "$PWD/./dbg/debug/rustcbuildx",
+                "$HOME/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/rustc",
              ]));
     }
 
@@ -378,28 +372,28 @@ mod tests {
 
         #[rustfmt::skip]
         assert_eq!(as_arguments(&[
-                "$PWD/./dbg/debug/rustcbuildx",
-                "$HOME/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/rustc",
                 "--crate-name", "rustcbuildx",
+             // "--diagnostic-width", "347",
                 "--edition", "2021",
-                "--error-format", "json",
-                "--json", "diagnostic-rendered-ansi,artifacts,future-incompat",
-                // "--diagnostic-width", "347",
                 "--emit", "dep-info,link",
-                "-C", "embed-bitcode=no",
-                "-C", "debuginfo=2",
-                "--test",
-                "-C", "metadata=7c7a0950383d41d3",
-                "-C", "extra-filename=-7c7a0950383d41d3",
-                "--out-dir", "$PWD/target/debug/deps",
-                "-C", "incremental=$PWD/target/debug/incremental",
-                "-L", "dependency=$PWD/target/debug/deps",
+                "--error-format", "json",
                 "--extern", "anyhow=$PWD/target/debug/deps/libanyhow-f96497119bad6f50.rlib",
                 "--extern", "env_logger=$PWD/target/debug/deps/libenv_logger-7e2d283f6e473671.rlib",
                 "--extern", "log=$PWD/target/debug/deps/liblog-27d1dc50ab631e5f.rlib",
                 "--extern", "mktemp=$PWD/target/debug/deps/libmktemp-b84fe47f0a44f88d.rlib",
                 "--extern", "os_pipe=$PWD/target/debug/deps/libos_pipe-f344e452b9bd1c5e.rlib",
                 "--extern", "pretty_assertions=$PWD/target/debug/deps/libpretty_assertions-9fa55d8a39fa5fe3.rlib",
+                "--json", "diagnostic-rendered-ansi,artifacts,future-incompat",
+                "--out-dir", "$PWD/target/debug/deps",
+                "--test",
+                "-C", "debuginfo=2",
+                "-C", "embed-bitcode=no",
+                "-C", "extra-filename=-7c7a0950383d41d3",
+                "-C", "incremental=$PWD/target/debug/incremental",
+                "-C", "metadata=7c7a0950383d41d3",
+                "-L", "dependency=$PWD/target/debug/deps",
+                "$PWD/./dbg/debug/rustcbuildx",
+                "$HOME/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/rustc",
              ]), args);
     }
 
@@ -449,26 +443,26 @@ mod tests {
 
         #[rustfmt::skip]
         assert_eq!(args,  as_arguments(&[
-                "$PWD/./dbg/debug/rustcbuildx",
-                "$HOME/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/rustc",
-                "--crate-name", "build_script_build",
-                "--edition", "2021",
-                "--error-format", "json",
-                "--json", "diagnostic-rendered-ansi,artifacts,future-incompat",
-                // "--diagnostic-width", "211",
-                "--crate-type", "bin",
-                "--emit", "dep-info,link",
-                "-C", "embed-bitcode=no",
+                "--cap-lints", "warn",
                 "--cfg", "'feature=\"alloc\"'",
                 "--cfg", "'feature=\"default\"'",
                 "--cfg", "'feature=\"std\"'",
                 "--cfg", "'feature=\"termios\"'",
                 "--cfg", "'feature=\"use-libc-auxv\"'",
-                "-C", "metadata=c7101a3d6c8e4dce",
-                "-C", "extra-filename=-c7101a3d6c8e4dce",
+                "--crate-name", "build_script_build",
+                "--crate-type", "bin",
+             // "--diagnostic-width", "211",
+                "--edition", "2021",
+                "--emit", "dep-info,link",
+                "--error-format", "json",
+                "--json", "diagnostic-rendered-ansi,artifacts,future-incompat",
                 "--out-dir", "$PWD/target/debug/build/rustix-c7101a3d6c8e4dce",
+                "-C", "embed-bitcode=no",
+                "-C", "extra-filename=-c7101a3d6c8e4dce",
+                "-C", "metadata=c7101a3d6c8e4dce",
                 "-L", "dependency=$PWD/target/debug/deps",
-                "--cap-lints", "warn",
+                "$PWD/./dbg/debug/rustcbuildx",
+                "$HOME/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/rustc",
              ]));
     }
 
@@ -519,27 +513,27 @@ mod tests {
 
         #[rustfmt::skip]
         assert_eq!(as_arguments(&[
-                "rustcbuildx",
-                "$HOME/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/rustc",
-                "--crate-name", "time_macros",
-                "--edition", "2021",
-                "--error-format", "json",
-                "--json", "diagnostic-rendered-ansi,artifacts,future-incompat",
-                // "--diagnostic-width", "211",
-                "--crate-type", "proc-macro",
-                "--emit", "dep-info,link",
-                "-C", "prefer-dynamic",
-                "-C", "embed-bitcode=no",
-                "-C", "debug-assertions=off",
+                "--cap-lints", "warn",
                 "--cfg", "'feature=\"formatting\"'",
                 "--cfg", "'feature=\"parsing\"'",
-                "-C", "metadata=89438a15ab938e2f",
-                "-C", "extra-filename=-89438a15ab938e2f",
-                "--out-dir", "/tmp/wfrefwef__cargo-deny_0-14-3/release/deps",
-                "-L", "dependency=/tmp/wfrefwef__cargo-deny_0-14-3/release/deps",
+                "--crate-name", "time_macros",
+                "--crate-type", "proc-macro",
+             // "--diagnostic-width", "211",
+                "--edition", "2021",
+                "--emit", "dep-info,link",
+                "--error-format", "json",
+                "--extern", "proc_macro",
                 "--extern", "time_core=/tmp/wfrefwef__cargo-deny_0-14-3/release/deps/libtime_core-c880e75c55528c08.rlib",
-                "--extern", "proc_macro", // oh hi
-                "--cap-lints", "warn",
+                "--json", "diagnostic-rendered-ansi,artifacts,future-incompat",
+                "--out-dir", "/tmp/wfrefwef__cargo-deny_0-14-3/release/deps",
+                "-C", "debug-assertions=off",
+                "-C", "embed-bitcode=no",
+                "-C", "extra-filename=-89438a15ab938e2f",
+                "-C", "metadata=89438a15ab938e2f",
+                "-C", "prefer-dynamic",
+                "-L", "dependency=/tmp/wfrefwef__cargo-deny_0-14-3/release/deps",
+                "rustcbuildx",
+                "$HOME/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/rustc",
              ]), args);
     }
 
@@ -588,22 +582,22 @@ mod tests {
 
         #[rustfmt::skip]
         assert_eq!(as_arguments(&[
-                "rustcbuildx",
-                "$HOME/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/rustc",
+                "--cfg", "feature=\"default\"",
                 "--crate-name", "build_script_build",
+                "--crate-type", "bin",
+             // "--diagnostic-width", "211",
                 "--edition", "2021",
+                "--emit", "dep-info,link",
                 "--error-format", "json",
                 "--json", "diagnostic-rendered-ansi,artifacts,future-incompat",
-                // "--diagnostic-width", "211",
-                "--crate-type", "bin",
-                "--emit", "dep-info,link",
-                "-C", "embed-bitcode=no",
-                "-C", "debug-assertions=off",
-                "--cfg", "feature=\"default\"",
-                "-C", "metadata=96fe5c8493f1a08f",
-                "-C", "extra-filename=-96fe5c8493f1a08f",
                 "--out-dir", "/tmp/wfrefwef__cross@0.2.5/release/build/cross-96fe5c8493f1a08f",
+                "-C", "debug-assertions=off",
+                "-C", "embed-bitcode=no",
+                "-C", "extra-filename=-96fe5c8493f1a08f",
+                "-C", "metadata=96fe5c8493f1a08f",
                 "-L", "dependency=/tmp/wfrefwef__cross@0.2.5/release/deps",
+                "rustcbuildx",
+                "$HOME/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/rustc",
              ]), args);
     }
 
@@ -628,7 +622,7 @@ mod tests {
             "--out-dir", "$HOME/instst/release/build/openssl-sys-99f749eccead4467",
             "-L", "dependency=$HOME/instst/release/deps",
             "--extern", "cc=$HOME/instst/release/deps/libcc-3c316ebdde73b0fe.rlib",
-            "--extern", "pkg_config=%HOME/instst/release/deps/libpkg_config-a6962381fee76247.rlib",
+            "--extern", "pkg_config=$HOME/instst/release/deps/libpkg_config-a6962381fee76247.rlib",
             "--extern", "vcpkg=$HOME/instst/release/deps/libvcpkg-ebcbc23bfdf4209b.rlib",
             "--cap-lints", "warn",
         ]);
@@ -656,24 +650,24 @@ mod tests {
 
         #[rustfmt::skip]
         assert_eq!(as_arguments(&[
+                "--cap-lints", "warn",
+                "--crate-name", "build_script_main",
+                "--crate-type", "bin",
+                "--edition", "2018",
+                "--emit", "dep-info,link",
+                "--error-format", "json",
+                "--extern", "cc=$HOME/instst/release/deps/libcc-3c316ebdde73b0fe.rlib",
+                "--extern", "pkg_config=$HOME/instst/release/deps/libpkg_config-a6962381fee76247.rlib",
+                "--extern", "vcpkg=$HOME/instst/release/deps/libvcpkg-ebcbc23bfdf4209b.rlib",
+                "--json", "diagnostic-rendered-ansi,artifacts,future-incompat",
+                "--out-dir", "$HOME/instst/release/build/openssl-sys-99f749eccead4467",
+                "-C", "debug-assertions=off",
+                "-C", "embed-bitcode=no",
+                "-C", "extra-filename=-99f749eccead4467",
+                "-C", "metadata=99f749eccead4467",
+                "-L", "dependency=$HOME/instst/release/deps",
                 "$HOME/work/rustcbuildx/rustcbuildx/rustcbuildx",
                 "$HOME/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin/rustc",
-                "--crate-name", "build_script_main",
-                "--edition", "2018",
-                "--error-format", "json",
-                "--json", "diagnostic-rendered-ansi,artifacts,future-incompat",
-                "--crate-type", "bin",
-                "--emit", "dep-info,link",
-                "-C", "embed-bitcode=no",
-                "-C", "debug-assertions=off",
-                "-C", "metadata=99f749eccead4467",
-                "-C", "extra-filename=-99f749eccead4467",
-                "--out-dir", "$HOME/instst/release/build/openssl-sys-99f749eccead4467",
-                "-L", "dependency=$HOME/instst/release/deps",
-                "--extern", "cc=$HOME/instst/release/deps/libcc-3c316ebdde73b0fe.rlib",
-                "--extern", "pkg_config=%HOME/instst/release/deps/libpkg_config-a6962381fee76247.rlib",
-                "--extern", "vcpkg=$HOME/instst/release/deps/libvcpkg-ebcbc23bfdf4209b.rlib",
-                "--cap-lints", "warn",
              ]), args);
     }
 
