@@ -630,3 +630,8 @@ https://lib.rs/crates/songrec
 0.6.4
 
 ---
+
+https://github.com/taiki-e/cargo-hack
+=> verify usage as subcommand
+
+---

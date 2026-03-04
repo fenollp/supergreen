@@ -10,9 +10,10 @@ jobs:
         shell: bash -euo pipefail {0}
     steps:
     - uses: actions/checkout@v6
+    - run: ./hack/bake.sh | tee docker-bake.hcl
     - run: ./hack/clis.sh | tee .github/workflows/clis.yml
-    - run: ./hack/self.sh | tee .github/workflows/self.yml
     - run: ./hack/docs.sh
+    - run: ./hack/self.sh | tee .github/workflows/self.yml
     - run: git --no-pager diff --exit-code
     - name: Run shellcheck
       uses: ludeeus/action-shellcheck@2.0.0
