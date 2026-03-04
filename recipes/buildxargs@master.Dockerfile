@@ -35,7 +35,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --crate-name pico_args --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --cfg feature'="default"' --cfg feature'="eq-separator"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("combined-flags", "default", "eq-separator", "short-space-opt"))' -C metadata'=1bda40e58e10df29' -C extra-filename'=-b23dd1fb69296b44' --out-dir /target/release/deps -C strip'=debuginfo' -L dependency'=/target/release/deps' --cap-lints warn $CARGO_HOME/registry/src/index.crates.io/pico-args-0.5.0/src/lib.rs \
+      rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="eq-separator"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("combined-flags", "default", "eq-separator", "short-space-opt"))' --crate-name pico_args --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-b23dd1fb69296b44' -C metadata'=1bda40e58e10df29' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/pico-args-0.5.0/src/lib.rs \
         1>          /target/release/deps/out-b23dd1fb69296b44-stdout \
         2>          /target/release/deps/out-b23dd1fb69296b44-stderr \
         || echo $? >/target/release/deps/out-b23dd1fb69296b44-errcode\
@@ -101,7 +101,7 @@ COPY --link --from=dep-n-pico-args-0.5.0-b23dd1fb69296b44 /target/release/deps/*
 ##         CARGO_PKG_VERSION_PATCH=0 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name pico_args --edition 2018 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --cfg feature'="default"' --cfg feature'="eq-separator"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("combined-flags", "default", "eq-separator", "short-space-opt"))' -C metadata'=1bda40e58e10df29' -C extra-filename'=-b23dd1fb69296b44' --out-dir /target/release/deps -C strip'=debuginfo' -L dependency'=/target/release/deps' --cap-lints warn $CARGO_HOME/registry/src/index.crates.io/pico-args-0.5.0/src/lib.rs \
+##       rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="eq-separator"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("combined-flags", "default", "eq-separator", "short-space-opt"))' --crate-name pico_args --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-b23dd1fb69296b44' -C metadata'=1bda40e58e10df29' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/pico-args-0.5.0/src/lib.rs \
 ##         1>          /target/release/deps/out-b23dd1fb69296b44-stdout \
 ##         2>          /target/release/deps/out-b23dd1fb69296b44-stderr \
 ##         || echo $? >/target/release/deps/out-b23dd1fb69296b44-errcode\
@@ -144,7 +144,7 @@ RUN \
         CARGO_PKG_VERSION_PATCH=0 \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
-      rustc --crate-name shlex --edition 2015 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "std"))' -C metadata'=76b1101dc62b2e16' -C extra-filename'=-a2dd0fe0df0b57cb' --out-dir /target/release/deps -C strip'=debuginfo' -L dependency'=/target/release/deps' --cap-lints warn $CARGO_HOME/registry/src/index.crates.io/shlex-1.3.0/src/lib.rs \
+      rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "std"))' --crate-name shlex --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-a2dd0fe0df0b57cb' -C metadata'=76b1101dc62b2e16' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/shlex-1.3.0/src/lib.rs \
         1>          /target/release/deps/out-a2dd0fe0df0b57cb-stdout \
         2>          /target/release/deps/out-a2dd0fe0df0b57cb-stderr \
         || echo $? >/target/release/deps/out-a2dd0fe0df0b57cb-errcode\
@@ -216,7 +216,7 @@ COPY --link --from=dep-n-shlex-1.3.0-a2dd0fe0df0b57cb /target/release/deps/*-a2d
 ##         CARGO_PKG_VERSION_PATCH=0 \
 ##         CARGO_PKG_VERSION_PRE= \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name shlex --edition 2015 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "std"))' -C metadata'=76b1101dc62b2e16' -C extra-filename'=-a2dd0fe0df0b57cb' --out-dir /target/release/deps -C strip'=debuginfo' -L dependency'=/target/release/deps' --cap-lints warn $CARGO_HOME/registry/src/index.crates.io/shlex-1.3.0/src/lib.rs \
+##       rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "std"))' --crate-name shlex --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-a2dd0fe0df0b57cb' -C metadata'=76b1101dc62b2e16' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/shlex-1.3.0/src/lib.rs \
 ##         1>          /target/release/deps/out-a2dd0fe0df0b57cb-stdout \
 ##         2>          /target/release/deps/out-a2dd0fe0df0b57cb-stderr \
 ##         || echo $? >/target/release/deps/out-a2dd0fe0df0b57cb-errcode\
@@ -266,7 +266,7 @@ RUN \
         CARGO_PRIMARY_PACKAGE=1 \
         CARGO_SBOM_PATH= \
         CARGOGREEN=1 \
-      rustc --crate-name buildxargs --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=2914f7f314c5df4b' -C extra-filename'=-6b139e29a6fbee8c' --out-dir /target/release/deps -C strip'=debuginfo' -L dependency'=/target/release/deps' --extern pico_args'=/target/release/deps/libpico_args-b23dd1fb69296b44.rmeta' --extern shlex'=/target/release/deps/libshlex-a2dd0fe0df0b57cb.rmeta' src/lib.rs \
+      rustc --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name buildxargs --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern pico_args'=/target/release/deps/libpico_args-b23dd1fb69296b44.rmeta' --extern shlex'=/target/release/deps/libshlex-a2dd0fe0df0b57cb.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-6b139e29a6fbee8c' -C metadata'=2914f7f314c5df4b' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' src/lib.rs \
         1>          /target/release/deps/out-6b139e29a6fbee8c-stdout \
         2>          /target/release/deps/out-6b139e29a6fbee8c-stderr \
         || echo $? >/target/release/deps/out-6b139e29a6fbee8c-errcode\
@@ -358,7 +358,7 @@ COPY --link --from=dep-n-buildxargs-1.4.0-6b139e29a6fbee8c /target/release/deps/
 ##         CARGO_PRIMARY_PACKAGE=1 \
 ##         CARGO_SBOM_PATH= \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name buildxargs --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit dep-info,metadata,link -C opt-level'=3' -C embed-bitcode'=no' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=2914f7f314c5df4b' -C extra-filename'=-6b139e29a6fbee8c' --out-dir /target/release/deps -C strip'=debuginfo' -L dependency'=/target/release/deps' --extern pico_args'=/target/release/deps/libpico_args-b23dd1fb69296b44.rmeta' --extern shlex'=/target/release/deps/libshlex-a2dd0fe0df0b57cb.rmeta' src/lib.rs \
+##       rustc --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name buildxargs --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern pico_args'=/target/release/deps/libpico_args-b23dd1fb69296b44.rmeta' --extern shlex'=/target/release/deps/libshlex-a2dd0fe0df0b57cb.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-6b139e29a6fbee8c' -C metadata'=2914f7f314c5df4b' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' src/lib.rs \
 ##         1>          /target/release/deps/out-6b139e29a6fbee8c-stdout \
 ##         2>          /target/release/deps/out-6b139e29a6fbee8c-stderr \
 ##         || echo $? >/target/release/deps/out-6b139e29a6fbee8c-errcode\
@@ -406,7 +406,7 @@ RUN \
         CARGO_PRIMARY_PACKAGE=1 \
         CARGO_SBOM_PATH= \
         CARGOGREEN=1 \
-      rustc --crate-name buildxargs --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C opt-level'=3' -C embed-bitcode'=no' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=bfcc25fbb1d1e27e' -C extra-filename'=-08fbf7e44bba6617' --out-dir /target/release/deps -C strip'=debuginfo' -L dependency'=/target/release/deps' --extern buildxargs'=/target/release/deps/libbuildxargs-6b139e29a6fbee8c.rlib' --extern pico_args'=/target/release/deps/libpico_args-b23dd1fb69296b44.rlib' --extern shlex'=/target/release/deps/libshlex-a2dd0fe0df0b57cb.rlib' src/main.rs \
+      rustc --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name buildxargs --crate-type bin --edition 2021 --emit dep-info,link --error-format json --extern buildxargs'=/target/release/deps/libbuildxargs-6b139e29a6fbee8c.rlib' --extern pico_args'=/target/release/deps/libpico_args-b23dd1fb69296b44.rlib' --extern shlex'=/target/release/deps/libshlex-a2dd0fe0df0b57cb.rlib' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-08fbf7e44bba6617' -C metadata'=bfcc25fbb1d1e27e' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' src/main.rs \
         1>          /target/release/deps/out-08fbf7e44bba6617-stdout \
         2>          /target/release/deps/out-08fbf7e44bba6617-stderr \
         || echo $? >/target/release/deps/out-08fbf7e44bba6617-errcode\
@@ -497,7 +497,7 @@ COPY --link --from=dep-n-buildxargs-1.4.0-08fbf7e44bba6617 /target/release/deps/
 ##         CARGO_PRIMARY_PACKAGE=1 \
 ##         CARGO_SBOM_PATH= \
 ##         CARGOGREEN=1 \
-##       rustc --crate-name buildxargs --edition 2021 --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --crate-type bin --emit dep-info,link -C opt-level'=3' -C embed-bitcode'=no' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' -C metadata'=bfcc25fbb1d1e27e' -C extra-filename'=-08fbf7e44bba6617' --out-dir /target/release/deps -C strip'=debuginfo' -L dependency'=/target/release/deps' --extern buildxargs'=/target/release/deps/libbuildxargs-6b139e29a6fbee8c.rlib' --extern pico_args'=/target/release/deps/libpico_args-b23dd1fb69296b44.rlib' --extern shlex'=/target/release/deps/libshlex-a2dd0fe0df0b57cb.rlib' src/main.rs \
+##       rustc --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name buildxargs --crate-type bin --edition 2021 --emit dep-info,link --error-format json --extern buildxargs'=/target/release/deps/libbuildxargs-6b139e29a6fbee8c.rlib' --extern pico_args'=/target/release/deps/libpico_args-b23dd1fb69296b44.rlib' --extern shlex'=/target/release/deps/libshlex-a2dd0fe0df0b57cb.rlib' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-08fbf7e44bba6617' -C metadata'=bfcc25fbb1d1e27e' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' src/main.rs \
 ##         1>          /target/release/deps/out-08fbf7e44bba6617-stdout \
 ##         2>          /target/release/deps/out-08fbf7e44bba6617-stderr \
 ##         || echo $? >/target/release/deps/out-08fbf7e44bba6617-errcode\
