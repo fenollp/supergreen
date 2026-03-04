@@ -631,6 +631,12 @@ See also this article on what `cargo-green` does (perfect layering):
 ### `./hack/recipes.sh`
 Syncs `./recipes/*.Dockerfile` files.
 
+### `./hack/bake.sh`
+Syncs the `./docker-bake.hcl` [bake file](https://docs.docker.com/build/bake/).
+
+The generates `./recipes` can all be built using e.g.:
+> docker buildx bake https://github.com/fenollp/supergreen.git btm rg
+
 ### `./hack/caching.sh`
 Verifies properties about caching crates & granularity.
 > docker buildx prune --all --force
