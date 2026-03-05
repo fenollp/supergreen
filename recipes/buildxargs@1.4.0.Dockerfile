@@ -38,7 +38,7 @@ RUN \
         1>          /target/release/deps/out-f4da04ff96e72eb0-stdout \
         2>          /target/release/deps/out-f4da04ff96e72eb0-stderr \
         || echo $? >/target/release/deps/out-f4da04ff96e72eb0-errcode\
-  ; find /target/release/deps/*-f4da04ff96e72eb0* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+  ; touch --no-dereference --date=@$SOURCE_DATE_EPOCH /target/release/deps/*-f4da04ff96e72eb0*
 FROM scratch AS out-f4da04ff96e72eb0
 COPY --link --from=dep-n-pico-args-0.5.0-f4da04ff96e72eb0 /target/release/deps/*-f4da04ff96e72eb0* /
 
@@ -103,7 +103,7 @@ COPY --link --from=dep-n-pico-args-0.5.0-f4da04ff96e72eb0 /target/release/deps/*
 ##         1>          /target/release/deps/out-f4da04ff96e72eb0-stdout \
 ##         2>          /target/release/deps/out-f4da04ff96e72eb0-stderr \
 ##         || echo $? >/target/release/deps/out-f4da04ff96e72eb0-errcode\
-##   ; find /target/release/deps/*-f4da04ff96e72eb0* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##   ; touch --no-dereference --date=@$SOURCE_DATE_EPOCH /target/release/deps/*-f4da04ff96e72eb0*'''
 ##
 ## [[stages]]
 ##
@@ -145,7 +145,7 @@ RUN \
         1>          /target/release/deps/out-7b61911c2216006d-stdout \
         2>          /target/release/deps/out-7b61911c2216006d-stderr \
         || echo $? >/target/release/deps/out-7b61911c2216006d-errcode\
-  ; find /target/release/deps/*-7b61911c2216006d* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+  ; touch --no-dereference --date=@$SOURCE_DATE_EPOCH /target/release/deps/*-7b61911c2216006d*
 FROM scratch AS out-7b61911c2216006d
 COPY --link --from=dep-n-shlex-1.3.0-7b61911c2216006d /target/release/deps/*-7b61911c2216006d* /
 
@@ -210,7 +210,7 @@ COPY --link --from=dep-n-shlex-1.3.0-7b61911c2216006d /target/release/deps/*-7b6
 ##         1>          /target/release/deps/out-7b61911c2216006d-stdout \
 ##         2>          /target/release/deps/out-7b61911c2216006d-stderr \
 ##         || echo $? >/target/release/deps/out-7b61911c2216006d-errcode\
-##   ; find /target/release/deps/*-7b61911c2216006d* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##   ; touch --no-dereference --date=@$SOURCE_DATE_EPOCH /target/release/deps/*-7b61911c2216006d*'''
 ##
 ## [[stages]]
 ##
@@ -257,7 +257,7 @@ RUN \
         1>          /target/release/deps/out-743dae7d2ec996f8-stdout \
         2>          /target/release/deps/out-743dae7d2ec996f8-stderr \
         || echo $? >/target/release/deps/out-743dae7d2ec996f8-errcode\
-  ; find /target/release/deps/*-743dae7d2ec996f8* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+  ; touch --no-dereference --date=@$SOURCE_DATE_EPOCH /target/release/deps/*-743dae7d2ec996f8*
 FROM scratch AS out-743dae7d2ec996f8
 COPY --link --from=dep-n-buildxargs-1.4.0-743dae7d2ec996f8 /target/release/deps/*-743dae7d2ec996f8* /
 
@@ -347,7 +347,7 @@ COPY --link --from=dep-n-buildxargs-1.4.0-743dae7d2ec996f8 /target/release/deps/
 ##         1>          /target/release/deps/out-743dae7d2ec996f8-stdout \
 ##         2>          /target/release/deps/out-743dae7d2ec996f8-stderr \
 ##         || echo $? >/target/release/deps/out-743dae7d2ec996f8-errcode\
-##   ; find /target/release/deps/*-743dae7d2ec996f8* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##   ; touch --no-dereference --date=@$SOURCE_DATE_EPOCH /target/release/deps/*-743dae7d2ec996f8*'''
 ##
 ## [[stages]]
 ##
@@ -392,7 +392,7 @@ RUN \
         1>          /target/release/deps/out-1c7f7fced940a33a-stdout \
         2>          /target/release/deps/out-1c7f7fced940a33a-stderr \
         || echo $? >/target/release/deps/out-1c7f7fced940a33a-errcode\
-  ; find /target/release/deps/*-1c7f7fced940a33a* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+  ; touch --no-dereference --date=@$SOURCE_DATE_EPOCH /target/release/deps/*-1c7f7fced940a33a*
 FROM scratch AS out-1c7f7fced940a33a
 COPY --link --from=dep-n-buildxargs-1.4.0-1c7f7fced940a33a /target/release/deps/*-1c7f7fced940a33a* /
 
@@ -481,7 +481,7 @@ COPY --link --from=dep-n-buildxargs-1.4.0-1c7f7fced940a33a /target/release/deps/
 ##         1>          /target/release/deps/out-1c7f7fced940a33a-stdout \
 ##         2>          /target/release/deps/out-1c7f7fced940a33a-stderr \
 ##         || echo $? >/target/release/deps/out-1c7f7fced940a33a-errcode\
-##   ; find /target/release/deps/*-1c7f7fced940a33a* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH'''
+##   ; touch --no-dereference --date=@$SOURCE_DATE_EPOCH /target/release/deps/*-1c7f7fced940a33a*'''
 ##
 ## [[stages]]
 ##
