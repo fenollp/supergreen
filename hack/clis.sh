@@ -186,6 +186,8 @@ declare -a nvs nvs_args toolchain
 
 ((i+=1)); nvs[i]=crater@master;               oks[i]=Ok; nvs_args[i]='--git https://github.com/rust-lang/crater --rev=102a0c7b0e4298e7f21c8e177120b6e143409d63'
 
+((i+=1)); nvs[i]=tract@0.22.1;                oks[i]=ok; nvs_args[i]=''
+
 #FIXME: test with Environment: CARGO_BUILD_RUSTC_WRAPPER or RUSTC_WRAPPER  or Environment: CARGO_BUILD_RUSTC_WORKSPACE_WRAPPER or RUSTC_WORKSPACE_WRAPPER
 # => the final invocation is $RUSTC_WRAPPER $RUSTC_WORKSPACE_WRAPPER $RUSTC.
 
