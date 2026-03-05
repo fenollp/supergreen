@@ -394,7 +394,9 @@ impl Md {
 
         // TODO: [`COPY --rewrite-timestamp ...` to apply SOURCE_DATE_EPOCH build arg value to the timestamps of the files](https://github.com/moby/buildkit/issues/6348)
         let pattern = if buildrs { "*".to_owned() } else { format!("*-{}*", self.this()) };
-        block.push_str(&format!("  ; find {out_dir}/{pattern} -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH\n"));
+        block.push_str(&format!(
+            "  ; touch --no-dereference --date=@$SOURCE_DATE_EPOCH {out_dir}/{pattern}\n"
+        ));
 
         self.push_block(stage, block);
         Ok(())
