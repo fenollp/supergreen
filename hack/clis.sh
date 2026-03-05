@@ -146,6 +146,8 @@ declare -a nvs nvs_args
 
 ((i+=1)); nvs[i]=cargo-rail@0.1.0;            oks[i]=ko; nvs_args[i]='' # requires rustc 1.91.0 or newer
 
+((i+=1)); nvs[i]=tract@0.22.1;                oks[i]=ok; nvs_args[i]=''
+
 #FIXME: test with Environment: CARGO_BUILD_RUSTC_WRAPPER or RUSTC_WRAPPER  or Environment: CARGO_BUILD_RUSTC_WORKSPACE_WRAPPER or RUSTC_WORKSPACE_WRAPPER
 # => the final invocation is $RUSTC_WRAPPER $RUSTC_WORKSPACE_WRAPPER $RUSTC.
 
@@ -283,11 +285,12 @@ finalpathnocomment() {
   local name_at_version=$1; shift
   [[ $# -eq 0 ]]
   case "$name_at_version" in
-    stu@*) echo ',finalpathnocomment' ;;
-    shpool@*) echo ',finalpathnocomment' ;;
-    sccache@*) echo ',finalpathnocomment' ;;
     cargo-authors@*) echo ',finalpathnocomment' ;;
     cargo-deny@*) echo ',finalpathnocomment' ;;
+    sccache@*) echo ',finalpathnocomment' ;;
+    shpool@*) echo ',finalpathnocomment' ;;
+    stu@*) echo ',finalpathnocomment' ;;
+    tract@*) echo ',finalpathnocomment' ;;
     *) echo ;;
   esac
 }
