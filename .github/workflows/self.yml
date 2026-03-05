@@ -82,7 +82,7 @@ jobs:
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
     steps:
-    - uses: docker/login-action@v3
+    - uses: docker/login-action@v4
       if: ${{ ! startsWith(github.ref, 'refs/heads/dependabot/') }}
       with:
         username: ${{ vars.DOCKERHUB_USERNAME }}
@@ -235,7 +235,7 @@ jobs:
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
     steps:
-    - uses: docker/login-action@v3
+    - uses: docker/login-action@v4
       if: ${{ ! startsWith(github.ref, 'refs/heads/dependabot/') }}
       with:
         username: ${{ vars.DOCKERHUB_USERNAME }}
@@ -390,7 +390,7 @@ jobs:
     - run: which cargo && cargo -Vv
     - run: which rustc && rustc -Vv
     - run: rustup show
-    - uses: docker/login-action@v3
+    - uses: docker/login-action@v4
       if: ${{ ! startsWith(github.ref, 'refs/heads/dependabot/') }}
       with:
         username: ${{ vars.DOCKERHUB_USERNAME }}
@@ -623,7 +623,7 @@ jobs:
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
     steps:
-    - uses: docker/login-action@v3
+    - uses: docker/login-action@v4
       if: ${{ ! startsWith(github.ref, 'refs/heads/dependabot/') }}
       with:
         username: ${{ vars.DOCKERHUB_USERNAME }}
@@ -916,7 +916,7 @@ jobs:
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
     steps:
-    - uses: docker/login-action@v3
+    - uses: docker/login-action@v4
       if: ${{ ! startsWith(github.ref, 'refs/heads/dependabot/') }}
       with:
         username: ${{ vars.DOCKERHUB_USERNAME }}
@@ -1209,7 +1209,7 @@ jobs:
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
     steps:
-    - uses: docker/login-action@v3
+    - uses: docker/login-action@v4
       if: ${{ ! startsWith(github.ref, 'refs/heads/dependabot/') }}
       with:
         username: ${{ vars.DOCKERHUB_USERNAME }}
@@ -1502,7 +1502,7 @@ jobs:
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
     steps:
-    - uses: docker/login-action@v3
+    - uses: docker/login-action@v4
       if: ${{ ! startsWith(github.ref, 'refs/heads/dependabot/') }}
       with:
         username: ${{ vars.DOCKERHUB_USERNAME }}
@@ -1718,7 +1718,7 @@ jobs:
       CARGOGREEN_LOG: trace
       CARGOGREEN_LOG_PATH: logs.txt
     steps:
-    - uses: docker/login-action@v3
+    - uses: docker/login-action@v4
       if: ${{ ! startsWith(github.ref, 'refs/heads/dependabot/') }}
       with:
         username: ${{ vars.DOCKERHUB_USERNAME }}
