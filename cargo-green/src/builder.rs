@@ -1,6 +1,7 @@
 use std::{fs, str::FromStr, sync::LazyLock, time::Duration};
 
 use anyhow::{anyhow, bail, Result};
+use camino::Utf8PathBuf;
 use indexmap::IndexSet;
 use log::info;
 use serde::{Deserialize, Serialize};
@@ -70,6 +71,16 @@ pub(crate) struct Builder {
     #[serde(skip_serializing_if = "Option::is_none")]
     #[serde(rename = "builder-driver")]
     pub(crate) driver: Option<Driver>,
+
+    /// Builder container ID
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(rename = "id")]
+    pub(crate) id: Option<String>,
+
+    /// Builder container data directory
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[serde(rename = "data")]
+    pub(crate) data: Option<Utf8PathBuf>,
 }
 
 impl Builder {
@@ -98,6 +109,34 @@ impl FromStr for Driver {
 }
 
 impl Green {
+    pub(crate) async fn maybe_inspect_builder(&mut self) -> Result<()> {
+        let Some(ref name) = self.builder.name else { return Ok(()) };
+
+        let mut cmd = self.cmd()?;
+        // TODO: find out how to come up with "buildx_buildkit_supergreen0"
+        cmd.arg("inspect").arg(format!("buildx_buildkit_{name}0"));
+
+        let (succeeded, stdout, stderr) = cmd.exec().await?;
+        if !succeeded {
+            let stderr = String::from_utf8_lossy(&stderr);
+            bail!("BUG: failed to inspect builder container: {stderr}")
+        }
+
+        let stdout = String::from_utf8_lossy(&stdout);
+        let inspect: Vec<DockerInspect> = serde_json::from_str(&stdout)
+            .map_err(|e| anyhow!("Failed decoding docker inspect: {e}"))?;
+        if let Some(DockerInspect { id, mounts }) = inspect.into_iter().next() {
+            if !id.is_empty() {
+                self.builder.id = Some(id);
+                if let Some(InspectMount { source }) = mounts.into_iter().next() {
+                    self.builder.data = Some(source);
+                }
+            }
+        }
+
+        Ok(())
+    }
+
     pub(crate) async fn maybe_setup_builder(&mut self, env: Option<String>) -> Result<()> {
         let (managed, name) = match env.as_deref() {
             None | Some("supergreen") => (true, "supergreen"),
@@ -407,4 +446,17 @@ impl BuildxBuilder {
         imgs.dedup();
         imgs.first().cloned()
     }
+}
+
+#[derive(Debug, Deserialize)]
+#[serde(rename_all = "PascalCase")]
+struct DockerInspect {
+    id: String,
+    mounts: Vec<InspectMount>,
+}
+
+#[derive(Debug, Deserialize)]
+#[serde(rename_all = "PascalCase")]
+struct InspectMount {
+    source: Utf8PathBuf,
 }
