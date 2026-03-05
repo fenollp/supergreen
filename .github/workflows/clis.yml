@@ -94,7 +94,7 @@ jobs:
       CARGOGREEN_LOG_PATH: logs.txt
     needs: bin
     steps:
-    - uses: docker/login-action@v3
+    - uses: docker/login-action@v4
       if: ${{ ! startsWith(github.ref, 'refs/heads/dependabot/') }}
       with:
         username: ${{ vars.DOCKERHUB_USERNAME }}
@@ -411,7 +411,7 @@ jobs:
       CARGOGREEN_LOG_PATH: logs.txt
     needs: bin
     steps:
-    - uses: docker/login-action@v3
+    - uses: docker/login-action@v4
       if: ${{ ! startsWith(github.ref, 'refs/heads/dependabot/') }}
       with:
         username: ${{ vars.DOCKERHUB_USERNAME }}
@@ -728,7 +728,7 @@ jobs:
       CARGOGREEN_LOG_PATH: logs.txt
     needs: bin
     steps:
-    - uses: docker/login-action@v3
+    - uses: docker/login-action@v4
       if: ${{ ! startsWith(github.ref, 'refs/heads/dependabot/') }}
       with:
         username: ${{ vars.DOCKERHUB_USERNAME }}
@@ -1045,7 +1045,7 @@ jobs:
       CARGOGREEN_LOG_PATH: logs.txt
     needs: bin
     steps:
-    - uses: docker/login-action@v3
+    - uses: docker/login-action@v4
       if: ${{ ! startsWith(github.ref, 'refs/heads/dependabot/') }}
       with:
         username: ${{ vars.DOCKERHUB_USERNAME }}
@@ -1362,7 +1362,7 @@ jobs:
       CARGOGREEN_LOG_PATH: logs.txt
     needs: bin
     steps:
-    - uses: docker/login-action@v3
+    - uses: docker/login-action@v4
       if: ${{ ! startsWith(github.ref, 'refs/heads/dependabot/') }}
       with:
         username: ${{ vars.DOCKERHUB_USERNAME }}
@@ -1679,7 +1679,7 @@ jobs:
       CARGOGREEN_LOG_PATH: logs.txt
     needs: bin
     steps:
-    - uses: docker/login-action@v3
+    - uses: docker/login-action@v4
       if: ${{ ! startsWith(github.ref, 'refs/heads/dependabot/') }}
       with:
         username: ${{ vars.DOCKERHUB_USERNAME }}
@@ -1996,7 +1996,7 @@ jobs:
       CARGOGREEN_LOG_PATH: logs.txt
     needs: bin
     steps:
-    - uses: docker/login-action@v3
+    - uses: docker/login-action@v4
       if: ${{ ! startsWith(github.ref, 'refs/heads/dependabot/') }}
       with:
         username: ${{ vars.DOCKERHUB_USERNAME }}
@@ -2313,7 +2313,7 @@ jobs:
       CARGOGREEN_LOG_PATH: logs.txt
     needs: bin
     steps:
-    - uses: docker/login-action@v3
+    - uses: docker/login-action@v4
       if: ${{ ! startsWith(github.ref, 'refs/heads/dependabot/') }}
       with:
         username: ${{ vars.DOCKERHUB_USERNAME }}
@@ -2630,7 +2630,7 @@ jobs:
       CARGOGREEN_LOG_PATH: logs.txt
     needs: bin
     steps:
-    - uses: docker/login-action@v3
+    - uses: docker/login-action@v4
       if: ${{ ! startsWith(github.ref, 'refs/heads/dependabot/') }}
       with:
         username: ${{ vars.DOCKERHUB_USERNAME }}
@@ -2947,7 +2947,7 @@ jobs:
       CARGOGREEN_LOG_PATH: logs.txt
     needs: bin
     steps:
-    - uses: docker/login-action@v3
+    - uses: docker/login-action@v4
       if: ${{ ! startsWith(github.ref, 'refs/heads/dependabot/') }}
       with:
         username: ${{ vars.DOCKERHUB_USERNAME }}
@@ -3264,7 +3264,7 @@ jobs:
       CARGOGREEN_LOG_PATH: logs.txt
     needs: bin
     steps:
-    - uses: docker/login-action@v3
+    - uses: docker/login-action@v4
       if: ${{ ! startsWith(github.ref, 'refs/heads/dependabot/') }}
       with:
         username: ${{ vars.DOCKERHUB_USERNAME }}
@@ -3581,7 +3581,7 @@ jobs:
       CARGOGREEN_LOG_PATH: logs.txt
     needs: bin
     steps:
-    - uses: docker/login-action@v3
+    - uses: docker/login-action@v4
       if: ${{ ! startsWith(github.ref, 'refs/heads/dependabot/') }}
       with:
         username: ${{ vars.DOCKERHUB_USERNAME }}
@@ -3898,7 +3898,7 @@ jobs:
       CARGOGREEN_LOG_PATH: logs.txt
     needs: bin
     steps:
-    - uses: docker/login-action@v3
+    - uses: docker/login-action@v4
       if: ${{ ! startsWith(github.ref, 'refs/heads/dependabot/') }}
       with:
         username: ${{ vars.DOCKERHUB_USERNAME }}
@@ -4215,7 +4215,7 @@ jobs:
       CARGOGREEN_LOG_PATH: logs.txt
     needs: bin
     steps:
-    - uses: docker/login-action@v3
+    - uses: docker/login-action@v4
       if: ${{ ! startsWith(github.ref, 'refs/heads/dependabot/') }}
       with:
         username: ${{ vars.DOCKERHUB_USERNAME }}
@@ -4532,7 +4532,7 @@ jobs:
       CARGOGREEN_LOG_PATH: logs.txt
     needs: bin
     steps:
-    - uses: docker/login-action@v3
+    - uses: docker/login-action@v4
       if: ${{ ! startsWith(github.ref, 'refs/heads/dependabot/') }}
       with:
         username: ${{ vars.DOCKERHUB_USERNAME }}
@@ -4849,7 +4849,7 @@ jobs:
       CARGOGREEN_LOG_PATH: logs.txt
     needs: bin
     steps:
-    - uses: docker/login-action@v3
+    - uses: docker/login-action@v4
       if: ${{ ! startsWith(github.ref, 'refs/heads/dependabot/') }}
       with:
         username: ${{ vars.DOCKERHUB_USERNAME }}
@@ -5166,7 +5166,7 @@ jobs:
       CARGOGREEN_LOG_PATH: logs.txt
     needs: bin
     steps:
-    - uses: docker/login-action@v3
+    - uses: docker/login-action@v4
       if: ${{ ! startsWith(github.ref, 'refs/heads/dependabot/') }}
       with:
         username: ${{ vars.DOCKERHUB_USERNAME }}
@@ -5483,7 +5483,7 @@ jobs:
       CARGOGREEN_LOG_PATH: logs.txt
     needs: bin
     steps:
-    - uses: docker/login-action@v3
+    - uses: docker/login-action@v4
       if: ${{ ! startsWith(github.ref, 'refs/heads/dependabot/') }}
       with:
         username: ${{ vars.DOCKERHUB_USERNAME }}
@@ -5800,7 +5800,7 @@ jobs:
       CARGOGREEN_LOG_PATH: logs.txt
     needs: bin
     steps:
-    - uses: docker/login-action@v3
+    - uses: docker/login-action@v4
       if: ${{ ! startsWith(github.ref, 'refs/heads/dependabot/') }}
       with:
         username: ${{ vars.DOCKERHUB_USERNAME }}
@@ -6117,7 +6117,7 @@ jobs:
       CARGOGREEN_LOG_PATH: logs.txt
     needs: bin
     steps:
-    - uses: docker/login-action@v3
+    - uses: docker/login-action@v4
       if: ${{ ! startsWith(github.ref, 'refs/heads/dependabot/') }}
       with:
         username: ${{ vars.DOCKERHUB_USERNAME }}
@@ -6434,7 +6434,7 @@ jobs:
       CARGOGREEN_LOG_PATH: logs.txt
     needs: bin
     steps:
-    - uses: docker/login-action@v3
+    - uses: docker/login-action@v4
       if: ${{ ! startsWith(github.ref, 'refs/heads/dependabot/') }}
       with:
         username: ${{ vars.DOCKERHUB_USERNAME }}
@@ -6751,7 +6751,7 @@ jobs:
       CARGOGREEN_LOG_PATH: logs.txt
     needs: bin
     steps:
-    - uses: docker/login-action@v3
+    - uses: docker/login-action@v4
       if: ${{ ! startsWith(github.ref, 'refs/heads/dependabot/') }}
       with:
         username: ${{ vars.DOCKERHUB_USERNAME }}
@@ -7068,7 +7068,7 @@ jobs:
       CARGOGREEN_LOG_PATH: logs.txt
     needs: bin
     steps:
-    - uses: docker/login-action@v3
+    - uses: docker/login-action@v4
       if: ${{ ! startsWith(github.ref, 'refs/heads/dependabot/') }}
       with:
         username: ${{ vars.DOCKERHUB_USERNAME }}
@@ -7385,7 +7385,7 @@ jobs:
       CARGOGREEN_LOG_PATH: logs.txt
     needs: bin
     steps:
-    - uses: docker/login-action@v3
+    - uses: docker/login-action@v4
       if: ${{ ! startsWith(github.ref, 'refs/heads/dependabot/') }}
       with:
         username: ${{ vars.DOCKERHUB_USERNAME }}
@@ -7702,7 +7702,7 @@ jobs:
       CARGOGREEN_LOG_PATH: logs.txt
     needs: bin
     steps:
-    - uses: docker/login-action@v3
+    - uses: docker/login-action@v4
       if: ${{ ! startsWith(github.ref, 'refs/heads/dependabot/') }}
       with:
         username: ${{ vars.DOCKERHUB_USERNAME }}
@@ -8019,7 +8019,7 @@ jobs:
       CARGOGREEN_LOG_PATH: logs.txt
     needs: bin
     steps:
-    - uses: docker/login-action@v3
+    - uses: docker/login-action@v4
       if: ${{ ! startsWith(github.ref, 'refs/heads/dependabot/') }}
       with:
         username: ${{ vars.DOCKERHUB_USERNAME }}

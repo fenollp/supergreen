@@ -157,7 +157,7 @@ EOF
 login_to_readonly_hub() {
     [[ $# -eq 0 ]]
 cat <<EOF
-    - uses: docker/login-action@v3
+    - uses: docker/login-action@v4
       if: \${{ ! startsWith(github.ref, 'refs/heads/dependabot/') }}
       with:
         username: \${{ vars.DOCKERHUB_USERNAME }}
@@ -170,7 +170,7 @@ EOF
 login_to_readwrite_ghcr() {
     [[ $# -eq 0 ]]
 cat <<EOF
-    - uses: docker/login-action@v3
+    - uses: docker/login-action@v4
       with:
         registry: ghcr.io
         username: \${{ github.actor }}
