@@ -131,7 +131,7 @@ dependencies = [
 
 [[package]]
 name = "cargo-green"
-version = "0.23.1"
+version = "0.24.0"
 dependencies = [
  "anyhow",
  "astral-tokio-tar",
