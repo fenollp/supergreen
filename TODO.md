@@ -635,3 +635,26 @@ https://github.com/taiki-e/cargo-hack
 => verify usage as subcommand
 
 ---
+
+https://github.com/moby/buildkit/issues/2805#issuecomment-4034926285
+Proposal: Add mode attribute to local exporter #2805
+    mode=continue
+
+---
+
+https://github.com/BuilderHub/buildkit-metrics-agent
+ A lightweight BuildKit metrics agent. 
+
+---
+
+https://github.com/tonistiigi/xx#rust
+
+https://github.com/cross-rs/cross-toolchains
+
+https://docs.docker.com/build/ci/github-actions/share-image-jobs/
+
+https://github.com/docker/build-push-action
+
+https://github.com/rust-lang/docker-rust/blob/3a5e32f235c2be1989511f9e7a6b48c9cf140b2e/stable/trixie/Dockerfile
+
+---
