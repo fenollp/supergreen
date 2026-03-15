@@ -9,6 +9,7 @@ for file in "${!files[@]}"; do
     file=${files[$file]}
     [[ "$file" = 'recipes/buildxargs@1.4.0.Dockerfile' ]] && continue
     portable=$(tail -n1 "$file" | cut -d/ -f3)
+    [[ "$portable" = '' ]] && continue # That recipe does not (yet) produce a binary
     portables["$portable"]=$(basename "$file")
     sizes["$portable"]=$(grep -cE '^FROM' "$file")
 done
