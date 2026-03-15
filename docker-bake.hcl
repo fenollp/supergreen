@@ -1,7 +1,10 @@
 group "default" {
   targets = [
     "buildxargs",
+    "edit.dwp",
+    "probe0.ll",
     "cargo_kani",
+    "CreuSAT",
     "vixargs",
     "rg",
     "get",
@@ -9,23 +12,30 @@ group "default" {
     "cargo_llvm_cov",
     "cargo_rail",
     "dbcc",
+    "fargo",
     "cross",
     "flamegraph",
     "rqcow2",
     "ntp_daemon",
     "mussh",
     "cargo_tally",
+    "cargo_osdk",
+    "qair",
     "shpool",
     "diesel",
     "btm",
     "cargo_mutants",
     "hickory_dns",
     "rublk",
+    "cargo_make",
     "binsider",
     "cargo_authors",
     "cargo_deny",
     "sccache",
+    "cfr",
     "cargo_nextest",
+    "harper_ls",
+    "ipa",
     "stu",
     "topiary",
   ]
@@ -36,9 +46,24 @@ target "buildxargs" {
   dockerfile = "buildxargs@master.Dockerfile"
   output = [{ type = "local", dest = "." }]
 }
+target "edit.dwp" {
+  context = "recipes"
+  dockerfile = "edit@main.Dockerfile"
+  output = [{ type = "local", dest = "." }]
+}
+target "probe0.ll" {
+  context = "recipes"
+  dockerfile = "privaxy@main.Dockerfile"
+  output = [{ type = "local", dest = "." }]
+}
 target "cargo_kani" {
   context = "recipes"
   dockerfile = "kani-verifier@0.66.0.Dockerfile"
+  output = [{ type = "local", dest = "." }]
+}
+target "CreuSAT" {
+  context = "recipes"
+  dockerfile = "CreuSAT@master.Dockerfile"
   output = [{ type = "local", dest = "." }]
 }
 target "vixargs" {
@@ -76,6 +101,11 @@ target "dbcc" {
   dockerfile = "dbcc@2.2.1.Dockerfile"
   output = [{ type = "local", dest = "." }]
 }
+target "fargo" {
+  context = "recipes"
+  dockerfile = "fargo@main.Dockerfile"
+  output = [{ type = "local", dest = "." }]
+}
 target "cross" {
   context = "recipes"
   dockerfile = "cross@0.2.5.Dockerfile"
@@ -104,6 +134,16 @@ target "mussh" {
 target "cargo_tally" {
   context = "recipes"
   dockerfile = "cargo-tally@1.0.71.Dockerfile"
+  output = [{ type = "local", dest = "." }]
+}
+target "cargo_osdk" {
+  context = "recipes"
+  dockerfile = "cargo-osdk@main.Dockerfile"
+  output = [{ type = "local", dest = "." }]
+}
+target "qair" {
+  context = "recipes"
+  dockerfile = "qair@main.Dockerfile"
   output = [{ type = "local", dest = "." }]
 }
 target "shpool" {
@@ -136,6 +176,11 @@ target "rublk" {
   dockerfile = "rublk@0.2.13.Dockerfile"
   output = [{ type = "local", dest = "." }]
 }
+target "cargo_make" {
+  context = "recipes"
+  dockerfile = "cargo-make@0.37.24.Dockerfile"
+  output = [{ type = "local", dest = "." }]
+}
 target "binsider" {
   context = "recipes"
   dockerfile = "binsider@0.3.0.Dockerfile"
@@ -156,9 +201,24 @@ target "sccache" {
   dockerfile = "sccache@0.12.0.Dockerfile"
   output = [{ type = "local", dest = "." }]
 }
+target "cfr" {
+  context = "recipes"
+  dockerfile = "coccinelleforrust@main.Dockerfile"
+  output = [{ type = "local", dest = "." }]
+}
 target "cargo_nextest" {
   context = "recipes"
   dockerfile = "cargo-nextest@0.9.114.Dockerfile"
+  output = [{ type = "local", dest = "." }]
+}
+target "harper_ls" {
+  context = "recipes"
+  dockerfile = "harper@master.Dockerfile"
+  output = [{ type = "local", dest = "." }]
+}
+target "ipa" {
+  context = "recipes"
+  dockerfile = "ipa@main.Dockerfile"
   output = [{ type = "local", dest = "." }]
 }
 target "stu" {
