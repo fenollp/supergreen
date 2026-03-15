@@ -1,8 +1,8 @@
 #!/usr/bin/env -S bash -eu
 set -o pipefail
 
-stable=1.91.1 # Closest to latest stable, as official Rust images availability permits (TODO: use rustup when image isn't yet available)
-fixed=1.90.0 # Some fixed rustc version
+stable=1.94.0 # Closest to latest stable, as official Rust images availability permits (TODO: use rustup when image isn't yet available)
+fixed=1.93.1 # Some fixed rustc version
 
 
 jobdef() {

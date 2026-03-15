@@ -7,6 +7,7 @@ group "default" {
     "get",
     "gifski",
     "cargo_llvm_cov",
+    "cargo_rail",
     "dbcc",
     "cross",
     "cargo_flamegraph",
@@ -62,6 +63,11 @@ target "gifski" {
 target "cargo_llvm_cov" {
   context = "recipes"
   dockerfile = "cargo-llvm-cov@0.6.21.Dockerfile"
+  output = [{ type = "local", dest = "." }]
+}
+target "cargo_rail" {
+  context = "recipes"
+  dockerfile = "cargo-rail@0.1.0.Dockerfile"
   output = [{ type = "local", dest = "." }]
 }
 target "dbcc" {
