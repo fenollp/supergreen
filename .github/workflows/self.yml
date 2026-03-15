@@ -13,7 +13,7 @@ jobs:
 
     - uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
-        toolchain: 1.91.1
+        toolchain: 1.94.0
         cache-on-failure: true
     - run: docker info
     - run: docker buildx version
@@ -55,7 +55,7 @@ jobs:
 #     - run: cargo green supergreen sync
 #     - uses: actions-rust-lang/setup-rust-toolchain@v1
 #       with:
-#         toolchain: 1.90.0
+#         toolchain: 1.93.1
 #         cache-on-failure: true
 #     - run: cargo green supergreen sync
 # $(rundeps_versions)
@@ -204,7 +204,7 @@ jobs:
       name: 🌀 Maybe show final path diff
       run: |
         final_diff=(git --no-pager diff)
-        if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
+        if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
           final_diff+=(--exit-code)
         fi
         final_diff+=(--ignore-matching-lines='^#')
@@ -352,7 +352,7 @@ jobs:
       name: 🌀 Maybe show final path diff
       run: |
         final_diff=(git --no-pager diff)
-        if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
+        if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
           final_diff+=(--exit-code)
         fi
         final_diff+=(--ignore-matching-lines='^#')
@@ -515,7 +515,7 @@ jobs:
       name: 🌀 Maybe show final path diff
       run: |
         final_diff=(git --no-pager diff)
-        if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
+        if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
           final_diff+=(--exit-code)
         fi
         final_diff+=(--ignore-matching-lines='^#')
@@ -592,7 +592,7 @@ jobs:
       name: 🌀 Maybe show final path diff
       run: |
         final_diff=(git --no-pager diff)
-        if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
+        if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
           final_diff+=(--exit-code)
         fi
         final_diff+=(--ignore-matching-lines='^#')
@@ -737,7 +737,7 @@ jobs:
       name: 🌀 Maybe show final path diff
       run: |
         final_diff=(git --no-pager diff)
-        if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
+        if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
           final_diff+=(--exit-code)
         fi
         final_diff+=(--ignore-matching-lines='^#')
@@ -808,7 +808,7 @@ jobs:
       name: 🌀 Maybe show final path diff
       run: |
         final_diff=(git --no-pager diff)
-        if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
+        if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
           final_diff+=(--exit-code)
         fi
         final_diff+=(--ignore-matching-lines='^#')
@@ -885,7 +885,7 @@ jobs:
       name: 🌀 Maybe show final path diff
       run: |
         final_diff=(git --no-pager diff)
-        if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
+        if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
           final_diff+=(--exit-code)
         fi
         final_diff+=(--ignore-matching-lines='^#')
@@ -1030,7 +1030,7 @@ jobs:
       name: 🌀 Maybe show final path diff
       run: |
         final_diff=(git --no-pager diff)
-        if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
+        if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
           final_diff+=(--exit-code)
         fi
         final_diff+=(--ignore-matching-lines='^#')
@@ -1101,7 +1101,7 @@ jobs:
       name: 🌀 Maybe show final path diff
       run: |
         final_diff=(git --no-pager diff)
-        if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
+        if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
           final_diff+=(--exit-code)
         fi
         final_diff+=(--ignore-matching-lines='^#')
@@ -1178,7 +1178,7 @@ jobs:
       name: 🌀 Maybe show final path diff
       run: |
         final_diff=(git --no-pager diff)
-        if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
+        if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
           final_diff+=(--exit-code)
         fi
         final_diff+=(--ignore-matching-lines='^#')
@@ -1323,7 +1323,7 @@ jobs:
       name: 🌀 Maybe show final path diff
       run: |
         final_diff=(git --no-pager diff)
-        if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
+        if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
           final_diff+=(--exit-code)
         fi
         final_diff+=(--ignore-matching-lines='^#')
@@ -1394,7 +1394,7 @@ jobs:
       name: 🌀 Maybe show final path diff
       run: |
         final_diff=(git --no-pager diff)
-        if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
+        if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
           final_diff+=(--exit-code)
         fi
         final_diff+=(--ignore-matching-lines='^#')
@@ -1471,7 +1471,7 @@ jobs:
       name: 🌀 Maybe show final path diff
       run: |
         final_diff=(git --no-pager diff)
-        if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
+        if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
           final_diff+=(--exit-code)
         fi
         final_diff+=(--ignore-matching-lines='^#')
@@ -1616,7 +1616,7 @@ jobs:
       name: 🌀 Maybe show final path diff
       run: |
         final_diff=(git --no-pager diff)
-        if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
+        if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
           final_diff+=(--exit-code)
         fi
         final_diff+=(--ignore-matching-lines='^#')
@@ -1687,7 +1687,7 @@ jobs:
       name: 🌀 Maybe show final path diff
       run: |
         final_diff=(git --no-pager diff)
-        if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
+        if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
           final_diff+=(--exit-code)
         fi
         final_diff+=(--ignore-matching-lines='^#')
@@ -1833,7 +1833,7 @@ jobs:
       name: 🌀 Maybe show final path diff
       run: |
         final_diff=(git --no-pager diff)
-        if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
+        if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
           final_diff+=(--exit-code)
         fi
         final_diff+=(--ignore-matching-lines='^#')
@@ -1904,7 +1904,7 @@ jobs:
       name: 🌀 Maybe show final path diff
       run: |
         final_diff=(git --no-pager diff)
-        if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
+        if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
           final_diff+=(--exit-code)
         fi
         final_diff+=(--ignore-matching-lines='^#')
@@ -1981,7 +1981,7 @@ jobs:
       name: 🌀 Maybe show final path diff
       run: |
         final_diff=(git --no-pager diff)
-        if [[ ${{ matrix.toolchain }} != 1.91.1 ]]; then
+        if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
           final_diff+=(--exit-code)
         fi
         final_diff+=(--ignore-matching-lines='^#')

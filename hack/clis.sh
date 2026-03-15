@@ -144,7 +144,7 @@ declare -a nvs nvs_args
 # Depends on https://lib.rs/crates/nvml-wrapper and on https://github.com/nagisa/rust_libloading
 ((i+=1)); nvs[i]=bottom@0.11.4;               oks[i]=ok; nvs_args[i]=''
 
-((i+=1)); nvs[i]=cargo-rail@0.1.0;            oks[i]=ko; nvs_args[i]='' # requires rustc 1.91.0 or newer
+((i+=1)); nvs[i]=cargo-rail@0.1.0;            oks[i]=ok; nvs_args[i]=''
 
 #FIXME: test with Environment: CARGO_BUILD_RUSTC_WRAPPER or RUSTC_WRAPPER  or Environment: CARGO_BUILD_RUSTC_WORKSPACE_WRAPPER or RUSTC_WORKSPACE_WRAPPER
 # => the final invocation is $RUSTC_WRAPPER $RUSTC_WORKSPACE_WRAPPER $RUSTC.
