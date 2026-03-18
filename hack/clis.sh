@@ -2,6 +2,7 @@
 set -o pipefail
 
 repo_root=$(realpath "$(dirname "$(dirname "$0")")")
+source "$repo_root"/hack/binaries.sh
 source "$repo_root"/hack/ck.sh
 
 # Usage:           $0                              #=> generate CI
@@ -31,6 +32,7 @@ source "$repo_root"/hack/ck.sh
 
 # TODO: set about green's overhead with --timings
 
+<<<<<<< Updated upstream
 # ok: builds | ko: doesn't build | [ok]D: ok|ko but old: shows too many cfg warnings | Ok: takes >=10min in CI
 declare -a nvs nvs_args
    i=0  ; nvs[i]=buildxargs@master;           oks[i]=ok; nvs_args[i]='--git https://github.com/fenollp/buildxargs.git'
@@ -146,6 +148,8 @@ declare -a nvs nvs_args
 
 ((i+=1)); nvs[i]=cargo-rail@0.1.0;            oks[i]=ok; nvs_args[i]=''
 
+=======
+>>>>>>> Stashed changes
 #FIXME: test with Environment: CARGO_BUILD_RUSTC_WRAPPER or RUSTC_WRAPPER  or Environment: CARGO_BUILD_RUSTC_WORKSPACE_WRAPPER or RUSTC_WORKSPACE_WRAPPER
 # => the final invocation is $RUSTC_WRAPPER $RUSTC_WORKSPACE_WRAPPER $RUSTC.
 
@@ -629,3 +633,5 @@ fi
 echo "$name_at_version"
 echo "Target dir: $tmptrgt"
 echo "Logs: $tmplogs"
+
+rm -rf "$tmptrgt"/*
