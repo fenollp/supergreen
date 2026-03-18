@@ -62,7 +62,7 @@ declare -a nvs nvs_args
 ((i+=1)); nvs[i]=cargo-authors@0.5.5;         oks[i]=ok; nvs_args[i]=''
 ((i+=1)); nvs[i]=vixargs@0.1.0;               oks[i]=ok; nvs_args[i]=''
 ((i+=1)); nvs[i]=cargo-config2@0.1.39;        oks[i]=ok; nvs_args[i]='--example=get'
-((i+=1)); nvs[i]=privaxy@main;                oks[i]=ok; nvs_args[i]='--git https://github.com/Barre/privaxy.git --rev=5dad688538bc7397d71d1c9cfd9d9d53bcf68032'
+((i+=1)); nvs[i]=privaxy@main;                oks[i]=ko; nvs_args[i]='--git https://github.com/Barre/privaxy.git --rev=5dad688538bc7397d71d1c9cfd9d9d53bcf68032'
 # I 26/02/07 18:43:08.958 Z openssl-sys 0.9.78-d183b817a1884996 appending (AW) to final path /home/runner/work/supergreen/supergreen/recipes/privaxy@main.Dockerfile
 # E 26/02/07 18:43:08.958 Z openssl-sys 0.9.78-d183b817a1884996 Error: Runner failed.
 # Check logs at /home/runner/work/supergreen/supergreen/logs.txt
@@ -80,7 +80,7 @@ declare -a nvs nvs_args
 # # Pinned on 2025/12/03 # BUG: $CARGO_HOME/registry/src/index.crates.io-0000000000000000/openssl-src-111.18.0+1.1.1n/src/lib.rs:496:32: No such file or directory
 
 ((i+=1)); nvs[i]=miri@master;                 oks[i]=ko; nvs_args[i]='--git https://github.com/rust-lang/miri.git --rev=092a83d273087c4f9dd7f1e34a0cd1916819c674' # Pinned on 2025/12/03
-((i+=1)); nvs[i]=zed@main;                    oks[i]=ok; nvs_args[i]='--git https://github.com/zed-industries/zed.git --tag=v0.215.3-pre'; cargos[i]='1.91.1'
+((i+=1)); nvs[i]=zed@main;                    oks[i]=ko; nvs_args[i]='--git https://github.com/zed-industries/zed.git --tag=v0.215.3-pre'; cargos[i]='1.91.1'
 # error[E0514]: found crate `indexmap` compiled by an incompatible version of rustc
 #  --> crates/collections/src/collections.rs:6:9
 #   |
@@ -112,16 +112,16 @@ declare -a nvs nvs_args
 
 ((i+=1)); nvs[i]=kani-verifier@0.66.0;        oks[i]=ok; nvs_args[i]='--bin=cargo-kani'
 
-((i+=1)); nvs[i]=CreuSAT@master;              oks[i]=ok; nvs_args[i]='--git https://github.com/sarsko/creusat.git --rev=0758fe729d52d8289f3db3508940662e2969ec97' # Pinned on 2025/12/03
+((i+=1)); nvs[i]=CreuSAT@master;              oks[i]=ko; nvs_args[i]='--git https://github.com/sarsko/creusat.git --rev=0758fe729d52d8289f3db3508940662e2969ec97' # Pinned on 2025/12/03
 
-((i+=1)); nvs[i]=cargo-make@0.37.24;          oks[i]=ok; nvs_args[i]=''
+((i+=1)); nvs[i]=cargo-make@0.37.24;          oks[i]=ko; nvs_args[i]=''
 
 #rust-toolchain.toml
-((i+=1)); nvs[i]=coccinelleforrust@main;      oks[i]=ok; nvs_args[i]='--git https://gitlab.inria.fr/coccinelle/coccinelleforrust.git --rev=50612e285' # Pinned on 2025/12/03
-((i+=1)); nvs[i]=edit@main;                   oks[i]=ok; nvs_args[i]='--git https://github.com/microsoft/edit --tag=v1.2.1 edit'; cargos[i]='nightly-2026-03-17' # Pinned 2025/12/04
-((i+=1)); nvs[i]=pyrefly@main;                oks[i]=ok; nvs_args[i]='--git https://github.com/facebook/pyrefly --tag=0.44.0'; cargos[i]='nightly-2025-09-14' # from its rust-toolchain.toml
+((i+=1)); nvs[i]=coccinelleforrust@main;      oks[i]=ko; nvs_args[i]='--git https://gitlab.inria.fr/coccinelle/coccinelleforrust.git --rev=50612e285' # Pinned on 2025/12/03
+((i+=1)); nvs[i]=edit@main;                   oks[i]=ko; nvs_args[i]='--git https://github.com/microsoft/edit --tag=v1.2.1 edit'; cargos[i]='nightly-2026-03-17' # Pinned 2025/12/04
+((i+=1)); nvs[i]=pyrefly@main;                oks[i]=ko; nvs_args[i]='--git https://github.com/facebook/pyrefly --tag=0.44.0'; cargos[i]='nightly-2025-09-14' # from its rust-toolchain.toml
 
-((i+=1)); nvs[i]=ipa@main;                    oks[i]=ok; nvs_args[i]='--git https://github.com/seekbytes/IPA.git --rev=3094f92' # Pinned on 2025/12/04
+((i+=1)); nvs[i]=ipa@main;                    oks[i]=ko; nvs_args[i]='--git https://github.com/seekbytes/IPA.git --rev=3094f92' # Pinned on 2025/12/04
 
 ((i+=1)); nvs[i]=cargo-tally@1.0.71;          oks[i]=ok; nvs_args[i]=''
 ((i+=1)); nvs[i]=cargo-mutants@25.3.1;        oks[i]=ok; nvs_args[i]=''
@@ -144,28 +144,28 @@ declare -a nvs nvs_args
 
 ((i+=1)); nvs[i]=flamegraph@0.6.10;           oks[i]=ok; nvs_args[i]='--bin=flamegraph'
 
-((i+=1)); nvs[i]=qair@main;                   oks[i]=ok; nvs_args[i]='--git https://codeberg.org/willempx/qair.git --tag=0.7.0'; cargos[i]='1.78.0' # Pinned 2020/06/14
+((i+=1)); nvs[i]=qair@main;                   oks[i]=ko; nvs_args[i]='--git https://codeberg.org/willempx/qair.git --tag=0.7.0'; cargos[i]='1.78.0' # Pinned 2020/06/14
 #TODO: use 1.44 => handle getting digest for rust:1.44 image
 
-((i+=1)); nvs[i]=rusty-man@master;            oks[i]=ok; nvs_args[i]='--git https://git.sr.ht/~ireas/rusty-man --tag=v0.5.0'; cargos[i]='1.78.0' # Pinned 2025/12/04
+((i+=1)); nvs[i]=rusty-man@master;            oks[i]=ko; nvs_args[i]='--git https://git.sr.ht/~ireas/rusty-man --tag=v0.5.0'; cargos[i]='1.78.0' # Pinned 2025/12/04
 # WAT same error
 # ====> CI doesnt fail !!
 # =======> due to that change on cinstall jobs=1
 # ==========> revert + add comment!
 # # BUG: error: couldn't read `src/main.rs`: No such file or directory (os error 2)
 
-((i+=1)); nvs[i]=cargo-osdk@main;             oks[i]=ok; nvs_args[i]='--git=https://github.com/asterinas/asterinas --tag=v0.16.1'
+((i+=1)); nvs[i]=cargo-osdk@main;             oks[i]=ko; nvs_args[i]='--git=https://github.com/asterinas/asterinas --tag=v0.16.1'
 
-((i+=1)); nvs[i]=fargo@main;                  oks[i]=ok; nvs_args[i]='--git https://fuchsia.googlesource.com/fargo --rev=a7d967b'; cargos[i]='1.78.0' # Pinned 2025/12/04
+((i+=1)); nvs[i]=fargo@main;                  oks[i]=ko; nvs_args[i]='--git https://fuchsia.googlesource.com/fargo --rev=a7d967b'; cargos[i]='1.78.0' # Pinned 2025/12/04
 
 ((i+=1)); nvs[i]=rapidraw@main;               oks[i]=ko; nvs_args[i]='--git https://github.com/CyberTimon/RapidRAW.git --tag=v1.4.6 RapidRAW' # Pinned 2025/12/04 # system library `gdk-3.0` required by crate `gdk-sys`
 
-((i+=1)); nvs[i]=harper-ls@master;            oks[i]=ok; nvs_args[i]='--git https://github.com/Automattic/harper.git --tag=v1.1.0' # Pinned 2025/12/04
+((i+=1)); nvs[i]=harper-ls@master;            oks[i]=ko; nvs_args[i]='--git https://github.com/Automattic/harper.git --tag=v1.1.0' # Pinned 2025/12/04
 
 #zstd
 ((i+=1)); nvs[i]=sccache@0.12.0;              oks[i]=ok; nvs_args[i]=''
 
-((i+=1)); nvs[i]=gst-plugin-webrtc-signalling@main; oks[i]=oD; nvs_args[i]='--git https://gitlab.freedesktop.org/gstreamer/gst-plugins-rs --rev=0a592e9c5649b4099b0ef7c25b6389d4bccea94a' # Pinned on 2025/12/05 
+((i+=1)); nvs[i]=gst-plugin-webrtc-signalling@main; oks[i]=kD; nvs_args[i]='--git https://gitlab.freedesktop.org/gstreamer/gst-plugins-rs --rev=0a592e9c5649b4099b0ef7c25b6389d4bccea94a' # Pinned on 2025/12/05 
 # WAT same err
 # # BUG: couldn't read `net/webrtc/protocol/src/lib.rs`: No such file or directory
 #((i+=1)); nvs[i]=cargo-c@0.10.18+cargo-0.92.0; oks[i]=ko; nvs_args[i]='' # extern location for cargo does not exist: /tmp/clis-cargo-c_0-10-18+cargo-0-92-0/release/deps/libcargo-398e775d8efe7ba7.rmeta
