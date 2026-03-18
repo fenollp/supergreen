@@ -120,7 +120,9 @@ struct RustcV {
     version: Version,
     #[expect(unused)]
     commit: String,
+    #[expect(unused)]
     date: String,
+    #[expect(unused)]
     channel: Channel,
 }
 
@@ -157,13 +159,13 @@ impl RustcV {
         //   https://github.com/reproducible-containers/repro-pkg-cache
         //   https://github.com/reproducible-containers/repro-get
 
-        let RustcV { date, channel, .. } = self;
-        let channel = match channel {
-            Channel::Stable => "stable",
-            Channel::Dev => "dev",
-            Channel::Beta => "beta",
-            Channel::Nightly => "nightly",
-        };
+        // let RustcV { date, channel, .. } = self;
+        // let channel = match channel {
+        //     Channel::Stable => "stable",
+        //     Channel::Dev => "dev",
+        //     Channel::Beta => "beta",
+        //     Channel::Nightly => "nightly",
+        // };
         //=> sub fn that takes "{channel}-{date}" in, because rustup takes somewhat-freeform toolchain specs
         //==> $RUSTUP_TOOLCHAIN https://rust-lang.github.io/rustup/environment-variables.html
 
@@ -180,26 +182,32 @@ impl RustcV {
         }
         .as_block(&format!("FROM --platform=$BUILDPLATFORM {base} AS {RST}"));
 
+        // rustup_toolchain => host: https://crates.io/crates/rustup-toolchain-manifest
+
         let block = format!(
             r#"
-FROM scratch AS rustup-{channel}-{date}
+FROM scratch AS rustup-{rustup_toolchain}
 SHELL {SHELL:?}
 ADD --chmod=0144 --checksum=sha256:{rustup_checksum} \
   https://static.rust-lang.org/rustup/archive/{rustup_version}/{host}/rustup-init /rustup-init
 {packages_block}
-ENV RUSTUP_HOME={RUSTUP_HOME} \
-     CARGO_HOME={CARGO_HOME} \
-           PATH={CARGO_HOME}/bin:$PATH
+ENV      RUSTUP_HOME={RUSTUP_HOME} \
+    RUSTUP_TOOLCHAIN={rustup_toolchain} \
+          CARGO_HOME={CARGO_HOME}
+ENV CARGO=$RUSTUP_HOME/toolchains/$RUSTUP_TOOLCHAIN/bin/cargo \
+    RUSTC=$RUSTUP_HOME/toolchains/$RUSTUP_TOOLCHAIN/bin/rustc \
+     PATH=$CARGO_HOME/bin:$PATH
 RUN \
- --mount=from=rustup-{channel}-{date},source=/rustup-init,dst=/rustup-init \
+ --mount=from=rustup-{rustup_toolchain},source=/rustup-init,dst=/rustup-init \
    set -eux \
-&& /rustup-init --verbose -y --no-modify-path --profile minimal --default-toolchain {channel}-{date} --default-host {host} \
+&& /rustup-init --verbose -y --no-modify-path --profile minimal --default-toolchain {rustup_toolchain} --default-host {host} \
 && chmod -R a+w $RUSTUP_HOME $CARGO_HOME \
 && rustup --version \
 && cargo --version \
 && rustc --version
 "#,
             packages_block = packages_block.trim(),
+            rustup_toolchain = ::std::env::var("RUSTUP_TOOLCHAIN").unwrap_or_default(),
         );
 
         BaseImage { with_network, image, image_inline: Some(block) }
