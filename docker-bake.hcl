@@ -10,7 +10,7 @@ group "default" {
     "cargo_rail",
     "dbcc",
     "cross",
-    "cargo_flamegraph",
+    "flamegraph",
     "rqcow2",
     "ntp_daemon",
     "mussh",
@@ -81,7 +81,7 @@ target "cross" {
   dockerfile = "cross@0.2.5.Dockerfile"
   output = [{ type = "local", dest = "." }]
 }
-target "cargo_flamegraph" {
+target "flamegraph" {
   context = "recipes"
   dockerfile = "flamegraph@0.6.10.Dockerfile"
   output = [{ type = "local", dest = "." }]
