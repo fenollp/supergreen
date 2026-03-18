@@ -1,7 +1,7 @@
 use std::sync::LazyLock;
 
+use anyhow::{anyhow, Result};
 use camino::Utf8Path;
-use rustc_version::{Channel, Version, VersionMeta};
 use serde::{Deserialize, Serialize};
 
 use crate::{
@@ -30,12 +30,7 @@ macro_rules! ENV_WITH_NETWORK {
 pub(crate) const CARGO_HOME: &str = "/usr/local/cargo";
 pub(crate) const RUSTUP_HOME: &str = "/usr/local/rustup";
 
-// TODO: switch to mentioning debian name: 1-slim-trixie, 1.89-slim-trixie, 1.89.0-slim-trixie, slim-trixie
-// MAY help with:
-//   /tmp/clis-diesel_cli_2-3-2_/release/build/proc-macro2- (required by /tmp/clis-diesel_cli_2-3-2_/release/build/proc-macro2-3093cf4d56979071/build-script-build)
-
-static STABLE_RUST: LazyLock<ImageUri> = LazyLock::new(|| ImageUri::std("rust:1-slim"));
-static BASE_FOR_RUST: LazyLock<ImageUri> = LazyLock::new(|| ImageUri::std("debian:stable-slim"));
+static BASE_FOR_RUST: LazyLock<ImageUri> = LazyLock::new(|| ImageUri::std("debian:trixie-slim"));
 
 #[test]
 fn default_is_unset() {
@@ -71,70 +66,15 @@ impl BaseImage {
         self.image.is_empty() && self.image_inline.is_none()
     }
 
-    #[must_use]
-    pub(crate) fn from_local_rustc() -> Self {
-        rustc_version::version_meta()
-            .ok()
-            .and_then(Self::from_rustcv)
-            .unwrap_or_else(|| Self::from_image(STABLE_RUST.to_owned()))
-    }
-
-    #[must_use]
-    fn from_rustcv(
-        VersionMeta { semver, commit_hash, commit_date, channel, .. }: VersionMeta,
-    ) -> Option<Self> {
-        if channel == Channel::Stable {
-            assert!(STABLE_RUST.contains(":1-"));
-            let minored = STABLE_RUST.as_str().replace(":1-", &format!(":{semver}-"));
-            return Some(Self::from_image(minored.try_into().unwrap()));
-        }
-        commit_hash
-            .zip(commit_date)
-            .map(|(commit, date)| RustcV { version: semver, commit, date, channel }.as_base_image())
-    }
-
-    #[must_use]
-    pub(crate) fn lock_base_to(self, image: ImageUri) -> Self {
-        let image_inline = self.image_inline.map(|block| {
-            let from = self.image.noscheme();
-            let to = image.noscheme();
-            block.replace(&format!(" {from} "), &format!(" {to} "))
-        });
-        Self { image, image_inline, ..self }
-    }
-
-    #[must_use]
-    pub(crate) fn as_block(&self) -> (Network, String) {
-        let block = self.image_inline.clone().unwrap_or_else(|| {
-            let base = self.image.noscheme();
-            // TODO? ARG RUST_BASE=myorg/myapp:latest \n FROM $RUST_BASE (+ similar for non-stable imgs)
-            format!("FROM --platform=$BUILDPLATFORM {base} AS {RST}\n")
-        });
-        (self.with_network, block)
-    }
-}
-
-// TODO? maybe use commit & version as selector too?
-struct RustcV {
-    #[expect(unused)]
-    version: Version,
-    #[expect(unused)]
-    commit: String,
-    #[expect(unused)]
-    date: String,
-    #[expect(unused)]
-    channel: Channel,
-}
-
-impl RustcV {
-    #[must_use]
-    fn as_base_image(&self) -> BaseImage {
+    /// https://rust-lang.github.io/rustup/environment-variables.html
+    /// https://rust-lang.github.io/rustup/concepts/toolchains.html#toolchain-specification
+    pub(crate) fn from_env(toolchain: &str) -> Result<Self> {
         // TODO: dynamically resolve + cache this, if network is up.
-        let rustup_version = "1.28.1";
-        let rustup_checksum = "a3339fb004c3d0bb9862ba0bce001861fe5cbde9c10d16591eb3f39ee6cd3e7f";
+        const VERSION: &str = "1.28.1";
+        const CHECKSUM: &str = "a3339fb004c3d0bb9862ba0bce001861fe5cbde9c10d16591eb3f39ee6cd3e7f";
 
-        // FIXME: multiplatformify (using auto ARG.s) (use rustc_version::VersionMeta.host)
-        let host = "x86_64-unknown-linux-gnu";
+        // TODO: multiplatformify (using auto ARG.s?)
+        let host = maybe_get_local_host_triple(toolchain)?;
 
         // have buildkit call rustc with `--target $(adapted $TARGETPLATFORM)`, if not given `--target`
         // `adapted` translates buildkit platform format to rustc's
@@ -159,17 +99,7 @@ impl RustcV {
         //   https://github.com/reproducible-containers/repro-pkg-cache
         //   https://github.com/reproducible-containers/repro-get
 
-        // let RustcV { date, channel, .. } = self;
-        // let channel = match channel {
-        //     Channel::Stable => "stable",
-        //     Channel::Dev => "dev",
-        //     Channel::Beta => "beta",
-        //     Channel::Nightly => "nightly",
-        // };
-        //=> sub fn that takes "{channel}-{date}" in, because rustup takes somewhat-freeform toolchain specs
-        //==> $RUSTUP_TOOLCHAIN https://rust-lang.github.io/rustup/environment-variables.html
-
-        let image = BASE_FOR_RUST.to_owned();
+        let image = BASE_FOR_RUST.to_owned(); // TODO: allow overriding (CARGOGREEN_BASE_DISTRO?)
         let base = image.noscheme();
         assert!(base.contains("/debian:"));
 
@@ -182,35 +112,49 @@ impl RustcV {
         }
         .as_block(&format!("FROM --platform=$BUILDPLATFORM {base} AS {RST}"));
 
-        // rustup_toolchain => host: https://crates.io/crates/rustup-toolchain-manifest
-
         let block = format!(
             r#"
-FROM scratch AS rustup-{rustup_toolchain}
+FROM scratch AS rustup-{toolchain}
 SHELL {SHELL:?}
-ADD --chmod=0144 --checksum=sha256:{rustup_checksum} \
-  https://static.rust-lang.org/rustup/archive/{rustup_version}/{host}/rustup-init /rustup-init
+ADD --chmod=0144 --checksum=sha256:{CHECKSUM} \
+  https://static.rust-lang.org/rustup/archive/{VERSION}/{host}/rustup-init /rustup-init
 {packages_block}
 ENV      RUSTUP_HOME={RUSTUP_HOME} \
-    RUSTUP_TOOLCHAIN={rustup_toolchain} \
+    RUSTUP_TOOLCHAIN={toolchain} \
           CARGO_HOME={CARGO_HOME}
 ENV CARGO=$RUSTUP_HOME/toolchains/$RUSTUP_TOOLCHAIN/bin/cargo \
     RUSTC=$RUSTUP_HOME/toolchains/$RUSTUP_TOOLCHAIN/bin/rustc \
      PATH=$CARGO_HOME/bin:$PATH
 RUN \
- --mount=from=rustup-{rustup_toolchain},source=/rustup-init,dst=/rustup-init \
-   set -eux \
-&& /rustup-init --verbose -y --no-modify-path --profile minimal --default-toolchain {rustup_toolchain} --default-host {host} \
-&& chmod -R a+w $RUSTUP_HOME $CARGO_HOME \
-&& rustup --version \
-&& cargo --version \
-&& rustc --version
+  --mount=from=rustup-{toolchain},source=/rustup-init,dst=/rustup-init \
+    set -eux \
+ && /rustup-init --verbose -y --no-modify-path --profile minimal --default-toolchain {toolchain} --default-host {host} \
+ && chmod -R a+w $RUSTUP_HOME $CARGO_HOME
 "#,
             packages_block = packages_block.trim(),
-            rustup_toolchain = ::std::env::var("RUSTUP_TOOLCHAIN").unwrap_or_default(),
         );
 
-        BaseImage { with_network, image, image_inline: Some(block) }
+        Ok(Self { with_network, image, image_inline: Some(block) })
+    }
+
+    #[must_use]
+    pub(crate) fn lock_base_to(self, image: ImageUri) -> Self {
+        let image_inline = self.image_inline.map(|block| {
+            let from = self.image.noscheme();
+            let to = image.noscheme();
+            block.replace(&format!(" {from} "), &format!(" {to} "))
+        });
+        Self { image, image_inline, ..self }
+    }
+
+    #[must_use]
+    pub(crate) fn as_block(&self) -> (Network, String) {
+        let block = self.image_inline.clone().unwrap_or_else(|| {
+            let base = self.image.noscheme();
+            // TODO? ARG RUST_BASE=myorg/myapp:latest \n FROM $RUST_BASE (+ similar for non-stable imgs)
+            format!("FROM --platform=$BUILDPLATFORM {base} AS {RST}\n")
+        });
+        (self.with_network, block)
     }
 }
 
@@ -239,41 +183,30 @@ fn test_rewrite_rustup_home() {
     );
 }
 
+fn maybe_get_local_host_triple(toolchain: &str) -> Result<String> {
+    use std::str::FromStr;
+
+    let toolchain = rustup_toolchain_manifest::Toolchain::from_str(toolchain)
+        .map_err(|e| anyhow!("Failed parsing $RUSTUP_TOOLCHAIN={toolchain:?}: {e}"))?;
+
+    if let Some(host) = toolchain.host.map(|h| h.target_triple) {
+        Ok(host.to_owned())
+    } else {
+        rustc_host::from_cli().map_err(|e| anyhow!("Failed getting local host triple: {e}"))
+    }
+}
+
 #[test]
-fn test_from_rustc_v() {
-    use rustc_version::version_meta_for;
+fn test_from_env() {
+    let some_stable = "1.80.0-x86_64-unknown-linux-gnu";
+    let res = BaseImage::from_env(some_stable).unwrap();
+    assert_eq!(res.image, ImageUri::std("debian:trixie-slim"));
+    assert!(res.image_inline.unwrap().contains(" docker.io/library/debian:trixie-slim "));
+    assert_eq!(res.with_network, Network::Default);
 
-    let some_stable = version_meta_for(
-        &r#"
-rustc 1.80.0 (051478957 2024-07-21)
-binary: rustc
-commit-hash: 051478957371ee0084a7c0913941d2a8c4757bb9
-commit-date: 2024-07-21
-host: x86_64-unknown-linux-gnu
-release: 1.80.0
-LLVM version: 18.1.7
-"#[1..],
-    )
-    .unwrap();
-    let res = BaseImage::from_rustcv(some_stable).unwrap();
-    assert_eq!(res.image, ImageUri::std("rust:1.80.0-slim"));
-    assert_eq!(res.image_inline, None);
-    assert_eq!(res.with_network, Network::None);
-
-    let some_nightly = version_meta_for(
-        &r#"
-rustc 1.82.0-nightly (60d146580 2024-08-06)
-binary: rustc
-commit-hash: 60d146580c10036ce89e019422c6bc2fd9729b65
-commit-date: 2024-08-06
-host: x86_64-unknown-linux-gnu
-release: 1.82.0-nightly
-LLVM version: 19.1.0
-"#[1..],
-    )
-    .unwrap();
-    let res = BaseImage::from_rustcv(some_nightly).unwrap();
-    assert_eq!(res.image, ImageUri::std("debian:stable-slim"));
-    assert!(res.image_inline.unwrap().contains(" docker.io/library/debian:stable-slim "));
+    let some_nightly = "nightly-2025-09-14-aarch64-apple-darwin";
+    let res = BaseImage::from_env(some_nightly).unwrap();
+    assert_eq!(res.image, ImageUri::std("debian:trixie-slim"));
+    assert!(res.image_inline.unwrap().contains(" docker.io/library/debian:trixie-slim "));
     assert_eq!(res.with_network, Network::Default);
 }

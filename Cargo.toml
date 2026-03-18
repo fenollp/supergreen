@@ -48,8 +48,9 @@ nutype = { version = "0, >=0.4", features = [ "serde" ], default-features = fals
 pico-args = { version = "0, >=0.5", features = [ "eq-separator" ], default-features = false }
 pretty_assertions = { version = "1", features = [ "std" ], default-features = false }
 reqwest = { version = "0, >=0.13", features = [ "rustls" ], default-features = false }
-rustc_version = { version = "0, >=0.4", default-features = false }
+rustc-host = { version = "0, >=0.1", default-features = false }
 rustflags = { version = "0, >=0.1", default-features = false }
+rustup-toolchain-manifest = { version = "0, >=0.3", default-features = false }
 serde = { version = "1", features = [ "derive" ], default-features = false }
 serde-jsonlines = { version = "0, >=0.6", features = [ "async" ], default-features = false }
 serde_json = { version = "1", default-features = false }
