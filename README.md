@@ -696,8 +696,7 @@ Count "portable" recipes in this repo (not portable = usage of local build conte
 ```make
 all:
 	cargo +nightly fmt --all
-	./hack/clis.sh | tee .github/workflows/clis.yml
-	./hack/self.sh | tee .github/workflows/self.yml
+	./hack/gen.sh
 	CARGO_TARGET_DIR=$${CARGO_TARGET_DIR:-target/clippy} cargo clippy --locked --frozen --offline --all-targets --all-features -- --no-deps -W clippy::cast_lossless -W clippy::redundant_closure_for_method_calls -W clippy::str_to_string -W clippy::unnecessary_wraps
 	RUST_MIN_STACK=8000000 cargo nextest run --all-targets --all-features --locked --frozen --offline --no-fail-fast
 	git --no-pager diff --exit-code

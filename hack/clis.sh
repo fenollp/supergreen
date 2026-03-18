@@ -32,13 +32,13 @@ source "$repo_root"/hack/ck.sh
 
 # TODO: set about green's overhead with --timings
 
-# ok: builds | ko: doesn't build | [ok]D: ok|ko but old: shows too many cfg warnings | Ok: takes >=10min in CI
+# ok: builds | ko: doesn't build | [ok]D: ok|ko but old: shows too many cfg warnings | Ok: takes >=8min in CI
 declare -a nvs nvs_args
    i=0  ; nvs[i]=buildxargs@master;           oks[i]=ok; nvs_args[i]='--git https://github.com/fenollp/buildxargs.git'
-((i+=1)); nvs[i]=cargo-audit@0.22.0;          oks[i]=kO; nvs_args[i]='--features=fix' # Flaky and slow
-((i+=1)); nvs[i]=cargo-deny@0.18.5;           oks[i]=Ok; nvs_args[i]=''
-((i+=1)); nvs[i]=cargo-fuzz@0.13.1;           oks[i]=ko; nvs_args[i]=''
-((i+=1)); nvs[i]=cargo-green@main;            oks[i]=ko; nvs_args[i]='--git https://github.com/fenollp/supergreen.git --branch=main cargo-green' # BUG: couldn't read `cargo-green/src/main.rs`: No such file or directory (os error 2)
+((i+=1)); nvs[i]=cargo-audit@0.22.0;          oks[i]=ok; nvs_args[i]='--features=fix' # Flaky and slow
+((i+=1)); nvs[i]=cargo-deny@0.18.5;           oks[i]=ok; nvs_args[i]=''
+((i+=1)); nvs[i]=cargo-fuzz@0.13.1;           oks[i]=ok; nvs_args[i]=''
+((i+=1)); nvs[i]=cargo-green@main;            oks[i]=ok; nvs_args[i]='--git https://github.com/fenollp/supergreen.git --branch=main cargo-green'
 ((i+=1)); nvs[i]=cargo-llvm-cov@0.6.21;       oks[i]=ok; nvs_args[i]=''
 ((i+=1)); nvs[i]=cargo-nextest@0.9.114;       oks[i]=ok; nvs_args[i]=''
 ((i+=1)); nvs[i]=cross@0.2.5;                 oks[i]=ok; nvs_args[i]='--git https://github.com/cross-rs/cross.git --rev=49cd054de9b832dfc11a4895c72b0aef533b5c6a --bin=cross' # Pinned on 2025/12/03
@@ -51,59 +51,96 @@ declare -a nvs nvs_args
 ((i+=1)); nvs[i]=ripgrep@15.1.0;              oks[i]=ok; nvs_args[i]=''
 ((i+=1)); nvs[i]=rublk@0.2.13;                oks[i]=ok; nvs_args[i]=''
 ((i+=1)); nvs[i]=shpool@0.9.3;                oks[i]=ok; nvs_args[i]=''
-((i+=1)); nvs[i]=topiary-cli@0.7.3;           oks[i]=ok; nvs_args[i]=''
+((i+=1)); nvs[i]=topiary-cli@0.7.3;           oks[i]=Ok; nvs_args[i]=''
 
 #cdylib
 ((i+=1)); nvs[i]=statehub@0.14.10;            oks[i]=kD; nvs_args[i]='' # Flaky builds + non-hermetic CARGOGREEN_SET_ENVS='VERGEN_CARGO_TARGET_TRIPLE,VERGEN_BUILD_SEMVER'
-((i+=1)); nvs[i]=code_reload@main             oks[i]=ko; nvs_args[i]='--git https://github.com/alordash/code_reload.git --rev=fc16bd2102ea1b59f55563923d6c161684230950 simple' # Pinned on 2025/12/03 # BUG: couldn't read `$CARGO_HOME/git/checkouts/code_reload-a4960c8e3a9a144c/fc16bd2/src/code_reload_core/src/lib.rs`: No such file or directory (os error 2)
-((i+=1)); nvs[i]=stu@0.7.5;                   oks[i]=ok; nvs_args[i]=''
+((i+=1)); nvs[i]=code_reload@main             oks[i]=ko; nvs_args[i]='--git https://github.com/alordash/code_reload.git --rev=fc16bd2102ea1b59f55563923d6c161684230950 simple' # BUG? doesnt set extrafn
+((i+=1)); nvs[i]=stu@0.7.5;                   oks[i]=Ok; nvs_args[i]=''
 
-((i+=1)); nvs[i]=torrust-index@3.0.0-develop; oks[i]=ko; nvs_args[i]='--git https://github.com/torrust/torrust-index.git --rev=f9c17f3d6f37b949101df3a5d4b4384c641ff929' # Pinned on 2025/12/03 # use of unresolved module or unlinked crate `reqwest`
+((i+=1)); nvs[i]=torrust-index@4.0.0-develop; oks[i]=Ok; nvs_args[i]='--git https://github.com/torrust/torrust-index.git --rev=a401c0c62867a7abbf2eee0ca4e7324ab89a1af0 --bin=torrust-index' # Pinned on 2026/04/23
 ((i+=1)); nvs[i]=cargo-authors@0.5.5;         oks[i]=ok; nvs_args[i]=''
 ((i+=1)); nvs[i]=vixargs@0.1.0;               oks[i]=ok; nvs_args[i]=''
 ((i+=1)); nvs[i]=cargo-config2@0.1.39;        oks[i]=ok; nvs_args[i]='--example=get'
-((i+=1)); nvs[i]=privaxy@main;                oks[i]=ko; nvs_args[i]='--git https://github.com/Barre/privaxy.git --rev=5dad688538bc7397d71d1c9cfd9d9d53bcf68032 privaxy' # Pinned on 2025/12/03 # BUG: $CARGO_HOME/registry/src/index.crates.io-0000000000000000/openssl-src-111.18.0+1.1.1n/src/lib.rs:496:32: No such file or directory
 
-((i+=1)); nvs[i]=miri@master;                 oks[i]=ko; nvs_args[i]='--git https://github.com/rust-lang/miri.git --rev=092a83d273087c4f9dd7f1e34a0cd1916819c674' # Pinned on 2025/12/03 # can't find crate for `rustc_errors`
-((i+=1)); nvs[i]=zed@main;                    oks[i]=ko; nvs_args[i]='--git https://github.com/zed-industries/zed.git --tag=v0.215.3-pre zed' # Pinned on 2025/12/03 # BUG: error: couldn't read `crates/collections/src/collections.rs`: No such file or directory (os error 2)
-((i+=1)); nvs[i]=verso@main;                  oks[i]=kD; nvs_args[i]='--git https://github.com/versotile-org/verso.git --rev eb719bdd6c7b verso' # Pinned on 2025/12/03 # use of unresolved module or unlinked crate `arboard`
-((i+=1)); nvs[i]=cargo-udeps@0.1.60;          oks[i]=ko; nvs_args[i]='' # extern location for cargo does not exist: /tmp/clis-cargo-udeps_0-1-60/release/deps/libcargo-71fcb7d73f0f1dfb.rmeta
+# GTK+3
+((i+=1)); nvs[i]=rapidraw@main;               oks[i]=ko; nvs_args[i]='--git https://github.com/CyberTimon/RapidRAW.git --tag=v1.4.6 RapidRAW' # Pinned 2025/12/04
+# Compiling rawler v0.7.1 (/home/pete/.cargo/git/checkouts/rapidraw-23a119d7e5f78018/b0c070f/src-tauri/rawler/rawler)
+# Calling  git config --get remote.origin.url
+# Error: Failed getting repository origin url:
+# error: could not compile `rawler` (build script)
+#==> no gwd + no error
 
-((i+=1)); nvs[i]=mirai@main;                  oks[i]=ko; nvs_args[i]='--git https://github.com/facebookexperimental/MIRAI.git --rev=8c258d28652c2bf5fbf7b92b7a6d4298d4ae18bc checker' # Pinned on 2025/12/03
-#     Updating git repository `https://github.com/facebookexperimental/MIRAI.git`
-#     Updating git submodule `git@github.com:microsoft/vcpkg.git`
-# error: failed to update submodule `vcpkg`
-# Caused by:
-#   failed to fetch submodule `vcpkg` from git@github.com:microsoft/vcpkg.git
-# Caused by:
-#   failed to authenticate when downloading repository
-#   * attempted ssh-agent authentication, but no usernames succeeded: `git`
-#   if the git CLI succeeds then `net.git-fetch-with-cli` may help here
-#   https://doc.rust-lang.org/cargo/reference/config.html#netgit-fetch-with-cli
-# Caused by:
-#   no authentication methods succeeded
+#===> lets recurse up
+# Calling  git config --get remote.origin.url in Some("/home/pete/.cargo/git/checkouts/rapidraw-23a119d7e5f78018/b0c070f/src-tauri/rawler/rawler")
+# Calling  git config --get remote.origin.url in Some("/home/pete/.cargo/git/checkouts/rapidraw-23a119d7e5f78018/b0c070f/src-tauri/rawler")
+# Calling  git config --get remote.origin.url in Some("/home/pete/.cargo/git/checkouts/rapidraw-23a119d7e5f78018/b0c070f/src-tauri")
+# Using runner /usr/bin/docker
+#====> we find main repo
 
-((i+=1)); nvs[i]=a-mir-formality@main;        oks[i]=kD; nvs_args[i]='--git https://github.com/rust-lang/a-mir-formality.git --rev=3fc2f38319bb729fbf2f59c38e15e23a9b774716 a-mir-formality' # Pinned 2025/12/03 # error: cannot export macro_rules! macros from a `proc-macro` crate type currently
+#=====> it actually uses that first one as submodule
+#     b0c070f main λ cat .gitmodules
+# [submodule "src-tauri/rawler"]
+# 	path = src-tauri/rawler
+# 	url = https://github.com/CyberTimon/RapidRAW-DngLab
+#      b0c070f main λ pwd
+# /home/pete/.cargo/git/checkouts/rapidraw-23a119d7e5f78018/b0c070f
+#========> patch all this up together
+
+((i+=1)); nvs[i]=privaxy@main;                oks[i]=ko; nvs_args[i]='--git https://github.com/Barre/privaxy.git --rev=5dad688538bc7397d71d1c9cfd9d9d53bcf68032'
+# I 26/02/07 18:43:08.958 Z openssl-sys 0.9.78-d183b817a1884996 appending (AW) to final path /home/runner/work/supergreen/supergreen/recipes/privaxy@main.Dockerfile
+# E 26/02/07 18:43:08.958 Z openssl-sys 0.9.78-d183b817a1884996 Error: Runner failed.
+# Check logs at /home/runner/work/supergreen/supergreen/logs.txt
+# cargo:rustc-cfg=const_fn
+# cargo:rustc-cfg=openssl
+# cargo:rerun-if-env-changed=X86_64_UNKNOWN_LINUX_GNU_OPENSSL_NO_VENDOR
+# X86_64_UNKNOWN_LINUX_GNU_OPENSSL_NO_VENDOR unset
+# cargo:rerun-if-env-changed=OPENSSL_NO_VENDOR
+# OPENSSL_NO_VENDOR unset
+# thread 'main' panicked at /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/openssl-src-111.18.0+1.1.1n/src/lib.rs:496:32:
+# called `Result::unwrap()` on an `Err` value: Os { code: 2, kind: NotFound, message: "No such file or directory" }
+# note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+# Please report an issue along with information from the following:
+# * docker buildx version
+# # Pinned on 2025/12/03 # BUG: $CARGO_HOME/registry/src/index.crates.io-0000000000000000/openssl-src-111.18.0+1.1.1n/src/lib.rs:496:32: No such file or directory
+
+((i+=1)); nvs[i]=miri@master;                 oks[i]=ko; nvs_args[i]='--git https://github.com/rust-lang/miri.git --rev=1fe9d5ba386064c14eb517aacfa8e3d5a1acf97c'; cargos[i]='nightly-2026-03-16' # Pinned on 2026/03/19
+# 174 | fn make_miri_codegen_backend(sess: &Session) -> Box<dyn CodegenBackend> {
+#     | ----------------------------------------------------------------------- takes 1 argument
+# ...
+# 285 |         config.make_codegen_backend = Some(Box::new(make_miri_codegen_backend));
+#     |                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ expected function that takes 2 arguments
+#     |
+#     = note: required for the cast from `Box<fn(&Session) -> Box<...> {make_miri_codegen_backend}>` to `Box<dyn FnOnce(&Options, &Target) -> Box<dyn CodegenBackend> + Send>`
+#     = note: the full name for the type has been written to '/target/release/deps/miri-e9f47534ee52cbf9.long-type-13241406945400517937.txt'
+#     = note: consider using `--verbose` to print the full type name to the console
+((i+=1)); nvs[i]=zed@main;                    oks[i]=ko; nvs_args[i]='--git https://github.com/zed-industries/zed.git --tag=v0.233.10';
+# In file included from /home/pete/.cargo/registry/src/index.crates.io/tree-sitter-0.26.8/src/lib.c:13:
+# /home/pete/.cargo/registry/src/index.crates.io/tree-sitter-0.26.8/src/./wasm_store.c:16:10: fatal error: wasm.h: No such file or directory
+#    16 | #include <wasm.h>
+#       |          ^~~~~~~~
+# compilation terminated.
+
+((i+=1)); nvs[i]=verso@main;                  oks[i]=ok; nvs_args[i]='--git https://github.com/versotile-org/verso.git --rev eb719bdd6c7b verso' # Pinned on 2025/12/03
+((i+=1)); nvs[i]=cargo-udeps@0.1.60;          oks[i]=Ok; nvs_args[i]=''
+
+((i+=1)); nvs[i]=a-mir-formality@main;        oks[i]=ok; nvs_args[i]='--git https://github.com/rust-lang/a-mir-formality.git --rev=3fc2f38319bb729fbf2f59c38e15e23a9b774716 a-mir-formality' # Pinned 2025/12/03
 
 ((i+=1)); nvs[i]=kani-verifier@0.66.0;        oks[i]=ok; nvs_args[i]='--bin=cargo-kani'
 
-((i+=1)); nvs[i]=creusat@master;              oks[i]=ko; nvs_args[i]='--git https://github.com/sarsko/creusat.git --rev=0758fe729d52d8289f3db3508940662e2969ec97 CreuSAT' # Pinned on 2025/12/03 # error: couldn't read `CreuSAT/src/lib.rs`: No such file or directory (os error 2)
-#80 [checkout-0758fe7-0758fe729d52d8289f3db3508940662e2969ec97 1/1] ADD --keep-git-dir=false   https://github.com/sarsko/creusat.git#0758fe729d52d8289f3db3508940662e2969ec97 /
-#80 0.026 Initialized empty Git repository in /var/lib/buildkit/runc-overlayfs/snapshots/snapshots/28181/fs/
-#80 0.033 fatal: Not a valid object name 0758fe729d52d8289f3db3508940662e2969ec97^{commit}
-#80 7.016 From https://github.com/sarsko/creusat
-#80 7.016  * branch              0758fe729d52d8289f3db3508940662e2969ec97 -> FETCH_HEAD
-#80 7.019 0758fe729d52d8289f3db3508940662e2969ec97
+((i+=1)); nvs[i]=CreuSAT@master;              oks[i]=ok; nvs_args[i]='--git https://github.com/sarsko/creusat.git --rev=0758fe729d52d8289f3db3508940662e2969ec97' # Pinned on 2025/12/03
 
-((i+=1)); nvs[i]=cargo-make@0.37.24;          oks[i]=ko; nvs_args[i]='' # BUG confused by 2 versions of same crate: struct takes 3 generic arguments but 2 generic arguments were supplied
+((i+=1)); nvs[i]=cargo-make@0.37.24;          oks[i]=ok; nvs_args[i]='--bin=cargo-make'
 
 #rust-toolchain.toml
-((i+=1)); nvs[i]=coccinelleforrust@main;      oks[i]=ko; nvs_args[i]='--git https://gitlab.inria.fr/coccinelle/coccinelleforrust.git --rev=04050b76b coccinelleforrust' # Pinned on 2025/12/03 # TODO: Unable to locate package python3.12-dev => try installing python3.12-dev via "also-run"
-((i+=1)); nvs[i]=edit@main;                   oks[i]=ko; nvs_args[i]='--git https://github.com/microsoft/edit --tag=v1.2.1 edit' # Pinned 2025/12/04 # error[E0554]: `#![feature]` may not be used on the stable release channel
-# => does toolchain file impact whole project or just primary crate?
-((i+=1)); nvs[i]=pyrefly@main;                oks[i]=ko; nvs_args[i]='--git https://github.com/facebook/pyrefly --tag=0.44.0' # Pinned 2025/12/05 # BUG: couldn't read `$CARGO_HOME/git/checkouts/displaydoc-6f27dab09e41f0bc/7dc6e32/src/lib.rs`: No such file or directory
+((i+=1)); nvs[i]=coccinelleforrust@main;      oks[i]=Ko; nvs_args[i]='--git https://gitlab.inria.fr/coccinelle/coccinelleforrust.git --rev=50612e285' # Pinned on 2025/12/03 # Dirty ra_ap_stdx v0.0.312: the environment variable CI changed
+((i+=1)); nvs[i]=edit@main;                   oks[i]=ok; nvs_args[i]='--git https://github.com/microsoft/edit --tag=v1.2.1 edit'; cargos[i]='nightly-2026-03-16' # Pinned 2025/12/04
+((i+=1)); nvs[i]=pyrefly@main;                oks[i]=ko; nvs_args[i]='--git https://github.com/facebook/pyrefly --tag=0.44.0'; cargos[i]='nightly-2025-09-14' # from its rust-toolchain.toml
+# running: cd "/tmp/clis-pyrefly_main/release/build/tikv-jemalloc-sys-3de93e63469ff870/out/build" && "make" "-j" "1"
+# thread 'main' (6) panicked at /home/pete/.cargo/registry/src/index.crates.io/tikv-jemalloc-sys-0.6.0+5.3.0-1-ge13ca993e8ccb9ba9847cc330696e02839f328f7/build.rs:384:19:
+# failed to execute command: No such file or directory (os error 2)
 
-((i+=1)); nvs[i]=ipa@main;                    oks[i]=ko; nvs_args[i]='--git https://github.com/seekbytes/IPA.git --rev=3094f92 ipa' # Pinned on 2025/12/04 # BUG couldn't read `$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/khronos_api-3.1.0/api_webgl/extensions/WEBGL_multiview/extension.xml`: No such file or directory (os error 2)
+((i+=1)); nvs[i]=ipa@main;                    oks[i]=Ok; nvs_args[i]='--git https://github.com/seekbytes/IPA.git --rev=3094f92' # Pinned on 2025/12/04
 
 ((i+=1)); nvs[i]=cargo-tally@1.0.71;          oks[i]=ok; nvs_args[i]=''
 ((i+=1)); nvs[i]=cargo-mutants@25.3.1;        oks[i]=ok; nvs_args[i]=''
@@ -116,34 +153,31 @@ declare -a nvs nvs_args
 #TODO: allowlist non-busting rustc flags => se about this cache key
 #TODO: test cargo -vv build -> test -> build and look for "Dirty", expect none
 
-((i+=1)); nvs[i]=nanometers@master;           oks[i]=ko; nvs_args[i]='--git https://github.com/aizcutei/nanometers.git --rev=ca11bbbead' # Pinned 2025/12/04 # WEIRD: system library `pango` required by crate `pango-sys` was not found.
+((i+=1)); nvs[i]=nanometers@master;           oks[i]=ko; nvs_args[i]='--git https://github.com/aizcutei/nanometers.git --rev=ca11bbbead' # Pinned 2025/12/04
+# error: The platform you're compiling for is not supported by winit
+# Maybe on targets? wasm32-unknown-unknown [target.aarch64-apple-darwin] [target.x86_64-apple-darwin]
 
 # TODO: https://belmoussaoui.com/blog/8-how-to-flatpak-a-rust-application/
 
-((i+=1)); nvs[i]=uv@main;                     oks[i]=ko; nvs_args[i]='--git https://github.com/astral-sh/uv.git --rev=2748dce' #; cargos[i]='1.91' FIXME: pin cargo whence rustup-only base image
-#TODO: move to using only rustup: no more relying on dockerhub rust images
-#TODO: drop base image inline ==> either provide base image (+ complain if missing 3 envs) OR customize through Add,SetEnvs,... helpers
+((i+=1)); nvs[i]=uv@main;                     oks[i]=ko; nvs_args[i]='--git https://github.com/astral-sh/uv.git --rev=2748dce'; cargos[i]='1.91' # failed to solve: ResourceExhausted: trying to send message larger than max (17778013 vs. 16777216)
 
 ((i+=1)); nvs[i]=flamegraph@0.6.10;           oks[i]=ok; nvs_args[i]='--bin=flamegraph'
 
-((i+=1)); nvs[i]=qair@main;                   oks[i]=kD; nvs_args[i]='--git https://codeberg.org/willempx/qair.git --rev=0751f410da' # Pinned 2025/12/04 # conflicting implementations of trait `Trait` for type `(dyn Send + Sync + 'static)` # rustc 1.91.1 too new
+((i+=1)); nvs[i]=qair@main;                   oks[i]=ok; nvs_args[i]='--git https://codeberg.org/willempx/qair.git --tag=0.7.0'; cargos[i]='1.78.0' # Pinned 2020/06/14
 
-((i+=1)); nvs[i]=rusty-man@master;            oks[i]=ko; nvs_args[i]='--git https://git.sr.ht/~ireas/rusty-man --tag=v0.5.0' # Pinned 2025/12/04 # BUG: error: couldn't read `src/main.rs`: No such file or directory (os error 2)
+((i+=1)); nvs[i]=rusty-man@master;            oks[i]=ko; nvs_args[i]='--git https://git.sr.ht/~ireas/rusty-man --tag=v0.5.0'; cargos[i]='1.78.0' # Pinned 2025/12/04 # BUG: error: couldn't read `src/main.rs`: No such file or directory (os error 2)
 
-((i+=1)); nvs[i]=asterinas@main;              oks[i]=ko; nvs_args[i]='--git=https://github.com/asterinas/asterinas --tag=v0.16.1 cargo-osdk' # Pinned 2025/12/04 # BUG: couldn't read `$CARGO_HOME/git/checkouts/asterinas-afa2d1b9c5178441/48c7c37/ostd/libs/align_ext/src/lib.rs`: No such file or directory
+((i+=1)); nvs[i]=cargo-osdk@main;             oks[i]=ok; nvs_args[i]='--git=https://github.com/asterinas/asterinas --tag=v0.16.1'
 
-((i+=1)); nvs[i]=fargo@main;                  oks[i]=kD; nvs_args[i]='--git https://fuchsia.googlesource.com/fargo --rev=a7d967b' # Pinned 2025/12/04 # BUG: couldn't read `src/lib.rs`: No such file or directory
+((i+=1)); nvs[i]=fargo@main;                  oks[i]=ok; nvs_args[i]='--git https://fuchsia.googlesource.com/fargo --rev=a7d967b'; cargos[i]='1.78.0' # Pinned 2025/12/04
 
-((i+=1)); nvs[i]=rapidraw@main;               oks[i]=ko; nvs_args[i]='--git https://github.com/CyberTimon/RapidRAW.git --tag=v1.4.6 RapidRAW' # Pinned 2025/12/04 # system library `gdk-3.0` required by crate `gdk-sys`
-
-((i+=1)); nvs[i]=harper@master;               oks[i]=ko; nvs_args[i]='--git https://github.com/Automattic/harper.git --tag=v1.1.0 harper-ls' # Pinned 2025/12/04 # BUG: couldn't read `harper-pos-utils/src/lib.rs`: No such file or directory
+((i+=1)); nvs[i]=harper-ls@master;            oks[i]=ok; nvs_args[i]='--git https://github.com/Automattic/harper.git --tag=v1.1.0' # Pinned 2025/12/04
 
 #zstd
-((i+=1)); nvs[i]=sccache@0.12.0;              oks[i]=ok; nvs_args[i]=''
+((i+=1)); nvs[i]=sccache@0.12.0;              oks[i]=Ok; nvs_args[i]=''
 
-((i+=1)); nvs[i]=gst-plugin-webrtc-signalling@main; oks[i]=kD; nvs_args[i]='--git https://gitlab.freedesktop.org/gstreamer/gst-plugins-rs --rev=0a592e9c5649b4099b0ef7c25b6389d4bccea94a' # Pinned on 2025/12/05 # BUG: couldn't read `net/webrtc/protocol/src/lib.rs`: No such file or directory
-#((i+=1)); nvs[i]=cargo-c@0.10.18+cargo-0.92.0; oks[i]=ko; nvs_args[i]='' # extern location for cargo does not exist: /tmp/clis-cargo-c_0-10-18+cargo-0-92-0/release/deps/libcargo-398e775d8efe7ba7.rmeta
- ((i+=1)); nvs[i]=cargo-c@0.10.15+cargo-0.90.0; oks[i]=ko; nvs_args[i]='' # extern location for cargo does not exist: /tmp/clis-cargo-c_0-10-15+cargo-0-90-0/release/deps/libcargo-6a92f81c48ba907f.rmeta
+((i+=1)); nvs[i]=gst-plugin-webrtc-signalling@main; oks[i]=ok; nvs_args[i]='--git https://gitlab.freedesktop.org/gstreamer/gst-plugins-rs --tag=gstreamer-1.29.1' # Pinned on 2026/03/21
+((i+=1)); nvs[i]=cargo-c@0.10.18+cargo-0.92.0;oks[i]=ko; nvs_args[i]='' # Failed to create /tmp/clis-cargo-c_0-10-18+cargo-0-92-0/release/build/proc-macro2-9405b83cdad3679c/out/probe: No such file or directory (os error 2)
 
 # Depends on https://lib.rs/crates/nvml-wrapper and on https://github.com/nagisa/rust_libloading
 ((i+=1)); nvs[i]=bottom@0.11.4;               oks[i]=ok; nvs_args[i]=''
@@ -158,10 +192,11 @@ declare -a nvs nvs_args
 #TODO: look into "writing rust tests inside tmux sessions"
 
 header() {
+  local page=$1; shift
   [[ $# -eq 0 ]]
   cat <<EOF
 on: [push]
-name: CLIs
+name: CLIs p.$page
 permissions: {}
 jobs:
 
@@ -188,16 +223,19 @@ as_env() {
     bottom@*) envvars+=(CARGOGREEN_SET_ENVS='GITHUB_SHA'); envvars+=(GITHUB_SHA=) ;; # "Dirty bottom v0.11.4: the environment variable GITHUB_SHA changed"
     cargo-authors@*) envvars+=(CARGOGREEN_ADD_APT='libcurl4-openssl-dev,pkg-config') ;;
     cargo-llvm-cov@*) envvars+=(CARGOGREEN_COMPONENTS='llvm-tools-preview') ;;
-    cargo-udeps@*) envvars+=(CARGOGREEN_ADD_APT='libssl-dev,pkg-config,zlib1g-dev') ;;
+    cargo-udeps@*) envvars+=(CARGOGREEN_ADD_APT='libcurl4-openssl-dev,libssl-dev,pkg-config,zlib1g-dev') ;;
     coccinelleforrust@*) envvars+=(CARGOGREEN_ADD_APT='python3-dev') ;;
     diesel_cli@*) envvars+=(CARGOGREEN_ADD_APT='libpq-dev') ;;
+    miri@*) envvars+=(CARGOGREEN_COMPONENTS='llvm-tools-preview,rust-src,rustc-dev'); envvars+=(CARGOGREEN_ADD_APT='build-essential') ;;
     mussh@*) envvars+=(CARGOGREEN_ADD_APT='libsqlite3-dev,libssl-dev,pkg-config,zlib1g-dev') ;;
-    nanometers@*) envvars+=(CARGOGREEN_ADD_APT='libcairo2-dev,libpango-1.0-0,libpango1.0-dev,libssl-dev,libxcb-render0-dev,libxcb-shape0-dev,libxcb-xfixes0-dev,libxkbcommon-dev') ;;
+    nanometers@*) envvars+=(CARGOGREEN_ADD_APT='libwayland-dev,libglib2.0-dev,libdbus-1-dev,libpangocairo-1.0-0,libasound2-dev,libcairo2-dev,libpango-1.0-0,libpango1.0-dev,libssl-dev,libxcb-render0-dev,libxcb-shape0-dev,libxcb-xfixes0-dev,libxkbcommon-dev,libx11-dev,libxcursor-dev,libxcb1-dev,libxi-dev,libxkbcommon-x11-dev,xvfb') ;;
     ntpd@*) envvars+=(NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b); envvars+=(NTPD_RS_GIT_DATE=2025-05-09) ;; # Any commit, just fixed + Time of commit
-    privaxy@*) envvars+=(CARGOGREEN_ADD_APT='libssl-dev') ;;
+    privaxy@*) envvars+=(CARGOGREEN_ADD_APT='build-essential,libayatana-appindicator3-dev,libgtk-3-dev,librsvg2-dev,libsoup2.4-dev,libssl-dev,pkg-config') ;;
+    rapidraw@*) envvars+=(CARGOGREEN_ADD_APT='g++,libgtk-3-dev,libjavascriptcoregtk-4.1-dev,libsoup-3.0-dev,libssl-dev,libwebkit2gtk-4.1-dev') ;;
     rublk@*) envvars+=(CARGOGREEN_ADD_APT='libclang-dev') ;;
     sccache@*) envvars+=(CARGOGREEN_ADD_APT='libssl-dev,pkg-config,zlib1g-dev') ;;
-    torrust-index@*) envvars+=(CARGOGREEN_ADD_APT='libssl-dev,zlib1g-dev') ;;
+    torrust-index@*) envvars+=(CARGOGREEN_ADD_APT='libssl-dev,pkg-config,zlib1g-dev') ;;
+    zed@*) envvars+=(CARGOGREEN_ADD_APT='build-essential,clang,cmake,curl,elfutils,g++,gcc,gettext-base,git,jq,libasound2-dev,libfontconfig-dev,libgit2-dev,libglib2.0-dev,libsqlite3-dev,libssl-dev,libva-dev,libvulkan1,libwayland-dev,libx11-xcb-dev,libxkbcommon-x11-dev,libzstd-dev,lld,llvm,make,musl-dev,musl-tools,pipewire,xdg-desktop-portal') ;; # From https://github.com/zed-industries/zed/blob/v0.233.10/script/linux#L25-L52
     *) ;;
   esac
 
@@ -460,14 +498,15 @@ $(cache_usage)
 EOF
 }
 
-# No args: generate CI file
+# No args: generate CI files
+#   debug webui at https://github.com/fenollp/supergreen/actions/workflows/clis-1.yml
+#                  https://github.com/fenollp/supergreen/actions/workflows/clis-2.yml
 if [[ $# = 0 ]]; then
-  header
-
+  page=1 ; perpage=0
   for i in "${!nvs[@]}"; do
     o=${oks[$i]}
     case "${o:0:1}" in
-        o|O) ;;
+        o) ;; # Skip big Os: they take too long
         *) continue ;;
     esac
     name_at_version=${nvs["$i"]}
@@ -480,7 +519,10 @@ if [[ $# = 0 ]]; then
     else
       cargo="cargo +$cargo"
     fi
-    cli "$name_at_version" "$cargo" "${nvs_args["$i"]}"
+    ((perpage+=1))
+    [[ $perpage = 32 ]] && { perpage=1 ; ((page+=1)) ; }
+    [[ $perpage = 1 ]] && header $page | tee .github/workflows/clis-$page.yml
+    cli "$name_at_version" "$cargo" "${nvs_args["$i"]}" | tee --append .github/workflows/clis-$page.yml
   done
 
   exit
