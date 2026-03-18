@@ -321,7 +321,7 @@ $(jobdef "$(slugify "$name_at_version")")
     # CARGOGREEN_CACHE_TO_IMAGES: docker-image://localhost:23456/\${{ github.repository }}
       CARGOGREEN_FINAL_PATH: recipes/$name_at_version.Dockerfile
       CARGOGREEN_EXPERIMENT: finalpathnonprimary$(finalpathnocomment "$name_at_version") # dumps on each build call
-      CARGOGREEN_LOG: trace
+      CARGOGREEN_LOG: debug
       CARGOGREEN_LOG_PATH: logs.txt
     needs: bin
     steps:
@@ -530,13 +530,13 @@ set -x
     echo "$arg1"
     echo "Target dir: $tmptrgt"
     echo "Logs: $tmplogs"
-    CARGOGREEN_LOG=trace \
+    CARGOGREEN_LOG=debug \
     CARGOGREEN_LOG_PATH="$tmplogs" \
     CARGOGREEN_FINAL_PATH="$tmptrgt/cargo-green-fetched.Dockerfile" \
     CARGOGREEN_EXPERIMENT=finalpathnonprimary \
     PATH=$install_dir/bin:"$PATH" \
       $CARGO green -v fetch
-    CARGOGREEN_LOG=trace \
+    CARGOGREEN_LOG=debug \
     CARGOGREEN_LOG_PATH="$tmplogs" \
     CARGOGREEN_FINAL_PATH="$tmptrgt/cargo-green.Dockerfile" \
     CARGOGREEN_EXPERIMENT=finalpathnonprimary \
@@ -602,7 +602,7 @@ done
 
 envvars=(CARGO_INCREMENTAL=0)
 envvars+=(PATH=$shortPATH)
-envvars+=(CARGOGREEN_LOG=trace)
+envvars+=(CARGOGREEN_LOG=debug)
 envvars+=(CARGOGREEN_LOG_PATH="$tmplogs")
 envvars+=(CARGO_TARGET_DIR="$tmptrgt")
 if [[ "$final" = '1' ]]; then
