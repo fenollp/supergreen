@@ -5099,7 +5099,7 @@ COPY --link --from=dep-n-flamegraph-0.6.10-d07aed4c27a03bf3 /target/release/deps
 
 
 
-FROM rust-base AS dep-n-flamegraph-0.6.10-c1e3352108a5fe62
+FROM rust-base AS dep-n-flamegraph-0.6.10-4269f01ea324781b
 SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /target/release/deps
 RUN \
@@ -5177,8 +5177,8 @@ RUN \
   --mount=from=out-b26718f8775463e7,dst=/target/release/deps/libsignal_hook_registry-b26718f8775463e7.rlib,source=/libsignal_hook_registry-b26718f8775463e7.rlib \
     env CARGO=$CARGO_HOME/bin/cargo \
         RUSTC=$CARGO_HOME/bin/rustc \
-        CARGO_BIN_NAME=cargo-flamegraph \
-        CARGO_CRATE_NAME=cargo_flamegraph \
+        CARGO_BIN_NAME=flamegraph \
+        CARGO_CRATE_NAME=flamegraph \
         CARGO_INCREMENTAL=0 \
         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/flamegraph-0.6.10 \
         CARGO_MANIFEST_PATH=$CARGO_HOME/registry/src/index.crates.io/flamegraph-0.6.10/Cargo.toml \
@@ -5199,17 +5199,17 @@ RUN \
         CARGO_PRIMARY_PACKAGE=1 \
         CARGO_SBOM_PATH= \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name cargo_flamegraph --crate-type bin --edition 2021 --emit dep-info,link --error-format json --extern anyhow'=/target/release/deps/libanyhow-ccfe19d1008f5644.rlib' --extern cargo_metadata'=/target/release/deps/libcargo_metadata-47c6c5d237fd46d1.rlib' --extern clap'=/target/release/deps/libclap-39a85db50a8fe1a8.rlib' --extern clap_complete'=/target/release/deps/libclap_complete-e99e5df5c16245b8.rlib' --extern flamegraph'=/target/release/deps/libflamegraph-d07aed4c27a03bf3.rlib' --extern indicatif'=/target/release/deps/libindicatif-58e12fd94ca398f8.rlib' --extern inferno'=/target/release/deps/libinferno-72293c1a8ec5bafb.rlib' --extern opener'=/target/release/deps/libopener-6be2fc838a94ad1b.rlib' --extern rustc_demangle'=/target/release/deps/librustc_demangle-5813d912755f080d.rlib' --extern shlex'=/target/release/deps/libshlex-81fc025aea3d5869.rlib' --extern signal_hook'=/target/release/deps/libsignal_hook-920a04ec42d51a6a.rlib' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-c1e3352108a5fe62' -C metadata'=fbbd914800fc8e7a' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/flamegraph-0.6.10/src/bin/cargo-flamegraph.rs \
-        1>          /target/release/deps/out-c1e3352108a5fe62-stdout \
-        2>          /target/release/deps/out-c1e3352108a5fe62-stderr \
-        || echo $? >/target/release/deps/out-c1e3352108a5fe62-errcode\
-  ; find /target/release/deps/*-c1e3352108a5fe62* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
-FROM scratch AS out-c1e3352108a5fe62
-COPY --link --from=dep-n-flamegraph-0.6.10-c1e3352108a5fe62 /target/release/deps/*-c1e3352108a5fe62* /
+      rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name flamegraph --crate-type bin --edition 2021 --emit dep-info,link --error-format json --extern anyhow'=/target/release/deps/libanyhow-ccfe19d1008f5644.rlib' --extern cargo_metadata'=/target/release/deps/libcargo_metadata-47c6c5d237fd46d1.rlib' --extern clap'=/target/release/deps/libclap-39a85db50a8fe1a8.rlib' --extern clap_complete'=/target/release/deps/libclap_complete-e99e5df5c16245b8.rlib' --extern flamegraph'=/target/release/deps/libflamegraph-d07aed4c27a03bf3.rlib' --extern indicatif'=/target/release/deps/libindicatif-58e12fd94ca398f8.rlib' --extern inferno'=/target/release/deps/libinferno-72293c1a8ec5bafb.rlib' --extern opener'=/target/release/deps/libopener-6be2fc838a94ad1b.rlib' --extern rustc_demangle'=/target/release/deps/librustc_demangle-5813d912755f080d.rlib' --extern shlex'=/target/release/deps/libshlex-81fc025aea3d5869.rlib' --extern signal_hook'=/target/release/deps/libsignal_hook-920a04ec42d51a6a.rlib' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-4269f01ea324781b' -C metadata'=398e745fe64fbffe' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/flamegraph-0.6.10/src/bin/flamegraph.rs \
+        1>          /target/release/deps/out-4269f01ea324781b-stdout \
+        2>          /target/release/deps/out-4269f01ea324781b-stderr \
+        || echo $? >/target/release/deps/out-4269f01ea324781b-errcode\
+  ; find /target/release/deps/*-4269f01ea324781b* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+FROM scratch AS out-4269f01ea324781b
+COPY --link --from=dep-n-flamegraph-0.6.10-4269f01ea324781b /target/release/deps/*-4269f01ea324781b* /
 
 # Pipe this file to:
 # DOCKER_BUILDKIT="1" \
 #   docker build --network=none --output=. - <THIS_FILE
 
 FROM scratch
-COPY --link --from=out-c1e3352108a5fe62 /cargo_flamegraph-c1e3352108a5fe62 /cargo_flamegraph
+COPY --link --from=out-4269f01ea324781b /flamegraph-4269f01ea324781b /flamegraph
