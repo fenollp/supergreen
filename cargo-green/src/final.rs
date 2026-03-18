@@ -59,7 +59,12 @@ impl Green {
 
             info!("reading (RO) containerfile {containerfile}");
             let mut opts = OpenOptions::new();
-            if self.finalpathnocomment() {
+            if self.finalpathcomments() {
+                let _ = fs::copy(containerfile, path)?;
+
+                info!("writing (AW) final path {path}");
+                opts.append(true);
+            } else {
                 for line in fs::read_to_string(containerfile)?.lines() {
                     if !line.starts_with(DIESES) {
                         fbuf.push_str(line);
@@ -69,11 +74,6 @@ impl Green {
 
                 info!("writing (TW) final path {path}");
                 opts.write(true).truncate(true);
-            } else {
-                let _ = fs::copy(containerfile, path)?;
-
-                info!("writing (AW) final path {path}");
-                opts.append(true);
             }
 
             fbuf.push('\n');
@@ -101,7 +101,7 @@ impl Green {
 
             let mut fbuf = String::new();
 
-            if !self.finalpathnocomment() {
+            if self.finalpathcomments() {
                 fbuf.push('\n');
                 for md_line in fs::read_to_string(md_path)?.lines() {
                     Md::comment_pretty(md_line, &mut fbuf);
