@@ -19,7 +19,7 @@ pub(crate) struct Checkouts {
     stage: Stage,
     repo: String,
     commit: String,
-    krate_manifest_dir: Utf8PathBuf,
+    mount: Utf8PathBuf,
 }
 
 impl AsBlock for Checkouts {
@@ -47,7 +47,7 @@ impl AsStage<'_> for Checkouts {
     }
 
     fn mounts(&self) -> Vec<(Option<Utf8PathBuf>, Utf8PathBuf, bool)> {
-        vec![(None, self.krate_manifest_dir.clone(), false)]
+        vec![(None, self.mount.clone(), false)]
     }
 }
 
@@ -72,7 +72,7 @@ pub(crate) async fn as_stage(
     }
     let stdout = String::from_utf8_lossy(&stdout);
     let stdout = stdout.trim();
-    // e.g.: file:///Users/pierre/.cargo/git/db/remarkable-tools-9f4e9942cc4e93a3
+    // e.g.: file://$CARGO_HOME/git/db/remarkable-tools-9f4e9942cc4e93a3
     if !stdout.starts_with("file:///") {
         bail!("BUG: unexpected repository db path: {stdout:?}")
     }
@@ -80,7 +80,7 @@ pub(crate) async fn as_stage(
     let head = db_dir.join("FETCH_HEAD");
 
     info!("opening (RO) git db head file: {head}");
-    // e.g.: /Users/pierre/.cargo/git/db/remarkable-tools-9f4e9942cc4e93a3/FETCH_HEAD
+    // e.g.: $CARGO_HOME/git/db/remarkable-tools-9f4e9942cc4e93a3/FETCH_HEAD
     let head = read_to_string(&head).map_err(|e| anyhow!("Failed reading {head}: {e}"))?;
     let head = head.trim();
 
@@ -91,11 +91,13 @@ pub(crate) async fn as_stage(
     let dir = krate_manifest_dir.parent().unwrap().file_name().unwrap();
     let stage = Stage::checkout(dir, commit)?;
 
+    let workdir = git_mount(cargo_home, krate_manifest_dir).unwrap();
+
     Ok(NamedStage::Checkouts(Checkouts {
         stage,
         repo: repo.to_owned(),
         commit: commit.to_owned(),
-        krate_manifest_dir: rewrite_cargo_home(cargo_home, krate_manifest_dir.as_str()).into(),
+        mount: rewrite_cargo_home(cargo_home, workdir.as_str()).into(),
     }))
 }
 
@@ -147,6 +149,27 @@ a89c01034a6c17db095c806132ca828bbf1e8830		https://github.com/fenollp/reMarkable-
                 "a89c01034a6c17db095c806132ca828bbf1e8830",
                 "https://github.com/fenollp/reMarkable-tools.git"
             )
+        );
+    }
+}
+
+fn git_mount(cargo_home: &Utf8Path, path: &Utf8Path) -> Option<Utf8PathBuf> {
+    if path.starts_with(cargo_home.join(HOME)) {
+        let n = cargo_home.components().count() + 2/*HOME's components*/ + 2/*repo's components*/;
+        return Some(path.components().take(n).collect());
+    }
+    None
+}
+
+#[test]
+fn gitmount() {
+    for path in [
+        "$CARGO_HOME/git/checkouts/code_reload-a4960c8e3a9a144c/fc16bd2".into(),
+        "$CARGO_HOME/git/checkouts/code_reload-a4960c8e3a9a144c/fc16bd2/blip/blop".into(),
+    ] {
+        assert_eq!(
+            Some("$CARGO_HOME/git/checkouts/code_reload-a4960c8e3a9a144c/fc16bd2".into()),
+            git_mount("$CARGO_HOME".into(), path)
         );
     }
 }
