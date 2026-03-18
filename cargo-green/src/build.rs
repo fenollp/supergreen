@@ -642,7 +642,7 @@ impl Effects {
             (start.elapsed(), res)
         };
         let mut status = res.map_err(|e| anyhow!("Failed calling `{call}`: {e}"))?;
-        info!("build ran in {secs:?}");
+        info!("build ran for {secs:?}");
 
         if let Ok(e) = rx_err.try_recv() {
             bail!("Runner BUG: {e}")
