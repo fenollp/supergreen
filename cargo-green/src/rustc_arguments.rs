@@ -188,7 +188,7 @@ pub(crate) fn as_rustc(
         )
     };
 
-    assert_ne!(state.mdid, "0".repeat(16).into());
+    assert_ne!(state.mdid, "0".repeat(16).into()); //simple
     args.sort();
     Ok((state, args.into_iter().flatten().collect()))
 }
