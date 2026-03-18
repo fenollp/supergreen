@@ -173,6 +173,14 @@ impl Green {
             }
         }
 
+        for (field, var) in [
+            (&mut green.add.apk, ENV_ADD_APK!()),
+            (&mut green.add.apt, ENV_ADD_APT!()),
+            (&mut green.add.apt_get, ENV_ADD_APT_GET!()),
+        ] {
+            validate_csv(field, var)?;
+        }
+
         let var = ENV_BASE_IMAGE!();
         if let Ok(val) = env::var(var) {
             let val = val.try_into().map_err(|e| anyhow!("${var} {e}"))?;
@@ -208,20 +216,12 @@ impl Green {
         }
         if green.base.is_unset() {
             //TODO: CARGOGREEN_COMPONENT=toolchain=,target=,add=llvm-tools-preview;remove=
-            green.base = BaseImage::from_env(toolchain)?;
+            green.base = BaseImage::from_env(toolchain, &green.add)?;
         }
 
         validate_csv(&mut green.set_envs, ENV_SET_ENVS!())?;
         if green.set_envs.iter().any(|var| var.starts_with("CARGOGREEN_")) {
             bail!("{origin} contains CARGOGREEN_* names")
-        }
-
-        for (field, var) in [
-            (&mut green.add.apk, ENV_ADD_APK!()),
-            (&mut green.add.apt, ENV_ADD_APT!()),
-            (&mut green.add.apt_get, ENV_ADD_APT_GET!()),
-        ] {
-            validate_csv(field, var)?;
         }
 
         Ok(green)
