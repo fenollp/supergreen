@@ -176,10 +176,7 @@ pub(crate) async fn main() -> Result<Green> {
         green.base = green.base.lock_base_to(base);
     }
 
-    let (mut with_network, mut finalized_block) = green.base.as_block();
-    if !green.add.is_empty() {
-        (with_network, finalized_block) = green.add.as_block(&finalized_block);
-    }
+    let (with_network, finalized_block) = green.base.as_block();
     green.base.with_network = with_network;
     green.base.image_inline = Some(finalized_block.trim().to_owned());
 

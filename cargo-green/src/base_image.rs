@@ -68,7 +68,7 @@ impl BaseImage {
 
     /// https://rust-lang.github.io/rustup/environment-variables.html
     /// https://rust-lang.github.io/rustup/concepts/toolchains.html#toolchain-specification
-    pub(crate) fn from_env(toolchain: &str) -> Result<Self> {
+    pub(crate) fn from_env(toolchain: &str, add: &Add) -> Result<Self> {
         // TODO: dynamically resolve + cache this, if network is up.
         const VERSION: &str = "1.28.1";
         const CHECKSUM: &str = "a3339fb004c3d0bb9862ba0bce001861fe5cbde9c10d16591eb3f39ee6cd3e7f";
@@ -110,6 +110,7 @@ impl BaseImage {
             apt: vec!["ca-certificates".to_owned(), "gcc".to_owned(), "libc6-dev".to_owned()],
             apt_get: vec!["ca-certificates".to_owned(), "gcc".to_owned(), "libc6-dev".to_owned()],
         }
+        .union(add)
         .as_block(&format!("FROM --platform=$BUILDPLATFORM {base} AS {RST}"));
 
         let block = format!(
@@ -199,13 +200,13 @@ fn maybe_get_local_host_triple(toolchain: &str) -> Result<String> {
 #[test]
 fn test_from_env() {
     let some_stable = "1.80.0-x86_64-unknown-linux-gnu";
-    let res = BaseImage::from_env(some_stable).unwrap();
+    let res = BaseImage::from_env(some_stable, &Add::default()).unwrap();
     assert_eq!(res.image, ImageUri::std("debian:trixie-slim"));
     assert!(res.image_inline.unwrap().contains(" docker.io/library/debian:trixie-slim "));
     assert_eq!(res.with_network, Network::Default);
 
     let some_nightly = "nightly-2025-09-14-aarch64-apple-darwin";
-    let res = BaseImage::from_env(some_nightly).unwrap();
+    let res = BaseImage::from_env(some_nightly, &Add::default()).unwrap();
     assert_eq!(res.image, ImageUri::std("debian:trixie-slim"));
     assert!(res.image_inline.unwrap().contains(" docker.io/library/debian:trixie-slim "));
     assert_eq!(res.with_network, Network::Default);

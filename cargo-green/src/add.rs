@@ -55,6 +55,21 @@ impl Add {
         [apk, apt, apt_get].iter().all(|x| x.is_empty())
     }
 
+    #[must_use]
+    pub(crate) fn union(self, lhs: &Self) -> Self {
+        let Self { mut apk, mut apt, mut apt_get } = self;
+        apk.extend(lhs.apk.iter().cloned());
+        apt.extend(lhs.apt.iter().cloned());
+        apt_get.extend(lhs.apt_get.iter().cloned());
+        apk.sort();
+        apt.sort();
+        apt_get.sort();
+        apk.dedup();
+        apt.dedup();
+        apt_get.dedup();
+        Self { apk, apt, apt_get }
+    }
+
     // TODO: pin major + lock by pulling
     // TODO: more architectures
     pub(crate) fn as_block(&self, last: &str) -> (Network, String) {
