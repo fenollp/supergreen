@@ -27,6 +27,7 @@ group "default" {
     "sccache",
     "cargo_nextest",
     "stu",
+    "topiary",
   ]
 }
 
@@ -163,5 +164,10 @@ target "cargo_nextest" {
 target "stu" {
   context = "recipes"
   dockerfile = "stu@0.7.5.Dockerfile"
+  output = [{ type = "local", dest = "." }]
+}
+target "topiary" {
+  context = "recipes"
+  dockerfile = "topiary-cli@0.7.3.Dockerfile"
   output = [{ type = "local", dest = "." }]
 }
