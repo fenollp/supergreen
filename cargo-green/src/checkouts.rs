@@ -26,11 +26,16 @@ impl AsBlock for Checkouts {
     fn as_block(&self) -> Option<String> {
         let Self { stage, repo, commit, .. } = self;
         // Add .git suffix, otherwise ADD fetches a webpage, not a repo!
+        let repo = if repo.contains("/git.sr.ht/") || repo.contains("@git.sr.ht:") {
+            repo
+        } else {
+            &format!("{repo}.git")
+        };
         Some(format!(
             r#"
 FROM scratch AS {stage}
 ADD --keep-git-dir=false \
-  {repo}.git#{commit} /
+  {repo}#{commit} /
 "#,
         ))
     }
