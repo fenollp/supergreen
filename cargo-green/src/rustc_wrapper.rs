@@ -310,24 +310,24 @@ impl Md {
         call: String,
         (out_stage, out_dir): (&Stage, Option<&Utf8Path>),
     ) -> Result<()> {
-        // Log a possible toolchain file contents (TODO: make per-crate base.image out of this)
-        if false {
-            block.push_str("    { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \\\n");
-        }
+        let mut first = true;
+        let mut push = |block: &mut String, var: &str, val: &String| -> Result<_> {
+            let val = rewrite_env(val, cargo_home)?;
+            block.push_str(&format!("    {} {var}={val} \\\n", if first { "env" } else { "   " }));
+            first = false;
+            Ok(())
+        };
 
-        // Rewrite host cargo/rustc so the base_image ones can be used
-        block.push_str("    env CARGO=$CARGO_HOME/bin/cargo \\\n");
-        block.push_str("        RUSTC=$CARGO_HOME/bin/rustc \\\n");
-        // TODO: move these 2 to base image when possible
-        let mut set = HashSet::from(["CARGO".to_owned(), "RUSTC".to_owned()]);
+        let mut set: HashSet<_> =
+            ["CARGO".to_owned(), "RUSTC".to_owned(), "RUSTUP_TOOLCHAIN".to_owned()].into();
+
         let mut vars = env::vars().collect::<Vec<_>>();
         vars.sort_by(|(a, _), (b, _)| a.cmp(b));
         for (var, val) in vars.into_iter().filter_map(|kv| fmap_env(kv, self.buildrs)) {
             if set.contains(&var) {
                 continue;
             }
-            let val = rewrite_env(&val, cargo_home)?;
-            block.push_str(&format!("        {var}={val} \\\n"));
+            push(&mut block, &var, &val)?;
             set.insert(var.clone());
         }
         block.push_str(&format!("        {}=1 \\\n", ENV!()));
@@ -337,8 +337,7 @@ impl Md {
                 continue;
             }
             warn!("setting rustc-env: ${var}={val:?}");
-            let val = rewrite_env(val, cargo_home)?;
-            block.push_str(&format!("        {var}={val} \\\n"));
+            push(&mut block, var, val)?;
             set.insert(var.to_owned());
         }
 
@@ -348,8 +347,7 @@ impl Md {
             }
             if let Ok(val) = env::var(var) {
                 warn!("passing ${var}={val:?} env through");
-                let val = rewrite_env(&val, cargo_home)?;
-                block.push_str(&format!("        {var}={val} \\\n"));
+                push(&mut block, var, &val)?;
                 set.insert(var.to_owned());
             }
         }
@@ -363,10 +361,7 @@ impl Md {
                     continue;
                 }
                 debug!("system env set (skipped): ${var}={val:?}");
-                if !val.is_empty() {
-                    let val = rewrite_env(&val, cargo_home)?;
-                    block.push_str(&format!("#       {var}={val:?} \\\n"));
-                }
+                push(&mut block, var, &val)?;
             }
         }
 
