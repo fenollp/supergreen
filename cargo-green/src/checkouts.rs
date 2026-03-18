@@ -25,11 +25,12 @@ pub(crate) struct Checkouts {
 impl AsBlock for Checkouts {
     fn as_block(&self) -> Option<String> {
         let Self { stage, repo, commit, .. } = self;
+        // Add .git suffix, otherwise ADD fetches a webpage, not a repo!
         Some(format!(
             r#"
 FROM scratch AS {stage}
 ADD --keep-git-dir=false \
-  {repo}#{commit} /
+  {repo}.git#{commit} /
 "#,
         ))
     }
@@ -79,6 +80,8 @@ pub(crate) async fn as_stage(
     let head = head.trim();
 
     let (commit, repo) = commit_and_repo(head)?;
+    let repo = repo.trim_end_matches('/');
+    let repo = repo.strip_suffix(".git").unwrap_or(repo); // Cleanup here + add it in ADD
 
     let dir = krate_manifest_dir.parent().unwrap().file_name().unwrap();
     let stage = Stage::checkout(dir, commit)?;
