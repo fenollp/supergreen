@@ -624,6 +624,7 @@ See also this article on what `cargo-green` does (perfect layering):
 # Usage:   clean=1 $0 ..                           #=> Both reset=1 + rmrf=1
 # Usage:   final=0 $0 ..                           #=> Don't generate final Containerfile
 #
+# Usage:          CARGO=.. $0 ..                   #   CARGO='nightly' $0 ..
 # Usage:    DOCKER_HOST=.. $0 ..                   #=> Overrides machine
 # Usage: BUILDX_BUILDER=.. $0 ..                   #=> Overrides builder (set to "empty" to set BUILDX_BUILDER='')
 ```

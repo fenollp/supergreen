@@ -18,6 +18,7 @@ source "$repo_root"/hack/ck.sh
 # Usage:   clean=1 $0 ..                           #=> Both reset=1 + rmrf=1
 # Usage:   final=0 $0 ..                           #=> Don't generate final Containerfile
 #
+# Usage:          CARGO=.. $0 ..                   #   CARGO='nightly' $0 ..
 # Usage:    DOCKER_HOST=.. $0 ..                   #=> Overrides machine
 # Usage: BUILDX_BUILDER=.. $0 ..                   #=> Overrides builder (set to "empty" to set BUILDX_BUILDER='')
 
@@ -288,6 +289,7 @@ slugify() {
 
 cli() {
   local name_at_version=$1; shift
+  local cargo=$1; shift
   local registry=/tmp/.local-registry
   local registry_new=$registry-new
   local envvars=()
@@ -378,19 +380,19 @@ $(rundeps_versions)
       run: ~/.cargo/bin/cargo-green green supergreen env
 
 $(cache_usage)
-    - name: 🔵 cargo install
+    - name: 🔵 $cargo install
       id: cargo-install
       continue-on-error: true
       run: |
 $(unset_action_envs)
         env ${envvars[@]} \\
-          cargo green -vv install --locked --force $(as_install "$name_at_version") $@ |& tee _
-    - name: 🔵 cargo install jobs=1
+          $cargo green -vv install --locked --force $(as_install "$name_at_version") $@ |& tee _
+    - name: 🔵 $cargo install jobs=1
       #if: \${{ job.steps.cargo-install.outcome == 'failure' }} this actually hides failure of cargo-install step
       run: |
 $(unset_action_envs)
         env ${envvars[@]} \\
-          cargo green -vv install --jobs=1 --locked --force $(as_install "$name_at_version") $@ |& tee _
+          $cargo green -vv install --jobs=1 --locked --force $(as_install "$name_at_version") $@ |& tee _
     - if: \${{ always() && matrix.toolchain != '$stable' }}
       uses: actions/upload-artifact@v7
       name: Upload recipe
@@ -409,7 +411,7 @@ $(cache_usage)
       run: |
 $(unset_action_envs)
         env ${envvars[@]} \\
-          cargo green -vv install --locked --force $(as_install "$name_at_version") $@ |& tee _
+          $cargo green -vv install --locked --force $(as_install "$name_at_version") $@ |& tee _
 $(postcond_fresh _)
 $(postconds _)
 
@@ -457,7 +459,13 @@ if [[ $# = 0 ]]; then
     case "$name_at_version" in
       cargo-green@*) continue ;;
     esac
-    cli "$name_at_version" "${nvs_args["$i"]}"
+    cargo=${cargos["$i"]:-''}
+    if [[ "$cargo" = '' ]]; then
+      cargo=cargo
+    else
+      cargo="cargo +$cargo"
+    fi
+    cli "$name_at_version" "$cargo" "${nvs_args["$i"]}"
   done
 
   exit
@@ -480,7 +488,6 @@ case "${BUILDX_BUILDER:-}" in
 esac
 
 install_dir=$repo_root/target
-CARGO=${CARGO:-cargo} ; [[ "$CARGO" = 'cargo' ]] && CARGO="$CARGO +$fixed"
 
 # Special first arg handling..
 case "$arg1" in
@@ -523,14 +530,14 @@ set -x
     CARGOGREEN_FINAL_PATH="$tmptrgt/cargo-green-fetched.Dockerfile" \
     CARGOGREEN_EXPERIMENT=finalpathnonprimary \
     PATH=$install_dir/bin:"$PATH" \
-      $CARGO green -v fetch
+      cargo green -v fetch
     CARGOGREEN_LOG=debug \
     CARGOGREEN_LOG_PATH="$tmplogs" \
     CARGOGREEN_FINAL_PATH="$tmptrgt/cargo-green.Dockerfile" \
     CARGOGREEN_EXPERIMENT=finalpathnonprimary \
     PATH=$install_dir/bin:"$PATH" \
     CARGO_TARGET_DIR="$tmptrgt" \
-      $CARGO green -v $arg1 $jobs --all-features $frozen -p cargo-green
+      cargo green -v $arg1 $jobs --all-features $frozen -p cargo-green
     exit ;;
 esac
 
@@ -552,6 +559,7 @@ if [[ "$picked" = -1 ]]; then
 fi
 name_at_version=${nvs[$i]}
 args=${nvs_args[$i]}
+cargo="cargo +${cargos["$i"]:-${CARGO:-$fixed}}"
 
 session_name=$(slugify "$name_at_version") #$(slugify "${DOCKER_HOST:-}")
 tmptrgt=/tmp/clis-$session_name
@@ -601,7 +609,7 @@ as_env "$name_at_version"
 send \
   'until' '[[' -f "$tmpgooo".installed ']];' 'do' sleep '.1;' 'done' '&&' rm "$tmpgooo".* \
   '&&' 'if' '[[' "$reset" '=' '1' ']];' 'then' docker buildx rm "$BUILDX_BUILDER" --force '||' 'exit' '1;' 'fi' \
-  '&&' "${envvars[@]}" $CARGO green -vv install --timings $jobs --root=$tmpbins $frozen --force "$(as_install "$name_at_version")" "$args" \
+  '&&' "${envvars[@]}" $cargo green -vv install --timings $jobs --root=$tmpbins $frozen --force "$(as_install "$name_at_version")" "$args" \
   '&&' tmux kill-session -t "$session_name"
 tmux select-layout even-vertical
 
