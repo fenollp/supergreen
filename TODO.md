@@ -304,6 +304,7 @@ https://users.rust-lang.org/t/is-it-possible-to-incorporate-one-executable-progr
 ---
 
 TODO: handle not-yet-published rust images => fallback to rustup
+    docker.io/library/rust:1.92.0-slim
 
 ```
 1 20s supergreen.git toolz 🔗 crun green supergreen env
@@ -322,6 +323,65 @@ GETing https://registry.hub.docker.com/v2/repositories/library/rust/tags/1.92.0-
 Error: Failed getting digest for docker-image://docker.io/library/rust:1.92.0-slim: Failed to decode response from registry: missing field `digest` at line 1 column 130
 {"message":"httperror 404: tag '1.92.0-slim' not found","errinfo":{"namespace":"library","repository":"rust","tag":"1.92.0-slim"}}
 ```
+
+TODO: handle older digest format
+    docker.io/library/rust:1.44.0-slim
+
+```
+info: syncing channel updates for 1.44.0-x86_64-unknown-linux-gnu
+info: latest update on 2020-06-04 for version 1.44.0 (49cae5576 2020-06-01)
+info: downloading 6 components
+$BUILDX_BUILDER is set to "supergreen"
+Using runner /usr/bin/docker
+Calling DOCKER_BUILDKIT="1" /usr/bin/docker buildx ls --format=json
+Calling BUILDX_BUILDER="supergreen" DOCKER_BUILDKIT="1" /usr/bin/docker buildx du --verbose --filter=type=regular --filter=description~=pulled.from
+Calling BUILDX_BUILDER="supergreen" DOCKER_BUILDKIT="1" /usr/bin/docker inspect --format={{index .RepoDigests 0}} docker.io/docker/dockerfile:1
+GETing https://registry.hub.docker.com/v2/repositories/docker/dockerfile/tags/1
+Calling BUILDX_BUILDER="supergreen" DOCKER_BUILDKIT="1" /usr/bin/docker inspect --format={{index .RepoDigests 0}} docker.io/library/rust:1.44.0-slim
+GETing https://registry.hub.docker.com/v2/repositories/library/rust/tags/1.44.0-slim
+Error: Failed getting digest for docker-image://docker.io/library/rust:1.44.0-slim: Failed to decode response from registry: missing field `digest` at line 1 column 1643
+{"creator":1156886,"id":103577370,"images":[{"architecture":"amd64","features":"","variant":null,"digest":"sha256:71e1fcc6901b89f329c5cc5d8427d6cba5ef9c31750c5807018d9862571e2e40","os":"linux","os_features":"","os_version":null,"size":207268936,"status":"active","last_pulled":"2026-03-16T09:11:16.626819836Z","last_pushed":"2020-06-09T20:22:13Z"},{"architecture":"arm64","features":"","variant":"v8","digest":"sha256:5da86b1b6035bc3d7c307f8ef5d1e7c3f04642253fda21c8c547c208196322fb","os":"linux","os_features":"","os_version":null,"size":210411823,"status":"active","last_pulled":"2026-03-16T09:11:18.807793857Z","last_pushed":"2020-06-09T13:58:56Z"},{"architecture":"arm","features":"","variant":"v7","digest":"sha256:20a44b32ffcadefc668666152a4976e22e074e165e2c62a07353d54a1e6bd963","os":"linux","os_features":"","os_version":null,"size":203309061,"status":"active","last_pulled":"2026-03-16T09:11:17.692384945Z","last_pushed":"2020-06-09T14:35:01Z"},{"architecture":"386","features":"","variant":null,"digest":"sha256:cbc5f55f9af251daefb595e67fe7b531e9b12e61037ca6a3878ce6e29e612974","os":"linux","os_features":"","os_version":null,"size":228338913,"status":"active","last_pulled":"2026-03-16T09:11:19.611354789Z","last_pushed":"2020-06-09T16:42:52Z"}],"last_updated":"2020-06-09T20:45:50.400981Z","last_updater":1156886,"last_updater_username":"doijanky","name":"1.44.0-slim","repository":1726866,"full_size":0,"v2":true,"tag_status":"active","tag_last_pulled":"2026-03-16T09:11:19.611354789Z","tag_last_pushed":"2020-06-09T20:45:50.400981Z","media_type":"application/vnd.docker.distribution.manifest.list.v2+json","content_type":"image"}
+```
+
+```json
+{"creator":1156886,"id":105496357,"images":[{"architecture":"arm64","features":"","variant":"v8","digest":"sha256:92e0980cc684e652780a18ff7c064d5ef48775c46bff3dc22cc2d0e246568104","os":"linux","os_features":"","os_version":null,"size":210995124,"status":"active","last_pulled":"2026-03-16T09:11:57.07229608Z","last_pushed":"2020-06-19T00:09:52Z"},{"architecture":"amd64","features":"","variant":null,"digest":"sha256:354b345047ce24c3b879e4427ab1662f608c6a0f6c6ac08ef22a971dfdc3056e","os":"linux","os_features":"","os_version":null,"size":207775593,"status":"active","last_pulled":"2026-03-17T03:03:28.263623736Z","last_pushed":"2020-06-18T19:25:05Z"},{"architecture":"arm","features":"","variant":"v7","digest":"sha256:aef5e2e31a2962e3bc789b16a201df05f3891c8b6351e479ca235de0130fe842","os":"linux","os_features":"","os_version":null,"size":203947983,"status":"active","last_pulled":"2026-03-16T09:11:51.910948279Z","last_pushed":"2020-06-18T19:20:36Z"},{"architecture":"386","features":"","variant":null,"digest":"sha256:6a71e80ff8fa21bb1a5acfee60e064f9a7d5632b257e4b8fee5d8a4dac7ca3d1","os":"linux","os_features":"","os_version":null,"size":228879583,"status":"active","last_pulled":"2026-03-16T09:11:57.563830963Z","last_pushed":"2020-06-18T20:14:55Z"}],"last_updated":"2020-06-19T02:45:26.871928Z","last_updater":1156886,"last_updater_username":"doijanky","name":"1.44.1-slim","repository":1726866,"full_size":0,"v2":true,"tag_status":"active","tag_last_pulled":"2026-03-17T03:03:28.263623736Z","tag_last_pushed":"2020-06-19T02:45:26.871928Z","media_type":"application/vnd.docker.distribution.manifest.list.v2+json","content_type":"image"}
+```
+
+rust docker hub client get digest
+Drop custom code and use?
+https://lib.rs/crates/dkregistry
+
+```rust
+use dkregistry::v2::Client;
+
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let host = "registry-1.docker.io";
+    let image = "library/alpine";
+    let tag = "latest";
+
+    // 1. Configure the client for Docker Hub
+    let client = Client::configure()
+        .registry(host)
+        .insecure_registry(false)
+        .build()?;
+
+    // 2. Authenticate (Docker Hub requires a token even for public images)
+    let login_scope = format!("repository:{}:pull", image);
+    let auth_client = client.authenticate(&[&login_scope]).await?;
+
+    // 3. Fetch the manifest
+    // The digest is often found in the response metadata or can be 
+    // calculated from the body.
+    let manifest = auth_client.get_manifest(image, tag).await?;
+    
+    // Most registry clients return the digest in the headers of the manifest response
+    println!("Fetched manifest for {}/{}", image, tag);
+    
+    Ok(())
+}
+```
+
 
 ---
 
