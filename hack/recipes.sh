@@ -7,26 +7,23 @@ repo_root=$(realpath "$(dirname "$(dirname "$0")")")
 
 
 branch=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
-runID=$(gh run list --branch "$branch" --limit 1 --workflow CLIs --json databaseId --jq '.[].databaseId')
-gh run download "$runID" --pattern '*.Dockerfile'
+for runID in $(gh run list --branch "$branch"  --json databaseId,workflowName --jq '.[] | select(.workflowName | test("clis"; "i")) | .databaseId' | head -n $(ls .github/workflows/clis-*.yml | wc -l)); do
+	gh run download "$runID" --pattern '*.Dockerfile'
 
-for f in *.Dockerfile/*.Dockerfile; do
-	echo $f
-	mv $f recipes/
-	rmdir $(dirname $f)
-	f=recipes/$(basename $f)
+	for f in *.Dockerfile/*.Dockerfile; do
+		echo $f
+		mv $f recipes/
+		rmdir $(dirname $f)
+		f=recipes/$(basename $f)
 
-	# When diffing, ignore changes that:
-	#  mention the crate version number
-	#  mention the rustc version number
-	#  mention BuildKit syntax version
-	#  and changes to cargo JSON stderr messages. (TODO: drop) Turns out these are flaky though multiple builds...
-	if git --no-pager diff --exit-code \
-		--ignore-matching-lines='^#' \
-		--ignore-matching-lines=' AS rust-base$' \
-		-- $f; then
-		git checkout -- $f 2>/dev/null || true
-	# else
-	# 	"$repo_root"/hack/graph.sh $f
-	fi
+		# When diffing, ignore changes that mention PKG version and image digests.
+		if git --no-pager diff --exit-code \
+			--ignore-matching-lines='^#' \
+			--ignore-matching-lines=' AS rust-base$' \
+			-- $f; then
+			git checkout -- $f 2>/dev/null || true
+		# else
+		# 	"$repo_root"/hack/graph.sh $f
+		fi
+	done
 done
