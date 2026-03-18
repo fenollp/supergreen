@@ -79,15 +79,18 @@ declare -a nvs nvs_args
 # * docker buildx version
 # # Pinned on 2025/12/03 # BUG: $CARGO_HOME/registry/src/index.crates.io-0000000000000000/openssl-src-111.18.0+1.1.1n/src/lib.rs:496:32: No such file or directory
 
-((i+=1)); nvs[i]=miri@master;                 oks[i]=ko; nvs_args[i]='--git https://github.com/rust-lang/miri.git --rev=092a83d273087c4f9dd7f1e34a0cd1916819c674' # Pinned on 2025/12/03 # can't find crate for `rustc_errors`
-((i+=1)); nvs[i]=zed@main;                    oks[i]=ok; nvs_args[i]='--git https://github.com/zed-industries/zed.git --tag=v0.215.3-pre zed'
-# in/docker build --network=none --platform=local --pull=false --target=out-9ff55beb6c4151a8 --output=type=tar - </tmp/clis-zed_main/release/time-core-9ff55beb6c4151a8.Dockerfile`
-# info: syncing channel updates for '1.91.1-x86_64-unknown-linux-gnu'
-# error: failed to download file error=Reqwest(reqwest::Error { kind: Request, url: "https://static.rust-lang.org/dist/channel-rust-1.91.1.toml.sha256", source: hyper_util::client::legacy::Error(Connect, ConnectError("dns error", Custom { kind: Uncategorized, error: "failed to lookup address information: Temporary failure in name resolution" })) })
-# error: could not download file from 'https://static.rust-lang.org/dist/channel-rust-1.91.1.toml.sha256' to '/usr/local/rustup/tmp/z3wv9g2aq2152zjk_file': error downloading file: error sending request for url (https://static.rust-lang.org/dist/channel-rust-1.91.1.toml.sha256): client error (Connect): dns error: failed to lookup address information: Temporary failure in name resolution: failed to lookup address information: Temporary failure in name resolution
-# Error: Runner failed.
-# Check logs at /home/runner/work/supergreen/supergreen/logs.txt
-# # Pinned on 2025/12/03 # BUG: error: couldn't read `crates/collections/src/collections.rs`: No such file or directory (os error 2)
+((i+=1)); nvs[i]=miri@master;                 oks[i]=ko; nvs_args[i]='--git https://github.com/rust-lang/miri.git --rev=092a83d273087c4f9dd7f1e34a0cd1916819c674' # Pinned on 2025/12/03
+((i+=1)); nvs[i]=zed@main;                    oks[i]=ok; nvs_args[i]='--git https://github.com/zed-industries/zed.git --tag=v0.215.3-pre'; cargos[i]='1.91.1'
+# error[E0514]: found crate `indexmap` compiled by an incompatible version of rustc
+#  --> crates/collections/src/collections.rs:6:9
+#   |
+# 6 | pub use indexmap::Equivalent;
+#   |         ^^^^^^^^
+#   |
+#   = note: the following crate versions were found:
+#           crate `indexmap` compiled by rustc 1.93.1 (01f6ddf75 2026-02-11): /target/release/deps/libindexmap-6757a3ecf08f6726.rmeta
+#   = help: please recompile that crate using this compiler (rustc 1.91.1 (ed61e7d7e 2025-11-07)) (consider running `cargo clean` first)
+#==> handle rust-toolchain.toml compilations
 ((i+=1)); nvs[i]=verso@main;                  oks[i]=kD; nvs_args[i]='--git https://github.com/versotile-org/verso.git --rev eb719bdd6c7b verso' # Pinned on 2025/12/03 # use of unresolved module or unlinked crate `arboard`
 ((i+=1)); nvs[i]=cargo-udeps@0.1.60;          oks[i]=ko; nvs_args[i]='' # extern location for cargo does not exist: /tmp/clis-cargo-udeps_0-1-60/release/deps/libcargo-71fcb7d73f0f1dfb.rmeta
 
@@ -144,7 +147,7 @@ declare -a nvs nvs_args
 ((i+=1)); nvs[i]=qair@main;                   oks[i]=ok; nvs_args[i]='--git https://codeberg.org/willempx/qair.git --tag=0.7.0'; cargos[i]='1.78.0' # Pinned 2020/06/14
 #TODO: use 1.44 => handle getting digest for rust:1.44 image
 
-((i+=1)); nvs[i]=rusty-man@master;            oks[i]=ok; nvs_args[i]='--git https://git.sr.ht/~ireas/rusty-man --tag=v0.5.0' # Pinned 2025/12/04
+((i+=1)); nvs[i]=rusty-man@master;            oks[i]=ok; nvs_args[i]='--git https://git.sr.ht/~ireas/rusty-man --tag=v0.5.0'; cargos[i]='1.78.0' # Pinned 2025/12/04
 # WAT same error
 # ====> CI doesnt fail !!
 # =======> due to that change on cinstall jobs=1
@@ -206,16 +209,18 @@ as_env() {
   case "$name_at_version" in
     bottom@*) envvars+=(CARGOGREEN_SET_ENVS='GITHUB_SHA'); envvars+=(GITHUB_SHA=) ;; # "Dirty bottom v0.11.4: the environment variable GITHUB_SHA changed"
     cargo-authors@*) envvars+=(CARGOGREEN_ADD_APT='libcurl4-openssl-dev,pkg-config') ;;
-    cargo-udeps@*) envvars+=(CARGOGREEN_ADD_APT='libssl-dev,pkg-config,zlib1g-dev') ;;
+    cargo-udeps@*) envvars+=(CARGOGREEN_ADD_APT='libcurl4-openssl-dev,libssl-dev,pkg-config,zlib1g-dev') ;;
     coccinelleforrust@*) envvars+=(CARGOGREEN_ADD_APT='python3-dev') ;;
     diesel_cli@*) envvars+=(CARGOGREEN_ADD_APT='libpq-dev') ;;
+    miri@*) envvars+=(CARGOGREEN_ADD_APT='build-essential') ;;
     mussh@*) envvars+=(CARGOGREEN_ADD_APT='libsqlite3-dev,libssl-dev,pkg-config,zlib1g-dev') ;;
     nanometers@*) envvars+=(CARGOGREEN_ADD_APT='libcairo2-dev,libpango-1.0-0,libpango1.0-dev,libssl-dev,libxcb-render0-dev,libxcb-shape0-dev,libxcb-xfixes0-dev,libxkbcommon-dev') ;;
     ntpd@*) envvars+=(NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b); envvars+=(NTPD_RS_GIT_DATE=2025-05-09) ;; # Any commit, just fixed + Time of commit
-    privaxy@*) envvars+=(CARGOGREEN_ADD_APT='libssl-dev') ;;
+    privaxy@*) envvars+=(CARGOGREEN_ADD_APT='libssl-dev,pkg-config') ;;
     rublk@*) envvars+=(CARGOGREEN_ADD_APT='libclang-dev') ;;
     sccache@*) envvars+=(CARGOGREEN_ADD_APT='libssl-dev,pkg-config,zlib1g-dev') ;;
     torrust-index@*) envvars+=(CARGOGREEN_ADD_APT='libssl-dev,zlib1g-dev') ;;
+    zed@*) envvars+=(CARGOGREEN_ADD_APT='build-essential,clang,cmake,curl,elfutils,g++,gcc,gettext-base,git,jq,libasound2-dev,libfontconfig-dev,libgit2-dev,libsqlite3-dev,libssl-dev,libvulkan1,libwayland-dev,libx11-xcb-dev,libxkbcommon-x11-dev,libzstd-dev,make,mold,musl-dev,musl-tools') ;; # From https://github.com/zed-industries/zed/blob/v0.215.3-pre/script/linux#L25-L52
     *) ;;
   esac
 

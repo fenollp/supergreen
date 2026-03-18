@@ -6221,7 +6221,7 @@ jobs:
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
-        env CARGOGREEN_ADD_APT=libssl-dev \
+        env CARGOGREEN_ADD_APT=libssl-dev,pkg-config \
           cargo green -vv install --locked --force privaxy --git https://github.com/Barre/privaxy.git --rev=5dad688538bc7397d71d1c9cfd9d9d53bcf68032 |& tee _
     - name: 🔵 cargo install jobs=1
       #if: ${{ job.steps.cargo-install.outcome == 'failure' }} this actually hides failure of cargo-install step
@@ -6230,7 +6230,7 @@ jobs:
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
-        env CARGOGREEN_ADD_APT=libssl-dev \
+        env CARGOGREEN_ADD_APT=libssl-dev,pkg-config \
           cargo green -vv install --jobs=1 --locked --force privaxy --git https://github.com/Barre/privaxy.git --rev=5dad688538bc7397d71d1c9cfd9d9d53bcf68032 |& tee _
     - if: ${{ always() && matrix.toolchain != '1.94.0' }}
       uses: actions/upload-artifact@v7
@@ -6312,7 +6312,7 @@ jobs:
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
-        env CARGOGREEN_ADD_APT=libssl-dev \
+        env CARGOGREEN_ADD_APT=libssl-dev,pkg-config \
           cargo green -vv install --locked --force privaxy --git https://github.com/Barre/privaxy.git --rev=5dad688538bc7397d71d1c9cfd9d9d53bcf68032 |& tee _
     - name: ...doesn't recompile anything
       run: |
@@ -6530,7 +6530,7 @@ jobs:
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
     - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
     - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
-    - name: 🔵 cargo install
+    - name: 🔵 cargo +1.91.1 install
       id: cargo-install
       continue-on-error: true
       run: |
@@ -6538,17 +6538,17 @@ jobs:
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
-        env  \
-          cargo green -vv install --locked --force zed --git https://github.com/zed-industries/zed.git --tag=v0.215.3-pre zed |& tee _
-    - name: 🔵 cargo install jobs=1
+        env CARGOGREEN_ADD_APT=build-essential,clang,cmake,curl,elfutils,g++,gcc,gettext-base,git,jq,libasound2-dev,libfontconfig-dev,libgit2-dev,libsqlite3-dev,libssl-dev,libvulkan1,libwayland-dev,libx11-xcb-dev,libxkbcommon-x11-dev,libzstd-dev,make,mold,musl-dev,musl-tools \
+          cargo +1.91.1 green -vv install --locked --force zed --git https://github.com/zed-industries/zed.git --tag=v0.215.3-pre |& tee _
+    - name: 🔵 cargo +1.91.1 install jobs=1
       #if: ${{ job.steps.cargo-install.outcome == 'failure' }} this actually hides failure of cargo-install step
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
-        env  \
-          cargo green -vv install --jobs=1 --locked --force zed --git https://github.com/zed-industries/zed.git --tag=v0.215.3-pre zed |& tee _
+        env CARGOGREEN_ADD_APT=build-essential,clang,cmake,curl,elfutils,g++,gcc,gettext-base,git,jq,libasound2-dev,libfontconfig-dev,libgit2-dev,libsqlite3-dev,libssl-dev,libvulkan1,libwayland-dev,libx11-xcb-dev,libxkbcommon-x11-dev,libzstd-dev,make,mold,musl-dev,musl-tools \
+          cargo +1.91.1 green -vv install --jobs=1 --locked --force zed --git https://github.com/zed-industries/zed.git --tag=v0.215.3-pre |& tee _
     - if: ${{ always() && matrix.toolchain != '1.94.0' }}
       uses: actions/upload-artifact@v7
       name: Upload recipe
@@ -6629,8 +6629,8 @@ jobs:
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
-        env  \
-          cargo green -vv install --locked --force zed --git https://github.com/zed-industries/zed.git --tag=v0.215.3-pre zed |& tee _
+        env CARGOGREEN_ADD_APT=build-essential,clang,cmake,curl,elfutils,g++,gcc,gettext-base,git,jq,libasound2-dev,libfontconfig-dev,libgit2-dev,libsqlite3-dev,libssl-dev,libvulkan1,libwayland-dev,libx11-xcb-dev,libxkbcommon-x11-dev,libzstd-dev,make,mold,musl-dev,musl-tools \
+          cargo +1.91.1 green -vv install --locked --force zed --git https://github.com/zed-industries/zed.git --tag=v0.215.3-pre |& tee _
     - name: ...doesn't recompile anything
       run: |
         err=0
@@ -10968,7 +10968,7 @@ jobs:
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
     - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
     - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
-    - name: 🔵 cargo install
+    - name: 🔵 cargo +1.78.0 install
       id: cargo-install
       continue-on-error: true
       run: |
@@ -10977,8 +10977,8 @@ jobs:
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env  \
-          cargo green -vv install --locked --force rusty-man --git https://git.sr.ht/~ireas/rusty-man --tag=v0.5.0 |& tee _
-    - name: 🔵 cargo install jobs=1
+          cargo +1.78.0 green -vv install --locked --force rusty-man --git https://git.sr.ht/~ireas/rusty-man --tag=v0.5.0 |& tee _
+    - name: 🔵 cargo +1.78.0 install jobs=1
       #if: ${{ job.steps.cargo-install.outcome == 'failure' }} this actually hides failure of cargo-install step
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
@@ -10986,7 +10986,7 @@ jobs:
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env  \
-          cargo green -vv install --jobs=1 --locked --force rusty-man --git https://git.sr.ht/~ireas/rusty-man --tag=v0.5.0 |& tee _
+          cargo +1.78.0 green -vv install --jobs=1 --locked --force rusty-man --git https://git.sr.ht/~ireas/rusty-man --tag=v0.5.0 |& tee _
     - if: ${{ always() && matrix.toolchain != '1.94.0' }}
       uses: actions/upload-artifact@v7
       name: Upload recipe
@@ -11068,7 +11068,7 @@ jobs:
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env  \
-          cargo green -vv install --locked --force rusty-man --git https://git.sr.ht/~ireas/rusty-man --tag=v0.5.0 |& tee _
+          cargo +1.78.0 green -vv install --locked --force rusty-man --git https://git.sr.ht/~ireas/rusty-man --tag=v0.5.0 |& tee _
     - name: ...doesn't recompile anything
       run: |
         err=0
