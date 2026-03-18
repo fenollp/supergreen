@@ -279,19 +279,6 @@ as_env() {
   fi
 }
 
-finalpathnocomment() {
-  local name_at_version=$1; shift
-  [[ $# -eq 0 ]]
-  case "$name_at_version" in
-    stu@*) echo ',finalpathnocomment' ;;
-    shpool@*) echo ',finalpathnocomment' ;;
-    sccache@*) echo ',finalpathnocomment' ;;
-    cargo-authors@*) echo ',finalpathnocomment' ;;
-    cargo-deny@*) echo ',finalpathnocomment' ;;
-    *) echo ;;
-  esac
-}
-
 slugify() {
   local name_at_version=$1; shift
   [[ $# -eq 0 ]]
@@ -320,7 +307,7 @@ $(jobdef "$(slugify "$name_at_version")")
     # CARGOGREEN_CACHE_FROM_IMAGES: docker-image://localhost:12345/\${{ github.repository }}
     # CARGOGREEN_CACHE_TO_IMAGES: docker-image://localhost:23456/\${{ github.repository }}
       CARGOGREEN_FINAL_PATH: recipes/$name_at_version.Dockerfile
-      CARGOGREEN_EXPERIMENT: finalpathnonprimary$(finalpathnocomment "$name_at_version") # dumps on each build call
+      CARGOGREEN_EXPERIMENT: finalpathnonprimary # dumps on each build call
       CARGOGREEN_LOG: debug
       CARGOGREEN_LOG_PATH: logs.txt
     needs: bin
@@ -607,7 +594,7 @@ envvars+=(CARGOGREEN_LOG_PATH="$tmplogs")
 envvars+=(CARGO_TARGET_DIR="$tmptrgt")
 if [[ "$final" = '1' ]]; then
   envvars+=(CARGOGREEN_FINAL_PATH=recipes/$name_at_version.Dockerfile)
-  envvars+=(CARGOGREEN_EXPERIMENT=finalpathnonprimary"$(finalpathnocomment "$name_at_version")")
+  envvars+=(CARGOGREEN_EXPERIMENT=finalpathnonprimary,finalpathcomments)
 fi
 # envvars+=(CARGOGREEN_SYNTAX_IMAGE=docker-image://docker.io/docker/dockerfile:1@sha256:4c68376a702446fc3c79af22de146a148bc3367e73c25a5803d453b6b3f722fb)
 # envvars+=(CARGOGREEN_BASE_IMAGE=docker-image://docker.io/library/rust:1.86.0-slim@sha256:3f391b0678a6e0c88fd26f13e399c9c515ac47354e3cadfee7daee3b21651a4f)

@@ -406,7 +406,7 @@ jobs:
     # CARGOGREEN_CACHE_FROM_IMAGES: docker-image://localhost:12345/${{ github.repository }}
     # CARGOGREEN_CACHE_TO_IMAGES: docker-image://localhost:23456/${{ github.repository }}
       CARGOGREEN_FINAL_PATH: recipes/cargo-deny@0.18.5.Dockerfile
-      CARGOGREEN_EXPERIMENT: finalpathnonprimary,finalpathnocomment # dumps on each build call
+      CARGOGREEN_EXPERIMENT: finalpathnonprimary # dumps on each build call
       CARGOGREEN_LOG: debug
       CARGOGREEN_LOG_PATH: logs.txt
     needs: bin
@@ -4210,7 +4210,7 @@ jobs:
     # CARGOGREEN_CACHE_FROM_IMAGES: docker-image://localhost:12345/${{ github.repository }}
     # CARGOGREEN_CACHE_TO_IMAGES: docker-image://localhost:23456/${{ github.repository }}
       CARGOGREEN_FINAL_PATH: recipes/shpool@0.9.3.Dockerfile
-      CARGOGREEN_EXPERIMENT: finalpathnonprimary,finalpathnocomment # dumps on each build call
+      CARGOGREEN_EXPERIMENT: finalpathnonprimary # dumps on each build call
       CARGOGREEN_LOG: debug
       CARGOGREEN_LOG_PATH: logs.txt
     needs: bin
@@ -4527,7 +4527,7 @@ jobs:
     # CARGOGREEN_CACHE_FROM_IMAGES: docker-image://localhost:12345/${{ github.repository }}
     # CARGOGREEN_CACHE_TO_IMAGES: docker-image://localhost:23456/${{ github.repository }}
       CARGOGREEN_FINAL_PATH: recipes/stu@0.7.5.Dockerfile
-      CARGOGREEN_EXPERIMENT: finalpathnonprimary,finalpathnocomment # dumps on each build call
+      CARGOGREEN_EXPERIMENT: finalpathnonprimary # dumps on each build call
       CARGOGREEN_LOG: debug
       CARGOGREEN_LOG_PATH: logs.txt
     needs: bin
@@ -4844,7 +4844,7 @@ jobs:
     # CARGOGREEN_CACHE_FROM_IMAGES: docker-image://localhost:12345/${{ github.repository }}
     # CARGOGREEN_CACHE_TO_IMAGES: docker-image://localhost:23456/${{ github.repository }}
       CARGOGREEN_FINAL_PATH: recipes/cargo-authors@0.5.5.Dockerfile
-      CARGOGREEN_EXPERIMENT: finalpathnonprimary,finalpathnocomment # dumps on each build call
+      CARGOGREEN_EXPERIMENT: finalpathnonprimary # dumps on each build call
       CARGOGREEN_LOG: debug
       CARGOGREEN_LOG_PATH: logs.txt
     needs: bin
@@ -7697,7 +7697,7 @@ jobs:
     # CARGOGREEN_CACHE_FROM_IMAGES: docker-image://localhost:12345/${{ github.repository }}
     # CARGOGREEN_CACHE_TO_IMAGES: docker-image://localhost:23456/${{ github.repository }}
       CARGOGREEN_FINAL_PATH: recipes/sccache@0.12.0.Dockerfile
-      CARGOGREEN_EXPERIMENT: finalpathnonprimary,finalpathnocomment # dumps on each build call
+      CARGOGREEN_EXPERIMENT: finalpathnonprimary # dumps on each build call
       CARGOGREEN_LOG: debug
       CARGOGREEN_LOG_PATH: logs.txt
     needs: bin
