@@ -329,40 +329,22 @@ impl Md {
     ) -> Result<()> {
         let out_dir = virtual_target_dir(out_dir);
 
-        let mut set = HashSet::new();
-        // let mut set: HashSet<_> =
-        //     ["CARGO".to_owned(), "RUSTC".to_owned(), "RUSTUP_TOOLCHAIN".to_owned()].into();
+        let mut first = true;
+        let mut push = |block: &mut String, var: &str, val: &String| -> Result<_> {
+            let val = rewrite_env(val, cargo_home)?;
+            block.push_str(&format!("    {} {var}={val} \\\n", if first { "env" } else { "   " }));
+            first = false;
+            Ok(())
+        };
 
-        // Rewrite host cargo/rustc so the base_image ones can be used
-        // Also, propagate RUSTUP_TOOLCHAIN so Rustup skips looking for rust-toolchain.toml
-        //   If you are trying to install a package that requires a specific nightly feature or a very new stable version,
-        //   you must ensure your active toolchain meets those requirements before running the install command.
-        //   Cargo won't auto-switch for you based on the dependency tree.
-        // for name in ["CARGO", "RUSTC", "RUSTUP_TOOLCHAIN"] {
-        //     block.push_str(&format!(
-        //         "    ### {name}={:?} \\\n",
-        //         env::vars().find_map(|(k, v)| (k == name).then_some(v)),
-        //     ));
-        // }
-        let cargo = env::vars().find_map(|(k, v)| (k == "CARGO").then_some(v)).unwrap();
-        block.push_str(&format!("    env CARGO={} \\\n", rewrite_env(&cargo, cargo_home)?));
-        set.insert("CARGO".to_owned());
-        let rustc = Utf8PathBuf::from(cargo).with_file_name("rustc").to_string();
-        block.push_str(&format!("        RUSTC={} \\\n", rewrite_env(&rustc, cargo_home)?));
-        set.insert("RUSTC".to_owned());
-        if let Some(ref val) = env::vars().find_map(|(k, v)| (k == "RUSTUP_TOOLCHAIN").then_some(v))
-        {
-            block.push_str(&format!("        RUSTUP_TOOLCHAIN={val} \\\n"));
-        }
-        set.insert("RUSTUP_TOOLCHAIN".to_owned());
-        // TODO: move these 3 to base image when possible
+        let mut set: HashSet<_> =
+            ["CARGO".to_owned(), "RUSTC".to_owned(), "RUSTUP_TOOLCHAIN".to_owned()].into();
 
         for (var, val) in env::vars().filter_map(|kv| fmap_env(kv, buildrs)) {
             if set.contains(&var) {
                 continue;
             }
-            let val = rewrite_env(&val, cargo_home)?;
-            block.push_str(&format!("        {var}={val} \\\n"));
+            push(&mut block, &var, &val)?;
             set.insert(var.clone());
         }
         block.push_str(&format!("        {}=1 \\\n", ENV!()));
@@ -372,8 +354,7 @@ impl Md {
                 continue;
             }
             warn!("setting rustc-env: ${var}={val:?}");
-            let val = rewrite_env(val, cargo_home)?;
-            block.push_str(&format!("        {var}={val} \\\n"));
+            push(&mut block, var, val)?;
             set.insert(var.to_owned());
         }
 
@@ -383,8 +364,7 @@ impl Md {
             }
             if let Ok(val) = env::var(var) {
                 warn!("passing ${var}={val:?} env through");
-                let val = rewrite_env(&val, cargo_home)?;
-                block.push_str(&format!("        {var}={val} \\\n"));
+                push(&mut block, var, &val)?;
                 set.insert(var.to_owned());
             }
         }
@@ -398,10 +378,7 @@ impl Md {
                     continue;
                 }
                 debug!("system env set (skipped): ${var}={val:?}");
-                if !val.is_empty() {
-                    let val = rewrite_env(&val, cargo_home)?;
-                    block.push_str(&format!("#       {var}={val:?} \\\n"));
-                }
+                push(&mut block, var, &val)?;
             }
         }
 

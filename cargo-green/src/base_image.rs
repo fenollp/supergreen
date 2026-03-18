@@ -119,6 +119,12 @@ impl BaseImage {
         .union(add)
         .as_block(&format!("FROM --platform=$BUILDPLATFORM {base} AS {RST}"));
 
+        // Rewrite host cargo/rustc so the base_image ones can be used
+        // Also, propagate RUSTUP_TOOLCHAIN so Rustup skips looking for rust-toolchain.toml
+        //   If you are trying to install a package that requires a specific nightly feature or a very new stable version,
+        //   you must ensure your active toolchain meets those requirements before running the install command.
+        //   Cargo won't auto-switch for you based on the dependency tree.
+
         let block = format!(
             r#"
 FROM scratch AS rustup-{toolchain}
