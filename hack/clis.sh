@@ -221,7 +221,7 @@ as_env() {
     cargo-udeps@*) envvars+=(CARGOGREEN_ADD_APT='libcurl4-openssl-dev,libssl-dev,pkg-config,zlib1g-dev') ;;
     coccinelleforrust@*) envvars+=(CARGOGREEN_ADD_APT='python3-dev') ;;
     diesel_cli@*) envvars+=(CARGOGREEN_ADD_APT='libpq-dev') ;;
-    miri@*) envvars+=(CARGOGREEN_ADD_APT='build-essential') ;;
+    miri@*) envvars+=(CARGOGREEN_COMPONENTS='llvm-tools-preview,rust-src,rustc-dev'); envvars+=(CARGOGREEN_ADD_APT='build-essential') ;;
     mussh@*) envvars+=(CARGOGREEN_ADD_APT='libsqlite3-dev,libssl-dev,pkg-config,zlib1g-dev') ;;
     nanometers@*) envvars+=(CARGOGREEN_ADD_APT='libcairo2-dev,libpango-1.0-0,libpango1.0-dev,libssl-dev,libxcb-render0-dev,libxcb-shape0-dev,libxcb-xfixes0-dev,libxkbcommon-dev') ;;
     ntpd@*) envvars+=(NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b); envvars+=(NTPD_RS_GIT_DATE=2025-05-09) ;; # Any commit, just fixed + Time of commit
@@ -301,6 +301,10 @@ as_env() {
   if [[ -n "${CARGOGREEN_WITH_NETWORK:-}" ]]; then
     echo Using CARGOGREEN_WITH_NETWORK="$CARGOGREEN_WITH_NETWORK"
     envvars+=(CARGOGREEN_WITH_NETWORK="$CARGOGREEN_WITH_NETWORK")
+  fi
+  if [[ -n "${CARGOGREEN_COMPONENTS:-}" ]]; then
+    echo Using CARGOGREEN_COMPONENTS="$CARGOGREEN_COMPONENTS"
+    envvars+=(CARGOGREEN_COMPONENTS="$CARGOGREEN_COMPONENTS")
   fi
   if [[ -n "${CARGOGREEN_ADD_APT:-}" ]]; then
     echo Using CARGOGREEN_ADD_APT="$CARGOGREEN_ADD_APT"

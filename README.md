@@ -33,6 +33,7 @@
   - [`$CARGOGREEN_SET_ENVS`](#cargogreen_set_envs)
   - [`$CARGOGREEN_BASE_IMAGE_INLINE`](#cargogreen_base_image_inline)
   - [`$CARGOGREEN_WITH_NETWORK`](#cargogreen_with_network)
+  - [`$CARGOGREEN_COMPONENTS`](#cargogreen_COMPONENTS)
   - [`$CARGOGREEN_ADD_APT`](#cargogreen_add_apt)
   - [`$CARGOGREEN_ADD_APT_GET`](#cargogreen_add_apt_get)
   - [`$CARGOGREEN_ADD_APK`](#cargogreen_add_apk)
@@ -479,6 +480,23 @@ base-image = "docker-image://docker.io/library/rust:1@sha256:72724f1a416c449b405
 *This environment variable takes precedence over any `Cargo.toml` settings:*
 ```shell
 export CARGOGREEN_WITH_NETWORK="none"
+```
+
+### `$CARGOGREEN_COMPONENTS`
+
+Tells `rustup` to add the given components to the base image.
+
+See <https://rust-lang.github.io/rustup/concepts/components.html>
+
+```toml
+[package.metadata.green]
+components = [ "rust-src", "llvm-tools-preview" ]
+```
+
+*This environment variable takes precedence over any `Cargo.toml` settings:*
+```shell
+# Note: values here are comma-separated.
+export CARGOGREEN_COMPONENTS="rust-src,llvm-tools-preview"
 ```
 
 ### `$CARGOGREEN_ADD_APT`
