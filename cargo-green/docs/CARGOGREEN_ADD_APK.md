@@ -15,6 +15,6 @@ add.apk = [ "libpq-dev", "pkgconf" ]
 export CARGOGREEN_ADD_APK="libpq-dev,pkg-conf"
 
 # Inspect the resulting base image with:
-cargo green supergreen env CARGOGREEN_BASE_IMAGE_INLINE
+echo -e $(cargo green supergreen env CARGOGREEN_BASE_IMAGE_INLINE)
 ```
 
