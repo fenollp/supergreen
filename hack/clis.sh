@@ -369,15 +369,15 @@ $(rundeps_versions)
 
     - name: Setup
       run: |
-        ~/.cargo/bin/cargo-green green supergreen setup || true
-        { ~/.cargo/bin/cargo-green green supergreen setup 2>/dev/null || true; } | sudo /bin/sh -xe
+        cargo green supergreen setup || true
+        { cargo green supergreen setup 2>/dev/null || true; } | sudo /bin/sh -xe
     - name: 🔵 Envs
-      run: ~/.cargo/bin/cargo-green green supergreen env
+      run: cargo green supergreen env
     - if: \${{ matrix.toolchain != '$stable' }}
-      run: ~/.cargo/bin/cargo-green green supergreen env CARGOGREEN_BASE_IMAGE | grep '\${{ matrix.toolchain }}'
-    - run: ~/.cargo/bin/cargo-green green supergreen builder
+      run: cargo green supergreen env CARGOGREEN_BASE_IMAGE | grep '\${{ matrix.toolchain }}'
+    - run: cargo green supergreen builder
     - name: 🔵 Envs again
-      run: ~/.cargo/bin/cargo-green green supergreen env
+      run: cargo green supergreen env
 
 $(cache_usage)
     - name: 🔵 $cargo install
