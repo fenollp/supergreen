@@ -85,6 +85,10 @@ fn cargo() -> OsString {
 
 #[tokio::main]
 async fn main() -> Result<()> {
+    rustls::crypto::ring::default_provider()
+        .install_default()
+        .expect("Failed to install rustls crypto provider");
+
     let mut args = env::args();
 
     let arg0 = args.next().expect("$0 has to be set");
