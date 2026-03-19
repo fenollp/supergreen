@@ -79,7 +79,16 @@ declare -a nvs nvs_args
 # * docker buildx version
 # # Pinned on 2025/12/03 # BUG: $CARGO_HOME/registry/src/index.crates.io-0000000000000000/openssl-src-111.18.0+1.1.1n/src/lib.rs:496:32: No such file or directory
 
-((i+=1)); nvs[i]=miri@master;                 oks[i]=ko; nvs_args[i]='--git https://github.com/rust-lang/miri.git --rev=092a83d273087c4f9dd7f1e34a0cd1916819c674' # Pinned on 2025/12/03
+((i+=1)); nvs[i]=miri@master;                 oks[i]=ko; nvs_args[i]='--git https://github.com/rust-lang/miri.git --rev=1fe9d5ba386064c14eb517aacfa8e3d5a1acf97c'; cargos[i]='nightly-2026-03-17' # Pinned on 2026/03/19
+# 174 | fn make_miri_codegen_backend(sess: &Session) -> Box<dyn CodegenBackend> {
+#     | ----------------------------------------------------------------------- takes 1 argument
+# ...
+# 285 |         config.make_codegen_backend = Some(Box::new(make_miri_codegen_backend));
+#     |                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ expected function that takes 2 arguments
+#     |
+#     = note: required for the cast from `Box<fn(&Session) -> Box<...> {make_miri_codegen_backend}>` to `Box<dyn FnOnce(&Options, &Target) -> Box<dyn CodegenBackend> + Send>`
+#     = note: the full name for the type has been written to '/target/release/deps/miri-e9f47534ee52cbf9.long-type-13241406945400517937.txt'
+#     = note: consider using `--verbose` to print the full type name to the console
 ((i+=1)); nvs[i]=zed@main;                    oks[i]=ko; nvs_args[i]='--git https://github.com/zed-industries/zed.git --tag=v0.215.3-pre'; cargos[i]='1.91.1'
 # error[E0514]: found crate `indexmap` compiled by an incompatible version of rustc
 #  --> crates/collections/src/collections.rs:6:9
