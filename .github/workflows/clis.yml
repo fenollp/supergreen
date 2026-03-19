@@ -107,7 +107,6 @@ jobs:
         rustflags: ''
         cache-on-failure: true
 
-
     - name: Retrieve saved bin
       uses: actions/download-artifact@v8
       with:
@@ -495,7 +494,6 @@ jobs:
         rustflags: ''
         cache-on-failure: true
 
-
     - name: Retrieve saved bin
       uses: actions/download-artifact@v8
       with:
@@ -882,7 +880,6 @@ jobs:
         toolchain: ${{ matrix.toolchain }}
         rustflags: ''
         cache-on-failure: true
-    - run: rustup component add llvm-tools-preview
 
     - name: Retrieve saved bin
       uses: actions/download-artifact@v8
@@ -976,7 +973,7 @@ jobs:
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
-        env  \
+        env CARGOGREEN_COMPONENTS=llvm-tools-preview \
           cargo green -vv install --locked --force cargo-llvm-cov@0.6.21  |& tee _
     - name: 🔵 cargo install jobs=1
       #if: ${{ job.steps.cargo-install.outcome == 'failure' }} this actually hides failure of cargo-install step
@@ -985,7 +982,7 @@ jobs:
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
-        env  \
+        env CARGOGREEN_COMPONENTS=llvm-tools-preview \
           cargo green -vv install --jobs=1 --locked --force cargo-llvm-cov@0.6.21  |& tee _
     - if: ${{ always() && matrix.toolchain != '1.94.0' }}
       uses: actions/upload-artifact@v7
@@ -1066,7 +1063,7 @@ jobs:
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
-        env  \
+        env CARGOGREEN_COMPONENTS=llvm-tools-preview \
           cargo green -vv install --locked --force cargo-llvm-cov@0.6.21  |& tee _
     - name: ...doesn't recompile anything
       run: |
@@ -1138,7 +1135,7 @@ jobs:
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
-        env  CARGOGREEN_RUNNER=none \
+        env CARGOGREEN_COMPONENTS=llvm-tools-preview CARGOGREEN_RUNNER=none \
           cargo green -vv install --locked --force cargo-llvm-cov@0.6.21  |& tee _
     - name: ...doesn't recompile anything
       run: |
@@ -1270,7 +1267,6 @@ jobs:
         toolchain: ${{ matrix.toolchain }}
         rustflags: ''
         cache-on-failure: true
-
 
     - name: Retrieve saved bin
       uses: actions/download-artifact@v8
@@ -1659,7 +1655,6 @@ jobs:
         rustflags: ''
         cache-on-failure: true
 
-
     - name: Retrieve saved bin
       uses: actions/download-artifact@v8
       with:
@@ -2046,7 +2041,6 @@ jobs:
         toolchain: ${{ matrix.toolchain }}
         rustflags: ''
         cache-on-failure: true
-
 
     - name: Retrieve saved bin
       uses: actions/download-artifact@v8
@@ -2435,7 +2429,6 @@ jobs:
         rustflags: ''
         cache-on-failure: true
 
-
     - name: Retrieve saved bin
       uses: actions/download-artifact@v8
       with:
@@ -2822,7 +2815,6 @@ jobs:
         toolchain: ${{ matrix.toolchain }}
         rustflags: ''
         cache-on-failure: true
-
 
     - name: Retrieve saved bin
       uses: actions/download-artifact@v8
@@ -3211,7 +3203,6 @@ jobs:
         rustflags: ''
         cache-on-failure: true
 
-
     - name: Retrieve saved bin
       uses: actions/download-artifact@v8
       with:
@@ -3598,7 +3589,6 @@ jobs:
         toolchain: ${{ matrix.toolchain }}
         rustflags: ''
         cache-on-failure: true
-
 
     - name: Retrieve saved bin
       uses: actions/download-artifact@v8
@@ -3987,7 +3977,6 @@ jobs:
         rustflags: ''
         cache-on-failure: true
 
-
     - name: Retrieve saved bin
       uses: actions/download-artifact@v8
       with:
@@ -4374,7 +4363,6 @@ jobs:
         toolchain: ${{ matrix.toolchain }}
         rustflags: ''
         cache-on-failure: true
-
 
     - name: Retrieve saved bin
       uses: actions/download-artifact@v8
@@ -4763,7 +4751,6 @@ jobs:
         rustflags: ''
         cache-on-failure: true
 
-
     - name: Retrieve saved bin
       uses: actions/download-artifact@v8
       with:
@@ -5150,7 +5137,6 @@ jobs:
         toolchain: ${{ matrix.toolchain }}
         rustflags: ''
         cache-on-failure: true
-
 
     - name: Retrieve saved bin
       uses: actions/download-artifact@v8
@@ -5539,7 +5525,6 @@ jobs:
         rustflags: ''
         cache-on-failure: true
 
-
     - name: Retrieve saved bin
       uses: actions/download-artifact@v8
       with:
@@ -5926,7 +5911,6 @@ jobs:
         toolchain: ${{ matrix.toolchain }}
         rustflags: ''
         cache-on-failure: true
-
 
     - name: Retrieve saved bin
       uses: actions/download-artifact@v8
@@ -6315,7 +6299,6 @@ jobs:
         rustflags: ''
         cache-on-failure: true
 
-
     - name: Retrieve saved bin
       uses: actions/download-artifact@v8
       with:
@@ -6702,7 +6685,6 @@ jobs:
         toolchain: ${{ matrix.toolchain }}
         rustflags: ''
         cache-on-failure: true
-
 
     - name: Retrieve saved bin
       uses: actions/download-artifact@v8
@@ -7091,7 +7073,6 @@ jobs:
         rustflags: ''
         cache-on-failure: true
 
-
     - name: Retrieve saved bin
       uses: actions/download-artifact@v8
       with:
@@ -7478,7 +7459,6 @@ jobs:
         toolchain: ${{ matrix.toolchain }}
         rustflags: ''
         cache-on-failure: true
-
 
     - name: Retrieve saved bin
       uses: actions/download-artifact@v8
@@ -7867,7 +7847,6 @@ jobs:
         rustflags: ''
         cache-on-failure: true
 
-
     - name: Retrieve saved bin
       uses: actions/download-artifact@v8
       with:
@@ -8254,7 +8233,6 @@ jobs:
         toolchain: ${{ matrix.toolchain }}
         rustflags: ''
         cache-on-failure: true
-
 
     - name: Retrieve saved bin
       uses: actions/download-artifact@v8
@@ -8643,7 +8621,6 @@ jobs:
         rustflags: ''
         cache-on-failure: true
 
-
     - name: Retrieve saved bin
       uses: actions/download-artifact@v8
       with:
@@ -9030,7 +9007,6 @@ jobs:
         toolchain: ${{ matrix.toolchain }}
         rustflags: ''
         cache-on-failure: true
-
 
     - name: Retrieve saved bin
       uses: actions/download-artifact@v8
@@ -9419,7 +9395,6 @@ jobs:
         rustflags: ''
         cache-on-failure: true
 
-
     - name: Retrieve saved bin
       uses: actions/download-artifact@v8
       with:
@@ -9806,7 +9781,6 @@ jobs:
         toolchain: ${{ matrix.toolchain }}
         rustflags: ''
         cache-on-failure: true
-
 
     - name: Retrieve saved bin
       uses: actions/download-artifact@v8
@@ -10195,7 +10169,6 @@ jobs:
         rustflags: ''
         cache-on-failure: true
 
-
     - name: Retrieve saved bin
       uses: actions/download-artifact@v8
       with:
@@ -10583,7 +10556,6 @@ jobs:
         rustflags: ''
         cache-on-failure: true
 
-
     - name: Retrieve saved bin
       uses: actions/download-artifact@v8
       with:
@@ -10970,7 +10942,6 @@ jobs:
         toolchain: ${{ matrix.toolchain }}
         rustflags: ''
         cache-on-failure: true
-
 
     - name: Retrieve saved bin
       uses: actions/download-artifact@v8

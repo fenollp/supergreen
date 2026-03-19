@@ -82,6 +82,10 @@ pub(crate) struct Green {
     #[doc = include_str!(concat!("../docs/",ENV_EXPERIMENT!(),".md"))]
     #[serde(skip_serializing_if = "Vec::is_empty")]
     pub(crate) experiment: Vec<String>,
+
+    #[doc = include_str!(concat!("../docs/",ENV_COMPONENTS!(),".md"))]
+    #[serde(skip_serializing_if = "Vec::is_empty")]
+    pub(crate) components: Vec<String>,
 }
 
 impl Green {
@@ -181,6 +185,8 @@ impl Green {
             validate_csv(field, var)?;
         }
 
+        validate_csv(&mut green.components, ENV_COMPONENTS!())?;
+
         let var = ENV_BASE_IMAGE!();
         if let Ok(val) = env::var(var) {
             let val = val.try_into().map_err(|e| anyhow!("${var} {e}"))?;
@@ -215,8 +221,7 @@ impl Green {
             }
         }
         if green.base.is_unset() {
-            //TODO: CARGOGREEN_COMPONENT=toolchain=,target=,add=llvm-tools-preview;remove=
-            green.base = BaseImage::from_env(toolchain, &green.add)?;
+            green.base = BaseImage::from_env(toolchain, &green.components, &green.add)?;
         }
 
         validate_csv(&mut green.set_envs, ENV_SET_ENVS!())?;
@@ -285,6 +290,93 @@ name = "test-package"
     green.registry_mirrors = vec![];
 
     assert_eq!(green, Green::default());
+}
+
+//
+
+#[test]
+fn metadata_green_components_ok() {
+    let toolchain = "stable-x86_64-unknown-linux-gnu";
+    let manifest = Manifest::from_str(
+        r#"
+[package]
+name = "test-package"
+
+[package.metadata.green]
+components = [ "rust-src", "llvm-tools-preview" ]
+"#,
+    )
+    .unwrap();
+    let green = Green::try_new(Some(manifest), toolchain).unwrap();
+    assert_eq!(green.components, vec!["rust-src".to_owned(), "llvm-tools-preview".to_owned()]);
+}
+
+#[test]
+fn metadata_green_components_empty_name() {
+    let toolchain = "stable-x86_64-unknown-linux-gnu";
+    let manifest = Manifest::from_str(
+        r#"
+[package]
+name = "test-package"
+
+[package.metadata.green]
+components = [ "" ]
+"#,
+    )
+    .unwrap();
+    let err = Green::try_new(Some(manifest), toolchain).err().unwrap().to_string();
+    assert!(err.contains("empty"), "In: {err}");
+}
+
+#[test]
+fn metadata_green_components_quotes() {
+    let toolchain = "stable-x86_64-unknown-linux-gnu";
+    let manifest = Manifest::from_str(
+        r#"
+[package]
+name = "test-package"
+
+[package.metadata.green]
+components = [ "'a'" ]
+"#,
+    )
+    .unwrap();
+    let err = Green::try_new(Some(manifest), toolchain).err().unwrap().to_string();
+    assert!(err.contains("quotes"), "In: {err}");
+}
+
+#[test]
+fn metadata_green_components_whitespace() {
+    let toolchain = "stable-x86_64-unknown-linux-gnu";
+    let manifest = Manifest::from_str(
+        r#"
+[package]
+name = "test-package"
+
+[package.metadata.green]
+components = [ "a b" ]
+"#,
+    )
+    .unwrap();
+    let err = Green::try_new(Some(manifest), toolchain).err().unwrap().to_string();
+    assert!(err.contains("space"), "In: {err}");
+}
+
+#[test]
+fn metadata_green_components_duplicates() {
+    let toolchain = "stable-x86_64-unknown-linux-gnu";
+    let manifest = Manifest::from_str(
+        r#"
+[package]
+name = "test-package"
+
+[package.metadata.green]
+components = [ "a", "b", "a" ]
+            "#,
+    )
+    .unwrap();
+    let err = Green::try_new(Some(manifest), toolchain).err().unwrap().to_string();
+    assert!(err.contains("duplicates"), "In: {err}");
 }
 
 //
