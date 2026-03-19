@@ -522,6 +522,8 @@ set -x
       *)     # xdg-terminal-exec tail -f $tmplogs ;;
     esac
 
+    cargo=cargo ; [[ "${CARGO:-}" != '' ]] && cargo="cargo +$CARGO"
+
     echo "$arg1"
     echo "Target dir: $tmptrgt"
     echo "Logs: $tmplogs"
@@ -530,14 +532,14 @@ set -x
     CARGOGREEN_FINAL_PATH="$tmptrgt/cargo-green-fetched.Dockerfile" \
     CARGOGREEN_EXPERIMENT=finalpathnonprimary \
     PATH=$install_dir/bin:"$PATH" \
-      cargo green fetch
+      $cargo green fetch
     CARGOGREEN_LOG=debug \
     CARGOGREEN_LOG_PATH="$tmplogs" \
     CARGOGREEN_FINAL_PATH="$tmptrgt/cargo-green.Dockerfile" \
     CARGOGREEN_EXPERIMENT=finalpathnonprimary \
     PATH=$install_dir/bin:"$PATH" \
     CARGO_TARGET_DIR="$tmptrgt" \
-      cargo green -vv $arg1 $jobs --all-features $frozen -p cargo-green
+      $cargo green -vv $arg1 $jobs --all-features $frozen -p cargo-green
     exit ;;
 esac
 
