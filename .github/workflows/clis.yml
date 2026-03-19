@@ -179,7 +179,7 @@ jobs:
     - name: 🔵 Envs
       run: cargo green supergreen env
     - if: ${{ matrix.toolchain != '1.94.0' }}
-      run: cargo green supergreen env CARGOGREEN_BASE_IMAGE | grep '${{ matrix.toolchain }}'
+      run: cargo green supergreen env CARGOGREEN_BASE_IMAGE_INLINE | grep '${{ matrix.toolchain }}'
     - run: cargo green supergreen builder
     - name: 🔵 Envs again
       run: cargo green supergreen env
@@ -496,7 +496,7 @@ jobs:
     - name: 🔵 Envs
       run: cargo green supergreen env
     - if: ${{ matrix.toolchain != '1.94.0' }}
-      run: cargo green supergreen env CARGOGREEN_BASE_IMAGE | grep '${{ matrix.toolchain }}'
+      run: cargo green supergreen env CARGOGREEN_BASE_IMAGE_INLINE | grep '${{ matrix.toolchain }}'
     - run: cargo green supergreen builder
     - name: 🔵 Envs again
       run: cargo green supergreen env
@@ -813,7 +813,7 @@ jobs:
     - name: 🔵 Envs
       run: cargo green supergreen env
     - if: ${{ matrix.toolchain != '1.94.0' }}
-      run: cargo green supergreen env CARGOGREEN_BASE_IMAGE | grep '${{ matrix.toolchain }}'
+      run: cargo green supergreen env CARGOGREEN_BASE_IMAGE_INLINE | grep '${{ matrix.toolchain }}'
     - run: cargo green supergreen builder
     - name: 🔵 Envs again
       run: cargo green supergreen env
@@ -1130,7 +1130,7 @@ jobs:
     - name: 🔵 Envs
       run: cargo green supergreen env
     - if: ${{ matrix.toolchain != '1.94.0' }}
-      run: cargo green supergreen env CARGOGREEN_BASE_IMAGE | grep '${{ matrix.toolchain }}'
+      run: cargo green supergreen env CARGOGREEN_BASE_IMAGE_INLINE | grep '${{ matrix.toolchain }}'
     - run: cargo green supergreen builder
     - name: 🔵 Envs again
       run: cargo green supergreen env
@@ -1447,7 +1447,7 @@ jobs:
     - name: 🔵 Envs
       run: cargo green supergreen env
     - if: ${{ matrix.toolchain != '1.94.0' }}
-      run: cargo green supergreen env CARGOGREEN_BASE_IMAGE | grep '${{ matrix.toolchain }}'
+      run: cargo green supergreen env CARGOGREEN_BASE_IMAGE_INLINE | grep '${{ matrix.toolchain }}'
     - run: cargo green supergreen builder
     - name: 🔵 Envs again
       run: cargo green supergreen env
@@ -1764,7 +1764,7 @@ jobs:
     - name: 🔵 Envs
       run: cargo green supergreen env
     - if: ${{ matrix.toolchain != '1.94.0' }}
-      run: cargo green supergreen env CARGOGREEN_BASE_IMAGE | grep '${{ matrix.toolchain }}'
+      run: cargo green supergreen env CARGOGREEN_BASE_IMAGE_INLINE | grep '${{ matrix.toolchain }}'
     - run: cargo green supergreen builder
     - name: 🔵 Envs again
       run: cargo green supergreen env
@@ -2081,7 +2081,7 @@ jobs:
     - name: 🔵 Envs
       run: cargo green supergreen env
     - if: ${{ matrix.toolchain != '1.94.0' }}
-      run: cargo green supergreen env CARGOGREEN_BASE_IMAGE | grep '${{ matrix.toolchain }}'
+      run: cargo green supergreen env CARGOGREEN_BASE_IMAGE_INLINE | grep '${{ matrix.toolchain }}'
     - run: cargo green supergreen builder
     - name: 🔵 Envs again
       run: cargo green supergreen env
@@ -2398,7 +2398,7 @@ jobs:
     - name: 🔵 Envs
       run: cargo green supergreen env
     - if: ${{ matrix.toolchain != '1.94.0' }}
-      run: cargo green supergreen env CARGOGREEN_BASE_IMAGE | grep '${{ matrix.toolchain }}'
+      run: cargo green supergreen env CARGOGREEN_BASE_IMAGE_INLINE | grep '${{ matrix.toolchain }}'
     - run: cargo green supergreen builder
     - name: 🔵 Envs again
       run: cargo green supergreen env
@@ -2715,7 +2715,7 @@ jobs:
     - name: 🔵 Envs
       run: cargo green supergreen env
     - if: ${{ matrix.toolchain != '1.94.0' }}
-      run: cargo green supergreen env CARGOGREEN_BASE_IMAGE | grep '${{ matrix.toolchain }}'
+      run: cargo green supergreen env CARGOGREEN_BASE_IMAGE_INLINE | grep '${{ matrix.toolchain }}'
     - run: cargo green supergreen builder
     - name: 🔵 Envs again
       run: cargo green supergreen env
@@ -3032,7 +3032,7 @@ jobs:
     - name: 🔵 Envs
       run: cargo green supergreen env
     - if: ${{ matrix.toolchain != '1.94.0' }}
-      run: cargo green supergreen env CARGOGREEN_BASE_IMAGE | grep '${{ matrix.toolchain }}'
+      run: cargo green supergreen env CARGOGREEN_BASE_IMAGE_INLINE | grep '${{ matrix.toolchain }}'
     - run: cargo green supergreen builder
     - name: 🔵 Envs again
       run: cargo green supergreen env
@@ -3349,7 +3349,7 @@ jobs:
     - name: 🔵 Envs
       run: cargo green supergreen env
     - if: ${{ matrix.toolchain != '1.94.0' }}
-      run: cargo green supergreen env CARGOGREEN_BASE_IMAGE | grep '${{ matrix.toolchain }}'
+      run: cargo green supergreen env CARGOGREEN_BASE_IMAGE_INLINE | grep '${{ matrix.toolchain }}'
     - run: cargo green supergreen builder
     - name: 🔵 Envs again
       run: cargo green supergreen env
@@ -3666,7 +3666,7 @@ jobs:
     - name: 🔵 Envs
       run: cargo green supergreen env
     - if: ${{ matrix.toolchain != '1.94.0' }}
-      run: cargo green supergreen env CARGOGREEN_BASE_IMAGE | grep '${{ matrix.toolchain }}'
+      run: cargo green supergreen env CARGOGREEN_BASE_IMAGE_INLINE | grep '${{ matrix.toolchain }}'
     - run: cargo green supergreen builder
     - name: 🔵 Envs again
       run: cargo green supergreen env
@@ -3983,7 +3983,7 @@ jobs:
     - name: 🔵 Envs
       run: cargo green supergreen env
     - if: ${{ matrix.toolchain != '1.94.0' }}
-      run: cargo green supergreen env CARGOGREEN_BASE_IMAGE | grep '${{ matrix.toolchain }}'
+      run: cargo green supergreen env CARGOGREEN_BASE_IMAGE_INLINE | grep '${{ matrix.toolchain }}'
     - run: cargo green supergreen builder
     - name: 🔵 Envs again
       run: cargo green supergreen env
@@ -4300,7 +4300,7 @@ jobs:
     - name: 🔵 Envs
       run: cargo green supergreen env
     - if: ${{ matrix.toolchain != '1.94.0' }}
-      run: cargo green supergreen env CARGOGREEN_BASE_IMAGE | grep '${{ matrix.toolchain }}'
+      run: cargo green supergreen env CARGOGREEN_BASE_IMAGE_INLINE | grep '${{ matrix.toolchain }}'
     - run: cargo green supergreen builder
     - name: 🔵 Envs again
       run: cargo green supergreen env
@@ -4617,7 +4617,7 @@ jobs:
     - name: 🔵 Envs
       run: cargo green supergreen env
     - if: ${{ matrix.toolchain != '1.94.0' }}
-      run: cargo green supergreen env CARGOGREEN_BASE_IMAGE | grep '${{ matrix.toolchain }}'
+      run: cargo green supergreen env CARGOGREEN_BASE_IMAGE_INLINE | grep '${{ matrix.toolchain }}'
     - run: cargo green supergreen builder
     - name: 🔵 Envs again
       run: cargo green supergreen env
@@ -4934,7 +4934,7 @@ jobs:
     - name: 🔵 Envs
       run: cargo green supergreen env
     - if: ${{ matrix.toolchain != '1.94.0' }}
-      run: cargo green supergreen env CARGOGREEN_BASE_IMAGE | grep '${{ matrix.toolchain }}'
+      run: cargo green supergreen env CARGOGREEN_BASE_IMAGE_INLINE | grep '${{ matrix.toolchain }}'
     - run: cargo green supergreen builder
     - name: 🔵 Envs again
       run: cargo green supergreen env
@@ -5251,7 +5251,7 @@ jobs:
     - name: 🔵 Envs
       run: cargo green supergreen env
     - if: ${{ matrix.toolchain != '1.94.0' }}
-      run: cargo green supergreen env CARGOGREEN_BASE_IMAGE | grep '${{ matrix.toolchain }}'
+      run: cargo green supergreen env CARGOGREEN_BASE_IMAGE_INLINE | grep '${{ matrix.toolchain }}'
     - run: cargo green supergreen builder
     - name: 🔵 Envs again
       run: cargo green supergreen env
@@ -5568,7 +5568,7 @@ jobs:
     - name: 🔵 Envs
       run: cargo green supergreen env
     - if: ${{ matrix.toolchain != '1.94.0' }}
-      run: cargo green supergreen env CARGOGREEN_BASE_IMAGE | grep '${{ matrix.toolchain }}'
+      run: cargo green supergreen env CARGOGREEN_BASE_IMAGE_INLINE | grep '${{ matrix.toolchain }}'
     - run: cargo green supergreen builder
     - name: 🔵 Envs again
       run: cargo green supergreen env
@@ -5885,7 +5885,7 @@ jobs:
     - name: 🔵 Envs
       run: cargo green supergreen env
     - if: ${{ matrix.toolchain != '1.94.0' }}
-      run: cargo green supergreen env CARGOGREEN_BASE_IMAGE | grep '${{ matrix.toolchain }}'
+      run: cargo green supergreen env CARGOGREEN_BASE_IMAGE_INLINE | grep '${{ matrix.toolchain }}'
     - run: cargo green supergreen builder
     - name: 🔵 Envs again
       run: cargo green supergreen env
@@ -6202,7 +6202,7 @@ jobs:
     - name: 🔵 Envs
       run: cargo green supergreen env
     - if: ${{ matrix.toolchain != '1.94.0' }}
-      run: cargo green supergreen env CARGOGREEN_BASE_IMAGE | grep '${{ matrix.toolchain }}'
+      run: cargo green supergreen env CARGOGREEN_BASE_IMAGE_INLINE | grep '${{ matrix.toolchain }}'
     - run: cargo green supergreen builder
     - name: 🔵 Envs again
       run: cargo green supergreen env
@@ -6519,7 +6519,7 @@ jobs:
     - name: 🔵 Envs
       run: cargo green supergreen env
     - if: ${{ matrix.toolchain != '1.94.0' }}
-      run: cargo green supergreen env CARGOGREEN_BASE_IMAGE | grep '${{ matrix.toolchain }}'
+      run: cargo green supergreen env CARGOGREEN_BASE_IMAGE_INLINE | grep '${{ matrix.toolchain }}'
     - run: cargo green supergreen builder
     - name: 🔵 Envs again
       run: cargo green supergreen env
@@ -6836,7 +6836,7 @@ jobs:
     - name: 🔵 Envs
       run: cargo green supergreen env
     - if: ${{ matrix.toolchain != '1.94.0' }}
-      run: cargo green supergreen env CARGOGREEN_BASE_IMAGE | grep '${{ matrix.toolchain }}'
+      run: cargo green supergreen env CARGOGREEN_BASE_IMAGE_INLINE | grep '${{ matrix.toolchain }}'
     - run: cargo green supergreen builder
     - name: 🔵 Envs again
       run: cargo green supergreen env
@@ -7153,7 +7153,7 @@ jobs:
     - name: 🔵 Envs
       run: cargo green supergreen env
     - if: ${{ matrix.toolchain != '1.94.0' }}
-      run: cargo green supergreen env CARGOGREEN_BASE_IMAGE | grep '${{ matrix.toolchain }}'
+      run: cargo green supergreen env CARGOGREEN_BASE_IMAGE_INLINE | grep '${{ matrix.toolchain }}'
     - run: cargo green supergreen builder
     - name: 🔵 Envs again
       run: cargo green supergreen env
@@ -7470,7 +7470,7 @@ jobs:
     - name: 🔵 Envs
       run: cargo green supergreen env
     - if: ${{ matrix.toolchain != '1.94.0' }}
-      run: cargo green supergreen env CARGOGREEN_BASE_IMAGE | grep '${{ matrix.toolchain }}'
+      run: cargo green supergreen env CARGOGREEN_BASE_IMAGE_INLINE | grep '${{ matrix.toolchain }}'
     - run: cargo green supergreen builder
     - name: 🔵 Envs again
       run: cargo green supergreen env
@@ -7787,7 +7787,7 @@ jobs:
     - name: 🔵 Envs
       run: cargo green supergreen env
     - if: ${{ matrix.toolchain != '1.94.0' }}
-      run: cargo green supergreen env CARGOGREEN_BASE_IMAGE | grep '${{ matrix.toolchain }}'
+      run: cargo green supergreen env CARGOGREEN_BASE_IMAGE_INLINE | grep '${{ matrix.toolchain }}'
     - run: cargo green supergreen builder
     - name: 🔵 Envs again
       run: cargo green supergreen env
@@ -8104,7 +8104,7 @@ jobs:
     - name: 🔵 Envs
       run: cargo green supergreen env
     - if: ${{ matrix.toolchain != '1.94.0' }}
-      run: cargo green supergreen env CARGOGREEN_BASE_IMAGE | grep '${{ matrix.toolchain }}'
+      run: cargo green supergreen env CARGOGREEN_BASE_IMAGE_INLINE | grep '${{ matrix.toolchain }}'
     - run: cargo green supergreen builder
     - name: 🔵 Envs again
       run: cargo green supergreen env
@@ -8421,7 +8421,7 @@ jobs:
     - name: 🔵 Envs
       run: cargo green supergreen env
     - if: ${{ matrix.toolchain != '1.94.0' }}
-      run: cargo green supergreen env CARGOGREEN_BASE_IMAGE | grep '${{ matrix.toolchain }}'
+      run: cargo green supergreen env CARGOGREEN_BASE_IMAGE_INLINE | grep '${{ matrix.toolchain }}'
     - run: cargo green supergreen builder
     - name: 🔵 Envs again
       run: cargo green supergreen env
@@ -8738,7 +8738,7 @@ jobs:
     - name: 🔵 Envs
       run: cargo green supergreen env
     - if: ${{ matrix.toolchain != '1.94.0' }}
-      run: cargo green supergreen env CARGOGREEN_BASE_IMAGE | grep '${{ matrix.toolchain }}'
+      run: cargo green supergreen env CARGOGREEN_BASE_IMAGE_INLINE | grep '${{ matrix.toolchain }}'
     - run: cargo green supergreen builder
     - name: 🔵 Envs again
       run: cargo green supergreen env

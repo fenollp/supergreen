@@ -376,7 +376,7 @@ $(rundeps_versions)
     - name: 🔵 Envs
       run: cargo green supergreen env
     - if: \${{ matrix.toolchain != '$stable' }}
-      run: cargo green supergreen env CARGOGREEN_BASE_IMAGE | grep '\${{ matrix.toolchain }}'
+      run: cargo green supergreen env CARGOGREEN_BASE_IMAGE_INLINE | grep '\${{ matrix.toolchain }}'
     - run: cargo green supergreen builder
     - name: 🔵 Envs again
       run: cargo green supergreen env
