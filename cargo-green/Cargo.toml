@@ -52,6 +52,7 @@ pico-args.workspace = true
 reqwest.workspace = true
 rustc_version.workspace = true
 rustflags.workspace = true                 # TODO: drop once !dbg
+rustls.workspace = true
 serde.workspace = true
 serde-jsonlines.workspace = true
 serde_json.workspace = true
