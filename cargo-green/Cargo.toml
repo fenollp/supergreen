@@ -48,6 +48,7 @@ home.workspace = true
 indexmap.workspace = true
 log.workspace = true
 nutype.workspace = true
+phf.workspace = true
 pico-args.workspace = true
 reqwest.workspace = true
 rustc-host.workspace = true

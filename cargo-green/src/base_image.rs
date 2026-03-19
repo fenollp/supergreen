@@ -1,12 +1,18 @@
 use std::sync::LazyLock;
 
-use anyhow::{anyhow, Result};
+use anyhow::{anyhow, bail, Result};
 use camino::Utf8Path;
 use serde::{Deserialize, Serialize};
 
 use crate::{
-    add::Add, build::SHELL, image_uri::ImageUri, network::Network, stage::RST,
+    add::Add,
+    build::SHELL,
+    image_uri::ImageUri,
+    network::Network,
+    rustup::{CHECKSUMS, VERSION},
+    stage::RST,
     target_dir::replace_carefully,
+    REPO,
 };
 
 macro_rules! ENV_BASE_IMAGE {
@@ -69,12 +75,12 @@ impl BaseImage {
     /// https://rust-lang.github.io/rustup/environment-variables.html
     /// https://rust-lang.github.io/rustup/concepts/toolchains.html#toolchain-specification
     pub(crate) fn from_env(toolchain: &str, add: &Add) -> Result<Self> {
-        // TODO: dynamically resolve + cache this, if network is up.
-        const VERSION: &str = "1.28.1";
-        const CHECKSUM: &str = "a3339fb004c3d0bb9862ba0bce001861fe5cbde9c10d16591eb3f39ee6cd3e7f";
-
         // TODO: multiplatformify (using auto ARG.s?)
         let host = maybe_get_local_host_triple(toolchain)?;
+
+        let Some(checksum) = CHECKSUMS.get(&host) else {
+            bail!("Unhandled rustup host {host:?} please report to {REPO}")
+        };
 
         // have buildkit call rustc with `--target $(adapted $TARGETPLATFORM)`, if not given `--target`
         // `adapted` translates buildkit platform format to rustc's
@@ -117,7 +123,7 @@ impl BaseImage {
             r#"
 FROM scratch AS rustup-{toolchain}
 SHELL {SHELL:?}
-ADD --chmod=0144 --checksum=sha256:{CHECKSUM} \
+ADD --chmod=0144 --checksum=sha256:{checksum} \
   https://static.rust-lang.org/rustup/archive/{VERSION}/{host}/rustup-init /rustup-init
 {packages_block}
 ENV      RUSTUP_HOME={RUSTUP_HOME} \
