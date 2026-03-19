@@ -530,14 +530,14 @@ set -x
     CARGOGREEN_FINAL_PATH="$tmptrgt/cargo-green-fetched.Dockerfile" \
     CARGOGREEN_EXPERIMENT=finalpathnonprimary \
     PATH=$install_dir/bin:"$PATH" \
-      cargo green -v fetch
+      cargo green fetch
     CARGOGREEN_LOG=debug \
     CARGOGREEN_LOG_PATH="$tmplogs" \
     CARGOGREEN_FINAL_PATH="$tmptrgt/cargo-green.Dockerfile" \
     CARGOGREEN_EXPERIMENT=finalpathnonprimary \
     PATH=$install_dir/bin:"$PATH" \
     CARGO_TARGET_DIR="$tmptrgt" \
-      cargo green -v $arg1 $jobs --all-features $frozen -p cargo-green
+      cargo green -vv $arg1 $jobs --all-features $frozen -p cargo-green
     exit ;;
 esac
 
