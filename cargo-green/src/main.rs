@@ -129,24 +129,23 @@ async fn main() -> Result<()> {
         return Ok(());
     }
 
+    // https://rust-lang.github.io/rustup/overrides.html#toolchain-override-shorthand
+    if let Some(ref toolchain) = arg2.as_ref().and_then(|arg2| arg2.strip_prefix('+')) {
+        // Special handling: call was `cargo green +toolchain ..` (probably from `alias cargo='cargo green'`).
+        //  Let's flip this back into `cargo +toolchain green ..`
+        let mut cmd = Command::new("cargo");
+        cmd.arg(format!("+{toolchain}"));
+        cmd.arg("green");
+        cmd.args(args);
+        cmd.kill_on_drop(true);
+        return cmd.status().await.map(|_| ()).map_err(Into::into);
+    }
+
     let mut cmd = Command::new(cargo());
     cmd.kill_on_drop(true);
     cmd.env("RUSTC_WRAPPER", arg0);
     if let Some(ref arg2) = arg2 {
-        // https://rust-lang.github.io/rustup/overrides.html#toolchain-override-shorthand
-        if let Some(toolchain) = arg2.strip_prefix('+') {
-            let var = "RUSTUP_TOOLCHAIN";
-            if let Some(val) = env::var_os(var) {
-                if val != toolchain {
-                    println!("Overriding {var}={val:?} to {toolchain:?} for `{PKG} +toolchain`");
-                }
-            }
-            // Special handling: call was `cargo green +toolchain ..` (probably from `alias cargo='cargo green'`).
-            // Normally, calls look like `cargo +toolchain green ..` but let's simplify alias creation!
-            env::set_var(var, toolchain); // Informs `rustc -vV` when deciding on base-image
-        } else {
-            cmd.arg(arg2);
-        }
+        cmd.arg(arg2);
     }
 
     // TODO: TUI above cargo output (? https://docs.rs/prodash )
@@ -187,7 +186,7 @@ async fn main() -> Result<()> {
         }
         return green.prebuild(true).await;
     }
-    green.prebuild(false).await?;
+    green.prebuild(false).await?; // TODO: parse cargo args and skip prebuild for e.g. `cargo green --version`
 
     //FIXME: check precedence
     let target_dir = if let Ok(target_dir) = env::var("CARGO_TARGET_DIR") {

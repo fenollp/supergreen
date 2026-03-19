@@ -120,7 +120,9 @@ declare -a nvs nvs_args
 
 # TODO: https://belmoussaoui.com/blog/8-how-to-flatpak-a-rust-application/
 
-((i+=1)); nvs[i]=uv@main;                     oks[i]=ko; nvs_args[i]='--git https://github.com/astral-sh/uv.git --rev=2748dce uv' # Pinned 2025/12/04 BUG: couldn't read `crates/uv-macros/src/lib.rs`: No such file or directory
+((i+=1)); nvs[i]=uv@main;                     oks[i]=ko; nvs_args[i]='--git https://github.com/astral-sh/uv.git --rev=2748dce' #; cargos[i]='1.91' FIXME: pin cargo whence rustup-only base image
+#TODO: move to using only rustup: no more relying on dockerhub rust images
+#TODO: drop base image inline ==> either provide base image (+ complain if missing 3 envs) OR customize through Add,SetEnvs,... helpers
 
 ((i+=1)); nvs[i]=flamegraph@0.6.10;           oks[i]=ok; nvs_args[i]='--bin=flamegraph'
 
