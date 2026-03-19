@@ -48,6 +48,7 @@ mod runner;
 mod rustc_arguments;
 #[macro_use]
 mod rustc_wrapper;
+mod rustup;
 mod stage;
 mod supergreen;
 
