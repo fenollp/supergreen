@@ -582,7 +582,7 @@ set -x
     CARGOGREEN_EXPERIMENT=finalpathnonprimary \
     PATH=$install_dir/bin:"$PATH" \
     CARGO_TARGET_DIR="$tmptrgt" \
-      $cargo green -vv $arg1 $jobs --all-features $frozen -p cargo-green
+      $cargo green -vv $arg1 $jobs --all-features $frozen -p cargo-green --target=aarch64-unknown-linux-gnu
     exit ;;
 
   *)

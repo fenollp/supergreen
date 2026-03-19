@@ -84,9 +84,15 @@ impl BaseImage {
         // TODO: multiplatformify (using auto ARG.s?)
         let host = maybe_get_local_host_triple(toolchain)?;
 
+        // let host = "x86_64-unknown-linux-gnu";
+        // let host = "aarch64-unknown-linux-gnu";
+        // let toolchain = format!("1.91.1-{host}");
+
         let Some(checksum) = CHECKSUMS.get(&host) else {
             bail!("Unhandled rustup host {host:?} please report to {REPO}")
         };
+
+        // https://scribe.rip/com/better-programming/cross-compiling-rust-from-mac-to-linux-7fad5a454ab1
 
         // have buildkit call rustc with `--target $(adapted $TARGETPLATFORM)`, if not given `--target`
         // `adapted` translates buildkit platform format to rustc's
@@ -123,7 +129,8 @@ impl BaseImage {
             apt_get: vec!["ca-certificates".to_owned(), "gcc".to_owned(), "libc6-dev".to_owned()],
         }
         .union(add)
-        .as_block(&format!("FROM --platform=$BUILDPLATFORM {base} AS {RST}"));
+        // .as_block(&format!("FROM --platform=$BUILDPLATFORM {base} AS {RST}"));
+        .as_block(&format!("FROM {base} AS {RST}"));
 
         let components = if !components.is_empty() {
             format!(" --component {}", components.join(","))
@@ -153,7 +160,8 @@ ENV CARGO=$RUSTUP_HOME/toolchains/$RUSTUP_TOOLCHAIN/bin/cargo \
 RUN \
   --mount=from=rustup-{toolchain},source=/rustup-init,dst=/rustup-init \
     set -eux \
- && /rustup-init --verbose -y --no-modify-path --profile minimal --default-toolchain {toolchain} --default-host {host}{components} \
+ && uname -a \
+ && /rustup-init --verbose -y --no-modify-path --profile minimal --default-toolchain {toolchain} --default-host {host} --target aarch64-unknown-linux-gnu{components} \
  && chmod -R a+w $RUSTUP_HOME $CARGO_HOME
 "#,
             packages_block = packages_block.trim(),
