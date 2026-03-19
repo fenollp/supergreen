@@ -33,6 +33,12 @@ macro_rules! ENV_WITH_NETWORK {
     };
 }
 
+macro_rules! ENV_COMPONENTS {
+    () => {
+        "CARGOGREEN_COMPONENTS"
+    };
+}
+
 pub(crate) const CARGO_HOME: &str = "/usr/local/cargo";
 pub(crate) const RUSTUP_HOME: &str = "/usr/local/rustup";
 
@@ -74,7 +80,7 @@ impl BaseImage {
 
     /// https://rust-lang.github.io/rustup/environment-variables.html
     /// https://rust-lang.github.io/rustup/concepts/toolchains.html#toolchain-specification
-    pub(crate) fn from_env(toolchain: &str, add: &Add) -> Result<Self> {
+    pub(crate) fn from_env(toolchain: &str, components: &[String], add: &Add) -> Result<Self> {
         // TODO: multiplatformify (using auto ARG.s?)
         let host = maybe_get_local_host_triple(toolchain)?;
 
@@ -119,6 +125,12 @@ impl BaseImage {
         .union(add)
         .as_block(&format!("FROM --platform=$BUILDPLATFORM {base} AS {RST}"));
 
+        let components = if !components.is_empty() {
+            format!(" --component {}", components.join(","))
+        } else {
+            "".to_owned()
+        };
+
         // Rewrite host cargo/rustc so the base_image ones can be used
         // Also, propagate RUSTUP_TOOLCHAIN so Rustup skips looking for rust-toolchain.toml
         //   If you are trying to install a package that requires a specific nightly feature or a very new stable version,
@@ -141,7 +153,7 @@ ENV CARGO=$RUSTUP_HOME/toolchains/$RUSTUP_TOOLCHAIN/bin/cargo \
 RUN \
   --mount=from=rustup-{toolchain},source=/rustup-init,dst=/rustup-init \
     set -eux \
- && /rustup-init --verbose -y --no-modify-path --profile minimal --default-toolchain {toolchain} --default-host {host} \
+ && /rustup-init --verbose -y --no-modify-path --profile minimal --default-toolchain {toolchain} --default-host {host}{components} \
  && chmod -R a+w $RUSTUP_HOME $CARGO_HOME
 "#,
             packages_block = packages_block.trim(),
@@ -212,13 +224,13 @@ fn maybe_get_local_host_triple(toolchain: &str) -> Result<String> {
 #[test]
 fn test_from_env() {
     let some_stable = "1.80.0-x86_64-unknown-linux-gnu";
-    let res = BaseImage::from_env(some_stable, &Add::default()).unwrap();
+    let res = BaseImage::from_env(some_stable, &[], &Add::default()).unwrap();
     assert_eq!(res.image, ImageUri::std("debian:trixie-slim"));
     assert!(res.image_inline.unwrap().contains(" docker.io/library/debian:trixie-slim "));
     assert_eq!(res.with_network, Network::Default);
 
     let some_nightly = "nightly-2025-09-14-aarch64-apple-darwin";
-    let res = BaseImage::from_env(some_nightly, &Add::default()).unwrap();
+    let res = BaseImage::from_env(some_nightly, &[], &Add::default()).unwrap();
     assert_eq!(res.image, ImageUri::std("debian:trixie-slim"));
     assert!(res.image_inline.unwrap().contains(" docker.io/library/debian:trixie-slim "));
     assert_eq!(res.with_network, Network::Default);

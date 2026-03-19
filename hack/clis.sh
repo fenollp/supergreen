@@ -186,6 +186,7 @@ as_env() {
     alacritty@*) envvars+=(CARGOGREEN_ADD_APT='cmake,g++,libfontconfig1-dev,libxcb-xfixes0-dev,libxkbcommon-dev,pkg-config,python3') ;; # From https://github.com/alacritty/alacritty/blob/94e7c8874e526b1e67b349d9ba30ddf81669119e/INSTALL.md#debianubuntu
     bottom@*) envvars+=(CARGOGREEN_SET_ENVS='GITHUB_SHA'); envvars+=(GITHUB_SHA=) ;; # "Dirty bottom v0.11.4: the environment variable GITHUB_SHA changed"
     cargo-authors@*) envvars+=(CARGOGREEN_ADD_APT='libcurl4-openssl-dev,pkg-config') ;;
+    cargo-llvm-cov@*) envvars+=(CARGOGREEN_COMPONENTS='llvm-tools-preview') ;;
     cargo-udeps@*) envvars+=(CARGOGREEN_ADD_APT='libssl-dev,pkg-config,zlib1g-dev') ;;
     coccinelleforrust@*) envvars+=(CARGOGREEN_ADD_APT='python3-dev') ;;
     diesel_cli@*) envvars+=(CARGOGREEN_ADD_APT='libpq-dev') ;;
@@ -268,6 +269,10 @@ as_env() {
     echo Using CARGOGREEN_WITH_NETWORK="$CARGOGREEN_WITH_NETWORK"
     envvars+=(CARGOGREEN_WITH_NETWORK="$CARGOGREEN_WITH_NETWORK")
   fi
+  if [[ -n "${CARGOGREEN_COMPONENTS:-}" ]]; then
+    echo Using CARGOGREEN_COMPONENTS="$CARGOGREEN_COMPONENTS"
+    envvars+=(CARGOGREEN_COMPONENTS="$CARGOGREEN_COMPONENTS")
+  fi
   if [[ -n "${CARGOGREEN_ADD_APT:-}" ]]; then
     echo Using CARGOGREEN_ADD_APT="$CARGOGREEN_ADD_APT"
     envvars+=(CARGOGREEN_ADD_APT="$CARGOGREEN_ADD_APT")
@@ -326,12 +331,6 @@ $(login_to_readonly_hub)
         toolchain: \${{ matrix.toolchain }}
         rustflags: ''
         cache-on-failure: true
-$(
-	case "$name_at_version" in
-		cargo-llvm-cov@*) printf '    - run: rustup component add llvm-tools-preview\n' ;;
-		*) ;;
-	esac
-)
 
 $(restore_bin)
 $(restore_builder_data)
