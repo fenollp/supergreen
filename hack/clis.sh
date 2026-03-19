@@ -541,27 +541,27 @@ set -x
     CARGO_TARGET_DIR="$tmptrgt" \
       $cargo green -vv $arg1 $jobs --all-features $frozen -p cargo-green
     exit ;;
+
+  *)
+    # Matching first arg:
+    picked=-1
+    for i in "${!nvs[@]}"; do
+      case "${nvs[$i]}" in
+        *"$arg1"*) picked=$i; break ;;
+      esac
+    done
+    if [[ "$picked" = -1 ]]; then
+      echo "Could not match '$arg1' among:"
+      for i in "${!nvs[@]}"; do
+        echo "${nvs[$i]}" "${nvs_args[$i]}"
+      done
+      exit 1
+    fi
+    name_at_version=${nvs[$i]}
+    args=${nvs_args[$i]}
+    cargo="cargo +${cargos["$i"]:-${CARGO:-$fixed}}"
+    ;;
 esac
-
-name_at_version=$arg1
-
-# Matching first arg:
-picked=-1
-for i in "${!nvs[@]}"; do
-  case "${nvs[$i]}" in
-    *"$name_at_version"*) picked=$i; break ;;
-  esac
-done
-if [[ "$picked" = -1 ]]; then
-  echo "Could not match '$name_at_version' among:"
-  for i in "${!nvs[@]}"; do
-    echo "${nvs[$i]}" "${nvs_args[$i]}"
-  done
-  exit 1
-fi
-name_at_version=${nvs[$i]}
-args=${nvs_args[$i]}
-cargo="cargo +${cargos["$i"]:-${CARGO:-$fixed}}"
 
 session_name=$(slugify "$name_at_version") #$(slugify "${DOCKER_HOST:-}")
 tmptrgt=/tmp/clis-$session_name
