@@ -73,7 +73,7 @@ impl Green {
                 }
 
                 info!("writing (TW) final path {path}");
-                opts.write(true).truncate(true);
+                opts.create(true).write(true).truncate(true);
             }
 
             fbuf.push('\n');
