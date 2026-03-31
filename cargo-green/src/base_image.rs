@@ -117,7 +117,7 @@ impl BaseImage {
         //   https://github.com/reproducible-containers/repro-pkg-cache
         //   https://github.com/reproducible-containers/repro-get
 
-        let image = BASE_FOR_RUST.to_owned(); // TODO: allow overriding (CARGOGREEN_BASE_DISTRO?)
+        let image = BASE_FOR_RUST.to_owned(); // TODO: allow overriding (CARGOGREEN_BASE_DISTRO?) FIXME: ==> thats the base image
         let base = image.noscheme();
         assert!(base.contains("/debian:"));
 

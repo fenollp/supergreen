@@ -62,22 +62,32 @@ declare -a nvs nvs_args
 ((i+=1)); nvs[i]=cargo-authors@0.5.5;         oks[i]=ok; nvs_args[i]=''
 ((i+=1)); nvs[i]=vixargs@0.1.0;               oks[i]=ok; nvs_args[i]=''
 ((i+=1)); nvs[i]=cargo-config2@0.1.39;        oks[i]=ok; nvs_args[i]='--example=get'
-((i+=1)); nvs[i]=privaxy@main;                oks[i]=ko; nvs_args[i]='--git https://github.com/Barre/privaxy.git --rev=5dad688538bc7397d71d1c9cfd9d9d53bcf68032'
-# I 26/02/07 18:43:08.958 Z openssl-sys 0.9.78-d183b817a1884996 appending (AW) to final path /home/runner/work/supergreen/supergreen/recipes/privaxy@main.Dockerfile
-# E 26/02/07 18:43:08.958 Z openssl-sys 0.9.78-d183b817a1884996 Error: Runner failed.
-# Check logs at /home/runner/work/supergreen/supergreen/logs.txt
-# cargo:rustc-cfg=const_fn
-# cargo:rustc-cfg=openssl
-# cargo:rerun-if-env-changed=X86_64_UNKNOWN_LINUX_GNU_OPENSSL_NO_VENDOR
-# X86_64_UNKNOWN_LINUX_GNU_OPENSSL_NO_VENDOR unset
-# cargo:rerun-if-env-changed=OPENSSL_NO_VENDOR
-# OPENSSL_NO_VENDOR unset
-# thread 'main' panicked at /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/openssl-src-111.18.0+1.1.1n/src/lib.rs:496:32:
-# called `Result::unwrap()` on an `Err` value: Os { code: 2, kind: NotFound, message: "No such file or directory" }
-# note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
-# Please report an issue along with information from the following:
-# * docker buildx version
-# # Pinned on 2025/12/03 # BUG: $CARGO_HOME/registry/src/index.crates.io-0000000000000000/openssl-src-111.18.0+1.1.1n/src/lib.rs:496:32: No such file or directory
+((i+=1)); nvs[i]=privaxy@main;                oks[i]=ko; nvs_args[i]='--git https://github.com/Barre/privaxy.git --rev=5dad688538bc7397d71d1c9cfd9d9d53bcf68032' # Pinned on 2025/12/03
+# x86_64-unknown-linux-gnu /tmp/clis-privaxy_main/release/build/openssl-sys-36d42742442ddf85/build-script-main` (exit status: 101)
+#   --- stdout
+#   cargo:rustc-cfg=const_fn
+#   cargo:rustc-cfg=openssl
+#   cargo:rerun-if-env-changed=X86_64_UNKNOWN_LINUX_GNU_OPENSSL_NO_VENDOR
+#   X86_64_UNKNOWN_LINUX_GNU_OPENSSL_NO_VENDOR unset
+#   cargo:rerun-if-env-changed=OPENSSL_NO_VENDOR
+#   OPENSSL_NO_VENDOR unset
+#   --- stderr
+#   Using runner /usr/bin/docker
+#   Starting `BUILDX_BUILDER="supergreen" DOCKER_BUILDKIT="1" /usr/bin/docker build --network=default --platform=local --pull=false --target=out-2b4615ece389381f --output=type=tar - </tmp/clis-privaxy_main/release/openssl-sys-2b4615ece389381f.Dockerfile`
+#   thread 'main' (7) panicked at /home/pete/.cargo/registry/src/index.crates.io/openssl-src-111.18.0+1.1.1n/src/lib.rs:496:32:
+#   called `Result::unwrap()` on an `Err` value: Os { code: 2, kind: NotFound, message: "No such file or directory" }
+#   note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+#   Error: Runner failed.
+#   Check logs at /tmp/clis-privaxy_main.logs.txt
+#   cargo:rustc-cfg=const_fn
+#   cargo:rustc-cfg=openssl
+#   cargo:rerun-if-env-changed=X86_64_UNKNOWN_LINUX_GNU_OPENSSL_NO_VENDOR
+#   X86_64_UNKNOWN_LINUX_GNU_OPENSSL_NO_VENDOR unset
+#   cargo:rerun-if-env-changed=OPENSSL_NO_VENDOR
+#   OPENSSL_NO_VENDOR unset
+#   thread 'main' (7) panicked at /usr/local/cargo/registry/src/index.crates.io/openssl-src-111.18.0+1.1.1n/src/lib.rs:496:32:
+#   called `Result::unwrap()` on an `Err` value: Os { code: 2, kind: NotFound, message: "No such file or directory" }
+#   note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
 
 ((i+=1)); nvs[i]=miri@master;                 oks[i]=ko; nvs_args[i]='--git https://github.com/rust-lang/miri.git --rev=1fe9d5ba386064c14eb517aacfa8e3d5a1acf97c'; cargos[i]='nightly-2026-03-17' # Pinned on 2026/03/19
 # 174 | fn make_miri_codegen_backend(sess: &Session) -> Box<dyn CodegenBackend> {
@@ -89,6 +99,7 @@ declare -a nvs nvs_args
 #     = note: required for the cast from `Box<fn(&Session) -> Box<...> {make_miri_codegen_backend}>` to `Box<dyn FnOnce(&Options, &Target) -> Box<dyn CodegenBackend> + Send>`
 #     = note: the full name for the type has been written to '/target/release/deps/miri-e9f47534ee52cbf9.long-type-13241406945400517937.txt'
 #     = note: consider using `--verbose` to print the full type name to the console
+#==> same error without cargo green actually
 ((i+=1)); nvs[i]=zed@main;                    oks[i]=ko; nvs_args[i]='--git https://github.com/zed-industries/zed.git --tag=v0.215.3-pre'; cargos[i]='1.91.1'
 # error[E0514]: found crate `indexmap` compiled by an incompatible version of rustc
 #  --> crates/collections/src/collections.rs:6:9
