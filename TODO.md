@@ -718,3 +718,28 @@ https://github.com/docker/build-push-action
 https://github.com/rust-lang/docker-rust/blob/3a5e32f235c2be1989511f9e7a6b48c9cf140b2e/stable/trixie/Dockerfile
 
 ---
+
+GETing https://registry.hub.docker.com/v2/repositories/moby/buildkit/tags/latest
+Calling DOCKER_BUILDKIT="1" /usr/bin/docker buildx create --bootstrap --name supergreen --driver docker-container --buildkitd-config /tmp/0x7f62749b.toml --driver-opt=image=docker.io/moby/buildkit:latest@sha256:37539dd4d60fc70968d164d3850d903a2c56f6402214a1953fbf9fcb81ada731
+Error: BUG: failed to create builder: ERROR: existing instance for "supergreen" but no append mode, specify the node name to make changes for existing instances
+
+==> match err + silent retry a few times with exp backoff
+
+---
+
+BUILDX_BUILDER="supergreen" docker build --network=default --target=out-eb36965cb6c9f22b -o=_ - </tmp/clis-zed_main/release/gpui-eb36965cb6c9f22b.Dockerfile
+
+
+FROM rust-base AS run-z-gpui-0.2.2-eb36965cb6c9f22b
+SHELL ["/bin/sh", "-eux", "-c"]
+WORKDIR /target/release/build/gpui-eb36965cb6c9f22b/out
+WORKDIR $CARGO_HOME/git/checkouts/zed-a70e2ad075855582/74f281d/crates/gpui
+RUN \
+  --mount=from=out-c6e8d484d4c9f2c4,source=/build_script_build-c6e8d484d4c9f2c4,dst=/target/release/build/gpui-c6e8d484d4c9f2c4/build-script-build \
+  --mount=from=checkout-crates-74f281da864725a4e21360852e2d6a62bc4b4941,dst=$CARGO_HOME/git/checkouts/zed-a70e2ad075855582/74f281d \
+    env CARGO=$RUSTUP_HOME/toolchains/1.91.1-x86_64-unknown-linux-gnu/bin/cargo \
+
+        CARGO_MANIFEST_DIR=$CARGO_HOME/git/checkouts/zed-a70e2ad075855582/74f281d/crates/gpui \
+        CARGO_MANIFEST_PATH=$CARGO_HOME/git/checkouts/zed-a70e2ad075855582/74f281d/crates/gpui/Cargo.toml \
+
+=> fixchk
