@@ -133,6 +133,7 @@ pub(crate) async fn main() -> Result<Green> {
     }
 
     green.maybe_setup_builder(builder.cloned()).await?;
+    green.maybe_inspect_builder().await?;
 
     var = ENV_SYNTAX_IMAGE!();
     if !green.syntax.is_empty() {
@@ -288,15 +289,13 @@ impl Green {
         }
         containerfile.push(&format!("COPY --link --from={RST} / /{RST}\n"));
 
-        let fname = format!("{PKG}-{VSN}-prebuilt-{}.Dockerfile", containerfile.hashed());
-
-        let sentinel = tmp().join(format!("{fname}.done"));
+        let sentinel = self.sentinel_path(&format!("{stage}-{}", containerfile.hashed()), "done");
         info!("checking the existence of {sentinel}");
         if sentinel.exists() {
             return Ok(());
         }
 
-        let path = tmp().join(fname);
+        let path = sentinel.with_extension("Dockerfile");
         containerfile.write_to(&path)?;
 
         self.build_cacheonly(&path, &stage)
@@ -307,5 +306,11 @@ impl Green {
                 }
             })
             .map_err(|e| anyhow!("{path}\n\nUnable to prebuild: {e}"))
+    }
+
+    /// Includes builder container ID so recreation retrying builds
+    fn sentinel_path(&self, name: &str, ext: &str) -> Utf8PathBuf {
+        let builder = self.builder.id.as_deref().map(|id| format!("x{id:.12}")).unwrap_or_default();
+        tmp().join(format!("{PKG}v{VSN}{builder}-{name}.{ext}"))
     }
 }
