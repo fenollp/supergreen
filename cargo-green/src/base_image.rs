@@ -214,7 +214,7 @@ pub(crate) fn un_rewrite_cargo_home(txt: &str, to: &str) -> String {
     replace_carefully(txt, CARGO_HOME, to)
 }
 
-pub(crate) fn rewrite_rustup_home(val: String) -> String {
+pub(crate) fn rewrite_rustup_home(val: &str) -> String {
     let val = val.replacen(RUSTUP_HOME, "$RUSTUP_HOME", 1);
     const DIR: &str = ".rustup";
     if let Some(pos) = val.find(DIR) {
@@ -226,11 +226,8 @@ pub(crate) fn rewrite_rustup_home(val: String) -> String {
 #[test]
 fn test_rewrite_rustup_home() {
     assert_eq!(
-        "$RUSTUP_HOME/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc",
-        rewrite_rustup_home(
-            "/home/runner/.rustup/toolchains/1.90.0-x86_64-unknown-linux-gnu/bin/rustdoc"
-                .to_owned()
-        )
+        "$RUSTUP_HOME/toolchains/$RUSTUP_TOOLCHAIN/bin/rustdoc",
+        rewrite_rustup_home("/home/runner/.rustup/toolchains/$RUSTUP_TOOLCHAIN/bin/rustdoc")
     );
 }
 

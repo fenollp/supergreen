@@ -18,6 +18,7 @@ source "$repo_root"/hack/ck.sh
 # Usage:   clean=1 $0 ..                           #=> Both reset=1 + rmrf=1
 # Usage:   final=0 $0 ..                           #=> Don't generate final Containerfile
 #
+# Usage:          CARGO=.. $0 ..                   #   CARGO='nightly' $0 ..
 # Usage:    DOCKER_HOST=.. $0 ..                   #=> Overrides machine
 # Usage: BUILDX_BUILDER=.. $0 ..                   #=> Overrides builder (set to "empty" to set BUILDX_BUILDER='')
 
@@ -50,6 +51,7 @@ declare -a nvs nvs_args
 ((i+=1)); nvs[i]=ripgrep@15.1.0;              oks[i]=ok; nvs_args[i]=''
 ((i+=1)); nvs[i]=rublk@0.2.13;                oks[i]=ok; nvs_args[i]=''
 ((i+=1)); nvs[i]=shpool@0.9.3;                oks[i]=ok; nvs_args[i]=''
+((i+=1)); nvs[i]=topiary-cli@0.7.3;           oks[i]=ok; nvs_args[i]=''
 
 #cdylib
 ((i+=1)); nvs[i]=statehub@0.14.10;            oks[i]=kD; nvs_args[i]='' # Flaky builds + non-hermetic CARGOGREEN_SET_ENVS='VERGEN_CARGO_TARGET_TRIPLE,VERGEN_BUILD_SEMVER'
@@ -118,9 +120,11 @@ declare -a nvs nvs_args
 
 # TODO: https://belmoussaoui.com/blog/8-how-to-flatpak-a-rust-application/
 
-((i+=1)); nvs[i]=uv@main;                     oks[i]=ko; nvs_args[i]='--git https://github.com/astral-sh/uv.git --rev=2748dce uv' # Pinned 2025/12/04 BUG: couldn't read `crates/uv-macros/src/lib.rs`: No such file or directory
+((i+=1)); nvs[i]=uv@main;                     oks[i]=ko; nvs_args[i]='--git https://github.com/astral-sh/uv.git --rev=2748dce' #; cargos[i]='1.91' FIXME: pin cargo whence rustup-only base image
+#TODO: move to using only rustup: no more relying on dockerhub rust images
+#TODO: drop base image inline ==> either provide base image (+ complain if missing 3 envs) OR customize through Add,SetEnvs,... helpers
 
-((i+=1)); nvs[i]=flamegraph@0.6.10;           oks[i]=ok; nvs_args[i]=''
+((i+=1)); nvs[i]=flamegraph@0.6.10;           oks[i]=ok; nvs_args[i]='--bin=flamegraph'
 
 ((i+=1)); nvs[i]=qair@main;                   oks[i]=kD; nvs_args[i]='--git https://codeberg.org/willempx/qair.git --rev=0751f410da' # Pinned 2025/12/04 # conflicting implementations of trait `Trait` for type `(dyn Send + Sync + 'static)` # rustc 1.91.1 too new
 
@@ -144,7 +148,7 @@ declare -a nvs nvs_args
 # Depends on https://lib.rs/crates/nvml-wrapper and on https://github.com/nagisa/rust_libloading
 ((i+=1)); nvs[i]=bottom@0.11.4;               oks[i]=ok; nvs_args[i]=''
 
-((i+=1)); nvs[i]=cargo-rail@0.1.0;            oks[i]=ko; nvs_args[i]='' # requires rustc 1.91.0 or newer
+((i+=1)); nvs[i]=cargo-rail@0.1.0;            oks[i]=ok; nvs_args[i]=''
 
 #FIXME: test with Environment: CARGO_BUILD_RUSTC_WRAPPER or RUSTC_WRAPPER  or Environment: CARGO_BUILD_RUSTC_WORKSPACE_WRAPPER or RUSTC_WORKSPACE_WRAPPER
 # => the final invocation is $RUSTC_WRAPPER $RUSTC_WORKSPACE_WRAPPER $RUSTC.
@@ -279,19 +283,6 @@ as_env() {
   fi
 }
 
-finalpathnocomment() {
-  local name_at_version=$1; shift
-  [[ $# -eq 0 ]]
-  case "$name_at_version" in
-    stu@*) echo ',finalpathnocomment' ;;
-    shpool@*) echo ',finalpathnocomment' ;;
-    sccache@*) echo ',finalpathnocomment' ;;
-    cargo-authors@*) echo ',finalpathnocomment' ;;
-    cargo-deny@*) echo ',finalpathnocomment' ;;
-    *) echo ;;
-  esac
-}
-
 slugify() {
   local name_at_version=$1; shift
   [[ $# -eq 0 ]]
@@ -300,6 +291,7 @@ slugify() {
 
 cli() {
   local name_at_version=$1; shift
+  local cargo=$1; shift
   local registry=/tmp/.local-registry
   local registry_new=$registry-new
   local envvars=()
@@ -320,8 +312,8 @@ $(jobdef "$(slugify "$name_at_version")")
     # CARGOGREEN_CACHE_FROM_IMAGES: docker-image://localhost:12345/\${{ github.repository }}
     # CARGOGREEN_CACHE_TO_IMAGES: docker-image://localhost:23456/\${{ github.repository }}
       CARGOGREEN_FINAL_PATH: recipes/$name_at_version.Dockerfile
-      CARGOGREEN_EXPERIMENT: finalpathnonprimary$(finalpathnocomment "$name_at_version") # dumps on each build call
-      CARGOGREEN_LOG: trace
+      CARGOGREEN_EXPERIMENT: finalpathnonprimary # dumps on each build call
+      CARGOGREEN_LOG: debug
       CARGOGREEN_LOG_PATH: logs.txt
     needs: bin
     steps:
@@ -379,30 +371,30 @@ $(rundeps_versions)
 
     - name: Setup
       run: |
-        ~/.cargo/bin/cargo-green green supergreen setup || true
-        { ~/.cargo/bin/cargo-green green supergreen setup 2>/dev/null || true; } | sudo /bin/sh -xe
+        cargo green supergreen setup || true
+        { cargo green supergreen setup 2>/dev/null || true; } | sudo /bin/sh -xe
     - name: 🔵 Envs
-      run: ~/.cargo/bin/cargo-green green supergreen env
+      run: cargo green supergreen env
     - if: \${{ matrix.toolchain != '$stable' }}
-      run: ~/.cargo/bin/cargo-green green supergreen env CARGOGREEN_BASE_IMAGE | grep '\${{ matrix.toolchain }}'
-    - run: ~/.cargo/bin/cargo-green green supergreen builder
+      run: cargo green supergreen env CARGOGREEN_BASE_IMAGE_INLINE | grep '\${{ matrix.toolchain }}'
+    - run: cargo green supergreen builder
     - name: 🔵 Envs again
-      run: ~/.cargo/bin/cargo-green green supergreen env
+      run: cargo green supergreen env
 
 $(cache_usage)
-    - name: 🔵 cargo install
+    - name: 🔵 $cargo install
       id: cargo-install
       continue-on-error: true
       run: |
 $(unset_action_envs)
         env ${envvars[@]} \\
-          cargo green -vv install --locked --force $(as_install "$name_at_version") $@ |& tee _
-    - name: 🔵 cargo install jobs=1
+          $cargo green -vv install --locked --force $(as_install "$name_at_version") $@ |& tee _
+    - name: 🔵 $cargo install jobs=1
       #if: \${{ job.steps.cargo-install.outcome == 'failure' }} this actually hides failure of cargo-install step
       run: |
 $(unset_action_envs)
         env ${envvars[@]} \\
-          cargo green -vv install --jobs=1 --locked --force $(as_install "$name_at_version") $@ |& tee _
+          $cargo green -vv install --jobs=1 --locked --force $(as_install "$name_at_version") $@ |& tee _
     - if: \${{ always() && matrix.toolchain != '$stable' }}
       uses: actions/upload-artifact@v7
       name: Upload recipe
@@ -421,7 +413,7 @@ $(cache_usage)
       run: |
 $(unset_action_envs)
         env ${envvars[@]} \\
-          cargo green -vv install --locked --force $(as_install "$name_at_version") $@ |& tee _
+          $cargo green -vv install --locked --force $(as_install "$name_at_version") $@ |& tee _
 $(postcond_fresh _)
 $(postconds _)
 
@@ -469,7 +461,13 @@ if [[ $# = 0 ]]; then
     case "$name_at_version" in
       cargo-green@*) continue ;;
     esac
-    cli "$name_at_version" "${nvs_args["$i"]}"
+    cargo=${cargos["$i"]:-''}
+    if [[ "$cargo" = '' ]]; then
+      cargo=cargo
+    else
+      cargo="cargo +$cargo"
+    fi
+    cli "$name_at_version" "$cargo" "${nvs_args["$i"]}"
   done
 
   exit
@@ -492,7 +490,6 @@ case "${BUILDX_BUILDER:-}" in
 esac
 
 install_dir=$repo_root/target
-CARGO=${CARGO:-cargo} ; [[ "$CARGO" = 'cargo' ]] && CARGO="$CARGO +$fixed"
 
 # Special first arg handling..
 case "$arg1" in
@@ -527,43 +524,46 @@ set -x
       *)     # xdg-terminal-exec tail -f $tmplogs ;;
     esac
 
+    cargo=cargo ; [[ "${CARGO:-}" != '' ]] && cargo="cargo +$CARGO"
+
     echo "$arg1"
     echo "Target dir: $tmptrgt"
     echo "Logs: $tmplogs"
-    CARGOGREEN_LOG=trace \
+    CARGOGREEN_LOG=debug \
     CARGOGREEN_LOG_PATH="$tmplogs" \
     CARGOGREEN_FINAL_PATH="$tmptrgt/cargo-green-fetched.Dockerfile" \
     CARGOGREEN_EXPERIMENT=finalpathnonprimary \
     PATH=$install_dir/bin:"$PATH" \
-      $CARGO green -v fetch
-    CARGOGREEN_LOG=trace \
+      $cargo green fetch
+    CARGOGREEN_LOG=debug \
     CARGOGREEN_LOG_PATH="$tmplogs" \
     CARGOGREEN_FINAL_PATH="$tmptrgt/cargo-green.Dockerfile" \
     CARGOGREEN_EXPERIMENT=finalpathnonprimary \
     PATH=$install_dir/bin:"$PATH" \
     CARGO_TARGET_DIR="$tmptrgt" \
-      $CARGO green -v $arg1 $jobs --all-features $frozen -p cargo-green
+      $cargo green -vv $arg1 $jobs --all-features $frozen -p cargo-green
     exit ;;
+
+  *)
+    # Matching first arg:
+    picked=-1
+    for i in "${!nvs[@]}"; do
+      case "${nvs[$i]}" in
+        *"$arg1"*) picked=$i; break ;;
+      esac
+    done
+    if [[ "$picked" = -1 ]]; then
+      echo "Could not match '$arg1' among:"
+      for i in "${!nvs[@]}"; do
+        echo "${nvs[$i]}" "${nvs_args[$i]}"
+      done
+      exit 1
+    fi
+    name_at_version=${nvs[$i]}
+    args=${nvs_args[$i]}
+    cargo="cargo +${cargos["$i"]:-${CARGO:-$fixed}}"
+    ;;
 esac
-
-name_at_version=$arg1
-
-# Matching first arg:
-picked=-1
-for i in "${!nvs[@]}"; do
-  case "${nvs[$i]}" in
-    *"$name_at_version"*) picked=$i; break ;;
-  esac
-done
-if [[ "$picked" = -1 ]]; then
-  echo "Could not match '$name_at_version' among:"
-  for i in "${!nvs[@]}"; do
-    echo "${nvs[$i]}" "${nvs_args[$i]}"
-  done
-  exit 1
-fi
-name_at_version=${nvs[$i]}
-args=${nvs_args[$i]}
 
 session_name=$(slugify "$name_at_version") #$(slugify "${DOCKER_HOST:-}")
 tmptrgt=/tmp/clis-$session_name
@@ -602,20 +602,18 @@ done
 
 envvars=(CARGO_INCREMENTAL=0)
 envvars+=(PATH=$shortPATH)
-envvars+=(CARGOGREEN_LOG=trace)
+envvars+=(CARGOGREEN_LOG=debug)
 envvars+=(CARGOGREEN_LOG_PATH="$tmplogs")
 envvars+=(CARGO_TARGET_DIR="$tmptrgt")
 if [[ "$final" = '1' ]]; then
   envvars+=(CARGOGREEN_FINAL_PATH=recipes/$name_at_version.Dockerfile)
-  envvars+=(CARGOGREEN_EXPERIMENT=finalpathnonprimary"$(finalpathnocomment "$name_at_version")")
+  envvars+=(CARGOGREEN_EXPERIMENT=finalpathnonprimary) #,finalpathcomments)
 fi
-# envvars+=(CARGOGREEN_SYNTAX_IMAGE=docker-image://docker.io/docker/dockerfile:1@sha256:4c68376a702446fc3c79af22de146a148bc3367e73c25a5803d453b6b3f722fb)
-# envvars+=(CARGOGREEN_BASE_IMAGE=docker-image://docker.io/library/rust:1.86.0-slim@sha256:3f391b0678a6e0c88fd26f13e399c9c515ac47354e3cadfee7daee3b21651a4f)
 as_env "$name_at_version"
 send \
   'until' '[[' -f "$tmpgooo".installed ']];' 'do' sleep '.1;' 'done' '&&' rm "$tmpgooo".* \
   '&&' 'if' '[[' "$reset" '=' '1' ']];' 'then' docker buildx rm "$BUILDX_BUILDER" --force '||' 'exit' '1;' 'fi' \
-  '&&' "${envvars[@]}" $CARGO green -vv install --timings $jobs --root=$tmpbins $frozen --force "$(as_install "$name_at_version")" "$args" \
+  '&&' "${envvars[@]}" $cargo green -vv install --timings $jobs --root=$tmpbins $frozen --force "$(as_install "$name_at_version")" "$args" \
   '&&' tmux kill-session -t "$session_name"
 tmux select-layout even-vertical
 

@@ -15,6 +15,6 @@ add.apt-get = [ "libpq-dev", "pkg-config" ]
 export CARGOGREEN_ADD_APT_GET="libpq-dev,pkg-config"
 
 # Inspect the resulting base image with:
-cargo green supergreen env CARGOGREEN_BASE_IMAGE_INLINE
+echo -e $(cargo green supergreen env CARGOGREEN_BASE_IMAGE_INLINE)
 ```
 

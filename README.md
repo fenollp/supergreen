@@ -495,7 +495,7 @@ add.apt = [ "libpq-dev", "pkg-config" ]
 export CARGOGREEN_ADD_APT="libpq-dev,pkg-config"
 
 # Inspect the resulting base image with:
-cargo green supergreen env CARGOGREEN_BASE_IMAGE_INLINE
+echo -e $(cargo green supergreen env CARGOGREEN_BASE_IMAGE_INLINE)
 ```
 
 ### `$CARGOGREEN_ADD_APT_GET`
@@ -517,7 +517,7 @@ add.apt-get = [ "libpq-dev", "pkg-config" ]
 export CARGOGREEN_ADD_APT_GET="libpq-dev,pkg-config"
 
 # Inspect the resulting base image with:
-cargo green supergreen env CARGOGREEN_BASE_IMAGE_INLINE
+echo -e $(cargo green supergreen env CARGOGREEN_BASE_IMAGE_INLINE)
 ```
 
 ### `$CARGOGREEN_ADD_APK`
@@ -539,7 +539,7 @@ add.apk = [ "libpq-dev", "pkgconf" ]
 export CARGOGREEN_ADD_APK="libpq-dev,pkg-conf"
 
 # Inspect the resulting base image with:
-cargo green supergreen env CARGOGREEN_BASE_IMAGE_INLINE
+echo -e $(cargo green supergreen env CARGOGREEN_BASE_IMAGE_INLINE)
 ```
 
 ### `$CARGOGREEN_EXPERIMENT`
@@ -548,14 +548,14 @@ A comma-separated list of names of features to activate.
 
 A name that does not match exactly is an error.
 
-* `finalpathnocomment`:
+* `finalpathcomments`:
   - Write final containerfile on every rustc call.
-  - Does not contain internal debugging structs: perfect format to share the file.
+  - Contains internal debugging structs: as commented TOML
   - Helps e.g. debug builds failing too early.
 
 * `finalpathnonprimary`:
   - Write final containerfile on every rustc call.
-  - Contains internal debugging structs
+  - Perfect format to share the file.
   - Helps e.g. debug builds failing too early.
 
 * `incremental`:
@@ -624,12 +624,19 @@ See also this article on what `cargo-green` does (perfect layering):
 # Usage:   clean=1 $0 ..                           #=> Both reset=1 + rmrf=1
 # Usage:   final=0 $0 ..                           #=> Don't generate final Containerfile
 #
+# Usage:          CARGO=.. $0 ..                   #   CARGO='nightly' $0 ..
 # Usage:    DOCKER_HOST=.. $0 ..                   #=> Overrides machine
 # Usage: BUILDX_BUILDER=.. $0 ..                   #=> Overrides builder (set to "empty" to set BUILDX_BUILDER='')
 ```
 
 ### `./hack/recipes.sh`
 Syncs `./recipes/*.Dockerfile` files.
+
+### `./hack/bake.sh`
+Syncs the `./docker-bake.hcl` [bake file](https://docs.docker.com/build/bake/).
+
+The generates `./recipes` can all be built using e.g.:
+> docker buildx bake https://github.com/fenollp/supergreen.git btm rg
 
 ### `./hack/caching.sh`
 Verifies properties about caching crates & granularity.

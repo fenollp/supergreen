@@ -1,8 +1,8 @@
 #!/usr/bin/env -S bash -eu
 set -o pipefail
 
-stable=1.91.1 # Closest to latest stable, as official Rust images availability permits (TODO: use rustup when image isn't yet available)
-fixed=1.90.0 # Some fixed rustc version
+stable=1.94.0 # Closest to latest stable, as official Rust images availability permits (TODO: use rustup when image isn't yet available)
+fixed=1.93.1 # Some fixed rustc version
 
 
 jobdef() {
@@ -157,7 +157,7 @@ EOF
 login_to_readonly_hub() {
     [[ $# -eq 0 ]]
 cat <<EOF
-    - uses: docker/login-action@v3
+    - uses: docker/login-action@v4
       if: \${{ ! startsWith(github.ref, 'refs/heads/dependabot/') }}
       with:
         username: \${{ vars.DOCKERHUB_USERNAME }}
@@ -170,7 +170,7 @@ EOF
 login_to_readwrite_ghcr() {
     [[ $# -eq 0 ]]
 cat <<EOF
-    - uses: docker/login-action@v3
+    - uses: docker/login-action@v4
       with:
         registry: ghcr.io
         username: \${{ github.actor }}

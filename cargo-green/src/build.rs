@@ -518,15 +518,13 @@ impl Effects {
                                 .mode()
                                 .map_err(|e| anyhow!("Failed decoding mode: {e}"))?;
 
-                            // Let's drop async for FS operations: we're not writing gigabytes!
-                            // Also: entries MUST be consumed in sequence anyway.
+                            // No async: entries MUST be consumed in sequence
                             let mut buf = Vec::new();
                             f.read_to_end(&mut buf)
                                 .await
-                                .map_err(|e| anyhow!("Failed unTARing buffer: {e}"))?;
+                                .map_err(|e| anyhow!("Failed unTARing: {e}"))?;
                             debug!("produced {}B {name} 0x{}", buf.len(), sha256::digest(&buf));
 
-                            assert_eq!(f.link_name().unwrap(), None);
                             assert_eq!(f.header().uid().unwrap(), 0);
                             assert_eq!(f.header().gid().unwrap(), 0);
                             //assert_eq!(f.header().mtime().unwrap(), 42);
@@ -535,6 +533,7 @@ impl Effects {
 
                             match f.header().entry_type() {
                                 EntryType::Regular => {
+                                    info!("opening (W) file {fname}");
                                     let mut opts = AtomicWriteFile::options();
                                     opts.mode(mode);
                                     let mut file = opts.open(&fname).map_err(|e| {
@@ -556,6 +555,7 @@ impl Effects {
                                 }
 
                                 EntryType::Directory => {
+                                    info!("creating path {fname}");
                                     DirBuilder::new()
                                         .mode(mode)
                                         .recursive(true) //= mkdir "-p"
@@ -563,16 +563,30 @@ impl Effects {
                                         .map_err(|e| anyhow!("Failed `mkdir -p {fname}`: {e}"))?;
                                 }
 
+                                EntryType::Symlink => {
+                                    info!("creating symlink {fname}");
+                                    let name = f.link_name().map_err(|e| {
+                                        anyhow!("Failed reading link name of {fname}: {e}")
+                                    })?;
+                                    let Some(name) = name else {
+                                        bail!("Link name not present for {fname}")
+                                    };
+                                    let _ = symlink::remove_symlink_file(&fname);
+                                    symlink::symlink_file(&name, &fname).map_err(|e| {
+                                        anyhow!("Failed `ln -s {name:?} {fname}`: {e}")
+                                    })?;
+                                }
+
                                 entryty => bail!("BUG: unexpected entry type {entryty:?}"),
                             }
 
                             assert_eq!(
-                            fname.metadata().unwrap().mode() & 0o777,
-                            mode,
-                            "Unexpected untared-then-written file mode {:#o} vs: {mode:#o} {:?}",
-                            fname.metadata().unwrap().mode(),
-                            fname.metadata()
-                        );
+                                fname.symlink_metadata().unwrap_or_else(|e| panic!("{fname}: {e}")).mode() & 0o777,
+                                mode,
+                                "Unexpected untared-then-written file mode {:#o} vs: {mode:#o} {:?} for {fname}",
+                                fname.symlink_metadata().unwrap_or_else(|e| panic!("{fname}: {e}")).mode(),
+                                fname.symlink_metadata()
+                            );
                         }
                     }
                     info!("rustc wrote {} files:", written.len());
@@ -642,7 +656,7 @@ impl Effects {
             (start.elapsed(), res)
         };
         let mut status = res.map_err(|e| anyhow!("Failed calling `{call}`: {e}"))?;
-        info!("build ran in {secs:?}");
+        info!("build ran for {secs:?}");
 
         if let Ok(e) = rx_err.try_recv() {
             bail!("Runner BUG: {e}")

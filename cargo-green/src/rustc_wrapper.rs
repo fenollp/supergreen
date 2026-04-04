@@ -596,7 +596,7 @@ l'"#
 fn rewrite_env(val: &str, cargo_home: &Utf8Path) -> Result<String> {
     let val = safeify(val)?;
     let val = virtual_target_dir_str(&val);
-    let val = rewrite_rustup_home(val);
+    let val = rewrite_rustup_home(&val);
     let val = rewrite_cratesio_index(&val);
     let val = rewrite_cargo_home(cargo_home, &val);
     Ok(val)
