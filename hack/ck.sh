@@ -132,7 +132,6 @@ cat <<EOF
         fi
         final_diff+=(--ignore-matching-lines='^#')
         final_diff+=(--ignore-matching-lines=' AS rust-base$')
-        final_diff+=(--ignore-matching-lines=' NUM_JOBS=')
         final_diff+=(-- \$CARGOGREEN_FINAL_PATH)
         "\${final_diff[@]}"
 

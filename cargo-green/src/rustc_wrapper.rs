@@ -512,6 +512,13 @@ fn fmap_env((var, val): (String, String), buildrs: bool) -> Option<(String, Stri
             debug!("not forwarding {var} ({val})");
             return None;
         }
+        if var == "NUM_JOBS" && buildrs {
+            // build.rs-only. Not required for recent `cargo`. cc jobserver & CARGO_MAKEFLAGS.
+            if val != "1" {
+                debug!("overriding {var} ({val})");
+            }
+            return Some((var, "1".to_owned()));
+        }
         return Some((var, val));
     }
     debug!("not passing env: {var}={val}");
@@ -558,8 +565,8 @@ fn pass_env(var: &str) -> (bool, bool, bool) {
         "PROFILE",
         "RUSTC", // Will be skipped as it's already set, along with $CARGO
         "RUSTC_LINKER",
-        "RUSTC_WRAPPER",
         "RUSTC_WORKSPACE_WRAPPER",
+        "RUSTC_WRAPPER",
         "RUSTDOC",
         "TARGET",
     ];
