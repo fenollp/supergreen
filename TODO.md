@@ -718,3 +718,106 @@ https://github.com/docker/build-push-action
 https://github.com/rust-lang/docker-rust/blob/3a5e32f235c2be1989511f9e7a6b48c9cf140b2e/stable/trixie/Dockerfile
 
 ---
+
+https://github.com/googlefonts/fontations/blob/fa64a3d65f68f981a41314b1a3e48c2dbddd55b0/skera/Cargo.toml#L15
+
+https://github.com/libjxl/jxl-rs/blob/7cf3a662ea0f487c3b47ad871aab3575d1a3146a/jxl_cli/Cargo.toml
+
+https://github.com/pdeljanov/Symphonia/blob/e5313f610d0c0a233c61da51d89c1bca29a85e9e/symphonia-play/Cargo.toml#L2
+
+one day!
+https://chromium.googlesource.com/chromium/src/third_party/rust/+/refs/heads/main
+https://github.com/mozilla-firefox/firefox/tree/main/third_party/rust
+
+---
+
+Better way to express system deps (per OS / distro / pkmgr)
+
+https://doc.rust-lang.org/cargo/reference/specifying-dependencies.html#platform-specific-dependencies
+
+https://docs.rs/cargo-rustc-cfg/0.2.0/cargo_rustc_cfg/struct.Cfg.html#method.rustc_target
+
+
+Similiarly to
+```toml
+[dependencies]
+clap = "4.6.0"
+lazy_static = { workspace = true }
+log = { workspace = true, features = ["release_max_level_info"] }
+pretty_env_logger = "0.5"
+symphonia = { version = "0.6.0-alpha.1", path = "../symphonia", features = ["all"] }
+
+[target.'cfg(target_os = "linux")'.dependencies]
+libpulse-binding = "2.5.0"
+libpulse-simple-binding = "2.5.0"
+
+[target.'cfg(not(target_os = "linux"))'.dependencies]
+cpal = "0.17.3"
+rb = "0.4.1"
+rubato = "2.0.0"
+```
+
+we should be able to say
+
+```toml
+[green.packages / system-dependencies]
+clap = "4.6.0"
+lazy_static = { workspace = true }
+log = { workspace = true, features = ["release_max_level_info"] }
+pretty_env_logger = "0.5"
+symphonia = { version = "0.6.0-alpha.1", path = "../symphonia", features = ["all"] }
+
+[green.target.'cfg(target_os = "linux")'.dependencies]
+libpulse-binding = "2.5.0"
+libpulse-simple-binding = "2.5.0"
+
+[green.target.'cfg(not(target_os = "linux"))'.dependencies]
+cpal = "0.17.3"
+rb = "0.4.1"
+rubato = "2.0.0"
+```
+but support more cfgs than just:
+
+    target_arch="x86_64"
+    target_endian="little"
+    target_env="msvc"
+    target_family="windows"
+    target_feature="fxsr"
+    target_feature="sse"
+    target_feature="sse2"
+    target_os="windows"
+    target_pointer_width="64"
+    target_vendor="pc"
+
+eg.
+
+```toml
+[green.target.'cfg(package_manager = "apt")'.system-dependencies]
+```
+
+(same algebra though: sum it all. If a target has >1 pkg mgr, then it gets the sum of all matching entries)
+  ((any errors to catch, statically?))
+
+---
+
+build cache
+=> exports to containerd's registry:3
+=> also could to nix's
+
+build output
+=> local xdg dir
+=> r2
+=> s3 likes
+
+runner
+=> buildkit native ==> drop buildx
+=> none ==> no remote but can still hit outputs cache
+=> podman (handled with buildkit?)
+=> nix ==> populates a different build cache
+
+both docker's and nix's build caches can then be used to craft images
+=> verify if nix's can be used similarly to docker's
+
+https://github.com/sayavc/niux
+
+---
