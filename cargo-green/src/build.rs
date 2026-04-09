@@ -334,6 +334,12 @@ impl Green {
 
         // Something is very wrong here. Try to be helpful by logging some info about runner config:
         if !status.success() {
+            let rewrite = |msg: &str| {
+                let msg = un_virtual_target_dir_str(msg);
+                let msg = un_rewrite_cargo_home(&msg, self.cargo_home.as_str());
+                msg
+            };
+
             let cargo_warnings = effects
                 .stdout
                 .iter()
@@ -343,6 +349,7 @@ impl Green {
                         .xor(line.split_once("cargo::warning="))
                         .map(|(_, rhs)| rhs)
                 })
+                .map(rewrite)
                 .collect::<Vec<_>>()
                 .join("\n");
 
@@ -355,6 +362,7 @@ impl Green {
                         .xor(line.split_once("cargo::error="))
                         .map(|(_, rhs)| rhs)
                 })
+                .map(rewrite)
                 .collect::<Vec<_>>()
                 .join("\n");
 
@@ -375,8 +383,8 @@ Please report an issue along with information from the following:
 * cargo green supergreen env
 ",
                 runner = self.runner,
-                stdout = effects.stdout.join("\n"),
-                stderr = effects.stderr.join("\n"),
+                stdout = effects.stdout.iter().map(|x| rewrite(x)).collect::<Vec<_>>().join("\n"),
+                stderr = effects.stderr.iter().map(|x| rewrite(x)).collect::<Vec<_>>().join("\n"),
             );
             return rtrn(e, effects);
         }
