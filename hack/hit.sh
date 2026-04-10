@@ -24,7 +24,7 @@ echo
 
 for stage in "${!stages[@]}"; do
     echo "${stages[$stage]}: $stage"
-done | sort -k1,2
+done | sort -n -k1,2
 
 echo
 
