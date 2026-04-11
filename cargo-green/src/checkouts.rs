@@ -19,7 +19,7 @@ pub(crate) struct Checkouts {
     stage: Stage,
     repo: String,
     commit: String,
-    krate_manifest_dir: Utf8PathBuf,
+    pkg_manifest_dir: Utf8PathBuf,
 }
 
 impl AsBlock for Checkouts {
@@ -47,7 +47,7 @@ impl AsStage<'_> for Checkouts {
     }
 
     fn mounts(&self) -> Vec<(Option<Utf8PathBuf>, Utf8PathBuf, bool)> {
-        vec![(None, self.krate_manifest_dir.clone(), false)]
+        vec![(None, self.pkg_manifest_dir.clone(), false)]
     }
 }
 
@@ -55,14 +55,14 @@ impl AsStage<'_> for Checkouts {
 /// --build-arg BUILDKIT_CONTEXT_KEEP_GIT_DIR=0 https://docs.docker.com/engine/reference/builder/#buildkit-built-in-build-args
 pub(crate) async fn as_stage(
     cargo_home: &Utf8Path,
-    krate_manifest_dir: &Utf8Path,
+    pkg_manifest_dir: &Utf8Path,
 ) -> Result<NamedStage> {
     // TODO: replace execve with pure Rust impl, e.g. gitoxide
     let mut cmd = Command::new("git");
     cmd.kill_on_drop(true); // Underlying OS process dies with us
     cmd.stdin(Stdio::null());
     // e.g.: CARGO_MANIFEST_DIR="$CARGO_HOME/git/checkouts/cross-f0189a1dc141e2d9/88f49ff"
-    cmd.current_dir(krate_manifest_dir);
+    cmd.current_dir(pkg_manifest_dir);
     cmd.env_clear(); // Pass all envs explicitly only
     cmd.args(["config", "--get", "remote.origin.url"]);
     let (succeeded, stdout, stderr) = cmd.exec().await?;
@@ -88,14 +88,14 @@ pub(crate) async fn as_stage(
     let repo = repo.trim_end_matches('/');
     let repo = repo.strip_suffix(".git").unwrap_or(repo); // Cleanup here + add it in ADD
 
-    let dir = krate_manifest_dir.parent().unwrap().file_name().unwrap();
+    let dir = pkg_manifest_dir.parent().unwrap().file_name().unwrap();
     let stage = Stage::checkout(dir, commit)?;
 
     Ok(NamedStage::Checkouts(Checkouts {
         stage,
         repo: repo.to_owned(),
         commit: commit.to_owned(),
-        krate_manifest_dir: rewrite_cargo_home(cargo_home, krate_manifest_dir.as_str()).into(),
+        pkg_manifest_dir: rewrite_cargo_home(cargo_home, pkg_manifest_dir.as_str()).into(),
     }))
 }
 

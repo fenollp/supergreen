@@ -109,12 +109,12 @@ impl AsStage<'_> for Cratesio {
 pub(crate) async fn named_stage<'a>(
     cargo_home: &Utf8Path,
     name: &'a str,
-    krate_manifest_dir: &'a Utf8Path,
+    pkg_manifest_dir: &'a Utf8Path,
 ) -> Result<NamedStage> {
-    let name_dash_version = krate_manifest_dir.file_name().unwrap();
+    let name_dash_version = pkg_manifest_dir.file_name().unwrap();
     let stage = Stage::cratesio(name_dash_version)?;
 
-    let cached = krate_manifest_dir.to_string() + ".crate";
+    let cached = pkg_manifest_dir.to_string() + ".crate";
     let cached = cached.replace(&format!("/{HOME}/"), "/registry/cache/");
 
     info!("opening (RO) crate tarball {cached}");
@@ -123,8 +123,8 @@ pub(crate) async fn named_stage<'a>(
         .map_err(|e| anyhow!("Failed reading {cached}: {e}"))?;
     debug!("crate sha256 for {stage}: {hash}");
 
-    let krate_manifest_dir = rewrite_cargo_home(cargo_home, krate_manifest_dir.as_str());
-    let extracted = rewrite_cratesio_index(&krate_manifest_dir);
+    let pkg_manifest_dir = rewrite_cargo_home(cargo_home, pkg_manifest_dir.as_str());
+    let extracted = rewrite_cratesio_index(&pkg_manifest_dir);
 
     Ok(NamedStage::Cratesio(Cratesio {
         stage,
