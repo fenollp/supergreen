@@ -7,13 +7,13 @@ use std::{
 
 use anyhow::{anyhow, bail, Result};
 use camino::{Utf8Path, Utf8PathBuf};
-use log::{debug, error, info, warn};
+use log::{debug, error, info, trace, warn};
 use tokio::process::Command;
 
 use crate::{
     base_image::{rewrite_cargo_home, rewrite_rustup_home},
     build::{Effects, ERRCODE, SHELL, STDERR, STDOUT},
-    buildrs_wrapper::rewrite_main,
+    buildrs_wrapper::{call_config, exe_dance, is_buildrs_executable},
     checkouts,
     cratesio::{self, rewrite_cratesio_index},
     ext::CommandExt,
@@ -50,8 +50,8 @@ pub(crate) async fn main(
 
     // TODO: find a better heuristic to ensure `rustc` is rustc
     match &argz[..] {
-        [rustc, "--crate-name", crate_name, ..] if rustc.ends_with("rustc") =>
-             wrap_rustc(green, crate_name, argv(1), call_rustc(rustc, argv(1))).await,
+        [rustc, "--crate-name", ..] if rustc.ends_with("rustc") =>
+             wrap_rustc(green, argv(1), call_rustc(rustc, argv(1))).await,
         [driver, rustc, "-"|"--crate-name", ..] if rustc.ends_with("rustc") => {
             // TODO: wrap driver? + rustc
             // driver: e.g. $RUSTUP_HOME/toolchains/stable-x86_64-unknown-linux-gnu/bin/clippy-driver
@@ -122,7 +122,6 @@ async fn call_rustc(rustc: &str, args: Vec<String>) -> Result<()> {
 
 async fn wrap_rustc(
     green: Green,
-    crate_name: &str,
     arguments: Vec<String>,
     fallback: impl Future<Output = Result<()>>,
 ) -> Result<()> {
@@ -135,31 +134,22 @@ async fn wrap_rustc(
 
     let (st @ RustcArgs { mdid, .. }, args) = as_rustc(&pwd, &arguments, out_dir_var.as_deref())?;
 
-    let buildrs = ["build_script_build", "build_script_main"].contains(&crate_name);
-    // NOTE: krate_name != crate_name: Gets named build_script_build + s/-/_/g + may actually be a different name
-    let krate_name = env::var("CARGO_PKG_NAME").expect("$CARGO_PKG_NAME");
+    let (crate_name, pkg_name, pkg_version, pkg_manifest_dir) = call_config();
 
-    let krate_version = env::var("CARGO_PKG_VERSION").expect("$CARGO_PKG_VERSION");
+    let buildrs = crate_name.as_deref().map(is_buildrs_executable).unwrap_or_default();
+    let kind = if buildrs { 'X' } else { 'N' }; // building buildrs eXe or Normal
+    let full_pkg_id = format!("{kind} {pkg_name} {pkg_version} {mdid}");
 
-    let krate_manifest_dir = env::var("CARGO_MANIFEST_DIR").expect("$CARGO_MANIFEST_DIR");
-    let krate_manifest_dir = Utf8Path::new(&krate_manifest_dir);
-
-    let full_krate_id = {
-        // X: for building build scripts
-        let kind = if buildrs { 'X' } else { 'N' }; // exe or normal
-        format!("{kind} {krate_name} {krate_version} {mdid}")
-    };
-
-    logging::setup(&full_krate_id);
+    logging::setup(&full_pkg_id);
 
     info!("{PKG}@{VSN} original args: {arguments:?} pwd={pwd} st={st:?} green={green:?}");
 
     do_wrap_rustc(
         green,
-        &krate_name,
-        krate_manifest_dir,
-        buildrs,
-        Stage::dep(&full_krate_id.replace(' ', "-"))?,
+        crate_name.as_deref(),
+        &pkg_name,
+        &pkg_manifest_dir,
+        Stage::dep(&full_pkg_id.replace(' ', "-"))?,
         pwd,
         args,
         out_dir_var,
@@ -173,9 +163,9 @@ async fn wrap_rustc(
 #[expect(clippy::too_many_arguments)]
 async fn do_wrap_rustc(
     green: Green,
-    krate_name: &str,
-    krate_manifest_dir: &Utf8Path,
-    buildrs: bool,
+    crate_name: Option<&str>,
+    pkg_name: &str,
+    pkg_manifest_dir: &Utf8Path,
     rustc_stage: Stage,
     pwd: Utf8PathBuf,
     args: Vec<String>,
@@ -184,6 +174,7 @@ async fn do_wrap_rustc(
     fallback: impl Future<Output = Result<()>>,
 ) -> Result<()> {
     let mut md: Md = mdid.into();
+    md.buildrs = crate_name.map(is_buildrs_executable).unwrap_or_default();
     md.push_block(&RUST, green.base.image_inline.clone().unwrap());
 
     fs::create_dir_all(&out_dir).map_err(|e| anyhow!("Failed to `mkdir -p {out_dir}`: {e}"))?;
@@ -216,17 +207,17 @@ async fn do_wrap_rustc(
         // Input is of a crate dep (hosted at crates.io)
         // Let's optimize this case by fetching & caching crate tarball
 
-        cratesio::named_stage(&green.cargo_home, krate_name, krate_manifest_dir).await?
-    } else if krate_manifest_dir.starts_with(green.cargo_home.join(checkouts::HOME)) {
+        cratesio::named_stage(&green.cargo_home, pkg_name, pkg_manifest_dir).await?
+    } else if pkg_manifest_dir.starts_with(green.cargo_home.join(checkouts::HOME)) {
         // Input is of a git checked out dep
 
-        checkouts::as_stage(&green.cargo_home, krate_manifest_dir).await?
+        checkouts::as_stage(&green.cargo_home, pkg_manifest_dir).await?
     } else if input.is_relative() {
         // Input is local code
 
         relative::as_stage(mdid, &pwd).await?
     } else {
-        bail!("BUG: unhandled input {input:?} ({krate_manifest_dir})")
+        bail!("BUG: unhandled input {input:?} ({pkg_manifest_dir})")
     };
     md.push_stage(&code_stage);
     rustc_block.push_str("RUN \\\n");
@@ -235,8 +226,7 @@ async fn do_wrap_rustc(
         let dst = virtual_target_dir(&dst);
         let src = src.as_deref().map(|src| format!(",source={src}")).unwrap_or_default();
         let mount = if swappity { format!(",dst={dst}{src}") } else { format!("{src},dst={dst}") };
-        let rw = if buildrs { ",rw" } else { "" }; //FIXME
-        rustc_block.push_str(&format!("  --mount=from={name}{mount}{rw} \\\n"));
+        rustc_block.push_str(&format!("  --mount=from={name}{mount} \\\n"));
     }
 
     if let Some((name, uri)) = code_stage.context() {
@@ -257,12 +247,6 @@ async fn do_wrap_rustc(
     let input = rewrite_cratesio_index(input.as_str());
     let input = rewrite_cargo_home(&green.cargo_home, &input);
 
-    if buildrs {
-        // TODO: this won't work with e.g. tokio-decorated main fns (async + decorator needs duplicating)
-        // TODO: replace this Rust patching by simply shell patching ==> must work on macOS x-compiling for eg. Linux
-        rustc_block.push_str(&rewrite_main(mdid, &input));
-    }
-
     let out_stage = Stage::output(mdid)?;
 
     let args = args
@@ -272,14 +256,12 @@ async fn do_wrap_rustc(
         .collect::<Vec<_>>()
         .join(" ");
     md.run_block(
-        &rustc_stage,
-        &out_stage,
-        &out_dir,
-        format!("rustc {args} {input}"),
-        &green.set_envs,
+        (&rustc_stage, rustc_block),
+        crate_name,
         &green.cargo_home,
-        buildrs,
-        rustc_block,
+        &green.set_envs,
+        format!("rustc {args} {input}"),
+        (&out_stage, &out_dir),
     )?;
 
     let incremental_stage = Stage::incremental(mdid)?;
@@ -291,7 +273,7 @@ async fn do_wrap_rustc(
 
     md.out_block(&out_stage, &rustc_stage, &out_dir, false);
 
-    let containerfile_path = md.finalize(&green, &target_path, krate_name, &mds)?;
+    let containerfile_path = md.finalize(&green, &target_path, pkg_name, &mds)?;
 
     // TODO: use tracing instead:
     // https://docs.rs/tracing-subscriber/latest/tracing_subscriber/fmt/struct.Subscriber.html
@@ -315,17 +297,14 @@ async fn do_wrap_rustc(
 }
 
 impl Md {
-    #[expect(clippy::too_many_arguments)]
     pub(crate) fn run_block(
         &mut self,
-        stage: &Stage,
-        out_stage: &Stage,
-        out_dir: &Utf8Path,
-        call: String,
-        green_set_envs: &[String],
+        (stage, mut block): (&Stage, String),
+        crate_name: Option<&str>,
         cargo_home: &Utf8Path,
-        buildrs: bool,
-        mut block: String,
+        green_set_envs: &[String],
+        call: String,
+        (out_stage, out_dir): (&Stage, &Utf8Path),
     ) -> Result<()> {
         let out_dir = virtual_target_dir(out_dir);
 
@@ -339,7 +318,9 @@ impl Md {
         block.push_str("        RUSTC=$CARGO_HOME/bin/rustc \\\n");
         // TODO: move these 2 to base image when possible
         let mut set = HashSet::from(["CARGO".to_owned(), "RUSTC".to_owned()]);
-        for (var, val) in env::vars().filter_map(|kv| fmap_env(kv, buildrs)) {
+        let mut vars = env::vars().collect::<Vec<_>>();
+        vars.sort_by(|(a, _), (b, _)| a.cmp(b));
+        for (var, val) in vars.into_iter().filter_map(|kv| fmap_env(kv, self.buildrs)) {
             if set.contains(&var) {
                 continue;
             }
@@ -392,9 +373,17 @@ impl Md {
         block.push_str(&format!("        2>          {out_dir}/{out_stage}-{STDERR} \\\n"));
         block.push_str(&format!("        || echo $? >{out_dir}/{out_stage}-{ERRCODE}\\\n"));
 
+        if let Some(crate_name) = crate_name {
+            if is_buildrs_executable(crate_name) {
+                block.push_str(&exe_dance(self.this(), crate_name, &out_dir));
+                block.push_str(&format!(" || echo $? >{out_dir}/{out_stage}-{ERRCODE} \\\n"));
+            }
+        }
+
         // TODO: [`COPY --rewrite-timestamp ...` to apply SOURCE_DATE_EPOCH build arg value to the timestamps of the files](https://github.com/moby/buildkit/issues/6348)
-        let pattern = if buildrs { "*".to_owned() } else { format!("*-{}*", self.this()) };
-        block.push_str(&format!("  ; find {out_dir}/{pattern} -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH\n"));
+        let pattern = if self.buildrs { "*".to_owned() } else { format!("*-{}*", self.this()) };
+        block.push_str(&format!("  ; find {out_dir}/{pattern} -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH \\\n"));
+        block.push_str(&format!(" || echo $? >{out_dir}/{out_stage}-{ERRCODE}\n"));
 
         self.push_block(stage, block);
         Ok(())
@@ -402,7 +391,6 @@ impl Md {
 
     /// TODO? in Dockerfile, when using outputs:
     /// => skip the COPY (--mount=from=out-08c4d63ed4366a99) use the stage directly
-    //FIXME? unpub
     pub(crate) fn out_block(
         &mut self,
         stage: &Stage,
@@ -421,7 +409,6 @@ impl Md {
         self.push_block(stage, block);
     }
 
-    //FIXME? unpub
     pub(crate) async fn do_build(
         &mut self,
         green: &Green,
@@ -521,7 +508,7 @@ fn fmap_env((var, val): (String, String), buildrs: bool) -> Option<(String, Stri
         }
         return Some((var, val));
     }
-    debug!("not passing env: {var}={val}");
+    trace!("not passing env: {var}={val}");
     None
 }
 

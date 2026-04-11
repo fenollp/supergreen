@@ -58,8 +58,11 @@ pub(crate) struct Md {
     #[serde(default, skip_serializing_if = "IndexSet::is_empty")]
     deps: IndexSet<MdId>,
 
+    #[serde(default, skip_serializing_if = "<&bool as std::ops::Not>::not")]
+    pub(crate) buildrs: bool,
     #[serde(default, skip_serializing_if = "IndexSet::is_empty")]
     pub(crate) buildrs_results: IndexSet<MdId>,
+    /// Set when executing buildrs (not when building buildrs)
     #[serde(default, skip_serializing_if = "path_is_empty")]
     pub(crate) writes_to: Utf8PathBuf,
     #[serde(default, skip_serializing_if = "IndexSet::is_empty")]
@@ -96,15 +99,16 @@ impl From<MdId> for Md {
 
             externs: IndexSet::default(),
             deps: IndexSet::default(),
+            buildrs: false,
             buildrs_results: IndexSet::default(),
             writes_to: "".into(),
             mounts: IndexSet::default(),
             set_envs: IndexMap::default(),
             contexts: IndexSet::default(),
             stages: IndexSet::default(),
-            writes: Vec::default(),
-            stdout: Vec::default(),
-            stderr: Vec::default(),
+            writes: vec![],
+            stdout: vec![],
+            stderr: vec![],
         }
     }
 }
@@ -317,7 +321,7 @@ impl Md {
                     .iter()
                     .filter(|w: &&Utf8PathBuf| !w.as_str().ends_with(".d"))
                     .filter(|w: &&Utf8PathBuf| exclude_rmeta_when_not_needed(w))
-                    .filter(|w: &&Utf8PathBuf| !w.as_str().starts_with("build_script_")) //FIXME: skip md if buildrs exe
+                    .filter(|_| !dep_md.buildrs) // Never need transitive deps' build scripts
                     .map(|w| w.file_name().unwrap().to_owned())
                     .map(|xtern: String| MountExtern { from: dep_stage.clone(), xtern }),
             );
@@ -327,21 +331,7 @@ impl Md {
         assert_eq!(self.deps(), vec![]);
 
         if let Some(out_dir) = out_dir_var {
-            assert_eq!(
-                out_dir.file_name(),
-                Some("out"),
-                "BUG: unexpected $OUT_DIR={out_dir} format"
-            );
-            // With OUT_DIR="/tmp/clis-vixargs_0-1-0/release/build/proc-macro-error-attr-de2f43c37de3bfce/out"
-            //   => proc-macro-error-attr-de2f43c37de3bfce
-            let z_dep = out_dir.parent().unwrap().file_name().unwrap();
-            assert_eq!("proc-macro-error-attr-de2f43c37de3bfce", Utf8PathBuf::from("/tmp/clis-vixargs_0-1-0/release/build/proc-macro-error-attr-de2f43c37de3bfce/out").parent().unwrap().file_name().unwrap());
-            assert_eq!(
-                "de2f43c37de3bfce",
-                "proc-macro-error-attr-de2f43c37de3bfce".rsplit('-').next().unwrap()
-            );
-            let z_dep = z_dep.rsplit('-').next().unwrap();
-            let z_dep: MdId = z_dep.into();
+            let z_dep = MdId::from_out_dir_var(&out_dir);
 
             // extern_mdids.insert(z_dep.to_owned());
             self.buildrs_results.insert(z_dep);
@@ -474,11 +464,11 @@ impl Md {
         &self,
         green: &Green,
         target_path: &Utf8Path,
-        krate_name: &str,
+        pkg_name: &str,
         mds: &[Self],
     ) -> Result<Utf8PathBuf> {
         let md_path = self.this.path(target_path);
-        let containerfile_path = target_path.join(format!("{krate_name}-{}.Dockerfile", self.this));
+        let containerfile_path = target_path.join(format!("{pkg_name}-{}.Dockerfile", self.this));
 
         self.write_to(&md_path)?;
 
@@ -548,14 +538,14 @@ impl fmt::Display for MdId {
     }
 }
 
-/// For use by serde
+/// Used by serde
 impl From<MdId> for String {
     fn from(metadata: MdId) -> Self {
         format!("{metadata}")
     }
 }
 
-/// For use by serde
+/// Used by serde
 /// = help: the trait `From<std::string::String>` is not implemented for `md::MdId`
 ///         but trait `From<&str>` is implemented for it
 // TODO? prefer &str impl
@@ -579,6 +569,23 @@ impl MdId {
     }
 
     #[must_use]
+    fn from_out_dir_var(out_dir: &Utf8Path) -> Self {
+        assert_eq!(out_dir.file_name(), Some("out"), "BUG: unexpected $OUT_DIR={out_dir} format");
+        // OUT_DIR="/tmp/clis-vixargs_0-1-0/release/build/proc-macro-error-attr-de2f43c37de3bfce/out"
+        out_dir
+            .parent()
+            .unwrap()
+            .file_name()
+            .unwrap()
+            //   => "proc-macro-error-attr-de2f43c37de3bfce"
+            .rsplit('-')
+            .next()
+            .unwrap()
+            //   => "de2f43c37de3bfce"
+            .into()
+    }
+
+    #[must_use]
     pub(crate) fn path(&self, target_path: &Utf8Path) -> Utf8PathBuf {
         target_path.join(format!("{self}.toml"))
     }
@@ -590,6 +597,12 @@ fn mdid_path() {
         MdId(0xfb7fae2e3366cafc).path("some/path".into()),
         "some/path/fb7fae2e3366cafc.toml"
     );
+}
+
+#[test]
+fn mdid_from_out_dir_var() {
+    let out_dir_var = "$CARGO_TARGET_DIR/release/build/proc-macro-error-attr-de2f43c37de3bfce/out";
+    assert_eq!(MdId::from_out_dir_var(out_dir_var.into()), "de2f43c37de3bfce".into());
 }
 
 #[test]
@@ -627,6 +640,7 @@ fn md_ser() {
         this: MdId(0x711ba64e1183a234),
         externs: [MountExtern { from: RUST.clone(), xtern: "blop".into() }].into(),
         deps: [MdId(0x81529f4c2380d9ec), MdId(0x88a4324b2aff6db9)].into(),
+        buildrs: false,
         buildrs_results: [MdId(0xa2ba26818f759606)].into(),
         writes_to: "".into(),
         mounts: [].into(),

@@ -4,7 +4,7 @@ use std::{
 };
 
 use anyhow::{anyhow, bail, Result};
-use camino::Utf8PathBuf;
+use camino::{Utf8Path, Utf8PathBuf};
 use log::{error, info, trace};
 use tokio::process::Command;
 
@@ -26,29 +26,37 @@ macro_rules! ENV_EXECUTE_BUILDRS {
     };
 }
 
-pub(crate) fn rewrite_main(mdid: MdId, input: &str) -> String {
+const BUILDRS_NAME: &str = "build_script_build";
+const BUILDRS_LEGACY: &str = "build_script_main";
+
+#[must_use]
+pub(crate) fn is_buildrs_executable(name: &str) -> bool {
+    [BUILDRS_NAME, BUILDRS_LEGACY].contains(&name)
+}
+
+// NOTE: "build_script_build" vs "build_script_main": cargo's fight with legacy.
+// NOTE: "build_script_build", "build-script-build" also Windows adds ".exe".
+// TODO: one trick even further: pull a quine: a Shell script that calls to PKG
+//       but still manages to embed the whole compiled build script. Thus leaving
+//       only one file.
+pub(crate) fn exe_dance(mdid: MdId, crate_name: &str, out_dir: &Utf8Path) -> String {
     format!(
-        r#"    {{ \
-        cat {input} | sed -E 's/^(pub[()a-z]* +)?(async +)?fn +main/\1\2fn actual_{mdid}_main/' >/_ && mv /_ {input} ; \
-        {{ \
-          echo ; \
-          echo 'fn main() {{' ; \
-          echo '    use std::env::{{args_os, var_os}};' ; \
-          echo '    if var_os("{var}").is_none() {{' ; \
-          echo '        use std::process::{{Command, Stdio}};' ; \
-          echo '        let mut cmd = Command::new("{PKG}");' ; \
-          echo '        cmd.stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit());' ; \
-          echo '        cmd.env("{var}", args_os().next().expect("{PKG}: getting buildrs arg0"));' ; \
-          echo '        let res = cmd.spawn().expect("{PKG}: spawning buildrs").wait().expect("{PKG}: running builds");' ; \
-          echo '        assert!(res.success());' ; \
-          echo '    }} else {{' ; \
-          echo '        actual_{mdid}_main();' ; \
-          echo '    }}' ; \
-          echo '}}' ; \
-        }} >>{input} ; \
-    }} && \
+        r#"
+  ; mv {out_dir}/{crate_name}-{mdid} {out_dir}/_{crate_name}-{mdid} \
+ && printf '#!/bin/sh\nenv {var}=$0 {PKG}\n' >{out_dir}/{crate_name}-{mdid} \
+ && chmod +x {out_dir}/{crate_name}-{mdid} \
 "#,
         var = ENV_EXECUTE_BUILDRS!(),
+    )[1..]
+        .to_owned()
+}
+
+pub(crate) fn call_config() -> (Option<String>, String, String, Utf8PathBuf) {
+    (
+        env::var("CARGO_CRATE_NAME").ok(), // Unset when executing buildrs (always set when building)
+        env::var("CARGO_PKG_NAME").expect("$CARGO_PKG_NAME"),
+        env::var("CARGO_PKG_VERSION").expect("$CARGO_PKG_VERSION"),
+        env::var("CARGO_MANIFEST_DIR").expect("$CARGO_MANIFEST_DIR").into(),
     )
 }
 
@@ -56,8 +64,7 @@ pub(crate) async fn exec_buildrs(green: Green, exe: Utf8PathBuf) -> Result<()> {
     assert!(env::var_os(ENV!()).is_none(), "It's turtles all the way down!");
     env::set_var(ENV!(), "1");
 
-    let krate_name = env::var("CARGO_PKG_NAME").expect("$CARGO_PKG_NAME");
-    let krate_version = env::var("CARGO_PKG_VERSION").expect("$CARGO_PKG_VERSION");
+    let (crate_name, pkg_name, pkg_version, _) = call_config();
 
     // exe: /target/release/build/proc-macro2-2f938e044e3f79bf/build-script-build
     let Some((previous_mdid, target_path)) = || -> Option<_> {
@@ -89,17 +96,17 @@ pub(crate) async fn exec_buildrs(green: Green, exe: Utf8PathBuf) -> Result<()> {
         bail!("BUG: malformed $OUT_DIR {out_dir_var:?}")
     };
 
-    // Z: for executing build scripts
-    let full_krate_id = format!("Z {krate_name} {krate_version}-{mdid}");
-    logging::setup(&full_krate_id);
+    // Z: for eggZecuting build scripts
+    let full_pkg_id = format!("Z {pkg_name} {pkg_version}-{mdid}");
+    logging::setup(&full_pkg_id);
 
     info!("{PKG}@{VSN} original args: {exe:?} green={green:?}");
 
     do_exec_buildrs(
         green,
-        &krate_name,
-        // krate_version,
-        full_krate_id.replace(' ', "-"),
+        crate_name.as_deref(),
+        &pkg_name,
+        full_pkg_id.replace(' ', "-"),
         out_dir_var,
         exe,
         target_path,
@@ -113,8 +120,8 @@ pub(crate) async fn exec_buildrs(green: Green, exe: Utf8PathBuf) -> Result<()> {
 #[expect(clippy::too_many_arguments)]
 async fn do_exec_buildrs(
     green: Green,
-    krate_name: &str,
-    // krate_version: String,
+    crate_name: Option<&str>,
+    pkg_name: &str,
     crate_id: String,
     out_dir_var: Utf8PathBuf,
     exe: Utf8PathBuf,
@@ -123,6 +130,7 @@ async fn do_exec_buildrs(
     mdid: MdId,
 ) -> Result<()> {
     let mut md: Md = mdid.into();
+    md.buildrs = true;
     md.writes_to = virtual_target_dir(&out_dir_var);
     md.push_block(&RUST, green.base.image_inline.clone().unwrap());
 
@@ -148,7 +156,7 @@ async fn do_exec_buildrs(
     let previous_out_dst = {
         let name = exe.file_name().expect("PROOF: already ensured path has file_name");
         let name = name.replacen('-', "_", 2);
-        format!("/{name}-{previous_mdid}")
+        format!("/_{name}-{previous_mdid}")
     };
 
     let mut run_block = format!("FROM {RST} AS {run_stage}\n");
@@ -178,16 +186,15 @@ async fn do_exec_buildrs(
     //     run_block.push_str(&format!("  --mount=from={name},dst={dst},source={src} \\\n"));
     // }
 
-    let mut extern_mds_and_paths: Vec<_> = previous_md
+    let mut extern_mds_and_paths = previous_md
         .deps()
         .iter()
-        .map(|xtern| -> Result<_> {
+        .map(|xtern| {
             let xtern_md_path = xtern.path(&target_path);
             let xtern_md = mds.get_or_read(&xtern_md_path)?;
             Ok((xtern_md_path, xtern_md))
         })
-        .collect::<Result<_>>()?;
-    // md.short_externs.push(previous_md as short xtern) FIXME?? MAY counter assemble+outdirvar
+        .collect::<Result<Vec<_>>>()?;
     extern_mds_and_paths.push((previous_md_path, previous_md));
     let extern_md_paths = md.sort_deps(extern_mds_and_paths)?;
     info!("extern_md_paths: {}", extern_md_paths.len());
@@ -198,24 +205,22 @@ async fn do_exec_buildrs(
         .collect::<Result<Vec<_>>>()?;
 
     md.run_block(
-        &run_stage,
-        &out_stage,
-        &out_dir_var,
-        format!("{env}= {exe}", env = ENV_EXECUTE_BUILDRS!(), exe = virtual_target_dir(&exe)),
-        &green.set_envs,
+        (&run_stage, run_block),
+        crate_name,
         &green.cargo_home,
-        true, //FIXME: try "false" => Noneify?
-        run_block,
+        &green.set_envs,
+        virtual_target_dir(&exe).to_string(),
+        (&out_stage, &out_dir_var),
     )?;
 
     md.out_block(&out_stage, &run_stage, &out_dir_var, true);
 
-    let containerfile_path = md.finalize(&green, &target_path, krate_name, &mds)?;
+    let containerfile_path = md.finalize(&green, &target_path, pkg_name, &mds)?;
 
     let fallback = async move {
         let mut cmd = Command::new(&exe);
         let cmd = cmd.kill_on_drop(true);
-        // Do not unset ENV_EXECUTE_BUILDRS
+        let cmd = cmd.env_remove(ENV_EXECUTE_BUILDRS!());
         let status = cmd
             .spawn()
             .map_err(|e| anyhow!("Failed to spawn {}: {e}", cmd.show()))?
