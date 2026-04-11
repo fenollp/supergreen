@@ -35,10 +35,11 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
       rustc --cap-lints allow --cfg feature'="default"' --cfg feature'="eq-separator"' --check-cfg cfg'(docsrs)' --check-cfg cfg'(feature, values("combined-flags", "default", "eq-separator", "short-space-opt"))' --crate-name pico_args --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-f4da04ff96e72eb0' -C metadata'=f4da04ff96e72eb0' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/pico-args-0.5.0/src/lib.rs \
-        1>          /target/release/deps/out-f4da04ff96e72eb0-stdout \
-        2>          /target/release/deps/out-f4da04ff96e72eb0-stderr \
-        || echo $? >/target/release/deps/out-f4da04ff96e72eb0-errcode\
-  ; find /target/release/deps/*-f4da04ff96e72eb0* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+        1>          ./out-f4da04ff96e72eb0-stdout \
+        2>          ./out-f4da04ff96e72eb0-stderr \
+        || echo $? >./out-f4da04ff96e72eb0-errcode\
+  ; find ./*-f4da04ff96e72eb0* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' + \
+ || echo $? >./out-f4da04ff96e72eb0-errcode
 FROM scratch AS out-f4da04ff96e72eb0
 COPY --link --from=dep-n-pico-args-0.5.0-f4da04ff96e72eb0 /target/release/deps/*-f4da04ff96e72eb0* /
 
@@ -72,10 +73,11 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
       rustc --cap-lints allow --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs)' --check-cfg cfg'(feature, values("default", "std"))' --crate-name shlex --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-7b61911c2216006d' -C metadata'=7b61911c2216006d' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/shlex-1.3.0/src/lib.rs \
-        1>          /target/release/deps/out-7b61911c2216006d-stdout \
-        2>          /target/release/deps/out-7b61911c2216006d-stderr \
-        || echo $? >/target/release/deps/out-7b61911c2216006d-errcode\
-  ; find /target/release/deps/*-7b61911c2216006d* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+        1>          ./out-7b61911c2216006d-stdout \
+        2>          ./out-7b61911c2216006d-stderr \
+        || echo $? >./out-7b61911c2216006d-errcode\
+  ; find ./*-7b61911c2216006d* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' + \
+ || echo $? >./out-7b61911c2216006d-errcode
 FROM scratch AS out-7b61911c2216006d
 COPY --link --from=dep-n-shlex-1.3.0-7b61911c2216006d /target/release/deps/*-7b61911c2216006d* /
 
@@ -114,10 +116,11 @@ RUN \
         CARGO_PRIMARY_PACKAGE=1 \
         CARGOGREEN=1 \
       rustc --cap-lints allow --check-cfg cfg'(docsrs)' --check-cfg cfg'(feature, values())' --crate-name buildxargs --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern pico_args'=/target/release/deps/libpico_args-f4da04ff96e72eb0.rmeta' --extern shlex'=/target/release/deps/libshlex-7b61911c2216006d.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-743dae7d2ec996f8' -C metadata'=743dae7d2ec996f8' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/buildxargs-1.4.0/src/lib.rs \
-        1>          /target/release/deps/out-743dae7d2ec996f8-stdout \
-        2>          /target/release/deps/out-743dae7d2ec996f8-stderr \
-        || echo $? >/target/release/deps/out-743dae7d2ec996f8-errcode\
-  ; find /target/release/deps/*-743dae7d2ec996f8* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+        1>          ./out-743dae7d2ec996f8-stdout \
+        2>          ./out-743dae7d2ec996f8-stderr \
+        || echo $? >./out-743dae7d2ec996f8-errcode\
+  ; find ./*-743dae7d2ec996f8* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' + \
+ || echo $? >./out-743dae7d2ec996f8-errcode
 FROM scratch AS out-743dae7d2ec996f8
 COPY --link --from=dep-n-buildxargs-1.4.0-743dae7d2ec996f8 /target/release/deps/*-743dae7d2ec996f8* /
 
@@ -154,10 +157,11 @@ RUN \
         CARGO_PRIMARY_PACKAGE=1 \
         CARGOGREEN=1 \
       rustc --cap-lints allow --check-cfg cfg'(docsrs)' --check-cfg cfg'(feature, values())' --crate-name buildxargs --crate-type bin --edition 2021 --emit dep-info,link --error-format json --extern buildxargs'=/target/release/deps/libbuildxargs-743dae7d2ec996f8.rlib' --extern pico_args'=/target/release/deps/libpico_args-f4da04ff96e72eb0.rlib' --extern shlex'=/target/release/deps/libshlex-7b61911c2216006d.rlib' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-1c7f7fced940a33a' -C metadata'=1c7f7fced940a33a' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/buildxargs-1.4.0/src/main.rs \
-        1>          /target/release/deps/out-1c7f7fced940a33a-stdout \
-        2>          /target/release/deps/out-1c7f7fced940a33a-stderr \
-        || echo $? >/target/release/deps/out-1c7f7fced940a33a-errcode\
-  ; find /target/release/deps/*-1c7f7fced940a33a* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+        1>          ./out-1c7f7fced940a33a-stdout \
+        2>          ./out-1c7f7fced940a33a-stderr \
+        || echo $? >./out-1c7f7fced940a33a-errcode\
+  ; find ./*-1c7f7fced940a33a* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' + \
+ || echo $? >./out-1c7f7fced940a33a-errcode
 FROM scratch AS out-1c7f7fced940a33a
 COPY --link --from=dep-n-buildxargs-1.4.0-1c7f7fced940a33a /target/release/deps/*-1c7f7fced940a33a* /
 
