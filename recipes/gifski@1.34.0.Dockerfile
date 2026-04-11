@@ -36,10 +36,10 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
       rustc --allow clippy'::bool_assert_comparison' --allow clippy'::branches_sharing_code' --allow clippy'::collapsible_else_if' --allow clippy'::if_same_then_else' --allow clippy'::let_and_return' --allow clippy'::needless_continue' --allow clippy'::result_large_err' --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "std"))' --crate-name anstyle --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::checked_conversions' --warn clippy'::create_dir' --warn clippy'::dbg_macro' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::doc_markdown' --warn clippy'::empty_enum' --warn clippy'::enum_glob_use' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::explicit_deref_methods' --warn clippy'::explicit_into_iter_loop' --warn clippy'::fallible_impl_from' --warn clippy'::filter_map_next' --warn clippy'::flat_map_option' --warn clippy'::float_cmp_const' --warn clippy'::fn_params_excessive_bools' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::implicit_clone' --warn clippy'::imprecise_flops' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::inefficient_to_string' --warn clippy'::infinite_loop' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::large_digit_groups' --warn clippy'::large_stack_arrays' --warn clippy'::large_types_passed_by_value' --warn clippy'::linkedlist' --warn clippy'::lossy_float_literal' --warn clippy'::macro_use_imports' --warn clippy'::mem_forget' --warn clippy'::mutex_integer' --warn clippy'::needless_for_each' --warn clippy'::negative_feature_names' --warn clippy'::path_buf_push_overwrite' --warn clippy'::ptr_as_ptr' --warn clippy'::rc_mutex' --warn clippy'::redundant_feature_names' --warn clippy'::ref_option_ref' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::same_functions_in_if_condition' --warn clippy'::self_named_module_files' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::str_to_string' --warn clippy'::string_add' --warn clippy'::string_add_assign' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_to_string' --warn clippy'::todo' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::uninlined_format_args' --warn clippy'::verbose_file_reads' --warn clippy'::wildcard_imports' --warn clippy'::zero_sized_map_values' --warn rust_2018_idioms --warn unnameable_types --warn unreachable_pub --warn unsafe_op_in_unsafe_fn --warn unused_lifetimes --warn unused_macro_rules --warn unused_qualifications -C extra-filename'=-d1f9f826e5291799' -C metadata'=b4d72143aedc7c3e' -C opt-level'=3' -C panic'=abort' -C strip'=symbols' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/anstyle-1.0.11/src/lib.rs \
-        1>          /target/release/deps/out-d1f9f826e5291799-stdout \
-        2>          /target/release/deps/out-d1f9f826e5291799-stderr \
-        || echo $? >/target/release/deps/out-d1f9f826e5291799-errcode\
-  ; find /target/release/deps/*-d1f9f826e5291799* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+        1>          out-d1f9f826e5291799-stdout \
+        2>          out-d1f9f826e5291799-stderr \
+        || echo $? >out-d1f9f826e5291799-errcode\
+  ; find ./*-d1f9f826e5291799* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-d1f9f826e5291799
 COPY --link --from=dep-n-anstyle-1.0.11-d1f9f826e5291799 /target/release/deps/*-d1f9f826e5291799* /
 
@@ -74,10 +74,10 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
       rustc --cap-lints warn --cfg feature'="default"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "nightly"))' --crate-name utf8parse --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C extra-filename'=-d26f8ef55e0e8506' -C metadata'=1553aae34d523137' -C opt-level'=3' -C panic'=abort' -C strip'=symbols' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/utf8parse-0.2.2/src/lib.rs \
-        1>          /target/release/deps/out-d26f8ef55e0e8506-stdout \
-        2>          /target/release/deps/out-d26f8ef55e0e8506-stderr \
-        || echo $? >/target/release/deps/out-d26f8ef55e0e8506-errcode\
-  ; find /target/release/deps/*-d26f8ef55e0e8506* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+        1>          out-d26f8ef55e0e8506-stdout \
+        2>          out-d26f8ef55e0e8506-stderr \
+        || echo $? >out-d26f8ef55e0e8506-errcode\
+  ; find ./*-d26f8ef55e0e8506* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-d26f8ef55e0e8506
 COPY --link --from=dep-n-utf8parse-0.2.2-d26f8ef55e0e8506 /target/release/deps/*-d26f8ef55e0e8506* /
 
@@ -114,10 +114,10 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
       rustc --allow clippy'::bool_assert_comparison' --allow clippy'::branches_sharing_code' --allow clippy'::collapsible_else_if' --allow clippy'::if_same_then_else' --allow clippy'::let_and_return' --allow clippy'::needless_continue' --allow clippy'::result_large_err' --cap-lints warn --cfg feature'="default"' --cfg feature'="utf8"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("core", "default", "utf8"))' --crate-name anstyle_parse --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern utf8parse'=/target/release/deps/libutf8parse-d26f8ef55e0e8506.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::checked_conversions' --warn clippy'::create_dir' --warn clippy'::dbg_macro' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::doc_markdown' --warn clippy'::empty_enum' --warn clippy'::enum_glob_use' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::explicit_deref_methods' --warn clippy'::explicit_into_iter_loop' --warn clippy'::fallible_impl_from' --warn clippy'::filter_map_next' --warn clippy'::flat_map_option' --warn clippy'::float_cmp_const' --warn clippy'::fn_params_excessive_bools' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::implicit_clone' --warn clippy'::imprecise_flops' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::inefficient_to_string' --warn clippy'::infinite_loop' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::large_digit_groups' --warn clippy'::large_stack_arrays' --warn clippy'::large_types_passed_by_value' --warn clippy'::linkedlist' --warn clippy'::lossy_float_literal' --warn clippy'::macro_use_imports' --warn clippy'::mem_forget' --warn clippy'::mutex_integer' --warn clippy'::needless_for_each' --warn clippy'::negative_feature_names' --warn clippy'::path_buf_push_overwrite' --warn clippy'::ptr_as_ptr' --warn clippy'::rc_mutex' --warn clippy'::redundant_feature_names' --warn clippy'::ref_option_ref' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::same_functions_in_if_condition' --warn clippy'::self_named_module_files' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::str_to_string' --warn clippy'::string_add' --warn clippy'::string_add_assign' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_to_string' --warn clippy'::todo' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::uninlined_format_args' --warn clippy'::verbose_file_reads' --warn clippy'::wildcard_imports' --warn clippy'::zero_sized_map_values' --warn rust_2018_idioms --warn unnameable_types --warn unreachable_pub --warn unsafe_op_in_unsafe_fn --warn unused_lifetimes --warn unused_macro_rules --warn unused_qualifications -C extra-filename'=-3a6656a0727a327a' -C metadata'=b026c6e9ef95a4cc' -C opt-level'=3' -C panic'=abort' -C strip'=symbols' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/anstyle-parse-0.2.7/src/lib.rs \
-        1>          /target/release/deps/out-3a6656a0727a327a-stdout \
-        2>          /target/release/deps/out-3a6656a0727a327a-stderr \
-        || echo $? >/target/release/deps/out-3a6656a0727a327a-errcode\
-  ; find /target/release/deps/*-3a6656a0727a327a* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+        1>          out-3a6656a0727a327a-stdout \
+        2>          out-3a6656a0727a327a-stderr \
+        || echo $? >out-3a6656a0727a327a-errcode\
+  ; find ./*-3a6656a0727a327a* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-3a6656a0727a327a
 COPY --link --from=dep-n-anstyle-parse-0.2.7-3a6656a0727a327a /target/release/deps/*-3a6656a0727a327a* /
 
@@ -152,10 +152,10 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
       rustc --allow clippy'::bool_assert_comparison' --allow clippy'::branches_sharing_code' --allow clippy'::collapsible_else_if' --allow clippy'::if_same_then_else' --allow clippy'::let_and_return' --allow clippy'::needless_continue' --allow clippy'::result_large_err' --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name anstyle_query --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::checked_conversions' --warn clippy'::create_dir' --warn clippy'::dbg_macro' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::doc_markdown' --warn clippy'::empty_enum' --warn clippy'::enum_glob_use' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::explicit_deref_methods' --warn clippy'::explicit_into_iter_loop' --warn clippy'::fallible_impl_from' --warn clippy'::filter_map_next' --warn clippy'::flat_map_option' --warn clippy'::float_cmp_const' --warn clippy'::fn_params_excessive_bools' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::implicit_clone' --warn clippy'::imprecise_flops' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::inefficient_to_string' --warn clippy'::infinite_loop' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::large_digit_groups' --warn clippy'::large_stack_arrays' --warn clippy'::large_types_passed_by_value' --warn clippy'::linkedlist' --warn clippy'::lossy_float_literal' --warn clippy'::macro_use_imports' --warn clippy'::mem_forget' --warn clippy'::mutex_integer' --warn clippy'::needless_for_each' --warn clippy'::negative_feature_names' --warn clippy'::path_buf_push_overwrite' --warn clippy'::ptr_as_ptr' --warn clippy'::rc_mutex' --warn clippy'::redundant_feature_names' --warn clippy'::ref_option_ref' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::same_functions_in_if_condition' --warn clippy'::self_named_module_files' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::str_to_string' --warn clippy'::string_add' --warn clippy'::string_add_assign' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_to_string' --warn clippy'::todo' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::uninlined_format_args' --warn clippy'::verbose_file_reads' --warn clippy'::wildcard_imports' --warn clippy'::zero_sized_map_values' --warn rust_2018_idioms --warn unnameable_types --warn unreachable_pub --warn unsafe_op_in_unsafe_fn --warn unused_lifetimes --warn unused_macro_rules --warn unused_qualifications -C extra-filename'=-59a52dfb1c99b533' -C metadata'=3e618c707460a6ad' -C opt-level'=3' -C panic'=abort' -C strip'=symbols' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/anstyle-query-1.1.3/src/lib.rs \
-        1>          /target/release/deps/out-59a52dfb1c99b533-stdout \
-        2>          /target/release/deps/out-59a52dfb1c99b533-stderr \
-        || echo $? >/target/release/deps/out-59a52dfb1c99b533-errcode\
-  ; find /target/release/deps/*-59a52dfb1c99b533* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+        1>          out-59a52dfb1c99b533-stdout \
+        2>          out-59a52dfb1c99b533-stderr \
+        || echo $? >out-59a52dfb1c99b533-errcode\
+  ; find ./*-59a52dfb1c99b533* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-59a52dfb1c99b533
 COPY --link --from=dep-n-anstyle-query-1.1.3-59a52dfb1c99b533 /target/release/deps/*-59a52dfb1c99b533* /
 
@@ -190,10 +190,10 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
       rustc --allow clippy'::bool_assert_comparison' --allow clippy'::branches_sharing_code' --allow clippy'::collapsible_else_if' --allow clippy'::if_same_then_else' --allow clippy'::let_and_return' --allow clippy'::needless_continue' --allow clippy'::result_large_err' --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name colorchoice --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::checked_conversions' --warn clippy'::create_dir' --warn clippy'::dbg_macro' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::doc_markdown' --warn clippy'::empty_enum' --warn clippy'::enum_glob_use' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::explicit_deref_methods' --warn clippy'::explicit_into_iter_loop' --warn clippy'::fallible_impl_from' --warn clippy'::filter_map_next' --warn clippy'::flat_map_option' --warn clippy'::float_cmp_const' --warn clippy'::fn_params_excessive_bools' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::implicit_clone' --warn clippy'::imprecise_flops' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::inefficient_to_string' --warn clippy'::infinite_loop' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::large_digit_groups' --warn clippy'::large_stack_arrays' --warn clippy'::large_types_passed_by_value' --warn clippy'::linkedlist' --warn clippy'::lossy_float_literal' --warn clippy'::macro_use_imports' --warn clippy'::mem_forget' --warn clippy'::mutex_integer' --warn clippy'::needless_for_each' --warn clippy'::negative_feature_names' --warn clippy'::path_buf_push_overwrite' --warn clippy'::ptr_as_ptr' --warn clippy'::rc_mutex' --warn clippy'::redundant_feature_names' --warn clippy'::ref_option_ref' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::same_functions_in_if_condition' --warn clippy'::self_named_module_files' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::str_to_string' --warn clippy'::string_add' --warn clippy'::string_add_assign' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_to_string' --warn clippy'::todo' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::uninlined_format_args' --warn clippy'::verbose_file_reads' --warn clippy'::wildcard_imports' --warn clippy'::zero_sized_map_values' --warn rust_2018_idioms --warn unnameable_types --warn unreachable_pub --warn unsafe_op_in_unsafe_fn --warn unused_lifetimes --warn unused_macro_rules --warn unused_qualifications -C extra-filename'=-b990aaec0cc9e059' -C metadata'=3dedd7b065b5fb4e' -C opt-level'=3' -C panic'=abort' -C strip'=symbols' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/colorchoice-1.0.4/src/lib.rs \
-        1>          /target/release/deps/out-b990aaec0cc9e059-stdout \
-        2>          /target/release/deps/out-b990aaec0cc9e059-stderr \
-        || echo $? >/target/release/deps/out-b990aaec0cc9e059-errcode\
-  ; find /target/release/deps/*-b990aaec0cc9e059* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+        1>          out-b990aaec0cc9e059-stdout \
+        2>          out-b990aaec0cc9e059-stderr \
+        || echo $? >out-b990aaec0cc9e059-errcode\
+  ; find ./*-b990aaec0cc9e059* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-b990aaec0cc9e059
 COPY --link --from=dep-n-colorchoice-1.0.4-b990aaec0cc9e059 /target/release/deps/*-b990aaec0cc9e059* /
 
@@ -228,10 +228,10 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
       rustc --allow clippy'::bool_assert_comparison' --allow clippy'::branches_sharing_code' --allow clippy'::collapsible_else_if' --allow clippy'::if_same_then_else' --allow clippy'::let_and_return' --cap-lints warn --cfg feature'="default"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default"))' --crate-name is_terminal_polyfill --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::checked_conversions' --warn clippy'::create_dir' --warn clippy'::dbg_macro' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::doc_markdown' --warn clippy'::empty_enum' --warn clippy'::enum_glob_use' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::explicit_deref_methods' --warn clippy'::explicit_into_iter_loop' --warn clippy'::fallible_impl_from' --warn clippy'::filter_map_next' --warn clippy'::flat_map_option' --warn clippy'::float_cmp_const' --warn clippy'::fn_params_excessive_bools' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::implicit_clone' --warn clippy'::imprecise_flops' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::inefficient_to_string' --warn clippy'::infinite_loop' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::large_digit_groups' --warn clippy'::large_stack_arrays' --warn clippy'::large_types_passed_by_value' --warn clippy'::linkedlist' --warn clippy'::lossy_float_literal' --warn clippy'::macro_use_imports' --warn clippy'::match_wildcard_for_single_variants' --warn clippy'::mem_forget' --warn clippy'::mutex_integer' --warn clippy'::needless_continue' --warn clippy'::needless_for_each' --warn clippy'::negative_feature_names' --warn clippy'::path_buf_push_overwrite' --warn clippy'::ptr_as_ptr' --warn clippy'::rc_mutex' --warn clippy'::redundant_feature_names' --warn clippy'::ref_option_ref' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::same_functions_in_if_condition' --warn clippy'::self_named_module_files' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::single_match_else' --warn clippy'::str_to_string' --warn clippy'::string_add' --warn clippy'::string_add_assign' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_to_string' --warn clippy'::todo' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::verbose_file_reads' --warn clippy'::wildcard_imports' --warn clippy'::zero_sized_map_values' --warn rust_2018_idioms --warn unreachable_pub --warn unsafe_op_in_unsafe_fn --warn unused_lifetimes --warn unused_macro_rules --warn unused_qualifications -C extra-filename'=-bb9cbf3b598df118' -C metadata'=7c710a66f4dcf4ad' -C opt-level'=3' -C panic'=abort' -C strip'=symbols' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/is_terminal_polyfill-1.70.1/src/lib.rs \
-        1>          /target/release/deps/out-bb9cbf3b598df118-stdout \
-        2>          /target/release/deps/out-bb9cbf3b598df118-stderr \
-        || echo $? >/target/release/deps/out-bb9cbf3b598df118-errcode\
-  ; find /target/release/deps/*-bb9cbf3b598df118* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+        1>          out-bb9cbf3b598df118-stdout \
+        2>          out-bb9cbf3b598df118-stderr \
+        || echo $? >out-bb9cbf3b598df118-errcode\
+  ; find ./*-bb9cbf3b598df118* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-bb9cbf3b598df118
 COPY --link --from=dep-n-is_terminal_polyfill-1.70.1-bb9cbf3b598df118 /target/release/deps/*-bb9cbf3b598df118* /
 
@@ -278,10 +278,10 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
       rustc --allow clippy'::bool_assert_comparison' --allow clippy'::branches_sharing_code' --allow clippy'::collapsible_else_if' --allow clippy'::if_same_then_else' --allow clippy'::let_and_return' --allow clippy'::needless_continue' --allow clippy'::result_large_err' --cap-lints warn --cfg feature'="auto"' --cfg feature'="default"' --cfg feature'="wincon"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("auto", "default", "test", "wincon"))' --crate-name anstream --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern anstyle'=/target/release/deps/libanstyle-d1f9f826e5291799.rmeta' --extern anstyle_parse'=/target/release/deps/libanstyle_parse-3a6656a0727a327a.rmeta' --extern anstyle_query'=/target/release/deps/libanstyle_query-59a52dfb1c99b533.rmeta' --extern colorchoice'=/target/release/deps/libcolorchoice-b990aaec0cc9e059.rmeta' --extern is_terminal_polyfill'=/target/release/deps/libis_terminal_polyfill-bb9cbf3b598df118.rmeta' --extern utf8parse'=/target/release/deps/libutf8parse-d26f8ef55e0e8506.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::checked_conversions' --warn clippy'::create_dir' --warn clippy'::dbg_macro' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::doc_markdown' --warn clippy'::empty_enum' --warn clippy'::enum_glob_use' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::explicit_deref_methods' --warn clippy'::explicit_into_iter_loop' --warn clippy'::fallible_impl_from' --warn clippy'::filter_map_next' --warn clippy'::flat_map_option' --warn clippy'::float_cmp_const' --warn clippy'::fn_params_excessive_bools' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::implicit_clone' --warn clippy'::imprecise_flops' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::inefficient_to_string' --warn clippy'::infinite_loop' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::large_digit_groups' --warn clippy'::large_stack_arrays' --warn clippy'::large_types_passed_by_value' --warn clippy'::linkedlist' --warn clippy'::lossy_float_literal' --warn clippy'::macro_use_imports' --warn clippy'::mem_forget' --warn clippy'::mutex_integer' --warn clippy'::needless_for_each' --warn clippy'::negative_feature_names' --warn clippy'::path_buf_push_overwrite' --warn clippy'::ptr_as_ptr' --warn clippy'::rc_mutex' --warn clippy'::redundant_feature_names' --warn clippy'::ref_option_ref' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::same_functions_in_if_condition' --warn clippy'::self_named_module_files' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::str_to_string' --warn clippy'::string_add' --warn clippy'::string_add_assign' --warn clippy'::string_lit_as_bytes' --warn clippy'::string_to_string' --warn clippy'::todo' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::uninlined_format_args' --warn clippy'::verbose_file_reads' --warn clippy'::wildcard_imports' --warn clippy'::zero_sized_map_values' --warn rust_2018_idioms --warn unnameable_types --warn unreachable_pub --warn unsafe_op_in_unsafe_fn --warn unused_lifetimes --warn unused_macro_rules --warn unused_qualifications -C extra-filename'=-a550586acd4c9334' -C metadata'=795a9e2d6bf46e9a' -C opt-level'=3' -C panic'=abort' -C strip'=symbols' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/anstream-0.6.19/src/lib.rs \
-        1>          /target/release/deps/out-a550586acd4c9334-stdout \
-        2>          /target/release/deps/out-a550586acd4c9334-stderr \
-        || echo $? >/target/release/deps/out-a550586acd4c9334-errcode\
-  ; find /target/release/deps/*-a550586acd4c9334* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+        1>          out-a550586acd4c9334-stdout \
+        2>          out-a550586acd4c9334-stderr \
+        || echo $? >out-a550586acd4c9334-errcode\
+  ; find ./*-a550586acd4c9334* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-a550586acd4c9334
 COPY --link --from=dep-n-anstream-0.6.19-a550586acd4c9334 /target/release/deps/*-a550586acd4c9334* /
 
@@ -316,10 +316,10 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
       rustc --allow clippy'::assigning_clones' --allow clippy'::blocks_in_conditions' --allow clippy'::bool_assert_comparison' --allow clippy'::branches_sharing_code' --allow clippy'::collapsible_else_if' --allow clippy'::if_same_then_else' --allow clippy'::let_and_return' --allow clippy'::multiple_bound_locations' --allow clippy'::needless_continue' --allow clippy'::result_large_err' --allow unnameable_types --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name clap_lex --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::checked_conversions' --warn clippy'::create_dir' --warn clippy'::dbg_macro' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::doc_markdown' --warn clippy'::empty_enum' --warn clippy'::enum_glob_use' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::explicit_deref_methods' --warn clippy'::explicit_into_iter_loop' --warn clippy'::fallible_impl_from' --warn clippy'::filter_map_next' --warn clippy'::flat_map_option' --warn clippy'::float_cmp_const' --warn clippy'::fn_params_excessive_bools' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::implicit_clone' --warn clippy'::imprecise_flops' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::inefficient_to_string' --warn clippy'::infinite_loop' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::large_digit_groups' --warn clippy'::large_stack_arrays' --warn clippy'::large_types_passed_by_value' --warn clippy'::linkedlist' --warn clippy'::lossy_float_literal' --warn clippy'::macro_use_imports' --warn clippy'::mem_forget' --warn clippy'::mutex_integer' --warn clippy'::needless_for_each' --warn clippy'::negative_feature_names' --warn clippy'::path_buf_push_overwrite' --warn clippy'::ptr_as_ptr' --warn clippy'::rc_mutex' --warn clippy'::redundant_feature_names' --warn clippy'::ref_option_ref' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::same_functions_in_if_condition' --warn clippy'::self_named_module_files' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::string_add_assign' --warn clippy'::string_lit_as_bytes' --warn clippy'::todo' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::uninlined_format_args' --warn clippy'::verbose_file_reads' --warn clippy'::zero_sized_map_values' --warn rust_2018_idioms --warn unreachable_pub --warn unsafe_op_in_unsafe_fn --warn unused_lifetimes --warn unused_macro_rules --warn unused_qualifications -C extra-filename'=-649f315ca8bc4ebc' -C metadata'=bc7057ba83d44421' -C opt-level'=3' -C panic'=abort' -C strip'=symbols' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/clap_lex-0.7.5/src/lib.rs \
-        1>          /target/release/deps/out-649f315ca8bc4ebc-stdout \
-        2>          /target/release/deps/out-649f315ca8bc4ebc-stderr \
-        || echo $? >/target/release/deps/out-649f315ca8bc4ebc-errcode\
-  ; find /target/release/deps/*-649f315ca8bc4ebc* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+        1>          out-649f315ca8bc4ebc-stdout \
+        2>          out-649f315ca8bc4ebc-stderr \
+        || echo $? >out-649f315ca8bc4ebc-errcode\
+  ; find ./*-649f315ca8bc4ebc* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-649f315ca8bc4ebc
 COPY --link --from=dep-n-clap_lex-0.7.5-649f315ca8bc4ebc /target/release/deps/*-649f315ca8bc4ebc* /
 
@@ -356,10 +356,10 @@ OSA, Damerau-Levenshtein, Jaro, Jaro-Winkler, and Sørensen-Dice.\
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name strsim --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C extra-filename'=-55db465d4601e4ea' -C metadata'=5da9e7087e921503' -C opt-level'=3' -C panic'=abort' -C strip'=symbols' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/strsim-0.11.1/src/lib.rs \
-        1>          /target/release/deps/out-55db465d4601e4ea-stdout \
-        2>          /target/release/deps/out-55db465d4601e4ea-stderr \
-        || echo $? >/target/release/deps/out-55db465d4601e4ea-errcode\
-  ; find /target/release/deps/*-55db465d4601e4ea* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+        1>          out-55db465d4601e4ea-stdout \
+        2>          out-55db465d4601e4ea-stderr \
+        || echo $? >out-55db465d4601e4ea-errcode\
+  ; find ./*-55db465d4601e4ea* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-55db465d4601e4ea
 COPY --link --from=dep-n-strsim-0.11.1-55db465d4601e4ea /target/release/deps/*-55db465d4601e4ea* /
 
@@ -412,10 +412,10 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
       rustc --allow clippy'::assigning_clones' --allow clippy'::blocks_in_conditions' --allow clippy'::bool_assert_comparison' --allow clippy'::branches_sharing_code' --allow clippy'::collapsible_else_if' --allow clippy'::if_same_then_else' --allow clippy'::let_and_return' --allow clippy'::multiple_bound_locations' --allow clippy'::needless_continue' --allow clippy'::result_large_err' --allow unnameable_types --cap-lints warn --cfg feature'="cargo"' --cfg feature'="color"' --cfg feature'="error-context"' --cfg feature'="help"' --cfg feature'="std"' --cfg feature'="suggestions"' --cfg feature'="usage"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("cargo", "color", "debug", "default", "deprecated", "env", "error-context", "help", "std", "string", "suggestions", "unicode", "unstable-doc", "unstable-ext", "unstable-styles", "unstable-v5", "usage", "wrap_help"))' --crate-name clap_builder --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern anstream'=/target/release/deps/libanstream-a550586acd4c9334.rmeta' --extern anstyle'=/target/release/deps/libanstyle-d1f9f826e5291799.rmeta' --extern clap_lex'=/target/release/deps/libclap_lex-649f315ca8bc4ebc.rmeta' --extern strsim'=/target/release/deps/libstrsim-55db465d4601e4ea.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::checked_conversions' --warn clippy'::create_dir' --warn clippy'::dbg_macro' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::doc_markdown' --warn clippy'::empty_enum' --warn clippy'::enum_glob_use' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::explicit_deref_methods' --warn clippy'::explicit_into_iter_loop' --warn clippy'::fallible_impl_from' --warn clippy'::filter_map_next' --warn clippy'::flat_map_option' --warn clippy'::float_cmp_const' --warn clippy'::fn_params_excessive_bools' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::implicit_clone' --warn clippy'::imprecise_flops' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::inefficient_to_string' --warn clippy'::infinite_loop' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::large_digit_groups' --warn clippy'::large_stack_arrays' --warn clippy'::large_types_passed_by_value' --warn clippy'::linkedlist' --warn clippy'::lossy_float_literal' --warn clippy'::macro_use_imports' --warn clippy'::mem_forget' --warn clippy'::mutex_integer' --warn clippy'::needless_for_each' --warn clippy'::negative_feature_names' --warn clippy'::path_buf_push_overwrite' --warn clippy'::ptr_as_ptr' --warn clippy'::rc_mutex' --warn clippy'::redundant_feature_names' --warn clippy'::ref_option_ref' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::same_functions_in_if_condition' --warn clippy'::self_named_module_files' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::string_add_assign' --warn clippy'::string_lit_as_bytes' --warn clippy'::todo' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::uninlined_format_args' --warn clippy'::verbose_file_reads' --warn clippy'::zero_sized_map_values' --warn rust_2018_idioms --warn unreachable_pub --warn unsafe_op_in_unsafe_fn --warn unused_lifetimes --warn unused_macro_rules --warn unused_qualifications -C extra-filename'=-1cc5db2c50406923' -C metadata'=d4b40dd5bf36cd5c' -C opt-level'=3' -C panic'=abort' -C strip'=symbols' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/clap_builder-4.5.41/src/lib.rs \
-        1>          /target/release/deps/out-1cc5db2c50406923-stdout \
-        2>          /target/release/deps/out-1cc5db2c50406923-stderr \
-        || echo $? >/target/release/deps/out-1cc5db2c50406923-errcode\
-  ; find /target/release/deps/*-1cc5db2c50406923* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+        1>          out-1cc5db2c50406923-stdout \
+        2>          out-1cc5db2c50406923-stderr \
+        || echo $? >out-1cc5db2c50406923-errcode\
+  ; find ./*-1cc5db2c50406923* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-1cc5db2c50406923
 COPY --link --from=dep-n-clap_builder-4.5.41-1cc5db2c50406923 /target/release/deps/*-1cc5db2c50406923* /
 
@@ -470,10 +470,10 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
       rustc --allow clippy'::assigning_clones' --allow clippy'::blocks_in_conditions' --allow clippy'::bool_assert_comparison' --allow clippy'::branches_sharing_code' --allow clippy'::collapsible_else_if' --allow clippy'::if_same_then_else' --allow clippy'::let_and_return' --allow clippy'::multiple_bound_locations' --allow clippy'::needless_continue' --allow clippy'::result_large_err' --allow unnameable_types --cap-lints warn --cfg feature'="cargo"' --cfg feature'="color"' --cfg feature'="default"' --cfg feature'="error-context"' --cfg feature'="help"' --cfg feature'="std"' --cfg feature'="suggestions"' --cfg feature'="usage"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("cargo", "color", "debug", "default", "deprecated", "derive", "env", "error-context", "help", "std", "string", "suggestions", "unicode", "unstable-derive-ui-tests", "unstable-doc", "unstable-ext", "unstable-markdown", "unstable-styles", "unstable-v5", "usage", "wrap_help"))' --crate-name clap --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern clap_builder'=/target/release/deps/libclap_builder-1cc5db2c50406923.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::checked_conversions' --warn clippy'::create_dir' --warn clippy'::dbg_macro' --warn clippy'::debug_assert_with_mut_call' --warn clippy'::doc_markdown' --warn clippy'::empty_enum' --warn clippy'::enum_glob_use' --warn clippy'::expl_impl_clone_on_copy' --warn clippy'::explicit_deref_methods' --warn clippy'::explicit_into_iter_loop' --warn clippy'::fallible_impl_from' --warn clippy'::filter_map_next' --warn clippy'::flat_map_option' --warn clippy'::float_cmp_const' --warn clippy'::fn_params_excessive_bools' --warn clippy'::from_iter_instead_of_collect' --warn clippy'::implicit_clone' --warn clippy'::imprecise_flops' --warn clippy'::inconsistent_struct_constructor' --warn clippy'::inefficient_to_string' --warn clippy'::infinite_loop' --warn clippy'::invalid_upcast_comparisons' --warn clippy'::large_digit_groups' --warn clippy'::large_stack_arrays' --warn clippy'::large_types_passed_by_value' --warn clippy'::linkedlist' --warn clippy'::lossy_float_literal' --warn clippy'::macro_use_imports' --warn clippy'::mem_forget' --warn clippy'::mutex_integer' --warn clippy'::needless_for_each' --warn clippy'::negative_feature_names' --warn clippy'::path_buf_push_overwrite' --warn clippy'::ptr_as_ptr' --warn clippy'::rc_mutex' --warn clippy'::redundant_feature_names' --warn clippy'::ref_option_ref' --warn clippy'::rest_pat_in_fully_bound_structs' --warn clippy'::same_functions_in_if_condition' --warn clippy'::self_named_module_files' --warn clippy'::semicolon_if_nothing_returned' --warn clippy'::string_add_assign' --warn clippy'::string_lit_as_bytes' --warn clippy'::todo' --warn clippy'::trait_duplication_in_bounds' --warn clippy'::uninlined_format_args' --warn clippy'::verbose_file_reads' --warn clippy'::zero_sized_map_values' --warn rust_2018_idioms --warn unreachable_pub --warn unsafe_op_in_unsafe_fn --warn unused_lifetimes --warn unused_macro_rules --warn unused_qualifications -C extra-filename'=-3787e001670b0523' -C metadata'=281402abbbbc56a8' -C opt-level'=3' -C panic'=abort' -C strip'=symbols' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/clap-4.5.41/src/lib.rs \
-        1>          /target/release/deps/out-3787e001670b0523-stdout \
-        2>          /target/release/deps/out-3787e001670b0523-stderr \
-        || echo $? >/target/release/deps/out-3787e001670b0523-errcode\
-  ; find /target/release/deps/*-3787e001670b0523* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+        1>          out-3787e001670b0523-stdout \
+        2>          out-3787e001670b0523-stderr \
+        || echo $? >out-3787e001670b0523-errcode\
+  ; find ./*-3787e001670b0523* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-3787e001670b0523
 COPY --link --from=dep-n-clap-4.5.41-3787e001670b0523 /target/release/deps/*-3787e001670b0523* /
 
@@ -527,18 +527,18 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
       rustc --allow clippy'::declare_interior_mutable_const' --allow clippy'::lint_groups_priority' --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(crossbeam_loom)' --check-cfg cfg'(crossbeam_sanitize)' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "loom", "nightly", "std"))' --crate-name build_script_build --crate-type bin --edition 2021 --emit dep-info,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/crossbeam-utils-9523696effe1b417 --warn unexpected_cfgs -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-9523696effe1b417' -C metadata'=c3f43be1c5312d8f' -C strip'=symbols' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/crossbeam-utils-0.8.21/build.rs \
-        1>          /target/release/build/crossbeam-utils-9523696effe1b417/out-9523696effe1b417-stdout \
-        2>          /target/release/build/crossbeam-utils-9523696effe1b417/out-9523696effe1b417-stderr \
-        || echo $? >/target/release/build/crossbeam-utils-9523696effe1b417/out-9523696effe1b417-errcode\
-  ; find /target/release/build/crossbeam-utils-9523696effe1b417/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+        1>          out-9523696effe1b417-stdout \
+        2>          out-9523696effe1b417-stderr \
+        || echo $? >out-9523696effe1b417-errcode\
+  ; find ./* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-9523696effe1b417
 COPY --link --from=dep-x-crossbeam-utils-0.8.21-9523696effe1b417 /target/release/build/crossbeam-utils-9523696effe1b417/*-9523696effe1b417* /
 
 
 FROM rust-base AS run-z-crossbeam-utils-0.8.21-66e8cb4d84473466
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /target/release/build/crossbeam-utils-66e8cb4d84473466/out
 WORKDIR $CARGO_HOME/registry/src/index.crates.io/crossbeam-utils-0.8.21
+WORKDIR /target/release/build/crossbeam-utils-66e8cb4d84473466/out
 RUN \
   --mount=from=out-9523696effe1b417,source=/build_script_build-9523696effe1b417,dst=/target/release/build/crossbeam-utils-9523696effe1b417/build-script-build \
   --mount=from=cratesio-crossbeam-utils-0.8.21,source=/crossbeam-utils-0.8.21,dst=$CARGO_HOME/registry/src/index.crates.io/crossbeam-utils-0.8.21 \
@@ -587,10 +587,10 @@ RUN \
         TARGET=x86_64-unknown-linux-gnu \
         CARGOGREEN=1 \
       CARGOGREEN_EXECUTE_BUILDRS_= /target/release/build/crossbeam-utils-9523696effe1b417/build-script-build \
-        1>          /target/release/build/crossbeam-utils-66e8cb4d84473466/out/out-66e8cb4d84473466-stdout \
-        2>          /target/release/build/crossbeam-utils-66e8cb4d84473466/out/out-66e8cb4d84473466-stderr \
-        || echo $? >/target/release/build/crossbeam-utils-66e8cb4d84473466/out/out-66e8cb4d84473466-errcode\
-  ; find /target/release/build/crossbeam-utils-66e8cb4d84473466/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+        1>          out-66e8cb4d84473466-stdout \
+        2>          out-66e8cb4d84473466-stderr \
+        || echo $? >out-66e8cb4d84473466-errcode\
+  ; find ./* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-66e8cb4d84473466
 COPY --link --from=run-z-crossbeam-utils-0.8.21-66e8cb4d84473466 /target/release/build/crossbeam-utils-66e8cb4d84473466/out /
 
@@ -625,10 +625,10 @@ RUN \
         OUT_DIR=/target/release/build/crossbeam-utils-66e8cb4d84473466/out \
         CARGOGREEN=1 \
       rustc --allow clippy'::declare_interior_mutable_const' --allow clippy'::lint_groups_priority' --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(crossbeam_loom)' --check-cfg cfg'(crossbeam_no_atomic,crossbeam_sanitize_thread)' --check-cfg cfg'(crossbeam_sanitize)' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "loom", "nightly", "std"))' --crate-name crossbeam_utils --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn unexpected_cfgs -C extra-filename'=-8b06b5563ea04699' -C metadata'=2d91b1e927ec8f38' -C opt-level'=3' -C panic'=abort' -C strip'=symbols' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/crossbeam-utils-0.8.21/src/lib.rs \
-        1>          /target/release/deps/out-8b06b5563ea04699-stdout \
-        2>          /target/release/deps/out-8b06b5563ea04699-stderr \
-        || echo $? >/target/release/deps/out-8b06b5563ea04699-errcode\
-  ; find /target/release/deps/*-8b06b5563ea04699* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+        1>          out-8b06b5563ea04699-stdout \
+        2>          out-8b06b5563ea04699-stderr \
+        || echo $? >out-8b06b5563ea04699-errcode\
+  ; find ./*-8b06b5563ea04699* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-8b06b5563ea04699
 COPY --link --from=dep-n-crossbeam-utils-0.8.21-8b06b5563ea04699 /target/release/deps/*-8b06b5563ea04699* /
 
@@ -665,10 +665,10 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
       rustc --allow clippy'::declare_interior_mutable_const' --allow clippy'::lint_groups_priority' --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(crossbeam_loom)' --check-cfg cfg'(crossbeam_sanitize)' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "std"))' --crate-name crossbeam_channel --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern crossbeam_utils'=/target/release/deps/libcrossbeam_utils-8b06b5563ea04699.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn unexpected_cfgs -C extra-filename'=-02208416784f0f0b' -C metadata'=940c251fd5c8718b' -C opt-level'=3' -C panic'=abort' -C strip'=symbols' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/crossbeam-channel-0.5.15/src/lib.rs \
-        1>          /target/release/deps/out-02208416784f0f0b-stdout \
-        2>          /target/release/deps/out-02208416784f0f0b-stderr \
-        || echo $? >/target/release/deps/out-02208416784f0f0b-errcode\
-  ; find /target/release/deps/*-02208416784f0f0b* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+        1>          out-02208416784f0f0b-stdout \
+        2>          out-02208416784f0f0b-stderr \
+        || echo $? >out-02208416784f0f0b-errcode\
+  ; find ./*-02208416784f0f0b* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-02208416784f0f0b
 COPY --link --from=dep-n-crossbeam-channel-0.5.15-02208416784f0f0b /target/release/deps/*-02208416784f0f0b* /
 
@@ -703,10 +703,10 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name dunce --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C extra-filename'=-5a0b46717148c91b' -C metadata'=5c8587cf7eb23f4c' -C opt-level'=3' -C panic'=abort' -C strip'=symbols' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/dunce-1.0.5/src/lib.rs \
-        1>          /target/release/deps/out-5a0b46717148c91b-stdout \
-        2>          /target/release/deps/out-5a0b46717148c91b-stderr \
-        || echo $? >/target/release/deps/out-5a0b46717148c91b-errcode\
-  ; find /target/release/deps/*-5a0b46717148c91b* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+        1>          out-5a0b46717148c91b-stdout \
+        2>          out-5a0b46717148c91b-stderr \
+        || echo $? >out-5a0b46717148c91b-errcode\
+  ; find ./*-5a0b46717148c91b* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-5a0b46717148c91b
 COPY --link --from=dep-n-dunce-1.0.5-5a0b46717148c91b /target/release/deps/*-5a0b46717148c91b* /
 
@@ -741,10 +741,10 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
       rustc --cap-lints warn --cfg feature'="alloc"' --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "async", "default", "futures", "std"))' --crate-name weezl --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C extra-filename'=-29342da6ce5426b8' -C metadata'=bd18ff06d20a0d93' -C opt-level'=3' -C panic'=abort' -C strip'=symbols' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/weezl-0.1.10/src/lib.rs \
-        1>          /target/release/deps/out-29342da6ce5426b8-stdout \
-        2>          /target/release/deps/out-29342da6ce5426b8-stderr \
-        || echo $? >/target/release/deps/out-29342da6ce5426b8-errcode\
-  ; find /target/release/deps/*-29342da6ce5426b8* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+        1>          out-29342da6ce5426b8-stdout \
+        2>          out-29342da6ce5426b8-stderr \
+        || echo $? >out-29342da6ce5426b8-errcode\
+  ; find ./*-29342da6ce5426b8* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-29342da6ce5426b8
 COPY --link --from=dep-n-weezl-0.1.10-29342da6ce5426b8 /target/release/deps/*-29342da6ce5426b8* /
 
@@ -781,10 +781,10 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
       rustc --cap-lints warn --cfg feature'="raii_no_panic"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("color_quant", "default", "raii_no_panic", "std"))' --crate-name gif --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern weezl'=/target/release/deps/libweezl-29342da6ce5426b8.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C extra-filename'=-833b713519db2754' -C metadata'=8cb0b0ca97e9c2c3' -C opt-level'=3' -C panic'=abort' -C strip'=symbols' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/gif-0.13.3/src/lib.rs \
-        1>          /target/release/deps/out-833b713519db2754-stdout \
-        2>          /target/release/deps/out-833b713519db2754-stderr \
-        || echo $? >/target/release/deps/out-833b713519db2754-errcode\
-  ; find /target/release/deps/*-833b713519db2754* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+        1>          out-833b713519db2754-stdout \
+        2>          out-833b713519db2754-stderr \
+        || echo $? >out-833b713519db2754-errcode\
+  ; find ./*-833b713519db2754* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-833b713519db2754
 COPY --link --from=dep-n-gif-0.13.3-833b713519db2754 /target/release/deps/*-833b713519db2754* /
 
@@ -819,10 +819,10 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
       rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="deprecated"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "deprecated"))' --crate-name imgref --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C extra-filename'=-84cf8c87f6610dd8' -C metadata'=4bb295632f78733c' -C opt-level'=3' -C panic'=abort' -C strip'=symbols' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/imgref-1.11.0/src/lib.rs \
-        1>          /target/release/deps/out-84cf8c87f6610dd8-stdout \
-        2>          /target/release/deps/out-84cf8c87f6610dd8-stderr \
-        || echo $? >/target/release/deps/out-84cf8c87f6610dd8-errcode\
-  ; find /target/release/deps/*-84cf8c87f6610dd8* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+        1>          out-84cf8c87f6610dd8-stdout \
+        2>          out-84cf8c87f6610dd8-stderr \
+        || echo $? >out-84cf8c87f6610dd8-errcode\
+  ; find ./*-84cf8c87f6610dd8* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-84cf8c87f6610dd8
 COPY --link --from=dep-n-imgref-1.11.0-84cf8c87f6610dd8 /target/release/deps/*-84cf8c87f6610dd8* /
 
@@ -857,10 +857,10 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("aarch64_simd", "align_offset", "alloc_uninit", "avx512_simd", "bytemuck_derive", "const_zeroed", "derive", "extern_crate_alloc", "extern_crate_std", "impl_core_error", "latest_stable_rust", "min_const_generics", "must_cast", "must_cast_extra", "nightly_docs", "nightly_float", "nightly_portable_simd", "nightly_stdsimd", "pod_saturating", "track_caller", "transparentwrapper_extra", "unsound_ptr_pod_impl", "wasm_simd", "zeroable_atomics", "zeroable_maybe_uninit", "zeroable_unwind_fn"))' --check-cfg cfg'(target_arch, values("spirv"))' --crate-name bytemuck --crate-type lib --deny unexpected_cfgs --edition 2018 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C extra-filename'=-05d4ff1873ad87bc' -C metadata'=5ec06ac1f778e3ca' -C opt-level'=3' -C panic'=abort' -C strip'=symbols' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/bytemuck-1.23.1/src/lib.rs \
-        1>          /target/release/deps/out-05d4ff1873ad87bc-stdout \
-        2>          /target/release/deps/out-05d4ff1873ad87bc-stderr \
-        || echo $? >/target/release/deps/out-05d4ff1873ad87bc-errcode\
-  ; find /target/release/deps/*-05d4ff1873ad87bc* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+        1>          out-05d4ff1873ad87bc-stdout \
+        2>          out-05d4ff1873ad87bc-stderr \
+        || echo $? >out-05d4ff1873ad87bc-errcode\
+  ; find ./*-05d4ff1873ad87bc* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-05d4ff1873ad87bc
 COPY --link --from=dep-n-bytemuck-1.23.1-05d4ff1873ad87bc /target/release/deps/*-05d4ff1873ad87bc* /
 
@@ -898,10 +898,10 @@ Allows no-copy high-level interoperability. Also adds common convenience methods
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
       rustc --cap-lints warn --cfg feature'="bytemuck"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("argb", "as-bytes", "bytemuck", "checked_fns", "default", "defmt-03", "grb", "serde", "unstable-experimental"))' --crate-name rgb --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern bytemuck'=/target/release/deps/libbytemuck-05d4ff1873ad87bc.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C extra-filename'=-9fccdab094376304' -C metadata'=11462be063c078d9' -C opt-level'=3' -C panic'=abort' -C strip'=symbols' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/rgb-0.8.51/src/lib.rs \
-        1>          /target/release/deps/out-9fccdab094376304-stdout \
-        2>          /target/release/deps/out-9fccdab094376304-stderr \
-        || echo $? >/target/release/deps/out-9fccdab094376304-errcode\
-  ; find /target/release/deps/*-9fccdab094376304* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+        1>          out-9fccdab094376304-stdout \
+        2>          out-9fccdab094376304-stderr \
+        || echo $? >out-9fccdab094376304-errcode\
+  ; find ./*-9fccdab094376304* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-9fccdab094376304
 COPY --link --from=dep-n-rgb-0.8.51-9fccdab094376304 /target/release/deps/*-9fccdab094376304* /
 
@@ -946,10 +946,10 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name gif_dispose --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern gif'=/target/release/deps/libgif-833b713519db2754.rmeta' --extern imgref'=/target/release/deps/libimgref-84cf8c87f6610dd8.rmeta' --extern rgb'=/target/release/deps/librgb-9fccdab094376304.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C extra-filename'=-673653af1372615a' -C metadata'=dad801d5ad82b8b7' -C opt-level'=3' -C panic'=abort' -C strip'=symbols' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/gif-dispose-5.0.1/src/lib.rs \
-        1>          /target/release/deps/out-673653af1372615a-stdout \
-        2>          /target/release/deps/out-673653af1372615a-stderr \
-        || echo $? >/target/release/deps/out-673653af1372615a-errcode\
-  ; find /target/release/deps/*-673653af1372615a* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+        1>          out-673653af1372615a-stdout \
+        2>          out-673653af1372615a-stderr \
+        || echo $? >out-673653af1372615a-errcode\
+  ; find ./*-673653af1372615a* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-673653af1372615a
 COPY --link --from=dep-n-gif-dispose-5.0.1-673653af1372615a /target/release/deps/*-673653af1372615a* /
 
@@ -984,10 +984,10 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
       rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("borsh", "default", "serde", "std", "zeroize"))' --crate-name arrayvec --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C extra-filename'=-7a3152d0e0cb316b' -C metadata'=7f6d33745797d5a5' -C opt-level'=3' -C panic'=abort' -C strip'=symbols' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/arrayvec-0.7.6/src/lib.rs \
-        1>          /target/release/deps/out-7a3152d0e0cb316b-stdout \
-        2>          /target/release/deps/out-7a3152d0e0cb316b-stderr \
-        || echo $? >/target/release/deps/out-7a3152d0e0cb316b-errcode\
-  ; find /target/release/deps/*-7a3152d0e0cb316b* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+        1>          out-7a3152d0e0cb316b-stdout \
+        2>          out-7a3152d0e0cb316b-stderr \
+        || echo $? >out-7a3152d0e0cb316b-errcode\
+  ; find ./*-7a3152d0e0cb316b* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-7a3152d0e0cb316b
 COPY --link --from=dep-n-arrayvec-0.7.6-7a3152d0e0cb316b /target/release/deps/*-7a3152d0e0cb316b* /
 
@@ -1022,10 +1022,10 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
       rustc --cap-lints warn --cfg feature'="alloc"' --cfg feature'="default"' --cfg feature'="race"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "atomic-polyfill", "critical-section", "default", "parking_lot", "portable-atomic", "race", "std", "unstable"))' --crate-name once_cell --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C extra-filename'=-9d970458fe25eb4d' -C metadata'=e3d864982c2ee7c9' -C opt-level'=3' -C panic'=abort' -C strip'=symbols' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/once_cell-1.21.3/src/lib.rs \
-        1>          /target/release/deps/out-9d970458fe25eb4d-stdout \
-        2>          /target/release/deps/out-9d970458fe25eb4d-stderr \
-        || echo $? >/target/release/deps/out-9d970458fe25eb4d-errcode\
-  ; find /target/release/deps/*-9d970458fe25eb4d* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+        1>          out-9d970458fe25eb4d-stdout \
+        2>          out-9d970458fe25eb4d-stderr \
+        || echo $? >out-9d970458fe25eb4d-errcode\
+  ; find ./*-9d970458fe25eb4d* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-9d970458fe25eb4d
 COPY --link --from=dep-n-once_cell-1.21.3-9d970458fe25eb4d /target/release/deps/*-9d970458fe25eb4d* /
 
@@ -1061,10 +1061,10 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "serde", "std", "use_std"))' --crate-name either --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C extra-filename'=-ee23e76a28f1de59' -C metadata'=3c1aa3b278c904d7' -C opt-level'=3' -C panic'=abort' -C strip'=symbols' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/either-1.15.0/src/lib.rs \
-        1>          /target/release/deps/out-ee23e76a28f1de59-stdout \
-        2>          /target/release/deps/out-ee23e76a28f1de59-stderr \
-        || echo $? >/target/release/deps/out-ee23e76a28f1de59-errcode\
-  ; find /target/release/deps/*-ee23e76a28f1de59* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+        1>          out-ee23e76a28f1de59-stdout \
+        2>          out-ee23e76a28f1de59-stderr \
+        || echo $? >out-ee23e76a28f1de59-errcode\
+  ; find ./*-ee23e76a28f1de59* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-ee23e76a28f1de59
 COPY --link --from=dep-n-either-1.15.0-ee23e76a28f1de59 /target/release/deps/*-ee23e76a28f1de59* /
 
@@ -1101,10 +1101,10 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
       rustc --cap-lints warn --cfg feature'="alloc"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("alloc", "default", "loom", "loom-crate", "nightly", "std"))' --crate-name crossbeam_epoch --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern crossbeam_utils'=/target/release/deps/libcrossbeam_utils-8b06b5563ea04699.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C extra-filename'=-2fca843e1b181c0c' -C metadata'=afc6f175ca97a0ec' -C opt-level'=3' -C panic'=abort' -C strip'=symbols' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/crossbeam-epoch-0.9.18/src/lib.rs \
-        1>          /target/release/deps/out-2fca843e1b181c0c-stdout \
-        2>          /target/release/deps/out-2fca843e1b181c0c-stderr \
-        || echo $? >/target/release/deps/out-2fca843e1b181c0c-errcode\
-  ; find /target/release/deps/*-2fca843e1b181c0c* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+        1>          out-2fca843e1b181c0c-stdout \
+        2>          out-2fca843e1b181c0c-stderr \
+        || echo $? >out-2fca843e1b181c0c-errcode\
+  ; find ./*-2fca843e1b181c0c* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-2fca843e1b181c0c
 COPY --link --from=dep-n-crossbeam-epoch-0.9.18-2fca843e1b181c0c /target/release/deps/*-2fca843e1b181c0c* /
 
@@ -1143,10 +1143,10 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
       rustc --allow clippy'::declare_interior_mutable_const' --allow clippy'::lint_groups_priority' --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(crossbeam_loom)' --check-cfg cfg'(crossbeam_sanitize)' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "std"))' --crate-name crossbeam_deque --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern crossbeam_epoch'=/target/release/deps/libcrossbeam_epoch-2fca843e1b181c0c.rmeta' --extern crossbeam_utils'=/target/release/deps/libcrossbeam_utils-8b06b5563ea04699.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn unexpected_cfgs -C extra-filename'=-3f3857720426e980' -C metadata'=3dba1f1ca8432d71' -C opt-level'=3' -C panic'=abort' -C strip'=symbols' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/crossbeam-deque-0.8.6/src/lib.rs \
-        1>          /target/release/deps/out-3f3857720426e980-stdout \
-        2>          /target/release/deps/out-3f3857720426e980-stderr \
-        || echo $? >/target/release/deps/out-3f3857720426e980-errcode\
-  ; find /target/release/deps/*-3f3857720426e980* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+        1>          out-3f3857720426e980-stdout \
+        2>          out-3f3857720426e980-stderr \
+        || echo $? >out-3f3857720426e980-errcode\
+  ; find ./*-3f3857720426e980* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-3f3857720426e980
 COPY --link --from=dep-n-crossbeam-deque-0.8.6-3f3857720426e980 /target/release/deps/*-3f3857720426e980* /
 
@@ -1200,18 +1200,18 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("web_spin_lock"))' --crate-name build_script_build --crate-type bin --edition 2021 --emit dep-info,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/rayon-core-80f61346d08b8ad4 -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-80f61346d08b8ad4' -C metadata'=36b3a4b284e89412' -C strip'=symbols' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/rayon-core-1.12.1/build.rs \
-        1>          /target/release/build/rayon-core-80f61346d08b8ad4/out-80f61346d08b8ad4-stdout \
-        2>          /target/release/build/rayon-core-80f61346d08b8ad4/out-80f61346d08b8ad4-stderr \
-        || echo $? >/target/release/build/rayon-core-80f61346d08b8ad4/out-80f61346d08b8ad4-errcode\
-  ; find /target/release/build/rayon-core-80f61346d08b8ad4/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+        1>          out-80f61346d08b8ad4-stdout \
+        2>          out-80f61346d08b8ad4-stderr \
+        || echo $? >out-80f61346d08b8ad4-errcode\
+  ; find ./* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-80f61346d08b8ad4
 COPY --link --from=dep-x-rayon-core-1.12.1-80f61346d08b8ad4 /target/release/build/rayon-core-80f61346d08b8ad4/*-80f61346d08b8ad4* /
 
 
 FROM rust-base AS run-z-rayon-core-1.12.1-296a31aad008c41f
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /target/release/build/rayon-core-296a31aad008c41f/out
 WORKDIR $CARGO_HOME/registry/src/index.crates.io/rayon-core-1.12.1
+WORKDIR /target/release/build/rayon-core-296a31aad008c41f/out
 RUN \
   --mount=from=out-80f61346d08b8ad4,source=/build_script_build-80f61346d08b8ad4,dst=/target/release/build/rayon-core-80f61346d08b8ad4/build-script-build \
   --mount=from=cratesio-rayon-core-1.12.1,source=/rayon-core-1.12.1,dst=$CARGO_HOME/registry/src/index.crates.io/rayon-core-1.12.1 \
@@ -1259,10 +1259,10 @@ RUN \
         TARGET=x86_64-unknown-linux-gnu \
         CARGOGREEN=1 \
       CARGOGREEN_EXECUTE_BUILDRS_= /target/release/build/rayon-core-80f61346d08b8ad4/build-script-build \
-        1>          /target/release/build/rayon-core-296a31aad008c41f/out/out-296a31aad008c41f-stdout \
-        2>          /target/release/build/rayon-core-296a31aad008c41f/out/out-296a31aad008c41f-stderr \
-        || echo $? >/target/release/build/rayon-core-296a31aad008c41f/out/out-296a31aad008c41f-errcode\
-  ; find /target/release/build/rayon-core-296a31aad008c41f/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+        1>          out-296a31aad008c41f-stdout \
+        2>          out-296a31aad008c41f-stderr \
+        || echo $? >out-296a31aad008c41f-errcode\
+  ; find ./* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-296a31aad008c41f
 COPY --link --from=run-z-rayon-core-1.12.1-296a31aad008c41f /target/release/build/rayon-core-296a31aad008c41f/out /
 
@@ -1303,10 +1303,10 @@ RUN \
         OUT_DIR=/target/release/build/rayon-core-296a31aad008c41f/out \
         CARGOGREEN=1 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("web_spin_lock"))' --crate-name rayon_core --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern crossbeam_deque'=/target/release/deps/libcrossbeam_deque-3f3857720426e980.rmeta' --extern crossbeam_utils'=/target/release/deps/libcrossbeam_utils-8b06b5563ea04699.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C extra-filename'=-a6f95a69fdf20092' -C metadata'=91905eb8c4a2e808' -C opt-level'=3' -C panic'=abort' -C strip'=symbols' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/rayon-core-1.12.1/src/lib.rs \
-        1>          /target/release/deps/out-a6f95a69fdf20092-stdout \
-        2>          /target/release/deps/out-a6f95a69fdf20092-stderr \
-        || echo $? >/target/release/deps/out-a6f95a69fdf20092-errcode\
-  ; find /target/release/deps/*-a6f95a69fdf20092* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+        1>          out-a6f95a69fdf20092-stdout \
+        2>          out-a6f95a69fdf20092-stderr \
+        || echo $? >out-a6f95a69fdf20092-errcode\
+  ; find ./*-a6f95a69fdf20092* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-a6f95a69fdf20092
 COPY --link --from=dep-n-rayon-core-1.12.1-a6f95a69fdf20092 /target/release/deps/*-a6f95a69fdf20092* /
 
@@ -1351,10 +1351,10 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("web_spin_lock"))' --crate-name rayon --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern either'=/target/release/deps/libeither-ee23e76a28f1de59.rmeta' --extern rayon_core'=/target/release/deps/librayon_core-a6f95a69fdf20092.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C extra-filename'=-48df830a8500daa6' -C metadata'=58f67917e827222a' -C opt-level'=3' -C panic'=abort' -C strip'=symbols' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/rayon-1.10.0/src/lib.rs \
-        1>          /target/release/deps/out-48df830a8500daa6-stdout \
-        2>          /target/release/deps/out-48df830a8500daa6-stderr \
-        || echo $? >/target/release/deps/out-48df830a8500daa6-errcode\
-  ; find /target/release/deps/*-48df830a8500daa6* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+        1>          out-48df830a8500daa6-stdout \
+        2>          out-48df830a8500daa6-stderr \
+        || echo $? >out-48df830a8500daa6-errcode\
+  ; find ./*-48df830a8500daa6* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-48df830a8500daa6
 COPY --link --from=dep-n-rayon-1.10.0-48df830a8500daa6 /target/release/deps/*-48df830a8500daa6* /
 
@@ -1392,10 +1392,10 @@ item that gets emitted.\
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("core", "rustc-dep-of-std"))' --crate-name cfg_if --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C extra-filename'=-d5f77f1499e95549' -C metadata'=b5773306800f287f' -C opt-level'=3' -C panic'=abort' -C strip'=symbols' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/cfg-if-1.0.1/src/lib.rs \
-        1>          /target/release/deps/out-d5f77f1499e95549-stdout \
-        2>          /target/release/deps/out-d5f77f1499e95549-stderr \
-        || echo $? >/target/release/deps/out-d5f77f1499e95549-errcode\
-  ; find /target/release/deps/*-d5f77f1499e95549* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+        1>          out-d5f77f1499e95549-stdout \
+        2>          out-d5f77f1499e95549-stderr \
+        || echo $? >out-d5f77f1499e95549-errcode\
+  ; find ./*-d5f77f1499e95549* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-d5f77f1499e95549
 COPY --link --from=dep-n-cfg-if-1.0.1-d5f77f1499e95549 /target/release/deps/*-d5f77f1499e95549* /
 
@@ -1432,10 +1432,10 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("nightly"))' --crate-name thread_local --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern cfg_if'=/target/release/deps/libcfg_if-d5f77f1499e95549.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C extra-filename'=-81ab489bedc10a4d' -C metadata'=e4e6e0547e62558a' -C opt-level'=3' -C panic'=abort' -C strip'=symbols' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/thread_local-1.1.9/src/lib.rs \
-        1>          /target/release/deps/out-81ab489bedc10a4d-stdout \
-        2>          /target/release/deps/out-81ab489bedc10a4d-stderr \
-        || echo $? >/target/release/deps/out-81ab489bedc10a4d-errcode\
-  ; find /target/release/deps/*-81ab489bedc10a4d* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+        1>          out-81ab489bedc10a4d-stdout \
+        2>          out-81ab489bedc10a4d-stderr \
+        || echo $? >out-81ab489bedc10a4d-errcode\
+  ; find ./*-81ab489bedc10a4d* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-81ab489bedc10a4d
 COPY --link --from=dep-n-thread_local-1.1.9-81ab489bedc10a4d /target/release/deps/*-81ab489bedc10a4d* /
 
@@ -1496,10 +1496,10 @@ Dual-licensed like pngquant. See https://pngquant.org for details.' \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
       rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="threads"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("_internal_c_ffi", "default", "large_palettes", "threads"))' --crate-name imagequant --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern arrayvec'=/target/release/deps/libarrayvec-7a3152d0e0cb316b.rmeta' --extern once_cell'=/target/release/deps/libonce_cell-9d970458fe25eb4d.rmeta' --extern rayon'=/target/release/deps/librayon-48df830a8500daa6.rmeta' --extern rgb'=/target/release/deps/librgb-9fccdab094376304.rmeta' --extern thread_local'=/target/release/deps/libthread_local-81ab489bedc10a4d.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C extra-filename'=-ddf60813053069d9' -C metadata'=a039446503ce1bf9' -C opt-level'=3' -C panic'=abort' -C strip'=symbols' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/imagequant-4.4.1/src/lib.rs \
-        1>          /target/release/deps/out-ddf60813053069d9-stdout \
-        2>          /target/release/deps/out-ddf60813053069d9-stderr \
-        || echo $? >/target/release/deps/out-ddf60813053069d9-errcode\
-  ; find /target/release/deps/*-ddf60813053069d9* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+        1>          out-ddf60813053069d9-stdout \
+        2>          out-ddf60813053069d9-stderr \
+        || echo $? >out-ddf60813053069d9-errcode\
+  ; find ./*-ddf60813053069d9* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-ddf60813053069d9
 COPY --link --from=dep-n-imagequant-4.4.1-ddf60813053069d9 /target/release/deps/*-ddf60813053069d9* /
 
@@ -1553,18 +1553,18 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
       rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "nightly", "std"))' --crate-name build_script_build --crate-type bin --edition 2021 --emit dep-info,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/crc32fast-d1dbff5e0a7e97c0 -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-d1dbff5e0a7e97c0' -C metadata'=b249ee942e4c0806' -C strip'=symbols' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/crc32fast-1.5.0/build.rs \
-        1>          /target/release/build/crc32fast-d1dbff5e0a7e97c0/out-d1dbff5e0a7e97c0-stdout \
-        2>          /target/release/build/crc32fast-d1dbff5e0a7e97c0/out-d1dbff5e0a7e97c0-stderr \
-        || echo $? >/target/release/build/crc32fast-d1dbff5e0a7e97c0/out-d1dbff5e0a7e97c0-errcode\
-  ; find /target/release/build/crc32fast-d1dbff5e0a7e97c0/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+        1>          out-d1dbff5e0a7e97c0-stdout \
+        2>          out-d1dbff5e0a7e97c0-stderr \
+        || echo $? >out-d1dbff5e0a7e97c0-errcode\
+  ; find ./* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-d1dbff5e0a7e97c0
 COPY --link --from=dep-x-crc32fast-1.5.0-d1dbff5e0a7e97c0 /target/release/build/crc32fast-d1dbff5e0a7e97c0/*-d1dbff5e0a7e97c0* /
 
 
 FROM rust-base AS run-z-crc32fast-1.5.0-60b668761379f88a
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /target/release/build/crc32fast-60b668761379f88a/out
 WORKDIR $CARGO_HOME/registry/src/index.crates.io/crc32fast-1.5.0
+WORKDIR /target/release/build/crc32fast-60b668761379f88a/out
 RUN \
   --mount=from=out-d1dbff5e0a7e97c0,source=/build_script_build-d1dbff5e0a7e97c0,dst=/target/release/build/crc32fast-d1dbff5e0a7e97c0/build-script-build \
   --mount=from=cratesio-crc32fast-1.5.0,source=/crc32fast-1.5.0,dst=$CARGO_HOME/registry/src/index.crates.io/crc32fast-1.5.0 \
@@ -1613,10 +1613,10 @@ RUN \
         TARGET=x86_64-unknown-linux-gnu \
         CARGOGREEN=1 \
       CARGOGREEN_EXECUTE_BUILDRS_= /target/release/build/crc32fast-d1dbff5e0a7e97c0/build-script-build \
-        1>          /target/release/build/crc32fast-60b668761379f88a/out/out-60b668761379f88a-stdout \
-        2>          /target/release/build/crc32fast-60b668761379f88a/out/out-60b668761379f88a-stderr \
-        || echo $? >/target/release/build/crc32fast-60b668761379f88a/out/out-60b668761379f88a-errcode\
-  ; find /target/release/build/crc32fast-60b668761379f88a/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+        1>          out-60b668761379f88a-stdout \
+        2>          out-60b668761379f88a-stderr \
+        || echo $? >out-60b668761379f88a-errcode\
+  ; find ./* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-60b668761379f88a
 COPY --link --from=run-z-crc32fast-1.5.0-60b668761379f88a /target/release/build/crc32fast-60b668761379f88a/out /
 
@@ -1653,10 +1653,10 @@ RUN \
         OUT_DIR=/target/release/build/crc32fast-60b668761379f88a/out \
         CARGOGREEN=1 \
       rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --cfg stable_arm_crc32_intrinsics --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "nightly", "std"))' --check-cfg cfg'(stable_arm_crc32_intrinsics)' --crate-name crc32fast --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern cfg_if'=/target/release/deps/libcfg_if-d5f77f1499e95549.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C extra-filename'=-fb6a0584a3a1daad' -C metadata'=2b50c7f301c024c6' -C opt-level'=3' -C panic'=abort' -C strip'=symbols' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/crc32fast-1.5.0/src/lib.rs \
-        1>          /target/release/deps/out-fb6a0584a3a1daad-stdout \
-        2>          /target/release/deps/out-fb6a0584a3a1daad-stderr \
-        || echo $? >/target/release/deps/out-fb6a0584a3a1daad-errcode\
-  ; find /target/release/deps/*-fb6a0584a3a1daad* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+        1>          out-fb6a0584a3a1daad-stdout \
+        2>          out-fb6a0584a3a1daad-stderr \
+        || echo $? >out-fb6a0584a3a1daad-errcode\
+  ; find ./*-fb6a0584a3a1daad* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-fb6a0584a3a1daad
 COPY --link --from=dep-n-crc32fast-1.5.0-fb6a0584a3a1daad /target/release/deps/*-fb6a0584a3a1daad* /
 
@@ -1691,10 +1691,10 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
       rustc --cap-lints warn --cfg feature'="rust-allocator"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("ZLIB_DEBUG", "__internal-fuzz", "__internal-fuzz-disable-checksum", "__internal-test", "arbitrary", "c-allocator", "default", "quickcheck", "rust-allocator", "std"))' --crate-name zlib_rs --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C extra-filename'=-04078eb4117344ab' -C metadata'=5217e164877f77f4' -C opt-level'=3' -C panic'=abort' -C strip'=symbols' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/zlib-rs-0.5.1/src/lib.rs \
-        1>          /target/release/deps/out-04078eb4117344ab-stdout \
-        2>          /target/release/deps/out-04078eb4117344ab-stderr \
-        || echo $? >/target/release/deps/out-04078eb4117344ab-errcode\
-  ; find /target/release/deps/*-04078eb4117344ab* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+        1>          out-04078eb4117344ab-stdout \
+        2>          out-04078eb4117344ab-stderr \
+        || echo $? >out-04078eb4117344ab-errcode\
+  ; find ./*-04078eb4117344ab* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-04078eb4117344ab
 COPY --link --from=dep-n-zlib-rs-0.5.1-04078eb4117344ab /target/release/deps/*-04078eb4117344ab* /
 
@@ -1731,10 +1731,10 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
       rustc --cap-lints warn --cfg feature'="rust-allocator"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("c-allocator", "custom-prefix", "default", "export-symbols", "rust-allocator", "semver-prefix", "std", "testing-prefix"))' --crate-name libz_rs_sys --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern zlib_rs'=/target/release/deps/libzlib_rs-04078eb4117344ab.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C extra-filename'=-430add265fb1f18b' -C metadata'=990975b1f54e928d' -C opt-level'=3' -C panic'=abort' -C strip'=symbols' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/libz-rs-sys-0.5.1/src/lib.rs \
-        1>          /target/release/deps/out-430add265fb1f18b-stdout \
-        2>          /target/release/deps/out-430add265fb1f18b-stderr \
-        || echo $? >/target/release/deps/out-430add265fb1f18b-errcode\
-  ; find /target/release/deps/*-430add265fb1f18b* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+        1>          out-430add265fb1f18b-stdout \
+        2>          out-430add265fb1f18b-stderr \
+        || echo $? >out-430add265fb1f18b-errcode\
+  ; find ./*-430add265fb1f18b* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-430add265fb1f18b
 COPY --link --from=dep-n-libz-rs-sys-0.5.1-430add265fb1f18b /target/release/deps/*-430add265fb1f18b* /
 
@@ -1780,10 +1780,10 @@ and raw deflate streams.\
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
       rustc --cap-lints warn --cfg feature'="any_impl"' --cfg feature'="any_zlib"' --cfg feature'="libz-rs-sys"' --cfg feature'="zlib-rs"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("any_impl", "any_zlib", "cloudflare-zlib-sys", "cloudflare_zlib", "default", "libz-ng-sys", "libz-rs-sys", "libz-sys", "miniz-sys", "miniz_oxide", "rust_backend", "zlib", "zlib-default", "zlib-ng", "zlib-ng-compat", "zlib-rs"))' --crate-name flate2 --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern crc32fast'=/target/release/deps/libcrc32fast-fb6a0584a3a1daad.rmeta' --extern libz_rs_sys'=/target/release/deps/liblibz_rs_sys-430add265fb1f18b.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C extra-filename'=-6ce7654e2dc50bfe' -C metadata'=9cf33f02fa359eb3' -C opt-level'=3' -C panic'=abort' -C strip'=symbols' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/flate2-1.1.2/src/lib.rs \
-        1>          /target/release/deps/out-6ce7654e2dc50bfe-stdout \
-        2>          /target/release/deps/out-6ce7654e2dc50bfe-stderr \
-        || echo $? >/target/release/deps/out-6ce7654e2dc50bfe-errcode\
-  ; find /target/release/deps/*-6ce7654e2dc50bfe* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+        1>          out-6ce7654e2dc50bfe-stdout \
+        2>          out-6ce7654e2dc50bfe-stderr \
+        || echo $? >out-6ce7654e2dc50bfe-errcode\
+  ; find ./*-6ce7654e2dc50bfe* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-6ce7654e2dc50bfe
 COPY --link --from=dep-n-flate2-1.1.2-6ce7654e2dc50bfe /target/release/deps/*-6ce7654e2dc50bfe* /
 
@@ -1837,18 +1837,18 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
       rustc --allow clippy'::expl_impl_clone_on_copy' --allow clippy'::identity_op' --allow clippy'::missing_safety_doc' --allow clippy'::non_minimal_cfg' --allow clippy'::uninlined_format_args' --allow clippy'::unnecessary_cast' --allow clippy'::used_underscore_binding' --allow unused_qualifications --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("align", "const-extern-fn", "default", "extra_traits", "rustc-dep-of-std", "rustc-std-workspace-core", "std", "use_std"))' --crate-name build_script_build --crate-type bin --edition 2021 --emit dep-info,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/libc-da51c29e42901e01 --warn clippy'::explicit_iter_loop' --warn clippy'::manual_assert' --warn clippy'::map_unwrap_or' --warn clippy'::ptr_as_ptr' --warn clippy'::unnecessary_semicolon' -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-da51c29e42901e01' -C metadata'=89a7af185c62e4de' -C strip'=symbols' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/libc-0.2.174/build.rs \
-        1>          /target/release/build/libc-da51c29e42901e01/out-da51c29e42901e01-stdout \
-        2>          /target/release/build/libc-da51c29e42901e01/out-da51c29e42901e01-stderr \
-        || echo $? >/target/release/build/libc-da51c29e42901e01/out-da51c29e42901e01-errcode\
-  ; find /target/release/build/libc-da51c29e42901e01/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+        1>          out-da51c29e42901e01-stdout \
+        2>          out-da51c29e42901e01-stderr \
+        || echo $? >out-da51c29e42901e01-errcode\
+  ; find ./* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-da51c29e42901e01
 COPY --link --from=dep-x-libc-0.2.174-da51c29e42901e01 /target/release/build/libc-da51c29e42901e01/*-da51c29e42901e01* /
 
 
 FROM rust-base AS run-z-libc-0.2.174-4cc3e5f3c96f9b30
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /target/release/build/libc-4cc3e5f3c96f9b30/out
 WORKDIR $CARGO_HOME/registry/src/index.crates.io/libc-0.2.174
+WORKDIR /target/release/build/libc-4cc3e5f3c96f9b30/out
 RUN \
   --mount=from=out-da51c29e42901e01,source=/build_script_build-da51c29e42901e01,dst=/target/release/build/libc-da51c29e42901e01/build-script-build \
   --mount=from=cratesio-libc-0.2.174,source=/libc-0.2.174,dst=$CARGO_HOME/registry/src/index.crates.io/libc-0.2.174 \
@@ -1897,10 +1897,10 @@ RUN \
         TARGET=x86_64-unknown-linux-gnu \
         CARGOGREEN=1 \
       CARGOGREEN_EXECUTE_BUILDRS_= /target/release/build/libc-da51c29e42901e01/build-script-build \
-        1>          /target/release/build/libc-4cc3e5f3c96f9b30/out/out-4cc3e5f3c96f9b30-stdout \
-        2>          /target/release/build/libc-4cc3e5f3c96f9b30/out/out-4cc3e5f3c96f9b30-stderr \
-        || echo $? >/target/release/build/libc-4cc3e5f3c96f9b30/out/out-4cc3e5f3c96f9b30-errcode\
-  ; find /target/release/build/libc-4cc3e5f3c96f9b30/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+        1>          out-4cc3e5f3c96f9b30-stdout \
+        2>          out-4cc3e5f3c96f9b30-stderr \
+        || echo $? >out-4cc3e5f3c96f9b30-errcode\
+  ; find ./* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-4cc3e5f3c96f9b30
 COPY --link --from=run-z-libc-0.2.174-4cc3e5f3c96f9b30 /target/release/build/libc-4cc3e5f3c96f9b30/out /
 
@@ -1935,10 +1935,10 @@ RUN \
         OUT_DIR=/target/release/build/libc-4cc3e5f3c96f9b30/out \
         CARGOGREEN=1 \
       rustc --allow clippy'::expl_impl_clone_on_copy' --allow clippy'::identity_op' --allow clippy'::missing_safety_doc' --allow clippy'::non_minimal_cfg' --allow clippy'::uninlined_format_args' --allow clippy'::unnecessary_cast' --allow clippy'::used_underscore_binding' --allow unused_qualifications --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --cfg freebsd11 --cfg libc_const_extern_fn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(emscripten_old_stat_abi)' --check-cfg cfg'(espidf_time32)' --check-cfg cfg'(feature, values("align", "const-extern-fn", "default", "extra_traits", "rustc-dep-of-std", "rustc-std-workspace-core", "std", "use_std"))' --check-cfg cfg'(freebsd10)' --check-cfg cfg'(freebsd11)' --check-cfg cfg'(freebsd12)' --check-cfg cfg'(freebsd13)' --check-cfg cfg'(freebsd14)' --check-cfg cfg'(freebsd15)' --check-cfg cfg'(gnu_file_offset_bits64)' --check-cfg cfg'(gnu_time_bits64)' --check-cfg cfg'(libc_const_extern_fn)' --check-cfg cfg'(libc_ctest)' --check-cfg cfg'(libc_deny_warnings)' --check-cfg cfg'(libc_thread_local)' --check-cfg cfg'(linux_time_bits64)' --check-cfg cfg'(musl_v1_2_3)' --check-cfg cfg'(target_arch,values("loongarch64","mips32r6","mips64r6","csky"))' --check-cfg cfg'(target_env,values("illumos","wasi","aix","ohos","nto71_iosock","nto80"))' --check-cfg cfg'(target_os,values("switch","aix","ohos","hurd","rtems","visionos","nuttx","cygwin"))' --crate-name libc --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps --warn clippy'::explicit_iter_loop' --warn clippy'::manual_assert' --warn clippy'::map_unwrap_or' --warn clippy'::ptr_as_ptr' --warn clippy'::unnecessary_semicolon' -C extra-filename'=-ba5310007d02d735' -C metadata'=943e9d9f67192075' -C opt-level'=3' -C panic'=abort' -C strip'=symbols' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/libc-0.2.174/src/lib.rs \
-        1>          /target/release/deps/out-ba5310007d02d735-stdout \
-        2>          /target/release/deps/out-ba5310007d02d735-stderr \
-        || echo $? >/target/release/deps/out-ba5310007d02d735-errcode\
-  ; find /target/release/deps/*-ba5310007d02d735* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+        1>          out-ba5310007d02d735-stdout \
+        2>          out-ba5310007d02d735-stderr \
+        || echo $? >out-ba5310007d02d735-errcode\
+  ; find ./*-ba5310007d02d735* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-ba5310007d02d735
 COPY --link --from=dep-n-libc-0.2.174-ba5310007d02d735 /target/release/deps/*-ba5310007d02d735* /
 
@@ -1989,10 +1989,10 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
       rustc --cap-lints warn --cfg feature'="_deprecated_c_ffi_default_"' --cfg feature'="default"' --cfg feature'="zlibrs"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("_deprecated_c_ffi_default_", "c_ffi", "cfzlib", "default", "ngzlib", "rust_backend", "zlibrs"))' --crate-name lodepng --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern crc32fast'=/target/release/deps/libcrc32fast-fb6a0584a3a1daad.rmeta' --extern flate2'=/target/release/deps/libflate2-6ce7654e2dc50bfe.rmeta' --extern libc'=/target/release/deps/liblibc-ba5310007d02d735.rmeta' --extern rgb'=/target/release/deps/librgb-9fccdab094376304.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C extra-filename'=-800f01a04e0f5cad' -C metadata'=be77949a1cc29803' -C opt-level'=3' -C panic'=abort' -C strip'=symbols' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/lodepng-3.12.1/src/lib.rs \
-        1>          /target/release/deps/out-800f01a04e0f5cad-stdout \
-        2>          /target/release/deps/out-800f01a04e0f5cad-stderr \
-        || echo $? >/target/release/deps/out-800f01a04e0f5cad-errcode\
-  ; find /target/release/deps/*-800f01a04e0f5cad* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+        1>          out-800f01a04e0f5cad-stdout \
+        2>          out-800f01a04e0f5cad-stderr \
+        || echo $? >out-800f01a04e0f5cad-errcode\
+  ; find ./*-800f01a04e0f5cad* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-800f01a04e0f5cad
 COPY --link --from=dep-n-lodepng-3.12.1-800f01a04e0f5cad /target/release/deps/*-800f01a04e0f5cad* /
 
@@ -2029,10 +2029,10 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name loop9 --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern imgref'=/target/release/deps/libimgref-84cf8c87f6610dd8.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C extra-filename'=-0da13261130b2b31' -C metadata'=c69d5507a9c46592' -C opt-level'=3' -C panic'=abort' -C strip'=symbols' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/loop9-0.1.5/src/lib.rs \
-        1>          /target/release/deps/out-0da13261130b2b31-stdout \
-        2>          /target/release/deps/out-0da13261130b2b31-stderr \
-        || echo $? >/target/release/deps/out-0da13261130b2b31-errcode\
-  ; find /target/release/deps/*-0da13261130b2b31* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+        1>          out-0da13261130b2b31-stdout \
+        2>          out-0da13261130b2b31-stderr \
+        || echo $? >out-0da13261130b2b31-errcode\
+  ; find ./*-0da13261130b2b31* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-0da13261130b2b31
 COPY --link --from=dep-n-loop9-0.1.5-0da13261130b2b31 /target/release/deps/*-0da13261130b2b31* /
 
@@ -2067,10 +2067,10 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name natord --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C extra-filename'=-0f94fc369184fe0b' -C metadata'=14af69f0841b1c5f' -C opt-level'=3' -C panic'=abort' -C strip'=symbols' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/natord-1.0.9/lib.rs \
-        1>          /target/release/deps/out-0f94fc369184fe0b-stdout \
-        2>          /target/release/deps/out-0f94fc369184fe0b-stderr \
-        || echo $? >/target/release/deps/out-0f94fc369184fe0b-errcode\
-  ; find /target/release/deps/*-0f94fc369184fe0b* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+        1>          out-0f94fc369184fe0b-stdout \
+        2>          out-0f94fc369184fe0b-stderr \
+        || echo $? >out-0f94fc369184fe0b-errcode\
+  ; find ./*-0f94fc369184fe0b* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-0f94fc369184fe0b
 COPY --link --from=dep-n-natord-1.0.9-0f94fc369184fe0b /target/release/deps/*-0f94fc369184fe0b* /
 
@@ -2105,10 +2105,10 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name autocfg --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-a6749ee212f31209' -C metadata'=93b882e1508f844d' -C strip'=symbols' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/autocfg-1.5.0/src/lib.rs \
-        1>          /target/release/deps/out-a6749ee212f31209-stdout \
-        2>          /target/release/deps/out-a6749ee212f31209-stderr \
-        || echo $? >/target/release/deps/out-a6749ee212f31209-errcode\
-  ; find /target/release/deps/*-a6749ee212f31209* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+        1>          out-a6749ee212f31209-stdout \
+        2>          out-a6749ee212f31209-stderr \
+        || echo $? >out-a6749ee212f31209-errcode\
+  ; find ./*-a6749ee212f31209* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-a6749ee212f31209
 COPY --link --from=dep-n-autocfg-1.5.0-a6749ee212f31209 /target/release/deps/*-a6749ee212f31209* /
 
@@ -2163,18 +2163,18 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
       rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="i128"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "i128", "libm", "std"))' --crate-name build_script_build --crate-type bin --edition 2021 --emit dep-info,link --error-format json --extern autocfg'=/target/release/deps/libautocfg-a6749ee212f31209.rlib' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/num-traits-f6ccb38f53f556a0 -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-f6ccb38f53f556a0' -C metadata'=739c2337b538132f' -C strip'=symbols' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/num-traits-0.2.19/build.rs \
-        1>          /target/release/build/num-traits-f6ccb38f53f556a0/out-f6ccb38f53f556a0-stdout \
-        2>          /target/release/build/num-traits-f6ccb38f53f556a0/out-f6ccb38f53f556a0-stderr \
-        || echo $? >/target/release/build/num-traits-f6ccb38f53f556a0/out-f6ccb38f53f556a0-errcode\
-  ; find /target/release/build/num-traits-f6ccb38f53f556a0/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+        1>          out-f6ccb38f53f556a0-stdout \
+        2>          out-f6ccb38f53f556a0-stderr \
+        || echo $? >out-f6ccb38f53f556a0-errcode\
+  ; find ./* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-f6ccb38f53f556a0
 COPY --link --from=dep-x-num-traits-0.2.19-f6ccb38f53f556a0 /target/release/build/num-traits-f6ccb38f53f556a0/*-f6ccb38f53f556a0* /
 
 
 FROM rust-base AS run-z-num-traits-0.2.19-3c5112c6c79a69d0
 SHELL ["/bin/sh", "-eux", "-c"]
-WORKDIR /target/release/build/num-traits-3c5112c6c79a69d0/out
 WORKDIR $CARGO_HOME/registry/src/index.crates.io/num-traits-0.2.19
+WORKDIR /target/release/build/num-traits-3c5112c6c79a69d0/out
 RUN \
   --mount=from=out-f6ccb38f53f556a0,source=/build_script_build-f6ccb38f53f556a0,dst=/target/release/build/num-traits-f6ccb38f53f556a0/build-script-build \
   --mount=from=cratesio-num-traits-0.2.19,source=/num-traits-0.2.19,dst=$CARGO_HOME/registry/src/index.crates.io/num-traits-0.2.19 \
@@ -2224,10 +2224,10 @@ RUN \
         TARGET=x86_64-unknown-linux-gnu \
         CARGOGREEN=1 \
       CARGOGREEN_EXECUTE_BUILDRS_= /target/release/build/num-traits-f6ccb38f53f556a0/build-script-build \
-        1>          /target/release/build/num-traits-3c5112c6c79a69d0/out/out-3c5112c6c79a69d0-stdout \
-        2>          /target/release/build/num-traits-3c5112c6c79a69d0/out/out-3c5112c6c79a69d0-stderr \
-        || echo $? >/target/release/build/num-traits-3c5112c6c79a69d0/out/out-3c5112c6c79a69d0-errcode\
-  ; find /target/release/build/num-traits-3c5112c6c79a69d0/out/* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+        1>          out-3c5112c6c79a69d0-stdout \
+        2>          out-3c5112c6c79a69d0-stderr \
+        || echo $? >out-3c5112c6c79a69d0-errcode\
+  ; find ./* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-3c5112c6c79a69d0
 COPY --link --from=run-z-num-traits-0.2.19-3c5112c6c79a69d0 /target/release/build/num-traits-3c5112c6c79a69d0/out /
 
@@ -2262,10 +2262,10 @@ RUN \
         OUT_DIR=/target/release/build/num-traits-3c5112c6c79a69d0/out \
         CARGOGREEN=1 \
       rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="i128"' --cfg feature'="std"' --cfg has_total_cmp --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "i128", "libm", "std"))' --check-cfg cfg'(has_total_cmp)' --crate-name num_traits --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C extra-filename'=-3c7fb17a06a83ce1' -C metadata'=32b4b21bc356bf06' -C opt-level'=3' -C panic'=abort' -C strip'=symbols' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/num-traits-0.2.19/src/lib.rs \
-        1>          /target/release/deps/out-3c7fb17a06a83ce1-stdout \
-        2>          /target/release/deps/out-3c7fb17a06a83ce1-stderr \
-        || echo $? >/target/release/deps/out-3c7fb17a06a83ce1-errcode\
-  ; find /target/release/deps/*-3c7fb17a06a83ce1* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+        1>          out-3c7fb17a06a83ce1-stdout \
+        2>          out-3c7fb17a06a83ce1-stderr \
+        || echo $? >out-3c7fb17a06a83ce1-errcode\
+  ; find ./*-3c7fb17a06a83ce1* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-3c7fb17a06a83ce1
 COPY --link --from=dep-n-num-traits-0.2.19-3c7fb17a06a83ce1 /target/release/deps/*-3c7fb17a06a83ce1* /
 
@@ -2304,10 +2304,10 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
       rustc --cap-lints warn --cfg feature'="crossbeam-channel"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("crossbeam-channel"))' --crate-name ordered_channel --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern crossbeam_channel'=/target/release/deps/libcrossbeam_channel-02208416784f0f0b.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C extra-filename'=-7cc7eab92620c41d' -C metadata'=6b5ba070a39405b4' -C opt-level'=3' -C panic'=abort' -C strip'=symbols' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/ordered-channel-1.2.0/src/lib.rs \
-        1>          /target/release/deps/out-7cc7eab92620c41d-stdout \
-        2>          /target/release/deps/out-7cc7eab92620c41d-stderr \
-        || echo $? >/target/release/deps/out-7cc7eab92620c41d-errcode\
-  ; find /target/release/deps/*-7cc7eab92620c41d* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+        1>          out-7cc7eab92620c41d-stdout \
+        2>          out-7cc7eab92620c41d-stderr \
+        || echo $? >out-7cc7eab92620c41d-errcode\
+  ; find ./*-7cc7eab92620c41d* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-7cc7eab92620c41d
 COPY --link --from=dep-n-ordered-channel-1.2.0-7cc7eab92620c41d /target/release/deps/*-7cc7eab92620c41d* /
 
@@ -2348,10 +2348,10 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name pbr --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern crossbeam_channel'=/target/release/deps/libcrossbeam_channel-02208416784f0f0b.rmeta' --extern libc'=/target/release/deps/liblibc-ba5310007d02d735.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C extra-filename'=-278521e2e48ae875' -C metadata'=d174f354ddfe2f4f' -C opt-level'=3' -C panic'=abort' -C strip'=symbols' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/pbr-1.1.1/src/lib.rs \
-        1>          /target/release/deps/out-278521e2e48ae875-stdout \
-        2>          /target/release/deps/out-278521e2e48ae875-stderr \
-        || echo $? >/target/release/deps/out-278521e2e48ae875-errcode\
-  ; find /target/release/deps/*-278521e2e48ae875* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+        1>          out-278521e2e48ae875-stdout \
+        2>          out-278521e2e48ae875-stderr \
+        || echo $? >out-278521e2e48ae875-errcode\
+  ; find ./*-278521e2e48ae875* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-278521e2e48ae875
 COPY --link --from=dep-n-pbr-1.1.1-278521e2e48ae875 /target/release/deps/*-278521e2e48ae875* /
 
@@ -2387,10 +2387,10 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name quick_error --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C extra-filename'=-47d375e08e9f09d1' -C metadata'=c299fb823c479cdf' -C opt-level'=3' -C panic'=abort' -C strip'=symbols' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/quick-error-2.0.1/src/lib.rs \
-        1>          /target/release/deps/out-47d375e08e9f09d1-stdout \
-        2>          /target/release/deps/out-47d375e08e9f09d1-stderr \
-        || echo $? >/target/release/deps/out-47d375e08e9f09d1-errcode\
-  ; find /target/release/deps/*-47d375e08e9f09d1* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+        1>          out-47d375e08e9f09d1-stdout \
+        2>          out-47d375e08e9f09d1-stderr \
+        || echo $? >out-47d375e08e9f09d1-errcode\
+  ; find ./*-47d375e08e9f09d1* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-47d375e08e9f09d1
 COPY --link --from=dep-n-quick-error-2.0.1-47d375e08e9f09d1 /target/release/deps/*-47d375e08e9f09d1* /
 
@@ -2441,10 +2441,10 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
       rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="rayon"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "no_std", "rayon", "std"))' --crate-name resize --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern rayon'=/target/release/deps/librayon-48df830a8500daa6.rmeta' --extern rgb'=/target/release/deps/librgb-9fccdab094376304.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C extra-filename'=-9369a94a4e3e9f4b' -C metadata'=27a5306e256a55d9' -C opt-level'=3' -C panic'=abort' -C strip'=symbols' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/resize-0.8.8/src/lib.rs \
-        1>          /target/release/deps/out-9369a94a4e3e9f4b-stdout \
-        2>          /target/release/deps/out-9369a94a4e3e9f4b-stderr \
-        || echo $? >/target/release/deps/out-9369a94a4e3e9f4b-errcode\
-  ; find /target/release/deps/*-9369a94a4e3e9f4b* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+        1>          out-9369a94a4e3e9f4b-stdout \
+        2>          out-9369a94a4e3e9f4b-stderr \
+        || echo $? >out-9369a94a4e3e9f4b-errcode\
+  ; find ./*-9369a94a4e3e9f4b* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-9369a94a4e3e9f4b
 COPY --link --from=dep-n-resize-0.8.8-9369a94a4e3e9f4b /target/release/deps/*-9369a94a4e3e9f4b* /
 
@@ -2479,10 +2479,10 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
       rustc --cap-lints warn --cfg feature'="glob-quoted-on-windows"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("glob-quoted-on-windows"))' --crate-name wild --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C extra-filename'=-9bee207c1d5c16f8' -C metadata'=a628cbca2fbe37e8' -C opt-level'=3' -C panic'=abort' -C strip'=symbols' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/wild-2.2.1/src/lib.rs \
-        1>          /target/release/deps/out-9bee207c1d5c16f8-stdout \
-        2>          /target/release/deps/out-9bee207c1d5c16f8-stderr \
-        || echo $? >/target/release/deps/out-9bee207c1d5c16f8-errcode\
-  ; find /target/release/deps/*-9bee207c1d5c16f8* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+        1>          out-9bee207c1d5c16f8-stdout \
+        2>          out-9bee207c1d5c16f8-stderr \
+        || echo $? >out-9bee207c1d5c16f8-errcode\
+  ; find ./*-9bee207c1d5c16f8* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-9bee207c1d5c16f8
 COPY --link --from=dep-n-wild-2.2.1-9bee207c1d5c16f8 /target/release/deps/*-9bee207c1d5c16f8* /
 
@@ -2517,10 +2517,10 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
       rustc --cap-lints warn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name y4m --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C extra-filename'=-3e59d2208d9bedbb' -C metadata'=5e318f30f22301d3' -C opt-level'=3' -C panic'=abort' -C strip'=symbols' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/y4m-0.8.0/src/lib.rs \
-        1>          /target/release/deps/out-3e59d2208d9bedbb-stdout \
-        2>          /target/release/deps/out-3e59d2208d9bedbb-stderr \
-        || echo $? >/target/release/deps/out-3e59d2208d9bedbb-errcode\
-  ; find /target/release/deps/*-3e59d2208d9bedbb* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+        1>          out-3e59d2208d9bedbb-stdout \
+        2>          out-3e59d2208d9bedbb-stderr \
+        || echo $? >out-3e59d2208d9bedbb-errcode\
+  ; find ./*-3e59d2208d9bedbb* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-3e59d2208d9bedbb
 COPY --link --from=dep-n-y4m-0.8.0-3e59d2208d9bedbb /target/release/deps/*-3e59d2208d9bedbb* /
 
@@ -2563,10 +2563,10 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
       rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "no_std", "std"))' --crate-name yuv --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern num_traits'=/target/release/deps/libnum_traits-3c7fb17a06a83ce1.rmeta' --extern rgb'=/target/release/deps/librgb-9fccdab094376304.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C extra-filename'=-67dae918be216ccf' -C metadata'=6c96a92c02435a1c' -C opt-level'=3' -C panic'=abort' -C strip'=symbols' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/yuv-0.1.9/src/lib.rs \
-        1>          /target/release/deps/out-67dae918be216ccf-stdout \
-        2>          /target/release/deps/out-67dae918be216ccf-stderr \
-        || echo $? >/target/release/deps/out-67dae918be216ccf-errcode\
-  ; find /target/release/deps/*-67dae918be216ccf* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+        1>          out-67dae918be216ccf-stdout \
+        2>          out-67dae918be216ccf-stderr \
+        || echo $? >out-67dae918be216ccf-errcode\
+  ; find ./*-67dae918be216ccf* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-67dae918be216ccf
 COPY --link --from=dep-n-yuv-0.1.9-67dae918be216ccf /target/release/deps/*-67dae918be216ccf* /
 
@@ -2650,10 +2650,10 @@ RUN \
         CARGO_SBOM_PATH= \
         CARGOGREEN=1 \
       rustc --cap-lints warn --cfg feature'="binary"' --cfg feature'="default"' --cfg feature'="gifsicle"' --cfg feature'="pbr"' --cfg feature'="png"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("binary", "capi", "default", "gifsicle", "pbr", "png", "video", "video-prebuilt-static", "video-static"))' --crate-name gifski --crate-type cdylib --crate-type lib --crate-type staticlib --edition 2021 --emit dep-info,link --error-format json --extern clap'=/target/release/deps/libclap-3787e001670b0523.rlib' --extern crossbeam_channel'=/target/release/deps/libcrossbeam_channel-02208416784f0f0b.rlib' --extern crossbeam_utils'=/target/release/deps/libcrossbeam_utils-8b06b5563ea04699.rlib' --extern dunce'=/target/release/deps/libdunce-5a0b46717148c91b.rlib' --extern gif'=/target/release/deps/libgif-833b713519db2754.rlib' --extern gif_dispose'=/target/release/deps/libgif_dispose-673653af1372615a.rlib' --extern imagequant'=/target/release/deps/libimagequant-ddf60813053069d9.rlib' --extern imgref'=/target/release/deps/libimgref-84cf8c87f6610dd8.rlib' --extern lodepng'=/target/release/deps/liblodepng-800f01a04e0f5cad.rlib' --extern loop9'=/target/release/deps/libloop9-0da13261130b2b31.rlib' --extern natord'=/target/release/deps/libnatord-0f94fc369184fe0b.rlib' --extern num_traits'=/target/release/deps/libnum_traits-3c7fb17a06a83ce1.rlib' --extern ordered_channel'=/target/release/deps/libordered_channel-7cc7eab92620c41d.rlib' --extern pbr'=/target/release/deps/libpbr-278521e2e48ae875.rlib' --extern quick_error'=/target/release/deps/libquick_error-47d375e08e9f09d1.rlib' --extern resize'=/target/release/deps/libresize-9369a94a4e3e9f4b.rlib' --extern rgb'=/target/release/deps/librgb-9fccdab094376304.rlib' --extern wild'=/target/release/deps/libwild-9bee207c1d5c16f8.rlib' --extern y4m'=/target/release/deps/liby4m-3e59d2208d9bedbb.rlib' --extern yuv'=/target/release/deps/libyuv-67dae918be216ccf.rlib' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C extra-filename'=-578be0313baf6404' -C metadata'=21efefa7f049a906' -C opt-level'=3' -C panic'=abort' -C strip'=symbols' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/gifski-1.34.0/src/lib.rs \
-        1>          /target/release/deps/out-578be0313baf6404-stdout \
-        2>          /target/release/deps/out-578be0313baf6404-stderr \
-        || echo $? >/target/release/deps/out-578be0313baf6404-errcode\
-  ; find /target/release/deps/*-578be0313baf6404* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+        1>          out-578be0313baf6404-stdout \
+        2>          out-578be0313baf6404-stderr \
+        || echo $? >out-578be0313baf6404-errcode\
+  ; find ./*-578be0313baf6404* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-578be0313baf6404
 COPY --link --from=dep-n-gifski-1.34.0-578be0313baf6404 /target/release/deps/*-578be0313baf6404* /
 
@@ -2739,10 +2739,10 @@ RUN \
         CARGO_SBOM_PATH= \
         CARGOGREEN=1 \
       rustc --cap-lints warn --cfg feature'="binary"' --cfg feature'="default"' --cfg feature'="gifsicle"' --cfg feature'="pbr"' --cfg feature'="png"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("binary", "capi", "default", "gifsicle", "pbr", "png", "video", "video-prebuilt-static", "video-static"))' --crate-name gifski --crate-type bin --edition 2021 --emit dep-info,link --error-format json --extern clap'=/target/release/deps/libclap-3787e001670b0523.rlib' --extern crossbeam_channel'=/target/release/deps/libcrossbeam_channel-02208416784f0f0b.rlib' --extern crossbeam_utils'=/target/release/deps/libcrossbeam_utils-8b06b5563ea04699.rlib' --extern dunce'=/target/release/deps/libdunce-5a0b46717148c91b.rlib' --extern gif'=/target/release/deps/libgif-833b713519db2754.rlib' --extern gif_dispose'=/target/release/deps/libgif_dispose-673653af1372615a.rlib' --extern gifski'=/target/release/deps/libgifski-578be0313baf6404.rlib' --extern imagequant'=/target/release/deps/libimagequant-ddf60813053069d9.rlib' --extern imgref'=/target/release/deps/libimgref-84cf8c87f6610dd8.rlib' --extern lodepng'=/target/release/deps/liblodepng-800f01a04e0f5cad.rlib' --extern loop9'=/target/release/deps/libloop9-0da13261130b2b31.rlib' --extern natord'=/target/release/deps/libnatord-0f94fc369184fe0b.rlib' --extern num_traits'=/target/release/deps/libnum_traits-3c7fb17a06a83ce1.rlib' --extern ordered_channel'=/target/release/deps/libordered_channel-7cc7eab92620c41d.rlib' --extern pbr'=/target/release/deps/libpbr-278521e2e48ae875.rlib' --extern quick_error'=/target/release/deps/libquick_error-47d375e08e9f09d1.rlib' --extern resize'=/target/release/deps/libresize-9369a94a4e3e9f4b.rlib' --extern rgb'=/target/release/deps/librgb-9fccdab094376304.rlib' --extern wild'=/target/release/deps/libwild-9bee207c1d5c16f8.rlib' --extern y4m'=/target/release/deps/liby4m-3e59d2208d9bedbb.rlib' --extern yuv'=/target/release/deps/libyuv-67dae918be216ccf.rlib' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C extra-filename'=-da437c7659db235e' -C lto -C metadata'=611f06c226626f05' -C opt-level'=3' -C panic'=abort' -C strip'=symbols' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/gifski-1.34.0/src/bin/gifski.rs \
-        1>          /target/release/deps/out-da437c7659db235e-stdout \
-        2>          /target/release/deps/out-da437c7659db235e-stderr \
-        || echo $? >/target/release/deps/out-da437c7659db235e-errcode\
-  ; find /target/release/deps/*-da437c7659db235e* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
+        1>          out-da437c7659db235e-stdout \
+        2>          out-da437c7659db235e-stderr \
+        || echo $? >out-da437c7659db235e-errcode\
+  ; find ./*-da437c7659db235e* -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH
 FROM scratch AS out-da437c7659db235e
 COPY --link --from=dep-n-gifski-1.34.0-da437c7659db235e /target/release/deps/*-da437c7659db235e* /
 
