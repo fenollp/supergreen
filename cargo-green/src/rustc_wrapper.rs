@@ -274,7 +274,6 @@ async fn do_wrap_rustc(
     md.run_block(
         &rustc_stage,
         &out_stage,
-        &out_dir,
         format!("rustc {args} {input}"),
         &green.set_envs,
         &green.cargo_home,
@@ -320,15 +319,12 @@ impl Md {
         &mut self,
         stage: &Stage,
         out_stage: &Stage,
-        out_dir: &Utf8Path,
         call: String,
         green_set_envs: &[String],
         cargo_home: &Utf8Path,
         buildrs: bool,
         mut block: String,
     ) -> Result<()> {
-        let out_dir = virtual_target_dir(out_dir);
-
         // Log a possible toolchain file contents (TODO: make per-crate base.image out of this)
         if false {
             block.push_str("    { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \\\n");
@@ -388,13 +384,13 @@ impl Md {
         }
 
         block.push_str(&format!("      {call} \\\n"));
-        block.push_str(&format!("        1>          {out_dir}/{out_stage}-{STDOUT} \\\n"));
-        block.push_str(&format!("        2>          {out_dir}/{out_stage}-{STDERR} \\\n"));
-        block.push_str(&format!("        || echo $? >{out_dir}/{out_stage}-{ERRCODE}\\\n"));
+        block.push_str(&format!("        1>          {out_stage}-{STDOUT} \\\n"));
+        block.push_str(&format!("        2>          {out_stage}-{STDERR} \\\n"));
+        block.push_str(&format!("        || echo $? >{out_stage}-{ERRCODE}\\\n"));
 
         // TODO: [`COPY --rewrite-timestamp ...` to apply SOURCE_DATE_EPOCH build arg value to the timestamps of the files](https://github.com/moby/buildkit/issues/6348)
         let pattern = if buildrs { "*".to_owned() } else { format!("*-{}*", self.this()) };
-        block.push_str(&format!("  ; find {out_dir}/{pattern} -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH\n"));
+        block.push_str(&format!("  ; find ./{pattern} -print0 | xargs -0 touch --no-dereference --date=@$SOURCE_DATE_EPOCH\n"));
 
         self.push_block(stage, block);
         Ok(())
