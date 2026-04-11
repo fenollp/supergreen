@@ -154,10 +154,6 @@ async fn do_exec_buildrs(
     let mut run_block = format!("FROM {RST} AS {run_stage}\n");
     run_block.push_str(&format!("SHELL {SHELL:?}\n"));
     run_block.push_str(&format!("WORKDIR {}\n", virtual_target_dir(&out_dir_var)));
-    for (_, code_dst, _) in code_stage.mounts() {
-        let code_dst = virtual_target_dir(&code_dst);
-        run_block.push_str(&format!("WORKDIR {code_dst}\n"));
-    }
     run_block.push_str("RUN \\\n");
     run_block.push_str(&format!(
         "  --mount=from={previous_out_stage},source={previous_out_dst},dst={exe} \\\n",
