@@ -50,8 +50,8 @@ pub(crate) async fn main(
 
     // TODO: find a better heuristic to ensure `rustc` is rustc
     match &argz[..] {
-        [rustc, "--crate-name", crate_name, ..] if rustc.ends_with("rustc") =>
-             wrap_rustc(green, crate_name, argv(1), call_rustc(rustc, argv(1))).await,
+        [rustc, "--crate-name", ..] if rustc.ends_with("rustc") =>
+             wrap_rustc(green, argv(1), call_rustc(rustc, argv(1))).await,
         [driver, rustc, "-"|"--crate-name", ..] if rustc.ends_with("rustc") => {
             // TODO: wrap driver? + rustc
             // driver: e.g. $RUSTUP_HOME/toolchains/stable-x86_64-unknown-linux-gnu/bin/clippy-driver
@@ -122,7 +122,6 @@ async fn call_rustc(rustc: &str, args: Vec<String>) -> Result<()> {
 
 async fn wrap_rustc(
     green: Green,
-    crate_name: &str,
     arguments: Vec<String>,
     fallback: impl Future<Output = Result<()>>,
 ) -> Result<()> {
@@ -135,9 +134,9 @@ async fn wrap_rustc(
 
     let (st @ RustcArgs { mdid, .. }, args) = as_rustc(&pwd, &arguments, out_dir_var.as_deref())?;
 
-    let buildrs = ["build_script_build", "build_script_main"].contains(&crate_name);
     // NOTE: krate_name != crate_name: Gets named build_script_build + s/-/_/g + may actually be a different name
     let krate_name = env::var("CARGO_PKG_NAME").expect("$CARGO_PKG_NAME");
+    let buildrs = ["build_script_build", "build_script_main"].contains(&krate_name.as_str());
 
     let krate_version = env::var("CARGO_PKG_VERSION").expect("$CARGO_PKG_VERSION");
 
