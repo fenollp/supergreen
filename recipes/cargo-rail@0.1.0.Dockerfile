@@ -66,7 +66,6 @@ COPY --link --from=dep-x-serde_core-1.0.228-a9821be9f17907c9 /target/release/bui
 FROM rust-base AS run-z-serde_core-1.0.228-2fec3ace8b90870d
 SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /target/release/build/serde_core-2fec3ace8b90870d/out
-WORKDIR $CARGO_HOME/registry/src/index.crates.io/serde_core-1.0.228
 RUN \
   --mount=from=out-a9821be9f17907c9,source=/build_script_build-a9821be9f17907c9,dst=/target/release/build/serde_core-a9821be9f17907c9/build-script-build \
   --mount=from=cratesio-serde_core-1.0.228,source=/serde_core-1.0.228,dst=$CARGO_HOME/registry/src/index.crates.io/serde_core-1.0.228 \
@@ -223,7 +222,6 @@ COPY --link --from=dep-x-camino-1.2.1-7de11c6eef56c262 /target/release/build/cam
 FROM rust-base AS run-z-camino-1.2.1-cd86ed3c17ceed77
 SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /target/release/build/camino-cd86ed3c17ceed77/out
-WORKDIR $CARGO_HOME/registry/src/index.crates.io/camino-1.2.1
 RUN \
   --mount=from=out-7de11c6eef56c262,source=/build_script_build-7de11c6eef56c262,dst=/target/release/build/camino-7de11c6eef56c262/build-script-build \
   --mount=from=cratesio-camino-1.2.1,source=/camino-1.2.1,dst=$CARGO_HOME/registry/src/index.crates.io/camino-1.2.1 \
@@ -418,7 +416,6 @@ COPY --link --from=dep-x-proc-macro2-1.0.103-0bdec25ed138a0f2 /target/release/bu
 FROM rust-base AS run-z-proc-macro2-1.0.103-9405b83cdad3679c
 SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /target/release/build/proc-macro2-9405b83cdad3679c/out
-WORKDIR $CARGO_HOME/registry/src/index.crates.io/proc-macro2-1.0.103
 RUN \
   --mount=from=out-0bdec25ed138a0f2,source=/build_script_build-0bdec25ed138a0f2,dst=/target/release/build/proc-macro2-0bdec25ed138a0f2/build-script-build \
   --mount=from=cratesio-proc-macro2-1.0.103,source=/proc-macro2-1.0.103,dst=$CARGO_HOME/registry/src/index.crates.io/proc-macro2-1.0.103 \
@@ -575,7 +572,6 @@ COPY --link --from=dep-x-quote-1.0.42-c7fc23bf5cc068b9 /target/release/build/quo
 FROM rust-base AS run-z-quote-1.0.42-b4ccfbcd55c1649d
 SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /target/release/build/quote-b4ccfbcd55c1649d/out
-WORKDIR $CARGO_HOME/registry/src/index.crates.io/quote-1.0.42
 RUN \
   --mount=from=out-c7fc23bf5cc068b9,source=/build_script_build-c7fc23bf5cc068b9,dst=/target/release/build/quote-c7fc23bf5cc068b9/build-script-build \
   --mount=from=cratesio-quote-1.0.42,source=/quote-1.0.42,dst=$CARGO_HOME/registry/src/index.crates.io/quote-1.0.42 \
@@ -665,7 +661,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         OUT_DIR=/target/release/build/quote-b4ccfbcd55c1649d/out \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="proc-macro"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "proc-macro"))' --crate-name quote --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern proc_macro2'=/target/release/deps/libproc_macro2-9f3f8a242c5ba2e9.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-87183a081b3ca96c' -C metadata'=7cf932011b99bdf6' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/quote-1.0.42/src/lib.rs \
+      rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="proc-macro"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "proc-macro"))' --check-cfg cfg'(no_diagnostic_namespace)' --crate-name quote --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --extern proc_macro2'=/target/release/deps/libproc_macro2-9f3f8a242c5ba2e9.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-87183a081b3ca96c' -C metadata'=7cf932011b99bdf6' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/quote-1.0.42/src/lib.rs \
         1>          /target/release/deps/out-87183a081b3ca96c-stdout \
         2>          /target/release/deps/out-87183a081b3ca96c-stderr \
         || echo $? >/target/release/deps/out-87183a081b3ca96c-errcode\
@@ -820,7 +816,6 @@ COPY --link --from=dep-x-serde-1.0.228-e40ed70bca7f4065 /target/release/build/se
 FROM rust-base AS run-z-serde-1.0.228-34f48f7d935fc3cc
 SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /target/release/build/serde-34f48f7d935fc3cc/out
-WORKDIR $CARGO_HOME/registry/src/index.crates.io/serde-1.0.228
 RUN \
   --mount=from=out-e40ed70bca7f4065,source=/build_script_build-e40ed70bca7f4065,dst=/target/release/build/serde-e40ed70bca7f4065/build-script-build \
   --mount=from=cratesio-serde-1.0.228,source=/serde-1.0.228,dst=$CARGO_HOME/registry/src/index.crates.io/serde-1.0.228 \
@@ -1199,7 +1194,6 @@ COPY --link --from=dep-x-serde_json-1.0.145-2100de8be202e2b5 /target/release/bui
 FROM rust-base AS run-z-serde_json-1.0.145-24d9d6fcc5dd6ae0
 SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /target/release/build/serde_json-24d9d6fcc5dd6ae0/out
-WORKDIR $CARGO_HOME/registry/src/index.crates.io/serde_json-1.0.145
 RUN \
   --mount=from=out-2100de8be202e2b5,source=/build_script_build-2100de8be202e2b5,dst=/target/release/build/serde_json-2100de8be202e2b5/build-script-build \
   --mount=from=cratesio-serde_json-1.0.145,source=/serde_json-1.0.145,dst=$CARGO_HOME/registry/src/index.crates.io/serde_json-1.0.145 \
@@ -1406,7 +1400,6 @@ COPY --link --from=dep-x-thiserror-2.0.17-d4b07cc1353b83d1 /target/release/build
 FROM rust-base AS run-z-thiserror-2.0.17-ca6245a35f400c47
 SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /target/release/build/thiserror-ca6245a35f400c47/out
-WORKDIR $CARGO_HOME/registry/src/index.crates.io/thiserror-2.0.17
 RUN \
   --mount=from=out-d4b07cc1353b83d1,source=/build_script_build-d4b07cc1353b83d1,dst=/target/release/build/thiserror-d4b07cc1353b83d1/build-script-build \
   --mount=from=cratesio-thiserror-2.0.17,source=/thiserror-2.0.17,dst=$CARGO_HOME/registry/src/index.crates.io/thiserror-2.0.17 \
@@ -1714,7 +1707,6 @@ COPY --link --from=dep-x-num-traits-0.2.19-3f17b198a3674963 /target/release/buil
 FROM rust-base AS run-z-num-traits-0.2.19-ae8d73c571a8c15f
 SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /target/release/build/num-traits-ae8d73c571a8c15f/out
-WORKDIR $CARGO_HOME/registry/src/index.crates.io/num-traits-0.2.19
 RUN \
   --mount=from=out-3f17b198a3674963,source=/build_script_build-3f17b198a3674963,dst=/target/release/build/num-traits-3f17b198a3674963/build-script-build \
   --mount=from=cratesio-num-traits-0.2.19,source=/num-traits-0.2.19,dst=$CARGO_HOME/registry/src/index.crates.io/num-traits-0.2.19 \
@@ -2837,7 +2829,6 @@ COPY --link --from=dep-x-crossbeam-utils-0.8.21-0798667d6011c212 /target/release
 FROM rust-base AS run-z-crossbeam-utils-0.8.21-3a211e20cc1ffb53
 SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /target/release/build/crossbeam-utils-3a211e20cc1ffb53/out
-WORKDIR $CARGO_HOME/registry/src/index.crates.io/crossbeam-utils-0.8.21
 RUN \
   --mount=from=out-0798667d6011c212,source=/build_script_build-0798667d6011c212,dst=/target/release/build/crossbeam-utils-0798667d6011c212/build-script-build \
   --mount=from=cratesio-crossbeam-utils-0.8.21,source=/crossbeam-utils-0.8.21,dst=$CARGO_HOME/registry/src/index.crates.io/crossbeam-utils-0.8.21 \
@@ -3074,7 +3065,6 @@ COPY --link --from=dep-x-rayon-core-1.13.0-be2415ce0722d200 /target/release/buil
 FROM rust-base AS run-z-rayon-core-1.13.0-3e3133c30b7e993c
 SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /target/release/build/rayon-core-3e3133c30b7e993c/out
-WORKDIR $CARGO_HOME/registry/src/index.crates.io/rayon-core-1.13.0
 RUN \
   --mount=from=out-be2415ce0722d200,source=/build_script_build-be2415ce0722d200,dst=/target/release/build/rayon-core-be2415ce0722d200/build-script-build \
   --mount=from=cratesio-rayon-core-1.13.0,source=/rayon-core-1.13.0,dst=$CARGO_HOME/registry/src/index.crates.io/rayon-core-1.13.0 \

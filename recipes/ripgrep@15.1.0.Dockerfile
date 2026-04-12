@@ -66,7 +66,6 @@ COPY --link --from=dep-x-anyhow-1.0.100-f0ebc98ccc9d4154 /target/release/build/a
 FROM rust-base AS run-z-anyhow-1.0.100-26d97e1c42a725d8
 SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /target/release/build/anyhow-26d97e1c42a725d8/out
-WORKDIR $CARGO_HOME/registry/src/index.crates.io/anyhow-1.0.100
 RUN \
   --mount=from=out-f0ebc98ccc9d4154,source=/build_script_build-f0ebc98ccc9d4154,dst=/target/release/build/anyhow-f0ebc98ccc9d4154/build-script-build \
   --mount=from=cratesio-anyhow-1.0.100,source=/anyhow-1.0.100,dst=$CARGO_HOME/registry/src/index.crates.io/anyhow-1.0.100 \
@@ -152,7 +151,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         OUT_DIR=/target/release/build/anyhow-26d97e1c42a725d8/out \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("backtrace", "default", "std"))' --crate-name anyhow --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debuginfo'=1' -C embed-bitcode'=no' -C extra-filename'=-4a0f117e06319b45' -C metadata'=e93239d541205601' -C opt-level'=3' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/anyhow-1.0.100/src/lib.rs \
+      rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --cfg std_backtrace --check-cfg cfg'(anyhow_build_probe)' --check-cfg cfg'(anyhow_nightly_testing)' --check-cfg cfg'(anyhow_no_clippy_format_args)' --check-cfg cfg'(anyhow_no_core_error)' --check-cfg cfg'(anyhow_no_core_unwind_safe)' --check-cfg cfg'(anyhow_no_fmt_arguments_as_str)' --check-cfg cfg'(anyhow_no_ptr_addr_of)' --check-cfg cfg'(anyhow_no_unsafe_op_in_unsafe_fn_lint)' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(error_generic_member_access)' --check-cfg cfg'(feature, values("backtrace", "default", "std"))' --check-cfg cfg'(std_backtrace)' --crate-name anyhow --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C debuginfo'=1' -C embed-bitcode'=no' -C extra-filename'=-4a0f117e06319b45' -C metadata'=e93239d541205601' -C opt-level'=3' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/anyhow-1.0.100/src/lib.rs \
         1>          /target/release/deps/out-4a0f117e06319b45-stdout \
         2>          /target/release/deps/out-4a0f117e06319b45-stderr \
         || echo $? >/target/release/deps/out-4a0f117e06319b45-errcode\
@@ -521,7 +520,6 @@ COPY --link --from=dep-x-libc-0.2.177-6fee29cee8891978 /target/release/build/lib
 FROM rust-base AS run-z-libc-0.2.177-3420a152342616a5
 SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /target/release/build/libc-3420a152342616a5/out
-WORKDIR $CARGO_HOME/registry/src/index.crates.io/libc-0.2.177
 RUN \
   --mount=from=out-6fee29cee8891978,source=/build_script_build-6fee29cee8891978,dst=/target/release/build/libc-6fee29cee8891978/build-script-build \
   --mount=from=cratesio-libc-0.2.177,source=/libc-0.2.177,dst=$CARGO_HOME/registry/src/index.crates.io/libc-0.2.177 \
@@ -1039,7 +1037,6 @@ COPY --link --from=dep-x-serde_core-1.0.228-312efa738ec00410 /target/release/bui
 FROM rust-base AS run-z-serde_core-1.0.228-018d01ec1a1f8e38
 SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /target/release/build/serde_core-018d01ec1a1f8e38/out
-WORKDIR $CARGO_HOME/registry/src/index.crates.io/serde_core-1.0.228
 RUN \
   --mount=from=out-312efa738ec00410,source=/build_script_build-312efa738ec00410,dst=/target/release/build/serde_core-312efa738ec00410/build-script-build \
   --mount=from=cratesio-serde_core-1.0.228,source=/serde_core-1.0.228,dst=$CARGO_HOME/registry/src/index.crates.io/serde_core-1.0.228 \
@@ -1194,7 +1191,6 @@ COPY --link --from=dep-x-serde-1.0.228-16d99e6897d553a4 /target/release/build/se
 FROM rust-base AS run-z-serde-1.0.228-af9af175d0d82b5f
 SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /target/release/build/serde-af9af175d0d82b5f/out
-WORKDIR $CARGO_HOME/registry/src/index.crates.io/serde-1.0.228
 RUN \
   --mount=from=out-16d99e6897d553a4,source=/build_script_build-16d99e6897d553a4,dst=/target/release/build/serde-16d99e6897d553a4/build-script-build \
   --mount=from=cratesio-serde-1.0.228,source=/serde-1.0.228,dst=$CARGO_HOME/registry/src/index.crates.io/serde-1.0.228 \
@@ -1428,7 +1424,6 @@ COPY --link --from=dep-x-serde_json-1.0.145-03cd772fcee49b4f /target/release/bui
 FROM rust-base AS run-z-serde_json-1.0.145-39d311d0dc2c8bc7
 SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /target/release/build/serde_json-39d311d0dc2c8bc7/out
-WORKDIR $CARGO_HOME/registry/src/index.crates.io/serde_json-1.0.145
 RUN \
   --mount=from=out-03cd772fcee49b4f,source=/build_script_build-03cd772fcee49b4f,dst=/target/release/build/serde_json-03cd772fcee49b4f/build-script-build \
   --mount=from=cratesio-serde_json-1.0.145,source=/serde_json-1.0.145,dst=$CARGO_HOME/registry/src/index.crates.io/serde_json-1.0.145 \
@@ -1812,7 +1807,6 @@ COPY --link --from=dep-x-crossbeam-utils-0.8.21-b58e312920afe21c /target/release
 FROM rust-base AS run-z-crossbeam-utils-0.8.21-5c3d3325af4fec1a
 SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /target/release/build/crossbeam-utils-5c3d3325af4fec1a/out
-WORKDIR $CARGO_HOME/registry/src/index.crates.io/crossbeam-utils-0.8.21
 RUN \
   --mount=from=out-b58e312920afe21c,source=/build_script_build-b58e312920afe21c,dst=/target/release/build/crossbeam-utils-b58e312920afe21c/build-script-build \
   --mount=from=cratesio-crossbeam-utils-0.8.21,source=/crossbeam-utils-0.8.21,dst=$CARGO_HOME/registry/src/index.crates.io/crossbeam-utils-0.8.21 \
@@ -2272,7 +2266,6 @@ COPY --link --from=dep-x-ripgrep-15.1.0-563dc927784d236a /target/release/build/r
 FROM rust-base AS run-z-ripgrep-15.1.0-cba2eb45b5ee68b5
 SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /target/release/build/ripgrep-cba2eb45b5ee68b5/out
-WORKDIR $CARGO_HOME/registry/src/index.crates.io/ripgrep-15.1.0
 RUN \
   --mount=from=out-563dc927784d236a,source=/build_script_build-563dc927784d236a,dst=/target/release/build/ripgrep-563dc927784d236a/build-script-build \
   --mount=from=cratesio-ripgrep-15.1.0,source=/ripgrep-15.1.0,dst=$CARGO_HOME/registry/src/index.crates.io/ripgrep-15.1.0 \

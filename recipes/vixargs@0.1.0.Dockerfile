@@ -67,7 +67,6 @@ COPY --link --from=dep-x-libc-0.2.112-700c239a91934db4 /target/release/build/lib
 FROM rust-base AS run-z-libc-0.2.112-5dc67c15a6d7cd39
 SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /target/release/build/libc-5dc67c15a6d7cd39/out
-WORKDIR $CARGO_HOME/registry/src/index.crates.io/libc-0.2.112
 RUN \
   --mount=from=out-700c239a91934db4,source=/build_script_build-700c239a91934db4,dst=/target/release/build/libc-700c239a91934db4/build-script-build \
   --mount=from=cratesio-libc-0.2.112,source=/libc-0.2.112,dst=$CARGO_HOME/registry/src/index.crates.io/libc-0.2.112 \
@@ -263,7 +262,6 @@ COPY --link --from=dep-x-num-traits-0.2.14-56d946147a797054 /target/release/buil
 FROM rust-base AS run-z-num-traits-0.2.14-c4c5522b13dce3a1
 SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /target/release/build/num-traits-c4c5522b13dce3a1/out
-WORKDIR $CARGO_HOME/registry/src/index.crates.io/num-traits-0.2.14
 RUN \
   --mount=from=out-56d946147a797054,source=/build_script_build-56d946147a797054,dst=/target/release/build/num-traits-56d946147a797054/build-script-build \
   --mount=from=cratesio-num-traits-0.2.14,source=/num-traits-0.2.14,dst=$CARGO_HOME/registry/src/index.crates.io/num-traits-0.2.14 \
@@ -417,7 +415,6 @@ COPY --link --from=dep-x-num-integer-0.1.44-3a9df396731409f1 /target/release/bui
 FROM rust-base AS run-z-num-integer-0.1.44-588be87c08e3b3fe
 SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /target/release/build/num-integer-588be87c08e3b3fe/out
-WORKDIR $CARGO_HOME/registry/src/index.crates.io/num-integer-0.1.44
 RUN \
   --mount=from=out-3a9df396731409f1,source=/build_script_build-3a9df396731409f1,dst=/target/release/build/num-integer-3a9df396731409f1/build-script-build \
   --mount=from=cratesio-num-integer-0.1.44,source=/num-integer-0.1.44,dst=$CARGO_HOME/registry/src/index.crates.io/num-integer-0.1.44 \
@@ -826,7 +823,6 @@ COPY --link --from=dep-x-proc-macro2-1.0.36-9fb9d6260cb93b8f /target/release/bui
 FROM rust-base AS run-z-proc-macro2-1.0.36-63e03558f9b5da32
 SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /target/release/build/proc-macro2-63e03558f9b5da32/out
-WORKDIR $CARGO_HOME/registry/src/index.crates.io/proc-macro2-1.0.36
 RUN \
   --mount=from=out-9fb9d6260cb93b8f,source=/build_script_build-9fb9d6260cb93b8f,dst=/target/release/build/proc-macro2-9fb9d6260cb93b8f/build-script-build \
   --mount=from=cratesio-proc-macro2-1.0.36,source=/proc-macro2-1.0.36,dst=$CARGO_HOME/registry/src/index.crates.io/proc-macro2-1.0.36 \
@@ -1068,7 +1064,6 @@ COPY --link --from=dep-x-proc-macro-error-attr-1.0.4-c4c12180f1a5f66c /target/re
 FROM rust-base AS run-z-proc-macro-error-attr-1.0.4-f5dafd799444d88a
 SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /target/release/build/proc-macro-error-attr-f5dafd799444d88a/out
-WORKDIR $CARGO_HOME/registry/src/index.crates.io/proc-macro-error-attr-1.0.4
 RUN \
   --mount=from=out-c4c12180f1a5f66c,source=/build_script_build-c4c12180f1a5f66c,dst=/target/release/build/proc-macro-error-attr-c4c12180f1a5f66c/build-script-build \
   --mount=from=cratesio-proc-macro-error-attr-1.0.4,source=/proc-macro-error-attr-1.0.4,dst=$CARGO_HOME/registry/src/index.crates.io/proc-macro-error-attr-1.0.4 \
@@ -1224,7 +1219,6 @@ COPY --link --from=dep-x-syn-1.0.85-b89b1a05bcd130f6 /target/release/build/syn-b
 FROM rust-base AS run-z-syn-1.0.85-93f16ce8fefeea06
 SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /target/release/build/syn-93f16ce8fefeea06/out
-WORKDIR $CARGO_HOME/registry/src/index.crates.io/syn-1.0.85
 RUN \
   --mount=from=out-b89b1a05bcd130f6,source=/build_script_build-b89b1a05bcd130f6,dst=/target/release/build/syn-b89b1a05bcd130f6/build-script-build \
   --mount=from=cratesio-syn-1.0.85,source=/syn-1.0.85,dst=$CARGO_HOME/registry/src/index.crates.io/syn-1.0.85 \
@@ -1392,7 +1386,6 @@ COPY --link --from=dep-x-proc-macro-error-1.0.4-51ec5414402f366c /target/release
 FROM rust-base AS run-z-proc-macro-error-1.0.4-022d7ce863aa01d9
 SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /target/release/build/proc-macro-error-022d7ce863aa01d9/out
-WORKDIR $CARGO_HOME/registry/src/index.crates.io/proc-macro-error-1.0.4
 RUN \
   --mount=from=out-51ec5414402f366c,source=/build_script_build-51ec5414402f366c,dst=/target/release/build/proc-macro-error-51ec5414402f366c/build-script-build \
   --mount=from=cratesio-proc-macro-error-1.0.4,source=/proc-macro-error-1.0.4,dst=$CARGO_HOME/registry/src/index.crates.io/proc-macro-error-1.0.4 \
@@ -1654,7 +1647,6 @@ COPY --link --from=dep-x-indexmap-1.8.0-3063c2cd91b9b76c /target/release/build/i
 FROM rust-base AS run-z-indexmap-1.8.0-13cbce60963522e8
 SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /target/release/build/indexmap-13cbce60963522e8/out
-WORKDIR $CARGO_HOME/registry/src/index.crates.io/indexmap-1.8.0
 RUN \
   --mount=from=out-3063c2cd91b9b76c,source=/build_script_build-3063c2cd91b9b76c,dst=/target/release/build/indexmap-3063c2cd91b9b76c/build-script-build \
   --mount=from=cratesio-indexmap-1.8.0,source=/indexmap-1.8.0,dst=$CARGO_HOME/registry/src/index.crates.io/indexmap-1.8.0 \
@@ -1868,7 +1860,6 @@ COPY --link --from=dep-x-memchr-2.4.1-b7979e1112956bb5 /target/release/build/mem
 FROM rust-base AS run-z-memchr-2.4.1-f45377e71f3874b1
 SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /target/release/build/memchr-f45377e71f3874b1/out
-WORKDIR $CARGO_HOME/registry/src/index.crates.io/memchr-2.4.1
 RUN \
   --mount=from=out-b7979e1112956bb5,source=/build_script_build-b7979e1112956bb5,dst=/target/release/build/memchr-b7979e1112956bb5/build-script-build \
   --mount=from=cratesio-memchr-2.4.1,source=/memchr-2.4.1,dst=$CARGO_HOME/registry/src/index.crates.io/memchr-2.4.1 \

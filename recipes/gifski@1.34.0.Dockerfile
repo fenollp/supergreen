@@ -538,7 +538,6 @@ COPY --link --from=dep-x-crossbeam-utils-0.8.21-9523696effe1b417 /target/release
 FROM rust-base AS run-z-crossbeam-utils-0.8.21-66e8cb4d84473466
 SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /target/release/build/crossbeam-utils-66e8cb4d84473466/out
-WORKDIR $CARGO_HOME/registry/src/index.crates.io/crossbeam-utils-0.8.21
 RUN \
   --mount=from=out-9523696effe1b417,source=/build_script_build-9523696effe1b417,dst=/target/release/build/crossbeam-utils-9523696effe1b417/build-script-build \
   --mount=from=cratesio-crossbeam-utils-0.8.21,source=/crossbeam-utils-0.8.21,dst=$CARGO_HOME/registry/src/index.crates.io/crossbeam-utils-0.8.21 \
@@ -1211,7 +1210,6 @@ COPY --link --from=dep-x-rayon-core-1.12.1-80f61346d08b8ad4 /target/release/buil
 FROM rust-base AS run-z-rayon-core-1.12.1-296a31aad008c41f
 SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /target/release/build/rayon-core-296a31aad008c41f/out
-WORKDIR $CARGO_HOME/registry/src/index.crates.io/rayon-core-1.12.1
 RUN \
   --mount=from=out-80f61346d08b8ad4,source=/build_script_build-80f61346d08b8ad4,dst=/target/release/build/rayon-core-80f61346d08b8ad4/build-script-build \
   --mount=from=cratesio-rayon-core-1.12.1,source=/rayon-core-1.12.1,dst=$CARGO_HOME/registry/src/index.crates.io/rayon-core-1.12.1 \
@@ -1564,7 +1562,6 @@ COPY --link --from=dep-x-crc32fast-1.5.0-d1dbff5e0a7e97c0 /target/release/build/
 FROM rust-base AS run-z-crc32fast-1.5.0-60b668761379f88a
 SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /target/release/build/crc32fast-60b668761379f88a/out
-WORKDIR $CARGO_HOME/registry/src/index.crates.io/crc32fast-1.5.0
 RUN \
   --mount=from=out-d1dbff5e0a7e97c0,source=/build_script_build-d1dbff5e0a7e97c0,dst=/target/release/build/crc32fast-d1dbff5e0a7e97c0/build-script-build \
   --mount=from=cratesio-crc32fast-1.5.0,source=/crc32fast-1.5.0,dst=$CARGO_HOME/registry/src/index.crates.io/crc32fast-1.5.0 \
@@ -1848,7 +1845,6 @@ COPY --link --from=dep-x-libc-0.2.174-da51c29e42901e01 /target/release/build/lib
 FROM rust-base AS run-z-libc-0.2.174-4cc3e5f3c96f9b30
 SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /target/release/build/libc-4cc3e5f3c96f9b30/out
-WORKDIR $CARGO_HOME/registry/src/index.crates.io/libc-0.2.174
 RUN \
   --mount=from=out-da51c29e42901e01,source=/build_script_build-da51c29e42901e01,dst=/target/release/build/libc-da51c29e42901e01/build-script-build \
   --mount=from=cratesio-libc-0.2.174,source=/libc-0.2.174,dst=$CARGO_HOME/registry/src/index.crates.io/libc-0.2.174 \
@@ -2174,7 +2170,6 @@ COPY --link --from=dep-x-num-traits-0.2.19-f6ccb38f53f556a0 /target/release/buil
 FROM rust-base AS run-z-num-traits-0.2.19-3c5112c6c79a69d0
 SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /target/release/build/num-traits-3c5112c6c79a69d0/out
-WORKDIR $CARGO_HOME/registry/src/index.crates.io/num-traits-0.2.19
 RUN \
   --mount=from=out-f6ccb38f53f556a0,source=/build_script_build-f6ccb38f53f556a0,dst=/target/release/build/num-traits-f6ccb38f53f556a0/build-script-build \
   --mount=from=cratesio-num-traits-0.2.19,source=/num-traits-0.2.19,dst=$CARGO_HOME/registry/src/index.crates.io/num-traits-0.2.19 \

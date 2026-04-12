@@ -66,7 +66,6 @@ COPY --link --from=dep-x-anyhow-1.0.100-6582e1465926e967 /target/release/build/a
 FROM rust-base AS run-z-anyhow-1.0.100-a3305763533f88ce
 SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /target/release/build/anyhow-a3305763533f88ce/out
-WORKDIR $CARGO_HOME/registry/src/index.crates.io/anyhow-1.0.100
 RUN \
   --mount=from=out-6582e1465926e967,source=/build_script_build-6582e1465926e967,dst=/target/release/build/anyhow-6582e1465926e967/build-script-build \
   --mount=from=cratesio-anyhow-1.0.100,source=/anyhow-1.0.100,dst=$CARGO_HOME/registry/src/index.crates.io/anyhow-1.0.100 \
@@ -152,7 +151,7 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         OUT_DIR=/target/release/build/anyhow-a3305763533f88ce/out \
         CARGOGREEN=1 \
-      rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("backtrace", "default", "std"))' --crate-name anyhow --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-105e86b51b812232' -C metadata'=0cdaa804270f12f7' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/anyhow-1.0.100/src/lib.rs \
+      rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --cfg std_backtrace --check-cfg cfg'(anyhow_build_probe)' --check-cfg cfg'(anyhow_nightly_testing)' --check-cfg cfg'(anyhow_no_clippy_format_args)' --check-cfg cfg'(anyhow_no_core_error)' --check-cfg cfg'(anyhow_no_core_unwind_safe)' --check-cfg cfg'(anyhow_no_fmt_arguments_as_str)' --check-cfg cfg'(anyhow_no_ptr_addr_of)' --check-cfg cfg'(anyhow_no_unsafe_op_in_unsafe_fn_lint)' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(error_generic_member_access)' --check-cfg cfg'(feature, values("backtrace", "default", "std"))' --check-cfg cfg'(std_backtrace)' --crate-name anyhow --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-105e86b51b812232' -C metadata'=0cdaa804270f12f7' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/anyhow-1.0.100/src/lib.rs \
         1>          /target/release/deps/out-105e86b51b812232-stdout \
         2>          /target/release/deps/out-105e86b51b812232-stderr \
         || echo $? >/target/release/deps/out-105e86b51b812232-errcode\
@@ -340,7 +339,6 @@ COPY --link --from=dep-x-kani-verifier-0.66.0-51c3d55f352b67d4 /target/release/b
 FROM rust-base AS run-z-kani-verifier-0.66.0-579ea352bbafce7f
 SHELL ["/bin/sh", "-eux", "-c"]
 WORKDIR /target/release/build/kani-verifier-579ea352bbafce7f/out
-WORKDIR $CARGO_HOME/registry/src/index.crates.io/kani-verifier-0.66.0
 RUN \
   --mount=from=out-51c3d55f352b67d4,source=/build_script_build-51c3d55f352b67d4,dst=/target/release/build/kani-verifier-51c3d55f352b67d4/build-script-build \
   --mount=from=cratesio-kani-verifier-0.66.0,source=/kani-verifier-0.66.0,dst=$CARGO_HOME/registry/src/index.crates.io/kani-verifier-0.66.0 \
