@@ -417,6 +417,14 @@ $(unset_action_envs)
 $(postcond_fresh _)
 $(postconds _)
 
+    - name: 🔵 Try CARGOGREEN_RUNNER=none with the same command twice without modifications...
+      run: |
+$(unset_action_envs)
+        env ${envvars[@]} CARGOGREEN_RUNNER=none \\
+          $cargo green -vv install --locked --force $(as_install "$name_at_version") $@ |& tee _
+$(postcond_fresh _)
+$(postconds _)
+
     - name: 🔵 Compare old/new local private registry image digests
       if: \${{ always() && env.CARGOGREEN_CACHE_FROM_IMAGES != '' && env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
       run: |

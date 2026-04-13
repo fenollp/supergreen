@@ -354,6 +354,78 @@ jobs:
       name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
 
+    - name: 🔵 Try CARGOGREEN_RUNNER=none with the same command twice without modifications...
+      run: |
+        unset CARGO_PROFILE_DEV_DEBUG
+        unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
+        unset CARGO_TERM_COLOR
+        unset CARGO_UNSTABLE_SPARSE_REGISTRY
+        env  CARGOGREEN_RUNNER=none \
+          cargo green -vv install --locked --force buildxargs --git https://github.com/fenollp/buildxargs.git |& tee _
+    - name: ...doesn't recompile anything
+      run: |
+        err=0
+        grep Finished  _
+        grep Finished  _ | grep -E [012]...s || ((err+=1))
+        grep Dirty     _                     && ((err+=2))
+        grep Compiling _                     && ((err+=4))
+        exit $err
+    - if: ${{ always() }}
+      name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
+      run: |
+        ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' _
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
+      run: |
+        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
+      run: |
+        ! grep -C20 -F 'connection error: COMPRESSION_ERROR' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> there's some panic!s
+      run: |
+        ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> there's some BUGs
+      run: |
+        ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> here's cargo's error text
+      run: |
+        ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' $CARGOGREEN_LOG_PATH _
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> 429 Too Many Requests
+      run: |
+        ! grep -C20 -F '429 Too Many Requests' $CARGOGREEN_LOG_PATH _
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> here's relevant logs
+      run: |
+        ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
+      name: 🌀 Maybe show final path diff
+      run: |
+        final_diff=(git --no-pager diff)
+        if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
+          final_diff+=(--exit-code)
+        fi
+        final_diff+=(--ignore-matching-lines='^#')
+        final_diff+=(--ignore-matching-lines=' AS rust-base$')
+        final_diff+=(-- $CARGOGREEN_FINAL_PATH)
+        "${final_diff[@]}"
+
+    - if: ${{ failure() }}
+      name: 🌀 cargo-green logs
+      run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
+
     - name: 🔵 Compare old/new local private registry image digests
       if: ${{ always() && env.CARGOGREEN_CACHE_FROM_IMAGES != '' && env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
       run: |
@@ -604,6 +676,78 @@ jobs:
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env  \
+          cargo green -vv install --locked --force cargo-deny@0.18.5  |& tee _
+    - name: ...doesn't recompile anything
+      run: |
+        err=0
+        grep Finished  _
+        grep Finished  _ | grep -E [012]...s || ((err+=1))
+        grep Dirty     _                     && ((err+=2))
+        grep Compiling _                     && ((err+=4))
+        exit $err
+    - if: ${{ always() }}
+      name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
+      run: |
+        ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' _
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
+      run: |
+        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
+      run: |
+        ! grep -C20 -F 'connection error: COMPRESSION_ERROR' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> there's some panic!s
+      run: |
+        ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> there's some BUGs
+      run: |
+        ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> here's cargo's error text
+      run: |
+        ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' $CARGOGREEN_LOG_PATH _
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> 429 Too Many Requests
+      run: |
+        ! grep -C20 -F '429 Too Many Requests' $CARGOGREEN_LOG_PATH _
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> here's relevant logs
+      run: |
+        ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
+      name: 🌀 Maybe show final path diff
+      run: |
+        final_diff=(git --no-pager diff)
+        if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
+          final_diff+=(--exit-code)
+        fi
+        final_diff+=(--ignore-matching-lines='^#')
+        final_diff+=(--ignore-matching-lines=' AS rust-base$')
+        final_diff+=(-- $CARGOGREEN_FINAL_PATH)
+        "${final_diff[@]}"
+
+    - if: ${{ failure() }}
+      name: 🌀 cargo-green logs
+      run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
+
+    - name: 🔵 Try CARGOGREEN_RUNNER=none with the same command twice without modifications...
+      run: |
+        unset CARGO_PROFILE_DEV_DEBUG
+        unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
+        unset CARGO_TERM_COLOR
+        unset CARGO_UNSTABLE_SPARSE_REGISTRY
+        env  CARGOGREEN_RUNNER=none \
           cargo green -vv install --locked --force cargo-deny@0.18.5  |& tee _
     - name: ...doesn't recompile anything
       run: |
@@ -984,6 +1128,78 @@ jobs:
       name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
 
+    - name: 🔵 Try CARGOGREEN_RUNNER=none with the same command twice without modifications...
+      run: |
+        unset CARGO_PROFILE_DEV_DEBUG
+        unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
+        unset CARGO_TERM_COLOR
+        unset CARGO_UNSTABLE_SPARSE_REGISTRY
+        env  CARGOGREEN_RUNNER=none \
+          cargo green -vv install --locked --force cargo-llvm-cov@0.6.21  |& tee _
+    - name: ...doesn't recompile anything
+      run: |
+        err=0
+        grep Finished  _
+        grep Finished  _ | grep -E [012]...s || ((err+=1))
+        grep Dirty     _                     && ((err+=2))
+        grep Compiling _                     && ((err+=4))
+        exit $err
+    - if: ${{ always() }}
+      name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
+      run: |
+        ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' _
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
+      run: |
+        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
+      run: |
+        ! grep -C20 -F 'connection error: COMPRESSION_ERROR' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> there's some panic!s
+      run: |
+        ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> there's some BUGs
+      run: |
+        ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> here's cargo's error text
+      run: |
+        ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' $CARGOGREEN_LOG_PATH _
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> 429 Too Many Requests
+      run: |
+        ! grep -C20 -F '429 Too Many Requests' $CARGOGREEN_LOG_PATH _
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> here's relevant logs
+      run: |
+        ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
+      name: 🌀 Maybe show final path diff
+      run: |
+        final_diff=(git --no-pager diff)
+        if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
+          final_diff+=(--exit-code)
+        fi
+        final_diff+=(--ignore-matching-lines='^#')
+        final_diff+=(--ignore-matching-lines=' AS rust-base$')
+        final_diff+=(-- $CARGOGREEN_FINAL_PATH)
+        "${final_diff[@]}"
+
+    - if: ${{ failure() }}
+      name: 🌀 cargo-green logs
+      run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
+
     - name: 🔵 Compare old/new local private registry image digests
       if: ${{ always() && env.CARGOGREEN_CACHE_FROM_IMAGES != '' && env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
       run: |
@@ -1234,6 +1450,78 @@ jobs:
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env  \
+          cargo green -vv install --locked --force cargo-nextest@0.9.114  |& tee _
+    - name: ...doesn't recompile anything
+      run: |
+        err=0
+        grep Finished  _
+        grep Finished  _ | grep -E [012]...s || ((err+=1))
+        grep Dirty     _                     && ((err+=2))
+        grep Compiling _                     && ((err+=4))
+        exit $err
+    - if: ${{ always() }}
+      name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
+      run: |
+        ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' _
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
+      run: |
+        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
+      run: |
+        ! grep -C20 -F 'connection error: COMPRESSION_ERROR' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> there's some panic!s
+      run: |
+        ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> there's some BUGs
+      run: |
+        ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> here's cargo's error text
+      run: |
+        ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' $CARGOGREEN_LOG_PATH _
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> 429 Too Many Requests
+      run: |
+        ! grep -C20 -F '429 Too Many Requests' $CARGOGREEN_LOG_PATH _
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> here's relevant logs
+      run: |
+        ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
+      name: 🌀 Maybe show final path diff
+      run: |
+        final_diff=(git --no-pager diff)
+        if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
+          final_diff+=(--exit-code)
+        fi
+        final_diff+=(--ignore-matching-lines='^#')
+        final_diff+=(--ignore-matching-lines=' AS rust-base$')
+        final_diff+=(-- $CARGOGREEN_FINAL_PATH)
+        "${final_diff[@]}"
+
+    - if: ${{ failure() }}
+      name: 🌀 cargo-green logs
+      run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
+
+    - name: 🔵 Try CARGOGREEN_RUNNER=none with the same command twice without modifications...
+      run: |
+        unset CARGO_PROFILE_DEV_DEBUG
+        unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
+        unset CARGO_TERM_COLOR
+        unset CARGO_UNSTABLE_SPARSE_REGISTRY
+        env  CARGOGREEN_RUNNER=none \
           cargo green -vv install --locked --force cargo-nextest@0.9.114  |& tee _
     - name: ...doesn't recompile anything
       run: |
@@ -1614,6 +1902,78 @@ jobs:
       name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
 
+    - name: 🔵 Try CARGOGREEN_RUNNER=none with the same command twice without modifications...
+      run: |
+        unset CARGO_PROFILE_DEV_DEBUG
+        unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
+        unset CARGO_TERM_COLOR
+        unset CARGO_UNSTABLE_SPARSE_REGISTRY
+        env  CARGOGREEN_RUNNER=none \
+          cargo green -vv install --locked --force cross@0.2.5 --git https://github.com/cross-rs/cross.git --rev=49cd054de9b832dfc11a4895c72b0aef533b5c6a --bin=cross |& tee _
+    - name: ...doesn't recompile anything
+      run: |
+        err=0
+        grep Finished  _
+        grep Finished  _ | grep -E [012]...s || ((err+=1))
+        grep Dirty     _                     && ((err+=2))
+        grep Compiling _                     && ((err+=4))
+        exit $err
+    - if: ${{ always() }}
+      name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
+      run: |
+        ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' _
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
+      run: |
+        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
+      run: |
+        ! grep -C20 -F 'connection error: COMPRESSION_ERROR' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> there's some panic!s
+      run: |
+        ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> there's some BUGs
+      run: |
+        ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> here's cargo's error text
+      run: |
+        ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' $CARGOGREEN_LOG_PATH _
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> 429 Too Many Requests
+      run: |
+        ! grep -C20 -F '429 Too Many Requests' $CARGOGREEN_LOG_PATH _
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> here's relevant logs
+      run: |
+        ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
+      name: 🌀 Maybe show final path diff
+      run: |
+        final_diff=(git --no-pager diff)
+        if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
+          final_diff+=(--exit-code)
+        fi
+        final_diff+=(--ignore-matching-lines='^#')
+        final_diff+=(--ignore-matching-lines=' AS rust-base$')
+        final_diff+=(-- $CARGOGREEN_FINAL_PATH)
+        "${final_diff[@]}"
+
+    - if: ${{ failure() }}
+      name: 🌀 cargo-green logs
+      run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
+
     - name: 🔵 Compare old/new local private registry image digests
       if: ${{ always() && env.CARGOGREEN_CACHE_FROM_IMAGES != '' && env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
       run: |
@@ -1864,6 +2224,78 @@ jobs:
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env  \
+          cargo green -vv install --locked --force dbcc@2.2.1  |& tee _
+    - name: ...doesn't recompile anything
+      run: |
+        err=0
+        grep Finished  _
+        grep Finished  _ | grep -E [012]...s || ((err+=1))
+        grep Dirty     _                     && ((err+=2))
+        grep Compiling _                     && ((err+=4))
+        exit $err
+    - if: ${{ always() }}
+      name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
+      run: |
+        ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' _
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
+      run: |
+        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
+      run: |
+        ! grep -C20 -F 'connection error: COMPRESSION_ERROR' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> there's some panic!s
+      run: |
+        ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> there's some BUGs
+      run: |
+        ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> here's cargo's error text
+      run: |
+        ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' $CARGOGREEN_LOG_PATH _
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> 429 Too Many Requests
+      run: |
+        ! grep -C20 -F '429 Too Many Requests' $CARGOGREEN_LOG_PATH _
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> here's relevant logs
+      run: |
+        ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
+      name: 🌀 Maybe show final path diff
+      run: |
+        final_diff=(git --no-pager diff)
+        if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
+          final_diff+=(--exit-code)
+        fi
+        final_diff+=(--ignore-matching-lines='^#')
+        final_diff+=(--ignore-matching-lines=' AS rust-base$')
+        final_diff+=(-- $CARGOGREEN_FINAL_PATH)
+        "${final_diff[@]}"
+
+    - if: ${{ failure() }}
+      name: 🌀 cargo-green logs
+      run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
+
+    - name: 🔵 Try CARGOGREEN_RUNNER=none with the same command twice without modifications...
+      run: |
+        unset CARGO_PROFILE_DEV_DEBUG
+        unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
+        unset CARGO_TERM_COLOR
+        unset CARGO_UNSTABLE_SPARSE_REGISTRY
+        env  CARGOGREEN_RUNNER=none \
           cargo green -vv install --locked --force dbcc@2.2.1  |& tee _
     - name: ...doesn't recompile anything
       run: |
@@ -2244,6 +2676,78 @@ jobs:
       name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
 
+    - name: 🔵 Try CARGOGREEN_RUNNER=none with the same command twice without modifications...
+      run: |
+        unset CARGO_PROFILE_DEV_DEBUG
+        unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
+        unset CARGO_TERM_COLOR
+        unset CARGO_UNSTABLE_SPARSE_REGISTRY
+        env CARGOGREEN_ADD_APT=libpq-dev CARGOGREEN_RUNNER=none \
+          cargo green -vv install --locked --force diesel_cli@2.3.4 --no-default-features --features=postgres |& tee _
+    - name: ...doesn't recompile anything
+      run: |
+        err=0
+        grep Finished  _
+        grep Finished  _ | grep -E [012]...s || ((err+=1))
+        grep Dirty     _                     && ((err+=2))
+        grep Compiling _                     && ((err+=4))
+        exit $err
+    - if: ${{ always() }}
+      name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
+      run: |
+        ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' _
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
+      run: |
+        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
+      run: |
+        ! grep -C20 -F 'connection error: COMPRESSION_ERROR' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> there's some panic!s
+      run: |
+        ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> there's some BUGs
+      run: |
+        ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> here's cargo's error text
+      run: |
+        ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' $CARGOGREEN_LOG_PATH _
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> 429 Too Many Requests
+      run: |
+        ! grep -C20 -F '429 Too Many Requests' $CARGOGREEN_LOG_PATH _
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> here's relevant logs
+      run: |
+        ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
+      name: 🌀 Maybe show final path diff
+      run: |
+        final_diff=(git --no-pager diff)
+        if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
+          final_diff+=(--exit-code)
+        fi
+        final_diff+=(--ignore-matching-lines='^#')
+        final_diff+=(--ignore-matching-lines=' AS rust-base$')
+        final_diff+=(-- $CARGOGREEN_FINAL_PATH)
+        "${final_diff[@]}"
+
+    - if: ${{ failure() }}
+      name: 🌀 cargo-green logs
+      run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
+
     - name: 🔵 Compare old/new local private registry image digests
       if: ${{ always() && env.CARGOGREEN_CACHE_FROM_IMAGES != '' && env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
       run: |
@@ -2494,6 +2998,78 @@ jobs:
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env  \
+          cargo green -vv install --locked --force hickory-dns@0.26.0-alpha.1  |& tee _
+    - name: ...doesn't recompile anything
+      run: |
+        err=0
+        grep Finished  _
+        grep Finished  _ | grep -E [012]...s || ((err+=1))
+        grep Dirty     _                     && ((err+=2))
+        grep Compiling _                     && ((err+=4))
+        exit $err
+    - if: ${{ always() }}
+      name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
+      run: |
+        ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' _
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
+      run: |
+        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
+      run: |
+        ! grep -C20 -F 'connection error: COMPRESSION_ERROR' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> there's some panic!s
+      run: |
+        ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> there's some BUGs
+      run: |
+        ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> here's cargo's error text
+      run: |
+        ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' $CARGOGREEN_LOG_PATH _
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> 429 Too Many Requests
+      run: |
+        ! grep -C20 -F '429 Too Many Requests' $CARGOGREEN_LOG_PATH _
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> here's relevant logs
+      run: |
+        ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
+      name: 🌀 Maybe show final path diff
+      run: |
+        final_diff=(git --no-pager diff)
+        if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
+          final_diff+=(--exit-code)
+        fi
+        final_diff+=(--ignore-matching-lines='^#')
+        final_diff+=(--ignore-matching-lines=' AS rust-base$')
+        final_diff+=(-- $CARGOGREEN_FINAL_PATH)
+        "${final_diff[@]}"
+
+    - if: ${{ failure() }}
+      name: 🌀 cargo-green logs
+      run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
+
+    - name: 🔵 Try CARGOGREEN_RUNNER=none with the same command twice without modifications...
+      run: |
+        unset CARGO_PROFILE_DEV_DEBUG
+        unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
+        unset CARGO_TERM_COLOR
+        unset CARGO_UNSTABLE_SPARSE_REGISTRY
+        env  CARGOGREEN_RUNNER=none \
           cargo green -vv install --locked --force hickory-dns@0.26.0-alpha.1  |& tee _
     - name: ...doesn't recompile anything
       run: |
@@ -2874,6 +3450,78 @@ jobs:
       name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
 
+    - name: 🔵 Try CARGOGREEN_RUNNER=none with the same command twice without modifications...
+      run: |
+        unset CARGO_PROFILE_DEV_DEBUG
+        unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
+        unset CARGO_TERM_COLOR
+        unset CARGO_UNSTABLE_SPARSE_REGISTRY
+        env CARGOGREEN_ADD_APT=libsqlite3-dev,libssl-dev,pkg-config,zlib1g-dev CARGOGREEN_RUNNER=none \
+          cargo green -vv install --locked --force mussh@3.1.3  |& tee _
+    - name: ...doesn't recompile anything
+      run: |
+        err=0
+        grep Finished  _
+        grep Finished  _ | grep -E [012]...s || ((err+=1))
+        grep Dirty     _                     && ((err+=2))
+        grep Compiling _                     && ((err+=4))
+        exit $err
+    - if: ${{ always() }}
+      name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
+      run: |
+        ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' _
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
+      run: |
+        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
+      run: |
+        ! grep -C20 -F 'connection error: COMPRESSION_ERROR' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> there's some panic!s
+      run: |
+        ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> there's some BUGs
+      run: |
+        ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> here's cargo's error text
+      run: |
+        ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' $CARGOGREEN_LOG_PATH _
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> 429 Too Many Requests
+      run: |
+        ! grep -C20 -F '429 Too Many Requests' $CARGOGREEN_LOG_PATH _
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> here's relevant logs
+      run: |
+        ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
+      name: 🌀 Maybe show final path diff
+      run: |
+        final_diff=(git --no-pager diff)
+        if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
+          final_diff+=(--exit-code)
+        fi
+        final_diff+=(--ignore-matching-lines='^#')
+        final_diff+=(--ignore-matching-lines=' AS rust-base$')
+        final_diff+=(-- $CARGOGREEN_FINAL_PATH)
+        "${final_diff[@]}"
+
+    - if: ${{ failure() }}
+      name: 🌀 cargo-green logs
+      run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
+
     - name: 🔵 Compare old/new local private registry image digests
       if: ${{ always() && env.CARGOGREEN_CACHE_FROM_IMAGES != '' && env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
       run: |
@@ -3124,6 +3772,78 @@ jobs:
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b NTPD_RS_GIT_DATE=2025-05-09 \
+          cargo green -vv install --locked --force ntpd@1.7.1 --bin=ntp-daemon |& tee _
+    - name: ...doesn't recompile anything
+      run: |
+        err=0
+        grep Finished  _
+        grep Finished  _ | grep -E [012]...s || ((err+=1))
+        grep Dirty     _                     && ((err+=2))
+        grep Compiling _                     && ((err+=4))
+        exit $err
+    - if: ${{ always() }}
+      name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
+      run: |
+        ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' _
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
+      run: |
+        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
+      run: |
+        ! grep -C20 -F 'connection error: COMPRESSION_ERROR' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> there's some panic!s
+      run: |
+        ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> there's some BUGs
+      run: |
+        ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> here's cargo's error text
+      run: |
+        ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' $CARGOGREEN_LOG_PATH _
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> 429 Too Many Requests
+      run: |
+        ! grep -C20 -F '429 Too Many Requests' $CARGOGREEN_LOG_PATH _
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> here's relevant logs
+      run: |
+        ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
+      name: 🌀 Maybe show final path diff
+      run: |
+        final_diff=(git --no-pager diff)
+        if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
+          final_diff+=(--exit-code)
+        fi
+        final_diff+=(--ignore-matching-lines='^#')
+        final_diff+=(--ignore-matching-lines=' AS rust-base$')
+        final_diff+=(-- $CARGOGREEN_FINAL_PATH)
+        "${final_diff[@]}"
+
+    - if: ${{ failure() }}
+      name: 🌀 cargo-green logs
+      run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
+
+    - name: 🔵 Try CARGOGREEN_RUNNER=none with the same command twice without modifications...
+      run: |
+        unset CARGO_PROFILE_DEV_DEBUG
+        unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
+        unset CARGO_TERM_COLOR
+        unset CARGO_UNSTABLE_SPARSE_REGISTRY
+        env NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b NTPD_RS_GIT_DATE=2025-05-09 CARGOGREEN_RUNNER=none \
           cargo green -vv install --locked --force ntpd@1.7.1 --bin=ntp-daemon |& tee _
     - name: ...doesn't recompile anything
       run: |
@@ -3504,6 +4224,78 @@ jobs:
       name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
 
+    - name: 🔵 Try CARGOGREEN_RUNNER=none with the same command twice without modifications...
+      run: |
+        unset CARGO_PROFILE_DEV_DEBUG
+        unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
+        unset CARGO_TERM_COLOR
+        unset CARGO_UNSTABLE_SPARSE_REGISTRY
+        env  CARGOGREEN_RUNNER=none \
+          cargo green -vv install --locked --force qcow2-rs@0.1.6  |& tee _
+    - name: ...doesn't recompile anything
+      run: |
+        err=0
+        grep Finished  _
+        grep Finished  _ | grep -E [012]...s || ((err+=1))
+        grep Dirty     _                     && ((err+=2))
+        grep Compiling _                     && ((err+=4))
+        exit $err
+    - if: ${{ always() }}
+      name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
+      run: |
+        ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' _
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
+      run: |
+        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
+      run: |
+        ! grep -C20 -F 'connection error: COMPRESSION_ERROR' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> there's some panic!s
+      run: |
+        ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> there's some BUGs
+      run: |
+        ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> here's cargo's error text
+      run: |
+        ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' $CARGOGREEN_LOG_PATH _
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> 429 Too Many Requests
+      run: |
+        ! grep -C20 -F '429 Too Many Requests' $CARGOGREEN_LOG_PATH _
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> here's relevant logs
+      run: |
+        ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
+      name: 🌀 Maybe show final path diff
+      run: |
+        final_diff=(git --no-pager diff)
+        if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
+          final_diff+=(--exit-code)
+        fi
+        final_diff+=(--ignore-matching-lines='^#')
+        final_diff+=(--ignore-matching-lines=' AS rust-base$')
+        final_diff+=(-- $CARGOGREEN_FINAL_PATH)
+        "${final_diff[@]}"
+
+    - if: ${{ failure() }}
+      name: 🌀 cargo-green logs
+      run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
+
     - name: 🔵 Compare old/new local private registry image digests
       if: ${{ always() && env.CARGOGREEN_CACHE_FROM_IMAGES != '' && env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
       run: |
@@ -3754,6 +4546,78 @@ jobs:
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env  \
+          cargo green -vv install --locked --force ripgrep@15.1.0  |& tee _
+    - name: ...doesn't recompile anything
+      run: |
+        err=0
+        grep Finished  _
+        grep Finished  _ | grep -E [012]...s || ((err+=1))
+        grep Dirty     _                     && ((err+=2))
+        grep Compiling _                     && ((err+=4))
+        exit $err
+    - if: ${{ always() }}
+      name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
+      run: |
+        ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' _
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
+      run: |
+        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
+      run: |
+        ! grep -C20 -F 'connection error: COMPRESSION_ERROR' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> there's some panic!s
+      run: |
+        ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> there's some BUGs
+      run: |
+        ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> here's cargo's error text
+      run: |
+        ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' $CARGOGREEN_LOG_PATH _
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> 429 Too Many Requests
+      run: |
+        ! grep -C20 -F '429 Too Many Requests' $CARGOGREEN_LOG_PATH _
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> here's relevant logs
+      run: |
+        ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
+      name: 🌀 Maybe show final path diff
+      run: |
+        final_diff=(git --no-pager diff)
+        if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
+          final_diff+=(--exit-code)
+        fi
+        final_diff+=(--ignore-matching-lines='^#')
+        final_diff+=(--ignore-matching-lines=' AS rust-base$')
+        final_diff+=(-- $CARGOGREEN_FINAL_PATH)
+        "${final_diff[@]}"
+
+    - if: ${{ failure() }}
+      name: 🌀 cargo-green logs
+      run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
+
+    - name: 🔵 Try CARGOGREEN_RUNNER=none with the same command twice without modifications...
+      run: |
+        unset CARGO_PROFILE_DEV_DEBUG
+        unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
+        unset CARGO_TERM_COLOR
+        unset CARGO_UNSTABLE_SPARSE_REGISTRY
+        env  CARGOGREEN_RUNNER=none \
           cargo green -vv install --locked --force ripgrep@15.1.0  |& tee _
     - name: ...doesn't recompile anything
       run: |
@@ -4134,6 +4998,78 @@ jobs:
       name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
 
+    - name: 🔵 Try CARGOGREEN_RUNNER=none with the same command twice without modifications...
+      run: |
+        unset CARGO_PROFILE_DEV_DEBUG
+        unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
+        unset CARGO_TERM_COLOR
+        unset CARGO_UNSTABLE_SPARSE_REGISTRY
+        env CARGOGREEN_ADD_APT=libclang-dev CARGOGREEN_RUNNER=none \
+          cargo green -vv install --locked --force rublk@0.2.13  |& tee _
+    - name: ...doesn't recompile anything
+      run: |
+        err=0
+        grep Finished  _
+        grep Finished  _ | grep -E [012]...s || ((err+=1))
+        grep Dirty     _                     && ((err+=2))
+        grep Compiling _                     && ((err+=4))
+        exit $err
+    - if: ${{ always() }}
+      name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
+      run: |
+        ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' _
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
+      run: |
+        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
+      run: |
+        ! grep -C20 -F 'connection error: COMPRESSION_ERROR' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> there's some panic!s
+      run: |
+        ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> there's some BUGs
+      run: |
+        ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> here's cargo's error text
+      run: |
+        ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' $CARGOGREEN_LOG_PATH _
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> 429 Too Many Requests
+      run: |
+        ! grep -C20 -F '429 Too Many Requests' $CARGOGREEN_LOG_PATH _
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> here's relevant logs
+      run: |
+        ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
+      name: 🌀 Maybe show final path diff
+      run: |
+        final_diff=(git --no-pager diff)
+        if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
+          final_diff+=(--exit-code)
+        fi
+        final_diff+=(--ignore-matching-lines='^#')
+        final_diff+=(--ignore-matching-lines=' AS rust-base$')
+        final_diff+=(-- $CARGOGREEN_FINAL_PATH)
+        "${final_diff[@]}"
+
+    - if: ${{ failure() }}
+      name: 🌀 cargo-green logs
+      run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
+
     - name: 🔵 Compare old/new local private registry image digests
       if: ${{ always() && env.CARGOGREEN_CACHE_FROM_IMAGES != '' && env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
       run: |
@@ -4384,6 +5320,78 @@ jobs:
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env  \
+          cargo green -vv install --locked --force shpool@0.9.3  |& tee _
+    - name: ...doesn't recompile anything
+      run: |
+        err=0
+        grep Finished  _
+        grep Finished  _ | grep -E [012]...s || ((err+=1))
+        grep Dirty     _                     && ((err+=2))
+        grep Compiling _                     && ((err+=4))
+        exit $err
+    - if: ${{ always() }}
+      name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
+      run: |
+        ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' _
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
+      run: |
+        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
+      run: |
+        ! grep -C20 -F 'connection error: COMPRESSION_ERROR' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> there's some panic!s
+      run: |
+        ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> there's some BUGs
+      run: |
+        ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> here's cargo's error text
+      run: |
+        ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' $CARGOGREEN_LOG_PATH _
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> 429 Too Many Requests
+      run: |
+        ! grep -C20 -F '429 Too Many Requests' $CARGOGREEN_LOG_PATH _
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> here's relevant logs
+      run: |
+        ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
+      name: 🌀 Maybe show final path diff
+      run: |
+        final_diff=(git --no-pager diff)
+        if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
+          final_diff+=(--exit-code)
+        fi
+        final_diff+=(--ignore-matching-lines='^#')
+        final_diff+=(--ignore-matching-lines=' AS rust-base$')
+        final_diff+=(-- $CARGOGREEN_FINAL_PATH)
+        "${final_diff[@]}"
+
+    - if: ${{ failure() }}
+      name: 🌀 cargo-green logs
+      run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
+
+    - name: 🔵 Try CARGOGREEN_RUNNER=none with the same command twice without modifications...
+      run: |
+        unset CARGO_PROFILE_DEV_DEBUG
+        unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
+        unset CARGO_TERM_COLOR
+        unset CARGO_UNSTABLE_SPARSE_REGISTRY
+        env  CARGOGREEN_RUNNER=none \
           cargo green -vv install --locked --force shpool@0.9.3  |& tee _
     - name: ...doesn't recompile anything
       run: |
@@ -4764,6 +5772,78 @@ jobs:
       name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
 
+    - name: 🔵 Try CARGOGREEN_RUNNER=none with the same command twice without modifications...
+      run: |
+        unset CARGO_PROFILE_DEV_DEBUG
+        unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
+        unset CARGO_TERM_COLOR
+        unset CARGO_UNSTABLE_SPARSE_REGISTRY
+        env  CARGOGREEN_RUNNER=none \
+          cargo green -vv install --locked --force topiary-cli@0.7.3  |& tee _
+    - name: ...doesn't recompile anything
+      run: |
+        err=0
+        grep Finished  _
+        grep Finished  _ | grep -E [012]...s || ((err+=1))
+        grep Dirty     _                     && ((err+=2))
+        grep Compiling _                     && ((err+=4))
+        exit $err
+    - if: ${{ always() }}
+      name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
+      run: |
+        ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' _
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
+      run: |
+        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
+      run: |
+        ! grep -C20 -F 'connection error: COMPRESSION_ERROR' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> there's some panic!s
+      run: |
+        ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> there's some BUGs
+      run: |
+        ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> here's cargo's error text
+      run: |
+        ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' $CARGOGREEN_LOG_PATH _
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> 429 Too Many Requests
+      run: |
+        ! grep -C20 -F '429 Too Many Requests' $CARGOGREEN_LOG_PATH _
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> here's relevant logs
+      run: |
+        ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
+      name: 🌀 Maybe show final path diff
+      run: |
+        final_diff=(git --no-pager diff)
+        if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
+          final_diff+=(--exit-code)
+        fi
+        final_diff+=(--ignore-matching-lines='^#')
+        final_diff+=(--ignore-matching-lines=' AS rust-base$')
+        final_diff+=(-- $CARGOGREEN_FINAL_PATH)
+        "${final_diff[@]}"
+
+    - if: ${{ failure() }}
+      name: 🌀 cargo-green logs
+      run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
+
     - name: 🔵 Compare old/new local private registry image digests
       if: ${{ always() && env.CARGOGREEN_CACHE_FROM_IMAGES != '' && env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
       run: |
@@ -5014,6 +6094,78 @@ jobs:
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env  \
+          cargo green -vv install --locked --force stu@0.7.5  |& tee _
+    - name: ...doesn't recompile anything
+      run: |
+        err=0
+        grep Finished  _
+        grep Finished  _ | grep -E [012]...s || ((err+=1))
+        grep Dirty     _                     && ((err+=2))
+        grep Compiling _                     && ((err+=4))
+        exit $err
+    - if: ${{ always() }}
+      name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
+      run: |
+        ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' _
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
+      run: |
+        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
+      run: |
+        ! grep -C20 -F 'connection error: COMPRESSION_ERROR' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> there's some panic!s
+      run: |
+        ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> there's some BUGs
+      run: |
+        ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> here's cargo's error text
+      run: |
+        ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' $CARGOGREEN_LOG_PATH _
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> 429 Too Many Requests
+      run: |
+        ! grep -C20 -F '429 Too Many Requests' $CARGOGREEN_LOG_PATH _
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> here's relevant logs
+      run: |
+        ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
+      name: 🌀 Maybe show final path diff
+      run: |
+        final_diff=(git --no-pager diff)
+        if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
+          final_diff+=(--exit-code)
+        fi
+        final_diff+=(--ignore-matching-lines='^#')
+        final_diff+=(--ignore-matching-lines=' AS rust-base$')
+        final_diff+=(-- $CARGOGREEN_FINAL_PATH)
+        "${final_diff[@]}"
+
+    - if: ${{ failure() }}
+      name: 🌀 cargo-green logs
+      run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
+
+    - name: 🔵 Try CARGOGREEN_RUNNER=none with the same command twice without modifications...
+      run: |
+        unset CARGO_PROFILE_DEV_DEBUG
+        unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
+        unset CARGO_TERM_COLOR
+        unset CARGO_UNSTABLE_SPARSE_REGISTRY
+        env  CARGOGREEN_RUNNER=none \
           cargo green -vv install --locked --force stu@0.7.5  |& tee _
     - name: ...doesn't recompile anything
       run: |
@@ -5394,6 +6546,78 @@ jobs:
       name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
 
+    - name: 🔵 Try CARGOGREEN_RUNNER=none with the same command twice without modifications...
+      run: |
+        unset CARGO_PROFILE_DEV_DEBUG
+        unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
+        unset CARGO_TERM_COLOR
+        unset CARGO_UNSTABLE_SPARSE_REGISTRY
+        env CARGOGREEN_ADD_APT=libcurl4-openssl-dev,pkg-config CARGOGREEN_RUNNER=none \
+          cargo green -vv install --locked --force cargo-authors@0.5.5  |& tee _
+    - name: ...doesn't recompile anything
+      run: |
+        err=0
+        grep Finished  _
+        grep Finished  _ | grep -E [012]...s || ((err+=1))
+        grep Dirty     _                     && ((err+=2))
+        grep Compiling _                     && ((err+=4))
+        exit $err
+    - if: ${{ always() }}
+      name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
+      run: |
+        ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' _
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
+      run: |
+        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
+      run: |
+        ! grep -C20 -F 'connection error: COMPRESSION_ERROR' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> there's some panic!s
+      run: |
+        ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> there's some BUGs
+      run: |
+        ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> here's cargo's error text
+      run: |
+        ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' $CARGOGREEN_LOG_PATH _
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> 429 Too Many Requests
+      run: |
+        ! grep -C20 -F '429 Too Many Requests' $CARGOGREEN_LOG_PATH _
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> here's relevant logs
+      run: |
+        ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
+      name: 🌀 Maybe show final path diff
+      run: |
+        final_diff=(git --no-pager diff)
+        if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
+          final_diff+=(--exit-code)
+        fi
+        final_diff+=(--ignore-matching-lines='^#')
+        final_diff+=(--ignore-matching-lines=' AS rust-base$')
+        final_diff+=(-- $CARGOGREEN_FINAL_PATH)
+        "${final_diff[@]}"
+
+    - if: ${{ failure() }}
+      name: 🌀 cargo-green logs
+      run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
+
     - name: 🔵 Compare old/new local private registry image digests
       if: ${{ always() && env.CARGOGREEN_CACHE_FROM_IMAGES != '' && env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
       run: |
@@ -5644,6 +6868,78 @@ jobs:
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env  \
+          cargo green -vv install --locked --force vixargs@0.1.0  |& tee _
+    - name: ...doesn't recompile anything
+      run: |
+        err=0
+        grep Finished  _
+        grep Finished  _ | grep -E [012]...s || ((err+=1))
+        grep Dirty     _                     && ((err+=2))
+        grep Compiling _                     && ((err+=4))
+        exit $err
+    - if: ${{ always() }}
+      name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
+      run: |
+        ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' _
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
+      run: |
+        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
+      run: |
+        ! grep -C20 -F 'connection error: COMPRESSION_ERROR' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> there's some panic!s
+      run: |
+        ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> there's some BUGs
+      run: |
+        ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> here's cargo's error text
+      run: |
+        ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' $CARGOGREEN_LOG_PATH _
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> 429 Too Many Requests
+      run: |
+        ! grep -C20 -F '429 Too Many Requests' $CARGOGREEN_LOG_PATH _
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> here's relevant logs
+      run: |
+        ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
+      name: 🌀 Maybe show final path diff
+      run: |
+        final_diff=(git --no-pager diff)
+        if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
+          final_diff+=(--exit-code)
+        fi
+        final_diff+=(--ignore-matching-lines='^#')
+        final_diff+=(--ignore-matching-lines=' AS rust-base$')
+        final_diff+=(-- $CARGOGREEN_FINAL_PATH)
+        "${final_diff[@]}"
+
+    - if: ${{ failure() }}
+      name: 🌀 cargo-green logs
+      run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
+
+    - name: 🔵 Try CARGOGREEN_RUNNER=none with the same command twice without modifications...
+      run: |
+        unset CARGO_PROFILE_DEV_DEBUG
+        unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
+        unset CARGO_TERM_COLOR
+        unset CARGO_UNSTABLE_SPARSE_REGISTRY
+        env  CARGOGREEN_RUNNER=none \
           cargo green -vv install --locked --force vixargs@0.1.0  |& tee _
     - name: ...doesn't recompile anything
       run: |
@@ -6024,6 +7320,78 @@ jobs:
       name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
 
+    - name: 🔵 Try CARGOGREEN_RUNNER=none with the same command twice without modifications...
+      run: |
+        unset CARGO_PROFILE_DEV_DEBUG
+        unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
+        unset CARGO_TERM_COLOR
+        unset CARGO_UNSTABLE_SPARSE_REGISTRY
+        env  CARGOGREEN_RUNNER=none \
+          cargo green -vv install --locked --force cargo-config2@0.1.39 --example=get |& tee _
+    - name: ...doesn't recompile anything
+      run: |
+        err=0
+        grep Finished  _
+        grep Finished  _ | grep -E [012]...s || ((err+=1))
+        grep Dirty     _                     && ((err+=2))
+        grep Compiling _                     && ((err+=4))
+        exit $err
+    - if: ${{ always() }}
+      name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
+      run: |
+        ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' _
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
+      run: |
+        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
+      run: |
+        ! grep -C20 -F 'connection error: COMPRESSION_ERROR' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> there's some panic!s
+      run: |
+        ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> there's some BUGs
+      run: |
+        ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> here's cargo's error text
+      run: |
+        ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' $CARGOGREEN_LOG_PATH _
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> 429 Too Many Requests
+      run: |
+        ! grep -C20 -F '429 Too Many Requests' $CARGOGREEN_LOG_PATH _
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> here's relevant logs
+      run: |
+        ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
+      name: 🌀 Maybe show final path diff
+      run: |
+        final_diff=(git --no-pager diff)
+        if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
+          final_diff+=(--exit-code)
+        fi
+        final_diff+=(--ignore-matching-lines='^#')
+        final_diff+=(--ignore-matching-lines=' AS rust-base$')
+        final_diff+=(-- $CARGOGREEN_FINAL_PATH)
+        "${final_diff[@]}"
+
+    - if: ${{ failure() }}
+      name: 🌀 cargo-green logs
+      run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
+
     - name: 🔵 Compare old/new local private registry image digests
       if: ${{ always() && env.CARGOGREEN_CACHE_FROM_IMAGES != '' && env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
       run: |
@@ -6274,6 +7642,78 @@ jobs:
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env  \
+          cargo green -vv install --locked --force kani-verifier@0.66.0 --bin=cargo-kani |& tee _
+    - name: ...doesn't recompile anything
+      run: |
+        err=0
+        grep Finished  _
+        grep Finished  _ | grep -E [012]...s || ((err+=1))
+        grep Dirty     _                     && ((err+=2))
+        grep Compiling _                     && ((err+=4))
+        exit $err
+    - if: ${{ always() }}
+      name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
+      run: |
+        ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' _
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
+      run: |
+        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
+      run: |
+        ! grep -C20 -F 'connection error: COMPRESSION_ERROR' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> there's some panic!s
+      run: |
+        ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> there's some BUGs
+      run: |
+        ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> here's cargo's error text
+      run: |
+        ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' $CARGOGREEN_LOG_PATH _
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> 429 Too Many Requests
+      run: |
+        ! grep -C20 -F '429 Too Many Requests' $CARGOGREEN_LOG_PATH _
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> here's relevant logs
+      run: |
+        ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
+      name: 🌀 Maybe show final path diff
+      run: |
+        final_diff=(git --no-pager diff)
+        if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
+          final_diff+=(--exit-code)
+        fi
+        final_diff+=(--ignore-matching-lines='^#')
+        final_diff+=(--ignore-matching-lines=' AS rust-base$')
+        final_diff+=(-- $CARGOGREEN_FINAL_PATH)
+        "${final_diff[@]}"
+
+    - if: ${{ failure() }}
+      name: 🌀 cargo-green logs
+      run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
+
+    - name: 🔵 Try CARGOGREEN_RUNNER=none with the same command twice without modifications...
+      run: |
+        unset CARGO_PROFILE_DEV_DEBUG
+        unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
+        unset CARGO_TERM_COLOR
+        unset CARGO_UNSTABLE_SPARSE_REGISTRY
+        env  CARGOGREEN_RUNNER=none \
           cargo green -vv install --locked --force kani-verifier@0.66.0 --bin=cargo-kani |& tee _
     - name: ...doesn't recompile anything
       run: |
@@ -6654,6 +8094,78 @@ jobs:
       name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
 
+    - name: 🔵 Try CARGOGREEN_RUNNER=none with the same command twice without modifications...
+      run: |
+        unset CARGO_PROFILE_DEV_DEBUG
+        unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
+        unset CARGO_TERM_COLOR
+        unset CARGO_UNSTABLE_SPARSE_REGISTRY
+        env  CARGOGREEN_RUNNER=none \
+          cargo green -vv install --locked --force cargo-tally@1.0.71  |& tee _
+    - name: ...doesn't recompile anything
+      run: |
+        err=0
+        grep Finished  _
+        grep Finished  _ | grep -E [012]...s || ((err+=1))
+        grep Dirty     _                     && ((err+=2))
+        grep Compiling _                     && ((err+=4))
+        exit $err
+    - if: ${{ always() }}
+      name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
+      run: |
+        ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' _
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
+      run: |
+        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
+      run: |
+        ! grep -C20 -F 'connection error: COMPRESSION_ERROR' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> there's some panic!s
+      run: |
+        ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> there's some BUGs
+      run: |
+        ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> here's cargo's error text
+      run: |
+        ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' $CARGOGREEN_LOG_PATH _
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> 429 Too Many Requests
+      run: |
+        ! grep -C20 -F '429 Too Many Requests' $CARGOGREEN_LOG_PATH _
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> here's relevant logs
+      run: |
+        ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
+      name: 🌀 Maybe show final path diff
+      run: |
+        final_diff=(git --no-pager diff)
+        if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
+          final_diff+=(--exit-code)
+        fi
+        final_diff+=(--ignore-matching-lines='^#')
+        final_diff+=(--ignore-matching-lines=' AS rust-base$')
+        final_diff+=(-- $CARGOGREEN_FINAL_PATH)
+        "${final_diff[@]}"
+
+    - if: ${{ failure() }}
+      name: 🌀 cargo-green logs
+      run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
+
     - name: 🔵 Compare old/new local private registry image digests
       if: ${{ always() && env.CARGOGREEN_CACHE_FROM_IMAGES != '' && env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
       run: |
@@ -6904,6 +8416,78 @@ jobs:
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env  \
+          cargo green -vv install --locked --force cargo-mutants@25.3.1  |& tee _
+    - name: ...doesn't recompile anything
+      run: |
+        err=0
+        grep Finished  _
+        grep Finished  _ | grep -E [012]...s || ((err+=1))
+        grep Dirty     _                     && ((err+=2))
+        grep Compiling _                     && ((err+=4))
+        exit $err
+    - if: ${{ always() }}
+      name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
+      run: |
+        ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' _
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
+      run: |
+        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
+      run: |
+        ! grep -C20 -F 'connection error: COMPRESSION_ERROR' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> there's some panic!s
+      run: |
+        ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> there's some BUGs
+      run: |
+        ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> here's cargo's error text
+      run: |
+        ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' $CARGOGREEN_LOG_PATH _
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> 429 Too Many Requests
+      run: |
+        ! grep -C20 -F '429 Too Many Requests' $CARGOGREEN_LOG_PATH _
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> here's relevant logs
+      run: |
+        ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
+      name: 🌀 Maybe show final path diff
+      run: |
+        final_diff=(git --no-pager diff)
+        if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
+          final_diff+=(--exit-code)
+        fi
+        final_diff+=(--ignore-matching-lines='^#')
+        final_diff+=(--ignore-matching-lines=' AS rust-base$')
+        final_diff+=(-- $CARGOGREEN_FINAL_PATH)
+        "${final_diff[@]}"
+
+    - if: ${{ failure() }}
+      name: 🌀 cargo-green logs
+      run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
+
+    - name: 🔵 Try CARGOGREEN_RUNNER=none with the same command twice without modifications...
+      run: |
+        unset CARGO_PROFILE_DEV_DEBUG
+        unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
+        unset CARGO_TERM_COLOR
+        unset CARGO_UNSTABLE_SPARSE_REGISTRY
+        env  CARGOGREEN_RUNNER=none \
           cargo green -vv install --locked --force cargo-mutants@25.3.1  |& tee _
     - name: ...doesn't recompile anything
       run: |
@@ -7284,6 +8868,78 @@ jobs:
       name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
 
+    - name: 🔵 Try CARGOGREEN_RUNNER=none with the same command twice without modifications...
+      run: |
+        unset CARGO_PROFILE_DEV_DEBUG
+        unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
+        unset CARGO_TERM_COLOR
+        unset CARGO_UNSTABLE_SPARSE_REGISTRY
+        env  CARGOGREEN_RUNNER=none \
+          cargo green -vv install --locked --force binsider@0.3.0  |& tee _
+    - name: ...doesn't recompile anything
+      run: |
+        err=0
+        grep Finished  _
+        grep Finished  _ | grep -E [012]...s || ((err+=1))
+        grep Dirty     _                     && ((err+=2))
+        grep Compiling _                     && ((err+=4))
+        exit $err
+    - if: ${{ always() }}
+      name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
+      run: |
+        ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' _
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
+      run: |
+        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
+      run: |
+        ! grep -C20 -F 'connection error: COMPRESSION_ERROR' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> there's some panic!s
+      run: |
+        ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> there's some BUGs
+      run: |
+        ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> here's cargo's error text
+      run: |
+        ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' $CARGOGREEN_LOG_PATH _
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> 429 Too Many Requests
+      run: |
+        ! grep -C20 -F '429 Too Many Requests' $CARGOGREEN_LOG_PATH _
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> here's relevant logs
+      run: |
+        ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
+      name: 🌀 Maybe show final path diff
+      run: |
+        final_diff=(git --no-pager diff)
+        if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
+          final_diff+=(--exit-code)
+        fi
+        final_diff+=(--ignore-matching-lines='^#')
+        final_diff+=(--ignore-matching-lines=' AS rust-base$')
+        final_diff+=(-- $CARGOGREEN_FINAL_PATH)
+        "${final_diff[@]}"
+
+    - if: ${{ failure() }}
+      name: 🌀 cargo-green logs
+      run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
+
     - name: 🔵 Compare old/new local private registry image digests
       if: ${{ always() && env.CARGOGREEN_CACHE_FROM_IMAGES != '' && env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
       run: |
@@ -7534,6 +9190,78 @@ jobs:
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env  \
+          cargo green -vv install --locked --force gifski@1.34.0  |& tee _
+    - name: ...doesn't recompile anything
+      run: |
+        err=0
+        grep Finished  _
+        grep Finished  _ | grep -E [012]...s || ((err+=1))
+        grep Dirty     _                     && ((err+=2))
+        grep Compiling _                     && ((err+=4))
+        exit $err
+    - if: ${{ always() }}
+      name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
+      run: |
+        ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' _
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
+      run: |
+        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
+      run: |
+        ! grep -C20 -F 'connection error: COMPRESSION_ERROR' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> there's some panic!s
+      run: |
+        ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> there's some BUGs
+      run: |
+        ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> here's cargo's error text
+      run: |
+        ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' $CARGOGREEN_LOG_PATH _
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> 429 Too Many Requests
+      run: |
+        ! grep -C20 -F '429 Too Many Requests' $CARGOGREEN_LOG_PATH _
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> here's relevant logs
+      run: |
+        ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
+      name: 🌀 Maybe show final path diff
+      run: |
+        final_diff=(git --no-pager diff)
+        if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
+          final_diff+=(--exit-code)
+        fi
+        final_diff+=(--ignore-matching-lines='^#')
+        final_diff+=(--ignore-matching-lines=' AS rust-base$')
+        final_diff+=(-- $CARGOGREEN_FINAL_PATH)
+        "${final_diff[@]}"
+
+    - if: ${{ failure() }}
+      name: 🌀 cargo-green logs
+      run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
+
+    - name: 🔵 Try CARGOGREEN_RUNNER=none with the same command twice without modifications...
+      run: |
+        unset CARGO_PROFILE_DEV_DEBUG
+        unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
+        unset CARGO_TERM_COLOR
+        unset CARGO_UNSTABLE_SPARSE_REGISTRY
+        env  CARGOGREEN_RUNNER=none \
           cargo green -vv install --locked --force gifski@1.34.0  |& tee _
     - name: ...doesn't recompile anything
       run: |
@@ -7914,6 +9642,78 @@ jobs:
       name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
 
+    - name: 🔵 Try CARGOGREEN_RUNNER=none with the same command twice without modifications...
+      run: |
+        unset CARGO_PROFILE_DEV_DEBUG
+        unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
+        unset CARGO_TERM_COLOR
+        unset CARGO_UNSTABLE_SPARSE_REGISTRY
+        env  CARGOGREEN_RUNNER=none \
+          cargo green -vv install --locked --force flamegraph@0.6.10 --bin=flamegraph |& tee _
+    - name: ...doesn't recompile anything
+      run: |
+        err=0
+        grep Finished  _
+        grep Finished  _ | grep -E [012]...s || ((err+=1))
+        grep Dirty     _                     && ((err+=2))
+        grep Compiling _                     && ((err+=4))
+        exit $err
+    - if: ${{ always() }}
+      name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
+      run: |
+        ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' _
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
+      run: |
+        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
+      run: |
+        ! grep -C20 -F 'connection error: COMPRESSION_ERROR' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> there's some panic!s
+      run: |
+        ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> there's some BUGs
+      run: |
+        ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> here's cargo's error text
+      run: |
+        ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' $CARGOGREEN_LOG_PATH _
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> 429 Too Many Requests
+      run: |
+        ! grep -C20 -F '429 Too Many Requests' $CARGOGREEN_LOG_PATH _
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> here's relevant logs
+      run: |
+        ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
+      name: 🌀 Maybe show final path diff
+      run: |
+        final_diff=(git --no-pager diff)
+        if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
+          final_diff+=(--exit-code)
+        fi
+        final_diff+=(--ignore-matching-lines='^#')
+        final_diff+=(--ignore-matching-lines=' AS rust-base$')
+        final_diff+=(-- $CARGOGREEN_FINAL_PATH)
+        "${final_diff[@]}"
+
+    - if: ${{ failure() }}
+      name: 🌀 cargo-green logs
+      run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
+
     - name: 🔵 Compare old/new local private registry image digests
       if: ${{ always() && env.CARGOGREEN_CACHE_FROM_IMAGES != '' && env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
       run: |
@@ -8164,6 +9964,78 @@ jobs:
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env CARGOGREEN_ADD_APT=libssl-dev,pkg-config,zlib1g-dev \
+          cargo green -vv install --locked --force sccache@0.12.0  |& tee _
+    - name: ...doesn't recompile anything
+      run: |
+        err=0
+        grep Finished  _
+        grep Finished  _ | grep -E [012]...s || ((err+=1))
+        grep Dirty     _                     && ((err+=2))
+        grep Compiling _                     && ((err+=4))
+        exit $err
+    - if: ${{ always() }}
+      name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
+      run: |
+        ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' _
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
+      run: |
+        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
+      run: |
+        ! grep -C20 -F 'connection error: COMPRESSION_ERROR' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> there's some panic!s
+      run: |
+        ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> there's some BUGs
+      run: |
+        ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> here's cargo's error text
+      run: |
+        ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' $CARGOGREEN_LOG_PATH _
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> 429 Too Many Requests
+      run: |
+        ! grep -C20 -F '429 Too Many Requests' $CARGOGREEN_LOG_PATH _
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> here's relevant logs
+      run: |
+        ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
+      name: 🌀 Maybe show final path diff
+      run: |
+        final_diff=(git --no-pager diff)
+        if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
+          final_diff+=(--exit-code)
+        fi
+        final_diff+=(--ignore-matching-lines='^#')
+        final_diff+=(--ignore-matching-lines=' AS rust-base$')
+        final_diff+=(-- $CARGOGREEN_FINAL_PATH)
+        "${final_diff[@]}"
+
+    - if: ${{ failure() }}
+      name: 🌀 cargo-green logs
+      run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
+
+    - name: 🔵 Try CARGOGREEN_RUNNER=none with the same command twice without modifications...
+      run: |
+        unset CARGO_PROFILE_DEV_DEBUG
+        unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
+        unset CARGO_TERM_COLOR
+        unset CARGO_UNSTABLE_SPARSE_REGISTRY
+        env CARGOGREEN_ADD_APT=libssl-dev,pkg-config,zlib1g-dev CARGOGREEN_RUNNER=none \
           cargo green -vv install --locked --force sccache@0.12.0  |& tee _
     - name: ...doesn't recompile anything
       run: |
@@ -8544,6 +10416,78 @@ jobs:
       name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
 
+    - name: 🔵 Try CARGOGREEN_RUNNER=none with the same command twice without modifications...
+      run: |
+        unset CARGO_PROFILE_DEV_DEBUG
+        unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
+        unset CARGO_TERM_COLOR
+        unset CARGO_UNSTABLE_SPARSE_REGISTRY
+        env CARGOGREEN_SET_ENVS=GITHUB_SHA GITHUB_SHA= CARGOGREEN_RUNNER=none \
+          cargo green -vv install --locked --force bottom@0.11.4  |& tee _
+    - name: ...doesn't recompile anything
+      run: |
+        err=0
+        grep Finished  _
+        grep Finished  _ | grep -E [012]...s || ((err+=1))
+        grep Dirty     _                     && ((err+=2))
+        grep Compiling _                     && ((err+=4))
+        exit $err
+    - if: ${{ always() }}
+      name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
+      run: |
+        ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' _
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
+      run: |
+        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
+      run: |
+        ! grep -C20 -F 'connection error: COMPRESSION_ERROR' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> there's some panic!s
+      run: |
+        ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> there's some BUGs
+      run: |
+        ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> here's cargo's error text
+      run: |
+        ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' $CARGOGREEN_LOG_PATH _
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> 429 Too Many Requests
+      run: |
+        ! grep -C20 -F '429 Too Many Requests' $CARGOGREEN_LOG_PATH _
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> here's relevant logs
+      run: |
+        ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
+      name: 🌀 Maybe show final path diff
+      run: |
+        final_diff=(git --no-pager diff)
+        if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
+          final_diff+=(--exit-code)
+        fi
+        final_diff+=(--ignore-matching-lines='^#')
+        final_diff+=(--ignore-matching-lines=' AS rust-base$')
+        final_diff+=(-- $CARGOGREEN_FINAL_PATH)
+        "${final_diff[@]}"
+
+    - if: ${{ failure() }}
+      name: 🌀 cargo-green logs
+      run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
+
     - name: 🔵 Compare old/new local private registry image digests
       if: ${{ always() && env.CARGOGREEN_CACHE_FROM_IMAGES != '' && env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
       run: |
@@ -8794,6 +10738,78 @@ jobs:
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env  \
+          cargo green -vv install --locked --force cargo-rail@0.1.0  |& tee _
+    - name: ...doesn't recompile anything
+      run: |
+        err=0
+        grep Finished  _
+        grep Finished  _ | grep -E [012]...s || ((err+=1))
+        grep Dirty     _                     && ((err+=2))
+        grep Compiling _                     && ((err+=4))
+        exit $err
+    - if: ${{ always() }}
+      name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
+      run: |
+        ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' _
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
+      run: |
+        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
+      run: |
+        ! grep -C20 -F 'connection error: COMPRESSION_ERROR' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> there's some panic!s
+      run: |
+        ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> there's some BUGs
+      run: |
+        ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> here's cargo's error text
+      run: |
+        ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' $CARGOGREEN_LOG_PATH _
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> 429 Too Many Requests
+      run: |
+        ! grep -C20 -F '429 Too Many Requests' $CARGOGREEN_LOG_PATH _
+
+    - if: ${{ always() }}
+      name: 🔴 =means=> here's relevant logs
+      run: |
+        ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
+      name: 🌀 Maybe show final path diff
+      run: |
+        final_diff=(git --no-pager diff)
+        if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
+          final_diff+=(--exit-code)
+        fi
+        final_diff+=(--ignore-matching-lines='^#')
+        final_diff+=(--ignore-matching-lines=' AS rust-base$')
+        final_diff+=(-- $CARGOGREEN_FINAL_PATH)
+        "${final_diff[@]}"
+
+    - if: ${{ failure() }}
+      name: 🌀 cargo-green logs
+      run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
+
+    - name: 🔵 Try CARGOGREEN_RUNNER=none with the same command twice without modifications...
+      run: |
+        unset CARGO_PROFILE_DEV_DEBUG
+        unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
+        unset CARGO_TERM_COLOR
+        unset CARGO_UNSTABLE_SPARSE_REGISTRY
+        env  CARGOGREEN_RUNNER=none \
           cargo green -vv install --locked --force cargo-rail@0.1.0  |& tee _
     - name: ...doesn't recompile anything
       run: |
