@@ -136,7 +136,6 @@ impl Green {
 }
 
 #[derive(Debug, Copy, Clone, Default, Serialize, Deserialize, Eq, PartialEq)]
-#[serde(deny_unknown_fields)]
 #[serde(rename_all = "kebab-case")]
 pub(crate) enum Runner {
     #[default]
