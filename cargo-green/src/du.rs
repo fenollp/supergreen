@@ -2,7 +2,7 @@ use std::sync::OnceLock;
 
 use anyhow::{bail, Result};
 use chrono::{DateTime, FixedOffset};
-use log::warn;
+use log::{info, warn};
 
 use crate::{ext::CommandExt, green::Green};
 
@@ -71,6 +71,12 @@ impl Green {
 
         if let Some(got) = got {
             return Ok(got);
+        }
+
+        if self.runner.is_none() {
+            info!("Skipping inspecting builder cache (runner:{})", self.runner);
+            let _ = ARRAY.set(vec![]);
+            return Ok(ARRAY.get().unwrap());
         }
 
         let mut cmd = self.cmd()?;

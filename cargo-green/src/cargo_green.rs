@@ -84,12 +84,14 @@ pub(crate) async fn main() -> Result<Green> {
     }
     let builder = green.runner_envs.get(var);
     if let Some(name) = builder {
-        info!("${var} is set to {name:?}");
-        eprintln!("${var} is set to {name:?}");
+        if !green.runner.is_none() {
+            info!("${var} is set to {name:?}");
+            eprintln!("${var} is set to {name:?}");
 
-        if !name.is_empty() {
-            if let Some(val) = buildkit_host {
-                bail!("Overriding ${BUILDKIT_HOST}={val:?} while setting ${var}={name:?} is unsupported")
+            if !name.is_empty() {
+                if let Some(val) = buildkit_host {
+                    bail!("Overriding ${BUILDKIT_HOST}={val:?} while setting ${var}={name:?} is unsupported")
+                }
             }
         }
     }
@@ -129,7 +131,7 @@ pub(crate) async fn main() -> Result<Green> {
             .try_into()
             .map_err(|e| anyhow!("${var}={builder_image:?} {e}"))?;
         // Don't use 'maybe_lock_image', only 'fetch_digest': cmd uses builder.
-        green.builder.image = Some(fetch_digest(&img).await?);
+        green.builder.image = Some(fetch_digest(&green.runner, &img).await?);
     }
 
     green.maybe_setup_builder(builder.cloned()).await?;
@@ -144,7 +146,7 @@ pub(crate) async fn main() -> Result<Green> {
     // Use local hashed image if one matching exists locally
     green.syntax = green.maybe_lock_image(&green.syntax).await?;
     // otherwise default to a hash found through some Web API
-    green.syntax = fetch_digest(&green.syntax).await?;
+    green.syntax = fetch_digest(&green.runner, &green.syntax).await?;
     if !green.syntax.stable_syntax_frontend() {
         // Enforce a known stable syntax + allow pinning to digest
         bail!("${var} must be a digest of {}", SYNTAX_IMAGE.as_str())
@@ -172,7 +174,7 @@ pub(crate) async fn main() -> Result<Green> {
 
     if !green.base.image.locked() {
         let mut base = green.maybe_lock_image(&green.base.image).await?;
-        base = fetch_digest(&base).await?;
+        base = fetch_digest(&green.runner, &base).await?;
         green.base = green.base.lock_base_to(base);
     }
 
@@ -299,6 +301,10 @@ impl Green {
         let path = tmp().join(fname);
         containerfile.write_to(&path)?;
 
+        if self.runner.is_none() {
+            info!("Skipping prebuild (runner:{})", self.runner);
+            return Ok(());
+        }
         self.build_cacheonly(&path, &stage)
             .await
             .inspect(|()| {

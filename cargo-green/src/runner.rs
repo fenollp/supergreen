@@ -144,25 +144,30 @@ pub(crate) enum Runner {
     None,
 }
 
-/// Resolve to an executable binary.
-///
-/// Somehow, not finding but executing `docker` may give the following errors (on arm Darwin):
-///
-/// ```text
-/// Error: Failed to spawn DOCKER_BUILDKIT="1" docker buildx ls --format=json: No such file or directory (os error 2)
-/// ```
-///
-/// ```text
-/// Calling DOCKER_BUILDKIT="1" /usr/local/bin/docker buildx create --bootstrap --name supergreen --driver docker-container --driver-opt=image=docker.io[...]
-/// Error: BUG: failed to create builder: #1 [internal] booting buildkit
-/// #1 pulling image docker.io/moby/buildkit:latest@sha256:faffcac91decfb3b981234bf2762d88ed6c90771b689a3d8a5049cd0e874759a done
-/// #1 ERROR: error getting credentials - err: exec: "docker-credential-desktop": executable file not found in $PATH, out: ``
-/// ------
-///  > [internal] booting buildkit:
-/// ------
-/// ERROR: error getting credentials - err: exec: "docker-credential-desktop": executable file not found in $PATH, out: ``
-/// ```
 impl Runner {
+    #[must_use]
+    pub(crate) fn is_none(&self) -> bool {
+        matches!(self, Self::None)
+    }
+
+    /// Resolve to an executable binary.
+    ///
+    /// Somehow, not finding but executing `docker` may give the following errors (on arm Darwin):
+    ///
+    /// ```text
+    /// Error: Failed to spawn DOCKER_BUILDKIT="1" docker buildx ls --format=json: No such file or directory (os error 2)
+    /// ```
+    ///
+    /// ```text
+    /// Calling DOCKER_BUILDKIT="1" /usr/local/bin/docker buildx create --bootstrap --name supergreen --driver docker-container --driver-opt=image=docker.io[...]
+    /// Error: BUG: failed to create builder: #1 [internal] booting buildkit
+    /// #1 pulling image docker.io/moby/buildkit:latest@sha256:faffcac91decfb3b981234bf2762d88ed6c90771b689a3d8a5049cd0e874759a done
+    /// #1 ERROR: error getting credentials - err: exec: "docker-credential-desktop": executable file not found in $PATH, out: ``
+    /// ------
+    ///  > [internal] booting buildkit:
+    /// ------
+    /// ERROR: error getting credentials - err: exec: "docker-credential-desktop": executable file not found in $PATH, out: ``
+    /// ```
     pub(crate) fn executable(&self) -> Result<&'static Utf8PathBuf> {
         static EXE: OnceLock<Utf8PathBuf> = OnceLock::new();
         if let Some(exe) = EXE.get() {

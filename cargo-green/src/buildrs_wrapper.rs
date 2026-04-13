@@ -6,11 +6,9 @@ use std::{
 use anyhow::{anyhow, bail, Result};
 use camino::{Utf8Path, Utf8PathBuf};
 use log::{error, info, trace};
-use tokio::process::Command;
 
 use crate::{
     build::SHELL,
-    ext::CommandExt,
     green::Green,
     logging::{self},
     md::{Md, MdId, Mds},
@@ -63,6 +61,8 @@ pub(crate) fn call_config() -> (Option<String>, String, String, Utf8PathBuf) {
 pub(crate) async fn exec_buildrs(green: Green, exe: Utf8PathBuf) -> Result<()> {
     assert!(env::var_os(ENV!()).is_none(), "It's turtles all the way down!");
     env::set_var(ENV!(), "1");
+
+    assert!(!green.runner.is_none(), "exec_buildrs() called with Runner::None");
 
     let (crate_name, pkg_name, pkg_version, _) = call_config();
 
@@ -217,24 +217,5 @@ async fn do_exec_buildrs(
 
     let containerfile_path = md.finalize(&green, &target_path, pkg_name, &mds)?;
 
-    let fallback = async move {
-        let mut cmd = Command::new(&exe);
-        let cmd = cmd.kill_on_drop(true);
-        let cmd = cmd.env_remove(ENV_EXECUTE_BUILDRS!());
-        let status = cmd
-            .spawn()
-            .map_err(|e| anyhow!("Failed to spawn {}: {e}", cmd.show()))?
-            .wait()
-            .await
-            .map_err(|e| anyhow!("Failed to wait {}: {e}", cmd.show()))?;
-        if !status.success() {
-            bail!("Failed in execute_buildrs")
-        }
-        Ok(())
-    };
-
-    md.do_build(&green, fallback, &containerfile_path, &out_stage, &out_dir_var, &target_path)
-        .await?;
-
-    Ok(())
+    md.do_build(&green, &containerfile_path, &out_stage, &out_dir_var, &target_path).await
 }

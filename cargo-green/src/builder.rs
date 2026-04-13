@@ -99,6 +99,11 @@ impl FromStr for Driver {
 
 impl Green {
     pub(crate) async fn maybe_setup_builder(&mut self, env: Option<String>) -> Result<()> {
+        if self.runner.is_none() {
+            info!("Skipping builder setup (runner:{})", self.runner);
+            return Ok(());
+        }
+
         let (managed, name) = match env.as_deref() {
             None | Some("supergreen") => (true, "supergreen"),
             Some("") => {
@@ -228,6 +233,7 @@ then run your cargo command again.
             None
         };
 
+        assert!(!self.runner.is_none(), "create_builder() called with Runner::None");
         let mut cmd = self.cmd()?;
         cmd.args(["buildx", "create", "--bootstrap"])
             .args(["--name", name])
@@ -248,7 +254,7 @@ then run your cargo command again.
         let img = if let Some(ref img) = self.builder.image {
             img.clone()
         } else {
-            fetch_digest(&BUILDKIT_IMAGE).await?
+            fetch_digest(&self.runner, &BUILDKIT_IMAGE).await?
         };
         cmd.arg(format!("--driver-opt=image={}", img.noscheme()));
 
@@ -268,6 +274,7 @@ then run your cargo command again.
     }
 
     async fn try_removing_builder(&self, name: &str, keep_state: bool) -> Result<()> {
+        assert!(!self.runner.is_none(), "try_removing_builder() called with Runner::None");
         let mut cmd = self.cmd()?;
         cmd.args(["buildx", "rm", "--builder", name]);
         if keep_state {
@@ -285,6 +292,7 @@ then run your cargo command again.
     }
 
     async fn list_builders(&self) -> Result<Vec<BuildxBuilder>> {
+        assert!(!self.runner.is_none(), "list_builders() called with Runner::None");
         let mut cmd = self.cmd()?;
         cmd.args(["buildx", "ls", "--format=json"]);
         let (succeeded, stdout, stderr) = cmd.exec().await?;
