@@ -41,7 +41,7 @@ use crate::{
     md::{BuildContext, DIESES},
     r#final::is_primary,
     rechrome,
-    runner::DOCKER_HOST,
+    runner::{Runner, DOCKER_HOST},
     stage::Stage,
     target_dir::un_virtual_target_dir_str,
     ENV_LOG_PATH, PKG,
@@ -91,6 +91,10 @@ impl Green {
     ///
     /// <https://docs.docker.com/dhi/core-concepts/digests/>
     async fn maybe_lock_from_image_cache(&self, img: &ImageUri) -> Result<Option<ImageUri>> {
+        if self.runner.is_none() {
+            info!("Skipping inspecting image cache (runner:{})", self.runner);
+            return Ok(None);
+        }
         let mut cmd = self.cmd()?;
         cmd.arg("inspect").arg("--format={{index .RepoDigests 0}}").arg(img.noscheme());
 
@@ -128,7 +132,13 @@ Maybe have a look at
 }
 
 /// If given an un-pinned image URI, query remote image API for its digest.
-pub(crate) async fn fetch_digest(img: &ImageUri) -> Result<ImageUri> {
+pub(crate) async fn fetch_digest(runner: &Runner, img: &ImageUri) -> Result<ImageUri> {
+    // TODO: add+impl traits on runner (fetch_digest, do_build, ..) Maybe on Green?
+    if runner.is_none() {
+        info!("Skipping fetching image digest (runner:{runner})");
+        return Ok(img.to_owned());
+    }
+
     if img.locked() {
         return Ok(img.to_owned());
     }
@@ -211,6 +221,7 @@ impl Green {
         let rtrn = |e, effects| ("".to_owned(), "".to_owned(), effects, Err(e));
         let mut effects = Effects::default();
 
+        assert!(!self.runner.is_none(), "build() called with Runner::None");
         let mut cmd = match self.cmd() {
             Ok(cmd) => cmd,
             Err(e) => return rtrn(e, effects),

@@ -93,6 +93,7 @@ pub(crate) fn help() {
 
 impl Green {
     async fn inspect_builder(&self) -> Result<()> {
+        assert!(!self.runner.is_none(), "inspect_builder() called with Runner::None");
         let mut cmd = self.cmd()?;
         cmd.args(["buildx", "inspect"]);
 
@@ -132,6 +133,7 @@ impl Green {
 
             async fn do_push(green: &Green, tag: String, img: &str) -> Result<()> {
                 println!("Pushing {img}:{tag}...");
+                assert!(!green.runner.is_none(), "do_push() called with Runner::None");
                 let mut cmd = green.cmd()?;
                 cmd.arg("push")
                     .arg(format!("{img}:{tag}"))
@@ -164,6 +166,7 @@ impl Green {
 async fn all_tags_of(green: &Green, img: &str) -> Result<Vec<String>> {
     // NOTE: https://github.com/moby/moby/issues/47809
     //   Meanwhile: just drop docker.io/ prefix
+    assert!(!green.runner.is_none(), "all_tags_of() called with Runner::None");
     let mut cmd = green.cmd()?;
     cmd.args(["image", "ls", "--format=json"]);
     cmd.arg(format!("--filter=reference={}:*", img.trim_start_matches("docker.io/")));

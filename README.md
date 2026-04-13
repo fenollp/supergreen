@@ -231,6 +231,8 @@ The [runner gets forwarded these environment variables](https://docs.docker.com/
 * `$HTTPS_PROXY`
 * `$NO_PROXY`
 
+When runner is set to `none`, the above runner-specific environment variables are ineffective and they are ignored.
+
 *Use by setting this environment variable (no `Cargo.toml` setting):*
 ```shell
 export CARGOGREEN_RUNNER="docker"

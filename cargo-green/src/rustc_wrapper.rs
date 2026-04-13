@@ -18,10 +18,9 @@ use crate::{
     cratesio::{self, rewrite_cratesio_index},
     ext::CommandExt,
     green::Green,
-    logging::{self, maybe_log},
+    logging::{self},
     md::{BuildContext, Md, MountExtern, NamedMount},
     pwd, relative,
-    runner::Runner,
     rustc_arguments::{as_rustc, RustcArgs},
     stage::{AsStage, Stage, RST, RUST},
     target_dir::{virtual_target_dir, virtual_target_dir_str},
@@ -128,6 +127,10 @@ async fn wrap_rustc(
     assert!(env::var_os(ENV!()).is_none(), "It's turtles all the way down!");
     env::set_var(ENV!(), "1");
 
+    if green.runner.is_none() {
+        return fallback.await;
+    }
+
     let pwd = pwd();
 
     let out_dir_var = env::var("OUT_DIR").ok().map(Utf8PathBuf::from);
@@ -154,7 +157,6 @@ async fn wrap_rustc(
         args,
         out_dir_var,
         st,
-        fallback,
     )
     .await
     .inspect_err(|e| error!("Error: {e}"))
@@ -171,7 +173,6 @@ async fn do_wrap_rustc(
     args: Vec<String>,
     out_dir_var: Option<Utf8PathBuf>,
     RustcArgs { externs, mdid, incremental, input, out_dir, target_path }: RustcArgs,
-    fallback: impl Future<Output = Result<()>>,
 ) -> Result<()> {
     let mut md: Md = mdid.into();
     md.buildrs = crate_name.map(is_buildrs_executable).unwrap_or_default();
@@ -281,7 +282,7 @@ async fn do_wrap_rustc(
     // https://github.com/tugglecore/rust-tracing-primer
     // TODO: `cargo green -v{N+1} ..` starts a TUI showing colored logs on above `cargo -v{N} ..`
 
-    md.do_build(&green, fallback, &containerfile_path, &out_stage, &out_dir, &target_path).await?;
+    md.do_build(&green, &containerfile_path, &out_stage, &out_dir, &target_path).await?;
 
     if let Some(incremental) = incremental {
         if let (_, _, _, Err(e)) = green
@@ -412,17 +413,11 @@ impl Md {
     pub(crate) async fn do_build(
         &mut self,
         green: &Green,
-        fallback: impl Future<Output = Result<()>>,
         containerfile_path: &Utf8Path,
         stage: &Stage,
         out_dir: &Utf8Path,
         target_path: &Utf8Path,
     ) -> Result<()> {
-        if green.runner == Runner::None {
-            info!("Runner disabled, falling back...");
-            return fallback.await;
-        }
-
         let (call, envs, Effects { written, stdout, stderr, cargo_rustc_env }, built) =
             green.build_out(containerfile_path, stage, &self.contexts, out_dir).await;
 
@@ -464,19 +459,7 @@ impl Md {
             .maybe_append_to_final_path(&md_path, final_stage)
             .map_err(|e| anyhow!("Failed finishing final path: {e}"))?;
 
-        if let Err(e) = built {
-            if maybe_log().is_none() {
-                warn!("Falling back due to {e}");
-                // Bubble up actual error & outputs
-                return fallback.await.inspect(|()| {
-                    eprintln!("BUG: {PKG} should not have encountered this error: {e}")
-                });
-            }
-
-            return Err(e);
-        }
-
-        Ok(())
+        built
     }
 }
 
