@@ -70,13 +70,10 @@ pub(crate) async fn exec_buildrs(green: Green, exe: Utf8PathBuf) -> Result<()> {
     let Some((previous_mdid, target_path)) = || -> Option<_> {
         // target_path: /target/release/build/proc-macro2-2f938e044e3f79bf
         let target_path = exe.parent()?;
-
         // mdid: 2f938e044e3f79bf
         let mdid: MdId = target_path.file_name()?.rsplit('-').next()?.into();
-
         // target_path: /target/release
         let target_path = target_path.parent()?.parent()?.to_owned();
-
         Some((mdid, target_path))
     }() else {
         bail!("BUG: malformed buildrs exe {exe:?}")
@@ -87,10 +84,8 @@ pub(crate) async fn exec_buildrs(green: Green, exe: Utf8PathBuf) -> Result<()> {
     let Some(mdid) = || -> Option<_> {
         // name: proc-macro2-b97492fdd0201a99
         let name = out_dir_var.parent()?.file_name()?;
-
         // mdid: b97492fdd0201a99
         let mdid: MdId = name.rsplit('-').next()?.into();
-
         Some(mdid)
     }() else {
         bail!("BUG: malformed $OUT_DIR {out_dir_var:?}")
@@ -138,7 +133,6 @@ async fn do_exec_buildrs(
         .map_err(|e| anyhow!("Failed to `mkdir -p {out_dir_var}`: {e}"))?;
 
     let run_stage = Stage::try_new(format!("run-{crate_id}"))?;
-    // let out_stage = Stage::try_new(format!("ran-{mdid}"))?;
     let out_stage = Stage::output(mdid)?;
 
     let mut mds = Mds::default(); //FIXME: unpub?
@@ -161,11 +155,16 @@ async fn do_exec_buildrs(
 
     let mut run_block = format!("FROM {RST} AS {run_stage}\n");
     run_block.push_str(&format!("SHELL {SHELL:?}\n"));
+
     run_block.push_str(&format!("WORKDIR {}\n", virtual_target_dir(&out_dir_var)));
-    for (_, code_dst, _) in code_stage.mounts() {
-        let code_dst = virtual_target_dir(&code_dst);
-        run_block.push_str(&format!("WORKDIR {code_dst}\n"));
-    }
+    let mut code_stage_mounts = code_stage.mounts();
+    let Some((_, code_dst, _)) = code_stage_mounts.pop() else {
+        bail!("BUG: a crate should only have one build script")
+    };
+    assert_eq!(code_stage_mounts, vec![]);
+    let code_dst = virtual_target_dir(&code_dst);
+    run_block.push_str(&format!("WORKDIR {code_dst}\n"));
+
     run_block.push_str("RUN \\\n");
     run_block.push_str(&format!(
         "  --mount=from={previous_out_stage},source={previous_out_dst},dst={exe} \\\n",
@@ -210,7 +209,7 @@ async fn do_exec_buildrs(
         &green.cargo_home,
         &green.set_envs,
         virtual_target_dir(&exe).to_string(),
-        (&out_stage, &out_dir_var),
+        (&out_stage, Some(&out_dir_var)),
     )?;
 
     md.out_block(&out_stage, &run_stage, &out_dir_var, true);
