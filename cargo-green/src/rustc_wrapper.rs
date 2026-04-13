@@ -189,6 +189,7 @@ async fn do_wrap_rustc(
 
     let mut rustc_block = format!("FROM {RST} AS {rustc_stage}\n");
     rustc_block.push_str(&format!("SHELL {SHELL:?}\n"));
+
     rustc_block.push_str(&format!("WORKDIR {out_dir}\n", out_dir = virtual_target_dir(&out_dir)));
     if !pwd.starts_with(green.cargo_home.join(cratesio::HOME)) {
         // Essentially match the same-ish path that points to crates-io paths.
@@ -197,7 +198,6 @@ async fn do_wrap_rustc(
         let pwd = rewrite_cargo_home(&green.cargo_home, pwd.as_str());
         rustc_block.push_str(&format!("WORKDIR {pwd}\n"));
     }
-
     if let Some(ref incremental) = incremental {
         rustc_block.push_str(&format!("WORKDIR {incremental}\n"));
     }
@@ -245,24 +245,28 @@ async fn do_wrap_rustc(
         rustc_block.push_str(&format!("  --mount=from={name},dst={mount},source=/ \\\n"));
     }
 
-    let input = rewrite_cratesio_index(input.as_str());
-    let input = rewrite_cargo_home(&green.cargo_home, &input);
-
     let out_stage = Stage::output(mdid)?;
 
-    let args = args
-        .into_iter()
-        .map(|ref x| virtual_target_dir_str(x))
-        .map(|arg| safeify(&arg).unwrap())
-        .collect::<Vec<_>>()
-        .join(" ");
+    let call = {
+        let input = rewrite_cratesio_index(input.as_str());
+        let input = rewrite_cargo_home(&green.cargo_home, &input);
+
+        let args = args
+            .into_iter()
+            .map(|ref x| virtual_target_dir_str(x))
+            .map(|arg| safeify(&arg).unwrap())
+            .collect::<Vec<_>>()
+            .join(" ");
+
+        format!("rustc {args} {input}")
+    };
     md.run_block(
         (&rustc_stage, rustc_block),
         crate_name,
         &green.cargo_home,
         &green.set_envs,
-        format!("rustc {args} {input}"),
-        (&out_stage, &out_dir),
+        call,
+        (&out_stage, input.is_relative().then_some(&out_dir)),
     )?;
 
     let incremental_stage = Stage::incremental(mdid)?;
@@ -305,10 +309,8 @@ impl Md {
         cargo_home: &Utf8Path,
         green_set_envs: &[String],
         call: String,
-        (out_stage, out_dir): (&Stage, &Utf8Path),
+        (out_stage, out_dir): (&Stage, Option<&Utf8Path>),
     ) -> Result<()> {
-        let out_dir = virtual_target_dir(out_dir);
-
         // Log a possible toolchain file contents (TODO: make per-crate base.image out of this)
         if false {
             block.push_str("    { cat ./rustc-toolchain{,.toml} 2>/dev/null || true ; } && \\\n");
@@ -368,6 +370,8 @@ impl Md {
                 }
             }
         }
+
+        let out_dir = out_dir.map(virtual_target_dir).unwrap_or(".".into());
 
         block.push_str(&format!("      {call} \\\n"));
         block.push_str(&format!("        1>          {out_dir}/{out_stage}-{STDOUT} \\\n"));
@@ -576,6 +580,7 @@ fn rewrite_env(val: &str, cargo_home: &Utf8Path) -> Result<String> {
     let val = rewrite_rustup_home(&val);
     let val = rewrite_cratesio_index(&val);
     let val = rewrite_cargo_home(cargo_home, &val);
+    // TODO: in rustc's args: replace last WORKDIR with $PWD (--out-dir ..., OUT_DIR=..., maybe others)
     Ok(val)
 }
 
