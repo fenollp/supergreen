@@ -821,3 +821,12 @@ both docker's and nix's build caches can then be used to craft images
 https://github.com/sayavc/niux
 
 ---
+
+```
+ > resolve image config for docker-image://docker.io/docker/dockerfile:1@sha256:2780b5c3bab67f1f76c781860de469442999ed1a0d7992a5efdf2cffc0e3d769:
+------
+ERROR: failed to build: failed to receive status: rpc error: code = Unavailable desc = closing transport due to: connection error: desc = "error reading from server: EOF", received prior goaway: code: NO_ERROR, debug data: "graceful_stop"
+```
+=> docker restarted? add retry logic to all .cmd() exec call sites?
+
+---
