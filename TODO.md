@@ -798,6 +798,9 @@ eg.
 (same algebra though: sum it all. If a target has >1 pkg mgr, then it gets the sum of all matching entries)
   ((any errors to catch, statically?))
 
+====> an approach only based on "which package manager" won't cut it!
+=====> see https://github.com/alacritty/alacritty/blob/94e7c8874e526b1e67b349d9ba30ddf81669119e/INSTALL.md#dependencies
+
 ---
 
 build cache
