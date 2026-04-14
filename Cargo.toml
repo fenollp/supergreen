@@ -25,7 +25,7 @@ keywords = [
     "buildkit",
     "docker",
 ]
-license = "MIT"
+license = "AGPL-3.0-or-later"
 repository = "https://github.com/fenollp/supergreen"
 version = "0.24.0"
 
