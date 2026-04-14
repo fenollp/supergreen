@@ -48,7 +48,7 @@ ensure__produces_same_shas() {
 registry_blobs() {
     local dir=$1; shift
     [[ $# -eq 0 ]]
-    find $dir/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print $NF}' | sort -u
+    find $dir/docker/registry/v2/blobs/sha256/ -type f | while read -r p; do basename $(dirname $p); done | sort -u
 }
 
 echo Sortons nos cartes!
@@ -95,13 +95,13 @@ echo
 #---
 
 
-reg1=$(mktemp -d)
-reg2=$(mktemp -d)
+reg1=$(mktemp -d) ; prt1=12345
+reg2=$(mktemp -d) ; prt2=23456
 registry_proxy=mirror.gcr.io # dockerhub gets annoying
-docker run --rm -it --name regis3-1 -d --user $(id -u):$(id -g) -p 12345:5000 -v $reg1:/var/lib/registry $registry_proxy/registry:3
-docker run --rm -it --name regis3-2 -d --user $(id -u):$(id -g) -p 23456:5000 -v $reg2:/var/lib/registry $registry_proxy/registry:3
-export CARGOGREEN_CACHE_IMAGES=docker-image://localhost:12345/ca/ching,docker-image://localhost:23456/ca/ching
-$CARGO green supergreen builder recreate
+docker run --rm -it --name regis3-1 -d --user $(id -u):$(id -g) -p $prt1:5000 -v $reg1:/var/lib/registry $registry_proxy/registry:3
+docker run --rm -it --name regis3-2 -d --user $(id -u):$(id -g) -p $prt2:5000 -v $reg2:/var/lib/registry $registry_proxy/registry:3
+export CARGOGREEN_CACHE_IMAGES=docker-image://localhost:$prt1/ca/ching,docker-image://localhost:$prt2/ca/ching # read & write
+$CARGO green supergreen builder recreate # keeps underlying data
 
 rm -rf $CARGO_TARGET_DIR/* >/dev/null
 rm -rf $CARGOGREEN_LOG_PATH >/dev/null
@@ -118,10 +118,10 @@ echo Re-re-builds fine and both remote registries are equal
 echo
 
 docker stop --timeout 2 regis3-2
-diff --width=150 -y <(registry_blobs $reg1) <(registry_blobs $reg2)
+diff --width=150 -y <(registry_blobs $reg1) <(registry_blobs $reg2) # equal blobs
 
 unset CARGOGREEN_CACHE_IMAGES
-export CARGOGREEN_CACHE_TO_IMAGES=docker-image://localhost:12345/ca/ching
+export CARGOGREEN_CACHE_TO_IMAGES=docker-image://localhost:$prt1/ca/ching # write, no read
 export CARGOGREEN_EXPERIMENT=repro
 
 rm -rf $CARGO_TARGET_DIR/* >/dev/null
@@ -136,13 +136,10 @@ $install_root/bin/${install_package%@*} --help >/dev/null
 [[ $install_sha = $(compute_installed_bin_sha256) ]] # rebuild => no change
 
 docker stop --timeout 2 regis3-1
-unset CARGOGREEN_EXPERIMENT
 unset CARGOGREEN_CACHE_TO_IMAGES
-[[ $(registry_blobs $reg1 | wc -l) -gt $(registry_blobs $reg2 | wc -l) ]]
-[[ $( ( diff --width=150 -y <(registry_blobs $reg1) <(registry_blobs $reg2) || true ) | wc -l ) = $(registry_blobs $reg1 | wc -l) ]]
-[[ $( ( diff --width=150 -y <(registry_blobs $reg1) <(registry_blobs $reg2) || true ) | grep '<' | wc -l ) -ge $(registry_blobs $reg2 | wc -l) ]]
-[[ $( ( diff --width=150 -y <(registry_blobs $reg1) <(registry_blobs $reg2) || true ) | grep '|' | wc -l ) = 0 ]]
-[[ $( ( diff --width=150 -y <(registry_blobs $reg1) <(registry_blobs $reg2) || true ) | grep '>' | wc -l ) = 0 ]]
+unset CARGOGREEN_EXPERIMENT
+[[ $(registry_blobs $reg1 | wc -l) -gt $(registry_blobs $reg2 | wc -l) ]] # wrote more to reg1
+[[ $( ( diff --width=150 -y <(registry_blobs $reg1) <(registry_blobs $reg2) ) | wc -l ) = $(registry_blobs $reg1 | wc -l) ]]
 rm -rf $reg1 $reg2 >/dev/null
 
 echo Re-re-re-builds fine but remote registry cache keeps growing '(albeit slowly)'...
