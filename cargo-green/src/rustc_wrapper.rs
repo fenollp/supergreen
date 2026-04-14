@@ -260,7 +260,7 @@ async fn do_wrap_rustc(
 
         format!("rustc {args} {input}")
     };
-    md.run_block(
+    md.call_block(
         (&rustc_stage, rustc_block),
         crate_name,
         &green.cargo_home,
@@ -302,7 +302,7 @@ async fn do_wrap_rustc(
 }
 
 impl Md {
-    pub(crate) fn run_block(
+    pub(crate) fn call_block(
         &mut self,
         (stage, mut block): (&Stage, String),
         crate_name: Option<&str>,
