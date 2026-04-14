@@ -48,6 +48,7 @@
                , "harper-ls"
                , "ipa"
                , "stu"
+               , "crater"
                , "topiary"
                , "torrust_index"
                ]}},
@@ -291,6 +292,11 @@
   , "stu": {
       "context": "recipes",
       "dockerfile": "stu@0.7.5.Dockerfile",
+      "output": ["."]
+    }
+  , "crater": {
+      "context": "recipes",
+      "dockerfile": "crater@master.Dockerfile",
       "output": ["."]
     }
   , "topiary": {
