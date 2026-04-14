@@ -203,7 +203,7 @@ async fn do_exec_buildrs(
         .map(|extern_md_path| mds.get_or_read(&extern_md_path))
         .collect::<Result<Vec<_>>>()?;
 
-    md.run_block(
+    md.call_block(
         (&run_stage, run_block),
         crate_name,
         &green.cargo_home,
