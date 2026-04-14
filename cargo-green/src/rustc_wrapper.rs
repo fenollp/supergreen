@@ -191,9 +191,8 @@ async fn do_wrap_rustc(
     rustc_block.push_str(&format!("SHELL {SHELL:?}\n"));
 
     rustc_block.push_str(&format!("WORKDIR {out_dir}\n", out_dir = virtual_target_dir(&out_dir)));
-    if !pwd.starts_with(green.cargo_home.join(cratesio::HOME)) {
-        // Essentially match the same-ish path that points to crates-io paths.
-        // Experiment showed that git-check'ed-out crates didn't like: // if !pwd.starts_with(&green.cargo_home) {
+    let not_a_cratesio_crate = !pwd.starts_with(green.cargo_home.join(cratesio::HOME));
+    if not_a_cratesio_crate {
         let pwd = virtual_target_dir(&pwd);
         let pwd = rewrite_cargo_home(&green.cargo_home, pwd.as_str());
         rustc_block.push_str(&format!("WORKDIR {pwd}\n"));
@@ -266,7 +265,7 @@ async fn do_wrap_rustc(
         &green.cargo_home,
         &green.set_envs,
         call,
-        (&out_stage, input.is_relative().then_some(&out_dir)),
+        (&out_stage, not_a_cratesio_crate.then_some(&out_dir)),
     )?;
 
     let incremental_stage = Stage::incremental(mdid)?;
@@ -372,6 +371,7 @@ impl Md {
         }
 
         let out_dir = out_dir.map(virtual_target_dir).unwrap_or(".".into());
+        // TODO: let out_dir = out_dir.map(|_| "$OLDPWD").unwrap_or("$PWD"); whence  https://github.com/moby/buildkit/issues/6698  [frontend] $OLDPWD is unset (after >1 WORKDIR layers)
 
         block.push_str(&format!("      {call} \\\n"));
         block.push_str(&format!("        1>          {out_dir}/{out_stage}-{STDOUT} \\\n"));
