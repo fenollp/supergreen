@@ -5,6 +5,7 @@ jobs:
 
   bin:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     defaults:
       run:
         shell: bash -euo pipefail {0}
@@ -73,6 +74,7 @@ jobs:
 
   installs:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     defaults:
       run:
         shell: bash -euo pipefail {0}
@@ -225,6 +227,7 @@ jobs:
 
   audits:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     defaults:
       run:
         shell: bash -euo pipefail {0}
@@ -372,6 +375,7 @@ jobs:
 
   udeps:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     defaults:
       run:
         shell: bash -euo pipefail {0}
@@ -610,6 +614,7 @@ jobs:
 
   builds:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     defaults:
       run:
         shell: bash -euo pipefail {0}
@@ -900,6 +905,7 @@ jobs:
 
   tests:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     defaults:
       run:
         shell: bash -euo pipefail {0}
@@ -1190,6 +1196,7 @@ jobs:
 
   checks:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     defaults:
       run:
         shell: bash -euo pipefail {0}
@@ -1480,6 +1487,7 @@ jobs:
 
   packages:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     defaults:
       run:
         shell: bash -euo pipefail {0}
@@ -1694,6 +1702,7 @@ jobs:
 
   clippy:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     defaults:
       run:
         shell: bash -euo pipefail {0}

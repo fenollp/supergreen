@@ -11,6 +11,7 @@ jobdef() {
 cat <<EOF
   $name:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     defaults:
       run:
         shell: bash -euo pipefail {0}
