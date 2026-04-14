@@ -179,6 +179,14 @@ then run your cargo command again.
     }
 
     pub(crate) async fn create_builder(&mut self, name: &str) -> Result<()> {
+        self.do_create_builder(name, 1).await
+    }
+
+    async fn do_create_builder(&mut self, name: &str, attempts: u8) -> Result<()> {
+        if attempts == 5 {
+            bail!("Could not create builder after {attempts} attempts. Is {} OK?", self.runner)
+        }
+
         let mut config = buildkitd::Config::default();
         if !self.registry_mirrors.is_empty() {
             let mirrors = self.registry_mirrors.clone();
@@ -261,6 +269,9 @@ then run your cargo command again.
         let (succeeded, _, stderr) = cmd.exec().await?;
         if !succeeded {
             let stderr = String::from_utf8_lossy(&stderr);
+            if stderr.contains("existing instance") && stderr.contains("but no append mode") {
+                return Box::pin(self.do_create_builder(name, attempts + 1)).await;
+            }
             bail!("BUG: failed to create builder: {stderr}")
         }
 
