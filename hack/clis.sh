@@ -148,6 +148,8 @@ declare -a nvs nvs_args
 # Depends on https://lib.rs/crates/nvml-wrapper and on https://github.com/nagisa/rust_libloading
 ((i+=1)); nvs[i]=bottom@0.11.4;               oks[i]=ok; nvs_args[i]=''
 
+((i+=1)); nvs[i]=alacritty@0.17.0;            oks[i]=ok; nvs_args[i]=''
+
 ((i+=1)); nvs[i]=cargo-rail@0.1.0;            oks[i]=ok; nvs_args[i]=''
 
 #FIXME: test with Environment: CARGO_BUILD_RUSTC_WRAPPER or RUSTC_WRAPPER  or Environment: CARGO_BUILD_RUSTC_WORKSPACE_WRAPPER or RUSTC_WORKSPACE_WRAPPER
@@ -181,6 +183,7 @@ as_env() {
   local name_at_version=$1; shift
   [[ $# -eq 0 ]]
   case "$name_at_version" in
+    alacritty@*) envvars+=(CARGOGREEN_ADD_APT='cmake,g++,libfontconfig1-dev,libxcb-xfixes0-dev,libxkbcommon-dev,pkg-config,python3') ;; # From https://github.com/alacritty/alacritty/blob/94e7c8874e526b1e67b349d9ba30ddf81669119e/INSTALL.md#debianubuntu
     bottom@*) envvars+=(CARGOGREEN_SET_ENVS='GITHUB_SHA'); envvars+=(GITHUB_SHA=) ;; # "Dirty bottom v0.11.4: the environment variable GITHUB_SHA changed"
     cargo-authors@*) envvars+=(CARGOGREEN_ADD_APT='libcurl4-openssl-dev,pkg-config') ;;
     cargo-udeps@*) envvars+=(CARGOGREEN_ADD_APT='libssl-dev,pkg-config,zlib1g-dev') ;;

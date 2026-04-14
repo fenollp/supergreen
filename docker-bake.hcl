@@ -20,6 +20,7 @@ group "default" {
     "btm",
     "cargo_mutants",
     "hickory_dns",
+    "alacritty",
     "rublk",
     "binsider",
     "cargo_authors",
@@ -129,6 +130,11 @@ target "cargo_mutants" {
 target "hickory_dns" {
   context = "recipes"
   dockerfile = "hickory-dns@0.26.0-alpha.1.Dockerfile"
+  output = [{ type = "local", dest = "." }]
+}
+target "alacritty" {
+  context = "recipes"
+  dockerfile = "alacritty@0.17.0.Dockerfile"
   output = [{ type = "local", dest = "." }]
 }
 target "rublk" {
