@@ -184,6 +184,8 @@ declare -a nvs nvs_args toolchain
 
 ((i+=1)); nvs[i]=cargo-rail@0.1.0;            oks[i]=ok; nvs_args[i]=''
 
+((i+=1)); nvs[i]=crater@master;               oks[i]=Ok; nvs_args[i]='--git https://github.com/rust-lang/crater --rev=102a0c7b0e4298e7f21c8e177120b6e143409d63'
+
 #FIXME: test with Environment: CARGO_BUILD_RUSTC_WRAPPER or RUSTC_WRAPPER  or Environment: CARGO_BUILD_RUSTC_WORKSPACE_WRAPPER or RUSTC_WORKSPACE_WRAPPER
 # => the final invocation is $RUSTC_WRAPPER $RUSTC_WORKSPACE_WRAPPER $RUSTC.
 
@@ -232,6 +234,7 @@ as_env() {
     cargo-llvm-cov@*) envvars+=(CARGOGREEN_COMPONENTS='llvm-tools-preview') ;;
     cargo-udeps@*) envvars+=(CARGOGREEN_ADD_APT='libcurl4-openssl-dev,libssl-dev=3.5.5-1~deb13u2,pkg-config,zlib1g-dev') ;;
     coccinelleforrust@*) envvars+=(CARGOGREEN_ADD_APT='python3-dev') ;;
+    crater@*) envvars+=(CARGOGREEN_ADD_APT='build-essential,ca-certificates,cmake,curl,git,libsqlite3-dev,libssh2-1-dev,libssl-dev,pkg-config,zlib1g-dev') ;; # From https://github.com/rust-lang/crater/blob/102a0c7b0e4298e7f21c8e177120b6e143409d63/Dockerfile#L11-L18
     diesel_cli@*) envvars+=(CARGOGREEN_ADD_APT='libpq-dev') ;;
     miri@*) envvars+=(CARGOGREEN_COMPONENTS='llvm-tools-preview,rust-src,rustc-dev'); envvars+=(CARGOGREEN_ADD_APT='build-essential') ;;
     mussh@*) envvars+=(CARGOGREEN_ADD_APT='libsqlite3-dev,"libssl-dev(>=3.5)",pkg-config,zlib1g-dev') ;;
