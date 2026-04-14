@@ -152,6 +152,10 @@ declare -a nvs nvs_args
 
 ((i+=1)); nvs[i]=cargo-rail@0.1.0;            oks[i]=ok; nvs_args[i]=''
 
+((i+=1)); nvs[i]=crater@master;               oks[i]=ok; nvs_args[i]='--git https://github.com/rust-lang/crater --rev=102a0c7b0e4298e7f21c8e177120b6e143409d63'
+# {"$message_type":"diagnostic","message":"couldn't read `/usr/local/cargo/git/checkouts/docs.rs-ed553c615e04334e/c173de9/crates/lib/metadata/build.rs`: No such file or directory (os error 2)","code":null,"level":"error","spans":[],"children":[],"rendered":"\u001b[1m\u001b[91merror\u001b[0m\u001b[1m: couldn't read `/usr/local/cargo/git/checkouts/docs.rs-ed553c615e04334e/c173de9/crates/lib/metadata/build.rs`: No such file or directory (os error 2)\u001b[0m\n\n"}
+# {"$message_type":"diagnostic","message":"aborting due to 1 previous error","code":null,"level":"error","spans":[],"children":[],"rendered":"\u001b[1m\u001b[91merror\u001b[0m\u001b[1m: aborting due to 1 previous error\u001b[0m\n\n"}
+
 #FIXME: test with Environment: CARGO_BUILD_RUSTC_WRAPPER or RUSTC_WRAPPER  or Environment: CARGO_BUILD_RUSTC_WORKSPACE_WRAPPER or RUSTC_WORKSPACE_WRAPPER
 # => the final invocation is $RUSTC_WRAPPER $RUSTC_WORKSPACE_WRAPPER $RUSTC.
 
@@ -188,6 +192,7 @@ as_env() {
     cargo-authors@*) envvars+=(CARGOGREEN_ADD_APT='libcurl4-openssl-dev,pkg-config') ;;
     cargo-udeps@*) envvars+=(CARGOGREEN_ADD_APT='libssl-dev,pkg-config,zlib1g-dev') ;;
     coccinelleforrust@*) envvars+=(CARGOGREEN_ADD_APT='python3-dev') ;;
+    crater@*) envvars+=(CARGOGREEN_ADD_APT='build-essential,ca-certificates,cmake,curl,git,libsqlite3-dev,libssh2-1-dev,libssl-dev,pkg-config,zlib1g-dev') ;; # From https://github.com/rust-lang/crater/blob/102a0c7b0e4298e7f21c8e177120b6e143409d63/Dockerfile#L11-L18
     diesel_cli@*) envvars+=(CARGOGREEN_ADD_APT='libpq-dev') ;;
     mussh@*) envvars+=(CARGOGREEN_ADD_APT='libsqlite3-dev,libssl-dev,pkg-config,zlib1g-dev') ;;
     nanometers@*) envvars+=(CARGOGREEN_ADD_APT='libcairo2-dev,libpango-1.0-0,libpango1.0-dev,libssl-dev,libxcb-render0-dev,libxcb-shape0-dev,libxcb-xfixes0-dev,libxkbcommon-dev') ;;
