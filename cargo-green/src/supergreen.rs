@@ -217,7 +217,7 @@ fn all_envs(green: &Green) -> Vec<(&str, &'static str, Option<String>)> {
         var!(ENV_LOG!(), env::var(ENV_LOG!()).ok()),
         var!(ENV_LOG_STYLE!(), env::var(ENV_LOG_STYLE!()).ok()),
         var!(ENV_RUNNER!(), Some(green.runner.to_string())),
-        var!(BUILDX_BUILDER!(), green.builder.name.as_deref().map(ToString::to_string)),
+        var!(BUILDX_BUILDER!(), green.builder.name.as_deref().map(ToOwned::to_owned)),
         var!(ENV_BUILDER_IMAGE!(), green.builder.image.as_deref().map(ToString::to_string)),
         var!(ENV_SYNTAX_IMAGE!(), Some(green.syntax.to_string())),
         var!(ENV_REGISTRY_MIRRORS!(), csv(&green.registry_mirrors)),
