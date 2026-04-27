@@ -76,7 +76,10 @@ const VSN: &str = env!("CARGO_PKG_VERSION");
 // \cargo green --version # check != displayed vsn
 // \cargo green # check displays help
 
-cargo_subcommand_metadata::description!(env!("CARGO_PKG_DESCRIPTION"));
+// TODO: make this actually show up in `cargo --list`
+cargo_subcommand_metadata::description! {
+    "Sandbox & cache cargo builds and execute jobs remotely"
+}
 
 fn cargo() -> OsString {
     env::var_os("CARGO").unwrap_or_else(|| "cargo".into())
