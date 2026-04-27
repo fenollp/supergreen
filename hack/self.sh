@@ -65,6 +65,19 @@ jobs:
 
 $(bin_job)
 
+
+$(bin_jobdef 'naked')
+    steps:
+$(postbin_steps)
+$(cache_usage)
+    - name: 🔵 cargo vs cargo green (NAKED)
+      run: |
+$(unset_action_envs)
+        diff <(cargo) <(cargo green |& tee ../_)
+$(postconds ../_)
+$(cache_usage)
+
+
 $(bin_jobdef 'installs')
     steps:
 $(postbin_steps)
