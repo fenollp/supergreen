@@ -55,19 +55,6 @@ const PKG: &str = env!("CARGO_PKG_NAME");
 const REPO: &str = env!("CARGO_PKG_REPOSITORY");
 const VSN: &str = env!("CARGO_PKG_VERSION");
 
-/*
-
-\cargo green clippy --locked --frozen --offline --all-targets --all-features
-
-\cargo green auditable build --locked --frozen --offline --all-targets --all-features
-\cargo auditable green build --locked --frozen --offline --all-targets --all-features
-
-\cargo green test --all-targets --all-features --locked --frozen --offline
-
-\cargo green nextest run --all-targets --all-features --locked --frozen --offline
-
-*/
-
 // TODO: make this actually show up in `cargo --list`
 cargo_subcommand_metadata::description! {
     "Sandbox & cache cargo builds and execute jobs remotely"
@@ -79,6 +66,29 @@ fn cargo() -> OsString {
 
 // Internal env used to pass config from cargo plugin to rustc wrapper
 const ENV_ROOT_PACKAGE_SETTINGS: &str = "CARGOGREEN_ROOT_PACKAGE_SETTINGS_";
+
+// Subcommands that need our wrapping
+#[rustfmt::skip]
+const HANDLED: &[&str] = &[
+    "supergreen",
+    "b", "bench", "build",
+    "c", "check",
+    "clippy",
+    "d", "doc",
+    "fetch",
+    "fix",
+    "install",
+    "package",
+    "publish",
+    "r", "run",
+    "rustc",
+    "rustdoc",
+    "t", "test",
+];
+// ...ones we know that don't:
+// (naked) add clean config fmt generate-lockfile help info init locate-project
+//         login logout metadata new owner pkgid read-manifest remove report rm
+//         search tree uninstall update vendor verify-project version yank
 
 #[tokio::main]
 async fn main() -> Result<()> {
@@ -123,14 +133,8 @@ async fn main() -> Result<()> {
 
     let arg2 = args.next();
 
-    // Shortcut here just for `cargo green supergreen --help` to avoid some calculations
-    if arg2.as_deref() == Some("supergreen") && just_help(env::args().nth(3).as_deref()) {
-        supergreen::help();
-        return Ok(());
-    }
-
     // https://rust-lang.github.io/rustup/overrides.html#toolchain-override-shorthand
-    if let Some(ref toolchain) = arg2.as_ref().and_then(|arg2| arg2.strip_prefix('+')) {
+    if let Some(toolchain) = arg2.as_ref().and_then(|arg2| arg2.strip_prefix('+')) {
         // Special handling: call was `cargo green +toolchain ..` (probably from `alias cargo='cargo green'`).
         //  Let's flip this back into `cargo +toolchain green ..`
         let mut cmd = Command::new("cargo");
@@ -143,9 +147,30 @@ async fn main() -> Result<()> {
 
     let mut cmd = Command::new(cargo());
     cmd.kill_on_drop(true);
-    cmd.env("RUSTC_WRAPPER", arg0);
     if let Some(ref arg2) = arg2 {
         cmd.arg(arg2);
+    }
+    cmd.args(args);
+
+    // TODO: handle `-Z bla` (works: `-Zbla`)
+    let subcommand_start = || env::args().skip(2).skip_while(|arg| arg.starts_with('-'));
+    let command = subcommand_start().next();
+
+    if !command.as_deref().map(|c| HANDLED.contains(&c)).unwrap_or(false) {
+        if !cmd.status().await?.success() {
+            exit(1)
+        }
+        return Ok(());
+    }
+    cmd.env("RUSTC_WRAPPER", arg0);
+
+    // Shortcut here just for `cargo green supergreen --help` to avoid some calculations
+    if command.as_deref() == Some("supergreen") {
+        let first_arg = subcommand_start().find(|arg| arg != "supergreen");
+        if just_help(first_arg.as_deref()) {
+            supergreen::help();
+            return Ok(());
+        }
     }
 
     // TODO: TUI above cargo output (? https://docs.rs/prodash )
@@ -170,15 +195,12 @@ async fn main() -> Result<()> {
     let green = cargo_green::main().await?;
     cmd.env(ENV_ROOT_PACKAGE_SETTINGS, serde_json::to_string(&green)?);
 
-    if arg2.as_deref() == Some("supergreen") {
-        return supergreen::main(green, args.next().as_deref(), args.collect()).await;
+    if command.as_deref() == Some("supergreen") {
+        let mut args = subcommand_start();
+        let first_arg = args.find(|arg| arg != "supergreen");
+        return supergreen::main(green, first_arg.as_deref(), args.collect()).await;
     }
-    cmd.args(args);
 
-    //TODO: https://github.com/messense/cargo-options/blob/086d7470cae34b0e694a62237e258fbd35384e93/examples/cargo-mimic.rs
-    // maybe https://lib.rs/crates/clap-cargo
-
-    let command = env::args().nth(2);
     if command.as_deref() == Some("fetch") {
         // Runs actual `cargo fetch`
         if !cmd.status().await?.success() {
@@ -186,7 +208,7 @@ async fn main() -> Result<()> {
         }
         return green.prebuild(true).await;
     }
-    green.prebuild(false).await?; // TODO: parse cargo args and skip prebuild for e.g. `cargo green --version`
+    green.prebuild(false).await?;
 
     //FIXME: check precedence
     let target_dir = if let Ok(target_dir) = env::var("CARGO_TARGET_DIR") {
