@@ -57,9 +57,6 @@ const VSN: &str = env!("CARGO_PKG_VERSION");
 
 /*
 
-\cargo green +nightly fmt --all
-\cargo +nightly green fmt --all
-
 \cargo green clippy --locked --frozen --offline --all-targets --all-features
 
 \cargo green auditable build --locked --frozen --offline --all-targets --all-features
@@ -70,11 +67,6 @@ const VSN: &str = env!("CARGO_PKG_VERSION");
 \cargo green nextest run --all-targets --all-features --locked --frozen --offline
 
 */
-
-//TODO test
-// \cargo green +nightly --version # check displayed vsn
-// \cargo green --version # check != displayed vsn
-// \cargo green # check displays help
 
 // TODO: make this actually show up in `cargo --list`
 cargo_subcommand_metadata::description! {
