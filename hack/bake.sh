@@ -32,6 +32,6 @@ sorted | while read -r _ bin file; do
     printf 'target "%s" {\n' "$bin"
     echo   '  context = "recipes"'
     printf '  dockerfile = "%s"\n' "$file"
-    echo   '  output = [{ type = "local", dest = "." }]'
+    echo   '  output = ["."]'
     echo   '}'
 done
