@@ -303,13 +303,14 @@ jobs:
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
     - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
     - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
-    - name: cargo audit net=ON cache=OFF remote=OFF
+    - name: 🔵 cargo audit net=ON cache=OFF remote=OFF
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         cargo green -vv audit |& tee ../_
+    - run: grep Scanning ../_
     - if: ${{ always() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |

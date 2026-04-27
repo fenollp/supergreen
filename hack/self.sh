@@ -9,22 +9,6 @@ nightly=nightly-2025-08-06
 # Usage:  $0                              #=> generate CI
 
 
-# TODO: all of `cargo --list` (including shortcuts) except for cinstall-ed plugins
-# Currently missing (non-exhaustive)
-# cargo green add
-# cargo green bench
-# cargo green clean
-# cargo green doc
-# cargo green init
-# cargo green install
-# cargo green new
-# cargo green publish
-# cargo green remove
-# cargo green run
-# cargo green search
-# cargo green uninstall
-# cargo green update
-
 
 postbin_steps() {
     local toolchain=${1:-stable}; shift
@@ -105,10 +89,11 @@ $(postbin_steps)
       with:
         tool: cargo-audit
 $(cache_usage)
-    - name: cargo audit net=ON cache=OFF remote=OFF
+    - name: 🔵 cargo audit net=ON cache=OFF remote=OFF
       run: |
 $(unset_action_envs)
         cargo green -vv audit |& tee ../_
+    - run: grep Scanning ../_
 $(postconds ../_)
 $(cache_usage)
 
