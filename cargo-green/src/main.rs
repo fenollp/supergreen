@@ -82,6 +82,9 @@ fn cargo() -> OsString {
     env::var_os("CARGO").unwrap_or_else(|| "cargo".into())
 }
 
+// Internal env used to pass config from cargo plugin to rustc wrapper
+const ENV_ROOT_PACKAGE_SETTINGS: &str = "CARGOGREEN_ROOT_PACKAGE_SETTINGS_";
+
 #[tokio::main]
 async fn main() -> Result<()> {
     rustls::crypto::ring::default_provider()
@@ -94,8 +97,6 @@ async fn main() -> Result<()> {
     if PathBuf::from(&arg0).file_name() != Some(OsStr::new(PKG)) {
         bail!("This binary should be named `{PKG}`")
     }
-
-    const ENV_ROOT_PACKAGE_SETTINGS: &str = "CARGOGREEN_ROOT_PACKAGE_SETTINGS_";
 
     if let Ok(wrapper) = env::var("RUSTC_WRAPPER") {
         // Now running as a subprocess
