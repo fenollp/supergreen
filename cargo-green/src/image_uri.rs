@@ -117,6 +117,8 @@ impl ImageUri {
 
 #[test]
 fn imageuri_basic() {
+    const DIGEST: &str = "sha256:27086352fd5e1907ea2b934eb1023f217c5ae087992eb59fde121dce9c9ff21e";
+
     let img = ImageUri::try_new("docker-image://registry.com/fenollp/supergreen").unwrap();
     assert!(!img.locked());
     assert!(!img.tagged());
@@ -124,6 +126,13 @@ fn imageuri_basic() {
     assert!(!img.stable_syntax_frontend());
     assert_eq!(img.path_and_tag(), ("registry.com/fenollp/supergreen", "latest"));
     assert_eq!(img.host(), "registry.com");
+    let img = img.lock(DIGEST);
+    assert!(img.locked());
+    assert!(!img.tagged());
+    assert!(!img.is_empty());
+    assert!(!img.stable_syntax_frontend());
+    assert_eq!(img.host(), "registry.com");
+    assert_eq!(img.digest(), DIGEST);
 
     let img = ImageUri::try_new("docker-image://registry.com/fenollp/supergreen:tagged").unwrap();
     assert!(!img.locked());
@@ -132,32 +141,43 @@ fn imageuri_basic() {
     assert!(!img.stable_syntax_frontend());
     assert_eq!(img.path_and_tag(), ("registry.com/fenollp/supergreen", "tagged"));
     assert_eq!(img.host(), "registry.com");
+    let img = img.lock(DIGEST);
+    assert!(img.locked());
+    assert!(img.tagged());
+    assert!(!img.is_empty());
+    assert!(!img.stable_syntax_frontend());
+    assert_eq!(img.host(), "registry.com");
+    assert_eq!(img.digest(), DIGEST);
 
     let img = ImageUri::try_new("docker-image://registry.com/fenollp/supergreen:tagged@sha256:27086352fd5e1907ea2b934eb1023f217c5ae087992eb59fde121dce9c9ff21e").unwrap();
     assert!(img.locked());
     assert!(img.tagged());
     assert!(!img.is_empty());
     assert!(!img.stable_syntax_frontend());
-    assert_eq!(
-        img.digest(),
-        "sha256:27086352fd5e1907ea2b934eb1023f217c5ae087992eb59fde121dce9c9ff21e"
-    );
+    assert_eq!(img.digest(), DIGEST);
     assert_eq!(img.host(), "registry.com");
+    assert_eq!(
+        img.unlocked(),
+        ImageUri::try_new("docker-image://registry.com/fenollp/supergreen:tagged").unwrap()
+    );
 
     let img = ImageUri::try_new("docker-image://registry.com/fenollp/supergreen@sha256:27086352fd5e1907ea2b934eb1023f217c5ae087992eb59fde121dce9c9ff21e").unwrap();
     assert!(img.locked());
     assert!(!img.tagged());
     assert!(!img.is_empty());
     assert!(!img.stable_syntax_frontend());
-    assert_eq!(
-        img.digest(),
-        "sha256:27086352fd5e1907ea2b934eb1023f217c5ae087992eb59fde121dce9c9ff21e"
-    );
+    assert_eq!(img.digest(), DIGEST);
     assert_eq!(img.host(), "registry.com");
+    assert_eq!(
+        img.unlocked(),
+        ImageUri::try_new("docker-image://registry.com/fenollp/supergreen").unwrap()
+    );
 }
 
 #[test]
 fn imageuri_with_port() {
+    const DIGEST: &str = "sha256:27086352fd5e1907ea2b934eb1023f217c5ae087992eb59fde121dce9c9ff21e";
+
     let img = ImageUri::try_new("docker-image://localhost:5000/fenollp/supergreen").unwrap();
     assert!(!img.locked());
     assert!(!img.tagged());
@@ -165,6 +185,13 @@ fn imageuri_with_port() {
     assert!(!img.stable_syntax_frontend());
     assert_eq!(img.path_and_tag(), ("localhost:5000/fenollp/supergreen", "latest"));
     assert_eq!(img.host(), "localhost:5000");
+    let img = img.lock(DIGEST);
+    assert!(img.locked());
+    assert!(!img.tagged());
+    assert!(!img.is_empty());
+    assert!(!img.stable_syntax_frontend());
+    assert_eq!(img.host(), "localhost:5000");
+    assert_eq!(img.digest(), DIGEST);
 
     let img = ImageUri::try_new("docker-image://localhost:5000/fenollp/supergreen:tagged").unwrap();
     assert!(!img.locked());
@@ -173,28 +200,37 @@ fn imageuri_with_port() {
     assert!(!img.stable_syntax_frontend());
     assert_eq!(img.path_and_tag(), ("localhost:5000/fenollp/supergreen", "tagged"));
     assert_eq!(img.host(), "localhost:5000");
+    let img = img.lock(DIGEST);
+    assert!(img.locked());
+    assert!(img.tagged());
+    assert!(!img.is_empty());
+    assert!(!img.stable_syntax_frontend());
+    assert_eq!(img.host(), "localhost:5000");
+    assert_eq!(img.digest(), DIGEST);
 
     let img = ImageUri::try_new("docker-image://localhost:5000/fenollp/supergreen:tagged@sha256:27086352fd5e1907ea2b934eb1023f217c5ae087992eb59fde121dce9c9ff21e").unwrap();
     assert!(img.locked());
     assert!(img.tagged());
     assert!(!img.is_empty());
     assert!(!img.stable_syntax_frontend());
-    assert_eq!(
-        img.digest(),
-        "sha256:27086352fd5e1907ea2b934eb1023f217c5ae087992eb59fde121dce9c9ff21e"
-    );
+    assert_eq!(img.digest(), DIGEST);
     assert_eq!(img.host(), "localhost:5000");
+    assert_eq!(
+        img.unlocked(),
+        ImageUri::try_new("docker-image://localhost:5000/fenollp/supergreen:tagged").unwrap()
+    );
 
     let img = ImageUri::try_new("docker-image://localhost:5000/fenollp/supergreen@sha256:27086352fd5e1907ea2b934eb1023f217c5ae087992eb59fde121dce9c9ff21e").unwrap();
     assert!(img.locked());
     assert!(!img.tagged());
     assert!(!img.is_empty());
     assert!(!img.stable_syntax_frontend());
-    assert_eq!(
-        img.digest(),
-        "sha256:27086352fd5e1907ea2b934eb1023f217c5ae087992eb59fde121dce9c9ff21e"
-    );
+    assert_eq!(img.digest(), DIGEST);
     assert_eq!(img.host(), "localhost:5000");
+    assert_eq!(
+        img.unlocked(),
+        ImageUri::try_new("docker-image://localhost:5000/fenollp/supergreen").unwrap()
+    );
 }
 
 #[test]
