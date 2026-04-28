@@ -26,6 +26,7 @@ group "default" {
     "cargo_authors",
     "cargo_deny",
     "sccache",
+    "tract",
     "cargo_nextest",
     "stu",
     "topiary",
@@ -161,6 +162,11 @@ target "sccache" {
   context = "recipes"
   dockerfile = "sccache@0.12.0.Dockerfile"
   output = ["."]
+}
+target "tract" {
+  context = "recipes"
+  dockerfile = "tract@0.22.1.Dockerfile"
+  output = [{ type = "local", dest = "." }]
 }
 target "cargo_nextest" {
   context = "recipes"
