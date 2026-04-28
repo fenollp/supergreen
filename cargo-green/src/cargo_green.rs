@@ -12,7 +12,7 @@ use crate::{
     cratesio::{self},
     experiments::EXPERIMENTS,
     green::{validate_csv, Green},
-    image_uri::SYNTAX_IMAGE,
+    image_uri::{SYNTAX_IMAGE, SYNTAX_IMAGE_LOCKED},
     lockfile::{find_lockfile, locked_crates},
     logging::{self, maybe_log},
     network::Network,
@@ -143,6 +143,10 @@ pub(crate) async fn main() -> Result<Green> {
     }
     if let Ok(syntax) = env::var(var) {
         green.syntax = syntax.as_str().try_into().map_err(|e| anyhow!("${var}={syntax:?} {e}"))?;
+    }
+    if green.syntax.is_empty() {
+        // TODO: dynamically lock, if network is up.
+        green.syntax = SYNTAX_IMAGE_LOCKED.clone();
     }
     // Use local hashed image if one matching exists locally
     green.syntax = green.maybe_lock_image(&green.syntax).await?;

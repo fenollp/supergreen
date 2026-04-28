@@ -42,7 +42,13 @@ macro_rules! ENV_COMPONENTS {
 pub(crate) const CARGO_HOME: &str = "/usr/local/cargo";
 pub(crate) const RUSTUP_HOME: &str = "/usr/local/rustup";
 
+/// Default base image: `docker-image://docker.io/library/debian:trixie-slim`
 static BASE_FOR_RUST: LazyLock<ImageUri> = LazyLock::new(|| ImageUri::std("debian:trixie-slim"));
+
+/// Default base image, pre-locked (on 2026-04-28)
+static BASE_FOR_RUST_LOCKED: LazyLock<ImageUri> = LazyLock::new(|| {
+    BASE_FOR_RUST.lock("sha256:cedb1ef40439206b673ee8b33a46a03a0c9fa90bf3732f54704f99cb061d2c5a")
+});
 
 #[test]
 fn default_is_unset() {
@@ -111,7 +117,9 @@ impl BaseImage {
         //   https://github.com/reproducible-containers/repro-pkg-cache
         //   https://github.com/reproducible-containers/repro-get
 
-        let image = BASE_FOR_RUST.to_owned(); // TODO: allow overriding (CARGOGREEN_BASE_DISTRO?)
+        // let image = BASE_FOR_RUST.to_owned(); // TODO: allow overriding (CARGOGREEN_BASE_DISTRO?)
+        // TODO: dynamically lock, if network is up.
+        let image = BASE_FOR_RUST_LOCKED.to_owned(); // FIXME: use BASE_IMAGE + drop _INLINE
         let base = image.noscheme();
         assert!(base.contains("/debian:"));
 
@@ -223,15 +231,17 @@ fn maybe_get_local_host_triple(toolchain: &str) -> Result<String> {
 
 #[test]
 fn test_from_env() {
+    let base_image = BASE_FOR_RUST_LOCKED.noscheme();
+
     let some_stable = "1.80.0-x86_64-unknown-linux-gnu";
     let res = BaseImage::from_env(some_stable, &[], &Add::default()).unwrap();
-    assert_eq!(res.image, ImageUri::std("debian:trixie-slim"));
-    assert!(res.image_inline.unwrap().contains(" docker.io/library/debian:trixie-slim "));
+    assert_eq!(res.image, BASE_FOR_RUST_LOCKED.clone());
+    assert!(res.image_inline.unwrap().contains(&format!(" {base_image} ")));
     assert_eq!(res.with_network, Network::Default);
 
     let some_nightly = "nightly-2025-09-14-aarch64-apple-darwin";
     let res = BaseImage::from_env(some_nightly, &[], &Add::default()).unwrap();
-    assert_eq!(res.image, ImageUri::std("debian:trixie-slim"));
-    assert!(res.image_inline.unwrap().contains(" docker.io/library/debian:trixie-slim "));
+    assert_eq!(res.image, BASE_FOR_RUST_LOCKED.clone());
+    assert!(res.image_inline.unwrap().contains(&format!(" {base_image} ")));
     assert_eq!(res.with_network, Network::Default);
 }
