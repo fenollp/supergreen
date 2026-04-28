@@ -3,6 +3,7 @@
   cargo green supergreen setup                                   Create required symlinks
   cargo green supergreen env [ENV ...]                           Show used values
   cargo green supergreen doc [ENV ...]                           Documentation of said values
+  cargo green supergreen show-rust-base                          Show base stage in use
   cargo green fetch                                              Pulls images and crates
   cargo green supergreen sync                                    Pulls everything, for offline usage
   cargo green supergreen push                                    Push cache image (all tags)
@@ -14,8 +15,8 @@
 # Try:
   cargo clean # Start from a clean slate
   cargo green build
-  cargo supergreen env CARGOGREEN_BASE_IMAGE 2>/dev/null
-  cargo supergreen help
+  cargo green supergreen env CARGOGREEN_BASE_IMAGE 2>/dev/null
+  cargo green supergreen help
   { cargo green supergreen setup 2>/dev/null || true; } | sudo /bin/sh -xe
 
 # Suggestion:
