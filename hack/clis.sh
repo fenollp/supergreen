@@ -69,6 +69,10 @@ declare -a nvs nvs_args
 ((i+=1)); nvs[i]=verso@main;                  oks[i]=kD; nvs_args[i]='--git https://github.com/versotile-org/verso.git --rev eb719bdd6c7b verso' # Pinned on 2025/12/03 # use of unresolved module or unlinked crate `arboard`
 ((i+=1)); nvs[i]=cargo-udeps@0.1.60;          oks[i]=ko; nvs_args[i]='' # extern location for cargo does not exist: /tmp/clis-cargo-udeps_0-1-60/release/deps/libcargo-71fcb7d73f0f1dfb.rmeta
 
+((i+=1)); nvs[i]=servo@main;                  oks[i]=ok; nvs_args[i]='--git=https://github.com/servo/servo --rev=69dbc1601414030826b4772d76a6004925b2b056 servoshell'
+# {"$message_type":"diagnostic","message":"couldn't read `/usr/local/cargo/git/checkouts/stylo-482338307e42a9ea/96ceb54/selectors/build.rs`: No such file or directory (os error 2)","code":null,"level":"error","spans":[],"children":[],"rendered":"\u001b[1m\u001b[91merror\u001b[0m\u001b[1m: couldn't read `/usr/local/cargo/git/checkouts/stylo-482338307e42a9ea/96ceb54/selectors/build.rs`: No such file or directory (os error 2)\u001b[0m\n\n"}
+# {"$message_type":"diagnostic","message":"aborting due to 1 previous error","code":null,"level":"error","spans":[],"children":[],"rendered":"\u001b[1m\u001b[91merror\u001b[0m\u001b[1m: aborting due to 1 previous error\u001b[0m\n\n"}
+
 ((i+=1)); nvs[i]=mirai@main;                  oks[i]=ko; nvs_args[i]='--git https://github.com/facebookexperimental/MIRAI.git --rev=8c258d28652c2bf5fbf7b92b7a6d4298d4ae18bc checker' # Pinned on 2025/12/03
 #     Updating git repository `https://github.com/facebookexperimental/MIRAI.git`
 #     Updating git submodule `git@github.com:microsoft/vcpkg.git`
@@ -187,6 +191,7 @@ as_env() {
     bottom@*) envvars+=(CARGOGREEN_SET_ENVS='GITHUB_SHA'); envvars+=(GITHUB_SHA=) ;; # "Dirty bottom v0.11.4: the environment variable GITHUB_SHA changed"
     cargo-authors@*) envvars+=(CARGOGREEN_ADD_APT='libcurl4-openssl-dev,pkg-config') ;;
     cargo-udeps@*) envvars+=(CARGOGREEN_ADD_APT='libssl-dev,pkg-config,zlib1g-dev') ;;
+    servo@*) envvars+=(CARGOGREEN_ADD_APT='build-essential,ca-certificates,ccache,clang,cmake,curl,g++,git,gperf,gstreamer1.0-libav,gstreamer1.0-plugins-bad,gstreamer1.0-plugins-base,gstreamer1.0-plugins-good,gstreamer1.0-plugins-ugly,gstreamer1.0-tools,libdbus-1-dev,libegl1-mesa-dev,libfreetype6-dev,libges-1.0-dev,libgl1-mesa-dri,libgles2-mesa-dev,libglib2.0-dev,libgstreamer-plugins-bad1.0-dev,libgstreamer-plugins-base1.0-dev,libgstrtspserver-1.0-dev,libharfbuzz-dev,liblzma-dev,libudev-dev,libunwind-dev,libvulkan1,libx11-dev,libxcb-render0-dev,libxcb-shape0-dev,libxcb-xfixes0-dev,libxkbcommon-x11-0,libxkbcommon0,libxmu-dev,libxmu6,llvm-dev,m4,xorg-dev') ;; # From https://github.com/servo/servo/tree/69dbc1601414030826b4772d76a6004925b2b056/python/servo/platform/linux_packages/apt
     coccinelleforrust@*) envvars+=(CARGOGREEN_ADD_APT='python3-dev') ;;
     diesel_cli@*) envvars+=(CARGOGREEN_ADD_APT='libpq-dev') ;;
     mussh@*) envvars+=(CARGOGREEN_ADD_APT='libsqlite3-dev,libssl-dev,pkg-config,zlib1g-dev') ;;
