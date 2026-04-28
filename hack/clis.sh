@@ -572,6 +572,7 @@ set -x
     name_at_version=${nvs[$i]}
     args=${nvs_args[$i]}
     cargo="cargo +${cargos["$i"]:-${CARGO:-$fixed}}"
+    timings=; [[ '1.61' = "$(printf "%s\n1.61\n" "${cargo/cargo +}" | sort -V | head -n1)" ]] && timings=--timings
     ;;
 esac
 
@@ -623,7 +624,7 @@ as_env "$name_at_version"
 send \
   'until' '[[' -f "$tmpgooo".installed ']];' 'do' sleep '.1;' 'done' '&&' rm "$tmpgooo".* \
   '&&' 'if' '[[' "$reset" '=' '1' ']];' 'then' docker buildx rm "$BUILDX_BUILDER" --force '||' 'exit' '1;' 'fi' \
-  '&&' "${envvars[@]}" $cargo green -vv install --timings $jobs --root=$tmpbins $frozen --force "$(as_install "$name_at_version")" "$args" \
+  '&&' "${envvars[@]}" $cargo green -vv install $timings $jobs --root=$tmpbins $frozen --force "$(as_install "$name_at_version")" "$args" \
   '&&' tmux kill-session -t "$session_name"
 tmux select-layout even-vertical
 
