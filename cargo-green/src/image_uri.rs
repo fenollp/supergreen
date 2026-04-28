@@ -7,6 +7,11 @@ use nutype::nutype;
 pub(crate) static SYNTAX_IMAGE: LazyLock<ImageUri> =
     LazyLock::new(|| ImageUri::try_new("docker-image://docker.io/docker/dockerfile:1").unwrap());
 
+/// Default BuildKit syntax, pre-locked (on 2026-04-28)
+pub(crate) static SYNTAX_IMAGE_LOCKED: LazyLock<ImageUri> = LazyLock::new(|| {
+    SYNTAX_IMAGE.lock("sha256:2780b5c3bab67f1f76c781860de469442999ed1a0d7992a5efdf2cffc0e3d769")
+});
+
 /// An OCI image URI of the format `docker-image://host/namespace/name:tag@sha256:digest`
 ///
 /// * Supported scheme: `docker-image://`
@@ -113,6 +118,21 @@ impl ImageUri {
         let (host, _) = self.noscheme().split_once('/').expect("PROOF: just checked");
         host
     }
+}
+
+#[test]
+fn imageuri_syntax() {
+    assert!(!SYNTAX_IMAGE.locked());
+    assert!(SYNTAX_IMAGE.tagged());
+    assert!(SYNTAX_IMAGE.is_empty());
+    assert!(SYNTAX_IMAGE.stable_syntax_frontend());
+    assert_eq!(SYNTAX_IMAGE.host(), "docker.io");
+
+    assert!(SYNTAX_IMAGE_LOCKED.locked());
+    assert!(SYNTAX_IMAGE_LOCKED.tagged());
+    assert!(!SYNTAX_IMAGE_LOCKED.is_empty());
+    assert!(SYNTAX_IMAGE_LOCKED.stable_syntax_frontend());
+    assert_eq!(SYNTAX_IMAGE_LOCKED.host(), "docker.io");
 }
 
 #[test]
