@@ -28,8 +28,9 @@ pub(crate) async fn main(mut green: Green, arg1: Option<&str>, args: Vec<String>
         (Some("setup"), None, None) => { /* done during Green init */ }
         (Some("env"), _, _) => green.envs(args)?,
         (Some("doc"), _, _) => green.docs(args)?,
+        (Some("show-rust-base"), _, _) => println!("{}", green.base.image_inline.unwrap()),
         (Some("sync"), None, None) => green.prebuild(false).await?,
-        (Some("sync"), Some("data"), None) => sync_data(&green),
+        (Some("sync"), Some("data"), None) => sync_data(&green), // undocumented
         (Some("push"), None, None) => green.push().await?,
         (Some("builder"), None, None) => green.inspect_builder().await?,
         (Some("builder"), Some("rm"), None) => green.rm_builder(true).await?,
