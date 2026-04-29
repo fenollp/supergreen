@@ -12,8 +12,8 @@ use serde::{Deserialize, Serialize};
 use crate::network::Network;
 use crate::{
     add::Add, base_image::BaseImage, builder::Builder, cache::Cache, containerfile::Containerfile,
-    image_uri::ImageUri, lockfile::find_manifest_path, r#final::Final, runner::Runner, stage::RST,
-    ENV_RUNNER, PKG,
+    image_uri::ImageUri, lockfile::find_manifest_path, r#final::Final, runner::Runner, ENV_RUNNER,
+    PKG,
 };
 
 macro_rules! ENV_REGISTRY_MIRRORS {
@@ -106,12 +106,10 @@ impl Green {
             None
         };
 
-        let toolchain = env::var("RUSTUP_TOOLCHAIN").expect("$RUSTUP_TOOLCHAIN");
-        Self::try_new(manifest, &toolchain)
-            .map_err(|e| anyhow!("Failed reading {PKG} configuration: {e}"))
+        Self::try_new(manifest).map_err(|e| anyhow!("Failed reading {PKG} configuration: {e}"))
     }
 
-    fn try_new(manifest: Option<Manifest>, toolchain: &str) -> Result<Self> {
+    fn try_new(manifest: Option<Manifest>) -> Result<Self> {
         let mut green = Self::default();
 
         if let Some(Manifest {
@@ -187,41 +185,12 @@ impl Green {
 
         validate_csv(&mut green.components, ENV_COMPONENTS!())?;
 
+        if !green.base.image_inline.is_empty() {
+            bail!("'base-image-inline' setting cannot be set")
+        }
         let var = ENV_BASE_IMAGE!();
         if let Ok(val) = env::var(var) {
-            let val = val.try_into().map_err(|e| anyhow!("${var} {e}"))?;
-            green.base = BaseImage::from_image(val);
-        }
-
-        let var = ENV_BASE_IMAGE_INLINE!();
-        let mut origin = setting(var);
-        if let Ok(val) = env::var(var) {
-            origin = format!("${var}");
-            green.base.image_inline = Some(val);
-        }
-        if let Some(ref base_image_inline) = green.base.image_inline {
-            if base_image_inline.is_empty() {
-                bail!("{origin} is empty")
-            }
-            // TODO: drop this requirement by allowing a `base-image-stage` override
-            //FIXME: have to repeat base stage per stage actually => no naming constraint then anyway
-            if !base_image_inline.to_lowercase().contains(&format!(" AS {RST}\n").to_lowercase()) {
-                bail!("{origin} does not provide a stage named '{RST}'")
-            }
-        }
-
-        if let Some(ref base_image_inline) = green.base.image_inline {
-            let base = green.base.image.noscheme();
-            if base.is_empty() || !base_image_inline.contains(&format!(" {base} ")) {
-                bail!(
-                    "Make sure to match {} ({base}) with the image URL used in {}",
-                    setting(ENV_BASE_IMAGE!()),
-                    setting(ENV_BASE_IMAGE_INLINE!())
-                )
-            }
-        }
-        if green.base.is_unset() {
-            green.base = BaseImage::from_env(toolchain, &green.components, &green.add)?;
+            green.base.image = val.try_into().map_err(|e| anyhow!("${var} {e}"))?;
         }
 
         validate_csv(&mut green.set_envs, ENV_SET_ENVS!())?;
@@ -271,7 +240,6 @@ pub(crate) fn validate_csv(field: &mut Vec<String>, var: &'static str) -> Result
 #[cfg(test)]
 #[test_case::test_matrix(["", "[package.metadata.green]", "[package.metadata.other]"])]
 fn metadata_green_ok(conf: &str) {
-    let toolchain = "stable-x86_64-unknown-linux-gnu";
     let manifest = Manifest::from_str(&format!(
         r#"
 [package]
@@ -281,10 +249,9 @@ name = "test-package"
 "#
     ))
     .unwrap();
-    let mut green = Green::try_new(Some(manifest), toolchain).unwrap();
+    let mut green = Green::try_new(Some(manifest)).unwrap();
 
-    assert_ne!(green.base, BaseImage::default());
-    green.base = BaseImage::default();
+    assert_eq!(green.base, BaseImage::default());
 
     assert!(!green.registry_mirrors.is_empty());
     green.registry_mirrors = vec![];
@@ -296,7 +263,6 @@ name = "test-package"
 
 #[test]
 fn metadata_green_components_ok() {
-    let toolchain = "stable-x86_64-unknown-linux-gnu";
     let manifest = Manifest::from_str(
         r#"
 [package]
@@ -307,13 +273,12 @@ components = [ "rust-src", "llvm-tools-preview" ]
 "#,
     )
     .unwrap();
-    let green = Green::try_new(Some(manifest), toolchain).unwrap();
+    let green = Green::try_new(Some(manifest)).unwrap();
     assert_eq!(green.components, vec!["rust-src".to_owned(), "llvm-tools-preview".to_owned()]);
 }
 
 #[test]
 fn metadata_green_components_empty_name() {
-    let toolchain = "stable-x86_64-unknown-linux-gnu";
     let manifest = Manifest::from_str(
         r#"
 [package]
@@ -324,13 +289,12 @@ components = [ "" ]
 "#,
     )
     .unwrap();
-    let err = Green::try_new(Some(manifest), toolchain).err().unwrap().to_string();
+    let err = Green::try_new(Some(manifest)).err().unwrap().to_string();
     assert!(err.contains("empty"), "In: {err}");
 }
 
 #[test]
 fn metadata_green_components_quotes() {
-    let toolchain = "stable-x86_64-unknown-linux-gnu";
     let manifest = Manifest::from_str(
         r#"
 [package]
@@ -341,13 +305,12 @@ components = [ "'a'" ]
 "#,
     )
     .unwrap();
-    let err = Green::try_new(Some(manifest), toolchain).err().unwrap().to_string();
+    let err = Green::try_new(Some(manifest)).err().unwrap().to_string();
     assert!(err.contains("quotes"), "In: {err}");
 }
 
 #[test]
 fn metadata_green_components_whitespace() {
-    let toolchain = "stable-x86_64-unknown-linux-gnu";
     let manifest = Manifest::from_str(
         r#"
 [package]
@@ -358,13 +321,12 @@ components = [ "a b" ]
 "#,
     )
     .unwrap();
-    let err = Green::try_new(Some(manifest), toolchain).err().unwrap().to_string();
+    let err = Green::try_new(Some(manifest)).err().unwrap().to_string();
     assert!(err.contains("space"), "In: {err}");
 }
 
 #[test]
 fn metadata_green_components_duplicates() {
-    let toolchain = "stable-x86_64-unknown-linux-gnu";
     let manifest = Manifest::from_str(
         r#"
 [package]
@@ -375,7 +337,7 @@ components = [ "a", "b", "a" ]
             "#,
     )
     .unwrap();
-    let err = Green::try_new(Some(manifest), toolchain).err().unwrap().to_string();
+    let err = Green::try_new(Some(manifest)).err().unwrap().to_string();
     assert!(err.contains("duplicates"), "In: {err}");
 }
 
@@ -383,7 +345,6 @@ components = [ "a", "b", "a" ]
 
 #[test]
 fn metadata_green_add_ok() {
-    let toolchain = "stable-x86_64-unknown-linux-gnu";
     let manifest = Manifest::from_str(
         r#"
 [package]
@@ -396,7 +357,7 @@ add.apk = [ "libpq-dev", "pkgconf" ]
 "#,
     )
     .unwrap();
-    let green = Green::try_new(Some(manifest), toolchain).unwrap();
+    let green = Green::try_new(Some(manifest)).unwrap();
     assert_eq!(green.add.apt, vec!["libpq-dev".to_owned(), "pkg-config".to_owned()]);
     assert_eq!(green.add.apt_get, vec!["libpq-dev".to_owned(), "pkg-config".to_owned()]);
     assert_eq!(green.add.apk, vec!["libpq-dev".to_owned(), "pkgconf".to_owned()]);
@@ -405,7 +366,6 @@ add.apk = [ "libpq-dev", "pkgconf" ]
 #[cfg(test)]
 #[test_case::test_matrix(["apt", "apt-get", "apk"])]
 fn metadata_green_add_empty_name(setting: &str) {
-    let toolchain = "stable-x86_64-unknown-linux-gnu";
     let manifest = Manifest::from_str(&format!(
         r#"
 [package]
@@ -416,14 +376,13 @@ add.{setting} = [ "" ]
 "#
     ))
     .unwrap();
-    let err = Green::try_new(Some(manifest), toolchain).err().unwrap().to_string();
+    let err = Green::try_new(Some(manifest)).err().unwrap().to_string();
     assert!(err.contains("empty"), "In: {err}");
 }
 
 #[cfg(test)]
 #[test_case::test_matrix(["apt", "apt-get", "apk"])]
 fn metadata_green_add_quotes(setting: &str) {
-    let toolchain = "stable-x86_64-unknown-linux-gnu";
     let manifest = Manifest::from_str(&format!(
         r#"
 [package]
@@ -434,14 +393,13 @@ add.{setting} = [ "'a'" ]
 "#
     ))
     .unwrap();
-    let err = Green::try_new(Some(manifest), toolchain).err().unwrap().to_string();
+    let err = Green::try_new(Some(manifest)).err().unwrap().to_string();
     assert!(err.contains("quotes"), "In: {err}");
 }
 
 #[cfg(test)]
 #[test_case::test_matrix(["apt", "apt-get", "apk"])]
 fn metadata_green_add_whitespace(setting: &str) {
-    let toolchain = "stable-x86_64-unknown-linux-gnu";
     let manifest = Manifest::from_str(&format!(
         r#"
 [package]
@@ -452,14 +410,13 @@ add.{setting} = [ "a b" ]
 "#
     ))
     .unwrap();
-    let err = Green::try_new(Some(manifest), toolchain).err().unwrap().to_string();
+    let err = Green::try_new(Some(manifest)).err().unwrap().to_string();
     assert!(err.contains("space"), "In: {err}");
 }
 
 #[cfg(test)]
 #[test_case::test_matrix(["apt", "apt-get", "apk"])]
 fn metadata_green_add_duplicates(setting: &str) {
-    let toolchain = "stable-x86_64-unknown-linux-gnu";
     let manifest = Manifest::from_str(&format!(
         r#"
 [package]
@@ -470,7 +427,7 @@ add.{setting} = [ "a", "b", "a" ]
             "#
     ))
     .unwrap();
-    let err = Green::try_new(Some(manifest), toolchain).err().unwrap().to_string();
+    let err = Green::try_new(Some(manifest)).err().unwrap().to_string();
     assert!(err.contains("duplicates"), "In: {err}");
 }
 
@@ -478,7 +435,6 @@ add.{setting} = [ "a", "b", "a" ]
 
 #[test]
 fn metadata_green_set_envs_ok() {
-    let toolchain = "stable-x86_64-unknown-linux-gnu";
     let manifest = Manifest::from_str(
         r#"
 [package]
@@ -489,7 +445,7 @@ set-envs = [ "GIT_AUTH_TOKEN", "TYPENUM_BUILD_CONSTS", "TYPENUM_BUILD_OP" ]
 "#,
     )
     .unwrap();
-    let green = Green::try_new(Some(manifest), toolchain).unwrap();
+    let green = Green::try_new(Some(manifest)).unwrap();
     assert_eq!(
         green.set_envs,
         vec![
@@ -502,7 +458,6 @@ set-envs = [ "GIT_AUTH_TOKEN", "TYPENUM_BUILD_CONSTS", "TYPENUM_BUILD_OP" ]
 
 #[test]
 fn metadata_green_set_envs_empty_var() {
-    let toolchain = "stable-x86_64-unknown-linux-gnu";
     let manifest = Manifest::from_str(
         r#"
 [package]
@@ -513,13 +468,12 @@ set-envs = [ "" ]
 "#,
     )
     .unwrap();
-    let err = Green::try_new(Some(manifest), toolchain).err().unwrap().to_string();
+    let err = Green::try_new(Some(manifest)).err().unwrap().to_string();
     assert!(err.contains("empty name"), "In: {err}");
 }
 
 #[test]
 fn metadata_green_set_envs_quotes() {
-    let toolchain = "stable-x86_64-unknown-linux-gnu";
     let manifest = Manifest::from_str(
         r#"
 [package]
@@ -530,13 +484,12 @@ set-envs = [ "'a'" ]
 "#,
     )
     .unwrap();
-    let err = Green::try_new(Some(manifest), toolchain).err().unwrap().to_string();
+    let err = Green::try_new(Some(manifest)).err().unwrap().to_string();
     assert!(err.contains("quotes"), "In: {err}");
 }
 
 #[test]
 fn metadata_green_set_envs_whitespace() {
-    let toolchain = "stable-x86_64-unknown-linux-gnu";
     let manifest = Manifest::from_str(
         r#"
 [package]
@@ -547,13 +500,12 @@ set-envs = [ "A B" ]
 "#,
     )
     .unwrap();
-    let err = Green::try_new(Some(manifest), toolchain).err().unwrap().to_string();
+    let err = Green::try_new(Some(manifest)).err().unwrap().to_string();
     assert!(err.contains("space"), "In: {err}");
 }
 
 #[test]
 fn metadata_green_set_envs_our_vars() {
-    let toolchain = "stable-x86_64-unknown-linux-gnu";
     let manifest = Manifest::from_str(
         r#"
 [package]
@@ -564,13 +516,12 @@ set-envs = [ "CARGOGREEN_LOG" ]
 "#,
     )
     .unwrap();
-    let err = Green::try_new(Some(manifest), toolchain).err().unwrap().to_string();
+    let err = Green::try_new(Some(manifest)).err().unwrap().to_string();
     assert!(err.contains("CARGOGREEN"), "In: {err}");
 }
 
 #[test]
 fn metadata_green_set_envs_duplicates() {
-    let toolchain = "stable-x86_64-unknown-linux-gnu";
     let manifest = Manifest::from_str(
         r#"
 [package]
@@ -581,7 +532,7 @@ set-envs = [ "A", "B", "A" ]
 "#,
     )
     .unwrap();
-    let err = Green::try_new(Some(manifest), toolchain).err().unwrap().to_string();
+    let err = Green::try_new(Some(manifest)).err().unwrap().to_string();
     assert!(err.contains("duplicates"), "In: {err}");
 }
 
@@ -589,196 +540,93 @@ set-envs = [ "A", "B", "A" ]
 
 #[test]
 fn metadata_green_base_image_ok() {
-    let toolchain = "stable-x86_64-unknown-linux-gnu";
     let manifest = Manifest::from_str(
         r#"
 [package]
 name = "test-package"
 
 [package.metadata.green]
-base-image = "docker-image://docker.io/library/rust:1"
+base-image = "docker-image://docker.io/library/ubuntu:latest"
 "#,
     )
     .unwrap();
-    let green = Green::try_new(Some(manifest), toolchain).unwrap();
+    let green = Green::try_new(Some(manifest)).unwrap();
+    assert_eq!(
+        green.base,
+        BaseImage { image: ImageUri::std("ubuntu:latest"), ..Default::default() }
+    );
+}
+
+#[test]
+fn metadata_green_base_image_with_network_ok() {
+    let manifest = Manifest::from_str(
+        r#"
+[package]
+name = "test-package"
+
+[package.metadata.green]
+with-network = "default"
+base-image = "docker-image://docker.io/library/ubuntu:latest"
+"#,
+    )
+    .unwrap();
+    let green = Green::try_new(Some(manifest)).unwrap();
     assert_eq!(
         green.base,
         BaseImage {
-            image: ImageUri::std("rust:1"),
-            image_inline: None,
-            with_network: Network::None,
+            image: ImageUri::std("ubuntu:latest"),
+            with_network: Network::Default,
+            ..Default::default()
         }
     );
 }
 
 #[test]
-fn metadata_green_base_image_bad_scheme() {
-    let toolchain = "stable-x86_64-unknown-linux-gnu";
+fn metadata_green_base_image_empty() {
     let manifest = Manifest::from_str(
         r#"
 [package]
 name = "test-package"
 
 [package.metadata.green]
-base-image = "docker.io/library/rust:1"
+base-image = ""
 "#,
     )
     .unwrap();
-    let err = Green::try_new(Some(manifest), toolchain).err().unwrap().to_string();
+    let err = Green::try_new(Some(manifest)).err().unwrap().to_string();
+    assert!(err.contains("scheme"), "In: {err}");
+}
+
+#[test]
+fn metadata_green_base_image_bad_scheme() {
+    let manifest = Manifest::from_str(
+        r#"
+[package]
+name = "test-package"
+
+[package.metadata.green]
+base-image = "docker.io/library/ubuntu:latest"
+"#,
+    )
+    .unwrap();
+    let err = Green::try_new(Some(manifest)).err().unwrap().to_string();
     assert!(err.contains("scheme"), "In: {err}");
 }
 
 #[test]
 fn metadata_green_base_image_whitespace() {
-    let toolchain = "stable-x86_64-unknown-linux-gnu";
     let manifest = Manifest::from_str(
         r#"
 [package]
 name = "test-package"
 
 [package.metadata.green]
-base-image = " docker-image://docker.io/library/rust:1  "
+base-image = " docker-image://docker.io/library/ubuntu:latest  "
 "#,
     )
     .unwrap();
-    let err = Green::try_new(Some(manifest), toolchain).err().unwrap().to_string();
+    let err = Green::try_new(Some(manifest)).err().unwrap().to_string();
     assert!(err.contains("space"), "In: {err}");
-}
-
-#[test]
-fn metadata_green_base_image_and_inline() {
-    let toolchain = "stable-x86_64-unknown-linux-gnu";
-    let manifest = Manifest::from_str(
-        r#"
-[package]
-name = "test-package"
-
-[package.metadata.green]
-base-image = "docker-image://docker.io/library/rust:1"
-base-image-inline = """
-FROM rust:1 AS rust-base
-RUN --mount=from=some-context,dst=/tmp/some-context cp -r /tmp/some-context ./
-RUN --mount=type=secret,id=aws
-"""
-"#,
-    )
-    .unwrap();
-    let err = Green::try_new(Some(manifest), toolchain).err().unwrap().to_string();
-    assert!(err.contains("to match"), "In: {err}");
-}
-
-//
-
-#[test]
-fn metadata_green_base_image_inline_ok() {
-    let toolchain = "stable-x86_64-unknown-linux-gnu";
-    let manifest = Manifest::from_str(
-            r#"
-[package]
-name = "test-package"
-
-[package.metadata.green]
-base-image = "docker-image://rust:1"
-base-image-inline = """
-# syntax = ghcr.io/reproducible-containers/buildkit-nix:v0.1.1@sha256:7d4c42a5c6baea2b21145589afa85e0862625e6779c89488987266b85e088021 <-- gets ignored
-FROM rust:1 AS rust-base
-RUN --mount=from=some-context,dst=/tmp/some-context cp -r /tmp/some-context ./
-RUN --mount=type=secret,id=aws
-"""
-"#,
-        )
-        .unwrap();
-    let green = Green::try_new(Some(manifest), toolchain).unwrap();
-    assert_eq!(green.base, BaseImage {
-        image: ImageUri::try_new("docker-image://rust:1").unwrap(),
-        image_inline:
-            Some(
-                r#"
-# syntax = ghcr.io/reproducible-containers/buildkit-nix:v0.1.1@sha256:7d4c42a5c6baea2b21145589afa85e0862625e6779c89488987266b85e088021 <-- gets ignored
-FROM rust:1 AS rust-base
-RUN --mount=from=some-context,dst=/tmp/some-context cp -r /tmp/some-context ./
-RUN --mount=type=secret,id=aws
-"#[1..]
-                    .to_owned()
-            ),
-            with_network: Network::None,
-        });
-}
-
-#[test]
-fn metadata_green_base_image_inline_with_network_ok() {
-    let toolchain = "stable-x86_64-unknown-linux-gnu";
-    let manifest = Manifest::from_str(
-            r#"
-[package]
-name = "test-package"
-
-[package.metadata.green]
-base-image = "docker-image://rust:1"
-with-network = "default"
-base-image-inline = """
-# syntax = ghcr.io/reproducible-containers/buildkit-nix:v0.1.1@sha256:7d4c42a5c6baea2b21145589afa85e0862625e6779c89488987266b85e088021 <-- gets ignored
-FROM rust:1 AS rust-base
-RUN --mount=from=some-context,dst=/tmp/some-context cp -r /tmp/some-context ./
-RUN --mount=type=secret,id=aws
-"""
-"#,
-        )
-        .unwrap();
-    let green = Green::try_new(Some(manifest), toolchain).unwrap();
-    assert_eq!(green.base, BaseImage {
-        image: ImageUri::try_new("docker-image://rust:1").unwrap(),
-        image_inline:
-            Some(
-                r#"
-# syntax = ghcr.io/reproducible-containers/buildkit-nix:v0.1.1@sha256:7d4c42a5c6baea2b21145589afa85e0862625e6779c89488987266b85e088021 <-- gets ignored
-FROM rust:1 AS rust-base
-RUN --mount=from=some-context,dst=/tmp/some-context cp -r /tmp/some-context ./
-RUN --mount=type=secret,id=aws
-"#[1..]
-                    .to_owned()
-            ),
-            with_network: Network::Default,
-        });
-}
-
-#[test]
-fn metadata_green_base_image_inline_empty() {
-    let toolchain = "stable-x86_64-unknown-linux-gnu";
-    let manifest = Manifest::from_str(
-        r#"
-[package]
-name = "test-package"
-
-[package.metadata.green]
-base-image-inline = ""
-"#,
-    )
-    .unwrap();
-    let err = Green::try_new(Some(manifest), toolchain).err().unwrap().to_string();
-    assert!(err.contains("empty"), "In: {err}");
-}
-
-#[test]
-fn metadata_green_base_image_inline_bad_stage() {
-    let toolchain = "stable-x86_64-unknown-linux-gnu";
-    let manifest = Manifest::from_str(
-        r#"
-[package]
-name = "test-package"
-
-[package.metadata.green]
-base-image-inline = """
-FROM xyz AS not-rust
-RUN exit 42
-"""
-"#,
-    )
-    .unwrap();
-    let err = Green::try_new(Some(manifest), toolchain).err().unwrap().to_string();
-    assert!(err.contains("provide"), "In: {err}");
-    assert!(err.contains("stage"), "In: {err}");
-    assert!(err.contains("'rust-base'"), "In: {err}");
 }
 
 //
@@ -786,7 +634,6 @@ RUN exit 42
 #[cfg(test)]
 #[test_case::test_matrix(["cache-images", "cache-from-images", "cache-to-images"])]
 fn metadata_green_cache_images_ok(setting: &str) {
-    let toolchain = "stable-x86_64-unknown-linux-gnu";
     let manifest = Manifest::from_str(&format!(
         r#"
 [package]
@@ -800,7 +647,7 @@ name = "test-package"
 "#,
     ))
     .unwrap();
-    let green = Green::try_new(Some(manifest), toolchain).unwrap();
+    let green = Green::try_new(Some(manifest)).unwrap();
     assert_eq!(
         match setting {
             "cache-images" => green.cache.images,
@@ -818,7 +665,6 @@ name = "test-package"
 #[cfg(test)]
 #[test_case::test_matrix(["cache-images", "cache-from-images", "cache-to-images"])]
 fn metadata_green_cache_images_dupes(setting: &str) {
-    let toolchain = "stable-x86_64-unknown-linux-gnu";
     let manifest = Manifest::from_str(&format!(
         r#"
 [package]
@@ -833,14 +679,13 @@ name = "test-package"
 "#,
     ))
     .unwrap();
-    let err = Green::try_new(Some(manifest), toolchain).err().unwrap().to_string();
+    let err = Green::try_new(Some(manifest)).err().unwrap().to_string();
     assert!(err.contains("duplicates"), "In: {err}");
 }
 
 #[cfg(test)]
 #[test_case::test_matrix(["cache-images", "cache-from-images", "cache-to-images"])]
 fn metadata_green_cache_images_bad_names(setting: &str) {
-    let toolchain = "stable-x86_64-unknown-linux-gnu";
     let manifest = Manifest::from_str(&format!(
         r#"
 [package]
@@ -851,14 +696,13 @@ name = "test-package"
 "#,
     ))
     .unwrap();
-    let err = Green::try_new(Some(manifest), toolchain).err().unwrap().to_string();
+    let err = Green::try_new(Some(manifest)).err().unwrap().to_string();
     assert!(err.contains("names"), "In: {err}");
 }
 
 #[cfg(test)]
 #[test_case::test_matrix(["cache-images", "cache-from-images", "cache-to-images"])]
 fn metadata_green_cache_images_bad_scheme(setting: &str) {
-    let toolchain = "stable-x86_64-unknown-linux-gnu";
     let manifest = Manifest::from_str(&format!(
         r#"
 [package]
@@ -869,14 +713,13 @@ name = "test-package"
 "#,
     ))
     .unwrap();
-    let err = Green::try_new(Some(manifest), toolchain).err().unwrap().to_string();
+    let err = Green::try_new(Some(manifest)).err().unwrap().to_string();
     assert!(err.contains("scheme"), "In: {err}");
 }
 
 #[cfg(test)]
 #[test_case::test_matrix(["cache-images", "cache-from-images", "cache-to-images"])]
 fn metadata_green_cache_images_bad_registry(setting: &str) {
-    let toolchain = "stable-x86_64-unknown-linux-gnu";
     let manifest = Manifest::from_str(&format!(
         r#"
 [package]
@@ -887,14 +730,13 @@ name = "test-package"
 "#,
     ))
     .unwrap();
-    let err = Green::try_new(Some(manifest), toolchain).err().unwrap().to_string();
+    let err = Green::try_new(Some(manifest)).err().unwrap().to_string();
     assert!(err.contains("registry"), "In: {err}");
 }
 
 #[cfg(test)]
 #[test_case::test_matrix(["cache-images", "cache-from-images", "cache-to-images"])]
 fn metadata_green_cache_images_bad_image(setting: &str) {
-    let toolchain = "stable-x86_64-unknown-linux-gnu";
     let manifest = Manifest::from_str(&format!(
         r#"
 [package]
@@ -905,7 +747,7 @@ name = "test-package"
 "#,
     ))
     .unwrap();
-    let err = Green::try_new(Some(manifest), toolchain).err().unwrap().to_string();
+    let err = Green::try_new(Some(manifest)).err().unwrap().to_string();
     assert!(err.contains("tag"), "In: {err}");
 }
 

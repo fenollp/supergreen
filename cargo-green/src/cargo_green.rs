@@ -8,6 +8,7 @@ use camino::Utf8PathBuf;
 use log::{debug, info, warn};
 
 use crate::{
+    base_image::{BASE_IMAGE, BASE_IMAGE_LOCKED},
     build::fetch_digest,
     cratesio::{self},
     experiments::EXPERIMENTS,
@@ -178,16 +179,15 @@ pub(crate) async fn main() -> Result<Green> {
     }
 
     if !green.base.image.locked() {
-        let mut base = green.maybe_lock_image(&green.base.image).await?;
-        base = fetch_digest(&green.runner, &base).await?;
-        green.base = green.base.lock_base_to(base);
+        if green.base.image.as_str() == BASE_IMAGE.as_str() {
+            // TODO: dynamically lock, if network is up.
+            green.base.image = BASE_IMAGE_LOCKED.clone();
+        }
+        let base = green.maybe_lock_image(&green.base.image).await?;
+        green.base.image = fetch_digest(&green.runner, &base).await?;
     }
-
-    let (with_network, finalized_block) = green.base.as_block();
-    green.base.with_network = with_network;
-    green.base.image_inline = Some(finalized_block.trim().to_owned());
-
-    assert!(!green.base.image.is_empty(), "BUG: base_image set to {SYNTAX_IMAGE:?}");
+    let toolchain = env::var("RUSTUP_TOOLCHAIN").expect("$RUSTUP_TOOLCHAIN");
+    green.base = green.base.make_block(&toolchain, &green.components, &green.add)?;
 
     var = ENV_WITH_NETWORK!();
     if let Ok(val) = env::var(var) {
@@ -261,7 +261,7 @@ impl Green {
         let stage = Stage::new("prebuild").unwrap();
         let mut containerfile = self.new_containerfile();
 
-        containerfile.pushln(self.base.image_inline.as_deref().unwrap());
+        containerfile.pushln(&self.base.image_inline);
 
         let stager = |i| format!("{stage}-{i}");
         let mut leaves = 0;

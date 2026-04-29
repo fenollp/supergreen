@@ -14,7 +14,7 @@ add.apk = [ "libpq-dev", "pkgconf" ]
 # Note: values here are comma-separated.
 export CARGOGREEN_ADD_APK="libpq-dev,pkg-conf"
 
-# Inspect the resulting base image with:
-echo -e $(cargo green supergreen env CARGOGREEN_BASE_IMAGE_INLINE)
+# Inspect the resulting base stage with:
+cargo green supergreen show-rust-base 2>/dev/null
 ```
 

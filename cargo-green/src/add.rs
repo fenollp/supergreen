@@ -70,15 +70,17 @@ impl Add {
         Self { apk, apt, apt_get }
     }
 
-    // TODO: pin major + lock by pulling
-    // TODO: more architectures
+    // TODO: finer package installs per os/distro
     pub(crate) fn as_block(&self, last: &str) -> (Network, String) {
+        // TODO: pin major + lock by pulling
         const XX: &str = "docker.io/tonistiigi/xx:1.6.1@sha256:923441d7c25f1e2eb5789f82d987693c47b8ed987c4ab3b075d6ed2b5d6779a3";
 
+        // NOTE: `ARG TARGETPLATFORM` is needed by xx
         let block = format!(
             r#"
 FROM --platform=$BUILDPLATFORM {XX} AS xx
 {last}
+SHELL {shell:?}
 ARG TARGETPLATFORM
 RUN \
   --mount=from=xx,source=/usr/bin/xx-apk,dst=/usr/bin/xx-apk \
@@ -104,6 +106,7 @@ RUN \
     fi
 "#,
             last = last.trim(),
+            shell = ["/bin/sh", "-eux", "-c"],
             apk = quote_pkgs(&self.apk),
             apt = quote_pkgs(&self.apt),
             apt_get = quote_pkgs(&self.apt_get),

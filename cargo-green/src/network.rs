@@ -40,3 +40,14 @@ impl FromStr for Network {
         }
     }
 }
+
+#[test]
+fn badnet() {
+    let err = "bla".parse::<Network>().err().unwrap().to_string();
+    assert_eq!(err, r#"Network must be one of ["none", "default", "host"]"#);
+}
+
+#[test]
+fn default_network_impl_is_no_network() {
+    assert_eq!(Network::default(), Network::None);
+}

@@ -8,7 +8,6 @@ use camino::{Utf8Path, Utf8PathBuf};
 use log::{error, info, trace};
 
 use crate::{
-    build::SHELL,
     green::Green,
     logging::{self},
     md::{Md, MdId, Mds},
@@ -127,7 +126,7 @@ async fn do_exec_buildrs(
     let mut md: Md = mdid.into();
     md.buildrs = true;
     md.writes_to = virtual_target_dir(&out_dir_var);
-    md.push_block(&RUST, green.base.image_inline.clone().unwrap());
+    md.push_block(&RUST, &green.base.image_inline);
 
     fs::create_dir_all(&out_dir_var)
         .map_err(|e| anyhow!("Failed to `mkdir -p {out_dir_var}`: {e}"))?;
@@ -154,7 +153,6 @@ async fn do_exec_buildrs(
     };
 
     let mut run_block = format!("FROM {RST} AS {run_stage}\n");
-    run_block.push_str(&format!("SHELL {SHELL:?}\n"));
 
     run_block.push_str(&format!("WORKDIR {}\n", virtual_target_dir(&out_dir_var)));
     let mut code_stage_mounts = code_stage.mounts();

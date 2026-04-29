@@ -12,7 +12,7 @@ use tokio::process::Command;
 
 use crate::{
     base_image::{rewrite_cargo_home, rewrite_rustup_home},
-    build::{Effects, ERRCODE, SHELL, STDERR, STDOUT},
+    build::{Effects, ERRCODE, STDERR, STDOUT},
     buildrs_wrapper::{call_config, exe_dance, is_buildrs_executable},
     checkouts,
     cratesio::{self, rewrite_cratesio_index},
@@ -176,7 +176,7 @@ async fn do_wrap_rustc(
 ) -> Result<()> {
     let mut md: Md = mdid.into();
     md.buildrs = crate_name.map(is_buildrs_executable).unwrap_or_default();
-    md.push_block(&RUST, green.base.image_inline.clone().unwrap());
+    md.push_block(&RUST, &green.base.image_inline);
 
     fs::create_dir_all(&out_dir).map_err(|e| anyhow!("Failed to `mkdir -p {out_dir}`: {e}"))?;
     let incremental = green.incremental().then_some(incremental).flatten();
@@ -188,7 +188,6 @@ async fn do_wrap_rustc(
     info!("picked {rustc_stage} for {input}");
 
     let mut rustc_block = format!("FROM {RST} AS {rustc_stage}\n");
-    rustc_block.push_str(&format!("SHELL {SHELL:?}\n"));
 
     rustc_block.push_str(&format!("WORKDIR {out_dir}\n", out_dir = virtual_target_dir(&out_dir)));
     let not_a_cratesio_crate = !pwd.starts_with(green.cargo_home.join(cratesio::HOME));
@@ -272,7 +271,7 @@ async fn do_wrap_rustc(
     if let Some(ref incremental) = incremental {
         let mut incremental_block = format!("FROM scratch AS {incremental_stage}\n");
         incremental_block.push_str(&format!("COPY --link --from={rustc_stage} {incremental} /\n"));
-        md.push_block(&incremental_stage, incremental_block);
+        md.push_block(&incremental_stage, &incremental_block);
     }
 
     md.out_block(&out_stage, &rustc_stage, &out_dir, false);
@@ -385,7 +384,7 @@ impl Md {
         block.push_str(&format!("  ; find {out_dir}/{pattern} -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{{}}' + \\\n"));
         block.push_str(&format!(" || echo $? >{out_dir}/{out_stage}-{ERRCODE}\n"));
 
-        self.push_block(stage, block);
+        self.push_block(stage, &block);
         Ok(())
     }
 
@@ -406,7 +405,7 @@ impl Md {
             let mdid = self.this();
             block.push_str(&format!("COPY --link --from={prev} {out_dir}/*-{mdid}* /\n"));
         }
-        self.push_block(stage, block);
+        self.push_block(stage, &block);
     }
 
     pub(crate) async fn do_build(

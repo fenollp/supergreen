@@ -28,7 +28,7 @@ pub(crate) async fn main(mut green: Green, arg1: Option<&str>, args: Vec<String>
         (Some("setup"), None, None) => { /* done during Green init */ }
         (Some("env"), _, _) => green.envs(args)?,
         (Some("doc"), _, _) => green.docs(args)?,
-        (Some("show-rust-base"), _, _) => println!("{}", green.base.image_inline.unwrap()),
+        (Some("show-rust-base"), _, _) => println!("{}", green.base.image_inline),
         (Some("sync"), None, None) => green.prebuild(false).await?,
         (Some("sync"), Some("data"), None) => sync_data(&green), // undocumented
         (Some("push"), None, None) => green.push().await?,
@@ -228,7 +228,6 @@ fn all_envs(green: &Green) -> Vec<(&str, &'static str, Option<String>)> {
         var!(ENV_FINAL_PATH!(), green.r#final.path.as_deref().map(ToString::to_string)),
         var!(ENV_BASE_IMAGE!(), Some(green.base.image.to_string())),
         var!(ENV_SET_ENVS!(), csv(&green.set_envs)),
-        var!(ENV_BASE_IMAGE_INLINE!(), green.base.image_inline.clone()),
         var!(ENV_WITH_NETWORK!(), Some(green.base.with_network.to_string())),
         var!(ENV_COMPONENTS!(), csv(&green.components)),
         var!(ENV_ADD_APT!(), csv(&green.add.apt)),

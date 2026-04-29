@@ -6,7 +6,6 @@ use serde::{Deserialize, Serialize};
 
 use crate::{
     add::Add,
-    build::SHELL,
     image_uri::ImageUri,
     network::Network,
     rustup::{CHECKSUMS, VERSION},
@@ -18,12 +17,6 @@ use crate::{
 macro_rules! ENV_BASE_IMAGE {
     () => {
         "CARGOGREEN_BASE_IMAGE"
-    };
-}
-
-macro_rules! ENV_BASE_IMAGE_INLINE {
-    () => {
-        "CARGOGREEN_BASE_IMAGE_INLINE"
     };
 }
 
@@ -43,19 +36,15 @@ pub(crate) const CARGO_HOME: &str = "/usr/local/cargo";
 pub(crate) const RUSTUP_HOME: &str = "/usr/local/rustup";
 
 /// Default base image: `docker-image://docker.io/library/debian:trixie-slim`
-static BASE_FOR_RUST: LazyLock<ImageUri> = LazyLock::new(|| ImageUri::std("debian:trixie-slim"));
+pub(crate) static BASE_IMAGE: LazyLock<ImageUri> =
+    LazyLock::new(|| ImageUri::std("debian:trixie-slim"));
 
 /// Default base image, pre-locked (on 2026-04-28)
-static BASE_FOR_RUST_LOCKED: LazyLock<ImageUri> = LazyLock::new(|| {
-    BASE_FOR_RUST.lock("sha256:cedb1ef40439206b673ee8b33a46a03a0c9fa90bf3732f54704f99cb061d2c5a")
+pub(crate) static BASE_IMAGE_LOCKED: LazyLock<ImageUri> = LazyLock::new(|| {
+    BASE_IMAGE.lock("sha256:cedb1ef40439206b673ee8b33a46a03a0c9fa90bf3732f54704f99cb061d2c5a")
 });
 
-#[test]
-fn default_is_unset() {
-    assert!(BaseImage::default().is_unset());
-}
-
-#[derive(Debug, Serialize, Deserialize, Default, PartialEq, Eq)]
+#[derive(Debug, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(default)]
 #[serde(deny_unknown_fields)]
 pub(crate) struct BaseImage {
@@ -67,26 +56,30 @@ pub(crate) struct BaseImage {
     #[serde(rename = "base-image")]
     pub(crate) image: ImageUri,
 
-    #[doc = include_str!(concat!("../docs/",ENV_BASE_IMAGE_INLINE!(),".md"))]
-    #[serde(skip_serializing_if = "Option::is_none")]
-    #[serde(rename = "base-image-inline")]
-    pub(crate) image_inline: Option<String>,
+    /// Computed base stage. Not user-settable.
+    #[doc(hidden)]
+    pub(crate) image_inline: String,
+}
+
+impl Default for BaseImage {
+    fn default() -> Self {
+        Self {
+            with_network: Network::default(),
+            image: BASE_IMAGE.clone(),
+            image_inline: "".to_owned(),
+        }
+    }
 }
 
 impl BaseImage {
-    #[must_use]
-    pub(crate) fn from_image(image: ImageUri) -> Self {
-        Self { image, ..Default::default() }
-    }
-
-    #[must_use]
-    pub(crate) fn is_unset(&self) -> bool {
-        self.image.is_empty() && self.image_inline.is_none()
-    }
-
     /// https://rust-lang.github.io/rustup/environment-variables.html
     /// https://rust-lang.github.io/rustup/concepts/toolchains.html#toolchain-specification
-    pub(crate) fn from_env(toolchain: &str, components: &[String], add: &Add) -> Result<Self> {
+    pub(crate) fn make_block(
+        &self,
+        toolchain: &str,
+        components: &[String],
+        add: &Add,
+    ) -> Result<Self> {
         // TODO: multiplatformify (using auto ARG.s?)
         let host = maybe_get_local_host_triple(toolchain)?;
 
@@ -112,16 +105,13 @@ impl BaseImage {
         // RUN cargo build --target=$(xx-cargo --print-target-triple) --release --target-dir ./build && \
         //     xx-verify ./build/$(xx-cargo --print-target-triple)/release/hello_cargo
 
+        // TODO: find a way to install packages without requiring Network (ie using only ADDs)
         // TODO: lock distro packages we install, somehow.
         //   https://github.com/reproducible-containers/repro-sources-list.sh
         //   https://github.com/reproducible-containers/repro-pkg-cache
         //   https://github.com/reproducible-containers/repro-get
 
-        // let image = BASE_FOR_RUST.to_owned(); // TODO: allow overriding (CARGOGREEN_BASE_DISTRO?)
-        // TODO: dynamically lock, if network is up.
-        let image = BASE_FOR_RUST_LOCKED.to_owned(); // FIXME: use BASE_IMAGE + drop _INLINE
-        let base = image.noscheme();
-        assert!(base.contains("/debian:"));
+        let image = self.image.clone();
 
         let (with_network, packages_block) = Add {
             // From https://github.com/rust-lang/docker-rust/blob/d14e1ad7efeb270012b1a7e88fea699b1d1082f2/nightly/alpine3.20/Dockerfile
@@ -131,7 +121,10 @@ impl BaseImage {
             apt_get: vec!["ca-certificates".to_owned(), "gcc".to_owned(), "libc6-dev".to_owned()],
         }
         .union(add)
-        .as_block(&format!("FROM --platform=$BUILDPLATFORM {base} AS {RST}"));
+        .as_block(&format!(
+            "FROM --platform=$BUILDPLATFORM {base} AS {RST}",
+            base = image.noscheme()
+        ));
 
         let components = if !components.is_empty() {
             format!(" --component {}", components.join(","))
@@ -145,10 +138,9 @@ impl BaseImage {
         //   you must ensure your active toolchain meets those requirements before running the install command.
         //   Cargo won't auto-switch for you based on the dependency tree.
 
-        let block = format!(
+        let image_inline = format!(
             r#"
 FROM scratch AS rustup-{toolchain}
-SHELL {SHELL:?}
 ADD --chmod=0144 --checksum=sha256:{checksum} \
   https://static.rust-lang.org/rustup/archive/{VERSION}/{host}/rustup-init /rustup-init
 {packages_block}
@@ -167,27 +159,7 @@ RUN \
             packages_block = packages_block.trim(),
         );
 
-        Ok(Self { with_network, image, image_inline: Some(block) })
-    }
-
-    #[must_use]
-    pub(crate) fn lock_base_to(self, image: ImageUri) -> Self {
-        let image_inline = self.image_inline.map(|block| {
-            let from = self.image.noscheme();
-            let to = image.noscheme();
-            block.replace(&format!(" {from} "), &format!(" {to} "))
-        });
-        Self { image, image_inline, ..self }
-    }
-
-    #[must_use]
-    pub(crate) fn as_block(&self) -> (Network, String) {
-        let block = self.image_inline.clone().unwrap_or_else(|| {
-            let base = self.image.noscheme();
-            // TODO? ARG RUST_BASE=myorg/myapp:latest \n FROM $RUST_BASE (+ similar for non-stable imgs)
-            format!("FROM --platform=$BUILDPLATFORM {base} AS {RST}\n")
-        });
-        (self.with_network, block)
+        Ok(Self { with_network, image, image_inline })
     }
 }
 
@@ -229,19 +201,20 @@ fn maybe_get_local_host_triple(toolchain: &str) -> Result<String> {
     }
 }
 
-#[test]
-fn test_from_env() {
-    let base_image = BASE_FOR_RUST_LOCKED.noscheme();
+#[cfg(test)]
+#[test_case::test_matrix(["1.80.0-x86_64-unknown-linux-gnu", "nightly-2025-09-14-aarch64-apple-darwin"])]
+fn base_make_block(toolchain: &str) {
+    let base_image = BASE_IMAGE_LOCKED.clone();
+    let base = BaseImage { image: base_image.clone(), ..Default::default() };
+    assert!(base.image_inline.is_empty());
+    assert_eq!(base.with_network, Network::None);
 
-    let some_stable = "1.80.0-x86_64-unknown-linux-gnu";
-    let res = BaseImage::from_env(some_stable, &[], &Add::default()).unwrap();
-    assert_eq!(res.image, BASE_FOR_RUST_LOCKED.clone());
-    assert!(res.image_inline.unwrap().contains(&format!(" {base_image} ")));
-    assert_eq!(res.with_network, Network::Default);
-
-    let some_nightly = "nightly-2025-09-14-aarch64-apple-darwin";
-    let res = BaseImage::from_env(some_nightly, &[], &Add::default()).unwrap();
-    assert_eq!(res.image, BASE_FOR_RUST_LOCKED.clone());
-    assert!(res.image_inline.unwrap().contains(&format!(" {base_image} ")));
+    let res = base.make_block(toolchain, &[], &Add::default()).unwrap();
+    assert_eq!(res.image, base_image);
+    assert!(
+        res.image_inline.contains(&format!(" {} ", base_image.noscheme())),
+        "In {}",
+        res.image_inline
+    );
     assert_eq!(res.with_network, Network::Default);
 }
