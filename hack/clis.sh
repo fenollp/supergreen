@@ -444,6 +444,7 @@ $(unset_action_envs)
       with:
         name: $name_at_version.Dockerfile
         path: \${{ env.CARGOGREEN_FINAL_PATH }}
+        retention-days: 1
         if-no-files-found: error
 $(postconds _)
 $(cache_usage)
