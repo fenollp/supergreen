@@ -15,7 +15,7 @@ postbin_steps() {
     [[ $# -eq 0 ]]
     cat <<EOF
 $(login_to_readonly_hub)
-    - uses: actions-rust-lang/setup-rust-toolchain@v1
+    - uses: $action__setup_rust_toolchain
       with:
         toolchain: $toolchain
         rustflags: ''
@@ -23,10 +23,12 @@ $(login_to_readonly_hub)
 $(rundeps_versions)
 $(restore_bin)
 $(restore_builder_data)
-    - uses: actions/checkout@v6
+    - uses: $action__checkout
+      with:
+        persist-credentials: false
 
     - name: Cache \`cargo fetch\`
-      uses: actions/cache@v5
+      uses: $action__cache
       with:
         path: |
           ~/.cargo/registry/index/
@@ -59,7 +61,8 @@ EOF
 
 cat <<EOF
 on: [push]
-name: self
+name: Self
+permissions: {}
 jobs:
 
 
@@ -98,7 +101,7 @@ $(cache_usage)
 $(bin_jobdef 'audits')
     steps:
 $(postbin_steps)
-    - uses: taiki-e/install-action@v2
+    - uses: $action__install_action
       with:
         tool: cargo-audit
 $(cache_usage)
@@ -115,7 +118,7 @@ $(bin_jobdef 'udeps')
     steps:
 $(rundeps_versions)
 $(postbin_steps $nightly)
-    - uses: taiki-e/install-action@v2
+    - uses: $action__install_action
       with:
         tool: cargo-udeps
 $(cache_usage)

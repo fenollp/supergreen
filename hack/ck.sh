@@ -5,6 +5,15 @@ stable=1.94.0 # Closest to latest stable, as official Rust images availability p
 fixed=1.93.1 # Some fixed rustc version
 
 
+action__cache='actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5'
+action__cache_restore='actions/cache/restore@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5'
+action__checkout='actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2'
+action__docker_login='docker/login-action@4907a6ddec9925e35a0a9e82d7399ccc52663121 # v4.1.0'
+action__download_artifact='actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1'
+action__install_action='taiki-e/install-action@1329c298aa20c3257846c9b2e0e55967df3e3c37 # v2.75.25'
+action__setup_rust_toolchain='actions-rust-lang/setup-rust-toolchain@2b1f5e9b395427c92ee4e3331786ca3c37afe2d7 # v1.16.0'
+action__upload_artifact='actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1'
+
 jobdef() {
     local name=$1; shift
     [[ $# -eq 0 ]]
@@ -23,7 +32,7 @@ restore_bin() {
     [[ $# -eq 0 ]]
     cat <<EOF
     - name: Retrieve saved bin
-      uses: actions/download-artifact@v8
+      uses: $action__download_artifact
       with:
         name: cargo-green
 
@@ -157,7 +166,7 @@ EOF
 login_to_readonly_hub() {
     [[ $# -eq 0 ]]
 cat <<EOF
-    - uses: docker/login-action@v4
+    - uses: $action__docker_login
       if: \${{ ! startsWith(github.ref, 'refs/heads/dependabot/') }}
       with:
         username: \${{ vars.DOCKERHUB_USERNAME }}
@@ -170,7 +179,7 @@ EOF
 login_to_readwrite_ghcr() {
     [[ $# -eq 0 ]]
 cat <<EOF
-    - uses: docker/login-action@v4
+    - uses: $action__docker_login
       with:
         registry: ghcr.io
         username: \${{ github.actor }}
@@ -184,16 +193,18 @@ bin_job() {
 cat <<EOF
 $(jobdef 'bin')
     steps:
-    - uses: actions/checkout@v6
+    - uses: $action__checkout
+      with:
+        persist-credentials: false
 
-    - uses: actions-rust-lang/setup-rust-toolchain@v1
+    - uses: $action__setup_rust_toolchain
       with:
         toolchain: $stable
         cache-on-failure: true
 $(rundeps_versions)
 
     - name: Cache \`cargo fetch\`
-      uses: actions/cache@v5
+      uses: $action__cache
       with:
         path: |
           ~/.cargo/registry/index/
@@ -203,7 +214,7 @@ $(rundeps_versions)
         restore-keys: \${{ github.job }}-\${{ runner.os }}-cargo-deps-
 
     - name: Cache \`cargo install\`
-      uses: actions/cache@v5
+      uses: $action__cache
       with:
         path: ~/instmp
         key: \${{ runner.os }}-cargo-install-\${{ hashFiles('**/Cargo.lock') }}
@@ -214,7 +225,7 @@ $(rundeps_versions)
       run: |
         CARGO_TARGET_DIR=~/instmp cargo install --locked --force --path=./cargo-green
 
-    - uses: actions/upload-artifact@v7
+    - uses: $action__upload_artifact
       with:
         name: cargo-green
         path: /home/runner/.cargo/bin/cargo-green
@@ -222,7 +233,7 @@ $(rundeps_versions)
 
 # \$(login_to_readonly_hub)
 #     - run: cargo green supergreen sync
-#     - uses: actions-rust-lang/setup-rust-toolchain@v1
+#     - uses: $action__setup_rust_toolchain
 #       with:
 #         toolchain: $fixed
 #         cache-on-failure: true
@@ -234,7 +245,7 @@ $(rundeps_versions)
 #     - run: sudo chown -R \$(id -u):\$(id -g) /home/runner/builder-cache
 #     - run: du -sh /home/runner/builder-cache || true
 #     - run: ls -lha /home/runner/builder-cache/ || true
-#     - uses: actions/upload-artifact@v7
+#     - uses: $action__upload_artifact
 #       with:
 #         name: builder-data
 #         path: /home/runner/builder-cache
@@ -246,18 +257,18 @@ EOF
 restore_builder_data() {
     [[ $# -eq 0 ]]
     cat <<EOF
-    - if: \${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
-      name: Retrieve saved builder data
-      uses: actions/download-artifact@v8
-      with:
-        name: builder-data
-        path: /home/runner/builder-cache
-    - if: \${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
-      run: |
-        set -x
-        sudo mkdir -p \$(cargo green supergreen sync data 2>/dev/null)
-        sudo mv -v /home/runner/builder-cache/* \$(cargo green supergreen sync data 2>/dev/null)/
-        sudo chown -R root:root \$(cargo green supergreen sync data 2>/dev/null)
+  # - if: \${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
+  #   name: Retrieve saved builder data
+  #   uses: $action__download_artifact
+  #   with:
+  #     name: builder-data
+  #     path: /home/runner/builder-cache
+  # - if: \${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
+  #   run: |
+  #     set -x
+  #     sudo mkdir -p \$(cargo green supergreen sync data 2>/dev/null)
+  #     sudo mv -v /home/runner/builder-cache/* \$(cargo green supergreen sync data 2>/dev/null)/
+  #     sudo chown -R root:root \$(cargo green supergreen sync data 2>/dev/null)
 
 EOF
 }
