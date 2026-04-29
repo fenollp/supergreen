@@ -1,16 +1,15 @@
 #  use md formart as such:
 
 [metadata.green]
-use-toolchain-file = true # any other value or abscence means: don't take ./toolchain.toml into account
-# errors if no ./toolchain.toml exists (local to the package/crate anyway)
-# will be used for building this crate and all of its dependencies as well
-#=> will that be okay with deps that do provide their own deps/x/toolchain.toml?
-#==> check what cargo/rustc does, pretty sure cargo allows crate-specific +...
-#===> so, each such metadata field (= each crate in the deps tree) MAY add/reuse a toolchain
-#====> thus, each [metadata.green] section only concerns current crate (but crate's base image MAY be a reused stage)
-#actually not sure it'd make sense to have this field
+# As with toolchain.toml files, a crate's metadata.green affects the build only if that crate is the primary crate.
+# In other words: the settings of the top crate affect the base image and all the other crates.
+#
+# That being said, efforts MAY be made to help produce the top crate's settings.
+# For instance, when establishing the top crate's system packages that need installing.
+
 
 #=====> tho ignore some fields when not set on root package: `additional-build-arguments`, ...
+# (=> discrepancy: not all settings are per-crate overridable?)
 #======> tho has to be noted all that sugar the tool provides MAY change in impl (eg. rustup stage)
 
 #--non-co=existant with--
@@ -27,6 +26,7 @@ use-toolchain-file = true # any other value or abscence means: don't take ./tool
 
 
 also-run = ["echo This script", "echo ..as &&-separated commands"] # as last stage of base image (see `also-run-stages` and `base-image`)
+# actually: HEREDOC syntax would be less ambiguous about "how many layers that'd be"
 
 also-run-stages = """
 RUN echo This script
@@ -52,6 +52,7 @@ additional-build-arguments = [
 set_envs = [ "GIT_AUTH_TOKEN" ] #eh check dis out: https://docs.docker.com/build/building/secrets/#git-authentication-for-remote-contexts
 #seealso: `crates`
 #forbid (maybe warn later) about setting CARGOGREEN_* vars (or RUSTCBUILDX_* ..)
+#GIT_AUTH_TOKEN and GIT_AUTH_HEADER: has to be a per-crate setting (or buildkit cache miss on public/private repos)
 
 #wouldMAY be nice tho to have a package-manager -free way of:
 additional-system-packages = [ "libpq-dev", "pkg-config" ] # passe-plat (using ["quo","ted"] notation)
@@ -100,13 +101,6 @@ precious =
 #ducktape: disallow when base block wasn't auto-decided
 #=> multiplatform like `rustup`
 
-# FROM scratch AS rustup
-# ADD --chmod=0144 --checksum=sha256:a3339fb004c3d0bb9862ba0bce001861fe5cbde9c10d16591eb3f39ee6cd3e7f \
-#   https://static.rust-lang.org/rustup/archive/1.28.1/x86_64-unknown-linux-gnu/rustup-init /rustup-init
-#=>pre-provide for each base block generated
-#==> for each platform $BUILDPLATFORM
-#btw, note: https://github.com/rust-lang/rustup/issues/2686#issuecomment-832150042
-#> rustup-init -y --no-update-default-toolchain && rustup toolchain ensure .
 
 [metadata.green.cargo-subcommands.cargo-auditable] #no .'*' allowed; for now.
 install-with = ["--locked", "cargo-auditable"] #=> optimize impl, use binstall, ... on exact install-with match
