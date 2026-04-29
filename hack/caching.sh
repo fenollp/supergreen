@@ -8,8 +8,8 @@ install_package=buildxargs@1.4.0
 install_root=$(mktemp -d)
 
 export CARGOGREEN_FINAL_PATH=./recipes/$install_package.Dockerfile
-export CARGOGREEN_SYNTAX_IMAGE=docker-image://docker.io/docker/dockerfile:1@sha256:38387523653efa0039f8e1c89bb74a30504e76ee9f565e25c9a09841f9427b05
-export CARGOGREEN_BASE_IMAGE=docker-image://docker.io/library/rust:1.84.1-slim@sha256:69fbd6ab81b514580bc14f35323fecb09feba9e74c5944ece9a70d9a2a369df0
+export CARGOGREEN_SYNTAX_IMAGE=docker-image://docker.io/docker/dockerfile:1@sha256:2780b5c3bab67f1f76c781860de469442999ed1a0d7992a5efdf2cffc0e3d769
+export CARGOGREEN_BASE_IMAGE=docker-image://docker.io/library/debian:trixie-slim@sha256:cedb1ef40439206b673ee8b33a46a03a0c9fa90bf3732f54704f99cb061d2c5a
 CARGO='cargo +1.84.1'
 export CARGOGREEN_LOG=trace
 export CARGOGREEN_LOG_PATH=/tmp/cargo-green--hack-caching--$install_package.log
@@ -174,7 +174,6 @@ echo
 #---
 
 
-export CARGOGREEN_BASE_IMAGE=docker-image://docker.io/library/rust:1.84.0-slim@sha256:0ec205a9abb049604cb085f2fdf7630f1a31dad1f7ad4986154a56501fb7ca77
 CARGO='cargo +1.84.0'
 
 rm -rf $CARGO_TARGET_DIR/* >/dev/null
@@ -183,10 +182,11 @@ rm -rf $install_root/* >/dev/null
 $CARGO green install --locked --frozen --offline --force $install_package --root=$install_root
 git --no-pager diff --ignore-matching-lines='^##' -- $CARGOGREEN_FINAL_PATH
 echo 'Change rustc => changes base image (at least)'
-cat <<EOF | diff -u - <(git --no-pager diff --ignore-matching-lines='^##' -- $CARGOGREEN_FINAL_PATH | head -n11 | tail -n+9)
--FROM --platform=\$BUILDPLATFORM docker.io/library/rust:1.84.1-slim@sha256:69fbd6ab81b514580bc14f35323fecb09feba9e74c5944ece9a70d9a2a369df0 AS rust-base
-+FROM --platform=\$BUILDPLATFORM docker.io/library/rust:1.84.0-slim@sha256:0ec205a9abb049604cb085f2fdf7630f1a31dad1f7ad4986154a56501fb7ca77 AS rust-base
- ARG SOURCE_DATE_EPOCH=42
+cat <<EOF | diff -u - <(git --no-pager diff --ignore-matching-lines='^##' -- $CARGOGREEN_FINAL_PATH | head -n12 | tail -n+9)
+-FROM scratch AS rustup-1.84.1-x86_64-unknown-linux-gnu
++FROM scratch AS rustup-1.84.0-x86_64-unknown-linux-gnu
+ ADD --chmod=0144 --checksum=sha256:4acc9acc76d5079515b46346a485974457b5a79893cfb01112423c89aeb5aa10 \\
+   https://static.rust-lang.org/rustup/archive/1.29.0/x86_64-unknown-linux-gnu/rustup-init /rustup-init
 EOF
 git add $CARGOGREEN_FINAL_PATH
 echo 'Change rustc => changes shas' && ! ensure__produces_same_shas

@@ -31,7 +31,6 @@
   - [`$CARGOGREEN_FINAL_PATH`](#cargogreen_final_path)
   - [`$CARGOGREEN_BASE_IMAGE`](#cargogreen_base_image)
   - [`$CARGOGREEN_SET_ENVS`](#cargogreen_set_envs)
-  - [`$CARGOGREEN_BASE_IMAGE_INLINE`](#cargogreen_base_image_inline)
   - [`$CARGOGREEN_WITH_NETWORK`](#cargogreen_with_network)
   - [`$CARGOGREEN_COMPONENTS`](#cargogreen_COMPONENTS)
   - [`$CARGOGREEN_ADD_APT`](#cargogreen_add_apt)
@@ -368,28 +367,27 @@ export CARGOGREEN_FINAL_PATH="$PWD/my-bin@1.0.0.Dockerfile"
 
 ### `$CARGOGREEN_BASE_IMAGE`
 
-Sets the base Rust image, as an image URL (or any build context, actually).
+Sets the base as an image URL, with scheme: `docker-image://`.
+
+On top of this, [rustup](https://rustup.rs/) installs the toolchain.
+This toolchain is picked by your local Rust installation or through `cargo +toolchain ..`.
 
 If needing additional envs to be passed to rustc or build script, set them in the base image.
 
-This can be done in that same config file with `base-image-inline`.
-
 See also:
+* `components`
 * `also-run`
-* `base-image-inline`
 * `additional-build-arguments`
 
-For remote builds: make sure this is accessible non-locally.
-
 ```toml
-base-image = "docker-image://docker.io/library/rust:1-slim"
+base-image = "docker-image://docker.io/library/debian:trixie-slim"
 ```
 
-The value must start with `docker-image://` and image must be available on the `$DOCKER_HOST`, eg:
+For remote builds, make sure this image is accessible non-locally.
 ```shell
-export CARGOGREEN_BASE_IMAGE=docker-image://rustc_with_libs
-DOCKER_HOST=ssh://my-remote-builder docker buildx build -t rustc_with_libs - <<EOF
-FROM docker.io/library/rust:1.69.0-slim-bookworm@sha256:8bdd28ef184d85c9b4932586af6280732780e806e5f452065420f2e783323ca3
+export CARGOGREEN_BASE_IMAGE=docker-image://my_ubuntu_with_libs_and_envs
+DOCKER_HOST=ssh://my-remote-builder docker buildx build -t my_ubuntu_with_libs_and_envs - <<EOF
+FROM ubuntu:latest@sha256:c4a8d5503dfb2a3eb8ab5f807da5bc69a85730fb49b5cfca2330194ebcc41c7b
 RUN set -eux && apt update && apt install -y libpq-dev libssl3
 ENV KEY=value
 EOF
@@ -397,7 +395,7 @@ EOF
 
 *This environment variable takes precedence over any `Cargo.toml` settings:*
 ```shell
-export CARGOGREEN_BASE_IMAGE="docker-image://docker.io/library/rust:1-slim"
+export CARGOGREEN_BASE_IMAGE="docker-image://docker.io/library/debian:trixie-slim"
 ```
 
 ### `$CARGOGREEN_SET_ENVS`
@@ -423,50 +421,13 @@ set-envs = [ "GIT_AUTH_TOKEN", "TYPENUM_BUILD_CONSTS", "TYPENUM_BUILD_OP" ]
 export CARGOGREEN_SET_ENVS="GIT_AUTH_TOKEN,TYPENUM_BUILD_CONSTS,TYPENUM_BUILD_OP"
 ```
 
-### `$CARGOGREEN_BASE_IMAGE_INLINE`
-
-Sets the base Rust image for root package and all dependencies, unless themselves being configured differently.
-
-See also:
-* `with-network`
-* `additional-build-arguments`
-
-In order to avoid unexpected changes, you may want to pin the image using an immutable digest.
-
-Note that carefully crafting crossplatform stages can be non-trivial.
-
-```toml
-base-image-inline = """
-FROM --platform=$BUILDPLATFORM rust:1 AS rust-base
-RUN --mount=from=some-context,dst=/tmp/some-context cp -r /tmp/some-context ./
-RUN --mount=type=secret,id=aws
-"""
-```
-
-```toml
-# This must also be set so digest gets pinned automatically.
-base-image = "docker-image://rust:1"
-```
-
-*This environment variable takes precedence over any `Cargo.toml` settings:*
-```shell
-IFS='' read -r -d '' CARGOGREEN_BASE_IMAGE_INLINE <<"EOF"
-FROM rust:1 AS rust-base
-RUN --mount=from=some-context,dst=/tmp/some-context cp -r /tmp/some-context ./
-RUN --mount=type=secret,id=aws
-EOF
-echo "$CARGOGREEN_BASE_IMAGE_INLINE" # (with quotes to preserve newlines)
-export CARGOGREEN_BASE_IMAGE_INLINE
-export CARGOGREEN_BASE_IMAGE=docker-image://rust:1
-```
-
 ### `$CARGOGREEN_WITH_NETWORK`
 
 Controls runner's `--network none (default) | default | host` setting.
 
-Set this to `"default"` if e.g. your `base-image-inline` calls `curl` or `wget` or installs some packages.
+Set this to `"default"` if e.g. your additional stages to the base image call `curl` or `wget` or install any packages.
 
-If adding system packages with `add`, this gets automatically set to `"default"`.
+If adding system packages via `add`, this gets automatically set to `"default"`.
 
 It turns out `--network` is part of BuildKit's cache key, so an initial online build won't cache-hit on later offline builds.
 
@@ -477,7 +438,7 @@ Set to `none` when in `$CARGO_NET_OFFLINE` mode. See
 ```toml
 [package.metadata.green]
 with-network = "none"
-base-image = "docker-image://docker.io/library/rust:1@sha256:72724f1a416c449b405a2b7ed6bac56058163e6dfb1b5ccb40839882141dd237"
+base-image = "docker-image://docker.io/library/ubuntu@sha256:c4a8d5503dfb2a3eb8ab5f807da5bc69a85730fb49b5cfca2330194ebcc41c7b"
 ```
 
 *This environment variable takes precedence over any `Cargo.toml` settings:*
@@ -521,8 +482,8 @@ add.apt = [ "libpq-dev", "pkg-config" ]
 # Note: values here are comma-separated.
 export CARGOGREEN_ADD_APT="libpq-dev,pkg-config"
 
-# Inspect the resulting base image with:
-echo -e $(cargo green supergreen env CARGOGREEN_BASE_IMAGE_INLINE)
+# Inspect the resulting base stage with:
+cargo green supergreen show-rust-base 2>/dev/null
 ```
 
 ### `$CARGOGREEN_ADD_APT_GET`
@@ -543,8 +504,8 @@ add.apt-get = [ "libpq-dev", "pkg-config" ]
 # Note: values here are comma-separated.
 export CARGOGREEN_ADD_APT_GET="libpq-dev,pkg-config"
 
-# Inspect the resulting base image with:
-echo -e $(cargo green supergreen env CARGOGREEN_BASE_IMAGE_INLINE)
+# Inspect the resulting base stage with:
+cargo green supergreen show-rust-base 2>/dev/null
 ```
 
 ### `$CARGOGREEN_ADD_APK`
@@ -565,8 +526,8 @@ add.apk = [ "libpq-dev", "pkgconf" ]
 # Note: values here are comma-separated.
 export CARGOGREEN_ADD_APK="libpq-dev,pkg-conf"
 
-# Inspect the resulting base image with:
-echo -e $(cargo green supergreen env CARGOGREEN_BASE_IMAGE_INLINE)
+# Inspect the resulting base stage with:
+cargo green supergreen show-rust-base 2>/dev/null
 ```
 
 ### `$CARGOGREEN_EXPERIMENT`

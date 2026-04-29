@@ -15,11 +15,7 @@ ignored = [ "astral-tokio-tar" ]
 
 # [package.metadata.green]
 # base-image = "docker-image://blabla"
-# base-image-inline = """
-# FROM blabla AS rust-base
-# RUN exit 42
-# """
-# # base-image-inline.workspace = true
+# # registry-mirrors.workspace = true
 # # set-envs = [ "AW" ]
 
 # [profile.release]

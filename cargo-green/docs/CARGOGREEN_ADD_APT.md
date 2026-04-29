@@ -15,7 +15,7 @@ add.apt = [ "libpq-dev", "pkg-config" ]
 # Note: values here are comma-separated.
 export CARGOGREEN_ADD_APT="libpq-dev,pkg-config"
 
-# Inspect the resulting base image with:
-echo -e $(cargo green supergreen env CARGOGREEN_BASE_IMAGE_INLINE)
+# Inspect the resulting base stage with:
+cargo green supergreen show-rust-base 2>/dev/null
 ```
 

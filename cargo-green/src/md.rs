@@ -206,7 +206,7 @@ impl Md {
         self.stages.insert(ns.clone());
     }
 
-    pub(crate) fn push_block(&mut self, name: &Stage, block: String) {
+    pub(crate) fn push_block(&mut self, name: &Stage, block: &str) {
         let ns = Script { stage: name.clone(), script: block.trim().to_owned() };
         self.stages.insert(NamedStage::Script(ns));
     }

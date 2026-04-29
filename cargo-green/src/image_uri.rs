@@ -47,9 +47,10 @@ impl ImageUri {
         uri
     }
 
+    /// Returns true if image is default (unlocked syntax image)
     #[must_use]
     pub(crate) fn is_empty(&self) -> bool {
-        self.as_str() == SYNTAX_IMAGE.as_str()
+        *self == Self::default()
     }
 
     #[must_use]

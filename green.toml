@@ -33,24 +33,10 @@ RUN echo This script
 """
 # as before-last (see `also-run` and `base-image`) stage of base image
 
-base-image = "docker-image://docker.io/library/rust:1-slim" # only allowed prefix, rest is passe-plat
+base-image = "docker-image://docker.io/library/debian:stable"
 #overridable by setting $CARGOGREEN_BASE_IMAGE
-#see `also-run` and `base-image-inline` and `additional-build-arguments`
-# For remote builds, make sure this is accessible non-locally
-
-base-image-inline = """
-FROM rust:1 AS rust
-RUN --mount=from=some-context,target=/tmp/some-context cp -r /tmp/some-context ./
-RUN --mount=type=secret,id=aws
-"""
-# Fails if doesn't find r#"FROM [^ \n]+ AS rust\n"# (before first r#"\n"#) in base_image_inline:&str
-#tho allow setting "(# *syntax=[^\n]+\n)?FROM..."
-#actually that "FROM...AS rust" just has to appear, just not as a comment (well HEREDOC but that's... EVASION)
-#=> needs thought
-#==> Ducktape version <> ensure dump initially-mentioned pattern
-# passe-plat to dockerfiles, happens what happens.
-# Also suggest: "See also `additional-build-arguments`"
-# Note however carefully crafting crossplatform stages can be non-trivial.
+#see `also-run` and `additional-build-arguments`
+# For remote builds, make sure this is accessible non-locally (if there's an error)
 
 additional-build-arguments = [
     "--build-context", "some-context=   ",

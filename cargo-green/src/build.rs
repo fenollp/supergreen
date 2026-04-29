@@ -51,10 +51,10 @@ pub(crate) const ERRCODE: &str = "errcode";
 pub(crate) const STDERR: &str = "stderr";
 pub(crate) const STDOUT: &str = "stdout";
 
-pub(crate) const SHELL: &[&str] = &["/bin/sh", "-eux", "-c"];
-
 impl Green {
     /// Read digest from builder cache, then maybe from default cache.
+    ///
+    /// No-op for an already locked image URI.
     ///
     /// Goal is to have a completely offline mode by default, after a `cargo green fetch`.
     pub(crate) async fn maybe_lock_image(&self, img: &ImageUri) -> Result<ImageUri> {
@@ -132,6 +132,8 @@ Maybe have a look at
 }
 
 /// If given an un-pinned image URI, query remote image API for its digest.
+///
+/// No-op for an already locked image URI.
 pub(crate) async fn fetch_digest(runner: &Runner, img: &ImageUri) -> Result<ImageUri> {
     // TODO: add+impl traits on runner (fetch_digest, do_build, ..) Maybe on Green?
     if runner.is_none() {

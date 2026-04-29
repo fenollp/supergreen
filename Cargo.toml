@@ -5,9 +5,7 @@ members = [
 resolver = "2"
 
 # [workspace.metadata.green]
-# base-image-inline = """
-# RUN exit 42
-# """
+# registry-mirrors = [ "mirror.gcr.io", "public.ecr.aws/docker" ]
 
 [workspace.package]
 authors = [ "Pierre Fenoll <pierrefenoll@gmail.com>" ]
