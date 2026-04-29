@@ -376,7 +376,6 @@ $(restore_builder_data)
     - uses: $action__checkout
       with:
         persist-credentials: false
-$(rundeps_versions)
 
     - name: Prepare local private registry cache
       if: \${{ env.CARGOGREEN_CACHE_FROM_IMAGES != '' || env.CARGOGREEN_CACHE_TO_IMAGES != '' }}

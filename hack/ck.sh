@@ -239,7 +239,6 @@ $(rundeps_versions)
 #         toolchain: $fixed
 #         cache-on-failure: true
 #     - run: cargo green supergreen sync
-# \$(rundeps_versions)
 #     - run: cargo green supergreen builder rm || true
 #     - run: sudo du -sh \$(cargo green supergreen sync data 2>/dev/null) || true
 #     - run: sudo cp -r \$(cargo green supergreen sync data 2>/dev/null) /home/runner/builder-cache || true

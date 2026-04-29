@@ -63,7 +63,6 @@ jobs:
 #         toolchain: 1.93.1
 #         cache-on-failure: true
 #     - run: cargo green supergreen sync
-# $(rundeps_versions)
 #     - run: cargo green supergreen builder rm || true
 #     - run: sudo du -sh $(cargo green supergreen sync data 2>/dev/null) || true
 #     - run: sudo cp -r $(cargo green supergreen sync data 2>/dev/null) /home/runner/builder-cache || true
@@ -138,13 +137,6 @@ jobs:
     - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       with:
         persist-credentials: false
-    - run: docker info
-    - run: docker buildx version
-    - run: docker buildx build --help
-    - run: podman version || true
-    - run: which cargo && cargo -Vv
-    - run: which rustc && rustc -Vv
-    - run: rustup show
 
     - name: Prepare local private registry cache
       if: ${{ env.CARGOGREEN_CACHE_FROM_IMAGES != '' || env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
@@ -528,13 +520,6 @@ jobs:
     - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       with:
         persist-credentials: false
-    - run: docker info
-    - run: docker buildx version
-    - run: docker buildx build --help
-    - run: podman version || true
-    - run: which cargo && cargo -Vv
-    - run: which rustc && rustc -Vv
-    - run: rustup show
 
     - name: Prepare local private registry cache
       if: ${{ env.CARGOGREEN_CACHE_FROM_IMAGES != '' || env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
@@ -918,13 +903,6 @@ jobs:
     - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       with:
         persist-credentials: false
-    - run: docker info
-    - run: docker buildx version
-    - run: docker buildx build --help
-    - run: podman version || true
-    - run: which cargo && cargo -Vv
-    - run: which rustc && rustc -Vv
-    - run: rustup show
 
     - name: Prepare local private registry cache
       if: ${{ env.CARGOGREEN_CACHE_FROM_IMAGES != '' || env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
@@ -1308,13 +1286,6 @@ jobs:
     - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       with:
         persist-credentials: false
-    - run: docker info
-    - run: docker buildx version
-    - run: docker buildx build --help
-    - run: podman version || true
-    - run: which cargo && cargo -Vv
-    - run: which rustc && rustc -Vv
-    - run: rustup show
 
     - name: Prepare local private registry cache
       if: ${{ env.CARGOGREEN_CACHE_FROM_IMAGES != '' || env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
@@ -1698,13 +1669,6 @@ jobs:
     - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       with:
         persist-credentials: false
-    - run: docker info
-    - run: docker buildx version
-    - run: docker buildx build --help
-    - run: podman version || true
-    - run: which cargo && cargo -Vv
-    - run: which rustc && rustc -Vv
-    - run: rustup show
 
     - name: Prepare local private registry cache
       if: ${{ env.CARGOGREEN_CACHE_FROM_IMAGES != '' || env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
@@ -2088,13 +2052,6 @@ jobs:
     - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       with:
         persist-credentials: false
-    - run: docker info
-    - run: docker buildx version
-    - run: docker buildx build --help
-    - run: podman version || true
-    - run: which cargo && cargo -Vv
-    - run: which rustc && rustc -Vv
-    - run: rustup show
 
     - name: Prepare local private registry cache
       if: ${{ env.CARGOGREEN_CACHE_FROM_IMAGES != '' || env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
@@ -2478,13 +2435,6 @@ jobs:
     - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       with:
         persist-credentials: false
-    - run: docker info
-    - run: docker buildx version
-    - run: docker buildx build --help
-    - run: podman version || true
-    - run: which cargo && cargo -Vv
-    - run: which rustc && rustc -Vv
-    - run: rustup show
 
     - name: Prepare local private registry cache
       if: ${{ env.CARGOGREEN_CACHE_FROM_IMAGES != '' || env.CARGOGREEN_CACHE_TO_IMAGES != '' }}

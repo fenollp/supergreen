@@ -20,7 +20,6 @@ $(login_to_readonly_hub)
         toolchain: $toolchain
         rustflags: ''
         cache-on-failure: true
-$(rundeps_versions)
 $(restore_bin)
 $(restore_builder_data)
     - uses: $action__checkout
@@ -116,7 +115,6 @@ $(cache_usage)
 
 $(bin_jobdef 'udeps')
     steps:
-$(rundeps_versions)
 $(postbin_steps $nightly)
     - uses: $action__install_action
       with:
