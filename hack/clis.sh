@@ -162,6 +162,7 @@ header() {
   cat <<EOF
 on: [push]
 name: CLIs
+permissions: {}
 jobs:
 
 
@@ -326,7 +327,7 @@ $(jobdef "$(slugify "$name_at_version")")
     needs: bin
     steps:
 $(login_to_readonly_hub)
-    - uses: actions-rust-lang/setup-rust-toolchain@v1
+    - uses: $action__setup_rust_toolchain
       with:
         toolchain: \${{ matrix.toolchain }}
         rustflags: ''
@@ -334,7 +335,9 @@ $(login_to_readonly_hub)
 
 $(restore_bin)
 $(restore_builder_data)
-    - uses: actions/checkout@v6
+    - uses: $action__checkout
+      with:
+        persist-credentials: false
 $(rundeps_versions)
 
     - name: Prepare local private registry cache
@@ -345,7 +348,7 @@ $(rundeps_versions)
         mkdir -p $registry_new
     - name: 🔵 Restore local private registry cache
       if: \${{ env.CARGOGREEN_CACHE_FROM_IMAGES != '' || env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
-      uses: actions/cache/restore@v5
+      uses: $action__cache_restore
       with:
         path: $registry
         # github.run_id: https://github.com/actions/toolkit/issues/658#issuecomment-2640690759
@@ -398,7 +401,7 @@ $(unset_action_envs)
         env ${envvars[@]} \\
           $cargo green -vv install --jobs=1 --locked --force $(as_install "$name_at_version") $@ |& tee _
     - if: \${{ always() && matrix.toolchain != '$stable' }}
-      uses: actions/upload-artifact@v7
+      uses: $action__upload_artifact
       name: Upload recipe
       with:
         name: $name_at_version.Dockerfile
@@ -441,12 +444,12 @@ $(postconds _)
         docker stop --timeout 10 reg-from reg-to
         rm -rf $registry
         mv $registry_new $registry
-    - name: Save local private registry cache
-      uses: actions/cache/save@v5
-      if: \${{ false }} # TODO: drop when digests are stable
-      with:
-        path: $registry
-        key: localprivatereg-\${{ runner.os }}-\${{ matrix.toolchain }}-\${{ github.job }}-\${{ github.run_id }}
+  # - name: Save local private registry cache
+  #   uses: actions/cache/save@v5
+  #   if: \${{ false }} # TODO: drop when digests are stable
+  #   with:
+  #     path: $registry
+  #     key: localprivatereg-\${{ runner.os }}-\${{ matrix.toolchain }}-\${{ github.job }}-\${{ github.run_id }}
 
 $(cache_usage)
 
