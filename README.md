@@ -673,18 +673,20 @@ Verifies properties about caching crates & granularity.
 Estimate the of amount of crates reused through compilation of `./recipes/` `--> ~5%`!
 Expecting more with larger/more representative corpus + smart locking of transitive deps.
 ```
-recipes/buildxargs@1.4.0.Dockerfile
+recipes/alacritty@0.17.0.Dockerfile
 8< 8< 8<
-3: dep-l-utf8parse-0.2.1-522ff71b25340e24
-5: dep-l-bitflags-1.3.2-70ce9f1f2fa253bc
-5: dep-l-strsim-0.10.0-fd42a4ea370e31ec
-5: dep-l-unicode-ident-1.0.12-4c1dc76c11b3deb8
-6: dep-l-cfg-if-1.0.0-da34da6838abd7f1
+15: dep-n-equivalent-1.0.2-b7fca33b7ad402aa
+16: dep-n-itoa-1.0.15-927ee08ecb30eb2e
+16: dep-n-version_check-0.9.5-505e5161b4582132
+17: dep-n-strsim-0.11.1-714e2b590cb17cd4
+18: dep-n-scopeguard-1.2.0-1198dcafbecb6b85
+18: dep-n-utf8parse-0.2.2-a4288836510ee242
+20: dep-n-heck-0.5.0-b2d11fd1520b7534
 
-Total recipes: 15
-Total stages: 1065
-Stages in common: 58
-5.44%
+Total recipes: 54
+Total stages: 8072
+Stages in common: 1203
+14.90%
 ```
 
 ### `./hack/portable.sh`
