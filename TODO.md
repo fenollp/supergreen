@@ -95,22 +95,6 @@ First google link: cyberciti.biz/faq/linux-unix-reuse-openssh-connection
 
 ---
 
-```
- FROM rust-base AS dep-l-anyhow-1.0.79-95e5d8a0e52ba465
-
-+  --mount=from=ran-467b075ea0bb0ef8,dst=/tmp/clis-ripgrep_14-1-0/release/build/anyhow-467b075ea0bb0ef8/out,source=/ \
-```
-
-rustc missing '--cfg' 'std_backtrace'
-
-
-=> runnning buildrs misses cargo::outputs
-z
-
-https://github.com/dtolnay/anyhow/blob/1.0.79/build.rs
-
----
-
 mulitplatform 
 https://docs.docker.com/desktop/features/containerd/
 containerd image store
@@ -302,9 +286,6 @@ https://github.com/cicadahq/buildkit-rs
 https://users.rust-lang.org/t/is-it-possible-to-incorporate-one-executable-program-into-your-rust-code/58854/21 ?
 
 ---
-
-TODO: handle not-yet-published rust images => fallback to rustup
-    docker.io/library/rust:1.92.0-slim
 
 ```
 1 20s supergreen.git toolz 🔗 crun green supergreen env
@@ -810,5 +791,101 @@ https://github.com/sayavc/niux
 ERROR: failed to build: failed to receive status: rpc error: code = Unavailable desc = closing transport due to: connection error: desc = "error reading from server: EOF", received prior goaway: code: NO_ERROR, debug data: "graceful_stop"
 ```
 => docker restarted? add retry logic to all .cmd() exec call sites?
+
+---
+
+=> drop `git` requirement
+
+```toml
+[dependencies]
+gix-discover = "0.36"
+gix-config = "0.41"
+```
+```rust
+let config_path = PathBuf::from(".git/config"); /// local
+
+let config = gix_config::File::from_path_no_includes(config_path, gix_config::Source::Local)?;
+let url = config
+    .string("remote", Some("origin".into()), "url")
+    .ok_or("Could not find remote.origin.url")?;
+
+//or
+
+let discovery = gix_discover::upwards(".")?;
+let config_path = discovery.0.into_repository_directory().join("config"); //discovery gives maybe-nonstandard .git folder name
+```
+
+---
+
+=> multiplatform building
+
+https://github.com/ArcaneNibble/awawausb/commit/67e16584a059f72b744e234d10c9ef8bbc402393
+docker build -o=awawausb https://github.com/ArcaneNibble/awawausb.git
+
+---
+
+https://crates.io/crates/zizmor
+
+https://crates.io/crates/resonators
+
+https://github.com/ArcaneNibble/awawausb/tree/main/native-stub
+
+https://github.com/matrix-org/matrix-rust-sdk
+
+https://crates.io/crates/epanet-rs
+
+https://github.com/bnjbvr/cargo-machete
+
+https://lib.rs/crates/cargo-sonic
+
+https://github.com/warpdotdev/warp
+
+https://github.com/zed-industries/zed/releases/tag/v1.0.0
+
+---
+
+https://github.com/zizmorcore/zizmor/blob/e8a2bb8de2f4d09da9cc7bb41d5f0a12388093cc/crates/zizmor/src/main.rs#L853
+    indicatif
+=> TUI: split view with logs
+
+---
+
+https://github.com/zizmorcore/zizmor/blob/e8a2bb8de2f4d09da9cc7bb41d5f0a12388093cc/mkdocs.yml
+    https://docs.zizmor.sh/usage/#cargo-style-output-plain
+=> docs website
+
+---
+
+https://github.com/docker/github-builder
+    Official Docker-maintained reusable GitHub Actions workflows to securely build container images
+        https://docs.docker.com/build/ci/github-actions/github-builder/
+
+---
+
+https://github.com/moby/buildkit/releases/tag/dockerfile/1.23.0
+    Git URLs now accept the mtime=commit query parameter to initialize checked-out file timestamps to Git commit time. Remote builds using a Git context that define SOURCE_DATE_EPOCH automatically default to mtime=commit for better reproducibility. #6600
+    Dockerfile can now define SOURCE_DATE_EPOCH build-arg in the global scope with a default value. The value can still be overridden with --build-arg as before. #6601
+
+---
+
+I 26/04/28 16:27:29.393 N str-buf 3.0.3 c0a72a922652c7f1 ✖ #14 ERROR: digest mismatch sha256:08bed0bc69739d1f4e553a9cb1a4db848332274df4257efc036db17ad02b9f15: sha256:0ceb97b7225c713c2fd4db0153cb6b3cab244eb37900c3f634ed4d43310d8c34
+I 26/04/28 16:27:29.436 N str-buf 3.0.3 c0a72a922652c7f1 ✖ ------
+I 26/04/28 16:27:29.436 N str-buf 3.0.3 c0a72a922652c7f1 ✖  > [cratesio-str-buf-3.0.3 1/1] ADD --chmod=0664 --unpack --checksum=sha256:0ceb97b7225c713c2fd4db0153cb6b3cab244eb37900c3f634ed4d43310d8c34   https://static.crates.io/crates/str-buf/str-buf-3.0.3.crate /:
+I 26/04/28 16:27:29.436 N str-buf 3.0.3 c0a72a922652c7f1 ✖ ------
+I 26/04/28 16:27:29.437 N str-buf 3.0.3 c0a72a922652c7f1 ✖ ERROR: failed to build: failed to solve: digest mismatch sha256:08bed0bc69739d1f4e553a9cb1a4db848332274df4257efc036db17ad02b9f15: sha256:0ceb97b7225c713c2fd4db0153cb6b3cab244eb37900c3f634ed4d43310d8c34
+
+I 26/04/28 16:27:29.441 N str-buf 3.0.3 c0a72a922652c7f1 Terminating task CACHED:5 DONE:8 {"context": " 2B", "dockerfile": " 5.19kB"}
+I 26/04/28 16:27:29.441 N str-buf 3.0.3 c0a72a922652c7f1 running untar on STDOUT
+I 26/04/28 16:27:29.441 N str-buf 3.0.3 c0a72a922652c7f1 build ran for 463.597703ms
+I 26/04/28 16:27:29.441 N str-buf 3.0.3 c0a72a922652c7f1 rustc wrote 0 files:
+
+E 26/04/28 16:27:29.442 N str-buf 3.0.3 c0a72a922652c7f1 Error: Runner BUG: failed to build: failed to solve: digest mismatch sha256:08bed0bc69739d1f4e553a9cb1a4db848332274df4257efc036db17ad02b9f15: sha256:0ceb97b7225c713c2fd4db0153cb6b3cab244eb37900c3f634ed4d43310d8c34
+
+==> reformulate error into "Failed while downloading a crate's source code, please check your connection and try again"
+
+---
+
+cargo green fetch
+=> dont check sentinel in this only case
 
 ---
