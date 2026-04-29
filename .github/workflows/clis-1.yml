@@ -53,6 +53,7 @@ jobs:
       with:
         name: cargo-green
         path: /home/runner/.cargo/bin/cargo-green
+        retention-days: 1
         if-no-files-found: error
 
 # $(login_to_readonly_hub)
@@ -73,6 +74,7 @@ jobs:
 #       with:
 #         name: builder-data
 #         path: /home/runner/builder-cache
+#         retention-days: 1
 #         if-no-files-found: error
 
   buildxargs_master:
@@ -221,6 +223,7 @@ jobs:
       with:
         name: buildxargs@master.Dockerfile
         path: ${{ env.CARGOGREEN_FINAL_PATH }}
+        retention-days: 1
         if-no-files-found: error
     - if: ${{ always() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
@@ -610,6 +613,7 @@ jobs:
       with:
         name: cargo-audit@0.22.0.Dockerfile
         path: ${{ env.CARGOGREEN_FINAL_PATH }}
+        retention-days: 1
         if-no-files-found: error
     - if: ${{ always() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
@@ -999,6 +1003,7 @@ jobs:
       with:
         name: cargo-deny@0.18.5.Dockerfile
         path: ${{ env.CARGOGREEN_FINAL_PATH }}
+        retention-days: 1
         if-no-files-found: error
     - if: ${{ always() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
@@ -1388,6 +1393,7 @@ jobs:
       with:
         name: cargo-fuzz@0.13.1.Dockerfile
         path: ${{ env.CARGOGREEN_FINAL_PATH }}
+        retention-days: 1
         if-no-files-found: error
     - if: ${{ always() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
@@ -1777,6 +1783,7 @@ jobs:
       with:
         name: cargo-llvm-cov@0.6.21.Dockerfile
         path: ${{ env.CARGOGREEN_FINAL_PATH }}
+        retention-days: 1
         if-no-files-found: error
     - if: ${{ always() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
@@ -2166,6 +2173,7 @@ jobs:
       with:
         name: cargo-nextest@0.9.114.Dockerfile
         path: ${{ env.CARGOGREEN_FINAL_PATH }}
+        retention-days: 1
         if-no-files-found: error
     - if: ${{ always() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
@@ -2555,6 +2563,7 @@ jobs:
       with:
         name: cross@0.2.5.Dockerfile
         path: ${{ env.CARGOGREEN_FINAL_PATH }}
+        retention-days: 1
         if-no-files-found: error
     - if: ${{ always() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
@@ -2944,6 +2953,7 @@ jobs:
       with:
         name: dbcc@2.2.1.Dockerfile
         path: ${{ env.CARGOGREEN_FINAL_PATH }}
+        retention-days: 1
         if-no-files-found: error
     - if: ${{ always() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
@@ -3333,6 +3343,7 @@ jobs:
       with:
         name: diesel_cli@2.3.4.Dockerfile
         path: ${{ env.CARGOGREEN_FINAL_PATH }}
+        retention-days: 1
         if-no-files-found: error
     - if: ${{ always() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
@@ -3722,6 +3733,7 @@ jobs:
       with:
         name: hickory-dns@0.26.0-alpha.1.Dockerfile
         path: ${{ env.CARGOGREEN_FINAL_PATH }}
+        retention-days: 1
         if-no-files-found: error
     - if: ${{ always() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
@@ -4111,6 +4123,7 @@ jobs:
       with:
         name: mussh@3.1.3.Dockerfile
         path: ${{ env.CARGOGREEN_FINAL_PATH }}
+        retention-days: 1
         if-no-files-found: error
     - if: ${{ always() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
@@ -4500,6 +4513,7 @@ jobs:
       with:
         name: ntpd@1.7.1.Dockerfile
         path: ${{ env.CARGOGREEN_FINAL_PATH }}
+        retention-days: 1
         if-no-files-found: error
     - if: ${{ always() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
@@ -4889,6 +4903,7 @@ jobs:
       with:
         name: qcow2-rs@0.1.6.Dockerfile
         path: ${{ env.CARGOGREEN_FINAL_PATH }}
+        retention-days: 1
         if-no-files-found: error
     - if: ${{ always() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
@@ -5278,6 +5293,7 @@ jobs:
       with:
         name: ripgrep@15.1.0.Dockerfile
         path: ${{ env.CARGOGREEN_FINAL_PATH }}
+        retention-days: 1
         if-no-files-found: error
     - if: ${{ always() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
@@ -5667,6 +5683,7 @@ jobs:
       with:
         name: rublk@0.2.13.Dockerfile
         path: ${{ env.CARGOGREEN_FINAL_PATH }}
+        retention-days: 1
         if-no-files-found: error
     - if: ${{ always() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
@@ -6056,6 +6073,7 @@ jobs:
       with:
         name: shpool@0.9.3.Dockerfile
         path: ${{ env.CARGOGREEN_FINAL_PATH }}
+        retention-days: 1
         if-no-files-found: error
     - if: ${{ always() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
@@ -6445,6 +6463,7 @@ jobs:
       with:
         name: cargo-authors@0.5.5.Dockerfile
         path: ${{ env.CARGOGREEN_FINAL_PATH }}
+        retention-days: 1
         if-no-files-found: error
     - if: ${{ always() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
@@ -6834,6 +6853,7 @@ jobs:
       with:
         name: vixargs@0.1.0.Dockerfile
         path: ${{ env.CARGOGREEN_FINAL_PATH }}
+        retention-days: 1
         if-no-files-found: error
     - if: ${{ always() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
@@ -7223,6 +7243,7 @@ jobs:
       with:
         name: cargo-config2@0.1.39.Dockerfile
         path: ${{ env.CARGOGREEN_FINAL_PATH }}
+        retention-days: 1
         if-no-files-found: error
     - if: ${{ always() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
@@ -7612,6 +7633,7 @@ jobs:
       with:
         name: verso@main.Dockerfile
         path: ${{ env.CARGOGREEN_FINAL_PATH }}
+        retention-days: 1
         if-no-files-found: error
     - if: ${{ always() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
@@ -8001,6 +8023,7 @@ jobs:
       with:
         name: a-mir-formality@main.Dockerfile
         path: ${{ env.CARGOGREEN_FINAL_PATH }}
+        retention-days: 1
         if-no-files-found: error
     - if: ${{ always() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
@@ -8390,6 +8413,7 @@ jobs:
       with:
         name: kani-verifier@0.66.0.Dockerfile
         path: ${{ env.CARGOGREEN_FINAL_PATH }}
+        retention-days: 1
         if-no-files-found: error
     - if: ${{ always() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
@@ -8779,6 +8803,7 @@ jobs:
       with:
         name: CreuSAT@master.Dockerfile
         path: ${{ env.CARGOGREEN_FINAL_PATH }}
+        retention-days: 1
         if-no-files-found: error
     - if: ${{ always() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
@@ -9168,6 +9193,7 @@ jobs:
       with:
         name: cargo-make@0.37.24.Dockerfile
         path: ${{ env.CARGOGREEN_FINAL_PATH }}
+        retention-days: 1
         if-no-files-found: error
     - if: ${{ always() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
@@ -9557,6 +9583,7 @@ jobs:
       with:
         name: edit@main.Dockerfile
         path: ${{ env.CARGOGREEN_FINAL_PATH }}
+        retention-days: 1
         if-no-files-found: error
     - if: ${{ always() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
@@ -9946,6 +9973,7 @@ jobs:
       with:
         name: cargo-tally@1.0.71.Dockerfile
         path: ${{ env.CARGOGREEN_FINAL_PATH }}
+        retention-days: 1
         if-no-files-found: error
     - if: ${{ always() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
@@ -10335,6 +10363,7 @@ jobs:
       with:
         name: cargo-mutants@25.3.1.Dockerfile
         path: ${{ env.CARGOGREEN_FINAL_PATH }}
+        retention-days: 1
         if-no-files-found: error
     - if: ${{ always() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
@@ -10724,6 +10753,7 @@ jobs:
       with:
         name: binsider@0.3.0.Dockerfile
         path: ${{ env.CARGOGREEN_FINAL_PATH }}
+        retention-days: 1
         if-no-files-found: error
     - if: ${{ always() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
@@ -11113,6 +11143,7 @@ jobs:
       with:
         name: gifski@1.34.0.Dockerfile
         path: ${{ env.CARGOGREEN_FINAL_PATH }}
+        retention-days: 1
         if-no-files-found: error
     - if: ${{ always() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
@@ -11502,6 +11533,7 @@ jobs:
       with:
         name: flamegraph@0.6.10.Dockerfile
         path: ${{ env.CARGOGREEN_FINAL_PATH }}
+        retention-days: 1
         if-no-files-found: error
     - if: ${{ always() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
@@ -11891,6 +11923,7 @@ jobs:
       with:
         name: qair@main.Dockerfile
         path: ${{ env.CARGOGREEN_FINAL_PATH }}
+        retention-days: 1
         if-no-files-found: error
     - if: ${{ always() }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
