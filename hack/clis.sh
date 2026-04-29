@@ -33,7 +33,7 @@ source "$repo_root"/hack/ck.sh
 # TODO: set about green's overhead with --timings
 
 # ok: builds | ko: doesn't build | [ok]D: ok|ko but old: shows too many cfg warnings | Ok: takes >=8min in CI
-declare -a nvs nvs_args
+declare -a nvs nvs_args toolchain
    i=0  ; nvs[i]=buildxargs@master;           oks[i]=ok; nvs_args[i]='--git https://github.com/fenollp/buildxargs.git'
 ((i+=1)); nvs[i]=cargo-audit@0.22.0;          oks[i]=ok; nvs_args[i]='--features=fix' # Flaky and slow
 ((i+=1)); nvs[i]=cargo-deny@0.18.5;           oks[i]=ok; nvs_args[i]=''
@@ -104,7 +104,7 @@ declare -a nvs nvs_args
 # * docker buildx version
 # # Pinned on 2025/12/03 # BUG: $CARGO_HOME/registry/src/index.crates.io-0000000000000000/openssl-src-111.18.0+1.1.1n/src/lib.rs:496:32: No such file or directory
 
-((i+=1)); nvs[i]=miri@master;                 oks[i]=ko; nvs_args[i]='--git https://github.com/rust-lang/miri.git --rev=1fe9d5ba386064c14eb517aacfa8e3d5a1acf97c'; cargos[i]='nightly-2026-03-16' # Pinned on 2026/03/19
+((i+=1)); nvs[i]=miri@master;                 oks[i]=ko; nvs_args[i]='--git https://github.com/rust-lang/miri.git --rev=1fe9d5ba386064c14eb517aacfa8e3d5a1acf97c'; toolchain[i]='nightly-2026-03-16' # Pinned on 2026/03/19
 # 174 | fn make_miri_codegen_backend(sess: &Session) -> Box<dyn CodegenBackend> {
 #     | ----------------------------------------------------------------------- takes 1 argument
 # ...
@@ -134,8 +134,8 @@ declare -a nvs nvs_args
 
 #rust-toolchain.toml
 ((i+=1)); nvs[i]=coccinelleforrust@main;      oks[i]=Ko; nvs_args[i]='--git https://gitlab.inria.fr/coccinelle/coccinelleforrust.git --rev=50612e285' # Pinned on 2025/12/03 # Dirty ra_ap_stdx v0.0.312: the environment variable CI changed
-((i+=1)); nvs[i]=edit@main;                   oks[i]=ok; nvs_args[i]='--git https://github.com/microsoft/edit --tag=v1.2.1 edit'; cargos[i]='nightly-2026-03-16' # Pinned 2025/12/04
-((i+=1)); nvs[i]=pyrefly@main;                oks[i]=ko; nvs_args[i]='--git https://github.com/facebook/pyrefly --tag=0.44.0'; cargos[i]='nightly-2025-09-14' # from its rust-toolchain.toml
+((i+=1)); nvs[i]=edit@main;                   oks[i]=ok; nvs_args[i]='--git https://github.com/microsoft/edit --tag=v1.2.1 edit'; toolchain[i]='nightly-2026-03-16' # Pinned 2025/12/04
+((i+=1)); nvs[i]=pyrefly@main;                oks[i]=ko; nvs_args[i]='--git https://github.com/facebook/pyrefly --tag=0.44.0'; toolchain[i]='nightly-2025-09-14' # from its rust-toolchain.toml
 # running: cd "/tmp/clis-pyrefly_main/release/build/tikv-jemalloc-sys-3de93e63469ff870/out/build" && "make" "-j" "1"
 # thread 'main' (6) panicked at /home/pete/.cargo/registry/src/index.crates.io/tikv-jemalloc-sys-0.6.0+5.3.0-1-ge13ca993e8ccb9ba9847cc330696e02839f328f7/build.rs:384:19:
 # failed to execute command: No such file or directory (os error 2)
@@ -159,17 +159,17 @@ declare -a nvs nvs_args
 
 # TODO: https://belmoussaoui.com/blog/8-how-to-flatpak-a-rust-application/
 
-((i+=1)); nvs[i]=uv@main;                     oks[i]=ko; nvs_args[i]='--git https://github.com/astral-sh/uv.git --rev=2748dce'; cargos[i]='1.91' # failed to solve: ResourceExhausted: trying to send message larger than max (17778013 vs. 16777216)
+((i+=1)); nvs[i]=uv@main;                     oks[i]=ko; nvs_args[i]='--git https://github.com/astral-sh/uv.git --rev=2748dce'; toolchain[i]='1.91' # failed to solve: ResourceExhausted: trying to send message larger than max (17778013 vs. 16777216)
 
 ((i+=1)); nvs[i]=flamegraph@0.6.10;           oks[i]=ok; nvs_args[i]='--bin=flamegraph'
 
-((i+=1)); nvs[i]=qair@main;                   oks[i]=ok; nvs_args[i]='--git https://codeberg.org/willempx/qair.git --tag=0.7.0'; cargos[i]='1.78.0' # Pinned 2020/06/14
+((i+=1)); nvs[i]=qair@main;                   oks[i]=ok; nvs_args[i]='--git https://codeberg.org/willempx/qair.git --tag=0.7.0'; toolchain[i]='1.78.0' # Pinned 2020/06/14
 
-((i+=1)); nvs[i]=rusty-man@master;            oks[i]=ko; nvs_args[i]='--git https://git.sr.ht/~ireas/rusty-man --tag=v0.5.0'; cargos[i]='1.78.0' # Pinned 2025/12/04 # BUG: error: couldn't read `src/main.rs`: No such file or directory (os error 2)
+((i+=1)); nvs[i]=rusty-man@master;            oks[i]=ko; nvs_args[i]='--git https://git.sr.ht/~ireas/rusty-man --tag=v0.5.0'; toolchain[i]='1.78.0' # Pinned 2025/12/04 # BUG: error: couldn't read `src/main.rs`: No such file or directory (os error 2)
 
 ((i+=1)); nvs[i]=cargo-osdk@main;             oks[i]=ok; nvs_args[i]='--git=https://github.com/asterinas/asterinas --tag=v0.16.1'
 
-((i+=1)); nvs[i]=fargo@main;                  oks[i]=ok; nvs_args[i]='--git https://fuchsia.googlesource.com/fargo --rev=a7d967b'; cargos[i]='1.78.0' # Pinned 2025/12/04
+((i+=1)); nvs[i]=fargo@main;                  oks[i]=ok; nvs_args[i]='--git https://fuchsia.googlesource.com/fargo --rev=a7d967b'; toolchain[i]='1.78.0' # Pinned 2025/12/04
 
 ((i+=1)); nvs[i]=harper-ls@master;            oks[i]=ok; nvs_args[i]='--git https://github.com/Automattic/harper.git --tag=v1.1.0' # Pinned 2025/12/04
 
@@ -513,7 +513,7 @@ if [[ $# = 0 ]]; then
     case "$name_at_version" in
       cargo-green@*) continue ;;
     esac
-    cargo=${cargos["$i"]:-''}
+    cargo=${toolchain["$i"]:-''}
     if [[ "$cargo" = '' ]]; then
       cargo=cargo
     else
@@ -616,7 +616,7 @@ set -x
     fi
     name_at_version=${nvs[$i]}
     args=${nvs_args[$i]}
-    cargo="cargo +${cargos["$i"]:-${CARGO:-$fixed}}"
+    cargo="cargo +${toolchain["$i"]:-${CARGO:-$fixed}}"
     timings=; [[ '1.61' = "$(printf "%s\n1.61\n" "${cargo/cargo +}" | sort -V | head -n1)" ]] && timings=--timings
     ;;
 esac
