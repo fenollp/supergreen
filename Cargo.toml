@@ -27,7 +27,7 @@ keywords = [
 ]
 license = "AGPL-3.0-or-later"
 repository = "https://github.com/fenollp/supergreen"
-version = "0.24.0"
+version = "0.25.0"
 
 [workspace.dependencies]
 anyhow = { version = "1", default-features = false }
