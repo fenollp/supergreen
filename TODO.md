@@ -840,8 +840,6 @@ https://lib.rs/crates/cargo-sonic
 
 https://github.com/warpdotdev/warp
 
-https://github.com/zed-industries/zed/releases/tag/v1.0.0
-
 ---
 
 https://github.com/zizmorcore/zizmor/blob/e8a2bb8de2f4d09da9cc7bb41d5f0a12388093cc/crates/zizmor/src/main.rs#L853

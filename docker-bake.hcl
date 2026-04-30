@@ -3,6 +3,7 @@ group "default" {
     "buildxargs",
     "edit.dwp",
     "cargo_kani",
+    "stdlib-symbols.txt",
     "CreuSAT",
     "vixargs",
     "rg",
@@ -62,6 +63,11 @@ target "edit.dwp" {
 target "cargo_kani" {
   context = "recipes"
   dockerfile = "kani-verifier@0.66.0.Dockerfile"
+  output = ["."]
+}
+target "stdlib-symbols.txt" {
+  context = "recipes"
+  dockerfile = "zed@main.Dockerfile"
   output = ["."]
 }
 target "CreuSAT" {
