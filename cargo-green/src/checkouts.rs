@@ -57,28 +57,7 @@ pub(crate) async fn as_stage(
     cargo_home: &Utf8Path,
     pkg_manifest_dir: &Utf8Path,
 ) -> Result<NamedStage> {
-    // TODO: replace execve with pure Rust impl, e.g. gitoxide
-    let mut cmd = Command::new("git");
-    cmd.kill_on_drop(true); // Underlying OS process dies with us
-    cmd.stdin(Stdio::null());
-    // e.g.: CARGO_MANIFEST_DIR="$CARGO_HOME/git/checkouts/cross-f0189a1dc141e2d9/88f49ff"
-    cmd.current_dir(pkg_manifest_dir);
-    cmd.env_clear(); // Pass all envs explicitly only
-    cmd.args(["config", "--get", "remote.origin.url"]);
-    let (succeeded, stdout, stderr) = cmd.exec().await?;
-    if !succeeded {
-        let stderr = String::from_utf8_lossy(&stderr);
-        bail!("Failed getting repository origin url: {stderr}")
-    }
-    let stdout = String::from_utf8_lossy(&stdout);
-    let stdout = stdout.trim();
-    // e.g.: file://$CARGO_HOME/git/db/remarkable-tools-9f4e9942cc4e93a3
-    if !stdout.starts_with("file:///") {
-        bail!("BUG: unexpected repository db path: {stdout:?}")
-    }
-    let db_dir: Utf8PathBuf = stdout.trim_start_matches("file://").into();
-    let head = db_dir.join("FETCH_HEAD");
-
+    let head = get_remote_origin_url(pkg_manifest_dir).await?;
     info!("opening (RO) git db head file: {head}");
     // e.g.: $CARGO_HOME/git/db/remarkable-tools-9f4e9942cc4e93a3/FETCH_HEAD
     let head = read_to_string(&head).map_err(|e| anyhow!("Failed reading {head}: {e}"))?;
@@ -99,6 +78,30 @@ pub(crate) async fn as_stage(
         commit: commit.to_owned(),
         mount: rewrite_cargo_home(cargo_home, workdir.as_str()).into(),
     }))
+}
+
+/// TODO: replace execve with pure Rust impl, e.g. gitoxide
+async fn get_remote_origin_url(pkg_manifest_dir: &Utf8Path) -> Result<Utf8PathBuf> {
+    let mut cmd = Command::new("git");
+    cmd.kill_on_drop(true); // Underlying OS process dies with us
+    cmd.stdin(Stdio::null());
+    // e.g.: CARGO_MANIFEST_DIR="$CARGO_HOME/git/checkouts/cross-f0189a1dc141e2d9/88f49ff"
+    cmd.current_dir(pkg_manifest_dir);
+    cmd.env_clear(); // Pass all envs explicitly only
+    cmd.args(["config", "--get", "remote.origin.url"]);
+    let (succeeded, stdout, stderr) = cmd.exec().await?;
+    if !succeeded {
+        let stderr = String::from_utf8_lossy(&stderr);
+        bail!("Failed getting repository origin url: {stderr}")
+    }
+    let stdout = String::from_utf8_lossy(&stdout);
+    let stdout = stdout.trim();
+    // e.g.: file://$CARGO_HOME/git/db/remarkable-tools-9f4e9942cc4e93a3
+    if !stdout.starts_with("file:///") {
+        bail!("BUG: unexpected repository db path: {stdout:?}")
+    }
+    let db_dir: Utf8PathBuf = stdout.trim_start_matches("file://").into();
+    Ok(db_dir.join("FETCH_HEAD"))
 }
 
 fn commit_and_repo(head: &str) -> Result<(&str, &str)> {
