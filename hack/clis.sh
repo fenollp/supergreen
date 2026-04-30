@@ -178,7 +178,7 @@ declare -a nvs nvs_args toolchain
 ((i+=1)); nvs[i]=sccache@0.12.0;              oks[i]=Ok; nvs_args[i]=''
 
 ((i+=1)); nvs[i]=gst-plugin-webrtc-signalling@main; oks[i]=ok; nvs_args[i]='--git https://gitlab.freedesktop.org/gstreamer/gst-plugins-rs --tag=gstreamer-1.29.1' # Pinned on 2026/03/21
-((i+=1)); nvs[i]=cargo-c@0.10.18+cargo-0.92.0;oks[i]=ko; nvs_args[i]='' # Failed to create /tmp/clis-cargo-c_0-10-18+cargo-0-92-0/release/build/proc-macro2-9405b83cdad3679c/out/probe: No such file or directory (os error 2)
+((i+=1)); nvs[i]=cargo-c@0.10.18+cargo-0.92.0;oks[i]=ok; nvs_args[i]='--bin=cargo-cbuild'
 
 # Depends on https://lib.rs/crates/nvml-wrapper and on https://github.com/nagisa/rust_libloading
 ((i+=1)); nvs[i]=bottom@0.11.4;               oks[i]=ok; nvs_args[i]=''
@@ -223,6 +223,7 @@ as_env() {
     alacritty@*) envvars+=(CARGOGREEN_ADD_APT='cmake,g++,libfontconfig1-dev,libxcb-xfixes0-dev,libxkbcommon-dev,pkg-config,python3') ;; # From https://github.com/alacritty/alacritty/blob/94e7c8874e526b1e67b349d9ba30ddf81669119e/INSTALL.md#debianubuntu
     bottom@*) envvars+=(CARGOGREEN_SET_ENVS='GITHUB_SHA'); envvars+=(GITHUB_SHA=) ;; # "Dirty bottom v0.11.4: the environment variable GITHUB_SHA changed"
     cargo-authors@*) envvars+=(CARGOGREEN_ADD_APT='libcurl4-openssl-dev,pkg-config') ;;
+    cargo-c@*) envvars+=(CARGOGREEN_ADD_APT='libcurl4-openssl-dev,pkg-config') ;;
     cargo-llvm-cov@*) envvars+=(CARGOGREEN_COMPONENTS='llvm-tools-preview') ;;
     cargo-udeps@*) envvars+=(CARGOGREEN_ADD_APT='libcurl4-openssl-dev,libssl-dev,pkg-config,zlib1g-dev') ;;
     coccinelleforrust@*) envvars+=(CARGOGREEN_ADD_APT='python3-dev') ;;
@@ -330,7 +331,7 @@ as_env() {
 slugify() {
   local name_at_version=$1; shift
   [[ $# -eq 0 ]]
-  sed 's%@%_%g;s%\.%-%g;s%/%%g;s%:%%g' <<<"$name_at_version"
+  sed 's%@%_%g;s%+%_%g;s%\.%-%g;s%/%%g;s%:%%g' <<<"$name_at_version"
 }
 
 cli() {
