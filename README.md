@@ -596,14 +596,14 @@ See also this article on what `cargo-green` does (perfect layering):
 
 ## Hacking
 
-### `./hack/cli.sh ...`
+### `./hack/clis.sh ...`
 ```shell
 # Usage:           $0                              #=> generate CI
 #
 # Usage:           $0 ( <name@version> | <name> )  #=> cargo install name@version
 # Usage:           $0   ok                         #=> cargo install all working bins
 #
-# Usage:           $0 ( build | package | test )   #=> cargo build ./cargo-green
+# Usage:           $0 ( build | package | test )   #=> cargo $cmd ./cargo-green
 #
 # Usage:    jobs=1 $0 ..                           #=> cargo --jobs=$jobs
 # Usage: offline=1 $0 ..                           #=> cargo --frozen (defaults to just: --locked)
@@ -611,6 +611,7 @@ See also this article on what `cargo-green` does (perfect layering):
 # Usage:   reset=1 $0 ..                           #=> docker buildx rm $BUILDX_BUILDER; cargo ...
 # Usage:   clean=1 $0 ..                           #=> Both reset=1 + rmrf=1
 # Usage:   final=0 $0 ..                           #=> Don't generate final Containerfile
+# Usage:   build=0 $0 ..                           #=> Use already installed cargo-green
 #
 # Usage:          CARGO=.. $0 ..                   #   CARGO='nightly' $0 ..
 # Usage:    DOCKER_HOST=.. $0 ..                   #=> Overrides machine

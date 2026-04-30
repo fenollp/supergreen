@@ -9,7 +9,7 @@ source "$repo_root"/hack/ck.sh
 # Usage:           $0 ( <name@version> | <name> )  #=> cargo install name@version
 # Usage:           $0   ok                         #=> cargo install all working bins
 #
-# Usage:           $0 ( build | package | test )   #=> cargo build ./cargo-green
+# Usage:           $0 ( build | package | test )   #=> cargo $cmd ./cargo-green
 #
 # Usage:    jobs=1 $0 ..                           #=> cargo --jobs=$jobs
 # Usage: offline=1 $0 ..                           #=> cargo --frozen (defaults to just: --locked)
@@ -17,6 +17,7 @@ source "$repo_root"/hack/ck.sh
 # Usage:   reset=1 $0 ..                           #=> docker buildx rm $BUILDX_BUILDER; cargo ...
 # Usage:   clean=1 $0 ..                           #=> Both reset=1 + rmrf=1
 # Usage:   final=0 $0 ..                           #=> Don't generate final Containerfile
+# Usage:   build=0 $0 ..                           #=> Use already installed cargo-green
 #
 # Usage:          CARGO=.. $0 ..                   #   CARGO='nightly' $0 ..
 # Usage:    DOCKER_HOST=.. $0 ..                   #=> Overrides machine
@@ -539,6 +540,7 @@ reset=${reset:-0}
 jobs=${jobs:-''} ; [[ "$jobs" != '' ]] && jobs="--jobs=$jobs"
 frozen=--locked ; [[ "${offline:-}" = '1' ]] && frozen=--frozen
 final=${final:-1}
+build=${build:-1}
 
 case "${BUILDX_BUILDER:-}" in
   '') BUILDX_BUILDER=supergreen ;;
@@ -571,7 +573,7 @@ set -x
     mkdir -p "$tmptrgt"
     if [[ "$rmrf" = '1' ]]; then rm -rf "$tmptrgt"/* || exit 1; fi
     if [[ "$reset" = 1 ]]; then docker buildx rm "$BUILDX_BUILDER" --force || exit 1; fi
-    CARGO_TARGET_DIR=$install_dir cargo install $frozen --force --root=$install_dir --path="$PWD"/cargo-green
+    if [[ "$build" = 1 ]]; then CARGO_TARGET_DIR=$install_dir cargo install $frozen --force --root=$install_dir --path="$PWD"/cargo-green || exit 1; fi
     ls -lha $install_dir/bin/cargo-green
     rm $tmplogs >/dev/null 2>&1 || true
     touch $tmplogs
@@ -644,7 +646,7 @@ send() {
 gitdir=$(realpath "$(dirname "$(dirname "$0")")")
 send \
   set -x \
-    '&&' CARGO_TARGET_DIR=$install_dir cargo install $frozen --force --root=$install_dir --path="$gitdir"/cargo-green \
+    '&&' 'if' '[[ ' "$build" = 1 ']];' 'then' CARGO_TARGET_DIR=$install_dir cargo install $frozen --force --root=$install_dir --path="$gitdir"/cargo-green '||' 'exit' '1;' 'fi' \
     '&&' touch "$tmpgooo".installed \
     '&&' "rm $tmplogs >/dev/null 2>&1; touch $tmplogs; tail -f $tmplogs; :"
 tmux select-layout even-vertical
