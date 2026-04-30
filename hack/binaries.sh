@@ -99,7 +99,7 @@ declare -a nvs oks nvs_args toolchain
 #     = note: the full name for the type has been written to '/target/release/deps/miri-e9f47534ee52cbf9.long-type-13241406945400517937.txt'
 #     = note: consider using `--verbose` to print the full type name to the console
 
-((i+=1)); nvs[i]=zed@main;                    oks[i]=ko; nvs_args[i]='--git https://github.com/zed-industries/zed.git --tag=v1.0.0';
+((i+=1)); nvs[i]=zed@main;                    oks[i]=ok; nvs_args[i]='--git https://github.com/zed-industries/zed.git --tag=v1.0.0';
 
 ((i+=1)); nvs[i]=verso@main;                  oks[i]=ok; nvs_args[i]='--git https://github.com/versotile-org/verso.git --rev eb719bdd6c7b verso' # Pinned on 2025/12/03
 ((i+=1)); nvs[i]=cargo-udeps@0.1.60;          oks[i]=Ok; nvs_args[i]=''
