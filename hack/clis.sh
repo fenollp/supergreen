@@ -88,7 +88,7 @@ declare -a nvs nvs_args toolchain
 # /home/pete/.cargo/git/checkouts/rapidraw-23a119d7e5f78018/b0c070f
 #========> patch all this up together
 
-((i+=1)); nvs[i]=privaxy@main;                oks[i]=ko; nvs_args[i]='--git https://github.com/Barre/privaxy.git --rev=5dad688538bc7397d71d1c9cfd9d9d53bcf68032'
+((i+=1)); nvs[i]=privaxy@main;                oks[i]=ok; nvs_args[i]='--git https://github.com/Barre/privaxy.git --rev=5dad688538bc7397d71d1c9cfd9d9d53bcf68032'
 # I 26/02/07 18:43:08.958 Z openssl-sys 0.9.78-d183b817a1884996 appending (AW) to final path /home/runner/work/supergreen/supergreen/recipes/privaxy@main.Dockerfile
 # E 26/02/07 18:43:08.958 Z openssl-sys 0.9.78-d183b817a1884996 Error: Runner failed.
 # Check logs at /home/runner/work/supergreen/supergreen/logs.txt
@@ -247,7 +247,7 @@ as_env() {
     mussh@*) envvars+=(CARGOGREEN_ADD_APT='libsqlite3-dev,"libssl-dev(>=3.5)",pkg-config,zlib1g-dev') ;;
     nanometers@*) envvars+=(CARGOGREEN_ADD_APT='libwayland-dev,libglib2.0-dev,libdbus-1-dev,libpangocairo-1.0-0,libasound2-dev,libcairo2-dev,libpango-1.0-0,libpango1.0-dev,libssl-dev=3.5.5-1~deb13u2,libxcb-render0-dev,libxcb-shape0-dev,libxcb-xfixes0-dev,libxkbcommon-dev,libx11-dev,libxcursor-dev,libxcb1-dev,libxi-dev,libxkbcommon-x11-dev,xvfb') ;;
     ntpd@*) envvars+=(NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b); envvars+=(NTPD_RS_GIT_DATE=2025-05-09) ;; # Any commit, just fixed + Time of commit
-    privaxy@*) envvars+=(CARGOGREEN_ADD_APT='build-essential,libayatana-appindicator3-dev,libgtk-3-dev,librsvg2-dev,libsoup2.4-dev,libssl-dev=3.5.5-1~deb13u2,pkg-config') ;;
+    privaxy@*) envvars+=(CARGOGREEN_ADD_APT='build-essential,libayatana-appindicator3-dev,libgtk-3-dev,librsvg2-dev,libsoup2.4-dev,"libssl-dev(>=3.5)",pkg-config') ;;
     pyrefly@*) envvars+=(CARGOGREEN_ADD_APT='make') ;;
     rapidraw@*) envvars+=(CARGOGREEN_ADD_APT='g++,libgtk-3-dev,libjavascriptcoregtk-4.1-dev,libsoup-3.0-dev,libssl-dev=3.5.5-1~deb13u2,libwebkit2gtk-4.1-dev') ;;
     rublk@*) envvars+=(CARGOGREEN_ADD_APT='libclang-dev') ;;
