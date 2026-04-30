@@ -65,7 +65,7 @@ declare -a nvs nvs_args toolchain
 ((i+=1)); nvs[i]=cargo-config2@0.1.39;        oks[i]=ok; nvs_args[i]='--example=get'
 
 # GTK+3
-((i+=1)); nvs[i]=rapidraw@main;               oks[i]=ko; nvs_args[i]='--git https://github.com/CyberTimon/RapidRAW.git --tag=v1.4.6 RapidRAW' # Pinned 2025/12/04
+((i+=1)); nvs[i]=rapidraw@main;               oks[i]=ok; nvs_args[i]='--git https://github.com/CyberTimon/RapidRAW.git --tag=v1.4.6 RapidRAW' # Pinned 2025/12/04
 # Compiling rawler v0.7.1 (/home/pete/.cargo/git/checkouts/rapidraw-23a119d7e5f78018/b0c070f/src-tauri/rawler/rawler)
 # Calling  git config --get remote.origin.url
 # Error: Failed getting repository origin url:
@@ -249,7 +249,7 @@ as_env() {
     ntpd@*) envvars+=(NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b); envvars+=(NTPD_RS_GIT_DATE=2025-05-09) ;; # Any commit, just fixed + Time of commit
     privaxy@*) envvars+=(CARGOGREEN_ADD_APT='build-essential,libayatana-appindicator3-dev,libgtk-3-dev,librsvg2-dev,libsoup2.4-dev,libssl-dev=3.5.5-1~deb13u2,pkg-config') ;;
     pyrefly@*) envvars+=(CARGOGREEN_ADD_APT='make') ;;
-    rapidraw@*) envvars+=(CARGOGREEN_ADD_APT='g++,libgtk-3-dev,libjavascriptcoregtk-4.1-dev,libsoup-3.0-dev,libssl-dev=3.5.5-1~deb13u2,libwebkit2gtk-4.1-dev') ;;
+    rapidraw@*) envvars+=(CARGOGREEN_ADD_APT='g++,libgtk-3-dev,libjavascriptcoregtk-4.1-dev,libsoup-3.0-dev,"libssl-dev(>=3.5)",libwebkit2gtk-4.1-dev') ;;
     rublk@*) envvars+=(CARGOGREEN_ADD_APT='libclang-dev') ;;
     sccache@*) envvars+=(CARGOGREEN_ADD_APT='"libssl-dev(>=3.5)",pkg-config,zlib1g-dev') ;;
     torrust-index@*) envvars+=(CARGOGREEN_ADD_APT='"libssl-dev(>=3.5)",pkg-config,zlib1g-dev') ;;
