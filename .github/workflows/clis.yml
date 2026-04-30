@@ -115,6 +115,7 @@ jobs:
         - {"nv":"cargo-authors@0.5.5","envs":{"CARGOGREEN_ADD_APT":"libcurl4-openssl-dev,libssl-dev(=3.5.9-1~deb13u1),pkg-config"},"bin":"cargo-authors","sha1":"48c02f15d0ea5b0da10d8f502a264c664a5fd321"}
         - {"nv":"vixargs@0.1.0","bin":"vixargs","sha1":"1352b4a17accfd43a940f71f23fad8aed7b8fe5c"}
         - {"nv":"cargo-config2@0.1.39","args":"--example=get","bin":"get","sha1":"be051afd91cb7db140483de9078903274a544400"}
+        - {"nv":"miri@master","args":"--git https://github.com/rust-lang/miri.git --rev=1fe9d5ba386064c14eb517aacfa8e3d5a1acf97c","cargo":"cargo +nightly-2026-03-16","envs":{"CARGOGREEN_COMPONENTS":"llvm-tools-preview,rust-src,rustc-dev","CARGOGREEN_ADD_APT":"build-essential"},"bin":"NOBINYET","sha1":"efe0c361f34641c4c48901d515749b93a3227813"}
         - {"nv":"verso@main","args":"--git https://github.com/versotile-org/verso.git --rev eb719bdd6c7b verso","bin":"verso","sha1":"e4de8eb678f625baab1db136839429b7182c39d5"}
         - {"nv":"a-mir-formality@main","args":"--git https://github.com/rust-lang/a-mir-formality.git --rev=3fc2f38319bb729fbf2f59c38e15e23a9b774716 a-mir-formality","bin":"a-mir-formality","sha1":"748e4963b740366df7b3ce787a9799787241280a"}
         - {"nv":"kani-verifier@0.66.0","args":"--bin=cargo-kani","bin":"cargo-kani","sha1":"7fa8af74ab94f312f64a4ced62b1a2f1ec877b44"}
