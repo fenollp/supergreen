@@ -87,6 +87,43 @@ impl BaseImage {
             bail!("Unhandled rustup host {host:?} please report to {REPO}")
         };
 
+        let image = self.image.clone();
+
+        let components = if !components.is_empty() {
+            format!(" --component {}", components.join(","))
+        } else {
+            "".to_owned()
+        };
+
+        // Rewrite host cargo/rustc so the base_image ones can be used
+        // Also, propagate RUSTUP_TOOLCHAIN so Rustup skips looking for rust-toolchain.toml
+        //   If you are trying to install a package that requires a specific nightly feature or a very new stable version,
+        //   you must ensure your active toolchain meets those requirements before running the install command.
+        //   Cargo won't auto-switch for you based on the dependency tree.
+
+        let rustup_block = format!(
+            r#"
+FROM scratch AS rustup-{toolchain}
+ADD --chmod=0144 --checksum=sha256:{checksum} \
+  https://static.rust-lang.org/rustup/archive/{VERSION}/{host}/rustup-init /rustup-init
+FROM --platform=$BUILDPLATFORM {base} AS {RST}
+SHELL {shell:?}
+ENV       CARGO_HOME={CARGO_HOME} \
+         RUSTUP_HOME={RUSTUP_HOME} \
+    RUSTUP_TOOLCHAIN={toolchain}
+ENV CARGO=$RUSTUP_HOME/toolchains/$RUSTUP_TOOLCHAIN/bin/cargo \
+    RUSTC=$RUSTUP_HOME/toolchains/$RUSTUP_TOOLCHAIN/bin/rustc \
+     PATH=$CARGO_HOME/bin:$PATH
+RUN \
+  --mount=from=rustup-{toolchain},source=/rustup-init,dst=/rustup-init \
+    set -eux \
+ && /rustup-init --verbose -y --no-modify-path --profile minimal --default-toolchain {toolchain} --default-host {host}{components} \
+ && chmod -R a+w $RUSTUP_HOME $CARGO_HOME
+"#,
+            shell = ["/bin/sh", "-eux", "-c"],
+            base = image.noscheme(),
+        );
+
         // have buildkit call rustc with `--target $(adapted $TARGETPLATFORM)`, if not given `--target`
         // `adapted` translates buildkit platform format to rustc's
         //
@@ -111,9 +148,7 @@ impl BaseImage {
         //   https://github.com/reproducible-containers/repro-pkg-cache
         //   https://github.com/reproducible-containers/repro-get
 
-        let image = self.image.clone();
-
-        let (with_network, packages_block) = Add {
+        let (with_network, image_inline) = Add {
             // From https://github.com/rust-lang/docker-rust/blob/d14e1ad7efeb270012b1a7e88fea699b1d1082f2/nightly/alpine3.20/Dockerfile
             apk: vec!["ca-certificates".to_owned(), "gcc".to_owned()],
             // From https://github.com/rust-lang/docker-rust/blob/d14e1ad7efeb270012b1a7e88fea699b1d1082f2/nightly/bullseye/slim/Dockerfile
@@ -121,43 +156,7 @@ impl BaseImage {
             apt_get: vec!["ca-certificates".to_owned(), "gcc".to_owned(), "libc6-dev".to_owned()],
         }
         .union(add)
-        .as_block(&format!(
-            "FROM --platform=$BUILDPLATFORM {base} AS {RST}",
-            base = image.noscheme()
-        ));
-
-        let components = if !components.is_empty() {
-            format!(" --component {}", components.join(","))
-        } else {
-            "".to_owned()
-        };
-
-        // Rewrite host cargo/rustc so the base_image ones can be used
-        // Also, propagate RUSTUP_TOOLCHAIN so Rustup skips looking for rust-toolchain.toml
-        //   If you are trying to install a package that requires a specific nightly feature or a very new stable version,
-        //   you must ensure your active toolchain meets those requirements before running the install command.
-        //   Cargo won't auto-switch for you based on the dependency tree.
-
-        let image_inline = format!(
-            r#"
-FROM scratch AS rustup-{toolchain}
-ADD --chmod=0144 --checksum=sha256:{checksum} \
-  https://static.rust-lang.org/rustup/archive/{VERSION}/{host}/rustup-init /rustup-init
-{packages_block}
-ENV      RUSTUP_HOME={RUSTUP_HOME} \
-    RUSTUP_TOOLCHAIN={toolchain} \
-          CARGO_HOME={CARGO_HOME}
-ENV CARGO=$RUSTUP_HOME/toolchains/$RUSTUP_TOOLCHAIN/bin/cargo \
-    RUSTC=$RUSTUP_HOME/toolchains/$RUSTUP_TOOLCHAIN/bin/rustc \
-     PATH=$CARGO_HOME/bin:$PATH
-RUN \
-  --mount=from=rustup-{toolchain},source=/rustup-init,dst=/rustup-init \
-    set -eux \
- && /rustup-init --verbose -y --no-modify-path --profile minimal --default-toolchain {toolchain} --default-host {host}{components} \
- && chmod -R a+w $RUSTUP_HOME $CARGO_HOME
-"#,
-            packages_block = packages_block.trim(),
-        );
+        .as_block(&rustup_block);
 
         Ok(Self { with_network, image, image_inline })
     }

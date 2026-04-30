@@ -80,7 +80,6 @@ impl Add {
             r#"
 FROM --platform=$BUILDPLATFORM {XX} AS xx
 {last}
-SHELL {shell:?}
 ARG TARGETPLATFORM
 RUN \
   --mount=from=xx,source=/usr/bin/xx-apk,dst=/usr/bin/xx-apk \
@@ -106,7 +105,6 @@ RUN \
     fi
 "#,
             last = last.trim(),
-            shell = ["/bin/sh", "-eux", "-c"],
             apk = quote_pkgs(&self.apk),
             apt = quote_pkgs(&self.apt),
             apt_get = quote_pkgs(&self.apt_get),
