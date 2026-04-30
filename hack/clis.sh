@@ -151,7 +151,7 @@ declare -a nvs nvs_args toolchain
 #TODO: allowlist non-busting rustc flags => se about this cache key
 #TODO: test cargo -vv build -> test -> build and look for "Dirty", expect none
 
-((i+=1)); nvs[i]=nanometers@master;           oks[i]=ko; nvs_args[i]='--git https://github.com/aizcutei/nanometers.git --rev=ca11bbbead' # Pinned 2025/12/04
+((i+=1)); nvs[i]=nanometers@master;           oks[i]=ok; nvs_args[i]='--git https://github.com/aizcutei/nanometers.git --rev=ca11bbbead' # Pinned 2025/12/04
 # error: The platform you're compiling for is not supported by winit
 # Maybe on targets? wasm32-unknown-unknown [target.aarch64-apple-darwin] [target.x86_64-apple-darwin]
 
@@ -245,7 +245,7 @@ as_env() {
     marauder@*) envvars+=(CARGO_TARGET_ARMV7_UNKNOWN_LINUX_MUSLEABIHF_LINKER='arm-linux-gnueabihf-gcc'); envvars+=(CARGOGREEN_ADD_APT='gcc-arm-linux-gnueabihf,libc6-dev-armhf-cross,"protobuf-compiler(>=3.6)"') ;; # ; envvars+=(CARGOGREEN_EXPERIMENT='buildscriptsources') ;;
     miri@*) envvars+=(CARGOGREEN_COMPONENTS='llvm-tools-preview,rust-src,rustc-dev'); envvars+=(CARGOGREEN_ADD_APT='build-essential') ;;
     mussh@*) envvars+=(CARGOGREEN_ADD_APT='libsqlite3-dev,"libssl-dev(>=3.5)",pkg-config,zlib1g-dev') ;;
-    nanometers@*) envvars+=(CARGOGREEN_ADD_APT='libwayland-dev,libglib2.0-dev,libdbus-1-dev,libpangocairo-1.0-0,libasound2-dev,libcairo2-dev,libpango-1.0-0,libpango1.0-dev,libssl-dev=3.5.5-1~deb13u2,libxcb-render0-dev,libxcb-shape0-dev,libxcb-xfixes0-dev,libxkbcommon-dev,libx11-dev,libxcursor-dev,libxcb1-dev,libxi-dev,libxkbcommon-x11-dev,xvfb') ;;
+    nanometers@*) envvars+=(CARGOGREEN_ADD_APT='libwayland-dev,libglib2.0-dev,libdbus-1-dev,libpangocairo-1.0-0,libasound2-dev,libcairo2-dev,libpango-1.0-0,libpango1.0-dev,"libssl-dev(>=3.5)",libxcb-render0-dev,libxcb-shape0-dev,libxcb-xfixes0-dev,libxkbcommon-dev,libx11-dev,libxcursor-dev,libxcb1-dev,libxi-dev,libxkbcommon-x11-dev,xvfb') ;;
     ntpd@*) envvars+=(NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b); envvars+=(NTPD_RS_GIT_DATE=2025-05-09) ;; # Any commit, just fixed + Time of commit
     privaxy@*) envvars+=(CARGOGREEN_ADD_APT='build-essential,libayatana-appindicator3-dev,libgtk-3-dev,librsvg2-dev,libsoup2.4-dev,libssl-dev=3.5.5-1~deb13u2,pkg-config') ;;
     pyrefly@*) envvars+=(CARGOGREEN_ADD_APT='make') ;;
