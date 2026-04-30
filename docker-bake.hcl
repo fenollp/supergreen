@@ -2,6 +2,7 @@ group "default" {
   targets = [
     "buildxargs",
     "edit.dwp",
+    "zero_reallocs.sh",
     "cargo_kani",
     "CreuSAT",
     "vixargs",
@@ -57,6 +58,11 @@ target "buildxargs" {
 target "edit.dwp" {
   context = "recipes"
   dockerfile = "edit@main.Dockerfile"
+  output = ["."]
+}
+target "zero_reallocs.sh" {
+  context = "recipes"
+  dockerfile = "pyrefly@main.Dockerfile"
   output = ["."]
 }
 target "cargo_kani" {
