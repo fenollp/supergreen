@@ -40,6 +40,7 @@ group "default" {
     "tract",
     "cargo_udeps",
     "cfr",
+    "cargo_cbuild",
     "cargo_nextest",
     "harper_ls",
     "ipa",
@@ -247,6 +248,11 @@ target "cargo_udeps" {
 target "cfr" {
   context = "recipes"
   dockerfile = "coccinelleforrust@main.Dockerfile"
+  output = ["."]
+}
+target "cargo_cbuild" {
+  context = "recipes"
+  dockerfile = "cargo-c@0.10.18+cargo-0.92.0.Dockerfile"
   output = ["."]
 }
 target "cargo_nextest" {
