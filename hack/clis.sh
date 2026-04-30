@@ -88,7 +88,7 @@ declare -a nvs nvs_args toolchain
 # /home/pete/.cargo/git/checkouts/rapidraw-23a119d7e5f78018/b0c070f
 #========> patch all this up together
 
-((i+=1)); nvs[i]=privaxy@main;                oks[i]=ko; nvs_args[i]='--git https://github.com/Barre/privaxy.git --rev=5dad688538bc7397d71d1c9cfd9d9d53bcf68032'
+((i+=1)); nvs[i]=privaxy@main;                oks[i]=ok; nvs_args[i]='--git https://github.com/Barre/privaxy.git --rev=5dad688538bc7397d71d1c9cfd9d9d53bcf68032'
 # I 26/02/07 18:43:08.958 Z openssl-sys 0.9.78-d183b817a1884996 appending (AW) to final path /home/runner/work/supergreen/supergreen/recipes/privaxy@main.Dockerfile
 # E 26/02/07 18:43:08.958 Z openssl-sys 0.9.78-d183b817a1884996 Error: Runner failed.
 # Check logs at /home/runner/work/supergreen/supergreen/logs.txt
