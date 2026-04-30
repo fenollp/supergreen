@@ -125,6 +125,7 @@ jobs:
         - {"nv":"cargo-mutants@25.3.1","bin":"cargo-mutants","sha1":"7d08f70cb223718bfde947328236aa63873592db"}
         - {"nv":"binsider@0.3.0","bin":"binsider","sha1":"081c4986b9c8f341efb7690490b1100b65799867"}
         - {"nv":"gifski@1.34.0","bin":"gifski","sha1":"cb547af1c1286f104cb9d2a7c58a280833b4a13f"}
+        - {"nv":"uv@main","args":"--git https://github.com/astral-sh/uv.git --rev=2748dce --bin=uv","cargo":"cargo +1.91","envs":{"CARGOGREEN_ADD_APT":"make"},"bin":"uv","sha1":"0a28afa7ea550dbdd9798663629e02206a3f6c01"}
         - {"nv":"flamegraph@0.6.10","args":"--bin=flamegraph","bin":"flamegraph","sha1":"afc66dca62b5aef70bfcfc0fa5643f107bae7aa3"}
         - {"nv":"qair@main","args":"--git https://codeberg.org/willempx/qair.git --tag=0.7.0","cargo":"cargo +1.78.0","bin":"qair","sha1":"793ce894437ffd56570abda5bfda0bd07267716e"}
         - {"nv":"cargo-osdk@main","args":"--git=https://github.com/asterinas/asterinas --tag=v0.16.1","bin":"cargo-osdk","sha1":"50f5f457249793006f4aeabbabdbe9a2d3ce4bad"}

@@ -49,6 +49,7 @@
                , "stu"
                , "crater"
                , "topiary"
+               , "uv"
                , "torrust-index"
                ]}},
 
@@ -296,6 +297,11 @@
   , "topiary": {
       "context": "recipes",
       "dockerfile": "topiary-cli@0.7.3.Dockerfile",
+      "output": ["."]
+    }
+  , "uv": {
+      "context": "recipes",
+      "dockerfile": "uv@main.Dockerfile",
       "output": ["."]
     }
   , "torrust-index": {
