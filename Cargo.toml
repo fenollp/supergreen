@@ -39,6 +39,8 @@ chrono = { version = "0, >=0.4", features = [ "now" ], default-features = false 
 crc32fast = { version = "1", default-features = false }
 env_logger = { version = "0, >=0.11", default-features = false }
 futures = { version = "0, >=0.3", default-features = false }
+gix-config = { version = "0, >=0.56", features = [ "sha1" ], default-features = false }
+gix-discover = { version = "0, >=0.51", features = [ "sha1" ], default-features = false }
 home = { version = "0, >=0.5", default-features = false }
 indexmap = { version = "2", features = [ "serde", "std" ], default-features = false }
 log = { version = "0, >=0.4", default-features = false }

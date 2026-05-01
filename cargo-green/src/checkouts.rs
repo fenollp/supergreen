@@ -1,14 +1,12 @@
-use std::{fs::read_to_string, process::Stdio};
+use std::fs::read_to_string;
 
 use anyhow::{anyhow, bail, Result};
 use camino::{Utf8Path, Utf8PathBuf};
 use log::info;
 use serde::{Deserialize, Serialize};
-use tokio::process::Command;
 
 use crate::{
     base_image::rewrite_cargo_home,
-    ext::CommandExt,
     stage::{AsBlock, AsStage, NamedStage, Stage},
 };
 
@@ -80,28 +78,30 @@ pub(crate) async fn as_stage(
     }))
 }
 
-/// TODO: replace execve with pure Rust impl, e.g. gitoxide
 async fn get_remote_origin_url(pkg_manifest_dir: &Utf8Path) -> Result<Utf8PathBuf> {
-    let mut cmd = Command::new("git");
-    cmd.kill_on_drop(true); // Underlying OS process dies with us
-    cmd.stdin(Stdio::null());
+    use gix_config::{File, Source};
+
+    // let config_path = pkg_manifest_dir.join(".git/config");
     // e.g.: CARGO_MANIFEST_DIR="$CARGO_HOME/git/checkouts/cross-f0189a1dc141e2d9/88f49ff"
-    cmd.current_dir(pkg_manifest_dir);
-    cmd.env_clear(); // Pass all envs explicitly only
-    cmd.args(["config", "--get", "remote.origin.url"]);
-    let (succeeded, stdout, stderr) = cmd.exec().await?;
-    if !succeeded {
-        let stderr = String::from_utf8_lossy(&stderr);
-        bail!("Failed getting repository origin url: {stderr}")
-    }
-    let stdout = String::from_utf8_lossy(&stdout);
-    let stdout = stdout.trim();
+    let (path, _trust) = gix_discover::upwards(pkg_manifest_dir.as_std_path())
+        .map_err(|e| anyhow!("Failed getting repository directoy from {pkg_manifest_dir}: {e}"))?;
+    let (repository_dir, _worktree_dir) = path.into_repository_and_work_tree_directories();
+    let config_path = repository_dir.join("config"); // discovery gives maybe-nonstandard .git folder name
+
+    let config = File::from_path_no_includes(config_path, Source::Local).map_err(|e| {
+        anyhow!("Failed getting repository origin url from {pkg_manifest_dir}: {e}")
+    })?;
+
+    let url = config
+        .string("remote.origin.url")
+        .ok_or_else(|| anyhow!("Could not find remote.origin.url from {pkg_manifest_dir}"))?;
     // e.g.: file://$CARGO_HOME/git/db/remarkable-tools-9f4e9942cc4e93a3
-    if !stdout.starts_with("file:///") {
-        bail!("BUG: unexpected repository db path: {stdout:?}")
+
+    if !url.starts_with("file:///".as_bytes()) {
+        bail!("BUG: unexpected repository db path for {pkg_manifest_dir}: {url:?}")
     }
-    let db_dir: Utf8PathBuf = stdout.trim_start_matches("file://").into();
-    Ok(db_dir.join("FETCH_HEAD"))
+    let db_dir = url["file://".len()..].to_string();
+    Ok(Utf8PathBuf::from(db_dir).join("FETCH_HEAD"))
 }
 
 fn commit_and_repo(head: &str) -> Result<(&str, &str)> {

@@ -794,29 +794,6 @@ ERROR: failed to build: failed to receive status: rpc error: code = Unavailable 
 
 ---
 
-=> drop `git` requirement
-
-```toml
-[dependencies]
-gix-discover = "0.36"
-gix-config = "0.41"
-```
-```rust
-let config_path = PathBuf::from(".git/config"); /// local
-
-let config = gix_config::File::from_path_no_includes(config_path, gix_config::Source::Local)?;
-let url = config
-    .string("remote", Some("origin".into()), "url")
-    .ok_or("Could not find remote.origin.url")?;
-
-//or
-
-let discovery = gix_discover::upwards(".")?;
-let config_path = discovery.0.into_repository_directory().join("config"); //discovery gives maybe-nonstandard .git folder name
-```
-
----
-
 => multiplatform building
 
 https://github.com/ArcaneNibble/awawausb/commit/67e16584a059f72b744e234d10c9ef8bbc402393
@@ -837,6 +814,8 @@ https://crates.io/crates/epanet-rs
 https://github.com/bnjbvr/cargo-machete
 
 https://lib.rs/crates/cargo-sonic
+
+https://lib.rs/crates/cargo-criterion
 
 https://github.com/warpdotdev/warp
 
