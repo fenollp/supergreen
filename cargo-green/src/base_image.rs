@@ -123,6 +123,7 @@ RUN \
             shell = ["/bin/sh", "-eux", "-c"],
             base = image.noscheme(),
         );
+        let with_network = Network::Default; // rustup-init requires network TODO: turn rustup-init calls into ADDs
 
         // have buildkit call rustc with `--target $(adapted $TARGETPLATFORM)`, if not given `--target`
         // `adapted` translates buildkit platform format to rustc's
@@ -148,7 +149,7 @@ RUN \
         //   https://github.com/reproducible-containers/repro-pkg-cache
         //   https://github.com/reproducible-containers/repro-get
 
-        let (with_network, image_inline) = Add {
+        let (_with_network, image_inline) = Add {
             // From https://github.com/rust-lang/docker-rust/blob/d14e1ad7efeb270012b1a7e88fea699b1d1082f2/nightly/alpine3.20/Dockerfile
             apk: vec!["ca-certificates".to_owned(), "gcc".to_owned()],
             // From https://github.com/rust-lang/docker-rust/blob/d14e1ad7efeb270012b1a7e88fea699b1d1082f2/nightly/bullseye/slim/Dockerfile

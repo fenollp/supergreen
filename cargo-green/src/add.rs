@@ -49,12 +49,14 @@ pub(crate) struct Add {
 }
 
 impl Add {
+    /// True when no OS packages are to be installed through apt/apk
     #[must_use]
     pub(crate) fn is_empty(&self) -> bool {
         let Self { apk, apt, apt_get } = self;
         [apk, apt, apt_get].iter().all(|x| x.is_empty())
     }
 
+    /// Sums, sorts and dedupes multiple instances
     #[must_use]
     pub(crate) fn union(self, lhs: &Self) -> Self {
         let Self { mut apk, mut apt, mut apt_get } = self;
@@ -72,6 +74,11 @@ impl Add {
 
     // TODO: finer package installs per os/distro
     pub(crate) fn as_block(&self, last: &str) -> (Network, String) {
+        if self.is_empty() {
+            let block = format!("\n{last}\n", last = last.trim());
+            return (Network::None, block);
+        }
+
         // TODO: pin major + lock by pulling
         const XX: &str = "docker.io/tonistiigi/xx:1.6.1@sha256:923441d7c25f1e2eb5789f82d987693c47b8ed987c4ab3b075d6ed2b5d6779a3";
 
