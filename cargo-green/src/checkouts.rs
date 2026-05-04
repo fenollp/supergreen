@@ -76,6 +76,17 @@ pub(crate) async fn as_stage(paths: &Paths, pkg_manifest_dir: &Utf8Path) -> Resu
 }
 
 pub(crate) fn real_fetch_head(pkg_manifest_dir: &Utf8Path) -> Result<Utf8PathBuf> {
+    let mut dir = Some(pkg_manifest_dir);
+    while let Some(folder) = dir {
+        if let Ok(head) = fetch_head(folder) {
+            return Ok(head);
+        }
+        dir = folder.parent();
+    }
+    bail!("Failed getting repository origin url: exhausted tree")
+}
+
+fn fetch_head(pkg_manifest_dir: &Utf8Path) -> Result<Utf8PathBuf> {
     // e.g.: "$CARGO_HOME/git/checkouts/cross-f0189a1dc141e2d9/88f49ff"
     let config_path = {
         let (path, _trust) = gix_discover::upwards(pkg_manifest_dir.as_std_path())
@@ -87,6 +98,8 @@ pub(crate) fn real_fetch_head(pkg_manifest_dir: &Utf8Path) -> Result<Utf8PathBuf
     let config = File::from_path_no_includes(config_path, Source::Local).map_err(|e| {
         anyhow!("Failed reading repository .git/config from {pkg_manifest_dir}: {e}")
     })?;
+
+    //FIXME: try .gitmodules ?
 
     let key = "remote.origin.url";
     let Some(url) = config.string(key) else {
