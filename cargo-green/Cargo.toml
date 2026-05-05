@@ -35,6 +35,7 @@ atomic-write-file.workspace = true
 camino.workspace = true
 cargo-lock.workspace = true
 cargo-subcommand-metadata.workspace = true
+cargo_metadata.workspace = true
 cargo_toml.workspace = true
 chrono.workspace = true
 crc32fast.workspace = true

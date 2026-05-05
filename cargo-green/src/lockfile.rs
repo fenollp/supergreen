@@ -1,11 +1,9 @@
-use anyhow::{bail, Result};
+use anyhow::{anyhow, bail, Result};
 use camino::{Utf8Path, Utf8PathBuf};
 use cargo_lock::{Lockfile, Package, SourceId};
 use pico_args::Arguments;
-use serde::Deserialize;
-use tokio::process::Command;
 
-use crate::{cargo, ext::CommandExt, pwd};
+use crate::pwd;
 
 // TODO: when cargo installing or building without a lockfile
 // we can wrap the version picking process to favor cache-hot versions
@@ -30,73 +28,57 @@ pub(crate) async fn locked_crates(
 }
 
 pub(crate) async fn find_lockfile() -> Result<Utf8PathBuf> {
-    let manifest_path = cargo_locate_project(false).await?;
+    let manifest_path = find_manifest_path().await?;
     let candidate = manifest_path.with_extension("lock");
     if candidate.exists() {
         return Ok(candidate);
     }
-    let manifest_path = cargo_locate_project(true).await?;
+
+    // Fallback on workspace lockfile
+    let manifest_path = cargo_metadata(true).await?;
     Ok(manifest_path.with_extension("lock"))
 }
 
-pub(crate) fn find_manifest_path() -> Result<Option<Utf8PathBuf>> {
-    if let Some(manifest_path) = find_toml_from_env()? {
-        return Ok(Some(manifest_path));
-    }
-    let manifest_path = pwd().join("Cargo.toml"); // TODO: ?
-    if manifest_path.exists() {
-        return Ok(Some(manifest_path));
-    }
-    Ok(None)
-}
-
-fn find_toml_from_env() -> Result<Option<Utf8PathBuf>> {
+/// FIXME: when cargo install-ing, root crate's code isn't local (yet)
+/// Meaning accessing its TOML metadata nor its locked deps is possible.
+/// cc https://github.com/rust-lang/cargo/issues/9700
+pub(crate) async fn find_manifest_path() -> Result<Utf8PathBuf> {
     let mut args = Arguments::from_env();
 
-    let manifest_path: Option<String> = args.opt_value_from_str("--manifest-path")?;
+    let manifest_path: Option<String> = args
+        .opt_value_from_str("--manifest-path")
+        .map_err(|e| anyhow!("Failed parsing cargo args: {e}"))?;
     if let Some(manifest_path) = manifest_path {
-        return Ok(Some(manifest_path.into()));
+        return Ok(manifest_path.into());
     }
 
-    //FIXME: not true for cinstall cf https://github.com/rust-lang/cargo/issues/9700
-    let package: Option<String> = args.opt_value_from_str(["-p", "--package"])?;
+    // This is probably not correct
+    let package: Option<String> = args
+        .opt_value_from_str(["-p", "--package"])
+        .map_err(|e| anyhow!("Failed parsing cargo args: {e}"))?;
     if let Some(package) = package {
         let manifest_path = pwd().join(package).join("Cargo.toml");
         if manifest_path.exists() {
-            return Ok(Some(manifest_path));
+            return Ok(manifest_path);
         }
     }
 
-    Ok(None)
+    cargo_metadata(false).await
 }
 
-// Returns Cargo.toml
-// https://doc.rust-lang.org/cargo/commands/cargo-locate-project.html
-// https://github.com/rust-lang/cargo/blob/3e96f1a28e47d4fd0f354b3a067d6322a8730cb6/src/bin/cargo/commands/locate_project.rs#L29
-async fn cargo_locate_project(at_workspace: bool) -> Result<Utf8PathBuf> {
-    let mut cmd = Command::new(cargo());
-    cmd.kill_on_drop(true);
+// TODO: memoize call "for speed"
+async fn cargo_metadata(of_workspace: bool) -> Result<Utf8PathBuf> {
+    let metadata = cargo_metadata::MetadataCommand::new()
+        .no_deps()
+        .exec()
+        .map_err(|e| anyhow!("Failed running cargo metadata: {e}"))?;
 
-    cmd.arg("locate-project");
-    if let Some(manifest_path) = find_toml_from_env()? {
-        cmd.arg("--manifest-path");
-        cmd.arg(manifest_path);
+    if of_workspace {
+        let Some(root_package) = metadata.packages.first() else {
+            bail!("BUG: cargo metadata was not able to find root package")
+        };
+        Ok(root_package.manifest_path.to_owned())
+    } else {
+        Ok(metadata.workspace_root.join("Cargo.toml"))
     }
-    if at_workspace {
-        cmd.arg("--workspace");
-    }
-
-    let (succeeded, stdout, stderr) = cmd.exec().await?;
-    if !succeeded || !stderr.is_empty() {
-        let stderr = String::from_utf8_lossy(&stderr);
-        bail!("{} failed: {stderr:?}", cmd.show())
-    }
-
-    #[derive(Debug, Deserialize)]
-    struct Located {
-        root: Utf8PathBuf,
-    }
-
-    let Located { root } = serde_json::from_slice(&stdout)?;
-    Ok(root)
 }

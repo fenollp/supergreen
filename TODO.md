@@ -868,3 +868,11 @@ cargo green fetch
 => dont check sentinel in this only case
 
 ---
+
+prebuild:
+    maximize layers
+        seems to get 1 ADD to download per stage
+            so 127 - 3 (debian + xx + frontend) gives max stages usables for ADDs
+            ==> faster/fastest prebuild
+
+---
