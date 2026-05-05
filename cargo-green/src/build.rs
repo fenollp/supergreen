@@ -264,7 +264,6 @@ impl Green {
 
         cmd.arg(format!("--network={}", self.base.with_network));
 
-        cmd.arg("--platform=local");
         cmd.arg("--pull=false");
         cmd.arg(format!("--target={target}"));
 
