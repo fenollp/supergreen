@@ -31,7 +31,7 @@ fn cargo_home() -> Result<Utf8PathBuf> {
 }
 
 pub(crate) async fn main() -> Result<Green> {
-    let mut green = Green::new_from_env_then_manifest()?;
+    let mut green = Green::new_from_env_then_manifest().await?;
 
     // Setting runner first as it's needed by many calls
     let mut var = ENV_RUNNER!();
@@ -242,7 +242,7 @@ impl Green {
         info!("{PKG}@{VSN} original args: {:?} pwd={:?}", env::args(), pwd());
 
         let mut packages = vec![];
-        if let Err(e) = (async {
+        if let Err(e) = async {
             let manifest_path_lockfile = find_lockfile().await?;
             debug!("using lockfile at {manifest_path_lockfile}");
 
@@ -250,7 +250,7 @@ impl Green {
             info!("found {} packages", packages.len());
 
             Ok(())
-        })
+        }
         .await
         {
             if require_lockfile {

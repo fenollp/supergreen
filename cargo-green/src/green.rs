@@ -108,28 +108,21 @@ impl Green {
 
     // TODO: handle worskpace cfg + merging fields
     // TODO: find a way to read cfg on `cargo install <non-local code>` cc https://github.com/rust-lang/cargo/issues/9700#issuecomment-2748617896
-    pub(crate) fn new_from_env_then_manifest() -> Result<Self> {
-        let manifest = if let Some(manifest_path) =
-            find_manifest_path().map_err(|e| anyhow!("Can't find package manifest: {e}"))?
-        {
-            let manifest = Manifest::from_path(&manifest_path)
-                .map_err(|e| anyhow!("Can't read package manifest {manifest_path}: {e}"))?;
-            Some(manifest)
-        } else {
-            None
-        };
+    pub(crate) async fn new_from_env_then_manifest() -> Result<Self> {
+        let manifest_path =
+            find_manifest_path().await.map_err(|e| anyhow!("Can't find package manifest: {e}"))?;
+        let manifest = Manifest::from_path(&manifest_path)
+            .map_err(|e| anyhow!("Can't read package manifest {manifest_path}: {e}"))?;
 
         Self::try_new(manifest).map_err(|e| anyhow!("Failed reading {PKG} configuration: {e}"))
     }
 
-    fn try_new(manifest: Option<Manifest>) -> Result<Self> {
+    fn try_new(manifest: Manifest) -> Result<Self> {
+        use cargo_toml::Package;
+
         let mut green = Self::default();
 
-        if let Some(Manifest {
-            package: Some(cargo_toml::Package { metadata: Some(metadata), .. }),
-            ..
-        }) = manifest
-        {
+        if let Manifest { package: Some(Package { metadata: Some(metadata), .. }), .. } = manifest {
             #[derive(Deserialize, Default)]
             struct GreenMetadata {
                 green: Option<Green>,
@@ -267,7 +260,7 @@ name = "test-package"
 "#
             ))
             .unwrap();
-            let mut green = Green::try_new(Some(manifest)).unwrap();
+            let mut green = Green::try_new(manifest).unwrap();
 
             assert_eq!(green.base, BaseImage::default());
 
@@ -293,7 +286,7 @@ components = [ "rust-src", "llvm-tools-preview" ]
 "#,
             )
             .unwrap();
-            let green = Green::try_new(Some(manifest)).unwrap();
+            let green = Green::try_new(manifest).unwrap();
             assert_eq!(
                 green.components,
                 vec!["rust-src".to_owned(), "llvm-tools-preview".to_owned()]
@@ -312,7 +305,7 @@ components = [ "" ]
 "#,
             )
             .unwrap();
-            let err = Green::try_new(Some(manifest)).err().unwrap().to_string();
+            let err = Green::try_new(manifest).err().unwrap().to_string();
             assert!(err.contains("empty"), "In: {err}");
         }
 
@@ -328,7 +321,7 @@ components = [ "'a'" ]
 "#,
             )
             .unwrap();
-            let err = Green::try_new(Some(manifest)).err().unwrap().to_string();
+            let err = Green::try_new(manifest).err().unwrap().to_string();
             assert!(err.contains("quotes"), "In: {err}");
         }
 
@@ -344,7 +337,7 @@ components = [ "a b" ]
 "#,
             )
             .unwrap();
-            let err = Green::try_new(Some(manifest)).err().unwrap().to_string();
+            let err = Green::try_new(manifest).err().unwrap().to_string();
             assert!(err.contains("space"), "In: {err}");
         }
 
@@ -360,7 +353,7 @@ components = [ "a", "b", "a" ]
             "#,
             )
             .unwrap();
-            let err = Green::try_new(Some(manifest)).err().unwrap().to_string();
+            let err = Green::try_new(manifest).err().unwrap().to_string();
             assert!(err.contains("duplicates"), "In: {err}");
         }
     }
@@ -382,7 +375,7 @@ add.apk = [ "libpq-dev", "pkgconf" ]
 "#,
             )
             .unwrap();
-            let green = Green::try_new(Some(manifest)).unwrap();
+            let green = Green::try_new(manifest).unwrap();
             assert_eq!(green.add.apt, vec!["libpq-dev".to_owned(), "pkg-config".to_owned()]);
             assert_eq!(green.add.apt_get, vec!["libpq-dev".to_owned(), "pkg-config".to_owned()]);
             assert_eq!(green.add.apk, vec!["libpq-dev".to_owned(), "pkgconf".to_owned()]);
@@ -400,7 +393,7 @@ add.{setting} = [ "" ]
 "#
             ))
             .unwrap();
-            let err = Green::try_new(Some(manifest)).err().unwrap().to_string();
+            let err = Green::try_new(manifest).err().unwrap().to_string();
             assert!(err.contains("empty"), "In: {err}");
         }
 
@@ -416,7 +409,7 @@ add.{setting} = [ "'a'" ]
 "#
             ))
             .unwrap();
-            let err = Green::try_new(Some(manifest)).err().unwrap().to_string();
+            let err = Green::try_new(manifest).err().unwrap().to_string();
             assert!(err.contains("quotes"), "In: {err}");
         }
 
@@ -432,7 +425,7 @@ add.{setting} = [ "a b" ]
 "#
             ))
             .unwrap();
-            let err = Green::try_new(Some(manifest)).err().unwrap().to_string();
+            let err = Green::try_new(manifest).err().unwrap().to_string();
             assert!(err.contains("space"), "In: {err}");
         }
 
@@ -448,7 +441,7 @@ add.{setting} = [ "a", "b", "a" ]
             "#
             ))
             .unwrap();
-            let err = Green::try_new(Some(manifest)).err().unwrap().to_string();
+            let err = Green::try_new(manifest).err().unwrap().to_string();
             assert!(err.contains("duplicates"), "In: {err}");
         }
     }
@@ -468,7 +461,7 @@ set-envs = [ "GIT_AUTH_TOKEN", "TYPENUM_BUILD_CONSTS", "TYPENUM_BUILD_OP" ]
 "#,
             )
             .unwrap();
-            let green = Green::try_new(Some(manifest)).unwrap();
+            let green = Green::try_new(manifest).unwrap();
             assert_eq!(
                 green.set_envs,
                 vec![
@@ -491,7 +484,7 @@ set-envs = [ "" ]
 "#,
             )
             .unwrap();
-            let err = Green::try_new(Some(manifest)).err().unwrap().to_string();
+            let err = Green::try_new(manifest).err().unwrap().to_string();
             assert!(err.contains("empty name"), "In: {err}");
         }
 
@@ -507,7 +500,7 @@ set-envs = [ "'a'" ]
 "#,
             )
             .unwrap();
-            let err = Green::try_new(Some(manifest)).err().unwrap().to_string();
+            let err = Green::try_new(manifest).err().unwrap().to_string();
             assert!(err.contains("quotes"), "In: {err}");
         }
 
@@ -523,7 +516,7 @@ set-envs = [ "A B" ]
 "#,
             )
             .unwrap();
-            let err = Green::try_new(Some(manifest)).err().unwrap().to_string();
+            let err = Green::try_new(manifest).err().unwrap().to_string();
             assert!(err.contains("space"), "In: {err}");
         }
 
@@ -539,7 +532,7 @@ set-envs = [ "CARGOGREEN_LOG" ]
 "#,
             )
             .unwrap();
-            let err = Green::try_new(Some(manifest)).err().unwrap().to_string();
+            let err = Green::try_new(manifest).err().unwrap().to_string();
             assert!(err.contains("CARGOGREEN"), "In: {err}");
         }
 
@@ -555,7 +548,7 @@ set-envs = [ "A", "B", "A" ]
 "#,
             )
             .unwrap();
-            let err = Green::try_new(Some(manifest)).err().unwrap().to_string();
+            let err = Green::try_new(manifest).err().unwrap().to_string();
             assert!(err.contains("duplicates"), "In: {err}");
         }
     }
@@ -576,7 +569,7 @@ base-image = "docker-image://docker.io/library/ubuntu:latest"
 "#,
             )
             .unwrap();
-            let green = Green::try_new(Some(manifest)).unwrap();
+            let green = Green::try_new(manifest).unwrap();
             assert_eq!(
                 green.base,
                 BaseImage { image: ImageUri::std("ubuntu:latest"), ..Default::default() }
@@ -596,7 +589,7 @@ base-image = "docker-image://docker.io/library/ubuntu:latest"
 "#,
             )
             .unwrap();
-            let green = Green::try_new(Some(manifest)).unwrap();
+            let green = Green::try_new(manifest).unwrap();
             assert_eq!(
                 green.base,
                 BaseImage {
@@ -619,7 +612,7 @@ base-image = ""
 "#,
             )
             .unwrap();
-            let err = Green::try_new(Some(manifest)).err().unwrap().to_string();
+            let err = Green::try_new(manifest).err().unwrap().to_string();
             assert!(err.contains("scheme"), "In: {err}");
         }
 
@@ -635,7 +628,7 @@ base-image = "docker.io/library/ubuntu:latest"
 "#,
             )
             .unwrap();
-            let err = Green::try_new(Some(manifest)).err().unwrap().to_string();
+            let err = Green::try_new(manifest).err().unwrap().to_string();
             assert!(err.contains("scheme"), "In: {err}");
         }
 
@@ -651,7 +644,7 @@ base-image = " docker-image://docker.io/library/ubuntu:latest  "
 "#,
             )
             .unwrap();
-            let err = Green::try_new(Some(manifest)).err().unwrap().to_string();
+            let err = Green::try_new(manifest).err().unwrap().to_string();
             assert!(err.contains("space"), "In: {err}");
         }
     }
@@ -675,7 +668,7 @@ name = "test-package"
 "#,
             ))
             .unwrap();
-            let green = Green::try_new(Some(manifest)).unwrap();
+            let green = Green::try_new(manifest).unwrap();
             assert_eq!(
                 match setting {
                     "cache-images" => green.cache.images,
@@ -706,7 +699,7 @@ name = "test-package"
 "#,
             ))
             .unwrap();
-            let err = Green::try_new(Some(manifest)).err().unwrap().to_string();
+            let err = Green::try_new(manifest).err().unwrap().to_string();
             assert!(err.contains("duplicates"), "In: {err}");
         }
 
@@ -722,7 +715,7 @@ name = "test-package"
 "#,
     ))
     .unwrap();
-            let err = Green::try_new(Some(manifest)).err().unwrap().to_string();
+            let err = Green::try_new(manifest).err().unwrap().to_string();
             assert!(err.contains("names"), "In: {err}");
         }
 
@@ -738,7 +731,7 @@ name = "test-package"
 "#,
             ))
             .unwrap();
-            let err = Green::try_new(Some(manifest)).err().unwrap().to_string();
+            let err = Green::try_new(manifest).err().unwrap().to_string();
             assert!(err.contains("scheme"), "In: {err}");
         }
 
@@ -754,7 +747,7 @@ name = "test-package"
 "#,
             ))
             .unwrap();
-            let err = Green::try_new(Some(manifest)).err().unwrap().to_string();
+            let err = Green::try_new(manifest).err().unwrap().to_string();
             assert!(err.contains("registry"), "In: {err}");
         }
 
@@ -770,7 +763,7 @@ name = "test-package"
 "#,
             ))
             .unwrap();
-            let err = Green::try_new(Some(manifest)).err().unwrap().to_string();
+            let err = Green::try_new(manifest).err().unwrap().to_string();
             assert!(err.contains("tag"), "In: {err}");
         }
     }
