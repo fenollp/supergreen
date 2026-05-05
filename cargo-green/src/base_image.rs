@@ -83,9 +83,15 @@ impl BaseImage {
         // TODO: multiplatformify (using auto ARG.s?)
         let host = maybe_get_local_host_triple(toolchain)?;
 
+        // let host = "x86_64-unknown-linux-gnu";
+        // let host = "aarch64-unknown-linux-gnu";
+        // let toolchain = format!("1.91.1-{host}");
+
         let Some(checksum) = CHECKSUMS.get(&host) else {
             bail!("Unhandled rustup host {host:?} please report to {REPO}")
         };
+
+        // https://scribe.rip/com/better-programming/cross-compiling-rust-from-mac-to-linux-7fad5a454ab1
 
         let image = self.image.clone();
 
@@ -106,7 +112,7 @@ impl BaseImage {
 FROM scratch AS rustup-{toolchain}
 ADD --chmod=0144 --checksum=sha256:{checksum} \
   https://static.rust-lang.org/rustup/archive/{VERSION}/{host}/rustup-init /rustup-init
-FROM --platform=$BUILDPLATFORM {base} AS {RST}
+FROM {base} AS {RST}
 SHELL {shell:?}
 ENV       CARGO_HOME={CARGO_HOME} \
          RUSTUP_HOME={RUSTUP_HOME} \
@@ -117,7 +123,8 @@ ENV CARGO=$RUSTUP_HOME/toolchains/$RUSTUP_TOOLCHAIN/bin/cargo \
 RUN \
   --mount=from=rustup-{toolchain},source=/rustup-init,dst=/rustup-init \
     set -eux \
- && /rustup-init --verbose -y --no-modify-path --profile minimal --default-toolchain {toolchain} --default-host {host}{components} \
+ && uname -a \
+ && /rustup-init --verbose -y --no-modify-path --profile minimal --default-toolchain {toolchain} --default-host {host} --target aarch64-unknown-linux-gnu{components} \
  && chmod -R a+w $RUSTUP_HOME $CARGO_HOME
 "#,
             shell = ["/bin/sh", "-eux", "-c"],
