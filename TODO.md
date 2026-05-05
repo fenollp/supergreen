@@ -874,5 +874,6 @@ prebuild:
         seems to get 1 ADD to download per stage
             so 127 - 3 (debian + xx + frontend) gives max stages usables for ADDs
             ==> faster/fastest prebuild
+=> OR look for buildkitd.toml param that throttles concurent ADDs
 
 ---

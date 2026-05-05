@@ -69,7 +69,7 @@ pub(crate) trait AsStage<'de>: AsBlock + Deserialize<'de> + Serialize {
     fn mounts(&self) -> Vec<(Option<Utf8PathBuf>, Utf8PathBuf, bool)> {
         vec![]
     }
-    fn context(&self) -> Option<(Stage, Utf8PathBuf)> {
+    fn context(&mut self) -> Option<(Stage, Utf8PathBuf)> {
         None
     }
 }
@@ -142,7 +142,7 @@ impl AsStage<'_> for NamedStage {
         }
     }
 
-    fn context(&self) -> Option<(Stage, Utf8PathBuf)> {
+    fn context(&mut self) -> Option<(Stage, Utf8PathBuf)> {
         match self {
             NamedStage::Script(dep) => dep.context(),
             NamedStage::Cratesio(dep) => dep.context(),

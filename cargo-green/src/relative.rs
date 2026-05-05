@@ -2,7 +2,7 @@ use std::{fs, iter::once};
 
 use anyhow::{anyhow, bail, Result};
 use camino::{Utf8Path, Utf8PathBuf};
-use log::{debug, info};
+use log::{debug, info, warn};
 use serde::{Deserialize, Serialize};
 
 use crate::{
@@ -17,6 +17,7 @@ pub(crate) struct Relative {
     pwd: Utf8PathBuf,
     keep: Vec<String>,
     lose: Vec<String>,
+    dockerignore: Option<Utf8PathBuf>,
 }
 
 impl AsBlock for Relative {}
@@ -33,9 +34,15 @@ impl AsStage<'_> for Relative {
             .collect()
     }
 
-    fn context(&self) -> Option<(Stage, Utf8PathBuf)> {
+    fn context(&mut self) -> Option<(Stage, Utf8PathBuf)> {
         let Self { stage, lose, pwd, .. } = self;
         if !lose.is_empty() {
+            let dockerignore = pwd.join(".dockerignore");
+            let already_has_one = dockerignore.exists();
+            //FIXME: if exists: save + extend (then restore??) .dockerignore
+            //TODO? add .gitignore in there?
+            //TODO? exclude everything, only include `git ls-files`?
+
             let mut lose: Vec<String> = lose
                 .iter()
                 .chain(once(&".dockerignore".to_owned()))
@@ -44,12 +51,23 @@ impl AsStage<'_> for Relative {
             lose.sort();
             lose.dedup();
             let lose: String = lose.into_iter().collect();
-            fs::write(pwd.join(".dockerignore"), lose).unwrap(); //TODO: remove created file
-                                                                 //FIXME: if exists: save + extend (then restore??) .dockerignore
-                                                                 //TODO? add .gitignore in there?
-                                                                 //TODO? exclude everything, only include `git ls-files`?
+            if let Err(e) = fs::write(&dockerignore, lose) {
+                warn!("Failed writing {dockerignore}: {e}");
+            }
+
+            if !already_has_one {
+                self.dockerignore = Some(dockerignore);
+            }
         }
         Some((stage.to_owned(), pwd.to_owned()))
+    }
+}
+
+impl Drop for Relative {
+    fn drop(&mut self) {
+        if let Some(ref dockerignore) = self.dockerignore {
+            let _ = fs::remove_file(dockerignore);
+        }
     }
 }
 
@@ -98,5 +116,6 @@ pub(crate) async fn as_stage(mdid: MdId, pwd: &Utf8Path) -> Result<NamedStage> {
         pwd: pwd.to_owned(),
         keep,
         lose,
+        dockerignore: None,
     }))
 }
