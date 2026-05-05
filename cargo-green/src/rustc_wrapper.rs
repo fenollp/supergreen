@@ -202,7 +202,7 @@ async fn do_wrap_rustc(
 
     // TODO: support non-crates.io crates managers + proxies
     // TODO: use --secret mounts for private deps (and secret direct artifacts)
-    let code_stage = if input.starts_with(green.cargo_home.join(cratesio::HOME)) {
+    let mut code_stage = if input.starts_with(green.cargo_home.join(cratesio::HOME)) {
         // Input is of a crate dep (hosted at crates.io)
         // Let's optimize this case by fetching & caching crate tarball
 
@@ -295,6 +295,8 @@ async fn do_wrap_rustc(
             return Err(e);
         }
     }
+
+    drop(code_stage); // Some impl cleans up files
 
     Ok(())
 }
