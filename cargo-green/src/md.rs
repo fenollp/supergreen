@@ -10,6 +10,7 @@ use serde::{Deserialize, Serialize};
 use szyk::{sort, Node, TopsortError};
 
 use crate::{
+    build::SOURCE_DATE_EPOCH,
     green::Green,
     logging::maybe_log,
     stage::{AsBlock, AsStage, NamedStage, Script, Stage, RST},
@@ -179,14 +180,9 @@ impl Md {
     #[must_use]
     fn rust_stage(&self) -> String {
         format!(
-            "{}\nARG SOURCE_DATE_EPOCH=42\n", // https://reproducible-builds.org/docs/source-date-epoch/
+            "{}\nARG SOURCE_DATE_EPOCH={SOURCE_DATE_EPOCH}\n",
             &self.stages.iter().find(|ns| ns.is_rust()).and_then(AsBlock::as_block).unwrap()
         )
-
-        // TODO? use a non-fixed EPOCH value
-        // * set SOURCE_DATE_EPOCH=$(git log -1 --pretty=%ct) for local code, and
-        // * set it to crates' birth date, in case it's a $HOME/.cargo/registry/cache/...crate
-        // * set it to the directory's birth date otherwise (should be a relative path to local files).
     }
 
     #[must_use]

@@ -51,6 +51,19 @@ pub(crate) const ERRCODE: &str = "errcode";
 pub(crate) const STDERR: &str = "stderr";
 pub(crate) const STDOUT: &str = "stdout";
 
+/// Value of BuildKit build-arg cf <https://reproducible-builds.org/docs/source-date-epoch>
+// TODO? use a non-fixed EPOCH value
+// * set SOURCE_DATE_EPOCH=$(git log -1 --pretty=%ct) for local code, and
+// * set it to crates' birth date, in case it's a $HOME/.cargo/registry/cache/...crate
+// * set it to the directory's birth date otherwise (should be a relative path to local files).
+//
+// https://github.com/moby/buildkit/releases/tag/dockerfile%2F1.24.0-rc1
+// Dockerfile now supports special arg definitions SOURCE_DATE_EPOCH=context and SOURCE_DATE_EPOCH=<stage>
+// which set the value of SOURCE_DATE_EPOCH to the timestamp associated with the remote context or the stage respectively.
+// When building from a Git commit, the context timestamp is the commit timestamp, and when building from a remote URL,
+// the timestamp is resolved from the metadata of files in the TAR archive or from the Last-Modified header of the URL #6602
+pub(crate) const SOURCE_DATE_EPOCH: u64 = 42;
+
 impl Green {
     /// Read digest from builder cache, then maybe from default cache.
     ///
@@ -545,7 +558,7 @@ impl Effects {
 
                             assert_eq!(f.header().uid().unwrap(), 0);
                             assert_eq!(f.header().gid().unwrap(), 0);
-                            //assert_eq!(f.header().mtime().unwrap(), 42);
+                            assert_eq!(f.header().mtime().unwrap(), SOURCE_DATE_EPOCH);
                             assert_eq!(f.header().username(), Ok(Some("")));
                             assert_eq!(f.header().groupname(), Ok(Some("")));
 
