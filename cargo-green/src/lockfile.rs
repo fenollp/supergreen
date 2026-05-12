@@ -3,7 +3,7 @@ use camino::{Utf8Path, Utf8PathBuf};
 use cargo_lock::{Lockfile, Package, SourceId};
 use pico_args::Arguments;
 
-use crate::pwd;
+use crate::dirs::pwd;
 
 // TODO: when cargo installing or building without a lockfile
 // we can wrap the version picking process to favor cache-hot versions
