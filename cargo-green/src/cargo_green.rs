@@ -11,24 +11,17 @@ use crate::{
     base_image::{BASE_IMAGE, BASE_IMAGE_LOCKED},
     build::fetch_digest,
     cratesio::{self},
+    dirs::{cargo_home, pwd},
     experiments::EXPERIMENTS,
     green::{validate_csv, Green},
     image_uri::{SYNTAX_IMAGE, SYNTAX_IMAGE_LOCKED},
     lockfile::{find_lockfile, locked_crates},
     logging::{self, maybe_log},
     network::Network,
-    pwd,
     runner::{Runner, BUILDKIT_HOST, DOCKER_BUILDKIT, DOCKER_CONTEXT, DOCKER_HOST},
     stage::{Stage, RST},
     tmp, ENV_FINAL_PATH, ENV_RUNNER, ENV_SYNTAX_IMAGE, PKG, VSN,
 };
-
-fn cargo_home() -> Result<Utf8PathBuf> {
-    home::cargo_home()
-        .map_err(|e| anyhow!("bad $CARGO_HOME or something: {e}"))?
-        .try_into()
-        .map_err(|e| anyhow!("corrupted $CARGO_HOME path: {e}"))
-}
 
 pub(crate) async fn main() -> Result<Green> {
     let mut green = Green::new_from_env_then_manifest().await?;

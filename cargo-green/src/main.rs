@@ -1,14 +1,10 @@
-use std::{
-    env,
-    ffi::{OsStr, OsString},
-    fs,
-    path::PathBuf,
-    process::exit,
-};
+use std::{env, ffi::OsStr, fs, path::PathBuf, process::exit};
 
 use anyhow::{anyhow, bail, Result};
 use supergreen::just_help;
 use tokio::process::Command;
+
+use crate::dirs::{create_current_target_dir, hashed_args, tmp};
 
 #[macro_use]
 mod add;
@@ -28,6 +24,7 @@ mod cargo_green;
 mod checkouts;
 mod containerfile;
 mod cratesio;
+mod dirs;
 mod du;
 mod ext;
 mod relative;
@@ -61,36 +58,6 @@ cargo_subcommand_metadata::description! {
     "Sandbox & cache cargo builds and execute jobs remotely"
 }
 
-fn cargo() -> OsString {
-    env::var_os("CARGO").unwrap_or_else(|| "cargo".into())
-}
-
-// Internal env used to pass config from cargo plugin to rustc wrapper
-const ENV_ROOT_PACKAGE_SETTINGS: &str = "CARGOGREEN_ROOT_PACKAGE_SETTINGS_";
-
-// Subcommands that need our wrapping
-#[rustfmt::skip]
-const HANDLED: &[&str] = &[
-    "supergreen",
-    "b", "bench", "build",
-    "c", "check",
-    "clippy",
-    "d", "doc",
-    "fetch",
-    "fix",
-    "install",
-    "package",
-    "publish",
-    "r", "run",
-    "rustc",
-    "rustdoc",
-    "t", "test",
-];
-// ...ones we know that don't:
-// (naked) add clean config fmt generate-lockfile help info init locate-project
-//         login logout metadata new owner pkgid read-manifest remove report rm
-//         search tree uninstall update vendor verify-project version yank
-
 #[tokio::main]
 async fn main() -> Result<()> {
     rustls::crypto::ring::default_provider()
@@ -103,6 +70,9 @@ async fn main() -> Result<()> {
     if PathBuf::from(&arg0).file_name() != Some(OsStr::new(PKG)) {
         bail!("This binary should be named `{PKG}`")
     }
+
+    // Internal env used to pass config from cargo plugin to rustc wrapper
+    const ENV_ROOT_PACKAGE_SETTINGS: &str = "CARGOGREEN_ROOT_PACKAGE_SETTINGS_";
 
     if let Ok(wrapper) = env::var("RUSTC_WRAPPER") {
         // Now running as a subprocess
@@ -146,7 +116,7 @@ async fn main() -> Result<()> {
         return cmd.status().await.map(|_| ()).map_err(Into::into);
     }
 
-    let mut cmd = Command::new(cargo());
+    let mut cmd = Command::new(env::var_os("CARGO").expect("$CARGO"));
     cmd.kill_on_drop(true);
     if let Some(ref arg2) = arg2 {
         cmd.arg(arg2);
@@ -157,7 +127,36 @@ async fn main() -> Result<()> {
     let subcommand_start = || env::args().skip(2).skip_while(|arg| arg.starts_with('-'));
     let command = subcommand_start().next();
 
-    if !command.as_deref().map(|c| HANDLED.contains(&c)).unwrap_or(false) {
+    let handled = command
+        .as_deref()
+        .map(|c| {
+            // Subcommands that need our wrapping
+            #[rustfmt::skip]
+            const HANDLED: &[&str] = &[
+                "supergreen",
+                "b", "bench", "build",
+                "c", "check",
+                "clippy",
+                "d", "doc",
+                "fetch",
+                "fix",
+                "install",
+                "package",
+                "publish",
+                "r", "run",
+                "rustc",
+                "rustdoc",
+                "t", "test",
+            ];
+            // ...ones we know that don't:
+            // (naked) add clean config fmt generate-lockfile help info init locate-project
+            //         login logout metadata new owner pkgid read-manifest remove report rm
+            //         search tree uninstall update vendor verify-project version yank
+            HANDLED.contains(&c)
+        })
+        .unwrap_or(false);
+
+    if !handled {
         if !cmd.status().await?.success() {
             exit(1)
         }
@@ -211,22 +210,7 @@ async fn main() -> Result<()> {
     }
     green.prebuild(false).await?;
 
-    //FIXME: check precedence
-    let target_dir = if let Ok(target_dir) = env::var("CARGO_TARGET_DIR") {
-        target_dir
-    } else if let Some(target_dir) = {
-        let mut args = pico_args::Arguments::from_env();
-        args.opt_value_from_str("--target-dir")?
-    } {
-        target_dir
-    } else if command.as_deref() == Some("install") {
-        tmp().join(hashed_args()).to_string() //FIXME also add used envs, at least some such as RUSTFLAGS
-    } else {
-        pwd().join("target").to_string()
-    };
-    fs::create_dir_all(&target_dir)?;
-    let target_dir = camino::Utf8PathBuf::from(target_dir).canonicalize_utf8().unwrap();
-    let target_dir = format!("{target_dir}/"); // Trailing slash required when replacing strings
+    let target_dir = create_current_target_dir(command.as_deref())?;
     cmd.env("CARGO_TARGET_DIR", &target_dir);
     env::set_var("CARGO_TARGET_DIR", target_dir);
 
@@ -234,24 +218,4 @@ async fn main() -> Result<()> {
         exit(1)
     }
     Ok(())
-}
-
-fn tmp() -> camino::Utf8PathBuf {
-    env::temp_dir().try_into().unwrap()
-}
-
-fn pwd() -> camino::Utf8PathBuf {
-    env::current_dir()
-        .expect("$PWD does not exist or is otherwise unreadable")
-        .try_into()
-        .expect("$PWD is not utf-8")
-}
-
-fn hash(string: &str) -> String {
-    let h = format!("{:#x}", crc32fast::hash(string.as_bytes())); //~ 0x..
-    h["0x".len()..].to_owned()
-}
-
-fn hashed_args() -> String {
-    hash(&env::args().collect::<Vec<_>>().join(" "))
 }

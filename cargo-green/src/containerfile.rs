@@ -4,7 +4,7 @@ use anyhow::{anyhow, Result};
 use camino::Utf8Path;
 use log::{info, trace};
 
-use crate::{hash, image_uri::ImageUri, logging::maybe_log, REPO, VSN};
+use crate::{dirs::hash, image_uri::ImageUri, logging::maybe_log, REPO, VSN};
 
 pub(crate) struct Containerfile {
     script: String,
