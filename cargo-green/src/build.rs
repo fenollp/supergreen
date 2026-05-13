@@ -24,7 +24,7 @@ use tokio::{
     fs::File as TokioFile,
     io::{AsyncBufReadExt, AsyncReadExt, AsyncWriteExt, BufReader as TokioBufReader},
     join,
-    process::Command,
+    process::{ChildStdin, Command},
     spawn,
     sync::oneshot::{self},
     task::JoinHandle,
@@ -443,24 +443,8 @@ impl Effects {
 
         spawn({
             let containerfile = containerfile.to_owned();
-            let mut stdin = child.stdin.take().expect("started");
-            async move {
-                let reader = TokioFile::open(&containerfile)
-                    .await
-                    .map_err(|e| anyhow!("Failed opening (RO) {containerfile}: {e}"))?;
-                let mut lines = TokioBufReader::new(reader).lines();
-                while let Ok(Some(line)) = lines.next_line().await {
-                    if line.starts_with(DIESES) {
-                        continue;
-                    }
-                    stdin
-                        .write_all(line.as_bytes())
-                        .await
-                        .map_err(|e| anyhow!("Failed piping {containerfile}: {e}"))?;
-                    let _ = stdin.write_u8(b'\n').await;
-                }
-                Ok::<_, anyhow::Error>(())
-            }
+            let stdin = child.stdin.take().expect("started");
+            async move { send_containerfile(stdin, containerfile).await }
         });
 
         // ---
@@ -713,6 +697,24 @@ impl Effects {
         drop(child);
         Ok(status)
     }
+}
+
+async fn send_containerfile(mut stdin: ChildStdin, containerfile: Utf8PathBuf) -> Result<()> {
+    let reader = TokioFile::open(&containerfile)
+        .await
+        .map_err(|e| anyhow!("Failed opening (RO) {containerfile}: {e}"))?;
+
+    let mut lines = TokioBufReader::new(reader).lines();
+    while let Ok(Some(line)) = lines.next_line().await {
+        if line.starts_with(DIESES) {
+            continue;
+        }
+
+        let errf = |e| anyhow!("Failed piping containerfile: {e}");
+        stdin.write_all(line.as_bytes()).await.map_err(errf)?;
+        stdin.write_u8(b'\n').await.map_err(errf)?;
+    }
+    Ok(())
 }
 
 #[inline]
