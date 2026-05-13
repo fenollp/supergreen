@@ -136,7 +136,7 @@ declare -a nvs nvs_args toolchain
 #rust-toolchain.toml
 ((i+=1)); nvs[i]=coccinelleforrust@main;      oks[i]=Ko; nvs_args[i]='--git https://gitlab.inria.fr/coccinelle/coccinelleforrust.git --rev=50612e285' # Pinned on 2025/12/03 # Dirty ra_ap_stdx v0.0.312: the environment variable CI changed
 ((i+=1)); nvs[i]=edit@main;                   oks[i]=ok; nvs_args[i]='--git https://github.com/microsoft/edit --tag=v1.2.1 edit'; toolchain[i]='nightly-2026-03-16' # Pinned 2025/12/04
-((i+=1)); nvs[i]=pyrefly@main;                oks[i]=ko; nvs_args[i]='--git https://github.com/facebook/pyrefly --tag=0.44.0'; toolchain[i]='nightly-2025-09-14' # from its rust-toolchain.toml
+((i+=1)); nvs[i]=pyrefly@main;                oks[i]=ok; nvs_args[i]='--git https://github.com/facebook/pyrefly --tag=0.44.0'; toolchain[i]='nightly-2025-09-14' # from its rust-toolchain.toml
 # running: cd "/tmp/clis-pyrefly_main/release/build/tikv-jemalloc-sys-3de93e63469ff870/out/build" && "make" "-j" "1"
 # thread 'main' (6) panicked at /home/pete/.cargo/registry/src/index.crates.io/tikv-jemalloc-sys-0.6.0+5.3.0-1-ge13ca993e8ccb9ba9847cc330696e02839f328f7/build.rs:384:19:
 # failed to execute command: No such file or directory (os error 2)
