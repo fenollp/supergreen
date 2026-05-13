@@ -154,7 +154,7 @@ declare -a nvs nvs_args toolchain
 #TODO: allowlist non-busting rustc flags => se about this cache key
 #TODO: test cargo -vv build -> test -> build and look for "Dirty", expect none
 
-((i+=1)); nvs[i]=nanometers@master;           oks[i]=ko; nvs_args[i]='--git https://github.com/aizcutei/nanometers.git --rev=ca11bbbead' # Pinned 2025/12/04
+((i+=1)); nvs[i]=nanometers@master;           oks[i]=ok; nvs_args[i]='--git https://github.com/aizcutei/nanometers.git --rev=ca11bbbead' # Pinned 2025/12/04
 # error: The platform you're compiling for is not supported by winit
 # Maybe on targets? wasm32-unknown-unknown [target.aarch64-apple-darwin] [target.x86_64-apple-darwin]
 
