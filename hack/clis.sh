@@ -115,7 +115,7 @@ declare -a nvs nvs_args toolchain
 #     = note: required for the cast from `Box<fn(&Session) -> Box<...> {make_miri_codegen_backend}>` to `Box<dyn FnOnce(&Options, &Target) -> Box<dyn CodegenBackend> + Send>`
 #     = note: the full name for the type has been written to '/target/release/deps/miri-e9f47534ee52cbf9.long-type-13241406945400517937.txt'
 #     = note: consider using `--verbose` to print the full type name to the console
-((i+=1)); nvs[i]=zed@main;                    oks[i]=ko; nvs_args[i]='--git https://github.com/zed-industries/zed.git --tag=v0.233.10';
+((i+=1)); nvs[i]=zed@main;                    oks[i]=ok; nvs_args[i]='--git https://github.com/zed-industries/zed.git --tag=v1.0.0';
 # In file included from /home/pete/.cargo/registry/src/index.crates.io/tree-sitter-0.26.8/src/lib.c:13:
 # /home/pete/.cargo/registry/src/index.crates.io/tree-sitter-0.26.8/src/./wasm_store.c:16:10: fatal error: wasm.h: No such file or directory
 #    16 | #include <wasm.h>
