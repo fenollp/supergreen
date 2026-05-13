@@ -4,7 +4,7 @@ set -o pipefail
 repo_root=$(realpath "$(dirname "$(dirname "$0")")")
 source "$repo_root"/hack/ck.sh
 
-nightly=nightly-2025-08-06
+nightly=nightly-2026-04-09
 
 # Usage:  $0                              #=> generate CI
 
