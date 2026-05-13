@@ -105,7 +105,7 @@ declare -a nvs nvs_args toolchain
 # * docker buildx version
 # # Pinned on 2025/12/03 # BUG: $CARGO_HOME/registry/src/index.crates.io-0000000000000000/openssl-src-111.18.0+1.1.1n/src/lib.rs:496:32: No such file or directory
 
-((i+=1)); nvs[i]=miri@master;                 oks[i]=ko; nvs_args[i]='--git https://github.com/rust-lang/miri.git --rev=1fe9d5ba386064c14eb517aacfa8e3d5a1acf97c'; toolchain[i]='nightly-2026-03-16' # Pinned on 2026/03/19
+((i+=1)); nvs[i]=miri@master;                 oks[i]=ok; nvs_args[i]='--git https://github.com/rust-lang/miri.git --rev=1fe9d5ba386064c14eb517aacfa8e3d5a1acf97c'; toolchain[i]='nightly-2026-03-16' # Pinned on 2026/03/19
 # 174 | fn make_miri_codegen_backend(sess: &Session) -> Box<dyn CodegenBackend> {
 #     | ----------------------------------------------------------------------- takes 1 argument
 # ...
