@@ -65,7 +65,7 @@ declare -a nvs nvs_args toolchain
 ((i+=1)); nvs[i]=cargo-config2@0.1.39;        oks[i]=ok; nvs_args[i]='--example=get'
 
 # GTK+3
-((i+=1)); nvs[i]=rapidraw@main;               oks[i]=ko; nvs_args[i]='--git https://github.com/CyberTimon/RapidRAW.git --tag=v1.4.6 RapidRAW' # Pinned 2025/12/04
+((i+=1)); nvs[i]=rapidraw@main;               oks[i]=ok; nvs_args[i]='--git https://github.com/CyberTimon/RapidRAW.git --tag=v1.4.6 RapidRAW' # Pinned 2025/12/04
 # Compiling rawler v0.7.1 (/home/pete/.cargo/git/checkouts/rapidraw-23a119d7e5f78018/b0c070f/src-tauri/rawler/rawler)
 # Calling  git config --get remote.origin.url
 # Error: Failed getting repository origin url:

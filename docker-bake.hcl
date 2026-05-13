@@ -3,6 +3,7 @@ group "default" {
     "buildxargs",
     "edit.dwp",
     "cargo_kani",
+    "libfutures.rmeta",
     "CreuSAT",
     "vixargs",
     "rg",
@@ -63,6 +64,11 @@ target "edit.dwp" {
 target "cargo_kani" {
   context = "recipes"
   dockerfile = "kani-verifier@0.66.0.Dockerfile"
+  output = ["."]
+}
+target "libfutures.rmeta" {
+  context = "recipes"
+  dockerfile = "rapidraw@main.Dockerfile"
   output = ["."]
 }
 target "CreuSAT" {
