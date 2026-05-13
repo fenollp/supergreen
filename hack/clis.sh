@@ -551,6 +551,18 @@ esac
 
 install_dir=$repo_root/target
 
+# Ad-hoc $PATH otherwise macOS has troubles with string length
+shortPATH=$install_dir/bin
+for cmd in cargo docker; do
+  shortPATH="$shortPATH:"$(dirname "$(which $cmd)")""
+done
+while read -d: -r path; do
+  if ! [[ "$shortPATH" =~ (^"$path":|:"$path":|:"$path"$) ]]; then
+    shortPATH="$shortPATH:$path"
+  fi
+done <<<"$PATH"
+
+
 # Special first arg handling..
 case "$arg1" in
   # Try all, sequentially
@@ -579,10 +591,10 @@ set -x
     rm $tmplogs >/dev/null 2>&1 || true
     touch $tmplogs
 
-    case "$OSTYPE" in
-      darwin*) osascript -e "$(printf 'tell app "Terminal" \n do script "tail -f %s" \n end tell' $tmplogs)" ;;
-      *)     # xdg-terminal-exec tail -f $tmplogs ;;
-    esac
+    # case "$OSTYPE" in
+    #   darwin*) osascript -e "$(printf 'tell app "Terminal" \n do script "tail -f %s" \n end tell' $tmplogs)" ;;
+    #   *)       xdg-terminal-exec tail -f $tmplogs ;;
+    # esac
 
     cargo=cargo ; [[ "${CARGO:-}" != '' ]] && cargo="cargo +$CARGO"
 
@@ -593,13 +605,13 @@ set -x
     CARGOGREEN_LOG_PATH="$tmplogs" \
     CARGOGREEN_FINAL_PATH="$tmptrgt/cargo-green-fetched.Dockerfile" \
     CARGOGREEN_EXPERIMENT=finalpathnonprimary \
-    PATH=$install_dir/bin:"$PATH" \
+    PATH=$shortPATH \
       $cargo green fetch
     CARGOGREEN_LOG=debug \
     CARGOGREEN_LOG_PATH="$tmplogs" \
     CARGOGREEN_FINAL_PATH="$tmptrgt/cargo-green.Dockerfile" \
     CARGOGREEN_EXPERIMENT=finalpathnonprimary \
-    PATH=$install_dir/bin:"$PATH" \
+    PATH=$shortPATH \
     CARGO_TARGET_DIR="$tmptrgt" \
       $cargo green -vv $arg1 $jobs --all-features $frozen -p cargo-green
     exit ;;
@@ -652,12 +664,6 @@ send \
     '&&' "rm $tmplogs >/dev/null 2>&1; touch $tmplogs; tail -f $tmplogs; :"
 tmux select-layout even-vertical
 tmux split-window
-
-# Ad-hoc $PATH otherwise macOS has troubles with string length
-shortPATH=$install_dir/bin
-for cmd in cargo docker; do
-  shortPATH="$shortPATH:"$(dirname "$(which $cmd)")""
-done
 
 # RUSTFLAGS="--remap-path-prefix=$tmptrgt="
 
