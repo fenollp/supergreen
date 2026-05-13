@@ -24,10 +24,9 @@ use tokio::{
     fs::File as TokioFile,
     io::{AsyncBufReadExt, AsyncReadExt, AsyncWriteExt, BufReader as TokioBufReader},
     join,
-    process::{ChildStderr, ChildStdin, Command},
+    process::{ChildStderr, ChildStdin, ChildStdout, Command},
     spawn,
     sync::oneshot::{self, Sender},
-    task::JoinHandle,
     time::timeout,
 };
 use tokio_stream::StreamExt;
@@ -455,139 +454,12 @@ impl Effects {
         let (tx_err, mut rx_err) = oneshot::channel();
 
         let handles = if let Some(out_dir) = out_dir {
-            let dbg_out: JoinHandle<Result<_>> = spawn({
-                let mut out = TokioBufReader::new(child.stdout.take().expect("started"));
+            let dbg_out = spawn({
                 let target = target.to_owned();
                 let out_dir = out_dir.to_owned();
                 let cargo_home = cargo_home.to_string();
-                let mut err_handle = None;
-                let mut out_handle = None;
-                let mut rcd = None;
-                let mut written = vec![];
-                async move {
-                    let mut buf = Vec::new();
-                    out.read_to_end(&mut buf)
-                        .await
-                        .map_err(|e| anyhow!("Failed getting all the buffer: {e}"))?;
-                    debug!("produced {target} 0x{}", sha256::digest(&buf));
-                    let out = TokioBufReader::new(buf.as_slice());
-                    let out_path = format!("{target}-{STDOUT}");
-                    let err_path = format!("{target}-{STDERR}");
-                    let rcd_path = format!("{target}-{ERRCODE}");
-
-                    info!("running untar on STDOUT");
-                    let mut ar = tokio_tar::Archive::new(out);
-                    let mut entries =
-                        ar.entries().map_err(|e| anyhow!("Failed reading TAR: {e}"))?;
-                    while let Some(Ok(mut f)) = entries.next().await {
-                        let name: Utf8PathBuf = f
-                            .path()
-                            .map_err(|e| anyhow!("Failed decoding TAR entry name: {e}"))?
-                            .to_string_lossy()
-                            .to_string()
-                            .into();
-
-                        if name == out_path {
-                            let mut buf = String::new();
-                            f.read_to_string(&mut buf)
-                                .await
-                                .map_err(|e| anyhow!("Failed unTARing buffer: {e}"))?;
-                            debug!("produced {name} 0x{}", sha256::digest(&buf));
-                            out_handle = Some(buf);
-                        } else if name == err_path {
-                            let mut buf = String::new();
-                            f.read_to_string(&mut buf)
-                                .await
-                                .map_err(|e| anyhow!("Failed unTARing buffer: {e}"))?;
-                            debug!("produced {name} 0x{}", sha256::digest(&buf));
-                            err_handle = Some(buf);
-                        } else if name == rcd_path {
-                            let line = TokioBufReader::new(f).lines().next_line().await;
-                            rcd = line.ok().flatten().and_then(|x| x.parse::<i32>().ok());
-                        } else {
-                            written.push(name.clone());
-                            info!("creating (RW) {name:?}");
-                            let fname = out_dir.join(&name);
-                            let mode = f
-                                .header()
-                                .mode()
-                                .map_err(|e| anyhow!("Failed decoding mode: {e}"))?;
-
-                            // No async: entries MUST be consumed in sequence
-                            let mut buf = Vec::new();
-                            f.read_to_end(&mut buf)
-                                .await
-                                .map_err(|e| anyhow!("Failed unTARing: {e}"))?;
-                            debug!("produced {}B {name} 0x{}", buf.len(), sha256::digest(&buf));
-
-                            assert_eq!(f.header().uid().unwrap(), 0);
-                            assert_eq!(f.header().gid().unwrap(), 0);
-                            assert_eq!(f.header().mtime().unwrap(), SOURCE_DATE_EPOCH);
-                            assert_eq!(f.header().username(), Ok(Some("")));
-                            assert_eq!(f.header().groupname(), Ok(Some("")));
-
-                            match f.header().entry_type() {
-                                EntryType::Regular => {
-                                    info!("opening (W) file {fname}");
-                                    let mut opts = AtomicWriteFile::options();
-                                    opts.mode(mode);
-                                    let mut file = opts.open(&fname).map_err(|e| {
-                                        anyhow!("Failed opening atomic {fname}: {e}")
-                                    })?;
-                                    if name.as_str().ends_with(".d") {
-                                        let buf = str::from_utf8(&buf).expect("cargo writes utf8");
-                                        // NOTE: rewrite text here so cargo shows host paths and keeps the illusion
-                                        // but really binaries (rlib, rmeta and such) cannot be modified.
-                                        let buf = un_virtual_target_dir_str(buf);
-                                        let buf = un_rewrite_cargo_home(&buf, &cargo_home);
-                                        file.write_all(buf.as_bytes())
-                                    } else {
-                                        file.write_all(&buf)
-                                    }
-                                    .map_err(|e| anyhow!("Failed writing unTARed: {e}"))?;
-                                    file.commit()
-                                        .map_err(|e| anyhow!("Failed writing unTARed: {e}"))?;
-                                }
-
-                                EntryType::Directory => {
-                                    info!("creating path {fname}");
-                                    DirBuilder::new()
-                                        .mode(mode)
-                                        .recursive(true) //= mkdir "-p"
-                                        .create(&fname)
-                                        .map_err(|e| anyhow!("Failed `mkdir -p {fname}`: {e}"))?;
-                                }
-
-                                EntryType::Symlink => {
-                                    info!("creating symlink {fname}");
-                                    let name = f.link_name().map_err(|e| {
-                                        anyhow!("Failed reading link name of {fname}: {e}")
-                                    })?;
-                                    let Some(name) = name else {
-                                        bail!("Link name not present for {fname}")
-                                    };
-                                    let _ = symlink::remove_symlink_file(&fname);
-                                    symlink::symlink_file(&name, &fname).map_err(|e| {
-                                        anyhow!("Failed `ln -s {name:?} {fname}`: {e}")
-                                    })?;
-                                }
-
-                                entryty => bail!("BUG: unexpected entry type {entryty:?}"),
-                            }
-
-                            assert_eq!(
-                                fname.symlink_metadata().unwrap_or_else(|e| panic!("{fname}: {e}")).mode() & 0o777,
-                                mode,
-                                "Unexpected untared-then-written file mode {:#o} vs: {mode:#o} {:?} for {fname}",
-                                fname.symlink_metadata().unwrap_or_else(|e| panic!("{fname}: {e}")).mode(),
-                                fname.symlink_metadata()
-                            );
-                        }
-                    }
-                    info!("rustc wrote {} files:", written.len());
-                    written.sort();
-                    Ok((out_handle, err_handle, rcd, written))
-                }
+                let stdout = child.stdout.take().expect("started");
+                async move { build_stdout(stdout, target, out_dir, cargo_home).await }
             });
 
             let dbg_err = spawn({
@@ -677,6 +549,129 @@ async fn send_containerfile(mut stdin: ChildStdin, containerfile: Utf8PathBuf) -
         stdin.write_u8(b'\n').await.map_err(errf)?;
     }
     Ok(())
+}
+
+async fn build_stdout(
+    stdout: ChildStdout,
+    target: Stage,
+    out_dir: Utf8PathBuf,
+    cargo_home: String,
+) -> Result<(Option<String>, Option<String>, Option<i32>, Vec<Utf8PathBuf>)> {
+    let mut buf = Vec::new();
+    TokioBufReader::new(stdout)
+        .read_to_end(&mut buf)
+        .await
+        .map_err(|e| anyhow!("Failed getting all the buffer: {e}"))?;
+    debug!("produced {target} 0x{}", sha256::digest(&buf));
+    let out = TokioBufReader::new(buf.as_slice());
+
+    let out_path = format!("{target}-{STDOUT}");
+    let err_path = format!("{target}-{STDERR}");
+    let rcd_path = format!("{target}-{ERRCODE}");
+
+    let mut err_handle = None;
+    let mut out_handle = None;
+    let mut rcd = None;
+    let mut written = vec![];
+
+    info!("running untar on STDOUT");
+    let mut ar = tokio_tar::Archive::new(out);
+    let mut entries = ar.entries().map_err(|e| anyhow!("Failed reading TAR: {e}"))?;
+    while let Some(Ok(mut f)) = entries.next().await {
+        let name: Utf8PathBuf = f
+            .path()
+            .map_err(|e| anyhow!("Failed decoding TAR entry name: {e}"))?
+            .to_string_lossy()
+            .to_string()
+            .into();
+
+        if name == out_path {
+            let mut buf = String::new();
+            f.read_to_string(&mut buf).await.map_err(|e| anyhow!("Failed unTARing stdout: {e}"))?;
+            debug!("produced {name} 0x{}", sha256::digest(&buf));
+            out_handle = Some(buf);
+        } else if name == err_path {
+            let mut buf = String::new();
+            f.read_to_string(&mut buf).await.map_err(|e| anyhow!("Failed unTARing stderr: {e}"))?;
+            debug!("produced {name} 0x{}", sha256::digest(&buf));
+            err_handle = Some(buf);
+        } else if name == rcd_path {
+            let line = TokioBufReader::new(f).lines().next_line().await;
+            rcd = line.ok().flatten().and_then(|x| x.parse::<i32>().ok());
+        } else {
+            written.push(name.clone());
+            info!("creating (RW) {name:?}");
+            let fname = out_dir.join(&name);
+            let mode = f.header().mode().map_err(|e| anyhow!("Failed decoding mode: {e}"))?;
+
+            // No async: entries MUST be consumed in sequence
+            let mut buf = Vec::new();
+            f.read_to_end(&mut buf).await.map_err(|e| anyhow!("Failed unTARing {name}: {e}"))?;
+            debug!("produced {}B {name} 0x{}", buf.len(), sha256::digest(&buf));
+
+            assert_eq!(f.header().uid().unwrap(), 0);
+            assert_eq!(f.header().gid().unwrap(), 0);
+            assert_eq!(f.header().mtime().unwrap(), SOURCE_DATE_EPOCH);
+            assert_eq!(f.header().username(), Ok(Some("")));
+            assert_eq!(f.header().groupname(), Ok(Some("")));
+
+            match f.header().entry_type() {
+                EntryType::Regular => {
+                    info!("opening (W) file {fname}");
+                    let mut opts = AtomicWriteFile::options();
+                    opts.mode(mode);
+                    let mut file = opts
+                        .open(&fname)
+                        .map_err(|e| anyhow!("Failed opening atomic {fname}: {e}"))?;
+                    if name.as_str().ends_with(".d") {
+                        let buf = str::from_utf8(&buf).expect("cargo writes utf8");
+                        // NOTE: rewrite text here so cargo shows host paths and keeps the illusion
+                        // but really binaries (rlib, rmeta and such) cannot be modified.
+                        let buf = un_virtual_target_dir_str(buf);
+                        let buf = un_rewrite_cargo_home(&buf, &cargo_home);
+                        file.write_all(buf.as_bytes())
+                    } else {
+                        file.write_all(&buf)
+                    }
+                    .map_err(|e| anyhow!("Failed writing unTARed: {e}"))?;
+                    file.commit().map_err(|e| anyhow!("Failed writing unTARed: {e}"))?;
+                }
+
+                EntryType::Directory => {
+                    info!("creating path {fname}");
+                    DirBuilder::new()
+                        .mode(mode)
+                        .recursive(true) //= mkdir "-p"
+                        .create(&fname)
+                        .map_err(|e| anyhow!("Failed `mkdir -p {fname}`: {e}"))?;
+                }
+
+                EntryType::Symlink => {
+                    info!("creating symlink {fname}");
+                    let name = f
+                        .link_name()
+                        .map_err(|e| anyhow!("Failed reading link name of {fname}: {e}"))?;
+                    let Some(name) = name else { bail!("Link name not present for {fname}") };
+                    let _ = symlink::remove_symlink_file(&fname);
+                    symlink::symlink_file(&name, &fname)
+                        .map_err(|e| anyhow!("Failed `ln -s {name:?} {fname}`: {e}"))?;
+                }
+
+                entryty => bail!("BUG: unexpected entry type {entryty:?}"),
+            }
+
+            assert_eq!(
+                fname.symlink_metadata().unwrap_or_else(|e| panic!("{fname}: {e}")).mode() & 0o777,
+                mode,
+                "Unexpected untared-then-written file mode {:#o} vs: {mode:#o} {:?} for {fname}",
+                fname.symlink_metadata().unwrap_or_else(|e| panic!("{fname}: {e}")).mode(),
+                fname.symlink_metadata()
+            );
+        }
+    }
+    info!("rustc wrote {} files:", written.len());
+    written.sort();
+    Ok((out_handle, err_handle, rcd, written))
 }
 
 #[inline]
