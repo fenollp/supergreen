@@ -2,6 +2,7 @@ group "default" {
   targets = [
     "buildxargs",
     "edit.dwp",
+    "probe0.ll",
     "cargo_kani",
     "CreuSAT",
     "vixargs",
@@ -58,6 +59,11 @@ target "buildxargs" {
 target "edit.dwp" {
   context = "recipes"
   dockerfile = "edit@main.Dockerfile"
+  output = ["."]
+}
+target "probe0.ll" {
+  context = "recipes"
+  dockerfile = "privaxy@main.Dockerfile"
   output = ["."]
 }
 target "cargo_kani" {
