@@ -350,13 +350,11 @@ impl Green {
             .replace(cmd.as_std().get_program().to_str().unwrap(), &self.runner.to_string());
         let envs = cmd.envs_string(&self.runner.buildnoop_envs());
 
-        let status = match effects
-            .run_build(cmd, &call, containerfile, target, out_dir, &self.cargo_home)
-            .await
-        {
-            Ok(status) => status,
-            Err(e) => return rtrn(e, effects),
-        };
+        let status =
+            match self.run_build(&mut effects, cmd, &call, containerfile, target, out_dir).await {
+                Ok(status) => status,
+                Err(e) => return rtrn(e, effects),
+            };
 
         // Something is very wrong here. Try to be helpful by logging some info about runner config:
         if !status.success() {
@@ -427,15 +425,15 @@ pub(crate) struct Effects {
     pub(crate) cargo_rustc_env: IndexSet<String>,
 }
 
-impl Effects {
+impl Green {
     async fn run_build(
-        &mut self,
+        &self,
+        effects: &mut Effects,
         mut cmd: Command,
         call: &str,
         containerfile: &Utf8Path,
         target: &Stage,
         out_dir: Option<&Utf8Path>,
-        cargo_home: &Utf8Path,
     ) -> Result<ExitStatus> {
         let start = Instant::now();
         let mut child = cmd.spawn().map_err(|e| anyhow!("Failed starting `{call}`: {e}"))?;
@@ -457,7 +455,7 @@ impl Effects {
             let dbg_out = spawn({
                 let target = target.to_owned();
                 let out_dir = out_dir.to_owned();
-                let cargo_home = cargo_home.to_string();
+                let cargo_home = self.cargo_home.to_string();
                 let stdout = child.stdout.take().expect("started");
                 async move { build_stdout(stdout, target, out_dir, cargo_home).await }
             });
@@ -503,19 +501,21 @@ impl Effects {
             match join!(timeout(SOME_TIME, dbg_out), timeout(SOME_TIME, dbg_err)) {
                 (Ok(Ok(Err(e))), _) => bail!("Something went wrong (maybe retry?): {e}"),
                 (Ok(Ok(Ok((Some(out_buf), Some(err_buf), errcode, written)))), _) => {
-                    let FromStdout { stdout, rustc_envs } = fwd_stdout(&out_buf, "➤", cargo_home);
+                    let FromStdout { stdout, rustc_envs } =
+                        fwd_stdout(&out_buf, "➤", &self.cargo_home);
                     info!("Buildscript {PKG}-specific config: envs:{}", rustc_envs.len());
-                    self.cargo_rustc_env = rustc_envs;
+                    effects.cargo_rustc_env = rustc_envs;
 
-                    let FromStderr { stderr, envs, libs } = fwd_stderr(&err_buf, "✖", cargo_home);
+                    let FromStderr { stderr, envs, libs } =
+                        fwd_stderr(&err_buf, "✖", &self.cargo_home);
                     info!(
                         "Suggested {PKG}-specific config: envs:{} libs:{}",
                         envs.len(),
                         libs.len()
                     );
-                    self.stdout = stdout;
-                    self.stderr = stderr;
-                    self.written = written;
+                    effects.stdout = stdout;
+                    effects.stderr = stderr;
+                    effects.written = written;
 
                     if let Some(errcode) = errcode.map(ExitStatus::from_raw) {
                         if !errcode.success() {
@@ -634,7 +634,7 @@ async fn build_stdout(
                         file.write_all(&buf)
                     }
                     .map_err(|e| anyhow!("Failed writing unTARed: {e}"))?;
-                    file.commit().map_err(|e| anyhow!("Failed writing unTARed: {e}"))?;
+                    file.commit().map_err(|e| anyhow!("Failed committing unTARed: {e}"))?;
                 }
 
                 EntryType::Directory => {
