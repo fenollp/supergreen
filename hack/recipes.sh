@@ -18,7 +18,6 @@ for runID in $(gh run list --branch "$branch"  --json databaseId,workflowName --
 
 		# When diffing, ignore changes that mention PKG version and image digests.
 		if git --no-pager diff --exit-code \
-			--ignore-matching-lines='^#' \
 			--ignore-matching-lines=' AS rust-base$' \
 			-- $f; then
 			git checkout -- $f 2>/dev/null || true

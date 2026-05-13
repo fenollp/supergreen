@@ -180,9 +180,9 @@ rm -rf $CARGO_TARGET_DIR/* >/dev/null
 rm -rf $CARGOGREEN_LOG_PATH >/dev/null
 rm -rf $install_root/* >/dev/null
 $CARGO green install --locked --frozen --offline --force $install_package --root=$install_root
-git --no-pager diff --ignore-matching-lines='^##' -- $CARGOGREEN_FINAL_PATH
+git --no-pager diff -- $CARGOGREEN_FINAL_PATH
 echo 'Change rustc => changes base image (at least)'
-cat <<EOF | diff -u - <(git --no-pager diff --ignore-matching-lines='^##' -- $CARGOGREEN_FINAL_PATH | head -n12 | tail -n+9)
+cat <<EOF | diff -u - <(git --no-pager diff -- $CARGOGREEN_FINAL_PATH | head -n12 | tail -n+9)
 -FROM scratch AS rustup-1.84.1-x86_64-unknown-linux-gnu
 +FROM scratch AS rustup-1.84.0-x86_64-unknown-linux-gnu
  ADD --chmod=0144 --checksum=sha256:4acc9acc76d5079515b46346a485974457b5a79893cfb01112423c89aeb5aa10 \\
@@ -237,7 +237,7 @@ rm -rf $CARGO_TARGET_DIR/* >/dev/null
 rm -rf $CARGOGREEN_LOG_PATH >/dev/null
 rm -rf $install_root/* >/dev/null
 $CARGO green install --locked --frozen --offline --force $install_package --root=$install_root
-git --no-pager diff --ignore-matching-lines='^##' -- $CARGOGREEN_FINAL_PATH
+git --no-pager diff -- $CARGOGREEN_FINAL_PATH
 echo 'Change CARGO_TARGET_DIR => no diff!'
 cat <<'EOF' | diff -u - <(git --no-pager diff -- $CARGOGREEN_FINAL_PATH | tail -n+7)
 EOF
@@ -247,7 +247,7 @@ ensure__rewrite_cratesio_index__works
 ensure__rewrite_target_dir__works
 $install_root/bin/${install_package%@*} --help >/dev/null
 [[ $install_sha = $(compute_installed_bin_sha256) ]] # change targetdir => no binary changes
-git --no-pager diff --ignore-matching-lines='^##' -- $CARGOGREEN_FINAL_PATH
+git --no-pager diff -- $CARGOGREEN_FINAL_PATH
 git add $CARGOGREEN_FINAL_PATH
 
 echo Changing CARGO_TARGET_DIR only changes runner call!
