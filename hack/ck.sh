@@ -140,7 +140,6 @@ cat <<EOF
         if [[ \${{ matrix.toolchain }} != $stable ]]; then
           final_diff+=(--exit-code)
         fi
-        final_diff+=(--ignore-matching-lines='^#')
         final_diff+=(--ignore-matching-lines=' AS rust-base$')
         final_diff+=(-- \$CARGOGREEN_FINAL_PATH)
         "\${final_diff[@]}"

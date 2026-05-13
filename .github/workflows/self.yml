@@ -201,7 +201,6 @@ jobs:
         if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
           final_diff+=(--exit-code)
         fi
-        final_diff+=(--ignore-matching-lines='^#')
         final_diff+=(--ignore-matching-lines=' AS rust-base$')
         final_diff+=(-- $CARGOGREEN_FINAL_PATH)
         "${final_diff[@]}"
@@ -349,7 +348,6 @@ jobs:
         if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
           final_diff+=(--exit-code)
         fi
-        final_diff+=(--ignore-matching-lines='^#')
         final_diff+=(--ignore-matching-lines=' AS rust-base$')
         final_diff+=(-- $CARGOGREEN_FINAL_PATH)
         "${final_diff[@]}"
@@ -493,7 +491,6 @@ jobs:
         if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
           final_diff+=(--exit-code)
         fi
-        final_diff+=(--ignore-matching-lines='^#')
         final_diff+=(--ignore-matching-lines=' AS rust-base$')
         final_diff+=(-- $CARGOGREEN_FINAL_PATH)
         "${final_diff[@]}"
@@ -644,7 +641,6 @@ jobs:
         if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
           final_diff+=(--exit-code)
         fi
-        final_diff+=(--ignore-matching-lines='^#')
         final_diff+=(--ignore-matching-lines=' AS rust-base$')
         final_diff+=(-- $CARGOGREEN_FINAL_PATH)
         "${final_diff[@]}"
@@ -720,7 +716,6 @@ jobs:
         if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
           final_diff+=(--exit-code)
         fi
-        final_diff+=(--ignore-matching-lines='^#')
         final_diff+=(--ignore-matching-lines=' AS rust-base$')
         final_diff+=(-- $CARGOGREEN_FINAL_PATH)
         "${final_diff[@]}"
@@ -860,7 +855,6 @@ jobs:
         if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
           final_diff+=(--exit-code)
         fi
-        final_diff+=(--ignore-matching-lines='^#')
         final_diff+=(--ignore-matching-lines=' AS rust-base$')
         final_diff+=(-- $CARGOGREEN_FINAL_PATH)
         "${final_diff[@]}"
@@ -930,7 +924,6 @@ jobs:
         if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
           final_diff+=(--exit-code)
         fi
-        final_diff+=(--ignore-matching-lines='^#')
         final_diff+=(--ignore-matching-lines=' AS rust-base$')
         final_diff+=(-- $CARGOGREEN_FINAL_PATH)
         "${final_diff[@]}"
@@ -1006,7 +999,6 @@ jobs:
         if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
           final_diff+=(--exit-code)
         fi
-        final_diff+=(--ignore-matching-lines='^#')
         final_diff+=(--ignore-matching-lines=' AS rust-base$')
         final_diff+=(-- $CARGOGREEN_FINAL_PATH)
         "${final_diff[@]}"
@@ -1146,7 +1138,6 @@ jobs:
         if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
           final_diff+=(--exit-code)
         fi
-        final_diff+=(--ignore-matching-lines='^#')
         final_diff+=(--ignore-matching-lines=' AS rust-base$')
         final_diff+=(-- $CARGOGREEN_FINAL_PATH)
         "${final_diff[@]}"
@@ -1216,7 +1207,6 @@ jobs:
         if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
           final_diff+=(--exit-code)
         fi
-        final_diff+=(--ignore-matching-lines='^#')
         final_diff+=(--ignore-matching-lines=' AS rust-base$')
         final_diff+=(-- $CARGOGREEN_FINAL_PATH)
         "${final_diff[@]}"
@@ -1292,7 +1282,6 @@ jobs:
         if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
           final_diff+=(--exit-code)
         fi
-        final_diff+=(--ignore-matching-lines='^#')
         final_diff+=(--ignore-matching-lines=' AS rust-base$')
         final_diff+=(-- $CARGOGREEN_FINAL_PATH)
         "${final_diff[@]}"
@@ -1432,7 +1421,6 @@ jobs:
         if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
           final_diff+=(--exit-code)
         fi
-        final_diff+=(--ignore-matching-lines='^#')
         final_diff+=(--ignore-matching-lines=' AS rust-base$')
         final_diff+=(-- $CARGOGREEN_FINAL_PATH)
         "${final_diff[@]}"
@@ -1502,7 +1490,6 @@ jobs:
         if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
           final_diff+=(--exit-code)
         fi
-        final_diff+=(--ignore-matching-lines='^#')
         final_diff+=(--ignore-matching-lines=' AS rust-base$')
         final_diff+=(-- $CARGOGREEN_FINAL_PATH)
         "${final_diff[@]}"
@@ -1578,7 +1565,6 @@ jobs:
         if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
           final_diff+=(--exit-code)
         fi
-        final_diff+=(--ignore-matching-lines='^#')
         final_diff+=(--ignore-matching-lines=' AS rust-base$')
         final_diff+=(-- $CARGOGREEN_FINAL_PATH)
         "${final_diff[@]}"
@@ -1718,7 +1704,6 @@ jobs:
         if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
           final_diff+=(--exit-code)
         fi
-        final_diff+=(--ignore-matching-lines='^#')
         final_diff+=(--ignore-matching-lines=' AS rust-base$')
         final_diff+=(-- $CARGOGREEN_FINAL_PATH)
         "${final_diff[@]}"
@@ -1788,7 +1773,6 @@ jobs:
         if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
           final_diff+=(--exit-code)
         fi
-        final_diff+=(--ignore-matching-lines='^#')
         final_diff+=(--ignore-matching-lines=' AS rust-base$')
         final_diff+=(-- $CARGOGREEN_FINAL_PATH)
         "${final_diff[@]}"
@@ -1929,7 +1913,6 @@ jobs:
         if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
           final_diff+=(--exit-code)
         fi
-        final_diff+=(--ignore-matching-lines='^#')
         final_diff+=(--ignore-matching-lines=' AS rust-base$')
         final_diff+=(-- $CARGOGREEN_FINAL_PATH)
         "${final_diff[@]}"
@@ -1999,7 +1982,6 @@ jobs:
         if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
           final_diff+=(--exit-code)
         fi
-        final_diff+=(--ignore-matching-lines='^#')
         final_diff+=(--ignore-matching-lines=' AS rust-base$')
         final_diff+=(-- $CARGOGREEN_FINAL_PATH)
         "${final_diff[@]}"
@@ -2075,7 +2057,6 @@ jobs:
         if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
           final_diff+=(--exit-code)
         fi
-        final_diff+=(--ignore-matching-lines='^#')
         final_diff+=(--ignore-matching-lines=' AS rust-base$')
         final_diff+=(-- $CARGOGREEN_FINAL_PATH)
         "${final_diff[@]}"
