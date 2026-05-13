@@ -72,6 +72,7 @@ impl Runner {
             "HTTP_PROXY",  //TODO: hinders reproducibility
             "HTTPS_PROXY", //TODO: hinders reproducibility
             "NO_PROXY",    //TODO: hinders reproducibility
+            "PATH",        // Required at least on macOS
         ]
         .into_iter()
         .filter_map(|k| env::var(k).ok().map(|v| (k.to_owned(), v)))
@@ -93,12 +94,13 @@ impl Runner {
                 DOCKER_DEFAULT_PLATFORM,
                 DOCKER_HIDE_LEGACY_COMMANDS,
                 DOCKER_HOST,
+                "PATH",
             ]
             .into_iter()
             .map(OsStr::new)
             .collect()
         } else {
-            vec![]
+            vec![OsStr::new("PATH")]
         }
     }
 
