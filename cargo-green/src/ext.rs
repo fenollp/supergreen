@@ -1,18 +1,7 @@
-use std::{ffi::OsStr, future::IntoFuture, process::Output, time::Duration};
+use std::{ffi::OsStr, process::Output};
 
 use anyhow::{anyhow, Result};
 use log::info;
-use tokio::time::Timeout;
-
-const SOME_TIME: Duration = Duration::from_secs(10);
-
-#[track_caller]
-pub(crate) fn timeout<F>(fut: F) -> Timeout<F::IntoFuture>
-where
-    F: IntoFuture,
-{
-    tokio::time::timeout(SOME_TIME, fut)
-}
 
 pub(crate) trait Popped: Clone {
     #[must_use]

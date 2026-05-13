@@ -28,6 +28,7 @@ use tokio::{
     spawn,
     sync::oneshot::{self},
     task::JoinHandle,
+    time::timeout,
 };
 use tokio_stream::StreamExt;
 use tokio_tar::EntryType;
@@ -35,7 +36,7 @@ use tokio_tar::EntryType;
 use crate::{
     base_image::un_rewrite_cargo_home,
     du::lock_from_builder_cache,
-    ext::{timeout, CommandExt},
+    ext::CommandExt,
     green::Green,
     image_uri::ImageUri,
     md::{BuildContext, DIESES},
@@ -678,8 +679,10 @@ impl Effects {
         // * if the call doesn't fail, the file isn't created.
         // * if the build fails that's a bug, and no files will be outputed.
 
+        const SOME_TIME: Duration = Duration::from_mins(30);
+
         if let Some((dbg_out, dbg_err)) = handles {
-            match join!(timeout(dbg_out), timeout(dbg_err)) {
+            match join!(timeout(SOME_TIME, dbg_out), timeout(SOME_TIME, dbg_err)) {
                 (Ok(Ok(Err(e))), _) => bail!("Something went wrong (maybe retry?): {e}"),
                 (Ok(Ok(Ok((Some(out_buf), Some(err_buf), errcode, written)))), _) => {
                     let FromStdout { stdout, rustc_envs } = fwd_stdout(&out_buf, "➤", cargo_home);
