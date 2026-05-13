@@ -24,9 +24,9 @@ use tokio::{
     fs::File as TokioFile,
     io::{AsyncBufReadExt, AsyncReadExt, AsyncWriteExt, BufReader as TokioBufReader},
     join,
-    process::{ChildStdin, Command},
+    process::{ChildStderr, ChildStdin, Command},
     spawn,
-    sync::oneshot::{self},
+    sync::oneshot::{self, Sender},
     task::JoinHandle,
     time::timeout,
 };
@@ -453,7 +453,6 @@ impl Effects {
         info!("Started as pid={pid} in {:?}", start.elapsed());
 
         let (tx_err, mut rx_err) = oneshot::channel();
-        let mut tx_err = Some(tx_err);
 
         let handles = if let Some(out_dir) = out_dir {
             let dbg_out: JoinHandle<Result<_>> = spawn({
@@ -592,45 +591,8 @@ impl Effects {
             });
 
             let dbg_err = spawn({
-                let mut lines = TokioBufReader::new(child.stderr.take().expect("started")).lines();
-                async move {
-                    let mut details: BTreeMap<String, String> = [].into();
-                    let mut dones = 0;
-                    let mut cacheds = 0;
-                    while let Ok(Some(line)) = lines.next_line().await {
-                        let line = strip_ansi_escapes(&line);
-                        if line.is_empty() {
-                            continue;
-                        }
-                        info!("✖ {line}");
-
-                        // Capture some approximate stats the runner gives us
-
-                        if line.starts_with("ERROR: ") {
-                            if let Some(tx_err) = tx_err.take() {
-                                let _ = tx_err.send(line.trim_start_matches("ERROR: ").to_owned());
-                            }
-                        }
-
-                        // Show data transfers (Bytes, maybe also timings?)
-                        for (idx, pattern) in line.as_str().match_indices(" transferring ") {
-                            let detail = line[(pattern.len() + idx)..].trim_end_matches(" done");
-                            let Some((ctx, value)) = detail.split_once(':') else { continue };
-                            details
-                                .entry(ctx.to_owned())
-                                .and_modify(|v| *v = value.to_owned())
-                                .or_insert(value.to_owned());
-                        }
-
-                        // Count DONEs and CACHEDs
-                        if line.contains(" DONE ") {
-                            dones += 1;
-                        } else if line.ends_with(" CACHED") {
-                            cacheds += 1;
-                        }
-                    }
-                    info!("Terminating task CACHED:{cacheds} DONE:{dones} {details:?}");
-                }
+                let stderr = child.stderr.take().expect("started");
+                async move { build_stderr(stderr, Some(tx_err)).await }
             });
 
             Some((dbg_out, dbg_err))
@@ -725,6 +687,48 @@ fn strip_ansi_escapes(line: &str) -> String {
         .replace("\\u001b[33m", "")
         .replace("\\u001b[38;5;12m", "")
         .replace("\\u001b[38;5;9m", "")
+}
+
+async fn build_stderr(stderr: ChildStderr, mut tx_err: Option<Sender<String>>) -> Result<()> {
+    let mut lines = TokioBufReader::new(stderr).lines();
+
+    let mut details: BTreeMap<String, String> = [].into();
+    let mut dones = 0;
+    let mut cacheds = 0;
+    while let Ok(Some(line)) = lines.next_line().await {
+        let line = strip_ansi_escapes(&line);
+        if line.is_empty() {
+            continue;
+        }
+        info!("✖ {line}");
+
+        // Capture some approximate stats the runner gives us
+
+        if line.starts_with("ERROR: ") {
+            if let Some(tx_err) = tx_err.take() {
+                let _ = tx_err.send(line.trim_start_matches("ERROR: ").to_owned());
+            }
+        }
+
+        // Show data transfers (Bytes, maybe also timings?)
+        for (idx, pattern) in line.as_str().match_indices(" transferring ") {
+            let detail = line[(pattern.len() + idx)..].trim_end_matches(" done");
+            let Some((ctx, value)) = detail.split_once(':') else { continue };
+            details
+                .entry(ctx.to_owned())
+                .and_modify(|v| *v = value.to_owned())
+                .or_insert(value.to_owned());
+        }
+
+        // Count DONEs and CACHEDs
+        if line.contains(" DONE ") {
+            dones += 1;
+        } else if line.ends_with(" CACHED") {
+            cacheds += 1;
+        }
+    }
+    info!("Terminating task CACHED:{cacheds} DONE:{dones} {details:?}");
+    Ok(())
 }
 
 #[derive(Debug, Default)]
