@@ -24,10 +24,10 @@ use tokio::{
     process::{ChildStderr, ChildStdin, ChildStdout, Command},
     spawn,
     sync::oneshot::{self, Sender},
-    time::timeout,
+    time::{error::Elapsed, timeout},
 };
 use tokio_stream::StreamExt;
-use tokio_tar::EntryType;
+use tokio_tar::{Archive as TarArchive, Entry as TarEntry, EntryType, Header as TarHeader};
 
 use crate::{
     base_image::un_rewrite_cargo_home,
@@ -288,7 +288,7 @@ impl Green {
             let res = child.wait().await;
             (start.elapsed(), res)
         };
-        let mut status = res.map_err(|e| anyhow!("Failed calling `{call}`: {e}"))?;
+        let status = res.map_err(|e| anyhow!("Failed calling `{call}`: {e}"))?;
         info!("build ran for {secs:?}");
 
         if let Ok(e) = rx_err.try_recv() {
@@ -300,41 +300,38 @@ impl Green {
         // * if the call doesn't fail, the file isn't created.
         // * if the build fails that's a bug, and no files will be outputed.
 
-        if let Some((dbg_out, dbg_err)) = handles {
-            const SOME_TIME: Duration = Duration::from_mins(30);
-            let joined = join!(timeout(SOME_TIME, dbg_out), timeout(SOME_TIME, dbg_err));
-            drop(child);
-            match joined {
-                (Ok(Ok(Err(e))), _) => bail!("Something went wrong (maybe retry?): {e}"),
-                (Ok(Ok(Ok((Some(out_buf), Some(err_buf), errcode, written)))), _) => {
-                    let FromStdout { stdout, rustc_envs } =
-                        fwd_stdout(&out_buf, "➤", &self.cargo_home);
-                    info!("Buildscript {PKG}-specific config: envs:{}", rustc_envs.len());
-                    effects.cargo_rustc_env = rustc_envs;
+        let Some((dbg_out, dbg_err)) = handles else { return Ok(status) };
+        const SOME_TIME: Duration = Duration::from_mins(30);
+        let joined = join!(timeout(SOME_TIME, dbg_out), timeout(SOME_TIME, dbg_err));
+        drop(child);
 
-                    let FromStderr { stderr, envs, libs } =
-                        fwd_stderr(&err_buf, "✖", &self.cargo_home);
-                    info!(
-                        "Suggested {PKG}-specific config: envs:{} libs:{}",
-                        envs.len(),
-                        libs.len()
-                    );
-                    effects.stdout = stdout;
-                    effects.stderr = stderr;
-                    effects.written = written;
+        match joined {
+            (Err(Elapsed { .. }), _) | (_, Err(Elapsed { .. })) => {
+                bail!("BUG: build took longer than {SOME_TIME:?}")
+            }
+            (Ok(Err(e)), _) | (_, Ok(Err(e))) if e.is_cancelled() => {
+                bail!("BUG: build was cancelled: {e}")
+            }
+            (Ok(Err(e)), _) | (_, Ok(Err(e))) => {
+                bail!("BUG: build panic'd or crashed: {e}")
+            }
+            (Ok(Ok(Err(e))), _) => {
+                bail!("Something went wrong (maybe retry?): {e}")
+            }
+            (Ok(Ok(Ok((out_buf, err_buf, errcode, written)))), _) => {
+                let FromStdout { stdout, rustc_envs } = fwd_stdout(&out_buf, "➤", &self.cargo_home);
+                info!("Buildscript {PKG}-specific config: envs:{}", rustc_envs.len());
+                effects.cargo_rustc_env = rustc_envs;
 
-                    if let Some(errcode) = errcode.map(ExitStatus::from_raw) {
-                        if !errcode.success() {
-                            status = errcode;
-                        }
-                    }
-                }
-                (e1, e2) => {
-                    bail!("BUG: STDIO forwarding crashed: {e1:?} | {e2:?}")
-                }
+                let FromStderr { stderr, envs, libs } = fwd_stderr(&err_buf, "✖", &self.cargo_home);
+                info!("Suggested {PKG}-specific config: envs:{} libs:{}", envs.len(), libs.len());
+                effects.stdout = stdout;
+                effects.stderr = stderr;
+                effects.written = written;
+
+                Ok(errcode.map(ExitStatus::from_raw).unwrap_or(status))
             }
         }
-        Ok(status)
     }
 }
 
@@ -423,26 +420,22 @@ async fn build_stdout(
     target: Stage,
     out_dir: Utf8PathBuf,
     cargo_home: String,
-) -> Result<(Option<String>, Option<String>, Option<i32>, Vec<Utf8PathBuf>)> {
+) -> Result<(String, String, Option<i32>, Vec<Utf8PathBuf>)> {
+    info!("running untar on STDOUT");
     let mut buf = Vec::new();
     BufReader::new(stdout)
         .read_to_end(&mut buf)
         .await
         .map_err(|e| anyhow!("Failed getting all the buffer: {e}"))?;
-    debug!("produced {target} 0x{}", sha256::digest(&buf));
+    debug!("produced {target} {}B 0x{}", buf.len(), sha256::digest(&buf));
     let out = BufReader::new(buf.as_slice());
 
-    let out_path = format!("{target}-{STDOUT}");
-    let err_path = format!("{target}-{STDERR}");
-    let rcd_path = format!("{target}-{ERRCODE}");
-
-    let mut err_handle = None;
-    let mut out_handle = None;
+    let mut err_handle = String::new();
+    let mut out_handle = String::new();
     let mut rcd = None;
     let mut written = vec![];
 
-    info!("running untar on STDOUT");
-    let mut ar = tokio_tar::Archive::new(out);
+    let mut ar = TarArchive::new(out);
     let mut entries = ar.entries().map_err(|e| anyhow!("Failed reading TAR: {e}"))?;
     while let Some(Ok(mut f)) = entries.next().await {
         let name: Utf8PathBuf = f
@@ -452,93 +445,104 @@ async fn build_stdout(
             .to_string()
             .into();
 
-        if name == out_path {
-            let mut buf = String::new();
-            f.read_to_string(&mut buf).await.map_err(|e| anyhow!("Failed unTARing stdout: {e}"))?;
-            debug!("produced {name} 0x{}", sha256::digest(&buf));
-            out_handle = Some(buf);
-        } else if name == err_path {
-            let mut buf = String::new();
-            f.read_to_string(&mut buf).await.map_err(|e| anyhow!("Failed unTARing stderr: {e}"))?;
-            debug!("produced {name} 0x{}", sha256::digest(&buf));
-            err_handle = Some(buf);
-        } else if name == rcd_path {
-            let line = BufReader::new(f).lines().next_line().await;
-            rcd = line.ok().flatten().and_then(|x| x.parse::<i32>().ok());
-        } else {
-            written.push(name.clone());
-            info!("creating (RW) {name:?}");
-            let fname = out_dir.join(&name);
-            let mode = f.header().mode().map_err(|e| anyhow!("Failed decoding mode: {e}"))?;
+        // No async: entries MUST be consumed in sequence
+        let mut buf = Vec::new();
+        f.read_to_end(&mut buf).await.map_err(|e| anyhow!("Failed unTARing {name}: {e}"))?;
+        let header = f.header();
+        debug!("produced {}B {name} 0x{}", buf.len(), sha256::digest(&buf));
 
-            // No async: entries MUST be consumed in sequence
-            let mut buf = Vec::new();
-            f.read_to_end(&mut buf).await.map_err(|e| anyhow!("Failed unTARing {name}: {e}"))?;
-            debug!("produced {}B {name} 0x{}", buf.len(), sha256::digest(&buf));
-
-            assert_eq!(f.header().uid().unwrap(), 0);
-            assert_eq!(f.header().gid().unwrap(), 0);
-            assert_eq!(f.header().mtime().unwrap(), SOURCE_DATE_EPOCH);
-            assert_eq!(f.header().username(), Ok(Some("")));
-            assert_eq!(f.header().groupname(), Ok(Some("")));
-
-            match f.header().entry_type() {
-                EntryType::Regular => {
-                    info!("opening (Watomic) file {fname}");
-                    let mut opts = AtomicWriteFile::options();
-                    opts.mode(mode);
-                    let mut file = opts
-                        .open(&fname)
-                        .map_err(|e| anyhow!("Failed opening atomic {fname}: {e}"))?;
-                    if name.as_str().ends_with(".d") {
-                        let buf = str::from_utf8(&buf).expect("cargo writes utf8");
-                        // NOTE: rewrite text here so cargo shows host paths and keeps the illusion
-                        // but really binaries (rlib, rmeta and such) cannot be modified.
-                        let buf = un_virtual_target_dir_str(buf);
-                        let buf = un_rewrite_cargo_home(&buf, &cargo_home);
-                        file.write_all(buf.as_bytes())
-                    } else {
-                        file.write_all(&buf)
-                    }
-                    .map_err(|e| anyhow!("Failed writing unTARed: {e}"))?;
-                    file.commit().map_err(|e| anyhow!("Failed committing unTARed: {e}"))?;
-                }
-
-                EntryType::Directory => {
-                    info!("creating path {fname}");
-                    DirBuilder::new()
-                        .mode(mode)
-                        .recursive(true) //= mkdir "-p"
-                        .create(&fname)
-                        .map_err(|e| anyhow!("Failed `mkdir -p {fname}`: {e}"))?;
-                }
-
-                EntryType::Symlink => {
-                    info!("creating symlink {fname}");
-                    let name = f
-                        .link_name()
-                        .map_err(|e| anyhow!("Failed reading link name of {fname}: {e}"))?;
-                    let Some(name) = name else { bail!("Link name not present for {fname}") };
-                    let _ = symlink::remove_symlink_file(&fname);
-                    symlink::symlink_file(&name, &fname)
-                        .map_err(|e| anyhow!("Failed `ln -s {name:?} {fname}`: {e}"))?;
-                }
-
-                entryty => bail!("BUG: unexpected entry type {entryty:?}"),
+        match name.as_str().trim_start_matches(&format!("{target}-")) {
+            STDOUT => {
+                out_handle =
+                    String::from_utf8(buf).map_err(|e| anyhow!("Corrupted result STDOUT: {e}"))?
             }
-
-            assert_eq!(
-                fname.symlink_metadata().unwrap_or_else(|e| panic!("{fname}: {e}")).mode() & 0o777,
-                mode,
-                "Unexpected untared-then-written file mode {:#o} vs: {mode:#o} {:?} for {fname}",
-                fname.symlink_metadata().unwrap_or_else(|e| panic!("{fname}: {e}")).mode(),
-                fname.symlink_metadata()
-            );
+            STDERR => {
+                err_handle =
+                    String::from_utf8(buf).map_err(|e| anyhow!("Corrupted result STDERR: {e}"))?
+            }
+            ERRCODE => {
+                let line = BufReader::new(f).lines().next_line().await;
+                rcd = line.ok().flatten().and_then(|x| x.parse::<i32>().ok());
+            }
+            _ => {
+                written.push(name.clone());
+                info!("creating (RW) {name:?}");
+                let fname = out_dir.join(&name);
+                write_build_artifact(header, &cargo_home, fname, buf, &f)?;
+            }
         }
     }
     info!("rustc wrote {} files:", written.len());
     written.sort();
     Ok((out_handle, err_handle, rcd, written))
+}
+
+fn write_build_artifact(
+    header: &TarHeader,
+    cargo_home: &str,
+    fname: Utf8PathBuf,
+    buf: Vec<u8>,
+    f: &TarEntry<TarArchive<BufReader<&[u8]>>>,
+) -> Result<()> {
+    let mode = header.mode().map_err(|e| anyhow!("Corrupted result mode: {e}"))?;
+
+    assert_eq!(header.uid().unwrap(), 0);
+    assert_eq!(header.gid().unwrap(), 0);
+    assert_eq!(header.mtime().unwrap(), SOURCE_DATE_EPOCH);
+    assert_eq!(header.username(), Ok(Some("")));
+    assert_eq!(header.groupname(), Ok(Some("")));
+
+    match header.entry_type() {
+        EntryType::Regular => {
+            info!("opening (Watomic) file {fname}");
+            let mut opts = AtomicWriteFile::options();
+            opts.mode(mode);
+            let mut file =
+                opts.open(&fname).map_err(|e| anyhow!("Failed opening atomic {fname}: {e}"))?;
+            if fname.as_str().ends_with(".d") {
+                let buf = str::from_utf8(&buf).map_err(|e| anyhow!("Corrupted result .d: {e}"))?;
+                // NOTE: rewrite text here so cargo shows host paths and keeps the illusion
+                // but really binaries (rlib, rmeta and such) cannot be modified.
+                let buf = un_virtual_target_dir_str(buf);
+                let buf = un_rewrite_cargo_home(&buf, cargo_home);
+                file.write_all(buf.as_bytes())
+            } else {
+                file.write_all(&buf)
+            }
+            .map_err(|e| anyhow!("Failed writing unTARed: {e}"))?;
+            file.commit().map_err(|e| anyhow!("Failed committing unTARed: {e}"))?;
+        }
+
+        EntryType::Directory => {
+            info!("creating path {fname}");
+            DirBuilder::new()
+                .mode(mode)
+                .recursive(true) //= mkdir "-p"
+                .create(&fname)
+                .map_err(|e| anyhow!("Failed `mkdir -p {fname}`: {e}"))?;
+        }
+
+        EntryType::Symlink => {
+            info!("creating symlink {fname}");
+            let name =
+                f.link_name().map_err(|e| anyhow!("Failed reading link name of {fname}: {e}"))?;
+            let Some(name) = name else { bail!("Link name not present for {fname}") };
+            let _ = symlink::remove_symlink_file(&fname);
+            symlink::symlink_file(&name, &fname)
+                .map_err(|e| anyhow!("Failed `ln -s {name:?} {fname}`: {e}"))?;
+        }
+
+        entryty => bail!("BUG: unexpected entry type {entryty:?}"),
+    }
+
+    assert_eq!(
+        fname.symlink_metadata().unwrap_or_else(|e| panic!("{fname}: {e}")).mode() & 0o777,
+        mode,
+        "Unexpected untared-then-written file mode {:#o} vs: {mode:#o} {:?} for {fname}",
+        fname.symlink_metadata().unwrap_or_else(|e| panic!("{fname}: {e}")).mode(),
+        fname.symlink_metadata()
+    );
+    Ok(())
 }
 
 #[inline]
