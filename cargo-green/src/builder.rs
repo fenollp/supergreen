@@ -8,7 +8,11 @@ use serde::{Deserialize, Serialize};
 use version_compare::Version;
 
 use crate::{
-    build::fetch_digest, buildkitd, ext::CommandExt, green::Green, image_uri::ImageUri, tmp,
+    buildkitd,
+    ext::CommandExt,
+    green::Green,
+    image_uri::{fetch_digest, ImageUri},
+    tmp,
 };
 
 macro_rules! BUILDX_BUILDER {

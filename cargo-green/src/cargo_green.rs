@@ -9,12 +9,11 @@ use log::{debug, info, warn};
 
 use crate::{
     base_image::{BASE_IMAGE, BASE_IMAGE_LOCKED},
-    build::fetch_digest,
     cratesio::{self},
     dirs::{cargo_home, pwd},
     experiments::EXPERIMENTS,
     green::{validate_csv, Green},
-    image_uri::{SYNTAX_IMAGE, SYNTAX_IMAGE_LOCKED},
+    image_uri::{fetch_digest, SYNTAX_IMAGE, SYNTAX_IMAGE_LOCKED},
     lockfile::{find_lockfile, locked_crates},
     logging::{self, maybe_log},
     network::Network,
