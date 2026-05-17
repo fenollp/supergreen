@@ -21,8 +21,8 @@ use log::{debug, info, warn};
 use reqwest::Client as ReqwestClient;
 use serde::Deserialize;
 use tokio::{
-    fs::File as TokioFile,
-    io::{AsyncBufReadExt, AsyncReadExt, AsyncWriteExt, BufReader as TokioBufReader},
+    fs::File,
+    io::{AsyncBufReadExt, AsyncReadExt, AsyncWriteExt, BufReader},
     join,
     process::{ChildStderr, ChildStdin, ChildStdout, Command},
     spawn,
@@ -495,10 +495,11 @@ impl Green {
         // * if the call doesn't fail, the file isn't created.
         // * if the build fails that's a bug, and no files will be outputed.
 
-        const SOME_TIME: Duration = Duration::from_mins(30);
-
         if let Some((dbg_out, dbg_err)) = handles {
-            match join!(timeout(SOME_TIME, dbg_out), timeout(SOME_TIME, dbg_err)) {
+            const SOME_TIME: Duration = Duration::from_mins(30);
+            let joined = join!(timeout(SOME_TIME, dbg_out), timeout(SOME_TIME, dbg_err));
+            drop(child);
+            match joined {
                 (Ok(Ok(Err(e))), _) => bail!("Something went wrong (maybe retry?): {e}"),
                 (Ok(Ok(Ok((Some(out_buf), Some(err_buf), errcode, written)))), _) => {
                     let FromStdout { stdout, rustc_envs } =
@@ -528,17 +529,16 @@ impl Green {
                 }
             }
         }
-        drop(child);
         Ok(status)
     }
 }
 
 async fn send_containerfile(mut stdin: ChildStdin, containerfile: Utf8PathBuf) -> Result<()> {
-    let reader = TokioFile::open(&containerfile)
+    let reader = File::open(&containerfile)
         .await
         .map_err(|e| anyhow!("Failed opening (RO) {containerfile}: {e}"))?;
 
-    let mut lines = TokioBufReader::new(reader).lines();
+    let mut lines = BufReader::new(reader).lines();
     while let Ok(Some(line)) = lines.next_line().await {
         if line.starts_with(DIESES) {
             continue;
@@ -558,12 +558,12 @@ async fn build_stdout(
     cargo_home: String,
 ) -> Result<(Option<String>, Option<String>, Option<i32>, Vec<Utf8PathBuf>)> {
     let mut buf = Vec::new();
-    TokioBufReader::new(stdout)
+    BufReader::new(stdout)
         .read_to_end(&mut buf)
         .await
         .map_err(|e| anyhow!("Failed getting all the buffer: {e}"))?;
     debug!("produced {target} 0x{}", sha256::digest(&buf));
-    let out = TokioBufReader::new(buf.as_slice());
+    let out = BufReader::new(buf.as_slice());
 
     let out_path = format!("{target}-{STDOUT}");
     let err_path = format!("{target}-{STDERR}");
@@ -596,7 +596,7 @@ async fn build_stdout(
             debug!("produced {name} 0x{}", sha256::digest(&buf));
             err_handle = Some(buf);
         } else if name == rcd_path {
-            let line = TokioBufReader::new(f).lines().next_line().await;
+            let line = BufReader::new(f).lines().next_line().await;
             rcd = line.ok().flatten().and_then(|x| x.parse::<i32>().ok());
         } else {
             written.push(name.clone());
@@ -617,7 +617,7 @@ async fn build_stdout(
 
             match f.header().entry_type() {
                 EntryType::Regular => {
-                    info!("opening (W) file {fname}");
+                    info!("opening (Watomic) file {fname}");
                     let mut opts = AtomicWriteFile::options();
                     opts.mode(mode);
                     let mut file = opts
@@ -685,7 +685,7 @@ fn strip_ansi_escapes(line: &str) -> String {
 }
 
 async fn build_stderr(stderr: ChildStderr, mut tx_err: Option<Sender<String>>) -> Result<()> {
-    let mut lines = TokioBufReader::new(stderr).lines();
+    let mut lines = BufReader::new(stderr).lines();
 
     let mut details: BTreeMap<String, String> = [].into();
     let mut dones = 0;
