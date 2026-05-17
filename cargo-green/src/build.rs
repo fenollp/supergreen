@@ -12,7 +12,7 @@ use std::{
     time::{Duration, Instant},
 };
 
-use anyhow::{anyhow, bail, Result};
+use anyhow::{anyhow, bail, Error, Result};
 use atomic_write_file::AtomicWriteFile;
 use camino::{Utf8Path, Utf8PathBuf};
 use indexmap::IndexSet;
@@ -36,6 +36,7 @@ use crate::{
     md::{BuildContext, DIESES},
     r#final::is_primary,
     rechrome,
+    runner::Runner,
     stage::Stage,
     target_dir::un_virtual_target_dir_str,
     ENV_LOG_PATH, PKG,
@@ -85,15 +86,41 @@ impl Green {
         out_dir: Option<&Utf8Path>,
     ) -> (String, String, Effects, Result<()>) {
         let rtrn = |e, effects| ("".to_owned(), "".to_owned(), effects, Err(e));
-        let mut effects = Effects::default();
 
         assert!(!self.runner.is_none(), "build() called with Runner::None");
         let mut cmd = match self.cmd() {
             Ok(cmd) => cmd,
-            Err(e) => return rtrn(e, effects),
+            Err(e) => return rtrn(e, Effects::default()),
         };
         cmd.arg("build");
 
+        let (call, envs) =
+            self.with_docker_args(&mut cmd, containerfile, target, contexts, out_dir);
+
+        let mut effects = Effects::default();
+        let status =
+            match self.run_build(&mut effects, cmd, &call, containerfile, target, out_dir).await {
+                Ok(status) => status,
+                Err(e) => return rtrn(e, effects),
+            };
+
+        // Something is very wrong here. Try to be helpful by logging some info about runner config:
+        if !status.success() {
+            let e = effects.try_to_help(&self.runner, self.cargo_home.as_str());
+            return rtrn(e, effects);
+        }
+
+        (call, envs, effects, Ok(()))
+    }
+
+    fn with_docker_args(
+        &self,
+        cmd: &mut Command,
+        containerfile: &Utf8Path,
+        target: &Stage,
+        contexts: &IndexSet<BuildContext>,
+        out_dir: Option<&Utf8Path>,
+    ) -> (String, String) {
         //TODO: if allowing additional-build-arguments, deny: --build-arg=BUILDKIT_SYNTAX=
 
         if self.repro() {
@@ -201,82 +228,9 @@ impl Green {
             .replace(cmd.as_std().get_program().to_str().unwrap(), &self.runner.to_string());
         let envs = cmd.envs_string(&self.runner.buildnoop_envs());
 
-        let status =
-            match self.run_build(&mut effects, cmd, &call, containerfile, target, out_dir).await {
-                Ok(status) => status,
-                Err(e) => return rtrn(e, effects),
-            };
-
-        // Something is very wrong here. Try to be helpful by logging some info about runner config:
-        if !status.success() {
-            let rewrite = |msg: &str| {
-                let msg = un_virtual_target_dir_str(msg);
-                let msg = un_rewrite_cargo_home(&msg, self.cargo_home.as_str());
-                msg
-            };
-
-            let cargo_warnings = effects
-                .stdout
-                .iter()
-                .filter_map(|line| {
-                    // https://doc.rust-lang.org/cargo/reference/build-scripts.html#cargo-warning
-                    line.split_once("cargo:warning=")
-                        .xor(line.split_once("cargo::warning="))
-                        .map(|(_, rhs)| rhs)
-                })
-                .map(rewrite)
-                .collect::<Vec<_>>()
-                .join("\n");
-
-            let cargo_errors = effects
-                .stdout
-                .iter()
-                .filter_map(|line| {
-                    // https://doc.rust-lang.org/cargo/reference/build-scripts.html#cargo-error
-                    line.split_once("cargo:error=")
-                        .xor(line.split_once("cargo::error="))
-                        .map(|(_, rhs)| rhs)
-                })
-                .map(rewrite)
-                .collect::<Vec<_>>()
-                .join("\n");
-
-            if !cargo_warnings.is_empty() || !cargo_errors.is_empty() {
-                let e = anyhow!("Runner failed.\n{cargo_warnings}\n{cargo_errors}\n");
-                return rtrn(e, effects);
-            }
-
-            let logs = env::var(ENV_LOG_PATH!())
-                .map(|val| format!("\nCheck logs at {val}"))
-                .unwrap_or_default();
-            let e = anyhow!(
-                "Runner failed.{logs}\n{stdout}\n{stderr}\n
-Please report an issue along with information from the following:
-* {runner} buildx version
-* {runner} info
-* {runner} buildx ls
-* cargo green supergreen env
-",
-                runner = self.runner,
-                stdout = effects.stdout.iter().map(|x| rewrite(x)).collect::<Vec<_>>().join("\n"),
-                stderr = effects.stderr.iter().map(|x| rewrite(x)).collect::<Vec<_>>().join("\n"),
-            );
-            return rtrn(e, effects);
-        }
-
-        (call, envs, effects, Ok(()))
+        (call, envs)
     }
-}
 
-#[derive(Debug, Default)]
-pub(crate) struct Effects {
-    pub(crate) written: Vec<Utf8PathBuf>,
-    pub(crate) stdout: Vec<String>,
-    pub(crate) stderr: Vec<String>,
-    pub(crate) cargo_rustc_env: IndexSet<String>,
-}
-
-impl Green {
     async fn run_build(
         &self,
         effects: &mut Effects,
@@ -381,6 +335,68 @@ impl Green {
             }
         }
         Ok(status)
+    }
+}
+
+#[derive(Debug, Default)]
+pub(crate) struct Effects {
+    pub(crate) written: Vec<Utf8PathBuf>,
+    pub(crate) stdout: Vec<String>,
+    pub(crate) stderr: Vec<String>,
+    pub(crate) cargo_rustc_env: IndexSet<String>,
+}
+
+impl Effects {
+    fn try_to_help(&self, runner: &Runner, cargo_home: &str) -> Error {
+        let rewrite = |msg: &str| {
+            let msg = un_virtual_target_dir_str(msg);
+            un_rewrite_cargo_home(&msg, cargo_home)
+        };
+
+        let cargo_warnings = self
+            .stdout
+            .iter()
+            .filter_map(|line| {
+                // https://doc.rust-lang.org/cargo/reference/build-scripts.html#cargo-warning
+                line.split_once("cargo:warning=")
+                    .xor(line.split_once("cargo::warning="))
+                    .map(|(_, rhs)| rhs)
+            })
+            .map(rewrite)
+            .collect::<Vec<_>>()
+            .join("\n");
+
+        let cargo_errors = self
+            .stdout
+            .iter()
+            .filter_map(|line| {
+                // https://doc.rust-lang.org/cargo/reference/build-scripts.html#cargo-error
+                line.split_once("cargo:error=")
+                    .xor(line.split_once("cargo::error="))
+                    .map(|(_, rhs)| rhs)
+            })
+            .map(rewrite)
+            .collect::<Vec<_>>()
+            .join("\n");
+
+        if !cargo_warnings.is_empty() || !cargo_errors.is_empty() {
+            return anyhow!("Runner failed.\n{cargo_warnings}\n{cargo_errors}\n");
+        }
+
+        let logs = env::var(ENV_LOG_PATH!())
+            .map(|val| format!("\nCheck logs at {val}"))
+            .unwrap_or_default();
+        anyhow!(
+            "Runner failed.{logs}\n{stdout}\n{stderr}\n
+Please report an issue along with information from the following:
+* {runner} buildx version
+* {runner} info
+* {runner} buildx ls
+* cargo green supergreen env
+",
+            stdout = self.stdout.iter().map(|x| rewrite(x)).collect::<Vec<_>>().join("\n"),
+            stderr = self.stderr.iter().map(|x| rewrite(x)).collect::<Vec<_>>().join("\n"),
+        )
     }
 }
 
