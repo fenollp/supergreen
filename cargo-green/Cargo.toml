@@ -31,6 +31,7 @@ ignored = [ "astral-tokio-tar" ]
 [dependencies]
 anyhow.workspace = true
 astral-tokio-tar.workspace = true
+async-compression.workspace = true
 atomic-write-file.workspace = true
 camino.workspace = true
 cargo-lock.workspace = true
@@ -39,6 +40,7 @@ cargo_metadata.workspace = true
 cargo_toml.workspace = true
 chrono.workspace = true
 crc32fast.workspace = true
+directories.workspace = true
 env_logger.workspace = true
 futures.workspace = true
 gix-config.workspace = true
@@ -65,6 +67,7 @@ termimad.workspace = true
 tokio.workspace = true
 tokio-stream.workspace = true
 toml.workspace = true
+uuid.workspace = true
 version-compare.workspace = true
 which.workspace = true
 

@@ -220,6 +220,8 @@ pub(crate) async fn main() -> Result<Green> {
         bail!("${var} contains unknown experiment names: {nopes:?}")
     }
 
+    green.setup_dirs()?;
+
     Ok(green)
 }
 

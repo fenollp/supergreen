@@ -45,6 +45,18 @@ ensure__produces_same_shas() {
 	fi
 }
 
+compute_results_shas() {
+	ls -sh1 ~/.cache/cargo-green/results
+}
+ensure__results_same_shas() {
+    if [[ ! -f $CARGOGREEN_LOG_PATH.results ]]; then
+		compute_results_shas >$CARGOGREEN_LOG_PATH.results
+		[[ -s $CARGOGREEN_LOG_PATH.results ]] # ensure file not empty
+	else
+		diff --width=150 -y <(cat $CARGOGREEN_LOG_PATH.results) <(compute_results_shas)
+	fi
+}
+
 registry_blobs() {
     local dir=$1; shift
     [[ $# -eq 0 ]]
@@ -60,10 +72,12 @@ echo
 
 rm -rf $CARGO_TARGET_DIR/* >/dev/null
 rm -rf $CARGOGREEN_LOG_PATH >/dev/null
+rm -rf ~/.cache/cargo-green/results/* >/dev/null
 rm -rf $install_root/* >/dev/null
 $CARGO green install --locked                            $install_package --root=$install_root
 git add $CARGOGREEN_FINAL_PATH
 ensure__produces_same_shas # => just computes shas
+ensure__results_same_shas # => just computes shas
 ensure__rewrite_cratesio_index__works
 ensure__rewrite_target_dir__works
 $install_root/bin/${install_package%@*} --help >/dev/null
@@ -79,10 +93,12 @@ echo
 
 rm -rf $CARGO_TARGET_DIR/* >/dev/null
 rm -rf $CARGOGREEN_LOG_PATH >/dev/null
+rm -rf ~/.cache/cargo-green/results/* >/dev/null
 rm -rf $install_root/* >/dev/null
 $CARGO green install --locked --frozen --offline --force $install_package --root=$install_root
 git add $CARGOGREEN_FINAL_PATH
 ensure__produces_same_shas # rebuild => same shas
+ensure__results_same_shas # rebuild => same shas
 ensure__rewrite_cratesio_index__works
 ensure__rewrite_target_dir__works
 $install_root/bin/${install_package%@*} --help >/dev/null
@@ -105,10 +121,12 @@ $CARGO green supergreen builder recreate # keeps underlying data
 
 rm -rf $CARGO_TARGET_DIR/* >/dev/null
 rm -rf $CARGOGREEN_LOG_PATH >/dev/null
+rm -rf ~/.cache/cargo-green/results/* >/dev/null
 rm -rf $install_root/* >/dev/null
 $CARGO green install --locked --frozen --offline --force $install_package --root=$install_root
 git add $CARGOGREEN_FINAL_PATH
 ensure__produces_same_shas # rebuild => same shas
+ensure__results_same_shas # rebuild => same shas
 ensure__rewrite_cratesio_index__works
 ensure__rewrite_target_dir__works
 $install_root/bin/${install_package%@*} --help >/dev/null
@@ -126,10 +144,12 @@ export CARGOGREEN_EXPERIMENT=repro
 
 rm -rf $CARGO_TARGET_DIR/* >/dev/null
 rm -rf $CARGOGREEN_LOG_PATH >/dev/null
+rm -rf ~/.cache/cargo-green/results/* >/dev/null
 rm -rf $install_root/* >/dev/null
 $CARGO green install --locked --frozen --offline --force $install_package --root=$install_root
 git add $CARGOGREEN_FINAL_PATH
 ensure__produces_same_shas # rebuild without reading cache => new layers written to cache!!
+ensure__results_same_shas
 ensure__rewrite_cratesio_index__works
 ensure__rewrite_target_dir__works
 $install_root/bin/${install_package%@*} --help >/dev/null
@@ -178,6 +198,7 @@ CARGO='cargo +1.84.0'
 
 rm -rf $CARGO_TARGET_DIR/* >/dev/null
 rm -rf $CARGOGREEN_LOG_PATH >/dev/null
+rm -rf ~/.cache/cargo-green/results/* >/dev/null
 rm -rf $install_root/* >/dev/null
 $CARGO green install --locked --frozen --offline --force $install_package --root=$install_root
 git --no-pager diff -- $CARGOGREEN_FINAL_PATH
@@ -190,8 +211,11 @@ cat <<EOF | diff -u - <(git --no-pager diff -- $CARGOGREEN_FINAL_PATH | head -n1
 EOF
 git add $CARGOGREEN_FINAL_PATH
 echo 'Change rustc => changes shas' && ! ensure__produces_same_shas
-rm -rf $CARGOGREEN_LOG_PATH.produced >/dev/null
+rm -f $CARGOGREEN_LOG_PATH.produced >/dev/null
 ensure__produces_same_shas # (here, we just re-compute shas)
+echo 'Change rustc => changes shas' && ! ensure__results_same_shas
+rm -f $CARGOGREEN_LOG_PATH.results >/dev/null
+ensure__results_same_shas # (here, we just re-compute shas)
 ensure__rewrite_cratesio_index__works
 ensure__rewrite_target_dir__works
 $install_root/bin/${install_package%@*} --help >/dev/null
@@ -235,6 +259,7 @@ mkdir -p $CARGO_TARGET_DIR
 
 rm -rf $CARGO_TARGET_DIR/* >/dev/null
 rm -rf $CARGOGREEN_LOG_PATH >/dev/null
+rm -rf ~/.cache/cargo-green/results/* >/dev/null
 rm -rf $install_root/* >/dev/null
 $CARGO green install --locked --frozen --offline --force $install_package --root=$install_root
 git --no-pager diff -- $CARGOGREEN_FINAL_PATH
@@ -243,6 +268,7 @@ cat <<'EOF' | diff -u - <(git --no-pager diff -- $CARGOGREEN_FINAL_PATH | tail -
 EOF
 unset old_target_dir
 ! ensure__produces_same_shas # change targetdir => changes shas (here, we just re-compute shas)
+ensure__produces_same_shas # change targetdir => same results
 ensure__rewrite_cratesio_index__works
 ensure__rewrite_target_dir__works
 $install_root/bin/${install_package%@*} --help >/dev/null
