@@ -206,7 +206,7 @@ async fn do_exec_buildrs(
         crate_name,
         &green.cargo_home,
         &green.set_envs,
-        virtual_target_dir(&exe).to_string(),
+        virtual_target_dir(&exe).as_str(),
         (&out_stage, Some(&out_dir_var)),
     )?;
 

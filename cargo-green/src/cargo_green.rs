@@ -19,7 +19,7 @@ use crate::{
     network::Network,
     runner::{Runner, BUILDKIT_HOST, DOCKER_BUILDKIT, DOCKER_CONTEXT, DOCKER_HOST},
     stage::{Stage, RST},
-    tmp, ENV_FINAL_PATH, ENV_RUNNER, ENV_SYNTAX_IMAGE, PKG, VSN,
+    tmp, PKG, VSN,
 };
 
 pub(crate) async fn main() -> Result<Green> {

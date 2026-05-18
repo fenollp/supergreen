@@ -39,7 +39,7 @@ use crate::{
     runner::Runner,
     stage::Stage,
     target_dir::un_virtual_target_dir_str,
-    ENV_LOG_PATH, PKG,
+    PKG,
 };
 
 pub(crate) const ERRCODE: &str = "errcode";
