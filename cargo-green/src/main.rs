@@ -13,8 +13,6 @@ mod base_image;
 #[macro_use]
 mod builder;
 #[macro_use]
-mod buildrs_wrapper;
-#[macro_use]
 mod cache;
 #[macro_use]
 mod experiments;
@@ -27,7 +25,7 @@ mod logging;
 #[macro_use]
 mod runner;
 #[macro_use]
-mod rustc_wrapper;
+mod wrap;
 
 mod build;
 mod buildkitd;
@@ -49,7 +47,6 @@ mod rustup;
 mod stage;
 mod supergreen;
 mod target_dir;
-mod wrap;
 
 const PKG: &str = env!("CARGO_PKG_NAME");
 const REPO: &str = env!("CARGO_PKG_REPOSITORY");
@@ -90,13 +87,13 @@ async fn main() -> Result<()> {
 
         // Dance to wrap build script execution: we patched the build.rs to call us back through here.
         if let Ok(exe) = env::var(ENV_EXECUTE_BUILDRS!()) {
-            return buildrs_wrapper::exec_buildrs(green, exe.into()).await;
+            return wrap::build_script::exec(green, exe.into()).await;
         }
 
         let arg0 = env::args().nth(1);
         let args = env::args().skip(1).collect();
         let vars = env::vars().collect();
-        return rustc_wrapper::main(green, arg0, args, vars).await;
+        return wrap::rustc(green, arg0, args, vars).await;
     }
 
     if args.next().as_deref() != Some("green") {

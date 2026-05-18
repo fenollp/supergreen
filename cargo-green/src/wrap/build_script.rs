@@ -13,6 +13,7 @@ use crate::{
     md::{Md, MdId, Mds},
     stage::{AsStage, Stage, RST, RUST},
     target_dir::virtual_target_dir,
+    wrap::call_config,
     ENV, PKG, VSN,
 };
 
@@ -48,20 +49,11 @@ pub(crate) fn exe_dance(mdid: MdId, crate_name: &str, out_dir: &Utf8Path) -> Str
         .to_owned()
 }
 
-pub(crate) fn call_config() -> (Option<String>, String, String, Utf8PathBuf) {
-    (
-        env::var("CARGO_CRATE_NAME").ok(), // Unset when executing buildrs (always set when building)
-        env::var("CARGO_PKG_NAME").expect("$CARGO_PKG_NAME"),
-        env::var("CARGO_PKG_VERSION").expect("$CARGO_PKG_VERSION"),
-        env::var("CARGO_MANIFEST_DIR").expect("$CARGO_MANIFEST_DIR").into(),
-    )
-}
-
-pub(crate) async fn exec_buildrs(green: Green, exe: Utf8PathBuf) -> Result<()> {
+pub(crate) async fn exec(green: Green, exe: Utf8PathBuf) -> Result<()> {
     assert!(env::var_os(ENV!()).is_none(), "It's turtles all the way down!");
     env::set_var(ENV!(), "1");
 
-    assert!(!green.runner.is_none(), "exec_buildrs() called with Runner::None");
+    assert!(!green.runner.is_none(), "exec() called with Runner::None");
 
     let (crate_name, pkg_name, pkg_version, _) = call_config();
 
@@ -96,7 +88,7 @@ pub(crate) async fn exec_buildrs(green: Green, exe: Utf8PathBuf) -> Result<()> {
 
     info!("{PKG}@{VSN} original args: {exe:?} green={green:?}");
 
-    do_exec_buildrs(
+    do_exec(
         green,
         crate_name.as_deref(),
         &pkg_name,
@@ -112,7 +104,7 @@ pub(crate) async fn exec_buildrs(green: Green, exe: Utf8PathBuf) -> Result<()> {
 }
 
 #[expect(clippy::too_many_arguments)]
-async fn do_exec_buildrs(
+async fn do_exec(
     green: Green,
     crate_name: Option<&str>,
     pkg_name: &str,
