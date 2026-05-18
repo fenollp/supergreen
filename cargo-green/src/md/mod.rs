@@ -154,12 +154,12 @@ impl Md {
         Self::from_str(&txt).map_err(|e| anyhow!("Failed deserializing Md {path}: {e}"))
     }
 
-    pub(crate) fn write_to(&self, path: &Utf8Path) -> Result<()> {
+    pub(crate) fn write_to(&self, path: &Utf8Path) -> Result<String> {
         let md_ser =
             self.to_string_pretty().map_err(|e| anyhow!("Failed serializing Md {path}: {e}"))?;
 
         info!("opening (RW) Md {path}");
-        fs::write(path, md_ser).map_err(|e| anyhow!("Failed creating {path}: {e}"))?;
+        fs::write(path, &md_ser).map_err(|e| anyhow!("Failed creating {path}: {e}"))?;
 
         if maybe_log().is_some() {
             match fs::read_to_string(path) {
@@ -171,10 +171,10 @@ impl Md {
             .for_each(|line| trace!("❯ {line}"));
         }
 
-        Ok(())
+        Ok(md_ser)
     }
 
-    fn to_string_pretty(&self) -> Result<String> {
+    pub(crate) fn to_string_pretty(&self) -> Result<String> {
         if !self.stages.iter().any(NamedStage::is_rust) {
             bail!("Md is missing root stage {RST}")
         }

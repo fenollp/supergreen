@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::{
     add::Add, base_image::BaseImage, builder::Builder, buildkitd::MIRRORS, cache::Cache,
-    containerfile::Containerfile, image_uri::ImageUri, lockfile::find_manifest_path,
+    containerfile::Containerfile, dirs::Dirs, image_uri::ImageUri, lockfile::find_manifest_path,
     r#final::Final, runner::Runner, ENV_RUNNER, PKG,
 };
 
@@ -60,6 +60,10 @@ pub(crate) struct Green {
     /// Memoized $CARGO_HOME
     #[doc(hidden)]
     pub(crate) cargo_home: Utf8PathBuf,
+
+    /// Various paths. Not user-settable.
+    #[doc(hidden)]
+    pub(crate) dirs: Option<Dirs>,
 
     /// Snapshot of runner's envs. Not user-settable.
     #[doc(hidden)]
