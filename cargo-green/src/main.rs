@@ -9,17 +9,28 @@ use crate::dirs::{create_current_target_dir, hashed_args, tmp};
 #[macro_use]
 mod add;
 #[macro_use]
-mod experiments;
-#[macro_use]
 mod base_image;
-mod build;
 #[macro_use]
 mod builder;
 #[macro_use]
-mod cache;
-mod buildkitd;
-#[macro_use]
 mod buildrs_wrapper;
+#[macro_use]
+mod cache;
+#[macro_use]
+mod experiments;
+#[macro_use]
+mod r#final;
+#[macro_use]
+mod green;
+#[macro_use]
+mod logging;
+#[macro_use]
+mod runner;
+#[macro_use]
+mod rustc_wrapper;
+
+mod build;
+mod buildkitd;
 mod cargo_green;
 mod checkouts;
 mod containerfile;
@@ -27,27 +38,18 @@ mod cratesio;
 mod dirs;
 mod du;
 mod ext;
-mod relative;
-mod target_dir;
-#[macro_use]
-mod r#final;
-#[macro_use]
-mod green;
 mod image_uri;
 mod lockfile;
-#[macro_use]
-mod logging;
 mod md;
 mod network;
 mod rechrome;
-#[macro_use]
-mod runner;
+mod relative;
 mod rustc_arguments;
-#[macro_use]
-mod rustc_wrapper;
 mod rustup;
 mod stage;
 mod supergreen;
+mod target_dir;
+mod wrap;
 
 const PKG: &str = env!("CARGO_PKG_NAME");
 const REPO: &str = env!("CARGO_PKG_REPOSITORY");

@@ -264,7 +264,7 @@ async fn do_wrap_rustc(
         crate_name,
         &green.cargo_home,
         &green.set_envs,
-        call,
+        &call,
         (&out_stage, not_a_cratesio_crate.then_some(&out_dir)),
     )?;
 
@@ -309,7 +309,7 @@ impl Md {
         crate_name: Option<&str>,
         cargo_home: &Utf8Path,
         green_set_envs: &[String],
-        call: String,
+        call: &str,
         (out_stage, out_dir): (&Stage, Option<&Utf8Path>),
     ) -> Result<()> {
         let mut first = true;
