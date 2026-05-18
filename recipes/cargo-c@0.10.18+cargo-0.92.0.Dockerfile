@@ -38,7 +38,7 @@ RUN \
  && if   command -v apk >/dev/null 2>&1; then \
                                      xx-apk     add     --no-cache                 'ca-certificates' 'gcc'; \
     elif command -v apt >/dev/null 2>&1; then \
-      DEBIAN_FRONTEND=noninteractive xx-apt     install --no-install-recommends -y 'ca-certificates' 'gcc' 'libc6-dev' 'libcurl4-openssl-dev' 'pkg-config'; \
+      DEBIAN_FRONTEND=noninteractive xx-apt     install --no-install-recommends -y 'ca-certificates' 'gcc' 'libc6-dev' 'libcurl4-openssl-dev' 'libssl-dev=3.5.5-1~deb13u2' 'pkg-config'; \
     else \
       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y 'ca-certificates' 'gcc' 'libc6-dev'; \
     fi
