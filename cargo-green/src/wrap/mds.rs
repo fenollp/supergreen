@@ -134,7 +134,7 @@ impl Md {
         stage: &Stage,
         out_dir: &Utf8Path,
     ) -> Result<()> {
-        let (call, envs, Effects { written, stdout, stderr, cargo_rustc_env }, built) =
+        let (call, envs, Effects { written, stdout, stderr, cargo_rustc_env }, result, built) =
             green.build_out(containerfile_path, stage, &self.contexts, out_dir).await;
 
         green
@@ -152,6 +152,14 @@ impl Md {
             self.set_envs = cargo_rustc_env;
             info!("re-opening (RW) crate's md {md_path}");
             self.write_to(md_path)?;
+        }
+        if let Some(result) = result {
+            let md_ser = self
+                .to_string_pretty()
+                .map_err(|e| anyhow!("Failed serializing Md {md_path}: {e}"))?;
+
+            result.finalize(md_ser).await?;
+            info!("wrote result");
         }
 
         let final_stage = format!(

@@ -183,7 +183,7 @@ impl Md {
         Ok(())
     }
 
-    fn to_string_pretty(&self) -> Result<String> {
+    pub(crate) fn to_string_pretty(&self) -> Result<String> {
         if !self.stages.iter().any(NamedStage::is_rust) {
             bail!("Md is missing root stage {RST}")
         }

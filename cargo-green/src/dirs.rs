@@ -1,7 +1,11 @@
-use std::{env, fs};
+use std::{env, fs, os::unix::fs::MetadataExt};
 
-use anyhow::{anyhow, Result};
-use camino::Utf8PathBuf;
+use anyhow::{anyhow, bail, Result};
+use camino::{Utf8Path, Utf8PathBuf};
+use directories::ProjectDirs;
+use serde::{Deserialize, Serialize};
+
+use crate::{green::Green, wrap::envs::pass_env, PKG};
 
 pub(crate) fn tmp() -> Utf8PathBuf {
     env::temp_dir().try_into().expect("$TMPDIR is not utf-8")
@@ -53,10 +57,65 @@ pub(crate) fn hash(string: &str) -> String {
 
 pub(crate) fn hashed_args() -> String {
     fn keep(k: &str) -> bool {
-        let (pass, skip, _) = crate::wrap::envs::pass_env(k);
+        let (pass, skip, _) = pass_env(k);
         pass && !skip
     }
     let envs = env::vars().filter_map(|(k, _)| keep(&k).then_some(k)).collect::<Vec<_>>().join(" ");
     let args = env::args().collect::<Vec<_>>().join(" ");
     format!("{}{}", hash(&envs), hash(&args))
+}
+
+#[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(deny_unknown_fields)]
+pub(crate) struct Dirs {
+    /// A place to write files before atomically moving them
+    #[doc(hidden)]
+    pub(crate) tmp: Utf8PathBuf,
+
+    /// A place for build result tarballs (containing .rmeta, .rlib, ...)
+    #[doc(hidden)]
+    pub(crate) results: Utf8PathBuf,
+}
+
+impl Green {
+    pub(crate) fn setup_dirs(&mut self) -> Result<()> {
+        let Some(xdg) = ProjectDirs::from("", "", PKG) else {
+            bail!("BUG: no valid $HOME could be retrieved from the OS")
+        };
+        let app_cache_dir = xdg.cache_dir().to_owned();
+        let app_cache_dir: Utf8PathBuf =
+            app_cache_dir.try_into().map_err(|e| anyhow!("Corrupted app cache dir path: {e}"))?;
+        fs::create_dir_all(&app_cache_dir)
+            .map_err(|e| anyhow!("Failed to `mkdir -p {app_cache_dir}`: {e}"))?;
+        // /appcache ~ downloaded/storing + toupload + tmp/onlyuniques
+        // /appcache/tarballs ~ DLd | storing (until some mdtime-based expiration)
+        // /appcache/tarballs :: rename "tarballs" to "buildresult" | "results" /appcache/results
+        let results = app_cache_dir.join("results");
+        fs::create_dir_all(&results).map_err(|e| anyhow!("Failed to `mkdir -p {results}`: {e}"))?;
+        // /appcache/toupload / uploading ~ symlinks to tarballs, created (before | after) conn to remote for upload => FS as sync point? badbadbad
+        // /appcache/toupload :: do later on
+        // /appcache/tmp ~ unique names | tarballs in DLing progress | tarballs in creating process
+        // /appcache/tmp :: use only if /appcache isn't on same partition as /tmp, otherwise use /tmp
+        // /appcache/buildkitcache-compatibility-version=20
+        let tmp = pick_same_partition_temp_dir(&app_cache_dir)?;
+        fs::create_dir_all(&tmp).map_err(|e| anyhow!("Failed to `mkdir -p {tmp}`: {e}"))?;
+
+        self.dirs = Some(Dirs { tmp, results });
+
+        Ok(())
+    }
+}
+
+/// Use a temp dir we know a `rename` can work atomically
+fn pick_same_partition_temp_dir(app_cache_dir: &Utf8Path) -> Result<Utf8PathBuf> {
+    let acd_meta = fs::metadata(app_cache_dir)
+        .map_err(|e| anyhow!("Failed to `stat {app_cache_dir}`: {e}"))?;
+    let tmp_dir = tmp();
+    let tmp_meta =
+        fs::metadata(&tmp_dir).map_err(|e| anyhow!("Failed to `stat {tmp_dir:?}`: {e}"))?;
+
+    if acd_meta.dev() == tmp_meta.dev() {
+        return Ok(tmp_dir);
+    }
+    Ok(app_cache_dir.join("tmp"))
 }

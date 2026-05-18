@@ -2,6 +2,8 @@ use serde::{Deserialize, Serialize};
 
 use crate::image_uri::ImageUri;
 
+pub(crate) mod result;
+
 // TODO: conf for github actions caching
 // CARGOGREEN_CACHE_FROM: type=gha
 // CARGOGREEN_CACHE_TO: type=gha,mode=max

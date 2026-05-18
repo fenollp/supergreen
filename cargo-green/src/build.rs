@@ -31,6 +31,8 @@ use tokio_tar::{Archive as TarArchive, Entry as TarEntry, EntryType, Header as T
 
 use crate::{
     base_image::un_rewrite_cargo_home,
+    cache::result::{assert_tarball_header, ResultWriter},
+    dirs::Dirs,
     ext::CommandExt,
     green::Green,
     md::{BuildContext, DIESES},
@@ -65,7 +67,7 @@ impl Green {
         containerfile: &Utf8Path,
         target: &Stage,
     ) -> Result<()> {
-        self.build(containerfile, target, &[].into(), None).await.3
+        self.build(containerfile, target, &[].into(), None).await.4
     }
 
     pub(crate) async fn build_out(
@@ -74,7 +76,7 @@ impl Green {
         target: &Stage,
         contexts: &IndexSet<BuildContext>,
         out_dir: &Utf8Path,
-    ) -> (String, String, Effects, Result<()>) {
+    ) -> (String, String, Effects, Option<ResultWriter>, Result<()>) {
         self.build(containerfile, target, contexts, Some(out_dir)).await
     }
 
@@ -84,8 +86,8 @@ impl Green {
         target: &Stage,
         contexts: &IndexSet<BuildContext>,
         out_dir: Option<&Utf8Path>,
-    ) -> (String, String, Effects, Result<()>) {
-        let rtrn = |e, effects| ("".to_owned(), "".to_owned(), effects, Err(e));
+    ) -> (String, String, Effects, Option<ResultWriter>, Result<()>) {
+        let rtrn = |e, effects| ("".to_owned(), "".to_owned(), effects, None, Err(e));
 
         assert!(!self.runner.is_none(), "build() called with Runner::None");
         let mut cmd = match self.cmd() {
@@ -98,9 +100,9 @@ impl Green {
             self.with_docker_args(&mut cmd, containerfile, target, contexts, out_dir);
 
         let mut effects = Effects::default();
-        let status =
+        let (status, result) =
             match self.run_build(&mut effects, cmd, &call, containerfile, target, out_dir).await {
-                Ok(status) => status,
+                Ok((status, result)) => (status, result),
                 Err(e) => return rtrn(e, effects),
             };
 
@@ -110,7 +112,7 @@ impl Green {
             return rtrn(e, effects);
         }
 
-        (call, envs, effects, Ok(()))
+        (call, envs, effects, result, Ok(()))
     }
 
     fn with_docker_args(
@@ -239,7 +241,7 @@ impl Green {
         containerfile: &Utf8Path,
         target: &Stage,
         out_dir: Option<&Utf8Path>,
-    ) -> Result<ExitStatus> {
+    ) -> Result<(ExitStatus, Option<ResultWriter>)> {
         let start = Instant::now();
         let mut child = cmd.spawn().map_err(|e| anyhow!("Failed starting `{call}`: {e}"))?;
 
@@ -260,9 +262,10 @@ impl Green {
             let dbg_out = spawn({
                 let target = target.to_owned();
                 let out_dir = out_dir.to_owned();
+                let dirs = self.dirs.clone();
                 let cargo_home = self.cargo_home.to_string();
                 let stdout = child.stdout.take().expect("started");
-                async move { build_stdout(stdout, target, out_dir, cargo_home).await }
+                async move { build_stdout(stdout, target, out_dir, dirs, cargo_home).await }
             });
 
             let dbg_err = spawn({
@@ -300,7 +303,7 @@ impl Green {
         // * if the call doesn't fail, the file isn't created.
         // * if the build fails that's a bug, and no files will be outputed.
 
-        let Some((dbg_out, dbg_err)) = handles else { return Ok(status) };
+        let Some((dbg_out, dbg_err)) = handles else { return Ok((status, None)) };
         const SOME_TIME: Duration = Duration::from_mins(30);
         let joined = join!(timeout(SOME_TIME, dbg_out), timeout(SOME_TIME, dbg_err));
         drop(child);
@@ -318,7 +321,7 @@ impl Green {
             (Ok(Ok(Err(e))), _) => {
                 bail!("Something went wrong (maybe retry?): {e}")
             }
-            (Ok(Ok(Ok((out_buf, err_buf, errcode, written)))), _) => {
+            (Ok(Ok(Ok((out_buf, err_buf, errcode, written, result)))), _) => {
                 let FromStdout { stdout, rustc_envs } = fwd_stdout(&out_buf, "➤", &self.cargo_home);
                 info!("Buildscript {PKG}-specific config: envs:{}", rustc_envs.len());
                 effects.cargo_rustc_env = rustc_envs;
@@ -329,7 +332,7 @@ impl Green {
                 effects.stderr = stderr;
                 effects.written = written;
 
-                Ok(errcode.map(ExitStatus::from_raw).unwrap_or(status))
+                Ok((errcode.map(ExitStatus::from_raw).unwrap_or(status), result))
             }
         }
     }
@@ -419,8 +422,11 @@ async fn build_stdout(
     stdout: ChildStdout,
     target: Stage,
     out_dir: Utf8PathBuf,
+    dirs: Option<Dirs>,
     cargo_home: String,
-) -> Result<(String, String, Option<i32>, Vec<Utf8PathBuf>)> {
+) -> Result<(String, String, Option<i32>, Vec<Utf8PathBuf>, Option<ResultWriter>)> {
+    let mut result = if let Some(ref dirs) = dirs { dirs.new_result(&target).await? } else { None };
+
     info!("running untar on STDOUT");
     let mut buf = Vec::new();
     BufReader::new(stdout)
@@ -428,6 +434,9 @@ async fn build_stdout(
         .await
         .map_err(|e| anyhow!("Failed getting all the buffer: {e}"))?;
     debug!("produced {target} {}B 0x{}", buf.len(), sha256::digest(&buf));
+    if let Some(ref mut result) = result {
+        result.add_tarball(&buf).await?;
+    }
     let out = BufReader::new(buf.as_slice());
 
     let mut err_handle = String::new();
@@ -474,7 +483,7 @@ async fn build_stdout(
     }
     info!("rustc wrote {} files:", written.len());
     written.sort();
-    Ok((out_handle, err_handle, rcd, written))
+    Ok((out_handle, err_handle, rcd, written, result))
 }
 
 fn write_build_artifact(
@@ -486,11 +495,7 @@ fn write_build_artifact(
 ) -> Result<()> {
     let mode = header.mode().map_err(|e| anyhow!("Corrupted result mode: {e}"))?;
 
-    assert_eq!(header.uid().unwrap(), 0);
-    assert_eq!(header.gid().unwrap(), 0);
-    assert_eq!(header.mtime().unwrap(), SOURCE_DATE_EPOCH);
-    assert_eq!(header.username(), Ok(Some("")));
-    assert_eq!(header.groupname(), Ok(Some("")));
+    assert_tarball_header(header);
 
     match header.entry_type() {
         EntryType::Regular => {
