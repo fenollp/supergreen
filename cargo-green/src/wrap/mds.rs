@@ -151,7 +151,7 @@ impl Md {
             self.writes = written;
             self.stdout = stdout;
             self.stderr = stderr;
-            // self.cargo_rustc_env = cargo_rustc_env;/////
+            self.set_envs = cargo_rustc_env;
             info!("re-opening (RW) crate's md {md_path}");
             self.write_to(&md_path)?;
         }
