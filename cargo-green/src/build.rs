@@ -15,7 +15,7 @@ use std::{
 use anyhow::{anyhow, bail, Error, Result};
 use atomic_write_file::AtomicWriteFile;
 use camino::{Utf8Path, Utf8PathBuf};
-use indexmap::IndexSet;
+use indexmap::{IndexMap, IndexSet};
 use log::{debug, info, warn};
 use tokio::{
     fs::File,
@@ -340,7 +340,7 @@ pub(crate) struct Effects {
     pub(crate) written: Vec<Utf8PathBuf>,
     pub(crate) stdout: Vec<String>,
     pub(crate) stderr: Vec<String>,
-    pub(crate) cargo_rustc_env: IndexSet<String>,
+    pub(crate) cargo_rustc_env: IndexMap<String, String>,
 }
 
 impl Effects {
@@ -646,7 +646,7 @@ fn fwd_stderr(stderr: &str, badge: &'static str, cargo_home: &Utf8Path) -> FromS
 #[derive(Debug, Default)]
 struct FromStdout {
     stdout: Vec<String>,
-    rustc_envs: IndexSet<String>,
+    rustc_envs: IndexMap<String, String>,
 }
 
 fn fwd_stdout(stdout: &str, badge: &'static str, cargo_home: &Utf8Path) -> FromStdout {
@@ -694,9 +694,9 @@ fn fwd_stdout(stdout: &str, badge: &'static str, cargo_home: &Utf8Path) -> FromS
                     // CHECK_CFG – Register custom cfgs as expected for compile-time checking of configs.
                 } else if rhs.starts_with("rustc-env=") {
                     // VAR=VALUE — Sets an environment variable.
-                    if let Some((var, _)) = rhs.split_once("=") {
+                    if let Some((var, val)) = rhs.trim_start_matches("rustc-env=").split_once("=") {
                         // NOTE: cargo errors if second '=' doesn't exist
-                        acc.rustc_envs.insert(var.to_owned().to_owned());
+                        acc.rustc_envs.insert(var.to_owned(), val.to_owned());
                     }
                 } else if rhs.starts_with("error=") {
                     // MESSAGE — Displays an error on the terminal.

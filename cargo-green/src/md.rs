@@ -340,16 +340,9 @@ impl Md {
                 mount: virtual_target_dir(&out_dir),
             });
 
-            for line in &z_dep_md.stdout {
-                // > MSRV: 1.77 is required for cargo::KEY=VALUE syntax. To support older versions, use the cargo:KEY=VALUE syntax.
-                for directive in ["cargo::", "cargo:"] {
-                    if let Some((_prefix, rhs)) = line.split_once(&format!("{directive}rustc-env="))
-                    {
-                        // NOTE: cargo errors if second '=' doesn't exist
-                        if let Some((var, val)) = rhs.split_once("=") {
-                            self.set_envs.insert(var.to_owned(), val.to_owned());
-                        }
-                    }
+            for (var, val) in &z_dep_md.set_envs {
+                if !self.set_envs.contains_key(var) {
+                    self.set_envs.insert(var.to_owned(), val.to_owned());
                 }
             }
 
