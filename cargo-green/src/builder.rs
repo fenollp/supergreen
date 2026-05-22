@@ -232,9 +232,7 @@ then run your cargo command again.
 
         let mut config = buildkitd::Config::default();
         if !self.registry_mirrors.is_empty() {
-            let mirrors = self.registry_mirrors.clone();
-            let mirrors = buildkitd::Registry { mirrors, ..Default::default() };
-            config.registry.insert("docker.io".to_owned(), mirrors);
+            config.set_registry_mirrors("docker.io", self.registry_mirrors.clone());
         }
 
         let mut use_host_network = false;
