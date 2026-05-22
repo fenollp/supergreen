@@ -213,8 +213,9 @@ impl Green {
         }
 
         let call = cmd.show();
-        info!("Starting `{envs} {call} <{containerfile}`", envs = cmd.envs_string(&[]));
-        eprintln!("Starting `{envs} {call} <{containerfile}`", envs = cmd.envs_string(&[]));
+        let envs = cmd.envs_string(&self.runner.buildnoop_envs());
+        info!("Starting `{envs} {call} <{containerfile}`");
+        eprintln!("Starting `{envs} {call} <{containerfile}`");
         let call = call
             .split_whitespace()
             .filter(|flag| !self.runner.buildnoop_flags().any(|prefix| flag.starts_with(prefix)))
@@ -226,7 +227,6 @@ impl Green {
             .collect::<Vec<_>>()
             .join(" ")
             .replace(cmd.as_std().get_program().to_str().unwrap(), &self.runner.to_string());
-        let envs = cmd.envs_string(&self.runner.buildnoop_envs());
 
         (call, envs)
     }
