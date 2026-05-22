@@ -20,7 +20,6 @@ use crate::{
 
 pub(crate) const DIESES: &str = "##";
 
-//FIXME unpub?
 #[derive(Debug, Clone, Deserialize, Serialize, Eq)]
 pub(crate) struct NamedMount {
     pub(crate) name: Stage,
@@ -226,7 +225,6 @@ impl Md {
         }
         blocks.push('\n');
 
-        // for NamedStage { name, script } in stages {
         for ns in stages {
             let name = ns.name();
             if Some(name) == filter {
@@ -289,22 +287,7 @@ impl Md {
                 }
             }
 
-            // for buildrs_result in &extern_md.buildrs_results {
-            //     let br_md_path = md_pather(buildrs_result);
-            //     let br_md = mds.get_or_read(&br_md_path)?;
-            //     for dep in &br_md.deps {
-            //         let mut dep_md_path = md_pather(&format!("*-{dep}"));
-            //         for (i, p) in glob::glob(dep_md_path.as_str()).unwrap().enumerate() {
-            //             assert_eq!(i, 0, ">>> {p:?}");
-            //             dep_md_path = p.unwrap().try_into().unwrap();
-            //         }
-            //         let dep_md = mds.get_or_read(&dep_md_path)?;
-            //         extern_mds_and_paths.push((dep_md_path, dep_md));
-            //     }
-            //     extern_mds_and_paths.push((br_md_path, br_md));
-            // }
             self.buildrs_results.extend(extern_md.buildrs_results.iter());
-            //FIXME? also add transitive buildrs_results?
         }
 
         for dep in extern_mdids {
@@ -328,7 +311,6 @@ impl Md {
         if let Some(out_dir) = out_dir_var {
             let z_dep = MdId::from_out_dir_var(&out_dir);
 
-            // extern_mdids.insert(z_dep.to_owned());
             self.buildrs_results.insert(z_dep);
 
             let z_dep_md = mds.get_or_read(&z_dep.path(target_path))?;
@@ -343,17 +325,6 @@ impl Md {
                     self.set_envs.insert(var.to_owned(), val.to_owned());
                 }
             }
-
-            // info!("and adding that buildrs dep");
-            // // build_script_build-422764cb03f8177b
-            // assert_eq!(z_dep_md.deps.len(), 1);
-            // let x_dep = format!("build_script_build-{}", z_dep_md.deps[0]);
-            // let x_dep_md_path = md_pather(&x_dep);
-            // let x_dep_md = mds.get_or_read(&x_dep_md_path)?;
-            // info!("and adding that buildrs dep: {x_dep_md:?}");
-            // extern_mds_and_paths.push((x_dep_md_path, x_dep_md));
-
-            // extern_mdids.insert(x_dep);
 
             extern_mds.push(z_dep_md);
         }

@@ -126,7 +126,7 @@ async fn do_exec(
     let run_stage = Stage::try_new(format!("run-{crate_id}"))?;
     let out_stage = Stage::output(mdid)?;
 
-    let mut mds = Mds::default(); //FIXME: unpub?
+    let mut mds = Mds::default();
 
     let previous_md = mds.get_or_read(&previous_mdid.path(&target_path))?;
     trace!("previous_md = {previous_md:?}");
@@ -164,14 +164,6 @@ async fn do_exec(
         let mount = if swappity { format!(",dst={dst}{src}") } else { format!("{src},dst={dst}") };
         run_block.push_str(&format!("  --mount=from={name}{mount} \\\n"));
     }
-
-    // let target_path = previous_md_path.parent().unwrap();
-    // let (mounts, mut mds) =
-    //     assemble_build_dependencies(&mut md, "bin", "dep-info,link", [].into(), target_path)?;
-    // mds.push(previous_md);
-    // for NamedMount { name, src, dst } in mounts {
-    //     run_block.push_str(&format!("  --mount=from={name},dst={dst},source={src} \\\n"));
-    // }
 
     let mut extern_mds = previous_md
         .deps()
