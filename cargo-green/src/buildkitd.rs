@@ -1,5 +1,4 @@
-use std::collections::BTreeMap;
-
+use indexmap::IndexMap;
 use serde::{Deserialize, Serialize};
 
 /// Default docker.io mirrors: "mirror.gcr.io", "public.ecr.aws/docker".
@@ -15,11 +14,11 @@ pub(crate) struct Config {
     #[serde(skip_serializing_if = "<&bool as std::ops::Not>::not")]
     pub(crate) debug: bool,
 
-    #[serde(skip_serializing_if = "BTreeMap::is_empty")]
-    pub(crate) registry: BTreeMap<String, Registry>,
+    #[serde(skip_serializing_if = "IndexMap::is_empty")]
+    pub(crate) registry: IndexMap<String, Registry>,
 
-    #[serde(skip_serializing_if = "BTreeMap::is_empty")]
-    pub(crate) worker: BTreeMap<String, Worker>,
+    #[serde(skip_serializing_if = "IndexMap::is_empty")]
+    pub(crate) worker: IndexMap<String, Worker>,
 
     #[serde(skip_serializing_if = "Vec::is_empty")]
     pub(crate) insecure_entitlements: Vec<String>,
