@@ -108,6 +108,8 @@ Builds reproducibility or hermeticity is guaranteed via:
 * `git` dependencies are pinned to their commit hash
 * Produced files timestamps' are rewritten to some fixed epoch (`SOURCE_DATE_EPOCH`)
 
+Switching from `cargo build` to `cargo green build` requires a `cargo clean` because of the additional work `cargo-green` does.
+Running `cargo build` after `cargo green build` works normally though: the same files are produced.
 
 ## Remote execution
 
