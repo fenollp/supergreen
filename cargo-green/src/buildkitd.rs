@@ -48,7 +48,8 @@ pub(crate) struct Registry {
 #[derive(Debug, Default, Serialize, Deserialize, PartialEq)]
 #[serde(default, rename_all = "kebab-case")]
 pub(crate) struct Worker {
-    pub(crate) max_parallelism: u8,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub(crate) max_parallelism: Option<u8>,
 }
 
 #[test]
@@ -162,7 +163,7 @@ max-parallelism = 4
     assert_eq!(
         de,
         Config {
-            worker: [("oci".to_owned(), Worker { max_parallelism: 4 })].into(),
+            worker: [("oci".to_owned(), Worker { max_parallelism: Some(4) })].into(),
             ..Default::default()
         }
     );
@@ -170,4 +171,33 @@ max-parallelism = 4
     let ser = toml::to_string_pretty(&de).unwrap();
     println!("{ser}");
     assert_eq!(ser, cfg);
+
+    let cfg = &r#"
+[worker.oci]
+max-parallelism = 0
+"#[1..];
+
+    let de: Config = toml::de::from_str(cfg).unwrap();
+    assert_eq!(
+        de,
+        Config {
+            worker: [("oci".to_owned(), Worker { max_parallelism: Some(0) })].into(),
+            ..Default::default()
+        }
+    );
+
+    let ser = toml::to_string_pretty(&de).unwrap();
+    println!("{ser}");
+    assert_eq!(ser, cfg);
+
+    let cfg =
+        Config { worker: [("oci".to_owned(), Worker::default())].into(), ..Default::default() };
+
+    let ser = toml::to_string_pretty(&cfg).unwrap();
+    assert_eq!(
+        ser,
+        &r#"
+[worker.oci]
+"#[1..]
+    );
 }
