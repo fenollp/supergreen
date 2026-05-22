@@ -7,7 +7,7 @@ use camino::{Utf8Path, Utf8PathBuf};
 use indexmap::{IndexMap, IndexSet};
 use log::{info, trace, warn};
 use serde::{Deserialize, Serialize};
-use szyk::{sort, Node, TopsortError};
+use szyk::Node;
 
 use crate::{
     build::SOURCE_DATE_EPOCH,
@@ -248,7 +248,7 @@ impl Md {
     ) -> Result<Vec<Rc<Self>>> {
         let mut mds = Mds::default();
 
-        let mut extern_mds_and_paths = vec![];
+        let mut extern_mds: Vec<Rc<Self>> = vec![];
 
         let exclude_rmeta_when_not_needed = {
             let has_rmetas = externs.iter().any(|xtern| xtern.ends_with(".rmeta"));
@@ -308,8 +308,7 @@ impl Md {
         }
 
         for dep in extern_mdids {
-            let dep_md_path = dep.path(target_path);
-            let dep_md = mds.get_or_read(&dep_md_path)?;
+            let dep_md = mds.get_or_read(&dep.path(target_path))?;
             let dep_stage = Stage::output(dep)?;
             self.externs.extend(
                 dep_md
@@ -321,7 +320,7 @@ impl Md {
                     .map(|w| w.file_name().unwrap().to_owned())
                     .map(|xtern: String| MountExtern { from: dep_stage.clone(), xtern }),
             );
-            extern_mds_and_paths.push((dep_md_path, dep_md));
+            extern_mds.push(dep_md);
         }
 
         assert_eq!(self.deps(), vec![]);
@@ -332,8 +331,7 @@ impl Md {
             // extern_mdids.insert(z_dep.to_owned());
             self.buildrs_results.insert(z_dep);
 
-            let z_dep_md_path = z_dep.path(target_path);
-            let z_dep_md = mds.get_or_read(&z_dep_md_path)?;
+            let z_dep_md = mds.get_or_read(&z_dep.path(target_path))?;
             info!("also mounting {z_dep}'s buildrs out dir {out_dir}");
             self.mounts.insert(NamedMount {
                 name: z_dep_md.last_stage(),
@@ -357,68 +355,45 @@ impl Md {
 
             // extern_mdids.insert(x_dep);
 
-            extern_mds_and_paths.push((z_dep_md_path, z_dep_md));
+            extern_mds.push(z_dep_md);
         }
 
         for buildrs_result in &self.buildrs_results {
-            let br_md_path = buildrs_result.path(target_path);
-            let br_md = mds.get_or_read(&br_md_path)?;
+            let br_md = mds.get_or_read(&buildrs_result.path(target_path))?;
             for dep in &br_md.deps {
-                let dep_md_path = dep.path(target_path);
-                let dep_md = mds.get_or_read(&dep_md_path)?;
-
+                let dep_md = mds.get_or_read(&dep.path(target_path))?;
                 for dep in &dep_md.deps {
-                    let dep_md_path = dep.path(target_path);
-                    let dep_md = mds.get_or_read(&dep_md_path)?;
-                    extern_mds_and_paths.push((dep_md_path, dep_md));
+                    let dep_md = mds.get_or_read(&dep.path(target_path))?;
+                    extern_mds.push(dep_md);
                 }
-
-                extern_mds_and_paths.push((dep_md_path, dep_md));
+                extern_mds.push(dep_md);
             }
-            extern_mds_and_paths.push((br_md_path, br_md));
+            extern_mds.push(br_md);
         }
 
-        let extern_md_paths = self.sort_deps(extern_mds_and_paths)?;
-        info!("extern_md_paths: {}", extern_md_paths.len());
-
-        let mds = extern_md_paths
-            .into_iter()
-            .map(|extern_md_path| mds.get_or_read(&extern_md_path))
-            .collect::<Result<Vec<_>>>()?;
+        let mds = self.sort_deps(extern_mds)?;
+        info!("sorted {} deps", mds.len());
 
         Ok(mds)
     }
 
-    //FIXME: unpub
-    pub(crate) fn sort_deps(
-        &mut self,
-        mds: Vec<(Utf8PathBuf, Rc<Self>)>,
-    ) -> Result<Vec<Utf8PathBuf>> {
+    pub(crate) fn sort_deps(&mut self, mds: Vec<Rc<Self>>) -> Result<Vec<Rc<Self>>> {
         let mut dag: Vec<_> = mds
             .into_iter()
-            .map(|(md_path, md)| {
-                let node = Node::new(md.this, md.deps(), md_path);
+            .map(|md| {
                 self.deps.insert(md.this);
                 self.contexts.extend(md.contexts.iter().cloned());
-                node
+                Node::new(md.this, md.deps(), Rc::clone(&md))
             })
             .collect();
-        let this = self.this;
-        let root = Utf8PathBuf::new();
-        dag.push(Node::new(this, self.deps(), root.clone()));
+        dag.push(Node::new(self.this, self.deps(), Rc::new(self.clone())));
 
-        let mut md_paths = sort(&dag, this).map_err(|e| match e {
-            TopsortError::TargetNotFound(x) => {
-                anyhow!("Failed topolosorting {this}: {x} not found")
-            }
-            TopsortError::CyclicDependency(x) => {
-                anyhow!("Failed topolosorting {this}: cyclic {x}")
-            }
-        })?;
-        let last = md_paths.pop();
-        assert_eq!(last, Some(root), "BUG: should be self.this's empty path");
+        let mut sorted = szyk::sort(&dag, self.this)
+            .map_err(|e| anyhow!("Failed toposorting {}: {e:?}", self.this))?;
+        let last = sorted.pop();
+        assert_eq!(last.map(|md| md.this), Some(self.this));
 
-        Ok(md_paths)
+        Ok(sorted)
     }
 
     pub(crate) fn comment_pretty(line: &str, buf: &mut String) {

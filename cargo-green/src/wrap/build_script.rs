@@ -128,10 +128,8 @@ async fn do_exec(
 
     let mut mds = Mds::default(); //FIXME: unpub?
 
-    let previous_md_path = previous_mdid.path(&target_path);
-    let previous_md = mds.get_or_read(&previous_md_path)?;
-    trace!("previous_md_path = {previous_md_path}");
-    trace!("previous_md      = {previous_md:?}");
+    let previous_md = mds.get_or_read(&previous_mdid.path(&target_path))?;
+    trace!("previous_md = {previous_md:?}");
 
     let Some(code_stage) = previous_md.code_stage() else {
         bail!("BUG: no code stage found in {previous_md:?}")
@@ -175,23 +173,14 @@ async fn do_exec(
     //     run_block.push_str(&format!("  --mount=from={name},dst={dst},source={src} \\\n"));
     // }
 
-    let mut extern_mds_and_paths = previous_md
+    let mut extern_mds = previous_md
         .deps()
         .iter()
-        .map(|xtern| {
-            let xtern_md_path = xtern.path(&target_path);
-            let xtern_md = mds.get_or_read(&xtern_md_path)?;
-            Ok((xtern_md_path, xtern_md))
-        })
+        .map(|xtern| mds.get_or_read(&xtern.path(&target_path)))
         .collect::<Result<Vec<_>>>()?;
-    extern_mds_and_paths.push((previous_md_path, previous_md));
-    let extern_md_paths = md.sort_deps(extern_mds_and_paths)?;
-    info!("extern_md_paths: {}", extern_md_paths.len());
-
-    let mds = extern_md_paths
-        .into_iter()
-        .map(|extern_md_path| mds.get_or_read(&extern_md_path))
-        .collect::<Result<Vec<_>>>()?;
+    extern_mds.push(previous_md);
+    let mds = md.sort_deps(extern_mds)?;
+    info!("sorted {} deps", mds.len());
 
     md.call_block(
         (&run_stage, run_block),
