@@ -48,7 +48,13 @@ pub(crate) struct Registry {
 #[serde(default, rename_all = "kebab-case")]
 pub(crate) struct Worker {
     #[serde(skip_serializing_if = "Option::is_none")]
+    pub(crate) enabled: Option<bool>,
+
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub(crate) max_parallelism: Option<u8>,
+
+    #[serde(skip_serializing_if = "String::is_empty")]
+    pub(crate) namespace: String,
 }
 
 #[test]
@@ -162,7 +168,8 @@ max-parallelism = 4
     assert_eq!(
         de,
         Config {
-            worker: [("oci".to_owned(), Worker { max_parallelism: Some(4) })].into(),
+            worker: [("oci".to_owned(), Worker { max_parallelism: Some(4), ..Default::default() })]
+                .into(),
             ..Default::default()
         }
     );
@@ -180,7 +187,8 @@ max-parallelism = 0
     assert_eq!(
         de,
         Config {
-            worker: [("oci".to_owned(), Worker { max_parallelism: Some(0) })].into(),
+            worker: [("oci".to_owned(), Worker { max_parallelism: Some(0), ..Default::default() })]
+                .into(),
             ..Default::default()
         }
     );
@@ -199,4 +207,41 @@ max-parallelism = 0
 [worker.oci]
 "#[1..]
     );
+}
+
+// https://github.com/moby/buildkit/issues/5340#issuecomment-2828164139
+#[test]
+fn use_containerd() {
+    let cfg = &r#"
+[worker.containerd]
+enabled = true
+namespace = "default"
+
+[worker.oci]
+enabled = false
+"#[1..];
+
+    let de: Config = toml::de::from_str(cfg).unwrap();
+    assert_eq!(
+        de,
+        Config {
+            worker: [
+                ("oci".to_owned(), Worker { enabled: Some(false), ..Default::default() }),
+                (
+                    "containerd".to_owned(),
+                    Worker {
+                        enabled: Some(true),
+                        namespace: "default".to_owned(),
+                        ..Default::default()
+                    }
+                )
+            ]
+            .into(),
+            ..Default::default()
+        }
+    );
+
+    let ser = toml::to_string_pretty(&de).unwrap();
+    println!("{ser}");
+    assert_eq!(ser, cfg);
 }
