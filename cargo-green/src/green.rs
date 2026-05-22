@@ -9,9 +9,9 @@ use cargo_toml::Manifest;
 use serde::{Deserialize, Serialize};
 
 use crate::{
-    add::Add, base_image::BaseImage, builder::Builder, cache::Cache, containerfile::Containerfile,
-    image_uri::ImageUri, lockfile::find_manifest_path, r#final::Final, runner::Runner, ENV_RUNNER,
-    PKG,
+    add::Add, base_image::BaseImage, builder::Builder, buildkitd::MIRRORS, cache::Cache,
+    containerfile::Containerfile, image_uri::ImageUri, lockfile::find_manifest_path,
+    r#final::Final, runner::Runner, ENV_RUNNER, PKG,
 };
 
 macro_rules! ENV_REGISTRY_MIRRORS {
@@ -150,9 +150,7 @@ impl Green {
             bail!("{origin} contains duplicates")
         }
         if green.registry_mirrors.is_empty() && !was_reset {
-            // Hit me if you have more!
-            green.registry_mirrors =
-                vec!["mirror.gcr.io".to_owned(), "public.ecr.aws/docker".to_owned()];
+            green.registry_mirrors = MIRRORS.iter().map(ToString::to_string).collect();
         }
 
         for (field, var) in [

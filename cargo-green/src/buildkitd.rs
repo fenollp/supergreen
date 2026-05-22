@@ -2,6 +2,11 @@ use std::collections::BTreeMap;
 
 use serde::{Deserialize, Serialize};
 
+/// Default docker.io mirrors: "mirror.gcr.io", "public.ecr.aws/docker".
+///
+/// Hit me if you have more!
+pub(crate) const MIRRORS: &[&str] = &["mirror.gcr.io", "public.ecr.aws/docker"];
+
 #[derive(Debug, Default, Serialize, Deserialize, PartialEq)]
 #[serde(default, rename_all = "kebab-case")]
 pub(crate) struct Config {
@@ -18,6 +23,13 @@ pub(crate) struct Config {
 
     #[serde(skip_serializing_if = "Vec::is_empty")]
     pub(crate) insecure_entitlements: Vec<String>,
+}
+
+impl Config {
+    pub(crate) fn set_registry_mirrors(&mut self, ns: &str, mirrors: Vec<String>) {
+        let mirrors = Registry { mirrors, ..Default::default() };
+        self.registry.insert(ns.to_owned(), mirrors);
+    }
 }
 
 #[derive(Debug, Default, Serialize, Deserialize, PartialEq)]
