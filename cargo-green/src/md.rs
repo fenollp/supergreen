@@ -1,6 +1,6 @@
 // Our own MetaData utils
 
-use std::{collections::HashMap, env, fmt, fs, io::ErrorKind, str::FromStr};
+use std::{collections::HashMap, env, fmt, fs, io::ErrorKind, rc::Rc, str::FromStr};
 
 use anyhow::{anyhow, bail, Result};
 use camino::{Utf8Path, Utf8PathBuf};
@@ -245,7 +245,7 @@ impl Md {
         externs: IndexSet<String>,
         out_dir_var: Option<Utf8PathBuf>,
         target_path: &Utf8Path,
-    ) -> Result<Vec<Self>> {
+    ) -> Result<Vec<Rc<Self>>> {
         let mut mds = Mds::default();
 
         let mut extern_mds_and_paths = vec![];
@@ -303,7 +303,7 @@ impl Md {
             //     }
             //     extern_mds_and_paths.push((br_md_path, br_md));
             // }
-            self.buildrs_results.extend(extern_md.buildrs_results);
+            self.buildrs_results.extend(extern_md.buildrs_results.iter());
             //FIXME? also add transitive buildrs_results?
         }
 
@@ -390,13 +390,16 @@ impl Md {
     }
 
     //FIXME: unpub
-    pub(crate) fn sort_deps(&mut self, mds: Vec<(Utf8PathBuf, Self)>) -> Result<Vec<Utf8PathBuf>> {
+    pub(crate) fn sort_deps(
+        &mut self,
+        mds: Vec<(Utf8PathBuf, Rc<Self>)>,
+    ) -> Result<Vec<Utf8PathBuf>> {
         let mut dag: Vec<_> = mds
             .into_iter()
             .map(|(md_path, md)| {
                 let node = Node::new(md.this, md.deps(), md_path);
                 self.deps.insert(md.this);
-                self.contexts.extend(md.contexts);
+                self.contexts.extend(md.contexts.iter().cloned());
                 node
             })
             .collect();
@@ -434,13 +437,13 @@ impl Md {
         buf.push('\n');
     }
 
-    fn block_along_with_predecessors(&self, mds: &[Self]) -> String {
+    fn block_along_with_predecessors(&self, mds: &[Rc<Self>]) -> String {
         let mut blocks = String::new();
         let mut visited = IndexSet::new();
         for md in mds {
             md.append_blocks(&mut blocks, &mut visited);
             blocks.push('\n');
-            for line in toml::to_string_pretty(md).expect("previously enc").lines() {
+            for line in toml::to_string_pretty(md.as_ref()).expect("previously enc").lines() {
                 Self::comment_pretty(line, &mut blocks);
             }
             blocks.push('\n');
@@ -454,7 +457,7 @@ impl Md {
         green: &Green,
         target_path: &Utf8Path,
         pkg_name: &str,
-        mds: &[Self],
+        mds: &[Rc<Self>],
     ) -> Result<Utf8PathBuf> {
         let md_path = self.this.path(target_path);
         let containerfile_path = target_path.join(format!("{pkg_name}-{}.Dockerfile", self.this));
@@ -496,15 +499,15 @@ impl std::hash::Hash for MountExtern {
 
 /// A file cache
 #[derive(Debug, Default)]
-pub(crate) struct Mds(HashMap<Utf8PathBuf, Md>);
+pub(crate) struct Mds(HashMap<Utf8PathBuf, Rc<Md>>);
 
 impl Mds {
-    pub(crate) fn get_or_read(&mut self, path: &Utf8Path) -> Result<Md> {
+    pub(crate) fn get_or_read(&mut self, path: &Utf8Path) -> Result<Rc<Md>> {
         if let Some(md) = self.0.get(path) {
-            return Ok(md.clone());
+            return Ok(Rc::clone(md));
         }
-        let md = Md::from_file(path)?;
-        let _ = self.0.insert(path.to_path_buf(), md.clone());
+        let md = Rc::new(Md::from_file(path)?);
+        let _ = self.0.insert(path.to_path_buf(), Rc::clone(&md));
         Ok(md)
     }
 }
