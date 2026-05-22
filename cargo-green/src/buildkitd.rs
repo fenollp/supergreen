@@ -40,6 +40,13 @@ pub(crate) struct Worker {
 }
 
 #[test]
+fn default_cfg() {
+    let cfg = Config::default();
+    let ser = toml::to_string_pretty(&cfg).unwrap();
+    assert_eq!(ser, "");
+}
+
+#[test]
 fn mirrors() {
     let cfg = &r#"
 debug = true
