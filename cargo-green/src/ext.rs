@@ -43,7 +43,8 @@ pub(crate) trait CommandExt {
 impl CommandExt for tokio::process::Command {
     async fn exec(&mut self) -> Result<(bool, Vec<u8>, Vec<u8>)> {
         let call = self.show();
-        let envs = self.envs_string(&[]);
+        let except_envs = &[OsStr::new("PATH")]; // PATH regardless of Runner
+        let envs = self.envs_string(except_envs);
 
         info!("Calling {envs} {call}");
         eprintln!("Calling {envs} {call}");
