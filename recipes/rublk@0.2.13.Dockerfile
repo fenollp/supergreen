@@ -10779,6 +10779,7 @@ RUN \
   --mount=from=out-9eef6f6266532c8c,dst=/target/release/deps/libthiserror-9eef6f6266532c8c.rlib,source=/libthiserror-9eef6f6266532c8c.rlib \
   --mount=from=out-d3a4e3f14257e459,dst=/target/release/deps/libthiserror_impl-d3a4e3f14257e459.so,source=/libthiserror_impl-d3a4e3f14257e459.so \
   --mount=from=out-cb453e48502fd63d,dst=/target/release/deps/libanyhow-cb453e48502fd63d.rlib,source=/libanyhow-cb453e48502fd63d.rlib \
+  --mount=from=out-368c7d6d126a0532,dst=/target/release/deps/libbindgen-368c7d6d126a0532.rlib,source=/libbindgen-368c7d6d126a0532.rlib \
   --mount=from=out-0e181dab89eb3efa,dst=/target/release/deps/libbitflags-0e181dab89eb3efa.rlib,source=/libbitflags-0e181dab89eb3efa.rlib \
   --mount=from=out-2ff410bf7c865568,dst=/target/release/deps/libcexpr-2ff410bf7c865568.rlib,source=/libcexpr-2ff410bf7c865568.rlib \
   --mount=from=out-2111450c2a3bcda3,dst=/target/release/deps/libnom-2111450c2a3bcda3.rlib,source=/libnom-2111450c2a3bcda3.rlib \
@@ -10805,7 +10806,6 @@ RUN \
   --mount=from=out-d3993dfc5e9405e6,dst=/target/release/deps/libhome-d3993dfc5e9405e6.rlib,source=/libhome-d3993dfc5e9405e6.rlib \
   --mount=from=out-2e363a36db479504,dst=/target/release/deps/librustix-2e363a36db479504.rlib,source=/librustix-2e363a36db479504.rlib \
   --mount=from=out-e4c0bcbfb9a354ad,dst=/target/release/deps/liblinux_raw_sys-e4c0bcbfb9a354ad.rlib,source=/liblinux_raw_sys-e4c0bcbfb9a354ad.rlib \
-  --mount=from=out-368c7d6d126a0532,dst=/target/release/deps/libbindgen-368c7d6d126a0532.rlib,source=/libbindgen-368c7d6d126a0532.rlib \
   --mount=from=out-6e21645243f500a6,dst=/target/release/deps/libnum_cpus-6e21645243f500a6.rlib,source=/libnum_cpus-6e21645243f500a6.rlib \
   --mount=from=out-362f3e8608fc2f17,dst=/target/release/deps/libopencl3-362f3e8608fc2f17.rlib,source=/libopencl3-362f3e8608fc2f17.rlib \
   --mount=from=out-07d689d7ad50e1ba,dst=/target/release/deps/libcl3-07d689d7ad50e1ba.rlib,source=/libcl3-07d689d7ad50e1ba.rlib \
@@ -10859,9 +10859,9 @@ RUN \
   --mount=from=out-20c80c2888920237,dst=/target/release/build/rustix-20c80c2888920237/out,source=/ \
   --mount=from=out-a3be514ed86d661b,dst=/target/release/build/thiserror-a3be514ed86d661b/out,source=/ \
   --mount=from=out-143a03f3fa83a239,dst=/target/release/build/anyhow-143a03f3fa83a239/out,source=/ \
-  --mount=from=out-d4f193d13e6095bb,dst=/target/release/build/bindgen-d4f193d13e6095bb/out,source=/ \
   --mount=from=out-9895eef58b4d9995,dst=/target/release/build/clang-sys-9895eef58b4d9995/out,source=/ \
   --mount=from=out-d5b0ce628d89fca3,dst=/target/release/build/rustix-d5b0ce628d89fca3/out,source=/ \
+  --mount=from=out-d4f193d13e6095bb,dst=/target/release/build/bindgen-d4f193d13e6095bb/out,source=/ \
   --mount=from=out-21a5c5bd40a3c51a,dst=/target/release/build/num-traits-21a5c5bd40a3c51a/out,source=/ \
   --mount=from=out-26f8216a923d32fd,dst=/target/release/build/lock_api-26f8216a923d32fd/out,source=/ \
   --mount=from=out-598fc27fa0d8c187,dst=/target/release/build/memoffset-598fc27fa0d8c187/out,source=/ \

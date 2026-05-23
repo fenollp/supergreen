@@ -9275,6 +9275,7 @@ RUN \
   --mount=from=out-3d5dc9d7ef40d356,dst=/target/release/deps/libwinnow-3d5dc9d7ef40d356.rlib,source=/libwinnow-3d5dc9d7ef40d356.rlib \
   --mount=from=out-50c59ed4a109eeac,dst=/target/release/deps/libtoml_writer-50c59ed4a109eeac.rlib,source=/libtoml_writer-50c59ed4a109eeac.rlib \
   --mount=from=out-7411c00f7bbd7d41,dst=/target/release/deps/libunicode_ellipsis-7411c00f7bbd7d41.rlib,source=/libunicode_ellipsis-7411c00f7bbd7d41.rlib \
+  --mount=from=out-489ba4afc48e6084,dst=/target/release/deps/libclap-489ba4afc48e6084.rlib,source=/libclap-489ba4afc48e6084.rlib \
   --mount=from=out-8f88a2712393d7b9,dst=/target/release/deps/libclap_builder-8f88a2712393d7b9.rlib,source=/libclap_builder-8f88a2712393d7b9.rlib \
   --mount=from=out-87a930d26714a61e,dst=/target/release/deps/libanstream-87a930d26714a61e.rlib,source=/libanstream-87a930d26714a61e.rlib \
   --mount=from=out-a5442630cf646936,dst=/target/release/deps/libanstyle-a5442630cf646936.rlib,source=/libanstyle-a5442630cf646936.rlib \
@@ -9288,12 +9289,11 @@ RUN \
   --mount=from=out-6e0a3d97b9b9ced2,dst=/target/release/deps/librustix-6e0a3d97b9b9ced2.rlib,source=/librustix-6e0a3d97b9b9ced2.rlib \
   --mount=from=out-94fc2a3bd3ee236d,dst=/target/release/deps/libbitflags-94fc2a3bd3ee236d.rlib,source=/libbitflags-94fc2a3bd3ee236d.rlib \
   --mount=from=out-9a3cac79ebb2adac,dst=/target/release/deps/liblinux_raw_sys-9a3cac79ebb2adac.rlib,source=/liblinux_raw_sys-9a3cac79ebb2adac.rlib \
-  --mount=from=out-489ba4afc48e6084,dst=/target/release/deps/libclap-489ba4afc48e6084.rlib,source=/libclap-489ba4afc48e6084.rlib \
   --mount=from=out-3c19089a44a38e6c,dst=/target/release/deps/libclap_complete-3c19089a44a38e6c.rlib,source=/libclap_complete-3c19089a44a38e6c.rlib \
   --mount=from=out-17e0b5134bc131d0,dst=/target/release/deps/libclap_complete_fig-17e0b5134bc131d0.rlib,source=/libclap_complete_fig-17e0b5134bc131d0.rlib \
   --mount=from=out-03f0fbd93a8a01d8,dst=/target/release/deps/libclap_complete_nushell-03f0fbd93a8a01d8.rlib,source=/libclap_complete_nushell-03f0fbd93a8a01d8.rlib \
-  --mount=from=out-144d6e555e22eba5,dst=/target/release/deps/libroff-144d6e555e22eba5.rlib,source=/libroff-144d6e555e22eba5.rlib \
   --mount=from=out-db4125809d0fc4c5,dst=/target/release/deps/libclap_mangen-db4125809d0fc4c5.rlib,source=/libclap_mangen-db4125809d0fc4c5.rlib \
+  --mount=from=out-144d6e555e22eba5,dst=/target/release/deps/libroff-144d6e555e22eba5.rlib,source=/libroff-144d6e555e22eba5.rlib \
   --mount=from=out-3a092740b99de547,dst=/target/release/build/rustversion-3a092740b99de547/out,source=/ \
   --mount=from=out-d5a12bd3e3da1e38,dst=/target/release/build/serde_core-d5a12bd3e3da1e38/out,source=/ \
   --mount=from=out-b264da6367cc7186,dst=/target/release/build/serde-b264da6367cc7186/out,source=/ \
