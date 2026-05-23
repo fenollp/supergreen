@@ -43,10 +43,6 @@ impl std::hash::Hash for NamedMount {
     }
 }
 
-fn path_is_empty(path: &Utf8PathBuf) -> bool {
-    path == ""
-}
-
 #[derive(Debug, Clone, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub(crate) struct Md {
@@ -58,29 +54,43 @@ pub(crate) struct Md {
     #[serde(default, skip_serializing_if = "IndexSet::is_empty")]
     deps: IndexSet<MdId>,
 
+    ///
+
+    /// Set when executing a build script (after building it)
     #[serde(default, skip_serializing_if = "<&bool as std::ops::Not>::not")]
     pub(crate) buildrs: bool,
+
     #[serde(default, skip_serializing_if = "IndexSet::is_empty")]
     pub(crate) buildrs_results: IndexSet<MdId>,
+
     /// Set when executing buildrs (not when building buildrs)
-    #[serde(default, skip_serializing_if = "path_is_empty")]
-    pub(crate) writes_to: Utf8PathBuf,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub(crate) writes_to: Option<Utf8PathBuf>,
+
     #[serde(default, skip_serializing_if = "IndexSet::is_empty")]
     pub(crate) mounts: IndexSet<NamedMount>,
+
+    /// Environment variables set via cargo::rustc-env=VAR=VAL
     #[serde(default, skip_serializing_if = "IndexMap::is_empty")]
     pub(crate) set_envs: IndexMap<String, String>,
 
+    ///
+
+    /// Out-of-build directories that get mounted (eg. crate code under $PWD)
     #[serde(default, skip_serializing_if = "IndexSet::is_empty")]
     pub(crate) contexts: IndexSet<BuildContext>,
 
     stages: IndexSet<NamedStage>,
 
+    /// Paths of the files that are the result of the build
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub(crate) writes: Vec<Utf8PathBuf>,
 
+    /// Lines written to STDOUT
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub(crate) stdout: Vec<String>,
 
+    /// Lines written to STDERR
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub(crate) stderr: Vec<String>,
 }
@@ -101,7 +111,7 @@ impl From<MdId> for Md {
             deps: IndexSet::default(),
             buildrs: false,
             buildrs_results: IndexSet::default(),
-            writes_to: "".into(),
+            writes_to: None,
             mounts: IndexSet::default(),
             set_envs: IndexMap::default(),
             contexts: IndexSet::default(),
@@ -271,13 +281,12 @@ impl Md {
             for transitive in &extern_md.deps {
                 trace!("❯ transitive {transitive}");
                 let trans_md = mds.load(*transitive)?;
-                let out_dir = trans_md.writes_to.clone();
-                if out_dir != "" {
+                if let Some(ref out_dir) = trans_md.writes_to {
                     let skip = trans_md.writes.is_empty();
                     info!("{}mounting buildrs out dir {out_dir}", if skip { "skip " } else { "" });
                     if !skip {
-                        self.mounts
-                            .insert(NamedMount { name: trans_md.last_stage(), mount: out_dir });
+                        let mount = out_dir.clone();
+                        self.mounts.insert(NamedMount { name: trans_md.last_stage(), mount });
                     }
                 } else {
                     extern_mdids.insert(*transitive);
@@ -589,7 +598,7 @@ fn md_ser() {
         deps: [MdId(0x81529f4c2380d9ec), MdId(0x88a4324b2aff6db9)].into(),
         buildrs: false,
         buildrs_results: [MdId(0xa2ba26818f759606)].into(),
-        writes_to: "".into(),
+        writes_to: None,
         mounts: [].into(),
         set_envs: [].into(),
         contexts: [BuildContext {
