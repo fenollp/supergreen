@@ -126,9 +126,9 @@ async fn do_exec(
     let run_stage = Stage::try_new(format!("run-{crate_id}"))?;
     let out_stage = Stage::output(mdid)?;
 
-    let mut mds = Mds::default();
+    let mut mds = Mds::new(&target_path);
 
-    let previous_md = mds.get_or_read(&previous_mdid.path(&target_path))?;
+    let previous_md = mds.load(previous_mdid)?;
     trace!("previous_md = {previous_md:?}");
 
     let Some(code_stage) = previous_md.code_stage() else {
@@ -165,11 +165,7 @@ async fn do_exec(
         run_block.push_str(&format!("  --mount=from={name}{mount} \\\n"));
     }
 
-    let mut extern_mds = previous_md
-        .deps()
-        .iter()
-        .map(|xtern| mds.get_or_read(&xtern.path(&target_path)))
-        .collect::<Result<Vec<_>>>()?;
+    let mut extern_mds = mds.load_all(&previous_md.deps())?;
     extern_mds.push(previous_md);
     let mds = md.sort_deps(extern_mds)?;
     info!("sorted {} deps", mds.len());
