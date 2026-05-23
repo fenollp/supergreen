@@ -6606,6 +6606,8 @@ RUN \
   --mount=from=out-1ade9570e81e8ca6,dst=/target/release/deps/liblibproc-1ade9570e81e8ca6.rmeta,source=/liblibproc-1ade9570e81e8ca6.rmeta \
   --mount=from=out-a138eee51efeb8a7,dst=/target/release/deps/liberrno-a138eee51efeb8a7.rlib,source=/liberrno-a138eee51efeb8a7.rlib \
   --mount=from=out-a138eee51efeb8a7,dst=/target/release/deps/liberrno-a138eee51efeb8a7.rmeta,source=/liberrno-a138eee51efeb8a7.rmeta \
+  --mount=from=out-67d8963bce8ff898,dst=/target/release/deps/libbindgen-67d8963bce8ff898.rlib,source=/libbindgen-67d8963bce8ff898.rlib \
+  --mount=from=out-67d8963bce8ff898,dst=/target/release/deps/libbindgen-67d8963bce8ff898.rmeta,source=/libbindgen-67d8963bce8ff898.rmeta \
   --mount=from=out-3642807da7a0e768,dst=/target/release/deps/libbitflags-3642807da7a0e768.rlib,source=/libbitflags-3642807da7a0e768.rlib \
   --mount=from=out-3642807da7a0e768,dst=/target/release/deps/libbitflags-3642807da7a0e768.rmeta,source=/libbitflags-3642807da7a0e768.rmeta \
   --mount=from=out-2ff410bf7c865568,dst=/target/release/deps/libcexpr-2ff410bf7c865568.rlib,source=/libcexpr-2ff410bf7c865568.rlib \
@@ -6644,8 +6646,6 @@ RUN \
   --mount=from=out-45672dd2e9f1cb05,dst=/target/release/deps/librustc_hash-45672dd2e9f1cb05.rmeta,source=/librustc_hash-45672dd2e9f1cb05.rmeta \
   --mount=from=out-5262b3f4f37b909a,dst=/target/release/deps/libshlex-5262b3f4f37b909a.rlib,source=/libshlex-5262b3f4f37b909a.rlib \
   --mount=from=out-5262b3f4f37b909a,dst=/target/release/deps/libshlex-5262b3f4f37b909a.rmeta,source=/libshlex-5262b3f4f37b909a.rmeta \
-  --mount=from=out-67d8963bce8ff898,dst=/target/release/deps/libbindgen-67d8963bce8ff898.rlib,source=/libbindgen-67d8963bce8ff898.rlib \
-  --mount=from=out-67d8963bce8ff898,dst=/target/release/deps/libbindgen-67d8963bce8ff898.rmeta,source=/libbindgen-67d8963bce8ff898.rmeta \
   --mount=from=out-77e4f77f10bd492e,dst=/target/release/deps/liblog-77e4f77f10bd492e.rlib,source=/liblog-77e4f77f10bd492e.rlib \
   --mount=from=out-77e4f77f10bd492e,dst=/target/release/deps/liblog-77e4f77f10bd492e.rmeta,source=/liblog-77e4f77f10bd492e.rmeta \
   --mount=from=out-5944bc7739d2e96e,dst=/target/release/deps/libmotd-5944bc7739d2e96e.rlib,source=/libmotd-5944bc7739d2e96e.rlib \
@@ -6653,14 +6653,14 @@ RUN \
   --mount=from=out-8f2e7e0a067d3583,dst=/target/release/deps/libserde-8f2e7e0a067d3583.rlib,source=/libserde-8f2e7e0a067d3583.rlib \
   --mount=from=out-8f2e7e0a067d3583,dst=/target/release/deps/libserde-8f2e7e0a067d3583.rmeta,source=/libserde-8f2e7e0a067d3583.rmeta \
   --mount=from=out-e70e5f45ffa4c82d,dst=/target/release/deps/libserde_derive-e70e5f45ffa4c82d.so,source=/libserde_derive-e70e5f45ffa4c82d.so \
+  --mount=from=out-9c6d54e255d5fe9e,dst=/target/release/deps/libwhich-9c6d54e255d5fe9e.rlib,source=/libwhich-9c6d54e255d5fe9e.rlib \
+  --mount=from=out-9c6d54e255d5fe9e,dst=/target/release/deps/libwhich-9c6d54e255d5fe9e.rmeta,source=/libwhich-9c6d54e255d5fe9e.rmeta \
   --mount=from=out-d3993dfc5e9405e6,dst=/target/release/deps/libhome-d3993dfc5e9405e6.rlib,source=/libhome-d3993dfc5e9405e6.rlib \
   --mount=from=out-d3993dfc5e9405e6,dst=/target/release/deps/libhome-d3993dfc5e9405e6.rmeta,source=/libhome-d3993dfc5e9405e6.rmeta \
   --mount=from=out-53725bfff9ca512b,dst=/target/release/deps/librustix-53725bfff9ca512b.rlib,source=/librustix-53725bfff9ca512b.rlib \
   --mount=from=out-53725bfff9ca512b,dst=/target/release/deps/librustix-53725bfff9ca512b.rmeta,source=/librustix-53725bfff9ca512b.rmeta \
   --mount=from=out-e4c0bcbfb9a354ad,dst=/target/release/deps/liblinux_raw_sys-e4c0bcbfb9a354ad.rlib,source=/liblinux_raw_sys-e4c0bcbfb9a354ad.rlib \
   --mount=from=out-e4c0bcbfb9a354ad,dst=/target/release/deps/liblinux_raw_sys-e4c0bcbfb9a354ad.rmeta,source=/liblinux_raw_sys-e4c0bcbfb9a354ad.rmeta \
-  --mount=from=out-9c6d54e255d5fe9e,dst=/target/release/deps/libwhich-9c6d54e255d5fe9e.rlib,source=/libwhich-9c6d54e255d5fe9e.rlib \
-  --mount=from=out-9c6d54e255d5fe9e,dst=/target/release/deps/libwhich-9c6d54e255d5fe9e.rmeta,source=/libwhich-9c6d54e255d5fe9e.rmeta \
   --mount=from=out-ce52fab5000eb1c1,dst=/target/release/deps/libnix-ce52fab5000eb1c1.rlib,source=/libnix-ce52fab5000eb1c1.rlib \
   --mount=from=out-ce52fab5000eb1c1,dst=/target/release/deps/libnix-ce52fab5000eb1c1.rmeta,source=/libnix-ce52fab5000eb1c1.rmeta \
   --mount=from=out-0c105d45d4b3178e,dst=/target/release/deps/libbitflags-0c105d45d4b3178e.rlib,source=/libbitflags-0c105d45d4b3178e.rlib \
@@ -6777,8 +6777,8 @@ RUN \
   --mount=from=out-4a9d3ad58f3c2ade,dst=/target/release/build/anyhow-4a9d3ad58f3c2ade/out,source=/ \
   --mount=from=out-5621cb39f819761e,dst=/target/release/build/num-traits-5621cb39f819761e/out,source=/ \
   --mount=from=out-b8372895cc2ac804,dst=/target/release/build/proc-macro2-b8372895cc2ac804/out,source=/ \
-  --mount=from=out-4813273d27f33a10,dst=/target/release/build/bindgen-4813273d27f33a10/out,source=/ \
   --mount=from=out-9895eef58b4d9995,dst=/target/release/build/clang-sys-9895eef58b4d9995/out,source=/ \
+  --mount=from=out-4813273d27f33a10,dst=/target/release/build/bindgen-4813273d27f33a10/out,source=/ \
   --mount=from=out-6db21b351cf5a31a,dst=/target/release/build/memoffset-6db21b351cf5a31a/out,source=/ \
     env CARGO_CRATE_NAME=libshpool \
         CARGO_INCREMENTAL=0 \
@@ -6850,6 +6850,7 @@ RUN \
   --mount=from=out-0c097b8b36264202,dst=/target/release/deps/liblazy_static-0c097b8b36264202.rlib,source=/liblazy_static-0c097b8b36264202.rlib \
   --mount=from=out-1ade9570e81e8ca6,dst=/target/release/deps/liblibproc-1ade9570e81e8ca6.rlib,source=/liblibproc-1ade9570e81e8ca6.rlib \
   --mount=from=out-a138eee51efeb8a7,dst=/target/release/deps/liberrno-a138eee51efeb8a7.rlib,source=/liberrno-a138eee51efeb8a7.rlib \
+  --mount=from=out-67d8963bce8ff898,dst=/target/release/deps/libbindgen-67d8963bce8ff898.rlib,source=/libbindgen-67d8963bce8ff898.rlib \
   --mount=from=out-3642807da7a0e768,dst=/target/release/deps/libbitflags-3642807da7a0e768.rlib,source=/libbitflags-3642807da7a0e768.rlib \
   --mount=from=out-2ff410bf7c865568,dst=/target/release/deps/libcexpr-2ff410bf7c865568.rlib,source=/libcexpr-2ff410bf7c865568.rlib \
   --mount=from=out-2111450c2a3bcda3,dst=/target/release/deps/libnom-2111450c2a3bcda3.rlib,source=/libnom-2111450c2a3bcda3.rlib \
@@ -6869,15 +6870,14 @@ RUN \
   --mount=from=out-b4b4b683d48a6653,dst=/target/release/deps/libregex_syntax-b4b4b683d48a6653.rlib,source=/libregex_syntax-b4b4b683d48a6653.rlib \
   --mount=from=out-45672dd2e9f1cb05,dst=/target/release/deps/librustc_hash-45672dd2e9f1cb05.rlib,source=/librustc_hash-45672dd2e9f1cb05.rlib \
   --mount=from=out-5262b3f4f37b909a,dst=/target/release/deps/libshlex-5262b3f4f37b909a.rlib,source=/libshlex-5262b3f4f37b909a.rlib \
-  --mount=from=out-67d8963bce8ff898,dst=/target/release/deps/libbindgen-67d8963bce8ff898.rlib,source=/libbindgen-67d8963bce8ff898.rlib \
   --mount=from=out-77e4f77f10bd492e,dst=/target/release/deps/liblog-77e4f77f10bd492e.rlib,source=/liblog-77e4f77f10bd492e.rlib \
   --mount=from=out-5944bc7739d2e96e,dst=/target/release/deps/libmotd-5944bc7739d2e96e.rlib,source=/libmotd-5944bc7739d2e96e.rlib \
   --mount=from=out-8f2e7e0a067d3583,dst=/target/release/deps/libserde-8f2e7e0a067d3583.rlib,source=/libserde-8f2e7e0a067d3583.rlib \
   --mount=from=out-e70e5f45ffa4c82d,dst=/target/release/deps/libserde_derive-e70e5f45ffa4c82d.so,source=/libserde_derive-e70e5f45ffa4c82d.so \
+  --mount=from=out-9c6d54e255d5fe9e,dst=/target/release/deps/libwhich-9c6d54e255d5fe9e.rlib,source=/libwhich-9c6d54e255d5fe9e.rlib \
   --mount=from=out-d3993dfc5e9405e6,dst=/target/release/deps/libhome-d3993dfc5e9405e6.rlib,source=/libhome-d3993dfc5e9405e6.rlib \
   --mount=from=out-53725bfff9ca512b,dst=/target/release/deps/librustix-53725bfff9ca512b.rlib,source=/librustix-53725bfff9ca512b.rlib \
   --mount=from=out-e4c0bcbfb9a354ad,dst=/target/release/deps/liblinux_raw_sys-e4c0bcbfb9a354ad.rlib,source=/liblinux_raw_sys-e4c0bcbfb9a354ad.rlib \
-  --mount=from=out-9c6d54e255d5fe9e,dst=/target/release/deps/libwhich-9c6d54e255d5fe9e.rlib,source=/libwhich-9c6d54e255d5fe9e.rlib \
   --mount=from=out-ce52fab5000eb1c1,dst=/target/release/deps/libnix-ce52fab5000eb1c1.rlib,source=/libnix-ce52fab5000eb1c1.rlib \
   --mount=from=out-0c105d45d4b3178e,dst=/target/release/deps/libbitflags-0c105d45d4b3178e.rlib,source=/libbitflags-0c105d45d4b3178e.rlib \
   --mount=from=out-cd405c5de7941d28,dst=/target/release/deps/libcfg_if-cd405c5de7941d28.rlib,source=/libcfg_if-cd405c5de7941d28.rlib \
@@ -6939,8 +6939,8 @@ RUN \
   --mount=from=out-4a9d3ad58f3c2ade,dst=/target/release/build/anyhow-4a9d3ad58f3c2ade/out,source=/ \
   --mount=from=out-b8372895cc2ac804,dst=/target/release/build/proc-macro2-b8372895cc2ac804/out,source=/ \
   --mount=from=out-5621cb39f819761e,dst=/target/release/build/num-traits-5621cb39f819761e/out,source=/ \
-  --mount=from=out-4813273d27f33a10,dst=/target/release/build/bindgen-4813273d27f33a10/out,source=/ \
   --mount=from=out-9895eef58b4d9995,dst=/target/release/build/clang-sys-9895eef58b4d9995/out,source=/ \
+  --mount=from=out-4813273d27f33a10,dst=/target/release/build/bindgen-4813273d27f33a10/out,source=/ \
   --mount=from=out-6db21b351cf5a31a,dst=/target/release/build/memoffset-6db21b351cf5a31a/out,source=/ \
     env CARGO_BIN_NAME=shpool \
         CARGO_CRATE_NAME=shpool \

@@ -268,14 +268,7 @@ impl Md {
 
         for buildrs_result in &self.buildrs_results {
             let br_md = mds.load(*buildrs_result)?;
-            for dep in &br_md.deps {
-                let dep_md = mds.load(*dep)?;
-                for dep in &dep_md.deps {
-                    let dep_md = mds.load(*dep)?;
-                    extern_mds.push(dep_md);
-                }
-                extern_mds.push(dep_md);
-            }
+            extern_mds.extend(mds.load_all(&br_md.deps())?);
             extern_mds.push(br_md);
         }
 
