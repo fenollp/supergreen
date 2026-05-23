@@ -256,11 +256,41 @@ impl Md {
     ) -> Result<Vec<Rc<Self>>> {
         let mut mds = Mds::new(target_path);
 
-        let exclude_rmeta_when_not_needed = {
-            let has_rmetas = externs.iter().any(|xtern| xtern.ends_with(".rmeta"));
-            move |xtern: &Utf8Path| has_rmetas || !xtern.as_str().ends_with(".rmeta")
-        };
+        let has_rmetas = externs.iter().any(|xtern| xtern.ends_with(".rmeta"));
+        let extern_mdids = self.walk_transitives(&mut mds, externs)?;
+        let mut extern_mds = self.keep_result_providers(&mut mds, extern_mdids, has_rmetas)?;
 
+        assert_eq!(self.deps(), vec![]);
+
+        if let Some(out_dir) = out_dir_var {
+            extern_mds.push(self.mount_buildrs_output(&mut mds, out_dir)?);
+        }
+
+        for buildrs_result in &self.buildrs_results {
+            let br_md = mds.load(*buildrs_result)?;
+            for dep in &br_md.deps {
+                let dep_md = mds.load(*dep)?;
+                for dep in &dep_md.deps {
+                    let dep_md = mds.load(*dep)?;
+                    extern_mds.push(dep_md);
+                }
+                extern_mds.push(dep_md);
+            }
+            extern_mds.push(br_md);
+        }
+
+        let mds = self.sort_deps(extern_mds)?;
+        info!("sorted {} deps", mds.len());
+
+        Ok(mds)
+    }
+
+    /// Aggregate deps and mounts from transitive deps
+    fn walk_transitives(
+        &mut self,
+        mds: &mut Mds,
+        externs: IndexSet<String>,
+    ) -> Result<IndexSet<MdId>> {
         let mut extern_mdids = IndexSet::new();
 
         for xtern in externs {
@@ -294,6 +324,16 @@ impl Md {
             }
         }
 
+        Ok(extern_mdids)
+    }
+
+    /// Keep deps that actually provide files to mount
+    fn keep_result_providers(
+        &mut self,
+        mds: &mut Mds,
+        extern_mdids: IndexSet<MdId>,
+        has_rmetas: bool,
+    ) -> Result<Vec<Rc<Self>>> {
         let mut extern_mds: Vec<Rc<Self>> = vec![];
 
         for dep in extern_mdids {
@@ -304,7 +344,7 @@ impl Md {
                     .writes
                     .iter()
                     .filter(|w: &&Utf8PathBuf| !w.as_str().ends_with(".d"))
-                    .filter(|w: &&Utf8PathBuf| exclude_rmeta_when_not_needed(w))
+                    .filter(|w: &&Utf8PathBuf| has_rmetas || !w.as_str().ends_with(".rmeta"))
                     .filter(|_| !dep_md.buildrs) // Never need transitive deps' build scripts
                     .map(|w| w.file_name().unwrap().to_owned())
                     .map(|xtern: String| MountExtern { from: dep_stage.clone(), xtern }),
@@ -312,46 +352,32 @@ impl Md {
             extern_mds.push(dep_md);
         }
 
-        assert_eq!(self.deps(), vec![]);
+        Ok(extern_mds)
+    }
 
-        if let Some(out_dir) = out_dir_var {
-            let z_dep = MdId::from_out_dir_var(&out_dir);
+    /// For build scripts: when $OUT_DIR is set.
+    ///
+    /// Turn that $OUT_DIR path to an MdId and
+    /// * include it as a dep
+    /// * include it as a mount
+    /// * aggregate the envs it set
+    fn mount_buildrs_output(&mut self, mds: &mut Mds, out_dir: Utf8PathBuf) -> Result<Rc<Self>> {
+        let z_dep = MdId::from_out_dir_var(&out_dir);
 
-            self.buildrs_results.insert(z_dep);
+        self.buildrs_results.insert(z_dep);
 
-            let z_dep_md = mds.load(z_dep)?;
-            info!("also mounting {z_dep}'s buildrs out dir {out_dir}");
-            self.mounts.insert(NamedMount {
-                name: z_dep_md.last_stage(),
-                mount: virtual_target_dir(&out_dir),
-            });
+        let z_dep_md = mds.load(z_dep)?;
+        info!("also mounting {z_dep}'s buildrs out dir {out_dir}");
+        self.mounts.insert(NamedMount {
+            name: z_dep_md.last_stage(),
+            mount: virtual_target_dir(&out_dir),
+        });
 
-            for (var, val) in &z_dep_md.set_envs {
-                if !self.set_envs.contains_key(var) {
-                    self.set_envs.insert(var.to_owned(), val.to_owned());
-                }
-            }
-
-            extern_mds.push(z_dep_md);
+        for (var, val) in &z_dep_md.set_envs {
+            self.set_envs.entry(var.to_owned()).or_insert_with(|| val.to_owned());
         }
 
-        for buildrs_result in &self.buildrs_results {
-            let br_md = mds.load(*buildrs_result)?;
-            for dep in &br_md.deps {
-                let dep_md = mds.load(*dep)?;
-                for dep in &dep_md.deps {
-                    let dep_md = mds.load(*dep)?;
-                    extern_mds.push(dep_md);
-                }
-                extern_mds.push(dep_md);
-            }
-            extern_mds.push(br_md);
-        }
-
-        let mds = self.sort_deps(extern_mds)?;
-        info!("sorted {} deps", mds.len());
-
-        Ok(mds)
+        Ok(z_dep_md)
     }
 
     pub(crate) fn sort_deps(&mut self, mds: Vec<Rc<Self>>) -> Result<Vec<Rc<Self>>> {
