@@ -244,9 +244,7 @@ impl Md {
         out_dir_var: Option<Utf8PathBuf>,
         target_path: &Utf8Path,
     ) -> Result<Vec<Rc<Self>>> {
-        let mut mds = Mds::default();
-
-        let mut extern_mds: Vec<Rc<Self>> = vec![];
+        let mut mds = Mds::new(target_path);
 
         let exclude_rmeta_when_not_needed = {
             let has_rmetas = externs.iter().any(|xtern| xtern.ends_with(".rmeta"));
@@ -268,12 +266,11 @@ impl Md {
 
             extern_mdids.insert(xtern);
 
-            let extern_md = mds.get_or_read(&xtern.path(target_path))?;
-
+            let extern_md = mds.load(xtern)?;
+            self.buildrs_results.extend(extern_md.buildrs_results.iter());
             for transitive in &extern_md.deps {
                 trace!("❯ transitive {transitive}");
-                let trans_md = mds.get_or_read(&transitive.path(target_path))?;
-
+                let trans_md = mds.load(*transitive)?;
                 let out_dir = trans_md.writes_to.clone();
                 if out_dir != "" {
                     let skip = trans_md.writes.is_empty();
@@ -286,12 +283,12 @@ impl Md {
                     extern_mdids.insert(*transitive);
                 }
             }
-
-            self.buildrs_results.extend(extern_md.buildrs_results.iter());
         }
 
+        let mut extern_mds: Vec<Rc<Self>> = vec![];
+
         for dep in extern_mdids {
-            let dep_md = mds.get_or_read(&dep.path(target_path))?;
+            let dep_md = mds.load(dep)?;
             let dep_stage = Stage::output(dep)?;
             self.externs.extend(
                 dep_md
@@ -313,7 +310,7 @@ impl Md {
 
             self.buildrs_results.insert(z_dep);
 
-            let z_dep_md = mds.get_or_read(&z_dep.path(target_path))?;
+            let z_dep_md = mds.load(z_dep)?;
             info!("also mounting {z_dep}'s buildrs out dir {out_dir}");
             self.mounts.insert(NamedMount {
                 name: z_dep_md.last_stage(),
@@ -330,11 +327,11 @@ impl Md {
         }
 
         for buildrs_result in &self.buildrs_results {
-            let br_md = mds.get_or_read(&buildrs_result.path(target_path))?;
+            let br_md = mds.load(*buildrs_result)?;
             for dep in &br_md.deps {
-                let dep_md = mds.get_or_read(&dep.path(target_path))?;
+                let dep_md = mds.load(*dep)?;
                 for dep in &dep_md.deps {
-                    let dep_md = mds.get_or_read(&dep.path(target_path))?;
+                    let dep_md = mds.load(*dep)?;
                     extern_mds.push(dep_md);
                 }
                 extern_mds.push(dep_md);
@@ -444,17 +441,29 @@ impl std::hash::Hash for MountExtern {
 }
 
 /// A file cache
-#[derive(Debug, Default)]
-pub(crate) struct Mds(HashMap<Utf8PathBuf, Rc<Md>>);
+#[derive(Debug)]
+pub(crate) struct Mds {
+    target_path: Utf8PathBuf,
+    cache: HashMap<MdId, Rc<Md>>,
+}
 
 impl Mds {
-    pub(crate) fn get_or_read(&mut self, path: &Utf8Path) -> Result<Rc<Md>> {
-        if let Some(md) = self.0.get(path) {
+    pub(crate) fn new(path: &Utf8Path) -> Self {
+        Self { target_path: path.to_owned(), cache: HashMap::default() }
+    }
+
+    pub(crate) fn load(&mut self, mdid: MdId) -> Result<Rc<Md>> {
+        if let Some(md) = self.cache.get(&mdid) {
             return Ok(Rc::clone(md));
         }
-        let md = Rc::new(Md::from_file(path)?);
-        let _ = self.0.insert(path.to_path_buf(), Rc::clone(&md));
+        let md = Md::from_file(&mdid.path(&self.target_path))?;
+        let md = Rc::new(md);
+        let _ = self.cache.insert(mdid, Rc::clone(&md));
         Ok(md)
+    }
+
+    pub(crate) fn load_all(&mut self, mdids: &[MdId]) -> Result<Vec<Rc<Md>>> {
+        mdids.iter().map(|mdid| self.load(*mdid)).collect()
     }
 }
 
