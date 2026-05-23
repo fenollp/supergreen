@@ -117,7 +117,7 @@ async fn do_exec(
 ) -> Result<()> {
     let mut md: Md = mdid.into();
     md.buildrs = true;
-    md.writes_to = virtual_target_dir(&out_dir_var);
+    md.writes_to = Some(virtual_target_dir(&out_dir_var));
     md.push_block(&RUST, &green.base.image_inline);
 
     fs::create_dir_all(&out_dir_var)
