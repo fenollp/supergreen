@@ -129,10 +129,10 @@ impl Md {
     pub(crate) async fn do_build(
         &mut self,
         green: &Green,
+        md_path: &Utf8Path,
         containerfile_path: &Utf8Path,
         stage: &Stage,
         out_dir: &Utf8Path,
-        target_path: &Utf8Path,
     ) -> Result<()> {
         let (call, envs, Effects { written, stdout, stderr, cargo_rustc_env }, built) =
             green.build_out(containerfile_path, stage, &self.contexts, out_dir).await;
@@ -140,8 +140,6 @@ impl Md {
         green
             .maybe_write_final_path(containerfile_path, &self.contexts, &call, &envs)
             .map_err(|e| anyhow!("Failed producing final path: {e}"))?;
-
-        let md_path = self.this().path(target_path);
 
         if !written.is_empty()
             || !stdout.is_empty()
@@ -153,7 +151,7 @@ impl Md {
             self.stderr = stderr;
             self.set_envs = cargo_rustc_env;
             info!("re-opening (RW) crate's md {md_path}");
-            self.write_to(&md_path)?;
+            self.write_to(md_path)?;
         }
 
         let final_stage = format!(
@@ -172,7 +170,7 @@ impl Md {
         );
 
         green
-            .maybe_append_to_final_path(&md_path, final_stage)
+            .maybe_append_to_final_path(md_path, final_stage)
             .map_err(|e| anyhow!("Failed finishing final path: {e}"))?;
 
         built

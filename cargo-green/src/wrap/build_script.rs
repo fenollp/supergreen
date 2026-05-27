@@ -181,7 +181,7 @@ async fn do_exec(
 
     md.out_block(&out_stage, &run_stage, &out_dir_var, true);
 
-    let containerfile_path = md.finalize(&green, &target_path, pkg_name, &mds)?;
+    let (md_path, containerfile_path) = md.finalize(&green, &target_path, pkg_name, &mds)?;
 
-    md.do_build(&green, &containerfile_path, &out_stage, &out_dir_var, &target_path).await
+    md.do_build(&green, &md_path, &containerfile_path, &out_stage, &out_dir_var).await
 }

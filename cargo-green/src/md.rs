@@ -428,7 +428,7 @@ impl Md {
         target_path: &Utf8Path,
         pkg_name: &str,
         mds: &[Rc<Self>],
-    ) -> Result<Utf8PathBuf> {
+    ) -> Result<(Utf8PathBuf, Utf8PathBuf)> {
         let md_path = self.this.path(target_path);
         let containerfile_path = target_path.join(format!("{pkg_name}-{}.Dockerfile", self.this));
 
@@ -440,7 +440,7 @@ impl Md {
         containerfile.push(&self.block_along_with_predecessors(mds));
         containerfile.write_to(&containerfile_path)?;
 
-        Ok(containerfile_path)
+        Ok((md_path, containerfile_path))
     }
 }
 
@@ -560,7 +560,7 @@ impl MdId {
     }
 
     #[must_use]
-    pub(crate) fn path(&self, target_path: &Utf8Path) -> Utf8PathBuf {
+    fn path(&self, target_path: &Utf8Path) -> Utf8PathBuf {
         target_path.join(format!("{self}.toml"))
     }
 }
