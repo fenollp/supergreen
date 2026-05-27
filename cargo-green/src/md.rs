@@ -292,14 +292,8 @@ impl Md {
 
         for xtern in externs {
             // E.g. libproc_macro2-e44df32b5d502568.rmeta
-            // E.g. libunicode_xid-c443c88a44e24bc6.rlib
             trace!("❯ extern {xtern}");
-
-            // E.g. c443c88a44e24bc6
-            let Some(xtern) = xtern.split(['-', '.']).nth(1) else {
-                bail!("BUG: expected extern to match ^lib[^.-]+-<mdid>.[^.]+$: {xtern}")
-            };
-            let xtern: MdId = xtern.into();
+            let xtern = MdId::from_extern_filename(&xtern)?;
 
             extern_mdids.insert(xtern);
 
@@ -547,10 +541,18 @@ impl MdId {
         extrafn[1..].to_owned().into()
     }
 
+    /// E.g. libunicode_xid-c443c88a44e24bc6.rlib
+    fn from_extern_filename(xtern: &str) -> Result<Self> {
+        let Some(xtern) = xtern.split(['-', '.']).nth(1) else {
+            bail!("BUG: expected extern to match ^lib[^.-]+-<mdid>.[^.]+$: {xtern}")
+        };
+        Ok(xtern.into())
+    }
+
+    /// E.g. OUT_DIR="/tmp/clis-vixargs_0-1-0/release/build/proc-macro-error-attr-de2f43c37de3bfce/out"
     #[must_use]
     fn from_out_dir_var(out_dir: &Utf8Path) -> Self {
         assert_eq!(out_dir.file_name(), Some("out"), "BUG: unexpected $OUT_DIR={out_dir} format");
-        // OUT_DIR="/tmp/clis-vixargs_0-1-0/release/build/proc-macro-error-attr-de2f43c37de3bfce/out"
         out_dir
             .parent()
             .unwrap()
