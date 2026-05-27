@@ -133,9 +133,8 @@ impl Md {
         self.externs.iter()
     }
 
-    #[must_use]
-    pub(crate) fn deps(&self) -> Vec<MdId> {
-        self.deps.iter().cloned().collect()
+    pub(crate) fn deps(&self) -> impl Iterator<Item = MdId> + use<'_> {
+        self.deps.iter().cloned()
     }
 
     fn from_file(path: &Utf8Path) -> Result<Self> {
@@ -260,7 +259,7 @@ impl Md {
         let extern_mdids = self.walk_transitives(&mut mds, externs)?;
         let mut extern_mds = self.keep_result_providers(&mut mds, extern_mdids, has_rmetas)?;
 
-        assert_eq!(self.deps(), vec![]);
+        assert_eq!(self.deps().count(), 0);
 
         if let Some(out_dir) = out_dir_var {
             extern_mds.push(self.mount_buildrs_output(&mut mds, out_dir)?);
@@ -268,7 +267,7 @@ impl Md {
 
         for buildrs_result in &self.buildrs_results {
             let br_md = mds.load(*buildrs_result)?;
-            extern_mds.extend(mds.load_all(&br_md.deps())?);
+            extern_mds.extend(mds.load_all(br_md.deps())?);
             extern_mds.push(br_md);
         }
 
@@ -379,10 +378,10 @@ impl Md {
             .map(|md| {
                 self.deps.insert(md.this);
                 self.contexts.extend(md.contexts.iter().cloned());
-                Node::new(md.this, md.deps(), Rc::clone(&md))
+                Node::new(md.this, md.deps().collect(), Rc::clone(&md))
             })
             .collect();
-        dag.push(Node::new(self.this, self.deps(), Rc::new(self.clone())));
+        dag.push(Node::new(self.this, self.deps().collect(), Rc::new(self.clone())));
 
         let mut sorted = szyk::sort(&dag, self.this)
             .map_err(|e| anyhow!("Failed toposorting {}: {e:?}", self.this))?;
@@ -490,8 +489,8 @@ impl Mds {
         Ok(md)
     }
 
-    pub(crate) fn load_all(&mut self, mdids: &[MdId]) -> Result<Vec<Rc<Md>>> {
-        mdids.iter().map(|mdid| self.load(*mdid)).collect()
+    pub(crate) fn load_all(&mut self, mdids: impl Iterator<Item = MdId>) -> Result<Vec<Rc<Md>>> {
+        mdids.map(|mdid| self.load(mdid)).collect()
     }
 }
 
@@ -706,7 +705,7 @@ stages = []
     ];
     let md = Md::from_str(origin).unwrap();
     assert_eq!(md.this, MdId(0x9494aa6093cd94c9));
-    assert_eq!(md.deps(), vec![MdId(0x0dc1fe2644e3176a)]);
+    assert_eq!(md.deps().collect::<Vec<_>>(), vec![MdId(0x0dc1fe2644e3176a)]);
     dbg!(&md.contexts);
     pretty_assertions::assert_eq!(md.contexts, contexts.clone().into());
 }

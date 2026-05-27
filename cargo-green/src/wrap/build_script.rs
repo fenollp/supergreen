@@ -165,7 +165,7 @@ async fn do_exec(
         run_block.push_str(&format!("  --mount=from={name}{mount} \\\n"));
     }
 
-    let mut extern_mds = mds.load_all(&previous_md.deps())?;
+    let mut extern_mds = mds.load_all(previous_md.deps())?;
     extern_mds.push(previous_md);
     let mds = md.sort_deps(extern_mds)?;
     info!("sorted {} deps", mds.len());
