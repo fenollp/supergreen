@@ -60,12 +60,12 @@ pub(crate) struct Md {
     #[serde(default, skip_serializing_if = "<&bool as std::ops::Not>::not")]
     pub(crate) buildrs: bool,
 
-    #[serde(default, skip_serializing_if = "IndexSet::is_empty")]
-    pub(crate) buildrs_results: IndexSet<MdId>,
-
     /// Set when executing buildrs (not when building buildrs)
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub(crate) writes_to: Option<Utf8PathBuf>,
+    writes_to: Option<Utf8PathBuf>,
+
+    #[serde(default, skip_serializing_if = "IndexSet::is_empty")]
+    buildrs_results: IndexSet<MdId>,
 
     #[serde(default, skip_serializing_if = "IndexSet::is_empty")]
     pub(crate) mounts: IndexSet<NamedMount>,
@@ -124,6 +124,11 @@ impl From<MdId> for Md {
 }
 
 impl Md {
+    pub(crate) fn build_script_writes_to(&mut self, to: Utf8PathBuf) {
+        self.buildrs = true;
+        self.writes_to = Some(to);
+    }
+
     #[must_use]
     pub(crate) fn this(&self) -> MdId {
         self.this
