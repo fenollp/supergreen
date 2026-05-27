@@ -181,7 +181,7 @@ async fn do_wrap_rustc(
 
     md.out_block(&out_stage, &rustc_stage, &out_dir, false);
 
-    let containerfile_path = md.finalize(&green, &target_path, pkg_name, &mds)?;
+    let (md_path, containerfile_path) = md.finalize(&green, &target_path, pkg_name, &mds)?;
 
     // TODO: use tracing instead:
     // https://docs.rs/tracing-subscriber/latest/tracing_subscriber/fmt/struct.Subscriber.html
@@ -189,7 +189,7 @@ async fn do_wrap_rustc(
     // https://github.com/tugglecore/rust-tracing-primer
     // TODO: `cargo green -v{N+1} ..` starts a TUI showing colored logs on above `cargo -v{N} ..`
 
-    md.do_build(&green, &containerfile_path, &out_stage, &out_dir, &target_path).await?;
+    md.do_build(&green, &md_path, &containerfile_path, &out_stage, &out_dir).await?;
 
     if let Some(incremental) = incremental {
         if let (_, _, _, Err(e)) = green
