@@ -49,7 +49,7 @@ pub(crate) fn exe_dance(mdid: MdId, crate_name: &str, out_dir: &Utf8Path) -> Str
         .to_owned()
 }
 
-pub(crate) async fn exec(green: Green, exe: Utf8PathBuf) -> Result<()> {
+pub(crate) async fn exec_build_script(green: Green, exe: Utf8PathBuf) -> Result<()> {
     assert!(env::var_os(ENV!()).is_none(), "It's turtles all the way down!");
     env::set_var(ENV!(), "1");
 

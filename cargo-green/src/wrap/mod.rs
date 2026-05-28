@@ -4,13 +4,17 @@ use anyhow::{anyhow, bail, Result};
 use camino::Utf8PathBuf;
 use tokio::process::Command;
 
-use crate::{ext::CommandExt, green::Green, wrap::rustc::wrap_rustc};
+use crate::{ext::CommandExt, green::Green};
 
 #[macro_use]
-pub(crate) mod build_script;
-pub(crate) mod envs;
-pub(crate) mod mds;
-pub(crate) mod rustc;
+mod build_script;
+mod envs;
+mod mds;
+mod rustc;
+
+pub(crate) use build_script::*;
+pub(crate) use envs::*;
+pub(crate) use rustc::*;
 
 // NOTE: this RUSTC_WRAPPER program only ever gets called by `cargo`, so we save
 //       ourselves some trouble and assume std::path::{Path, PathBuf} are UTF-8.
