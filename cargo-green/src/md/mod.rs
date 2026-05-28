@@ -94,15 +94,15 @@ impl From<MdId> for Md {
         Self {
             this,
 
-            externs: IndexSet::default(),
+            externs: IndexSet::new(),
             deps: vec![],
             buildrs: false,
-            buildrs_results: IndexSet::default(),
+            buildrs_results: IndexSet::new(),
             writes_to: None,
-            mounts: IndexSet::default(),
-            set_envs: IndexMap::default(),
-            contexts: IndexSet::default(),
-            stages: IndexSet::default(),
+            mounts: IndexSet::new(),
+            set_envs: IndexMap::new(),
+            contexts: IndexSet::new(),
+            stages: IndexSet::new(),
             writes: vec![],
             stdout: vec![],
             stderr: vec![],
@@ -111,6 +111,10 @@ impl From<MdId> for Md {
 }
 
 impl Md {
+    fn from_out_dir_var(mds: &mut Mds, out_dir: &Utf8Path) -> Result<Rc<Self>> {
+        mds.load(MdId::from_out_dir_var(out_dir))
+    }
+
     pub(crate) fn build_script_writes_to(&mut self, to: Utf8PathBuf) {
         self.buildrs = true;
         self.writes_to = Some(to);
@@ -175,6 +179,10 @@ impl Md {
             bail!("Md is missing root stage {RST}")
         }
         toml::to_string_pretty(self).map_err(Into::into)
+    }
+
+    fn out_dir_mount(&self, out_dir: &Utf8Path) -> NamedMount {
+        NamedMount { name: self.last_stage(), mount: out_dir.to_owned() }
     }
 
     #[must_use]
@@ -246,15 +254,23 @@ impl Md {
         target_path: &Utf8Path,
     ) -> Result<Vec<Rc<Self>>> {
         let mut mds = Mds::new(target_path);
-
         let has_rmetas = externs.iter().any(|xtern| xtern.ends_with(".rmeta"));
-        let extern_mdids = self.walk_transitives(&mut mds, externs)?;
-        let mut extern_mds = self.keep_result_providers(&mut mds, extern_mdids, has_rmetas)?;
 
-        assert_eq!(self.deps().count(), 0);
+        let (buildrs_results, mounts, extern_mdids) = walk_transitives(&mut mds, externs)?;
+        self.mounts = mounts;
+        self.buildrs_results = buildrs_results;
+        let (filtered, mut extern_mds) = keep_result_providers(&mut mds, extern_mdids, has_rmetas)?;
+        self.externs = filtered;
 
         if let Some(out_dir) = out_dir_var {
-            extern_mds.push(self.mount_buildrs_output(&mut mds, out_dir)?);
+            let z_dep_md = Self::from_out_dir_var(&mut mds, &out_dir)?;
+            self.buildrs_results.insert(z_dep_md.this);
+            info!("also mounting buildrs out dir {out_dir}");
+            self.mounts.insert(z_dep_md.out_dir_mount(&virtual_target_dir(&out_dir)));
+
+            for (var, val) in &z_dep_md.set_envs {
+                self.set_envs.entry(var.to_owned()).or_insert_with(|| val.to_owned());
+            }
         }
 
         for buildrs_result in &self.buildrs_results {
@@ -264,101 +280,9 @@ impl Md {
         }
 
         let mds = self.sort_deps(extern_mds)?;
-        info!("sorted {} deps", mds.len());
+        info!("sorted {} deps", self.deps.len());
 
         Ok(mds)
-    }
-
-    /// Aggregate deps and mounts from transitive deps
-    fn walk_transitives(
-        &mut self,
-        mds: &mut Mds,
-        externs: IndexSet<String>,
-    ) -> Result<IndexSet<MdId>> {
-        let mut extern_mdids = IndexSet::new();
-
-        for xtern in externs {
-            // E.g. libproc_macro2-e44df32b5d502568.rmeta
-            trace!("❯ extern {xtern}");
-            let xtern = MdId::from_extern_filename(&xtern)?;
-
-            extern_mdids.insert(xtern);
-
-            let extern_md = mds.load(xtern)?;
-            self.buildrs_results.extend(extern_md.buildrs_results.iter());
-            for transitive in &extern_md.deps {
-                trace!("❯ transitive {transitive}");
-                let trans_md = mds.load(*transitive)?;
-                if let Some(ref out_dir) = trans_md.writes_to {
-                    let skip = trans_md.writes.is_empty();
-                    info!("{}mounting buildrs out dir {out_dir}", if skip { "skip " } else { "" });
-                    if !skip {
-                        let mount = out_dir.clone();
-                        self.mounts.insert(NamedMount { name: trans_md.last_stage(), mount });
-                    }
-                } else {
-                    extern_mdids.insert(*transitive);
-                }
-            }
-        }
-
-        Ok(extern_mdids)
-    }
-
-    /// Keep deps that actually provide files to mount
-    fn keep_result_providers(
-        &mut self,
-        mds: &mut Mds,
-        extern_mdids: IndexSet<MdId>,
-        has_rmetas: bool,
-    ) -> Result<Vec<Rc<Self>>> {
-        let mut extern_mds: Vec<Rc<Self>> = vec![];
-
-        for dep in extern_mdids {
-            let dep_md = mds.load(dep)?;
-            let dep_stage = Stage::output(dep)?;
-            self.externs.extend(
-                dep_md
-                    .writes
-                    .iter()
-                    .filter(|w: &&Utf8PathBuf| !w.as_str().ends_with(".d"))
-                    .filter(|w: &&Utf8PathBuf| has_rmetas || !w.as_str().ends_with(".rmeta"))
-                    .filter(|_| !dep_md.buildrs) // Never need transitive deps' build scripts
-                    .map(|w| w.file_name().unwrap().to_owned())
-                    .map(|xtern: String| NamedMount {
-                        name: dep_stage.clone(),
-                        mount: xtern.into(),
-                    }),
-            );
-            extern_mds.push(dep_md);
-        }
-
-        Ok(extern_mds)
-    }
-
-    /// For build scripts: when $OUT_DIR is set.
-    ///
-    /// Turn that $OUT_DIR path to an MdId and
-    /// * include it as a dep
-    /// * include it as a mount
-    /// * aggregate the envs it set
-    fn mount_buildrs_output(&mut self, mds: &mut Mds, out_dir: Utf8PathBuf) -> Result<Rc<Self>> {
-        let z_dep = MdId::from_out_dir_var(&out_dir);
-
-        self.buildrs_results.insert(z_dep);
-
-        let z_dep_md = mds.load(z_dep)?;
-        info!("also mounting {z_dep}'s buildrs out dir {out_dir}");
-        self.mounts.insert(NamedMount {
-            name: z_dep_md.last_stage(),
-            mount: virtual_target_dir(&out_dir),
-        });
-
-        for (var, val) in &z_dep_md.set_envs {
-            self.set_envs.entry(var.to_owned()).or_insert_with(|| val.to_owned());
-        }
-
-        Ok(z_dep_md)
     }
 
     pub(crate) fn sort_deps(&mut self, mds: Vec<Rc<Self>>) -> Result<Vec<Rc<Self>>> {
@@ -429,6 +353,70 @@ impl Md {
 
         Ok((md_path, containerfile_path))
     }
+}
+
+/// Aggregate deps and mounts from transitive deps
+fn walk_transitives(
+    mds: &mut Mds,
+    externs: IndexSet<String>,
+) -> Result<(IndexSet<MdId>, IndexSet<NamedMount>, IndexSet<MdId>)> {
+    let mut buildrs_results = IndexSet::new();
+    let mut mounts = IndexSet::new();
+    let mut extern_mdids = IndexSet::new();
+
+    for xtern in externs {
+        // E.g. libproc_macro2-e44df32b5d502568.rmeta
+        trace!("❯ extern {xtern}");
+        let xtern = MdId::from_extern_filename(&xtern)?;
+
+        extern_mdids.insert(xtern);
+
+        let extern_md = mds.load(xtern)?;
+        buildrs_results.extend(extern_md.buildrs_results.iter());
+        for transitive in &extern_md.deps {
+            trace!("❯ transitive {transitive}");
+            let trans_md = mds.load(*transitive)?;
+            if let Some(ref out_dir) = trans_md.writes_to {
+                let skip = trans_md.writes.is_empty();
+                info!("{}mounting buildrs out dir {out_dir}", if skip { "skip " } else { "" });
+                if !skip {
+                    mounts.insert(trans_md.out_dir_mount(out_dir));
+                }
+            } else {
+                extern_mdids.insert(*transitive);
+            }
+        }
+    }
+
+    Ok((buildrs_results, mounts, extern_mdids))
+}
+
+/// Keep deps that actually provide files to mount
+fn keep_result_providers(
+    mds: &mut Mds,
+    extern_mdids: IndexSet<MdId>,
+    has_rmetas: bool,
+) -> Result<(IndexSet<NamedMount>, Vec<Rc<Md>>)> {
+    let mut externs = IndexSet::new();
+    let mut extern_mds = Vec::with_capacity(extern_mdids.len());
+
+    for dep in extern_mdids {
+        let dep_md = mds.load(dep)?;
+        let dep_stage = Stage::output(dep)?;
+        externs.extend(
+            dep_md
+                .writes
+                .iter()
+                .filter(|w: &&Utf8PathBuf| !w.as_str().ends_with(".d"))
+                .filter(|w: &&Utf8PathBuf| has_rmetas || !w.as_str().ends_with(".rmeta"))
+                .filter(|_| !dep_md.buildrs) // Never need transitive deps' build scripts
+                .map(|w| w.file_name().unwrap().to_owned())
+                .map(|xtern: String| NamedMount { name: dep_stage.clone(), mount: xtern.into() }),
+        );
+        extern_mds.push(dep_md);
+    }
+
+    Ok((externs, extern_mds))
 }
 
 #[test]
