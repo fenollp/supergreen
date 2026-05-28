@@ -13,18 +13,20 @@ use crate::{
     build::SOURCE_DATE_EPOCH,
     green::Green,
     logging::maybe_log,
-    md::{build_context::BuildContext, mds::Mds, named_mount::NamedMount},
     stage::{AsBlock, AsStage, NamedStage, Script, Stage, RST},
     target_dir::virtual_target_dir,
     PKG,
 };
 
+mod build_context;
 mod md_id;
+mod mds;
+mod named_mount;
 
-pub(crate) mod build_context;
+pub(crate) use build_context::*;
 pub(crate) use md_id::*;
-pub(crate) mod mds;
-pub(crate) mod named_mount;
+pub(crate) use mds::*;
+pub(crate) use named_mount::*;
 
 pub(crate) const DIESES: &str = "##";
 

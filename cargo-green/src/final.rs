@@ -12,7 +12,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::{
     green::Green,
-    md::{build_context::BuildContext, Md, DIESES},
+    md::{BuildContext, Md, DIESES},
 };
 
 #[macro_export]
