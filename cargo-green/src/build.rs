@@ -33,7 +33,7 @@ use crate::{
     base_image::un_rewrite_cargo_home,
     ext::CommandExt,
     green::Green,
-    md::{BuildContext, DIESES},
+    md::{build_context::BuildContext, DIESES},
     r#final::is_primary,
     rechrome,
     runner::Runner,
