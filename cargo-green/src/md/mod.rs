@@ -38,8 +38,8 @@ pub(crate) struct Md {
     #[serde(default, skip_serializing_if = "IndexSet::is_empty")]
     externs: IndexSet<NamedMount>,
 
-    #[serde(default, skip_serializing_if = "IndexSet::is_empty")]
-    deps: IndexSet<MdId>,
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    deps: Vec<MdId>,
 
     ///
 
@@ -95,7 +95,7 @@ impl From<MdId> for Md {
             this,
 
             externs: IndexSet::default(),
-            deps: IndexSet::default(),
+            deps: vec![],
             buildrs: false,
             buildrs_results: IndexSet::default(),
             writes_to: None,
@@ -363,20 +363,18 @@ impl Md {
 
     pub(crate) fn sort_deps(&mut self, mds: Vec<Rc<Self>>) -> Result<Vec<Rc<Self>>> {
         let mut dag: Vec<_> = mds
-            .into_iter()
-            .map(|md| {
-                self.deps.insert(md.this);
-                self.contexts.extend(md.contexts.iter().cloned());
-                Node::new(md.this, md.deps().collect(), Rc::clone(&md))
-            })
+            .iter()
+            .map(|md| Node::new(md.this, md.deps().collect(), Some(Rc::clone(md))))
             .collect();
-        dag.push(Node::new(self.this, self.deps().collect(), Rc::new(self.clone())));
+        dag.push(Node::new(self.this, mds.iter().map(|md| md.this).collect(), None));
 
-        let mut sorted = szyk::sort(&dag, self.this)
-            .map_err(|e| anyhow!("Failed toposorting {}: {e:?}", self.this))?;
-        let last = sorted.pop();
-        assert_eq!(last.map(|md| md.this), Some(self.this));
+        let mut sorted =
+            szyk::sort(&dag, self.this).map_err(|e| anyhow!("Failed toposorting: {e:?}"))?;
+        sorted.pop();
+        let sorted: Vec<_> = sorted.into_iter().map(|md| md.expect("wrapped")).collect();
 
+        self.deps = sorted.iter().map(|md| md.this).collect();
+        self.contexts.extend(sorted.iter().flat_map(|md| md.contexts.iter().cloned()));
         Ok(sorted)
     }
 
