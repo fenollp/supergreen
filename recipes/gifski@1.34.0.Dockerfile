@@ -396,10 +396,10 @@ RUN \
   --mount=from=out-a550586acd4c9334,dst=/target/release/deps/libanstream-a550586acd4c9334.rmeta,source=/libanstream-a550586acd4c9334.rmeta \
   --mount=from=out-d1f9f826e5291799,dst=/target/release/deps/libanstyle-d1f9f826e5291799.rlib,source=/libanstyle-d1f9f826e5291799.rlib \
   --mount=from=out-d1f9f826e5291799,dst=/target/release/deps/libanstyle-d1f9f826e5291799.rmeta,source=/libanstyle-d1f9f826e5291799.rmeta \
-  --mount=from=out-3a6656a0727a327a,dst=/target/release/deps/libanstyle_parse-3a6656a0727a327a.rlib,source=/libanstyle_parse-3a6656a0727a327a.rlib \
-  --mount=from=out-3a6656a0727a327a,dst=/target/release/deps/libanstyle_parse-3a6656a0727a327a.rmeta,source=/libanstyle_parse-3a6656a0727a327a.rmeta \
   --mount=from=out-d26f8ef55e0e8506,dst=/target/release/deps/libutf8parse-d26f8ef55e0e8506.rlib,source=/libutf8parse-d26f8ef55e0e8506.rlib \
   --mount=from=out-d26f8ef55e0e8506,dst=/target/release/deps/libutf8parse-d26f8ef55e0e8506.rmeta,source=/libutf8parse-d26f8ef55e0e8506.rmeta \
+  --mount=from=out-3a6656a0727a327a,dst=/target/release/deps/libanstyle_parse-3a6656a0727a327a.rlib,source=/libanstyle_parse-3a6656a0727a327a.rlib \
+  --mount=from=out-3a6656a0727a327a,dst=/target/release/deps/libanstyle_parse-3a6656a0727a327a.rmeta,source=/libanstyle_parse-3a6656a0727a327a.rmeta \
   --mount=from=out-59a52dfb1c99b533,dst=/target/release/deps/libanstyle_query-59a52dfb1c99b533.rlib,source=/libanstyle_query-59a52dfb1c99b533.rlib \
   --mount=from=out-59a52dfb1c99b533,dst=/target/release/deps/libanstyle_query-59a52dfb1c99b533.rmeta,source=/libanstyle_query-59a52dfb1c99b533.rmeta \
   --mount=from=out-b990aaec0cc9e059,dst=/target/release/deps/libcolorchoice-b990aaec0cc9e059.rlib,source=/libcolorchoice-b990aaec0cc9e059.rlib \
@@ -448,20 +448,20 @@ RUN \
   --mount=from=cratesio-clap-4.5.41,source=/clap-4.5.41,dst=$CARGO_HOME/registry/src/index.crates.io/clap-4.5.41 \
   --mount=from=out-1cc5db2c50406923,dst=/target/release/deps/libclap_builder-1cc5db2c50406923.rlib,source=/libclap_builder-1cc5db2c50406923.rlib \
   --mount=from=out-1cc5db2c50406923,dst=/target/release/deps/libclap_builder-1cc5db2c50406923.rmeta,source=/libclap_builder-1cc5db2c50406923.rmeta \
-  --mount=from=out-a550586acd4c9334,dst=/target/release/deps/libanstream-a550586acd4c9334.rlib,source=/libanstream-a550586acd4c9334.rlib \
-  --mount=from=out-a550586acd4c9334,dst=/target/release/deps/libanstream-a550586acd4c9334.rmeta,source=/libanstream-a550586acd4c9334.rmeta \
   --mount=from=out-d1f9f826e5291799,dst=/target/release/deps/libanstyle-d1f9f826e5291799.rlib,source=/libanstyle-d1f9f826e5291799.rlib \
   --mount=from=out-d1f9f826e5291799,dst=/target/release/deps/libanstyle-d1f9f826e5291799.rmeta,source=/libanstyle-d1f9f826e5291799.rmeta \
-  --mount=from=out-3a6656a0727a327a,dst=/target/release/deps/libanstyle_parse-3a6656a0727a327a.rlib,source=/libanstyle_parse-3a6656a0727a327a.rlib \
-  --mount=from=out-3a6656a0727a327a,dst=/target/release/deps/libanstyle_parse-3a6656a0727a327a.rmeta,source=/libanstyle_parse-3a6656a0727a327a.rmeta \
   --mount=from=out-d26f8ef55e0e8506,dst=/target/release/deps/libutf8parse-d26f8ef55e0e8506.rlib,source=/libutf8parse-d26f8ef55e0e8506.rlib \
   --mount=from=out-d26f8ef55e0e8506,dst=/target/release/deps/libutf8parse-d26f8ef55e0e8506.rmeta,source=/libutf8parse-d26f8ef55e0e8506.rmeta \
+  --mount=from=out-3a6656a0727a327a,dst=/target/release/deps/libanstyle_parse-3a6656a0727a327a.rlib,source=/libanstyle_parse-3a6656a0727a327a.rlib \
+  --mount=from=out-3a6656a0727a327a,dst=/target/release/deps/libanstyle_parse-3a6656a0727a327a.rmeta,source=/libanstyle_parse-3a6656a0727a327a.rmeta \
   --mount=from=out-59a52dfb1c99b533,dst=/target/release/deps/libanstyle_query-59a52dfb1c99b533.rlib,source=/libanstyle_query-59a52dfb1c99b533.rlib \
   --mount=from=out-59a52dfb1c99b533,dst=/target/release/deps/libanstyle_query-59a52dfb1c99b533.rmeta,source=/libanstyle_query-59a52dfb1c99b533.rmeta \
   --mount=from=out-b990aaec0cc9e059,dst=/target/release/deps/libcolorchoice-b990aaec0cc9e059.rlib,source=/libcolorchoice-b990aaec0cc9e059.rlib \
   --mount=from=out-b990aaec0cc9e059,dst=/target/release/deps/libcolorchoice-b990aaec0cc9e059.rmeta,source=/libcolorchoice-b990aaec0cc9e059.rmeta \
   --mount=from=out-bb9cbf3b598df118,dst=/target/release/deps/libis_terminal_polyfill-bb9cbf3b598df118.rlib,source=/libis_terminal_polyfill-bb9cbf3b598df118.rlib \
   --mount=from=out-bb9cbf3b598df118,dst=/target/release/deps/libis_terminal_polyfill-bb9cbf3b598df118.rmeta,source=/libis_terminal_polyfill-bb9cbf3b598df118.rmeta \
+  --mount=from=out-a550586acd4c9334,dst=/target/release/deps/libanstream-a550586acd4c9334.rlib,source=/libanstream-a550586acd4c9334.rlib \
+  --mount=from=out-a550586acd4c9334,dst=/target/release/deps/libanstream-a550586acd4c9334.rmeta,source=/libanstream-a550586acd4c9334.rmeta \
   --mount=from=out-649f315ca8bc4ebc,dst=/target/release/deps/libclap_lex-649f315ca8bc4ebc.rlib,source=/libclap_lex-649f315ca8bc4ebc.rlib \
   --mount=from=out-649f315ca8bc4ebc,dst=/target/release/deps/libclap_lex-649f315ca8bc4ebc.rmeta,source=/libclap_lex-649f315ca8bc4ebc.rmeta \
   --mount=from=out-55db465d4601e4ea,dst=/target/release/deps/libstrsim-55db465d4601e4ea.rlib,source=/libstrsim-55db465d4601e4ea.rlib \
@@ -1225,10 +1225,10 @@ RUN \
   --mount=from=cratesio-rayon-core-1.12.1,source=/rayon-core-1.12.1,dst=$CARGO_HOME/registry/src/index.crates.io/rayon-core-1.12.1 \
   --mount=from=out-3f3857720426e980,dst=/target/release/deps/libcrossbeam_deque-3f3857720426e980.rlib,source=/libcrossbeam_deque-3f3857720426e980.rlib \
   --mount=from=out-3f3857720426e980,dst=/target/release/deps/libcrossbeam_deque-3f3857720426e980.rmeta,source=/libcrossbeam_deque-3f3857720426e980.rmeta \
-  --mount=from=out-2fca843e1b181c0c,dst=/target/release/deps/libcrossbeam_epoch-2fca843e1b181c0c.rlib,source=/libcrossbeam_epoch-2fca843e1b181c0c.rlib \
-  --mount=from=out-2fca843e1b181c0c,dst=/target/release/deps/libcrossbeam_epoch-2fca843e1b181c0c.rmeta,source=/libcrossbeam_epoch-2fca843e1b181c0c.rmeta \
   --mount=from=out-8b06b5563ea04699,dst=/target/release/deps/libcrossbeam_utils-8b06b5563ea04699.rlib,source=/libcrossbeam_utils-8b06b5563ea04699.rlib \
   --mount=from=out-8b06b5563ea04699,dst=/target/release/deps/libcrossbeam_utils-8b06b5563ea04699.rmeta,source=/libcrossbeam_utils-8b06b5563ea04699.rmeta \
+  --mount=from=out-2fca843e1b181c0c,dst=/target/release/deps/libcrossbeam_epoch-2fca843e1b181c0c.rlib,source=/libcrossbeam_epoch-2fca843e1b181c0c.rlib \
+  --mount=from=out-2fca843e1b181c0c,dst=/target/release/deps/libcrossbeam_epoch-2fca843e1b181c0c.rmeta,source=/libcrossbeam_epoch-2fca843e1b181c0c.rmeta \
   --mount=from=out-296a31aad008c41f,dst=/target/release/build/rayon-core-296a31aad008c41f/out,source=/ \
     env CARGO_CRATE_NAME=rayon_core \
         CARGO_INCREMENTAL=0 \
@@ -1271,12 +1271,12 @@ RUN \
   --mount=from=out-ee23e76a28f1de59,dst=/target/release/deps/libeither-ee23e76a28f1de59.rmeta,source=/libeither-ee23e76a28f1de59.rmeta \
   --mount=from=out-a6f95a69fdf20092,dst=/target/release/deps/librayon_core-a6f95a69fdf20092.rlib,source=/librayon_core-a6f95a69fdf20092.rlib \
   --mount=from=out-a6f95a69fdf20092,dst=/target/release/deps/librayon_core-a6f95a69fdf20092.rmeta,source=/librayon_core-a6f95a69fdf20092.rmeta \
-  --mount=from=out-3f3857720426e980,dst=/target/release/deps/libcrossbeam_deque-3f3857720426e980.rlib,source=/libcrossbeam_deque-3f3857720426e980.rlib \
-  --mount=from=out-3f3857720426e980,dst=/target/release/deps/libcrossbeam_deque-3f3857720426e980.rmeta,source=/libcrossbeam_deque-3f3857720426e980.rmeta \
-  --mount=from=out-2fca843e1b181c0c,dst=/target/release/deps/libcrossbeam_epoch-2fca843e1b181c0c.rlib,source=/libcrossbeam_epoch-2fca843e1b181c0c.rlib \
-  --mount=from=out-2fca843e1b181c0c,dst=/target/release/deps/libcrossbeam_epoch-2fca843e1b181c0c.rmeta,source=/libcrossbeam_epoch-2fca843e1b181c0c.rmeta \
   --mount=from=out-8b06b5563ea04699,dst=/target/release/deps/libcrossbeam_utils-8b06b5563ea04699.rlib,source=/libcrossbeam_utils-8b06b5563ea04699.rlib \
   --mount=from=out-8b06b5563ea04699,dst=/target/release/deps/libcrossbeam_utils-8b06b5563ea04699.rmeta,source=/libcrossbeam_utils-8b06b5563ea04699.rmeta \
+  --mount=from=out-2fca843e1b181c0c,dst=/target/release/deps/libcrossbeam_epoch-2fca843e1b181c0c.rlib,source=/libcrossbeam_epoch-2fca843e1b181c0c.rlib \
+  --mount=from=out-2fca843e1b181c0c,dst=/target/release/deps/libcrossbeam_epoch-2fca843e1b181c0c.rmeta,source=/libcrossbeam_epoch-2fca843e1b181c0c.rmeta \
+  --mount=from=out-3f3857720426e980,dst=/target/release/deps/libcrossbeam_deque-3f3857720426e980.rlib,source=/libcrossbeam_deque-3f3857720426e980.rlib \
+  --mount=from=out-3f3857720426e980,dst=/target/release/deps/libcrossbeam_deque-3f3857720426e980.rmeta,source=/libcrossbeam_deque-3f3857720426e980.rmeta \
     env CARGO_CRATE_NAME=rayon \
         CARGO_INCREMENTAL=0 \
         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/rayon-1.10.0 \
@@ -1398,14 +1398,14 @@ RUN \
   --mount=from=out-48df830a8500daa6,dst=/target/release/deps/librayon-48df830a8500daa6.rmeta,source=/librayon-48df830a8500daa6.rmeta \
   --mount=from=out-ee23e76a28f1de59,dst=/target/release/deps/libeither-ee23e76a28f1de59.rlib,source=/libeither-ee23e76a28f1de59.rlib \
   --mount=from=out-ee23e76a28f1de59,dst=/target/release/deps/libeither-ee23e76a28f1de59.rmeta,source=/libeither-ee23e76a28f1de59.rmeta \
-  --mount=from=out-a6f95a69fdf20092,dst=/target/release/deps/librayon_core-a6f95a69fdf20092.rlib,source=/librayon_core-a6f95a69fdf20092.rlib \
-  --mount=from=out-a6f95a69fdf20092,dst=/target/release/deps/librayon_core-a6f95a69fdf20092.rmeta,source=/librayon_core-a6f95a69fdf20092.rmeta \
-  --mount=from=out-3f3857720426e980,dst=/target/release/deps/libcrossbeam_deque-3f3857720426e980.rlib,source=/libcrossbeam_deque-3f3857720426e980.rlib \
-  --mount=from=out-3f3857720426e980,dst=/target/release/deps/libcrossbeam_deque-3f3857720426e980.rmeta,source=/libcrossbeam_deque-3f3857720426e980.rmeta \
-  --mount=from=out-2fca843e1b181c0c,dst=/target/release/deps/libcrossbeam_epoch-2fca843e1b181c0c.rlib,source=/libcrossbeam_epoch-2fca843e1b181c0c.rlib \
-  --mount=from=out-2fca843e1b181c0c,dst=/target/release/deps/libcrossbeam_epoch-2fca843e1b181c0c.rmeta,source=/libcrossbeam_epoch-2fca843e1b181c0c.rmeta \
   --mount=from=out-8b06b5563ea04699,dst=/target/release/deps/libcrossbeam_utils-8b06b5563ea04699.rlib,source=/libcrossbeam_utils-8b06b5563ea04699.rlib \
   --mount=from=out-8b06b5563ea04699,dst=/target/release/deps/libcrossbeam_utils-8b06b5563ea04699.rmeta,source=/libcrossbeam_utils-8b06b5563ea04699.rmeta \
+  --mount=from=out-2fca843e1b181c0c,dst=/target/release/deps/libcrossbeam_epoch-2fca843e1b181c0c.rlib,source=/libcrossbeam_epoch-2fca843e1b181c0c.rlib \
+  --mount=from=out-2fca843e1b181c0c,dst=/target/release/deps/libcrossbeam_epoch-2fca843e1b181c0c.rmeta,source=/libcrossbeam_epoch-2fca843e1b181c0c.rmeta \
+  --mount=from=out-3f3857720426e980,dst=/target/release/deps/libcrossbeam_deque-3f3857720426e980.rlib,source=/libcrossbeam_deque-3f3857720426e980.rlib \
+  --mount=from=out-3f3857720426e980,dst=/target/release/deps/libcrossbeam_deque-3f3857720426e980.rmeta,source=/libcrossbeam_deque-3f3857720426e980.rmeta \
+  --mount=from=out-a6f95a69fdf20092,dst=/target/release/deps/librayon_core-a6f95a69fdf20092.rlib,source=/librayon_core-a6f95a69fdf20092.rlib \
+  --mount=from=out-a6f95a69fdf20092,dst=/target/release/deps/librayon_core-a6f95a69fdf20092.rmeta,source=/librayon_core-a6f95a69fdf20092.rmeta \
   --mount=from=out-9fccdab094376304,dst=/target/release/deps/librgb-9fccdab094376304.rlib,source=/librgb-9fccdab094376304.rlib \
   --mount=from=out-9fccdab094376304,dst=/target/release/deps/librgb-9fccdab094376304.rmeta,source=/librgb-9fccdab094376304.rmeta \
   --mount=from=out-05d4ff1873ad87bc,dst=/target/release/deps/libbytemuck-05d4ff1873ad87bc.rlib,source=/libbytemuck-05d4ff1873ad87bc.rlib \
@@ -1849,10 +1849,10 @@ RUN \
   --mount=from=out-d5f77f1499e95549,dst=/target/release/deps/libcfg_if-d5f77f1499e95549.rmeta,source=/libcfg_if-d5f77f1499e95549.rmeta \
   --mount=from=out-6ce7654e2dc50bfe,dst=/target/release/deps/libflate2-6ce7654e2dc50bfe.rlib,source=/libflate2-6ce7654e2dc50bfe.rlib \
   --mount=from=out-6ce7654e2dc50bfe,dst=/target/release/deps/libflate2-6ce7654e2dc50bfe.rmeta,source=/libflate2-6ce7654e2dc50bfe.rmeta \
-  --mount=from=out-430add265fb1f18b,dst=/target/release/deps/liblibz_rs_sys-430add265fb1f18b.rlib,source=/liblibz_rs_sys-430add265fb1f18b.rlib \
-  --mount=from=out-430add265fb1f18b,dst=/target/release/deps/liblibz_rs_sys-430add265fb1f18b.rmeta,source=/liblibz_rs_sys-430add265fb1f18b.rmeta \
   --mount=from=out-04078eb4117344ab,dst=/target/release/deps/libzlib_rs-04078eb4117344ab.rlib,source=/libzlib_rs-04078eb4117344ab.rlib \
   --mount=from=out-04078eb4117344ab,dst=/target/release/deps/libzlib_rs-04078eb4117344ab.rmeta,source=/libzlib_rs-04078eb4117344ab.rmeta \
+  --mount=from=out-430add265fb1f18b,dst=/target/release/deps/liblibz_rs_sys-430add265fb1f18b.rlib,source=/liblibz_rs_sys-430add265fb1f18b.rlib \
+  --mount=from=out-430add265fb1f18b,dst=/target/release/deps/liblibz_rs_sys-430add265fb1f18b.rmeta,source=/liblibz_rs_sys-430add265fb1f18b.rmeta \
   --mount=from=out-ba5310007d02d735,dst=/target/release/deps/liblibc-ba5310007d02d735.rlib,source=/liblibc-ba5310007d02d735.rlib \
   --mount=from=out-ba5310007d02d735,dst=/target/release/deps/liblibc-ba5310007d02d735.rmeta,source=/liblibc-ba5310007d02d735.rmeta \
   --mount=from=out-9fccdab094376304,dst=/target/release/deps/librgb-9fccdab094376304.rlib,source=/librgb-9fccdab094376304.rlib \
@@ -2264,14 +2264,14 @@ RUN \
   --mount=from=out-48df830a8500daa6,dst=/target/release/deps/librayon-48df830a8500daa6.rmeta,source=/librayon-48df830a8500daa6.rmeta \
   --mount=from=out-ee23e76a28f1de59,dst=/target/release/deps/libeither-ee23e76a28f1de59.rlib,source=/libeither-ee23e76a28f1de59.rlib \
   --mount=from=out-ee23e76a28f1de59,dst=/target/release/deps/libeither-ee23e76a28f1de59.rmeta,source=/libeither-ee23e76a28f1de59.rmeta \
-  --mount=from=out-a6f95a69fdf20092,dst=/target/release/deps/librayon_core-a6f95a69fdf20092.rlib,source=/librayon_core-a6f95a69fdf20092.rlib \
-  --mount=from=out-a6f95a69fdf20092,dst=/target/release/deps/librayon_core-a6f95a69fdf20092.rmeta,source=/librayon_core-a6f95a69fdf20092.rmeta \
-  --mount=from=out-3f3857720426e980,dst=/target/release/deps/libcrossbeam_deque-3f3857720426e980.rlib,source=/libcrossbeam_deque-3f3857720426e980.rlib \
-  --mount=from=out-3f3857720426e980,dst=/target/release/deps/libcrossbeam_deque-3f3857720426e980.rmeta,source=/libcrossbeam_deque-3f3857720426e980.rmeta \
-  --mount=from=out-2fca843e1b181c0c,dst=/target/release/deps/libcrossbeam_epoch-2fca843e1b181c0c.rlib,source=/libcrossbeam_epoch-2fca843e1b181c0c.rlib \
-  --mount=from=out-2fca843e1b181c0c,dst=/target/release/deps/libcrossbeam_epoch-2fca843e1b181c0c.rmeta,source=/libcrossbeam_epoch-2fca843e1b181c0c.rmeta \
   --mount=from=out-8b06b5563ea04699,dst=/target/release/deps/libcrossbeam_utils-8b06b5563ea04699.rlib,source=/libcrossbeam_utils-8b06b5563ea04699.rlib \
   --mount=from=out-8b06b5563ea04699,dst=/target/release/deps/libcrossbeam_utils-8b06b5563ea04699.rmeta,source=/libcrossbeam_utils-8b06b5563ea04699.rmeta \
+  --mount=from=out-2fca843e1b181c0c,dst=/target/release/deps/libcrossbeam_epoch-2fca843e1b181c0c.rlib,source=/libcrossbeam_epoch-2fca843e1b181c0c.rlib \
+  --mount=from=out-2fca843e1b181c0c,dst=/target/release/deps/libcrossbeam_epoch-2fca843e1b181c0c.rmeta,source=/libcrossbeam_epoch-2fca843e1b181c0c.rmeta \
+  --mount=from=out-3f3857720426e980,dst=/target/release/deps/libcrossbeam_deque-3f3857720426e980.rlib,source=/libcrossbeam_deque-3f3857720426e980.rlib \
+  --mount=from=out-3f3857720426e980,dst=/target/release/deps/libcrossbeam_deque-3f3857720426e980.rmeta,source=/libcrossbeam_deque-3f3857720426e980.rmeta \
+  --mount=from=out-a6f95a69fdf20092,dst=/target/release/deps/librayon_core-a6f95a69fdf20092.rlib,source=/librayon_core-a6f95a69fdf20092.rlib \
+  --mount=from=out-a6f95a69fdf20092,dst=/target/release/deps/librayon_core-a6f95a69fdf20092.rmeta,source=/librayon_core-a6f95a69fdf20092.rmeta \
   --mount=from=out-9fccdab094376304,dst=/target/release/deps/librgb-9fccdab094376304.rlib,source=/librgb-9fccdab094376304.rlib \
   --mount=from=out-9fccdab094376304,dst=/target/release/deps/librgb-9fccdab094376304.rmeta,source=/librgb-9fccdab094376304.rmeta \
   --mount=from=out-05d4ff1873ad87bc,dst=/target/release/deps/libbytemuck-05d4ff1873ad87bc.rlib,source=/libbytemuck-05d4ff1873ad87bc.rlib \
@@ -2429,16 +2429,16 @@ WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-gifski-1.34.0,source=/gifski-1.34.0,dst=$CARGO_HOME/registry/src/index.crates.io/gifski-1.34.0 \
   --mount=from=out-3787e001670b0523,dst=/target/release/deps/libclap-3787e001670b0523.rlib,source=/libclap-3787e001670b0523.rlib \
-  --mount=from=out-1cc5db2c50406923,dst=/target/release/deps/libclap_builder-1cc5db2c50406923.rlib,source=/libclap_builder-1cc5db2c50406923.rlib \
-  --mount=from=out-a550586acd4c9334,dst=/target/release/deps/libanstream-a550586acd4c9334.rlib,source=/libanstream-a550586acd4c9334.rlib \
   --mount=from=out-d1f9f826e5291799,dst=/target/release/deps/libanstyle-d1f9f826e5291799.rlib,source=/libanstyle-d1f9f826e5291799.rlib \
-  --mount=from=out-3a6656a0727a327a,dst=/target/release/deps/libanstyle_parse-3a6656a0727a327a.rlib,source=/libanstyle_parse-3a6656a0727a327a.rlib \
   --mount=from=out-d26f8ef55e0e8506,dst=/target/release/deps/libutf8parse-d26f8ef55e0e8506.rlib,source=/libutf8parse-d26f8ef55e0e8506.rlib \
+  --mount=from=out-3a6656a0727a327a,dst=/target/release/deps/libanstyle_parse-3a6656a0727a327a.rlib,source=/libanstyle_parse-3a6656a0727a327a.rlib \
   --mount=from=out-59a52dfb1c99b533,dst=/target/release/deps/libanstyle_query-59a52dfb1c99b533.rlib,source=/libanstyle_query-59a52dfb1c99b533.rlib \
   --mount=from=out-b990aaec0cc9e059,dst=/target/release/deps/libcolorchoice-b990aaec0cc9e059.rlib,source=/libcolorchoice-b990aaec0cc9e059.rlib \
   --mount=from=out-bb9cbf3b598df118,dst=/target/release/deps/libis_terminal_polyfill-bb9cbf3b598df118.rlib,source=/libis_terminal_polyfill-bb9cbf3b598df118.rlib \
+  --mount=from=out-a550586acd4c9334,dst=/target/release/deps/libanstream-a550586acd4c9334.rlib,source=/libanstream-a550586acd4c9334.rlib \
   --mount=from=out-649f315ca8bc4ebc,dst=/target/release/deps/libclap_lex-649f315ca8bc4ebc.rlib,source=/libclap_lex-649f315ca8bc4ebc.rlib \
   --mount=from=out-55db465d4601e4ea,dst=/target/release/deps/libstrsim-55db465d4601e4ea.rlib,source=/libstrsim-55db465d4601e4ea.rlib \
+  --mount=from=out-1cc5db2c50406923,dst=/target/release/deps/libclap_builder-1cc5db2c50406923.rlib,source=/libclap_builder-1cc5db2c50406923.rlib \
   --mount=from=out-02208416784f0f0b,dst=/target/release/deps/libcrossbeam_channel-02208416784f0f0b.rlib,source=/libcrossbeam_channel-02208416784f0f0b.rlib \
   --mount=from=out-8b06b5563ea04699,dst=/target/release/deps/libcrossbeam_utils-8b06b5563ea04699.rlib,source=/libcrossbeam_utils-8b06b5563ea04699.rlib \
   --mount=from=out-5a0b46717148c91b,dst=/target/release/deps/libdunce-5a0b46717148c91b.rlib,source=/libdunce-5a0b46717148c91b.rlib \
@@ -2446,23 +2446,23 @@ RUN \
   --mount=from=out-29342da6ce5426b8,dst=/target/release/deps/libweezl-29342da6ce5426b8.rlib,source=/libweezl-29342da6ce5426b8.rlib \
   --mount=from=out-673653af1372615a,dst=/target/release/deps/libgif_dispose-673653af1372615a.rlib,source=/libgif_dispose-673653af1372615a.rlib \
   --mount=from=out-84cf8c87f6610dd8,dst=/target/release/deps/libimgref-84cf8c87f6610dd8.rlib,source=/libimgref-84cf8c87f6610dd8.rlib \
-  --mount=from=out-9fccdab094376304,dst=/target/release/deps/librgb-9fccdab094376304.rlib,source=/librgb-9fccdab094376304.rlib \
   --mount=from=out-05d4ff1873ad87bc,dst=/target/release/deps/libbytemuck-05d4ff1873ad87bc.rlib,source=/libbytemuck-05d4ff1873ad87bc.rlib \
+  --mount=from=out-9fccdab094376304,dst=/target/release/deps/librgb-9fccdab094376304.rlib,source=/librgb-9fccdab094376304.rlib \
   --mount=from=out-ddf60813053069d9,dst=/target/release/deps/libimagequant-ddf60813053069d9.rlib,source=/libimagequant-ddf60813053069d9.rlib \
   --mount=from=out-7a3152d0e0cb316b,dst=/target/release/deps/libarrayvec-7a3152d0e0cb316b.rlib,source=/libarrayvec-7a3152d0e0cb316b.rlib \
   --mount=from=out-9d970458fe25eb4d,dst=/target/release/deps/libonce_cell-9d970458fe25eb4d.rlib,source=/libonce_cell-9d970458fe25eb4d.rlib \
-  --mount=from=out-48df830a8500daa6,dst=/target/release/deps/librayon-48df830a8500daa6.rlib,source=/librayon-48df830a8500daa6.rlib \
   --mount=from=out-ee23e76a28f1de59,dst=/target/release/deps/libeither-ee23e76a28f1de59.rlib,source=/libeither-ee23e76a28f1de59.rlib \
-  --mount=from=out-a6f95a69fdf20092,dst=/target/release/deps/librayon_core-a6f95a69fdf20092.rlib,source=/librayon_core-a6f95a69fdf20092.rlib \
-  --mount=from=out-3f3857720426e980,dst=/target/release/deps/libcrossbeam_deque-3f3857720426e980.rlib,source=/libcrossbeam_deque-3f3857720426e980.rlib \
   --mount=from=out-2fca843e1b181c0c,dst=/target/release/deps/libcrossbeam_epoch-2fca843e1b181c0c.rlib,source=/libcrossbeam_epoch-2fca843e1b181c0c.rlib \
-  --mount=from=out-81ab489bedc10a4d,dst=/target/release/deps/libthread_local-81ab489bedc10a4d.rlib,source=/libthread_local-81ab489bedc10a4d.rlib \
+  --mount=from=out-3f3857720426e980,dst=/target/release/deps/libcrossbeam_deque-3f3857720426e980.rlib,source=/libcrossbeam_deque-3f3857720426e980.rlib \
+  --mount=from=out-a6f95a69fdf20092,dst=/target/release/deps/librayon_core-a6f95a69fdf20092.rlib,source=/librayon_core-a6f95a69fdf20092.rlib \
+  --mount=from=out-48df830a8500daa6,dst=/target/release/deps/librayon-48df830a8500daa6.rlib,source=/librayon-48df830a8500daa6.rlib \
   --mount=from=out-d5f77f1499e95549,dst=/target/release/deps/libcfg_if-d5f77f1499e95549.rlib,source=/libcfg_if-d5f77f1499e95549.rlib \
+  --mount=from=out-81ab489bedc10a4d,dst=/target/release/deps/libthread_local-81ab489bedc10a4d.rlib,source=/libthread_local-81ab489bedc10a4d.rlib \
   --mount=from=out-800f01a04e0f5cad,dst=/target/release/deps/liblodepng-800f01a04e0f5cad.rlib,source=/liblodepng-800f01a04e0f5cad.rlib \
   --mount=from=out-fb6a0584a3a1daad,dst=/target/release/deps/libcrc32fast-fb6a0584a3a1daad.rlib,source=/libcrc32fast-fb6a0584a3a1daad.rlib \
-  --mount=from=out-6ce7654e2dc50bfe,dst=/target/release/deps/libflate2-6ce7654e2dc50bfe.rlib,source=/libflate2-6ce7654e2dc50bfe.rlib \
-  --mount=from=out-430add265fb1f18b,dst=/target/release/deps/liblibz_rs_sys-430add265fb1f18b.rlib,source=/liblibz_rs_sys-430add265fb1f18b.rlib \
   --mount=from=out-04078eb4117344ab,dst=/target/release/deps/libzlib_rs-04078eb4117344ab.rlib,source=/libzlib_rs-04078eb4117344ab.rlib \
+  --mount=from=out-430add265fb1f18b,dst=/target/release/deps/liblibz_rs_sys-430add265fb1f18b.rlib,source=/liblibz_rs_sys-430add265fb1f18b.rlib \
+  --mount=from=out-6ce7654e2dc50bfe,dst=/target/release/deps/libflate2-6ce7654e2dc50bfe.rlib,source=/libflate2-6ce7654e2dc50bfe.rlib \
   --mount=from=out-ba5310007d02d735,dst=/target/release/deps/liblibc-ba5310007d02d735.rlib,source=/liblibc-ba5310007d02d735.rlib \
   --mount=from=out-0da13261130b2b31,dst=/target/release/deps/libloop9-0da13261130b2b31.rlib,source=/libloop9-0da13261130b2b31.rlib \
   --mount=from=out-0f94fc369184fe0b,dst=/target/release/deps/libnatord-0f94fc369184fe0b.rlib,source=/libnatord-0f94fc369184fe0b.rlib \
@@ -2512,16 +2512,16 @@ WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-gifski-1.34.0,source=/gifski-1.34.0,dst=$CARGO_HOME/registry/src/index.crates.io/gifski-1.34.0 \
   --mount=from=out-3787e001670b0523,dst=/target/release/deps/libclap-3787e001670b0523.rlib,source=/libclap-3787e001670b0523.rlib \
-  --mount=from=out-1cc5db2c50406923,dst=/target/release/deps/libclap_builder-1cc5db2c50406923.rlib,source=/libclap_builder-1cc5db2c50406923.rlib \
-  --mount=from=out-a550586acd4c9334,dst=/target/release/deps/libanstream-a550586acd4c9334.rlib,source=/libanstream-a550586acd4c9334.rlib \
   --mount=from=out-d1f9f826e5291799,dst=/target/release/deps/libanstyle-d1f9f826e5291799.rlib,source=/libanstyle-d1f9f826e5291799.rlib \
-  --mount=from=out-3a6656a0727a327a,dst=/target/release/deps/libanstyle_parse-3a6656a0727a327a.rlib,source=/libanstyle_parse-3a6656a0727a327a.rlib \
   --mount=from=out-d26f8ef55e0e8506,dst=/target/release/deps/libutf8parse-d26f8ef55e0e8506.rlib,source=/libutf8parse-d26f8ef55e0e8506.rlib \
+  --mount=from=out-3a6656a0727a327a,dst=/target/release/deps/libanstyle_parse-3a6656a0727a327a.rlib,source=/libanstyle_parse-3a6656a0727a327a.rlib \
   --mount=from=out-59a52dfb1c99b533,dst=/target/release/deps/libanstyle_query-59a52dfb1c99b533.rlib,source=/libanstyle_query-59a52dfb1c99b533.rlib \
   --mount=from=out-b990aaec0cc9e059,dst=/target/release/deps/libcolorchoice-b990aaec0cc9e059.rlib,source=/libcolorchoice-b990aaec0cc9e059.rlib \
   --mount=from=out-bb9cbf3b598df118,dst=/target/release/deps/libis_terminal_polyfill-bb9cbf3b598df118.rlib,source=/libis_terminal_polyfill-bb9cbf3b598df118.rlib \
+  --mount=from=out-a550586acd4c9334,dst=/target/release/deps/libanstream-a550586acd4c9334.rlib,source=/libanstream-a550586acd4c9334.rlib \
   --mount=from=out-649f315ca8bc4ebc,dst=/target/release/deps/libclap_lex-649f315ca8bc4ebc.rlib,source=/libclap_lex-649f315ca8bc4ebc.rlib \
   --mount=from=out-55db465d4601e4ea,dst=/target/release/deps/libstrsim-55db465d4601e4ea.rlib,source=/libstrsim-55db465d4601e4ea.rlib \
+  --mount=from=out-1cc5db2c50406923,dst=/target/release/deps/libclap_builder-1cc5db2c50406923.rlib,source=/libclap_builder-1cc5db2c50406923.rlib \
   --mount=from=out-02208416784f0f0b,dst=/target/release/deps/libcrossbeam_channel-02208416784f0f0b.rlib,source=/libcrossbeam_channel-02208416784f0f0b.rlib \
   --mount=from=out-8b06b5563ea04699,dst=/target/release/deps/libcrossbeam_utils-8b06b5563ea04699.rlib,source=/libcrossbeam_utils-8b06b5563ea04699.rlib \
   --mount=from=out-5a0b46717148c91b,dst=/target/release/deps/libdunce-5a0b46717148c91b.rlib,source=/libdunce-5a0b46717148c91b.rlib \
@@ -2529,31 +2529,31 @@ RUN \
   --mount=from=out-29342da6ce5426b8,dst=/target/release/deps/libweezl-29342da6ce5426b8.rlib,source=/libweezl-29342da6ce5426b8.rlib \
   --mount=from=out-673653af1372615a,dst=/target/release/deps/libgif_dispose-673653af1372615a.rlib,source=/libgif_dispose-673653af1372615a.rlib \
   --mount=from=out-84cf8c87f6610dd8,dst=/target/release/deps/libimgref-84cf8c87f6610dd8.rlib,source=/libimgref-84cf8c87f6610dd8.rlib \
-  --mount=from=out-9fccdab094376304,dst=/target/release/deps/librgb-9fccdab094376304.rlib,source=/librgb-9fccdab094376304.rlib \
   --mount=from=out-05d4ff1873ad87bc,dst=/target/release/deps/libbytemuck-05d4ff1873ad87bc.rlib,source=/libbytemuck-05d4ff1873ad87bc.rlib \
+  --mount=from=out-9fccdab094376304,dst=/target/release/deps/librgb-9fccdab094376304.rlib,source=/librgb-9fccdab094376304.rlib \
   --mount=from=out-578be0313baf6404,dst=/target/release/deps/libgifski-578be0313baf6404.a,source=/libgifski-578be0313baf6404.a \
   --mount=from=out-578be0313baf6404,dst=/target/release/deps/libgifski-578be0313baf6404.rlib,source=/libgifski-578be0313baf6404.rlib \
   --mount=from=out-578be0313baf6404,dst=/target/release/deps/libgifski-578be0313baf6404.so,source=/libgifski-578be0313baf6404.so \
-  --mount=from=out-ddf60813053069d9,dst=/target/release/deps/libimagequant-ddf60813053069d9.rlib,source=/libimagequant-ddf60813053069d9.rlib \
   --mount=from=out-7a3152d0e0cb316b,dst=/target/release/deps/libarrayvec-7a3152d0e0cb316b.rlib,source=/libarrayvec-7a3152d0e0cb316b.rlib \
   --mount=from=out-9d970458fe25eb4d,dst=/target/release/deps/libonce_cell-9d970458fe25eb4d.rlib,source=/libonce_cell-9d970458fe25eb4d.rlib \
-  --mount=from=out-48df830a8500daa6,dst=/target/release/deps/librayon-48df830a8500daa6.rlib,source=/librayon-48df830a8500daa6.rlib \
   --mount=from=out-ee23e76a28f1de59,dst=/target/release/deps/libeither-ee23e76a28f1de59.rlib,source=/libeither-ee23e76a28f1de59.rlib \
-  --mount=from=out-a6f95a69fdf20092,dst=/target/release/deps/librayon_core-a6f95a69fdf20092.rlib,source=/librayon_core-a6f95a69fdf20092.rlib \
-  --mount=from=out-3f3857720426e980,dst=/target/release/deps/libcrossbeam_deque-3f3857720426e980.rlib,source=/libcrossbeam_deque-3f3857720426e980.rlib \
   --mount=from=out-2fca843e1b181c0c,dst=/target/release/deps/libcrossbeam_epoch-2fca843e1b181c0c.rlib,source=/libcrossbeam_epoch-2fca843e1b181c0c.rlib \
-  --mount=from=out-81ab489bedc10a4d,dst=/target/release/deps/libthread_local-81ab489bedc10a4d.rlib,source=/libthread_local-81ab489bedc10a4d.rlib \
+  --mount=from=out-3f3857720426e980,dst=/target/release/deps/libcrossbeam_deque-3f3857720426e980.rlib,source=/libcrossbeam_deque-3f3857720426e980.rlib \
+  --mount=from=out-a6f95a69fdf20092,dst=/target/release/deps/librayon_core-a6f95a69fdf20092.rlib,source=/librayon_core-a6f95a69fdf20092.rlib \
+  --mount=from=out-48df830a8500daa6,dst=/target/release/deps/librayon-48df830a8500daa6.rlib,source=/librayon-48df830a8500daa6.rlib \
   --mount=from=out-d5f77f1499e95549,dst=/target/release/deps/libcfg_if-d5f77f1499e95549.rlib,source=/libcfg_if-d5f77f1499e95549.rlib \
-  --mount=from=out-800f01a04e0f5cad,dst=/target/release/deps/liblodepng-800f01a04e0f5cad.rlib,source=/liblodepng-800f01a04e0f5cad.rlib \
+  --mount=from=out-81ab489bedc10a4d,dst=/target/release/deps/libthread_local-81ab489bedc10a4d.rlib,source=/libthread_local-81ab489bedc10a4d.rlib \
+  --mount=from=out-ddf60813053069d9,dst=/target/release/deps/libimagequant-ddf60813053069d9.rlib,source=/libimagequant-ddf60813053069d9.rlib \
   --mount=from=out-fb6a0584a3a1daad,dst=/target/release/deps/libcrc32fast-fb6a0584a3a1daad.rlib,source=/libcrc32fast-fb6a0584a3a1daad.rlib \
-  --mount=from=out-6ce7654e2dc50bfe,dst=/target/release/deps/libflate2-6ce7654e2dc50bfe.rlib,source=/libflate2-6ce7654e2dc50bfe.rlib \
-  --mount=from=out-430add265fb1f18b,dst=/target/release/deps/liblibz_rs_sys-430add265fb1f18b.rlib,source=/liblibz_rs_sys-430add265fb1f18b.rlib \
   --mount=from=out-04078eb4117344ab,dst=/target/release/deps/libzlib_rs-04078eb4117344ab.rlib,source=/libzlib_rs-04078eb4117344ab.rlib \
+  --mount=from=out-430add265fb1f18b,dst=/target/release/deps/liblibz_rs_sys-430add265fb1f18b.rlib,source=/liblibz_rs_sys-430add265fb1f18b.rlib \
+  --mount=from=out-6ce7654e2dc50bfe,dst=/target/release/deps/libflate2-6ce7654e2dc50bfe.rlib,source=/libflate2-6ce7654e2dc50bfe.rlib \
   --mount=from=out-ba5310007d02d735,dst=/target/release/deps/liblibc-ba5310007d02d735.rlib,source=/liblibc-ba5310007d02d735.rlib \
+  --mount=from=out-800f01a04e0f5cad,dst=/target/release/deps/liblodepng-800f01a04e0f5cad.rlib,source=/liblodepng-800f01a04e0f5cad.rlib \
   --mount=from=out-0da13261130b2b31,dst=/target/release/deps/libloop9-0da13261130b2b31.rlib,source=/libloop9-0da13261130b2b31.rlib \
   --mount=from=out-0f94fc369184fe0b,dst=/target/release/deps/libnatord-0f94fc369184fe0b.rlib,source=/libnatord-0f94fc369184fe0b.rlib \
-  --mount=from=out-3c7fb17a06a83ce1,dst=/target/release/deps/libnum_traits-3c7fb17a06a83ce1.rlib,source=/libnum_traits-3c7fb17a06a83ce1.rlib \
   --mount=from=out-a6749ee212f31209,dst=/target/release/deps/libautocfg-a6749ee212f31209.rlib,source=/libautocfg-a6749ee212f31209.rlib \
+  --mount=from=out-3c7fb17a06a83ce1,dst=/target/release/deps/libnum_traits-3c7fb17a06a83ce1.rlib,source=/libnum_traits-3c7fb17a06a83ce1.rlib \
   --mount=from=out-7cc7eab92620c41d,dst=/target/release/deps/libordered_channel-7cc7eab92620c41d.rlib,source=/libordered_channel-7cc7eab92620c41d.rlib \
   --mount=from=out-278521e2e48ae875,dst=/target/release/deps/libpbr-278521e2e48ae875.rlib,source=/libpbr-278521e2e48ae875.rlib \
   --mount=from=out-47d375e08e9f09d1,dst=/target/release/deps/libquick_error-47d375e08e9f09d1.rlib,source=/libquick_error-47d375e08e9f09d1.rlib \

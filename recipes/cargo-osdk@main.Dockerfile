@@ -644,10 +644,10 @@ RUN \
   --mount=from=out-b9a85b735d63a26f,dst=/target/release/deps/libanstream-b9a85b735d63a26f.rmeta,source=/libanstream-b9a85b735d63a26f.rmeta \
   --mount=from=out-f10f31ca98d3d384,dst=/target/release/deps/libanstyle-f10f31ca98d3d384.rlib,source=/libanstyle-f10f31ca98d3d384.rlib \
   --mount=from=out-f10f31ca98d3d384,dst=/target/release/deps/libanstyle-f10f31ca98d3d384.rmeta,source=/libanstyle-f10f31ca98d3d384.rmeta \
-  --mount=from=out-633581034005add8,dst=/target/release/deps/libanstyle_parse-633581034005add8.rlib,source=/libanstyle_parse-633581034005add8.rlib \
-  --mount=from=out-633581034005add8,dst=/target/release/deps/libanstyle_parse-633581034005add8.rmeta,source=/libanstyle_parse-633581034005add8.rmeta \
   --mount=from=out-a4288836510ee242,dst=/target/release/deps/libutf8parse-a4288836510ee242.rlib,source=/libutf8parse-a4288836510ee242.rlib \
   --mount=from=out-a4288836510ee242,dst=/target/release/deps/libutf8parse-a4288836510ee242.rmeta,source=/libutf8parse-a4288836510ee242.rmeta \
+  --mount=from=out-633581034005add8,dst=/target/release/deps/libanstyle_parse-633581034005add8.rlib,source=/libanstyle_parse-633581034005add8.rlib \
+  --mount=from=out-633581034005add8,dst=/target/release/deps/libanstyle_parse-633581034005add8.rmeta,source=/libanstyle_parse-633581034005add8.rmeta \
   --mount=from=out-9940be7e53615ed8,dst=/target/release/deps/libanstyle_query-9940be7e53615ed8.rlib,source=/libanstyle_query-9940be7e53615ed8.rlib \
   --mount=from=out-9940be7e53615ed8,dst=/target/release/deps/libanstyle_query-9940be7e53615ed8.rmeta,source=/libanstyle_query-9940be7e53615ed8.rmeta \
   --mount=from=out-0a0a81159ebed644,dst=/target/release/deps/libcolorchoice-0a0a81159ebed644.rlib,source=/libcolorchoice-0a0a81159ebed644.rlib \
@@ -1027,20 +1027,20 @@ RUN \
   --mount=from=cratesio-clap-4.5.38,source=/clap-4.5.38,dst=$CARGO_HOME/registry/src/index.crates.io/clap-4.5.38 \
   --mount=from=out-0edd921231a81779,dst=/target/release/deps/libclap_builder-0edd921231a81779.rlib,source=/libclap_builder-0edd921231a81779.rlib \
   --mount=from=out-0edd921231a81779,dst=/target/release/deps/libclap_builder-0edd921231a81779.rmeta,source=/libclap_builder-0edd921231a81779.rmeta \
-  --mount=from=out-b9a85b735d63a26f,dst=/target/release/deps/libanstream-b9a85b735d63a26f.rlib,source=/libanstream-b9a85b735d63a26f.rlib \
-  --mount=from=out-b9a85b735d63a26f,dst=/target/release/deps/libanstream-b9a85b735d63a26f.rmeta,source=/libanstream-b9a85b735d63a26f.rmeta \
   --mount=from=out-f10f31ca98d3d384,dst=/target/release/deps/libanstyle-f10f31ca98d3d384.rlib,source=/libanstyle-f10f31ca98d3d384.rlib \
   --mount=from=out-f10f31ca98d3d384,dst=/target/release/deps/libanstyle-f10f31ca98d3d384.rmeta,source=/libanstyle-f10f31ca98d3d384.rmeta \
-  --mount=from=out-633581034005add8,dst=/target/release/deps/libanstyle_parse-633581034005add8.rlib,source=/libanstyle_parse-633581034005add8.rlib \
-  --mount=from=out-633581034005add8,dst=/target/release/deps/libanstyle_parse-633581034005add8.rmeta,source=/libanstyle_parse-633581034005add8.rmeta \
   --mount=from=out-a4288836510ee242,dst=/target/release/deps/libutf8parse-a4288836510ee242.rlib,source=/libutf8parse-a4288836510ee242.rlib \
   --mount=from=out-a4288836510ee242,dst=/target/release/deps/libutf8parse-a4288836510ee242.rmeta,source=/libutf8parse-a4288836510ee242.rmeta \
+  --mount=from=out-633581034005add8,dst=/target/release/deps/libanstyle_parse-633581034005add8.rlib,source=/libanstyle_parse-633581034005add8.rlib \
+  --mount=from=out-633581034005add8,dst=/target/release/deps/libanstyle_parse-633581034005add8.rmeta,source=/libanstyle_parse-633581034005add8.rmeta \
   --mount=from=out-9940be7e53615ed8,dst=/target/release/deps/libanstyle_query-9940be7e53615ed8.rlib,source=/libanstyle_query-9940be7e53615ed8.rlib \
   --mount=from=out-9940be7e53615ed8,dst=/target/release/deps/libanstyle_query-9940be7e53615ed8.rmeta,source=/libanstyle_query-9940be7e53615ed8.rmeta \
   --mount=from=out-0a0a81159ebed644,dst=/target/release/deps/libcolorchoice-0a0a81159ebed644.rlib,source=/libcolorchoice-0a0a81159ebed644.rlib \
   --mount=from=out-0a0a81159ebed644,dst=/target/release/deps/libcolorchoice-0a0a81159ebed644.rmeta,source=/libcolorchoice-0a0a81159ebed644.rmeta \
   --mount=from=out-a7fa188c5f0cbab1,dst=/target/release/deps/libis_terminal_polyfill-a7fa188c5f0cbab1.rlib,source=/libis_terminal_polyfill-a7fa188c5f0cbab1.rlib \
   --mount=from=out-a7fa188c5f0cbab1,dst=/target/release/deps/libis_terminal_polyfill-a7fa188c5f0cbab1.rmeta,source=/libis_terminal_polyfill-a7fa188c5f0cbab1.rmeta \
+  --mount=from=out-b9a85b735d63a26f,dst=/target/release/deps/libanstream-b9a85b735d63a26f.rlib,source=/libanstream-b9a85b735d63a26f.rlib \
+  --mount=from=out-b9a85b735d63a26f,dst=/target/release/deps/libanstream-b9a85b735d63a26f.rmeta,source=/libanstream-b9a85b735d63a26f.rmeta \
   --mount=from=out-4e6385e1d36e3ef8,dst=/target/release/deps/libclap_lex-4e6385e1d36e3ef8.rlib,source=/libclap_lex-4e6385e1d36e3ef8.rlib \
   --mount=from=out-4e6385e1d36e3ef8,dst=/target/release/deps/libclap_lex-4e6385e1d36e3ef8.rmeta,source=/libclap_lex-4e6385e1d36e3ef8.rmeta \
   --mount=from=out-714e2b590cb17cd4,dst=/target/release/deps/libstrsim-714e2b590cb17cd4.rlib,source=/libstrsim-714e2b590cb17cd4.rlib \
@@ -1048,10 +1048,10 @@ RUN \
   --mount=from=out-8be527ef5a4653ea,dst=/target/release/deps/libclap_derive-8be527ef5a4653ea.so,source=/libclap_derive-8be527ef5a4653ea.so \
   --mount=from=out-b2d11fd1520b7534,dst=/target/release/deps/libheck-b2d11fd1520b7534.rlib,source=/libheck-b2d11fd1520b7534.rlib \
   --mount=from=out-b2d11fd1520b7534,dst=/target/release/deps/libheck-b2d11fd1520b7534.rmeta,source=/libheck-b2d11fd1520b7534.rmeta \
-  --mount=from=out-4356c86342e02c28,dst=/target/release/deps/libproc_macro2-4356c86342e02c28.rlib,source=/libproc_macro2-4356c86342e02c28.rlib \
-  --mount=from=out-4356c86342e02c28,dst=/target/release/deps/libproc_macro2-4356c86342e02c28.rmeta,source=/libproc_macro2-4356c86342e02c28.rmeta \
   --mount=from=out-3ebac8e6359c6825,dst=/target/release/deps/libunicode_ident-3ebac8e6359c6825.rlib,source=/libunicode_ident-3ebac8e6359c6825.rlib \
   --mount=from=out-3ebac8e6359c6825,dst=/target/release/deps/libunicode_ident-3ebac8e6359c6825.rmeta,source=/libunicode_ident-3ebac8e6359c6825.rmeta \
+  --mount=from=out-4356c86342e02c28,dst=/target/release/deps/libproc_macro2-4356c86342e02c28.rlib,source=/libproc_macro2-4356c86342e02c28.rlib \
+  --mount=from=out-4356c86342e02c28,dst=/target/release/deps/libproc_macro2-4356c86342e02c28.rmeta,source=/libproc_macro2-4356c86342e02c28.rmeta \
   --mount=from=out-55894410ba9909c3,dst=/target/release/deps/libquote-55894410ba9909c3.rlib,source=/libquote-55894410ba9909c3.rlib \
   --mount=from=out-55894410ba9909c3,dst=/target/release/deps/libquote-55894410ba9909c3.rmeta,source=/libquote-55894410ba9909c3.rmeta \
   --mount=from=out-a92dc9c4c7d1735b,dst=/target/release/deps/libsyn-a92dc9c4c7d1735b.rlib,source=/libsyn-a92dc9c4c7d1735b.rlib \
@@ -1333,14 +1333,14 @@ RUN \
   --mount=from=out-f4d0a3bc79e88dc8,dst=/target/release/deps/liblog-f4d0a3bc79e88dc8.rmeta,source=/liblog-f4d0a3bc79e88dc8.rmeta \
   --mount=from=out-af35e8362d2e9bca,dst=/target/release/deps/libregex-af35e8362d2e9bca.rlib,source=/libregex-af35e8362d2e9bca.rlib \
   --mount=from=out-af35e8362d2e9bca,dst=/target/release/deps/libregex-af35e8362d2e9bca.rmeta,source=/libregex-af35e8362d2e9bca.rmeta \
-  --mount=from=out-969dc9365c470fde,dst=/target/release/deps/libaho_corasick-969dc9365c470fde.rlib,source=/libaho_corasick-969dc9365c470fde.rlib \
-  --mount=from=out-969dc9365c470fde,dst=/target/release/deps/libaho_corasick-969dc9365c470fde.rmeta,source=/libaho_corasick-969dc9365c470fde.rmeta \
   --mount=from=out-a6946e2dbbd03be4,dst=/target/release/deps/libmemchr-a6946e2dbbd03be4.rlib,source=/libmemchr-a6946e2dbbd03be4.rlib \
   --mount=from=out-a6946e2dbbd03be4,dst=/target/release/deps/libmemchr-a6946e2dbbd03be4.rmeta,source=/libmemchr-a6946e2dbbd03be4.rmeta \
-  --mount=from=out-3e93fe531166d9d8,dst=/target/release/deps/libregex_automata-3e93fe531166d9d8.rlib,source=/libregex_automata-3e93fe531166d9d8.rlib \
-  --mount=from=out-3e93fe531166d9d8,dst=/target/release/deps/libregex_automata-3e93fe531166d9d8.rmeta,source=/libregex_automata-3e93fe531166d9d8.rmeta \
+  --mount=from=out-969dc9365c470fde,dst=/target/release/deps/libaho_corasick-969dc9365c470fde.rlib,source=/libaho_corasick-969dc9365c470fde.rlib \
+  --mount=from=out-969dc9365c470fde,dst=/target/release/deps/libaho_corasick-969dc9365c470fde.rmeta,source=/libaho_corasick-969dc9365c470fde.rmeta \
   --mount=from=out-f2f221e392eb7fc5,dst=/target/release/deps/libregex_syntax-f2f221e392eb7fc5.rlib,source=/libregex_syntax-f2f221e392eb7fc5.rlib \
   --mount=from=out-f2f221e392eb7fc5,dst=/target/release/deps/libregex_syntax-f2f221e392eb7fc5.rmeta,source=/libregex_syntax-f2f221e392eb7fc5.rmeta \
+  --mount=from=out-3e93fe531166d9d8,dst=/target/release/deps/libregex_automata-3e93fe531166d9d8.rlib,source=/libregex_automata-3e93fe531166d9d8.rlib \
+  --mount=from=out-3e93fe531166d9d8,dst=/target/release/deps/libregex_automata-3e93fe531166d9d8.rmeta,source=/libregex_automata-3e93fe531166d9d8.rmeta \
     env CARGO_CRATE_NAME=env_filter \
         CARGO_INCREMENTAL=0 \
         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/env_filter-0.1.3 \
@@ -1421,10 +1421,10 @@ RUN \
   --mount=from=out-b9a85b735d63a26f,dst=/target/release/deps/libanstream-b9a85b735d63a26f.rmeta,source=/libanstream-b9a85b735d63a26f.rmeta \
   --mount=from=out-f10f31ca98d3d384,dst=/target/release/deps/libanstyle-f10f31ca98d3d384.rlib,source=/libanstyle-f10f31ca98d3d384.rlib \
   --mount=from=out-f10f31ca98d3d384,dst=/target/release/deps/libanstyle-f10f31ca98d3d384.rmeta,source=/libanstyle-f10f31ca98d3d384.rmeta \
-  --mount=from=out-633581034005add8,dst=/target/release/deps/libanstyle_parse-633581034005add8.rlib,source=/libanstyle_parse-633581034005add8.rlib \
-  --mount=from=out-633581034005add8,dst=/target/release/deps/libanstyle_parse-633581034005add8.rmeta,source=/libanstyle_parse-633581034005add8.rmeta \
   --mount=from=out-a4288836510ee242,dst=/target/release/deps/libutf8parse-a4288836510ee242.rlib,source=/libutf8parse-a4288836510ee242.rlib \
   --mount=from=out-a4288836510ee242,dst=/target/release/deps/libutf8parse-a4288836510ee242.rmeta,source=/libutf8parse-a4288836510ee242.rmeta \
+  --mount=from=out-633581034005add8,dst=/target/release/deps/libanstyle_parse-633581034005add8.rlib,source=/libanstyle_parse-633581034005add8.rlib \
+  --mount=from=out-633581034005add8,dst=/target/release/deps/libanstyle_parse-633581034005add8.rmeta,source=/libanstyle_parse-633581034005add8.rmeta \
   --mount=from=out-9940be7e53615ed8,dst=/target/release/deps/libanstyle_query-9940be7e53615ed8.rlib,source=/libanstyle_query-9940be7e53615ed8.rlib \
   --mount=from=out-9940be7e53615ed8,dst=/target/release/deps/libanstyle_query-9940be7e53615ed8.rmeta,source=/libanstyle_query-9940be7e53615ed8.rmeta \
   --mount=from=out-0a0a81159ebed644,dst=/target/release/deps/libcolorchoice-0a0a81159ebed644.rlib,source=/libcolorchoice-0a0a81159ebed644.rlib \
@@ -1435,16 +1435,16 @@ RUN \
   --mount=from=out-a4448d12fe1e7d73,dst=/target/release/deps/libenv_filter-a4448d12fe1e7d73.rmeta,source=/libenv_filter-a4448d12fe1e7d73.rmeta \
   --mount=from=out-f4d0a3bc79e88dc8,dst=/target/release/deps/liblog-f4d0a3bc79e88dc8.rlib,source=/liblog-f4d0a3bc79e88dc8.rlib \
   --mount=from=out-f4d0a3bc79e88dc8,dst=/target/release/deps/liblog-f4d0a3bc79e88dc8.rmeta,source=/liblog-f4d0a3bc79e88dc8.rmeta \
-  --mount=from=out-af35e8362d2e9bca,dst=/target/release/deps/libregex-af35e8362d2e9bca.rlib,source=/libregex-af35e8362d2e9bca.rlib \
-  --mount=from=out-af35e8362d2e9bca,dst=/target/release/deps/libregex-af35e8362d2e9bca.rmeta,source=/libregex-af35e8362d2e9bca.rmeta \
-  --mount=from=out-969dc9365c470fde,dst=/target/release/deps/libaho_corasick-969dc9365c470fde.rlib,source=/libaho_corasick-969dc9365c470fde.rlib \
-  --mount=from=out-969dc9365c470fde,dst=/target/release/deps/libaho_corasick-969dc9365c470fde.rmeta,source=/libaho_corasick-969dc9365c470fde.rmeta \
   --mount=from=out-a6946e2dbbd03be4,dst=/target/release/deps/libmemchr-a6946e2dbbd03be4.rlib,source=/libmemchr-a6946e2dbbd03be4.rlib \
   --mount=from=out-a6946e2dbbd03be4,dst=/target/release/deps/libmemchr-a6946e2dbbd03be4.rmeta,source=/libmemchr-a6946e2dbbd03be4.rmeta \
-  --mount=from=out-3e93fe531166d9d8,dst=/target/release/deps/libregex_automata-3e93fe531166d9d8.rlib,source=/libregex_automata-3e93fe531166d9d8.rlib \
-  --mount=from=out-3e93fe531166d9d8,dst=/target/release/deps/libregex_automata-3e93fe531166d9d8.rmeta,source=/libregex_automata-3e93fe531166d9d8.rmeta \
+  --mount=from=out-969dc9365c470fde,dst=/target/release/deps/libaho_corasick-969dc9365c470fde.rlib,source=/libaho_corasick-969dc9365c470fde.rlib \
+  --mount=from=out-969dc9365c470fde,dst=/target/release/deps/libaho_corasick-969dc9365c470fde.rmeta,source=/libaho_corasick-969dc9365c470fde.rmeta \
   --mount=from=out-f2f221e392eb7fc5,dst=/target/release/deps/libregex_syntax-f2f221e392eb7fc5.rlib,source=/libregex_syntax-f2f221e392eb7fc5.rlib \
   --mount=from=out-f2f221e392eb7fc5,dst=/target/release/deps/libregex_syntax-f2f221e392eb7fc5.rmeta,source=/libregex_syntax-f2f221e392eb7fc5.rmeta \
+  --mount=from=out-3e93fe531166d9d8,dst=/target/release/deps/libregex_automata-3e93fe531166d9d8.rlib,source=/libregex_automata-3e93fe531166d9d8.rlib \
+  --mount=from=out-3e93fe531166d9d8,dst=/target/release/deps/libregex_automata-3e93fe531166d9d8.rmeta,source=/libregex_automata-3e93fe531166d9d8.rmeta \
+  --mount=from=out-af35e8362d2e9bca,dst=/target/release/deps/libregex-af35e8362d2e9bca.rlib,source=/libregex-af35e8362d2e9bca.rlib \
+  --mount=from=out-af35e8362d2e9bca,dst=/target/release/deps/libregex-af35e8362d2e9bca.rmeta,source=/libregex-af35e8362d2e9bca.rmeta \
   --mount=from=out-796bb2a4e11a9725,dst=/target/release/deps/libjiff-796bb2a4e11a9725.rlib,source=/libjiff-796bb2a4e11a9725.rlib \
   --mount=from=out-796bb2a4e11a9725,dst=/target/release/deps/libjiff-796bb2a4e11a9725.rmeta,source=/libjiff-796bb2a4e11a9725.rmeta \
     env CARGO_CRATE_NAME=env_logger \
@@ -2774,10 +2774,10 @@ RUN \
   --mount=from=out-fbe3ee16abb1bbef,dst=/target/release/deps/libahash-fbe3ee16abb1bbef.rmeta,source=/libahash-fbe3ee16abb1bbef.rmeta \
   --mount=from=out-cd405c5de7941d28,dst=/target/release/deps/libcfg_if-cd405c5de7941d28.rlib,source=/libcfg_if-cd405c5de7941d28.rlib \
   --mount=from=out-cd405c5de7941d28,dst=/target/release/deps/libcfg_if-cd405c5de7941d28.rmeta,source=/libcfg_if-cd405c5de7941d28.rmeta \
-  --mount=from=out-5f0d6da3b6365d7a,dst=/target/release/deps/libgetrandom-5f0d6da3b6365d7a.rlib,source=/libgetrandom-5f0d6da3b6365d7a.rlib \
-  --mount=from=out-5f0d6da3b6365d7a,dst=/target/release/deps/libgetrandom-5f0d6da3b6365d7a.rmeta,source=/libgetrandom-5f0d6da3b6365d7a.rmeta \
   --mount=from=out-b6e0e142f77cdf65,dst=/target/release/deps/liblibc-b6e0e142f77cdf65.rlib,source=/liblibc-b6e0e142f77cdf65.rlib \
   --mount=from=out-b6e0e142f77cdf65,dst=/target/release/deps/liblibc-b6e0e142f77cdf65.rmeta,source=/liblibc-b6e0e142f77cdf65.rmeta \
+  --mount=from=out-5f0d6da3b6365d7a,dst=/target/release/deps/libgetrandom-5f0d6da3b6365d7a.rlib,source=/libgetrandom-5f0d6da3b6365d7a.rlib \
+  --mount=from=out-5f0d6da3b6365d7a,dst=/target/release/deps/libgetrandom-5f0d6da3b6365d7a.rmeta,source=/libgetrandom-5f0d6da3b6365d7a.rmeta \
   --mount=from=out-d025d0ff782d651d,dst=/target/release/deps/libonce_cell-d025d0ff782d651d.rlib,source=/libonce_cell-d025d0ff782d651d.rlib \
   --mount=from=out-d025d0ff782d651d,dst=/target/release/deps/libonce_cell-d025d0ff782d651d.rmeta,source=/libonce_cell-d025d0ff782d651d.rmeta \
   --mount=from=out-1aa205749963a8da,dst=/target/release/deps/libzerocopy-1aa205749963a8da.rlib,source=/libzerocopy-1aa205749963a8da.rlib \
@@ -3180,18 +3180,18 @@ RUN \
   --mount=from=out-6c429d87be32f91e,dst=/target/release/deps/libcrossbeam_utils-6c429d87be32f91e.rmeta,source=/libcrossbeam_utils-6c429d87be32f91e.rmeta \
   --mount=from=out-4aee6d3837356d02,dst=/target/release/deps/libhashbrown-4aee6d3837356d02.rlib,source=/libhashbrown-4aee6d3837356d02.rlib \
   --mount=from=out-4aee6d3837356d02,dst=/target/release/deps/libhashbrown-4aee6d3837356d02.rmeta,source=/libhashbrown-4aee6d3837356d02.rmeta \
-  --mount=from=out-fbe3ee16abb1bbef,dst=/target/release/deps/libahash-fbe3ee16abb1bbef.rlib,source=/libahash-fbe3ee16abb1bbef.rlib \
-  --mount=from=out-fbe3ee16abb1bbef,dst=/target/release/deps/libahash-fbe3ee16abb1bbef.rmeta,source=/libahash-fbe3ee16abb1bbef.rmeta \
-  --mount=from=out-5f0d6da3b6365d7a,dst=/target/release/deps/libgetrandom-5f0d6da3b6365d7a.rlib,source=/libgetrandom-5f0d6da3b6365d7a.rlib \
-  --mount=from=out-5f0d6da3b6365d7a,dst=/target/release/deps/libgetrandom-5f0d6da3b6365d7a.rmeta,source=/libgetrandom-5f0d6da3b6365d7a.rmeta \
   --mount=from=out-b6e0e142f77cdf65,dst=/target/release/deps/liblibc-b6e0e142f77cdf65.rlib,source=/liblibc-b6e0e142f77cdf65.rlib \
   --mount=from=out-b6e0e142f77cdf65,dst=/target/release/deps/liblibc-b6e0e142f77cdf65.rmeta,source=/liblibc-b6e0e142f77cdf65.rmeta \
+  --mount=from=out-5f0d6da3b6365d7a,dst=/target/release/deps/libgetrandom-5f0d6da3b6365d7a.rlib,source=/libgetrandom-5f0d6da3b6365d7a.rlib \
+  --mount=from=out-5f0d6da3b6365d7a,dst=/target/release/deps/libgetrandom-5f0d6da3b6365d7a.rmeta,source=/libgetrandom-5f0d6da3b6365d7a.rmeta \
   --mount=from=out-d025d0ff782d651d,dst=/target/release/deps/libonce_cell-d025d0ff782d651d.rlib,source=/libonce_cell-d025d0ff782d651d.rlib \
   --mount=from=out-d025d0ff782d651d,dst=/target/release/deps/libonce_cell-d025d0ff782d651d.rmeta,source=/libonce_cell-d025d0ff782d651d.rmeta \
   --mount=from=out-1aa205749963a8da,dst=/target/release/deps/libzerocopy-1aa205749963a8da.rlib,source=/libzerocopy-1aa205749963a8da.rlib \
   --mount=from=out-1aa205749963a8da,dst=/target/release/deps/libzerocopy-1aa205749963a8da.rmeta,source=/libzerocopy-1aa205749963a8da.rmeta \
   --mount=from=out-505e5161b4582132,dst=/target/release/deps/libversion_check-505e5161b4582132.rlib,source=/libversion_check-505e5161b4582132.rlib \
   --mount=from=out-505e5161b4582132,dst=/target/release/deps/libversion_check-505e5161b4582132.rmeta,source=/libversion_check-505e5161b4582132.rmeta \
+  --mount=from=out-fbe3ee16abb1bbef,dst=/target/release/deps/libahash-fbe3ee16abb1bbef.rlib,source=/libahash-fbe3ee16abb1bbef.rlib \
+  --mount=from=out-fbe3ee16abb1bbef,dst=/target/release/deps/libahash-fbe3ee16abb1bbef.rmeta,source=/libahash-fbe3ee16abb1bbef.rmeta \
   --mount=from=out-d8e4baa25bd475a2,dst=/target/release/deps/liballocator_api2-d8e4baa25bd475a2.rlib,source=/liballocator_api2-d8e4baa25bd475a2.rlib \
   --mount=from=out-d8e4baa25bd475a2,dst=/target/release/deps/liballocator_api2-d8e4baa25bd475a2.rmeta,source=/liballocator_api2-d8e4baa25bd475a2.rmeta \
   --mount=from=out-bcb4f1d4fde5ecee,dst=/target/release/deps/liblock_api-bcb4f1d4fde5ecee.rlib,source=/liblock_api-bcb4f1d4fde5ecee.rlib \
@@ -3470,8 +3470,8 @@ WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-bytemuck-1.23.0,source=/bytemuck-1.23.0,dst=$CARGO_HOME/registry/src/index.crates.io/bytemuck-1.23.0 \
   --mount=from=out-5c6d96369604b05e,dst=/target/release/deps/libbytemuck_derive-5c6d96369604b05e.so,source=/libbytemuck_derive-5c6d96369604b05e.so \
-  --mount=from=out-4356c86342e02c28,dst=/target/release/deps/libproc_macro2-4356c86342e02c28.rlib,source=/libproc_macro2-4356c86342e02c28.rlib \
   --mount=from=out-3ebac8e6359c6825,dst=/target/release/deps/libunicode_ident-3ebac8e6359c6825.rlib,source=/libunicode_ident-3ebac8e6359c6825.rlib \
+  --mount=from=out-4356c86342e02c28,dst=/target/release/deps/libproc_macro2-4356c86342e02c28.rlib,source=/libproc_macro2-4356c86342e02c28.rlib \
   --mount=from=out-55894410ba9909c3,dst=/target/release/deps/libquote-55894410ba9909c3.rlib,source=/libquote-55894410ba9909c3.rlib \
   --mount=from=out-a92dc9c4c7d1735b,dst=/target/release/deps/libsyn-a92dc9c4c7d1735b.rlib,source=/libsyn-a92dc9c4c7d1735b.rlib \
     env CARGO_CRATE_NAME=bytemuck \
@@ -3512,15 +3512,15 @@ RUN \
   --mount=from=cratesio-rgb-0.8.50,source=/rgb-0.8.50,dst=$CARGO_HOME/registry/src/index.crates.io/rgb-0.8.50 \
   --mount=from=out-11c142c9054a396c,dst=/target/release/deps/libbytemuck-11c142c9054a396c.rlib,source=/libbytemuck-11c142c9054a396c.rlib \
   --mount=from=out-11c142c9054a396c,dst=/target/release/deps/libbytemuck-11c142c9054a396c.rmeta,source=/libbytemuck-11c142c9054a396c.rmeta \
-  --mount=from=out-5c6d96369604b05e,dst=/target/release/deps/libbytemuck_derive-5c6d96369604b05e.so,source=/libbytemuck_derive-5c6d96369604b05e.so \
-  --mount=from=out-4356c86342e02c28,dst=/target/release/deps/libproc_macro2-4356c86342e02c28.rlib,source=/libproc_macro2-4356c86342e02c28.rlib \
-  --mount=from=out-4356c86342e02c28,dst=/target/release/deps/libproc_macro2-4356c86342e02c28.rmeta,source=/libproc_macro2-4356c86342e02c28.rmeta \
   --mount=from=out-3ebac8e6359c6825,dst=/target/release/deps/libunicode_ident-3ebac8e6359c6825.rlib,source=/libunicode_ident-3ebac8e6359c6825.rlib \
   --mount=from=out-3ebac8e6359c6825,dst=/target/release/deps/libunicode_ident-3ebac8e6359c6825.rmeta,source=/libunicode_ident-3ebac8e6359c6825.rmeta \
+  --mount=from=out-4356c86342e02c28,dst=/target/release/deps/libproc_macro2-4356c86342e02c28.rlib,source=/libproc_macro2-4356c86342e02c28.rlib \
+  --mount=from=out-4356c86342e02c28,dst=/target/release/deps/libproc_macro2-4356c86342e02c28.rmeta,source=/libproc_macro2-4356c86342e02c28.rmeta \
   --mount=from=out-55894410ba9909c3,dst=/target/release/deps/libquote-55894410ba9909c3.rlib,source=/libquote-55894410ba9909c3.rlib \
   --mount=from=out-55894410ba9909c3,dst=/target/release/deps/libquote-55894410ba9909c3.rmeta,source=/libquote-55894410ba9909c3.rmeta \
   --mount=from=out-a92dc9c4c7d1735b,dst=/target/release/deps/libsyn-a92dc9c4c7d1735b.rlib,source=/libsyn-a92dc9c4c7d1735b.rlib \
   --mount=from=out-a92dc9c4c7d1735b,dst=/target/release/deps/libsyn-a92dc9c4c7d1735b.rmeta,source=/libsyn-a92dc9c4c7d1735b.rmeta \
+  --mount=from=out-5c6d96369604b05e,dst=/target/release/deps/libbytemuck_derive-5c6d96369604b05e.so,source=/libbytemuck_derive-5c6d96369604b05e.so \
     env CARGO_CRATE_NAME=rgb \
         CARGO_INCREMENTAL=0 \
         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/rgb-0.8.50 \
@@ -3602,10 +3602,10 @@ RUN \
   --mount=from=out-fbe3ee16abb1bbef,dst=/target/release/deps/libahash-fbe3ee16abb1bbef.rmeta,source=/libahash-fbe3ee16abb1bbef.rmeta \
   --mount=from=out-cd405c5de7941d28,dst=/target/release/deps/libcfg_if-cd405c5de7941d28.rlib,source=/libcfg_if-cd405c5de7941d28.rlib \
   --mount=from=out-cd405c5de7941d28,dst=/target/release/deps/libcfg_if-cd405c5de7941d28.rmeta,source=/libcfg_if-cd405c5de7941d28.rmeta \
-  --mount=from=out-5f0d6da3b6365d7a,dst=/target/release/deps/libgetrandom-5f0d6da3b6365d7a.rlib,source=/libgetrandom-5f0d6da3b6365d7a.rlib \
-  --mount=from=out-5f0d6da3b6365d7a,dst=/target/release/deps/libgetrandom-5f0d6da3b6365d7a.rmeta,source=/libgetrandom-5f0d6da3b6365d7a.rmeta \
   --mount=from=out-b6e0e142f77cdf65,dst=/target/release/deps/liblibc-b6e0e142f77cdf65.rlib,source=/liblibc-b6e0e142f77cdf65.rlib \
   --mount=from=out-b6e0e142f77cdf65,dst=/target/release/deps/liblibc-b6e0e142f77cdf65.rmeta,source=/liblibc-b6e0e142f77cdf65.rmeta \
+  --mount=from=out-5f0d6da3b6365d7a,dst=/target/release/deps/libgetrandom-5f0d6da3b6365d7a.rlib,source=/libgetrandom-5f0d6da3b6365d7a.rlib \
+  --mount=from=out-5f0d6da3b6365d7a,dst=/target/release/deps/libgetrandom-5f0d6da3b6365d7a.rmeta,source=/libgetrandom-5f0d6da3b6365d7a.rmeta \
   --mount=from=out-d025d0ff782d651d,dst=/target/release/deps/libonce_cell-d025d0ff782d651d.rlib,source=/libonce_cell-d025d0ff782d651d.rlib \
   --mount=from=out-d025d0ff782d651d,dst=/target/release/deps/libonce_cell-d025d0ff782d651d.rmeta,source=/libonce_cell-d025d0ff782d651d.rmeta \
   --mount=from=out-1aa205749963a8da,dst=/target/release/deps/libzerocopy-1aa205749963a8da.rlib,source=/libzerocopy-1aa205749963a8da.rlib \
@@ -3614,73 +3614,73 @@ RUN \
   --mount=from=out-505e5161b4582132,dst=/target/release/deps/libversion_check-505e5161b4582132.rmeta,source=/libversion_check-505e5161b4582132.rmeta \
   --mount=from=out-4d40053c5918fdf7,dst=/target/release/deps/libclap-4d40053c5918fdf7.rlib,source=/libclap-4d40053c5918fdf7.rlib \
   --mount=from=out-4d40053c5918fdf7,dst=/target/release/deps/libclap-4d40053c5918fdf7.rmeta,source=/libclap-4d40053c5918fdf7.rmeta \
-  --mount=from=out-0edd921231a81779,dst=/target/release/deps/libclap_builder-0edd921231a81779.rlib,source=/libclap_builder-0edd921231a81779.rlib \
-  --mount=from=out-0edd921231a81779,dst=/target/release/deps/libclap_builder-0edd921231a81779.rmeta,source=/libclap_builder-0edd921231a81779.rmeta \
-  --mount=from=out-b9a85b735d63a26f,dst=/target/release/deps/libanstream-b9a85b735d63a26f.rlib,source=/libanstream-b9a85b735d63a26f.rlib \
-  --mount=from=out-b9a85b735d63a26f,dst=/target/release/deps/libanstream-b9a85b735d63a26f.rmeta,source=/libanstream-b9a85b735d63a26f.rmeta \
   --mount=from=out-f10f31ca98d3d384,dst=/target/release/deps/libanstyle-f10f31ca98d3d384.rlib,source=/libanstyle-f10f31ca98d3d384.rlib \
   --mount=from=out-f10f31ca98d3d384,dst=/target/release/deps/libanstyle-f10f31ca98d3d384.rmeta,source=/libanstyle-f10f31ca98d3d384.rmeta \
-  --mount=from=out-633581034005add8,dst=/target/release/deps/libanstyle_parse-633581034005add8.rlib,source=/libanstyle_parse-633581034005add8.rlib \
-  --mount=from=out-633581034005add8,dst=/target/release/deps/libanstyle_parse-633581034005add8.rmeta,source=/libanstyle_parse-633581034005add8.rmeta \
   --mount=from=out-a4288836510ee242,dst=/target/release/deps/libutf8parse-a4288836510ee242.rlib,source=/libutf8parse-a4288836510ee242.rlib \
   --mount=from=out-a4288836510ee242,dst=/target/release/deps/libutf8parse-a4288836510ee242.rmeta,source=/libutf8parse-a4288836510ee242.rmeta \
+  --mount=from=out-633581034005add8,dst=/target/release/deps/libanstyle_parse-633581034005add8.rlib,source=/libanstyle_parse-633581034005add8.rlib \
+  --mount=from=out-633581034005add8,dst=/target/release/deps/libanstyle_parse-633581034005add8.rmeta,source=/libanstyle_parse-633581034005add8.rmeta \
   --mount=from=out-9940be7e53615ed8,dst=/target/release/deps/libanstyle_query-9940be7e53615ed8.rlib,source=/libanstyle_query-9940be7e53615ed8.rlib \
   --mount=from=out-9940be7e53615ed8,dst=/target/release/deps/libanstyle_query-9940be7e53615ed8.rmeta,source=/libanstyle_query-9940be7e53615ed8.rmeta \
   --mount=from=out-0a0a81159ebed644,dst=/target/release/deps/libcolorchoice-0a0a81159ebed644.rlib,source=/libcolorchoice-0a0a81159ebed644.rlib \
   --mount=from=out-0a0a81159ebed644,dst=/target/release/deps/libcolorchoice-0a0a81159ebed644.rmeta,source=/libcolorchoice-0a0a81159ebed644.rmeta \
   --mount=from=out-a7fa188c5f0cbab1,dst=/target/release/deps/libis_terminal_polyfill-a7fa188c5f0cbab1.rlib,source=/libis_terminal_polyfill-a7fa188c5f0cbab1.rlib \
   --mount=from=out-a7fa188c5f0cbab1,dst=/target/release/deps/libis_terminal_polyfill-a7fa188c5f0cbab1.rmeta,source=/libis_terminal_polyfill-a7fa188c5f0cbab1.rmeta \
+  --mount=from=out-b9a85b735d63a26f,dst=/target/release/deps/libanstream-b9a85b735d63a26f.rlib,source=/libanstream-b9a85b735d63a26f.rlib \
+  --mount=from=out-b9a85b735d63a26f,dst=/target/release/deps/libanstream-b9a85b735d63a26f.rmeta,source=/libanstream-b9a85b735d63a26f.rmeta \
   --mount=from=out-4e6385e1d36e3ef8,dst=/target/release/deps/libclap_lex-4e6385e1d36e3ef8.rlib,source=/libclap_lex-4e6385e1d36e3ef8.rlib \
   --mount=from=out-4e6385e1d36e3ef8,dst=/target/release/deps/libclap_lex-4e6385e1d36e3ef8.rmeta,source=/libclap_lex-4e6385e1d36e3ef8.rmeta \
   --mount=from=out-714e2b590cb17cd4,dst=/target/release/deps/libstrsim-714e2b590cb17cd4.rlib,source=/libstrsim-714e2b590cb17cd4.rlib \
   --mount=from=out-714e2b590cb17cd4,dst=/target/release/deps/libstrsim-714e2b590cb17cd4.rmeta,source=/libstrsim-714e2b590cb17cd4.rmeta \
-  --mount=from=out-8be527ef5a4653ea,dst=/target/release/deps/libclap_derive-8be527ef5a4653ea.so,source=/libclap_derive-8be527ef5a4653ea.so \
+  --mount=from=out-0edd921231a81779,dst=/target/release/deps/libclap_builder-0edd921231a81779.rlib,source=/libclap_builder-0edd921231a81779.rlib \
+  --mount=from=out-0edd921231a81779,dst=/target/release/deps/libclap_builder-0edd921231a81779.rmeta,source=/libclap_builder-0edd921231a81779.rmeta \
   --mount=from=out-b2d11fd1520b7534,dst=/target/release/deps/libheck-b2d11fd1520b7534.rlib,source=/libheck-b2d11fd1520b7534.rlib \
   --mount=from=out-b2d11fd1520b7534,dst=/target/release/deps/libheck-b2d11fd1520b7534.rmeta,source=/libheck-b2d11fd1520b7534.rmeta \
-  --mount=from=out-4356c86342e02c28,dst=/target/release/deps/libproc_macro2-4356c86342e02c28.rlib,source=/libproc_macro2-4356c86342e02c28.rlib \
-  --mount=from=out-4356c86342e02c28,dst=/target/release/deps/libproc_macro2-4356c86342e02c28.rmeta,source=/libproc_macro2-4356c86342e02c28.rmeta \
   --mount=from=out-3ebac8e6359c6825,dst=/target/release/deps/libunicode_ident-3ebac8e6359c6825.rlib,source=/libunicode_ident-3ebac8e6359c6825.rlib \
   --mount=from=out-3ebac8e6359c6825,dst=/target/release/deps/libunicode_ident-3ebac8e6359c6825.rmeta,source=/libunicode_ident-3ebac8e6359c6825.rmeta \
+  --mount=from=out-4356c86342e02c28,dst=/target/release/deps/libproc_macro2-4356c86342e02c28.rlib,source=/libproc_macro2-4356c86342e02c28.rlib \
+  --mount=from=out-4356c86342e02c28,dst=/target/release/deps/libproc_macro2-4356c86342e02c28.rmeta,source=/libproc_macro2-4356c86342e02c28.rmeta \
   --mount=from=out-55894410ba9909c3,dst=/target/release/deps/libquote-55894410ba9909c3.rlib,source=/libquote-55894410ba9909c3.rlib \
   --mount=from=out-55894410ba9909c3,dst=/target/release/deps/libquote-55894410ba9909c3.rmeta,source=/libquote-55894410ba9909c3.rmeta \
   --mount=from=out-a92dc9c4c7d1735b,dst=/target/release/deps/libsyn-a92dc9c4c7d1735b.rlib,source=/libsyn-a92dc9c4c7d1735b.rlib \
   --mount=from=out-a92dc9c4c7d1735b,dst=/target/release/deps/libsyn-a92dc9c4c7d1735b.rmeta,source=/libsyn-a92dc9c4c7d1735b.rmeta \
+  --mount=from=out-8be527ef5a4653ea,dst=/target/release/deps/libclap_derive-8be527ef5a4653ea.so,source=/libclap_derive-8be527ef5a4653ea.so \
   --mount=from=out-90d2e26d50d7623c,dst=/target/release/deps/libcrossbeam_channel-90d2e26d50d7623c.rlib,source=/libcrossbeam_channel-90d2e26d50d7623c.rlib \
   --mount=from=out-90d2e26d50d7623c,dst=/target/release/deps/libcrossbeam_channel-90d2e26d50d7623c.rmeta,source=/libcrossbeam_channel-90d2e26d50d7623c.rmeta \
   --mount=from=out-6c429d87be32f91e,dst=/target/release/deps/libcrossbeam_utils-6c429d87be32f91e.rlib,source=/libcrossbeam_utils-6c429d87be32f91e.rlib \
   --mount=from=out-6c429d87be32f91e,dst=/target/release/deps/libcrossbeam_utils-6c429d87be32f91e.rmeta,source=/libcrossbeam_utils-6c429d87be32f91e.rmeta \
   --mount=from=out-72c75df0248d722d,dst=/target/release/deps/libdashmap-72c75df0248d722d.rlib,source=/libdashmap-72c75df0248d722d.rlib \
   --mount=from=out-72c75df0248d722d,dst=/target/release/deps/libdashmap-72c75df0248d722d.rmeta,source=/libdashmap-72c75df0248d722d.rmeta \
-  --mount=from=out-4aee6d3837356d02,dst=/target/release/deps/libhashbrown-4aee6d3837356d02.rlib,source=/libhashbrown-4aee6d3837356d02.rlib \
-  --mount=from=out-4aee6d3837356d02,dst=/target/release/deps/libhashbrown-4aee6d3837356d02.rmeta,source=/libhashbrown-4aee6d3837356d02.rmeta \
   --mount=from=out-d8e4baa25bd475a2,dst=/target/release/deps/liballocator_api2-d8e4baa25bd475a2.rlib,source=/liballocator_api2-d8e4baa25bd475a2.rlib \
   --mount=from=out-d8e4baa25bd475a2,dst=/target/release/deps/liballocator_api2-d8e4baa25bd475a2.rmeta,source=/liballocator_api2-d8e4baa25bd475a2.rmeta \
-  --mount=from=out-bcb4f1d4fde5ecee,dst=/target/release/deps/liblock_api-bcb4f1d4fde5ecee.rlib,source=/liblock_api-bcb4f1d4fde5ecee.rlib \
-  --mount=from=out-bcb4f1d4fde5ecee,dst=/target/release/deps/liblock_api-bcb4f1d4fde5ecee.rmeta,source=/liblock_api-bcb4f1d4fde5ecee.rmeta \
+  --mount=from=out-4aee6d3837356d02,dst=/target/release/deps/libhashbrown-4aee6d3837356d02.rlib,source=/libhashbrown-4aee6d3837356d02.rlib \
+  --mount=from=out-4aee6d3837356d02,dst=/target/release/deps/libhashbrown-4aee6d3837356d02.rmeta,source=/libhashbrown-4aee6d3837356d02.rmeta \
   --mount=from=out-1198dcafbecb6b85,dst=/target/release/deps/libscopeguard-1198dcafbecb6b85.rlib,source=/libscopeguard-1198dcafbecb6b85.rlib \
   --mount=from=out-1198dcafbecb6b85,dst=/target/release/deps/libscopeguard-1198dcafbecb6b85.rmeta,source=/libscopeguard-1198dcafbecb6b85.rmeta \
   --mount=from=out-ecac5742315087ca,dst=/target/release/deps/libautocfg-ecac5742315087ca.rlib,source=/libautocfg-ecac5742315087ca.rlib \
   --mount=from=out-ecac5742315087ca,dst=/target/release/deps/libautocfg-ecac5742315087ca.rmeta,source=/libautocfg-ecac5742315087ca.rmeta \
-  --mount=from=out-8fe4e9ae483cebec,dst=/target/release/deps/libparking_lot_core-8fe4e9ae483cebec.rlib,source=/libparking_lot_core-8fe4e9ae483cebec.rlib \
-  --mount=from=out-8fe4e9ae483cebec,dst=/target/release/deps/libparking_lot_core-8fe4e9ae483cebec.rmeta,source=/libparking_lot_core-8fe4e9ae483cebec.rmeta \
+  --mount=from=out-bcb4f1d4fde5ecee,dst=/target/release/deps/liblock_api-bcb4f1d4fde5ecee.rlib,source=/liblock_api-bcb4f1d4fde5ecee.rlib \
+  --mount=from=out-bcb4f1d4fde5ecee,dst=/target/release/deps/liblock_api-bcb4f1d4fde5ecee.rmeta,source=/liblock_api-bcb4f1d4fde5ecee.rmeta \
   --mount=from=out-bcf04d5a912b04a1,dst=/target/release/deps/libsmallvec-bcf04d5a912b04a1.rlib,source=/libsmallvec-bcf04d5a912b04a1.rlib \
   --mount=from=out-bcf04d5a912b04a1,dst=/target/release/deps/libsmallvec-bcf04d5a912b04a1.rmeta,source=/libsmallvec-bcf04d5a912b04a1.rmeta \
+  --mount=from=out-8fe4e9ae483cebec,dst=/target/release/deps/libparking_lot_core-8fe4e9ae483cebec.rlib,source=/libparking_lot_core-8fe4e9ae483cebec.rlib \
+  --mount=from=out-8fe4e9ae483cebec,dst=/target/release/deps/libparking_lot_core-8fe4e9ae483cebec.rmeta,source=/libparking_lot_core-8fe4e9ae483cebec.rmeta \
   --mount=from=out-045870ce1e117e1c,dst=/target/release/deps/libenv_logger-045870ce1e117e1c.rlib,source=/libenv_logger-045870ce1e117e1c.rlib \
   --mount=from=out-045870ce1e117e1c,dst=/target/release/deps/libenv_logger-045870ce1e117e1c.rmeta,source=/libenv_logger-045870ce1e117e1c.rmeta \
-  --mount=from=out-a4448d12fe1e7d73,dst=/target/release/deps/libenv_filter-a4448d12fe1e7d73.rlib,source=/libenv_filter-a4448d12fe1e7d73.rlib \
-  --mount=from=out-a4448d12fe1e7d73,dst=/target/release/deps/libenv_filter-a4448d12fe1e7d73.rmeta,source=/libenv_filter-a4448d12fe1e7d73.rmeta \
   --mount=from=out-f4d0a3bc79e88dc8,dst=/target/release/deps/liblog-f4d0a3bc79e88dc8.rlib,source=/liblog-f4d0a3bc79e88dc8.rlib \
   --mount=from=out-f4d0a3bc79e88dc8,dst=/target/release/deps/liblog-f4d0a3bc79e88dc8.rmeta,source=/liblog-f4d0a3bc79e88dc8.rmeta \
-  --mount=from=out-af35e8362d2e9bca,dst=/target/release/deps/libregex-af35e8362d2e9bca.rlib,source=/libregex-af35e8362d2e9bca.rlib \
-  --mount=from=out-af35e8362d2e9bca,dst=/target/release/deps/libregex-af35e8362d2e9bca.rmeta,source=/libregex-af35e8362d2e9bca.rmeta \
-  --mount=from=out-969dc9365c470fde,dst=/target/release/deps/libaho_corasick-969dc9365c470fde.rlib,source=/libaho_corasick-969dc9365c470fde.rlib \
-  --mount=from=out-969dc9365c470fde,dst=/target/release/deps/libaho_corasick-969dc9365c470fde.rmeta,source=/libaho_corasick-969dc9365c470fde.rmeta \
   --mount=from=out-a6946e2dbbd03be4,dst=/target/release/deps/libmemchr-a6946e2dbbd03be4.rlib,source=/libmemchr-a6946e2dbbd03be4.rlib \
   --mount=from=out-a6946e2dbbd03be4,dst=/target/release/deps/libmemchr-a6946e2dbbd03be4.rmeta,source=/libmemchr-a6946e2dbbd03be4.rmeta \
-  --mount=from=out-3e93fe531166d9d8,dst=/target/release/deps/libregex_automata-3e93fe531166d9d8.rlib,source=/libregex_automata-3e93fe531166d9d8.rlib \
-  --mount=from=out-3e93fe531166d9d8,dst=/target/release/deps/libregex_automata-3e93fe531166d9d8.rmeta,source=/libregex_automata-3e93fe531166d9d8.rmeta \
+  --mount=from=out-969dc9365c470fde,dst=/target/release/deps/libaho_corasick-969dc9365c470fde.rlib,source=/libaho_corasick-969dc9365c470fde.rlib \
+  --mount=from=out-969dc9365c470fde,dst=/target/release/deps/libaho_corasick-969dc9365c470fde.rmeta,source=/libaho_corasick-969dc9365c470fde.rmeta \
   --mount=from=out-f2f221e392eb7fc5,dst=/target/release/deps/libregex_syntax-f2f221e392eb7fc5.rlib,source=/libregex_syntax-f2f221e392eb7fc5.rlib \
   --mount=from=out-f2f221e392eb7fc5,dst=/target/release/deps/libregex_syntax-f2f221e392eb7fc5.rmeta,source=/libregex_syntax-f2f221e392eb7fc5.rmeta \
+  --mount=from=out-3e93fe531166d9d8,dst=/target/release/deps/libregex_automata-3e93fe531166d9d8.rlib,source=/libregex_automata-3e93fe531166d9d8.rlib \
+  --mount=from=out-3e93fe531166d9d8,dst=/target/release/deps/libregex_automata-3e93fe531166d9d8.rmeta,source=/libregex_automata-3e93fe531166d9d8.rmeta \
+  --mount=from=out-af35e8362d2e9bca,dst=/target/release/deps/libregex-af35e8362d2e9bca.rlib,source=/libregex-af35e8362d2e9bca.rlib \
+  --mount=from=out-af35e8362d2e9bca,dst=/target/release/deps/libregex-af35e8362d2e9bca.rmeta,source=/libregex-af35e8362d2e9bca.rmeta \
+  --mount=from=out-a4448d12fe1e7d73,dst=/target/release/deps/libenv_filter-a4448d12fe1e7d73.rlib,source=/libenv_filter-a4448d12fe1e7d73.rlib \
+  --mount=from=out-a4448d12fe1e7d73,dst=/target/release/deps/libenv_filter-a4448d12fe1e7d73.rmeta,source=/libenv_filter-a4448d12fe1e7d73.rmeta \
   --mount=from=out-796bb2a4e11a9725,dst=/target/release/deps/libjiff-796bb2a4e11a9725.rlib,source=/libjiff-796bb2a4e11a9725.rlib \
   --mount=from=out-796bb2a4e11a9725,dst=/target/release/deps/libjiff-796bb2a4e11a9725.rmeta,source=/libjiff-796bb2a4e11a9725.rmeta \
   --mount=from=out-fb5c86d2badb0447,dst=/target/release/deps/libindexmap-fb5c86d2badb0447.rlib,source=/libindexmap-fb5c86d2badb0447.rlib \
@@ -3701,9 +3701,9 @@ RUN \
   --mount=from=out-08be0374ae3ffef9,dst=/target/release/deps/libquick_xml-08be0374ae3ffef9.rmeta,source=/libquick_xml-08be0374ae3ffef9.rmeta \
   --mount=from=out-91adf01bf41d24c3,dst=/target/release/deps/librgb-91adf01bf41d24c3.rlib,source=/librgb-91adf01bf41d24c3.rlib \
   --mount=from=out-91adf01bf41d24c3,dst=/target/release/deps/librgb-91adf01bf41d24c3.rmeta,source=/librgb-91adf01bf41d24c3.rmeta \
+  --mount=from=out-5c6d96369604b05e,dst=/target/release/deps/libbytemuck_derive-5c6d96369604b05e.so,source=/libbytemuck_derive-5c6d96369604b05e.so \
   --mount=from=out-11c142c9054a396c,dst=/target/release/deps/libbytemuck-11c142c9054a396c.rlib,source=/libbytemuck-11c142c9054a396c.rlib \
   --mount=from=out-11c142c9054a396c,dst=/target/release/deps/libbytemuck-11c142c9054a396c.rmeta,source=/libbytemuck-11c142c9054a396c.rmeta \
-  --mount=from=out-5c6d96369604b05e,dst=/target/release/deps/libbytemuck_derive-5c6d96369604b05e.so,source=/libbytemuck_derive-5c6d96369604b05e.so \
   --mount=from=out-09867fcb3e24342e,dst=/target/release/deps/libstr_stack-09867fcb3e24342e.rlib,source=/libstr_stack-09867fcb3e24342e.rlib \
   --mount=from=out-09867fcb3e24342e,dst=/target/release/deps/libstr_stack-09867fcb3e24342e.rmeta,source=/libstr_stack-09867fcb3e24342e.rmeta \
   --mount=from=out-313c3474b049c2ac,dst=/target/release/build/lock_api-313c3474b049c2ac/out,source=/ \
@@ -4010,20 +4010,20 @@ RUN \
   --mount=from=out-a6946e2dbbd03be4,dst=/target/release/deps/libmemchr-a6946e2dbbd03be4.rmeta,source=/libmemchr-a6946e2dbbd03be4.rmeta \
   --mount=from=out-4aee6d3837356d02,dst=/target/release/deps/libhashbrown-4aee6d3837356d02.rlib,source=/libhashbrown-4aee6d3837356d02.rlib \
   --mount=from=out-4aee6d3837356d02,dst=/target/release/deps/libhashbrown-4aee6d3837356d02.rmeta,source=/libhashbrown-4aee6d3837356d02.rmeta \
-  --mount=from=out-fbe3ee16abb1bbef,dst=/target/release/deps/libahash-fbe3ee16abb1bbef.rlib,source=/libahash-fbe3ee16abb1bbef.rlib \
-  --mount=from=out-fbe3ee16abb1bbef,dst=/target/release/deps/libahash-fbe3ee16abb1bbef.rmeta,source=/libahash-fbe3ee16abb1bbef.rmeta \
   --mount=from=out-cd405c5de7941d28,dst=/target/release/deps/libcfg_if-cd405c5de7941d28.rlib,source=/libcfg_if-cd405c5de7941d28.rlib \
   --mount=from=out-cd405c5de7941d28,dst=/target/release/deps/libcfg_if-cd405c5de7941d28.rmeta,source=/libcfg_if-cd405c5de7941d28.rmeta \
-  --mount=from=out-5f0d6da3b6365d7a,dst=/target/release/deps/libgetrandom-5f0d6da3b6365d7a.rlib,source=/libgetrandom-5f0d6da3b6365d7a.rlib \
-  --mount=from=out-5f0d6da3b6365d7a,dst=/target/release/deps/libgetrandom-5f0d6da3b6365d7a.rmeta,source=/libgetrandom-5f0d6da3b6365d7a.rmeta \
   --mount=from=out-b6e0e142f77cdf65,dst=/target/release/deps/liblibc-b6e0e142f77cdf65.rlib,source=/liblibc-b6e0e142f77cdf65.rlib \
   --mount=from=out-b6e0e142f77cdf65,dst=/target/release/deps/liblibc-b6e0e142f77cdf65.rmeta,source=/liblibc-b6e0e142f77cdf65.rmeta \
+  --mount=from=out-5f0d6da3b6365d7a,dst=/target/release/deps/libgetrandom-5f0d6da3b6365d7a.rlib,source=/libgetrandom-5f0d6da3b6365d7a.rlib \
+  --mount=from=out-5f0d6da3b6365d7a,dst=/target/release/deps/libgetrandom-5f0d6da3b6365d7a.rmeta,source=/libgetrandom-5f0d6da3b6365d7a.rmeta \
   --mount=from=out-d025d0ff782d651d,dst=/target/release/deps/libonce_cell-d025d0ff782d651d.rlib,source=/libonce_cell-d025d0ff782d651d.rlib \
   --mount=from=out-d025d0ff782d651d,dst=/target/release/deps/libonce_cell-d025d0ff782d651d.rmeta,source=/libonce_cell-d025d0ff782d651d.rmeta \
   --mount=from=out-1aa205749963a8da,dst=/target/release/deps/libzerocopy-1aa205749963a8da.rlib,source=/libzerocopy-1aa205749963a8da.rlib \
   --mount=from=out-1aa205749963a8da,dst=/target/release/deps/libzerocopy-1aa205749963a8da.rmeta,source=/libzerocopy-1aa205749963a8da.rmeta \
   --mount=from=out-505e5161b4582132,dst=/target/release/deps/libversion_check-505e5161b4582132.rlib,source=/libversion_check-505e5161b4582132.rlib \
   --mount=from=out-505e5161b4582132,dst=/target/release/deps/libversion_check-505e5161b4582132.rmeta,source=/libversion_check-505e5161b4582132.rmeta \
+  --mount=from=out-fbe3ee16abb1bbef,dst=/target/release/deps/libahash-fbe3ee16abb1bbef.rlib,source=/libahash-fbe3ee16abb1bbef.rlib \
+  --mount=from=out-fbe3ee16abb1bbef,dst=/target/release/deps/libahash-fbe3ee16abb1bbef.rmeta,source=/libahash-fbe3ee16abb1bbef.rmeta \
   --mount=from=out-d8e4baa25bd475a2,dst=/target/release/deps/liballocator_api2-d8e4baa25bd475a2.rlib,source=/liballocator_api2-d8e4baa25bd475a2.rlib \
   --mount=from=out-d8e4baa25bd475a2,dst=/target/release/deps/liballocator_api2-d8e4baa25bd475a2.rmeta,source=/liballocator_api2-d8e4baa25bd475a2.rmeta \
   --mount=from=out-9f2cedab3db40650,dst=/target/release/deps/librle_decode_fast-9f2cedab3db40650.rlib,source=/librle_decode_fast-9f2cedab3db40650.rlib \
@@ -4078,22 +4078,22 @@ RUN \
   --mount=from=out-e91823f3b0b21e52,dst=/target/release/deps/libdary_heap-e91823f3b0b21e52.rmeta,source=/libdary_heap-e91823f3b0b21e52.rmeta \
   --mount=from=out-c795c0993f591b6a,dst=/target/release/deps/liblibflate_lz77-c795c0993f591b6a.rlib,source=/liblibflate_lz77-c795c0993f591b6a.rlib \
   --mount=from=out-c795c0993f591b6a,dst=/target/release/deps/liblibflate_lz77-c795c0993f591b6a.rmeta,source=/liblibflate_lz77-c795c0993f591b6a.rmeta \
-  --mount=from=out-4aee6d3837356d02,dst=/target/release/deps/libhashbrown-4aee6d3837356d02.rlib,source=/libhashbrown-4aee6d3837356d02.rlib \
-  --mount=from=out-4aee6d3837356d02,dst=/target/release/deps/libhashbrown-4aee6d3837356d02.rmeta,source=/libhashbrown-4aee6d3837356d02.rmeta \
-  --mount=from=out-fbe3ee16abb1bbef,dst=/target/release/deps/libahash-fbe3ee16abb1bbef.rlib,source=/libahash-fbe3ee16abb1bbef.rlib \
-  --mount=from=out-fbe3ee16abb1bbef,dst=/target/release/deps/libahash-fbe3ee16abb1bbef.rmeta,source=/libahash-fbe3ee16abb1bbef.rmeta \
-  --mount=from=out-5f0d6da3b6365d7a,dst=/target/release/deps/libgetrandom-5f0d6da3b6365d7a.rlib,source=/libgetrandom-5f0d6da3b6365d7a.rlib \
-  --mount=from=out-5f0d6da3b6365d7a,dst=/target/release/deps/libgetrandom-5f0d6da3b6365d7a.rmeta,source=/libgetrandom-5f0d6da3b6365d7a.rmeta \
   --mount=from=out-b6e0e142f77cdf65,dst=/target/release/deps/liblibc-b6e0e142f77cdf65.rlib,source=/liblibc-b6e0e142f77cdf65.rlib \
   --mount=from=out-b6e0e142f77cdf65,dst=/target/release/deps/liblibc-b6e0e142f77cdf65.rmeta,source=/liblibc-b6e0e142f77cdf65.rmeta \
+  --mount=from=out-5f0d6da3b6365d7a,dst=/target/release/deps/libgetrandom-5f0d6da3b6365d7a.rlib,source=/libgetrandom-5f0d6da3b6365d7a.rlib \
+  --mount=from=out-5f0d6da3b6365d7a,dst=/target/release/deps/libgetrandom-5f0d6da3b6365d7a.rmeta,source=/libgetrandom-5f0d6da3b6365d7a.rmeta \
   --mount=from=out-d025d0ff782d651d,dst=/target/release/deps/libonce_cell-d025d0ff782d651d.rlib,source=/libonce_cell-d025d0ff782d651d.rlib \
   --mount=from=out-d025d0ff782d651d,dst=/target/release/deps/libonce_cell-d025d0ff782d651d.rmeta,source=/libonce_cell-d025d0ff782d651d.rmeta \
   --mount=from=out-1aa205749963a8da,dst=/target/release/deps/libzerocopy-1aa205749963a8da.rlib,source=/libzerocopy-1aa205749963a8da.rlib \
   --mount=from=out-1aa205749963a8da,dst=/target/release/deps/libzerocopy-1aa205749963a8da.rmeta,source=/libzerocopy-1aa205749963a8da.rmeta \
   --mount=from=out-505e5161b4582132,dst=/target/release/deps/libversion_check-505e5161b4582132.rlib,source=/libversion_check-505e5161b4582132.rlib \
   --mount=from=out-505e5161b4582132,dst=/target/release/deps/libversion_check-505e5161b4582132.rmeta,source=/libversion_check-505e5161b4582132.rmeta \
+  --mount=from=out-fbe3ee16abb1bbef,dst=/target/release/deps/libahash-fbe3ee16abb1bbef.rlib,source=/libahash-fbe3ee16abb1bbef.rlib \
+  --mount=from=out-fbe3ee16abb1bbef,dst=/target/release/deps/libahash-fbe3ee16abb1bbef.rmeta,source=/libahash-fbe3ee16abb1bbef.rmeta \
   --mount=from=out-d8e4baa25bd475a2,dst=/target/release/deps/liballocator_api2-d8e4baa25bd475a2.rlib,source=/liballocator_api2-d8e4baa25bd475a2.rlib \
   --mount=from=out-d8e4baa25bd475a2,dst=/target/release/deps/liballocator_api2-d8e4baa25bd475a2.rmeta,source=/liballocator_api2-d8e4baa25bd475a2.rmeta \
+  --mount=from=out-4aee6d3837356d02,dst=/target/release/deps/libhashbrown-4aee6d3837356d02.rlib,source=/libhashbrown-4aee6d3837356d02.rlib \
+  --mount=from=out-4aee6d3837356d02,dst=/target/release/deps/libhashbrown-4aee6d3837356d02.rmeta,source=/libhashbrown-4aee6d3837356d02.rmeta \
   --mount=from=out-9f2cedab3db40650,dst=/target/release/deps/librle_decode_fast-9f2cedab3db40650.rlib,source=/librle_decode_fast-9f2cedab3db40650.rlib \
   --mount=from=out-9f2cedab3db40650,dst=/target/release/deps/librle_decode_fast-9f2cedab3db40650.rmeta,source=/librle_decode_fast-9f2cedab3db40650.rmeta \
     env CARGO_CRATE_NAME=libflate \
@@ -4271,8 +4271,8 @@ WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-serde-1.0.219,source=/serde-1.0.219,dst=$CARGO_HOME/registry/src/index.crates.io/serde-1.0.219 \
   --mount=from=out-b5a2ecf97f2ffa2b,dst=/target/release/deps/libserde_derive-b5a2ecf97f2ffa2b.so,source=/libserde_derive-b5a2ecf97f2ffa2b.so \
-  --mount=from=out-4356c86342e02c28,dst=/target/release/deps/libproc_macro2-4356c86342e02c28.rlib,source=/libproc_macro2-4356c86342e02c28.rlib \
   --mount=from=out-3ebac8e6359c6825,dst=/target/release/deps/libunicode_ident-3ebac8e6359c6825.rlib,source=/libunicode_ident-3ebac8e6359c6825.rlib \
+  --mount=from=out-4356c86342e02c28,dst=/target/release/deps/libproc_macro2-4356c86342e02c28.rlib,source=/libproc_macro2-4356c86342e02c28.rlib \
   --mount=from=out-55894410ba9909c3,dst=/target/release/deps/libquote-55894410ba9909c3.rlib,source=/libquote-55894410ba9909c3.rlib \
   --mount=from=out-a92dc9c4c7d1735b,dst=/target/release/deps/libsyn-a92dc9c4c7d1735b.rlib,source=/libsyn-a92dc9c4c7d1735b.rlib \
   --mount=from=out-c4a2573e0878faf3,dst=/target/release/build/serde-c4a2573e0878faf3/out,source=/ \
@@ -4394,49 +4394,49 @@ RUN \
   --mount=from=out-e4020537d0dacd10,dst=/target/release/deps/libbitflags-e4020537d0dacd10.rmeta,source=/libbitflags-e4020537d0dacd10.rmeta \
   --mount=from=out-11c142c9054a396c,dst=/target/release/deps/libbytemuck-11c142c9054a396c.rlib,source=/libbytemuck-11c142c9054a396c.rlib \
   --mount=from=out-11c142c9054a396c,dst=/target/release/deps/libbytemuck-11c142c9054a396c.rmeta,source=/libbytemuck-11c142c9054a396c.rmeta \
-  --mount=from=out-5c6d96369604b05e,dst=/target/release/deps/libbytemuck_derive-5c6d96369604b05e.so,source=/libbytemuck_derive-5c6d96369604b05e.so \
-  --mount=from=out-4356c86342e02c28,dst=/target/release/deps/libproc_macro2-4356c86342e02c28.rlib,source=/libproc_macro2-4356c86342e02c28.rlib \
-  --mount=from=out-4356c86342e02c28,dst=/target/release/deps/libproc_macro2-4356c86342e02c28.rmeta,source=/libproc_macro2-4356c86342e02c28.rmeta \
   --mount=from=out-3ebac8e6359c6825,dst=/target/release/deps/libunicode_ident-3ebac8e6359c6825.rlib,source=/libunicode_ident-3ebac8e6359c6825.rlib \
   --mount=from=out-3ebac8e6359c6825,dst=/target/release/deps/libunicode_ident-3ebac8e6359c6825.rmeta,source=/libunicode_ident-3ebac8e6359c6825.rmeta \
+  --mount=from=out-4356c86342e02c28,dst=/target/release/deps/libproc_macro2-4356c86342e02c28.rlib,source=/libproc_macro2-4356c86342e02c28.rlib \
+  --mount=from=out-4356c86342e02c28,dst=/target/release/deps/libproc_macro2-4356c86342e02c28.rmeta,source=/libproc_macro2-4356c86342e02c28.rmeta \
   --mount=from=out-55894410ba9909c3,dst=/target/release/deps/libquote-55894410ba9909c3.rlib,source=/libquote-55894410ba9909c3.rlib \
   --mount=from=out-55894410ba9909c3,dst=/target/release/deps/libquote-55894410ba9909c3.rmeta,source=/libquote-55894410ba9909c3.rmeta \
   --mount=from=out-a92dc9c4c7d1735b,dst=/target/release/deps/libsyn-a92dc9c4c7d1735b.rlib,source=/libsyn-a92dc9c4c7d1735b.rlib \
   --mount=from=out-a92dc9c4c7d1735b,dst=/target/release/deps/libsyn-a92dc9c4c7d1735b.rmeta,source=/libsyn-a92dc9c4c7d1735b.rmeta \
+  --mount=from=out-5c6d96369604b05e,dst=/target/release/deps/libbytemuck_derive-5c6d96369604b05e.so,source=/libbytemuck_derive-5c6d96369604b05e.so \
   --mount=from=out-cc824c3d4374cb1a,dst=/target/release/deps/liblibflate-cc824c3d4374cb1a.rlib,source=/liblibflate-cc824c3d4374cb1a.rlib \
   --mount=from=out-cc824c3d4374cb1a,dst=/target/release/deps/liblibflate-cc824c3d4374cb1a.rmeta,source=/liblibflate-cc824c3d4374cb1a.rmeta \
   --mount=from=out-1c343cbde01c9cae,dst=/target/release/deps/libadler32-1c343cbde01c9cae.rlib,source=/libadler32-1c343cbde01c9cae.rlib \
   --mount=from=out-1c343cbde01c9cae,dst=/target/release/deps/libadler32-1c343cbde01c9cae.rmeta,source=/libadler32-1c343cbde01c9cae.rmeta \
-  --mount=from=out-307ab372d744d6de,dst=/target/release/deps/libcore2-307ab372d744d6de.rlib,source=/libcore2-307ab372d744d6de.rlib \
-  --mount=from=out-307ab372d744d6de,dst=/target/release/deps/libcore2-307ab372d744d6de.rmeta,source=/libcore2-307ab372d744d6de.rmeta \
   --mount=from=out-a6946e2dbbd03be4,dst=/target/release/deps/libmemchr-a6946e2dbbd03be4.rlib,source=/libmemchr-a6946e2dbbd03be4.rlib \
   --mount=from=out-a6946e2dbbd03be4,dst=/target/release/deps/libmemchr-a6946e2dbbd03be4.rmeta,source=/libmemchr-a6946e2dbbd03be4.rmeta \
-  --mount=from=out-ef542ed63b64e000,dst=/target/release/deps/libcrc32fast-ef542ed63b64e000.rlib,source=/libcrc32fast-ef542ed63b64e000.rlib \
-  --mount=from=out-ef542ed63b64e000,dst=/target/release/deps/libcrc32fast-ef542ed63b64e000.rmeta,source=/libcrc32fast-ef542ed63b64e000.rmeta \
+  --mount=from=out-307ab372d744d6de,dst=/target/release/deps/libcore2-307ab372d744d6de.rlib,source=/libcore2-307ab372d744d6de.rlib \
+  --mount=from=out-307ab372d744d6de,dst=/target/release/deps/libcore2-307ab372d744d6de.rmeta,source=/libcore2-307ab372d744d6de.rmeta \
   --mount=from=out-cd405c5de7941d28,dst=/target/release/deps/libcfg_if-cd405c5de7941d28.rlib,source=/libcfg_if-cd405c5de7941d28.rlib \
   --mount=from=out-cd405c5de7941d28,dst=/target/release/deps/libcfg_if-cd405c5de7941d28.rmeta,source=/libcfg_if-cd405c5de7941d28.rmeta \
+  --mount=from=out-ef542ed63b64e000,dst=/target/release/deps/libcrc32fast-ef542ed63b64e000.rlib,source=/libcrc32fast-ef542ed63b64e000.rlib \
+  --mount=from=out-ef542ed63b64e000,dst=/target/release/deps/libcrc32fast-ef542ed63b64e000.rmeta,source=/libcrc32fast-ef542ed63b64e000.rmeta \
   --mount=from=out-e91823f3b0b21e52,dst=/target/release/deps/libdary_heap-e91823f3b0b21e52.rlib,source=/libdary_heap-e91823f3b0b21e52.rlib \
   --mount=from=out-e91823f3b0b21e52,dst=/target/release/deps/libdary_heap-e91823f3b0b21e52.rmeta,source=/libdary_heap-e91823f3b0b21e52.rmeta \
-  --mount=from=out-c795c0993f591b6a,dst=/target/release/deps/liblibflate_lz77-c795c0993f591b6a.rlib,source=/liblibflate_lz77-c795c0993f591b6a.rlib \
-  --mount=from=out-c795c0993f591b6a,dst=/target/release/deps/liblibflate_lz77-c795c0993f591b6a.rmeta,source=/liblibflate_lz77-c795c0993f591b6a.rmeta \
-  --mount=from=out-4aee6d3837356d02,dst=/target/release/deps/libhashbrown-4aee6d3837356d02.rlib,source=/libhashbrown-4aee6d3837356d02.rlib \
-  --mount=from=out-4aee6d3837356d02,dst=/target/release/deps/libhashbrown-4aee6d3837356d02.rmeta,source=/libhashbrown-4aee6d3837356d02.rmeta \
-  --mount=from=out-fbe3ee16abb1bbef,dst=/target/release/deps/libahash-fbe3ee16abb1bbef.rlib,source=/libahash-fbe3ee16abb1bbef.rlib \
-  --mount=from=out-fbe3ee16abb1bbef,dst=/target/release/deps/libahash-fbe3ee16abb1bbef.rmeta,source=/libahash-fbe3ee16abb1bbef.rmeta \
-  --mount=from=out-5f0d6da3b6365d7a,dst=/target/release/deps/libgetrandom-5f0d6da3b6365d7a.rlib,source=/libgetrandom-5f0d6da3b6365d7a.rlib \
-  --mount=from=out-5f0d6da3b6365d7a,dst=/target/release/deps/libgetrandom-5f0d6da3b6365d7a.rmeta,source=/libgetrandom-5f0d6da3b6365d7a.rmeta \
   --mount=from=out-b6e0e142f77cdf65,dst=/target/release/deps/liblibc-b6e0e142f77cdf65.rlib,source=/liblibc-b6e0e142f77cdf65.rlib \
   --mount=from=out-b6e0e142f77cdf65,dst=/target/release/deps/liblibc-b6e0e142f77cdf65.rmeta,source=/liblibc-b6e0e142f77cdf65.rmeta \
+  --mount=from=out-5f0d6da3b6365d7a,dst=/target/release/deps/libgetrandom-5f0d6da3b6365d7a.rlib,source=/libgetrandom-5f0d6da3b6365d7a.rlib \
+  --mount=from=out-5f0d6da3b6365d7a,dst=/target/release/deps/libgetrandom-5f0d6da3b6365d7a.rmeta,source=/libgetrandom-5f0d6da3b6365d7a.rmeta \
   --mount=from=out-d025d0ff782d651d,dst=/target/release/deps/libonce_cell-d025d0ff782d651d.rlib,source=/libonce_cell-d025d0ff782d651d.rlib \
   --mount=from=out-d025d0ff782d651d,dst=/target/release/deps/libonce_cell-d025d0ff782d651d.rmeta,source=/libonce_cell-d025d0ff782d651d.rmeta \
   --mount=from=out-1aa205749963a8da,dst=/target/release/deps/libzerocopy-1aa205749963a8da.rlib,source=/libzerocopy-1aa205749963a8da.rlib \
   --mount=from=out-1aa205749963a8da,dst=/target/release/deps/libzerocopy-1aa205749963a8da.rmeta,source=/libzerocopy-1aa205749963a8da.rmeta \
   --mount=from=out-505e5161b4582132,dst=/target/release/deps/libversion_check-505e5161b4582132.rlib,source=/libversion_check-505e5161b4582132.rlib \
   --mount=from=out-505e5161b4582132,dst=/target/release/deps/libversion_check-505e5161b4582132.rmeta,source=/libversion_check-505e5161b4582132.rmeta \
+  --mount=from=out-fbe3ee16abb1bbef,dst=/target/release/deps/libahash-fbe3ee16abb1bbef.rlib,source=/libahash-fbe3ee16abb1bbef.rlib \
+  --mount=from=out-fbe3ee16abb1bbef,dst=/target/release/deps/libahash-fbe3ee16abb1bbef.rmeta,source=/libahash-fbe3ee16abb1bbef.rmeta \
   --mount=from=out-d8e4baa25bd475a2,dst=/target/release/deps/liballocator_api2-d8e4baa25bd475a2.rlib,source=/liballocator_api2-d8e4baa25bd475a2.rlib \
   --mount=from=out-d8e4baa25bd475a2,dst=/target/release/deps/liballocator_api2-d8e4baa25bd475a2.rmeta,source=/liballocator_api2-d8e4baa25bd475a2.rmeta \
+  --mount=from=out-4aee6d3837356d02,dst=/target/release/deps/libhashbrown-4aee6d3837356d02.rlib,source=/libhashbrown-4aee6d3837356d02.rlib \
+  --mount=from=out-4aee6d3837356d02,dst=/target/release/deps/libhashbrown-4aee6d3837356d02.rmeta,source=/libhashbrown-4aee6d3837356d02.rmeta \
   --mount=from=out-9f2cedab3db40650,dst=/target/release/deps/librle_decode_fast-9f2cedab3db40650.rlib,source=/librle_decode_fast-9f2cedab3db40650.rlib \
   --mount=from=out-9f2cedab3db40650,dst=/target/release/deps/librle_decode_fast-9f2cedab3db40650.rmeta,source=/librle_decode_fast-9f2cedab3db40650.rmeta \
+  --mount=from=out-c795c0993f591b6a,dst=/target/release/deps/liblibflate_lz77-c795c0993f591b6a.rlib,source=/liblibflate_lz77-c795c0993f591b6a.rlib \
+  --mount=from=out-c795c0993f591b6a,dst=/target/release/deps/liblibflate_lz77-c795c0993f591b6a.rmeta,source=/liblibflate_lz77-c795c0993f591b6a.rmeta \
   --mount=from=out-de61c61b4933576a,dst=/target/release/deps/libserde-de61c61b4933576a.rlib,source=/libserde-de61c61b4933576a.rlib \
   --mount=from=out-de61c61b4933576a,dst=/target/release/deps/libserde-de61c61b4933576a.rmeta,source=/libserde-de61c61b4933576a.rmeta \
   --mount=from=out-b5a2ecf97f2ffa2b,dst=/target/release/deps/libserde_derive-b5a2ecf97f2ffa2b.so,source=/libserde_derive-b5a2ecf97f2ffa2b.so \
@@ -4863,15 +4863,15 @@ RUN \
   --mount=from=out-ccd54ca766da2e45,dst=/target/release/deps/libryu-ccd54ca766da2e45.rmeta,source=/libryu-ccd54ca766da2e45.rmeta \
   --mount=from=out-de61c61b4933576a,dst=/target/release/deps/libserde-de61c61b4933576a.rlib,source=/libserde-de61c61b4933576a.rlib \
   --mount=from=out-de61c61b4933576a,dst=/target/release/deps/libserde-de61c61b4933576a.rmeta,source=/libserde-de61c61b4933576a.rmeta \
-  --mount=from=out-b5a2ecf97f2ffa2b,dst=/target/release/deps/libserde_derive-b5a2ecf97f2ffa2b.so,source=/libserde_derive-b5a2ecf97f2ffa2b.so \
-  --mount=from=out-4356c86342e02c28,dst=/target/release/deps/libproc_macro2-4356c86342e02c28.rlib,source=/libproc_macro2-4356c86342e02c28.rlib \
-  --mount=from=out-4356c86342e02c28,dst=/target/release/deps/libproc_macro2-4356c86342e02c28.rmeta,source=/libproc_macro2-4356c86342e02c28.rmeta \
   --mount=from=out-3ebac8e6359c6825,dst=/target/release/deps/libunicode_ident-3ebac8e6359c6825.rlib,source=/libunicode_ident-3ebac8e6359c6825.rlib \
   --mount=from=out-3ebac8e6359c6825,dst=/target/release/deps/libunicode_ident-3ebac8e6359c6825.rmeta,source=/libunicode_ident-3ebac8e6359c6825.rmeta \
+  --mount=from=out-4356c86342e02c28,dst=/target/release/deps/libproc_macro2-4356c86342e02c28.rlib,source=/libproc_macro2-4356c86342e02c28.rlib \
+  --mount=from=out-4356c86342e02c28,dst=/target/release/deps/libproc_macro2-4356c86342e02c28.rmeta,source=/libproc_macro2-4356c86342e02c28.rmeta \
   --mount=from=out-55894410ba9909c3,dst=/target/release/deps/libquote-55894410ba9909c3.rlib,source=/libquote-55894410ba9909c3.rlib \
   --mount=from=out-55894410ba9909c3,dst=/target/release/deps/libquote-55894410ba9909c3.rmeta,source=/libquote-55894410ba9909c3.rmeta \
   --mount=from=out-a92dc9c4c7d1735b,dst=/target/release/deps/libsyn-a92dc9c4c7d1735b.rlib,source=/libsyn-a92dc9c4c7d1735b.rlib \
   --mount=from=out-a92dc9c4c7d1735b,dst=/target/release/deps/libsyn-a92dc9c4c7d1735b.rmeta,source=/libsyn-a92dc9c4c7d1735b.rmeta \
+  --mount=from=out-b5a2ecf97f2ffa2b,dst=/target/release/deps/libserde_derive-b5a2ecf97f2ffa2b.so,source=/libserde_derive-b5a2ecf97f2ffa2b.so \
   --mount=from=out-5367331ac2135163,dst=/target/release/build/serde_json-5367331ac2135163/out,source=/ \
     env CARGO_CRATE_NAME=serde_json \
         CARGO_INCREMENTAL=0 \
@@ -5287,15 +5287,15 @@ RUN \
   --mount=from=cratesio-serde_spanned-0.6.8,source=/serde_spanned-0.6.8,dst=$CARGO_HOME/registry/src/index.crates.io/serde_spanned-0.6.8 \
   --mount=from=out-de61c61b4933576a,dst=/target/release/deps/libserde-de61c61b4933576a.rlib,source=/libserde-de61c61b4933576a.rlib \
   --mount=from=out-de61c61b4933576a,dst=/target/release/deps/libserde-de61c61b4933576a.rmeta,source=/libserde-de61c61b4933576a.rmeta \
-  --mount=from=out-b5a2ecf97f2ffa2b,dst=/target/release/deps/libserde_derive-b5a2ecf97f2ffa2b.so,source=/libserde_derive-b5a2ecf97f2ffa2b.so \
-  --mount=from=out-4356c86342e02c28,dst=/target/release/deps/libproc_macro2-4356c86342e02c28.rlib,source=/libproc_macro2-4356c86342e02c28.rlib \
-  --mount=from=out-4356c86342e02c28,dst=/target/release/deps/libproc_macro2-4356c86342e02c28.rmeta,source=/libproc_macro2-4356c86342e02c28.rmeta \
   --mount=from=out-3ebac8e6359c6825,dst=/target/release/deps/libunicode_ident-3ebac8e6359c6825.rlib,source=/libunicode_ident-3ebac8e6359c6825.rlib \
   --mount=from=out-3ebac8e6359c6825,dst=/target/release/deps/libunicode_ident-3ebac8e6359c6825.rmeta,source=/libunicode_ident-3ebac8e6359c6825.rmeta \
+  --mount=from=out-4356c86342e02c28,dst=/target/release/deps/libproc_macro2-4356c86342e02c28.rlib,source=/libproc_macro2-4356c86342e02c28.rlib \
+  --mount=from=out-4356c86342e02c28,dst=/target/release/deps/libproc_macro2-4356c86342e02c28.rmeta,source=/libproc_macro2-4356c86342e02c28.rmeta \
   --mount=from=out-55894410ba9909c3,dst=/target/release/deps/libquote-55894410ba9909c3.rlib,source=/libquote-55894410ba9909c3.rlib \
   --mount=from=out-55894410ba9909c3,dst=/target/release/deps/libquote-55894410ba9909c3.rmeta,source=/libquote-55894410ba9909c3.rmeta \
   --mount=from=out-a92dc9c4c7d1735b,dst=/target/release/deps/libsyn-a92dc9c4c7d1735b.rlib,source=/libsyn-a92dc9c4c7d1735b.rlib \
   --mount=from=out-a92dc9c4c7d1735b,dst=/target/release/deps/libsyn-a92dc9c4c7d1735b.rmeta,source=/libsyn-a92dc9c4c7d1735b.rmeta \
+  --mount=from=out-b5a2ecf97f2ffa2b,dst=/target/release/deps/libserde_derive-b5a2ecf97f2ffa2b.so,source=/libserde_derive-b5a2ecf97f2ffa2b.so \
     env CARGO_CRATE_NAME=serde_spanned \
         CARGO_INCREMENTAL=0 \
         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/serde_spanned-0.6.8 \
@@ -5334,15 +5334,15 @@ RUN \
   --mount=from=cratesio-toml_datetime-0.6.9,source=/toml_datetime-0.6.9,dst=$CARGO_HOME/registry/src/index.crates.io/toml_datetime-0.6.9 \
   --mount=from=out-de61c61b4933576a,dst=/target/release/deps/libserde-de61c61b4933576a.rlib,source=/libserde-de61c61b4933576a.rlib \
   --mount=from=out-de61c61b4933576a,dst=/target/release/deps/libserde-de61c61b4933576a.rmeta,source=/libserde-de61c61b4933576a.rmeta \
-  --mount=from=out-b5a2ecf97f2ffa2b,dst=/target/release/deps/libserde_derive-b5a2ecf97f2ffa2b.so,source=/libserde_derive-b5a2ecf97f2ffa2b.so \
-  --mount=from=out-4356c86342e02c28,dst=/target/release/deps/libproc_macro2-4356c86342e02c28.rlib,source=/libproc_macro2-4356c86342e02c28.rlib \
-  --mount=from=out-4356c86342e02c28,dst=/target/release/deps/libproc_macro2-4356c86342e02c28.rmeta,source=/libproc_macro2-4356c86342e02c28.rmeta \
   --mount=from=out-3ebac8e6359c6825,dst=/target/release/deps/libunicode_ident-3ebac8e6359c6825.rlib,source=/libunicode_ident-3ebac8e6359c6825.rlib \
   --mount=from=out-3ebac8e6359c6825,dst=/target/release/deps/libunicode_ident-3ebac8e6359c6825.rmeta,source=/libunicode_ident-3ebac8e6359c6825.rmeta \
+  --mount=from=out-4356c86342e02c28,dst=/target/release/deps/libproc_macro2-4356c86342e02c28.rlib,source=/libproc_macro2-4356c86342e02c28.rlib \
+  --mount=from=out-4356c86342e02c28,dst=/target/release/deps/libproc_macro2-4356c86342e02c28.rmeta,source=/libproc_macro2-4356c86342e02c28.rmeta \
   --mount=from=out-55894410ba9909c3,dst=/target/release/deps/libquote-55894410ba9909c3.rlib,source=/libquote-55894410ba9909c3.rlib \
   --mount=from=out-55894410ba9909c3,dst=/target/release/deps/libquote-55894410ba9909c3.rmeta,source=/libquote-55894410ba9909c3.rmeta \
   --mount=from=out-a92dc9c4c7d1735b,dst=/target/release/deps/libsyn-a92dc9c4c7d1735b.rlib,source=/libsyn-a92dc9c4c7d1735b.rlib \
   --mount=from=out-a92dc9c4c7d1735b,dst=/target/release/deps/libsyn-a92dc9c4c7d1735b.rmeta,source=/libsyn-a92dc9c4c7d1735b.rmeta \
+  --mount=from=out-b5a2ecf97f2ffa2b,dst=/target/release/deps/libserde_derive-b5a2ecf97f2ffa2b.so,source=/libserde_derive-b5a2ecf97f2ffa2b.so \
     env CARGO_CRATE_NAME=toml_datetime \
         CARGO_INCREMENTAL=0 \
         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/toml_datetime-0.6.9 \
@@ -5460,15 +5460,15 @@ RUN \
   --mount=from=out-f8473c2240875569,dst=/target/release/deps/libhashbrown-f8473c2240875569.rmeta,source=/libhashbrown-f8473c2240875569.rmeta \
   --mount=from=out-de61c61b4933576a,dst=/target/release/deps/libserde-de61c61b4933576a.rlib,source=/libserde-de61c61b4933576a.rlib \
   --mount=from=out-de61c61b4933576a,dst=/target/release/deps/libserde-de61c61b4933576a.rmeta,source=/libserde-de61c61b4933576a.rmeta \
-  --mount=from=out-b5a2ecf97f2ffa2b,dst=/target/release/deps/libserde_derive-b5a2ecf97f2ffa2b.so,source=/libserde_derive-b5a2ecf97f2ffa2b.so \
-  --mount=from=out-4356c86342e02c28,dst=/target/release/deps/libproc_macro2-4356c86342e02c28.rlib,source=/libproc_macro2-4356c86342e02c28.rlib \
-  --mount=from=out-4356c86342e02c28,dst=/target/release/deps/libproc_macro2-4356c86342e02c28.rmeta,source=/libproc_macro2-4356c86342e02c28.rmeta \
   --mount=from=out-3ebac8e6359c6825,dst=/target/release/deps/libunicode_ident-3ebac8e6359c6825.rlib,source=/libunicode_ident-3ebac8e6359c6825.rlib \
   --mount=from=out-3ebac8e6359c6825,dst=/target/release/deps/libunicode_ident-3ebac8e6359c6825.rmeta,source=/libunicode_ident-3ebac8e6359c6825.rmeta \
+  --mount=from=out-4356c86342e02c28,dst=/target/release/deps/libproc_macro2-4356c86342e02c28.rlib,source=/libproc_macro2-4356c86342e02c28.rlib \
+  --mount=from=out-4356c86342e02c28,dst=/target/release/deps/libproc_macro2-4356c86342e02c28.rmeta,source=/libproc_macro2-4356c86342e02c28.rmeta \
   --mount=from=out-55894410ba9909c3,dst=/target/release/deps/libquote-55894410ba9909c3.rlib,source=/libquote-55894410ba9909c3.rlib \
   --mount=from=out-55894410ba9909c3,dst=/target/release/deps/libquote-55894410ba9909c3.rmeta,source=/libquote-55894410ba9909c3.rmeta \
   --mount=from=out-a92dc9c4c7d1735b,dst=/target/release/deps/libsyn-a92dc9c4c7d1735b.rlib,source=/libsyn-a92dc9c4c7d1735b.rlib \
   --mount=from=out-a92dc9c4c7d1735b,dst=/target/release/deps/libsyn-a92dc9c4c7d1735b.rmeta,source=/libsyn-a92dc9c4c7d1735b.rmeta \
+  --mount=from=out-b5a2ecf97f2ffa2b,dst=/target/release/deps/libserde_derive-b5a2ecf97f2ffa2b.so,source=/libserde_derive-b5a2ecf97f2ffa2b.so \
   --mount=from=out-54e36471a8510950,dst=/target/release/deps/libserde_spanned-54e36471a8510950.rlib,source=/libserde_spanned-54e36471a8510950.rlib \
   --mount=from=out-54e36471a8510950,dst=/target/release/deps/libserde_spanned-54e36471a8510950.rmeta,source=/libserde_spanned-54e36471a8510950.rmeta \
   --mount=from=out-b5046950db432e07,dst=/target/release/deps/libtoml_datetime-b5046950db432e07.rlib,source=/libtoml_datetime-b5046950db432e07.rlib \
@@ -5521,15 +5521,15 @@ RUN \
   --mount=from=out-f8473c2240875569,dst=/target/release/deps/libhashbrown-f8473c2240875569.rmeta,source=/libhashbrown-f8473c2240875569.rmeta \
   --mount=from=out-de61c61b4933576a,dst=/target/release/deps/libserde-de61c61b4933576a.rlib,source=/libserde-de61c61b4933576a.rlib \
   --mount=from=out-de61c61b4933576a,dst=/target/release/deps/libserde-de61c61b4933576a.rmeta,source=/libserde-de61c61b4933576a.rmeta \
-  --mount=from=out-b5a2ecf97f2ffa2b,dst=/target/release/deps/libserde_derive-b5a2ecf97f2ffa2b.so,source=/libserde_derive-b5a2ecf97f2ffa2b.so \
-  --mount=from=out-4356c86342e02c28,dst=/target/release/deps/libproc_macro2-4356c86342e02c28.rlib,source=/libproc_macro2-4356c86342e02c28.rlib \
-  --mount=from=out-4356c86342e02c28,dst=/target/release/deps/libproc_macro2-4356c86342e02c28.rmeta,source=/libproc_macro2-4356c86342e02c28.rmeta \
   --mount=from=out-3ebac8e6359c6825,dst=/target/release/deps/libunicode_ident-3ebac8e6359c6825.rlib,source=/libunicode_ident-3ebac8e6359c6825.rlib \
   --mount=from=out-3ebac8e6359c6825,dst=/target/release/deps/libunicode_ident-3ebac8e6359c6825.rmeta,source=/libunicode_ident-3ebac8e6359c6825.rmeta \
+  --mount=from=out-4356c86342e02c28,dst=/target/release/deps/libproc_macro2-4356c86342e02c28.rlib,source=/libproc_macro2-4356c86342e02c28.rlib \
+  --mount=from=out-4356c86342e02c28,dst=/target/release/deps/libproc_macro2-4356c86342e02c28.rmeta,source=/libproc_macro2-4356c86342e02c28.rmeta \
   --mount=from=out-55894410ba9909c3,dst=/target/release/deps/libquote-55894410ba9909c3.rlib,source=/libquote-55894410ba9909c3.rlib \
   --mount=from=out-55894410ba9909c3,dst=/target/release/deps/libquote-55894410ba9909c3.rmeta,source=/libquote-55894410ba9909c3.rmeta \
   --mount=from=out-a92dc9c4c7d1735b,dst=/target/release/deps/libsyn-a92dc9c4c7d1735b.rlib,source=/libsyn-a92dc9c4c7d1735b.rlib \
   --mount=from=out-a92dc9c4c7d1735b,dst=/target/release/deps/libsyn-a92dc9c4c7d1735b.rmeta,source=/libsyn-a92dc9c4c7d1735b.rmeta \
+  --mount=from=out-b5a2ecf97f2ffa2b,dst=/target/release/deps/libserde_derive-b5a2ecf97f2ffa2b.so,source=/libserde_derive-b5a2ecf97f2ffa2b.so \
   --mount=from=out-54e36471a8510950,dst=/target/release/deps/libserde_spanned-54e36471a8510950.rlib,source=/libserde_spanned-54e36471a8510950.rlib \
   --mount=from=out-54e36471a8510950,dst=/target/release/deps/libserde_spanned-54e36471a8510950.rmeta,source=/libserde_spanned-54e36471a8510950.rmeta \
   --mount=from=out-b5046950db432e07,dst=/target/release/deps/libtoml_datetime-b5046950db432e07.rlib,source=/libtoml_datetime-b5046950db432e07.rlib \
@@ -5837,85 +5837,85 @@ RUN \
   --mount=from=checkout-48c7c37-48c7c37f50fe80689a04e14d7075c56a17ca6d52,dst=$CARGO_HOME/git/checkouts/asterinas-afa2d1b9c5178441/48c7c37 \
   --mount=from=out-a05a8d09b57dcdf4,dst=/target/release/deps/libchrono-a05a8d09b57dcdf4.rlib,source=/libchrono-a05a8d09b57dcdf4.rlib \
   --mount=from=out-0bb4377c2f34b57d,dst=/target/release/deps/libiana_time_zone-0bb4377c2f34b57d.rlib,source=/libiana_time_zone-0bb4377c2f34b57d.rlib \
-  --mount=from=out-fa7bce882c2342dd,dst=/target/release/deps/libnum_traits-fa7bce882c2342dd.rlib,source=/libnum_traits-fa7bce882c2342dd.rlib \
   --mount=from=out-ecac5742315087ca,dst=/target/release/deps/libautocfg-ecac5742315087ca.rlib,source=/libautocfg-ecac5742315087ca.rlib \
+  --mount=from=out-fa7bce882c2342dd,dst=/target/release/deps/libnum_traits-fa7bce882c2342dd.rlib,source=/libnum_traits-fa7bce882c2342dd.rlib \
   --mount=from=out-4d40053c5918fdf7,dst=/target/release/deps/libclap-4d40053c5918fdf7.rlib,source=/libclap-4d40053c5918fdf7.rlib \
-  --mount=from=out-0edd921231a81779,dst=/target/release/deps/libclap_builder-0edd921231a81779.rlib,source=/libclap_builder-0edd921231a81779.rlib \
-  --mount=from=out-b9a85b735d63a26f,dst=/target/release/deps/libanstream-b9a85b735d63a26f.rlib,source=/libanstream-b9a85b735d63a26f.rlib \
   --mount=from=out-f10f31ca98d3d384,dst=/target/release/deps/libanstyle-f10f31ca98d3d384.rlib,source=/libanstyle-f10f31ca98d3d384.rlib \
-  --mount=from=out-633581034005add8,dst=/target/release/deps/libanstyle_parse-633581034005add8.rlib,source=/libanstyle_parse-633581034005add8.rlib \
   --mount=from=out-a4288836510ee242,dst=/target/release/deps/libutf8parse-a4288836510ee242.rlib,source=/libutf8parse-a4288836510ee242.rlib \
+  --mount=from=out-633581034005add8,dst=/target/release/deps/libanstyle_parse-633581034005add8.rlib,source=/libanstyle_parse-633581034005add8.rlib \
   --mount=from=out-9940be7e53615ed8,dst=/target/release/deps/libanstyle_query-9940be7e53615ed8.rlib,source=/libanstyle_query-9940be7e53615ed8.rlib \
   --mount=from=out-0a0a81159ebed644,dst=/target/release/deps/libcolorchoice-0a0a81159ebed644.rlib,source=/libcolorchoice-0a0a81159ebed644.rlib \
   --mount=from=out-a7fa188c5f0cbab1,dst=/target/release/deps/libis_terminal_polyfill-a7fa188c5f0cbab1.rlib,source=/libis_terminal_polyfill-a7fa188c5f0cbab1.rlib \
+  --mount=from=out-b9a85b735d63a26f,dst=/target/release/deps/libanstream-b9a85b735d63a26f.rlib,source=/libanstream-b9a85b735d63a26f.rlib \
   --mount=from=out-4e6385e1d36e3ef8,dst=/target/release/deps/libclap_lex-4e6385e1d36e3ef8.rlib,source=/libclap_lex-4e6385e1d36e3ef8.rlib \
   --mount=from=out-714e2b590cb17cd4,dst=/target/release/deps/libstrsim-714e2b590cb17cd4.rlib,source=/libstrsim-714e2b590cb17cd4.rlib \
-  --mount=from=out-8be527ef5a4653ea,dst=/target/release/deps/libclap_derive-8be527ef5a4653ea.so,source=/libclap_derive-8be527ef5a4653ea.so \
+  --mount=from=out-0edd921231a81779,dst=/target/release/deps/libclap_builder-0edd921231a81779.rlib,source=/libclap_builder-0edd921231a81779.rlib \
   --mount=from=out-b2d11fd1520b7534,dst=/target/release/deps/libheck-b2d11fd1520b7534.rlib,source=/libheck-b2d11fd1520b7534.rlib \
-  --mount=from=out-4356c86342e02c28,dst=/target/release/deps/libproc_macro2-4356c86342e02c28.rlib,source=/libproc_macro2-4356c86342e02c28.rlib \
   --mount=from=out-3ebac8e6359c6825,dst=/target/release/deps/libunicode_ident-3ebac8e6359c6825.rlib,source=/libunicode_ident-3ebac8e6359c6825.rlib \
+  --mount=from=out-4356c86342e02c28,dst=/target/release/deps/libproc_macro2-4356c86342e02c28.rlib,source=/libproc_macro2-4356c86342e02c28.rlib \
   --mount=from=out-55894410ba9909c3,dst=/target/release/deps/libquote-55894410ba9909c3.rlib,source=/libquote-55894410ba9909c3.rlib \
   --mount=from=out-a92dc9c4c7d1735b,dst=/target/release/deps/libsyn-a92dc9c4c7d1735b.rlib,source=/libsyn-a92dc9c4c7d1735b.rlib \
+  --mount=from=out-8be527ef5a4653ea,dst=/target/release/deps/libclap_derive-8be527ef5a4653ea.so,source=/libclap_derive-8be527ef5a4653ea.so \
   --mount=from=out-045870ce1e117e1c,dst=/target/release/deps/libenv_logger-045870ce1e117e1c.rlib,source=/libenv_logger-045870ce1e117e1c.rlib \
-  --mount=from=out-a4448d12fe1e7d73,dst=/target/release/deps/libenv_filter-a4448d12fe1e7d73.rlib,source=/libenv_filter-a4448d12fe1e7d73.rlib \
   --mount=from=out-f4d0a3bc79e88dc8,dst=/target/release/deps/liblog-f4d0a3bc79e88dc8.rlib,source=/liblog-f4d0a3bc79e88dc8.rlib \
-  --mount=from=out-af35e8362d2e9bca,dst=/target/release/deps/libregex-af35e8362d2e9bca.rlib,source=/libregex-af35e8362d2e9bca.rlib \
-  --mount=from=out-969dc9365c470fde,dst=/target/release/deps/libaho_corasick-969dc9365c470fde.rlib,source=/libaho_corasick-969dc9365c470fde.rlib \
   --mount=from=out-a6946e2dbbd03be4,dst=/target/release/deps/libmemchr-a6946e2dbbd03be4.rlib,source=/libmemchr-a6946e2dbbd03be4.rlib \
-  --mount=from=out-3e93fe531166d9d8,dst=/target/release/deps/libregex_automata-3e93fe531166d9d8.rlib,source=/libregex_automata-3e93fe531166d9d8.rlib \
+  --mount=from=out-969dc9365c470fde,dst=/target/release/deps/libaho_corasick-969dc9365c470fde.rlib,source=/libaho_corasick-969dc9365c470fde.rlib \
   --mount=from=out-f2f221e392eb7fc5,dst=/target/release/deps/libregex_syntax-f2f221e392eb7fc5.rlib,source=/libregex_syntax-f2f221e392eb7fc5.rlib \
+  --mount=from=out-3e93fe531166d9d8,dst=/target/release/deps/libregex_automata-3e93fe531166d9d8.rlib,source=/libregex_automata-3e93fe531166d9d8.rlib \
+  --mount=from=out-af35e8362d2e9bca,dst=/target/release/deps/libregex-af35e8362d2e9bca.rlib,source=/libregex-af35e8362d2e9bca.rlib \
+  --mount=from=out-a4448d12fe1e7d73,dst=/target/release/deps/libenv_filter-a4448d12fe1e7d73.rlib,source=/libenv_filter-a4448d12fe1e7d73.rlib \
   --mount=from=out-796bb2a4e11a9725,dst=/target/release/deps/libjiff-796bb2a4e11a9725.rlib,source=/libjiff-796bb2a4e11a9725.rlib \
   --mount=from=out-fb5c86d2badb0447,dst=/target/release/deps/libindexmap-fb5c86d2badb0447.rlib,source=/libindexmap-fb5c86d2badb0447.rlib \
   --mount=from=out-b7fca33b7ad402aa,dst=/target/release/deps/libequivalent-b7fca33b7ad402aa.rlib,source=/libequivalent-b7fca33b7ad402aa.rlib \
   --mount=from=out-f8473c2240875569,dst=/target/release/deps/libhashbrown-f8473c2240875569.rlib,source=/libhashbrown-f8473c2240875569.rlib \
   --mount=from=out-61a2a9d488447b5a,dst=/target/release/deps/libindicatif-61a2a9d488447b5a.rlib,source=/libindicatif-61a2a9d488447b5a.rlib \
-  --mount=from=out-54a3c182c099581f,dst=/target/release/deps/libconsole-54a3c182c099581f.rlib,source=/libconsole-54a3c182c099581f.rlib \
   --mount=from=out-b6e0e142f77cdf65,dst=/target/release/deps/liblibc-b6e0e142f77cdf65.rlib,source=/liblibc-b6e0e142f77cdf65.rlib \
   --mount=from=out-d025d0ff782d651d,dst=/target/release/deps/libonce_cell-d025d0ff782d651d.rlib,source=/libonce_cell-d025d0ff782d651d.rlib \
   --mount=from=out-33c709fc8b327143,dst=/target/release/deps/libunicode_width-33c709fc8b327143.rlib,source=/libunicode_width-33c709fc8b327143.rlib \
+  --mount=from=out-54a3c182c099581f,dst=/target/release/deps/libconsole-54a3c182c099581f.rlib,source=/libconsole-54a3c182c099581f.rlib \
   --mount=from=out-d5d3c6d557678e8c,dst=/target/release/deps/libnumber_prefix-d5d3c6d557678e8c.rlib,source=/libnumber_prefix-d5d3c6d557678e8c.rlib \
   --mount=from=out-09c979a64719664c,dst=/target/release/deps/libportable_atomic-09c979a64719664c.rlib,source=/libportable_atomic-09c979a64719664c.rlib \
   --mount=from=out-d8be0c5f14cad05c,dst=/target/release/deps/libinferno-d8be0c5f14cad05c.rlib,source=/libinferno-d8be0c5f14cad05c.rlib \
-  --mount=from=out-fbe3ee16abb1bbef,dst=/target/release/deps/libahash-fbe3ee16abb1bbef.rlib,source=/libahash-fbe3ee16abb1bbef.rlib \
   --mount=from=out-cd405c5de7941d28,dst=/target/release/deps/libcfg_if-cd405c5de7941d28.rlib,source=/libcfg_if-cd405c5de7941d28.rlib \
   --mount=from=out-5f0d6da3b6365d7a,dst=/target/release/deps/libgetrandom-5f0d6da3b6365d7a.rlib,source=/libgetrandom-5f0d6da3b6365d7a.rlib \
   --mount=from=out-1aa205749963a8da,dst=/target/release/deps/libzerocopy-1aa205749963a8da.rlib,source=/libzerocopy-1aa205749963a8da.rlib \
   --mount=from=out-505e5161b4582132,dst=/target/release/deps/libversion_check-505e5161b4582132.rlib,source=/libversion_check-505e5161b4582132.rlib \
-  --mount=from=out-90d2e26d50d7623c,dst=/target/release/deps/libcrossbeam_channel-90d2e26d50d7623c.rlib,source=/libcrossbeam_channel-90d2e26d50d7623c.rlib \
+  --mount=from=out-fbe3ee16abb1bbef,dst=/target/release/deps/libahash-fbe3ee16abb1bbef.rlib,source=/libahash-fbe3ee16abb1bbef.rlib \
   --mount=from=out-6c429d87be32f91e,dst=/target/release/deps/libcrossbeam_utils-6c429d87be32f91e.rlib,source=/libcrossbeam_utils-6c429d87be32f91e.rlib \
-  --mount=from=out-72c75df0248d722d,dst=/target/release/deps/libdashmap-72c75df0248d722d.rlib,source=/libdashmap-72c75df0248d722d.rlib \
-  --mount=from=out-4aee6d3837356d02,dst=/target/release/deps/libhashbrown-4aee6d3837356d02.rlib,source=/libhashbrown-4aee6d3837356d02.rlib \
+  --mount=from=out-90d2e26d50d7623c,dst=/target/release/deps/libcrossbeam_channel-90d2e26d50d7623c.rlib,source=/libcrossbeam_channel-90d2e26d50d7623c.rlib \
   --mount=from=out-d8e4baa25bd475a2,dst=/target/release/deps/liballocator_api2-d8e4baa25bd475a2.rlib,source=/liballocator_api2-d8e4baa25bd475a2.rlib \
-  --mount=from=out-bcb4f1d4fde5ecee,dst=/target/release/deps/liblock_api-bcb4f1d4fde5ecee.rlib,source=/liblock_api-bcb4f1d4fde5ecee.rlib \
+  --mount=from=out-4aee6d3837356d02,dst=/target/release/deps/libhashbrown-4aee6d3837356d02.rlib,source=/libhashbrown-4aee6d3837356d02.rlib \
   --mount=from=out-1198dcafbecb6b85,dst=/target/release/deps/libscopeguard-1198dcafbecb6b85.rlib,source=/libscopeguard-1198dcafbecb6b85.rlib \
-  --mount=from=out-8fe4e9ae483cebec,dst=/target/release/deps/libparking_lot_core-8fe4e9ae483cebec.rlib,source=/libparking_lot_core-8fe4e9ae483cebec.rlib \
+  --mount=from=out-bcb4f1d4fde5ecee,dst=/target/release/deps/liblock_api-bcb4f1d4fde5ecee.rlib,source=/liblock_api-bcb4f1d4fde5ecee.rlib \
   --mount=from=out-bcf04d5a912b04a1,dst=/target/release/deps/libsmallvec-bcf04d5a912b04a1.rlib,source=/libsmallvec-bcf04d5a912b04a1.rlib \
+  --mount=from=out-8fe4e9ae483cebec,dst=/target/release/deps/libparking_lot_core-8fe4e9ae483cebec.rlib,source=/libparking_lot_core-8fe4e9ae483cebec.rlib \
+  --mount=from=out-72c75df0248d722d,dst=/target/release/deps/libdashmap-72c75df0248d722d.rlib,source=/libdashmap-72c75df0248d722d.rlib \
   --mount=from=out-e5d8b97439f87300,dst=/target/release/deps/libis_terminal-e5d8b97439f87300.rlib,source=/libis_terminal-e5d8b97439f87300.rlib \
   --mount=from=out-927ee08ecb30eb2e,dst=/target/release/deps/libitoa-927ee08ecb30eb2e.rlib,source=/libitoa-927ee08ecb30eb2e.rlib \
-  --mount=from=out-54fc144b3a345dc1,dst=/target/release/deps/libnum_format-54fc144b3a345dc1.rlib,source=/libnum_format-54fc144b3a345dc1.rlib \
   --mount=from=out-7b24806c6aa1422b,dst=/target/release/deps/libarrayvec-7b24806c6aa1422b.rlib,source=/libarrayvec-7b24806c6aa1422b.rlib \
+  --mount=from=out-54fc144b3a345dc1,dst=/target/release/deps/libnum_format-54fc144b3a345dc1.rlib,source=/libnum_format-54fc144b3a345dc1.rlib \
   --mount=from=out-08be0374ae3ffef9,dst=/target/release/deps/libquick_xml-08be0374ae3ffef9.rlib,source=/libquick_xml-08be0374ae3ffef9.rlib \
-  --mount=from=out-91adf01bf41d24c3,dst=/target/release/deps/librgb-91adf01bf41d24c3.rlib,source=/librgb-91adf01bf41d24c3.rlib \
-  --mount=from=out-11c142c9054a396c,dst=/target/release/deps/libbytemuck-11c142c9054a396c.rlib,source=/libbytemuck-11c142c9054a396c.rlib \
   --mount=from=out-5c6d96369604b05e,dst=/target/release/deps/libbytemuck_derive-5c6d96369604b05e.so,source=/libbytemuck_derive-5c6d96369604b05e.so \
+  --mount=from=out-11c142c9054a396c,dst=/target/release/deps/libbytemuck-11c142c9054a396c.rlib,source=/libbytemuck-11c142c9054a396c.rlib \
+  --mount=from=out-91adf01bf41d24c3,dst=/target/release/deps/librgb-91adf01bf41d24c3.rlib,source=/librgb-91adf01bf41d24c3.rlib \
   --mount=from=out-09867fcb3e24342e,dst=/target/release/deps/libstr_stack-09867fcb3e24342e.rlib,source=/libstr_stack-09867fcb3e24342e.rlib \
   --mount=from=out-730f548fe41b0ede,dst=/target/release/deps/liblinux_bzimage_builder-730f548fe41b0ede.rlib,source=/liblinux_bzimage_builder-730f548fe41b0ede.rlib \
   --mount=from=out-e811179725a3c7f1,dst=/target/release/deps/libalign_ext-e811179725a3c7f1.rlib,source=/libalign_ext-e811179725a3c7f1.rlib \
   --mount=from=out-e4020537d0dacd10,dst=/target/release/deps/libbitflags-e4020537d0dacd10.rlib,source=/libbitflags-e4020537d0dacd10.rlib \
-  --mount=from=out-cc824c3d4374cb1a,dst=/target/release/deps/liblibflate-cc824c3d4374cb1a.rlib,source=/liblibflate-cc824c3d4374cb1a.rlib \
   --mount=from=out-1c343cbde01c9cae,dst=/target/release/deps/libadler32-1c343cbde01c9cae.rlib,source=/libadler32-1c343cbde01c9cae.rlib \
   --mount=from=out-307ab372d744d6de,dst=/target/release/deps/libcore2-307ab372d744d6de.rlib,source=/libcore2-307ab372d744d6de.rlib \
   --mount=from=out-ef542ed63b64e000,dst=/target/release/deps/libcrc32fast-ef542ed63b64e000.rlib,source=/libcrc32fast-ef542ed63b64e000.rlib \
   --mount=from=out-e91823f3b0b21e52,dst=/target/release/deps/libdary_heap-e91823f3b0b21e52.rlib,source=/libdary_heap-e91823f3b0b21e52.rlib \
-  --mount=from=out-c795c0993f591b6a,dst=/target/release/deps/liblibflate_lz77-c795c0993f591b6a.rlib,source=/liblibflate_lz77-c795c0993f591b6a.rlib \
   --mount=from=out-9f2cedab3db40650,dst=/target/release/deps/librle_decode_fast-9f2cedab3db40650.rlib,source=/librle_decode_fast-9f2cedab3db40650.rlib \
-  --mount=from=out-de61c61b4933576a,dst=/target/release/deps/libserde-de61c61b4933576a.rlib,source=/libserde-de61c61b4933576a.rlib \
+  --mount=from=out-c795c0993f591b6a,dst=/target/release/deps/liblibflate_lz77-c795c0993f591b6a.rlib,source=/liblibflate_lz77-c795c0993f591b6a.rlib \
+  --mount=from=out-cc824c3d4374cb1a,dst=/target/release/deps/liblibflate-cc824c3d4374cb1a.rlib,source=/liblibflate-cc824c3d4374cb1a.rlib \
   --mount=from=out-b5a2ecf97f2ffa2b,dst=/target/release/deps/libserde_derive-b5a2ecf97f2ffa2b.so,source=/libserde_derive-b5a2ecf97f2ffa2b.so \
-  --mount=from=out-f88591296463d7c1,dst=/target/release/deps/libxmas_elf-f88591296463d7c1.rlib,source=/libxmas_elf-f88591296463d7c1.rlib \
+  --mount=from=out-de61c61b4933576a,dst=/target/release/deps/libserde-de61c61b4933576a.rlib,source=/libserde-de61c61b4933576a.rlib \
   --mount=from=out-f34dbf5e727a922c,dst=/target/release/deps/libzero-f34dbf5e727a922c.rlib,source=/libzero-f34dbf5e727a922c.rlib \
+  --mount=from=out-f88591296463d7c1,dst=/target/release/deps/libxmas_elf-f88591296463d7c1.rlib,source=/libxmas_elf-f88591296463d7c1.rlib \
   --mount=from=out-49728a734a85beab,dst=/target/release/deps/libquote-49728a734a85beab.rlib,source=/libquote-49728a734a85beab.rlib \
-  --mount=from=out-8ac6eb94140fa650,dst=/target/release/deps/libproc_macro2-8ac6eb94140fa650.rlib,source=/libproc_macro2-8ac6eb94140fa650.rlib \
   --mount=from=out-c665241af297aeeb,dst=/target/release/deps/libunicode_ident-c665241af297aeeb.rlib,source=/libunicode_ident-c665241af297aeeb.rlib \
+  --mount=from=out-8ac6eb94140fa650,dst=/target/release/deps/libproc_macro2-8ac6eb94140fa650.rlib,source=/libproc_macro2-8ac6eb94140fa650.rlib \
   --mount=from=out-6206bd4645a6a400,dst=/target/release/deps/librev_buf_reader-6206bd4645a6a400.rlib,source=/librev_buf_reader-6206bd4645a6a400.rlib \
   --mount=from=out-538862b9303d298c,dst=/target/release/deps/libserde_json-538862b9303d298c.rlib,source=/libserde_json-538862b9303d298c.rlib \
   --mount=from=out-ccd54ca766da2e45,dst=/target/release/deps/libryu-ccd54ca766da2e45.rlib,source=/libryu-ccd54ca766da2e45.rlib \
@@ -5923,19 +5923,19 @@ RUN \
   --mount=from=out-e7c63199926731c9,dst=/target/release/deps/libsyn-e7c63199926731c9.rlib,source=/libsyn-e7c63199926731c9.rlib \
   --mount=from=out-7a56f2c441c13262,dst=/target/release/deps/libtempfile-7a56f2c441c13262.rlib,source=/libtempfile-7a56f2c441c13262.rlib \
   --mount=from=out-c3cf0d541728893f,dst=/target/release/deps/libfastrand-c3cf0d541728893f.rlib,source=/libfastrand-c3cf0d541728893f.rlib \
-  --mount=from=out-1035e346110b8b4a,dst=/target/release/deps/librustix-1035e346110b8b4a.rlib,source=/librustix-1035e346110b8b4a.rlib \
   --mount=from=out-02400bfae66ce9de,dst=/target/release/deps/libbitflags-02400bfae66ce9de.rlib,source=/libbitflags-02400bfae66ce9de.rlib \
   --mount=from=out-debf65eae6c2ff9b,dst=/target/release/deps/liblinux_raw_sys-debf65eae6c2ff9b.rlib,source=/liblinux_raw_sys-debf65eae6c2ff9b.rlib \
+  --mount=from=out-1035e346110b8b4a,dst=/target/release/deps/librustix-1035e346110b8b4a.rlib,source=/librustix-1035e346110b8b4a.rlib \
   --mount=from=out-d0e64e032620d6c0,dst=/target/release/deps/libtoml-d0e64e032620d6c0.rlib,source=/libtoml-d0e64e032620d6c0.rlib \
   --mount=from=out-54e36471a8510950,dst=/target/release/deps/libserde_spanned-54e36471a8510950.rlib,source=/libserde_spanned-54e36471a8510950.rlib \
   --mount=from=out-b5046950db432e07,dst=/target/release/deps/libtoml_datetime-b5046950db432e07.rlib,source=/libtoml_datetime-b5046950db432e07.rlib \
-  --mount=from=out-b2eec23d8c266fba,dst=/target/release/deps/libtoml_edit-b2eec23d8c266fba.rlib,source=/libtoml_edit-b2eec23d8c266fba.rlib \
   --mount=from=out-0f8fcb300180f224,dst=/target/release/deps/libtoml_write-0f8fcb300180f224.rlib,source=/libtoml_write-0f8fcb300180f224.rlib \
   --mount=from=out-f17647010d353f97,dst=/target/release/deps/libwinnow-f17647010d353f97.rlib,source=/libwinnow-f17647010d353f97.rlib \
+  --mount=from=out-b2eec23d8c266fba,dst=/target/release/deps/libtoml_edit-b2eec23d8c266fba.rlib,source=/libtoml_edit-b2eec23d8c266fba.rlib \
   --mount=from=out-a759253564d2529a,dst=/target/release/deps/libwhich-a759253564d2529a.rlib,source=/libwhich-a759253564d2529a.rlib \
   --mount=from=out-def3e3bba025f476,dst=/target/release/deps/libenv_home-def3e3bba025f476.rlib,source=/libenv_home-def3e3bba025f476.rlib \
-  --mount=from=out-6d122b00dd937751,dst=/target/release/deps/librustix-6d122b00dd937751.rlib,source=/librustix-6d122b00dd937751.rlib \
   --mount=from=out-d50b26910ae1b422,dst=/target/release/deps/liblinux_raw_sys-d50b26910ae1b422.rlib,source=/liblinux_raw_sys-d50b26910ae1b422.rlib \
+  --mount=from=out-6d122b00dd937751,dst=/target/release/deps/librustix-6d122b00dd937751.rlib,source=/librustix-6d122b00dd937751.rlib \
   --mount=from=out-dabe09f638f2d2c8,dst=/target/release/build/num-traits-dabe09f638f2d2c8/out,source=/ \
   --mount=from=out-313c3474b049c2ac,dst=/target/release/build/lock_api-313c3474b049c2ac/out,source=/ \
     env CARGO_BIN_NAME=cargo-osdk \

@@ -443,8 +443,8 @@ RUN \
   --mount=from=out-105e86b51b812232,dst=/target/release/deps/libanyhow-105e86b51b812232.rlib,source=/libanyhow-105e86b51b812232.rlib \
   --mount=from=out-58ce213a890bc574,dst=/target/release/deps/libhome-58ce213a890bc574.rlib,source=/libhome-58ce213a890bc574.rlib \
   --mount=from=out-5201580549647dd3,dst=/target/release/deps/libkani_verifier-5201580549647dd3.rlib,source=/libkani_verifier-5201580549647dd3.rlib \
-  --mount=from=out-90432cd6c0a879f6,dst=/target/release/deps/libos_info-90432cd6c0a879f6.rlib,source=/libos_info-90432cd6c0a879f6.rlib \
   --mount=from=out-f1da36df6da0a1c2,dst=/target/release/deps/liblog-f1da36df6da0a1c2.rlib,source=/liblog-f1da36df6da0a1c2.rlib \
+  --mount=from=out-90432cd6c0a879f6,dst=/target/release/deps/libos_info-90432cd6c0a879f6.rlib,source=/libos_info-90432cd6c0a879f6.rlib \
   --mount=from=out-579ea352bbafce7f,dst=/target/release/build/kani-verifier-579ea352bbafce7f/out,source=/ \
     env CARGO_BIN_NAME=cargo-kani \
         CARGO_CRATE_NAME=cargo_kani \
