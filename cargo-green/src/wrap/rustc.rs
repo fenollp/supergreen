@@ -15,7 +15,7 @@ use crate::{
     dirs::pwd,
     green::Green,
     logging::{self},
-    md::{BuildContext, Md, MountExtern, NamedMount},
+    md::{named_mount::NamedMount, BuildContext, Md, MountExtern},
     relative,
     rustc_arguments::{as_rustc, RustcArgs},
     stage::{AsStage, Stage, RST, RUST},

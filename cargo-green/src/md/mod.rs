@@ -13,35 +13,15 @@ use crate::{
     build::SOURCE_DATE_EPOCH,
     green::Green,
     logging::maybe_log,
+    md::named_mount::NamedMount,
     stage::{AsBlock, AsStage, NamedStage, Script, Stage, RST},
     target_dir::virtual_target_dir,
     PKG,
 };
 
+pub(crate) mod named_mount;
+
 pub(crate) const DIESES: &str = "##";
-
-#[derive(Debug, Clone, Deserialize, Serialize, Eq)]
-pub(crate) struct NamedMount {
-    pub(crate) name: Stage,
-    pub(crate) mount: Utf8PathBuf,
-}
-
-/// For use by IndexSet
-impl PartialEq for NamedMount {
-    fn eq(&self, other: &Self) -> bool {
-        self.mount == other.mount
-    }
-}
-
-/// For use by IndexSet
-impl std::hash::Hash for NamedMount {
-    fn hash<H>(&self, state: &mut H)
-    where
-        H: std::hash::Hasher,
-    {
-        self.mount.hash(state);
-    }
-}
 
 #[derive(Debug, Clone, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
