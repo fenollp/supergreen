@@ -1,6 +1,6 @@
 // Our own MetaData utils
 
-use std::{collections::HashMap, env, fmt, fs, io::ErrorKind, rc::Rc, str::FromStr};
+use std::{env, fmt, fs, io::ErrorKind, rc::Rc, str::FromStr};
 
 use anyhow::{anyhow, bail, Result};
 use camino::{Utf8Path, Utf8PathBuf};
@@ -13,12 +13,13 @@ use crate::{
     build::SOURCE_DATE_EPOCH,
     green::Green,
     logging::maybe_log,
-    md::named_mount::NamedMount,
+    md::{mds::Mds, named_mount::NamedMount},
     stage::{AsBlock, AsStage, NamedStage, Script, Stage, RST},
     target_dir::virtual_target_dir,
     PKG,
 };
 
+pub(crate) mod mds;
 pub(crate) mod named_mount;
 
 pub(crate) const DIESES: &str = "##";
@@ -423,33 +424,6 @@ impl Md {
         containerfile.write_to(&containerfile_path)?;
 
         Ok((md_path, containerfile_path))
-    }
-}
-
-/// A file cache
-#[derive(Debug)]
-pub(crate) struct Mds {
-    target_path: Utf8PathBuf,
-    cache: HashMap<MdId, Rc<Md>>,
-}
-
-impl Mds {
-    pub(crate) fn new(path: &Utf8Path) -> Self {
-        Self { target_path: path.to_owned(), cache: HashMap::default() }
-    }
-
-    pub(crate) fn load(&mut self, mdid: MdId) -> Result<Rc<Md>> {
-        if let Some(md) = self.cache.get(&mdid) {
-            return Ok(Rc::clone(md));
-        }
-        let md = Md::from_file(&mdid.path(&self.target_path))?;
-        let md = Rc::new(md);
-        let _ = self.cache.insert(mdid, Rc::clone(&md));
-        Ok(md)
-    }
-
-    pub(crate) fn load_all(&mut self, mdids: impl Iterator<Item = MdId>) -> Result<Vec<Rc<Md>>> {
-        mdids.map(|mdid| self.load(mdid)).collect()
     }
 }
 
