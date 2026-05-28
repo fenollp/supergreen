@@ -10,7 +10,7 @@ use log::{error, info, trace};
 use crate::{
     green::Green,
     logging::{self},
-    md::{mds::Mds, Md, MdId},
+    md::{Md, MdId, Mds},
     stage::{AsStage, Stage, RST, RUST},
     target_dir::virtual_target_dir,
     wrap::call_config,
