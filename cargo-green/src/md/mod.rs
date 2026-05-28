@@ -13,12 +13,13 @@ use crate::{
     build::SOURCE_DATE_EPOCH,
     green::Green,
     logging::maybe_log,
-    md::{mds::Mds, named_mount::NamedMount},
+    md::{build_context::BuildContext, mds::Mds, named_mount::NamedMount},
     stage::{AsBlock, AsStage, NamedStage, Script, Stage, RST},
     target_dir::virtual_target_dir,
     PKG,
 };
 
+pub(crate) mod build_context;
 pub(crate) mod mds;
 pub(crate) mod named_mount;
 
@@ -425,13 +426,6 @@ impl Md {
 
         Ok((md_path, containerfile_path))
     }
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize, Eq, PartialEq, Ord, PartialOrd, Hash)]
-pub(crate) struct BuildContext {
-    pub(crate) name: Stage,
-    /// Actually any BuildKit ctx works, we just only use local paths.
-    pub(crate) uri: Utf8PathBuf,
 }
 
 /// An ID unique to crate+version+crate-type+.. extracted from the rustc arg "extrafn"
