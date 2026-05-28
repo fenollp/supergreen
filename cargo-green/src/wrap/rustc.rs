@@ -15,7 +15,7 @@ use crate::{
     dirs::pwd,
     green::Green,
     logging::{self},
-    md::{named_mount::NamedMount, BuildContext, Md, MountExtern},
+    md::{named_mount::NamedMount, BuildContext, Md},
     relative,
     rustc_arguments::{as_rustc, RustcArgs},
     stage::{AsStage, Stage, RST, RUST},
@@ -140,9 +140,9 @@ async fn do_wrap_rustc(
     }
 
     let mds = md.assemble_build_dependencies(externs, out_dir_var, &target_path)?;
-    for MountExtern { from, xtern } in md.externs() {
-        let dst = virtual_target_dir(&target_path).join("deps").join(xtern);
-        rustc_block.push_str(&format!("  --mount=from={from},dst={dst},source=/{xtern} \\\n"));
+    for NamedMount { name, mount } in md.externs() {
+        let dst = virtual_target_dir(&target_path).join("deps").join(mount);
+        rustc_block.push_str(&format!("  --mount=from={name},dst={dst},source=/{mount} \\\n"));
     }
     for NamedMount { name, mount } in &md.mounts {
         rustc_block.push_str(&format!("  --mount=from={name},dst={mount},source=/ \\\n"));

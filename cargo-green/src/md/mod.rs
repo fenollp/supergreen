@@ -29,7 +29,7 @@ pub(crate) struct Md {
     this: MdId,
 
     #[serde(default, skip_serializing_if = "IndexSet::is_empty")]
-    externs: IndexSet<MountExtern>,
+    externs: IndexSet<NamedMount>,
 
     #[serde(default, skip_serializing_if = "IndexSet::is_empty")]
     deps: IndexSet<MdId>,
@@ -114,7 +114,7 @@ impl Md {
         self.this
     }
 
-    pub(crate) fn externs(&self) -> impl Iterator<Item = &MountExtern> {
+    pub(crate) fn externs(&self) -> impl Iterator<Item = &NamedMount> {
         self.externs.iter()
     }
 
@@ -318,7 +318,10 @@ impl Md {
                     .filter(|w: &&Utf8PathBuf| has_rmetas || !w.as_str().ends_with(".rmeta"))
                     .filter(|_| !dep_md.buildrs) // Never need transitive deps' build scripts
                     .map(|w| w.file_name().unwrap().to_owned())
-                    .map(|xtern: String| MountExtern { from: dep_stage.clone(), xtern }),
+                    .map(|xtern: String| NamedMount {
+                        name: dep_stage.clone(),
+                        mount: xtern.into(),
+                    }),
             );
             extern_mds.push(dep_md);
         }
@@ -420,29 +423,6 @@ impl Md {
         containerfile.write_to(&containerfile_path)?;
 
         Ok((md_path, containerfile_path))
-    }
-}
-
-#[derive(Debug, Clone, Deserialize, Serialize, Eq)]
-pub(crate) struct MountExtern {
-    pub(crate) from: Stage,
-    pub(crate) xtern: String,
-}
-
-/// For use by IndexSet
-impl PartialEq for MountExtern {
-    fn eq(&self, other: &Self) -> bool {
-        self.xtern == other.xtern
-    }
-}
-
-/// For use by IndexSet
-impl std::hash::Hash for MountExtern {
-    fn hash<H>(&self, state: &mut H)
-    where
-        H: std::hash::Hasher,
-    {
-        self.xtern.hash(state);
     }
 }
 
@@ -599,7 +579,7 @@ fn md_ser() {
 
     let md = Md {
         this: MdId(0x711ba64e1183a234),
-        externs: [MountExtern { from: RUST.clone(), xtern: "blop".into() }].into(),
+        externs: [NamedMount { name: RUST.clone(), mount: "blop".into() }].into(),
         deps: [MdId(0x81529f4c2380d9ec), MdId(0x88a4324b2aff6db9)].into(),
         buildrs: false,
         buildrs_results: [MdId(0xa2ba26818f759606)].into(),
@@ -640,8 +620,8 @@ writes = [
 ]
 
 [[externs]]
-from = "rust-base"
-xtern = "blop"
+name = "rust-base"
+mount = "blop"
 
 [[contexts]]
 name = "rust"
