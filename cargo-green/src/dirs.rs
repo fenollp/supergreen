@@ -53,7 +53,7 @@ pub(crate) fn hash(string: &str) -> String {
 
 pub(crate) fn hashed_args() -> String {
     fn keep(k: &str) -> bool {
-        let (pass, skip, _) = crate::wrap::envs::pass_env(k);
+        let (pass, skip, _) = crate::wrap::pass_env(k);
         pass && !skip
     }
     let envs = env::vars().filter_map(|(k, _)| keep(&k).then_some(k)).collect::<Vec<_>>().join(" ");

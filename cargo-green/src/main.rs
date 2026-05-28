@@ -87,7 +87,7 @@ async fn main() -> Result<()> {
 
         // Dance to wrap build script execution: we patched the build.rs to call us back through here.
         if let Ok(exe) = env::var(ENV_EXECUTE_BUILDRS!()) {
-            return wrap::build_script::exec(green, exe.into()).await;
+            return wrap::exec_build_script(green, exe.into()).await;
         }
 
         let arg0 = env::args().nth(1);
