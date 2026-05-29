@@ -166,7 +166,7 @@ declare -a nvs nvs_args toolchain
 
 ((i+=1)); nvs[i]=qair@main;                   oks[i]=ok; nvs_args[i]='--git https://codeberg.org/willempx/qair.git --tag=0.7.0'; toolchain[i]='1.78.0' # Pinned 2020/06/14
 
-((i+=1)); nvs[i]=rusty-man@master;            oks[i]=ko; nvs_args[i]='--git https://git.sr.ht/~ireas/rusty-man --tag=v0.5.0'; toolchain[i]='1.78.0' # Pinned 2025/12/04 # BUG: error: couldn't read `src/main.rs`: No such file or directory (os error 2)
+((i+=1)); nvs[i]=rusty-man@master;            oks[i]=ok; nvs_args[i]='--git https://git.sr.ht/~ireas/rusty-man --tag=v0.5.0'; toolchain[i]='1.78.0' # Pinned 2025/12/04 # BUG: error: couldn't read `src/main.rs`: No such file or directory (os error 2)
 
 ((i+=1)); nvs[i]=cargo-osdk@main;             oks[i]=ok; nvs_args[i]='--git=https://github.com/asterinas/asterinas --tag=v0.16.1'
 
