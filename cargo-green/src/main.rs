@@ -1,7 +1,6 @@
 use std::{env, ffi::OsStr, fs, path::PathBuf, process::exit};
 
 use anyhow::{anyhow, bail, Result};
-use supergreen::just_help;
 use tokio::process::Command;
 
 use crate::dirs::{create_current_target_dir, hashed_args, tmp};
@@ -163,15 +162,6 @@ async fn main() -> Result<()> {
     }
     cmd.env("RUSTC_WRAPPER", arg0);
 
-    // Shortcut here just for `cargo green supergreen --help` to avoid some calculations
-    if command.as_deref() == Some("supergreen") {
-        let first_arg = subcommand_start().find(|arg| arg != "supergreen");
-        if just_help(first_arg.as_deref()) {
-            supergreen::help();
-            return Ok(());
-        }
-    }
-
     // TODO: TUI above cargo output (? https://docs.rs/prodash )
 
     if let Ok(log) = env::var(ENV_LOG!()) {
@@ -189,15 +179,17 @@ async fn main() -> Result<()> {
     assert!(env::var_os(ENV!()).is_none());
     assert!(env::var_os(ENV_ROOT_PACKAGE_SETTINGS).is_none());
 
-    // Goal: produce only fully-locked Dockerfiles/TOMLs
+    // Shortcut here just for `cargo green supergreen --help` to avoid some calculations
+    if supergreen::just_help() {
+        supergreen::help();
+        return Ok(());
+    }
 
     let green = cargo_green::main().await?;
     cmd.env(ENV_ROOT_PACKAGE_SETTINGS, serde_json::to_string(&green)?);
 
     if command.as_deref() == Some("supergreen") {
-        let mut args = subcommand_start();
-        let first_arg = args.find(|arg| arg != "supergreen");
-        return supergreen::main(green, first_arg.as_deref(), args.collect()).await;
+        return supergreen::main(green).await;
     }
 
     if command.as_deref() == Some("fetch") {

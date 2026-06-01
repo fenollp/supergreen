@@ -7,6 +7,7 @@ use std::{
 
 use anyhow::{bail, Result};
 use camino::Utf8Path;
+use clap::{Parser, Subcommand};
 use futures::stream::{iter, StreamExt, TryStreamExt};
 use serde_jsonlines::AsyncBufReadJsonLines;
 use tokio::io::BufReader;
@@ -14,6 +15,96 @@ use tokio::io::BufReader;
 use crate::{
     base_image::CARGO_HOME, ext::CommandExt, green::Green, image_uri::ImageUri, PKG, REPO, VSN,
 };
+
+macro_rules! description {
+    () => {
+        env!("CARGO_PKG_DESCRIPTION")
+    };
+}
+
+#[derive(Parser, Debug)]
+#[command(
+    name = "cargo",
+    bin_name = "cargo",
+    version = VSN,
+    about = description!(),
+)]
+struct Cli {
+    #[command(subcommand)]
+    cli: Option<GreenCli>,
+}
+
+#[derive(Subcommand, Debug)]
+enum GreenCli {
+    Green {
+        #[command(subcommand)]
+        sub: Option<SupergreenCli>,
+    },
+}
+
+#[derive(Subcommand, Debug)]
+enum SupergreenCli {
+    Supergreen {
+        #[command(subcommand)]
+        sub: Option<Supergreen>,
+    },
+}
+
+#[derive(Subcommand, Debug)]
+enum Supergreen {
+    /// Create required symlinks
+    Setup,
+
+    /// Show used values (optionally filtered to given env names)
+    Env {
+        #[arg(value_name = "ENV")]
+        vars: Vec<String>,
+    },
+
+    /// Documentation of said values (optionally filtered)
+    Doc {
+        #[arg(value_name = "ENV")]
+        vars: Vec<String>,
+    },
+
+    /// Show base stage in use
+    ShowRustBase,
+
+    /// Pulls everything, for offline usage
+    Sync {
+        #[command(subcommand)]
+        sub: Option<SyncSub>,
+    },
+
+    /// Push cache image (all tags)
+    Push,
+
+    /// Manage local/remote builder
+    Builder {
+        #[command(subcommand)]
+        sub: Option<BuilderSub>,
+    },
+}
+
+#[derive(Subcommand, Debug)]
+enum SyncSub {
+    #[command(hide = true)]
+    Data,
+}
+
+#[derive(Subcommand, Debug)]
+enum BuilderSub {
+    /// Remove the builder (keeps state unless --clean)
+    Rm {
+        #[arg(long)]
+        clean: bool,
+    },
+    /// Remove then recreate the builder (keeps state unless --clean)
+    Recreate {
+        #[arg(long)]
+        clean: bool,
+    },
+}
 
 // TODO: tune logging verbosity https://docs.rs/clap-verbosity-flag/latest/clap_verbosity_flag/
 
@@ -25,34 +116,42 @@ use crate::{
 
 // TODO: short-hand command to show builder logs cf https://docs.docker.com/engine/daemon/logs/
 
-pub(crate) async fn main(mut green: Green, arg1: Option<&str>, args: Vec<String>) -> Result<()> {
-    match (arg1, args.first().map(String::as_str), args.get(1).map(String::as_str)) {
-        (Some("setup"), None, None) => { /* done during Green init */ }
-        (Some("env"), _, _) => green.envs(args)?,
-        (Some("doc"), _, _) => green.docs(args)?,
-        (Some("show-rust-base"), _, _) => println!("{}", green.base.image_inline),
-        (Some("sync"), None, None) => green.prebuild(false).await?,
-        (Some("sync"), Some("data"), None) => sync_data(&green), // undocumented
-        (Some("push"), None, None) => green.push().await?,
-        (Some("builder"), None, None) => green.inspect_builder().await?,
-        (Some("builder"), Some("rm"), None) => green.rm_builder(true).await?,
-        (Some("builder"), Some("rm"), Some("--clean")) => green.rm_builder(false).await?,
-        (Some("builder"), Some("recreate"), None) => green.recreate_builder(true).await?,
-        (Some("builder"), Some("recreate"), Some("--clean")) => {
-            green.recreate_builder(false).await?
+pub(crate) async fn main(mut green: Green) -> Result<()> {
+    let Cli {
+        cli: Some(GreenCli::Green { sub: Some(SupergreenCli::Supergreen { sub: Some(cmd) }) }),
+    } = Cli::try_parse()?
+    else {
+        bail!("BUG: unhandled subcommand {:?}", env::args())
+    };
+
+    match cmd {
+        Supergreen::Setup => { /* done during Green init */ }
+        Supergreen::Env { vars } => green.envs(vars)?,
+        Supergreen::Doc { vars } => green.docs(vars)?,
+        Supergreen::ShowRustBase => println!("{}", green.base.image_inline),
+        Supergreen::Sync { sub: None } => green.prebuild(false).await?,
+        Supergreen::Sync { sub: Some(SyncSub::Data) } => sync_data(&green),
+        Supergreen::Push => green.push().await?,
+        Supergreen::Builder { sub: None } => green.inspect_builder().await?,
+        Supergreen::Builder { sub: Some(BuilderSub::Rm { clean }) } => {
+            green.rm_builder(!clean).await?
         }
-        _ => {
-            help();
-            if !just_help(arg1) {
-                bail!("Unexpected supergreen arguments: {}", args.join(" "))
-            }
+        Supergreen::Builder { sub: Some(BuilderSub::Recreate { clean }) } => {
+            green.recreate_builder(!clean).await?
         }
     }
     Ok(())
 }
 
-pub(crate) fn just_help(arg1: Option<&str>) -> bool {
-    matches!(arg1, None | Some("-h" | "--help" | "-V" | "--version"))
+pub(crate) fn just_help() -> bool {
+    use clap::error::ErrorKind;
+    use GreenCli::*;
+
+    match Cli::try_parse() {
+        Ok(Cli { cli: Some(Green { sub: Some(SupergreenCli::Supergreen { sub: None }) }) }) => true,
+        Err(e) if e.kind() == ErrorKind::DisplayHelp => true,
+        _ => false,
+    }
 }
 
 /// TODO: replace with non-hackish way eg. local cache backend
@@ -97,7 +196,7 @@ pub(crate) fn help() {
 
 {usage}
 ",
-        description = env!("CARGO_PKG_DESCRIPTION"),
+        description = description!(),
         usage = include_str!("../docs/usage.md").trim().replace("```shell", "").replace("```", ""),
     );
 }
