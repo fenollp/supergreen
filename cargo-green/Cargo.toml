@@ -39,6 +39,7 @@ cargo-subcommand-metadata.workspace = true
 cargo_metadata.workspace = true
 cargo_toml.workspace = true
 chrono.workspace = true
+clap.workspace = true
 crc32fast.workspace = true
 directories.workspace = true
 env_logger.workspace = true
@@ -70,9 +71,6 @@ toml.workspace = true
 uuid.workspace = true
 version-compare.workspace = true
 which.workspace = true
-
-# clap.workspace = true
-# clap-cargo.workspace = true
 
 [dev-dependencies]
 pretty_assertions.workspace = true

@@ -38,6 +38,7 @@ cargo-subcommand-metadata = { version = "0, >=0.1", default-features = false }
 cargo_metadata = { version = "0, >=0.23", default-features = false }
 cargo_toml = { version = "0, >=0.22", default-features = false }
 chrono = { version = "0, >=0.4", features = [ "now" ], default-features = false }
+clap = { version = "4", features = [ "derive" ] }
 crc32fast = { version = "1", default-features = false }
 directories = { version = "6", default-features = false }
 env_logger = { version = "0, >=0.11", default-features = false }
@@ -72,6 +73,3 @@ toml = { version = "1", features = [ "display", "parse", "serde" ], default-feat
 uuid = { version = "1", features = [ "v4" ], default-features = false }
 version-compare = { version = "0, >=0.2", default-features = false }
 which = { version = "8", features = [ "real-sys" ], default-features = false }
-
-# clap = { version = "4", features = [ "derive" ] }
-# clap-cargo = { version = "0, >=0.15", features = [ "cargo_metadata", "clap" ] }
