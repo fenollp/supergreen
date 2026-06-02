@@ -122,37 +122,21 @@ async fn main() -> Result<()> {
     cmd.args(args);
 
     // TODO: handle `-Z bla` (works: `-Zbla`)
-    let subcommand_start = || env::args().skip(2).skip_while(|arg| arg.starts_with('-'));
-    let command = subcommand_start().next();
+    let command = env::args().skip(2).find(|arg| !arg.starts_with('-'));
 
-    let handled = command
-        .as_deref()
-        .map(|c| {
-            // Subcommands that need our wrapping
-            #[rustfmt::skip]
-            const HANDLED: &[&str] = &[
-                "supergreen",
-                "b", "bench", "build",
-                "c", "check",
-                "clippy",
-                "d", "doc",
-                "fetch",
-                "fix",
-                "install",
-                "package",
-                "publish",
-                "r", "run",
-                "rustc",
-                "rustdoc",
-                "t", "test",
-            ];
-            // ...ones we know that don't:
-            // (naked) add clean config fmt generate-lockfile help info init locate-project
-            //         login logout metadata new owner pkgid read-manifest remove report rm
-            //         search tree uninstall update vendor verify-project version yank
-            HANDLED.contains(&c)
-        })
-        .unwrap_or(false);
+    #[rustfmt::skip]
+    let handled = command.as_deref().is_some_and(|arg| {
+        // Subcommands that needn't our wrapping:
+        // (naked) add clean config fmt generate-lockfile help info init locate-project
+        //         login logout metadata new owner pkgid read-manifest remove report rm
+        //         search tree uninstall update vendor verify-project version yank
+            matches!(
+                arg,
+                "supergreen" | "b" | "bench" | "build" | "c" | "check" | "clippy" |
+                "d" | "doc" | "fetch" | "fix" | "install" | "package" | "publish" |
+                "r" | "run" | "rustc" | "rustdoc" | "t" | "test"
+            )
+    });
 
     if !handled {
         if !cmd.status().await?.success() {
