@@ -1,4 +1,4 @@
-use std::{env, ffi::OsStr, fs, path::PathBuf, process::exit};
+use std::{env, ffi::OsStr, fs, path::PathBuf};
 
 use anyhow::{anyhow, bail, Result};
 use tokio::process::Command;
@@ -56,8 +56,20 @@ cargo_subcommand_metadata::description! {
     "Sandbox & cache cargo builds and execute jobs remotely"
 }
 
+const EEXIT: &str = "";
+
 #[tokio::main]
 async fn main() -> Result<()> {
+    if let Err(e) = actual_main().await {
+        if format!("{e}") == EEXIT {
+            std::process::exit(1)
+        }
+        return Err(e);
+    }
+    Ok(())
+}
+
+async fn actual_main() -> Result<()> {
     rustls::crypto::ring::default_provider()
         .install_default()
         .expect("Failed to install rustls crypto provider");
@@ -97,7 +109,7 @@ async fn main() -> Result<()> {
 
     if args.next().as_deref() != Some("green") {
         supergreen::help();
-        exit(1)
+        bail!(EEXIT)
     }
 
     let arg2 = args.next();
@@ -140,7 +152,7 @@ async fn main() -> Result<()> {
 
     if !handled {
         if !cmd.status().await?.success() {
-            exit(1)
+            bail!(EEXIT)
         }
         return Ok(());
     }
@@ -179,7 +191,7 @@ async fn main() -> Result<()> {
     if command.as_deref() == Some("fetch") {
         // Runs actual `cargo fetch`
         if !cmd.status().await?.success() {
-            exit(1)
+            bail!(EEXIT)
         }
         return green.prebuild(true).await;
     }
@@ -190,7 +202,7 @@ async fn main() -> Result<()> {
     env::set_var("CARGO_TARGET_DIR", target_dir);
 
     if !cmd.status().await?.success() {
-        exit(1)
+        bail!(EEXIT)
     }
     Ok(())
 }
