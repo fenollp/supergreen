@@ -13,7 +13,8 @@ use serde_jsonlines::AsyncBufReadJsonLines;
 use tokio::io::BufReader;
 
 use crate::{
-    base_image::CARGO_HOME, ext::CommandExt, green::Green, image_uri::ImageUri, PKG, REPO, VSN,
+    base_image::CARGO_HOME, ext::CommandExt, green::Green, image_uri::ImageUri, wrap::safeify, PKG,
+    REPO, VSN,
 };
 
 macro_rules! description {
@@ -341,12 +342,12 @@ fn all_envs(green: &Green) -> Vec<(&str, &'static str, Option<String>)> {
 fn for_all_or_filtered(
     green: &Green,
     vars: Vec<String>,
-    f: fn(&str, &'static str, Option<&str>),
+    f: fn(bool, &str, &'static str, Option<&str>) -> Result<()>,
 ) -> Result<()> {
     let mut envs = all_envs(green);
     if vars.is_empty() {
         for (k, doc, v) in envs {
-            f(k, doc, v.as_deref())
+            f(true, k, doc, v.as_deref())?
         }
         return Ok(());
     }
@@ -356,7 +357,7 @@ fn for_all_or_filtered(
         let Some((k, doc, v)) = envs.iter().find(|(k, _, _)| *k == var) else {
             bail!("Unexpected env {var}")
         };
-        f(k, doc, v.as_deref())
+        f(false, k, doc, v.as_deref())?
     }
 
     Ok(())
@@ -364,22 +365,34 @@ fn for_all_or_filtered(
 
 impl Green {
     fn envs(&self, vars: Vec<String>) -> Result<()> {
-        for_all_or_filtered(self, vars, |var: &str, _doc: &'static str, val: Option<&str>| {
-            println!("{var}={:?}", val.unwrap_or_default());
-        })
+        for_all_or_filtered(
+            self,
+            vars,
+            |all: bool, var: &str, _doc: &'static str, val: Option<&str>| {
+                let prefix = if all { format!("{var}=") } else { "".to_owned() };
+                let val = safeify(val.unwrap_or_default())?;
+                println!("{prefix}{val}");
+                Ok(())
+            },
+        )
     }
 
     fn docs(&self, vars: Vec<String>) -> Result<()> {
-        for_all_or_filtered(self, vars, |var: &str, doc: &'static str, val: Option<&str>| {
-            println!();
-            termimad::print_text(&format!("# ${var}"));
-            if let Some(val) = val {
-                let val = val.trim().lines().collect::<Vec<_>>().join("\n> ");
-                termimad::print_text(&format!("> {val}"));
+        for_all_or_filtered(
+            self,
+            vars,
+            |_all: bool, var: &str, doc: &'static str, val: Option<&str>| {
                 println!();
-            }
-            termimad::print_text(doc);
-        })
+                termimad::print_text(&format!("# ${var}"));
+                if let Some(val) = val {
+                    let val = val.trim().lines().collect::<Vec<_>>().join("\n> ");
+                    termimad::print_text(&format!("> {val}"));
+                    println!();
+                }
+                termimad::print_text(doc);
+                Ok(())
+            },
+        )
     }
 }
 
