@@ -885,3 +885,59 @@ prebuild:
 => OR look for buildkitd.toml param that throttles concurent ADDs
 
 ---
+
+https://github.com/moby/buildkit/blob/v0.30.0-rc1/docs/build-repro.md#compatibility-version
+  compatibility-version pins digest-affecting image assembly behavior for the image and oci exporters.
+BuildKit currently supports these values:
+    10 for the v0.13.0 and v0.14.0 historical path
+    20 for the v0.15.0+ path and current behavior
+20 is the current compatibility version.
+
+---
+
+https://github.com/moby/buildkit/releases/tag/dockerfile/1.24.0
+Dockerfile now supports special arg definitions SOURCE_DATE_EPOCH=context and SOURCE_DATE_EPOCH=<stage> which set the value of SOURCE_DATE_EPOCH to the timestamp associated with the remote context or the stage respectively. When building from a Git commit, the context timestamp is the commit timestamp, and when building from a remote URL, the timestamp is resolved from the metadata of files in the TAR archive or from the Last-Modified header of the URL #6602
+==> set crate/git epochs from their ADD stage
+
+---
+
+https://github.com/sharkdp/fd
+
+https://crates.io/crates/ring/reverse_dependencies?page=54
+https://lib.rs/crates/lychee
+https://lib.rs/crates/redbpf
+https://lib.rs/crates/s3m
+https://lib.rs/crates/cargo-resources
+https://lib.rs/crates/rustup-mirror
+https://lib.rs/crates/aati
+https://crates.io/crates/voila
+https://crates.io/crates/slugid
+https://lib.rs/crates/rmd
+https://lib.rs/crates/cratery
+https://lib.rs/crates/hfile
+https://lib.rs/crates/gauth
+https://lib.rs/crates/muid
+https://lib.rs/crates/pbcli
+https://lib.rs/crates/yayo
+https://lib.rs/crates/duplicate-checker
+https://lib.rs/crates/mediafire_rs
+https://lib.rs/crates/pw
+
+---
+
+impl these recommendations
+  https://www.tangramvision.com/blog/building-robust-filesystem-interactions-in-rust
+error wrappings
+  https://docs.rs/fs-err
+
+---
+
+sort=downloads ./hack/find.sh rev image
+
+---
+
+check each CARGOGREEN_ADD_APT for existnce of '=' as in pkg=vsn
+    suggest using apt-cache policy nodejs
+        even suggest values from executing apt-cache policy nodejs ourselves
+
+---
