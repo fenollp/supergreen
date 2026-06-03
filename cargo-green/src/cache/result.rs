@@ -31,7 +31,7 @@ impl Dirs {
             opts.open(&tmp).await.map_err(|e| anyhow!("Failed opening (W) result {tmp}: {e}"))?;
 
         let writer = BufWriter::new(f);
-        let encoder = GzipEncoder::new(writer);
+        let encoder = GzipEncoder::new(writer); // FIXME: replace with pure-Rust zstd eg. libzstd-rs-sys
         let w = TarBuilder::new(encoder);
         Ok(Some(ResultWriter { tmp, dst, w }))
     }
