@@ -40,6 +40,7 @@ compute_produced_shas() {
 ensure__produces_same_shas() {
 	if [[ ! -f $CARGOGREEN_LOG_PATH.produced ]]; then
 		compute_produced_shas >$CARGOGREEN_LOG_PATH.produced
+		[[ -s $CARGOGREEN_LOG_PATH.produced ]] # ensure file not empty
 	else
 		diff --width=150 -y <(cat $CARGOGREEN_LOG_PATH.produced) <(compute_produced_shas)
 	fi
@@ -58,9 +59,9 @@ ensure__results_same_shas() {
 }
 
 registry_blobs() {
-    local dir=$1; shift
-    [[ $# -eq 0 ]]
-    find $dir/docker/registry/v2/blobs/sha256/ -type f | while read -r p; do basename $(dirname $p); done | sort -u
+	local dir=$1; shift
+	[[ $# -eq 0 ]]
+	find $dir/docker/registry/v2/blobs/sha256/ -type f | while read -r p; do basename $(dirname $p); done | sort -u
 }
 
 echo Sortons nos cartes!
