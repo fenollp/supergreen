@@ -23,6 +23,8 @@ use crate::{
 
 //TODO: cli shows builder's jaeger: BUILDX_BUILDER=supergreen docker buildx history trace --addr 127.0.0.1:5452
 
+// TODO: short-hand command to show builder logs cf https://docs.docker.com/engine/daemon/logs/
+
 pub(crate) async fn main(mut green: Green, arg1: Option<&str>, args: Vec<String>) -> Result<()> {
     match (arg1, args.first().map(String::as_str), args.get(1).map(String::as_str)) {
         (Some("setup"), None, None) => { /* done during Green init */ }
