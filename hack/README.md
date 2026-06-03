@@ -1,0 +1,217 @@
+- [Hacking](#hacking)
+- [Goals](#goals)
+- [Upstream issues & patches](#upstream-issues--patches)
+- [En vrac](#en-vrac)
+
+
+## Hacking
+
+### `./hack/clis.sh ...`
+```shell
+# Usage:           $0                              #=> generate CI
+#
+# Usage:           $0 ( <name@version> | <name> )  #=> cargo install name@version
+# Usage:           $0   ok                         #=> cargo install all working bins
+#
+# Usage:           $0 ( build | package | test )   #=> cargo $cmd ./cargo-green
+#
+# Usage:    jobs=1 $0 ..                           #=> cargo --jobs=$jobs
+# Usage: offline=1 $0 ..                           #=> cargo --frozen (defaults to just: --locked)
+# Usage:    rmrf=1 $0 ..                           #=> rm -rf $CARGO_TARGET_DIR/*; cargo ...
+# Usage:   reset=1 $0 ..                           #=> docker buildx rm $BUILDX_BUILDER; cargo ...
+# Usage:   clean=1 $0 ..                           #=> Both reset=1 + rmrf=1
+# Usage:   final=0 $0 ..                           #=> Don't generate final Containerfile
+# Usage:   build=0 $0 ..                           #=> Use already installed cargo-green
+#
+# Usage:          CARGO=.. $0 ..                   #   CARGO='nightly' $0 ..
+# Usage:    DOCKER_HOST=.. $0 ..                   #=> Overrides machine
+# Usage: BUILDX_BUILDER=.. $0 ..                   #=> Overrides builder (set to "empty" to set BUILDX_BUILDER='')
+```
+
+### `./hack/recipes.sh`
+Syncs `./recipes/*.Dockerfile` files.
+
+### `./hack/bake.sh`
+Syncs the `./docker-bake.hcl` [bake file](https://docs.docker.com/build/bake/).
+
+The generates `./recipes` can all be built using e.g.:
+> docker buildx bake https://github.com/fenollp/supergreen.git btm rg
+
+### `./hack/caching.sh`
+Verifies properties about caching crates & granularity.
+> docker buildx prune --all --force
+
+### `./hack/hit.sh`
+Estimate the of amount of crates reused through compilation of `./recipes/` `--> ~15%`!
+Expecting more with larger/more representative corpus + smart locking of transitive deps.
+```
+recipes/alacritty@0.17.0.Dockerfile
+8< 8< 8<
+15: dep-n-equivalent-1.0.2-b7fca33b7ad402aa
+16: dep-n-itoa-1.0.15-927ee08ecb30eb2e
+16: dep-n-version_check-0.9.5-505e5161b4582132
+17: dep-n-strsim-0.11.1-714e2b590cb17cd4
+18: dep-n-scopeguard-1.2.0-1198dcafbecb6b85
+18: dep-n-utf8parse-0.2.2-a4288836510ee242
+20: dep-n-heck-0.5.0-b2d11fd1520b7534
+
+Total recipes: 54
+Total stages: 8072
+Stages in common: 1203
+15.09%
+```
+
+### `./hack/portable.sh`
+Count "portable" recipes in this repo (not portable = usage of local build contexts).
+
+### When `git-bisect`ing
+```make
+all:
+	cargo +nightly fmt --all
+	./hack/gen.sh
+	CARGO_TARGET_DIR=$${CARGO_TARGET_DIR:-target/clippy} cargo clippy --locked --frozen --offline --all-targets --all-features -- --no-deps -W clippy::cast_lossless -W clippy::redundant_closure_for_method_calls -W clippy::str_to_string -W clippy::unnecessary_wraps
+	RUST_MIN_STACK=8000000 cargo nextest run --all-targets --all-features --locked --frozen --offline --no-fail-fast
+	git --no-pager diff --exit-code
+```
+
+## Goals
+* [x] seamlessly build on another machine (with more cores, more cache)
+  * [x] support remote builds by setting env `DOCKER_HOST=` with e.g. `ssh://me@beaffy-machine.internal.net`
+    * [x] Build cache is saved remotely, artifacts are saved locally
+    * [x] Tests building happens on remote machine, execution happens on local machine
+* [x] seamlessly integrate with normal `cargo` usage
+  * [x] only pull sources from local filesystem
+  * [x] produce the same intermediary artefacts as local `cargo` does
+  * [x] fallback to normal, local `rustc` anytime
+    * switching from this wrapper back to local `rustc` does necessitate a fresh build
+* [ ] wrap `rustc` calls in `buildkit`-like calls (`docker`, `podman`)
+  * [x] `docker`
+  * [ ] `podman` TODO: test in CI
+  * [ ] deps compatibility
+    * [x] handle Rust-only deps
+    * [ ] handle all the other deps (expand this list) (use `crater`)
+      * [x] `C` deps
+      * [ ] ...
+  * [x] runner compatibility
+    * [x] set `.dockerignore`s (to be authoritative on srcs)
+  * [x] trace these outputs (STDOUT/STDERR) for debugging
+* [x] available as a `rustc` wrapper through `$RUSTC_WRAPPER`
+* [ ] available as a `cargo` subcommand
+  * [ ] configuration profiles (user, team, per-workspace, per-crate, CI, ...)
+  * [x] seamlessly use current/local `rustc` version
+    * [x] support overriding `rustc` base image
+  * [ ] seamlessly use current/local tools (`mold`, ...)
+    * [ ] config expressions on top of base image config?
+    * [ ] just suggest an inline `Dockerfile` stage?
+  * [ ] support CRUD-ish operations on local/remotes cache
+  * [x] `[SEC]` support building a crate without it having network access
+* [ ] integrate with shipping OCI images
+* [ ] share cache with the World cf. [`user-wide-cache`](https://rust-lang.github.io/rust-project-goals/2024h2/user-wide-cache.html)
+  * [x] never rebuild a dep (for a given version of `rustc`, ...)
+    * [x] ensure finest cache granularity (crate-level)
+    * [x] free users from cache key built from `Cargo.lock` (changes on every release cut!)
+  * [ ] share cache with other projects on local machine
+    * [ ] fix `WORKDIR`s + rewrite paths with `remap-path-prefix` 
+  * [ ] share cache with CI and team
+    * [ ] share cache with CI (at least for a single user)
+  * [ ] `[SEC]` ensure private deps don't leak through/to cache
+  * [ ] CLI gives the Dockerfile that `cargo install`'s any crate
+* [ ] suggest a global cache -faciliting configuration profile
+* [ ] integrate with `cross`
+  * [ ] build for a non-local target
+  * [ ] run/test for a non-local target (with `cross`'s same caveats ie. QEMU)
+
+
+## Upstream issues & patches
+* [ ] [`rust`: Compile a crate from its source archive directly](https://github.com/rust-lang/rust/issues/128884)
+* [ ] [`cargo`: Tell `rustc` wrappers which envs to pass through to allow env sandboxing](https://github.com/rust-lang/cargo/issues/14444)
+* [ ] [`buildkit`: `docker/dockerfile` image tags are late](https://github.com/moby/buildkit/issues/6118)
+* gRPC buffers too small
+  * [x] [`buildkit`: Build function: ResourceExhausted: grpc: received message larger than max (_ vs. 4194304)](https://github.com/moby/buildkit/issues/5217)
+  * [x] [`buildx`: `ResourceExhausted: grpc: received message larger than max (_ vs. 4194304)`](https://github.com/docker/buildx/issues/2453)
+  * [ ] [`buildkit`: remote `docker buildx build` with large dockerfile gives `trying to send message larger than max (22482550 vs. 16777216)` error](https://github.com/moby/buildkit/issues/6097)
+  * [ ] [`buildx`: `error reading from server: connection error: COMPRESSION_ERROR`](https://github.com/docker/buildx/issues/3637)
+* [ ] [`buildkit`: Support multiple input dockerfiles (single frontend)](https://github.com/moby/buildkit/issues/6508)
+* [x] [`buildkit`: Support extracting `ADD --checksum=.. https://.. ..`](https://github.com/moby/buildkit/issues/4907)
+* [ ] [`buildkit`: `RUN --no-cache` to skip reading & writing a RUN layer to cache](https://github.com/moby/buildkit/issues/6303)
+* [ ] [`buildkit`: FR: an option to delay --cache-to pushes](https://github.com/docker/buildx/issues/3150)
+* [x] [`buildkit`: Looking for a consistently "latest" BuildKit image tag](https://github.com/moby/buildkit/discussions/6134)
+* [x] [`buildkit`: docker/dockerfile image tags are late](https://github.com/moby/buildkit/issues/6118)
+* [ ] [`buildx`: Support --format=json for buildx du --verbose](https://github.com/docker/buildx/issues/3367)
+* TODO
+  1. buildkit flag to disable dockerignore and save disk read
+    * --ignore-file (closed) [Add support for specifying .dockerignore file with -i/--ignore](https://github.com/moby/moby/issues/12886)
+    * --no-ignore-file
+  1. docker build support multiple input files
+    * --file-part
+    * >=1 stage per Dockerfile part file
+      * order doesn't matter: order is fixed when consolidation happens (internally)
+  1. cargo + docker
+    * [cargo build --dependencies-only](https://github.com/rust-lang/cargo/issues/2644#issuecomment-2304774192)
+* [Getting an image's digest fast, within a docker-container builder](https://github.com/docker/buildx/discussions/3363)
+  * [Inspect image manifest without pushing to registry or load to local docker daemon](https://github.com/moby/buildkit/issues/4854)
+  * [Proposal: introduce enhanced image resolution gateway API](https://github.com/moby/buildkit/issues/2944)
+* [ ] [`buildkit`: allow exporting cache layers in parallel to the remote registry](https://github.com/moby/buildkit/issues/6123)
+* [ ] [`buildkit`: remote docker buildx build with large dockerfile gives trying to send message larger than max (22482550 vs. 16777216) error](https://github.com/moby/buildkit/issues/6097)
+* [ ] [`buildx`: `--cache-from` takes longer than actual (cached) build](https://github.com/docker/buildx/issues/3491)
+* [ ] [`buildx`: The cache export step hangs](https://github.com/docker/buildx/issues/537)
+* [ ] [`buildkit`: `COPY --rewrite-timestamp ...` to apply SOURCE_DATE_EPOCH build arg value to the timestamps of the files](https://github.com/moby/buildkit/issues/6348)
+* [ ] [`buildkit`: Dockerfile frontend: `ADD --checksum=.. https://..` hides HTTP error](https://github.com/moby/buildkit/issues/6380)
+* [ ] [`buildkit`: Support passing `--local context=FILE`](https://github.com/moby/buildkit/issues/6410)
+
+
+## En vrac
+* Proposal: c8d: expose contentstore API #44369 https://github.com/moby/moby/issues/44369
+*  Incremental export transfer #1224 https://github.com/moby/buildkit/issues/1224
+* "sending tarball" takes a long time even when the image already exists #107 https://github.com/docker/buildx/issues/107
+* Build drivers https://docs.docker.com/build/drivers/
+* https://docs.docker.com/build/ci/github-actions/configure-builder/#max-parallelism
+* https://docs.docker.com/engine/reference/builder/#buildkit-built-in-build-args
+* https://github.com/moby/buildkit#export-cache
+* `tunnel tty into a docker build through http`
+* docker build `remote` driver https://docs.docker.com/build/drivers/remote
+* rootless `k8s` driver https://docs.docker.com/build/drivers/kubernetes/#rootless-mode
+* tune many options https://docs.docker.com/build/drivers/docker-container/
+  * https://docs.docker.com/config/containers/resource_constraints/
+  * https://hub.docker.com/r/moby/buildkit
+    * https://github.com/moby/buildkit/releases
+* https://docs.docker.com/build/attestations/sbom/
+  * https://github.com/moby/buildkit/blob/647a997b389757068760410053873745acabfc80/docs/attestations/sbom.md?plain=1#L48
+  * `BUILDKIT_SBOM_SCAN_CONTEXT and BUILDKIT_SBOM_SCAN_STAGE`
+* [Support extracting `ADD --checksum=.. https://.. ..` #4907](https://github.com/moby/buildkit/issues/4907)
+* [`docker image ls --filter=reference=docker.io/$MY/$IMG` != `docker image ls --filter=reference=$MY/$IMG` #47809](https://github.com/moby/moby/issues/47809)
+* [Proposal: csv syntax for git repos #4905](https://github.com/moby/buildkit/issues/4905)
+* [`prune`: filtering out `ADD --checksum=... https://...` entries #2448](https://github.com/docker/buildx/issues/2448)
+* [`-o=.`: `open $HOME/.local/share/docker/overlay2/066f6../work/work: permission denied` #2219](https://github.com/docker/buildx/issues/2219)
+
+* `cargo restrict targets of crate`
+*  Target configuration for binaries #9208 https://github.com/rust-lang/cargo/issues/9208
+*  Unsafe fields #3458 https://github.com/rust-lang/rfcs/pull/3458
+*  Warning when large binary files are included into the bundle #9058 https://github.com/rust-lang/cargo/issues/9058
+*  Hermetic build mode #9506 https://github.com/rust-lang/cargo/issues/9506
+*  Feature Request static asserts #2790 https://github.com/rust-lang/rfcs/issues/2790
+* greater supply chain attack risk due to large dependency trees? https://www.reddit.com/r/rust/comments/102yz60/greater_supply_chain_attack_risk_due_to_large/
+  * https://github.com/rust-secure-code/cargo-supply-chain
+* https://doc.rust-lang.org/rustc/command-line-arguments.html#option-emit
+* https://rust-lang.github.io/rustup/overrides.html
+* https://docs.rs/rustflags/0.1.4/rustflags/index.html
+* [Provide better diagnostics for why crates are rebuilt](https://github.com/rust-lang/cargo/issues/2904)
+* `[build] rustflags = ["--remap-path-prefix"`
+  * [RFC: `trim-paths`](https://rust-lang.github.io/rfcs/3127-trim-paths.html)
+  * [RFC: `-Zremap-cwd-prefix=.`](https://github.com/rust-lang/rust/issues/89434)
+* [`crater`: Run experiments across parts of the Rust ecosystem!](https://github.com/rust-lang/crater)
+* [`cargo-options` Clap parser](https://docs.rs/cargo-options/latest/cargo_options/struct.Build.html)
+* /r/Rust scare [Serde has started shipping precompiled binaries with no way to opt out](https://www.reddit.com/r/rust/comments/15va70a/serde_has_started_shipping_precompiled_binaries/)
+* [assertion failed: edges.remove(&key) #13889](https://github.com/rust-lang/cargo/issues/13889)
+* [How we rescued our build process from 24+ hour nightmares](https://www.reddit.com/r/rust/comments/1emhq19/how_we_rescued_our_build_process_from_24_hour/)
+* [Partially sandbox your Rust builds](https://www.reddit.com/r/rust/comments/hjxh2a/partially_sandbox_your_rust_builds/)
+* [Is just me or Rust is too heavy for my computer to handle?](https://www.reddit.com/r/rust/comments/1f6bvw3/is_just_me_or_rust_is_too_heavy_for_my_computer/)
+* [Doesn't detect Docker Rootless #4](https://github.com/TheLarkInn/is-docker/issues/4)
+* [Using S3 as a container registry](https://ochagavia.nl/blog/using-s3-as-a-container-registry/)
+* [What's the best practice for caching compilation of Rust dependencies?](https://www.reddit.com/r/rust/comments/sunme5/whats_the_best_practice_for_caching_compilation/)
+* [Enable Fast Compiles](https://bevy.org/learn/quick-start/getting-started/setup/#enable-fast-compiles-optional)
+  * [Compiling is slow...](https://www.reddit.com/r/bevy/comments/1mrvcis/compiling_is_slow/)
+* [Everytime I try to use Tauri for Android... Why?](https://www.reddit.com/r/rust/comments/1mlzz5l/media_everytime_i_try_to_use_tauri_for_android_why/)
+  * on size of compilation artifacts
+  * > ultimately the "real" solution has got to be a complete overhaul of the entire compilation system to be entirely on-demand in a granular basis, rather than "compile every crate in the dependency tree wholesale".
+  * suggestion to use a shared target folder
