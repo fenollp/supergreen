@@ -9,11 +9,6 @@ pub(crate) const MIRRORS: &[&str] = &["mirror.gcr.io", "public.ecr.aws/docker"];
 #[derive(Debug, Default, Serialize, Deserialize, PartialEq)]
 #[serde(default, rename_all = "kebab-case")]
 pub(crate) struct Config {
-    /// --buildkitd-flags '--debug'
-    /// => docker logs $BUILDX_BUILDER -f | grep 'do request.+host='
-    #[serde(skip_serializing_if = "<&bool as std::ops::Not>::not")]
-    pub(crate) debug: bool,
-
     #[serde(skip_serializing_if = "IndexMap::is_empty")]
     pub(crate) registry: IndexMap<String, Registry>,
 
@@ -67,8 +62,6 @@ fn default_cfg() {
 #[test]
 fn mirrors() {
     let cfg = &r#"
-debug = true
-
 [registry."docker.io"]
 mirrors = [
     "localhost:5000",
@@ -81,7 +74,6 @@ mirrors = [
     assert_eq!(
         de,
         Config {
-            debug: true,
             registry: [(
                 "docker.io".to_owned(),
                 Registry {
