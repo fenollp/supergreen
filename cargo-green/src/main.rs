@@ -23,6 +23,7 @@ mod checkouts;
 mod containerfile;
 mod cratesio;
 mod dirs;
+mod docker_pool;
 mod du;
 mod experiments;
 mod ext;
@@ -198,14 +199,28 @@ async fn really_actual_main(arg0: String, mut args: env::Args) -> Result<()> {
     let green = cargo_green::main(&toolchain, is_install).await?;
     cmd.env(CARGOGREEN_PLUGINSETTINGS!(), serde_json::to_string(&green)?);
 
+    // For a remote (ssh://) $DOCKER_HOST: start a warm, multiplexed connection pool
+    // in this long-lived parent and publish its unix socket. The rustc-wrapper
+    // subprocesses (and our own prebuild) inherit $CARGOGREEN_DOCKER_POOL_SOCK and
+    // redirect their `docker`/`podman` child to it, so the whole workspace pays one
+    // SSH handshake instead of one per `rustc` invocation. `None` for local/tcp.
+    let proxy = docker_pool::PoolProxy::maybe_start_from_env().await?;
+    if let Some(ref p) = proxy {
+        // SAFETY: environment access only happens in single-threaded code.
+        unsafe {
+            env::set_var(docker_pool::POOL_SOCK_ENV, p.socket_path());
+        }
+        cmd.env(docker_pool::POOL_SOCK_ENV, p.socket_path()); //this should be enough
+    }
+
     match command.as_deref() {
-        Some("supergreen") => supergreen::main(green).await,
+        Some("supergreen") => supergreen::main(green).await?,
         Some("fetch") => {
             // Runs actual `cargo fetch`
             if !cmd.status().await?.success() {
                 bail!(EEXIT)
             }
-            green.prebuild(true, is_install).await
+            green.prebuild(true, is_install).await?;
         }
         _ => {
             green.prebuild(false, is_install).await?;
@@ -213,7 +228,12 @@ async fn really_actual_main(arg0: String, mut args: env::Args) -> Result<()> {
             if !cmd.status().await?.success() {
                 bail!(EEXIT)
             }
-            Ok(())
         }
     }
+
+    if let Some(p) = proxy {
+        p.shutdown().await;
+    }
+
+    Ok(())
 }
