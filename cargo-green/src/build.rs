@@ -67,7 +67,7 @@ impl Green {
         containerfile: &Utf8Path,
         target: &Stage,
     ) -> Result<()> {
-        self.build(containerfile, target, &[].into(), None).await.4
+        self.build(containerfile, target, &[].into(), None, None).await.4
     }
 
     pub(crate) async fn build_out(
@@ -77,7 +77,22 @@ impl Green {
         contexts: &IndexSet<BuildContext>,
         out_dir: &Utf8Path,
     ) -> (String, String, Effects, Option<ResultWriter>, Result<()>) {
-        self.build(containerfile, target, contexts, Some(out_dir)).await
+        let (built, cached) = join!(biased;
+            self.build(containerfile, target, contexts, Some(out_dir), None),
+            async {
+                let true = self.runner.is_buildkit() else { return Ok(()) };
+                // Concurrently run same build just to export runner cache
+                let Some(ref dirs) = self.dirs else { return Ok(()) };
+                let Some(dst) = dirs.new_runner_cache(target)? else { return Ok(()) };
+                self.build(containerfile, target, contexts, None, Some(&dst)).await.4
+            }
+        );
+        if let Err(e) = cached {
+            if built.4.is_ok() {
+                warn!("troubles saving runner cache: {e}");
+            }
+        }
+        built
     }
 
     async fn build(
@@ -86,6 +101,7 @@ impl Green {
         target: &Stage,
         contexts: &IndexSet<BuildContext>,
         out_dir: Option<&Utf8Path>,
+        export: Option<&Utf8Path>,
     ) -> (String, String, Effects, Option<ResultWriter>, Result<()>) {
         assert!(!self.runner.is_none(), "build() called with Runner::None");
         let mut cmd = match self.cmd() {
@@ -95,7 +111,7 @@ impl Green {
         cmd.arg("build");
 
         let (call, envs) =
-            self.with_docker_args(&mut cmd, containerfile, target, contexts, out_dir);
+            self.with_docker_args(&mut cmd, containerfile, target, contexts, out_dir, export);
 
         let mut effects = Effects::default();
         let (status, result) =
@@ -120,6 +136,7 @@ impl Green {
         target: &Stage,
         contexts: &IndexSet<BuildContext>,
         out_dir: Option<&Utf8Path>,
+        export: Option<&Utf8Path>,
     ) -> (String, String) {
         //TODO: if allowing additional-build-arguments, deny: --build-arg=BUILDKIT_SYNTAX=
 
@@ -196,6 +213,18 @@ impl Green {
             // https://docs.docker.com/build/exporters/#cache-only-export
             cmd.arg("--output=type=cacheonly");
         }
+
+        if let Some(dst) = export {
+            cmd.arg(self.builder.export_arg(dst));
+        }
+        if let Some(ref dirs) = self.dirs {
+            if self.runner.is_buildkit() {
+                if let Some(src) = dirs.runner_cache(target) {
+                    cmd.arg(self.builder.import_arg(&src));
+                }
+            }
+        }
+
         // cmd.arg("--build-arg=BUILDKIT_MULTI_PLATFORM=1"); // "deterministic output"? adds /linux_amd64/ to extracted cratesio
 
         // TODO: do without local Docker-compatible CLI

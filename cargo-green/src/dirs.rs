@@ -75,6 +75,11 @@ pub(crate) struct Dirs {
     /// A place for build result tarballs (containing .rmeta, .rlib, ...)
     #[doc(hidden)]
     pub(crate) results: Utf8PathBuf,
+
+    /// A place for BuildKit stages' cache exports (local cache backend)
+    /// <https://docs.docker.com/build/cache/backends/local/>
+    #[doc(hidden)]
+    pub(crate) buildkit: Utf8PathBuf,
 }
 
 impl Green {
@@ -90,18 +95,17 @@ impl Green {
         fs::create_dir_all(&app_cache_dir)
             .map_err(|e| anyhow!("Failed to `mkdir -p {app_cache_dir}`: {e}"))?;
 
-        // A local copy of (remotely) cached results
-        let results = app_cache_dir.join("results");
-        fs::create_dir_all(&results).map_err(|e| anyhow!("Failed to `mkdir -p {results}`: {e}"))?;
-
-        // TODO: $APPCACHEDIR/buildkit (with compatibility-version=20) using file exporter
-
-        // A /tmp "local" to appcachedir
         let tmp = pick_same_partition_temp_dir(&app_cache_dir)?;
         fs::create_dir_all(&tmp).map_err(|e| anyhow!("Failed to `mkdir -p {tmp}`: {e}"))?;
 
-        self.dirs = Some(Dirs { tmp, results });
+        let results = app_cache_dir.join("results");
+        fs::create_dir_all(&results).map_err(|e| anyhow!("Failed to `mkdir -p {results}`: {e}"))?;
 
+        let buildkit = app_cache_dir.join("buildkit");
+        fs::create_dir_all(&buildkit)
+            .map_err(|e| anyhow!("Failed to `mkdir -p {buildkit}`: {e}"))?;
+
+        self.dirs = Some(Dirs { tmp, results, buildkit });
         Ok(())
     }
 }
