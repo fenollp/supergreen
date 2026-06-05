@@ -837,15 +837,6 @@ prebuild:
 
 ---
 
-https://github.com/moby/buildkit/blob/v0.30.0-rc1/docs/build-repro.md#compatibility-version
-  compatibility-version pins digest-affecting image assembly behavior for the image and oci exporters.
-BuildKit currently supports these values:
-    10 for the v0.13.0 and v0.14.0 historical path
-    20 for the v0.15.0+ path and current behavior
-20 is the current compatibility version.
-
----
-
 https://github.com/moby/buildkit/releases/tag/dockerfile/1.24.0
 Dockerfile now supports special arg definitions SOURCE_DATE_EPOCH=context and SOURCE_DATE_EPOCH=<stage> which set the value of SOURCE_DATE_EPOCH to the timestamp associated with the remote context or the stage respectively. When building from a Git commit, the context timestamp is the commit timestamp, and when building from a remote URL, the timestamp is resolved from the metadata of files in the TAR archive or from the Last-Modified header of the URL #6602
 ==> set crate/git epochs from their ADD stage
