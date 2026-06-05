@@ -87,12 +87,10 @@ impl Green {
         contexts: &IndexSet<BuildContext>,
         out_dir: Option<&Utf8Path>,
     ) -> (String, String, Effects, Option<ResultWriter>, Result<()>) {
-        let rtrn = |e, effects| ("".to_owned(), "".to_owned(), effects, None, Err(e));
-
         assert!(!self.runner.is_none(), "build() called with Runner::None");
         let mut cmd = match self.cmd() {
             Ok(cmd) => cmd,
-            Err(e) => return rtrn(e, Effects::default()),
+            Err(e) => return ("".to_owned(), "".to_owned(), Effects::default(), None, Err(e)),
         };
         cmd.arg("build");
 
@@ -103,13 +101,13 @@ impl Green {
         let (status, result) =
             match self.run_build(&mut effects, cmd, &call, containerfile, target, out_dir).await {
                 Ok((status, result)) => (status, result),
-                Err(e) => return rtrn(e, effects),
+                Err(e) => return (call, envs, effects, None, Err(e)),
             };
 
         // Something is very wrong here. Try to be helpful by logging some info about runner config:
         if !status.success() {
             let e = effects.try_to_help(&self.runner, self.cargo_home.as_str());
-            return rtrn(e, effects);
+            return (call, envs, effects, result, Err(e));
         }
 
         (call, envs, effects, result, Ok(()))
