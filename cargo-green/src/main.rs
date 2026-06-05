@@ -33,6 +33,7 @@ mod checkouts;
 mod containerfile;
 mod cratesio;
 mod dirs;
+mod docker_pool;
 mod du;
 mod ext;
 mod image_uri;
@@ -192,12 +193,29 @@ async fn actual_main() -> Result<()> {
         return supergreen::main(green).await;
     }
 
+    // For a remote (ssh://) $DOCKER_HOST: start a warm, multiplexed connection pool
+    // in this long-lived parent and publish its unix socket. The rustc-wrapper
+    // subprocesses (and our own prebuild) inherit $CARGOGREEN_DOCKER_POOL_SOCK and
+    // redirect their `docker`/`podman` child to it, so the whole workspace pays one
+    // SSH handshake instead of one per `rustc` invocation. `None` for local/tcp.
+    let proxy = docker_pool::PoolProxy::maybe_start_from_env().await?;
+    if let Some(ref p) = proxy {
+        // SAFETY: environment access only happens in single-threaded code.
+        unsafe {
+            env::set_var(docker_pool::POOL_SOCK_ENV, p.socket_path());
+        }
+    }
+
     if command.as_deref() == Some("fetch") {
         // Runs actual `cargo fetch`
         if !cmd.status().await?.success() {
             bail!(EEXIT)
         }
-        return green.prebuild(true, is_install).await;
+        let res = green.prebuild(true, is_install).await;
+        if let Some(p) = proxy {
+            p.shutdown().await;
+        }
+        return res;
     }
     green.prebuild(false, is_install).await?;
 
@@ -206,7 +224,11 @@ async fn actual_main() -> Result<()> {
     // SAFETY: environment access only happens in single-threaded code.
     unsafe { env::set_var("CARGO_TARGET_DIR", target_dir) };
 
-    if !cmd.status().await?.success() {
+    let ok = cmd.status().await?.success();
+    if let Some(p) = proxy {
+        p.shutdown().await;
+    }
+    if !ok {
         bail!(EEXIT)
     }
     Ok(())

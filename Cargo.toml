@@ -67,7 +67,7 @@ szyk = { version = "1", default-features = false }
 temp-env = { version = "0, >=0.3", default-features = false }
 termimad = { version = "0, >=0.34", default-features = false }
 test-case = { version = "3", default-features = false }
-tokio = { version = "1", features = [ "io-util", "macros", "process", "rt-multi-thread", "time" ], default-features = false }
+tokio = { version = "1", features = [ "io-util", "macros", "net", "process", "rt-multi-thread", "sync", "time" ], default-features = false }
 tokio-stream = { version = "0, >=0.1", default-features = false }
 toml = { version = "1", features = [ "display", "parse", "serde" ], default-features = false }
 uuid = { version = "1", features = [ "v4" ], default-features = false }
