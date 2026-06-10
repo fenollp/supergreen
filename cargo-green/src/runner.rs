@@ -74,6 +74,11 @@ impl Runner {
         matches!(self, Self::None)
     }
 
+    #[must_use]
+    pub(crate) fn is_buildkit(&self) -> bool {
+        matches!(self, Self::Docker | Self::Podman)
+    }
+
     /// Resolve to an executable binary.
     pub(crate) fn executable(&self) -> Result<&'static Utf8PathBuf> {
         static EXE: OnceLock<Utf8PathBuf> = OnceLock::new();
@@ -193,4 +198,15 @@ impl Green {
 
         Ok(cmd)
     }
+}
+
+#[test]
+fn runner_is_what() {
+    assert!(!Runner::Docker.is_none());
+    assert!(!Runner::Podman.is_none());
+    assert!(Runner::None.is_none());
+
+    assert!(Runner::Docker.is_buildkit());
+    assert!(Runner::Podman.is_buildkit());
+    assert!(!Runner::None.is_buildkit());
 }
