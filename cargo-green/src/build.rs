@@ -82,6 +82,7 @@ impl Green {
             async {
                 let true = self.runner.is_buildkit() else { return Ok(()) };
                 // Concurrently run same build just to export runner cache
+                let true = self.cachebuildkit() else { return Ok(()) }; // TODO: drop experiment
                 let Some(ref dirs) = self.dirs else { return Ok(()) };
                 let Some(dst) = dirs.new_runner_cache(target)? else { return Ok(()) };
                 self.build(containerfile, target, contexts, None, Some(&dst)).await.4
@@ -218,7 +219,7 @@ impl Green {
             cmd.arg(self.builder.export_arg(dst));
         }
         if let Some(ref dirs) = self.dirs {
-            if self.runner.is_buildkit() {
+            if self.runner.is_buildkit() && self.cachebuildkit() {
                 if let Some(src) = dirs.runner_cache(target) {
                     cmd.arg(self.builder.import_arg(&src));
                 }

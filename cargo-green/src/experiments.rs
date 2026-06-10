@@ -8,6 +8,7 @@ macro_rules! ENV_EXPERIMENT {
 
 pub(crate) const EXPERIMENTS: &[&str] = &[
     //
+    "cachebuildkit",
     "finalpathcomments",
     "finalpathnonprimary",
     "incremental",
@@ -23,6 +24,7 @@ macro_rules! experiment {
 }
 
 impl Green {
+    experiment!(cachebuildkit);
     experiment!(finalpathcomments);
     experiment!(finalpathnonprimary);
     experiment!(incremental);
