@@ -514,6 +514,10 @@ A comma-separated list of names of features to activate.
 
 A name that does not match exactly is an error.
 
+* `cachebuildkit`:
+  - Write BuildKit build cache to disk
+  - Reuse it from disk
+
 * `finalpathcomments`:
   - Write final containerfile on every rustc call.
   - Contains internal debugging structs: as commented TOML
