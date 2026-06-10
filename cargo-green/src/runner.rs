@@ -30,7 +30,65 @@ const DOCKER_DEFAULT_PLATFORM: &str = "DOCKER_DEFAULT_PLATFORM";
 const DOCKER_HIDE_LEGACY_COMMANDS: &str = "DOCKER_HIDE_LEGACY_COMMANDS";
 pub(crate) const DOCKER_HOST: &str = "DOCKER_HOST";
 
+#[derive(Debug, Copy, Clone, Default, Serialize, Deserialize, Eq, PartialEq)]
+#[serde(rename_all = "kebab-case")]
+pub(crate) enum Runner {
+    #[default]
+    Docker,
+    Podman,
+    None,
+}
+
+impl fmt::Display for Runner {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            Self::Docker => write!(f, "docker"),
+            Self::Podman => write!(f, "podman"),
+            Self::None => write!(f, "none"),
+        }
+    }
+}
+
+impl FromStr for Runner {
+    type Err = anyhow::Error;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "docker" => Ok(Self::Docker),
+            "podman" => Ok(Self::Podman),
+            "none" => Ok(Self::None),
+            _ => {
+                let all: Vec<_> = [Self::Docker, Self::Podman, Self::None]
+                    .iter()
+                    .map(ToString::to_string)
+                    .collect();
+                bail!("Runner must be one of {all:?}")
+            }
+        }
+    }
+}
+
 impl Runner {
+    #[must_use]
+    pub(crate) fn is_none(&self) -> bool {
+        matches!(self, Self::None)
+    }
+
+    /// Resolve to an executable binary.
+    pub(crate) fn executable(&self) -> Result<&'static Utf8PathBuf> {
+        static EXE: OnceLock<Utf8PathBuf> = OnceLock::new();
+        if let Some(exe) = EXE.get() {
+            return Ok(exe);
+        }
+
+        let runner = self.to_string();
+        let exe = which::which(&runner).map_err(|e| anyhow!("No such {self} runner: {e}"))?;
+        let exe = exe.try_into().map_err(|e| anyhow!("Path to {runner} is not utf-8: {e}"))?;
+
+        let _ = EXE.set(exe);
+        Ok(EXE.get().unwrap())
+    }
+
     /// Read envs used by runner, once.
     ///
     /// * <https://docs.docker.com/engine/reference/commandline/cli/#environment-variables>
@@ -134,65 +192,5 @@ impl Green {
         }
 
         Ok(cmd)
-    }
-}
-
-#[derive(Debug, Copy, Clone, Default, Serialize, Deserialize, Eq, PartialEq)]
-#[serde(rename_all = "kebab-case")]
-pub(crate) enum Runner {
-    #[default]
-    Docker,
-    Podman,
-    None,
-}
-
-impl Runner {
-    #[must_use]
-    pub(crate) fn is_none(&self) -> bool {
-        matches!(self, Self::None)
-    }
-
-    /// Resolve to an executable binary.
-    pub(crate) fn executable(&self) -> Result<&'static Utf8PathBuf> {
-        static EXE: OnceLock<Utf8PathBuf> = OnceLock::new();
-        if let Some(exe) = EXE.get() {
-            return Ok(exe);
-        }
-
-        let runner = self.to_string();
-        let exe = which::which(&runner).map_err(|e| anyhow!("No such {self} runner: {e}"))?;
-        let exe = exe.try_into().map_err(|e| anyhow!("Path to {runner} is not utf-8: {e}"))?;
-
-        let _ = EXE.set(exe);
-        Ok(EXE.get().unwrap())
-    }
-}
-
-impl fmt::Display for Runner {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        match self {
-            Self::Docker => write!(f, "docker"),
-            Self::Podman => write!(f, "podman"),
-            Self::None => write!(f, "none"),
-        }
-    }
-}
-
-impl FromStr for Runner {
-    type Err = anyhow::Error;
-
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
-        match s {
-            "docker" => Ok(Self::Docker),
-            "podman" => Ok(Self::Podman),
-            "none" => Ok(Self::None),
-            _ => {
-                let all: Vec<_> = [Self::Docker, Self::Podman, Self::None]
-                    .iter()
-                    .map(ToString::to_string)
-                    .collect();
-                bail!("Runner must be one of {all:?}")
-            }
-        }
     }
 }
