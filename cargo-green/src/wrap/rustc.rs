@@ -41,6 +41,7 @@ pub(crate) async fn wrap_rustc(
     let out_dir_var = env::var("OUT_DIR").ok().map(Utf8PathBuf::from);
 
     let (st @ RustcArgs { mdid, .. }, args) = as_rustc(&pwd, &arguments, out_dir_var.as_deref())?;
+    let mdid = mdid.expect("mdid set");
 
     let (crate_name, pkg_name, pkg_version, pkg_manifest_dir) = call_config();
 
@@ -79,7 +80,9 @@ async fn do_wrap_rustc(
     out_dir_var: Option<Utf8PathBuf>,
     RustcArgs { externs, mdid, incremental, input, out_dir, target_path }: RustcArgs,
 ) -> Result<()> {
+    let mdid = mdid.expect("mdid set");
     let mut md: Md = mdid.into();
+
     md.buildrs = crate_name.map(is_buildrs_executable).unwrap_or_default();
     md.push_block(&RUST, &green.base.image_inline);
 
