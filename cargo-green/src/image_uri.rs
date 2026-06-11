@@ -14,6 +14,8 @@ use crate::{
     runner::{Runner, DOCKER_HOST},
 };
 
+pub(crate) const BAD_CHARS: &[char] = &[' ', '\'', '"', ';', '\\', ','];
+
 /// Default BuildKit syntax: `docker-image://docker.io/docker/dockerfile:1`
 pub(crate) static SYNTAX_IMAGE: LazyLock<ImageUri> =
     LazyLock::new(|| ImageUri::try_new("docker-image://docker.io/docker/dockerfile:1").unwrap());
@@ -42,8 +44,8 @@ fn docker_image_uri(uri: &str) -> Result<()> {
     if !uri.starts_with("docker-image://") {
         bail!("Unsupported scheme: {uri:?}")
     }
-    if uri.contains([' ', '\'', '"']) {
-        bail!("Contains empty names, quotes or whitespace")
+    if uri.contains(BAD_CHARS) {
+        bail!("Contains empty names, whitespace, quotes or bad characters")
     }
     Ok(())
 }

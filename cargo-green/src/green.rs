@@ -9,9 +9,18 @@ use cargo_toml::Manifest;
 use serde::{Deserialize, Serialize};
 
 use crate::{
-    add::Add, base_image::BaseImage, builder::Builder, buildkitd::MIRRORS, cache::Cache,
-    containerfile::Containerfile, dirs::Dirs, image_uri::ImageUri, lockfile::find_manifest_path,
-    r#final::Final, runner::Runner, ENV_RUNNER, PKG,
+    add::Add,
+    base_image::BaseImage,
+    builder::Builder,
+    buildkitd::MIRRORS,
+    cache::Cache,
+    containerfile::Containerfile,
+    dirs::Dirs,
+    image_uri::{ImageUri, BAD_CHARS},
+    lockfile::find_manifest_path,
+    r#final::Final,
+    runner::Runner,
+    ENV_RUNNER, PKG,
 };
 
 macro_rules! ENV_REGISTRY_MIRRORS {
@@ -233,9 +242,8 @@ pub(crate) fn validate_csv(field: &mut Vec<String>, var: &'static str) -> Result
         *field = parse_csv(&val);
     }
     if !field.is_empty() {
-        let bad_chars = [' ', '\'', '"', ';'];
-        if field.iter().any(|x| x.is_empty() || x.contains(bad_chars) || x.trim() != x) {
-            bail!("{origin} contains empty names, quotes, semicolons or whitespace")
+        if field.iter().any(|x| x.is_empty() || x.contains(BAD_CHARS) || x.trim() != x) {
+            bail!("{origin} contains empty names, whitespace, quotes or bad characters")
         }
 
         if field.len() != field.iter().collect::<HashSet<_>>().len() {
@@ -381,6 +389,18 @@ add.apk = [ "libpq-dev", "pkgconf" ]
             assert_eq!(green.add.apt, vec!["libpq-dev".to_owned(), "pkg-config".to_owned()]);
             assert_eq!(green.add.apt_get, vec!["libpq-dev".to_owned(), "pkg-config".to_owned()]);
             assert_eq!(green.add.apk, vec!["libpq-dev".to_owned(), "pkgconf".to_owned()]);
+        }
+
+        #[test]
+        fn empty_var() {
+            use crate::green::{parse_csv, validate_csv};
+            let var = ENV_ADD_APT!();
+            temp_env::with_var(var, Some("a=1,,b"), || {
+                let mut field = parse_csv(&std::env::var(var).unwrap());
+                let err = validate_csv(&mut field, var).err().unwrap().to_string();
+                assert!(err.contains("empty"), "In: {err}");
+                assert!(err.contains(&format!("${}", var)), "In: {err}");
+            });
         }
 
         #[test_case::test_matrix(["apt", "apt-get", "apk"])]
