@@ -4,7 +4,25 @@ use anyhow::{bail, Result};
 use camino::{Utf8Path, Utf8PathBuf};
 use serde::{Deserialize, Serialize};
 
+// FIXME: replace with our own, knowing we own relative/absolute paths
 /// An ID unique to crate+version+crate-type+.. extracted from the rustc arg "extrafn"
+///
+/// NOTE: extrafn is not always present
+///
+/// From <https://github.com/rust-lang/cargo/blob/0.96.0/src/cargo/core/compiler/build_runner/compilation_files.rs>
+/// In it:
+/// * METADATA_VERSION (currently 1.96: 2) a cargo-owned differenciator vs rustc
+/// * package id: (name, version, source) hashed relative to the workspace root (or sysroot for -Zbuild-std)
+/// * package features
+/// * profile: build | check | test | .. | also LTO kind
+/// * whether host or target(triple)
+/// * crate type: bin | cdylib | ..
+/// * rustc version: some or most of `rustc -vV` depending on channel and cross compilation
+/// * $RUSTC_WORKSPACE_WRAPPER
+/// * $__CARGO_DEFAULT_LIB_METADATA concerns libstd
+/// * all deps MdIds
+/// * extra compiler args
+/// * $RUSTFLAGS (or $RUSTDOCFLAGS) MAY be poisonous: excluded when contains `--remap-path-prefix` (to avoid including absolute paths)
 #[derive(Debug, Copy, Clone, Deserialize, Serialize, Eq, PartialEq, Hash)]
 #[serde(from = "String", into = "String")]
 pub(crate) struct MdId(u64);
@@ -45,6 +63,7 @@ impl From<&str> for MdId {
 }
 
 impl MdId {
+    /// Make an MdId from a dash-led 16-digit string
     #[must_use]
     pub(crate) fn new(extrafn: &str) -> Self {
         assert!(extrafn.starts_with('-'), "Unexpected extrafn {extrafn:?}");
