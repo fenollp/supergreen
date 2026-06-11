@@ -4,7 +4,6 @@ use std::{
 };
 
 use anyhow::{anyhow, bail, Result};
-use camino::Utf8PathBuf;
 use log::{debug, info, warn};
 
 use crate::{
@@ -19,7 +18,7 @@ use crate::{
     network::Network,
     runner::{Runner, BUILDKIT_HOST, DOCKER_BUILDKIT, DOCKER_CONTEXT, DOCKER_HOST},
     stage::{Stage, RST},
-    tmp, PKG, VSN,
+    PKG, VSN,
 };
 
 pub(crate) async fn main() -> Result<Green> {
@@ -307,11 +306,5 @@ impl Green {
                 }
             })
             .map_err(|e| anyhow!("{path}\n\nUnable to prebuild: {e}"))
-    }
-
-    /// Includes builder container ID so recreation retrying builds
-    fn sentinel_path(&self, name: &str, ext: &str) -> Utf8PathBuf {
-        let builder = self.builder.id.as_deref().map(|id| format!("x{id:.12}")).unwrap_or_default();
-        tmp().join(format!("{PKG}v{VSN}{builder}-{name}.{ext}"))
     }
 }
