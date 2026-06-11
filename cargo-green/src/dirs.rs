@@ -5,7 +5,7 @@ use camino::{Utf8Path, Utf8PathBuf};
 use directories::ProjectDirs;
 use serde::{Deserialize, Serialize};
 
-use crate::{green::Green, wrap::pass_env, PKG};
+use crate::{green::Green, wrap::pass_env, PKG, VSN};
 
 pub(crate) fn tmp() -> Utf8PathBuf {
     env::temp_dir().try_into().expect("$TMPDIR is not utf-8")
@@ -118,4 +118,12 @@ fn pick_same_partition_temp_dir(app_cache_dir: &Utf8Path) -> Result<Utf8PathBuf>
         return Ok(tmp_dir);
     }
     Ok(app_cache_dir.join("tmp"))
+}
+
+impl Green {
+    /// Includes builder container ID so its recreation retries builds
+    pub(crate) fn sentinel_path(&self, name: &str, ext: &str) -> Utf8PathBuf {
+        let builder = self.builder.id.as_deref().map(|id| format!("x{id:.12}")).unwrap_or_default();
+        tmp().join(format!("{PKG}v{VSN}{builder}-{name}.{ext}"))
+    }
 }
