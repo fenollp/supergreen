@@ -35,22 +35,21 @@ pub(crate) async fn rustc(
     let argz = args.iter().take(3).map(AsRef::as_ref).collect::<Vec<_>>();
 
     let argv = |times| args.clone().into_iter().skip(times).collect();
+    let is_rustc = |bin: &str| bin.ends_with("rustc");
 
-    // TODO: find a better heuristic to ensure `rustc` is rustc
     match &argz[..] {
-        [rustc, "--crate-name", ..] if rustc.ends_with("rustc") =>
-             wrap_rustc(green, argv(1), call_rustc(rustc, argv(1))).await,
-        [driver, rustc, "-"|"--crate-name", ..] if rustc.ends_with("rustc") => {
+        [bin, "--crate-name", ..] if is_rustc(bin) => {
+            wrap_rustc(green, argv(1), call_rustc(bin, argv(1))).await
+        }
+        [driver, bin, "-" | "--crate-name", ..] if is_rustc(bin) => {
             // TODO: wrap driver? + rustc
             // driver: e.g. $RUSTUP_HOME/toolchains/stable-x86_64-unknown-linux-gnu/bin/clippy-driver
             // cf. https://github.com/rust-lang/rust-clippy/tree/da27c979e29e78362b7a2a91ebcf605cb01da94c#using-clippy-driver
-             call_rustc(driver, argv(2)).await
-         }
-        [_driver, rustc, ..] if rustc.ends_with("rustc") =>
-             call_rustc(rustc, argv(2)).await,
-        [rustc, ..] if rustc.ends_with("rustc") =>
-             call_rustc(rustc, argv(1)).await,
-        _ => panic!("RUSTC_WRAPPER={arg0:?}'s input unexpected:\n\targz = {argz:?}\n\targs = {args:?}\n\tenvs = {vars:?}\n"),
+            call_rustc(driver, argv(2)).await
+        }
+        [_driver, bin, ..] if is_rustc(bin) => call_rustc(bin, argv(2)).await,
+        [bin, ..] if is_rustc(bin) => call_rustc(bin, argv(1)).await,
+        _ => panic!("BUG: RUSTC_WRAPPER={arg0:?}'s input unexpected:\n\targz = {argz:?}\n\targs = {args:?}\n\tenvs = {vars:?}\n"),
     }
 }
 
