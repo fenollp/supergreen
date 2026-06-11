@@ -2,7 +2,7 @@ Write cached data to image registries
 
 Note that errors caused by failed cache exports are not ignored.
 
-See also [Green::cache_images] and [Green::cache_from_images].
+See also [Cache::images] and [Cache::from_images].
 
 ```toml
 cache-to-images = [ "docker-image://my.org/team/my-fork" ]

@@ -49,8 +49,8 @@ impl AsStage<'_> for Checkouts {
     }
 }
 
-/// https://docs.docker.com/reference/dockerfile/#add---keep-git-dir
-/// --build-arg BUILDKIT_CONTEXT_KEEP_GIT_DIR=0 https://docs.docker.com/engine/reference/builder/#buildkit-built-in-build-args
+/// <https://docs.docker.com/reference/dockerfile/#add---keep-git-dir>
+/// `--build-arg BUILDKIT_CONTEXT_KEEP_GIT_DIR=0` <https://docs.docker.com/engine/reference/builder/#buildkit-built-in-build-args>
 pub(crate) async fn as_stage(
     cargo_home: &Utf8Path,
     pkg_manifest_dir: &Utf8Path,

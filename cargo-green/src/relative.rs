@@ -72,7 +72,9 @@ impl Drop for Relative {
 }
 
 /// NOTE: build contexts have to be directories, can't be files.
-///> failed to get build context path {$HOME/wefwefwef/supergreen.git/Cargo.lock <nil>}: not a directory
+/// ```
+/// failed to get build context path {$HOME/wefwefwef/supergreen.git/Cargo.lock <nil>}: not a directory
+/// ```
 pub(crate) async fn as_stage(mdid: MdId, pwd: &Utf8Path) -> Result<NamedStage> {
     info!("mounting {}files under {pwd}", if pwd.join(".git").is_dir() { "git " } else { "" });
 

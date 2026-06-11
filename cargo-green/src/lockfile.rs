@@ -41,7 +41,7 @@ pub(crate) async fn find_lockfile() -> Result<Utf8PathBuf> {
 
 /// FIXME: when cargo install-ing, root crate's code isn't local (yet)
 /// Meaning accessing its TOML metadata nor its locked deps is possible.
-/// cc https://github.com/rust-lang/cargo/issues/9700
+/// cc <https://github.com/rust-lang/cargo/issues/9700>
 pub(crate) async fn find_manifest_path() -> Result<Utf8PathBuf> {
     let mut args = Arguments::from_env();
 

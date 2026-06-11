@@ -301,7 +301,7 @@ export CARGOGREEN_REGISTRY_MIRRORS="mirror.gcr.io,public.ecr.aws/docker"
 
 Both read and write cached data to and from image registries
 
-Exactly a combination of [Green::cache_from_images] and [Green::cache_to_images].
+Exactly a combination of [Cache::from_images] and [Cache::to_images].
 
 See
 * `type=registry` at <https://docs.docker.com/build/cache/backends/>
@@ -321,7 +321,7 @@ export CARGOGREEN_CACHE_IMAGES="docker-image://my.org/team/my-project,docker-ima
 
 Read cached data from image registries
 
-See also [Green::cache_images] and [Green::cache_to_images].
+See also [Cache::images] and [Cache::to_images].
 
 ```toml
 cache-from-images = [ "docker-image://my.org/team/my-project-in-ci", "docker-image://some.org/global/cache" ]
@@ -339,7 +339,7 @@ Write cached data to image registries
 
 Note that errors caused by failed cache exports are not ignored.
 
-See also [Green::cache_images] and [Green::cache_from_images].
+See also [Cache::images] and [Cache::from_images].
 
 ```toml
 cache-to-images = [ "docker-image://my.org/team/my-fork" ]
