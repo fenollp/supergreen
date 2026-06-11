@@ -544,6 +544,7 @@ In no particular order:
   * `=>` Very complete! Relies on `nix` tools and language.
 * **Mozilla**'s `sccache`: [sccache - Shared Compilation Cache](https://github.com/mozilla/sccache)
   * [Cargo Book ~ Build cache ~ Shared cache](https://doc.rust-lang.org/cargo/reference/build-cache.html#shared-cache)
+  * [`sccache`'s Known Caveats](https://github.com/mozilla/sccache/tree/5d52f91da50fee9b48fa5f6db1f19bc149a7a0f2#known-caveats)
   * `=>` Relies on everyone having the same paths and doesn't cache all crate types.
 * **garentyler**'s `distrustc`: [A Rust-compatible distcc implementation](https://github.com/garentyler/distrustc)
   * [`distcc`'s manpage](https://linux.die.net/man/1/distcc)
