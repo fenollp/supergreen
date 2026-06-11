@@ -286,14 +286,14 @@ jobs:
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
     - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
     - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
-    - name: 🔵 cargo green install --locked --force --path=./cargo-green
+    - name: 🔵 cargo green -vv install --locked --force --path=./cargo-green
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         cargo green -vv install --locked --force --path=./cargo-green |& tee ../_
-    - name: cargo green install --locked --force --path=./cargo-green --jobs=1
+    - name: cargo green -vv install --locked --force --path=./cargo-green --jobs=1
       if: ${{ failure() }}
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
@@ -862,14 +862,14 @@ jobs:
     - if: ${{ failure() }}
       name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
-    - name: 🔵 cargo green build --all-targets --all-features --locked --frozen --offline
+    - name: 🔵 cargo green -vv build --all-targets --all-features --locked --frozen --offline
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         cargo green -vv build --all-targets --all-features --locked --frozen --offline |& tee ../_
-    - name: cargo green build --all-targets --all-features --locked --frozen --offline --jobs=1
+    - name: cargo green -vv build --all-targets --all-features --locked --frozen --offline --jobs=1
       if: ${{ failure() }}
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
@@ -1145,14 +1145,14 @@ jobs:
     - if: ${{ failure() }}
       name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
-    - name: 🔵 cargo green test --all-targets --all-features --locked --frozen --offline
+    - name: 🔵 cargo green -vv test --all-targets --all-features --locked --frozen --offline
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         cargo green -vv test --all-targets --all-features --locked --frozen --offline |& tee ../_
-    - name: cargo green test --all-targets --all-features --locked --frozen --offline --jobs=1
+    - name: cargo green -vv test --all-targets --all-features --locked --frozen --offline --jobs=1
       if: ${{ failure() }}
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
@@ -1428,14 +1428,14 @@ jobs:
     - if: ${{ failure() }}
       name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
-    - name: 🔵 cargo green check --all-targets --all-features --locked --frozen --offline
+    - name: 🔵 cargo green -vv check --all-targets --all-features --locked --frozen --offline
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         cargo green -vv check --all-targets --all-features --locked --frozen --offline |& tee ../_
-    - name: cargo green check --all-targets --all-features --locked --frozen --offline --jobs=1
+    - name: cargo green -vv check --all-targets --all-features --locked --frozen --offline --jobs=1
       if: ${{ failure() }}
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
@@ -1711,14 +1711,14 @@ jobs:
     - if: ${{ failure() }}
       name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
-    - name: 🔵 cargo green package --all-features --locked --frozen --offline
+    - name: 🔵 cargo green -vv package --all-features --locked --frozen --offline
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         cargo green -vv package --all-features --locked --frozen --offline |& tee ../_
-    - name: cargo green package --all-features --locked --frozen --offline --jobs=1
+    - name: cargo green -vv package --all-features --locked --frozen --offline --jobs=1
       if: ${{ failure() }}
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
@@ -1920,14 +1920,14 @@ jobs:
     - if: ${{ failure() }}
       name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
-    - name: 🔵 cargo green clippy --all-targets --all-features --locked --frozen --offline
+    - name: 🔵 cargo green -vv clippy --all-targets --all-features --locked --frozen --offline
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         cargo green -vv clippy --all-targets --all-features --locked --frozen --offline |& tee ../_
-    - name: cargo green clippy --all-targets --all-features --locked --frozen --offline --jobs=1
+    - name: cargo green -vv clippy --all-targets --all-features --locked --frozen --offline --jobs=1
       if: ${{ failure() }}
       run: |
         unset CARGO_PROFILE_DEV_DEBUG

@@ -55,6 +55,21 @@ $(postconds ../_)
 EOF
 }
 
+try_then_fallback_single_threaded() {
+    cat <<EOF
+    - name: 🔵 $*
+      run: |
+$(unset_action_envs)
+        $* |& tee ../_
+    - name: $* --jobs=1
+      if: \${{ failure() }}
+      run: |
+$(unset_action_envs)
+        $* --jobs=1 |& tee ../_
+$(postconds ../_)
+EOF
+}
+
 bin_jobdef() {
     local name=$1; shift
     [[ $# -eq 0 ]]
@@ -95,16 +110,7 @@ $(bin_jobdef 'installs')
     steps:
 $(postbin_steps)
 $(cache_usage)
-    - name: 🔵 cargo green install --locked --force --path=./cargo-green
-      run: |
-$(unset_action_envs)
-        cargo green -vv install --locked --force --path=./cargo-green |& tee ../_
-    - name: cargo green install --locked --force --path=./cargo-green --jobs=1
-      if: \${{ failure() }}
-      run: |
-$(unset_action_envs)
-        cargo green -vv install --locked --force --path=./cargo-green --jobs=1 |& tee ../_
-$(postconds ../_)
+$(try_then_fallback_single_threaded cargo green -vv install --locked --force --path=./cargo-green)
 $(cache_usage)
 
 
@@ -131,27 +137,9 @@ $(postbin_steps $nightly)
       with:
         tool: cargo-udeps
 $(cache_usage)
-    - name: 🔵 cargo +$nightly green udeps --all-targets
-      run: |
-$(unset_action_envs)
-        cargo +$nightly green udeps --all-targets |& tee ../_
-    - name: cargo +$nightly green udeps --all-targets --jobs=1
-      if: \${{ failure() }}
-      run: |
-$(unset_action_envs)
-        cargo +$nightly green udeps --all-targets --jobs=1 |& tee ../_
-$(postconds ../_)
+$(try_then_fallback_single_threaded cargo +$nightly green udeps --all-targets)
 $(cache_usage)
-    - name: 🔵 cargo green +$nightly udeps --all-targets
-      run: |
-$(unset_action_envs)
-        cargo green +$nightly udeps --all-targets |& tee ../_
-    - name: cargo green +$nightly udeps --all-targets --jobs=1
-      if: \${{ failure() }}
-      run: |
-$(unset_action_envs)
-        cargo green +$nightly udeps --all-targets --jobs=1 |& tee ../_
-$(postconds ../_)
+$(try_then_fallback_single_threaded cargo green +$nightly udeps --all-targets)
 $(cache_usage)
 
 
@@ -160,16 +148,7 @@ $(bin_jobdef 'builds')
 $(postbin_steps)
 $(cache_usage)
 $(cargo_green_fetch)
-    - name: 🔵 cargo green build --all-targets --all-features --locked --frozen --offline
-      run: |
-$(unset_action_envs)
-        cargo green -vv build --all-targets --all-features --locked --frozen --offline |& tee ../_
-    - name: cargo green build --all-targets --all-features --locked --frozen --offline --jobs=1
-      if: \${{ failure() }}
-      run: |
-$(unset_action_envs)
-        cargo green -vv build --all-targets --all-features --locked --frozen --offline --jobs=1 |& tee ../_
-$(postconds ../_)
+$(try_then_fallback_single_threaded cargo green -vv build --all-targets --all-features --locked --frozen --offline)
 $(cache_usage)
     - name: Ensure running the same command thrice without modifications...
       run: |
@@ -185,16 +164,7 @@ $(bin_jobdef 'tests')
 $(postbin_steps)
 $(cache_usage)
 $(cargo_green_fetch)
-    - name: 🔵 cargo green test --all-targets --all-features --locked --frozen --offline
-      run: |
-$(unset_action_envs)
-        cargo green -vv test --all-targets --all-features --locked --frozen --offline |& tee ../_
-    - name: cargo green test --all-targets --all-features --locked --frozen --offline --jobs=1
-      if: \${{ failure() }}
-      run: |
-$(unset_action_envs)
-        cargo green -vv test --all-targets --all-features --locked --frozen --offline --jobs=1 |& tee ../_
-$(postconds ../_)
+$(try_then_fallback_single_threaded cargo green -vv test --all-targets --all-features --locked --frozen --offline)
 $(cache_usage)
     - name: Ensure running the same command twice without modifications...
       run: |
@@ -210,16 +180,7 @@ $(bin_jobdef 'checks')
 $(postbin_steps)
 $(cache_usage)
 $(cargo_green_fetch)
-    - name: 🔵 cargo green check --all-targets --all-features --locked --frozen --offline
-      run: |
-$(unset_action_envs)
-        cargo green -vv check --all-targets --all-features --locked --frozen --offline |& tee ../_
-    - name: cargo green check --all-targets --all-features --locked --frozen --offline --jobs=1
-      if: \${{ failure() }}
-      run: |
-$(unset_action_envs)
-        cargo green -vv check --all-targets --all-features --locked --frozen --offline --jobs=1 |& tee ../_
-$(postconds ../_)
+$(try_then_fallback_single_threaded cargo green -vv check --all-targets --all-features --locked --frozen --offline)
 $(cache_usage)
     - name: Ensure running the same command twice without modifications...
       run: |
@@ -235,16 +196,7 @@ $(bin_jobdef 'packages')
 $(postbin_steps)
 $(cache_usage)
 $(cargo_green_fetch)
-    - name: 🔵 cargo green package --all-features --locked --frozen --offline
-      run: |
-$(unset_action_envs)
-        cargo green -vv package --all-features --locked --frozen --offline |& tee ../_
-    - name: cargo green package --all-features --locked --frozen --offline --jobs=1
-      if: \${{ failure() }}
-      run: |
-$(unset_action_envs)
-        cargo green -vv package --all-features --locked --frozen --offline --jobs=1 |& tee ../_
-$(postconds ../_)
+$(try_then_fallback_single_threaded cargo green -vv package --all-features --locked --frozen --offline)
 $(cache_usage)
 
 
@@ -254,16 +206,7 @@ $(postbin_steps)
     - run: rustup component add clippy
 $(cache_usage)
 $(cargo_green_fetch)
-    - name: 🔵 cargo green clippy --all-targets --all-features --locked --frozen --offline
-      run: |
-$(unset_action_envs)
-        cargo green -vv clippy --all-targets --all-features --locked --frozen --offline |& tee ../_
-    - name: cargo green clippy --all-targets --all-features --locked --frozen --offline --jobs=1
-      if: \${{ failure() }}
-      run: |
-$(unset_action_envs)
-        cargo green -vv clippy --all-targets --all-features --locked --frozen --offline --jobs=1 |& tee ../_
-$(postconds ../_)
+$(try_then_fallback_single_threaded cargo green -vv clippy --all-targets --all-features --locked --frozen --offline)
 $(cache_usage)
     - name: Ensure running the same command twice without modifications...
       run: |
