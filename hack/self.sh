@@ -187,6 +187,17 @@ $(run_again_ensuring_freshly_result cargo green -vv check --all-targets --all-fe
 $(cache_usage)
 
 
+$(bin_jobdef 'docs')
+    steps:
+$(postbin_steps)
+$(cache_usage)
+$(cargo_green_fetch)
+$(try_then_fallback_single_threaded "RUSTDOCFLAGS='-D warnings'" cargo doc --locked --frozen --offline --all-features --no-deps)
+$(cache_usage)
+$(run_again_ensuring_freshly_result "RUSTDOCFLAGS='-D warnings'" cargo doc --locked --frozen --offline --all-features --no-deps)
+$(cache_usage)
+
+
 $(bin_jobdef 'packages')
     steps:
 $(postbin_steps)
