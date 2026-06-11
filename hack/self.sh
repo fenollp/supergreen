@@ -44,6 +44,17 @@ $(restore_builder_data)
 EOF
 }
 
+cargo_green_fetch() {
+    [[ $# -eq 0 ]]
+    cat <<EOF
+    - name: cargo fetch
+      run: |
+$(unset_action_envs)
+        cargo green -vv fetch |& tee ../_
+$(postconds ../_)
+EOF
+}
+
 bin_jobdef() {
     local name=$1; shift
     [[ $# -eq 0 ]]
@@ -148,11 +159,7 @@ $(bin_jobdef 'builds')
     steps:
 $(postbin_steps)
 $(cache_usage)
-    - name: cargo fetch
-      run: |
-$(unset_action_envs)
-        cargo green -vv fetch |& tee ../_
-$(postconds ../_)
+$(cargo_green_fetch)
     - name: 🔵 cargo green build --all-targets --all-features --locked --frozen --offline
       run: |
 $(unset_action_envs)
@@ -177,11 +184,7 @@ $(bin_jobdef 'tests')
     steps:
 $(postbin_steps)
 $(cache_usage)
-    - name: cargo fetch
-      run: |
-$(unset_action_envs)
-        cargo green -vv fetch |& tee ../_
-$(postconds ../_)
+$(cargo_green_fetch)
     - name: 🔵 cargo green test --all-targets --all-features --locked --frozen --offline
       run: |
 $(unset_action_envs)
@@ -206,11 +209,7 @@ $(bin_jobdef 'checks')
     steps:
 $(postbin_steps)
 $(cache_usage)
-    - name: cargo fetch
-      run: |
-$(unset_action_envs)
-        cargo green -vv fetch |& tee ../_
-$(postconds ../_)
+$(cargo_green_fetch)
     - name: 🔵 cargo green check --all-targets --all-features --locked --frozen --offline
       run: |
 $(unset_action_envs)
@@ -235,11 +234,7 @@ $(bin_jobdef 'packages')
     steps:
 $(postbin_steps)
 $(cache_usage)
-    - name: cargo fetch
-      run: |
-$(unset_action_envs)
-        cargo green -vv fetch |& tee ../_
-$(postconds ../_)
+$(cargo_green_fetch)
     - name: 🔵 cargo green package --all-features --locked --frozen --offline
       run: |
 $(unset_action_envs)
@@ -258,11 +253,7 @@ $(bin_jobdef 'clippy')
 $(postbin_steps)
     - run: rustup component add clippy
 $(cache_usage)
-    - name: cargo fetch
-      run: |
-$(unset_action_envs)
-        cargo green -vv fetch
-$(postconds ../_)
+$(cargo_green_fetch)
     - name: 🔵 cargo green clippy --all-targets --all-features --locked --frozen --offline
       run: |
 $(unset_action_envs)
