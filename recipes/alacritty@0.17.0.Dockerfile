@@ -22,7 +22,6 @@ RUN \
 ARG TARGETPLATFORM
 RUN \
   --mount=from=xx,source=/usr/bin/xx-apk,dst=/usr/bin/xx-apk \
-  --mount=from=xx,source=/usr/bin/xx-apt,dst=/usr/bin/xx-apt \
   --mount=from=xx,source=/usr/bin/xx-apt,dst=/usr/bin/xx-apt-get \
   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-c++ \
   --mount=from=xx,source=/usr/bin/xx-cargo,dst=/usr/bin/xx-cargo \
@@ -35,12 +34,10 @@ RUN \
   --mount=from=xx,source=/usr/bin/xx-verify,dst=/usr/bin/xx-verify \
   --mount=from=xx,source=/usr/bin/xx-windres,dst=/usr/bin/xx-windres \
     set -eux \
- && if   command -v apk >/dev/null 2>&1; then \
-                                     xx-apk     add     --no-cache                 'ca-certificates' 'gcc'; \
-    elif command -v apt >/dev/null 2>&1; then \
-      DEBIAN_FRONTEND=noninteractive xx-apt     install --no-install-recommends -y 'ca-certificates' 'cmake' 'g++' 'gcc' 'libc6-dev' 'libfontconfig1-dev' 'libxcb-xfixes0-dev' 'libxkbcommon-dev' 'pkg-config' 'python3'; \
+ && if command -v apk >/dev/null 2>&1; then \
+                                                          xx-apk     add     --no-cache                 'ca-certificates' 'gcc'; \
     else \
-      DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y 'ca-certificates' 'gcc' 'libc6-dev'; \
+      xx-apt-get update && DEBIAN_FRONTEND=noninteractive xx-apt-get satisfy --no-install-recommends -y 'ca-certificates' 'cmake' 'g++' 'gcc' 'libc6-dev' 'libfontconfig1-dev' 'libxcb-xfixes0-dev' 'libxkbcommon-dev' 'pkg-config' 'python3'; \
     fi
 ARG SOURCE_DATE_EPOCH=42
 

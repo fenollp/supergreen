@@ -22,7 +22,6 @@ RUN \
 ARG TARGETPLATFORM
 RUN \
   --mount=from=xx,source=/usr/bin/xx-apk,dst=/usr/bin/xx-apk \
-  --mount=from=xx,source=/usr/bin/xx-apt,dst=/usr/bin/xx-apt \
   --mount=from=xx,source=/usr/bin/xx-apt,dst=/usr/bin/xx-apt-get \
   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-c++ \
   --mount=from=xx,source=/usr/bin/xx-cargo,dst=/usr/bin/xx-cargo \
@@ -35,12 +34,10 @@ RUN \
   --mount=from=xx,source=/usr/bin/xx-verify,dst=/usr/bin/xx-verify \
   --mount=from=xx,source=/usr/bin/xx-windres,dst=/usr/bin/xx-windres \
     set -eux \
- && if   command -v apk >/dev/null 2>&1; then \
-                                     xx-apk     add     --no-cache                 'ca-certificates' 'gcc'; \
-    elif command -v apt >/dev/null 2>&1; then \
-      DEBIAN_FRONTEND=noninteractive xx-apt     install --no-install-recommends -y 'ca-certificates' 'gcc' 'libc6-dev' 'libcurl4-openssl-dev' 'libssl-dev=3.5.5-1~deb13u2' 'pkg-config'; \
+ && if command -v apk >/dev/null 2>&1; then \
+                                                          xx-apk     add     --no-cache                 'ca-certificates' 'gcc'; \
     else \
-      DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y 'ca-certificates' 'gcc' 'libc6-dev'; \
+      xx-apt-get update && DEBIAN_FRONTEND=noninteractive xx-apt-get satisfy --no-install-recommends -y 'ca-certificates' 'gcc' 'libc6-dev' 'libcurl4-openssl-dev' 'libssl-dev(>=3.5)' 'pkg-config'; \
     fi
 ARG SOURCE_DATE_EPOCH=42
 
@@ -7583,7 +7580,7 @@ RUN \
         DEP_NGHTTP2_ROOT=/target/release/build/libnghttp2-sys-2a32aa415f1dcbd2/out/i \
         DEP_OPENSSL_CONF=OPENSSL_NO_IDEA,OPENSSL_NO_SSL3_METHOD \
         DEP_OPENSSL_INCLUDE=/usr/include \
-        DEP_OPENSSL_VERSION_NUMBER=30500050 \
+        DEP_OPENSSL_VERSION_NUMBER=30500060 \
         DEP_Z_INCLUDE=/usr/include \
         HOST=x86_64-unknown-linux-gnu \
         NUM_JOBS=1 \
@@ -7823,7 +7820,7 @@ RUN \
         DEP_CURL_INCLUDE=/usr/include/mit-krb5 \
         DEP_OPENSSL_CONF=OPENSSL_NO_IDEA,OPENSSL_NO_SSL3_METHOD \
         DEP_OPENSSL_INCLUDE=/usr/include \
-        DEP_OPENSSL_VERSION_NUMBER=30500050 \
+        DEP_OPENSSL_VERSION_NUMBER=30500060 \
         HOST=x86_64-unknown-linux-gnu \
         NUM_JOBS=1 \
         OPT_LEVEL=3 \
@@ -8272,7 +8269,7 @@ RUN \
         DEBUG=false \
         DEP_OPENSSL_CONF=OPENSSL_NO_IDEA,OPENSSL_NO_SSL3_METHOD \
         DEP_OPENSSL_INCLUDE=/usr/include \
-        DEP_OPENSSL_VERSION_NUMBER=30500050 \
+        DEP_OPENSSL_VERSION_NUMBER=30500060 \
         DEP_Z_INCLUDE=/usr/include \
         HOST=x86_64-unknown-linux-gnu \
         NUM_JOBS=1 \
@@ -8437,7 +8434,7 @@ RUN \
         DEBUG=false \
         DEP_OPENSSL_CONF=OPENSSL_NO_IDEA,OPENSSL_NO_SSL3_METHOD \
         DEP_OPENSSL_INCLUDE=/usr/include \
-        DEP_OPENSSL_VERSION_NUMBER=30500050 \
+        DEP_OPENSSL_VERSION_NUMBER=30500060 \
         DEP_SSH2_INCLUDE=/target/release/build/libssh2-sys-8a50a74a3e5a424e/out/include \
         DEP_SSH2_ROOT=/target/release/build/libssh2-sys-8a50a74a3e5a424e/out \
         DEP_Z_INCLUDE=/usr/include \
