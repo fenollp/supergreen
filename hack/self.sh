@@ -70,6 +70,17 @@ $(postconds ../_)
 EOF
 }
 
+run_again_ensuring_freshly_result() {
+    cat <<EOF
+    - name: Ensure running the same command twice without modifications...
+      run: |
+$(unset_action_envs)
+        $* |& tee ../_
+$(postcond_fresh ../_)
+$(postconds ../_)
+EOF
+}
+
 bin_jobdef() {
     local name=$1; shift
     [[ $# -eq 0 ]]
@@ -150,12 +161,7 @@ $(cache_usage)
 $(cargo_green_fetch)
 $(try_then_fallback_single_threaded cargo green -vv build --all-targets --all-features --locked --frozen --offline)
 $(cache_usage)
-    - name: Ensure running the same command thrice without modifications...
-      run: |
-$(unset_action_envs)
-        cargo green -vv build --all-targets --all-features --locked --frozen --offline |& tee ../_
-$(postcond_fresh ../_)
-$(postconds ../_)
+$(run_again_ensuring_freshly_result cargo green -vv build --all-targets --all-features --locked --frozen --offline)
 $(cache_usage)
 
 
@@ -166,12 +172,7 @@ $(cache_usage)
 $(cargo_green_fetch)
 $(try_then_fallback_single_threaded cargo green -vv test --all-targets --all-features --locked --frozen --offline)
 $(cache_usage)
-    - name: Ensure running the same command twice without modifications...
-      run: |
-$(unset_action_envs)
-        cargo green -vv test --all-targets --all-features --locked --frozen --offline |& tee ../_
-$(postcond_fresh ../_)
-$(postconds ../_)
+$(run_again_ensuring_freshly_result cargo green -vv test --all-targets --all-features --locked --frozen --offline)
 $(cache_usage)
 
 
@@ -182,12 +183,7 @@ $(cache_usage)
 $(cargo_green_fetch)
 $(try_then_fallback_single_threaded cargo green -vv check --all-targets --all-features --locked --frozen --offline)
 $(cache_usage)
-    - name: Ensure running the same command twice without modifications...
-      run: |
-$(unset_action_envs)
-        cargo green -vv check --all-targets --all-features --locked --frozen --offline |& tee ../_
-$(postcond_fresh ../_)
-$(postconds ../_)
+$(run_again_ensuring_freshly_result cargo green -vv check --all-targets --all-features --locked --frozen --offline)
 $(cache_usage)
 
 
@@ -197,6 +193,8 @@ $(postbin_steps)
 $(cache_usage)
 $(cargo_green_fetch)
 $(try_then_fallback_single_threaded cargo green -vv package --all-features --locked --frozen --offline)
+$(cache_usage)
+$(run_again_ensuring_freshly_result cargo green -vv package --all-features --locked --frozen --offline)
 $(cache_usage)
 
 
@@ -208,11 +206,6 @@ $(cache_usage)
 $(cargo_green_fetch)
 $(try_then_fallback_single_threaded cargo green -vv clippy --all-targets --all-features --locked --frozen --offline)
 $(cache_usage)
-    - name: Ensure running the same command twice without modifications...
-      run: |
-$(unset_action_envs)
-        cargo green -vv clippy --all-targets --all-features --locked --frozen --offline |& tee ../_
-$(postcond_fresh ../_)
-$(postconds ../_)
+$(run_again_ensuring_freshly_result cargo green -vv clippy --all-targets --all-features --locked --frozen --offline)
 $(cache_usage)
 EOF
