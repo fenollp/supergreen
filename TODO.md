@@ -935,9 +935,3 @@ error wrappings
 sort=downloads ./hack/find.sh rev image
 
 ---
-
-check each CARGOGREEN_ADD_APT for existnce of '=' as in pkg=vsn
-    suggest using apt-cache policy nodejs
-        even suggest values from executing apt-cache policy nodejs ourselves
-
----
