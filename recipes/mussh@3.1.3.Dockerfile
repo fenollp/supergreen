@@ -22,7 +22,6 @@ RUN \
 ARG TARGETPLATFORM
 RUN \
   --mount=from=xx,source=/usr/bin/xx-apk,dst=/usr/bin/xx-apk \
-  --mount=from=xx,source=/usr/bin/xx-apt,dst=/usr/bin/xx-apt \
   --mount=from=xx,source=/usr/bin/xx-apt,dst=/usr/bin/xx-apt-get \
   --mount=from=xx,source=/usr/bin/xx-cc,dst=/usr/bin/xx-c++ \
   --mount=from=xx,source=/usr/bin/xx-cargo,dst=/usr/bin/xx-cargo \
@@ -35,12 +34,10 @@ RUN \
   --mount=from=xx,source=/usr/bin/xx-verify,dst=/usr/bin/xx-verify \
   --mount=from=xx,source=/usr/bin/xx-windres,dst=/usr/bin/xx-windres \
     set -eux \
- && if   command -v apk >/dev/null 2>&1; then \
-                                     xx-apk     add     --no-cache                 'ca-certificates' 'gcc'; \
-    elif command -v apt >/dev/null 2>&1; then \
-      DEBIAN_FRONTEND=noninteractive xx-apt     install --no-install-recommends -y 'ca-certificates' 'gcc' 'libc6-dev' 'libsqlite3-dev' 'libssl-dev=3.5.5-1~deb13u2' 'pkg-config' 'zlib1g-dev'; \
+ && if command -v apk >/dev/null 2>&1; then \
+                                                          xx-apk     add     --no-cache                 'ca-certificates' 'gcc'; \
     else \
-      DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y 'ca-certificates' 'gcc' 'libc6-dev'; \
+      xx-apt-get update && DEBIAN_FRONTEND=noninteractive xx-apt-get satisfy --no-install-recommends -y 'ca-certificates' 'gcc' 'libc6-dev' 'libsqlite3-dev' 'libssl-dev(>=3.5)' 'pkg-config' 'zlib1g-dev'; \
     fi
 ARG SOURCE_DATE_EPOCH=42
 
@@ -3364,7 +3361,7 @@ RUN \
         DEBUG=false \
         DEP_OPENSSL_CONF=OPENSSL_NO_IDEA,OPENSSL_NO_SSL3_METHOD \
         DEP_OPENSSL_INCLUDE=/usr/include \
-        DEP_OPENSSL_VERSION_NUMBER=30500050 \
+        DEP_OPENSSL_VERSION_NUMBER=30500060 \
         HOST=x86_64-unknown-linux-gnu \
         NUM_JOBS=1 \
         OPT_LEVEL=3 \
