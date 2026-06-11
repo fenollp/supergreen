@@ -1,5 +1,5 @@
 use std::{
-    collections::BTreeMap,
+    collections::{BTreeMap, HashSet, VecDeque},
     env,
     fs::DirBuilder,
     io::Write,
@@ -210,6 +210,9 @@ impl Green {
         if out_dir.is_some() {
             cmd.stdout(Stdio::piped());
             cmd.stderr(Stdio::piped());
+        } else {
+            // cacheonly: tee to CLI + to Effects.stderr to try_to_help
+            cmd.stderr(Stdio::piped());
         }
 
         let call = cmd.show();
@@ -256,7 +259,7 @@ impl Green {
 
         let (tx_err, mut rx_err) = oneshot::channel();
 
-        let handles = if let Some(out_dir) = out_dir {
+        let (handles, tee_err) = if let Some(out_dir) = out_dir {
             let dbg_out = spawn({
                 let target = target.to_owned();
                 let out_dir = out_dir.to_owned();
@@ -271,9 +274,14 @@ impl Green {
                 async move { build_stderr(stderr, Some(tx_err)).await }
             });
 
-            Some((dbg_out, dbg_err))
+            (Some((dbg_out, dbg_err)), None)
         } else {
-            None
+            let tee_err = spawn({
+                let stderr = child.stderr.take().expect("started");
+                async move { tee_stderr(stderr).await }
+            });
+
+            (None, Some(tee_err))
         };
 
         // NOTE: storing STDOUT+STDERR within output stage,
@@ -301,8 +309,23 @@ impl Green {
         // * if the call doesn't fail, the file isn't created.
         // * if the build fails that's a bug, and no files will be outputed.
 
-        let Some((dbg_out, dbg_err)) = handles else { return Ok((status, None)) };
         const SOME_TIME: Duration = Duration::from_mins(30);
+
+        let Some((dbg_out, dbg_err)) = handles else {
+            let Some(tee_err) = tee_err else { unreachable!("either handles or tee_err") };
+            let joined = timeout(SOME_TIME, tee_err).await;
+            drop(child);
+            match joined {
+                Ok(Ok(err_buf)) => {
+                    // Keep STDERR around so Effects::try_to_help can match on errors even for cacheonly
+                    effects.stderr = err_buf.lines().map(ToOwned::to_owned).collect();
+                }
+                Ok(Err(e)) if e.is_cancelled() => bail!("BUG: stderr tee was cancelled: {e}"),
+                Ok(Err(e)) => bail!("BUG: stderr tee panic'd or crashed: {e}"),
+                Err(Elapsed { .. }) => bail!("BUG: build took longer than {SOME_TIME:?}"),
+            }
+            return Ok((status, None));
+        };
         let joined = join!(timeout(SOME_TIME, dbg_out), timeout(SOME_TIME, dbg_err));
         drop(child);
 
@@ -379,6 +402,13 @@ impl Effects {
 
         if !cargo_warnings.is_empty() || !cargo_errors.is_empty() {
             return anyhow!("Runner failed.\n{cargo_warnings}\n{cargo_errors}\n");
+        }
+
+        if self.stderr.iter().any(|line| line.contains("you have held broken packages")) {
+            let pkgs = broken_packages(self.stderr.iter().map(AsRef::as_ref));
+            if !pkgs.is_empty() {
+                return anyhow!("Unable to install these system packages: {pkgs:?}");
+            }
         }
 
         let logs = env::var(ENV_LOG_PATH!())
@@ -600,6 +630,23 @@ async fn build_stderr(stderr: ChildStderr, mut tx_err: Option<Sender<String>>) -
     Ok(())
 }
 
+/// Show in cli but still keep ~1MB rolling text buffer stderr
+async fn tee_stderr(stderr: ChildStderr) -> String {
+    let mut lines = BufReader::new(stderr).lines();
+    let mut ring = VecDeque::new();
+    while let Ok(Some(line)) = lines.next_line().await {
+        eprintln!("{line}"); // Tee to CLI
+
+        ring.extend(line.as_bytes());
+        ring.push_back(b'\n');
+        const CAP: usize = 1 << 20; // 1 MiB
+        while ring.len() > CAP {
+            ring.pop_front();
+        }
+    }
+    String::from_utf8_lossy(ring.make_contiguous()).into_owned()
+}
+
 #[derive(Debug, Default)]
 struct FromStderr {
     stderr: Vec<String>,
@@ -724,6 +771,42 @@ fn fwd_stdout(stdout: &str, badge: &'static str, cargo_home: &Utf8Path) -> FromS
         }
     }
     acc
+}
+
+/// Extract system packages that apt-satisfy wasn't able to install
+fn broken_packages<'a>(it: impl Iterator<Item = &'a str>) -> HashSet<&'a str> {
+    it.filter_map(|line| line.split_once(" Depends: "))
+        .map(|(_, rhs)| rhs)
+        .filter_map(|line| line.split_once(" but it is not installable"))
+        .map(|(lhs, _)| lhs)
+        .collect()
+}
+
+#[test]
+fn list_broken_packages() {
+    let stderr = r#"
+        #379 3.697 Building dependency tree...
+        #379 3.807 Reading state information...
+        #379 3.826 11 packages can be upgraded. Run 'apt list --upgradable' to see them.
+        #379 3.827 + DEBIAN_FRONTEND=noninteractive xx-apt satisfy --no-install-recommends -y ca-certificates gcc libc6-dev libsqlite3-dev libssl-dev=3.5.5-1~deb13u2 pkg-config zlib1g-dev
+        #379 3.837
+        #379 3.837 WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
+        #379 3.837
+        #379 3.840 Reading package lists...
+        #379 4.169 Building dependency tree...
+        #379 4.271 Reading state information...
+        #379 4.323 Some packages could not be installed. This may mean that you have
+        #379 4.323 requested an impossible situation or if you are using the unstable
+        #379 4.323 distribution that some required packages have not yet been created
+        #379 4.323 or been moved out of Incoming.
+        #379 4.323 The following information may help to resolve the situation:
+        #379 4.323
+        #379 4.323 Unsatisfied dependencies:
+        #379 4.388  satisfy:command-line : Depends: libssl-dev=3.5.5-1~deb13u2 but it is not installable
+        #379 4.390 Error: Unable to correct problems, you have held broken packages.
+"#;
+    let pkgs = broken_packages(stderr.lines());
+    assert_eq!(pkgs, ["libssl-dev=3.5.5-1~deb13u2"].into());
 }
 
 /// Somehow, GitHub Actions won't hide this secret
