@@ -139,14 +139,15 @@ async fn actual_main() -> Result<()> {
     #[rustfmt::skip]
     let handled = command.as_deref().is_some_and(|arg| {
         // Subcommands that needn't our wrapping:
-        // (naked) add clean config fmt generate-lockfile help info init locate-project
-        //         login logout metadata new owner pkgid read-manifest remove report rm
-        //         search tree uninstall update vendor verify-project version yank
+        // (naked) add clean config fix fmt generate-lockfile help info init
+        // locate-project login logout metadata new owner pkgid read-manifest
+        // remove report rm search tree uninstall update vendor verify-project
+        // version yank
             matches!(
                 arg,
-                "supergreen" | "b" | "bench" | "build" | "c" | "check" | "clippy" |
-                "d" | "doc" | "fetch" | "fix" | "install" | "package" | "publish" |
-                "r" | "run" | "rustc" | "rustdoc" | "t" | "test"
+                "supergreen" | "b" | "bench" | "build" | "c" | "check" |
+                "clippy" | "d" | "doc" | "fetch" | "install" | "package" |
+                "publish" | "r" | "run" | "rustc" | "rustdoc" | "t" | "test"
             )
     });
 
