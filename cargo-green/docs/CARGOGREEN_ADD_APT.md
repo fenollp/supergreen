@@ -1,5 +1,10 @@
 Adds OS packages to the base image with `apt install`.
 
+Supported syntax:
+* `libssl-dev`
+* `libssl-dev(>=3.5)`
+* `libssl-dev(=3.5.5-1~deb13u2)` *is the encouraged usage for better build cache hits*
+
 See also:
 * `add.apk`
 * `add.apt-get`

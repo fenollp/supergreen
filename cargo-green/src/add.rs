@@ -106,9 +106,9 @@ RUN \
  && if   command -v apk >/dev/null 2>&1; then \
                                      xx-apk     add     --no-cache                 '{apk}'; \
     elif command -v apt >/dev/null 2>&1; then \
-      DEBIAN_FRONTEND=noninteractive xx-apt     install --no-install-recommends -y '{apt}'; \
+      DEBIAN_FRONTEND=noninteractive xx-apt     satisfy --no-install-recommends -y '{apt}'; \
     else \
-      DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '{apt_get}'; \
+      DEBIAN_FRONTEND=noninteractive xx-apt-get satisfy --no-install-recommends -y '{apt_get}'; \
     fi
 "#,
             last = last.trim(),
@@ -117,7 +117,10 @@ RUN \
             apt_get = quote_pkgs(&self.apt_get),
         );
 
-        (Network::Default, block)
+        // TODO: lock package resolving indexes to snaphots (date = base image's?)
+        // https://github.com/reproducible-containers/repro-sources-list.sh/blob/39fbf150e3a5062d4c6b9a241f25af133e7cb6f0/repro-sources-list.sh
+        // https://github.com/reproducible-containers/repro-get/blob/fcc0f1b7907fc0543d10b6934f1ef3a963bcd9c7/examples/gcc/Dockerfile
+        (Network::Default, block) // TODO: pull Network::None using ADDs
     }
 }
 
