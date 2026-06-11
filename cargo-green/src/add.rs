@@ -104,11 +104,11 @@ RUN \
   --mount=from=xx,source=/usr/bin/xx-windres,dst=/usr/bin/xx-windres \
     set -eux \
  && if   command -v apk >/dev/null 2>&1; then \
-                                     xx-apk     add     --no-cache                 '{apk}'; \
+                                                          xx-apk     add     --no-cache                 '{apk}'; \
     elif command -v apt >/dev/null 2>&1; then \
-      DEBIAN_FRONTEND=noninteractive xx-apt     satisfy --no-install-recommends -y '{apt}'; \
+      xx-apt     update && DEBIAN_FRONTEND=noninteractive xx-apt     satisfy --no-install-recommends -y '{apt}'; \
     else \
-      DEBIAN_FRONTEND=noninteractive xx-apt-get satisfy --no-install-recommends -y '{apt_get}'; \
+      xx-apt-get update && DEBIAN_FRONTEND=noninteractive xx-apt-get satisfy --no-install-recommends -y '{apt_get}'; \
     fi
 "#,
             last = last.trim(),
@@ -116,6 +116,11 @@ RUN \
             apt = quote_pkgs(&self.apt),
             apt_get = quote_pkgs(&self.apt_get),
         );
+
+        // TODO: switch to colon-separated values because apt-satisfy may use commas
+        //   cc https://askubuntu.com/a/1516406/719302 + find the whole grammar
+        // > satisfy satisfies dependency strings, as used in Build-Depends.
+        // > It also handles conflicts, by prefixing an argument with "Conflicts: ".
 
         // TODO: lock package resolving indexes to snaphots (date = base image's?)
         // https://github.com/reproducible-containers/repro-sources-list.sh/blob/39fbf150e3a5062d4c6b9a241f25af133e7cb6f0/repro-sources-list.sh
