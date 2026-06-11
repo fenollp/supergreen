@@ -6,6 +6,7 @@ use std::{
 use anyhow::{anyhow, bail, Result};
 use camino::Utf8PathBuf;
 use cargo_toml::Manifest;
+use log::warn;
 use serde::{Deserialize, Serialize};
 
 use crate::{
@@ -197,7 +198,11 @@ impl Green {
             (&mut green.add.apt, ENV_ADD_APT!()),
             (&mut green.add.apt_get, ENV_ADD_APT_GET!()),
         ] {
-            validate_csv(field, var)?;
+            let origin = validate_csv(field, var)?;
+            for f in field.iter().filter(|f| !f.contains('=')) {
+                warn!("{origin} is missing version constraints on {f:?}");
+                eprintln!("{origin} is missing version constraints on {f:?}");
+            }
         }
 
         validate_csv(&mut green.components, ENV_COMPONENTS!())?;
@@ -231,7 +236,7 @@ fn parse_csv(val: &str) -> Vec<String> {
     val.split(',').map(ToOwned::to_owned).collect()
 }
 
-pub(crate) fn validate_csv(field: &mut Vec<String>, var: &'static str) -> Result<()> {
+pub(crate) fn validate_csv(field: &mut Vec<String>, var: &'static str) -> Result<String> {
     let mut origin = setting(var);
     if let Ok(val) = env::var(var) {
         origin = format!("${var}");
@@ -250,7 +255,7 @@ pub(crate) fn validate_csv(field: &mut Vec<String>, var: &'static str) -> Result
             bail!("{origin} contains duplicates")
         }
     }
-    Ok(())
+    Ok(origin)
 }
 
 #[cfg(test)]
