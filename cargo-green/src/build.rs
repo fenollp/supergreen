@@ -459,14 +459,24 @@ async fn build_stdout(
     if let Some(ref mut result) = result {
         result.add_tarball(&buf).await?;
     }
-    let out = BufReader::new(buf.as_slice());
 
+    let (out_handle, err_handle, rcd, written) =
+        untar_into(&buf, &target, &out_dir, &cargo_home).await?;
+    Ok((out_handle, err_handle, rcd, written, result))
+}
+
+async fn untar_into(
+    buf: &[u8],
+    target: &Stage,
+    out_dir: &Utf8Path,
+    cargo_home: &str,
+) -> Result<(String, String, Option<i32>, Vec<Utf8PathBuf>)> {
     let mut err_handle = String::new();
     let mut out_handle = String::new();
     let mut rcd = None;
     let mut written = vec![];
 
-    let mut ar = TarArchive::new(out);
+    let mut ar = TarArchive::new(BufReader::new(buf));
     let mut entries = ar.entries().map_err(|e| anyhow!("Failed reading TAR: {e}"))?;
     while let Some(Ok(mut f)) = entries.next().await {
         let name: Utf8PathBuf = f
@@ -499,13 +509,13 @@ async fn build_stdout(
                 written.push(name.clone());
                 info!("creating (RW) {name:?}");
                 let fname = out_dir.join(&name);
-                write_build_artifact(header, &cargo_home, fname, buf, &f)?;
+                write_build_artifact(header, cargo_home, fname, buf, &f)?;
             }
         }
     }
     info!("rustc wrote {} files:", written.len());
     written.sort();
-    Ok((out_handle, err_handle, rcd, written, result))
+    Ok((out_handle, err_handle, rcd, written))
 }
 
 fn write_build_artifact(
