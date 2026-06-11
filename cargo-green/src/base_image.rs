@@ -72,8 +72,8 @@ impl Default for BaseImage {
 }
 
 impl BaseImage {
-    /// https://rust-lang.github.io/rustup/environment-variables.html
-    /// https://rust-lang.github.io/rustup/concepts/toolchains.html#toolchain-specification
+    /// <https://rust-lang.github.io/rustup/environment-variables.html>
+    /// <https://rust-lang.github.io/rustup/concepts/toolchains.html#toolchain-specification>
     pub(crate) fn make_block(
         &self,
         toolchain: &str,

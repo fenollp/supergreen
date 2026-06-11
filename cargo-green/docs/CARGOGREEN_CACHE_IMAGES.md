@@ -1,6 +1,6 @@
 Both read and write cached data to and from image registries
 
-Exactly a combination of [Green::cache_from_images] and [Green::cache_to_images].
+Exactly a combination of [Cache::from_images] and [Cache::to_images].
 
 See
 * `type=registry` at <https://docs.docker.com/build/cache/backends/>

@@ -1,6 +1,6 @@
 Read cached data from image registries
 
-See also [Green::cache_images] and [Green::cache_to_images].
+See also [Cache::images] and [Cache::to_images].
 
 ```toml
 cache-from-images = [ "docker-image://my.org/team/my-project-in-ci", "docker-image://some.org/global/cache" ]
