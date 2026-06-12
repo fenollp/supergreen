@@ -1,8 +1,8 @@
 #!/usr/bin/env -S bash -eu
 set -o pipefail
 
-stable=1.94.0 # Closest to latest stable, as official Rust images availability permits (TODO: use rustup when image isn't yet available)
-fixed=1.93.1 # Some fixed rustc version
+stable=1.96.0 # Closest to latest stable, as official Rust images availability permits (TODO: use rustup when image isn't yet available)
+fixed=1.94.0 # Some fixed rustc version
 
 
 action__cache='actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5'

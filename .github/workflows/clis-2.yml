@@ -17,7 +17,7 @@ jobs:
 
     - uses: actions-rust-lang/setup-rust-toolchain@2b1f5e9b395427c92ee4e3331786ca3c37afe2d7 # v1.16.0
       with:
-        toolchain: 1.94.0
+        toolchain: 1.96.0
         cache-on-failure: true
     - run: docker info
     - run: docker buildx version
@@ -60,7 +60,7 @@ jobs:
 #     - run: cargo green supergreen sync
 #     - uses: actions-rust-lang/setup-rust-toolchain@2b1f5e9b395427c92ee4e3331786ca3c37afe2d7 # v1.16.0
 #       with:
-#         toolchain: 1.93.1
+#         toolchain: 1.94.0
 #         cache-on-failure: true
 #     - run: cargo green supergreen sync
 #     - run: cargo green supergreen builder rm || true
@@ -82,14 +82,14 @@ jobs:
     defaults:
       run:
         shell: bash -euo pipefail {0}
-    continue-on-error: ${{ matrix.toolchain != '1.94.0' }}
+    continue-on-error: ${{ matrix.toolchain != '1.96.0' }}
     strategy:
       matrix:
         toolchain:
+        - 1.96.0
         - 1.94.0
-        - 1.93.1
         exclude:
-        - toolchain: ${{ github.ref != 'refs/heads/main' && '1.94.0' }}
+        - toolchain: ${{ github.ref != 'refs/heads/main' && '1.96.0' }}
     env:
       CARGO_TARGET_DIR: /tmp/clis-cargo-osdk_main
     # CARGOGREEN_CACHE_FROM_IMAGES: docker-image://localhost:12345/${{ github.repository }}
@@ -178,7 +178,7 @@ jobs:
         { cargo green supergreen setup 2>/dev/null || true; } | sudo /bin/sh -xe
     - name: 🔵 Envs
       run: cargo green supergreen env
-    - if: ${{ matrix.toolchain != '1.94.0' }}
+    - if: ${{ matrix.toolchain != '1.96.0' }}
       run: cargo green supergreen show-rust-base 2>/dev/null | grep '${{ matrix.toolchain }}'
     - run: cargo green supergreen builder
     - name: 🔵 Envs again
@@ -209,7 +209,7 @@ jobs:
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env  \
           cargo green -vv install --jobs=1 --locked --force cargo-osdk --git=https://github.com/asterinas/asterinas --tag=v0.16.1 |& tee _
-    - if: ${{ always() && matrix.toolchain != '1.94.0' }}
+    - if: ${{ always() && matrix.toolchain != '1.96.0' }}
       uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
       name: Upload recipe
       with:
@@ -261,7 +261,7 @@ jobs:
       name: 🌀 Maybe show final path diff
       run: |
         final_diff=(git --no-pager diff)
-        if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
+        if [[ ${{ matrix.toolchain }} != 1.96.0 ]]; then
           final_diff+=(--exit-code)
         fi
         final_diff+=(--ignore-matching-lines=' AS rust-base$')
@@ -342,7 +342,7 @@ jobs:
       name: 🌀 Maybe show final path diff
       run: |
         final_diff=(git --no-pager diff)
-        if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
+        if [[ ${{ matrix.toolchain }} != 1.96.0 ]]; then
           final_diff+=(--exit-code)
         fi
         final_diff+=(--ignore-matching-lines=' AS rust-base$')
@@ -413,7 +413,7 @@ jobs:
       name: 🌀 Maybe show final path diff
       run: |
         final_diff=(git --no-pager diff)
-        if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
+        if [[ ${{ matrix.toolchain }} != 1.96.0 ]]; then
           final_diff+=(--exit-code)
         fi
         final_diff+=(--ignore-matching-lines=' AS rust-base$')
@@ -462,14 +462,14 @@ jobs:
     defaults:
       run:
         shell: bash -euo pipefail {0}
-    continue-on-error: ${{ matrix.toolchain != '1.94.0' }}
+    continue-on-error: ${{ matrix.toolchain != '1.96.0' }}
     strategy:
       matrix:
         toolchain:
+        - 1.96.0
         - 1.94.0
-        - 1.93.1
         exclude:
-        - toolchain: ${{ github.ref != 'refs/heads/main' && '1.94.0' }}
+        - toolchain: ${{ github.ref != 'refs/heads/main' && '1.96.0' }}
     env:
       CARGO_TARGET_DIR: /tmp/clis-fargo_main
     # CARGOGREEN_CACHE_FROM_IMAGES: docker-image://localhost:12345/${{ github.repository }}
@@ -558,7 +558,7 @@ jobs:
         { cargo green supergreen setup 2>/dev/null || true; } | sudo /bin/sh -xe
     - name: 🔵 Envs
       run: cargo green supergreen env
-    - if: ${{ matrix.toolchain != '1.94.0' }}
+    - if: ${{ matrix.toolchain != '1.96.0' }}
       run: cargo green supergreen show-rust-base 2>/dev/null | grep '${{ matrix.toolchain }}'
     - run: cargo green supergreen builder
     - name: 🔵 Envs again
@@ -589,7 +589,7 @@ jobs:
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env  \
           cargo +1.78.0 green -vv install --jobs=1 --locked --force fargo --git https://fuchsia.googlesource.com/fargo --rev=a7d967b |& tee _
-    - if: ${{ always() && matrix.toolchain != '1.94.0' }}
+    - if: ${{ always() && matrix.toolchain != '1.96.0' }}
       uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
       name: Upload recipe
       with:
@@ -641,7 +641,7 @@ jobs:
       name: 🌀 Maybe show final path diff
       run: |
         final_diff=(git --no-pager diff)
-        if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
+        if [[ ${{ matrix.toolchain }} != 1.96.0 ]]; then
           final_diff+=(--exit-code)
         fi
         final_diff+=(--ignore-matching-lines=' AS rust-base$')
@@ -722,7 +722,7 @@ jobs:
       name: 🌀 Maybe show final path diff
       run: |
         final_diff=(git --no-pager diff)
-        if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
+        if [[ ${{ matrix.toolchain }} != 1.96.0 ]]; then
           final_diff+=(--exit-code)
         fi
         final_diff+=(--ignore-matching-lines=' AS rust-base$')
@@ -793,7 +793,7 @@ jobs:
       name: 🌀 Maybe show final path diff
       run: |
         final_diff=(git --no-pager diff)
-        if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
+        if [[ ${{ matrix.toolchain }} != 1.96.0 ]]; then
           final_diff+=(--exit-code)
         fi
         final_diff+=(--ignore-matching-lines=' AS rust-base$')
@@ -842,14 +842,14 @@ jobs:
     defaults:
       run:
         shell: bash -euo pipefail {0}
-    continue-on-error: ${{ matrix.toolchain != '1.94.0' }}
+    continue-on-error: ${{ matrix.toolchain != '1.96.0' }}
     strategy:
       matrix:
         toolchain:
+        - 1.96.0
         - 1.94.0
-        - 1.93.1
         exclude:
-        - toolchain: ${{ github.ref != 'refs/heads/main' && '1.94.0' }}
+        - toolchain: ${{ github.ref != 'refs/heads/main' && '1.96.0' }}
     env:
       CARGO_TARGET_DIR: /tmp/clis-harper-ls_master
     # CARGOGREEN_CACHE_FROM_IMAGES: docker-image://localhost:12345/${{ github.repository }}
@@ -938,7 +938,7 @@ jobs:
         { cargo green supergreen setup 2>/dev/null || true; } | sudo /bin/sh -xe
     - name: 🔵 Envs
       run: cargo green supergreen env
-    - if: ${{ matrix.toolchain != '1.94.0' }}
+    - if: ${{ matrix.toolchain != '1.96.0' }}
       run: cargo green supergreen show-rust-base 2>/dev/null | grep '${{ matrix.toolchain }}'
     - run: cargo green supergreen builder
     - name: 🔵 Envs again
@@ -969,7 +969,7 @@ jobs:
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env  \
           cargo green -vv install --jobs=1 --locked --force harper-ls --git https://github.com/Automattic/harper.git --tag=v1.1.0 |& tee _
-    - if: ${{ always() && matrix.toolchain != '1.94.0' }}
+    - if: ${{ always() && matrix.toolchain != '1.96.0' }}
       uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
       name: Upload recipe
       with:
@@ -1021,7 +1021,7 @@ jobs:
       name: 🌀 Maybe show final path diff
       run: |
         final_diff=(git --no-pager diff)
-        if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
+        if [[ ${{ matrix.toolchain }} != 1.96.0 ]]; then
           final_diff+=(--exit-code)
         fi
         final_diff+=(--ignore-matching-lines=' AS rust-base$')
@@ -1102,7 +1102,7 @@ jobs:
       name: 🌀 Maybe show final path diff
       run: |
         final_diff=(git --no-pager diff)
-        if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
+        if [[ ${{ matrix.toolchain }} != 1.96.0 ]]; then
           final_diff+=(--exit-code)
         fi
         final_diff+=(--ignore-matching-lines=' AS rust-base$')
@@ -1173,7 +1173,7 @@ jobs:
       name: 🌀 Maybe show final path diff
       run: |
         final_diff=(git --no-pager diff)
-        if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
+        if [[ ${{ matrix.toolchain }} != 1.96.0 ]]; then
           final_diff+=(--exit-code)
         fi
         final_diff+=(--ignore-matching-lines=' AS rust-base$')
@@ -1222,14 +1222,14 @@ jobs:
     defaults:
       run:
         shell: bash -euo pipefail {0}
-    continue-on-error: ${{ matrix.toolchain != '1.94.0' }}
+    continue-on-error: ${{ matrix.toolchain != '1.96.0' }}
     strategy:
       matrix:
         toolchain:
+        - 1.96.0
         - 1.94.0
-        - 1.93.1
         exclude:
-        - toolchain: ${{ github.ref != 'refs/heads/main' && '1.94.0' }}
+        - toolchain: ${{ github.ref != 'refs/heads/main' && '1.96.0' }}
     env:
       CARGO_TARGET_DIR: /tmp/clis-gst-plugin-webrtc-signalling_main
     # CARGOGREEN_CACHE_FROM_IMAGES: docker-image://localhost:12345/${{ github.repository }}
@@ -1318,7 +1318,7 @@ jobs:
         { cargo green supergreen setup 2>/dev/null || true; } | sudo /bin/sh -xe
     - name: 🔵 Envs
       run: cargo green supergreen env
-    - if: ${{ matrix.toolchain != '1.94.0' }}
+    - if: ${{ matrix.toolchain != '1.96.0' }}
       run: cargo green supergreen show-rust-base 2>/dev/null | grep '${{ matrix.toolchain }}'
     - run: cargo green supergreen builder
     - name: 🔵 Envs again
@@ -1349,7 +1349,7 @@ jobs:
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env  \
           cargo green -vv install --jobs=1 --locked --force gst-plugin-webrtc-signalling --git https://gitlab.freedesktop.org/gstreamer/gst-plugins-rs --tag=gstreamer-1.29.1 |& tee _
-    - if: ${{ always() && matrix.toolchain != '1.94.0' }}
+    - if: ${{ always() && matrix.toolchain != '1.96.0' }}
       uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
       name: Upload recipe
       with:
@@ -1401,7 +1401,7 @@ jobs:
       name: 🌀 Maybe show final path diff
       run: |
         final_diff=(git --no-pager diff)
-        if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
+        if [[ ${{ matrix.toolchain }} != 1.96.0 ]]; then
           final_diff+=(--exit-code)
         fi
         final_diff+=(--ignore-matching-lines=' AS rust-base$')
@@ -1482,7 +1482,7 @@ jobs:
       name: 🌀 Maybe show final path diff
       run: |
         final_diff=(git --no-pager diff)
-        if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
+        if [[ ${{ matrix.toolchain }} != 1.96.0 ]]; then
           final_diff+=(--exit-code)
         fi
         final_diff+=(--ignore-matching-lines=' AS rust-base$')
@@ -1553,7 +1553,7 @@ jobs:
       name: 🌀 Maybe show final path diff
       run: |
         final_diff=(git --no-pager diff)
-        if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
+        if [[ ${{ matrix.toolchain }} != 1.96.0 ]]; then
           final_diff+=(--exit-code)
         fi
         final_diff+=(--ignore-matching-lines=' AS rust-base$')
@@ -1602,14 +1602,14 @@ jobs:
     defaults:
       run:
         shell: bash -euo pipefail {0}
-    continue-on-error: ${{ matrix.toolchain != '1.94.0' }}
+    continue-on-error: ${{ matrix.toolchain != '1.96.0' }}
     strategy:
       matrix:
         toolchain:
+        - 1.96.0
         - 1.94.0
-        - 1.93.1
         exclude:
-        - toolchain: ${{ github.ref != 'refs/heads/main' && '1.94.0' }}
+        - toolchain: ${{ github.ref != 'refs/heads/main' && '1.96.0' }}
     env:
       CARGO_TARGET_DIR: /tmp/clis-cargo-c_0-10-18_cargo-0-92-0
     # CARGOGREEN_CACHE_FROM_IMAGES: docker-image://localhost:12345/${{ github.repository }}
@@ -1698,7 +1698,7 @@ jobs:
         { cargo green supergreen setup 2>/dev/null || true; } | sudo /bin/sh -xe
     - name: 🔵 Envs
       run: cargo green supergreen env
-    - if: ${{ matrix.toolchain != '1.94.0' }}
+    - if: ${{ matrix.toolchain != '1.96.0' }}
       run: cargo green supergreen show-rust-base 2>/dev/null | grep '${{ matrix.toolchain }}'
     - run: cargo green supergreen builder
     - name: 🔵 Envs again
@@ -1729,7 +1729,7 @@ jobs:
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env CARGOGREEN_ADD_APT=libcurl4-openssl-dev,"libssl-dev(>=3.5)",pkg-config \
           cargo green -vv install --jobs=1 --locked --force cargo-c@0.10.18+cargo-0.92.0 --bin=cargo-cbuild |& tee _
-    - if: ${{ always() && matrix.toolchain != '1.94.0' }}
+    - if: ${{ always() && matrix.toolchain != '1.96.0' }}
       uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
       name: Upload recipe
       with:
@@ -1781,7 +1781,7 @@ jobs:
       name: 🌀 Maybe show final path diff
       run: |
         final_diff=(git --no-pager diff)
-        if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
+        if [[ ${{ matrix.toolchain }} != 1.96.0 ]]; then
           final_diff+=(--exit-code)
         fi
         final_diff+=(--ignore-matching-lines=' AS rust-base$')
@@ -1862,7 +1862,7 @@ jobs:
       name: 🌀 Maybe show final path diff
       run: |
         final_diff=(git --no-pager diff)
-        if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
+        if [[ ${{ matrix.toolchain }} != 1.96.0 ]]; then
           final_diff+=(--exit-code)
         fi
         final_diff+=(--ignore-matching-lines=' AS rust-base$')
@@ -1933,7 +1933,7 @@ jobs:
       name: 🌀 Maybe show final path diff
       run: |
         final_diff=(git --no-pager diff)
-        if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
+        if [[ ${{ matrix.toolchain }} != 1.96.0 ]]; then
           final_diff+=(--exit-code)
         fi
         final_diff+=(--ignore-matching-lines=' AS rust-base$')
@@ -1982,14 +1982,14 @@ jobs:
     defaults:
       run:
         shell: bash -euo pipefail {0}
-    continue-on-error: ${{ matrix.toolchain != '1.94.0' }}
+    continue-on-error: ${{ matrix.toolchain != '1.96.0' }}
     strategy:
       matrix:
         toolchain:
+        - 1.96.0
         - 1.94.0
-        - 1.93.1
         exclude:
-        - toolchain: ${{ github.ref != 'refs/heads/main' && '1.94.0' }}
+        - toolchain: ${{ github.ref != 'refs/heads/main' && '1.96.0' }}
     env:
       CARGO_TARGET_DIR: /tmp/clis-bottom_0-11-4
     # CARGOGREEN_CACHE_FROM_IMAGES: docker-image://localhost:12345/${{ github.repository }}
@@ -2078,7 +2078,7 @@ jobs:
         { cargo green supergreen setup 2>/dev/null || true; } | sudo /bin/sh -xe
     - name: 🔵 Envs
       run: cargo green supergreen env
-    - if: ${{ matrix.toolchain != '1.94.0' }}
+    - if: ${{ matrix.toolchain != '1.96.0' }}
       run: cargo green supergreen show-rust-base 2>/dev/null | grep '${{ matrix.toolchain }}'
     - run: cargo green supergreen builder
     - name: 🔵 Envs again
@@ -2109,7 +2109,7 @@ jobs:
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env CARGOGREEN_SET_ENVS=GITHUB_SHA GITHUB_SHA= \
           cargo green -vv install --jobs=1 --locked --force bottom@0.11.4  |& tee _
-    - if: ${{ always() && matrix.toolchain != '1.94.0' }}
+    - if: ${{ always() && matrix.toolchain != '1.96.0' }}
       uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
       name: Upload recipe
       with:
@@ -2161,7 +2161,7 @@ jobs:
       name: 🌀 Maybe show final path diff
       run: |
         final_diff=(git --no-pager diff)
-        if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
+        if [[ ${{ matrix.toolchain }} != 1.96.0 ]]; then
           final_diff+=(--exit-code)
         fi
         final_diff+=(--ignore-matching-lines=' AS rust-base$')
@@ -2242,7 +2242,7 @@ jobs:
       name: 🌀 Maybe show final path diff
       run: |
         final_diff=(git --no-pager diff)
-        if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
+        if [[ ${{ matrix.toolchain }} != 1.96.0 ]]; then
           final_diff+=(--exit-code)
         fi
         final_diff+=(--ignore-matching-lines=' AS rust-base$')
@@ -2313,7 +2313,7 @@ jobs:
       name: 🌀 Maybe show final path diff
       run: |
         final_diff=(git --no-pager diff)
-        if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
+        if [[ ${{ matrix.toolchain }} != 1.96.0 ]]; then
           final_diff+=(--exit-code)
         fi
         final_diff+=(--ignore-matching-lines=' AS rust-base$')
@@ -2362,14 +2362,14 @@ jobs:
     defaults:
       run:
         shell: bash -euo pipefail {0}
-    continue-on-error: ${{ matrix.toolchain != '1.94.0' }}
+    continue-on-error: ${{ matrix.toolchain != '1.96.0' }}
     strategy:
       matrix:
         toolchain:
+        - 1.96.0
         - 1.94.0
-        - 1.93.1
         exclude:
-        - toolchain: ${{ github.ref != 'refs/heads/main' && '1.94.0' }}
+        - toolchain: ${{ github.ref != 'refs/heads/main' && '1.96.0' }}
     env:
       CARGO_TARGET_DIR: /tmp/clis-alacritty_0-17-0
     # CARGOGREEN_CACHE_FROM_IMAGES: docker-image://localhost:12345/${{ github.repository }}
@@ -2458,7 +2458,7 @@ jobs:
         { cargo green supergreen setup 2>/dev/null || true; } | sudo /bin/sh -xe
     - name: 🔵 Envs
       run: cargo green supergreen env
-    - if: ${{ matrix.toolchain != '1.94.0' }}
+    - if: ${{ matrix.toolchain != '1.96.0' }}
       run: cargo green supergreen show-rust-base 2>/dev/null | grep '${{ matrix.toolchain }}'
     - run: cargo green supergreen builder
     - name: 🔵 Envs again
@@ -2489,7 +2489,7 @@ jobs:
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env CARGOGREEN_ADD_APT=cmake,g++,libfontconfig1-dev,libxcb-xfixes0-dev,libxkbcommon-dev,pkg-config,python3 \
           cargo green -vv install --jobs=1 --locked --force alacritty@0.17.0  |& tee _
-    - if: ${{ always() && matrix.toolchain != '1.94.0' }}
+    - if: ${{ always() && matrix.toolchain != '1.96.0' }}
       uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
       name: Upload recipe
       with:
@@ -2541,7 +2541,7 @@ jobs:
       name: 🌀 Maybe show final path diff
       run: |
         final_diff=(git --no-pager diff)
-        if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
+        if [[ ${{ matrix.toolchain }} != 1.96.0 ]]; then
           final_diff+=(--exit-code)
         fi
         final_diff+=(--ignore-matching-lines=' AS rust-base$')
@@ -2622,7 +2622,7 @@ jobs:
       name: 🌀 Maybe show final path diff
       run: |
         final_diff=(git --no-pager diff)
-        if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
+        if [[ ${{ matrix.toolchain }} != 1.96.0 ]]; then
           final_diff+=(--exit-code)
         fi
         final_diff+=(--ignore-matching-lines=' AS rust-base$')
@@ -2693,7 +2693,7 @@ jobs:
       name: 🌀 Maybe show final path diff
       run: |
         final_diff=(git --no-pager diff)
-        if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
+        if [[ ${{ matrix.toolchain }} != 1.96.0 ]]; then
           final_diff+=(--exit-code)
         fi
         final_diff+=(--ignore-matching-lines=' AS rust-base$')
@@ -2742,14 +2742,14 @@ jobs:
     defaults:
       run:
         shell: bash -euo pipefail {0}
-    continue-on-error: ${{ matrix.toolchain != '1.94.0' }}
+    continue-on-error: ${{ matrix.toolchain != '1.96.0' }}
     strategy:
       matrix:
         toolchain:
+        - 1.96.0
         - 1.94.0
-        - 1.93.1
         exclude:
-        - toolchain: ${{ github.ref != 'refs/heads/main' && '1.94.0' }}
+        - toolchain: ${{ github.ref != 'refs/heads/main' && '1.96.0' }}
     env:
       CARGO_TARGET_DIR: /tmp/clis-cargo-rail_0-1-0
     # CARGOGREEN_CACHE_FROM_IMAGES: docker-image://localhost:12345/${{ github.repository }}
@@ -2838,7 +2838,7 @@ jobs:
         { cargo green supergreen setup 2>/dev/null || true; } | sudo /bin/sh -xe
     - name: 🔵 Envs
       run: cargo green supergreen env
-    - if: ${{ matrix.toolchain != '1.94.0' }}
+    - if: ${{ matrix.toolchain != '1.96.0' }}
       run: cargo green supergreen show-rust-base 2>/dev/null | grep '${{ matrix.toolchain }}'
     - run: cargo green supergreen builder
     - name: 🔵 Envs again
@@ -2869,7 +2869,7 @@ jobs:
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env  \
           cargo green -vv install --jobs=1 --locked --force cargo-rail@0.1.0  |& tee _
-    - if: ${{ always() && matrix.toolchain != '1.94.0' }}
+    - if: ${{ always() && matrix.toolchain != '1.96.0' }}
       uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
       name: Upload recipe
       with:
@@ -2921,7 +2921,7 @@ jobs:
       name: 🌀 Maybe show final path diff
       run: |
         final_diff=(git --no-pager diff)
-        if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
+        if [[ ${{ matrix.toolchain }} != 1.96.0 ]]; then
           final_diff+=(--exit-code)
         fi
         final_diff+=(--ignore-matching-lines=' AS rust-base$')
@@ -3002,7 +3002,7 @@ jobs:
       name: 🌀 Maybe show final path diff
       run: |
         final_diff=(git --no-pager diff)
-        if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
+        if [[ ${{ matrix.toolchain }} != 1.96.0 ]]; then
           final_diff+=(--exit-code)
         fi
         final_diff+=(--ignore-matching-lines=' AS rust-base$')
@@ -3073,7 +3073,7 @@ jobs:
       name: 🌀 Maybe show final path diff
       run: |
         final_diff=(git --no-pager diff)
-        if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
+        if [[ ${{ matrix.toolchain }} != 1.96.0 ]]; then
           final_diff+=(--exit-code)
         fi
         final_diff+=(--ignore-matching-lines=' AS rust-base$')
