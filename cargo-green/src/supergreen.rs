@@ -333,7 +333,6 @@ fn all_envs(green: &Green) -> Vec<(&str, &'static str, Option<String>)> {
         var!(ENV_WITH_NETWORK!(), Some(green.base.with_network.to_string())),
         var!(ENV_COMPONENTS!(), csv(&green.components)),
         var!(ENV_ADD_APT!(), csv(&green.add.apt)),
-        var!(ENV_ADD_APT_GET!(), csv(&green.add.apt_get)),
         var!(ENV_ADD_APK!(), csv(&green.add.apk)),
         var!(ENV_EXPERIMENT!(), csv(&green.experiment)),
     ]

@@ -7,7 +7,6 @@ Supported syntax:
 
 See also:
 * `add.apk`
-* `add.apt-get`
 * `base-image`
 
 ```toml
