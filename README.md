@@ -34,7 +34,6 @@
   - [`$CARGOGREEN_WITH_NETWORK`](#cargogreen_with_network)
   - [`$CARGOGREEN_COMPONENTS`](#cargogreen_COMPONENTS)
   - [`$CARGOGREEN_ADD_APT`](#cargogreen_add_apt)
-  - [`$CARGOGREEN_ADD_APT_GET`](#cargogreen_add_apt_get)
   - [`$CARGOGREEN_ADD_APK`](#cargogreen_add_apk)
   - [`$CARGOGREEN_EXPERIMENT`](#cargogreen_experiment)
 - [Alternatives](#alternatives)
@@ -472,7 +471,6 @@ Supported syntax:
 
 See also:
 * `add.apk`
-* `add.apt-get`
 * `base-image`
 
 ```toml
@@ -489,35 +487,12 @@ export CARGOGREEN_ADD_APT="libpq-dev,pkg-config"
 cargo green supergreen show-rust-base 2>/dev/null
 ```
 
-### `$CARGOGREEN_ADD_APT_GET`
-
-Adds OS packages to the base image with `apt-get install`.
-
-See also:
-* `add.apk`
-* `add.apt`
-* `base-image`
-
-```toml
-add.apt-get = [ "libpq-dev", "pkg-config" ]
-```
-
-*This environment variable takes precedence over any `Cargo.toml` settings:*
-```shell
-# Note: values here are comma-separated.
-export CARGOGREEN_ADD_APT_GET="libpq-dev,pkg-config"
-
-# Inspect the resulting base stage with:
-cargo green supergreen show-rust-base 2>/dev/null
-```
-
 ### `$CARGOGREEN_ADD_APK`
 
 Adds OS packages to the base image with `apk add`.
 
 See also:
 * `add.apt`
-* `add.apt-get`
 * `base-image`
 
 ```toml

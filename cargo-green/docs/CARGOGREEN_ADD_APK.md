@@ -2,7 +2,6 @@ Adds OS packages to the base image with `apk add`.
 
 See also:
 * `add.apt`
-* `add.apt-get`
 * `base-image`
 
 ```toml

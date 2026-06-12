@@ -193,11 +193,9 @@ impl Green {
             }
         }
 
-        for (field, var) in [
-            (&mut green.add.apk, ENV_ADD_APK!()),
-            (&mut green.add.apt, ENV_ADD_APT!()),
-            (&mut green.add.apt_get, ENV_ADD_APT_GET!()),
-        ] {
+        for (field, var) in
+            [(&mut green.add.apk, ENV_ADD_APK!()), (&mut green.add.apt, ENV_ADD_APT!())]
+        {
             let origin = validate_csv(field, var)?;
             for f in field.iter().filter(|f| !f.contains('=')) {
                 warn!("{origin} is missing version constraints on {f:?}");
@@ -385,14 +383,12 @@ name = "test-package"
 
 [package.metadata.green]
 add.apt = [ "libpq-dev", "pkg-config" ]
-add.apt-get = [ "libpq-dev", "pkg-config" ]
 add.apk = [ "libpq-dev", "pkgconf" ]
 "#,
             )
             .unwrap();
             let green = Green::try_new(manifest).unwrap();
             assert_eq!(green.add.apt, vec!["libpq-dev".to_owned(), "pkg-config".to_owned()]);
-            assert_eq!(green.add.apt_get, vec!["libpq-dev".to_owned(), "pkg-config".to_owned()]);
             assert_eq!(green.add.apk, vec!["libpq-dev".to_owned(), "pkgconf".to_owned()]);
         }
 
@@ -408,7 +404,7 @@ add.apk = [ "libpq-dev", "pkgconf" ]
             });
         }
 
-        #[test_case::test_matrix(["apt", "apt-get", "apk"])]
+        #[test_case::test_matrix(["apt", "apk"])]
         fn empty_name(setting: &str) {
             let manifest = Manifest::from_str(&format!(
                 r#"
@@ -424,7 +420,7 @@ add.{setting} = [ "" ]
             assert!(err.contains("empty"), "In: {err}");
         }
 
-        #[test_case::test_matrix(["apt", "apt-get", "apk"])]
+        #[test_case::test_matrix(["apt", "apk"])]
         fn quotes(setting: &str) {
             let manifest = Manifest::from_str(&format!(
                 r#"
@@ -440,7 +436,7 @@ add.{setting} = [ "'a'" ]
             assert!(err.contains("quotes"), "In: {err}");
         }
 
-        #[test_case::test_matrix(["apt", "apt-get", "apk"])]
+        #[test_case::test_matrix(["apt", "apk"])]
         fn whitespace(setting: &str) {
             let manifest = Manifest::from_str(&format!(
                 r#"
@@ -456,7 +452,7 @@ add.{setting} = [ "a b" ]
             assert!(err.contains("space"), "In: {err}");
         }
 
-        #[test_case::test_matrix(["apt", "apt-get", "apk"])]
+        #[test_case::test_matrix(["apt", "apk"])]
         fn duplicates(setting: &str) {
             let manifest = Manifest::from_str(&format!(
                 r#"

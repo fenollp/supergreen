@@ -419,32 +419,17 @@ how should I know which node is selected ? #429
 
 ---
 
-```
-T 25/11/22 09:38:17.432 N clang-sys 1.3.0 ecb54402a27d97cd ❯  && if   command -v apk >/dev/null 2>&1; then
-T 25/11/22 09:38:17.432 N clang-sys 1.3.0 ecb54402a27d97cd ❯                                      xx-apk     add     --no-cache                 '<none>'; \
-T 25/11/22 09:38:17.432 N clang-sys 1.3.0 ecb54402a27d97cd ❯     elif command -v apt >/dev/null 2>&1; then \
-T 25/11/22 09:38:17.432 N clang-sys 1.3.0 ecb54402a27d97cd ❯       DEBIAN_FRONTEND=noninteractive xx-apt     install --no-install-recommends -y 'libelf-dev'; \
-T 25/11/22 09:38:17.432 N clang-sys 1.3.0 ecb54402a27d97cd ❯     else \
-T 25/11/22 09:38:17.432 N clang-sys 1.3.0 ecb54402a27d97cd ❯       DEBIAN_FRONTEND=noninteractive xx-apt-get install --no-install-recommends -y '<none>'; \
-T 25/11/22 09:38:17.432 N clang-sys 1.3.0 ecb54402a27d97cd ❯     fi'''
-T 25/11/22 09:38:17.432 N clang-sys 1.3.0 ecb54402a27d97cd ❯ [[stages]]
-```
-no
-if var set then call install
-> DEBIAN_FRONTEND=noninteractive xx-apt     install --no-install-recommends -y 'libelf-dev'
-thatsit
-
 add: alphasort pkgs before containerfile
 
 also
 add: should be per distro
 * one cargotoml to support multiple distros
     * how to detect which distro is in use?
+      => starlark + give it computed info on baseimage
 
 apt apk :
 * vars for both apt + apk: {apt=libwut-dev, apk=libwut}
 * another var to say which tool  to use: apt
-  _____________________________s to use /in order: apt,apt-get
 
 ---
 
