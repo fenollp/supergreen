@@ -374,32 +374,19 @@ impl Effects {
             un_rewrite_cargo_home(&msg, cargo_home)
         };
 
-        let cargo_warnings = self
-            .stdout
-            .iter()
-            .filter_map(|line| {
-                // https://doc.rust-lang.org/cargo/reference/build-scripts.html#cargo-warning
-                line.split_once("cargo:warning=")
-                    .xor(line.split_once("cargo::warning="))
-                    .map(|(_, rhs)| rhs)
+        let cargo_msgs = |legacy, pat, it: core::slice::Iter<'_, String>| -> String {
+            it.filter_map(|line| {
+                line.split_once(legacy).xor(line.split_once(pat)).map(|(_, rhs)| rhs)
             })
             .map(rewrite)
             .collect::<Vec<_>>()
-            .join("\n");
+            .join("\n")
+        };
 
-        let cargo_errors = self
-            .stdout
-            .iter()
-            .filter_map(|line| {
-                // https://doc.rust-lang.org/cargo/reference/build-scripts.html#cargo-error
-                line.split_once("cargo:error=")
-                    .xor(line.split_once("cargo::error="))
-                    .map(|(_, rhs)| rhs)
-            })
-            .map(rewrite)
-            .collect::<Vec<_>>()
-            .join("\n");
-
+        // https://doc.rust-lang.org/cargo/reference/build-scripts.html#cargo-warning
+        let cargo_warnings = cargo_msgs("cargo:warning=", "cargo::warning=", self.stdout.iter());
+        // https://doc.rust-lang.org/cargo/reference/build-scripts.html#cargo-error
+        let cargo_errors = cargo_msgs("cargo:error=", "cargo::error=", self.stdout.iter());
         if !cargo_warnings.is_empty() || !cargo_errors.is_empty() {
             return anyhow!("Runner failed.\n{cargo_warnings}\n{cargo_errors}\n");
         }
