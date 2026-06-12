@@ -398,6 +398,13 @@ impl Effects {
             }
         }
 
+        if failed_downloading(self.stderr.iter().map(AsRef::as_ref)) {
+            return anyhow!("Failed while downloading a crate's source code, please check your connection and try again");
+        }
+        if buildkit_interrupted(self.stderr.iter().map(AsRef::as_ref)) {
+            return anyhow!("Runner daemon was possibly restarted, please try again");
+        }
+
         let logs = env::var(ENV_LOG_PATH!())
             .map(|val| format!("\nCheck logs at {val}"))
             .unwrap_or_default();
@@ -819,6 +826,53 @@ fn hide_credentials_from_final_log() {
         "toomanyrequests: You have reached your pull rate limit as 'hubuser': *************************************. You may increase the limit by upgrading. https://www.docker.com/increase-rate-limit");
 }
 
+#[must_use]
+fn failed_downloading<'a>(mut it: impl Iterator<Item = &'a str>) -> bool {
+    #[expect(clippy::nonminimal_bool)]
+    it.any(|line| {
+        false
+            || line.contains(" http2: server sent GOAWAY and closed the connection;")
+            || line.contains(" http2: client connection force closed via ")
+            || line.contains(" read: connection reset by peer")
+            || line.contains(" failed to fetch remote ")
+            || line.contains(" digest mismatch sha256:")
+    })
+}
+
+#[test]
+fn download_failed() {
+    let stderrs = vec![
+        r#"
+        I 26/04/28 16:27:29.393 N str-buf 3.0.3 c0a72a922652c7f1 ✖ #14 ERROR: digest mismatch sha256:08bed0bc69739d1f4e553a9cb1a4db848332274df4257efc036db17ad02b9f15: sha256:0ceb97b7225c713c2fd4db0153cb6b3cab244eb37900c3f634ed4d43310d8c34
+        I 26/04/28 16:27:29.436 N str-buf 3.0.3 c0a72a922652c7f1 ✖ ------
+        I 26/04/28 16:27:29.436 N str-buf 3.0.3 c0a72a922652c7f1 ✖  > [cratesio-str-buf-3.0.3 1/1] ADD --chmod=0664 --unpack --checksum=sha256:0ceb97b7225c713c2fd4db0153cb6b3cab244eb37900c3f634ed4d43310d8c34   https://static.crates.io/crates/str-buf/str-buf-3.0.3.crate /:
+        I 26/04/28 16:27:29.436 N str-buf 3.0.3 c0a72a922652c7f1 ✖ ------
+        I 26/04/28 16:27:29.437 N str-buf 3.0.3 c0a72a922652c7f1 ✖ ERROR: failed to build: failed to solve: digest mismatch sha256:08bed0bc69739d1f4e553a9cb1a4db848332274df4257efc036db17ad02b9f15: sha256:0ceb97b7225c713c2fd4db0153cb6b3cab244eb37900c3f634ed4d43310d8c34
+        "#,
+        r#"
+        E 26/04/28 16:27:29.442 N str-buf 3.0.3 c0a72a922652c7f1 Error: Runner BUG: failed to build: failed to solve: digest mismatch sha256:08bed0bc69739d1f4e553a9cb1a4db848332274df4257efc036db17ad02b9f15: sha256:0ceb97b7225c713c2fd4db0153cb6b3cab244eb37900c3f634ed4d43310d8c34
+        "#,
+        r#"
+        E 26/05/22 13:59:46.807 N zerovec 0.11.4 77b613567de82307 Error: Runner BUG: failed to build: failed to solve: Get "https://static.crates.io/crates/zerovec/zerovec-0.11.4.crate": http2: server sent GOAWAY and closed the connection; LastStreamID=289, ErrCode=NO_ERROR, debug="graceful shutdown"
+        "#,
+        r#"
+        E 26/06/02 00:03:45.481 X semver 1.0.26 9fbca58694034ec8 Error: Runner BUG: failed to build: failed to solve: Get "https://static.crates.io/crates/semver/semver-1.0.26.crate": http2: server sent GOAWAY and closed the connection; LastStreamID=257, ErrCode=NO_ERROR, debug="graceful shutdown"
+        "#,
+        r#"
+        Error: Runner BUG: failed to build: failed to solve: failed to fetch remote https://codeberg.org/willempx/qair.git: git stderr:
+        "#,
+        r#"
+        ERROR: failed to build: failed to solve: Get "https://static.crates.io/crates/windows_x86_64_gnullvm/windows_x86_64_gnullvm-0.52.6.crate": http2: client connection force closed via ClientConn.Close
+        "#,
+        r#"
+        ERROR: failed to build: failed to solve: Get "https://static.crates.io/crates/yoke-derive/yoke-derive-0.8.1.crate": read tcp 172.17.0.2:43654->151.101.162.137:443: read: connection reset by peer
+        "#,
+    ];
+    for stderr in stderrs {
+        assert!(failed_downloading(stderr.lines()), "In: {stderr}");
+    }
+}
+
 #[test]
 fn un_rewrites_target_dir_before_outputting_to_cargo() {
     temp_env::with_var("CARGO_TARGET_DIR", Some("/some/path/"), || {
@@ -836,6 +890,21 @@ fn un_rewrites_target_dir_before_outputting_to_cargo() {
     "#
         );
     })
+}
+
+#[must_use]
+fn buildkit_interrupted<'a>(mut it: impl Iterator<Item = &'a str>) -> bool {
+    it.any(|line| line.contains(" received prior goaway:"))
+}
+
+#[test]
+fn interrupted_runner() {
+    let stderr = r#"
+    > resolve image config for docker-image://docker.io/docker/dockerfile:1@sha256:2780b5c3bab67f1f76c781860de469442999ed1a0d7992a5efdf2cffc0e3d769:
+    ------
+    ERROR: failed to build: failed to receive status: rpc error: code = Unavailable desc = closing transport due to: connection error: desc = "error reading from server: EOF", received prior goaway: code: NO_ERROR, debug data: "graceful_stop"
+    "#;
+    assert!(buildkit_interrupted(stderr.lines()), "In: {stderr}");
 }
 
 #[test]
