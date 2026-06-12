@@ -770,15 +770,6 @@ https://github.com/sayavc/niux
 
 ---
 
-```
- > resolve image config for docker-image://docker.io/docker/dockerfile:1@sha256:2780b5c3bab67f1f76c781860de469442999ed1a0d7992a5efdf2cffc0e3d769:
-------
-ERROR: failed to build: failed to receive status: rpc error: code = Unavailable desc = closing transport due to: connection error: desc = "error reading from server: EOF", received prior goaway: code: NO_ERROR, debug data: "graceful_stop"
-```
-=> docker restarted? add retry logic to all .cmd() exec call sites?
-
----
-
 => multiplatform building
 
 https://github.com/ArcaneNibble/awawausb/commit/67e16584a059f72b744e234d10c9ef8bbc402393
@@ -829,31 +820,6 @@ https://github.com/docker/github-builder
 https://github.com/moby/buildkit/releases/tag/dockerfile/1.23.0
     Git URLs now accept the mtime=commit query parameter to initialize checked-out file timestamps to Git commit time. Remote builds using a Git context that define SOURCE_DATE_EPOCH automatically default to mtime=commit for better reproducibility. #6600
     Dockerfile can now define SOURCE_DATE_EPOCH build-arg in the global scope with a default value. The value can still be overridden with --build-arg as before. #6601
-
----
-
-I 26/04/28 16:27:29.393 N str-buf 3.0.3 c0a72a922652c7f1 ✖ #14 ERROR: digest mismatch sha256:08bed0bc69739d1f4e553a9cb1a4db848332274df4257efc036db17ad02b9f15: sha256:0ceb97b7225c713c2fd4db0153cb6b3cab244eb37900c3f634ed4d43310d8c34
-I 26/04/28 16:27:29.436 N str-buf 3.0.3 c0a72a922652c7f1 ✖ ------
-I 26/04/28 16:27:29.436 N str-buf 3.0.3 c0a72a922652c7f1 ✖  > [cratesio-str-buf-3.0.3 1/1] ADD --chmod=0664 --unpack --checksum=sha256:0ceb97b7225c713c2fd4db0153cb6b3cab244eb37900c3f634ed4d43310d8c34   https://static.crates.io/crates/str-buf/str-buf-3.0.3.crate /:
-I 26/04/28 16:27:29.436 N str-buf 3.0.3 c0a72a922652c7f1 ✖ ------
-I 26/04/28 16:27:29.437 N str-buf 3.0.3 c0a72a922652c7f1 ✖ ERROR: failed to build: failed to solve: digest mismatch sha256:08bed0bc69739d1f4e553a9cb1a4db848332274df4257efc036db17ad02b9f15: sha256:0ceb97b7225c713c2fd4db0153cb6b3cab244eb37900c3f634ed4d43310d8c34
-
-I 26/04/28 16:27:29.441 N str-buf 3.0.3 c0a72a922652c7f1 Terminating task CACHED:5 DONE:8 {"context": " 2B", "dockerfile": " 5.19kB"}
-I 26/04/28 16:27:29.441 N str-buf 3.0.3 c0a72a922652c7f1 running untar on STDOUT
-I 26/04/28 16:27:29.441 N str-buf 3.0.3 c0a72a922652c7f1 build ran for 463.597703ms
-I 26/04/28 16:27:29.441 N str-buf 3.0.3 c0a72a922652c7f1 rustc wrote 0 files:
-
-E 26/04/28 16:27:29.442 N str-buf 3.0.3 c0a72a922652c7f1 Error: Runner BUG: failed to build: failed to solve: digest mismatch sha256:08bed0bc69739d1f4e553a9cb1a4db848332274df4257efc036db17ad02b9f15: sha256:0ceb97b7225c713c2fd4db0153cb6b3cab244eb37900c3f634ed4d43310d8c34
-
-==> reformulate error into "Failed while downloading a crate's source code, please check your connection and try again"
-===> retry first though
-same for:
-
-E 26/05/22 13:59:46.807 N zerovec 0.11.4 77b613567de82307 Error: Runner BUG: failed to build: failed to solve: Get "https://static.crates.io/crates/zerovec/zerovec-0.11.4.crate": http2: server sent GOAWAY and closed the connection; LastStreamID=289, ErrCode=NO_ERROR, debug="graceful shutdown"
-
-E 26/06/02 00:03:45.481 X semver 1.0.26 9fbca58694034ec8 Error: Runner BUG: failed to build: failed to solve: Get "https://static.crates.io/crates/semver/semver-1.0.26.crate": http2: server sent GOAWAY and closed the connection; LastStreamID=257, ErrCode=NO_ERROR, debug="graceful shutdown"
-
-Error: Runner BUG: failed to build: failed to solve: failed to fetch remote https://codeberg.org/willempx/qair.git: git stderr:
 
 ---
 
