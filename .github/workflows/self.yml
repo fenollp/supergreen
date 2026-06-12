@@ -17,7 +17,7 @@ jobs:
 
     - uses: actions-rust-lang/setup-rust-toolchain@2b1f5e9b395427c92ee4e3331786ca3c37afe2d7 # v1.16.0
       with:
-        toolchain: 1.94.0
+        toolchain: 1.96.0
         cache-on-failure: true
     - run: docker info
     - run: docker buildx version
@@ -60,7 +60,7 @@ jobs:
 #     - run: cargo green supergreen sync
 #     - uses: actions-rust-lang/setup-rust-toolchain@2b1f5e9b395427c92ee4e3331786ca3c37afe2d7 # v1.16.0
 #       with:
-#         toolchain: 1.93.1
+#         toolchain: 1.94.0
 #         cache-on-failure: true
 #     - run: cargo green supergreen sync
 #     - run: cargo green supergreen builder rm || true
@@ -198,7 +198,7 @@ jobs:
       name: 🌀 Maybe show final path diff
       run: |
         final_diff=(git --no-pager diff)
-        if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
+        if [[ ${{ matrix.toolchain }} != 1.96.0 ]]; then
           final_diff+=(--exit-code)
         fi
         final_diff+=(--ignore-matching-lines=' AS rust-base$')
@@ -345,7 +345,7 @@ jobs:
       name: 🌀 Maybe show final path diff
       run: |
         final_diff=(git --no-pager diff)
-        if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
+        if [[ ${{ matrix.toolchain }} != 1.96.0 ]]; then
           final_diff+=(--exit-code)
         fi
         final_diff+=(--ignore-matching-lines=' AS rust-base$')
@@ -488,7 +488,7 @@ jobs:
       name: 🌀 Maybe show final path diff
       run: |
         final_diff=(git --no-pager diff)
-        if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
+        if [[ ${{ matrix.toolchain }} != 1.96.0 ]]; then
           final_diff+=(--exit-code)
         fi
         final_diff+=(--ignore-matching-lines=' AS rust-base$')
@@ -638,7 +638,7 @@ jobs:
       name: 🌀 Maybe show final path diff
       run: |
         final_diff=(git --no-pager diff)
-        if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
+        if [[ ${{ matrix.toolchain }} != 1.96.0 ]]; then
           final_diff+=(--exit-code)
         fi
         final_diff+=(--ignore-matching-lines=' AS rust-base$')
@@ -713,7 +713,7 @@ jobs:
       name: 🌀 Maybe show final path diff
       run: |
         final_diff=(git --no-pager diff)
-        if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
+        if [[ ${{ matrix.toolchain }} != 1.96.0 ]]; then
           final_diff+=(--exit-code)
         fi
         final_diff+=(--ignore-matching-lines=' AS rust-base$')
@@ -852,7 +852,7 @@ jobs:
       name: 🌀 Maybe show final path diff
       run: |
         final_diff=(git --no-pager diff)
-        if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
+        if [[ ${{ matrix.toolchain }} != 1.96.0 ]]; then
           final_diff+=(--exit-code)
         fi
         final_diff+=(--ignore-matching-lines=' AS rust-base$')
@@ -921,7 +921,7 @@ jobs:
       name: 🌀 Maybe show final path diff
       run: |
         final_diff=(git --no-pager diff)
-        if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
+        if [[ ${{ matrix.toolchain }} != 1.96.0 ]]; then
           final_diff+=(--exit-code)
         fi
         final_diff+=(--ignore-matching-lines=' AS rust-base$')
@@ -996,7 +996,7 @@ jobs:
       name: 🌀 Maybe show final path diff
       run: |
         final_diff=(git --no-pager diff)
-        if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
+        if [[ ${{ matrix.toolchain }} != 1.96.0 ]]; then
           final_diff+=(--exit-code)
         fi
         final_diff+=(--ignore-matching-lines=' AS rust-base$')
@@ -1135,7 +1135,7 @@ jobs:
       name: 🌀 Maybe show final path diff
       run: |
         final_diff=(git --no-pager diff)
-        if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
+        if [[ ${{ matrix.toolchain }} != 1.96.0 ]]; then
           final_diff+=(--exit-code)
         fi
         final_diff+=(--ignore-matching-lines=' AS rust-base$')
@@ -1204,7 +1204,7 @@ jobs:
       name: 🌀 Maybe show final path diff
       run: |
         final_diff=(git --no-pager diff)
-        if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
+        if [[ ${{ matrix.toolchain }} != 1.96.0 ]]; then
           final_diff+=(--exit-code)
         fi
         final_diff+=(--ignore-matching-lines=' AS rust-base$')
@@ -1279,7 +1279,7 @@ jobs:
       name: 🌀 Maybe show final path diff
       run: |
         final_diff=(git --no-pager diff)
-        if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
+        if [[ ${{ matrix.toolchain }} != 1.96.0 ]]; then
           final_diff+=(--exit-code)
         fi
         final_diff+=(--ignore-matching-lines=' AS rust-base$')
@@ -1418,7 +1418,7 @@ jobs:
       name: 🌀 Maybe show final path diff
       run: |
         final_diff=(git --no-pager diff)
-        if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
+        if [[ ${{ matrix.toolchain }} != 1.96.0 ]]; then
           final_diff+=(--exit-code)
         fi
         final_diff+=(--ignore-matching-lines=' AS rust-base$')
@@ -1487,7 +1487,7 @@ jobs:
       name: 🌀 Maybe show final path diff
       run: |
         final_diff=(git --no-pager diff)
-        if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
+        if [[ ${{ matrix.toolchain }} != 1.96.0 ]]; then
           final_diff+=(--exit-code)
         fi
         final_diff+=(--ignore-matching-lines=' AS rust-base$')
@@ -1562,7 +1562,7 @@ jobs:
       name: 🌀 Maybe show final path diff
       run: |
         final_diff=(git --no-pager diff)
-        if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
+        if [[ ${{ matrix.toolchain }} != 1.96.0 ]]; then
           final_diff+=(--exit-code)
         fi
         final_diff+=(--ignore-matching-lines=' AS rust-base$')
@@ -1701,7 +1701,7 @@ jobs:
       name: 🌀 Maybe show final path diff
       run: |
         final_diff=(git --no-pager diff)
-        if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
+        if [[ ${{ matrix.toolchain }} != 1.96.0 ]]; then
           final_diff+=(--exit-code)
         fi
         final_diff+=(--ignore-matching-lines=' AS rust-base$')
@@ -1770,7 +1770,7 @@ jobs:
       name: 🌀 Maybe show final path diff
       run: |
         final_diff=(git --no-pager diff)
-        if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
+        if [[ ${{ matrix.toolchain }} != 1.96.0 ]]; then
           final_diff+=(--exit-code)
         fi
         final_diff+=(--ignore-matching-lines=' AS rust-base$')
@@ -1845,7 +1845,7 @@ jobs:
       name: 🌀 Maybe show final path diff
       run: |
         final_diff=(git --no-pager diff)
-        if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
+        if [[ ${{ matrix.toolchain }} != 1.96.0 ]]; then
           final_diff+=(--exit-code)
         fi
         final_diff+=(--ignore-matching-lines=' AS rust-base$')
@@ -1984,7 +1984,7 @@ jobs:
       name: 🌀 Maybe show final path diff
       run: |
         final_diff=(git --no-pager diff)
-        if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
+        if [[ ${{ matrix.toolchain }} != 1.96.0 ]]; then
           final_diff+=(--exit-code)
         fi
         final_diff+=(--ignore-matching-lines=' AS rust-base$')
@@ -2053,7 +2053,7 @@ jobs:
       name: 🌀 Maybe show final path diff
       run: |
         final_diff=(git --no-pager diff)
-        if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
+        if [[ ${{ matrix.toolchain }} != 1.96.0 ]]; then
           final_diff+=(--exit-code)
         fi
         final_diff+=(--ignore-matching-lines=' AS rust-base$')
@@ -2196,7 +2196,7 @@ jobs:
       name: 🌀 Maybe show final path diff
       run: |
         final_diff=(git --no-pager diff)
-        if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
+        if [[ ${{ matrix.toolchain }} != 1.96.0 ]]; then
           final_diff+=(--exit-code)
         fi
         final_diff+=(--ignore-matching-lines=' AS rust-base$')
@@ -2265,7 +2265,7 @@ jobs:
       name: 🌀 Maybe show final path diff
       run: |
         final_diff=(git --no-pager diff)
-        if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
+        if [[ ${{ matrix.toolchain }} != 1.96.0 ]]; then
           final_diff+=(--exit-code)
         fi
         final_diff+=(--ignore-matching-lines=' AS rust-base$')
@@ -2340,7 +2340,7 @@ jobs:
       name: 🌀 Maybe show final path diff
       run: |
         final_diff=(git --no-pager diff)
-        if [[ ${{ matrix.toolchain }} != 1.94.0 ]]; then
+        if [[ ${{ matrix.toolchain }} != 1.96.0 ]]; then
           final_diff+=(--exit-code)
         fi
         final_diff+=(--ignore-matching-lines=' AS rust-base$')
