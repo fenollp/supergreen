@@ -152,6 +152,14 @@ $(postbin_steps $nightly)
 $(cache_usage)
 $(try_then_fallback_single_threaded cargo +$nightly green udeps --all-targets)
 $(cache_usage)
+
+$(bin_jobdef 'udeps-bis')
+    steps:
+$(postbin_steps $nightly)
+    - uses: $action__install_action
+      with:
+        tool: cargo-udeps
+$(cache_usage)
 $(try_then_fallback_single_threaded cargo green +$nightly udeps --all-targets)
 $(cache_usage)
 
