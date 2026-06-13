@@ -191,8 +191,7 @@ jobs:
     - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
     - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
     - name: 🔵 cargo install
-      id: cargo-install
-      continue-on-error: true
+      id: do-try
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
@@ -201,7 +200,8 @@ jobs:
         env  \
           cargo green -vv install --locked --force cargo-osdk --git=https://github.com/asterinas/asterinas --tag=v0.16.1 |& tee _
     - name: 🔵 cargo install jobs=1
-      #if: ${{ job.steps.cargo-install.outcome == 'failure' }} this actually hides failure of cargo-install step
+      id: do-try-jobs1
+      if: ${{ job.steps.do-try.outcome == 'failure' }}
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
@@ -217,42 +217,42 @@ jobs:
         path: ${{ env.CARGOGREEN_FINAL_PATH }}
         retention-days: 1
         if-no-files-found: error
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
         ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' _
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
       run: |
         ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
       run: |
         ! grep -C20 -F 'connection error: COMPRESSION_ERROR' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> there's some panic!s
       run: |
         ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> there's some BUGs
       run: |
         ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> here's cargo's error text
       run: |
         ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' $CARGOGREEN_LOG_PATH _
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> 429 Too Many Requests
       run: |
         ! grep -C20 -F '429 Too Many Requests' $CARGOGREEN_LOG_PATH _
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> here's relevant logs
       run: |
         ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
@@ -297,42 +297,42 @@ jobs:
         grep Dirty     _                     && ((err+=2))
         grep Compiling _                     && ((err+=4))
         exit $err
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
         ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' _
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
       run: |
         ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
       run: |
         ! grep -C20 -F 'connection error: COMPRESSION_ERROR' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> there's some panic!s
       run: |
         ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> there's some BUGs
       run: |
         ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> here's cargo's error text
       run: |
         ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' $CARGOGREEN_LOG_PATH _
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> 429 Too Many Requests
       run: |
         ! grep -C20 -F '429 Too Many Requests' $CARGOGREEN_LOG_PATH _
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> here's relevant logs
       run: |
         ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
@@ -368,42 +368,42 @@ jobs:
         grep Dirty     _                     && ((err+=2))
         grep Compiling _                     && ((err+=4))
         exit $err
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
         ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' _
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
       run: |
         ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
       run: |
         ! grep -C20 -F 'connection error: COMPRESSION_ERROR' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> there's some panic!s
       run: |
         ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> there's some BUGs
       run: |
         ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> here's cargo's error text
       run: |
         ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' $CARGOGREEN_LOG_PATH _
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> 429 Too Many Requests
       run: |
         ! grep -C20 -F '429 Too Many Requests' $CARGOGREEN_LOG_PATH _
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> here's relevant logs
       run: |
         ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
@@ -569,8 +569,7 @@ jobs:
     - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
     - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
     - name: 🔵 cargo +1.78.0 install
-      id: cargo-install
-      continue-on-error: true
+      id: do-try
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
@@ -579,7 +578,8 @@ jobs:
         env  \
           cargo +1.78.0 green -vv install --locked --force fargo --git https://fuchsia.googlesource.com/fargo --rev=a7d967b |& tee _
     - name: 🔵 cargo +1.78.0 install jobs=1
-      #if: ${{ job.steps.cargo-install.outcome == 'failure' }} this actually hides failure of cargo-install step
+      id: do-try-jobs1
+      if: ${{ job.steps.do-try.outcome == 'failure' }}
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
@@ -595,42 +595,42 @@ jobs:
         path: ${{ env.CARGOGREEN_FINAL_PATH }}
         retention-days: 1
         if-no-files-found: error
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
         ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' _
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
       run: |
         ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
       run: |
         ! grep -C20 -F 'connection error: COMPRESSION_ERROR' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> there's some panic!s
       run: |
         ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> there's some BUGs
       run: |
         ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> here's cargo's error text
       run: |
         ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' $CARGOGREEN_LOG_PATH _
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> 429 Too Many Requests
       run: |
         ! grep -C20 -F '429 Too Many Requests' $CARGOGREEN_LOG_PATH _
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> here's relevant logs
       run: |
         ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
@@ -675,42 +675,42 @@ jobs:
         grep Dirty     _                     && ((err+=2))
         grep Compiling _                     && ((err+=4))
         exit $err
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
         ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' _
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
       run: |
         ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
       run: |
         ! grep -C20 -F 'connection error: COMPRESSION_ERROR' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> there's some panic!s
       run: |
         ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> there's some BUGs
       run: |
         ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> here's cargo's error text
       run: |
         ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' $CARGOGREEN_LOG_PATH _
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> 429 Too Many Requests
       run: |
         ! grep -C20 -F '429 Too Many Requests' $CARGOGREEN_LOG_PATH _
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> here's relevant logs
       run: |
         ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
@@ -746,42 +746,42 @@ jobs:
         grep Dirty     _                     && ((err+=2))
         grep Compiling _                     && ((err+=4))
         exit $err
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
         ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' _
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
       run: |
         ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
       run: |
         ! grep -C20 -F 'connection error: COMPRESSION_ERROR' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> there's some panic!s
       run: |
         ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> there's some BUGs
       run: |
         ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> here's cargo's error text
       run: |
         ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' $CARGOGREEN_LOG_PATH _
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> 429 Too Many Requests
       run: |
         ! grep -C20 -F '429 Too Many Requests' $CARGOGREEN_LOG_PATH _
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> here's relevant logs
       run: |
         ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
@@ -947,8 +947,7 @@ jobs:
     - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
     - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
     - name: 🔵 cargo install
-      id: cargo-install
-      continue-on-error: true
+      id: do-try
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
@@ -957,7 +956,8 @@ jobs:
         env  \
           cargo green -vv install --locked --force harper-ls --git https://github.com/Automattic/harper.git --tag=v1.1.0 |& tee _
     - name: 🔵 cargo install jobs=1
-      #if: ${{ job.steps.cargo-install.outcome == 'failure' }} this actually hides failure of cargo-install step
+      id: do-try-jobs1
+      if: ${{ job.steps.do-try.outcome == 'failure' }}
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
@@ -973,42 +973,42 @@ jobs:
         path: ${{ env.CARGOGREEN_FINAL_PATH }}
         retention-days: 1
         if-no-files-found: error
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
         ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' _
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
       run: |
         ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
       run: |
         ! grep -C20 -F 'connection error: COMPRESSION_ERROR' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> there's some panic!s
       run: |
         ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> there's some BUGs
       run: |
         ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> here's cargo's error text
       run: |
         ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' $CARGOGREEN_LOG_PATH _
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> 429 Too Many Requests
       run: |
         ! grep -C20 -F '429 Too Many Requests' $CARGOGREEN_LOG_PATH _
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> here's relevant logs
       run: |
         ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
@@ -1053,42 +1053,42 @@ jobs:
         grep Dirty     _                     && ((err+=2))
         grep Compiling _                     && ((err+=4))
         exit $err
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
         ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' _
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
       run: |
         ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
       run: |
         ! grep -C20 -F 'connection error: COMPRESSION_ERROR' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> there's some panic!s
       run: |
         ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> there's some BUGs
       run: |
         ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> here's cargo's error text
       run: |
         ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' $CARGOGREEN_LOG_PATH _
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> 429 Too Many Requests
       run: |
         ! grep -C20 -F '429 Too Many Requests' $CARGOGREEN_LOG_PATH _
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> here's relevant logs
       run: |
         ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
@@ -1124,42 +1124,42 @@ jobs:
         grep Dirty     _                     && ((err+=2))
         grep Compiling _                     && ((err+=4))
         exit $err
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
         ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' _
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
       run: |
         ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
       run: |
         ! grep -C20 -F 'connection error: COMPRESSION_ERROR' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> there's some panic!s
       run: |
         ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> there's some BUGs
       run: |
         ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> here's cargo's error text
       run: |
         ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' $CARGOGREEN_LOG_PATH _
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> 429 Too Many Requests
       run: |
         ! grep -C20 -F '429 Too Many Requests' $CARGOGREEN_LOG_PATH _
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> here's relevant logs
       run: |
         ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
@@ -1325,8 +1325,7 @@ jobs:
     - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
     - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
     - name: 🔵 cargo install
-      id: cargo-install
-      continue-on-error: true
+      id: do-try
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
@@ -1335,7 +1334,8 @@ jobs:
         env  \
           cargo green -vv install --locked --force gst-plugin-webrtc-signalling --git https://gitlab.freedesktop.org/gstreamer/gst-plugins-rs --tag=gstreamer-1.29.1 |& tee _
     - name: 🔵 cargo install jobs=1
-      #if: ${{ job.steps.cargo-install.outcome == 'failure' }} this actually hides failure of cargo-install step
+      id: do-try-jobs1
+      if: ${{ job.steps.do-try.outcome == 'failure' }}
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
@@ -1351,42 +1351,42 @@ jobs:
         path: ${{ env.CARGOGREEN_FINAL_PATH }}
         retention-days: 1
         if-no-files-found: error
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
         ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' _
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
       run: |
         ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
       run: |
         ! grep -C20 -F 'connection error: COMPRESSION_ERROR' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> there's some panic!s
       run: |
         ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> there's some BUGs
       run: |
         ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> here's cargo's error text
       run: |
         ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' $CARGOGREEN_LOG_PATH _
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> 429 Too Many Requests
       run: |
         ! grep -C20 -F '429 Too Many Requests' $CARGOGREEN_LOG_PATH _
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> here's relevant logs
       run: |
         ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
@@ -1431,42 +1431,42 @@ jobs:
         grep Dirty     _                     && ((err+=2))
         grep Compiling _                     && ((err+=4))
         exit $err
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
         ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' _
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
       run: |
         ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
       run: |
         ! grep -C20 -F 'connection error: COMPRESSION_ERROR' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> there's some panic!s
       run: |
         ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> there's some BUGs
       run: |
         ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> here's cargo's error text
       run: |
         ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' $CARGOGREEN_LOG_PATH _
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> 429 Too Many Requests
       run: |
         ! grep -C20 -F '429 Too Many Requests' $CARGOGREEN_LOG_PATH _
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> here's relevant logs
       run: |
         ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
@@ -1502,42 +1502,42 @@ jobs:
         grep Dirty     _                     && ((err+=2))
         grep Compiling _                     && ((err+=4))
         exit $err
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
         ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' _
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
       run: |
         ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
       run: |
         ! grep -C20 -F 'connection error: COMPRESSION_ERROR' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> there's some panic!s
       run: |
         ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> there's some BUGs
       run: |
         ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> here's cargo's error text
       run: |
         ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' $CARGOGREEN_LOG_PATH _
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> 429 Too Many Requests
       run: |
         ! grep -C20 -F '429 Too Many Requests' $CARGOGREEN_LOG_PATH _
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> here's relevant logs
       run: |
         ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
@@ -1703,8 +1703,7 @@ jobs:
     - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
     - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
     - name: 🔵 cargo install
-      id: cargo-install
-      continue-on-error: true
+      id: do-try
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
@@ -1713,7 +1712,8 @@ jobs:
         env CARGOGREEN_ADD_APT=libcurl4-openssl-dev,"libssl-dev(>=3.5)",pkg-config \
           cargo green -vv install --locked --force cargo-c@0.10.18+cargo-0.92.0 --bin=cargo-cbuild |& tee _
     - name: 🔵 cargo install jobs=1
-      #if: ${{ job.steps.cargo-install.outcome == 'failure' }} this actually hides failure of cargo-install step
+      id: do-try-jobs1
+      if: ${{ job.steps.do-try.outcome == 'failure' }}
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
@@ -1729,42 +1729,42 @@ jobs:
         path: ${{ env.CARGOGREEN_FINAL_PATH }}
         retention-days: 1
         if-no-files-found: error
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
         ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' _
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
       run: |
         ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
       run: |
         ! grep -C20 -F 'connection error: COMPRESSION_ERROR' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> there's some panic!s
       run: |
         ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> there's some BUGs
       run: |
         ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> here's cargo's error text
       run: |
         ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' $CARGOGREEN_LOG_PATH _
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> 429 Too Many Requests
       run: |
         ! grep -C20 -F '429 Too Many Requests' $CARGOGREEN_LOG_PATH _
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> here's relevant logs
       run: |
         ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
@@ -1809,42 +1809,42 @@ jobs:
         grep Dirty     _                     && ((err+=2))
         grep Compiling _                     && ((err+=4))
         exit $err
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
         ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' _
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
       run: |
         ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
       run: |
         ! grep -C20 -F 'connection error: COMPRESSION_ERROR' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> there's some panic!s
       run: |
         ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> there's some BUGs
       run: |
         ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> here's cargo's error text
       run: |
         ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' $CARGOGREEN_LOG_PATH _
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> 429 Too Many Requests
       run: |
         ! grep -C20 -F '429 Too Many Requests' $CARGOGREEN_LOG_PATH _
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> here's relevant logs
       run: |
         ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
@@ -1880,42 +1880,42 @@ jobs:
         grep Dirty     _                     && ((err+=2))
         grep Compiling _                     && ((err+=4))
         exit $err
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
         ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' _
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
       run: |
         ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
       run: |
         ! grep -C20 -F 'connection error: COMPRESSION_ERROR' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> there's some panic!s
       run: |
         ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> there's some BUGs
       run: |
         ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> here's cargo's error text
       run: |
         ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' $CARGOGREEN_LOG_PATH _
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> 429 Too Many Requests
       run: |
         ! grep -C20 -F '429 Too Many Requests' $CARGOGREEN_LOG_PATH _
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> here's relevant logs
       run: |
         ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
@@ -2081,8 +2081,7 @@ jobs:
     - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
     - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
     - name: 🔵 cargo install
-      id: cargo-install
-      continue-on-error: true
+      id: do-try
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
@@ -2091,7 +2090,8 @@ jobs:
         env CARGOGREEN_SET_ENVS=GITHUB_SHA GITHUB_SHA= \
           cargo green -vv install --locked --force bottom@0.11.4  |& tee _
     - name: 🔵 cargo install jobs=1
-      #if: ${{ job.steps.cargo-install.outcome == 'failure' }} this actually hides failure of cargo-install step
+      id: do-try-jobs1
+      if: ${{ job.steps.do-try.outcome == 'failure' }}
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
@@ -2107,42 +2107,42 @@ jobs:
         path: ${{ env.CARGOGREEN_FINAL_PATH }}
         retention-days: 1
         if-no-files-found: error
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
         ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' _
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
       run: |
         ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
       run: |
         ! grep -C20 -F 'connection error: COMPRESSION_ERROR' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> there's some panic!s
       run: |
         ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> there's some BUGs
       run: |
         ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> here's cargo's error text
       run: |
         ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' $CARGOGREEN_LOG_PATH _
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> 429 Too Many Requests
       run: |
         ! grep -C20 -F '429 Too Many Requests' $CARGOGREEN_LOG_PATH _
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> here's relevant logs
       run: |
         ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
@@ -2187,42 +2187,42 @@ jobs:
         grep Dirty     _                     && ((err+=2))
         grep Compiling _                     && ((err+=4))
         exit $err
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
         ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' _
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
       run: |
         ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
       run: |
         ! grep -C20 -F 'connection error: COMPRESSION_ERROR' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> there's some panic!s
       run: |
         ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> there's some BUGs
       run: |
         ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> here's cargo's error text
       run: |
         ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' $CARGOGREEN_LOG_PATH _
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> 429 Too Many Requests
       run: |
         ! grep -C20 -F '429 Too Many Requests' $CARGOGREEN_LOG_PATH _
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> here's relevant logs
       run: |
         ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
@@ -2258,42 +2258,42 @@ jobs:
         grep Dirty     _                     && ((err+=2))
         grep Compiling _                     && ((err+=4))
         exit $err
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
         ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' _
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
       run: |
         ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
       run: |
         ! grep -C20 -F 'connection error: COMPRESSION_ERROR' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> there's some panic!s
       run: |
         ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> there's some BUGs
       run: |
         ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> here's cargo's error text
       run: |
         ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' $CARGOGREEN_LOG_PATH _
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> 429 Too Many Requests
       run: |
         ! grep -C20 -F '429 Too Many Requests' $CARGOGREEN_LOG_PATH _
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> here's relevant logs
       run: |
         ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
@@ -2459,8 +2459,7 @@ jobs:
     - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
     - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
     - name: 🔵 cargo install
-      id: cargo-install
-      continue-on-error: true
+      id: do-try
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
@@ -2469,7 +2468,8 @@ jobs:
         env CARGOGREEN_ADD_APT=cmake,g++,libfontconfig1-dev,libxcb-xfixes0-dev,libxkbcommon-dev,pkg-config,python3 \
           cargo green -vv install --locked --force alacritty@0.17.0  |& tee _
     - name: 🔵 cargo install jobs=1
-      #if: ${{ job.steps.cargo-install.outcome == 'failure' }} this actually hides failure of cargo-install step
+      id: do-try-jobs1
+      if: ${{ job.steps.do-try.outcome == 'failure' }}
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
@@ -2485,42 +2485,42 @@ jobs:
         path: ${{ env.CARGOGREEN_FINAL_PATH }}
         retention-days: 1
         if-no-files-found: error
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
         ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' _
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
       run: |
         ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
       run: |
         ! grep -C20 -F 'connection error: COMPRESSION_ERROR' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> there's some panic!s
       run: |
         ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> there's some BUGs
       run: |
         ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> here's cargo's error text
       run: |
         ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' $CARGOGREEN_LOG_PATH _
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> 429 Too Many Requests
       run: |
         ! grep -C20 -F '429 Too Many Requests' $CARGOGREEN_LOG_PATH _
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> here's relevant logs
       run: |
         ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
@@ -2565,42 +2565,42 @@ jobs:
         grep Dirty     _                     && ((err+=2))
         grep Compiling _                     && ((err+=4))
         exit $err
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
         ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' _
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
       run: |
         ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
       run: |
         ! grep -C20 -F 'connection error: COMPRESSION_ERROR' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> there's some panic!s
       run: |
         ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> there's some BUGs
       run: |
         ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> here's cargo's error text
       run: |
         ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' $CARGOGREEN_LOG_PATH _
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> 429 Too Many Requests
       run: |
         ! grep -C20 -F '429 Too Many Requests' $CARGOGREEN_LOG_PATH _
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> here's relevant logs
       run: |
         ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
@@ -2636,42 +2636,42 @@ jobs:
         grep Dirty     _                     && ((err+=2))
         grep Compiling _                     && ((err+=4))
         exit $err
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
         ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' _
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
       run: |
         ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
       run: |
         ! grep -C20 -F 'connection error: COMPRESSION_ERROR' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> there's some panic!s
       run: |
         ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> there's some BUGs
       run: |
         ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> here's cargo's error text
       run: |
         ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' $CARGOGREEN_LOG_PATH _
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> 429 Too Many Requests
       run: |
         ! grep -C20 -F '429 Too Many Requests' $CARGOGREEN_LOG_PATH _
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> here's relevant logs
       run: |
         ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
@@ -2837,8 +2837,7 @@ jobs:
     - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
     - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
     - name: 🔵 cargo install
-      id: cargo-install
-      continue-on-error: true
+      id: do-try
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
@@ -2847,7 +2846,8 @@ jobs:
         env  \
           cargo green -vv install --locked --force cargo-rail@0.1.0  |& tee _
     - name: 🔵 cargo install jobs=1
-      #if: ${{ job.steps.cargo-install.outcome == 'failure' }} this actually hides failure of cargo-install step
+      id: do-try-jobs1
+      if: ${{ job.steps.do-try.outcome == 'failure' }}
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
@@ -2863,42 +2863,42 @@ jobs:
         path: ${{ env.CARGOGREEN_FINAL_PATH }}
         retention-days: 1
         if-no-files-found: error
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
         ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' _
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
       run: |
         ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
       run: |
         ! grep -C20 -F 'connection error: COMPRESSION_ERROR' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> there's some panic!s
       run: |
         ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> there's some BUGs
       run: |
         ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> here's cargo's error text
       run: |
         ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' $CARGOGREEN_LOG_PATH _
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> 429 Too Many Requests
       run: |
         ! grep -C20 -F '429 Too Many Requests' $CARGOGREEN_LOG_PATH _
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> here's relevant logs
       run: |
         ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
@@ -2943,42 +2943,42 @@ jobs:
         grep Dirty     _                     && ((err+=2))
         grep Compiling _                     && ((err+=4))
         exit $err
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
         ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' _
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
       run: |
         ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
       run: |
         ! grep -C20 -F 'connection error: COMPRESSION_ERROR' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> there's some panic!s
       run: |
         ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> there's some BUGs
       run: |
         ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> here's cargo's error text
       run: |
         ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' $CARGOGREEN_LOG_PATH _
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> 429 Too Many Requests
       run: |
         ! grep -C20 -F '429 Too Many Requests' $CARGOGREEN_LOG_PATH _
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> here's relevant logs
       run: |
         ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
@@ -3014,42 +3014,42 @@ jobs:
         grep Dirty     _                     && ((err+=2))
         grep Compiling _                     && ((err+=4))
         exit $err
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
       run: |
         ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' _
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
       run: |
         ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
       run: |
         ! grep -C20 -F 'connection error: COMPRESSION_ERROR' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> there's some panic!s
       run: |
         ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> there's some BUGs
       run: |
         ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> here's cargo's error text
       run: |
         ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' $CARGOGREEN_LOG_PATH _
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> 429 Too Many Requests
       run: |
         ! grep -C20 -F '429 Too Many Requests' $CARGOGREEN_LOG_PATH _
 
-    - if: ${{ always() }}
+    - if: ${{ job.steps.do-try.outcome == 'failure' || job.steps.do-try-jobs1.outcome == 'failure' }}
       name: 🔴 =means=> here's relevant logs
       run: |
         ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH

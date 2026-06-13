@@ -58,11 +58,13 @@ EOF
 try_then_fallback_single_threaded() {
     cat <<EOF
     - name: 🔵 $*
+      id: do-try
       run: |
 $(unset_action_envs)
         $* |& tee ../_
     - name: $* --jobs=1
-      if: \${{ failure() }}
+      id: do-try-jobs1
+      if: \${{ job.steps.do-try.outcome == 'failure' }}
       run: |
 $(unset_action_envs)
         $* --jobs=1 |& tee ../_
