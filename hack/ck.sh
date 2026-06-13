@@ -72,6 +72,14 @@ cache_usage() {
 EOF
 }
 
+disk_usage() {
+    [[ $# -eq 0 ]]
+    cat <<EOF
+    - name: Target dir disk usage
+      if: \${{ always() }}
+      run: du -sh \$CARGO_TARGET_DIR || true
+EOF
+}
 
 postcond_fresh() {
     local cargologs=$1; shift
