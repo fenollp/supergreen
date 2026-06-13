@@ -445,10 +445,7 @@ $(unset_action_envs)
         if-no-files-found: error
 $(postconds _)
 $(cache_usage)
-
-    - name: Target dir disk usage
-      if: \${{ always() }}
-      run: du -sh \$CARGO_TARGET_DIR || true
+$(disk_usage)
 
     - name: 🔵 Ensure running the same command twice without modifications...
       run: |
@@ -488,10 +485,7 @@ $(postconds _)
   #     key: localprivatereg-\${{ runner.os }}-\${{ matrix.toolchain }}-\${{ github.job }}-\${{ github.run_id }}
 
 $(cache_usage)
-
-    - name: Target dir disk usage
-      if: \${{ always() }}
-      run: du -sh \$CARGO_TARGET_DIR || true
+$(disk_usage)
 
 EOF
 }
