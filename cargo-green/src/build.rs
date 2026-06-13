@@ -24,7 +24,7 @@ use tokio::{
     process::{ChildStderr, ChildStdin, ChildStdout, Command},
     spawn,
     sync::oneshot::{self, Sender},
-    time::{error::Elapsed, timeout},
+    time::{error::Elapsed, sleep, timeout},
 };
 use tokio_stream::StreamExt;
 use tokio_tar::{Archive as TarArchive, Entry as TarEntry, EntryType, Header as TarHeader};
@@ -105,29 +105,48 @@ impl Green {
         export: Option<&Utf8Path>,
     ) -> (String, String, Effects, Option<ResultWriter>, Result<()>) {
         assert!(!self.runner.is_none(), "build() called with Runner::None");
-        let mut cmd = match self.cmd() {
-            Ok(cmd) => cmd,
-            Err(e) => return ("".to_owned(), "".to_owned(), Effects::default(), None, Err(e)),
-        };
-        cmd.arg("build");
 
-        let (call, envs) =
-            self.with_docker_args(&mut cmd, containerfile, target, contexts, out_dir, export);
+        const MAX_RETRIES: u8 = 5;
+        let mut attempt = 0;
+        loop {
+            let backoff = || async move {
+                let secs = 1u64 << attempt; // exponential
+                warn!("hit a transient error, retrying in {secs}s ({}/{MAX_RETRIES})", attempt + 1);
+                sleep(Duration::from_secs(secs)).await;
+            };
 
-        let mut effects = Effects::default();
-        let (status, result) =
-            match self.run_build(&mut effects, cmd, &call, containerfile, target, out_dir).await {
+            let mut cmd = match self.cmd() {
+                Ok(cmd) => cmd,
+                Err(e) => return ("".to_owned(), "".to_owned(), Effects::default(), None, Err(e)),
+            };
+            cmd.arg("build");
+
+            let (call, envs) =
+                self.with_docker_args(&mut cmd, containerfile, target, contexts, out_dir, export);
+
+            let mut effects = Effects::default();
+            let (status, result) = match self
+                .run_build(&mut effects, cmd, &call, containerfile, target, out_dir)
+                .await
+            {
                 Ok((status, result)) => (status, result),
                 Err(e) => return (call, envs, effects, None, Err(e)),
             };
 
-        // Something is very wrong here. Try to be helpful by logging some info about runner config:
-        if !status.success() {
-            let e = effects.try_to_help(&self.runner, self.cargo_home.as_str());
-            return (call, envs, effects, result, Err(e));
-        }
+            // Something is very wrong here. Try to be helpful by logging some info about runner config:
+            if !status.success() {
+                let (retryme, e) = effects.try_to_help(&self.runner, self.cargo_home.as_str());
+                if attempt < MAX_RETRIES && retryme {
+                    warn!("spurious build error: {e}");
+                    backoff().await;
+                    attempt += 1;
+                    continue;
+                }
+                return (call, envs, effects, result, Err(e));
+            }
 
-        (call, envs, effects, result, Ok(()))
+            return (call, envs, effects, result, Ok(()));
+        }
     }
 
     fn with_docker_args(
@@ -398,7 +417,7 @@ pub(crate) struct Effects {
 }
 
 impl Effects {
-    fn try_to_help(&self, runner: &Runner, cargo_home: &str) -> Error {
+    fn try_to_help(&self, runner: &Runner, cargo_home: &str) -> (bool, Error) {
         let rewrite = |msg: &str| {
             let msg = un_virtual_target_dir_str(msg);
             un_rewrite_cargo_home(&msg, cargo_home)
@@ -418,36 +437,39 @@ impl Effects {
         // https://doc.rust-lang.org/cargo/reference/build-scripts.html#cargo-error
         let cargo_errors = cargo_msgs("cargo:error=", "cargo::error=", self.stdout.iter());
         if !cargo_warnings.is_empty() || !cargo_errors.is_empty() {
-            return anyhow!("Runner failed.\n{cargo_warnings}\n{cargo_errors}\n");
+            return (false, anyhow!("Runner failed.\n{cargo_warnings}\n{cargo_errors}\n"));
         }
 
         if self.stderr.iter().any(|line| line.contains("you have held broken packages")) {
             let pkgs = broken_packages(self.stderr.iter().map(AsRef::as_ref));
             if !pkgs.is_empty() {
-                return anyhow!("Unable to install these system packages: {pkgs:?}");
+                return (false, anyhow!("Unable to install these system packages: {pkgs:?}"));
             }
         }
 
         if failed_downloading(self.stderr.iter().map(AsRef::as_ref)) {
-            return anyhow!("Failed while downloading a crate's source code, please check your connection and try again");
+            return (true, anyhow!("Failed while downloading a crate's source code, please check your connection and try again"));
         }
         if buildkit_interrupted(self.stderr.iter().map(AsRef::as_ref)) {
-            return anyhow!("Runner daemon was possibly restarted, please try again");
+            return (true, anyhow!("Runner daemon was possibly restarted, please try again"));
         }
 
         let logs = env::var(ENV_LOG_PATH!())
             .map(|val| format!("\nCheck logs at {val}"))
             .unwrap_or_default();
-        anyhow!(
-            "Runner failed.{logs}\n{stdout}\n{stderr}\n
+        (
+            false,
+            anyhow!(
+                "Runner failed.{logs}\n{stdout}\n{stderr}\n
 Please report an issue along with information from the following:
 * {runner} buildx version
 * {runner} info
 * {runner} buildx ls
 * cargo green supergreen env
 ",
-            stdout = self.stdout.iter().map(|x| rewrite(x)).collect::<Vec<_>>().join("\n"),
-            stderr = self.stderr.iter().map(|x| rewrite(x)).collect::<Vec<_>>().join("\n"),
+                stdout = self.stdout.iter().map(|x| rewrite(x)).collect::<Vec<_>>().join("\n"),
+                stderr = self.stderr.iter().map(|x| rewrite(x)).collect::<Vec<_>>().join("\n"),
+            ),
         )
     }
 }
