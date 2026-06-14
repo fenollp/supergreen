@@ -424,13 +424,14 @@ $(restore_builder_data)
 $(cache_usage)
     - name: 🔵 $cargo install
       id: do-try
+      continue-on-error: true
       run: |
 $(unset_action_envs)
         env ${envvars[@]} \\
           $cargo green -vv install --locked --force $(as_install "$name_at_version") $@ |& tee _
     - name: 🔵 $cargo install jobs=1
       id: do-try-jobs1
-      if: \${{ job.steps.do-try.outcome == 'failure' }}
+      if: \${{ job.steps.do-try.outcome != 'success' }}
       run: |
 $(unset_action_envs)
         env ${envvars[@]} \\
