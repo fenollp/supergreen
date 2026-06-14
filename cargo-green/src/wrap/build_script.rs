@@ -50,10 +50,10 @@ pub(crate) fn exe_dance(mdid: MdId, crate_name: &str, out_dir: &Utf8Path) -> Str
 }
 
 pub(crate) async fn exec_build_script(green: Green, exe: Utf8PathBuf) -> Result<()> {
-    assert!(env::var_os(ENV!()).is_none(), "It's turtles all the way down!");
+    if let Some(weird) = env::var_os(ENV!()) {
+        panic!("It's turtles all the way down! ({weird:?})");
+    }
     env::set_var(ENV!(), "1");
-
-    assert!(!green.runner.is_none(), "exec() called with Runner::None");
 
     let (crate_name, pkg_name, pkg_version, _) = call_config();
 
@@ -87,6 +87,13 @@ pub(crate) async fn exec_build_script(green: Green, exe: Utf8PathBuf) -> Result<
     logging::setup(&full_pkg_id);
 
     info!("{PKG}@{VSN} original args: {exe:?} green={green:?}");
+
+    if green.runner.is_none() {
+        if green.reuse_out(&Stage::output(mdid)?, &out_dir_var).await? {
+            return Ok(());
+        }
+        todo!("fallback()");
+    }
 
     do_exec(
         green,
