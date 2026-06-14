@@ -53,7 +53,6 @@ jobs:
       with:
         name: cargo-green
         path: /home/runner/.cargo/bin/cargo-green
-        retention-days: 1
         if-no-files-found: error
 
 # $(login_to_readonly_hub)
@@ -73,7 +72,6 @@ jobs:
 #       with:
 #         name: builder-data
 #         path: /home/runner/builder-cache
-#         retention-days: 1
 #         if-no-files-found: error
 
   cargo-osdk_main:
@@ -216,7 +214,6 @@ jobs:
       with:
         name: cargo-osdk@main.Dockerfile
         path: ${{ env.CARGOGREEN_FINAL_PATH }}
-        retention-days: 1
         if-no-files-found: error
     - if: ${{ job.steps.do-try.outcome != 'success' || job.steps.do-try-jobs1.outcome != 'success' }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
@@ -595,7 +592,6 @@ jobs:
       with:
         name: fargo@main.Dockerfile
         path: ${{ env.CARGOGREEN_FINAL_PATH }}
-        retention-days: 1
         if-no-files-found: error
     - if: ${{ job.steps.do-try.outcome != 'success' || job.steps.do-try-jobs1.outcome != 'success' }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
@@ -974,7 +970,6 @@ jobs:
       with:
         name: harper-ls@master.Dockerfile
         path: ${{ env.CARGOGREEN_FINAL_PATH }}
-        retention-days: 1
         if-no-files-found: error
     - if: ${{ job.steps.do-try.outcome != 'success' || job.steps.do-try-jobs1.outcome != 'success' }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
@@ -1353,7 +1348,6 @@ jobs:
       with:
         name: gst-plugin-webrtc-signalling@main.Dockerfile
         path: ${{ env.CARGOGREEN_FINAL_PATH }}
-        retention-days: 1
         if-no-files-found: error
     - if: ${{ job.steps.do-try.outcome != 'success' || job.steps.do-try-jobs1.outcome != 'success' }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
@@ -1732,7 +1726,6 @@ jobs:
       with:
         name: cargo-c@0.10.18+cargo-0.92.0.Dockerfile
         path: ${{ env.CARGOGREEN_FINAL_PATH }}
-        retention-days: 1
         if-no-files-found: error
     - if: ${{ job.steps.do-try.outcome != 'success' || job.steps.do-try-jobs1.outcome != 'success' }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
@@ -2111,7 +2104,6 @@ jobs:
       with:
         name: bottom@0.11.4.Dockerfile
         path: ${{ env.CARGOGREEN_FINAL_PATH }}
-        retention-days: 1
         if-no-files-found: error
     - if: ${{ job.steps.do-try.outcome != 'success' || job.steps.do-try-jobs1.outcome != 'success' }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
@@ -2490,7 +2482,6 @@ jobs:
       with:
         name: alacritty@0.17.0.Dockerfile
         path: ${{ env.CARGOGREEN_FINAL_PATH }}
-        retention-days: 1
         if-no-files-found: error
     - if: ${{ job.steps.do-try.outcome != 'success' || job.steps.do-try-jobs1.outcome != 'success' }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
@@ -2869,7 +2860,6 @@ jobs:
       with:
         name: cargo-rail@0.1.0.Dockerfile
         path: ${{ env.CARGOGREEN_FINAL_PATH }}
-        retention-days: 1
         if-no-files-found: error
     - if: ${{ job.steps.do-try.outcome != 'success' || job.steps.do-try-jobs1.outcome != 'success' }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
