@@ -183,7 +183,6 @@ jobs:
     - name: 🔵 Envs again
       run: cargo green supergreen env
 
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -270,7 +269,6 @@ jobs:
     - if: ${{ failure() }}
       name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -443,7 +441,6 @@ jobs:
   #     path: /tmp/.local-registry
   #     key: localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-${{ github.run_id }}
 
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -562,7 +559,6 @@ jobs:
     - name: 🔵 Envs again
       run: cargo green supergreen env
 
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -649,7 +645,6 @@ jobs:
     - if: ${{ failure() }}
       name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -822,7 +817,6 @@ jobs:
   #     path: /tmp/.local-registry
   #     key: localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-${{ github.run_id }}
 
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -941,7 +935,6 @@ jobs:
     - name: 🔵 Envs again
       run: cargo green supergreen env
 
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -1028,7 +1021,6 @@ jobs:
     - if: ${{ failure() }}
       name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -1201,7 +1193,6 @@ jobs:
   #     path: /tmp/.local-registry
   #     key: localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-${{ github.run_id }}
 
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -1320,7 +1311,6 @@ jobs:
     - name: 🔵 Envs again
       run: cargo green supergreen env
 
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -1407,7 +1397,6 @@ jobs:
     - if: ${{ failure() }}
       name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -1580,7 +1569,6 @@ jobs:
   #     path: /tmp/.local-registry
   #     key: localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-${{ github.run_id }}
 
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -1699,7 +1687,6 @@ jobs:
     - name: 🔵 Envs again
       run: cargo green supergreen env
 
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -1786,7 +1773,6 @@ jobs:
     - if: ${{ failure() }}
       name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -1959,7 +1945,6 @@ jobs:
   #     path: /tmp/.local-registry
   #     key: localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-${{ github.run_id }}
 
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -2078,7 +2063,6 @@ jobs:
     - name: 🔵 Envs again
       run: cargo green supergreen env
 
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -2165,7 +2149,6 @@ jobs:
     - if: ${{ failure() }}
       name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -2338,7 +2321,6 @@ jobs:
   #     path: /tmp/.local-registry
   #     key: localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-${{ github.run_id }}
 
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -2457,7 +2439,6 @@ jobs:
     - name: 🔵 Envs again
       run: cargo green supergreen env
 
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -2544,7 +2525,6 @@ jobs:
     - if: ${{ failure() }}
       name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -2717,7 +2697,6 @@ jobs:
   #     path: /tmp/.local-registry
   #     key: localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-${{ github.run_id }}
 
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -2836,7 +2815,6 @@ jobs:
     - name: 🔵 Envs again
       run: cargo green supergreen env
 
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -2923,7 +2901,6 @@ jobs:
     - if: ${{ failure() }}
       name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -3096,7 +3073,6 @@ jobs:
   #     path: /tmp/.local-registry
   #     key: localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-${{ github.run_id }}
 
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -3215,7 +3191,6 @@ jobs:
     - name: 🔵 Envs again
       run: cargo green supergreen env
 
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -3302,7 +3277,6 @@ jobs:
     - if: ${{ failure() }}
       name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -3475,7 +3449,6 @@ jobs:
   #     path: /tmp/.local-registry
   #     key: localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-${{ github.run_id }}
 
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -3594,7 +3567,6 @@ jobs:
     - name: 🔵 Envs again
       run: cargo green supergreen env
 
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -3681,7 +3653,6 @@ jobs:
     - if: ${{ failure() }}
       name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -3854,7 +3825,6 @@ jobs:
   #     path: /tmp/.local-registry
   #     key: localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-${{ github.run_id }}
 
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -3973,7 +3943,6 @@ jobs:
     - name: 🔵 Envs again
       run: cargo green supergreen env
 
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -4060,7 +4029,6 @@ jobs:
     - if: ${{ failure() }}
       name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -4233,7 +4201,6 @@ jobs:
   #     path: /tmp/.local-registry
   #     key: localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-${{ github.run_id }}
 
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -4352,7 +4319,6 @@ jobs:
     - name: 🔵 Envs again
       run: cargo green supergreen env
 
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -4439,7 +4405,6 @@ jobs:
     - if: ${{ failure() }}
       name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -4612,7 +4577,6 @@ jobs:
   #     path: /tmp/.local-registry
   #     key: localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-${{ github.run_id }}
 
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -4731,7 +4695,6 @@ jobs:
     - name: 🔵 Envs again
       run: cargo green supergreen env
 
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -4818,7 +4781,6 @@ jobs:
     - if: ${{ failure() }}
       name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -4991,7 +4953,6 @@ jobs:
   #     path: /tmp/.local-registry
   #     key: localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-${{ github.run_id }}
 
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -5110,7 +5071,6 @@ jobs:
     - name: 🔵 Envs again
       run: cargo green supergreen env
 
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -5197,7 +5157,6 @@ jobs:
     - if: ${{ failure() }}
       name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -5370,7 +5329,6 @@ jobs:
   #     path: /tmp/.local-registry
   #     key: localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-${{ github.run_id }}
 
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -5489,7 +5447,6 @@ jobs:
     - name: 🔵 Envs again
       run: cargo green supergreen env
 
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -5576,7 +5533,6 @@ jobs:
     - if: ${{ failure() }}
       name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -5749,7 +5705,6 @@ jobs:
   #     path: /tmp/.local-registry
   #     key: localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-${{ github.run_id }}
 
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -5868,7 +5823,6 @@ jobs:
     - name: 🔵 Envs again
       run: cargo green supergreen env
 
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -5955,7 +5909,6 @@ jobs:
     - if: ${{ failure() }}
       name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -6128,7 +6081,6 @@ jobs:
   #     path: /tmp/.local-registry
   #     key: localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-${{ github.run_id }}
 
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -6247,7 +6199,6 @@ jobs:
     - name: 🔵 Envs again
       run: cargo green supergreen env
 
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -6334,7 +6285,6 @@ jobs:
     - if: ${{ failure() }}
       name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -6507,7 +6457,6 @@ jobs:
   #     path: /tmp/.local-registry
   #     key: localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-${{ github.run_id }}
 
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -6626,7 +6575,6 @@ jobs:
     - name: 🔵 Envs again
       run: cargo green supergreen env
 
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -6713,7 +6661,6 @@ jobs:
     - if: ${{ failure() }}
       name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -6886,7 +6833,6 @@ jobs:
   #     path: /tmp/.local-registry
   #     key: localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-${{ github.run_id }}
 
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -7005,7 +6951,6 @@ jobs:
     - name: 🔵 Envs again
       run: cargo green supergreen env
 
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -7092,7 +7037,6 @@ jobs:
     - if: ${{ failure() }}
       name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -7265,7 +7209,6 @@ jobs:
   #     path: /tmp/.local-registry
   #     key: localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-${{ github.run_id }}
 
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -7384,7 +7327,6 @@ jobs:
     - name: 🔵 Envs again
       run: cargo green supergreen env
 
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -7471,7 +7413,6 @@ jobs:
     - if: ${{ failure() }}
       name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -7644,7 +7585,6 @@ jobs:
   #     path: /tmp/.local-registry
   #     key: localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-${{ github.run_id }}
 
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -7763,7 +7703,6 @@ jobs:
     - name: 🔵 Envs again
       run: cargo green supergreen env
 
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -7850,7 +7789,6 @@ jobs:
     - if: ${{ failure() }}
       name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -8023,7 +7961,6 @@ jobs:
   #     path: /tmp/.local-registry
   #     key: localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-${{ github.run_id }}
 
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -8142,7 +8079,6 @@ jobs:
     - name: 🔵 Envs again
       run: cargo green supergreen env
 
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -8229,7 +8165,6 @@ jobs:
     - if: ${{ failure() }}
       name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -8402,7 +8337,6 @@ jobs:
   #     path: /tmp/.local-registry
   #     key: localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-${{ github.run_id }}
 
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -8521,7 +8455,6 @@ jobs:
     - name: 🔵 Envs again
       run: cargo green supergreen env
 
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -8608,7 +8541,6 @@ jobs:
     - if: ${{ failure() }}
       name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -8781,7 +8713,6 @@ jobs:
   #     path: /tmp/.local-registry
   #     key: localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-${{ github.run_id }}
 
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -8900,7 +8831,6 @@ jobs:
     - name: 🔵 Envs again
       run: cargo green supergreen env
 
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -8987,7 +8917,6 @@ jobs:
     - if: ${{ failure() }}
       name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -9160,7 +9089,6 @@ jobs:
   #     path: /tmp/.local-registry
   #     key: localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-${{ github.run_id }}
 
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -9279,7 +9207,6 @@ jobs:
     - name: 🔵 Envs again
       run: cargo green supergreen env
 
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -9366,7 +9293,6 @@ jobs:
     - if: ${{ failure() }}
       name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -9539,7 +9465,6 @@ jobs:
   #     path: /tmp/.local-registry
   #     key: localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-${{ github.run_id }}
 
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -9658,7 +9583,6 @@ jobs:
     - name: 🔵 Envs again
       run: cargo green supergreen env
 
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -9745,7 +9669,6 @@ jobs:
     - if: ${{ failure() }}
       name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -9918,7 +9841,6 @@ jobs:
   #     path: /tmp/.local-registry
   #     key: localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-${{ github.run_id }}
 
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -10037,7 +9959,6 @@ jobs:
     - name: 🔵 Envs again
       run: cargo green supergreen env
 
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -10124,7 +10045,6 @@ jobs:
     - if: ${{ failure() }}
       name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -10297,7 +10217,6 @@ jobs:
   #     path: /tmp/.local-registry
   #     key: localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-${{ github.run_id }}
 
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -10416,7 +10335,6 @@ jobs:
     - name: 🔵 Envs again
       run: cargo green supergreen env
 
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -10503,7 +10421,6 @@ jobs:
     - if: ${{ failure() }}
       name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -10676,7 +10593,6 @@ jobs:
   #     path: /tmp/.local-registry
   #     key: localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-${{ github.run_id }}
 
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -10795,7 +10711,6 @@ jobs:
     - name: 🔵 Envs again
       run: cargo green supergreen env
 
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -10882,7 +10797,6 @@ jobs:
     - if: ${{ failure() }}
       name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -11055,7 +10969,6 @@ jobs:
   #     path: /tmp/.local-registry
   #     key: localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-${{ github.run_id }}
 
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -11174,7 +11087,6 @@ jobs:
     - name: 🔵 Envs again
       run: cargo green supergreen env
 
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -11261,7 +11173,6 @@ jobs:
     - if: ${{ failure() }}
       name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -11434,7 +11345,6 @@ jobs:
   #     path: /tmp/.local-registry
   #     key: localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-${{ github.run_id }}
 
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -11553,7 +11463,6 @@ jobs:
     - name: 🔵 Envs again
       run: cargo green supergreen env
 
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -11640,7 +11549,6 @@ jobs:
     - if: ${{ failure() }}
       name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -11813,7 +11721,6 @@ jobs:
   #     path: /tmp/.local-registry
   #     key: localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-${{ github.run_id }}
 
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true

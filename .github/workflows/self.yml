@@ -141,7 +141,6 @@ jobs:
         fi
     - run: cargo fetch
     - run: cargo green supergreen env
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -208,7 +207,6 @@ jobs:
     - if: ${{ failure() }}
       name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -282,7 +280,6 @@ jobs:
         fi
     - run: cargo fetch
     - run: cargo green supergreen env
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -359,7 +356,6 @@ jobs:
     - if: ${{ failure() }}
       name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -436,7 +432,6 @@ jobs:
     - uses: taiki-e/install-action@1329c298aa20c3257846c9b2e0e55967df3e3c37 # v2.75.25
       with:
         tool: cargo-audit
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -504,7 +499,6 @@ jobs:
     - if: ${{ failure() }}
       name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -581,7 +575,6 @@ jobs:
     - uses: taiki-e/install-action@1329c298aa20c3257846c9b2e0e55967df3e3c37 # v2.75.25
       with:
         tool: cargo-udeps
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -658,7 +651,6 @@ jobs:
     - if: ${{ failure() }}
       name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -734,7 +726,6 @@ jobs:
     - uses: taiki-e/install-action@1329c298aa20c3257846c9b2e0e55967df3e3c37 # v2.75.25
       with:
         tool: cargo-udeps
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -811,7 +802,6 @@ jobs:
     - if: ${{ failure() }}
       name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -885,7 +875,6 @@ jobs:
         fi
     - run: cargo fetch
     - run: cargo green supergreen env
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -1023,7 +1012,6 @@ jobs:
     - if: ${{ failure() }}
       name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -1098,7 +1086,6 @@ jobs:
     - if: ${{ failure() }}
       name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -1172,7 +1159,6 @@ jobs:
         fi
     - run: cargo fetch
     - run: cargo green supergreen env
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -1310,7 +1296,6 @@ jobs:
     - if: ${{ failure() }}
       name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -1385,7 +1370,6 @@ jobs:
     - if: ${{ failure() }}
       name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -1459,7 +1443,6 @@ jobs:
         fi
     - run: cargo fetch
     - run: cargo green supergreen env
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -1597,7 +1580,6 @@ jobs:
     - if: ${{ failure() }}
       name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -1672,7 +1654,6 @@ jobs:
     - if: ${{ failure() }}
       name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -1746,7 +1727,6 @@ jobs:
         fi
     - run: cargo fetch
     - run: cargo green supergreen env
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -1884,7 +1864,6 @@ jobs:
     - if: ${{ failure() }}
       name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -1959,7 +1938,6 @@ jobs:
     - if: ${{ failure() }}
       name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -2033,7 +2011,6 @@ jobs:
         fi
     - run: cargo fetch
     - run: cargo green supergreen env
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -2171,7 +2148,6 @@ jobs:
     - if: ${{ failure() }}
       name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -2249,7 +2225,6 @@ jobs:
     - run: cargo fetch
     - run: cargo green supergreen env
     - run: rustup component add clippy
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -2387,7 +2362,6 @@ jobs:
     - if: ${{ failure() }}
       name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
@@ -2462,7 +2436,6 @@ jobs:
     - if: ${{ failure() }}
       name: 🌀 cargo-green logs
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
