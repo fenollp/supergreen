@@ -1,11 +1,16 @@
-use std::{error::Error as StdError, sync::LazyLock, time::Duration};
+use std::{
+    error::Error as StdError,
+    sync::{LazyLock, Once},
+    time::Duration,
+};
 
 use anyhow::{anyhow, bail, Error, Result};
 use camino::Utf8Path;
-use log::info;
+use log::{info, warn};
 use nutype::nutype;
-use reqwest::Client as ReqwestClient;
+use reqwest::{Client as ReqwestClient, Request};
 use serde::Deserialize;
+use tokio::time::sleep;
 
 use crate::{
     du::lock_from_builder_cache,
@@ -414,37 +419,64 @@ pub(crate) async fn fetch_digest(runner: &Runner, img: &ImageUri) -> Result<Imag
         return Ok(img.to_owned());
     }
 
-    async fn actual(img: &ImageUri) -> Result<ImageUri> {
+    const DOMAIN: &str = "registry.hub.docker.com";
+
+    fn request(img: &ImageUri) -> Result<(ReqwestClient, Request)> {
         let (path, tag) = img.path_and_tag();
         let (ns, slug) = match Utf8Path::new(path).iter().collect::<Vec<_>>()[..] {
             ["docker.io", ns, slug] => (ns, slug),
             _ => bail!("BUG: unhandled registry {img:?}"),
         };
 
-        let domain = "registry.hub.docker.com";
         let (client, req) = ReqwestClient::builder()
             .connect_timeout(Duration::from_secs(4))
             .build()
             .map_err(|e| anyhow!("HTTP client's config/TLS failed: {e}"))?
-            .get(format!("https://{domain}/v2/repositories/{ns}/{slug}/tags/{tag}"))
+            .get(format!("https://{DOMAIN}/v2/repositories/{ns}/{slug}/tags/{tag}"))
             .build_split();
         let req = req.map_err(|e| {
             // e.source(): try to be a bit more helpful than just "error sending request for url"
-            anyhow!("Failed to build a request against {domain}: {e} ({:?})", e.source())
+            anyhow!("Failed to build a request against {DOMAIN}: {e} ({:?})", e.source())
         })?;
+        Ok((client, req))
+    }
 
-        info!("GETing {}", req.url());
-        eprintln!("GETing {}", req.url());
-        assert!(req.body().is_none());
-        assert!(req.headers().is_empty());
+    async fn actual(img: &ImageUri) -> Result<ImageUri> {
+        let show = Once::new();
+        const MAX_RETRIES: u8 = 5;
+        let mut attempt = 0;
+        let txt;
+        loop {
+            let backoff = || async move {
+                let secs = 1u64 << attempt; // exponential
+                warn!("hit a transient error, retrying in {secs}s ({}/{MAX_RETRIES})", attempt + 1);
+                sleep(Duration::from_secs(secs)).await;
+            };
 
-        let txt = client
-            .execute(req)
-            .await
-            .map_err(|e| anyhow!("Failed to reach {domain}'s registry: {e}"))?
-            .text()
-            .await
-            .map_err(|e| anyhow!("Failed to read response from {domain} registry: {e}"))?;
+            let (client, req) = request(img)?;
+            show.call_once(|| {
+                info!("GETing {}", req.url());
+                eprintln!("GETing {}", req.url());
+            });
+
+            // Eg.: error sending request for url (https://registry.hub.docker.com/v2/repositories/moby/buildkit/tags/latest)
+            let req = match client.execute(req).await {
+                Ok(req) => req,
+                Err(e) if attempt < MAX_RETRIES => {
+                    warn!("spurious connection error: {e}");
+                    backoff().await;
+                    attempt += 1;
+                    continue;
+                }
+                Err(e) => bail!("Failed to reach {DOMAIN}'s registry: {e}"),
+            };
+
+            txt = req
+                .text()
+                .await
+                .map_err(|e| anyhow!("Failed to read response from {DOMAIN} registry: {e}"))?;
+            break;
+        }
 
         #[derive(Deserialize)]
         struct RegistryResponse {
