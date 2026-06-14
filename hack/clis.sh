@@ -491,13 +491,13 @@ EOF
 #   debug webui at https://github.com/fenollp/supergreen/actions/workflows/clis-1.yml
 #                  https://github.com/fenollp/supergreen/actions/workflows/clis-2.yml
 if [[ $# = 0 ]]; then
-  page=1 ; perpage=0 ; declare -a slows
+  page=1 ; perpage=0 ; actual=0 ; declare -a slows
   for i in "${!nvs[@]}"; do
     name_at_version=${nvs["$i"]}
     o=${oks[$i]}
     case "${o:0:1}" in
         O) slows[i]=recipes/$name_at_version.Dockerfile ; continue ;;
-        o) ;; # Skip big Os: they take too long
+        o) ((actual+=1)) ;; # Skip big Os: they take too long
         *) continue ;;
     esac
     case "$name_at_version" in
@@ -516,10 +516,11 @@ if [[ $# = 0 ]]; then
   done
 
   echo
-  echo
+  echo Too slow to use:
   for slow in "${!slows[@]}"; do
     echo "${slows[$slow]}"
   done | sort
+  echo Produced: "$actual" jobs in "$page" workflows
   exit
 fi
 
