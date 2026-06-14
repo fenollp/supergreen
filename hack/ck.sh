@@ -62,8 +62,8 @@ EOF
 
 cache_usage() {
     [[ $# -eq 0 ]]
+#   - run: sudo du -sh /var/lib/docker || true Slow + `docker system df` is better
     cat <<EOF
-    - run: sudo du -sh /var/lib/docker || true
     - run: docker system df
     - run: docker system df --verbose
     - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
