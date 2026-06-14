@@ -32,10 +32,6 @@ pub(crate) async fn wrap_rustc(
     assert!(env::var_os(ENV!()).is_none(), "It's turtles all the way down!");
     env::set_var(ENV!(), "1");
 
-    if green.runner.is_none() {
-        return fallback.await;
-    }
-
     let pwd = pwd();
 
     let out_dir_var = env::var("OUT_DIR").ok().map(Utf8PathBuf::from);
@@ -52,6 +48,13 @@ pub(crate) async fn wrap_rustc(
     logging::setup(&full_pkg_id);
 
     info!("{PKG}@{VSN} original args: {arguments:?} pwd={pwd} st={st:?} green={green:?}");
+
+    if green.runner.is_none() {
+        if green.reuse_out(&Stage::output(mdid)?, &st.out_dir).await? {
+            return Ok(());
+        }
+        return fallback.await;
+    }
 
     do_wrap_rustc(
         green,

@@ -31,7 +31,7 @@ use tokio_tar::{Archive as TarArchive, Entry as TarEntry, EntryType, Header as T
 
 use crate::{
     base_image::un_rewrite_cargo_home,
-    cache::result::{assert_tarball_header, ResultWriter},
+    cache::result::{assert_tarball_header, extract_just, ResultWriter},
     dirs::Dirs,
     ext::CommandExt,
     green::Green,
@@ -95,6 +95,40 @@ impl Green {
             }
         }
         built
+    }
+
+    /// Returns whether `target`'s result was extracted into `out_dir`.
+    pub(crate) async fn reuse_out(&self, target: &Stage, out_dir: &Utf8Path) -> Result<bool> {
+        debug!("trying to reuse exported result for {target}");
+        let Some(ref dirs) = self.dirs else { return Ok(false) };
+        let src = dirs.result_from_stage(target);
+        if !src.exists() {
+            return Ok(false);
+        }
+        info!("reusing exported result {src}");
+
+        let tarball = extract_just(&src, "result.tar").await?;
+        if tarball.is_empty() {
+            bail!("Corrupted result {src}: missing result.tar")
+        }
+
+        std::fs::create_dir_all(out_dir)
+            .map_err(|e| anyhow!("Failed to `mkdir -p {out_dir}`: {e}"))?;
+
+        let (out_buf, err_buf, errcode, written) =
+            untar_into(&tarball, target, out_dir, self.cargo_home.as_str()).await?;
+
+        // Forward the wrapped rustc's stdio so cargo behaves as if it had run rustc itself.
+        let _ = fwd_stdout(&out_buf, "➤", &self.cargo_home);
+        let _ = fwd_stderr(&err_buf, "✖", &self.cargo_home);
+        info!("reused {} files from {src}", written.len());
+
+        if let Some(code) = errcode {
+            if code != 0 {
+                bail!("Reused result of a failed rustc (exit code {code})")
+            }
+        }
+        Ok(true)
     }
 
     async fn build(

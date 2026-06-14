@@ -2,21 +2,26 @@
 //! invocations bundled as a tarball.
 
 use anyhow::{anyhow, bail, Result};
-use async_compression::tokio::write::GzipEncoder;
-use camino::Utf8PathBuf;
+use async_compression::tokio::{bufread::GzipDecoder, write::GzipEncoder};
+use camino::{Utf8Path, Utf8PathBuf};
 use log::{debug, info};
 use tokio::{
     fs::{self, File, OpenOptions},
-    io::{AsyncWriteExt, BufWriter},
+    io::{AsyncReadExt, AsyncWriteExt, BufReader, BufWriter},
 };
-use tokio_tar::{Builder as TarBuilder, EntryType, Header};
+use tokio_stream::StreamExt;
+use tokio_tar::{Archive as TarArchive, Builder as TarBuilder, EntryType, Header};
 use uuid::Uuid;
 
 use crate::{build::SOURCE_DATE_EPOCH, dirs::Dirs, stage::Stage};
 
 impl Dirs {
+    pub(crate) fn result_from_stage(&self, target: &Stage) -> Utf8PathBuf {
+        self.results.join(format!("{target}.tar.gz"))
+    }
+
     pub(crate) async fn new_result(&self, target: &Stage) -> Result<Option<ResultWriter>> {
-        let dst = self.results.join(format!("{target}.tar.gz"));
+        let dst = self.result_from_stage(target);
         let tmp = self.tmp.join(format!("{}.tar.gz", Uuid::new_v4()));
         if dst.exists() {
             return Ok(None);
@@ -65,12 +70,41 @@ impl ResultWriter {
             w.into_inner().await.map_err(|e| anyhow!("Failed finishing result: {e}"))?;
         finished_encoder.shutdown().await.map_err(|e| anyhow!("Failed flushing result: {e}"))?;
 
-        if !dst.exists() {
+        if dst.exists() {
+            fs::remove_file(&tmp).await.map_err(|e| anyhow!("Failed `rm {tmp}`: {e}"))?;
+        } else {
             info!("moving result to {dst}");
             fs::rename(&tmp, &dst).await.map_err(|e| anyhow!("Failed `mv {tmp} {dst}`: {e}"))?;
         }
         Ok(())
     }
+}
+
+pub(crate) async fn extract_just(src: &Utf8Path, fname: &str) -> Result<Vec<u8>> {
+    let mut gz = Vec::new();
+    let mut f =
+        File::open(&src).await.map_err(|e| anyhow!("Failed opening (RO) tarball {src}: {e}"))?;
+    let _ =
+        f.read_to_end(&mut gz).await.map_err(|e| anyhow!("Failed reading tarball {src}: {e}"))?;
+
+    let mut inner = Vec::new();
+    let mut ar = TarArchive::new(GzipDecoder::new(BufReader::new(gz.as_slice())));
+    let mut entries = ar.entries().map_err(|e| anyhow!("Failed reading {src}: {e}"))?;
+    while let Some(Ok(mut f)) = entries.next().await {
+        let name = f
+            .path()
+            .map_err(|e| anyhow!("Failed decoding {src} entry name: {e}"))?
+            .to_string_lossy()
+            .to_string();
+        if name == fname {
+            let _ = f
+                .read_to_end(&mut inner)
+                .await
+                .map_err(|e| anyhow!("Failed extracting {fname} from {src}: {e}"))?;
+            break;
+        }
+    }
+    Ok(inner)
 }
 
 fn header_for(fname: &str, len: usize) -> Result<Header> {
