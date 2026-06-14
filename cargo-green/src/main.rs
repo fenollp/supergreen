@@ -41,6 +41,7 @@ mod md;
 mod network;
 mod rechrome;
 mod relative;
+mod retrier;
 mod rustc_arguments;
 mod rustup;
 mod stage;

@@ -6,16 +6,16 @@ use std::{
 
 use anyhow::{anyhow, bail, Error, Result};
 use camino::Utf8Path;
-use log::{info, warn};
+use log::info;
 use nutype::nutype;
 use reqwest::{Client as ReqwestClient, Request};
 use serde::Deserialize;
-use tokio::time::sleep;
 
 use crate::{
     du::lock_from_builder_cache,
     ext::CommandExt,
     green::Green,
+    retrier::Retrier,
     runner::{Runner, DOCKER_HOST},
 };
 
@@ -443,16 +443,9 @@ pub(crate) async fn fetch_digest(runner: &Runner, img: &ImageUri) -> Result<Imag
 
     async fn actual(img: &ImageUri) -> Result<ImageUri> {
         let show = Once::new();
-        const MAX_RETRIES: u8 = 5;
-        let mut attempt = 0;
+        let mut retrier = Retrier::with_max_attempts(5);
         let txt;
         loop {
-            let backoff = || async move {
-                let secs = 1u64 << attempt; // exponential
-                warn!("hit a transient error, retrying in {secs}s ({}/{MAX_RETRIES})", attempt + 1);
-                sleep(Duration::from_secs(secs)).await;
-            };
-
             let (client, req) = request(img)?;
             show.call_once(|| {
                 info!("GETing {}", req.url());
@@ -462,10 +455,8 @@ pub(crate) async fn fetch_digest(runner: &Runner, img: &ImageUri) -> Result<Imag
             // Eg.: error sending request for url (https://registry.hub.docker.com/v2/repositories/moby/buildkit/tags/latest)
             let req = match client.execute(req).await {
                 Ok(req) => req,
-                Err(e) if attempt < MAX_RETRIES => {
-                    warn!("spurious connection error: {e}");
-                    backoff().await;
-                    attempt += 1;
+                Err(e) if retrier.continues() => {
+                    retrier.backoff("connection", e.into()).await;
                     continue;
                 }
                 Err(e) => bail!("Failed to reach {DOMAIN}'s registry: {e}"),
