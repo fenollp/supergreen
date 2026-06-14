@@ -236,7 +236,6 @@ $(rundeps_versions)
       with:
         name: cargo-green
         path: /home/runner/.cargo/bin/cargo-green
-        retention-days: 1
         if-no-files-found: error
 
 # \$(login_to_readonly_hub)
@@ -256,7 +255,6 @@ $(rundeps_versions)
 #       with:
 #         name: builder-data
 #         path: /home/runner/builder-cache
-#         retention-days: 1
 #         if-no-files-found: error
 EOF
 }
