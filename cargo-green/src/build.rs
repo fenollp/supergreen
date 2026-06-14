@@ -24,7 +24,7 @@ use tokio::{
     process::{ChildStderr, ChildStdin, ChildStdout, Command},
     spawn,
     sync::oneshot::{self, Sender},
-    time::{error::Elapsed, sleep, timeout},
+    time::{error::Elapsed, timeout},
 };
 use tokio_stream::StreamExt;
 use tokio_tar::{Archive as TarArchive, Entry as TarEntry, EntryType, Header as TarHeader};
@@ -38,6 +38,7 @@ use crate::{
     md::{BuildContext, DIESES},
     r#final::is_primary,
     rechrome,
+    retrier::Retrier,
     runner::Runner,
     stage::Stage,
     target_dir::un_virtual_target_dir_str,
@@ -106,15 +107,8 @@ impl Green {
     ) -> (String, String, Effects, Option<ResultWriter>, Result<()>) {
         assert!(!self.runner.is_none(), "build() called with Runner::None");
 
-        const MAX_RETRIES: u8 = 5;
-        let mut attempt = 0;
+        let mut retrier = Retrier::with_max_attempts(5);
         loop {
-            let backoff = || async move {
-                let secs = 1u64 << attempt; // exponential
-                warn!("hit a transient error, retrying in {secs}s ({}/{MAX_RETRIES})", attempt + 1);
-                sleep(Duration::from_secs(secs)).await;
-            };
-
             let mut cmd = match self.cmd() {
                 Ok(cmd) => cmd,
                 Err(e) => return ("".to_owned(), "".to_owned(), Effects::default(), None, Err(e)),
@@ -136,10 +130,8 @@ impl Green {
             // Something is very wrong here. Try to be helpful by logging some info about runner config:
             if !status.success() {
                 let (retryme, e) = effects.try_to_help(&self.runner, self.cargo_home.as_str());
-                if attempt < MAX_RETRIES && retryme {
-                    warn!("spurious build error: {e}");
-                    backoff().await;
-                    attempt += 1;
+                if retryme && retrier.continues() {
+                    retrier.backoff("build", e).await;
                     continue;
                 }
                 return (call, envs, effects, result, Err(e));
