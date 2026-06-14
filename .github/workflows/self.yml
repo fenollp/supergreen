@@ -136,8 +136,9 @@ jobs:
 
     - name: Setup
       run: |
-        cargo green supergreen setup || true
-        { cargo green supergreen setup 2>/dev/null || true; } | sudo /bin/sh -xe
+        if ! cargo green supergreen setup; then
+            { cargo green supergreen setup 2>/dev/null || true; } | sudo /bin/sh -xe
+        fi
     - run: cargo fetch
     - run: cargo green supergreen env
     - run: sudo du -sh /var/lib/docker || true
@@ -276,8 +277,9 @@ jobs:
 
     - name: Setup
       run: |
-        cargo green supergreen setup || true
-        { cargo green supergreen setup 2>/dev/null || true; } | sudo /bin/sh -xe
+        if ! cargo green supergreen setup; then
+            { cargo green supergreen setup 2>/dev/null || true; } | sudo /bin/sh -xe
+        fi
     - run: cargo fetch
     - run: cargo green supergreen env
     - run: sudo du -sh /var/lib/docker || true
@@ -426,8 +428,9 @@ jobs:
 
     - name: Setup
       run: |
-        cargo green supergreen setup || true
-        { cargo green supergreen setup 2>/dev/null || true; } | sudo /bin/sh -xe
+        if ! cargo green supergreen setup; then
+            { cargo green supergreen setup 2>/dev/null || true; } | sudo /bin/sh -xe
+        fi
     - run: cargo fetch
     - run: cargo green supergreen env
     - uses: taiki-e/install-action@1329c298aa20c3257846c9b2e0e55967df3e3c37 # v2.75.25
@@ -570,8 +573,9 @@ jobs:
 
     - name: Setup
       run: |
-        cargo green supergreen setup || true
-        { cargo green supergreen setup 2>/dev/null || true; } | sudo /bin/sh -xe
+        if ! cargo green supergreen setup; then
+            { cargo green supergreen setup 2>/dev/null || true; } | sudo /bin/sh -xe
+        fi
     - run: cargo fetch
     - run: cargo green supergreen env
     - uses: taiki-e/install-action@1329c298aa20c3257846c9b2e0e55967df3e3c37 # v2.75.25
@@ -722,8 +726,9 @@ jobs:
 
     - name: Setup
       run: |
-        cargo green supergreen setup || true
-        { cargo green supergreen setup 2>/dev/null || true; } | sudo /bin/sh -xe
+        if ! cargo green supergreen setup; then
+            { cargo green supergreen setup 2>/dev/null || true; } | sudo /bin/sh -xe
+        fi
     - run: cargo fetch
     - run: cargo green supergreen env
     - uses: taiki-e/install-action@1329c298aa20c3257846c9b2e0e55967df3e3c37 # v2.75.25
@@ -875,8 +880,9 @@ jobs:
 
     - name: Setup
       run: |
-        cargo green supergreen setup || true
-        { cargo green supergreen setup 2>/dev/null || true; } | sudo /bin/sh -xe
+        if ! cargo green supergreen setup; then
+            { cargo green supergreen setup 2>/dev/null || true; } | sudo /bin/sh -xe
+        fi
     - run: cargo fetch
     - run: cargo green supergreen env
     - run: sudo du -sh /var/lib/docker || true
@@ -1161,8 +1167,9 @@ jobs:
 
     - name: Setup
       run: |
-        cargo green supergreen setup || true
-        { cargo green supergreen setup 2>/dev/null || true; } | sudo /bin/sh -xe
+        if ! cargo green supergreen setup; then
+            { cargo green supergreen setup 2>/dev/null || true; } | sudo /bin/sh -xe
+        fi
     - run: cargo fetch
     - run: cargo green supergreen env
     - run: sudo du -sh /var/lib/docker || true
@@ -1447,8 +1454,9 @@ jobs:
 
     - name: Setup
       run: |
-        cargo green supergreen setup || true
-        { cargo green supergreen setup 2>/dev/null || true; } | sudo /bin/sh -xe
+        if ! cargo green supergreen setup; then
+            { cargo green supergreen setup 2>/dev/null || true; } | sudo /bin/sh -xe
+        fi
     - run: cargo fetch
     - run: cargo green supergreen env
     - run: sudo du -sh /var/lib/docker || true
@@ -1733,8 +1741,9 @@ jobs:
 
     - name: Setup
       run: |
-        cargo green supergreen setup || true
-        { cargo green supergreen setup 2>/dev/null || true; } | sudo /bin/sh -xe
+        if ! cargo green supergreen setup; then
+            { cargo green supergreen setup 2>/dev/null || true; } | sudo /bin/sh -xe
+        fi
     - run: cargo fetch
     - run: cargo green supergreen env
     - run: sudo du -sh /var/lib/docker || true
@@ -2019,8 +2028,9 @@ jobs:
 
     - name: Setup
       run: |
-        cargo green supergreen setup || true
-        { cargo green supergreen setup 2>/dev/null || true; } | sudo /bin/sh -xe
+        if ! cargo green supergreen setup; then
+            { cargo green supergreen setup 2>/dev/null || true; } | sudo /bin/sh -xe
+        fi
     - run: cargo fetch
     - run: cargo green supergreen env
     - run: sudo du -sh /var/lib/docker || true
@@ -2233,8 +2243,9 @@ jobs:
 
     - name: Setup
       run: |
-        cargo green supergreen setup || true
-        { cargo green supergreen setup 2>/dev/null || true; } | sudo /bin/sh -xe
+        if ! cargo green supergreen setup; then
+            { cargo green supergreen setup 2>/dev/null || true; } | sudo /bin/sh -xe
+        fi
     - run: cargo fetch
     - run: cargo green supergreen env
     - run: rustup component add clippy

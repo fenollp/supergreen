@@ -285,7 +285,8 @@ cargo_green_setup() {
     cat <<EOF
     - name: Setup
       run: |
-        cargo green supergreen setup || true
-        { cargo green supergreen setup 2>/dev/null || true; } | sudo /bin/sh -xe
+        if ! cargo green supergreen setup; then
+            { cargo green supergreen setup 2>/dev/null || true; } | sudo /bin/sh -xe
+        fi
 EOF
 }
