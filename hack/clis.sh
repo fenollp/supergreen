@@ -409,10 +409,7 @@ $(restore_builder_data)
       if: \${{ env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
       run: docker run --name=reg-to   --rm --detach -p 23456:5000 --user \$(id -u):\$(id -g) -v $registry_new:/var/lib/registry regist3
 
-    - name: Setup
-      run: |
-        cargo green supergreen setup || true
-        { cargo green supergreen setup 2>/dev/null || true; } | sudo /bin/sh -xe
+$(cargo_green_setup)
     - name: 🔵 Envs
       run: cargo green supergreen env
     - if: \${{ matrix.toolchain != '$stable' }}

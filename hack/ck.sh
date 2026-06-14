@@ -278,3 +278,14 @@ restore_builder_data() {
 
 EOF
 }
+
+
+cargo_green_setup() {
+    [[ $# -eq 0 ]]
+    cat <<EOF
+    - name: Setup
+      run: |
+        cargo green supergreen setup || true
+        { cargo green supergreen setup 2>/dev/null || true; } | sudo /bin/sh -xe
+EOF
+}

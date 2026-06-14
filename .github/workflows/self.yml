@@ -134,7 +134,8 @@ jobs:
         key: ${{ github.job }}-${{ runner.os }}-cargo-deps-${{ hashFiles('**/Cargo.lock') }}
         restore-keys: ${{ github.job }}-${{ runner.os }}-cargo-deps-
 
-    - run: |
+    - name: Setup
+      run: |
         cargo green supergreen setup || true
         { cargo green supergreen setup 2>/dev/null || true; } | sudo /bin/sh -xe
     - run: cargo fetch
@@ -273,7 +274,8 @@ jobs:
         key: ${{ github.job }}-${{ runner.os }}-cargo-deps-${{ hashFiles('**/Cargo.lock') }}
         restore-keys: ${{ github.job }}-${{ runner.os }}-cargo-deps-
 
-    - run: |
+    - name: Setup
+      run: |
         cargo green supergreen setup || true
         { cargo green supergreen setup 2>/dev/null || true; } | sudo /bin/sh -xe
     - run: cargo fetch
@@ -422,7 +424,8 @@ jobs:
         key: ${{ github.job }}-${{ runner.os }}-cargo-deps-${{ hashFiles('**/Cargo.lock') }}
         restore-keys: ${{ github.job }}-${{ runner.os }}-cargo-deps-
 
-    - run: |
+    - name: Setup
+      run: |
         cargo green supergreen setup || true
         { cargo green supergreen setup 2>/dev/null || true; } | sudo /bin/sh -xe
     - run: cargo fetch
@@ -565,7 +568,8 @@ jobs:
         key: ${{ github.job }}-${{ runner.os }}-cargo-deps-${{ hashFiles('**/Cargo.lock') }}
         restore-keys: ${{ github.job }}-${{ runner.os }}-cargo-deps-
 
-    - run: |
+    - name: Setup
+      run: |
         cargo green supergreen setup || true
         { cargo green supergreen setup 2>/dev/null || true; } | sudo /bin/sh -xe
     - run: cargo fetch
@@ -716,7 +720,8 @@ jobs:
         key: ${{ github.job }}-${{ runner.os }}-cargo-deps-${{ hashFiles('**/Cargo.lock') }}
         restore-keys: ${{ github.job }}-${{ runner.os }}-cargo-deps-
 
-    - run: |
+    - name: Setup
+      run: |
         cargo green supergreen setup || true
         { cargo green supergreen setup 2>/dev/null || true; } | sudo /bin/sh -xe
     - run: cargo fetch
@@ -868,7 +873,8 @@ jobs:
         key: ${{ github.job }}-${{ runner.os }}-cargo-deps-${{ hashFiles('**/Cargo.lock') }}
         restore-keys: ${{ github.job }}-${{ runner.os }}-cargo-deps-
 
-    - run: |
+    - name: Setup
+      run: |
         cargo green supergreen setup || true
         { cargo green supergreen setup 2>/dev/null || true; } | sudo /bin/sh -xe
     - run: cargo fetch
@@ -1153,7 +1159,8 @@ jobs:
         key: ${{ github.job }}-${{ runner.os }}-cargo-deps-${{ hashFiles('**/Cargo.lock') }}
         restore-keys: ${{ github.job }}-${{ runner.os }}-cargo-deps-
 
-    - run: |
+    - name: Setup
+      run: |
         cargo green supergreen setup || true
         { cargo green supergreen setup 2>/dev/null || true; } | sudo /bin/sh -xe
     - run: cargo fetch
@@ -1438,7 +1445,8 @@ jobs:
         key: ${{ github.job }}-${{ runner.os }}-cargo-deps-${{ hashFiles('**/Cargo.lock') }}
         restore-keys: ${{ github.job }}-${{ runner.os }}-cargo-deps-
 
-    - run: |
+    - name: Setup
+      run: |
         cargo green supergreen setup || true
         { cargo green supergreen setup 2>/dev/null || true; } | sudo /bin/sh -xe
     - run: cargo fetch
@@ -1723,7 +1731,8 @@ jobs:
         key: ${{ github.job }}-${{ runner.os }}-cargo-deps-${{ hashFiles('**/Cargo.lock') }}
         restore-keys: ${{ github.job }}-${{ runner.os }}-cargo-deps-
 
-    - run: |
+    - name: Setup
+      run: |
         cargo green supergreen setup || true
         { cargo green supergreen setup 2>/dev/null || true; } | sudo /bin/sh -xe
     - run: cargo fetch
@@ -2008,7 +2017,8 @@ jobs:
         key: ${{ github.job }}-${{ runner.os }}-cargo-deps-${{ hashFiles('**/Cargo.lock') }}
         restore-keys: ${{ github.job }}-${{ runner.os }}-cargo-deps-
 
-    - run: |
+    - name: Setup
+      run: |
         cargo green supergreen setup || true
         { cargo green supergreen setup 2>/dev/null || true; } | sudo /bin/sh -xe
     - run: cargo fetch
@@ -2221,7 +2231,8 @@ jobs:
         key: ${{ github.job }}-${{ runner.os }}-cargo-deps-${{ hashFiles('**/Cargo.lock') }}
         restore-keys: ${{ github.job }}-${{ runner.os }}-cargo-deps-
 
-    - run: |
+    - name: Setup
+      run: |
         cargo green supergreen setup || true
         { cargo green supergreen setup 2>/dev/null || true; } | sudo /bin/sh -xe
     - run: cargo fetch
