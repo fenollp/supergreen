@@ -7,6 +7,8 @@ use serde::{Deserialize, Serialize};
 use crate::{
     REPO,
     add::Add,
+    checkouts,
+    cratesio::{self, INDEX},
     image_uri::ImageUri,
     network::Network,
     rustup::{CHECKSUMS, VERSION},
@@ -34,6 +36,15 @@ macro_rules! ENV_COMPONENTS {
 
 pub(crate) const CARGO_HOME: &str = "/usr/local/cargo";
 pub(crate) const RUSTUP_HOME: &str = "/usr/local/rustup";
+
+/// `--remap-path-prefix` targets applied to rustc's outputs in [`crate::wrap::rustc`] and
+/// reversed for display by [`un_rewrite_cargo_home`]. Kept here beside the home (un)rewrite
+/// helpers and the [`CARGO_HOME`]/[`RUSTUP_HOME`] constants so the forward (compile-time) and
+/// reverse (display-time) mappings stay in sync.
+pub(crate) const REMAPPED_CRATESIO: &str = "/crates.io";
+pub(crate) const REMAPPED_GIT: &str = "/git";
+pub(crate) const REMAPPED_CARGO: &str = "/cargo";
+pub(crate) const REMAPPED_RUSTUP: &str = "/rustup";
 
 /// Default base image: `docker-image://docker.io/library/debian:trixie-slim`
 pub(crate) static BASE_IMAGE: LazyLock<ImageUri> =
@@ -167,7 +178,53 @@ pub(crate) fn rewrite_cargo_home(cargo_home: &Utf8Path, path: &str) -> String {
 }
 
 pub(crate) fn un_rewrite_cargo_home(txt: &str, to: &str) -> String {
-    replace_carefully(txt, CARGO_HOME, to)
+    // Reverse the --remap-path-prefix rules applied to rustc's outputs (see crate::wrap::rustc),
+    // plus the legacy in-container CARGO_HOME prefix (e.g. left in extracted .d depfiles, which
+    // rustc does not remap), all back to host paths — so diagnostics and depfiles point at files
+    // that exist on the host. Match a trailing slash so short roots don't eat lookalikes such as
+    // `/github`. $RUSTUP_HOME's host location isn't tracked, so REMAPPED_RUSTUP is left as-is: it
+    // virtually never surfaces in dependency diagnostics.
+    let txt = replace_carefully(
+        txt,
+        &format!("{REMAPPED_CRATESIO}/"),
+        &format!("{to}/{}/{INDEX}/", cratesio::HOME),
+    );
+    let txt =
+        replace_carefully(&txt, &format!("{REMAPPED_GIT}/"), &format!("{to}/{}/", checkouts::HOME));
+    let txt = replace_carefully(&txt, &format!("{REMAPPED_CARGO}/"), &format!("{to}/"));
+    replace_carefully(&txt, CARGO_HOME, to)
+}
+
+#[test]
+fn un_rewrites_remapped_homes() {
+    let to = "/home/pete/.cargo";
+
+    // crates.io dependency path remapped into a compile diagnostic
+    assert_eq!(
+        un_rewrite_cargo_home("error at /crates.io/anyhow-1.0.100/src/lib.rs:4:10", to),
+        format!("error at {to}/registry/src/index.crates.io/anyhow-1.0.100/src/lib.rs:4:10")
+    );
+
+    // git checkout dependency path
+    assert_eq!(
+        un_rewrite_cargo_home("note: /git/cross-f0189a1dc141e2d9/88f49ff/src/main.rs", to),
+        format!("note: {to}/git/checkouts/cross-f0189a1dc141e2d9/88f49ff/src/main.rs")
+    );
+
+    // legacy (un-remapped) in-container path, as found in extracted .d depfiles
+    assert_eq!(
+        un_rewrite_cargo_home(
+            "dep: /usr/local/cargo/registry/src/index.crates.io/foo-0.1.0/src/lib.rs",
+            to
+        ),
+        format!("dep: {to}/registry/src/index.crates.io/foo-0.1.0/src/lib.rs")
+    );
+
+    // lookalikes must survive untouched
+    assert_eq!(
+        un_rewrite_cargo_home("see https://github.com/foo/bar", to),
+        "see https://github.com/foo/bar"
+    );
 }
 
 pub(crate) fn rewrite_rustup_home(val: &str) -> String {

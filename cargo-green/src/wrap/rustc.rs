@@ -10,7 +10,9 @@ use log::{error, info, warn};
 
 use crate::{
     ENV, PKG, VSN,
-    base_image::rewrite_cargo_home,
+    base_image::{
+        REMAPPED_CARGO, REMAPPED_CRATESIO, REMAPPED_GIT, REMAPPED_RUSTUP, rewrite_cargo_home,
+    },
     checkouts,
     cratesio::{self, rewrite_cratesio_index},
     dirs::pwd,
@@ -168,7 +170,29 @@ async fn do_wrap_rustc(
             .collect::<Vec<_>>()
             .join(" ");
 
-        format!("rustc {args} {input}")
+        // Scrub the container's absolute path prefixes from everything rustc bakes into its
+        // emitted objects (rmeta/rlib metadata: input source path + embedded working dir) and
+        // debuginfo, so neither $CARGO_HOME (/usr/local/cargo) nor $RUSTUP_HOME
+        // (/usr/local/rustup) leaks into artifacts we cannot post-process.
+        // These shell vars are ENV-set by the base image and expand at RUN time, hence not
+        // safeified. The default (`all`) scope is deliberate: `--remap-path-scope=object` would
+        // leave the real source path in the rmeta metadata. The `.d` depfiles are not remapped
+        // by rustc; they get rewritten to host paths at extraction (build.rs un_rewrite_cargo_home).
+        // rustc applies the LAST matching rule, so the specific prefixes (crates.io registry, git
+        // checkouts) follow the general $CARGO_HOME catch-all.
+        let remap = [
+            format!("--remap-path-prefix=$RUSTUP_HOME={REMAPPED_RUSTUP}"),
+            format!("--remap-path-prefix=$CARGO_HOME={REMAPPED_CARGO}"),
+            format!(
+                "--remap-path-prefix=$CARGO_HOME/{}/{}={REMAPPED_CRATESIO}",
+                cratesio::HOME,
+                cratesio::INDEX
+            ),
+            format!("--remap-path-prefix=$CARGO_HOME/{}={REMAPPED_GIT}", checkouts::HOME),
+        ]
+        .join(" ");
+
+        format!("rustc {remap} {args} {input}")
     };
     md.call_block(
         (&rustc_stage, rustc_block),

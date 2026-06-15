@@ -688,8 +688,6 @@ send \
 tmux select-layout even-vertical
 tmux split-window
 
-# RUSTFLAGS="--remap-path-prefix=$tmptrgt="
-
 envvars=(CARGO_INCREMENTAL=0)
 envvars+=(PATH=$shortPATH)
 envvars+=(CARGOGREEN_LOG=debug)
