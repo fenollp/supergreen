@@ -318,16 +318,18 @@ impl Md {
         buf.push('\n');
     }
 
-    fn block_along_with_predecessors(&self, mds: &[Rc<Self>]) -> String {
+    fn block_along_with_predecessors(&self, mds: &[Rc<Self>], finalpathcomments: bool) -> String {
         let mut blocks = String::new();
         let mut visited = IndexSet::new();
         for md in mds {
             md.append_blocks(&mut blocks, &mut visited);
             blocks.push('\n');
-            for line in toml::to_string_pretty(md.as_ref()).expect("previously enc").lines() {
-                Self::comment_pretty(line, &mut blocks);
+            if finalpathcomments {
+                for line in toml::to_string_pretty(md.as_ref()).expect("previously enc").lines() {
+                    Self::comment_pretty(line, &mut blocks);
+                }
+                blocks.push('\n');
             }
-            blocks.push('\n');
         }
         self.append_blocks(&mut blocks, &mut visited);
         blocks
@@ -348,7 +350,7 @@ impl Md {
         let mut containerfile = green.new_containerfile();
         containerfile.pushln(&self.rust_stage());
         containerfile.nl();
-        containerfile.push(&self.block_along_with_predecessors(mds));
+        containerfile.push(&self.block_along_with_predecessors(mds, green.finalpathcomments()));
         containerfile.write_to(&containerfile_path)?;
 
         Ok((md_path, containerfile_path))
