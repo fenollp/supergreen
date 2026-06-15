@@ -10,9 +10,7 @@ use log::{error, info, warn};
 
 use crate::{
     ENV, PKG, VSN,
-    base_image::{
-        REMAPPED_CARGO, REMAPPED_CRATESIO, REMAPPED_GIT, REMAPPED_RUSTUP, rewrite_cargo_home,
-    },
+    base_image::{REMAPPED_CARGO, REMAPPED_RUSTUP, rewrite_cargo_home},
     checkouts,
     cratesio::{self, rewrite_cratesio_index},
     dirs::pwd,
@@ -170,25 +168,19 @@ async fn do_wrap_rustc(
             .collect::<Vec<_>>()
             .join(" ");
 
-        // Scrub the container's absolute path prefixes from everything rustc bakes into its
-        // emitted objects (rmeta/rlib metadata: input source path + embedded working dir) and
-        // debuginfo, so neither $CARGO_HOME (/usr/local/cargo) nor $RUSTUP_HOME
-        // (/usr/local/rustup) leaks into artifacts we cannot post-process.
-        // These shell vars are ENV-set by the base image and expand at RUN time, hence not
-        // safeified. The default (`all`) scope is deliberate: `--remap-path-scope=object` would
-        // leave the real source path in the rmeta metadata. The `.d` depfiles are not remapped
-        // by rustc; they get rewritten to host paths at extraction (build.rs un_rewrite_cargo_home).
-        // rustc applies the LAST matching rule, so the specific prefixes (crates.io registry, git
-        // checkouts) follow the general $CARGO_HOME catch-all.
+        // Replace the container's CARGO_HOME (/usr/local/cargo) and RUSTUP_HOME (/usr/local/rustup)
+        // with stable, layout-independent roots in the paths rustc bakes into its emitted objects
+        // (rmeta/rlib metadata: input source path + embedded working dir) and debuginfo — so those
+        // artifacts, and thus the BuildKit cache, don't depend on the base image's install prefix.
+        // REMAPPED_CARGO subsumes both the crates.io registry and git checkouts (they live under
+        // $CARGO_HOME). These shell vars are ENV-set by the base image and expand at RUN time,
+        // hence not safeified. The default (`all`) scope is deliberate: `--remap-path-scope=object`
+        // would leave the real source path in the rmeta metadata. The .d depfiles are not remapped
+        // by rustc; they already carry the fixed in-container paths and get localized to the host
+        // at extraction (build.rs un_rewrite_cargo_home).
         let remap = [
-            format!("--remap-path-prefix=$RUSTUP_HOME={REMAPPED_RUSTUP}"),
             format!("--remap-path-prefix=$CARGO_HOME={REMAPPED_CARGO}"),
-            format!(
-                "--remap-path-prefix=$CARGO_HOME/{}/{}={REMAPPED_CRATESIO}",
-                cratesio::HOME,
-                cratesio::INDEX
-            ),
-            format!("--remap-path-prefix=$CARGO_HOME/{}={REMAPPED_GIT}", checkouts::HOME),
+            format!("--remap-path-prefix=$RUSTUP_HOME={REMAPPED_RUSTUP}"),
         ]
         .join(" ");
 

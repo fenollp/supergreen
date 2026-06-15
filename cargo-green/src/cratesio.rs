@@ -13,7 +13,7 @@ use crate::{
 
 pub(crate) const HOME: &str = "registry/src";
 
-pub(crate) const INDEX: &str = "index.crates.io";
+const INDEX: &str = "index.crates.io";
 
 impl Green {
     pub(crate) fn maybe_arrange_cratesio_index(&self) -> Result<()> {
