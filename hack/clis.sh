@@ -216,6 +216,14 @@ as_install() {
   esac
 }
 
+declare -A binaries=()
+populate_binaries() {
+  [[ $# -eq 0 ]]
+  while read -r dockerfile bin; do
+    binaries["${dockerfile%.Dockerfile}"]="$bin"
+  done < <(cat docker-bake.json | jq -r '.target | to_entries[] | "\( .value.dockerfile )"+" \( .key )"')
+}
+
 as_env() {
   local name_at_version=$1; shift
   [[ $# -eq 0 ]]
@@ -332,9 +340,11 @@ slugify() {
 
 cli() {
   local name_at_version=$1; shift
+  local binname=$1; shift
   local cargo=$1; shift
   local registry=/tmp/.local-registry
   local registry_new=$registry-new
+  local root=/tmp
   local envvars=()
   as_env "$name_at_version"
 
@@ -422,7 +432,7 @@ $(cache_usage)
       run: |
 $(unset_action_envs)
         env ${envvars[@]} \\
-          $cargo green -vv install --locked --force $(as_install "$name_at_version") $@ |& tee _
+          $cargo green -vv install --locked --force --root=$root $(as_install "$name_at_version") $@ |& tee _
     - name: 🔵 $cargo install jobs=1
       id: do-try-jobs1
       timeout-minutes: 11
@@ -430,7 +440,7 @@ $(unset_action_envs)
       run: |
 $(unset_action_envs)
         env ${envvars[@]} \\
-          $cargo green -vv install --jobs=1 --locked --force $(as_install "$name_at_version") $@ |& tee _
+          $cargo green -vv install --jobs=1 --locked --force --root=$root $(as_install "$name_at_version") $@ |& tee _
     - if: \${{ always() && matrix.toolchain != '$stable' }}
       uses: $action__upload_artifact
       name: Upload recipe
@@ -441,22 +451,38 @@ $(unset_action_envs)
 $(postconds _)
 $(cache_usage)
 $(disk_usage)
+$(check_bin_help_and_set_hash "$root" "$binname")
 
     - name: 🔵 Ensure running the same command twice without modifications...
       run: |
 $(unset_action_envs)
         env ${envvars[@]} \\
-          $cargo green -vv install --locked --force $(as_install "$name_at_version") $@ |& tee _
+          $cargo green -vv install --locked --force --root=$root $(as_install "$name_at_version") $@ |& tee _
 $(postcond_fresh _)
 $(postconds _)
+$(check_bin_hash "$root" "$binname")
 
     - name: 🔵 Try CARGOGREEN_RUNNER=none with the same command twice without modifications...
       run: |
 $(unset_action_envs)
         env ${envvars[@]} CARGOGREEN_RUNNER=none \\
-          $cargo green -vv install --locked --force $(as_install "$name_at_version") $@ |& tee _
+          $cargo green -vv install --locked --force --root=$root $(as_install "$name_at_version") $@ |& tee _
 $(postcond_fresh _)
 $(postconds _)
+$(check_bin_hash "$root" "$binname")
+
+    - run: rm -rf $root/bin/* \$CARGO_TARGET_DIR/* >/dev/null
+    - name: 🔵 Reuse locally cached results...
+      run: |
+$(unset_action_envs)
+        env ${envvars[@]} CARGOGREEN_RUNNER=none \\
+          $cargo green -vv install --locked --force --root=$root $(as_install "$name_at_version") $@ |& tee _
+    - name: ...is blazingly fearlessly lightspeed fast
+      run: |
+        grep Finished ./_ || exit 1
+        grep Finished ./_ | grep -E ....s || exit 1
+$(postconds _)
+$(check_bin_hash "$root" "$binname")
 
     - name: 🔵 Compare old/new local private registry image digests
       if: \${{ always() && env.CARGOGREEN_CACHE_FROM_IMAGES != '' && env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
@@ -489,6 +515,7 @@ EOF
 #   debug webui at https://github.com/fenollp/supergreen/actions/workflows/clis-1.yml
 #                  https://github.com/fenollp/supergreen/actions/workflows/clis-2.yml
 if [[ $# = 0 ]]; then
+  populate_binaries
   page=1 ; perpage=0 ; actual=0 ; declare -a slows
   for i in "${!nvs[@]}"; do
     name_at_version=${nvs["$i"]}
@@ -508,9 +535,9 @@ if [[ $# = 0 ]]; then
       cargo="cargo +$cargo"
     fi
     ((perpage+=1))
-    [[ $perpage = 24 ]] && { perpage=1 ; ((page+=1)) ; }
+    [[ $perpage = 10 ]] && { perpage=1 ; ((page+=1)) ; }
     [[ $perpage = 1 ]] && header $page | tee .github/workflows/clis-$page.yml
-    cli "$name_at_version" "$cargo" "${nvs_args["$i"]}" | tee --append .github/workflows/clis-$page.yml
+    cli "$name_at_version" "${binaries["$name_at_version"]}" "$cargo" "${nvs_args["$i"]}" | tee --append .github/workflows/clis-$page.yml
   done
 
   echo

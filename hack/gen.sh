@@ -6,7 +6,7 @@ repo_root=$(realpath "$(dirname "$(dirname "$0")")")
 [[ $# -ne 0 ]] && echo "Usage: $0" && exit 1
 
 
-"$repo_root"/hack/bake.sh | tee docker-bake.hcl
+"$repo_root"/hack/bake.sh | tee docker-bake.json
 
 rm -f .github/workflows/clis-*.yml
 "$repo_root"/hack/clis.sh
@@ -16,4 +16,4 @@ rm -f .github/workflows/clis-*.yml
 "$repo_root"/hack/docs.sh
 
 
-git --no-pager diff --exit-code -- .github docker-bake.hcl cargo-green/docs
+git --no-pager diff --exit-code -- .github docker-bake.json cargo-green/docs

@@ -32,7 +32,7 @@
 Syncs `./recipes/*.Dockerfile` files.
 
 ### `./hack/bake.sh`
-Syncs the `./docker-bake.hcl` [bake file](https://docs.docker.com/build/bake/).
+Syncs the `./docker-bake.json` [bake file](https://docs.docker.com/build/bake/).
 
 The generates `./recipes` can all be built using e.g.:
 > docker buildx bake https://github.com/fenollp/supergreen.git btm rg
