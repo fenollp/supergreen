@@ -20,18 +20,28 @@ sorted() {
     done | sort -k1n
 }
 
-echo 'group "default" {'
-echo '  targets = ['
-sorted | while read -r _ bin _; do
-    printf '    "%s",\n' "$bin"
-done
-echo '  ]'
-echo '}'
+echo '{'
+echo '  "group": { "default": {'
+first=1
+while read -r _ bin _; do
+    if [[ $first = 1 ]]; then
+        first=0
+        printf '    "targets": [ "%s"\n' "$bin"
+    else
+        printf '               , "%s"\n' "$bin"
+    fi
+done < <(sorted)
+echo '               ]}},'
 echo
-sorted | while read -r _ bin file; do
-    printf 'target "%s" {\n' "$bin"
-    echo   '  context = "recipes"'
-    printf '  dockerfile = "%s"\n' "$file"
-    echo   '  output = ["."]'
-    echo   '}'
-done
+echo '  "target":'
+x='{ '
+while read -r _ bin file; do
+    printf '  %s"%s": {\n' "$x" "$bin"
+    echo   '      "context": "recipes",'
+    printf '      "dockerfile": "%s",\n' "$file"
+    echo   '      "output": ["."]'
+    echo   '    }'
+    x=', '
+done < <(sorted)
+echo '  }'
+echo '}'

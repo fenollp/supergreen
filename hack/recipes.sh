@@ -26,3 +26,6 @@ for runID in $(gh run list --branch "$branch"  --json databaseId,workflowName --
 		fi
 	done
 done
+
+
+"$repo_root"/hack/gen.sh

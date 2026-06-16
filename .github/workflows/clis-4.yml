@@ -1,5 +1,5 @@
 on: [push]
-name: CLIs p.2
+name: CLIs p.4
 permissions: {}
 jobs:
 
@@ -74,7 +74,7 @@ jobs:
 #         path: /home/runner/builder-cache
 #         if-no-files-found: error
 
-  hickory-dns_0-26-0-alpha-1:
+  binsider_0-3-0:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     defaults:
@@ -89,10 +89,10 @@ jobs:
         exclude:
         - toolchain: ${{ github.ref != 'refs/heads/main' && '1.96.0' }}
     env:
-      CARGO_TARGET_DIR: /tmp/clis-hickory-dns_0-26-0-alpha-1
+      CARGO_TARGET_DIR: /tmp/clis-binsider_0-3-0
     # CARGOGREEN_CACHE_FROM_IMAGES: docker-image://localhost:12345/${{ github.repository }}
     # CARGOGREEN_CACHE_TO_IMAGES: docker-image://localhost:23456/${{ github.repository }}
-      CARGOGREEN_FINAL_PATH: recipes/hickory-dns@0.26.0-alpha.1.Dockerfile
+      CARGOGREEN_FINAL_PATH: recipes/binsider@0.3.0.Dockerfile
       CARGOGREEN_EXPERIMENT: finalpathnonprimary # dumps on each build call
       CARGOGREEN_LOG: debug
       CARGOGREEN_LOG_PATH: logs.txt
@@ -198,7 +198,7 @@ jobs:
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env  \
-          cargo green -vv install --locked --force --root=/tmp hickory-dns@0.26.0-alpha.1  |& tee _
+          cargo green -vv install --locked --force --root=/tmp binsider@0.3.0  |& tee _
     - name: 🔵 cargo install jobs=1
       id: do-try-jobs1
       timeout-minutes: 11
@@ -209,12 +209,12 @@ jobs:
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env  \
-          cargo green -vv install --jobs=1 --locked --force --root=/tmp hickory-dns@0.26.0-alpha.1  |& tee _
+          cargo green -vv install --jobs=1 --locked --force --root=/tmp binsider@0.3.0  |& tee _
     - if: ${{ always() && matrix.toolchain != '1.96.0' }}
       uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
       name: Upload recipe
       with:
-        name: hickory-dns@0.26.0-alpha.1.Dockerfile
+        name: binsider@0.3.0.Dockerfile
         path: ${{ env.CARGOGREEN_FINAL_PATH }}
         if-no-files-found: error
     - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
@@ -281,9 +281,9 @@ jobs:
       run: du -sh $CARGO_TARGET_DIR || true
     - name: Check that generated binary executes and set sha256
       run: |
-        ls -lha /tmp/bin/hickory_dns
-        /tmp/bin/hickory_dns --help || true
-        echo "BINHASHED=$(sha256sum /tmp/bin/hickory_dns)" >>$GITHUB_ENV
+        ls -lha /tmp/bin/binsider
+        /tmp/bin/binsider --help || true
+        echo "BINHASHED=$(sha256sum /tmp/bin/binsider)" >>$GITHUB_ENV
 
     - name: 🔵 Ensure running the same command twice without modifications...
       run: |
@@ -292,7 +292,7 @@ jobs:
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env  \
-          cargo green -vv install --locked --force --root=/tmp hickory-dns@0.26.0-alpha.1  |& tee _
+          cargo green -vv install --locked --force --root=/tmp binsider@0.3.0  |& tee _
     - name: ...doesn't recompile anything
       run: |
         err=0
@@ -357,7 +357,7 @@ jobs:
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
     - name: Check that generated binary matches sha256
       run: |
-        [[ "$BINHASHED" = "$(sha256sum /tmp/bin/hickory_dns)" ]]
+        [[ "$BINHASHED" = "$(sha256sum /tmp/bin/binsider)" ]]
 
     - name: 🔵 Try CARGOGREEN_RUNNER=none with the same command twice without modifications...
       run: |
@@ -366,7 +366,7 @@ jobs:
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env  CARGOGREEN_RUNNER=none \
-          cargo green -vv install --locked --force --root=/tmp hickory-dns@0.26.0-alpha.1  |& tee _
+          cargo green -vv install --locked --force --root=/tmp binsider@0.3.0  |& tee _
     - name: ...doesn't recompile anything
       run: |
         err=0
@@ -431,7 +431,7 @@ jobs:
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
     - name: Check that generated binary matches sha256
       run: |
-        [[ "$BINHASHED" = "$(sha256sum /tmp/bin/hickory_dns)" ]]
+        [[ "$BINHASHED" = "$(sha256sum /tmp/bin/binsider)" ]]
 
     - run: rm -rf /tmp/bin/* $CARGO_TARGET_DIR/* >/dev/null
     - name: 🔵 Reuse locally cached results...
@@ -441,7 +441,7 @@ jobs:
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env  CARGOGREEN_RUNNER=none \
-          cargo green -vv install --locked --force --root=/tmp hickory-dns@0.26.0-alpha.1  |& tee _
+          cargo green -vv install --locked --force --root=/tmp binsider@0.3.0  |& tee _
     - name: ...is blazingly fearlessly lightspeed fast
       run: |
         grep Finished ./_ || exit 1
@@ -502,7 +502,7 @@ jobs:
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
     - name: Check that generated binary matches sha256
       run: |
-        [[ "$BINHASHED" = "$(sha256sum /tmp/bin/hickory_dns)" ]]
+        [[ "$BINHASHED" = "$(sha256sum /tmp/bin/binsider)" ]]
 
     - name: 🔵 Compare old/new local private registry image digests
       if: ${{ always() && env.CARGOGREEN_CACHE_FROM_IMAGES != '' && env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
@@ -534,7 +534,7 @@ jobs:
       if: ${{ always() }}
       run: du -sh $CARGO_TARGET_DIR || true
 
-  mussh_3-1-3:
+  gifski_1-34-0:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     defaults:
@@ -549,930 +549,10 @@ jobs:
         exclude:
         - toolchain: ${{ github.ref != 'refs/heads/main' && '1.96.0' }}
     env:
-      CARGO_TARGET_DIR: /tmp/clis-mussh_3-1-3
+      CARGO_TARGET_DIR: /tmp/clis-gifski_1-34-0
     # CARGOGREEN_CACHE_FROM_IMAGES: docker-image://localhost:12345/${{ github.repository }}
     # CARGOGREEN_CACHE_TO_IMAGES: docker-image://localhost:23456/${{ github.repository }}
-      CARGOGREEN_FINAL_PATH: recipes/mussh@3.1.3.Dockerfile
-      CARGOGREEN_EXPERIMENT: finalpathnonprimary # dumps on each build call
-      CARGOGREEN_LOG: debug
-      CARGOGREEN_LOG_PATH: logs.txt
-    needs: bin
-    steps:
-    - uses: docker/login-action@4907a6ddec9925e35a0a9e82d7399ccc52663121 # v4.1.0
-      if: ${{ ! startsWith(github.ref, 'refs/heads/dependabot/') }}
-      with:
-        username: ${{ vars.DOCKERHUB_USERNAME }}
-        password: ${{ secrets.DOCKERHUB_TOKEN }}
-    - uses: actions-rust-lang/setup-rust-toolchain@2b1f5e9b395427c92ee4e3331786ca3c37afe2d7 # v1.16.0
-      with:
-        toolchain: ${{ matrix.toolchain }}
-        rustflags: ''
-        cache-on-failure: true
-
-    - name: Retrieve saved bin
-      uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
-      with:
-        name: cargo-green
-
-    - name: Install saved bin
-      shell: bash -eu {0}
-      run: | # TODO: whence https://github.com/actions/download-artifact/issues/236
-        chmod +x ./cargo-green
-        { ! ./cargo-green --version ; } | grep cargo-green
-        mv ./cargo-green ~/.cargo/bin/
-  # - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
-  #   name: Retrieve saved builder data
-  #   uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
-  #   with:
-  #     name: builder-data
-  #     path: /home/runner/builder-cache
-  # - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
-  #   run: |
-  #     set -x
-  #     sudo mkdir -p $(cargo green supergreen sync data 2>/dev/null)
-  #     sudo mv -v /home/runner/builder-cache/* $(cargo green supergreen sync data 2>/dev/null)/
-  #     sudo chown -R root:root $(cargo green supergreen sync data 2>/dev/null)
-    - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-      with:
-        persist-credentials: false
-
-    - name: Prepare local private registry cache
-      if: ${{ env.CARGOGREEN_CACHE_FROM_IMAGES != '' || env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
-      run: |
-        # https://github.com/fenollp/supergreen/actions/caches
-        mkdir -p /tmp/.local-registry
-        mkdir -p /tmp/.local-registry-new
-    - name: 🔵 Restore local private registry cache
-      if: ${{ env.CARGOGREEN_CACHE_FROM_IMAGES != '' || env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
-      uses: actions/cache/restore@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
-      with:
-        path: /tmp/.local-registry
-        # github.run_id: https://github.com/actions/toolkit/issues/658#issuecomment-2640690759
-        key: localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-${{ github.run_id }}
-        restore-keys: |
-          localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-
-          localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-
-          localprivatereg-${{ runner.os }}-
-          localprivatereg-
-
-    - name: Pull regist3 image
-      if: ${{ env.CARGOGREEN_CACHE_FROM_IMAGES != '' || env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
-      run: |
-        false \
-        || docker build --tag regist3 - <<<'FROM docker.io/registry:3' \
-        || docker build --tag regist3 - <<<'FROM mirror.gcr.io/registry:3' \
-        || docker build --tag regist3 - <<<'FROM public.ecr.aws/docker/registry:3' \
-        || exit 1
-    - name: Start "cache from" image registry
-      if: ${{ env.CARGOGREEN_CACHE_FROM_IMAGES != '' }}
-      run: docker run --name=reg-from --rm --detach -p 12345:5000 --user $(id -u):$(id -g) -v     /tmp/.local-registry:/var/lib/registry regist3
-    - name: Start "cache to" image registry
-      if: ${{ env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
-      run: docker run --name=reg-to   --rm --detach -p 23456:5000 --user $(id -u):$(id -g) -v /tmp/.local-registry-new:/var/lib/registry regist3
-
-    - name: Setup
-      run: |
-        if ! cargo green supergreen setup; then
-            { cargo green supergreen setup 2>/dev/null || true; } | sudo /bin/sh -xe
-        fi
-    - name: 🔵 Envs
-      run: cargo green supergreen env
-    - if: ${{ matrix.toolchain != '1.96.0' }}
-      run: cargo green supergreen show-rust-base 2>/dev/null | grep '${{ matrix.toolchain }}'
-    - run: cargo green supergreen builder
-    - name: 🔵 Envs again
-      run: cargo green supergreen env
-
-    - run: docker system df
-    - run: docker system df --verbose
-    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
-    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
-    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
-    - name: 🔵 cargo install
-      id: do-try
-      timeout-minutes: 11
-      continue-on-error: true
-      run: |
-        unset CARGO_PROFILE_DEV_DEBUG
-        unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
-        unset CARGO_TERM_COLOR
-        unset CARGO_UNSTABLE_SPARSE_REGISTRY
-        env CARGOGREEN_ADD_APT=libsqlite3-dev,"libssl-dev(>=3.5)",pkg-config,zlib1g-dev \
-          cargo green -vv install --locked --force --root=/tmp mussh@3.1.3  |& tee _
-    - name: 🔵 cargo install jobs=1
-      id: do-try-jobs1
-      timeout-minutes: 11
-      if: ${{ job.steps.do-try.outcome != 'success' }}
-      run: |
-        unset CARGO_PROFILE_DEV_DEBUG
-        unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
-        unset CARGO_TERM_COLOR
-        unset CARGO_UNSTABLE_SPARSE_REGISTRY
-        env CARGOGREEN_ADD_APT=libsqlite3-dev,"libssl-dev(>=3.5)",pkg-config,zlib1g-dev \
-          cargo green -vv install --jobs=1 --locked --force --root=/tmp mussh@3.1.3  |& tee _
-    - if: ${{ always() && matrix.toolchain != '1.96.0' }}
-      uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
-      name: Upload recipe
-      with:
-        name: mussh@3.1.3.Dockerfile
-        path: ${{ env.CARGOGREEN_FINAL_PATH }}
-        if-no-files-found: error
-    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
-      name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
-      run: |
-        ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' _
-
-    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
-      name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
-      run: |
-        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
-
-    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
-      name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
-      run: |
-        ! grep -C20 -F 'connection error: COMPRESSION_ERROR' $CARGOGREEN_LOG_PATH
-
-    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
-      name: 🔴 =means=> there's some panic!s
-      run: |
-        ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
-
-    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
-      name: 🔴 =means=> there's some BUGs
-      run: |
-        ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
-
-    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
-      name: 🔴 =means=> here's cargo's error text
-      run: |
-        ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' $CARGOGREEN_LOG_PATH _
-
-    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
-      name: 🔴 =means=> 429 Too Many Requests
-      run: |
-        ! grep -C20 -F '429 Too Many Requests' $CARGOGREEN_LOG_PATH _
-
-    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
-      name: 🔴 =means=> here's relevant logs
-      run: |
-        ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
-
-    - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
-      name: 🌀 Maybe show final path diff
-      run: |
-        final_diff=(git --no-pager diff)
-        if [[ ${{ matrix.toolchain }} != 1.96.0 ]]; then
-          final_diff+=(--exit-code)
-        fi
-        final_diff+=(--ignore-matching-lines=' AS rust-base$')
-        final_diff+=(-- $CARGOGREEN_FINAL_PATH)
-        "${final_diff[@]}"
-
-    - if: ${{ failure() }}
-      name: 🌀 cargo-green logs
-      run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
-    - run: docker system df
-    - run: docker system df --verbose
-    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
-    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
-    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
-    - name: Target dir disk usage
-      if: ${{ always() }}
-      run: du -sh $CARGO_TARGET_DIR || true
-    - name: Check that generated binary executes and set sha256
-      run: |
-        ls -lha /tmp/bin/mussh
-        /tmp/bin/mussh --help || true
-        echo "BINHASHED=$(sha256sum /tmp/bin/mussh)" >>$GITHUB_ENV
-
-    - name: 🔵 Ensure running the same command twice without modifications...
-      run: |
-        unset CARGO_PROFILE_DEV_DEBUG
-        unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
-        unset CARGO_TERM_COLOR
-        unset CARGO_UNSTABLE_SPARSE_REGISTRY
-        env CARGOGREEN_ADD_APT=libsqlite3-dev,"libssl-dev(>=3.5)",pkg-config,zlib1g-dev \
-          cargo green -vv install --locked --force --root=/tmp mussh@3.1.3  |& tee _
-    - name: ...doesn't recompile anything
-      run: |
-        err=0
-        grep Finished  _
-        grep Finished  _ | grep -E [0123]...s || ((err+=1))
-        grep Dirty     _                      && ((err+=2))
-        grep Compiling _                      && ((err+=4))
-        exit $err
-    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
-      name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
-      run: |
-        ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' _
-
-    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
-      name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
-      run: |
-        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
-
-    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
-      name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
-      run: |
-        ! grep -C20 -F 'connection error: COMPRESSION_ERROR' $CARGOGREEN_LOG_PATH
-
-    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
-      name: 🔴 =means=> there's some panic!s
-      run: |
-        ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
-
-    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
-      name: 🔴 =means=> there's some BUGs
-      run: |
-        ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
-
-    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
-      name: 🔴 =means=> here's cargo's error text
-      run: |
-        ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' $CARGOGREEN_LOG_PATH _
-
-    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
-      name: 🔴 =means=> 429 Too Many Requests
-      run: |
-        ! grep -C20 -F '429 Too Many Requests' $CARGOGREEN_LOG_PATH _
-
-    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
-      name: 🔴 =means=> here's relevant logs
-      run: |
-        ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
-
-    - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
-      name: 🌀 Maybe show final path diff
-      run: |
-        final_diff=(git --no-pager diff)
-        if [[ ${{ matrix.toolchain }} != 1.96.0 ]]; then
-          final_diff+=(--exit-code)
-        fi
-        final_diff+=(--ignore-matching-lines=' AS rust-base$')
-        final_diff+=(-- $CARGOGREEN_FINAL_PATH)
-        "${final_diff[@]}"
-
-    - if: ${{ failure() }}
-      name: 🌀 cargo-green logs
-      run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
-    - name: Check that generated binary matches sha256
-      run: |
-        [[ "$BINHASHED" = "$(sha256sum /tmp/bin/mussh)" ]]
-
-    - name: 🔵 Try CARGOGREEN_RUNNER=none with the same command twice without modifications...
-      run: |
-        unset CARGO_PROFILE_DEV_DEBUG
-        unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
-        unset CARGO_TERM_COLOR
-        unset CARGO_UNSTABLE_SPARSE_REGISTRY
-        env CARGOGREEN_ADD_APT=libsqlite3-dev,"libssl-dev(>=3.5)",pkg-config,zlib1g-dev CARGOGREEN_RUNNER=none \
-          cargo green -vv install --locked --force --root=/tmp mussh@3.1.3  |& tee _
-    - name: ...doesn't recompile anything
-      run: |
-        err=0
-        grep Finished  _
-        grep Finished  _ | grep -E [0123]...s || ((err+=1))
-        grep Dirty     _                      && ((err+=2))
-        grep Compiling _                      && ((err+=4))
-        exit $err
-    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
-      name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
-      run: |
-        ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' _
-
-    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
-      name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
-      run: |
-        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
-
-    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
-      name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
-      run: |
-        ! grep -C20 -F 'connection error: COMPRESSION_ERROR' $CARGOGREEN_LOG_PATH
-
-    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
-      name: 🔴 =means=> there's some panic!s
-      run: |
-        ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
-
-    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
-      name: 🔴 =means=> there's some BUGs
-      run: |
-        ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
-
-    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
-      name: 🔴 =means=> here's cargo's error text
-      run: |
-        ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' $CARGOGREEN_LOG_PATH _
-
-    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
-      name: 🔴 =means=> 429 Too Many Requests
-      run: |
-        ! grep -C20 -F '429 Too Many Requests' $CARGOGREEN_LOG_PATH _
-
-    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
-      name: 🔴 =means=> here's relevant logs
-      run: |
-        ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
-
-    - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
-      name: 🌀 Maybe show final path diff
-      run: |
-        final_diff=(git --no-pager diff)
-        if [[ ${{ matrix.toolchain }} != 1.96.0 ]]; then
-          final_diff+=(--exit-code)
-        fi
-        final_diff+=(--ignore-matching-lines=' AS rust-base$')
-        final_diff+=(-- $CARGOGREEN_FINAL_PATH)
-        "${final_diff[@]}"
-
-    - if: ${{ failure() }}
-      name: 🌀 cargo-green logs
-      run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
-    - name: Check that generated binary matches sha256
-      run: |
-        [[ "$BINHASHED" = "$(sha256sum /tmp/bin/mussh)" ]]
-
-    - run: rm -rf /tmp/bin/* $CARGO_TARGET_DIR/* >/dev/null
-    - name: 🔵 Reuse locally cached results...
-      run: |
-        unset CARGO_PROFILE_DEV_DEBUG
-        unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
-        unset CARGO_TERM_COLOR
-        unset CARGO_UNSTABLE_SPARSE_REGISTRY
-        env CARGOGREEN_ADD_APT=libsqlite3-dev,"libssl-dev(>=3.5)",pkg-config,zlib1g-dev CARGOGREEN_RUNNER=none \
-          cargo green -vv install --locked --force --root=/tmp mussh@3.1.3  |& tee _
-    - name: ...is blazingly fearlessly lightspeed fast
-      run: |
-        grep Finished ./_ || exit 1
-        grep Finished ./_ | grep -E ....s || exit 1
-    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
-      name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
-      run: |
-        ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' _
-
-    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
-      name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
-      run: |
-        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
-
-    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
-      name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
-      run: |
-        ! grep -C20 -F 'connection error: COMPRESSION_ERROR' $CARGOGREEN_LOG_PATH
-
-    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
-      name: 🔴 =means=> there's some panic!s
-      run: |
-        ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
-
-    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
-      name: 🔴 =means=> there's some BUGs
-      run: |
-        ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
-
-    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
-      name: 🔴 =means=> here's cargo's error text
-      run: |
-        ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' $CARGOGREEN_LOG_PATH _
-
-    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
-      name: 🔴 =means=> 429 Too Many Requests
-      run: |
-        ! grep -C20 -F '429 Too Many Requests' $CARGOGREEN_LOG_PATH _
-
-    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
-      name: 🔴 =means=> here's relevant logs
-      run: |
-        ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
-
-    - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
-      name: 🌀 Maybe show final path diff
-      run: |
-        final_diff=(git --no-pager diff)
-        if [[ ${{ matrix.toolchain }} != 1.96.0 ]]; then
-          final_diff+=(--exit-code)
-        fi
-        final_diff+=(--ignore-matching-lines=' AS rust-base$')
-        final_diff+=(-- $CARGOGREEN_FINAL_PATH)
-        "${final_diff[@]}"
-
-    - if: ${{ failure() }}
-      name: 🌀 cargo-green logs
-      run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
-    - name: Check that generated binary matches sha256
-      run: |
-        [[ "$BINHASHED" = "$(sha256sum /tmp/bin/mussh)" ]]
-
-    - name: 🔵 Compare old/new local private registry image digests
-      if: ${{ always() && env.CARGOGREEN_CACHE_FROM_IMAGES != '' && env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
-      run: |
-        diff --width=150 -y \
-          <(find /tmp/.local-registry/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print $NF}' | sort -u) \
-          <(find /tmp/.local-registry-new/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print $NF}' | sort -u) || true
-        du -sh /tmp/.local-registry /tmp/.local-registry-new || true
-    - name: Local private registry cache dance
-      if: ${{ always() && env.CARGOGREEN_CACHE_FROM_IMAGES != '' && env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
-      run: |
-        # [ci: caches keep growing](https://github.com/moby/buildkit/issues/1850)
-        docker stop --timeout 10 reg-from reg-to
-        rm -rf /tmp/.local-registry
-        mv /tmp/.local-registry-new /tmp/.local-registry
-  # - name: Save local private registry cache
-  #   uses: actions/cache/save@v5
-  #   if: ${{ false }} # TODO: drop when digests are stable
-  #   with:
-  #     path: /tmp/.local-registry
-  #     key: localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-${{ github.run_id }}
-
-    - run: docker system df
-    - run: docker system df --verbose
-    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
-    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
-    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
-    - name: Target dir disk usage
-      if: ${{ always() }}
-      run: du -sh $CARGO_TARGET_DIR || true
-
-  ntpd_1-7-1:
-    runs-on: ubuntu-latest
-    timeout-minutes: 30
-    defaults:
-      run:
-        shell: bash -euo pipefail {0}
-    continue-on-error: ${{ matrix.toolchain != '1.96.0' }}
-    strategy:
-      matrix:
-        toolchain:
-        - 1.96.0
-        - 1.94.0
-        exclude:
-        - toolchain: ${{ github.ref != 'refs/heads/main' && '1.96.0' }}
-    env:
-      CARGO_TARGET_DIR: /tmp/clis-ntpd_1-7-1
-    # CARGOGREEN_CACHE_FROM_IMAGES: docker-image://localhost:12345/${{ github.repository }}
-    # CARGOGREEN_CACHE_TO_IMAGES: docker-image://localhost:23456/${{ github.repository }}
-      CARGOGREEN_FINAL_PATH: recipes/ntpd@1.7.1.Dockerfile
-      CARGOGREEN_EXPERIMENT: finalpathnonprimary # dumps on each build call
-      CARGOGREEN_LOG: debug
-      CARGOGREEN_LOG_PATH: logs.txt
-    needs: bin
-    steps:
-    - uses: docker/login-action@4907a6ddec9925e35a0a9e82d7399ccc52663121 # v4.1.0
-      if: ${{ ! startsWith(github.ref, 'refs/heads/dependabot/') }}
-      with:
-        username: ${{ vars.DOCKERHUB_USERNAME }}
-        password: ${{ secrets.DOCKERHUB_TOKEN }}
-    - uses: actions-rust-lang/setup-rust-toolchain@2b1f5e9b395427c92ee4e3331786ca3c37afe2d7 # v1.16.0
-      with:
-        toolchain: ${{ matrix.toolchain }}
-        rustflags: ''
-        cache-on-failure: true
-
-    - name: Retrieve saved bin
-      uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
-      with:
-        name: cargo-green
-
-    - name: Install saved bin
-      shell: bash -eu {0}
-      run: | # TODO: whence https://github.com/actions/download-artifact/issues/236
-        chmod +x ./cargo-green
-        { ! ./cargo-green --version ; } | grep cargo-green
-        mv ./cargo-green ~/.cargo/bin/
-  # - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
-  #   name: Retrieve saved builder data
-  #   uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
-  #   with:
-  #     name: builder-data
-  #     path: /home/runner/builder-cache
-  # - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
-  #   run: |
-  #     set -x
-  #     sudo mkdir -p $(cargo green supergreen sync data 2>/dev/null)
-  #     sudo mv -v /home/runner/builder-cache/* $(cargo green supergreen sync data 2>/dev/null)/
-  #     sudo chown -R root:root $(cargo green supergreen sync data 2>/dev/null)
-    - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-      with:
-        persist-credentials: false
-
-    - name: Prepare local private registry cache
-      if: ${{ env.CARGOGREEN_CACHE_FROM_IMAGES != '' || env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
-      run: |
-        # https://github.com/fenollp/supergreen/actions/caches
-        mkdir -p /tmp/.local-registry
-        mkdir -p /tmp/.local-registry-new
-    - name: 🔵 Restore local private registry cache
-      if: ${{ env.CARGOGREEN_CACHE_FROM_IMAGES != '' || env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
-      uses: actions/cache/restore@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
-      with:
-        path: /tmp/.local-registry
-        # github.run_id: https://github.com/actions/toolkit/issues/658#issuecomment-2640690759
-        key: localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-${{ github.run_id }}
-        restore-keys: |
-          localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-
-          localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-
-          localprivatereg-${{ runner.os }}-
-          localprivatereg-
-
-    - name: Pull regist3 image
-      if: ${{ env.CARGOGREEN_CACHE_FROM_IMAGES != '' || env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
-      run: |
-        false \
-        || docker build --tag regist3 - <<<'FROM docker.io/registry:3' \
-        || docker build --tag regist3 - <<<'FROM mirror.gcr.io/registry:3' \
-        || docker build --tag regist3 - <<<'FROM public.ecr.aws/docker/registry:3' \
-        || exit 1
-    - name: Start "cache from" image registry
-      if: ${{ env.CARGOGREEN_CACHE_FROM_IMAGES != '' }}
-      run: docker run --name=reg-from --rm --detach -p 12345:5000 --user $(id -u):$(id -g) -v     /tmp/.local-registry:/var/lib/registry regist3
-    - name: Start "cache to" image registry
-      if: ${{ env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
-      run: docker run --name=reg-to   --rm --detach -p 23456:5000 --user $(id -u):$(id -g) -v /tmp/.local-registry-new:/var/lib/registry regist3
-
-    - name: Setup
-      run: |
-        if ! cargo green supergreen setup; then
-            { cargo green supergreen setup 2>/dev/null || true; } | sudo /bin/sh -xe
-        fi
-    - name: 🔵 Envs
-      run: cargo green supergreen env
-    - if: ${{ matrix.toolchain != '1.96.0' }}
-      run: cargo green supergreen show-rust-base 2>/dev/null | grep '${{ matrix.toolchain }}'
-    - run: cargo green supergreen builder
-    - name: 🔵 Envs again
-      run: cargo green supergreen env
-
-    - run: docker system df
-    - run: docker system df --verbose
-    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
-    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
-    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
-    - name: 🔵 cargo install
-      id: do-try
-      timeout-minutes: 11
-      continue-on-error: true
-      run: |
-        unset CARGO_PROFILE_DEV_DEBUG
-        unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
-        unset CARGO_TERM_COLOR
-        unset CARGO_UNSTABLE_SPARSE_REGISTRY
-        env NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b NTPD_RS_GIT_DATE=2025-05-09 \
-          cargo green -vv install --locked --force --root=/tmp ntpd@1.7.1 --bin=ntp-daemon |& tee _
-    - name: 🔵 cargo install jobs=1
-      id: do-try-jobs1
-      timeout-minutes: 11
-      if: ${{ job.steps.do-try.outcome != 'success' }}
-      run: |
-        unset CARGO_PROFILE_DEV_DEBUG
-        unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
-        unset CARGO_TERM_COLOR
-        unset CARGO_UNSTABLE_SPARSE_REGISTRY
-        env NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b NTPD_RS_GIT_DATE=2025-05-09 \
-          cargo green -vv install --jobs=1 --locked --force --root=/tmp ntpd@1.7.1 --bin=ntp-daemon |& tee _
-    - if: ${{ always() && matrix.toolchain != '1.96.0' }}
-      uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
-      name: Upload recipe
-      with:
-        name: ntpd@1.7.1.Dockerfile
-        path: ${{ env.CARGOGREEN_FINAL_PATH }}
-        if-no-files-found: error
-    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
-      name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
-      run: |
-        ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' _
-
-    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
-      name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
-      run: |
-        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
-
-    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
-      name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
-      run: |
-        ! grep -C20 -F 'connection error: COMPRESSION_ERROR' $CARGOGREEN_LOG_PATH
-
-    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
-      name: 🔴 =means=> there's some panic!s
-      run: |
-        ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
-
-    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
-      name: 🔴 =means=> there's some BUGs
-      run: |
-        ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
-
-    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
-      name: 🔴 =means=> here's cargo's error text
-      run: |
-        ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' $CARGOGREEN_LOG_PATH _
-
-    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
-      name: 🔴 =means=> 429 Too Many Requests
-      run: |
-        ! grep -C20 -F '429 Too Many Requests' $CARGOGREEN_LOG_PATH _
-
-    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
-      name: 🔴 =means=> here's relevant logs
-      run: |
-        ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
-
-    - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
-      name: 🌀 Maybe show final path diff
-      run: |
-        final_diff=(git --no-pager diff)
-        if [[ ${{ matrix.toolchain }} != 1.96.0 ]]; then
-          final_diff+=(--exit-code)
-        fi
-        final_diff+=(--ignore-matching-lines=' AS rust-base$')
-        final_diff+=(-- $CARGOGREEN_FINAL_PATH)
-        "${final_diff[@]}"
-
-    - if: ${{ failure() }}
-      name: 🌀 cargo-green logs
-      run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
-    - run: docker system df
-    - run: docker system df --verbose
-    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
-    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
-    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
-    - name: Target dir disk usage
-      if: ${{ always() }}
-      run: du -sh $CARGO_TARGET_DIR || true
-    - name: Check that generated binary executes and set sha256
-      run: |
-        ls -lha /tmp/bin/ntp_daemon
-        /tmp/bin/ntp_daemon --help || true
-        echo "BINHASHED=$(sha256sum /tmp/bin/ntp_daemon)" >>$GITHUB_ENV
-
-    - name: 🔵 Ensure running the same command twice without modifications...
-      run: |
-        unset CARGO_PROFILE_DEV_DEBUG
-        unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
-        unset CARGO_TERM_COLOR
-        unset CARGO_UNSTABLE_SPARSE_REGISTRY
-        env NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b NTPD_RS_GIT_DATE=2025-05-09 \
-          cargo green -vv install --locked --force --root=/tmp ntpd@1.7.1 --bin=ntp-daemon |& tee _
-    - name: ...doesn't recompile anything
-      run: |
-        err=0
-        grep Finished  _
-        grep Finished  _ | grep -E [0123]...s || ((err+=1))
-        grep Dirty     _                      && ((err+=2))
-        grep Compiling _                      && ((err+=4))
-        exit $err
-    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
-      name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
-      run: |
-        ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' _
-
-    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
-      name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
-      run: |
-        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
-
-    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
-      name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
-      run: |
-        ! grep -C20 -F 'connection error: COMPRESSION_ERROR' $CARGOGREEN_LOG_PATH
-
-    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
-      name: 🔴 =means=> there's some panic!s
-      run: |
-        ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
-
-    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
-      name: 🔴 =means=> there's some BUGs
-      run: |
-        ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
-
-    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
-      name: 🔴 =means=> here's cargo's error text
-      run: |
-        ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' $CARGOGREEN_LOG_PATH _
-
-    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
-      name: 🔴 =means=> 429 Too Many Requests
-      run: |
-        ! grep -C20 -F '429 Too Many Requests' $CARGOGREEN_LOG_PATH _
-
-    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
-      name: 🔴 =means=> here's relevant logs
-      run: |
-        ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
-
-    - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
-      name: 🌀 Maybe show final path diff
-      run: |
-        final_diff=(git --no-pager diff)
-        if [[ ${{ matrix.toolchain }} != 1.96.0 ]]; then
-          final_diff+=(--exit-code)
-        fi
-        final_diff+=(--ignore-matching-lines=' AS rust-base$')
-        final_diff+=(-- $CARGOGREEN_FINAL_PATH)
-        "${final_diff[@]}"
-
-    - if: ${{ failure() }}
-      name: 🌀 cargo-green logs
-      run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
-    - name: Check that generated binary matches sha256
-      run: |
-        [[ "$BINHASHED" = "$(sha256sum /tmp/bin/ntp_daemon)" ]]
-
-    - name: 🔵 Try CARGOGREEN_RUNNER=none with the same command twice without modifications...
-      run: |
-        unset CARGO_PROFILE_DEV_DEBUG
-        unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
-        unset CARGO_TERM_COLOR
-        unset CARGO_UNSTABLE_SPARSE_REGISTRY
-        env NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b NTPD_RS_GIT_DATE=2025-05-09 CARGOGREEN_RUNNER=none \
-          cargo green -vv install --locked --force --root=/tmp ntpd@1.7.1 --bin=ntp-daemon |& tee _
-    - name: ...doesn't recompile anything
-      run: |
-        err=0
-        grep Finished  _
-        grep Finished  _ | grep -E [0123]...s || ((err+=1))
-        grep Dirty     _                      && ((err+=2))
-        grep Compiling _                      && ((err+=4))
-        exit $err
-    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
-      name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
-      run: |
-        ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' _
-
-    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
-      name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
-      run: |
-        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
-
-    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
-      name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
-      run: |
-        ! grep -C20 -F 'connection error: COMPRESSION_ERROR' $CARGOGREEN_LOG_PATH
-
-    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
-      name: 🔴 =means=> there's some panic!s
-      run: |
-        ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
-
-    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
-      name: 🔴 =means=> there's some BUGs
-      run: |
-        ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
-
-    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
-      name: 🔴 =means=> here's cargo's error text
-      run: |
-        ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' $CARGOGREEN_LOG_PATH _
-
-    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
-      name: 🔴 =means=> 429 Too Many Requests
-      run: |
-        ! grep -C20 -F '429 Too Many Requests' $CARGOGREEN_LOG_PATH _
-
-    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
-      name: 🔴 =means=> here's relevant logs
-      run: |
-        ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
-
-    - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
-      name: 🌀 Maybe show final path diff
-      run: |
-        final_diff=(git --no-pager diff)
-        if [[ ${{ matrix.toolchain }} != 1.96.0 ]]; then
-          final_diff+=(--exit-code)
-        fi
-        final_diff+=(--ignore-matching-lines=' AS rust-base$')
-        final_diff+=(-- $CARGOGREEN_FINAL_PATH)
-        "${final_diff[@]}"
-
-    - if: ${{ failure() }}
-      name: 🌀 cargo-green logs
-      run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
-    - name: Check that generated binary matches sha256
-      run: |
-        [[ "$BINHASHED" = "$(sha256sum /tmp/bin/ntp_daemon)" ]]
-
-    - run: rm -rf /tmp/bin/* $CARGO_TARGET_DIR/* >/dev/null
-    - name: 🔵 Reuse locally cached results...
-      run: |
-        unset CARGO_PROFILE_DEV_DEBUG
-        unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
-        unset CARGO_TERM_COLOR
-        unset CARGO_UNSTABLE_SPARSE_REGISTRY
-        env NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b NTPD_RS_GIT_DATE=2025-05-09 CARGOGREEN_RUNNER=none \
-          cargo green -vv install --locked --force --root=/tmp ntpd@1.7.1 --bin=ntp-daemon |& tee _
-    - name: ...is blazingly fearlessly lightspeed fast
-      run: |
-        grep Finished ./_ || exit 1
-        grep Finished ./_ | grep -E ....s || exit 1
-    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
-      name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
-      run: |
-        ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' _
-
-    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
-      name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
-      run: |
-        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
-
-    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
-      name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
-      run: |
-        ! grep -C20 -F 'connection error: COMPRESSION_ERROR' $CARGOGREEN_LOG_PATH
-
-    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
-      name: 🔴 =means=> there's some panic!s
-      run: |
-        ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
-
-    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
-      name: 🔴 =means=> there's some BUGs
-      run: |
-        ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
-
-    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
-      name: 🔴 =means=> here's cargo's error text
-      run: |
-        ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' $CARGOGREEN_LOG_PATH _
-
-    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
-      name: 🔴 =means=> 429 Too Many Requests
-      run: |
-        ! grep -C20 -F '429 Too Many Requests' $CARGOGREEN_LOG_PATH _
-
-    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
-      name: 🔴 =means=> here's relevant logs
-      run: |
-        ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
-
-    - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
-      name: 🌀 Maybe show final path diff
-      run: |
-        final_diff=(git --no-pager diff)
-        if [[ ${{ matrix.toolchain }} != 1.96.0 ]]; then
-          final_diff+=(--exit-code)
-        fi
-        final_diff+=(--ignore-matching-lines=' AS rust-base$')
-        final_diff+=(-- $CARGOGREEN_FINAL_PATH)
-        "${final_diff[@]}"
-
-    - if: ${{ failure() }}
-      name: 🌀 cargo-green logs
-      run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
-    - name: Check that generated binary matches sha256
-      run: |
-        [[ "$BINHASHED" = "$(sha256sum /tmp/bin/ntp_daemon)" ]]
-
-    - name: 🔵 Compare old/new local private registry image digests
-      if: ${{ always() && env.CARGOGREEN_CACHE_FROM_IMAGES != '' && env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
-      run: |
-        diff --width=150 -y \
-          <(find /tmp/.local-registry/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print $NF}' | sort -u) \
-          <(find /tmp/.local-registry-new/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print $NF}' | sort -u) || true
-        du -sh /tmp/.local-registry /tmp/.local-registry-new || true
-    - name: Local private registry cache dance
-      if: ${{ always() && env.CARGOGREEN_CACHE_FROM_IMAGES != '' && env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
-      run: |
-        # [ci: caches keep growing](https://github.com/moby/buildkit/issues/1850)
-        docker stop --timeout 10 reg-from reg-to
-        rm -rf /tmp/.local-registry
-        mv /tmp/.local-registry-new /tmp/.local-registry
-  # - name: Save local private registry cache
-  #   uses: actions/cache/save@v5
-  #   if: ${{ false }} # TODO: drop when digests are stable
-  #   with:
-  #     path: /tmp/.local-registry
-  #     key: localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-${{ github.run_id }}
-
-    - run: docker system df
-    - run: docker system df --verbose
-    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
-    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
-    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
-    - name: Target dir disk usage
-      if: ${{ always() }}
-      run: du -sh $CARGO_TARGET_DIR || true
-
-  qcow2-rs_0-1-6:
-    runs-on: ubuntu-latest
-    timeout-minutes: 30
-    defaults:
-      run:
-        shell: bash -euo pipefail {0}
-    continue-on-error: ${{ matrix.toolchain != '1.96.0' }}
-    strategy:
-      matrix:
-        toolchain:
-        - 1.96.0
-        - 1.94.0
-        exclude:
-        - toolchain: ${{ github.ref != 'refs/heads/main' && '1.96.0' }}
-    env:
-      CARGO_TARGET_DIR: /tmp/clis-qcow2-rs_0-1-6
-    # CARGOGREEN_CACHE_FROM_IMAGES: docker-image://localhost:12345/${{ github.repository }}
-    # CARGOGREEN_CACHE_TO_IMAGES: docker-image://localhost:23456/${{ github.repository }}
-      CARGOGREEN_FINAL_PATH: recipes/qcow2-rs@0.1.6.Dockerfile
+      CARGOGREEN_FINAL_PATH: recipes/gifski@1.34.0.Dockerfile
       CARGOGREEN_EXPERIMENT: finalpathnonprimary # dumps on each build call
       CARGOGREEN_LOG: debug
       CARGOGREEN_LOG_PATH: logs.txt
@@ -1578,7 +658,7 @@ jobs:
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env  \
-          cargo green -vv install --locked --force --root=/tmp qcow2-rs@0.1.6  |& tee _
+          cargo green -vv install --locked --force --root=/tmp gifski@1.34.0  |& tee _
     - name: 🔵 cargo install jobs=1
       id: do-try-jobs1
       timeout-minutes: 11
@@ -1589,12 +669,12 @@ jobs:
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env  \
-          cargo green -vv install --jobs=1 --locked --force --root=/tmp qcow2-rs@0.1.6  |& tee _
+          cargo green -vv install --jobs=1 --locked --force --root=/tmp gifski@1.34.0  |& tee _
     - if: ${{ always() && matrix.toolchain != '1.96.0' }}
       uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
       name: Upload recipe
       with:
-        name: qcow2-rs@0.1.6.Dockerfile
+        name: gifski@1.34.0.Dockerfile
         path: ${{ env.CARGOGREEN_FINAL_PATH }}
         if-no-files-found: error
     - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
@@ -1661,9 +741,9 @@ jobs:
       run: du -sh $CARGO_TARGET_DIR || true
     - name: Check that generated binary executes and set sha256
       run: |
-        ls -lha /tmp/bin/rqcow2
-        /tmp/bin/rqcow2 --help || true
-        echo "BINHASHED=$(sha256sum /tmp/bin/rqcow2)" >>$GITHUB_ENV
+        ls -lha /tmp/bin/gifski
+        /tmp/bin/gifski --help || true
+        echo "BINHASHED=$(sha256sum /tmp/bin/gifski)" >>$GITHUB_ENV
 
     - name: 🔵 Ensure running the same command twice without modifications...
       run: |
@@ -1672,7 +752,7 @@ jobs:
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env  \
-          cargo green -vv install --locked --force --root=/tmp qcow2-rs@0.1.6  |& tee _
+          cargo green -vv install --locked --force --root=/tmp gifski@1.34.0  |& tee _
     - name: ...doesn't recompile anything
       run: |
         err=0
@@ -1737,7 +817,7 @@ jobs:
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
     - name: Check that generated binary matches sha256
       run: |
-        [[ "$BINHASHED" = "$(sha256sum /tmp/bin/rqcow2)" ]]
+        [[ "$BINHASHED" = "$(sha256sum /tmp/bin/gifski)" ]]
 
     - name: 🔵 Try CARGOGREEN_RUNNER=none with the same command twice without modifications...
       run: |
@@ -1746,7 +826,7 @@ jobs:
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env  CARGOGREEN_RUNNER=none \
-          cargo green -vv install --locked --force --root=/tmp qcow2-rs@0.1.6  |& tee _
+          cargo green -vv install --locked --force --root=/tmp gifski@1.34.0  |& tee _
     - name: ...doesn't recompile anything
       run: |
         err=0
@@ -1811,7 +891,7 @@ jobs:
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
     - name: Check that generated binary matches sha256
       run: |
-        [[ "$BINHASHED" = "$(sha256sum /tmp/bin/rqcow2)" ]]
+        [[ "$BINHASHED" = "$(sha256sum /tmp/bin/gifski)" ]]
 
     - run: rm -rf /tmp/bin/* $CARGO_TARGET_DIR/* >/dev/null
     - name: 🔵 Reuse locally cached results...
@@ -1821,7 +901,7 @@ jobs:
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env  CARGOGREEN_RUNNER=none \
-          cargo green -vv install --locked --force --root=/tmp qcow2-rs@0.1.6  |& tee _
+          cargo green -vv install --locked --force --root=/tmp gifski@1.34.0  |& tee _
     - name: ...is blazingly fearlessly lightspeed fast
       run: |
         grep Finished ./_ || exit 1
@@ -1882,7 +962,7 @@ jobs:
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
     - name: Check that generated binary matches sha256
       run: |
-        [[ "$BINHASHED" = "$(sha256sum /tmp/bin/rqcow2)" ]]
+        [[ "$BINHASHED" = "$(sha256sum /tmp/bin/gifski)" ]]
 
     - name: 🔵 Compare old/new local private registry image digests
       if: ${{ always() && env.CARGOGREEN_CACHE_FROM_IMAGES != '' && env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
@@ -1914,7 +994,7 @@ jobs:
       if: ${{ always() }}
       run: du -sh $CARGO_TARGET_DIR || true
 
-  ripgrep_15-1-0:
+  flamegraph_0-6-10:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     defaults:
@@ -1929,10 +1009,10 @@ jobs:
         exclude:
         - toolchain: ${{ github.ref != 'refs/heads/main' && '1.96.0' }}
     env:
-      CARGO_TARGET_DIR: /tmp/clis-ripgrep_15-1-0
+      CARGO_TARGET_DIR: /tmp/clis-flamegraph_0-6-10
     # CARGOGREEN_CACHE_FROM_IMAGES: docker-image://localhost:12345/${{ github.repository }}
     # CARGOGREEN_CACHE_TO_IMAGES: docker-image://localhost:23456/${{ github.repository }}
-      CARGOGREEN_FINAL_PATH: recipes/ripgrep@15.1.0.Dockerfile
+      CARGOGREEN_FINAL_PATH: recipes/flamegraph@0.6.10.Dockerfile
       CARGOGREEN_EXPERIMENT: finalpathnonprimary # dumps on each build call
       CARGOGREEN_LOG: debug
       CARGOGREEN_LOG_PATH: logs.txt
@@ -2038,7 +1118,7 @@ jobs:
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env  \
-          cargo green -vv install --locked --force --root=/tmp ripgrep@15.1.0  |& tee _
+          cargo green -vv install --locked --force --root=/tmp flamegraph@0.6.10 --bin=flamegraph |& tee _
     - name: 🔵 cargo install jobs=1
       id: do-try-jobs1
       timeout-minutes: 11
@@ -2049,12 +1129,12 @@ jobs:
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env  \
-          cargo green -vv install --jobs=1 --locked --force --root=/tmp ripgrep@15.1.0  |& tee _
+          cargo green -vv install --jobs=1 --locked --force --root=/tmp flamegraph@0.6.10 --bin=flamegraph |& tee _
     - if: ${{ always() && matrix.toolchain != '1.96.0' }}
       uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
       name: Upload recipe
       with:
-        name: ripgrep@15.1.0.Dockerfile
+        name: flamegraph@0.6.10.Dockerfile
         path: ${{ env.CARGOGREEN_FINAL_PATH }}
         if-no-files-found: error
     - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
@@ -2121,9 +1201,9 @@ jobs:
       run: du -sh $CARGO_TARGET_DIR || true
     - name: Check that generated binary executes and set sha256
       run: |
-        ls -lha /tmp/bin/rg
-        /tmp/bin/rg --help || true
-        echo "BINHASHED=$(sha256sum /tmp/bin/rg)" >>$GITHUB_ENV
+        ls -lha /tmp/bin/flamegraph
+        /tmp/bin/flamegraph --help || true
+        echo "BINHASHED=$(sha256sum /tmp/bin/flamegraph)" >>$GITHUB_ENV
 
     - name: 🔵 Ensure running the same command twice without modifications...
       run: |
@@ -2132,7 +1212,7 @@ jobs:
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env  \
-          cargo green -vv install --locked --force --root=/tmp ripgrep@15.1.0  |& tee _
+          cargo green -vv install --locked --force --root=/tmp flamegraph@0.6.10 --bin=flamegraph |& tee _
     - name: ...doesn't recompile anything
       run: |
         err=0
@@ -2197,7 +1277,7 @@ jobs:
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
     - name: Check that generated binary matches sha256
       run: |
-        [[ "$BINHASHED" = "$(sha256sum /tmp/bin/rg)" ]]
+        [[ "$BINHASHED" = "$(sha256sum /tmp/bin/flamegraph)" ]]
 
     - name: 🔵 Try CARGOGREEN_RUNNER=none with the same command twice without modifications...
       run: |
@@ -2206,7 +1286,7 @@ jobs:
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env  CARGOGREEN_RUNNER=none \
-          cargo green -vv install --locked --force --root=/tmp ripgrep@15.1.0  |& tee _
+          cargo green -vv install --locked --force --root=/tmp flamegraph@0.6.10 --bin=flamegraph |& tee _
     - name: ...doesn't recompile anything
       run: |
         err=0
@@ -2271,7 +1351,7 @@ jobs:
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
     - name: Check that generated binary matches sha256
       run: |
-        [[ "$BINHASHED" = "$(sha256sum /tmp/bin/rg)" ]]
+        [[ "$BINHASHED" = "$(sha256sum /tmp/bin/flamegraph)" ]]
 
     - run: rm -rf /tmp/bin/* $CARGO_TARGET_DIR/* >/dev/null
     - name: 🔵 Reuse locally cached results...
@@ -2281,7 +1361,7 @@ jobs:
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env  CARGOGREEN_RUNNER=none \
-          cargo green -vv install --locked --force --root=/tmp ripgrep@15.1.0  |& tee _
+          cargo green -vv install --locked --force --root=/tmp flamegraph@0.6.10 --bin=flamegraph |& tee _
     - name: ...is blazingly fearlessly lightspeed fast
       run: |
         grep Finished ./_ || exit 1
@@ -2342,7 +1422,7 @@ jobs:
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
     - name: Check that generated binary matches sha256
       run: |
-        [[ "$BINHASHED" = "$(sha256sum /tmp/bin/rg)" ]]
+        [[ "$BINHASHED" = "$(sha256sum /tmp/bin/flamegraph)" ]]
 
     - name: 🔵 Compare old/new local private registry image digests
       if: ${{ always() && env.CARGOGREEN_CACHE_FROM_IMAGES != '' && env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
@@ -2374,7 +1454,7 @@ jobs:
       if: ${{ always() }}
       run: du -sh $CARGO_TARGET_DIR || true
 
-  rublk_0-2-13:
+  qair_main:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     defaults:
@@ -2389,10 +1469,470 @@ jobs:
         exclude:
         - toolchain: ${{ github.ref != 'refs/heads/main' && '1.96.0' }}
     env:
-      CARGO_TARGET_DIR: /tmp/clis-rublk_0-2-13
+      CARGO_TARGET_DIR: /tmp/clis-qair_main
     # CARGOGREEN_CACHE_FROM_IMAGES: docker-image://localhost:12345/${{ github.repository }}
     # CARGOGREEN_CACHE_TO_IMAGES: docker-image://localhost:23456/${{ github.repository }}
-      CARGOGREEN_FINAL_PATH: recipes/rublk@0.2.13.Dockerfile
+      CARGOGREEN_FINAL_PATH: recipes/qair@main.Dockerfile
+      CARGOGREEN_EXPERIMENT: finalpathnonprimary # dumps on each build call
+      CARGOGREEN_LOG: debug
+      CARGOGREEN_LOG_PATH: logs.txt
+    needs: bin
+    steps:
+    - uses: docker/login-action@4907a6ddec9925e35a0a9e82d7399ccc52663121 # v4.1.0
+      if: ${{ ! startsWith(github.ref, 'refs/heads/dependabot/') }}
+      with:
+        username: ${{ vars.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+    - uses: actions-rust-lang/setup-rust-toolchain@2b1f5e9b395427c92ee4e3331786ca3c37afe2d7 # v1.16.0
+      with:
+        toolchain: ${{ matrix.toolchain }}
+        rustflags: ''
+        cache-on-failure: true
+
+    - name: Retrieve saved bin
+      uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+      with:
+        name: cargo-green
+
+    - name: Install saved bin
+      shell: bash -eu {0}
+      run: | # TODO: whence https://github.com/actions/download-artifact/issues/236
+        chmod +x ./cargo-green
+        { ! ./cargo-green --version ; } | grep cargo-green
+        mv ./cargo-green ~/.cargo/bin/
+  # - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
+  #   name: Retrieve saved builder data
+  #   uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+  #   with:
+  #     name: builder-data
+  #     path: /home/runner/builder-cache
+  # - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
+  #   run: |
+  #     set -x
+  #     sudo mkdir -p $(cargo green supergreen sync data 2>/dev/null)
+  #     sudo mv -v /home/runner/builder-cache/* $(cargo green supergreen sync data 2>/dev/null)/
+  #     sudo chown -R root:root $(cargo green supergreen sync data 2>/dev/null)
+    - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      with:
+        persist-credentials: false
+
+    - name: Prepare local private registry cache
+      if: ${{ env.CARGOGREEN_CACHE_FROM_IMAGES != '' || env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
+      run: |
+        # https://github.com/fenollp/supergreen/actions/caches
+        mkdir -p /tmp/.local-registry
+        mkdir -p /tmp/.local-registry-new
+    - name: 🔵 Restore local private registry cache
+      if: ${{ env.CARGOGREEN_CACHE_FROM_IMAGES != '' || env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
+      uses: actions/cache/restore@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
+      with:
+        path: /tmp/.local-registry
+        # github.run_id: https://github.com/actions/toolkit/issues/658#issuecomment-2640690759
+        key: localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-${{ github.run_id }}
+        restore-keys: |
+          localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-
+          localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-
+          localprivatereg-${{ runner.os }}-
+          localprivatereg-
+
+    - name: Pull regist3 image
+      if: ${{ env.CARGOGREEN_CACHE_FROM_IMAGES != '' || env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
+      run: |
+        false \
+        || docker build --tag regist3 - <<<'FROM docker.io/registry:3' \
+        || docker build --tag regist3 - <<<'FROM mirror.gcr.io/registry:3' \
+        || docker build --tag regist3 - <<<'FROM public.ecr.aws/docker/registry:3' \
+        || exit 1
+    - name: Start "cache from" image registry
+      if: ${{ env.CARGOGREEN_CACHE_FROM_IMAGES != '' }}
+      run: docker run --name=reg-from --rm --detach -p 12345:5000 --user $(id -u):$(id -g) -v     /tmp/.local-registry:/var/lib/registry regist3
+    - name: Start "cache to" image registry
+      if: ${{ env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
+      run: docker run --name=reg-to   --rm --detach -p 23456:5000 --user $(id -u):$(id -g) -v /tmp/.local-registry-new:/var/lib/registry regist3
+
+    - name: Setup
+      run: |
+        if ! cargo green supergreen setup; then
+            { cargo green supergreen setup 2>/dev/null || true; } | sudo /bin/sh -xe
+        fi
+    - name: 🔵 Envs
+      run: cargo green supergreen env
+    - if: ${{ matrix.toolchain != '1.96.0' }}
+      run: cargo green supergreen show-rust-base 2>/dev/null | grep '${{ matrix.toolchain }}'
+    - run: cargo green supergreen builder
+    - name: 🔵 Envs again
+      run: cargo green supergreen env
+
+    - run: docker system df
+    - run: docker system df --verbose
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
+    - name: 🔵 cargo +1.78.0 install
+      id: do-try
+      timeout-minutes: 11
+      continue-on-error: true
+      run: |
+        unset CARGO_PROFILE_DEV_DEBUG
+        unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
+        unset CARGO_TERM_COLOR
+        unset CARGO_UNSTABLE_SPARSE_REGISTRY
+        env  \
+          cargo +1.78.0 green -vv install --locked --force --root=/tmp qair --git https://codeberg.org/willempx/qair.git --tag=0.7.0 |& tee _
+    - name: 🔵 cargo +1.78.0 install jobs=1
+      id: do-try-jobs1
+      timeout-minutes: 11
+      if: ${{ job.steps.do-try.outcome != 'success' }}
+      run: |
+        unset CARGO_PROFILE_DEV_DEBUG
+        unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
+        unset CARGO_TERM_COLOR
+        unset CARGO_UNSTABLE_SPARSE_REGISTRY
+        env  \
+          cargo +1.78.0 green -vv install --jobs=1 --locked --force --root=/tmp qair --git https://codeberg.org/willempx/qair.git --tag=0.7.0 |& tee _
+    - if: ${{ always() && matrix.toolchain != '1.96.0' }}
+      uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+      name: Upload recipe
+      with:
+        name: qair@main.Dockerfile
+        path: ${{ env.CARGOGREEN_FINAL_PATH }}
+        if-no-files-found: error
+    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
+      name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
+      run: |
+        ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' _
+
+    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
+      name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
+      run: |
+        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
+      name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
+      run: |
+        ! grep -C20 -F 'connection error: COMPRESSION_ERROR' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
+      name: 🔴 =means=> there's some panic!s
+      run: |
+        ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
+      name: 🔴 =means=> there's some BUGs
+      run: |
+        ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
+      name: 🔴 =means=> here's cargo's error text
+      run: |
+        ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' $CARGOGREEN_LOG_PATH _
+
+    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
+      name: 🔴 =means=> 429 Too Many Requests
+      run: |
+        ! grep -C20 -F '429 Too Many Requests' $CARGOGREEN_LOG_PATH _
+
+    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
+      name: 🔴 =means=> here's relevant logs
+      run: |
+        ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
+      name: 🌀 Maybe show final path diff
+      run: |
+        final_diff=(git --no-pager diff)
+        if [[ ${{ matrix.toolchain }} != 1.96.0 ]]; then
+          final_diff+=(--exit-code)
+        fi
+        final_diff+=(--ignore-matching-lines=' AS rust-base$')
+        final_diff+=(-- $CARGOGREEN_FINAL_PATH)
+        "${final_diff[@]}"
+
+    - if: ${{ failure() }}
+      name: 🌀 cargo-green logs
+      run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
+    - run: docker system df
+    - run: docker system df --verbose
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
+    - name: Target dir disk usage
+      if: ${{ always() }}
+      run: du -sh $CARGO_TARGET_DIR || true
+    - name: Check that generated binary executes and set sha256
+      run: |
+        ls -lha /tmp/bin/qair
+        /tmp/bin/qair --help || true
+        echo "BINHASHED=$(sha256sum /tmp/bin/qair)" >>$GITHUB_ENV
+
+    - name: 🔵 Ensure running the same command twice without modifications...
+      run: |
+        unset CARGO_PROFILE_DEV_DEBUG
+        unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
+        unset CARGO_TERM_COLOR
+        unset CARGO_UNSTABLE_SPARSE_REGISTRY
+        env  \
+          cargo +1.78.0 green -vv install --locked --force --root=/tmp qair --git https://codeberg.org/willempx/qair.git --tag=0.7.0 |& tee _
+    - name: ...doesn't recompile anything
+      run: |
+        err=0
+        grep Finished  _
+        grep Finished  _ | grep -E [0123]...s || ((err+=1))
+        grep Dirty     _                      && ((err+=2))
+        grep Compiling _                      && ((err+=4))
+        exit $err
+    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
+      name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
+      run: |
+        ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' _
+
+    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
+      name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
+      run: |
+        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
+      name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
+      run: |
+        ! grep -C20 -F 'connection error: COMPRESSION_ERROR' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
+      name: 🔴 =means=> there's some panic!s
+      run: |
+        ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
+      name: 🔴 =means=> there's some BUGs
+      run: |
+        ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
+      name: 🔴 =means=> here's cargo's error text
+      run: |
+        ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' $CARGOGREEN_LOG_PATH _
+
+    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
+      name: 🔴 =means=> 429 Too Many Requests
+      run: |
+        ! grep -C20 -F '429 Too Many Requests' $CARGOGREEN_LOG_PATH _
+
+    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
+      name: 🔴 =means=> here's relevant logs
+      run: |
+        ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
+      name: 🌀 Maybe show final path diff
+      run: |
+        final_diff=(git --no-pager diff)
+        if [[ ${{ matrix.toolchain }} != 1.96.0 ]]; then
+          final_diff+=(--exit-code)
+        fi
+        final_diff+=(--ignore-matching-lines=' AS rust-base$')
+        final_diff+=(-- $CARGOGREEN_FINAL_PATH)
+        "${final_diff[@]}"
+
+    - if: ${{ failure() }}
+      name: 🌀 cargo-green logs
+      run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
+    - name: Check that generated binary matches sha256
+      run: |
+        [[ "$BINHASHED" = "$(sha256sum /tmp/bin/qair)" ]]
+
+    - name: 🔵 Try CARGOGREEN_RUNNER=none with the same command twice without modifications...
+      run: |
+        unset CARGO_PROFILE_DEV_DEBUG
+        unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
+        unset CARGO_TERM_COLOR
+        unset CARGO_UNSTABLE_SPARSE_REGISTRY
+        env  CARGOGREEN_RUNNER=none \
+          cargo +1.78.0 green -vv install --locked --force --root=/tmp qair --git https://codeberg.org/willempx/qair.git --tag=0.7.0 |& tee _
+    - name: ...doesn't recompile anything
+      run: |
+        err=0
+        grep Finished  _
+        grep Finished  _ | grep -E [0123]...s || ((err+=1))
+        grep Dirty     _                      && ((err+=2))
+        grep Compiling _                      && ((err+=4))
+        exit $err
+    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
+      name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
+      run: |
+        ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' _
+
+    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
+      name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
+      run: |
+        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
+      name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
+      run: |
+        ! grep -C20 -F 'connection error: COMPRESSION_ERROR' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
+      name: 🔴 =means=> there's some panic!s
+      run: |
+        ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
+      name: 🔴 =means=> there's some BUGs
+      run: |
+        ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
+      name: 🔴 =means=> here's cargo's error text
+      run: |
+        ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' $CARGOGREEN_LOG_PATH _
+
+    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
+      name: 🔴 =means=> 429 Too Many Requests
+      run: |
+        ! grep -C20 -F '429 Too Many Requests' $CARGOGREEN_LOG_PATH _
+
+    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
+      name: 🔴 =means=> here's relevant logs
+      run: |
+        ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
+      name: 🌀 Maybe show final path diff
+      run: |
+        final_diff=(git --no-pager diff)
+        if [[ ${{ matrix.toolchain }} != 1.96.0 ]]; then
+          final_diff+=(--exit-code)
+        fi
+        final_diff+=(--ignore-matching-lines=' AS rust-base$')
+        final_diff+=(-- $CARGOGREEN_FINAL_PATH)
+        "${final_diff[@]}"
+
+    - if: ${{ failure() }}
+      name: 🌀 cargo-green logs
+      run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
+    - name: Check that generated binary matches sha256
+      run: |
+        [[ "$BINHASHED" = "$(sha256sum /tmp/bin/qair)" ]]
+
+    - run: rm -rf /tmp/bin/* $CARGO_TARGET_DIR/* >/dev/null
+    - name: 🔵 Reuse locally cached results...
+      run: |
+        unset CARGO_PROFILE_DEV_DEBUG
+        unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
+        unset CARGO_TERM_COLOR
+        unset CARGO_UNSTABLE_SPARSE_REGISTRY
+        env  CARGOGREEN_RUNNER=none \
+          cargo +1.78.0 green -vv install --locked --force --root=/tmp qair --git https://codeberg.org/willempx/qair.git --tag=0.7.0 |& tee _
+    - name: ...is blazingly fearlessly lightspeed fast
+      run: |
+        grep Finished ./_ || exit 1
+        grep Finished ./_ | grep -E ....s || exit 1
+    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
+      name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
+      run: |
+        ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' _
+
+    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
+      name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
+      run: |
+        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
+      name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
+      run: |
+        ! grep -C20 -F 'connection error: COMPRESSION_ERROR' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
+      name: 🔴 =means=> there's some panic!s
+      run: |
+        ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
+      name: 🔴 =means=> there's some BUGs
+      run: |
+        ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
+      name: 🔴 =means=> here's cargo's error text
+      run: |
+        ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' $CARGOGREEN_LOG_PATH _
+
+    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
+      name: 🔴 =means=> 429 Too Many Requests
+      run: |
+        ! grep -C20 -F '429 Too Many Requests' $CARGOGREEN_LOG_PATH _
+
+    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
+      name: 🔴 =means=> here's relevant logs
+      run: |
+        ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
+      name: 🌀 Maybe show final path diff
+      run: |
+        final_diff=(git --no-pager diff)
+        if [[ ${{ matrix.toolchain }} != 1.96.0 ]]; then
+          final_diff+=(--exit-code)
+        fi
+        final_diff+=(--ignore-matching-lines=' AS rust-base$')
+        final_diff+=(-- $CARGOGREEN_FINAL_PATH)
+        "${final_diff[@]}"
+
+    - if: ${{ failure() }}
+      name: 🌀 cargo-green logs
+      run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
+    - name: Check that generated binary matches sha256
+      run: |
+        [[ "$BINHASHED" = "$(sha256sum /tmp/bin/qair)" ]]
+
+    - name: 🔵 Compare old/new local private registry image digests
+      if: ${{ always() && env.CARGOGREEN_CACHE_FROM_IMAGES != '' && env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
+      run: |
+        diff --width=150 -y \
+          <(find /tmp/.local-registry/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print $NF}' | sort -u) \
+          <(find /tmp/.local-registry-new/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print $NF}' | sort -u) || true
+        du -sh /tmp/.local-registry /tmp/.local-registry-new || true
+    - name: Local private registry cache dance
+      if: ${{ always() && env.CARGOGREEN_CACHE_FROM_IMAGES != '' && env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
+      run: |
+        # [ci: caches keep growing](https://github.com/moby/buildkit/issues/1850)
+        docker stop --timeout 10 reg-from reg-to
+        rm -rf /tmp/.local-registry
+        mv /tmp/.local-registry-new /tmp/.local-registry
+  # - name: Save local private registry cache
+  #   uses: actions/cache/save@v5
+  #   if: ${{ false }} # TODO: drop when digests are stable
+  #   with:
+  #     path: /tmp/.local-registry
+  #     key: localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-${{ github.run_id }}
+
+    - run: docker system df
+    - run: docker system df --verbose
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
+    - name: Target dir disk usage
+      if: ${{ always() }}
+      run: du -sh $CARGO_TARGET_DIR || true
+
+  cargo-osdk_main:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    defaults:
+      run:
+        shell: bash -euo pipefail {0}
+    continue-on-error: ${{ matrix.toolchain != '1.96.0' }}
+    strategy:
+      matrix:
+        toolchain:
+        - 1.96.0
+        - 1.94.0
+        exclude:
+        - toolchain: ${{ github.ref != 'refs/heads/main' && '1.96.0' }}
+    env:
+      CARGO_TARGET_DIR: /tmp/clis-cargo-osdk_main
+    # CARGOGREEN_CACHE_FROM_IMAGES: docker-image://localhost:12345/${{ github.repository }}
+    # CARGOGREEN_CACHE_TO_IMAGES: docker-image://localhost:23456/${{ github.repository }}
+      CARGOGREEN_FINAL_PATH: recipes/cargo-osdk@main.Dockerfile
       CARGOGREEN_EXPERIMENT: finalpathnonprimary # dumps on each build call
       CARGOGREEN_LOG: debug
       CARGOGREEN_LOG_PATH: logs.txt
@@ -2497,8 +2037,8 @@ jobs:
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
-        env CARGOGREEN_ADD_APT=libclang-dev \
-          cargo green -vv install --locked --force --root=/tmp rublk@0.2.13  |& tee _
+        env  \
+          cargo green -vv install --locked --force --root=/tmp cargo-osdk --git=https://github.com/asterinas/asterinas --tag=v0.16.1 |& tee _
     - name: 🔵 cargo install jobs=1
       id: do-try-jobs1
       timeout-minutes: 11
@@ -2508,13 +2048,13 @@ jobs:
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
-        env CARGOGREEN_ADD_APT=libclang-dev \
-          cargo green -vv install --jobs=1 --locked --force --root=/tmp rublk@0.2.13  |& tee _
+        env  \
+          cargo green -vv install --jobs=1 --locked --force --root=/tmp cargo-osdk --git=https://github.com/asterinas/asterinas --tag=v0.16.1 |& tee _
     - if: ${{ always() && matrix.toolchain != '1.96.0' }}
       uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
       name: Upload recipe
       with:
-        name: rublk@0.2.13.Dockerfile
+        name: cargo-osdk@main.Dockerfile
         path: ${{ env.CARGOGREEN_FINAL_PATH }}
         if-no-files-found: error
     - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
@@ -2581,9 +2121,9 @@ jobs:
       run: du -sh $CARGO_TARGET_DIR || true
     - name: Check that generated binary executes and set sha256
       run: |
-        ls -lha /tmp/bin/rublk
-        /tmp/bin/rublk --help || true
-        echo "BINHASHED=$(sha256sum /tmp/bin/rublk)" >>$GITHUB_ENV
+        ls -lha /tmp/bin/cargo_osdk
+        /tmp/bin/cargo_osdk --help || true
+        echo "BINHASHED=$(sha256sum /tmp/bin/cargo_osdk)" >>$GITHUB_ENV
 
     - name: 🔵 Ensure running the same command twice without modifications...
       run: |
@@ -2591,8 +2131,8 @@ jobs:
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
-        env CARGOGREEN_ADD_APT=libclang-dev \
-          cargo green -vv install --locked --force --root=/tmp rublk@0.2.13  |& tee _
+        env  \
+          cargo green -vv install --locked --force --root=/tmp cargo-osdk --git=https://github.com/asterinas/asterinas --tag=v0.16.1 |& tee _
     - name: ...doesn't recompile anything
       run: |
         err=0
@@ -2657,7 +2197,7 @@ jobs:
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
     - name: Check that generated binary matches sha256
       run: |
-        [[ "$BINHASHED" = "$(sha256sum /tmp/bin/rublk)" ]]
+        [[ "$BINHASHED" = "$(sha256sum /tmp/bin/cargo_osdk)" ]]
 
     - name: 🔵 Try CARGOGREEN_RUNNER=none with the same command twice without modifications...
       run: |
@@ -2665,8 +2205,8 @@ jobs:
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
-        env CARGOGREEN_ADD_APT=libclang-dev CARGOGREEN_RUNNER=none \
-          cargo green -vv install --locked --force --root=/tmp rublk@0.2.13  |& tee _
+        env  CARGOGREEN_RUNNER=none \
+          cargo green -vv install --locked --force --root=/tmp cargo-osdk --git=https://github.com/asterinas/asterinas --tag=v0.16.1 |& tee _
     - name: ...doesn't recompile anything
       run: |
         err=0
@@ -2731,7 +2271,7 @@ jobs:
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
     - name: Check that generated binary matches sha256
       run: |
-        [[ "$BINHASHED" = "$(sha256sum /tmp/bin/rublk)" ]]
+        [[ "$BINHASHED" = "$(sha256sum /tmp/bin/cargo_osdk)" ]]
 
     - run: rm -rf /tmp/bin/* $CARGO_TARGET_DIR/* >/dev/null
     - name: 🔵 Reuse locally cached results...
@@ -2740,8 +2280,8 @@ jobs:
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
-        env CARGOGREEN_ADD_APT=libclang-dev CARGOGREEN_RUNNER=none \
-          cargo green -vv install --locked --force --root=/tmp rublk@0.2.13  |& tee _
+        env  CARGOGREEN_RUNNER=none \
+          cargo green -vv install --locked --force --root=/tmp cargo-osdk --git=https://github.com/asterinas/asterinas --tag=v0.16.1 |& tee _
     - name: ...is blazingly fearlessly lightspeed fast
       run: |
         grep Finished ./_ || exit 1
@@ -2802,7 +2342,7 @@ jobs:
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
     - name: Check that generated binary matches sha256
       run: |
-        [[ "$BINHASHED" = "$(sha256sum /tmp/bin/rublk)" ]]
+        [[ "$BINHASHED" = "$(sha256sum /tmp/bin/cargo_osdk)" ]]
 
     - name: 🔵 Compare old/new local private registry image digests
       if: ${{ always() && env.CARGOGREEN_CACHE_FROM_IMAGES != '' && env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
@@ -2834,7 +2374,7 @@ jobs:
       if: ${{ always() }}
       run: du -sh $CARGO_TARGET_DIR || true
 
-  shpool_0-9-3:
+  fargo_main:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     defaults:
@@ -2849,10 +2389,470 @@ jobs:
         exclude:
         - toolchain: ${{ github.ref != 'refs/heads/main' && '1.96.0' }}
     env:
-      CARGO_TARGET_DIR: /tmp/clis-shpool_0-9-3
+      CARGO_TARGET_DIR: /tmp/clis-fargo_main
     # CARGOGREEN_CACHE_FROM_IMAGES: docker-image://localhost:12345/${{ github.repository }}
     # CARGOGREEN_CACHE_TO_IMAGES: docker-image://localhost:23456/${{ github.repository }}
-      CARGOGREEN_FINAL_PATH: recipes/shpool@0.9.3.Dockerfile
+      CARGOGREEN_FINAL_PATH: recipes/fargo@main.Dockerfile
+      CARGOGREEN_EXPERIMENT: finalpathnonprimary # dumps on each build call
+      CARGOGREEN_LOG: debug
+      CARGOGREEN_LOG_PATH: logs.txt
+    needs: bin
+    steps:
+    - uses: docker/login-action@4907a6ddec9925e35a0a9e82d7399ccc52663121 # v4.1.0
+      if: ${{ ! startsWith(github.ref, 'refs/heads/dependabot/') }}
+      with:
+        username: ${{ vars.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+    - uses: actions-rust-lang/setup-rust-toolchain@2b1f5e9b395427c92ee4e3331786ca3c37afe2d7 # v1.16.0
+      with:
+        toolchain: ${{ matrix.toolchain }}
+        rustflags: ''
+        cache-on-failure: true
+
+    - name: Retrieve saved bin
+      uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+      with:
+        name: cargo-green
+
+    - name: Install saved bin
+      shell: bash -eu {0}
+      run: | # TODO: whence https://github.com/actions/download-artifact/issues/236
+        chmod +x ./cargo-green
+        { ! ./cargo-green --version ; } | grep cargo-green
+        mv ./cargo-green ~/.cargo/bin/
+  # - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
+  #   name: Retrieve saved builder data
+  #   uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+  #   with:
+  #     name: builder-data
+  #     path: /home/runner/builder-cache
+  # - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
+  #   run: |
+  #     set -x
+  #     sudo mkdir -p $(cargo green supergreen sync data 2>/dev/null)
+  #     sudo mv -v /home/runner/builder-cache/* $(cargo green supergreen sync data 2>/dev/null)/
+  #     sudo chown -R root:root $(cargo green supergreen sync data 2>/dev/null)
+    - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      with:
+        persist-credentials: false
+
+    - name: Prepare local private registry cache
+      if: ${{ env.CARGOGREEN_CACHE_FROM_IMAGES != '' || env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
+      run: |
+        # https://github.com/fenollp/supergreen/actions/caches
+        mkdir -p /tmp/.local-registry
+        mkdir -p /tmp/.local-registry-new
+    - name: 🔵 Restore local private registry cache
+      if: ${{ env.CARGOGREEN_CACHE_FROM_IMAGES != '' || env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
+      uses: actions/cache/restore@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
+      with:
+        path: /tmp/.local-registry
+        # github.run_id: https://github.com/actions/toolkit/issues/658#issuecomment-2640690759
+        key: localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-${{ github.run_id }}
+        restore-keys: |
+          localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-
+          localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-
+          localprivatereg-${{ runner.os }}-
+          localprivatereg-
+
+    - name: Pull regist3 image
+      if: ${{ env.CARGOGREEN_CACHE_FROM_IMAGES != '' || env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
+      run: |
+        false \
+        || docker build --tag regist3 - <<<'FROM docker.io/registry:3' \
+        || docker build --tag regist3 - <<<'FROM mirror.gcr.io/registry:3' \
+        || docker build --tag regist3 - <<<'FROM public.ecr.aws/docker/registry:3' \
+        || exit 1
+    - name: Start "cache from" image registry
+      if: ${{ env.CARGOGREEN_CACHE_FROM_IMAGES != '' }}
+      run: docker run --name=reg-from --rm --detach -p 12345:5000 --user $(id -u):$(id -g) -v     /tmp/.local-registry:/var/lib/registry regist3
+    - name: Start "cache to" image registry
+      if: ${{ env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
+      run: docker run --name=reg-to   --rm --detach -p 23456:5000 --user $(id -u):$(id -g) -v /tmp/.local-registry-new:/var/lib/registry regist3
+
+    - name: Setup
+      run: |
+        if ! cargo green supergreen setup; then
+            { cargo green supergreen setup 2>/dev/null || true; } | sudo /bin/sh -xe
+        fi
+    - name: 🔵 Envs
+      run: cargo green supergreen env
+    - if: ${{ matrix.toolchain != '1.96.0' }}
+      run: cargo green supergreen show-rust-base 2>/dev/null | grep '${{ matrix.toolchain }}'
+    - run: cargo green supergreen builder
+    - name: 🔵 Envs again
+      run: cargo green supergreen env
+
+    - run: docker system df
+    - run: docker system df --verbose
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
+    - name: 🔵 cargo +1.78.0 install
+      id: do-try
+      timeout-minutes: 11
+      continue-on-error: true
+      run: |
+        unset CARGO_PROFILE_DEV_DEBUG
+        unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
+        unset CARGO_TERM_COLOR
+        unset CARGO_UNSTABLE_SPARSE_REGISTRY
+        env  \
+          cargo +1.78.0 green -vv install --locked --force --root=/tmp fargo --git https://fuchsia.googlesource.com/fargo --rev=a7d967b |& tee _
+    - name: 🔵 cargo +1.78.0 install jobs=1
+      id: do-try-jobs1
+      timeout-minutes: 11
+      if: ${{ job.steps.do-try.outcome != 'success' }}
+      run: |
+        unset CARGO_PROFILE_DEV_DEBUG
+        unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
+        unset CARGO_TERM_COLOR
+        unset CARGO_UNSTABLE_SPARSE_REGISTRY
+        env  \
+          cargo +1.78.0 green -vv install --jobs=1 --locked --force --root=/tmp fargo --git https://fuchsia.googlesource.com/fargo --rev=a7d967b |& tee _
+    - if: ${{ always() && matrix.toolchain != '1.96.0' }}
+      uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+      name: Upload recipe
+      with:
+        name: fargo@main.Dockerfile
+        path: ${{ env.CARGOGREEN_FINAL_PATH }}
+        if-no-files-found: error
+    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
+      name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
+      run: |
+        ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' _
+
+    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
+      name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
+      run: |
+        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
+      name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
+      run: |
+        ! grep -C20 -F 'connection error: COMPRESSION_ERROR' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
+      name: 🔴 =means=> there's some panic!s
+      run: |
+        ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
+      name: 🔴 =means=> there's some BUGs
+      run: |
+        ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
+      name: 🔴 =means=> here's cargo's error text
+      run: |
+        ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' $CARGOGREEN_LOG_PATH _
+
+    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
+      name: 🔴 =means=> 429 Too Many Requests
+      run: |
+        ! grep -C20 -F '429 Too Many Requests' $CARGOGREEN_LOG_PATH _
+
+    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
+      name: 🔴 =means=> here's relevant logs
+      run: |
+        ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
+      name: 🌀 Maybe show final path diff
+      run: |
+        final_diff=(git --no-pager diff)
+        if [[ ${{ matrix.toolchain }} != 1.96.0 ]]; then
+          final_diff+=(--exit-code)
+        fi
+        final_diff+=(--ignore-matching-lines=' AS rust-base$')
+        final_diff+=(-- $CARGOGREEN_FINAL_PATH)
+        "${final_diff[@]}"
+
+    - if: ${{ failure() }}
+      name: 🌀 cargo-green logs
+      run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
+    - run: docker system df
+    - run: docker system df --verbose
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
+    - name: Target dir disk usage
+      if: ${{ always() }}
+      run: du -sh $CARGO_TARGET_DIR || true
+    - name: Check that generated binary executes and set sha256
+      run: |
+        ls -lha /tmp/bin/fargo
+        /tmp/bin/fargo --help || true
+        echo "BINHASHED=$(sha256sum /tmp/bin/fargo)" >>$GITHUB_ENV
+
+    - name: 🔵 Ensure running the same command twice without modifications...
+      run: |
+        unset CARGO_PROFILE_DEV_DEBUG
+        unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
+        unset CARGO_TERM_COLOR
+        unset CARGO_UNSTABLE_SPARSE_REGISTRY
+        env  \
+          cargo +1.78.0 green -vv install --locked --force --root=/tmp fargo --git https://fuchsia.googlesource.com/fargo --rev=a7d967b |& tee _
+    - name: ...doesn't recompile anything
+      run: |
+        err=0
+        grep Finished  _
+        grep Finished  _ | grep -E [0123]...s || ((err+=1))
+        grep Dirty     _                      && ((err+=2))
+        grep Compiling _                      && ((err+=4))
+        exit $err
+    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
+      name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
+      run: |
+        ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' _
+
+    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
+      name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
+      run: |
+        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
+      name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
+      run: |
+        ! grep -C20 -F 'connection error: COMPRESSION_ERROR' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
+      name: 🔴 =means=> there's some panic!s
+      run: |
+        ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
+      name: 🔴 =means=> there's some BUGs
+      run: |
+        ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
+      name: 🔴 =means=> here's cargo's error text
+      run: |
+        ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' $CARGOGREEN_LOG_PATH _
+
+    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
+      name: 🔴 =means=> 429 Too Many Requests
+      run: |
+        ! grep -C20 -F '429 Too Many Requests' $CARGOGREEN_LOG_PATH _
+
+    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
+      name: 🔴 =means=> here's relevant logs
+      run: |
+        ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
+      name: 🌀 Maybe show final path diff
+      run: |
+        final_diff=(git --no-pager diff)
+        if [[ ${{ matrix.toolchain }} != 1.96.0 ]]; then
+          final_diff+=(--exit-code)
+        fi
+        final_diff+=(--ignore-matching-lines=' AS rust-base$')
+        final_diff+=(-- $CARGOGREEN_FINAL_PATH)
+        "${final_diff[@]}"
+
+    - if: ${{ failure() }}
+      name: 🌀 cargo-green logs
+      run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
+    - name: Check that generated binary matches sha256
+      run: |
+        [[ "$BINHASHED" = "$(sha256sum /tmp/bin/fargo)" ]]
+
+    - name: 🔵 Try CARGOGREEN_RUNNER=none with the same command twice without modifications...
+      run: |
+        unset CARGO_PROFILE_DEV_DEBUG
+        unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
+        unset CARGO_TERM_COLOR
+        unset CARGO_UNSTABLE_SPARSE_REGISTRY
+        env  CARGOGREEN_RUNNER=none \
+          cargo +1.78.0 green -vv install --locked --force --root=/tmp fargo --git https://fuchsia.googlesource.com/fargo --rev=a7d967b |& tee _
+    - name: ...doesn't recompile anything
+      run: |
+        err=0
+        grep Finished  _
+        grep Finished  _ | grep -E [0123]...s || ((err+=1))
+        grep Dirty     _                      && ((err+=2))
+        grep Compiling _                      && ((err+=4))
+        exit $err
+    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
+      name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
+      run: |
+        ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' _
+
+    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
+      name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
+      run: |
+        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
+      name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
+      run: |
+        ! grep -C20 -F 'connection error: COMPRESSION_ERROR' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
+      name: 🔴 =means=> there's some panic!s
+      run: |
+        ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
+      name: 🔴 =means=> there's some BUGs
+      run: |
+        ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
+      name: 🔴 =means=> here's cargo's error text
+      run: |
+        ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' $CARGOGREEN_LOG_PATH _
+
+    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
+      name: 🔴 =means=> 429 Too Many Requests
+      run: |
+        ! grep -C20 -F '429 Too Many Requests' $CARGOGREEN_LOG_PATH _
+
+    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
+      name: 🔴 =means=> here's relevant logs
+      run: |
+        ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
+      name: 🌀 Maybe show final path diff
+      run: |
+        final_diff=(git --no-pager diff)
+        if [[ ${{ matrix.toolchain }} != 1.96.0 ]]; then
+          final_diff+=(--exit-code)
+        fi
+        final_diff+=(--ignore-matching-lines=' AS rust-base$')
+        final_diff+=(-- $CARGOGREEN_FINAL_PATH)
+        "${final_diff[@]}"
+
+    - if: ${{ failure() }}
+      name: 🌀 cargo-green logs
+      run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
+    - name: Check that generated binary matches sha256
+      run: |
+        [[ "$BINHASHED" = "$(sha256sum /tmp/bin/fargo)" ]]
+
+    - run: rm -rf /tmp/bin/* $CARGO_TARGET_DIR/* >/dev/null
+    - name: 🔵 Reuse locally cached results...
+      run: |
+        unset CARGO_PROFILE_DEV_DEBUG
+        unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
+        unset CARGO_TERM_COLOR
+        unset CARGO_UNSTABLE_SPARSE_REGISTRY
+        env  CARGOGREEN_RUNNER=none \
+          cargo +1.78.0 green -vv install --locked --force --root=/tmp fargo --git https://fuchsia.googlesource.com/fargo --rev=a7d967b |& tee _
+    - name: ...is blazingly fearlessly lightspeed fast
+      run: |
+        grep Finished ./_ || exit 1
+        grep Finished ./_ | grep -E ....s || exit 1
+    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
+      name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
+      run: |
+        ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' _
+
+    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
+      name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
+      run: |
+        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
+      name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
+      run: |
+        ! grep -C20 -F 'connection error: COMPRESSION_ERROR' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
+      name: 🔴 =means=> there's some panic!s
+      run: |
+        ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
+      name: 🔴 =means=> there's some BUGs
+      run: |
+        ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
+      name: 🔴 =means=> here's cargo's error text
+      run: |
+        ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' $CARGOGREEN_LOG_PATH _
+
+    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
+      name: 🔴 =means=> 429 Too Many Requests
+      run: |
+        ! grep -C20 -F '429 Too Many Requests' $CARGOGREEN_LOG_PATH _
+
+    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
+      name: 🔴 =means=> here's relevant logs
+      run: |
+        ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
+      name: 🌀 Maybe show final path diff
+      run: |
+        final_diff=(git --no-pager diff)
+        if [[ ${{ matrix.toolchain }} != 1.96.0 ]]; then
+          final_diff+=(--exit-code)
+        fi
+        final_diff+=(--ignore-matching-lines=' AS rust-base$')
+        final_diff+=(-- $CARGOGREEN_FINAL_PATH)
+        "${final_diff[@]}"
+
+    - if: ${{ failure() }}
+      name: 🌀 cargo-green logs
+      run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
+    - name: Check that generated binary matches sha256
+      run: |
+        [[ "$BINHASHED" = "$(sha256sum /tmp/bin/fargo)" ]]
+
+    - name: 🔵 Compare old/new local private registry image digests
+      if: ${{ always() && env.CARGOGREEN_CACHE_FROM_IMAGES != '' && env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
+      run: |
+        diff --width=150 -y \
+          <(find /tmp/.local-registry/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print $NF}' | sort -u) \
+          <(find /tmp/.local-registry-new/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print $NF}' | sort -u) || true
+        du -sh /tmp/.local-registry /tmp/.local-registry-new || true
+    - name: Local private registry cache dance
+      if: ${{ always() && env.CARGOGREEN_CACHE_FROM_IMAGES != '' && env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
+      run: |
+        # [ci: caches keep growing](https://github.com/moby/buildkit/issues/1850)
+        docker stop --timeout 10 reg-from reg-to
+        rm -rf /tmp/.local-registry
+        mv /tmp/.local-registry-new /tmp/.local-registry
+  # - name: Save local private registry cache
+  #   uses: actions/cache/save@v5
+  #   if: ${{ false }} # TODO: drop when digests are stable
+  #   with:
+  #     path: /tmp/.local-registry
+  #     key: localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-${{ github.run_id }}
+
+    - run: docker system df
+    - run: docker system df --verbose
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
+    - name: Target dir disk usage
+      if: ${{ always() }}
+      run: du -sh $CARGO_TARGET_DIR || true
+
+  harper-ls_master:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    defaults:
+      run:
+        shell: bash -euo pipefail {0}
+    continue-on-error: ${{ matrix.toolchain != '1.96.0' }}
+    strategy:
+      matrix:
+        toolchain:
+        - 1.96.0
+        - 1.94.0
+        exclude:
+        - toolchain: ${{ github.ref != 'refs/heads/main' && '1.96.0' }}
+    env:
+      CARGO_TARGET_DIR: /tmp/clis-harper-ls_master
+    # CARGOGREEN_CACHE_FROM_IMAGES: docker-image://localhost:12345/${{ github.repository }}
+    # CARGOGREEN_CACHE_TO_IMAGES: docker-image://localhost:23456/${{ github.repository }}
+      CARGOGREEN_FINAL_PATH: recipes/harper-ls@master.Dockerfile
       CARGOGREEN_EXPERIMENT: finalpathnonprimary # dumps on each build call
       CARGOGREEN_LOG: debug
       CARGOGREEN_LOG_PATH: logs.txt
@@ -2958,7 +2958,7 @@ jobs:
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env  \
-          cargo green -vv install --locked --force --root=/tmp shpool@0.9.3  |& tee _
+          cargo green -vv install --locked --force --root=/tmp harper-ls --git https://github.com/Automattic/harper.git --tag=v1.1.0 |& tee _
     - name: 🔵 cargo install jobs=1
       id: do-try-jobs1
       timeout-minutes: 11
@@ -2969,12 +2969,12 @@ jobs:
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env  \
-          cargo green -vv install --jobs=1 --locked --force --root=/tmp shpool@0.9.3  |& tee _
+          cargo green -vv install --jobs=1 --locked --force --root=/tmp harper-ls --git https://github.com/Automattic/harper.git --tag=v1.1.0 |& tee _
     - if: ${{ always() && matrix.toolchain != '1.96.0' }}
       uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
       name: Upload recipe
       with:
-        name: shpool@0.9.3.Dockerfile
+        name: harper-ls@master.Dockerfile
         path: ${{ env.CARGOGREEN_FINAL_PATH }}
         if-no-files-found: error
     - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
@@ -3041,9 +3041,9 @@ jobs:
       run: du -sh $CARGO_TARGET_DIR || true
     - name: Check that generated binary executes and set sha256
       run: |
-        ls -lha /tmp/bin/shpool
-        /tmp/bin/shpool --help || true
-        echo "BINHASHED=$(sha256sum /tmp/bin/shpool)" >>$GITHUB_ENV
+        ls -lha /tmp/bin/harper_ls
+        /tmp/bin/harper_ls --help || true
+        echo "BINHASHED=$(sha256sum /tmp/bin/harper_ls)" >>$GITHUB_ENV
 
     - name: 🔵 Ensure running the same command twice without modifications...
       run: |
@@ -3052,7 +3052,7 @@ jobs:
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env  \
-          cargo green -vv install --locked --force --root=/tmp shpool@0.9.3  |& tee _
+          cargo green -vv install --locked --force --root=/tmp harper-ls --git https://github.com/Automattic/harper.git --tag=v1.1.0 |& tee _
     - name: ...doesn't recompile anything
       run: |
         err=0
@@ -3117,7 +3117,7 @@ jobs:
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
     - name: Check that generated binary matches sha256
       run: |
-        [[ "$BINHASHED" = "$(sha256sum /tmp/bin/shpool)" ]]
+        [[ "$BINHASHED" = "$(sha256sum /tmp/bin/harper_ls)" ]]
 
     - name: 🔵 Try CARGOGREEN_RUNNER=none with the same command twice without modifications...
       run: |
@@ -3126,7 +3126,7 @@ jobs:
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env  CARGOGREEN_RUNNER=none \
-          cargo green -vv install --locked --force --root=/tmp shpool@0.9.3  |& tee _
+          cargo green -vv install --locked --force --root=/tmp harper-ls --git https://github.com/Automattic/harper.git --tag=v1.1.0 |& tee _
     - name: ...doesn't recompile anything
       run: |
         err=0
@@ -3191,7 +3191,7 @@ jobs:
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
     - name: Check that generated binary matches sha256
       run: |
-        [[ "$BINHASHED" = "$(sha256sum /tmp/bin/shpool)" ]]
+        [[ "$BINHASHED" = "$(sha256sum /tmp/bin/harper_ls)" ]]
 
     - run: rm -rf /tmp/bin/* $CARGO_TARGET_DIR/* >/dev/null
     - name: 🔵 Reuse locally cached results...
@@ -3201,7 +3201,7 @@ jobs:
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env  CARGOGREEN_RUNNER=none \
-          cargo green -vv install --locked --force --root=/tmp shpool@0.9.3  |& tee _
+          cargo green -vv install --locked --force --root=/tmp harper-ls --git https://github.com/Automattic/harper.git --tag=v1.1.0 |& tee _
     - name: ...is blazingly fearlessly lightspeed fast
       run: |
         grep Finished ./_ || exit 1
@@ -3262,7 +3262,7 @@ jobs:
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
     - name: Check that generated binary matches sha256
       run: |
-        [[ "$BINHASHED" = "$(sha256sum /tmp/bin/shpool)" ]]
+        [[ "$BINHASHED" = "$(sha256sum /tmp/bin/harper_ls)" ]]
 
     - name: 🔵 Compare old/new local private registry image digests
       if: ${{ always() && env.CARGOGREEN_CACHE_FROM_IMAGES != '' && env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
@@ -3294,7 +3294,7 @@ jobs:
       if: ${{ always() }}
       run: du -sh $CARGO_TARGET_DIR || true
 
-  cargo-authors_0-5-5:
+  gst-plugin-webrtc-signalling_main:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     defaults:
@@ -3309,10 +3309,470 @@ jobs:
         exclude:
         - toolchain: ${{ github.ref != 'refs/heads/main' && '1.96.0' }}
     env:
-      CARGO_TARGET_DIR: /tmp/clis-cargo-authors_0-5-5
+      CARGO_TARGET_DIR: /tmp/clis-gst-plugin-webrtc-signalling_main
     # CARGOGREEN_CACHE_FROM_IMAGES: docker-image://localhost:12345/${{ github.repository }}
     # CARGOGREEN_CACHE_TO_IMAGES: docker-image://localhost:23456/${{ github.repository }}
-      CARGOGREEN_FINAL_PATH: recipes/cargo-authors@0.5.5.Dockerfile
+      CARGOGREEN_FINAL_PATH: recipes/gst-plugin-webrtc-signalling@main.Dockerfile
+      CARGOGREEN_EXPERIMENT: finalpathnonprimary # dumps on each build call
+      CARGOGREEN_LOG: debug
+      CARGOGREEN_LOG_PATH: logs.txt
+    needs: bin
+    steps:
+    - uses: docker/login-action@4907a6ddec9925e35a0a9e82d7399ccc52663121 # v4.1.0
+      if: ${{ ! startsWith(github.ref, 'refs/heads/dependabot/') }}
+      with:
+        username: ${{ vars.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+    - uses: actions-rust-lang/setup-rust-toolchain@2b1f5e9b395427c92ee4e3331786ca3c37afe2d7 # v1.16.0
+      with:
+        toolchain: ${{ matrix.toolchain }}
+        rustflags: ''
+        cache-on-failure: true
+
+    - name: Retrieve saved bin
+      uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+      with:
+        name: cargo-green
+
+    - name: Install saved bin
+      shell: bash -eu {0}
+      run: | # TODO: whence https://github.com/actions/download-artifact/issues/236
+        chmod +x ./cargo-green
+        { ! ./cargo-green --version ; } | grep cargo-green
+        mv ./cargo-green ~/.cargo/bin/
+  # - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
+  #   name: Retrieve saved builder data
+  #   uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+  #   with:
+  #     name: builder-data
+  #     path: /home/runner/builder-cache
+  # - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
+  #   run: |
+  #     set -x
+  #     sudo mkdir -p $(cargo green supergreen sync data 2>/dev/null)
+  #     sudo mv -v /home/runner/builder-cache/* $(cargo green supergreen sync data 2>/dev/null)/
+  #     sudo chown -R root:root $(cargo green supergreen sync data 2>/dev/null)
+    - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      with:
+        persist-credentials: false
+
+    - name: Prepare local private registry cache
+      if: ${{ env.CARGOGREEN_CACHE_FROM_IMAGES != '' || env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
+      run: |
+        # https://github.com/fenollp/supergreen/actions/caches
+        mkdir -p /tmp/.local-registry
+        mkdir -p /tmp/.local-registry-new
+    - name: 🔵 Restore local private registry cache
+      if: ${{ env.CARGOGREEN_CACHE_FROM_IMAGES != '' || env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
+      uses: actions/cache/restore@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
+      with:
+        path: /tmp/.local-registry
+        # github.run_id: https://github.com/actions/toolkit/issues/658#issuecomment-2640690759
+        key: localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-${{ github.run_id }}
+        restore-keys: |
+          localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-
+          localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-
+          localprivatereg-${{ runner.os }}-
+          localprivatereg-
+
+    - name: Pull regist3 image
+      if: ${{ env.CARGOGREEN_CACHE_FROM_IMAGES != '' || env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
+      run: |
+        false \
+        || docker build --tag regist3 - <<<'FROM docker.io/registry:3' \
+        || docker build --tag regist3 - <<<'FROM mirror.gcr.io/registry:3' \
+        || docker build --tag regist3 - <<<'FROM public.ecr.aws/docker/registry:3' \
+        || exit 1
+    - name: Start "cache from" image registry
+      if: ${{ env.CARGOGREEN_CACHE_FROM_IMAGES != '' }}
+      run: docker run --name=reg-from --rm --detach -p 12345:5000 --user $(id -u):$(id -g) -v     /tmp/.local-registry:/var/lib/registry regist3
+    - name: Start "cache to" image registry
+      if: ${{ env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
+      run: docker run --name=reg-to   --rm --detach -p 23456:5000 --user $(id -u):$(id -g) -v /tmp/.local-registry-new:/var/lib/registry regist3
+
+    - name: Setup
+      run: |
+        if ! cargo green supergreen setup; then
+            { cargo green supergreen setup 2>/dev/null || true; } | sudo /bin/sh -xe
+        fi
+    - name: 🔵 Envs
+      run: cargo green supergreen env
+    - if: ${{ matrix.toolchain != '1.96.0' }}
+      run: cargo green supergreen show-rust-base 2>/dev/null | grep '${{ matrix.toolchain }}'
+    - run: cargo green supergreen builder
+    - name: 🔵 Envs again
+      run: cargo green supergreen env
+
+    - run: docker system df
+    - run: docker system df --verbose
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
+    - name: 🔵 cargo install
+      id: do-try
+      timeout-minutes: 11
+      continue-on-error: true
+      run: |
+        unset CARGO_PROFILE_DEV_DEBUG
+        unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
+        unset CARGO_TERM_COLOR
+        unset CARGO_UNSTABLE_SPARSE_REGISTRY
+        env  \
+          cargo green -vv install --locked --force --root=/tmp gst-plugin-webrtc-signalling --git https://gitlab.freedesktop.org/gstreamer/gst-plugins-rs --tag=gstreamer-1.29.1 |& tee _
+    - name: 🔵 cargo install jobs=1
+      id: do-try-jobs1
+      timeout-minutes: 11
+      if: ${{ job.steps.do-try.outcome != 'success' }}
+      run: |
+        unset CARGO_PROFILE_DEV_DEBUG
+        unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
+        unset CARGO_TERM_COLOR
+        unset CARGO_UNSTABLE_SPARSE_REGISTRY
+        env  \
+          cargo green -vv install --jobs=1 --locked --force --root=/tmp gst-plugin-webrtc-signalling --git https://gitlab.freedesktop.org/gstreamer/gst-plugins-rs --tag=gstreamer-1.29.1 |& tee _
+    - if: ${{ always() && matrix.toolchain != '1.96.0' }}
+      uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+      name: Upload recipe
+      with:
+        name: gst-plugin-webrtc-signalling@main.Dockerfile
+        path: ${{ env.CARGOGREEN_FINAL_PATH }}
+        if-no-files-found: error
+    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
+      name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
+      run: |
+        ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' _
+
+    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
+      name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
+      run: |
+        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
+      name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
+      run: |
+        ! grep -C20 -F 'connection error: COMPRESSION_ERROR' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
+      name: 🔴 =means=> there's some panic!s
+      run: |
+        ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
+      name: 🔴 =means=> there's some BUGs
+      run: |
+        ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
+      name: 🔴 =means=> here's cargo's error text
+      run: |
+        ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' $CARGOGREEN_LOG_PATH _
+
+    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
+      name: 🔴 =means=> 429 Too Many Requests
+      run: |
+        ! grep -C20 -F '429 Too Many Requests' $CARGOGREEN_LOG_PATH _
+
+    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
+      name: 🔴 =means=> here's relevant logs
+      run: |
+        ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
+      name: 🌀 Maybe show final path diff
+      run: |
+        final_diff=(git --no-pager diff)
+        if [[ ${{ matrix.toolchain }} != 1.96.0 ]]; then
+          final_diff+=(--exit-code)
+        fi
+        final_diff+=(--ignore-matching-lines=' AS rust-base$')
+        final_diff+=(-- $CARGOGREEN_FINAL_PATH)
+        "${final_diff[@]}"
+
+    - if: ${{ failure() }}
+      name: 🌀 cargo-green logs
+      run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
+    - run: docker system df
+    - run: docker system df --verbose
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
+    - name: Target dir disk usage
+      if: ${{ always() }}
+      run: du -sh $CARGO_TARGET_DIR || true
+    - name: Check that generated binary executes and set sha256
+      run: |
+        ls -lha /tmp/bin/gst_webrtc_signalling_server
+        /tmp/bin/gst_webrtc_signalling_server --help || true
+        echo "BINHASHED=$(sha256sum /tmp/bin/gst_webrtc_signalling_server)" >>$GITHUB_ENV
+
+    - name: 🔵 Ensure running the same command twice without modifications...
+      run: |
+        unset CARGO_PROFILE_DEV_DEBUG
+        unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
+        unset CARGO_TERM_COLOR
+        unset CARGO_UNSTABLE_SPARSE_REGISTRY
+        env  \
+          cargo green -vv install --locked --force --root=/tmp gst-plugin-webrtc-signalling --git https://gitlab.freedesktop.org/gstreamer/gst-plugins-rs --tag=gstreamer-1.29.1 |& tee _
+    - name: ...doesn't recompile anything
+      run: |
+        err=0
+        grep Finished  _
+        grep Finished  _ | grep -E [0123]...s || ((err+=1))
+        grep Dirty     _                      && ((err+=2))
+        grep Compiling _                      && ((err+=4))
+        exit $err
+    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
+      name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
+      run: |
+        ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' _
+
+    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
+      name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
+      run: |
+        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
+      name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
+      run: |
+        ! grep -C20 -F 'connection error: COMPRESSION_ERROR' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
+      name: 🔴 =means=> there's some panic!s
+      run: |
+        ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
+      name: 🔴 =means=> there's some BUGs
+      run: |
+        ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
+      name: 🔴 =means=> here's cargo's error text
+      run: |
+        ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' $CARGOGREEN_LOG_PATH _
+
+    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
+      name: 🔴 =means=> 429 Too Many Requests
+      run: |
+        ! grep -C20 -F '429 Too Many Requests' $CARGOGREEN_LOG_PATH _
+
+    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
+      name: 🔴 =means=> here's relevant logs
+      run: |
+        ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
+      name: 🌀 Maybe show final path diff
+      run: |
+        final_diff=(git --no-pager diff)
+        if [[ ${{ matrix.toolchain }} != 1.96.0 ]]; then
+          final_diff+=(--exit-code)
+        fi
+        final_diff+=(--ignore-matching-lines=' AS rust-base$')
+        final_diff+=(-- $CARGOGREEN_FINAL_PATH)
+        "${final_diff[@]}"
+
+    - if: ${{ failure() }}
+      name: 🌀 cargo-green logs
+      run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
+    - name: Check that generated binary matches sha256
+      run: |
+        [[ "$BINHASHED" = "$(sha256sum /tmp/bin/gst_webrtc_signalling_server)" ]]
+
+    - name: 🔵 Try CARGOGREEN_RUNNER=none with the same command twice without modifications...
+      run: |
+        unset CARGO_PROFILE_DEV_DEBUG
+        unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
+        unset CARGO_TERM_COLOR
+        unset CARGO_UNSTABLE_SPARSE_REGISTRY
+        env  CARGOGREEN_RUNNER=none \
+          cargo green -vv install --locked --force --root=/tmp gst-plugin-webrtc-signalling --git https://gitlab.freedesktop.org/gstreamer/gst-plugins-rs --tag=gstreamer-1.29.1 |& tee _
+    - name: ...doesn't recompile anything
+      run: |
+        err=0
+        grep Finished  _
+        grep Finished  _ | grep -E [0123]...s || ((err+=1))
+        grep Dirty     _                      && ((err+=2))
+        grep Compiling _                      && ((err+=4))
+        exit $err
+    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
+      name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
+      run: |
+        ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' _
+
+    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
+      name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
+      run: |
+        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
+      name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
+      run: |
+        ! grep -C20 -F 'connection error: COMPRESSION_ERROR' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
+      name: 🔴 =means=> there's some panic!s
+      run: |
+        ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
+      name: 🔴 =means=> there's some BUGs
+      run: |
+        ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
+      name: 🔴 =means=> here's cargo's error text
+      run: |
+        ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' $CARGOGREEN_LOG_PATH _
+
+    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
+      name: 🔴 =means=> 429 Too Many Requests
+      run: |
+        ! grep -C20 -F '429 Too Many Requests' $CARGOGREEN_LOG_PATH _
+
+    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
+      name: 🔴 =means=> here's relevant logs
+      run: |
+        ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
+      name: 🌀 Maybe show final path diff
+      run: |
+        final_diff=(git --no-pager diff)
+        if [[ ${{ matrix.toolchain }} != 1.96.0 ]]; then
+          final_diff+=(--exit-code)
+        fi
+        final_diff+=(--ignore-matching-lines=' AS rust-base$')
+        final_diff+=(-- $CARGOGREEN_FINAL_PATH)
+        "${final_diff[@]}"
+
+    - if: ${{ failure() }}
+      name: 🌀 cargo-green logs
+      run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
+    - name: Check that generated binary matches sha256
+      run: |
+        [[ "$BINHASHED" = "$(sha256sum /tmp/bin/gst_webrtc_signalling_server)" ]]
+
+    - run: rm -rf /tmp/bin/* $CARGO_TARGET_DIR/* >/dev/null
+    - name: 🔵 Reuse locally cached results...
+      run: |
+        unset CARGO_PROFILE_DEV_DEBUG
+        unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
+        unset CARGO_TERM_COLOR
+        unset CARGO_UNSTABLE_SPARSE_REGISTRY
+        env  CARGOGREEN_RUNNER=none \
+          cargo green -vv install --locked --force --root=/tmp gst-plugin-webrtc-signalling --git https://gitlab.freedesktop.org/gstreamer/gst-plugins-rs --tag=gstreamer-1.29.1 |& tee _
+    - name: ...is blazingly fearlessly lightspeed fast
+      run: |
+        grep Finished ./_ || exit 1
+        grep Finished ./_ | grep -E ....s || exit 1
+    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
+      name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
+      run: |
+        ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' _
+
+    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
+      name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
+      run: |
+        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
+      name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
+      run: |
+        ! grep -C20 -F 'connection error: COMPRESSION_ERROR' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
+      name: 🔴 =means=> there's some panic!s
+      run: |
+        ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
+      name: 🔴 =means=> there's some BUGs
+      run: |
+        ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
+      name: 🔴 =means=> here's cargo's error text
+      run: |
+        ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' $CARGOGREEN_LOG_PATH _
+
+    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
+      name: 🔴 =means=> 429 Too Many Requests
+      run: |
+        ! grep -C20 -F '429 Too Many Requests' $CARGOGREEN_LOG_PATH _
+
+    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
+      name: 🔴 =means=> here's relevant logs
+      run: |
+        ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
+
+    - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
+      name: 🌀 Maybe show final path diff
+      run: |
+        final_diff=(git --no-pager diff)
+        if [[ ${{ matrix.toolchain }} != 1.96.0 ]]; then
+          final_diff+=(--exit-code)
+        fi
+        final_diff+=(--ignore-matching-lines=' AS rust-base$')
+        final_diff+=(-- $CARGOGREEN_FINAL_PATH)
+        "${final_diff[@]}"
+
+    - if: ${{ failure() }}
+      name: 🌀 cargo-green logs
+      run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
+    - name: Check that generated binary matches sha256
+      run: |
+        [[ "$BINHASHED" = "$(sha256sum /tmp/bin/gst_webrtc_signalling_server)" ]]
+
+    - name: 🔵 Compare old/new local private registry image digests
+      if: ${{ always() && env.CARGOGREEN_CACHE_FROM_IMAGES != '' && env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
+      run: |
+        diff --width=150 -y \
+          <(find /tmp/.local-registry/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print $NF}' | sort -u) \
+          <(find /tmp/.local-registry-new/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print $NF}' | sort -u) || true
+        du -sh /tmp/.local-registry /tmp/.local-registry-new || true
+    - name: Local private registry cache dance
+      if: ${{ always() && env.CARGOGREEN_CACHE_FROM_IMAGES != '' && env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
+      run: |
+        # [ci: caches keep growing](https://github.com/moby/buildkit/issues/1850)
+        docker stop --timeout 10 reg-from reg-to
+        rm -rf /tmp/.local-registry
+        mv /tmp/.local-registry-new /tmp/.local-registry
+  # - name: Save local private registry cache
+  #   uses: actions/cache/save@v5
+  #   if: ${{ false }} # TODO: drop when digests are stable
+  #   with:
+  #     path: /tmp/.local-registry
+  #     key: localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-${{ github.run_id }}
+
+    - run: docker system df
+    - run: docker system df --verbose
+    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
+    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
+    - name: Target dir disk usage
+      if: ${{ always() }}
+      run: du -sh $CARGO_TARGET_DIR || true
+
+  cargo-c_0-10-18_cargo-0-92-0:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    defaults:
+      run:
+        shell: bash -euo pipefail {0}
+    continue-on-error: ${{ matrix.toolchain != '1.96.0' }}
+    strategy:
+      matrix:
+        toolchain:
+        - 1.96.0
+        - 1.94.0
+        exclude:
+        - toolchain: ${{ github.ref != 'refs/heads/main' && '1.96.0' }}
+    env:
+      CARGO_TARGET_DIR: /tmp/clis-cargo-c_0-10-18_cargo-0-92-0
+    # CARGOGREEN_CACHE_FROM_IMAGES: docker-image://localhost:12345/${{ github.repository }}
+    # CARGOGREEN_CACHE_TO_IMAGES: docker-image://localhost:23456/${{ github.repository }}
+      CARGOGREEN_FINAL_PATH: recipes/cargo-c@0.10.18+cargo-0.92.0.Dockerfile
       CARGOGREEN_EXPERIMENT: finalpathnonprimary # dumps on each build call
       CARGOGREEN_LOG: debug
       CARGOGREEN_LOG_PATH: logs.txt
@@ -3418,7 +3878,7 @@ jobs:
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env CARGOGREEN_ADD_APT=libcurl4-openssl-dev,"libssl-dev(>=3.5)",pkg-config \
-          cargo green -vv install --locked --force --root=/tmp cargo-authors@0.5.5  |& tee _
+          cargo green -vv install --locked --force --root=/tmp cargo-c@0.10.18+cargo-0.92.0 --bin=cargo-cbuild |& tee _
     - name: 🔵 cargo install jobs=1
       id: do-try-jobs1
       timeout-minutes: 11
@@ -3429,12 +3889,12 @@ jobs:
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env CARGOGREEN_ADD_APT=libcurl4-openssl-dev,"libssl-dev(>=3.5)",pkg-config \
-          cargo green -vv install --jobs=1 --locked --force --root=/tmp cargo-authors@0.5.5  |& tee _
+          cargo green -vv install --jobs=1 --locked --force --root=/tmp cargo-c@0.10.18+cargo-0.92.0 --bin=cargo-cbuild |& tee _
     - if: ${{ always() && matrix.toolchain != '1.96.0' }}
       uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
       name: Upload recipe
       with:
-        name: cargo-authors@0.5.5.Dockerfile
+        name: cargo-c@0.10.18+cargo-0.92.0.Dockerfile
         path: ${{ env.CARGOGREEN_FINAL_PATH }}
         if-no-files-found: error
     - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
@@ -3501,9 +3961,9 @@ jobs:
       run: du -sh $CARGO_TARGET_DIR || true
     - name: Check that generated binary executes and set sha256
       run: |
-        ls -lha /tmp/bin/cargo_authors
-        /tmp/bin/cargo_authors --help || true
-        echo "BINHASHED=$(sha256sum /tmp/bin/cargo_authors)" >>$GITHUB_ENV
+        ls -lha /tmp/bin/cargo_cbuild
+        /tmp/bin/cargo_cbuild --help || true
+        echo "BINHASHED=$(sha256sum /tmp/bin/cargo_cbuild)" >>$GITHUB_ENV
 
     - name: 🔵 Ensure running the same command twice without modifications...
       run: |
@@ -3512,7 +3972,7 @@ jobs:
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env CARGOGREEN_ADD_APT=libcurl4-openssl-dev,"libssl-dev(>=3.5)",pkg-config \
-          cargo green -vv install --locked --force --root=/tmp cargo-authors@0.5.5  |& tee _
+          cargo green -vv install --locked --force --root=/tmp cargo-c@0.10.18+cargo-0.92.0 --bin=cargo-cbuild |& tee _
     - name: ...doesn't recompile anything
       run: |
         err=0
@@ -3577,7 +4037,7 @@ jobs:
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
     - name: Check that generated binary matches sha256
       run: |
-        [[ "$BINHASHED" = "$(sha256sum /tmp/bin/cargo_authors)" ]]
+        [[ "$BINHASHED" = "$(sha256sum /tmp/bin/cargo_cbuild)" ]]
 
     - name: 🔵 Try CARGOGREEN_RUNNER=none with the same command twice without modifications...
       run: |
@@ -3586,7 +4046,7 @@ jobs:
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env CARGOGREEN_ADD_APT=libcurl4-openssl-dev,"libssl-dev(>=3.5)",pkg-config CARGOGREEN_RUNNER=none \
-          cargo green -vv install --locked --force --root=/tmp cargo-authors@0.5.5  |& tee _
+          cargo green -vv install --locked --force --root=/tmp cargo-c@0.10.18+cargo-0.92.0 --bin=cargo-cbuild |& tee _
     - name: ...doesn't recompile anything
       run: |
         err=0
@@ -3651,7 +4111,7 @@ jobs:
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
     - name: Check that generated binary matches sha256
       run: |
-        [[ "$BINHASHED" = "$(sha256sum /tmp/bin/cargo_authors)" ]]
+        [[ "$BINHASHED" = "$(sha256sum /tmp/bin/cargo_cbuild)" ]]
 
     - run: rm -rf /tmp/bin/* $CARGO_TARGET_DIR/* >/dev/null
     - name: 🔵 Reuse locally cached results...
@@ -3661,7 +4121,7 @@ jobs:
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env CARGOGREEN_ADD_APT=libcurl4-openssl-dev,"libssl-dev(>=3.5)",pkg-config CARGOGREEN_RUNNER=none \
-          cargo green -vv install --locked --force --root=/tmp cargo-authors@0.5.5  |& tee _
+          cargo green -vv install --locked --force --root=/tmp cargo-c@0.10.18+cargo-0.92.0 --bin=cargo-cbuild |& tee _
     - name: ...is blazingly fearlessly lightspeed fast
       run: |
         grep Finished ./_ || exit 1
@@ -3722,467 +4182,7 @@ jobs:
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
     - name: Check that generated binary matches sha256
       run: |
-        [[ "$BINHASHED" = "$(sha256sum /tmp/bin/cargo_authors)" ]]
-
-    - name: 🔵 Compare old/new local private registry image digests
-      if: ${{ always() && env.CARGOGREEN_CACHE_FROM_IMAGES != '' && env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
-      run: |
-        diff --width=150 -y \
-          <(find /tmp/.local-registry/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print $NF}' | sort -u) \
-          <(find /tmp/.local-registry-new/docker/registry/v2/blobs/sha256/??/ -type d | awk -F/ '{print $NF}' | sort -u) || true
-        du -sh /tmp/.local-registry /tmp/.local-registry-new || true
-    - name: Local private registry cache dance
-      if: ${{ always() && env.CARGOGREEN_CACHE_FROM_IMAGES != '' && env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
-      run: |
-        # [ci: caches keep growing](https://github.com/moby/buildkit/issues/1850)
-        docker stop --timeout 10 reg-from reg-to
-        rm -rf /tmp/.local-registry
-        mv /tmp/.local-registry-new /tmp/.local-registry
-  # - name: Save local private registry cache
-  #   uses: actions/cache/save@v5
-  #   if: ${{ false }} # TODO: drop when digests are stable
-  #   with:
-  #     path: /tmp/.local-registry
-  #     key: localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-${{ github.run_id }}
-
-    - run: docker system df
-    - run: docker system df --verbose
-    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
-    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
-    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
-    - name: Target dir disk usage
-      if: ${{ always() }}
-      run: du -sh $CARGO_TARGET_DIR || true
-
-  vixargs_0-1-0:
-    runs-on: ubuntu-latest
-    timeout-minutes: 30
-    defaults:
-      run:
-        shell: bash -euo pipefail {0}
-    continue-on-error: ${{ matrix.toolchain != '1.96.0' }}
-    strategy:
-      matrix:
-        toolchain:
-        - 1.96.0
-        - 1.94.0
-        exclude:
-        - toolchain: ${{ github.ref != 'refs/heads/main' && '1.96.0' }}
-    env:
-      CARGO_TARGET_DIR: /tmp/clis-vixargs_0-1-0
-    # CARGOGREEN_CACHE_FROM_IMAGES: docker-image://localhost:12345/${{ github.repository }}
-    # CARGOGREEN_CACHE_TO_IMAGES: docker-image://localhost:23456/${{ github.repository }}
-      CARGOGREEN_FINAL_PATH: recipes/vixargs@0.1.0.Dockerfile
-      CARGOGREEN_EXPERIMENT: finalpathnonprimary # dumps on each build call
-      CARGOGREEN_LOG: debug
-      CARGOGREEN_LOG_PATH: logs.txt
-    needs: bin
-    steps:
-    - uses: docker/login-action@4907a6ddec9925e35a0a9e82d7399ccc52663121 # v4.1.0
-      if: ${{ ! startsWith(github.ref, 'refs/heads/dependabot/') }}
-      with:
-        username: ${{ vars.DOCKERHUB_USERNAME }}
-        password: ${{ secrets.DOCKERHUB_TOKEN }}
-    - uses: actions-rust-lang/setup-rust-toolchain@2b1f5e9b395427c92ee4e3331786ca3c37afe2d7 # v1.16.0
-      with:
-        toolchain: ${{ matrix.toolchain }}
-        rustflags: ''
-        cache-on-failure: true
-
-    - name: Retrieve saved bin
-      uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
-      with:
-        name: cargo-green
-
-    - name: Install saved bin
-      shell: bash -eu {0}
-      run: | # TODO: whence https://github.com/actions/download-artifact/issues/236
-        chmod +x ./cargo-green
-        { ! ./cargo-green --version ; } | grep cargo-green
-        mv ./cargo-green ~/.cargo/bin/
-  # - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
-  #   name: Retrieve saved builder data
-  #   uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
-  #   with:
-  #     name: builder-data
-  #     path: /home/runner/builder-cache
-  # - if: ${{ false }} # TODO: just-sync'd builder cache ends up >500MB (above artifacts free tier)
-  #   run: |
-  #     set -x
-  #     sudo mkdir -p $(cargo green supergreen sync data 2>/dev/null)
-  #     sudo mv -v /home/runner/builder-cache/* $(cargo green supergreen sync data 2>/dev/null)/
-  #     sudo chown -R root:root $(cargo green supergreen sync data 2>/dev/null)
-    - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-      with:
-        persist-credentials: false
-
-    - name: Prepare local private registry cache
-      if: ${{ env.CARGOGREEN_CACHE_FROM_IMAGES != '' || env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
-      run: |
-        # https://github.com/fenollp/supergreen/actions/caches
-        mkdir -p /tmp/.local-registry
-        mkdir -p /tmp/.local-registry-new
-    - name: 🔵 Restore local private registry cache
-      if: ${{ env.CARGOGREEN_CACHE_FROM_IMAGES != '' || env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
-      uses: actions/cache/restore@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
-      with:
-        path: /tmp/.local-registry
-        # github.run_id: https://github.com/actions/toolkit/issues/658#issuecomment-2640690759
-        key: localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-${{ github.run_id }}
-        restore-keys: |
-          localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-${{ github.job }}-
-          localprivatereg-${{ runner.os }}-${{ matrix.toolchain }}-
-          localprivatereg-${{ runner.os }}-
-          localprivatereg-
-
-    - name: Pull regist3 image
-      if: ${{ env.CARGOGREEN_CACHE_FROM_IMAGES != '' || env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
-      run: |
-        false \
-        || docker build --tag regist3 - <<<'FROM docker.io/registry:3' \
-        || docker build --tag regist3 - <<<'FROM mirror.gcr.io/registry:3' \
-        || docker build --tag regist3 - <<<'FROM public.ecr.aws/docker/registry:3' \
-        || exit 1
-    - name: Start "cache from" image registry
-      if: ${{ env.CARGOGREEN_CACHE_FROM_IMAGES != '' }}
-      run: docker run --name=reg-from --rm --detach -p 12345:5000 --user $(id -u):$(id -g) -v     /tmp/.local-registry:/var/lib/registry regist3
-    - name: Start "cache to" image registry
-      if: ${{ env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
-      run: docker run --name=reg-to   --rm --detach -p 23456:5000 --user $(id -u):$(id -g) -v /tmp/.local-registry-new:/var/lib/registry regist3
-
-    - name: Setup
-      run: |
-        if ! cargo green supergreen setup; then
-            { cargo green supergreen setup 2>/dev/null || true; } | sudo /bin/sh -xe
-        fi
-    - name: 🔵 Envs
-      run: cargo green supergreen env
-    - if: ${{ matrix.toolchain != '1.96.0' }}
-      run: cargo green supergreen show-rust-base 2>/dev/null | grep '${{ matrix.toolchain }}'
-    - run: cargo green supergreen builder
-    - name: 🔵 Envs again
-      run: cargo green supergreen env
-
-    - run: docker system df
-    - run: docker system df --verbose
-    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
-    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
-    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
-    - name: 🔵 cargo install
-      id: do-try
-      timeout-minutes: 11
-      continue-on-error: true
-      run: |
-        unset CARGO_PROFILE_DEV_DEBUG
-        unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
-        unset CARGO_TERM_COLOR
-        unset CARGO_UNSTABLE_SPARSE_REGISTRY
-        env  \
-          cargo green -vv install --locked --force --root=/tmp vixargs@0.1.0  |& tee _
-    - name: 🔵 cargo install jobs=1
-      id: do-try-jobs1
-      timeout-minutes: 11
-      if: ${{ job.steps.do-try.outcome != 'success' }}
-      run: |
-        unset CARGO_PROFILE_DEV_DEBUG
-        unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
-        unset CARGO_TERM_COLOR
-        unset CARGO_UNSTABLE_SPARSE_REGISTRY
-        env  \
-          cargo green -vv install --jobs=1 --locked --force --root=/tmp vixargs@0.1.0  |& tee _
-    - if: ${{ always() && matrix.toolchain != '1.96.0' }}
-      uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
-      name: Upload recipe
-      with:
-        name: vixargs@0.1.0.Dockerfile
-        path: ${{ env.CARGOGREEN_FINAL_PATH }}
-        if-no-files-found: error
-    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
-      name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
-      run: |
-        ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' _
-
-    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
-      name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
-      run: |
-        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
-
-    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
-      name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
-      run: |
-        ! grep -C20 -F 'connection error: COMPRESSION_ERROR' $CARGOGREEN_LOG_PATH
-
-    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
-      name: 🔴 =means=> there's some panic!s
-      run: |
-        ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
-
-    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
-      name: 🔴 =means=> there's some BUGs
-      run: |
-        ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
-
-    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
-      name: 🔴 =means=> here's cargo's error text
-      run: |
-        ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' $CARGOGREEN_LOG_PATH _
-
-    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
-      name: 🔴 =means=> 429 Too Many Requests
-      run: |
-        ! grep -C20 -F '429 Too Many Requests' $CARGOGREEN_LOG_PATH _
-
-    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
-      name: 🔴 =means=> here's relevant logs
-      run: |
-        ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
-
-    - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
-      name: 🌀 Maybe show final path diff
-      run: |
-        final_diff=(git --no-pager diff)
-        if [[ ${{ matrix.toolchain }} != 1.96.0 ]]; then
-          final_diff+=(--exit-code)
-        fi
-        final_diff+=(--ignore-matching-lines=' AS rust-base$')
-        final_diff+=(-- $CARGOGREEN_FINAL_PATH)
-        "${final_diff[@]}"
-
-    - if: ${{ failure() }}
-      name: 🌀 cargo-green logs
-      run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
-    - run: docker system df
-    - run: docker system df --verbose
-    - run: BUILDX_BUILDER=supergreen docker buildx du | head || true
-    - run: BUILDX_BUILDER=supergreen docker buildx du | tail || true
-    - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
-    - name: Target dir disk usage
-      if: ${{ always() }}
-      run: du -sh $CARGO_TARGET_DIR || true
-    - name: Check that generated binary executes and set sha256
-      run: |
-        ls -lha /tmp/bin/vixargs
-        /tmp/bin/vixargs --help || true
-        echo "BINHASHED=$(sha256sum /tmp/bin/vixargs)" >>$GITHUB_ENV
-
-    - name: 🔵 Ensure running the same command twice without modifications...
-      run: |
-        unset CARGO_PROFILE_DEV_DEBUG
-        unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
-        unset CARGO_TERM_COLOR
-        unset CARGO_UNSTABLE_SPARSE_REGISTRY
-        env  \
-          cargo green -vv install --locked --force --root=/tmp vixargs@0.1.0  |& tee _
-    - name: ...doesn't recompile anything
-      run: |
-        err=0
-        grep Finished  _
-        grep Finished  _ | grep -E [0123]...s || ((err+=1))
-        grep Dirty     _                      && ((err+=2))
-        grep Compiling _                      && ((err+=4))
-        exit $err
-    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
-      name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
-      run: |
-        ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' _
-
-    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
-      name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
-      run: |
-        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
-
-    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
-      name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
-      run: |
-        ! grep -C20 -F 'connection error: COMPRESSION_ERROR' $CARGOGREEN_LOG_PATH
-
-    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
-      name: 🔴 =means=> there's some panic!s
-      run: |
-        ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
-
-    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
-      name: 🔴 =means=> there's some BUGs
-      run: |
-        ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
-
-    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
-      name: 🔴 =means=> here's cargo's error text
-      run: |
-        ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' $CARGOGREEN_LOG_PATH _
-
-    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
-      name: 🔴 =means=> 429 Too Many Requests
-      run: |
-        ! grep -C20 -F '429 Too Many Requests' $CARGOGREEN_LOG_PATH _
-
-    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
-      name: 🔴 =means=> here's relevant logs
-      run: |
-        ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
-
-    - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
-      name: 🌀 Maybe show final path diff
-      run: |
-        final_diff=(git --no-pager diff)
-        if [[ ${{ matrix.toolchain }} != 1.96.0 ]]; then
-          final_diff+=(--exit-code)
-        fi
-        final_diff+=(--ignore-matching-lines=' AS rust-base$')
-        final_diff+=(-- $CARGOGREEN_FINAL_PATH)
-        "${final_diff[@]}"
-
-    - if: ${{ failure() }}
-      name: 🌀 cargo-green logs
-      run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
-    - name: Check that generated binary matches sha256
-      run: |
-        [[ "$BINHASHED" = "$(sha256sum /tmp/bin/vixargs)" ]]
-
-    - name: 🔵 Try CARGOGREEN_RUNNER=none with the same command twice without modifications...
-      run: |
-        unset CARGO_PROFILE_DEV_DEBUG
-        unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
-        unset CARGO_TERM_COLOR
-        unset CARGO_UNSTABLE_SPARSE_REGISTRY
-        env  CARGOGREEN_RUNNER=none \
-          cargo green -vv install --locked --force --root=/tmp vixargs@0.1.0  |& tee _
-    - name: ...doesn't recompile anything
-      run: |
-        err=0
-        grep Finished  _
-        grep Finished  _ | grep -E [0123]...s || ((err+=1))
-        grep Dirty     _                      && ((err+=2))
-        grep Compiling _                      && ((err+=4))
-        exit $err
-    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
-      name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
-      run: |
-        ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' _
-
-    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
-      name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
-      run: |
-        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
-
-    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
-      name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
-      run: |
-        ! grep -C20 -F 'connection error: COMPRESSION_ERROR' $CARGOGREEN_LOG_PATH
-
-    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
-      name: 🔴 =means=> there's some panic!s
-      run: |
-        ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
-
-    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
-      name: 🔴 =means=> there's some BUGs
-      run: |
-        ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
-
-    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
-      name: 🔴 =means=> here's cargo's error text
-      run: |
-        ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' $CARGOGREEN_LOG_PATH _
-
-    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
-      name: 🔴 =means=> 429 Too Many Requests
-      run: |
-        ! grep -C20 -F '429 Too Many Requests' $CARGOGREEN_LOG_PATH _
-
-    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
-      name: 🔴 =means=> here's relevant logs
-      run: |
-        ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
-
-    - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
-      name: 🌀 Maybe show final path diff
-      run: |
-        final_diff=(git --no-pager diff)
-        if [[ ${{ matrix.toolchain }} != 1.96.0 ]]; then
-          final_diff+=(--exit-code)
-        fi
-        final_diff+=(--ignore-matching-lines=' AS rust-base$')
-        final_diff+=(-- $CARGOGREEN_FINAL_PATH)
-        "${final_diff[@]}"
-
-    - if: ${{ failure() }}
-      name: 🌀 cargo-green logs
-      run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
-    - name: Check that generated binary matches sha256
-      run: |
-        [[ "$BINHASHED" = "$(sha256sum /tmp/bin/vixargs)" ]]
-
-    - run: rm -rf /tmp/bin/* $CARGO_TARGET_DIR/* >/dev/null
-    - name: 🔵 Reuse locally cached results...
-      run: |
-        unset CARGO_PROFILE_DEV_DEBUG
-        unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
-        unset CARGO_TERM_COLOR
-        unset CARGO_UNSTABLE_SPARSE_REGISTRY
-        env  CARGOGREEN_RUNNER=none \
-          cargo green -vv install --locked --force --root=/tmp vixargs@0.1.0  |& tee _
-    - name: ...is blazingly fearlessly lightspeed fast
-      run: |
-        grep Finished ./_ || exit 1
-        grep Finished ./_ | grep -E ....s || exit 1
-    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
-      name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
-      run: |
-        ! grep -C20 -F 'src/cargo/util/dependency_queue.rs:' _
-
-    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
-      name: 🔴 =means=> it's again that docker issue https://github.com/moby/buildkit/issues/5217
-      run: |
-        ! grep -C20 -F 'ResourceExhausted: grpc: received message larger than max' $CARGOGREEN_LOG_PATH
-
-    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
-      name: 🔴 =means=> it's this HTTP/2 code = Unavailable desc = error reading from server-- connection error-- COMPRESSION_ERROR
-      run: |
-        ! grep -C20 -F 'connection error: COMPRESSION_ERROR' $CARGOGREEN_LOG_PATH
-
-    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
-      name: 🔴 =means=> there's some panic!s
-      run: |
-        ! grep -C20 -F ' panicked at ' $CARGOGREEN_LOG_PATH
-
-    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
-      name: 🔴 =means=> there's some BUGs
-      run: |
-        ! grep -C20 -F 'BUG: ' $CARGOGREEN_LOG_PATH
-
-    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
-      name: 🔴 =means=> here's cargo's error text
-      run: |
-        ! grep -C20 -E '-[a-f0-9]{16} [eE]rror:' $CARGOGREEN_LOG_PATH _
-
-    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
-      name: 🔴 =means=> 429 Too Many Requests
-      run: |
-        ! grep -C20 -F '429 Too Many Requests' $CARGOGREEN_LOG_PATH _
-
-    - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
-      name: 🔴 =means=> here's relevant logs
-      run: |
-        ! grep -C20 -F ' >>> ' $CARGOGREEN_LOG_PATH
-
-    - if: ${{ always() && env.CARGOGREEN_FINAL_PATH != '' }}
-      name: 🌀 Maybe show final path diff
-      run: |
-        final_diff=(git --no-pager diff)
-        if [[ ${{ matrix.toolchain }} != 1.96.0 ]]; then
-          final_diff+=(--exit-code)
-        fi
-        final_diff+=(--ignore-matching-lines=' AS rust-base$')
-        final_diff+=(-- $CARGOGREEN_FINAL_PATH)
-        "${final_diff[@]}"
-
-    - if: ${{ failure() }}
-      name: 🌀 cargo-green logs
-      run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
-    - name: Check that generated binary matches sha256
-      run: |
-        [[ "$BINHASHED" = "$(sha256sum /tmp/bin/vixargs)" ]]
+        [[ "$BINHASHED" = "$(sha256sum /tmp/bin/cargo_cbuild)" ]]
 
     - name: 🔵 Compare old/new local private registry image digests
       if: ${{ always() && env.CARGOGREEN_CACHE_FROM_IMAGES != '' && env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
