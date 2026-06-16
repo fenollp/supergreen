@@ -20,7 +20,7 @@ use crate::{
     relative,
     rustc_arguments::{RustcArgs, as_rustc},
     stage::{AsStage, RST, RUST, Stage},
-    target_dir::{virtual_target_dir, virtual_target_dir_str},
+    target_dir::{virtual_pwd_str, virtual_target_dir, virtual_target_dir_str},
     wrap::{build_script::is_buildrs_executable, call_config, envs::safeify},
 };
 
@@ -106,6 +106,9 @@ async fn do_wrap_rustc(
     if not_a_cratesio_crate {
         let pwd = virtual_target_dir(&pwd);
         let pwd = rewrite_cargo_home(&green.cargo_home, pwd.as_str());
+        // A git-checkout dep is now $CARGO_HOME-rooted (no host literal left); a genuinely-local
+        // crate still carries its host path, which this pins to VIRTUAL_PWD.
+        let pwd = virtual_pwd_str(&pwd);
         rustc_block.push_str(&format!("WORKDIR {pwd}\n"));
     }
     if let Some(ref incremental) = incremental {
@@ -134,7 +137,7 @@ async fn do_wrap_rustc(
     rustc_block.push_str("RUN \\\n");
     for (src, dst, swappity) in code_stage.mounts() {
         let name = code_stage.name();
-        let dst = virtual_target_dir(&dst);
+        let dst = virtual_pwd_str(virtual_target_dir(&dst).as_str());
         let src = src.as_deref().map(|src| format!(",source={src}")).unwrap_or_default();
         let mount = if swappity { format!(",dst={dst}{src}") } else { format!("{src},dst={dst}") };
         rustc_block.push_str(&format!("  --mount=from={name}{mount} \\\n"));

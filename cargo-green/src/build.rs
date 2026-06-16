@@ -17,6 +17,7 @@ use atomic_write_file::AtomicWriteFile;
 use camino::{Utf8Path, Utf8PathBuf};
 use indexmap::{IndexMap, IndexSet};
 use log::{debug, info, warn};
+use memchr::memmem;
 use tokio::{
     fs::File,
     io::{AsyncBufReadExt, AsyncReadExt, AsyncWriteExt, BufReader},
@@ -42,7 +43,7 @@ use crate::{
     retrier::Retrier,
     runner::Runner,
     stage::Stage,
-    target_dir::un_virtual_target_dir_str,
+    target_dir::{host_pwd, host_target_dir, un_virtual_target_dir_str},
 };
 
 pub(crate) const ERRCODE: &str = "errcode";
@@ -623,6 +624,47 @@ async fn untar_into(
     Ok((out_handle, err_handle, rcd, written))
 }
 
+/// Returns the first of `needles` (a host-specific absolute path) found verbatim in `buf`, if any.
+/// Uses memchr's SIMD substring search since `buf` is arbitrary binary (rlib/rmeta/executable).
+/// Trailing slashes are trimmed so `/some/dir` matches whether or not the embedded path has one.
+#[must_use]
+fn leaked_host_path<'a>(buf: &[u8], needles: &[&'a str]) -> Option<&'a str> {
+    needles
+        .iter()
+        .copied()
+        .map(|needle| needle.trim_end_matches('/'))
+        .filter(|needle| !needle.is_empty())
+        .find(|needle| memmem::find(buf, needle.as_bytes()).is_some())
+}
+
+#[test]
+fn detects_only_host_path_leaks() {
+    let needles = ["/home/pete/.cargo", "/tmp/clis-kani/", "/home/pete/proj"];
+    // Rewritten, layout-independent paths are fine — these are what BuildKit emits.
+    assert_eq!(
+        leaked_host_path(
+            b"/cargo/registry/src/index.crates.io/anyhow-1.0.100/src/lib.rs",
+            &needles
+        ),
+        None
+    );
+    assert_eq!(
+        leaked_host_path(b"/usr/local/cargo/registry/x \x00 /target/release /work/src", &needles),
+        None
+    );
+    // A host path embedded in binary data is caught (trailing slash on the needle is ignored).
+    assert_eq!(
+        leaked_host_path(b"\x7fELF...\x00/home/pete/.cargo/registry/src/...", &needles),
+        Some("/home/pete/.cargo")
+    );
+    assert_eq!(
+        leaked_host_path(b"binary\x00/tmp/clis-kani/release/deps\x00", &needles),
+        Some("/tmp/clis-kani")
+    );
+    // Empty needle (e.g. unset) never matches.
+    assert_eq!(leaked_host_path(b"anything", &["", "/"]), None);
+}
+
 fn write_build_artifact(
     header: &TarHeader,
     cargo_home: &str,
@@ -633,6 +675,18 @@ fn write_build_artifact(
     let mode = header.mode().map_err(|e| anyhow!("Corrupted result mode: {e}"))?;
 
     assert_tarball_header(header);
+
+    // BuildKit only ever sees layout-independent paths (rewritten to /usr/local/cargo, /target,
+    // /work, ...), so a host-specific path in an artifact means a rewrite was missed upstream
+    // (wrap/rustc.rs, wrap/envs.rs, target_dir.rs) — which would make the artifact, and the
+    // BuildKit cache, depend on this machine's layout. Checked on the raw bytes, BEFORE the .d
+    // files get rewritten back to host paths for cargo's benefit below.
+    let leak = leaked_host_path(&buf, &[cargo_home, host_target_dir(), host_pwd()]);
+    assert!(
+        leak.is_none(),
+        "host path {:?} leaked into build artifact {fname}: a path rewrite was missed",
+        leak.unwrap()
+    );
 
     match header.entry_type() {
         EntryType::Regular => {

@@ -49,6 +49,7 @@ gix-discover.workspace = true
 home.workspace = true
 indexmap.workspace = true
 log.workspace = true
+memchr.workspace = true
 nutype.workspace = true
 phf.workspace = true
 pico-args.workspace = true

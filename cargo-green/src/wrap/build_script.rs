@@ -13,7 +13,7 @@ use crate::{
     logging::{self},
     md::{Md, MdId, Mds},
     stage::{AsStage, RST, RUST, Stage},
-    target_dir::virtual_target_dir,
+    target_dir::{virtual_pwd_str, virtual_target_dir},
     wrap::call_config,
 };
 
@@ -157,7 +157,7 @@ async fn do_exec(
         bail!("BUG: a crate should only have one build script")
     };
     assert_eq!(code_stage_mounts, vec![]);
-    let code_dst = virtual_target_dir(&code_dst);
+    let code_dst = virtual_pwd_str(virtual_target_dir(&code_dst).as_str());
     run_block.push_str(&format!("WORKDIR {code_dst}\n"));
 
     run_block.push_str("RUN \\\n");
@@ -167,6 +167,7 @@ async fn do_exec(
     ));
     for (src, dst, swappity) in code_stage.mounts() {
         let name = code_stage.name();
+        let dst = virtual_pwd_str(dst.as_str());
         let src = src.as_deref().map(|src| format!(",source={src}")).unwrap_or_default();
         let mount = if swappity { format!(",dst={dst}{src}") } else { format!("{src},dst={dst}") };
         run_block.push_str(&format!("  --mount=from={name}{mount} \\\n"));

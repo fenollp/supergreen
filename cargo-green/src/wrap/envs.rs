@@ -5,7 +5,7 @@ use log::{debug, trace};
 use crate::{
     base_image::{rewrite_cargo_home, rewrite_rustup_home},
     cratesio::rewrite_cratesio_index,
-    target_dir::virtual_target_dir_str,
+    target_dir::{virtual_pwd_str, virtual_target_dir_str},
 };
 
 pub(crate) fn fmap_env((var, val): (String, String), buildrs: bool) -> Option<(String, String)> {
@@ -121,6 +121,8 @@ pub(crate) fn rewrite_env(val: &str, cargo_home: &Utf8Path) -> Result<String> {
     let val = rewrite_rustup_home(&val);
     let val = rewrite_cratesio_index(&val);
     let val = rewrite_cargo_home(cargo_home, &val);
+    // After $CARGO_HOME: pins a local crate's host paths (e.g. CARGO_MANIFEST_DIR) to VIRTUAL_PWD.
+    let val = virtual_pwd_str(&val);
     // TODO: in rustc's args: replace last WORKDIR with $PWD (--out-dir ..., OUT_DIR=..., maybe others)
     Ok(val)
 }

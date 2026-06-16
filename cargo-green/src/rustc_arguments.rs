@@ -97,6 +97,14 @@ pub(crate) fn as_rustc(
             continue;
         }
 
+        // Disable stripping (release profiles often set `-C strip=symbols`) so the remapped,
+        // layout-independent paths survive into the final binaries — which is the whole point of
+        // the path rewriting (and lets us assert on them). See build::leaked_host_path.
+        if key == "-C" && val.starts_with("strip=") {
+            (s_e, key) = (false, "".to_owned());
+            continue;
+        }
+
         match key.as_str() {
             "-C" => match val.split_once('=') {
                 Some(("extra-filename", v)) => {
@@ -263,6 +271,7 @@ mod tests {
             "--extern", "mktemp=$PWD/target/debug/deps/libmktemp-b84fe47f0a44f88d.rlib",         // state.externs
             "--extern", "os_pipe=$PWD/target/debug/deps/libos_pipe-f344e452b9bd1c5e.rlib",       // state.externs
             "-C", "link-arg=-fuse-ld=/usr/local/bin/mold",
+            "-C", "strip=symbols",                                                             // dropped: keep paths in final binaries
         ]);
 
         let (st, args) = as_rustc(PWD.into(), &arguments, None).unwrap();

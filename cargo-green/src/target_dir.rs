@@ -2,15 +2,46 @@ use std::{env, sync::LazyLock};
 
 use camino::{Utf8Path, Utf8PathBuf};
 
+use crate::dirs::pwd;
+
 const REWRITE_TARGETDIR: bool = true; // TODO: turn into a CARGOGREEN_EXPERIMENT
 
 pub(crate) const VIRTUAL_TARGET_DIR: &str = "/target/";
+
+/// Fixed in-container root that local (workspace) crate paths are pinned to, so a crate's stage
+/// (and the cwd its compiler bakes into objects) is independent of where the project lives on the
+/// host — see [`virtual_pwd_str`]. Dependency paths are pinned via $CARGO_HOME instead.
+pub(crate) const VIRTUAL_PWD: &str = "/work";
 
 static TARGET_DIR: LazyLock<Utf8PathBuf> = LazyLock::new(|| {
     env::var("CARGO_TARGET_DIR")
         .expect("BUG: $CARGO_TARGET_DIR is unset (or not utf-8 encoded)")
         .into()
 });
+
+/// This rustc-wrapper process's working directory: the crate cargo is currently compiling. cargo
+/// spawns one wrapper process per crate, so this is that crate's own directory.
+static PWD: LazyLock<Utf8PathBuf> = LazyLock::new(pwd);
+
+/// The host's CARGO_TARGET_DIR — must never appear in a BuildKit artifact (it's `/target` there).
+#[must_use]
+pub(crate) fn host_target_dir() -> &'static str {
+    TARGET_DIR.as_str()
+}
+
+/// The host working directory — must never appear in a BuildKit artifact (it's [`VIRTUAL_PWD`]).
+#[must_use]
+pub(crate) fn host_pwd() -> &'static str {
+    PWD.as_str()
+}
+
+/// Replace the host working directory prefix with [`VIRTUAL_PWD`]. Must be applied AFTER
+/// [`crate::base_image::rewrite_cargo_home`]: dependency paths (under $CARGO_HOME) are rewritten
+/// to `$CARGO_HOME/…` first and so no longer carry the host literal, leaving only genuinely-local
+/// crate paths for this to pin.
+pub(crate) fn virtual_pwd_str(txt: &str) -> String {
+    replace_carefully(txt, PWD.as_str(), VIRTUAL_PWD)
+}
 
 pub(crate) fn un_virtual_target_dir_str(txt: &str) -> String {
     if !REWRITE_TARGETDIR {
@@ -92,4 +123,17 @@ fn replace_target_dirs() {
             "error: couldn't read `/some/path/armv7-unknown-linux-musleabihf/release/build/pb-bd1e88e219ae6eda/out/hypercards.rs`: No such file or directory (os error 2)"
         );
     });
+}
+
+#[test]
+fn virtual_pwd_pins_local_paths() {
+    // PWD is this process's working directory; a local crate's own paths live under it.
+    let here = PWD.as_str();
+    assert_eq!(virtual_pwd_str(&format!("{here}/src/lib.rs")), "/work/src/lib.rs");
+    assert_eq!(virtual_pwd_str(&format!("CARGO_MANIFEST_DIR={here}")), "CARGO_MANIFEST_DIR=/work");
+    // Dependency paths (already $CARGO_HOME-rooted) and unrelated text are left untouched.
+    assert_eq!(
+        virtual_pwd_str("$CARGO_HOME/registry/src/index.crates.io/anyhow-1.0.100/src/lib.rs"),
+        "$CARGO_HOME/registry/src/index.crates.io/anyhow-1.0.100/src/lib.rs"
+    );
 }
