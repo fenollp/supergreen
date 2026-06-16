@@ -57,11 +57,13 @@ try_then_fallback_single_threaded() {
     cat <<EOF
     - name: 🔵 $*
       id: do-try
+      timeout-minutes: 11
       run: |
 $(unset_action_envs)
         $* |& tee ../_
     - name: $* --jobs=1
       id: do-try-jobs1
+      timeout-minutes: 11
       if: \${{ job.steps.do-try.outcome == 'failure' }}
       run: |
 $(unset_action_envs)

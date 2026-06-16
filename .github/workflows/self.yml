@@ -287,6 +287,7 @@ jobs:
     - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
     - name: 🔵 cargo green -vv install --locked --force --path=./cargo-green
       id: do-try
+      timeout-minutes: 11
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
@@ -295,6 +296,7 @@ jobs:
         cargo green -vv install --locked --force --path=./cargo-green |& tee ../_
     - name: cargo green -vv install --locked --force --path=./cargo-green --jobs=1
       id: do-try-jobs1
+      timeout-minutes: 11
       if: ${{ job.steps.do-try.outcome == 'failure' }}
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
@@ -582,6 +584,7 @@ jobs:
     - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
     - name: 🔵 cargo +nightly-2026-04-09 green udeps --all-targets
       id: do-try
+      timeout-minutes: 11
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
@@ -590,6 +593,7 @@ jobs:
         cargo +nightly-2026-04-09 green udeps --all-targets |& tee ../_
     - name: cargo +nightly-2026-04-09 green udeps --all-targets --jobs=1
       id: do-try-jobs1
+      timeout-minutes: 11
       if: ${{ job.steps.do-try.outcome == 'failure' }}
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
@@ -733,6 +737,7 @@ jobs:
     - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
     - name: 🔵 cargo green +nightly-2026-04-09 udeps --all-targets
       id: do-try
+      timeout-minutes: 11
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
@@ -741,6 +746,7 @@ jobs:
         cargo green +nightly-2026-04-09 udeps --all-targets |& tee ../_
     - name: cargo green +nightly-2026-04-09 udeps --all-targets --jobs=1
       id: do-try-jobs1
+      timeout-minutes: 11
       if: ${{ job.steps.do-try.outcome == 'failure' }}
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
@@ -943,6 +949,7 @@ jobs:
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
     - name: 🔵 cargo green -vv build --all-targets --all-features --locked --frozen --offline
       id: do-try
+      timeout-minutes: 11
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
@@ -951,6 +958,7 @@ jobs:
         cargo green -vv build --all-targets --all-features --locked --frozen --offline |& tee ../_
     - name: cargo green -vv build --all-targets --all-features --locked --frozen --offline --jobs=1
       id: do-try-jobs1
+      timeout-minutes: 11
       if: ${{ job.steps.do-try.outcome == 'failure' }}
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
@@ -1227,6 +1235,7 @@ jobs:
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
     - name: 🔵 cargo green -vv test --all-targets --all-features --locked --frozen --offline
       id: do-try
+      timeout-minutes: 11
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
@@ -1235,6 +1244,7 @@ jobs:
         cargo green -vv test --all-targets --all-features --locked --frozen --offline |& tee ../_
     - name: cargo green -vv test --all-targets --all-features --locked --frozen --offline --jobs=1
       id: do-try-jobs1
+      timeout-minutes: 11
       if: ${{ job.steps.do-try.outcome == 'failure' }}
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
@@ -1511,6 +1521,7 @@ jobs:
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
     - name: 🔵 cargo green -vv check --all-targets --all-features --locked --frozen --offline
       id: do-try
+      timeout-minutes: 11
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
@@ -1519,6 +1530,7 @@ jobs:
         cargo green -vv check --all-targets --all-features --locked --frozen --offline |& tee ../_
     - name: cargo green -vv check --all-targets --all-features --locked --frozen --offline --jobs=1
       id: do-try-jobs1
+      timeout-minutes: 11
       if: ${{ job.steps.do-try.outcome == 'failure' }}
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
@@ -1795,6 +1807,7 @@ jobs:
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
     - name: 🔵 RUSTDOCFLAGS='-D warnings' cargo doc --locked --frozen --offline --all-features --no-deps
       id: do-try
+      timeout-minutes: 11
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
@@ -1803,6 +1816,7 @@ jobs:
         RUSTDOCFLAGS='-D warnings' cargo doc --locked --frozen --offline --all-features --no-deps |& tee ../_
     - name: RUSTDOCFLAGS='-D warnings' cargo doc --locked --frozen --offline --all-features --no-deps --jobs=1
       id: do-try-jobs1
+      timeout-minutes: 11
       if: ${{ job.steps.do-try.outcome == 'failure' }}
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
@@ -2079,6 +2093,7 @@ jobs:
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
     - name: 🔵 cargo green -vv package --all-features --locked --frozen --offline
       id: do-try
+      timeout-minutes: 11
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
@@ -2087,6 +2102,7 @@ jobs:
         cargo green -vv package --all-features --locked --frozen --offline |& tee ../_
     - name: cargo green -vv package --all-features --locked --frozen --offline --jobs=1
       id: do-try-jobs1
+      timeout-minutes: 11
       if: ${{ job.steps.do-try.outcome == 'failure' }}
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
@@ -2293,6 +2309,7 @@ jobs:
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
     - name: 🔵 cargo green -vv clippy --all-targets --all-features --locked --frozen --offline
       id: do-try
+      timeout-minutes: 11
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
@@ -2301,6 +2318,7 @@ jobs:
         cargo green -vv clippy --all-targets --all-features --locked --frozen --offline |& tee ../_
     - name: cargo green -vv clippy --all-targets --all-features --locked --frozen --offline --jobs=1
       id: do-try-jobs1
+      timeout-minutes: 11
       if: ${{ job.steps.do-try.outcome == 'failure' }}
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
