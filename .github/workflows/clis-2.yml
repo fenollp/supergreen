@@ -190,6 +190,7 @@ jobs:
     - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
     - name: 🔵 cargo install
       id: do-try
+      timeout-minutes: 11
       continue-on-error: true
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
@@ -200,6 +201,7 @@ jobs:
           cargo green -vv install --locked --force cargo-make@0.37.24 --bin=cargo-make |& tee _
     - name: 🔵 cargo install jobs=1
       id: do-try-jobs1
+      timeout-minutes: 11
       if: ${{ job.steps.do-try.outcome != 'success' }}
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
@@ -566,6 +568,7 @@ jobs:
     - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
     - name: 🔵 cargo +nightly-2026-03-16 install
       id: do-try
+      timeout-minutes: 11
       continue-on-error: true
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
@@ -576,6 +579,7 @@ jobs:
           cargo +nightly-2026-03-16 green -vv install --locked --force edit --git https://github.com/microsoft/edit --tag=v1.2.1 edit |& tee _
     - name: 🔵 cargo +nightly-2026-03-16 install jobs=1
       id: do-try-jobs1
+      timeout-minutes: 11
       if: ${{ job.steps.do-try.outcome != 'success' }}
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
@@ -942,6 +946,7 @@ jobs:
     - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
     - name: 🔵 cargo install
       id: do-try
+      timeout-minutes: 11
       continue-on-error: true
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
@@ -952,6 +957,7 @@ jobs:
           cargo green -vv install --locked --force cargo-tally@1.0.71  |& tee _
     - name: 🔵 cargo install jobs=1
       id: do-try-jobs1
+      timeout-minutes: 11
       if: ${{ job.steps.do-try.outcome != 'success' }}
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
@@ -1318,6 +1324,7 @@ jobs:
     - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
     - name: 🔵 cargo install
       id: do-try
+      timeout-minutes: 11
       continue-on-error: true
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
@@ -1328,6 +1335,7 @@ jobs:
           cargo green -vv install --locked --force cargo-mutants@25.3.1  |& tee _
     - name: 🔵 cargo install jobs=1
       id: do-try-jobs1
+      timeout-minutes: 11
       if: ${{ job.steps.do-try.outcome != 'success' }}
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
@@ -1694,6 +1702,7 @@ jobs:
     - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
     - name: 🔵 cargo install
       id: do-try
+      timeout-minutes: 11
       continue-on-error: true
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
@@ -1704,6 +1713,7 @@ jobs:
           cargo green -vv install --locked --force binsider@0.3.0  |& tee _
     - name: 🔵 cargo install jobs=1
       id: do-try-jobs1
+      timeout-minutes: 11
       if: ${{ job.steps.do-try.outcome != 'success' }}
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
@@ -2070,6 +2080,7 @@ jobs:
     - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
     - name: 🔵 cargo install
       id: do-try
+      timeout-minutes: 11
       continue-on-error: true
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
@@ -2080,6 +2091,7 @@ jobs:
           cargo green -vv install --locked --force gifski@1.34.0  |& tee _
     - name: 🔵 cargo install jobs=1
       id: do-try-jobs1
+      timeout-minutes: 11
       if: ${{ job.steps.do-try.outcome != 'success' }}
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
@@ -2446,6 +2458,7 @@ jobs:
     - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
     - name: 🔵 cargo install
       id: do-try
+      timeout-minutes: 11
       continue-on-error: true
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
@@ -2456,6 +2469,7 @@ jobs:
           cargo green -vv install --locked --force flamegraph@0.6.10 --bin=flamegraph |& tee _
     - name: 🔵 cargo install jobs=1
       id: do-try-jobs1
+      timeout-minutes: 11
       if: ${{ job.steps.do-try.outcome != 'success' }}
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
@@ -2822,6 +2836,7 @@ jobs:
     - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
     - name: 🔵 cargo +1.78.0 install
       id: do-try
+      timeout-minutes: 11
       continue-on-error: true
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
@@ -2832,6 +2847,7 @@ jobs:
           cargo +1.78.0 green -vv install --locked --force qair --git https://codeberg.org/willempx/qair.git --tag=0.7.0 |& tee _
     - name: 🔵 cargo +1.78.0 install jobs=1
       id: do-try-jobs1
+      timeout-minutes: 11
       if: ${{ job.steps.do-try.outcome != 'success' }}
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
@@ -3198,6 +3214,7 @@ jobs:
     - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
     - name: 🔵 cargo install
       id: do-try
+      timeout-minutes: 11
       continue-on-error: true
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
@@ -3208,6 +3225,7 @@ jobs:
           cargo green -vv install --locked --force cargo-osdk --git=https://github.com/asterinas/asterinas --tag=v0.16.1 |& tee _
     - name: 🔵 cargo install jobs=1
       id: do-try-jobs1
+      timeout-minutes: 11
       if: ${{ job.steps.do-try.outcome != 'success' }}
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
@@ -3574,6 +3592,7 @@ jobs:
     - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
     - name: 🔵 cargo +1.78.0 install
       id: do-try
+      timeout-minutes: 11
       continue-on-error: true
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
@@ -3584,6 +3603,7 @@ jobs:
           cargo +1.78.0 green -vv install --locked --force fargo --git https://fuchsia.googlesource.com/fargo --rev=a7d967b |& tee _
     - name: 🔵 cargo +1.78.0 install jobs=1
       id: do-try-jobs1
+      timeout-minutes: 11
       if: ${{ job.steps.do-try.outcome != 'success' }}
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
@@ -3950,6 +3970,7 @@ jobs:
     - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
     - name: 🔵 cargo install
       id: do-try
+      timeout-minutes: 11
       continue-on-error: true
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
@@ -3960,6 +3981,7 @@ jobs:
           cargo green -vv install --locked --force harper-ls --git https://github.com/Automattic/harper.git --tag=v1.1.0 |& tee _
     - name: 🔵 cargo install jobs=1
       id: do-try-jobs1
+      timeout-minutes: 11
       if: ${{ job.steps.do-try.outcome != 'success' }}
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
@@ -4326,6 +4348,7 @@ jobs:
     - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
     - name: 🔵 cargo install
       id: do-try
+      timeout-minutes: 11
       continue-on-error: true
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
@@ -4336,6 +4359,7 @@ jobs:
           cargo green -vv install --locked --force gst-plugin-webrtc-signalling --git https://gitlab.freedesktop.org/gstreamer/gst-plugins-rs --tag=gstreamer-1.29.1 |& tee _
     - name: 🔵 cargo install jobs=1
       id: do-try-jobs1
+      timeout-minutes: 11
       if: ${{ job.steps.do-try.outcome != 'success' }}
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
@@ -4702,6 +4726,7 @@ jobs:
     - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
     - name: 🔵 cargo install
       id: do-try
+      timeout-minutes: 11
       continue-on-error: true
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
@@ -4712,6 +4737,7 @@ jobs:
           cargo green -vv install --locked --force cargo-c@0.10.18+cargo-0.92.0 --bin=cargo-cbuild |& tee _
     - name: 🔵 cargo install jobs=1
       id: do-try-jobs1
+      timeout-minutes: 11
       if: ${{ job.steps.do-try.outcome != 'success' }}
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
@@ -5078,6 +5104,7 @@ jobs:
     - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
     - name: 🔵 cargo install
       id: do-try
+      timeout-minutes: 11
       continue-on-error: true
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
@@ -5088,6 +5115,7 @@ jobs:
           cargo green -vv install --locked --force bottom@0.11.4  |& tee _
     - name: 🔵 cargo install jobs=1
       id: do-try-jobs1
+      timeout-minutes: 11
       if: ${{ job.steps.do-try.outcome != 'success' }}
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
@@ -5454,6 +5482,7 @@ jobs:
     - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
     - name: 🔵 cargo install
       id: do-try
+      timeout-minutes: 11
       continue-on-error: true
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
@@ -5464,6 +5493,7 @@ jobs:
           cargo green -vv install --locked --force alacritty@0.17.0  |& tee _
     - name: 🔵 cargo install jobs=1
       id: do-try-jobs1
+      timeout-minutes: 11
       if: ${{ job.steps.do-try.outcome != 'success' }}
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
@@ -5830,6 +5860,7 @@ jobs:
     - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
     - name: 🔵 cargo install
       id: do-try
+      timeout-minutes: 11
       continue-on-error: true
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
@@ -5840,6 +5871,7 @@ jobs:
           cargo green -vv install --locked --force cargo-rail@0.1.0  |& tee _
     - name: 🔵 cargo install jobs=1
       id: do-try-jobs1
+      timeout-minutes: 11
       if: ${{ job.steps.do-try.outcome != 'success' }}
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
