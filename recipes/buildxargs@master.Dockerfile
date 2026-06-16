@@ -77,7 +77,6 @@ RUN \
 FROM scratch AS out-032c3c86f219fdca
 COPY --link --from=dep-n-pico-args-0.5.0-032c3c86f219fdca /target/release/deps/*-032c3c86f219fdca* /
 
-
 FROM scratch AS cratesio-shlex-1.3.0
 ADD --chmod=0664 --unpack --checksum=sha256:0fda2ff0d084019ba4d7c6f371c95d8fd75ce3524c3cb8fb653a3023f6323e64 \
   https://static.crates.io/crates/shlex/shlex-1.3.0.crate /
@@ -112,7 +111,6 @@ RUN \
  || echo $? >./out-0a241a4d93417b0d-errcode
 FROM scratch AS out-0a241a4d93417b0d
 COPY --link --from=dep-n-shlex-1.3.0-0a241a4d93417b0d /target/release/deps/*-0a241a4d93417b0d* /
-
 
 FROM scratch AS checkout-buildxargs-76dd4ee9dadcdcf0-0060a682a2f84b295cfd2cff36602784f36ed9cf
 ADD --keep-git-dir=false \
@@ -154,7 +152,6 @@ RUN \
  || echo $? >/target/release/deps/out-0cc8c700f758d6b3-errcode
 FROM scratch AS out-0cc8c700f758d6b3
 COPY --link --from=dep-n-buildxargs-1.4.0-0cc8c700f758d6b3 /target/release/deps/*-0cc8c700f758d6b3* /
-
 
 
 FROM rust-base AS dep-n-buildxargs-1.4.0-e4b32e5f783993ac

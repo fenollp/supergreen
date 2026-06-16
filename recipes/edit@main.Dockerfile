@@ -82,7 +82,6 @@ RUN \
 FROM scratch AS out-511472849bd6a7b9
 COPY --link --from=dep-x-libc-0.2.172-511472849bd6a7b9 /target/release/build/libc-511472849bd6a7b9/*-511472849bd6a7b9* /
 
-
 FROM rust-base AS run-z-libc-0.2.172-04a03301ee2772a2
 WORKDIR /target/release/build/libc-04a03301ee2772a2/out
 WORKDIR $CARGO_HOME/registry/src/index.crates.io/libc-0.2.172
@@ -153,7 +152,6 @@ FROM scratch AS out-04a03301ee2772a2
 COPY --link --from=run-z-libc-0.2.172-04a03301ee2772a2 /target/release/build/libc-04a03301ee2772a2/out /
 
 
-
 FROM rust-base AS dep-n-libc-0.2.172-392aeff92c0e8f19
 WORKDIR /target/release/deps
 RUN \
@@ -188,7 +186,6 @@ RUN \
  || echo $? >./out-392aeff92c0e8f19-errcode
 FROM scratch AS out-392aeff92c0e8f19
 COPY --link --from=dep-n-libc-0.2.172-392aeff92c0e8f19 /target/release/deps/*-392aeff92c0e8f19* /
-
 
 FROM scratch AS checkout-edit-d235d8189188b09c-91a9a5f808af7711810b0d0f9df23c42884263e2
 ADD --keep-git-dir=false \
@@ -230,7 +227,6 @@ RUN \
  || echo $? >/target/release/build/edit-ef0e44c03f8f6e35/out-ef0e44c03f8f6e35-errcode
 FROM scratch AS out-ef0e44c03f8f6e35
 COPY --link --from=dep-x-edit-1.2.1-ef0e44c03f8f6e35 /target/release/build/edit-ef0e44c03f8f6e35/*-ef0e44c03f8f6e35* /
-
 
 FROM rust-base AS run-z-edit-1.2.1-5229da92903ebe58
 WORKDIR /target/release/build/edit-5229da92903ebe58/out
@@ -299,7 +295,6 @@ FROM scratch AS out-5229da92903ebe58
 COPY --link --from=run-z-edit-1.2.1-5229da92903ebe58 /target/release/build/edit-5229da92903ebe58/out /
 
 
-
 FROM rust-base AS dep-n-edit-1.2.1-7a81b7a4ac7326d1
 WORKDIR /target/release/deps
 WORKDIR $CARGO_HOME/git/checkouts/edit-d235d8189188b09c/91a9a5f
@@ -337,7 +332,6 @@ RUN \
  || echo $? >/target/release/deps/out-7a81b7a4ac7326d1-errcode
 FROM scratch AS out-7a81b7a4ac7326d1
 COPY --link --from=dep-n-edit-1.2.1-7a81b7a4ac7326d1 /target/release/deps/*-7a81b7a4ac7326d1* /
-
 
 
 FROM rust-base AS dep-n-edit-1.2.1-08c0b4c9bb99f4a2

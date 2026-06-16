@@ -81,7 +81,6 @@ RUN \
 FROM scratch AS out-91b05701e1d73726
 COPY --link --from=dep-x-anyhow-1.0.100-91b05701e1d73726 /target/release/build/anyhow-91b05701e1d73726/*-91b05701e1d73726* /
 
-
 FROM rust-base AS run-z-anyhow-1.0.100-ea3acd71b93ec71d
 WORKDIR /target/release/build/anyhow-ea3acd71b93ec71d/out
 WORKDIR $CARGO_HOME/registry/src/index.crates.io/anyhow-1.0.100
@@ -140,7 +139,6 @@ FROM scratch AS out-ea3acd71b93ec71d
 COPY --link --from=run-z-anyhow-1.0.100-ea3acd71b93ec71d /target/release/build/anyhow-ea3acd71b93ec71d/out /
 
 
-
 FROM rust-base AS dep-n-anyhow-1.0.100-aa9a328f978a9bce
 WORKDIR /target/release/deps
 RUN \
@@ -174,7 +172,6 @@ RUN \
  || echo $? >./out-aa9a328f978a9bce-errcode
 FROM scratch AS out-aa9a328f978a9bce
 COPY --link --from=dep-n-anyhow-1.0.100-aa9a328f978a9bce /target/release/deps/*-aa9a328f978a9bce* /
-
 
 FROM scratch AS cratesio-home-0.5.12
 ADD --chmod=0664 --unpack --checksum=sha256:cc627f471c528ff0c4a49e1d5e60450c8f6461dd6d10ba9dcd3a61d3dff7728d \
@@ -210,7 +207,6 @@ RUN \
  || echo $? >./out-384d1fb2cc99fe82-errcode
 FROM scratch AS out-384d1fb2cc99fe82
 COPY --link --from=dep-n-home-0.5.12-384d1fb2cc99fe82 /target/release/deps/*-384d1fb2cc99fe82* /
-
 
 FROM scratch AS cratesio-log-0.4.28
 ADD --chmod=0664 --unpack --checksum=sha256:34080505efa8e45a4b816c349525ebe327ceaa8559756f0356cba97ef3bf7432 \
@@ -248,7 +244,6 @@ RUN \
 FROM scratch AS out-5d1f965d123fc9a9
 COPY --link --from=dep-n-log-0.4.28-5d1f965d123fc9a9 /target/release/deps/*-5d1f965d123fc9a9* /
 
-
 FROM scratch AS cratesio-os_info-3.12.0
 ADD --chmod=0664 --unpack --checksum=sha256:d0e1ac5fde8d43c34139135df8ea9ee9465394b2d8d20f032d38998f64afffc3 \
   https://static.crates.io/crates/os_info/os_info-3.12.0.crate /
@@ -285,7 +280,6 @@ RUN \
  || echo $? >./out-99e1b74dcbc37d10-errcode
 FROM scratch AS out-99e1b74dcbc37d10
 COPY --link --from=dep-n-os_info-3.12.0-99e1b74dcbc37d10 /target/release/deps/*-99e1b74dcbc37d10* /
-
 
 FROM scratch AS cratesio-kani-verifier-0.66.0
 ADD --chmod=0664 --unpack --checksum=sha256:07485e9dd5ec9dfb861681b98ef64ea1593a5dc0b9f7a49a490231dfdfcc0a19 \
@@ -326,7 +320,6 @@ RUN \
  || echo $? >./out-7e1b6cb68fd0f475-errcode
 FROM scratch AS out-7e1b6cb68fd0f475
 COPY --link --from=dep-x-kani-verifier-0.66.0-7e1b6cb68fd0f475 /target/release/build/kani-verifier-7e1b6cb68fd0f475/*-7e1b6cb68fd0f475* /
-
 
 FROM rust-base AS run-z-kani-verifier-0.66.0-737549d94e13a8a8
 WORKDIR /target/release/build/kani-verifier-737549d94e13a8a8/out
@@ -384,7 +377,6 @@ FROM scratch AS out-737549d94e13a8a8
 COPY --link --from=run-z-kani-verifier-0.66.0-737549d94e13a8a8 /target/release/build/kani-verifier-737549d94e13a8a8/out /
 
 
-
 FROM rust-base AS dep-n-kani-verifier-0.66.0-e96a45def5cfa65b
 WORKDIR /target/release/deps
 RUN \
@@ -428,7 +420,6 @@ RUN \
  || echo $? >./out-e96a45def5cfa65b-errcode
 FROM scratch AS out-e96a45def5cfa65b
 COPY --link --from=dep-n-kani-verifier-0.66.0-e96a45def5cfa65b /target/release/deps/*-e96a45def5cfa65b* /
-
 
 
 FROM rust-base AS dep-n-kani-verifier-0.66.0-6f5a7c02543c0528
