@@ -11052,4 +11052,4 @@ COPY --link --from=dep-n-cargo-make-0.37.24-dc378163900b9c89 /target/release/dep
 #   docker build --output=. - <THIS_FILE
 
 FROM scratch
-COPY --link --from=out-dc378163900b9c89 /cargo_make-dc378163900b9c89 /cargo_make
+COPY --link --from=out-dc378163900b9c89 /cargo_make-dc378163900b9c89 /cargo-make

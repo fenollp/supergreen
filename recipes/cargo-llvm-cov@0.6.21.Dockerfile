@@ -3130,4 +3130,4 @@ COPY --link --from=dep-n-cargo-llvm-cov-0.6.21-9ac2f752507ed84d /target/release/
 #   docker build --output=. - <THIS_FILE
 
 FROM scratch
-COPY --link --from=out-9ac2f752507ed84d /cargo_llvm_cov-9ac2f752507ed84d /cargo_llvm_cov
+COPY --link --from=out-9ac2f752507ed84d /cargo_llvm_cov-9ac2f752507ed84d /cargo-llvm-cov

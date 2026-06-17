@@ -21277,4 +21277,4 @@ COPY --link --from=dep-n-cargo-nextest-0.9.114-0f461fb0188a4aea /target/release/
 #   docker build --output=. - <THIS_FILE
 
 FROM scratch
-COPY --link --from=out-0f461fb0188a4aea /cargo_nextest-0f461fb0188a4aea /cargo_nextest
+COPY --link --from=out-0f461fb0188a4aea /cargo_nextest-0f461fb0188a4aea /cargo-nextest

@@ -3384,4 +3384,4 @@ COPY --link --from=dep-n-cargo-rail-0.1.0-8ab4f7f47ee9b0f7 /target/release/deps/
 #   docker build --output=. - <THIS_FILE
 
 FROM scratch
-COPY --link --from=out-8ab4f7f47ee9b0f7 /cargo_rail-8ab4f7f47ee9b0f7 /cargo_rail
+COPY --link --from=out-8ab4f7f47ee9b0f7 /cargo_rail-8ab4f7f47ee9b0f7 /cargo-rail

@@ -23109,4 +23109,4 @@ COPY --link --from=dep-n-cargo-deny-0.18.5-430315dd0f24d372 /target/release/deps
 #   docker build --output=. - <THIS_FILE
 
 FROM scratch
-COPY --link --from=out-430315dd0f24d372 /cargo_deny-430315dd0f24d372 /cargo_deny
+COPY --link --from=out-430315dd0f24d372 /cargo_deny-430315dd0f24d372 /cargo-deny

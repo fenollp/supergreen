@@ -5851,4 +5851,4 @@ COPY --link --from=dep-n-cargo-tally-1.0.71-daf9e2db555f434c /target/release/dep
 #   docker build --output=. - <THIS_FILE
 
 FROM scratch
-COPY --link --from=out-daf9e2db555f434c /cargo_tally-daf9e2db555f434c /cargo_tally
+COPY --link --from=out-daf9e2db555f434c /cargo_tally-daf9e2db555f434c /cargo-tally

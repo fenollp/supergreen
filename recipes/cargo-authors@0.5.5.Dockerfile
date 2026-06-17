@@ -21408,4 +21408,4 @@ COPY --link --from=dep-n-cargo-authors-0.5.5-a07b11733b29790d /target/release/de
 #   docker build --output=. - <THIS_FILE
 
 FROM scratch
-COPY --link --from=out-a07b11733b29790d /cargo_authors-a07b11733b29790d /cargo_authors
+COPY --link --from=out-a07b11733b29790d /cargo_authors-a07b11733b29790d /cargo-authors

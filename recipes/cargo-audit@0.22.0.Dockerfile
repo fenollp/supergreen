@@ -23330,4 +23330,4 @@ COPY --link --from=dep-n-cargo-audit-0.22.0-e4a5ce6b49b39807 /target/release/dep
 #   docker build --output=. - <THIS_FILE
 
 FROM scratch
-COPY --link --from=out-e4a5ce6b49b39807 /cargo_audit-e4a5ce6b49b39807 /cargo_audit
+COPY --link --from=out-e4a5ce6b49b39807 /cargo_audit-e4a5ce6b49b39807 /cargo-audit

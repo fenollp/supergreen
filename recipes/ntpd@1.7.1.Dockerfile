@@ -5579,4 +5579,4 @@ COPY --link --from=dep-n-ntpd-1.7.1-f3759350da0b716c /target/release/deps/*-f375
 #   docker build --output=. - <THIS_FILE
 
 FROM scratch
-COPY --link --from=out-f3759350da0b716c /ntp_daemon-f3759350da0b716c /ntp_daemon
+COPY --link --from=out-f3759350da0b716c /ntp_daemon-f3759350da0b716c /ntp-daemon

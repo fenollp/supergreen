@@ -3168,4 +3168,4 @@ COPY --link --from=dep-n-cargo-fuzz-0.13.1-eb98012837744d46 /target/release/deps
 #   docker build --output=. - <THIS_FILE
 
 FROM scratch
-COPY --link --from=out-eb98012837744d46 /cargo_fuzz-eb98012837744d46 /cargo_fuzz
+COPY --link --from=out-eb98012837744d46 /cargo_fuzz-eb98012837744d46 /cargo-fuzz
