@@ -405,12 +405,19 @@ fn keep_result_providers(
     for dep in extern_mdids {
         let dep_md = mds.load(dep)?;
         let dep_stage = Stage::output(dep)?;
+        let dep_has_rmeta = dep_md.writes.iter().any(|w| w.as_str().ends_with(".rmeta"));
         externs.extend(
             dep_md
                 .writes
                 .iter()
                 .filter(|w: &&Utf8PathBuf| !w.as_str().ends_with(".d"))
-                .filter(|w: &&Utf8PathBuf| has_rmetas || !w.as_str().ends_with(".rmeta"))
+                .filter(|w: &&Utf8PathBuf| {
+                    !if has_rmetas {
+                        dep_has_rmeta && w.as_str().ends_with(".rlib")
+                    } else {
+                        w.as_str().ends_with(".rmeta")
+                    }
+                })
                 .filter(|_| !dep_md.buildrs) // Never need transitive deps' build scripts
                 .map(|w| w.file_name().unwrap().to_owned())
                 .map(|xtern: String| NamedMount { name: dep_stage.clone(), mount: xtern.into() }),
