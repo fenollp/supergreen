@@ -33,6 +33,7 @@ pub(crate) fn replace_carefully(txt: &str, from: &str, to: &str) -> String {
     let txt = txt.replace(&format!("'{from}"), &format!("'{to}"));
     let txt = txt.replace(&format!("\"{from}"), &format!("\"{to}"));
     let txt = txt.replace(&format!("={from}"), &format!("={to}"));
+    let txt = txt.replace(&format!("`{from}"), &format!("`{to}"));
     txt
 }
 
@@ -66,5 +67,8 @@ fn replace_target_dirs() {
 
         assert_eq!(un_virtual_target_dir_str("/target/debug/deps/cc-63321ad70751c592.d: /home/pete/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/cc-1.2.47/src/lib.rs /home/pete/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/cc-1.2.47/src/target.rs /home/pete/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/cc-1.2.47/src/target/apple.rs"),
         "/some/path/debug/deps/cc-63321ad70751c592.d: /home/pete/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/cc-1.2.47/src/lib.rs /home/pete/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/cc-1.2.47/src/target.rs /home/pete/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/cc-1.2.47/src/target/apple.rs");
+
+        assert_eq!(un_virtual_target_dir_str("error: couldn't read `/target/armv7-unknown-linux-musleabihf/release/build/pb-bd1e88e219ae6eda/out/hypercards.rs`: No such file or directory (os error 2)"),
+        "error: couldn't read `/some/path/armv7-unknown-linux-musleabihf/release/build/pb-bd1e88e219ae6eda/out/hypercards.rs`: No such file or directory (os error 2)");
     });
 }
