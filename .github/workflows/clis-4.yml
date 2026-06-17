@@ -2121,9 +2121,9 @@ jobs:
       run: du -sh $CARGO_TARGET_DIR || true
     - name: Check that generated binary executes and set sha256
       run: |
-        ls -lha /tmp/bin/cargo_osdk
-        /tmp/bin/cargo_osdk --help || true
-        echo "BINHASHED=$(sha256sum /tmp/bin/cargo_osdk)" >>$GITHUB_ENV
+        ls -lha /tmp/bin/cargo-osdk
+        /tmp/bin/cargo-osdk --help || true
+        echo "BINHASHED=$(sha256sum /tmp/bin/cargo-osdk)" >>$GITHUB_ENV
 
     - name: 🔵 Ensure running the same command twice without modifications...
       run: |
@@ -2197,7 +2197,7 @@ jobs:
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
     - name: Check that generated binary matches sha256
       run: |
-        [[ "$BINHASHED" = "$(sha256sum /tmp/bin/cargo_osdk)" ]]
+        [[ "$BINHASHED" = "$(sha256sum /tmp/bin/cargo-osdk)" ]]
 
     - name: 🔵 Try CARGOGREEN_RUNNER=none with the same command twice without modifications...
       run: |
@@ -2271,7 +2271,7 @@ jobs:
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
     - name: Check that generated binary matches sha256
       run: |
-        [[ "$BINHASHED" = "$(sha256sum /tmp/bin/cargo_osdk)" ]]
+        [[ "$BINHASHED" = "$(sha256sum /tmp/bin/cargo-osdk)" ]]
 
     - run: rm -rf /tmp/bin/* $CARGO_TARGET_DIR/* >/dev/null
     - name: 🔵 Reuse locally cached results...
@@ -2342,7 +2342,7 @@ jobs:
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
     - name: Check that generated binary matches sha256
       run: |
-        [[ "$BINHASHED" = "$(sha256sum /tmp/bin/cargo_osdk)" ]]
+        [[ "$BINHASHED" = "$(sha256sum /tmp/bin/cargo-osdk)" ]]
 
     - name: 🔵 Compare old/new local private registry image digests
       if: ${{ always() && env.CARGOGREEN_CACHE_FROM_IMAGES != '' && env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
@@ -3041,9 +3041,9 @@ jobs:
       run: du -sh $CARGO_TARGET_DIR || true
     - name: Check that generated binary executes and set sha256
       run: |
-        ls -lha /tmp/bin/harper_ls
-        /tmp/bin/harper_ls --help || true
-        echo "BINHASHED=$(sha256sum /tmp/bin/harper_ls)" >>$GITHUB_ENV
+        ls -lha /tmp/bin/harper-ls
+        /tmp/bin/harper-ls --help || true
+        echo "BINHASHED=$(sha256sum /tmp/bin/harper-ls)" >>$GITHUB_ENV
 
     - name: 🔵 Ensure running the same command twice without modifications...
       run: |
@@ -3117,7 +3117,7 @@ jobs:
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
     - name: Check that generated binary matches sha256
       run: |
-        [[ "$BINHASHED" = "$(sha256sum /tmp/bin/harper_ls)" ]]
+        [[ "$BINHASHED" = "$(sha256sum /tmp/bin/harper-ls)" ]]
 
     - name: 🔵 Try CARGOGREEN_RUNNER=none with the same command twice without modifications...
       run: |
@@ -3191,7 +3191,7 @@ jobs:
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
     - name: Check that generated binary matches sha256
       run: |
-        [[ "$BINHASHED" = "$(sha256sum /tmp/bin/harper_ls)" ]]
+        [[ "$BINHASHED" = "$(sha256sum /tmp/bin/harper-ls)" ]]
 
     - run: rm -rf /tmp/bin/* $CARGO_TARGET_DIR/* >/dev/null
     - name: 🔵 Reuse locally cached results...
@@ -3262,7 +3262,7 @@ jobs:
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
     - name: Check that generated binary matches sha256
       run: |
-        [[ "$BINHASHED" = "$(sha256sum /tmp/bin/harper_ls)" ]]
+        [[ "$BINHASHED" = "$(sha256sum /tmp/bin/harper-ls)" ]]
 
     - name: 🔵 Compare old/new local private registry image digests
       if: ${{ always() && env.CARGOGREEN_CACHE_FROM_IMAGES != '' && env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
@@ -3501,9 +3501,9 @@ jobs:
       run: du -sh $CARGO_TARGET_DIR || true
     - name: Check that generated binary executes and set sha256
       run: |
-        ls -lha /tmp/bin/gst_webrtc_signalling_server
-        /tmp/bin/gst_webrtc_signalling_server --help || true
-        echo "BINHASHED=$(sha256sum /tmp/bin/gst_webrtc_signalling_server)" >>$GITHUB_ENV
+        ls -lha /tmp/bin/gst-webrtc-signalling-server
+        /tmp/bin/gst-webrtc-signalling-server --help || true
+        echo "BINHASHED=$(sha256sum /tmp/bin/gst-webrtc-signalling-server)" >>$GITHUB_ENV
 
     - name: 🔵 Ensure running the same command twice without modifications...
       run: |
@@ -3577,7 +3577,7 @@ jobs:
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
     - name: Check that generated binary matches sha256
       run: |
-        [[ "$BINHASHED" = "$(sha256sum /tmp/bin/gst_webrtc_signalling_server)" ]]
+        [[ "$BINHASHED" = "$(sha256sum /tmp/bin/gst-webrtc-signalling-server)" ]]
 
     - name: 🔵 Try CARGOGREEN_RUNNER=none with the same command twice without modifications...
       run: |
@@ -3651,7 +3651,7 @@ jobs:
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
     - name: Check that generated binary matches sha256
       run: |
-        [[ "$BINHASHED" = "$(sha256sum /tmp/bin/gst_webrtc_signalling_server)" ]]
+        [[ "$BINHASHED" = "$(sha256sum /tmp/bin/gst-webrtc-signalling-server)" ]]
 
     - run: rm -rf /tmp/bin/* $CARGO_TARGET_DIR/* >/dev/null
     - name: 🔵 Reuse locally cached results...
@@ -3722,7 +3722,7 @@ jobs:
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
     - name: Check that generated binary matches sha256
       run: |
-        [[ "$BINHASHED" = "$(sha256sum /tmp/bin/gst_webrtc_signalling_server)" ]]
+        [[ "$BINHASHED" = "$(sha256sum /tmp/bin/gst-webrtc-signalling-server)" ]]
 
     - name: 🔵 Compare old/new local private registry image digests
       if: ${{ always() && env.CARGOGREEN_CACHE_FROM_IMAGES != '' && env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
@@ -3961,9 +3961,9 @@ jobs:
       run: du -sh $CARGO_TARGET_DIR || true
     - name: Check that generated binary executes and set sha256
       run: |
-        ls -lha /tmp/bin/cargo_cbuild
-        /tmp/bin/cargo_cbuild --help || true
-        echo "BINHASHED=$(sha256sum /tmp/bin/cargo_cbuild)" >>$GITHUB_ENV
+        ls -lha /tmp/bin/cargo-cbuild
+        /tmp/bin/cargo-cbuild --help || true
+        echo "BINHASHED=$(sha256sum /tmp/bin/cargo-cbuild)" >>$GITHUB_ENV
 
     - name: 🔵 Ensure running the same command twice without modifications...
       run: |
@@ -4037,7 +4037,7 @@ jobs:
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
     - name: Check that generated binary matches sha256
       run: |
-        [[ "$BINHASHED" = "$(sha256sum /tmp/bin/cargo_cbuild)" ]]
+        [[ "$BINHASHED" = "$(sha256sum /tmp/bin/cargo-cbuild)" ]]
 
     - name: 🔵 Try CARGOGREEN_RUNNER=none with the same command twice without modifications...
       run: |
@@ -4111,7 +4111,7 @@ jobs:
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
     - name: Check that generated binary matches sha256
       run: |
-        [[ "$BINHASHED" = "$(sha256sum /tmp/bin/cargo_cbuild)" ]]
+        [[ "$BINHASHED" = "$(sha256sum /tmp/bin/cargo-cbuild)" ]]
 
     - run: rm -rf /tmp/bin/* $CARGO_TARGET_DIR/* >/dev/null
     - name: 🔵 Reuse locally cached results...
@@ -4182,7 +4182,7 @@ jobs:
       run: tail -n9999999 $CARGOGREEN_LOG_PATH ; echo >$CARGOGREEN_LOG_PATH
     - name: Check that generated binary matches sha256
       run: |
-        [[ "$BINHASHED" = "$(sha256sum /tmp/bin/cargo_cbuild)" ]]
+        [[ "$BINHASHED" = "$(sha256sum /tmp/bin/cargo-cbuild)" ]]
 
     - name: 🔵 Compare old/new local private registry image digests
       if: ${{ always() && env.CARGOGREEN_CACHE_FROM_IMAGES != '' && env.CARGOGREEN_CACHE_TO_IMAGES != '' }}

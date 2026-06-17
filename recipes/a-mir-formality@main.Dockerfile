@@ -4761,4 +4761,4 @@ COPY --link --from=dep-n-a-mir-formality-0.1.0-790c64103ddda721 /target/release/
 #   docker build --output=. - <THIS_FILE
 
 FROM scratch
-COPY --link --from=out-790c64103ddda721 /a_mir_formality-790c64103ddda721 /a_mir_formality
+COPY --link --from=out-790c64103ddda721 /a_mir_formality-790c64103ddda721 /a-mir-formality

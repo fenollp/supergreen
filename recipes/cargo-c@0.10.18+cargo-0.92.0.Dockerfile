@@ -25941,4 +25941,4 @@ COPY --link --from=dep-n-cargo-c-0.10.18-cargo-0.92.0-438e603007a24878 /target/r
 #   docker build --output=. - <THIS_FILE
 
 FROM scratch
-COPY --link --from=out-438e603007a24878 /cargo_cbuild-438e603007a24878 /cargo_cbuild
+COPY --link --from=out-438e603007a24878 /cargo_cbuild-438e603007a24878 /cargo-cbuild

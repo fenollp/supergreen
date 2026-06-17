@@ -1,48 +1,50 @@
 {
   "group": { "default": {
     "targets": [ "buildxargs"
-               , "edit.dwp"
-               , "cargo_kani"
+               , "edit"
+               , "cargo-kani"
                , "CreuSAT"
                , "vixargs"
                , "rg"
                , "get"
                , "gifski"
-               , "cargo_fuzz"
-               , "cargo_llvm_cov"
-               , "cargo_rail"
+               , "cargo-fuzz"
+               , "cargo-llvm-cov"
+               , "cargo-rail"
                , "dbcc"
                , "fargo"
-               , "a_mir_formality"
+               , "a-mir-formality"
                , "cross"
                , "flamegraph"
                , "rqcow2"
                , "verso"
                , "ntp_daemon"
+               , "ntp-daemon"
                , "mussh"
-               , "cargo_tally"
+               , "cargo-tally"
                , "cargo_osdk"
-               , "gst_webrtc_signalling_server"
+               , "cargo-osdk"
+               , "gst-webrtc-signalling-server"
                , "shpool"
                , "qair"
                , "diesel"
                , "btm"
-               , "cargo_mutants"
-               , "hickory_dns"
+               , "cargo-mutants"
+               , "hickory-dns"
                , "alacritty"
                , "rublk"
-               , "cargo_make"
+               , "cargo-make"
                , "binsider"
-               , "cargo_authors"
-               , "cargo_audit"
-               , "cargo_deny"
+               , "cargo-authors"
+               , "cargo-audit"
+               , "cargo-deny"
                , "sccache"
                , "tract"
                , "cargo_udeps"
                , "cfr"
-               , "cargo_cbuild"
-               , "cargo_nextest"
-               , "harper_ls"
+               , "cargo-cbuild"
+               , "cargo-nextest"
+               , "harper-ls"
                , "ipa"
                , "stu"
                , "topiary"
@@ -55,12 +57,12 @@
       "dockerfile": "buildxargs@master.Dockerfile",
       "output": ["."]
     }
-  , "edit.dwp": {
+  , "edit": {
       "context": "recipes",
       "dockerfile": "edit@main.Dockerfile",
       "output": ["."]
     }
-  , "cargo_kani": {
+  , "cargo-kani": {
       "context": "recipes",
       "dockerfile": "kani-verifier@0.66.0.Dockerfile",
       "output": ["."]
@@ -90,17 +92,17 @@
       "dockerfile": "gifski@1.34.0.Dockerfile",
       "output": ["."]
     }
-  , "cargo_fuzz": {
+  , "cargo-fuzz": {
       "context": "recipes",
       "dockerfile": "cargo-fuzz@0.13.1.Dockerfile",
       "output": ["."]
     }
-  , "cargo_llvm_cov": {
+  , "cargo-llvm-cov": {
       "context": "recipes",
       "dockerfile": "cargo-llvm-cov@0.6.21.Dockerfile",
       "output": ["."]
     }
-  , "cargo_rail": {
+  , "cargo-rail": {
       "context": "recipes",
       "dockerfile": "cargo-rail@0.1.0.Dockerfile",
       "output": ["."]
@@ -115,7 +117,7 @@
       "dockerfile": "fargo@main.Dockerfile",
       "output": ["."]
     }
-  , "a_mir_formality": {
+  , "a-mir-formality": {
       "context": "recipes",
       "dockerfile": "a-mir-formality@main.Dockerfile",
       "output": ["."]
@@ -142,6 +144,11 @@
     }
   , "ntp_daemon": {
       "context": "recipes",
+      "dockerfile": "ntpd@1.7.0-alpha.20251003.Dockerfile",
+      "output": ["."]
+    }
+  , "ntp-daemon": {
+      "context": "recipes",
       "dockerfile": "ntpd@1.7.1.Dockerfile",
       "output": ["."]
     }
@@ -150,17 +157,22 @@
       "dockerfile": "mussh@3.1.3.Dockerfile",
       "output": ["."]
     }
-  , "cargo_tally": {
+  , "cargo-tally": {
       "context": "recipes",
       "dockerfile": "cargo-tally@1.0.71.Dockerfile",
       "output": ["."]
     }
   , "cargo_osdk": {
       "context": "recipes",
+      "dockerfile": "asterinas@main.Dockerfile",
+      "output": ["."]
+    }
+  , "cargo-osdk": {
+      "context": "recipes",
       "dockerfile": "cargo-osdk@main.Dockerfile",
       "output": ["."]
     }
-  , "gst_webrtc_signalling_server": {
+  , "gst-webrtc-signalling-server": {
       "context": "recipes",
       "dockerfile": "gst-plugin-webrtc-signalling@main.Dockerfile",
       "output": ["."]
@@ -185,12 +197,12 @@
       "dockerfile": "bottom@0.11.4.Dockerfile",
       "output": ["."]
     }
-  , "cargo_mutants": {
+  , "cargo-mutants": {
       "context": "recipes",
       "dockerfile": "cargo-mutants@25.3.1.Dockerfile",
       "output": ["."]
     }
-  , "hickory_dns": {
+  , "hickory-dns": {
       "context": "recipes",
       "dockerfile": "hickory-dns@0.26.0-alpha.1.Dockerfile",
       "output": ["."]
@@ -205,7 +217,7 @@
       "dockerfile": "rublk@0.2.13.Dockerfile",
       "output": ["."]
     }
-  , "cargo_make": {
+  , "cargo-make": {
       "context": "recipes",
       "dockerfile": "cargo-make@0.37.24.Dockerfile",
       "output": ["."]
@@ -215,17 +227,17 @@
       "dockerfile": "binsider@0.3.0.Dockerfile",
       "output": ["."]
     }
-  , "cargo_authors": {
+  , "cargo-authors": {
       "context": "recipes",
       "dockerfile": "cargo-authors@0.5.5.Dockerfile",
       "output": ["."]
     }
-  , "cargo_audit": {
+  , "cargo-audit": {
       "context": "recipes",
       "dockerfile": "cargo-audit@0.22.0.Dockerfile",
       "output": ["."]
     }
-  , "cargo_deny": {
+  , "cargo-deny": {
       "context": "recipes",
       "dockerfile": "cargo-deny@0.18.5.Dockerfile",
       "output": ["."]
@@ -250,17 +262,17 @@
       "dockerfile": "coccinelleforrust@main.Dockerfile",
       "output": ["."]
     }
-  , "cargo_cbuild": {
+  , "cargo-cbuild": {
       "context": "recipes",
       "dockerfile": "cargo-c@0.10.18+cargo-0.92.0.Dockerfile",
       "output": ["."]
     }
-  , "cargo_nextest": {
+  , "cargo-nextest": {
       "context": "recipes",
       "dockerfile": "cargo-nextest@0.9.114.Dockerfile",
       "output": ["."]
     }
-  , "harper_ls": {
+  , "harper-ls": {
       "context": "recipes",
       "dockerfile": "harper-ls@master.Dockerfile",
       "output": ["."]

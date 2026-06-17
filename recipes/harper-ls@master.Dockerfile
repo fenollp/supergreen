@@ -27167,4 +27167,4 @@ COPY --link --from=dep-n-harper-ls-1.1.0-0f72574305d93594 /target/release/deps/*
 #   docker build --output=. - <THIS_FILE
 
 FROM scratch
-COPY --link --from=out-0f72574305d93594 /harper_ls-0f72574305d93594 /harper_ls
+COPY --link --from=out-0f72574305d93594 /harper_ls-0f72574305d93594 /harper-ls

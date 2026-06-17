@@ -9709,4 +9709,4 @@ COPY --link --from=dep-n-hickory-dns-0.26.0-alpha.1-3b77722d738042ba /target/rel
 #   docker build --output=. - <THIS_FILE
 
 FROM scratch
-COPY --link --from=out-3b77722d738042ba /hickory_dns-3b77722d738042ba /hickory_dns
+COPY --link --from=out-3b77722d738042ba /hickory_dns-3b77722d738042ba /hickory-dns

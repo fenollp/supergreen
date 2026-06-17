@@ -469,4 +469,4 @@ COPY --link --from=dep-n-kani-verifier-0.66.0-6f5a7c02543c0528 /target/release/d
 #   docker build --output=. - <THIS_FILE
 
 FROM scratch
-COPY --link --from=out-6f5a7c02543c0528 /cargo_kani-6f5a7c02543c0528 /cargo_kani
+COPY --link --from=out-6f5a7c02543c0528 /cargo_kani-6f5a7c02543c0528 /cargo-kani

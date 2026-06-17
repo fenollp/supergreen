@@ -5839,4 +5839,4 @@ COPY --link --from=dep-n-cargo-osdk-0.16.1-68d1e4f59383100f /target/release/deps
 #   docker build --output=. - <THIS_FILE
 
 FROM scratch
-COPY --link --from=out-68d1e4f59383100f /cargo_osdk-68d1e4f59383100f /cargo_osdk
+COPY --link --from=out-68d1e4f59383100f /cargo_osdk-68d1e4f59383100f /cargo-osdk

@@ -8755,4 +8755,4 @@ COPY --link --from=dep-n-cargo-mutants-25.3.1-986fb321b59c1250 /target/release/d
 #   docker build --output=. - <THIS_FILE
 
 FROM scratch
-COPY --link --from=out-986fb321b59c1250 /cargo_mutants-986fb321b59c1250 /cargo_mutants
+COPY --link --from=out-986fb321b59c1250 /cargo_mutants-986fb321b59c1250 /cargo-mutants

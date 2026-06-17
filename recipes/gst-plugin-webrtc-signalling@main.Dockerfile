@@ -6418,4 +6418,4 @@ COPY --link --from=dep-n-gst-plugin-webrtc-signalling-0.16.0-alpha-6773ec8325010
 #   docker build --output=. - <THIS_FILE
 
 FROM scratch
-COPY --link --from=out-6773ec8325010d40 /gst_webrtc_signalling_server-6773ec8325010d40 /gst_webrtc_signalling_server
+COPY --link --from=out-6773ec8325010d40 /gst_webrtc_signalling_server-6773ec8325010d40 /gst-webrtc-signalling-server
