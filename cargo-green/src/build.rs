@@ -168,6 +168,7 @@ impl Green {
                     retrier.backoff("build", e).await;
                     continue;
                 }
+                let e = anyhow!("retried {} times: {e}", retrier.max());
                 return (call, envs, effects, result, Err(e));
             }
 
@@ -376,7 +377,7 @@ impl Green {
         info!("build ran for {secs:?}");
 
         if let Ok(e) = rx_err.try_recv() {
-            bail!("Runner BUG: {e}")
+            bail!("Runner {e}")
         }
 
         // NOTE:
@@ -938,16 +939,16 @@ fn download_failed() {
         I 26/04/28 16:27:29.437 N str-buf 3.0.3 c0a72a922652c7f1 ✖ ERROR: failed to build: failed to solve: digest mismatch sha256:08bed0bc69739d1f4e553a9cb1a4db848332274df4257efc036db17ad02b9f15: sha256:0ceb97b7225c713c2fd4db0153cb6b3cab244eb37900c3f634ed4d43310d8c34
         "#,
         r#"
-        E 26/04/28 16:27:29.442 N str-buf 3.0.3 c0a72a922652c7f1 Error: Runner BUG: failed to build: failed to solve: digest mismatch sha256:08bed0bc69739d1f4e553a9cb1a4db848332274df4257efc036db17ad02b9f15: sha256:0ceb97b7225c713c2fd4db0153cb6b3cab244eb37900c3f634ed4d43310d8c34
+        E 26/04/28 16:27:29.442 N str-buf 3.0.3 c0a72a922652c7f1 Error: Runner failed to build: failed to solve: digest mismatch sha256:08bed0bc69739d1f4e553a9cb1a4db848332274df4257efc036db17ad02b9f15: sha256:0ceb97b7225c713c2fd4db0153cb6b3cab244eb37900c3f634ed4d43310d8c34
         "#,
         r#"
-        E 26/05/22 13:59:46.807 N zerovec 0.11.4 77b613567de82307 Error: Runner BUG: failed to build: failed to solve: Get "https://static.crates.io/crates/zerovec/zerovec-0.11.4.crate": http2: server sent GOAWAY and closed the connection; LastStreamID=289, ErrCode=NO_ERROR, debug="graceful shutdown"
+        E 26/05/22 13:59:46.807 N zerovec 0.11.4 77b613567de82307 Error: Runner failed to build: failed to solve: Get "https://static.crates.io/crates/zerovec/zerovec-0.11.4.crate": http2: server sent GOAWAY and closed the connection; LastStreamID=289, ErrCode=NO_ERROR, debug="graceful shutdown"
         "#,
         r#"
-        E 26/06/02 00:03:45.481 X semver 1.0.26 9fbca58694034ec8 Error: Runner BUG: failed to build: failed to solve: Get "https://static.crates.io/crates/semver/semver-1.0.26.crate": http2: server sent GOAWAY and closed the connection; LastStreamID=257, ErrCode=NO_ERROR, debug="graceful shutdown"
+        E 26/06/02 00:03:45.481 X semver 1.0.26 9fbca58694034ec8 Error: Runner failed to build: failed to solve: Get "https://static.crates.io/crates/semver/semver-1.0.26.crate": http2: server sent GOAWAY and closed the connection; LastStreamID=257, ErrCode=NO_ERROR, debug="graceful shutdown"
         "#,
         r#"
-        Error: Runner BUG: failed to build: failed to solve: failed to fetch remote https://codeberg.org/willempx/qair.git: git stderr:
+        Error: Runner failed to build: failed to solve: failed to fetch remote https://codeberg.org/willempx/qair.git: git stderr:
         "#,
         r#"
         ERROR: failed to build: failed to solve: Get "https://static.crates.io/crates/windows_x86_64_gnullvm/windows_x86_64_gnullvm-0.52.6.crate": http2: client connection force closed via ClientConn.Close
