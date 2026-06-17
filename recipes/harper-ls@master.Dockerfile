@@ -6,7 +6,7 @@ FROM --platform=$BUILDPLATFORM docker.io/tonistiigi/xx:1.6.1@sha256:923441d7c25f
 FROM scratch AS rustup-1.94.0-x86_64-unknown-linux-gnu
 ADD --chmod=0144 --checksum=sha256:4acc9acc76d5079515b46346a485974457b5a79893cfb01112423c89aeb5aa10 \
   https://static.rust-lang.org/rustup/archive/1.29.0/x86_64-unknown-linux-gnu/rustup-init /rustup-init
-FROM --platform=$BUILDPLATFORM docker.io/library/debian:trixie-slim@sha256:cedb1ef40439206b673ee8b33a46a03a0c9fa90bf3732f54704f99cb061d2c5a AS rust-base
+FROM docker.io/library/debian:trixie-slim@sha256:cedb1ef40439206b673ee8b33a46a03a0c9fa90bf3732f54704f99cb061d2c5a AS rust-base
 SHELL ["/bin/sh", "-eux", "-c"]
 ENV       CARGO_HOME=/usr/local/cargo \
          RUSTUP_HOME=/usr/local/rustup \
@@ -3605,6 +3605,16 @@ WORKDIR $CARGO_HOME/registry/src/index.crates.io/web_atoms-0.1.3
 RUN \
   --mount=from=out-89acc83c9cb3c1dd,source=/_build_script_build-89acc83c9cb3c1dd,dst=/target/release/build/web_atoms-89acc83c9cb3c1dd/build-script-build \
   --mount=from=cratesio-web_atoms-0.1.3,source=/web_atoms-0.1.3,dst=$CARGO_HOME/registry/src/index.crates.io/web_atoms-0.1.3 \
+  --mount=from=cratesio-siphasher-1.0.1,source=/siphasher-1.0.1,dst=$CARGO_HOME/registry/src/index.crates.io/siphasher-1.0.1 \
+  --mount=from=cratesio-phf_shared-0.11.3,source=/phf_shared-0.11.3,dst=$CARGO_HOME/registry/src/index.crates.io/phf_shared-0.11.3 \
+  --mount=from=cratesio-rand_core-0.6.4,source=/rand_core-0.6.4,dst=$CARGO_HOME/registry/src/index.crates.io/rand_core-0.6.4 \
+  --mount=from=cratesio-rand-0.8.5,source=/rand-0.8.5,dst=$CARGO_HOME/registry/src/index.crates.io/rand-0.8.5 \
+  --mount=from=cratesio-phf_generator-0.11.3,source=/phf_generator-0.11.3,dst=$CARGO_HOME/registry/src/index.crates.io/phf_generator-0.11.3 \
+  --mount=from=cratesio-phf_codegen-0.11.3,source=/phf_codegen-0.11.3,dst=$CARGO_HOME/registry/src/index.crates.io/phf_codegen-0.11.3 \
+  --mount=from=cratesio-unicode-ident-1.0.18,source=/unicode-ident-1.0.18,dst=$CARGO_HOME/registry/src/index.crates.io/unicode-ident-1.0.18 \
+  --mount=from=cratesio-proc-macro2-1.0.103,source=/proc-macro2-1.0.103,dst=$CARGO_HOME/registry/src/index.crates.io/proc-macro2-1.0.103 \
+  --mount=from=cratesio-quote-1.0.41,source=/quote-1.0.41,dst=$CARGO_HOME/registry/src/index.crates.io/quote-1.0.41 \
+  --mount=from=cratesio-string_cache_codegen-0.5.4,source=/string_cache_codegen-0.5.4,dst=$CARGO_HOME/registry/src/index.crates.io/string_cache_codegen-0.5.4 \
     env CARGO_CFG_FEATURE= \
         CARGO_CFG_PANIC=unwind \
         CARGO_CFG_TARGET_ABI= \
@@ -5832,6 +5842,7 @@ WORKDIR $CARGO_HOME/registry/src/index.crates.io/ahash-0.8.12
 RUN \
   --mount=from=out-e38636491bbd513d,source=/_build_script_build-e38636491bbd513d,dst=/target/release/build/ahash-e38636491bbd513d/build-script-build \
   --mount=from=cratesio-ahash-0.8.12,source=/ahash-0.8.12,dst=$CARGO_HOME/registry/src/index.crates.io/ahash-0.8.12 \
+  --mount=from=cratesio-version_check-0.9.5,source=/version_check-0.9.5,dst=$CARGO_HOME/registry/src/index.crates.io/version_check-0.9.5 \
     env CARGO_CFG_FEATURE= \
         CARGO_CFG_PANIC=unwind \
         CARGO_CFG_TARGET_ABI= \
@@ -7410,6 +7421,7 @@ WORKDIR $CARGO_HOME/registry/src/index.crates.io/num-traits-0.2.19
 RUN \
   --mount=from=out-7d1140ec110bd90e,source=/_build_script_build-7d1140ec110bd90e,dst=/target/release/build/num-traits-7d1140ec110bd90e/build-script-build \
   --mount=from=cratesio-num-traits-0.2.19,source=/num-traits-0.2.19,dst=$CARGO_HOME/registry/src/index.crates.io/num-traits-0.2.19 \
+  --mount=from=cratesio-autocfg-1.5.0,source=/autocfg-1.5.0,dst=$CARGO_HOME/registry/src/index.crates.io/autocfg-1.5.0 \
     env CARGO_CFG_FEATURE=i128,libm,std \
         CARGO_CFG_PANIC=unwind \
         CARGO_CFG_TARGET_ABI= \
@@ -8311,6 +8323,7 @@ WORKDIR $CARGO_HOME/registry/src/index.crates.io/cubecl-common-0.8.1
 RUN \
   --mount=from=out-65cf894d661e48e1,source=/_build_script_build-65cf894d661e48e1,dst=/target/release/build/cubecl-common-65cf894d661e48e1/build-script-build \
   --mount=from=cratesio-cubecl-common-0.8.1,source=/cubecl-common-0.8.1,dst=$CARGO_HOME/registry/src/index.crates.io/cubecl-common-0.8.1 \
+  --mount=from=cratesio-cfg_aliases-0.2.1,source=/cfg_aliases-0.2.1,dst=$CARGO_HOME/registry/src/index.crates.io/cfg_aliases-0.2.1 \
     env CARGO_CFG_FEATURE=float8,fp8,futures-lite,parking_lot,serde,serde_bytes,std \
         CARGO_CFG_PANIC=unwind \
         CARGO_CFG_TARGET_ABI= \
@@ -10945,6 +10958,7 @@ WORKDIR $CARGO_HOME/registry/src/index.crates.io/matrixmultiply-0.3.10
 RUN \
   --mount=from=out-6a35ded977d20512,source=/_build_script_build-6a35ded977d20512,dst=/target/release/build/matrixmultiply-6a35ded977d20512/build-script-build \
   --mount=from=cratesio-matrixmultiply-0.3.10,source=/matrixmultiply-0.3.10,dst=$CARGO_HOME/registry/src/index.crates.io/matrixmultiply-0.3.10 \
+  --mount=from=cratesio-autocfg-1.5.0,source=/autocfg-1.5.0,dst=$CARGO_HOME/registry/src/index.crates.io/autocfg-1.5.0 \
     env CARGO_CFG_FEATURE=cgemm \
         CARGO_CFG_PANIC=unwind \
         CARGO_CFG_TARGET_ABI= \
@@ -14281,6 +14295,17 @@ WORKDIR $CARGO_HOME/registry/src/index.crates.io/tree-sitter-0.25.10
 RUN \
   --mount=from=out-7536bdc969009c60,source=/_build_script_build-7536bdc969009c60,dst=/target/release/build/tree-sitter-7536bdc969009c60/build-script-build \
   --mount=from=cratesio-tree-sitter-0.25.10,source=/tree-sitter-0.25.10,dst=$CARGO_HOME/registry/src/index.crates.io/tree-sitter-0.25.10 \
+  --mount=from=cratesio-find-msvc-tools-0.1.4,source=/find-msvc-tools-0.1.4,dst=$CARGO_HOME/registry/src/index.crates.io/find-msvc-tools-0.1.4 \
+  --mount=from=cratesio-shlex-1.3.0,source=/shlex-1.3.0,dst=$CARGO_HOME/registry/src/index.crates.io/shlex-1.3.0 \
+  --mount=from=cratesio-cc-1.2.43,source=/cc-1.2.43,dst=$CARGO_HOME/registry/src/index.crates.io/cc-1.2.43 \
+  --mount=from=cratesio-equivalent-1.0.2,source=/equivalent-1.0.2,dst=$CARGO_HOME/registry/src/index.crates.io/equivalent-1.0.2 \
+  --mount=from=cratesio-hashbrown-0.16.1,source=/hashbrown-0.16.1,dst=$CARGO_HOME/registry/src/index.crates.io/hashbrown-0.16.1 \
+  --mount=from=cratesio-indexmap-2.12.1,source=/indexmap-2.12.1,dst=$CARGO_HOME/registry/src/index.crates.io/indexmap-2.12.1 \
+  --mount=from=cratesio-itoa-1.0.15,source=/itoa-1.0.15,dst=$CARGO_HOME/registry/src/index.crates.io/itoa-1.0.15 \
+  --mount=from=cratesio-memchr-2.7.5,source=/memchr-2.7.5,dst=$CARGO_HOME/registry/src/index.crates.io/memchr-2.7.5 \
+  --mount=from=cratesio-ryu-1.0.20,source=/ryu-1.0.20,dst=$CARGO_HOME/registry/src/index.crates.io/ryu-1.0.20 \
+  --mount=from=cratesio-serde_core-1.0.228,source=/serde_core-1.0.228,dst=$CARGO_HOME/registry/src/index.crates.io/serde_core-1.0.228 \
+  --mount=from=cratesio-serde_json-1.0.145,source=/serde_json-1.0.145,dst=$CARGO_HOME/registry/src/index.crates.io/serde_json-1.0.145 \
     env CARGO_CFG_FEATURE=default,std \
         CARGO_CFG_PANIC=unwind \
         CARGO_CFG_TARGET_ABI= \
@@ -14697,6 +14722,9 @@ WORKDIR $CARGO_HOME/registry/src/index.crates.io/tree-sitter-html-0.23.2
 RUN \
   --mount=from=out-34ec457eae93fd11,source=/_build_script_build-34ec457eae93fd11,dst=/target/release/build/tree-sitter-html-34ec457eae93fd11/build-script-build \
   --mount=from=cratesio-tree-sitter-html-0.23.2,source=/tree-sitter-html-0.23.2,dst=$CARGO_HOME/registry/src/index.crates.io/tree-sitter-html-0.23.2 \
+  --mount=from=cratesio-find-msvc-tools-0.1.4,source=/find-msvc-tools-0.1.4,dst=$CARGO_HOME/registry/src/index.crates.io/find-msvc-tools-0.1.4 \
+  --mount=from=cratesio-shlex-1.3.0,source=/shlex-1.3.0,dst=$CARGO_HOME/registry/src/index.crates.io/shlex-1.3.0 \
+  --mount=from=cratesio-cc-1.2.43,source=/cc-1.2.43,dst=$CARGO_HOME/registry/src/index.crates.io/cc-1.2.43 \
     env CARGO_CFG_FEATURE= \
         CARGO_CFG_PANIC=unwind \
         CARGO_CFG_TARGET_ABI= \
@@ -15107,6 +15135,9 @@ WORKDIR $CARGO_HOME/registry/src/index.crates.io/harper-tree-sitter-dart-0.0.5
 RUN \
   --mount=from=out-1b58f43ff3d0c2b9,source=/_build_script_build-1b58f43ff3d0c2b9,dst=/target/release/build/harper-tree-sitter-dart-1b58f43ff3d0c2b9/build-script-build \
   --mount=from=cratesio-harper-tree-sitter-dart-0.0.5,source=/harper-tree-sitter-dart-0.0.5,dst=$CARGO_HOME/registry/src/index.crates.io/harper-tree-sitter-dart-0.0.5 \
+  --mount=from=cratesio-find-msvc-tools-0.1.4,source=/find-msvc-tools-0.1.4,dst=$CARGO_HOME/registry/src/index.crates.io/find-msvc-tools-0.1.4 \
+  --mount=from=cratesio-shlex-1.3.0,source=/shlex-1.3.0,dst=$CARGO_HOME/registry/src/index.crates.io/shlex-1.3.0 \
+  --mount=from=cratesio-cc-1.2.43,source=/cc-1.2.43,dst=$CARGO_HOME/registry/src/index.crates.io/cc-1.2.43 \
     env CARGO_CFG_FEATURE= \
         CARGO_CFG_PANIC=unwind \
         CARGO_CFG_TARGET_ABI= \
@@ -15261,6 +15292,9 @@ WORKDIR $CARGO_HOME/registry/src/index.crates.io/tree-sitter-bash-0.25.0
 RUN \
   --mount=from=out-9d7ebdb1b60acafe,source=/_build_script_build-9d7ebdb1b60acafe,dst=/target/release/build/tree-sitter-bash-9d7ebdb1b60acafe/build-script-build \
   --mount=from=cratesio-tree-sitter-bash-0.25.0,source=/tree-sitter-bash-0.25.0,dst=$CARGO_HOME/registry/src/index.crates.io/tree-sitter-bash-0.25.0 \
+  --mount=from=cratesio-find-msvc-tools-0.1.4,source=/find-msvc-tools-0.1.4,dst=$CARGO_HOME/registry/src/index.crates.io/find-msvc-tools-0.1.4 \
+  --mount=from=cratesio-shlex-1.3.0,source=/shlex-1.3.0,dst=$CARGO_HOME/registry/src/index.crates.io/shlex-1.3.0 \
+  --mount=from=cratesio-cc-1.2.43,source=/cc-1.2.43,dst=$CARGO_HOME/registry/src/index.crates.io/cc-1.2.43 \
     env CARGO_CFG_FEATURE= \
         CARGO_CFG_PANIC=unwind \
         CARGO_CFG_TARGET_ABI= \
@@ -15394,6 +15428,9 @@ WORKDIR $CARGO_HOME/registry/src/index.crates.io/tree-sitter-c-0.24.1
 RUN \
   --mount=from=out-431177f117af3c21,source=/_build_script_build-431177f117af3c21,dst=/target/release/build/tree-sitter-c-431177f117af3c21/build-script-build \
   --mount=from=cratesio-tree-sitter-c-0.24.1,source=/tree-sitter-c-0.24.1,dst=$CARGO_HOME/registry/src/index.crates.io/tree-sitter-c-0.24.1 \
+  --mount=from=cratesio-find-msvc-tools-0.1.4,source=/find-msvc-tools-0.1.4,dst=$CARGO_HOME/registry/src/index.crates.io/find-msvc-tools-0.1.4 \
+  --mount=from=cratesio-shlex-1.3.0,source=/shlex-1.3.0,dst=$CARGO_HOME/registry/src/index.crates.io/shlex-1.3.0 \
+  --mount=from=cratesio-cc-1.2.43,source=/cc-1.2.43,dst=$CARGO_HOME/registry/src/index.crates.io/cc-1.2.43 \
     env CARGO_CFG_FEATURE= \
         CARGO_CFG_PANIC=unwind \
         CARGO_CFG_TARGET_ABI= \
@@ -15527,6 +15564,9 @@ WORKDIR $CARGO_HOME/registry/src/index.crates.io/tree-sitter-c-sharp-0.23.1
 RUN \
   --mount=from=out-9663437ba2d19110,source=/_build_script_build-9663437ba2d19110,dst=/target/release/build/tree-sitter-c-sharp-9663437ba2d19110/build-script-build \
   --mount=from=cratesio-tree-sitter-c-sharp-0.23.1,source=/tree-sitter-c-sharp-0.23.1,dst=$CARGO_HOME/registry/src/index.crates.io/tree-sitter-c-sharp-0.23.1 \
+  --mount=from=cratesio-find-msvc-tools-0.1.4,source=/find-msvc-tools-0.1.4,dst=$CARGO_HOME/registry/src/index.crates.io/find-msvc-tools-0.1.4 \
+  --mount=from=cratesio-shlex-1.3.0,source=/shlex-1.3.0,dst=$CARGO_HOME/registry/src/index.crates.io/shlex-1.3.0 \
+  --mount=from=cratesio-cc-1.2.43,source=/cc-1.2.43,dst=$CARGO_HOME/registry/src/index.crates.io/cc-1.2.43 \
     env CARGO_CFG_FEATURE= \
         CARGO_CFG_PANIC=unwind \
         CARGO_CFG_TARGET_ABI= \
@@ -15660,6 +15700,9 @@ WORKDIR $CARGO_HOME/registry/src/index.crates.io/tree-sitter-clojure-0.1.0
 RUN \
   --mount=from=out-c8c833f1c77d3808,source=/_build_script_build-c8c833f1c77d3808,dst=/target/release/build/tree-sitter-clojure-c8c833f1c77d3808/build-script-build \
   --mount=from=cratesio-tree-sitter-clojure-0.1.0,source=/tree-sitter-clojure-0.1.0,dst=$CARGO_HOME/registry/src/index.crates.io/tree-sitter-clojure-0.1.0 \
+  --mount=from=cratesio-find-msvc-tools-0.1.4,source=/find-msvc-tools-0.1.4,dst=$CARGO_HOME/registry/src/index.crates.io/find-msvc-tools-0.1.4 \
+  --mount=from=cratesio-shlex-1.3.0,source=/shlex-1.3.0,dst=$CARGO_HOME/registry/src/index.crates.io/shlex-1.3.0 \
+  --mount=from=cratesio-cc-1.2.43,source=/cc-1.2.43,dst=$CARGO_HOME/registry/src/index.crates.io/cc-1.2.43 \
     env CARGO_CFG_FEATURE= \
         CARGO_CFG_PANIC=unwind \
         CARGO_CFG_TARGET_ABI= \
@@ -15814,6 +15857,9 @@ WORKDIR $CARGO_HOME/registry/src/index.crates.io/tree-sitter-cmake-0.7.1
 RUN \
   --mount=from=out-b67d36f1d6639619,source=/_build_script_build-b67d36f1d6639619,dst=/target/release/build/tree-sitter-cmake-b67d36f1d6639619/build-script-build \
   --mount=from=cratesio-tree-sitter-cmake-0.7.1,source=/tree-sitter-cmake-0.7.1,dst=$CARGO_HOME/registry/src/index.crates.io/tree-sitter-cmake-0.7.1 \
+  --mount=from=cratesio-find-msvc-tools-0.1.4,source=/find-msvc-tools-0.1.4,dst=$CARGO_HOME/registry/src/index.crates.io/find-msvc-tools-0.1.4 \
+  --mount=from=cratesio-shlex-1.3.0,source=/shlex-1.3.0,dst=$CARGO_HOME/registry/src/index.crates.io/shlex-1.3.0 \
+  --mount=from=cratesio-cc-1.2.43,source=/cc-1.2.43,dst=$CARGO_HOME/registry/src/index.crates.io/cc-1.2.43 \
     env CARGO_CFG_FEATURE= \
         CARGO_CFG_PANIC=unwind \
         CARGO_CFG_TARGET_ABI= \
@@ -15947,6 +15993,9 @@ WORKDIR $CARGO_HOME/registry/src/index.crates.io/tree-sitter-cpp-0.23.4
 RUN \
   --mount=from=out-33550a838e803622,source=/_build_script_build-33550a838e803622,dst=/target/release/build/tree-sitter-cpp-33550a838e803622/build-script-build \
   --mount=from=cratesio-tree-sitter-cpp-0.23.4,source=/tree-sitter-cpp-0.23.4,dst=$CARGO_HOME/registry/src/index.crates.io/tree-sitter-cpp-0.23.4 \
+  --mount=from=cratesio-find-msvc-tools-0.1.4,source=/find-msvc-tools-0.1.4,dst=$CARGO_HOME/registry/src/index.crates.io/find-msvc-tools-0.1.4 \
+  --mount=from=cratesio-shlex-1.3.0,source=/shlex-1.3.0,dst=$CARGO_HOME/registry/src/index.crates.io/shlex-1.3.0 \
+  --mount=from=cratesio-cc-1.2.43,source=/cc-1.2.43,dst=$CARGO_HOME/registry/src/index.crates.io/cc-1.2.43 \
     env CARGO_CFG_FEATURE= \
         CARGO_CFG_PANIC=unwind \
         CARGO_CFG_TARGET_ABI= \
@@ -16080,6 +16129,9 @@ WORKDIR $CARGO_HOME/registry/src/index.crates.io/tree-sitter-go-0.25.0
 RUN \
   --mount=from=out-2dad89b2347d81de,source=/_build_script_build-2dad89b2347d81de,dst=/target/release/build/tree-sitter-go-2dad89b2347d81de/build-script-build \
   --mount=from=cratesio-tree-sitter-go-0.25.0,source=/tree-sitter-go-0.25.0,dst=$CARGO_HOME/registry/src/index.crates.io/tree-sitter-go-0.25.0 \
+  --mount=from=cratesio-find-msvc-tools-0.1.4,source=/find-msvc-tools-0.1.4,dst=$CARGO_HOME/registry/src/index.crates.io/find-msvc-tools-0.1.4 \
+  --mount=from=cratesio-shlex-1.3.0,source=/shlex-1.3.0,dst=$CARGO_HOME/registry/src/index.crates.io/shlex-1.3.0 \
+  --mount=from=cratesio-cc-1.2.43,source=/cc-1.2.43,dst=$CARGO_HOME/registry/src/index.crates.io/cc-1.2.43 \
     env CARGO_CFG_FEATURE= \
         CARGO_CFG_PANIC=unwind \
         CARGO_CFG_TARGET_ABI= \
@@ -16213,6 +16265,9 @@ WORKDIR $CARGO_HOME/registry/src/index.crates.io/tree-sitter-haskell-0.23.1
 RUN \
   --mount=from=out-b04903ef8dfd0734,source=/_build_script_build-b04903ef8dfd0734,dst=/target/release/build/tree-sitter-haskell-b04903ef8dfd0734/build-script-build \
   --mount=from=cratesio-tree-sitter-haskell-0.23.1,source=/tree-sitter-haskell-0.23.1,dst=$CARGO_HOME/registry/src/index.crates.io/tree-sitter-haskell-0.23.1 \
+  --mount=from=cratesio-find-msvc-tools-0.1.4,source=/find-msvc-tools-0.1.4,dst=$CARGO_HOME/registry/src/index.crates.io/find-msvc-tools-0.1.4 \
+  --mount=from=cratesio-shlex-1.3.0,source=/shlex-1.3.0,dst=$CARGO_HOME/registry/src/index.crates.io/shlex-1.3.0 \
+  --mount=from=cratesio-cc-1.2.43,source=/cc-1.2.43,dst=$CARGO_HOME/registry/src/index.crates.io/cc-1.2.43 \
     env CARGO_CFG_FEATURE= \
         CARGO_CFG_PANIC=unwind \
         CARGO_CFG_TARGET_ABI= \
@@ -16346,6 +16401,9 @@ WORKDIR $CARGO_HOME/registry/src/index.crates.io/tree-sitter-java-0.23.5
 RUN \
   --mount=from=out-5ad1d7fe6ba42eeb,source=/_build_script_build-5ad1d7fe6ba42eeb,dst=/target/release/build/tree-sitter-java-5ad1d7fe6ba42eeb/build-script-build \
   --mount=from=cratesio-tree-sitter-java-0.23.5,source=/tree-sitter-java-0.23.5,dst=$CARGO_HOME/registry/src/index.crates.io/tree-sitter-java-0.23.5 \
+  --mount=from=cratesio-find-msvc-tools-0.1.4,source=/find-msvc-tools-0.1.4,dst=$CARGO_HOME/registry/src/index.crates.io/find-msvc-tools-0.1.4 \
+  --mount=from=cratesio-shlex-1.3.0,source=/shlex-1.3.0,dst=$CARGO_HOME/registry/src/index.crates.io/shlex-1.3.0 \
+  --mount=from=cratesio-cc-1.2.43,source=/cc-1.2.43,dst=$CARGO_HOME/registry/src/index.crates.io/cc-1.2.43 \
     env CARGO_CFG_FEATURE= \
         CARGO_CFG_PANIC=unwind \
         CARGO_CFG_TARGET_ABI= \
@@ -16479,6 +16537,9 @@ WORKDIR $CARGO_HOME/registry/src/index.crates.io/tree-sitter-javascript-0.25.0
 RUN \
   --mount=from=out-1b7382e5a7f9a153,source=/_build_script_build-1b7382e5a7f9a153,dst=/target/release/build/tree-sitter-javascript-1b7382e5a7f9a153/build-script-build \
   --mount=from=cratesio-tree-sitter-javascript-0.25.0,source=/tree-sitter-javascript-0.25.0,dst=$CARGO_HOME/registry/src/index.crates.io/tree-sitter-javascript-0.25.0 \
+  --mount=from=cratesio-find-msvc-tools-0.1.4,source=/find-msvc-tools-0.1.4,dst=$CARGO_HOME/registry/src/index.crates.io/find-msvc-tools-0.1.4 \
+  --mount=from=cratesio-shlex-1.3.0,source=/shlex-1.3.0,dst=$CARGO_HOME/registry/src/index.crates.io/shlex-1.3.0 \
+  --mount=from=cratesio-cc-1.2.43,source=/cc-1.2.43,dst=$CARGO_HOME/registry/src/index.crates.io/cc-1.2.43 \
     env CARGO_CFG_FEATURE= \
         CARGO_CFG_PANIC=unwind \
         CARGO_CFG_TARGET_ABI= \
@@ -16612,6 +16673,9 @@ WORKDIR $CARGO_HOME/registry/src/index.crates.io/tree-sitter-kotlin-ng-1.1.0
 RUN \
   --mount=from=out-b521de7f78edce74,source=/_build_script_build-b521de7f78edce74,dst=/target/release/build/tree-sitter-kotlin-ng-b521de7f78edce74/build-script-build \
   --mount=from=cratesio-tree-sitter-kotlin-ng-1.1.0,source=/tree-sitter-kotlin-ng-1.1.0,dst=$CARGO_HOME/registry/src/index.crates.io/tree-sitter-kotlin-ng-1.1.0 \
+  --mount=from=cratesio-find-msvc-tools-0.1.4,source=/find-msvc-tools-0.1.4,dst=$CARGO_HOME/registry/src/index.crates.io/find-msvc-tools-0.1.4 \
+  --mount=from=cratesio-shlex-1.3.0,source=/shlex-1.3.0,dst=$CARGO_HOME/registry/src/index.crates.io/shlex-1.3.0 \
+  --mount=from=cratesio-cc-1.2.43,source=/cc-1.2.43,dst=$CARGO_HOME/registry/src/index.crates.io/cc-1.2.43 \
     env CARGO_CFG_FEATURE= \
         CARGO_CFG_PANIC=unwind \
         CARGO_CFG_TARGET_ABI= \
@@ -16745,6 +16809,9 @@ WORKDIR $CARGO_HOME/registry/src/index.crates.io/tree-sitter-lua-0.2.0
 RUN \
   --mount=from=out-885cce91ba5b4f7e,source=/_build_script_build-885cce91ba5b4f7e,dst=/target/release/build/tree-sitter-lua-885cce91ba5b4f7e/build-script-build \
   --mount=from=cratesio-tree-sitter-lua-0.2.0,source=/tree-sitter-lua-0.2.0,dst=$CARGO_HOME/registry/src/index.crates.io/tree-sitter-lua-0.2.0 \
+  --mount=from=cratesio-find-msvc-tools-0.1.4,source=/find-msvc-tools-0.1.4,dst=$CARGO_HOME/registry/src/index.crates.io/find-msvc-tools-0.1.4 \
+  --mount=from=cratesio-shlex-1.3.0,source=/shlex-1.3.0,dst=$CARGO_HOME/registry/src/index.crates.io/shlex-1.3.0 \
+  --mount=from=cratesio-cc-1.2.43,source=/cc-1.2.43,dst=$CARGO_HOME/registry/src/index.crates.io/cc-1.2.43 \
     env CARGO_CFG_FEATURE= \
         CARGO_CFG_PANIC=unwind \
         CARGO_CFG_TARGET_ABI= \
@@ -16878,6 +16945,9 @@ WORKDIR $CARGO_HOME/registry/src/index.crates.io/tree-sitter-nix-0.3.0
 RUN \
   --mount=from=out-a1374dc49b4bb002,source=/_build_script_build-a1374dc49b4bb002,dst=/target/release/build/tree-sitter-nix-a1374dc49b4bb002/build-script-build \
   --mount=from=cratesio-tree-sitter-nix-0.3.0,source=/tree-sitter-nix-0.3.0,dst=$CARGO_HOME/registry/src/index.crates.io/tree-sitter-nix-0.3.0 \
+  --mount=from=cratesio-find-msvc-tools-0.1.4,source=/find-msvc-tools-0.1.4,dst=$CARGO_HOME/registry/src/index.crates.io/find-msvc-tools-0.1.4 \
+  --mount=from=cratesio-shlex-1.3.0,source=/shlex-1.3.0,dst=$CARGO_HOME/registry/src/index.crates.io/shlex-1.3.0 \
+  --mount=from=cratesio-cc-1.2.43,source=/cc-1.2.43,dst=$CARGO_HOME/registry/src/index.crates.io/cc-1.2.43 \
     env CARGO_CFG_FEATURE= \
         CARGO_CFG_PANIC=unwind \
         CARGO_CFG_TARGET_ABI= \
@@ -17011,6 +17081,9 @@ WORKDIR $CARGO_HOME/registry/src/index.crates.io/tree-sitter-php-0.24.2
 RUN \
   --mount=from=out-09918d45fe37a615,source=/_build_script_build-09918d45fe37a615,dst=/target/release/build/tree-sitter-php-09918d45fe37a615/build-script-build \
   --mount=from=cratesio-tree-sitter-php-0.24.2,source=/tree-sitter-php-0.24.2,dst=$CARGO_HOME/registry/src/index.crates.io/tree-sitter-php-0.24.2 \
+  --mount=from=cratesio-find-msvc-tools-0.1.4,source=/find-msvc-tools-0.1.4,dst=$CARGO_HOME/registry/src/index.crates.io/find-msvc-tools-0.1.4 \
+  --mount=from=cratesio-shlex-1.3.0,source=/shlex-1.3.0,dst=$CARGO_HOME/registry/src/index.crates.io/shlex-1.3.0 \
+  --mount=from=cratesio-cc-1.2.43,source=/cc-1.2.43,dst=$CARGO_HOME/registry/src/index.crates.io/cc-1.2.43 \
     env CARGO_CFG_FEATURE= \
         CARGO_CFG_PANIC=unwind \
         CARGO_CFG_TARGET_ABI= \
@@ -17144,6 +17217,9 @@ WORKDIR $CARGO_HOME/registry/src/index.crates.io/tree-sitter-ruby-0.23.1
 RUN \
   --mount=from=out-97fef8a30979ccfc,source=/_build_script_build-97fef8a30979ccfc,dst=/target/release/build/tree-sitter-ruby-97fef8a30979ccfc/build-script-build \
   --mount=from=cratesio-tree-sitter-ruby-0.23.1,source=/tree-sitter-ruby-0.23.1,dst=$CARGO_HOME/registry/src/index.crates.io/tree-sitter-ruby-0.23.1 \
+  --mount=from=cratesio-find-msvc-tools-0.1.4,source=/find-msvc-tools-0.1.4,dst=$CARGO_HOME/registry/src/index.crates.io/find-msvc-tools-0.1.4 \
+  --mount=from=cratesio-shlex-1.3.0,source=/shlex-1.3.0,dst=$CARGO_HOME/registry/src/index.crates.io/shlex-1.3.0 \
+  --mount=from=cratesio-cc-1.2.43,source=/cc-1.2.43,dst=$CARGO_HOME/registry/src/index.crates.io/cc-1.2.43 \
     env CARGO_CFG_FEATURE= \
         CARGO_CFG_PANIC=unwind \
         CARGO_CFG_TARGET_ABI= \
@@ -17277,6 +17353,9 @@ WORKDIR $CARGO_HOME/registry/src/index.crates.io/tree-sitter-rust-0.24.0
 RUN \
   --mount=from=out-b065fcda074ccfea,source=/_build_script_build-b065fcda074ccfea,dst=/target/release/build/tree-sitter-rust-b065fcda074ccfea/build-script-build \
   --mount=from=cratesio-tree-sitter-rust-0.24.0,source=/tree-sitter-rust-0.24.0,dst=$CARGO_HOME/registry/src/index.crates.io/tree-sitter-rust-0.24.0 \
+  --mount=from=cratesio-find-msvc-tools-0.1.4,source=/find-msvc-tools-0.1.4,dst=$CARGO_HOME/registry/src/index.crates.io/find-msvc-tools-0.1.4 \
+  --mount=from=cratesio-shlex-1.3.0,source=/shlex-1.3.0,dst=$CARGO_HOME/registry/src/index.crates.io/shlex-1.3.0 \
+  --mount=from=cratesio-cc-1.2.43,source=/cc-1.2.43,dst=$CARGO_HOME/registry/src/index.crates.io/cc-1.2.43 \
     env CARGO_CFG_FEATURE= \
         CARGO_CFG_PANIC=unwind \
         CARGO_CFG_TARGET_ABI= \
@@ -17410,6 +17489,9 @@ WORKDIR $CARGO_HOME/registry/src/index.crates.io/tree-sitter-scala-0.24.0
 RUN \
   --mount=from=out-fc443343da915f53,source=/_build_script_build-fc443343da915f53,dst=/target/release/build/tree-sitter-scala-fc443343da915f53/build-script-build \
   --mount=from=cratesio-tree-sitter-scala-0.24.0,source=/tree-sitter-scala-0.24.0,dst=$CARGO_HOME/registry/src/index.crates.io/tree-sitter-scala-0.24.0 \
+  --mount=from=cratesio-find-msvc-tools-0.1.4,source=/find-msvc-tools-0.1.4,dst=$CARGO_HOME/registry/src/index.crates.io/find-msvc-tools-0.1.4 \
+  --mount=from=cratesio-shlex-1.3.0,source=/shlex-1.3.0,dst=$CARGO_HOME/registry/src/index.crates.io/shlex-1.3.0 \
+  --mount=from=cratesio-cc-1.2.43,source=/cc-1.2.43,dst=$CARGO_HOME/registry/src/index.crates.io/cc-1.2.43 \
     env CARGO_CFG_FEATURE= \
         CARGO_CFG_PANIC=unwind \
         CARGO_CFG_TARGET_ABI= \
@@ -17543,6 +17625,9 @@ WORKDIR $CARGO_HOME/registry/src/index.crates.io/tree-sitter-solidity-1.2.13
 RUN \
   --mount=from=out-799f93704265625b,source=/_build_script_build-799f93704265625b,dst=/target/release/build/tree-sitter-solidity-799f93704265625b/build-script-build \
   --mount=from=cratesio-tree-sitter-solidity-1.2.13,source=/tree-sitter-solidity-1.2.13,dst=$CARGO_HOME/registry/src/index.crates.io/tree-sitter-solidity-1.2.13 \
+  --mount=from=cratesio-find-msvc-tools-0.1.4,source=/find-msvc-tools-0.1.4,dst=$CARGO_HOME/registry/src/index.crates.io/find-msvc-tools-0.1.4 \
+  --mount=from=cratesio-shlex-1.3.0,source=/shlex-1.3.0,dst=$CARGO_HOME/registry/src/index.crates.io/shlex-1.3.0 \
+  --mount=from=cratesio-cc-1.2.43,source=/cc-1.2.43,dst=$CARGO_HOME/registry/src/index.crates.io/cc-1.2.43 \
     env CARGO_CFG_FEATURE= \
         CARGO_CFG_PANIC=unwind \
         CARGO_CFG_TARGET_ABI= \
@@ -17676,6 +17761,9 @@ WORKDIR $CARGO_HOME/registry/src/index.crates.io/tree-sitter-swift-0.7.1
 RUN \
   --mount=from=out-0ac17c5998ae3ed8,source=/_build_script_build-0ac17c5998ae3ed8,dst=/target/release/build/tree-sitter-swift-0ac17c5998ae3ed8/build-script-build \
   --mount=from=cratesio-tree-sitter-swift-0.7.1,source=/tree-sitter-swift-0.7.1,dst=$CARGO_HOME/registry/src/index.crates.io/tree-sitter-swift-0.7.1 \
+  --mount=from=cratesio-find-msvc-tools-0.1.4,source=/find-msvc-tools-0.1.4,dst=$CARGO_HOME/registry/src/index.crates.io/find-msvc-tools-0.1.4 \
+  --mount=from=cratesio-shlex-1.3.0,source=/shlex-1.3.0,dst=$CARGO_HOME/registry/src/index.crates.io/shlex-1.3.0 \
+  --mount=from=cratesio-cc-1.2.43,source=/cc-1.2.43,dst=$CARGO_HOME/registry/src/index.crates.io/cc-1.2.43 \
     env CARGO_CFG_FEATURE= \
         CARGO_CFG_PANIC=unwind \
         CARGO_CFG_TARGET_ABI= \
@@ -17809,6 +17897,9 @@ WORKDIR $CARGO_HOME/registry/src/index.crates.io/tree-sitter-toml-ng-0.7.0
 RUN \
   --mount=from=out-d9ebc3753275b296,source=/_build_script_build-d9ebc3753275b296,dst=/target/release/build/tree-sitter-toml-ng-d9ebc3753275b296/build-script-build \
   --mount=from=cratesio-tree-sitter-toml-ng-0.7.0,source=/tree-sitter-toml-ng-0.7.0,dst=$CARGO_HOME/registry/src/index.crates.io/tree-sitter-toml-ng-0.7.0 \
+  --mount=from=cratesio-find-msvc-tools-0.1.4,source=/find-msvc-tools-0.1.4,dst=$CARGO_HOME/registry/src/index.crates.io/find-msvc-tools-0.1.4 \
+  --mount=from=cratesio-shlex-1.3.0,source=/shlex-1.3.0,dst=$CARGO_HOME/registry/src/index.crates.io/shlex-1.3.0 \
+  --mount=from=cratesio-cc-1.2.43,source=/cc-1.2.43,dst=$CARGO_HOME/registry/src/index.crates.io/cc-1.2.43 \
     env CARGO_CFG_FEATURE= \
         CARGO_CFG_PANIC=unwind \
         CARGO_CFG_TARGET_ABI= \
@@ -17942,6 +18033,9 @@ WORKDIR $CARGO_HOME/registry/src/index.crates.io/tree-sitter-typescript-0.23.2
 RUN \
   --mount=from=out-05973a161d1850cf,source=/_build_script_build-05973a161d1850cf,dst=/target/release/build/tree-sitter-typescript-05973a161d1850cf/build-script-build \
   --mount=from=cratesio-tree-sitter-typescript-0.23.2,source=/tree-sitter-typescript-0.23.2,dst=$CARGO_HOME/registry/src/index.crates.io/tree-sitter-typescript-0.23.2 \
+  --mount=from=cratesio-find-msvc-tools-0.1.4,source=/find-msvc-tools-0.1.4,dst=$CARGO_HOME/registry/src/index.crates.io/find-msvc-tools-0.1.4 \
+  --mount=from=cratesio-shlex-1.3.0,source=/shlex-1.3.0,dst=$CARGO_HOME/registry/src/index.crates.io/shlex-1.3.0 \
+  --mount=from=cratesio-cc-1.2.43,source=/cc-1.2.43,dst=$CARGO_HOME/registry/src/index.crates.io/cc-1.2.43 \
     env CARGO_CFG_FEATURE= \
         CARGO_CFG_PANIC=unwind \
         CARGO_CFG_TARGET_ABI= \
@@ -18397,6 +18491,9 @@ WORKDIR $CARGO_HOME/registry/src/index.crates.io/tree-sitter-ink-lbz-0.0.1
 RUN \
   --mount=from=out-90a45d29cb00af3a,source=/_build_script_build-90a45d29cb00af3a,dst=/target/release/build/tree-sitter-ink-lbz-90a45d29cb00af3a/build-script-build \
   --mount=from=cratesio-tree-sitter-ink-lbz-0.0.1,source=/tree-sitter-ink-lbz-0.0.1,dst=$CARGO_HOME/registry/src/index.crates.io/tree-sitter-ink-lbz-0.0.1 \
+  --mount=from=cratesio-find-msvc-tools-0.1.4,source=/find-msvc-tools-0.1.4,dst=$CARGO_HOME/registry/src/index.crates.io/find-msvc-tools-0.1.4 \
+  --mount=from=cratesio-shlex-1.3.0,source=/shlex-1.3.0,dst=$CARGO_HOME/registry/src/index.crates.io/shlex-1.3.0 \
+  --mount=from=cratesio-cc-1.2.43,source=/cc-1.2.43,dst=$CARGO_HOME/registry/src/index.crates.io/cc-1.2.43 \
     env CARGO_CFG_FEATURE= \
         CARGO_CFG_PANIC=unwind \
         CARGO_CFG_TARGET_ABI= \
@@ -18807,6 +18904,9 @@ WORKDIR $CARGO_HOME/registry/src/index.crates.io/tree-sitter-jjdescription-0.0.1
 RUN \
   --mount=from=out-af5e0a032baccec0,source=/_build_script_build-af5e0a032baccec0,dst=/target/release/build/tree-sitter-jjdescription-af5e0a032baccec0/build-script-build \
   --mount=from=cratesio-tree-sitter-jjdescription-0.0.1,source=/tree-sitter-jjdescription-0.0.1,dst=$CARGO_HOME/registry/src/index.crates.io/tree-sitter-jjdescription-0.0.1 \
+  --mount=from=cratesio-find-msvc-tools-0.1.4,source=/find-msvc-tools-0.1.4,dst=$CARGO_HOME/registry/src/index.crates.io/find-msvc-tools-0.1.4 \
+  --mount=from=cratesio-shlex-1.3.0,source=/shlex-1.3.0,dst=$CARGO_HOME/registry/src/index.crates.io/shlex-1.3.0 \
+  --mount=from=cratesio-cc-1.2.43,source=/cc-1.2.43,dst=$CARGO_HOME/registry/src/index.crates.io/cc-1.2.43 \
     env CARGO_CFG_FEATURE= \
         CARGO_CFG_PANIC=unwind \
         CARGO_CFG_TARGET_ABI= \
@@ -19561,6 +19661,9 @@ WORKDIR $CARGO_HOME/registry/src/index.crates.io/tree-sitter-python-0.25.0
 RUN \
   --mount=from=out-bac0c9fec1599651,source=/_build_script_build-bac0c9fec1599651,dst=/target/release/build/tree-sitter-python-bac0c9fec1599651/build-script-build \
   --mount=from=cratesio-tree-sitter-python-0.25.0,source=/tree-sitter-python-0.25.0,dst=$CARGO_HOME/registry/src/index.crates.io/tree-sitter-python-0.25.0 \
+  --mount=from=cratesio-find-msvc-tools-0.1.4,source=/find-msvc-tools-0.1.4,dst=$CARGO_HOME/registry/src/index.crates.io/find-msvc-tools-0.1.4 \
+  --mount=from=cratesio-shlex-1.3.0,source=/shlex-1.3.0,dst=$CARGO_HOME/registry/src/index.crates.io/shlex-1.3.0 \
+  --mount=from=cratesio-cc-1.2.43,source=/cc-1.2.43,dst=$CARGO_HOME/registry/src/index.crates.io/cc-1.2.43 \
     env CARGO_CFG_FEATURE= \
         CARGO_CFG_PANIC=unwind \
         CARGO_CFG_TARGET_ABI= \

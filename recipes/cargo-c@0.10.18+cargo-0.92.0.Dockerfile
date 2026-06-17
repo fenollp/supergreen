@@ -6,7 +6,7 @@ FROM --platform=$BUILDPLATFORM docker.io/tonistiigi/xx:1.6.1@sha256:923441d7c25f
 FROM scratch AS rustup-1.94.0-x86_64-unknown-linux-gnu
 ADD --chmod=0144 --checksum=sha256:4acc9acc76d5079515b46346a485974457b5a79893cfb01112423c89aeb5aa10 \
   https://static.rust-lang.org/rustup/archive/1.29.0/x86_64-unknown-linux-gnu/rustup-init /rustup-init
-FROM --platform=$BUILDPLATFORM docker.io/library/debian:trixie-slim@sha256:cedb1ef40439206b673ee8b33a46a03a0c9fa90bf3732f54704f99cb061d2c5a AS rust-base
+FROM docker.io/library/debian:trixie-slim@sha256:cedb1ef40439206b673ee8b33a46a03a0c9fa90bf3732f54704f99cb061d2c5a AS rust-base
 SHELL ["/bin/sh", "-eux", "-c"]
 ENV       CARGO_HOME=/usr/local/cargo \
          RUSTUP_HOME=/usr/local/rustup \
@@ -1045,6 +1045,11 @@ WORKDIR $CARGO_HOME/registry/src/index.crates.io/blake3-1.8.2
 RUN \
   --mount=from=out-688547480060434f,source=/_build_script_build-688547480060434f,dst=/target/release/build/blake3-688547480060434f/build-script-build \
   --mount=from=cratesio-blake3-1.8.2,source=/blake3-1.8.2,dst=$CARGO_HOME/registry/src/index.crates.io/blake3-1.8.2 \
+  --mount=from=cratesio-find-msvc-tools-0.1.4,source=/find-msvc-tools-0.1.4,dst=$CARGO_HOME/registry/src/index.crates.io/find-msvc-tools-0.1.4 \
+  --mount=from=cratesio-libc-0.2.177,source=/libc-0.2.177,dst=$CARGO_HOME/registry/src/index.crates.io/libc-0.2.177 \
+  --mount=from=cratesio-jobserver-0.1.34,source=/jobserver-0.1.34,dst=$CARGO_HOME/registry/src/index.crates.io/jobserver-0.1.34 \
+  --mount=from=cratesio-shlex-1.3.0,source=/shlex-1.3.0,dst=$CARGO_HOME/registry/src/index.crates.io/shlex-1.3.0 \
+  --mount=from=cratesio-cc-1.2.44,source=/cc-1.2.44,dst=$CARGO_HOME/registry/src/index.crates.io/cc-1.2.44 \
     env CARGO_CFG_FEATURE=default,std \
         CARGO_CFG_PANIC=unwind \
         CARGO_CFG_TARGET_ABI= \
@@ -3614,6 +3619,7 @@ WORKDIR $CARGO_HOME/registry/src/index.crates.io/generic-array-0.14.9
 RUN \
   --mount=from=out-39af8f2cb77126f9,source=/_build_script_build-39af8f2cb77126f9,dst=/target/release/build/generic-array-39af8f2cb77126f9/build-script-build \
   --mount=from=cratesio-generic-array-0.14.9,source=/generic-array-0.14.9,dst=$CARGO_HOME/registry/src/index.crates.io/generic-array-0.14.9 \
+  --mount=from=cratesio-version_check-0.9.5,source=/version_check-0.9.5,dst=$CARGO_HOME/registry/src/index.crates.io/version_check-0.9.5 \
     env CARGO_CFG_FEATURE=more_lengths,zeroize \
         CARGO_CFG_PANIC=unwind \
         CARGO_CFG_TARGET_ABI= \
@@ -5095,6 +5101,7 @@ WORKDIR $CARGO_HOME/registry/src/index.crates.io/num-traits-0.2.19
 RUN \
   --mount=from=out-cd3e9d338cc0c977,source=/_build_script_build-cd3e9d338cc0c977,dst=/target/release/build/num-traits-cd3e9d338cc0c977/build-script-build \
   --mount=from=cratesio-num-traits-0.2.19,source=/num-traits-0.2.19,dst=$CARGO_HOME/registry/src/index.crates.io/num-traits-0.2.19 \
+  --mount=from=cratesio-autocfg-1.5.0,source=/autocfg-1.5.0,dst=$CARGO_HOME/registry/src/index.crates.io/autocfg-1.5.0 \
     env CARGO_CFG_FEATURE=std \
         CARGO_CFG_PANIC=unwind \
         CARGO_CFG_TARGET_ABI= \
@@ -7830,6 +7837,11 @@ WORKDIR $CARGO_HOME/registry/src/index.crates.io/libnghttp2-sys-0.1.11+1.64.0
 RUN \
   --mount=from=out-bf7d9dcad2666ec0,source=/_build_script_build-bf7d9dcad2666ec0,dst=/target/release/build/libnghttp2-sys-bf7d9dcad2666ec0/build-script-build \
   --mount=from=cratesio-libnghttp2-sys-0.1.11-1.64.0,source=/libnghttp2-sys-0.1.11+1.64.0,dst=$CARGO_HOME/registry/src/index.crates.io/libnghttp2-sys-0.1.11+1.64.0 \
+  --mount=from=cratesio-find-msvc-tools-0.1.4,source=/find-msvc-tools-0.1.4,dst=$CARGO_HOME/registry/src/index.crates.io/find-msvc-tools-0.1.4 \
+  --mount=from=cratesio-libc-0.2.177,source=/libc-0.2.177,dst=$CARGO_HOME/registry/src/index.crates.io/libc-0.2.177 \
+  --mount=from=cratesio-jobserver-0.1.34,source=/jobserver-0.1.34,dst=$CARGO_HOME/registry/src/index.crates.io/jobserver-0.1.34 \
+  --mount=from=cratesio-shlex-1.3.0,source=/shlex-1.3.0,dst=$CARGO_HOME/registry/src/index.crates.io/shlex-1.3.0 \
+  --mount=from=cratesio-cc-1.2.44,source=/cc-1.2.44,dst=$CARGO_HOME/registry/src/index.crates.io/cc-1.2.44 \
     env CARGO_CFG_FEATURE= \
         CARGO_CFG_PANIC=unwind \
         CARGO_CFG_TARGET_ABI= \
@@ -8044,6 +8056,13 @@ WORKDIR $CARGO_HOME/registry/src/index.crates.io/libz-sys-1.1.22
 RUN \
   --mount=from=out-00fdf7218172e46d,source=/_build_script_build-00fdf7218172e46d,dst=/target/release/build/libz-sys-00fdf7218172e46d/build-script-build \
   --mount=from=cratesio-libz-sys-1.1.22,source=/libz-sys-1.1.22,dst=$CARGO_HOME/registry/src/index.crates.io/libz-sys-1.1.22 \
+  --mount=from=cratesio-find-msvc-tools-0.1.4,source=/find-msvc-tools-0.1.4,dst=$CARGO_HOME/registry/src/index.crates.io/find-msvc-tools-0.1.4 \
+  --mount=from=cratesio-libc-0.2.177,source=/libc-0.2.177,dst=$CARGO_HOME/registry/src/index.crates.io/libc-0.2.177 \
+  --mount=from=cratesio-jobserver-0.1.34,source=/jobserver-0.1.34,dst=$CARGO_HOME/registry/src/index.crates.io/jobserver-0.1.34 \
+  --mount=from=cratesio-shlex-1.3.0,source=/shlex-1.3.0,dst=$CARGO_HOME/registry/src/index.crates.io/shlex-1.3.0 \
+  --mount=from=cratesio-cc-1.2.44,source=/cc-1.2.44,dst=$CARGO_HOME/registry/src/index.crates.io/cc-1.2.44 \
+  --mount=from=cratesio-pkg-config-0.3.32,source=/pkg-config-0.3.32,dst=$CARGO_HOME/registry/src/index.crates.io/pkg-config-0.3.32 \
+  --mount=from=cratesio-vcpkg-0.2.15,source=/vcpkg-0.2.15,dst=$CARGO_HOME/registry/src/index.crates.io/vcpkg-0.2.15 \
     env CARGO_CFG_FEATURE=libc \
         CARGO_CFG_PANIC=unwind \
         CARGO_CFG_TARGET_ABI= \
@@ -8183,6 +8202,13 @@ WORKDIR $CARGO_HOME/registry/src/index.crates.io/openssl-sys-0.9.110
 RUN \
   --mount=from=out-c3dd59a59f4e47fa,source=/_build_script_main-c3dd59a59f4e47fa,dst=/target/release/build/openssl-sys-c3dd59a59f4e47fa/build-script-main \
   --mount=from=cratesio-openssl-sys-0.9.110,source=/openssl-sys-0.9.110,dst=$CARGO_HOME/registry/src/index.crates.io/openssl-sys-0.9.110 \
+  --mount=from=cratesio-find-msvc-tools-0.1.4,source=/find-msvc-tools-0.1.4,dst=$CARGO_HOME/registry/src/index.crates.io/find-msvc-tools-0.1.4 \
+  --mount=from=cratesio-libc-0.2.177,source=/libc-0.2.177,dst=$CARGO_HOME/registry/src/index.crates.io/libc-0.2.177 \
+  --mount=from=cratesio-jobserver-0.1.34,source=/jobserver-0.1.34,dst=$CARGO_HOME/registry/src/index.crates.io/jobserver-0.1.34 \
+  --mount=from=cratesio-shlex-1.3.0,source=/shlex-1.3.0,dst=$CARGO_HOME/registry/src/index.crates.io/shlex-1.3.0 \
+  --mount=from=cratesio-cc-1.2.44,source=/cc-1.2.44,dst=$CARGO_HOME/registry/src/index.crates.io/cc-1.2.44 \
+  --mount=from=cratesio-pkg-config-0.3.32,source=/pkg-config-0.3.32,dst=$CARGO_HOME/registry/src/index.crates.io/pkg-config-0.3.32 \
+  --mount=from=cratesio-vcpkg-0.2.15,source=/vcpkg-0.2.15,dst=$CARGO_HOME/registry/src/index.crates.io/vcpkg-0.2.15 \
     env CARGO_CFG_FEATURE= \
         CARGO_CFG_PANIC=unwind \
         CARGO_CFG_TARGET_ABI= \
@@ -8320,6 +8346,12 @@ WORKDIR $CARGO_HOME/registry/src/index.crates.io/curl-sys-0.4.83+curl-8.15.0
 RUN \
   --mount=from=out-56f799a6f9e30a6f,source=/_build_script_build-56f799a6f9e30a6f,dst=/target/release/build/curl-sys-56f799a6f9e30a6f/build-script-build \
   --mount=from=cratesio-curl-sys-0.4.83-curl-8.15.0,source=/curl-sys-0.4.83+curl-8.15.0,dst=$CARGO_HOME/registry/src/index.crates.io/curl-sys-0.4.83+curl-8.15.0 \
+  --mount=from=cratesio-find-msvc-tools-0.1.4,source=/find-msvc-tools-0.1.4,dst=$CARGO_HOME/registry/src/index.crates.io/find-msvc-tools-0.1.4 \
+  --mount=from=cratesio-libc-0.2.177,source=/libc-0.2.177,dst=$CARGO_HOME/registry/src/index.crates.io/libc-0.2.177 \
+  --mount=from=cratesio-jobserver-0.1.34,source=/jobserver-0.1.34,dst=$CARGO_HOME/registry/src/index.crates.io/jobserver-0.1.34 \
+  --mount=from=cratesio-shlex-1.3.0,source=/shlex-1.3.0,dst=$CARGO_HOME/registry/src/index.crates.io/shlex-1.3.0 \
+  --mount=from=cratesio-cc-1.2.44,source=/cc-1.2.44,dst=$CARGO_HOME/registry/src/index.crates.io/cc-1.2.44 \
+  --mount=from=cratesio-pkg-config-0.3.32,source=/pkg-config-0.3.32,dst=$CARGO_HOME/registry/src/index.crates.io/pkg-config-0.3.32 \
     env CARGO_CFG_FEATURE=default,http2,libnghttp2-sys,openssl-sys,ssl \
         CARGO_CFG_PANIC=unwind \
         CARGO_CFG_TARGET_ABI= \
@@ -9046,6 +9078,12 @@ WORKDIR $CARGO_HOME/registry/src/index.crates.io/libssh2-sys-0.3.1
 RUN \
   --mount=from=out-4570e20537e1f341,source=/_build_script_build-4570e20537e1f341,dst=/target/release/build/libssh2-sys-4570e20537e1f341/build-script-build \
   --mount=from=cratesio-libssh2-sys-0.3.1,source=/libssh2-sys-0.3.1,dst=$CARGO_HOME/registry/src/index.crates.io/libssh2-sys-0.3.1 \
+  --mount=from=cratesio-find-msvc-tools-0.1.4,source=/find-msvc-tools-0.1.4,dst=$CARGO_HOME/registry/src/index.crates.io/find-msvc-tools-0.1.4 \
+  --mount=from=cratesio-libc-0.2.177,source=/libc-0.2.177,dst=$CARGO_HOME/registry/src/index.crates.io/libc-0.2.177 \
+  --mount=from=cratesio-jobserver-0.1.34,source=/jobserver-0.1.34,dst=$CARGO_HOME/registry/src/index.crates.io/jobserver-0.1.34 \
+  --mount=from=cratesio-shlex-1.3.0,source=/shlex-1.3.0,dst=$CARGO_HOME/registry/src/index.crates.io/shlex-1.3.0 \
+  --mount=from=cratesio-cc-1.2.44,source=/cc-1.2.44,dst=$CARGO_HOME/registry/src/index.crates.io/cc-1.2.44 \
+  --mount=from=cratesio-pkg-config-0.3.32,source=/pkg-config-0.3.32,dst=$CARGO_HOME/registry/src/index.crates.io/pkg-config-0.3.32 \
     env CARGO_CFG_FEATURE= \
         CARGO_CFG_PANIC=unwind \
         CARGO_CFG_TARGET_ABI= \
@@ -9196,6 +9234,12 @@ WORKDIR $CARGO_HOME/registry/src/index.crates.io/libgit2-sys-0.18.2+1.9.1
 RUN \
   --mount=from=out-eda998b34aceed90,source=/_build_script_build-eda998b34aceed90,dst=/target/release/build/libgit2-sys-eda998b34aceed90/build-script-build \
   --mount=from=cratesio-libgit2-sys-0.18.2-1.9.1,source=/libgit2-sys-0.18.2+1.9.1,dst=$CARGO_HOME/registry/src/index.crates.io/libgit2-sys-0.18.2+1.9.1 \
+  --mount=from=cratesio-find-msvc-tools-0.1.4,source=/find-msvc-tools-0.1.4,dst=$CARGO_HOME/registry/src/index.crates.io/find-msvc-tools-0.1.4 \
+  --mount=from=cratesio-libc-0.2.177,source=/libc-0.2.177,dst=$CARGO_HOME/registry/src/index.crates.io/libc-0.2.177 \
+  --mount=from=cratesio-jobserver-0.1.34,source=/jobserver-0.1.34,dst=$CARGO_HOME/registry/src/index.crates.io/jobserver-0.1.34 \
+  --mount=from=cratesio-shlex-1.3.0,source=/shlex-1.3.0,dst=$CARGO_HOME/registry/src/index.crates.io/shlex-1.3.0 \
+  --mount=from=cratesio-cc-1.2.44,source=/cc-1.2.44,dst=$CARGO_HOME/registry/src/index.crates.io/cc-1.2.44 \
+  --mount=from=cratesio-pkg-config-0.3.32,source=/pkg-config-0.3.32,dst=$CARGO_HOME/registry/src/index.crates.io/pkg-config-0.3.32 \
     env CARGO_CFG_FEATURE=https,libssh2-sys,openssl-sys,ssh \
         CARGO_CFG_PANIC=unwind \
         CARGO_CFG_TARGET_ABI= \
@@ -16069,6 +16113,7 @@ WORKDIR $CARGO_HOME/registry/src/index.crates.io/im-rc-15.1.0
 RUN \
   --mount=from=out-9cf8e9db348b740d,source=/_build_script_build-9cf8e9db348b740d,dst=/target/release/build/im-rc-9cf8e9db348b740d/build-script-build \
   --mount=from=cratesio-im-rc-15.1.0,source=/im-rc-15.1.0,dst=$CARGO_HOME/registry/src/index.crates.io/im-rc-15.1.0 \
+  --mount=from=cratesio-version_check-0.9.5,source=/version_check-0.9.5,dst=$CARGO_HOME/registry/src/index.crates.io/version_check-0.9.5 \
     env CARGO_CFG_FEATURE= \
         CARGO_CFG_PANIC=unwind \
         CARGO_CFG_TARGET_ABI= \
@@ -17949,6 +17994,13 @@ WORKDIR $CARGO_HOME/registry/src/index.crates.io/libsqlite3-sys-0.35.0
 RUN \
   --mount=from=out-915060ffe2f60b59,source=/_build_script_build-915060ffe2f60b59,dst=/target/release/build/libsqlite3-sys-915060ffe2f60b59/build-script-build \
   --mount=from=cratesio-libsqlite3-sys-0.35.0,source=/libsqlite3-sys-0.35.0,dst=$CARGO_HOME/registry/src/index.crates.io/libsqlite3-sys-0.35.0 \
+  --mount=from=cratesio-find-msvc-tools-0.1.4,source=/find-msvc-tools-0.1.4,dst=$CARGO_HOME/registry/src/index.crates.io/find-msvc-tools-0.1.4 \
+  --mount=from=cratesio-libc-0.2.177,source=/libc-0.2.177,dst=$CARGO_HOME/registry/src/index.crates.io/libc-0.2.177 \
+  --mount=from=cratesio-jobserver-0.1.34,source=/jobserver-0.1.34,dst=$CARGO_HOME/registry/src/index.crates.io/jobserver-0.1.34 \
+  --mount=from=cratesio-shlex-1.3.0,source=/shlex-1.3.0,dst=$CARGO_HOME/registry/src/index.crates.io/shlex-1.3.0 \
+  --mount=from=cratesio-cc-1.2.44,source=/cc-1.2.44,dst=$CARGO_HOME/registry/src/index.crates.io/cc-1.2.44 \
+  --mount=from=cratesio-pkg-config-0.3.32,source=/pkg-config-0.3.32,dst=$CARGO_HOME/registry/src/index.crates.io/pkg-config-0.3.32 \
+  --mount=from=cratesio-vcpkg-0.2.15,source=/vcpkg-0.2.15,dst=$CARGO_HOME/registry/src/index.crates.io/vcpkg-0.2.15 \
     env CARGO_CFG_FEATURE=bundled,bundled_bindings,cc,default,min_sqlite_version_3_14_0,pkg-config,vcpkg \
         CARGO_CFG_PANIC=unwind \
         CARGO_CFG_TARGET_ABI= \
@@ -19159,6 +19211,14 @@ WORKDIR $CARGO_HOME/registry/src/index.crates.io/cargo-0.92.0
 RUN \
   --mount=from=out-a3c67144cc2c2b81,source=/_build_script_build-a3c67144cc2c2b81,dst=/target/release/build/cargo-a3c67144cc2c2b81/build-script-build \
   --mount=from=cratesio-cargo-0.92.0,source=/cargo-0.92.0,dst=$CARGO_HOME/registry/src/index.crates.io/cargo-0.92.0 \
+  --mount=from=cratesio-cfg-if-1.0.4,source=/cfg-if-1.0.4,dst=$CARGO_HOME/registry/src/index.crates.io/cfg-if-1.0.4 \
+  --mount=from=cratesio-crc32fast-1.5.0,source=/crc32fast-1.5.0,dst=$CARGO_HOME/registry/src/index.crates.io/crc32fast-1.5.0 \
+  --mount=from=cratesio-zlib-rs-0.5.2,source=/zlib-rs-0.5.2,dst=$CARGO_HOME/registry/src/index.crates.io/zlib-rs-0.5.2 \
+  --mount=from=cratesio-libz-rs-sys-0.5.2,source=/libz-rs-sys-0.5.2,dst=$CARGO_HOME/registry/src/index.crates.io/libz-rs-sys-0.5.2 \
+  --mount=from=cratesio-flate2-1.1.5,source=/flate2-1.1.5,dst=$CARGO_HOME/registry/src/index.crates.io/flate2-1.1.5 \
+  --mount=from=cratesio-libc-0.2.177,source=/libc-0.2.177,dst=$CARGO_HOME/registry/src/index.crates.io/libc-0.2.177 \
+  --mount=from=cratesio-filetime-0.2.26,source=/filetime-0.2.26,dst=$CARGO_HOME/registry/src/index.crates.io/filetime-0.2.26 \
+  --mount=from=cratesio-tar-0.4.44,source=/tar-0.4.44,dst=$CARGO_HOME/registry/src/index.crates.io/tar-0.4.44 \
     env CARGO_CFG_FEATURE=default,http-transport-curl \
         CARGO_CFG_PANIC=unwind \
         CARGO_CFG_TARGET_ABI= \
@@ -20144,6 +20204,7 @@ WORKDIR $CARGO_HOME/registry/src/index.crates.io/memoffset-0.9.1
 RUN \
   --mount=from=out-38f0d6b2c4bc42f5,source=/_build_script_build-38f0d6b2c4bc42f5,dst=/target/release/build/memoffset-38f0d6b2c4bc42f5/build-script-build \
   --mount=from=cratesio-memoffset-0.9.1,source=/memoffset-0.9.1,dst=$CARGO_HOME/registry/src/index.crates.io/memoffset-0.9.1 \
+  --mount=from=cratesio-autocfg-1.5.0,source=/autocfg-1.5.0,dst=$CARGO_HOME/registry/src/index.crates.io/autocfg-1.5.0 \
     env CARGO_CFG_FEATURE=default \
         CARGO_CFG_PANIC=unwind \
         CARGO_CFG_TARGET_ABI= \

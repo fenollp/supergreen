@@ -6,7 +6,7 @@ FROM --platform=$BUILDPLATFORM docker.io/tonistiigi/xx:1.6.1@sha256:923441d7c25f
 FROM scratch AS rustup-1.94.0-x86_64-unknown-linux-gnu
 ADD --chmod=0144 --checksum=sha256:4acc9acc76d5079515b46346a485974457b5a79893cfb01112423c89aeb5aa10 \
   https://static.rust-lang.org/rustup/archive/1.29.0/x86_64-unknown-linux-gnu/rustup-init /rustup-init
-FROM --platform=$BUILDPLATFORM docker.io/library/debian:trixie-slim@sha256:cedb1ef40439206b673ee8b33a46a03a0c9fa90bf3732f54704f99cb061d2c5a AS rust-base
+FROM docker.io/library/debian:trixie-slim@sha256:cedb1ef40439206b673ee8b33a46a03a0c9fa90bf3732f54704f99cb061d2c5a AS rust-base
 SHELL ["/bin/sh", "-eux", "-c"]
 ENV       CARGO_HOME=/usr/local/cargo \
          RUSTUP_HOME=/usr/local/rustup \
@@ -1493,6 +1493,7 @@ WORKDIR $CARGO_HOME/registry/src/index.crates.io/proc-macro-error-attr-1.0.4
 RUN \
   --mount=from=out-67d8778f473b2709,source=/_build_script_build-67d8778f473b2709,dst=/target/release/build/proc-macro-error-attr-67d8778f473b2709/build-script-build \
   --mount=from=cratesio-proc-macro-error-attr-1.0.4,source=/proc-macro-error-attr-1.0.4,dst=$CARGO_HOME/registry/src/index.crates.io/proc-macro-error-attr-1.0.4 \
+  --mount=from=cratesio-version_check-0.9.4,source=/version_check-0.9.4,dst=$CARGO_HOME/registry/src/index.crates.io/version_check-0.9.4 \
     env CARGO_CFG_FEATURE= \
         CARGO_CFG_PANIC=unwind \
         CARGO_CFG_TARGET_ABI= \
@@ -1766,6 +1767,7 @@ WORKDIR $CARGO_HOME/registry/src/index.crates.io/proc-macro-error-1.0.4
 RUN \
   --mount=from=out-4f6b4c9abf70c16f,source=/_build_script_build-4f6b4c9abf70c16f,dst=/target/release/build/proc-macro-error-4f6b4c9abf70c16f/build-script-build \
   --mount=from=cratesio-proc-macro-error-1.0.4,source=/proc-macro-error-1.0.4,dst=$CARGO_HOME/registry/src/index.crates.io/proc-macro-error-1.0.4 \
+  --mount=from=cratesio-version_check-0.9.4,source=/version_check-0.9.4,dst=$CARGO_HOME/registry/src/index.crates.io/version_check-0.9.4 \
     env CARGO_CFG_FEATURE=default,syn,syn-error \
         CARGO_CFG_PANIC=unwind \
         CARGO_CFG_TARGET_ABI= \

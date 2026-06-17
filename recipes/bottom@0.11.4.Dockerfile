@@ -6,7 +6,7 @@ FROM --platform=$BUILDPLATFORM docker.io/tonistiigi/xx:1.6.1@sha256:923441d7c25f
 FROM scratch AS rustup-1.94.0-x86_64-unknown-linux-gnu
 ADD --chmod=0144 --checksum=sha256:4acc9acc76d5079515b46346a485974457b5a79893cfb01112423c89aeb5aa10 \
   https://static.rust-lang.org/rustup/archive/1.29.0/x86_64-unknown-linux-gnu/rustup-init /rustup-init
-FROM --platform=$BUILDPLATFORM docker.io/library/debian:trixie-slim@sha256:cedb1ef40439206b673ee8b33a46a03a0c9fa90bf3732f54704f99cb061d2c5a AS rust-base
+FROM docker.io/library/debian:trixie-slim@sha256:cedb1ef40439206b673ee8b33a46a03a0c9fa90bf3732f54704f99cb061d2c5a AS rust-base
 SHELL ["/bin/sh", "-eux", "-c"]
 ENV       CARGO_HOME=/usr/local/cargo \
          RUSTUP_HOME=/usr/local/rustup \
@@ -2245,6 +2245,7 @@ WORKDIR $CARGO_HOME/registry/src/index.crates.io/lock_api-0.4.13
 RUN \
   --mount=from=out-2c11e443d702ceac,source=/_build_script_build-2c11e443d702ceac,dst=/target/release/build/lock_api-2c11e443d702ceac/build-script-build \
   --mount=from=cratesio-lock_api-0.4.13,source=/lock_api-0.4.13,dst=$CARGO_HOME/registry/src/index.crates.io/lock_api-0.4.13 \
+  --mount=from=cratesio-autocfg-1.5.0,source=/autocfg-1.5.0,dst=$CARGO_HOME/registry/src/index.crates.io/autocfg-1.5.0 \
     env CARGO_CFG_FEATURE=atomic_usize,default \
         CARGO_CFG_PANIC=unwind \
         CARGO_CFG_TARGET_ABI= \
@@ -2908,6 +2909,7 @@ WORKDIR $CARGO_HOME/registry/src/index.crates.io/nix-0.30.1
 RUN \
   --mount=from=out-e18dd7a7f122eef8,source=/_build_script_build-e18dd7a7f122eef8,dst=/target/release/build/nix-e18dd7a7f122eef8/build-script-build \
   --mount=from=cratesio-nix-0.30.1,source=/nix-0.30.1,dst=$CARGO_HOME/registry/src/index.crates.io/nix-0.30.1 \
+  --mount=from=cratesio-cfg_aliases-0.2.1,source=/cfg_aliases-0.2.1,dst=$CARGO_HOME/registry/src/index.crates.io/cfg_aliases-0.2.1 \
     env CARGO_CFG_FEATURE=process,signal \
         CARGO_CFG_PANIC=unwind \
         CARGO_CFG_TARGET_ABI= \
@@ -6310,6 +6312,7 @@ WORKDIR $CARGO_HOME/registry/src/index.crates.io/num-traits-0.2.19
 RUN \
   --mount=from=out-d169f7e3926a1f30,source=/_build_script_build-d169f7e3926a1f30,dst=/target/release/build/num-traits-d169f7e3926a1f30/build-script-build \
   --mount=from=cratesio-num-traits-0.2.19,source=/num-traits-0.2.19,dst=$CARGO_HOME/registry/src/index.crates.io/num-traits-0.2.19 \
+  --mount=from=cratesio-autocfg-1.5.0,source=/autocfg-1.5.0,dst=$CARGO_HOME/registry/src/index.crates.io/autocfg-1.5.0 \
     env CARGO_CFG_FEATURE=std \
         CARGO_CFG_PANIC=unwind \
         CARGO_CFG_TARGET_ABI= \
@@ -8026,6 +8029,33 @@ WORKDIR $CARGO_HOME/registry/src/index.crates.io/bottom-0.11.4
 RUN \
   --mount=from=out-4d8f70f249e5e93b,source=/_build_script_build-4d8f70f249e5e93b,dst=/target/release/build/bottom-4d8f70f249e5e93b/build-script-build \
   --mount=from=cratesio-bottom-0.11.4,source=/bottom-0.11.4,dst=$CARGO_HOME/registry/src/index.crates.io/bottom-0.11.4 \
+  --mount=from=cratesio-anstyle-1.0.11,source=/anstyle-1.0.11,dst=$CARGO_HOME/registry/src/index.crates.io/anstyle-1.0.11 \
+  --mount=from=cratesio-utf8parse-0.2.2,source=/utf8parse-0.2.2,dst=$CARGO_HOME/registry/src/index.crates.io/utf8parse-0.2.2 \
+  --mount=from=cratesio-anstyle-parse-0.2.7,source=/anstyle-parse-0.2.7,dst=$CARGO_HOME/registry/src/index.crates.io/anstyle-parse-0.2.7 \
+  --mount=from=cratesio-anstyle-query-1.1.4,source=/anstyle-query-1.1.4,dst=$CARGO_HOME/registry/src/index.crates.io/anstyle-query-1.1.4 \
+  --mount=from=cratesio-colorchoice-1.0.4,source=/colorchoice-1.0.4,dst=$CARGO_HOME/registry/src/index.crates.io/colorchoice-1.0.4 \
+  --mount=from=cratesio-is_terminal_polyfill-1.70.1,source=/is_terminal_polyfill-1.70.1,dst=$CARGO_HOME/registry/src/index.crates.io/is_terminal_polyfill-1.70.1 \
+  --mount=from=cratesio-anstream-0.6.20,source=/anstream-0.6.20,dst=$CARGO_HOME/registry/src/index.crates.io/anstream-0.6.20 \
+  --mount=from=cratesio-clap_lex-0.7.5,source=/clap_lex-0.7.5,dst=$CARGO_HOME/registry/src/index.crates.io/clap_lex-0.7.5 \
+  --mount=from=cratesio-strsim-0.11.1,source=/strsim-0.11.1,dst=$CARGO_HOME/registry/src/index.crates.io/strsim-0.11.1 \
+  --mount=from=cratesio-bitflags-2.10.0,source=/bitflags-2.10.0,dst=$CARGO_HOME/registry/src/index.crates.io/bitflags-2.10.0 \
+  --mount=from=cratesio-linux-raw-sys-0.11.0,source=/linux-raw-sys-0.11.0,dst=$CARGO_HOME/registry/src/index.crates.io/linux-raw-sys-0.11.0 \
+  --mount=from=cratesio-rustix-1.1.2,source=/rustix-1.1.2,dst=$CARGO_HOME/registry/src/index.crates.io/rustix-1.1.2 \
+  --mount=from=cratesio-terminal_size-0.4.3,source=/terminal_size-0.4.3,dst=$CARGO_HOME/registry/src/index.crates.io/terminal_size-0.4.3 \
+  --mount=from=cratesio-clap_builder-4.5.48,source=/clap_builder-4.5.48,dst=$CARGO_HOME/registry/src/index.crates.io/clap_builder-4.5.48 \
+  --mount=from=cratesio-heck-0.5.0,source=/heck-0.5.0,dst=$CARGO_HOME/registry/src/index.crates.io/heck-0.5.0 \
+  --mount=from=cratesio-unicode-ident-1.0.19,source=/unicode-ident-1.0.19,dst=$CARGO_HOME/registry/src/index.crates.io/unicode-ident-1.0.19 \
+  --mount=from=cratesio-proc-macro2-1.0.101,source=/proc-macro2-1.0.101,dst=$CARGO_HOME/registry/src/index.crates.io/proc-macro2-1.0.101 \
+  --mount=from=cratesio-quote-1.0.40,source=/quote-1.0.40,dst=$CARGO_HOME/registry/src/index.crates.io/quote-1.0.40 \
+  --mount=from=cratesio-syn-2.0.106,source=/syn-2.0.106,dst=$CARGO_HOME/registry/src/index.crates.io/syn-2.0.106 \
+  --mount=from=cratesio-clap_derive-4.5.47,source=/clap_derive-4.5.47,dst=$CARGO_HOME/registry/src/index.crates.io/clap_derive-4.5.47 \
+  --mount=from=cratesio-clap-4.5.48,source=/clap-4.5.48,dst=$CARGO_HOME/registry/src/index.crates.io/clap-4.5.48 \
+  --mount=from=cratesio-clap_complete-4.5.58,source=/clap_complete-4.5.58,dst=$CARGO_HOME/registry/src/index.crates.io/clap_complete-4.5.58 \
+  --mount=from=cratesio-clap_complete_fig-4.5.2,source=/clap_complete_fig-4.5.2,dst=$CARGO_HOME/registry/src/index.crates.io/clap_complete_fig-4.5.2 \
+  --mount=from=cratesio-clap_complete_nushell-4.5.8,source=/clap_complete_nushell-4.5.8,dst=$CARGO_HOME/registry/src/index.crates.io/clap_complete_nushell-4.5.8 \
+  --mount=from=cratesio-roff-0.2.2,source=/roff-0.2.2,dst=$CARGO_HOME/registry/src/index.crates.io/roff-0.2.2 \
+  --mount=from=cratesio-clap_mangen-0.2.29,source=/clap_mangen-0.2.29,dst=$CARGO_HOME/registry/src/index.crates.io/clap_mangen-0.2.29 \
+  --mount=from=cratesio-indoc-2.0.6,source=/indoc-2.0.6,dst=$CARGO_HOME/registry/src/index.crates.io/indoc-2.0.6 \
     env CARGO_CFG_FEATURE=battery,default,deploy,gpu,nvidia,nvml-wrapper,starship-battery,zfs \
         CARGO_CFG_PANIC=unwind \
         CARGO_CFG_TARGET_ABI= \

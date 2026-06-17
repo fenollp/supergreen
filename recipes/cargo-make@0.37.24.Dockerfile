@@ -6,7 +6,7 @@ FROM --platform=$BUILDPLATFORM docker.io/tonistiigi/xx:1.6.1@sha256:923441d7c25f
 FROM scratch AS rustup-1.94.0-x86_64-unknown-linux-gnu
 ADD --chmod=0144 --checksum=sha256:4acc9acc76d5079515b46346a485974457b5a79893cfb01112423c89aeb5aa10 \
   https://static.rust-lang.org/rustup/archive/1.29.0/x86_64-unknown-linux-gnu/rustup-init /rustup-init
-FROM --platform=$BUILDPLATFORM docker.io/library/debian:trixie-slim@sha256:cedb1ef40439206b673ee8b33a46a03a0c9fa90bf3732f54704f99cb061d2c5a AS rust-base
+FROM docker.io/library/debian:trixie-slim@sha256:cedb1ef40439206b673ee8b33a46a03a0c9fa90bf3732f54704f99cb061d2c5a AS rust-base
 SHELL ["/bin/sh", "-eux", "-c"]
 ENV       CARGO_HOME=/usr/local/cargo \
          RUSTUP_HOME=/usr/local/rustup \
@@ -1919,6 +1919,7 @@ WORKDIR $CARGO_HOME/registry/src/index.crates.io/indexmap-1.9.3
 RUN \
   --mount=from=out-f60ba950cc41807b,source=/_build_script_build-f60ba950cc41807b,dst=/target/release/build/indexmap-f60ba950cc41807b/build-script-build \
   --mount=from=cratesio-indexmap-1.9.3,source=/indexmap-1.9.3,dst=$CARGO_HOME/registry/src/index.crates.io/indexmap-1.9.3 \
+  --mount=from=cratesio-autocfg-1.4.0,source=/autocfg-1.4.0,dst=$CARGO_HOME/registry/src/index.crates.io/autocfg-1.4.0 \
     env CARGO_CFG_FEATURE= \
         CARGO_CFG_PANIC=unwind \
         CARGO_CFG_TARGET_ABI= \
@@ -2300,6 +2301,7 @@ WORKDIR $CARGO_HOME/registry/src/index.crates.io/nix-0.29.0
 RUN \
   --mount=from=out-30d44295bacb2568,source=/_build_script_build-30d44295bacb2568,dst=/target/release/build/nix-30d44295bacb2568/build-script-build \
   --mount=from=cratesio-nix-0.29.0,source=/nix-0.29.0,dst=$CARGO_HOME/registry/src/index.crates.io/nix-0.29.0 \
+  --mount=from=cratesio-cfg_aliases-0.2.1,source=/cfg_aliases-0.2.1,dst=$CARGO_HOME/registry/src/index.crates.io/cfg_aliases-0.2.1 \
     env CARGO_CFG_FEATURE=fs,process,signal \
         CARGO_CFG_PANIC=unwind \
         CARGO_CFG_TARGET_ABI= \
@@ -3079,6 +3081,8 @@ WORKDIR $CARGO_HOME/registry/src/index.crates.io/ring-0.17.8
 RUN \
   --mount=from=out-5c9f5e898bf20307,source=/_build_script_build-5c9f5e898bf20307,dst=/target/release/build/ring-5c9f5e898bf20307/build-script-build \
   --mount=from=cratesio-ring-0.17.8,source=/ring-0.17.8,dst=$CARGO_HOME/registry/src/index.crates.io/ring-0.17.8 \
+  --mount=from=cratesio-shlex-1.3.0,source=/shlex-1.3.0,dst=$CARGO_HOME/registry/src/index.crates.io/shlex-1.3.0 \
+  --mount=from=cratesio-cc-1.2.10,source=/cc-1.2.10,dst=$CARGO_HOME/registry/src/index.crates.io/cc-1.2.10 \
     env CARGO_CFG_FEATURE=alloc,default,dev_urandom_fallback \
         CARGO_CFG_PANIC=unwind \
         CARGO_CFG_TARGET_ABI= \
@@ -6179,6 +6183,7 @@ WORKDIR $CARGO_HOME/registry/src/index.crates.io/generic-array-0.14.7
 RUN \
   --mount=from=out-cdbe43b0f4c2f12d,source=/_build_script_build-cdbe43b0f4c2f12d,dst=/target/release/build/generic-array-cdbe43b0f4c2f12d/build-script-build \
   --mount=from=cratesio-generic-array-0.14.7,source=/generic-array-0.14.7,dst=$CARGO_HOME/registry/src/index.crates.io/generic-array-0.14.7 \
+  --mount=from=cratesio-version_check-0.9.5,source=/version_check-0.9.5,dst=$CARGO_HOME/registry/src/index.crates.io/version_check-0.9.5 \
     env CARGO_CFG_FEATURE=more_lengths \
         CARGO_CFG_PANIC=unwind \
         CARGO_CFG_TARGET_ABI= \
@@ -6512,6 +6517,7 @@ WORKDIR $CARGO_HOME/registry/src/index.crates.io/num-traits-0.2.19
 RUN \
   --mount=from=out-cbf501beb938dfac,source=/_build_script_build-cbf501beb938dfac,dst=/target/release/build/num-traits-cbf501beb938dfac/build-script-build \
   --mount=from=cratesio-num-traits-0.2.19,source=/num-traits-0.2.19,dst=$CARGO_HOME/registry/src/index.crates.io/num-traits-0.2.19 \
+  --mount=from=cratesio-autocfg-1.4.0,source=/autocfg-1.4.0,dst=$CARGO_HOME/registry/src/index.crates.io/autocfg-1.4.0 \
     env CARGO_CFG_FEATURE= \
         CARGO_CFG_PANIC=unwind \
         CARGO_CFG_TARGET_ABI= \
@@ -7595,6 +7601,9 @@ WORKDIR $CARGO_HOME/registry/src/index.crates.io/bzip2-sys-0.1.11+1.0.8
 RUN \
   --mount=from=out-9151dce1f3241a0f,source=/_build_script_build-9151dce1f3241a0f,dst=/target/release/build/bzip2-sys-9151dce1f3241a0f/build-script-build \
   --mount=from=cratesio-bzip2-sys-0.1.11-1.0.8,source=/bzip2-sys-0.1.11+1.0.8,dst=$CARGO_HOME/registry/src/index.crates.io/bzip2-sys-0.1.11+1.0.8 \
+  --mount=from=cratesio-shlex-1.3.0,source=/shlex-1.3.0,dst=$CARGO_HOME/registry/src/index.crates.io/shlex-1.3.0 \
+  --mount=from=cratesio-cc-1.2.10,source=/cc-1.2.10,dst=$CARGO_HOME/registry/src/index.crates.io/cc-1.2.10 \
+  --mount=from=cratesio-pkg-config-0.3.31,source=/pkg-config-0.3.31,dst=$CARGO_HOME/registry/src/index.crates.io/pkg-config-0.3.31 \
     env CARGO_CFG_FEATURE= \
         CARGO_CFG_PANIC=unwind \
         CARGO_CFG_TARGET_ABI= \

@@ -6,7 +6,7 @@ FROM --platform=$BUILDPLATFORM docker.io/tonistiigi/xx:1.6.1@sha256:923441d7c25f
 FROM scratch AS rustup-1.94.0-x86_64-unknown-linux-gnu
 ADD --chmod=0144 --checksum=sha256:4acc9acc76d5079515b46346a485974457b5a79893cfb01112423c89aeb5aa10 \
   https://static.rust-lang.org/rustup/archive/1.29.0/x86_64-unknown-linux-gnu/rustup-init /rustup-init
-FROM --platform=$BUILDPLATFORM docker.io/library/debian:trixie-slim@sha256:cedb1ef40439206b673ee8b33a46a03a0c9fa90bf3732f54704f99cb061d2c5a AS rust-base
+FROM docker.io/library/debian:trixie-slim@sha256:cedb1ef40439206b673ee8b33a46a03a0c9fa90bf3732f54704f99cb061d2c5a AS rust-base
 SHELL ["/bin/sh", "-eux", "-c"]
 ENV       CARGO_HOME=/usr/local/cargo \
          RUSTUP_HOME=/usr/local/rustup \
@@ -4070,6 +4070,7 @@ WORKDIR $CARGO_HOME/registry/src/index.crates.io/generic-array-0.14.7
 RUN \
   --mount=from=out-64cb29654dbed717,source=/_build_script_build-64cb29654dbed717,dst=/target/release/build/generic-array-64cb29654dbed717/build-script-build \
   --mount=from=cratesio-generic-array-0.14.7,source=/generic-array-0.14.7,dst=$CARGO_HOME/registry/src/index.crates.io/generic-array-0.14.7 \
+  --mount=from=cratesio-version_check-0.9.5,source=/version_check-0.9.5,dst=$CARGO_HOME/registry/src/index.crates.io/version_check-0.9.5 \
     env CARGO_CFG_FEATURE=more_lengths \
         CARGO_CFG_PANIC=unwind \
         CARGO_CFG_TARGET_ABI= \
@@ -4610,7 +4611,7 @@ COPY --link --from=dep-x-verso-0.0.3-ced6f7a8e395d530 /target/release/build/vers
 
 FROM rust-base AS run-z-verso-0.0.3-f7185de04a6ee86c
 WORKDIR /target/release/build/verso-f7185de04a6ee86c/out
-WORKDIR $CARGO_HOME/git/checkouts/verso-144ecdd6ab82f47d/eb719bd
+WORKDIR $CARGO_HOME/git/checkouts/verso-144ecdd6ab82f47d/eb719bd/verso
 RUN \
   --mount=from=out-ced6f7a8e395d530,source=/_build_script_build-ced6f7a8e395d530,dst=/target/release/build/verso-ced6f7a8e395d530/build-script-build \
   --mount=from=checkout-eb719bd-eb719bdd6c7b4a22b640d33ea55c6d440a5a850d,dst=$CARGO_HOME/git/checkouts/verso-144ecdd6ab82f47d/eb719bd \
