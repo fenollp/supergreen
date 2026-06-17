@@ -459,7 +459,10 @@ pub(crate) async fn fetch_digest(runner: &Runner, img: &ImageUri) -> Result<Imag
                     retrier.backoff("connection", e.into()).await;
                     continue;
                 }
-                Err(e) => bail!("Failed to reach {DOMAIN}'s registry: {e}"),
+                Err(e) => {
+                    let e = anyhow!("retried {} times: {e}", retrier.max());
+                    bail!("Failed to reach {DOMAIN}'s registry: {e}")
+                }
             };
 
             txt = req

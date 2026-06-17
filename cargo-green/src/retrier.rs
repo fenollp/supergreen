@@ -9,8 +9,14 @@ pub(crate) struct Retrier {
 }
 
 impl Retrier {
+    #[must_use]
     pub(crate) fn with_max_attempts(max: u8) -> Self {
         Self { max, attempt: 0 }
+    }
+
+    #[must_use]
+    pub(crate) fn max(&self) -> u8 {
+        self.max
     }
 
     /// Returns true when the maximum number of attempts is not reached
