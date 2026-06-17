@@ -2,6 +2,11 @@ A comma-separated list of names of features to activate.
 
 A name that does not match exactly is an error.
 
+* `buildscriptsources`:
+  - Mounts build scripts' dependencies' sources so build scripts that
+    read a dependency's bundled files at execution time may find them
+    (eg. <https://lib.rs/crates/protoc-bin-vendored> ships `protoc` binaries).
+
 * `cachebuildkit`:
   - Write BuildKit build cache to disk
   - Reuse it from disk
