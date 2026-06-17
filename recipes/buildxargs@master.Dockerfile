@@ -120,9 +120,7 @@ WORKDIR /target/release/deps
 WORKDIR $CARGO_HOME/git/checkouts/buildxargs-76dd4ee9dadcdcf0/0060a68
 RUN \
   --mount=from=checkout-buildxargs-76dd4ee9dadcdcf0-0060a682a2f84b295cfd2cff36602784f36ed9cf,dst=$CARGO_HOME/git/checkouts/buildxargs-76dd4ee9dadcdcf0/0060a68 \
-  --mount=from=out-032c3c86f219fdca,dst=/target/release/deps/libpico_args-032c3c86f219fdca.rlib,source=/libpico_args-032c3c86f219fdca.rlib \
   --mount=from=out-032c3c86f219fdca,dst=/target/release/deps/libpico_args-032c3c86f219fdca.rmeta,source=/libpico_args-032c3c86f219fdca.rmeta \
-  --mount=from=out-0a241a4d93417b0d,dst=/target/release/deps/libshlex-0a241a4d93417b0d.rlib,source=/libshlex-0a241a4d93417b0d.rlib \
   --mount=from=out-0a241a4d93417b0d,dst=/target/release/deps/libshlex-0a241a4d93417b0d.rmeta,source=/libshlex-0a241a4d93417b0d.rmeta \
     env CARGO_CRATE_NAME=buildxargs \
         CARGO_INCREMENTAL=0 \

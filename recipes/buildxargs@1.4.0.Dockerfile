@@ -117,9 +117,7 @@ FROM rust-base AS dep-n-buildxargs-1.4.0-743dae7d2ec996f8
 WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-buildxargs-1.4.0,source=/buildxargs-1.4.0,dst=$CARGO_HOME/registry/src/index.crates.io/buildxargs-1.4.0 \
-  --mount=from=out-f4da04ff96e72eb0,dst=/target/release/deps/libpico_args-f4da04ff96e72eb0.rlib,source=/libpico_args-f4da04ff96e72eb0.rlib \
   --mount=from=out-f4da04ff96e72eb0,dst=/target/release/deps/libpico_args-f4da04ff96e72eb0.rmeta,source=/libpico_args-f4da04ff96e72eb0.rmeta \
-  --mount=from=out-7b61911c2216006d,dst=/target/release/deps/libshlex-7b61911c2216006d.rlib,source=/libshlex-7b61911c2216006d.rlib \
   --mount=from=out-7b61911c2216006d,dst=/target/release/deps/libshlex-7b61911c2216006d.rmeta,source=/libshlex-7b61911c2216006d.rmeta \
     env CARGO_CRATE_NAME=buildxargs \
         CARGO_MANIFEST_DIR=$CARGO_HOME/registry/src/index.crates.io/buildxargs-1.4.0 \
