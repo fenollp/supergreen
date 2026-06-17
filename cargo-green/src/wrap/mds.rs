@@ -175,7 +175,12 @@ impl Md {
                 .filter(|f| f != &format!("{stage}-{STDOUT}"))
                 .filter(|f| f != &format!("{stage}-{STDERR}"))
                 .filter(|f| f != &format!("{stage}-{ERRCODE}"))
-                .map(|f| (f, f.replace(&format!("-{}", self.this()), "")))
+                .map(|f| (
+                    f,
+                    f.replace(&format!("-{}", self.this()), "")
+                        .replace("_", "-") // cargo-install rewrites underscores
+                        .replace(".dwp", "") // cargo-install drops that extension
+                ))
                 .map(|(src, dst)| format!("COPY --link --from={stage} /{src} /{dst}"))
                 .collect::<Vec<_>>()
                 .join("\n")
