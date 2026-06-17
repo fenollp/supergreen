@@ -119,7 +119,6 @@ FROM rust-base AS dep-n-anstyle-parse-0.2.3-a4d541fdfdd904f7
 WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-anstyle-parse-0.2.3,source=/anstyle-parse-0.2.3,dst=$CARGO_HOME/registry/src/index.crates.io/anstyle-parse-0.2.3 \
-  --mount=from=out-0476db41494a3472,dst=/target/release/deps/libutf8parse-0476db41494a3472.rlib,source=/libutf8parse-0476db41494a3472.rlib \
   --mount=from=out-0476db41494a3472,dst=/target/release/deps/libutf8parse-0476db41494a3472.rmeta,source=/libutf8parse-0476db41494a3472.rmeta \
     env CARGO_CRATE_NAME=anstyle_parse \
         CARGO_INCREMENTAL=0 \
@@ -226,15 +225,10 @@ FROM rust-base AS dep-n-anstream-0.6.13-c213c02dafc60daf
 WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-anstream-0.6.13,source=/anstream-0.6.13,dst=$CARGO_HOME/registry/src/index.crates.io/anstream-0.6.13 \
-  --mount=from=out-e6ca2181067a0e20,dst=/target/release/deps/libanstyle-e6ca2181067a0e20.rlib,source=/libanstyle-e6ca2181067a0e20.rlib \
   --mount=from=out-e6ca2181067a0e20,dst=/target/release/deps/libanstyle-e6ca2181067a0e20.rmeta,source=/libanstyle-e6ca2181067a0e20.rmeta \
-  --mount=from=out-a4d541fdfdd904f7,dst=/target/release/deps/libanstyle_parse-a4d541fdfdd904f7.rlib,source=/libanstyle_parse-a4d541fdfdd904f7.rlib \
   --mount=from=out-a4d541fdfdd904f7,dst=/target/release/deps/libanstyle_parse-a4d541fdfdd904f7.rmeta,source=/libanstyle_parse-a4d541fdfdd904f7.rmeta \
-  --mount=from=out-0476db41494a3472,dst=/target/release/deps/libutf8parse-0476db41494a3472.rlib,source=/libutf8parse-0476db41494a3472.rlib \
   --mount=from=out-0476db41494a3472,dst=/target/release/deps/libutf8parse-0476db41494a3472.rmeta,source=/libutf8parse-0476db41494a3472.rmeta \
-  --mount=from=out-78a56e9144a58ce6,dst=/target/release/deps/libanstyle_query-78a56e9144a58ce6.rlib,source=/libanstyle_query-78a56e9144a58ce6.rlib \
   --mount=from=out-78a56e9144a58ce6,dst=/target/release/deps/libanstyle_query-78a56e9144a58ce6.rmeta,source=/libanstyle_query-78a56e9144a58ce6.rmeta \
-  --mount=from=out-9863e044ed14fecf,dst=/target/release/deps/libcolorchoice-9863e044ed14fecf.rlib,source=/libcolorchoice-9863e044ed14fecf.rlib \
   --mount=from=out-9863e044ed14fecf,dst=/target/release/deps/libcolorchoice-9863e044ed14fecf.rmeta,source=/libcolorchoice-9863e044ed14fecf.rmeta \
     env CARGO_CRATE_NAME=anstream \
         CARGO_INCREMENTAL=0 \
@@ -343,21 +337,13 @@ FROM rust-base AS dep-n-clap_builder-4.5.2-76be5aa906cac5e1
 WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-clap_builder-4.5.2,source=/clap_builder-4.5.2,dst=$CARGO_HOME/registry/src/index.crates.io/clap_builder-4.5.2 \
-  --mount=from=out-c213c02dafc60daf,dst=/target/release/deps/libanstream-c213c02dafc60daf.rlib,source=/libanstream-c213c02dafc60daf.rlib \
   --mount=from=out-c213c02dafc60daf,dst=/target/release/deps/libanstream-c213c02dafc60daf.rmeta,source=/libanstream-c213c02dafc60daf.rmeta \
-  --mount=from=out-e6ca2181067a0e20,dst=/target/release/deps/libanstyle-e6ca2181067a0e20.rlib,source=/libanstyle-e6ca2181067a0e20.rlib \
   --mount=from=out-e6ca2181067a0e20,dst=/target/release/deps/libanstyle-e6ca2181067a0e20.rmeta,source=/libanstyle-e6ca2181067a0e20.rmeta \
-  --mount=from=out-0476db41494a3472,dst=/target/release/deps/libutf8parse-0476db41494a3472.rlib,source=/libutf8parse-0476db41494a3472.rlib \
   --mount=from=out-0476db41494a3472,dst=/target/release/deps/libutf8parse-0476db41494a3472.rmeta,source=/libutf8parse-0476db41494a3472.rmeta \
-  --mount=from=out-a4d541fdfdd904f7,dst=/target/release/deps/libanstyle_parse-a4d541fdfdd904f7.rlib,source=/libanstyle_parse-a4d541fdfdd904f7.rlib \
   --mount=from=out-a4d541fdfdd904f7,dst=/target/release/deps/libanstyle_parse-a4d541fdfdd904f7.rmeta,source=/libanstyle_parse-a4d541fdfdd904f7.rmeta \
-  --mount=from=out-78a56e9144a58ce6,dst=/target/release/deps/libanstyle_query-78a56e9144a58ce6.rlib,source=/libanstyle_query-78a56e9144a58ce6.rlib \
   --mount=from=out-78a56e9144a58ce6,dst=/target/release/deps/libanstyle_query-78a56e9144a58ce6.rmeta,source=/libanstyle_query-78a56e9144a58ce6.rmeta \
-  --mount=from=out-9863e044ed14fecf,dst=/target/release/deps/libcolorchoice-9863e044ed14fecf.rlib,source=/libcolorchoice-9863e044ed14fecf.rlib \
   --mount=from=out-9863e044ed14fecf,dst=/target/release/deps/libcolorchoice-9863e044ed14fecf.rmeta,source=/libcolorchoice-9863e044ed14fecf.rmeta \
-  --mount=from=out-98756f6d2a116c73,dst=/target/release/deps/libclap_lex-98756f6d2a116c73.rlib,source=/libclap_lex-98756f6d2a116c73.rlib \
   --mount=from=out-98756f6d2a116c73,dst=/target/release/deps/libclap_lex-98756f6d2a116c73.rmeta,source=/libclap_lex-98756f6d2a116c73.rmeta \
-  --mount=from=out-ecf246efc85cb0b2,dst=/target/release/deps/libstrsim-ecf246efc85cb0b2.rlib,source=/libstrsim-ecf246efc85cb0b2.rlib \
   --mount=from=out-ecf246efc85cb0b2,dst=/target/release/deps/libstrsim-ecf246efc85cb0b2.rmeta,source=/libstrsim-ecf246efc85cb0b2.rmeta \
     env CARGO_CRATE_NAME=clap_builder \
         CARGO_INCREMENTAL=0 \
@@ -394,23 +380,14 @@ FROM rust-base AS dep-n-clap-4.5.4-e321e70457e18609
 WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-clap-4.5.4,source=/clap-4.5.4,dst=$CARGO_HOME/registry/src/index.crates.io/clap-4.5.4 \
-  --mount=from=out-76be5aa906cac5e1,dst=/target/release/deps/libclap_builder-76be5aa906cac5e1.rlib,source=/libclap_builder-76be5aa906cac5e1.rlib \
   --mount=from=out-76be5aa906cac5e1,dst=/target/release/deps/libclap_builder-76be5aa906cac5e1.rmeta,source=/libclap_builder-76be5aa906cac5e1.rmeta \
-  --mount=from=out-e6ca2181067a0e20,dst=/target/release/deps/libanstyle-e6ca2181067a0e20.rlib,source=/libanstyle-e6ca2181067a0e20.rlib \
   --mount=from=out-e6ca2181067a0e20,dst=/target/release/deps/libanstyle-e6ca2181067a0e20.rmeta,source=/libanstyle-e6ca2181067a0e20.rmeta \
-  --mount=from=out-0476db41494a3472,dst=/target/release/deps/libutf8parse-0476db41494a3472.rlib,source=/libutf8parse-0476db41494a3472.rlib \
   --mount=from=out-0476db41494a3472,dst=/target/release/deps/libutf8parse-0476db41494a3472.rmeta,source=/libutf8parse-0476db41494a3472.rmeta \
-  --mount=from=out-a4d541fdfdd904f7,dst=/target/release/deps/libanstyle_parse-a4d541fdfdd904f7.rlib,source=/libanstyle_parse-a4d541fdfdd904f7.rlib \
   --mount=from=out-a4d541fdfdd904f7,dst=/target/release/deps/libanstyle_parse-a4d541fdfdd904f7.rmeta,source=/libanstyle_parse-a4d541fdfdd904f7.rmeta \
-  --mount=from=out-78a56e9144a58ce6,dst=/target/release/deps/libanstyle_query-78a56e9144a58ce6.rlib,source=/libanstyle_query-78a56e9144a58ce6.rlib \
   --mount=from=out-78a56e9144a58ce6,dst=/target/release/deps/libanstyle_query-78a56e9144a58ce6.rmeta,source=/libanstyle_query-78a56e9144a58ce6.rmeta \
-  --mount=from=out-9863e044ed14fecf,dst=/target/release/deps/libcolorchoice-9863e044ed14fecf.rlib,source=/libcolorchoice-9863e044ed14fecf.rlib \
   --mount=from=out-9863e044ed14fecf,dst=/target/release/deps/libcolorchoice-9863e044ed14fecf.rmeta,source=/libcolorchoice-9863e044ed14fecf.rmeta \
-  --mount=from=out-c213c02dafc60daf,dst=/target/release/deps/libanstream-c213c02dafc60daf.rlib,source=/libanstream-c213c02dafc60daf.rlib \
   --mount=from=out-c213c02dafc60daf,dst=/target/release/deps/libanstream-c213c02dafc60daf.rmeta,source=/libanstream-c213c02dafc60daf.rmeta \
-  --mount=from=out-98756f6d2a116c73,dst=/target/release/deps/libclap_lex-98756f6d2a116c73.rlib,source=/libclap_lex-98756f6d2a116c73.rlib \
   --mount=from=out-98756f6d2a116c73,dst=/target/release/deps/libclap_lex-98756f6d2a116c73.rmeta,source=/libclap_lex-98756f6d2a116c73.rmeta \
-  --mount=from=out-ecf246efc85cb0b2,dst=/target/release/deps/libstrsim-ecf246efc85cb0b2.rlib,source=/libstrsim-ecf246efc85cb0b2.rlib \
   --mount=from=out-ecf246efc85cb0b2,dst=/target/release/deps/libstrsim-ecf246efc85cb0b2.rmeta,source=/libstrsim-ecf246efc85cb0b2.rmeta \
     env CARGO_CRATE_NAME=clap \
         CARGO_INCREMENTAL=0 \
@@ -576,7 +553,6 @@ FROM rust-base AS dep-n-proc-macro2-1.0.79-bbbcf01754686714
 WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-proc-macro2-1.0.79,source=/proc-macro2-1.0.79,dst=$CARGO_HOME/registry/src/index.crates.io/proc-macro2-1.0.79 \
-  --mount=from=out-6ecae1944df3b80f,dst=/target/release/deps/libunicode_ident-6ecae1944df3b80f.rlib,source=/libunicode_ident-6ecae1944df3b80f.rlib \
   --mount=from=out-6ecae1944df3b80f,dst=/target/release/deps/libunicode_ident-6ecae1944df3b80f.rmeta,source=/libunicode_ident-6ecae1944df3b80f.rmeta \
   --mount=from=out-5137d34738d13fb4,dst=/target/release/build/proc-macro2-5137d34738d13fb4/out,source=/ \
     env CARGO_CRATE_NAME=proc_macro2 \
@@ -615,9 +591,7 @@ FROM rust-base AS dep-n-quote-1.0.36-bd6e0c606776fc14
 WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-quote-1.0.36,source=/quote-1.0.36,dst=$CARGO_HOME/registry/src/index.crates.io/quote-1.0.36 \
-  --mount=from=out-bbbcf01754686714,dst=/target/release/deps/libproc_macro2-bbbcf01754686714.rlib,source=/libproc_macro2-bbbcf01754686714.rlib \
   --mount=from=out-bbbcf01754686714,dst=/target/release/deps/libproc_macro2-bbbcf01754686714.rmeta,source=/libproc_macro2-bbbcf01754686714.rmeta \
-  --mount=from=out-6ecae1944df3b80f,dst=/target/release/deps/libunicode_ident-6ecae1944df3b80f.rlib,source=/libunicode_ident-6ecae1944df3b80f.rlib \
   --mount=from=out-6ecae1944df3b80f,dst=/target/release/deps/libunicode_ident-6ecae1944df3b80f.rmeta,source=/libunicode_ident-6ecae1944df3b80f.rmeta \
   --mount=from=out-5137d34738d13fb4,dst=/target/release/build/proc-macro2-5137d34738d13fb4/out,source=/ \
     env CARGO_CRATE_NAME=quote \
@@ -655,11 +629,8 @@ FROM rust-base AS dep-n-syn-2.0.58-03c0a74f7cdd83e5
 WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-syn-2.0.58,source=/syn-2.0.58,dst=$CARGO_HOME/registry/src/index.crates.io/syn-2.0.58 \
-  --mount=from=out-bbbcf01754686714,dst=/target/release/deps/libproc_macro2-bbbcf01754686714.rlib,source=/libproc_macro2-bbbcf01754686714.rlib \
   --mount=from=out-bbbcf01754686714,dst=/target/release/deps/libproc_macro2-bbbcf01754686714.rmeta,source=/libproc_macro2-bbbcf01754686714.rmeta \
-  --mount=from=out-6ecae1944df3b80f,dst=/target/release/deps/libunicode_ident-6ecae1944df3b80f.rlib,source=/libunicode_ident-6ecae1944df3b80f.rlib \
   --mount=from=out-6ecae1944df3b80f,dst=/target/release/deps/libunicode_ident-6ecae1944df3b80f.rmeta,source=/libunicode_ident-6ecae1944df3b80f.rmeta \
-  --mount=from=out-bd6e0c606776fc14,dst=/target/release/deps/libquote-bd6e0c606776fc14.rlib,source=/libquote-bd6e0c606776fc14.rlib \
   --mount=from=out-bd6e0c606776fc14,dst=/target/release/deps/libquote-bd6e0c606776fc14.rmeta,source=/libquote-bd6e0c606776fc14.rmeta \
   --mount=from=out-5137d34738d13fb4,dst=/target/release/build/proc-macro2-5137d34738d13fb4/out,source=/ \
     env CARGO_CRATE_NAME=syn \
@@ -983,9 +954,7 @@ FROM rust-base AS dep-n-getrandom-0.2.14-5fa28dd2b19441b5
 WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-getrandom-0.2.14,source=/getrandom-0.2.14,dst=$CARGO_HOME/registry/src/index.crates.io/getrandom-0.2.14 \
-  --mount=from=out-d11044f27048411a,dst=/target/release/deps/libcfg_if-d11044f27048411a.rlib,source=/libcfg_if-d11044f27048411a.rlib \
   --mount=from=out-d11044f27048411a,dst=/target/release/deps/libcfg_if-d11044f27048411a.rmeta,source=/libcfg_if-d11044f27048411a.rmeta \
-  --mount=from=out-364cef4fb49edb8a,dst=/target/release/deps/liblibc-364cef4fb49edb8a.rlib,source=/liblibc-364cef4fb49edb8a.rlib \
   --mount=from=out-364cef4fb49edb8a,dst=/target/release/deps/liblibc-364cef4fb49edb8a.rmeta,source=/liblibc-364cef4fb49edb8a.rmeta \
     env CARGO_CRATE_NAME=getrandom \
         CARGO_INCREMENTAL=0 \
@@ -1022,11 +991,8 @@ FROM rust-base AS dep-n-rand_core-0.6.4-2e473e307b6d636d
 WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-rand_core-0.6.4,source=/rand_core-0.6.4,dst=$CARGO_HOME/registry/src/index.crates.io/rand_core-0.6.4 \
-  --mount=from=out-5fa28dd2b19441b5,dst=/target/release/deps/libgetrandom-5fa28dd2b19441b5.rlib,source=/libgetrandom-5fa28dd2b19441b5.rlib \
   --mount=from=out-5fa28dd2b19441b5,dst=/target/release/deps/libgetrandom-5fa28dd2b19441b5.rmeta,source=/libgetrandom-5fa28dd2b19441b5.rmeta \
-  --mount=from=out-d11044f27048411a,dst=/target/release/deps/libcfg_if-d11044f27048411a.rlib,source=/libcfg_if-d11044f27048411a.rlib \
   --mount=from=out-d11044f27048411a,dst=/target/release/deps/libcfg_if-d11044f27048411a.rmeta,source=/libcfg_if-d11044f27048411a.rmeta \
-  --mount=from=out-364cef4fb49edb8a,dst=/target/release/deps/liblibc-364cef4fb49edb8a.rlib,source=/liblibc-364cef4fb49edb8a.rlib \
   --mount=from=out-364cef4fb49edb8a,dst=/target/release/deps/liblibc-364cef4fb49edb8a.rmeta,source=/liblibc-364cef4fb49edb8a.rmeta \
     env CARGO_CRATE_NAME=rand_core \
         CARGO_INCREMENTAL=0 \
@@ -1064,15 +1030,10 @@ FROM rust-base AS dep-n-rand_chacha-0.3.1-e77533df8840b272
 WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-rand_chacha-0.3.1,source=/rand_chacha-0.3.1,dst=$CARGO_HOME/registry/src/index.crates.io/rand_chacha-0.3.1 \
-  --mount=from=out-11d5ff3794da866b,dst=/target/release/deps/libppv_lite86-11d5ff3794da866b.rlib,source=/libppv_lite86-11d5ff3794da866b.rlib \
   --mount=from=out-11d5ff3794da866b,dst=/target/release/deps/libppv_lite86-11d5ff3794da866b.rmeta,source=/libppv_lite86-11d5ff3794da866b.rmeta \
-  --mount=from=out-2e473e307b6d636d,dst=/target/release/deps/librand_core-2e473e307b6d636d.rlib,source=/librand_core-2e473e307b6d636d.rlib \
   --mount=from=out-2e473e307b6d636d,dst=/target/release/deps/librand_core-2e473e307b6d636d.rmeta,source=/librand_core-2e473e307b6d636d.rmeta \
-  --mount=from=out-d11044f27048411a,dst=/target/release/deps/libcfg_if-d11044f27048411a.rlib,source=/libcfg_if-d11044f27048411a.rlib \
   --mount=from=out-d11044f27048411a,dst=/target/release/deps/libcfg_if-d11044f27048411a.rmeta,source=/libcfg_if-d11044f27048411a.rmeta \
-  --mount=from=out-364cef4fb49edb8a,dst=/target/release/deps/liblibc-364cef4fb49edb8a.rlib,source=/liblibc-364cef4fb49edb8a.rlib \
   --mount=from=out-364cef4fb49edb8a,dst=/target/release/deps/liblibc-364cef4fb49edb8a.rmeta,source=/liblibc-364cef4fb49edb8a.rmeta \
-  --mount=from=out-5fa28dd2b19441b5,dst=/target/release/deps/libgetrandom-5fa28dd2b19441b5.rlib,source=/libgetrandom-5fa28dd2b19441b5.rlib \
   --mount=from=out-5fa28dd2b19441b5,dst=/target/release/deps/libgetrandom-5fa28dd2b19441b5.rmeta,source=/libgetrandom-5fa28dd2b19441b5.rmeta \
     env CARGO_CRATE_NAME=rand_chacha \
         CARGO_INCREMENTAL=0 \
@@ -1110,17 +1071,11 @@ FROM rust-base AS dep-n-rand-0.8.5-aec45ee1fea7ca37
 WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-rand-0.8.5,source=/rand-0.8.5,dst=$CARGO_HOME/registry/src/index.crates.io/rand-0.8.5 \
-  --mount=from=out-364cef4fb49edb8a,dst=/target/release/deps/liblibc-364cef4fb49edb8a.rlib,source=/liblibc-364cef4fb49edb8a.rlib \
   --mount=from=out-364cef4fb49edb8a,dst=/target/release/deps/liblibc-364cef4fb49edb8a.rmeta,source=/liblibc-364cef4fb49edb8a.rmeta \
-  --mount=from=out-e77533df8840b272,dst=/target/release/deps/librand_chacha-e77533df8840b272.rlib,source=/librand_chacha-e77533df8840b272.rlib \
   --mount=from=out-e77533df8840b272,dst=/target/release/deps/librand_chacha-e77533df8840b272.rmeta,source=/librand_chacha-e77533df8840b272.rmeta \
-  --mount=from=out-11d5ff3794da866b,dst=/target/release/deps/libppv_lite86-11d5ff3794da866b.rlib,source=/libppv_lite86-11d5ff3794da866b.rlib \
   --mount=from=out-11d5ff3794da866b,dst=/target/release/deps/libppv_lite86-11d5ff3794da866b.rmeta,source=/libppv_lite86-11d5ff3794da866b.rmeta \
-  --mount=from=out-d11044f27048411a,dst=/target/release/deps/libcfg_if-d11044f27048411a.rlib,source=/libcfg_if-d11044f27048411a.rlib \
   --mount=from=out-d11044f27048411a,dst=/target/release/deps/libcfg_if-d11044f27048411a.rmeta,source=/libcfg_if-d11044f27048411a.rmeta \
-  --mount=from=out-5fa28dd2b19441b5,dst=/target/release/deps/libgetrandom-5fa28dd2b19441b5.rlib,source=/libgetrandom-5fa28dd2b19441b5.rlib \
   --mount=from=out-5fa28dd2b19441b5,dst=/target/release/deps/libgetrandom-5fa28dd2b19441b5.rmeta,source=/libgetrandom-5fa28dd2b19441b5.rmeta \
-  --mount=from=out-2e473e307b6d636d,dst=/target/release/deps/librand_core-2e473e307b6d636d.rlib,source=/librand_core-2e473e307b6d636d.rlib \
   --mount=from=out-2e473e307b6d636d,dst=/target/release/deps/librand_core-2e473e307b6d636d.rmeta,source=/librand_core-2e473e307b6d636d.rmeta \
     env CARGO_CRATE_NAME=rand \
         CARGO_INCREMENTAL=0 \
@@ -1159,50 +1114,28 @@ WORKDIR /target/release/deps
 WORKDIR $CARGO_HOME/git/checkouts/creusat-eb1f5c5507e0b875/0758fe7
 RUN \
   --mount=from=checkout-0758fe7-0758fe729d52d8289f3db3508940662e2969ec97,dst=$CARGO_HOME/git/checkouts/creusat-eb1f5c5507e0b875/0758fe7 \
-  --mount=from=out-e321e70457e18609,dst=/target/release/deps/libclap-e321e70457e18609.rlib,source=/libclap-e321e70457e18609.rlib \
   --mount=from=out-e321e70457e18609,dst=/target/release/deps/libclap-e321e70457e18609.rmeta,source=/libclap-e321e70457e18609.rmeta \
-  --mount=from=out-e6ca2181067a0e20,dst=/target/release/deps/libanstyle-e6ca2181067a0e20.rlib,source=/libanstyle-e6ca2181067a0e20.rlib \
   --mount=from=out-e6ca2181067a0e20,dst=/target/release/deps/libanstyle-e6ca2181067a0e20.rmeta,source=/libanstyle-e6ca2181067a0e20.rmeta \
-  --mount=from=out-0476db41494a3472,dst=/target/release/deps/libutf8parse-0476db41494a3472.rlib,source=/libutf8parse-0476db41494a3472.rlib \
   --mount=from=out-0476db41494a3472,dst=/target/release/deps/libutf8parse-0476db41494a3472.rmeta,source=/libutf8parse-0476db41494a3472.rmeta \
-  --mount=from=out-a4d541fdfdd904f7,dst=/target/release/deps/libanstyle_parse-a4d541fdfdd904f7.rlib,source=/libanstyle_parse-a4d541fdfdd904f7.rlib \
   --mount=from=out-a4d541fdfdd904f7,dst=/target/release/deps/libanstyle_parse-a4d541fdfdd904f7.rmeta,source=/libanstyle_parse-a4d541fdfdd904f7.rmeta \
-  --mount=from=out-78a56e9144a58ce6,dst=/target/release/deps/libanstyle_query-78a56e9144a58ce6.rlib,source=/libanstyle_query-78a56e9144a58ce6.rlib \
   --mount=from=out-78a56e9144a58ce6,dst=/target/release/deps/libanstyle_query-78a56e9144a58ce6.rmeta,source=/libanstyle_query-78a56e9144a58ce6.rmeta \
-  --mount=from=out-9863e044ed14fecf,dst=/target/release/deps/libcolorchoice-9863e044ed14fecf.rlib,source=/libcolorchoice-9863e044ed14fecf.rlib \
   --mount=from=out-9863e044ed14fecf,dst=/target/release/deps/libcolorchoice-9863e044ed14fecf.rmeta,source=/libcolorchoice-9863e044ed14fecf.rmeta \
-  --mount=from=out-c213c02dafc60daf,dst=/target/release/deps/libanstream-c213c02dafc60daf.rlib,source=/libanstream-c213c02dafc60daf.rlib \
   --mount=from=out-c213c02dafc60daf,dst=/target/release/deps/libanstream-c213c02dafc60daf.rmeta,source=/libanstream-c213c02dafc60daf.rmeta \
-  --mount=from=out-98756f6d2a116c73,dst=/target/release/deps/libclap_lex-98756f6d2a116c73.rlib,source=/libclap_lex-98756f6d2a116c73.rlib \
   --mount=from=out-98756f6d2a116c73,dst=/target/release/deps/libclap_lex-98756f6d2a116c73.rmeta,source=/libclap_lex-98756f6d2a116c73.rmeta \
-  --mount=from=out-ecf246efc85cb0b2,dst=/target/release/deps/libstrsim-ecf246efc85cb0b2.rlib,source=/libstrsim-ecf246efc85cb0b2.rlib \
   --mount=from=out-ecf246efc85cb0b2,dst=/target/release/deps/libstrsim-ecf246efc85cb0b2.rmeta,source=/libstrsim-ecf246efc85cb0b2.rmeta \
-  --mount=from=out-76be5aa906cac5e1,dst=/target/release/deps/libclap_builder-76be5aa906cac5e1.rlib,source=/libclap_builder-76be5aa906cac5e1.rlib \
   --mount=from=out-76be5aa906cac5e1,dst=/target/release/deps/libclap_builder-76be5aa906cac5e1.rmeta,source=/libclap_builder-76be5aa906cac5e1.rmeta \
-  --mount=from=out-9e928540597e5285,dst=/target/release/deps/libcreusot_contracts-9e928540597e5285.rlib,source=/libcreusot_contracts-9e928540597e5285.rlib \
   --mount=from=out-9e928540597e5285,dst=/target/release/deps/libcreusot_contracts-9e928540597e5285.rmeta,source=/libcreusot_contracts-9e928540597e5285.rmeta \
-  --mount=from=out-6ecae1944df3b80f,dst=/target/release/deps/libunicode_ident-6ecae1944df3b80f.rlib,source=/libunicode_ident-6ecae1944df3b80f.rlib \
   --mount=from=out-6ecae1944df3b80f,dst=/target/release/deps/libunicode_ident-6ecae1944df3b80f.rmeta,source=/libunicode_ident-6ecae1944df3b80f.rmeta \
-  --mount=from=out-bbbcf01754686714,dst=/target/release/deps/libproc_macro2-bbbcf01754686714.rlib,source=/libproc_macro2-bbbcf01754686714.rlib \
   --mount=from=out-bbbcf01754686714,dst=/target/release/deps/libproc_macro2-bbbcf01754686714.rmeta,source=/libproc_macro2-bbbcf01754686714.rmeta \
-  --mount=from=out-bd6e0c606776fc14,dst=/target/release/deps/libquote-bd6e0c606776fc14.rlib,source=/libquote-bd6e0c606776fc14.rlib \
   --mount=from=out-bd6e0c606776fc14,dst=/target/release/deps/libquote-bd6e0c606776fc14.rmeta,source=/libquote-bd6e0c606776fc14.rmeta \
-  --mount=from=out-03c0a74f7cdd83e5,dst=/target/release/deps/libsyn-03c0a74f7cdd83e5.rlib,source=/libsyn-03c0a74f7cdd83e5.rlib \
   --mount=from=out-03c0a74f7cdd83e5,dst=/target/release/deps/libsyn-03c0a74f7cdd83e5.rmeta,source=/libsyn-03c0a74f7cdd83e5.rmeta \
   --mount=from=out-32382e5b224a4573,dst=/target/release/deps/libcreusot_contracts_proc-32382e5b224a4573.so,source=/libcreusot_contracts_proc-32382e5b224a4573.so \
-  --mount=from=out-aec45ee1fea7ca37,dst=/target/release/deps/librand-aec45ee1fea7ca37.rlib,source=/librand-aec45ee1fea7ca37.rlib \
   --mount=from=out-aec45ee1fea7ca37,dst=/target/release/deps/librand-aec45ee1fea7ca37.rmeta,source=/librand-aec45ee1fea7ca37.rmeta \
-  --mount=from=out-364cef4fb49edb8a,dst=/target/release/deps/liblibc-364cef4fb49edb8a.rlib,source=/liblibc-364cef4fb49edb8a.rlib \
   --mount=from=out-364cef4fb49edb8a,dst=/target/release/deps/liblibc-364cef4fb49edb8a.rmeta,source=/liblibc-364cef4fb49edb8a.rmeta \
-  --mount=from=out-11d5ff3794da866b,dst=/target/release/deps/libppv_lite86-11d5ff3794da866b.rlib,source=/libppv_lite86-11d5ff3794da866b.rlib \
   --mount=from=out-11d5ff3794da866b,dst=/target/release/deps/libppv_lite86-11d5ff3794da866b.rmeta,source=/libppv_lite86-11d5ff3794da866b.rmeta \
-  --mount=from=out-d11044f27048411a,dst=/target/release/deps/libcfg_if-d11044f27048411a.rlib,source=/libcfg_if-d11044f27048411a.rlib \
   --mount=from=out-d11044f27048411a,dst=/target/release/deps/libcfg_if-d11044f27048411a.rmeta,source=/libcfg_if-d11044f27048411a.rmeta \
-  --mount=from=out-5fa28dd2b19441b5,dst=/target/release/deps/libgetrandom-5fa28dd2b19441b5.rlib,source=/libgetrandom-5fa28dd2b19441b5.rlib \
   --mount=from=out-5fa28dd2b19441b5,dst=/target/release/deps/libgetrandom-5fa28dd2b19441b5.rmeta,source=/libgetrandom-5fa28dd2b19441b5.rmeta \
-  --mount=from=out-2e473e307b6d636d,dst=/target/release/deps/librand_core-2e473e307b6d636d.rlib,source=/librand_core-2e473e307b6d636d.rlib \
   --mount=from=out-2e473e307b6d636d,dst=/target/release/deps/librand_core-2e473e307b6d636d.rmeta,source=/librand_core-2e473e307b6d636d.rmeta \
-  --mount=from=out-e77533df8840b272,dst=/target/release/deps/librand_chacha-e77533df8840b272.rlib,source=/librand_chacha-e77533df8840b272.rlib \
   --mount=from=out-e77533df8840b272,dst=/target/release/deps/librand_chacha-e77533df8840b272.rmeta,source=/librand_chacha-e77533df8840b272.rmeta \
   --mount=from=out-5137d34738d13fb4,dst=/target/release/build/proc-macro2-5137d34738d13fb4/out,source=/ \
     env CARGO_CRATE_NAME=CreuSAT \

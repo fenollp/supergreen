@@ -119,7 +119,6 @@ FROM rust-base AS dep-n-anstyle-parse-0.2.7-e85cc6d593f4b5ea
 WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-anstyle-parse-0.2.7,source=/anstyle-parse-0.2.7,dst=$CARGO_HOME/registry/src/index.crates.io/anstyle-parse-0.2.7 \
-  --mount=from=out-a6d6afef7bffa60c,dst=/target/release/deps/libutf8parse-a6d6afef7bffa60c.rlib,source=/libutf8parse-a6d6afef7bffa60c.rlib \
   --mount=from=out-a6d6afef7bffa60c,dst=/target/release/deps/libutf8parse-a6d6afef7bffa60c.rmeta,source=/libutf8parse-a6d6afef7bffa60c.rmeta \
     env CARGO_CRATE_NAME=anstyle_parse \
         CARGO_INCREMENTAL=0 \
@@ -261,17 +260,11 @@ FROM rust-base AS dep-n-anstream-0.6.19-22923f2776dd92a7
 WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-anstream-0.6.19,source=/anstream-0.6.19,dst=$CARGO_HOME/registry/src/index.crates.io/anstream-0.6.19 \
-  --mount=from=out-f56da184bf26d2ac,dst=/target/release/deps/libanstyle-f56da184bf26d2ac.rlib,source=/libanstyle-f56da184bf26d2ac.rlib \
   --mount=from=out-f56da184bf26d2ac,dst=/target/release/deps/libanstyle-f56da184bf26d2ac.rmeta,source=/libanstyle-f56da184bf26d2ac.rmeta \
-  --mount=from=out-e85cc6d593f4b5ea,dst=/target/release/deps/libanstyle_parse-e85cc6d593f4b5ea.rlib,source=/libanstyle_parse-e85cc6d593f4b5ea.rlib \
   --mount=from=out-e85cc6d593f4b5ea,dst=/target/release/deps/libanstyle_parse-e85cc6d593f4b5ea.rmeta,source=/libanstyle_parse-e85cc6d593f4b5ea.rmeta \
-  --mount=from=out-a6d6afef7bffa60c,dst=/target/release/deps/libutf8parse-a6d6afef7bffa60c.rlib,source=/libutf8parse-a6d6afef7bffa60c.rlib \
   --mount=from=out-a6d6afef7bffa60c,dst=/target/release/deps/libutf8parse-a6d6afef7bffa60c.rmeta,source=/libutf8parse-a6d6afef7bffa60c.rmeta \
-  --mount=from=out-848fc07ab7a1cff3,dst=/target/release/deps/libanstyle_query-848fc07ab7a1cff3.rlib,source=/libanstyle_query-848fc07ab7a1cff3.rlib \
   --mount=from=out-848fc07ab7a1cff3,dst=/target/release/deps/libanstyle_query-848fc07ab7a1cff3.rmeta,source=/libanstyle_query-848fc07ab7a1cff3.rmeta \
-  --mount=from=out-10d857d95cbcc4ab,dst=/target/release/deps/libcolorchoice-10d857d95cbcc4ab.rlib,source=/libcolorchoice-10d857d95cbcc4ab.rlib \
   --mount=from=out-10d857d95cbcc4ab,dst=/target/release/deps/libcolorchoice-10d857d95cbcc4ab.rmeta,source=/libcolorchoice-10d857d95cbcc4ab.rmeta \
-  --mount=from=out-5e4ef27975f66d55,dst=/target/release/deps/libis_terminal_polyfill-5e4ef27975f66d55.rlib,source=/libis_terminal_polyfill-5e4ef27975f66d55.rlib \
   --mount=from=out-5e4ef27975f66d55,dst=/target/release/deps/libis_terminal_polyfill-5e4ef27975f66d55.rmeta,source=/libis_terminal_polyfill-5e4ef27975f66d55.rmeta \
     env CARGO_CRATE_NAME=anstream \
         CARGO_INCREMENTAL=0 \
@@ -380,23 +373,14 @@ FROM rust-base AS dep-n-clap_builder-4.5.41-565a6c7fac5bb111
 WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-clap_builder-4.5.41,source=/clap_builder-4.5.41,dst=$CARGO_HOME/registry/src/index.crates.io/clap_builder-4.5.41 \
-  --mount=from=out-22923f2776dd92a7,dst=/target/release/deps/libanstream-22923f2776dd92a7.rlib,source=/libanstream-22923f2776dd92a7.rlib \
   --mount=from=out-22923f2776dd92a7,dst=/target/release/deps/libanstream-22923f2776dd92a7.rmeta,source=/libanstream-22923f2776dd92a7.rmeta \
-  --mount=from=out-f56da184bf26d2ac,dst=/target/release/deps/libanstyle-f56da184bf26d2ac.rlib,source=/libanstyle-f56da184bf26d2ac.rlib \
   --mount=from=out-f56da184bf26d2ac,dst=/target/release/deps/libanstyle-f56da184bf26d2ac.rmeta,source=/libanstyle-f56da184bf26d2ac.rmeta \
-  --mount=from=out-a6d6afef7bffa60c,dst=/target/release/deps/libutf8parse-a6d6afef7bffa60c.rlib,source=/libutf8parse-a6d6afef7bffa60c.rlib \
   --mount=from=out-a6d6afef7bffa60c,dst=/target/release/deps/libutf8parse-a6d6afef7bffa60c.rmeta,source=/libutf8parse-a6d6afef7bffa60c.rmeta \
-  --mount=from=out-e85cc6d593f4b5ea,dst=/target/release/deps/libanstyle_parse-e85cc6d593f4b5ea.rlib,source=/libanstyle_parse-e85cc6d593f4b5ea.rlib \
   --mount=from=out-e85cc6d593f4b5ea,dst=/target/release/deps/libanstyle_parse-e85cc6d593f4b5ea.rmeta,source=/libanstyle_parse-e85cc6d593f4b5ea.rmeta \
-  --mount=from=out-848fc07ab7a1cff3,dst=/target/release/deps/libanstyle_query-848fc07ab7a1cff3.rlib,source=/libanstyle_query-848fc07ab7a1cff3.rlib \
   --mount=from=out-848fc07ab7a1cff3,dst=/target/release/deps/libanstyle_query-848fc07ab7a1cff3.rmeta,source=/libanstyle_query-848fc07ab7a1cff3.rmeta \
-  --mount=from=out-10d857d95cbcc4ab,dst=/target/release/deps/libcolorchoice-10d857d95cbcc4ab.rlib,source=/libcolorchoice-10d857d95cbcc4ab.rlib \
   --mount=from=out-10d857d95cbcc4ab,dst=/target/release/deps/libcolorchoice-10d857d95cbcc4ab.rmeta,source=/libcolorchoice-10d857d95cbcc4ab.rmeta \
-  --mount=from=out-5e4ef27975f66d55,dst=/target/release/deps/libis_terminal_polyfill-5e4ef27975f66d55.rlib,source=/libis_terminal_polyfill-5e4ef27975f66d55.rlib \
   --mount=from=out-5e4ef27975f66d55,dst=/target/release/deps/libis_terminal_polyfill-5e4ef27975f66d55.rmeta,source=/libis_terminal_polyfill-5e4ef27975f66d55.rmeta \
-  --mount=from=out-fe3439128fe1bd2f,dst=/target/release/deps/libclap_lex-fe3439128fe1bd2f.rlib,source=/libclap_lex-fe3439128fe1bd2f.rlib \
   --mount=from=out-fe3439128fe1bd2f,dst=/target/release/deps/libclap_lex-fe3439128fe1bd2f.rmeta,source=/libclap_lex-fe3439128fe1bd2f.rmeta \
-  --mount=from=out-f0689cc68077fae2,dst=/target/release/deps/libstrsim-f0689cc68077fae2.rlib,source=/libstrsim-f0689cc68077fae2.rlib \
   --mount=from=out-f0689cc68077fae2,dst=/target/release/deps/libstrsim-f0689cc68077fae2.rmeta,source=/libstrsim-f0689cc68077fae2.rmeta \
     env CARGO_CRATE_NAME=clap_builder \
         CARGO_INCREMENTAL=0 \
@@ -433,25 +417,15 @@ FROM rust-base AS dep-n-clap-4.5.41-9c55118b61aa7759
 WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-clap-4.5.41,source=/clap-4.5.41,dst=$CARGO_HOME/registry/src/index.crates.io/clap-4.5.41 \
-  --mount=from=out-565a6c7fac5bb111,dst=/target/release/deps/libclap_builder-565a6c7fac5bb111.rlib,source=/libclap_builder-565a6c7fac5bb111.rlib \
   --mount=from=out-565a6c7fac5bb111,dst=/target/release/deps/libclap_builder-565a6c7fac5bb111.rmeta,source=/libclap_builder-565a6c7fac5bb111.rmeta \
-  --mount=from=out-f56da184bf26d2ac,dst=/target/release/deps/libanstyle-f56da184bf26d2ac.rlib,source=/libanstyle-f56da184bf26d2ac.rlib \
   --mount=from=out-f56da184bf26d2ac,dst=/target/release/deps/libanstyle-f56da184bf26d2ac.rmeta,source=/libanstyle-f56da184bf26d2ac.rmeta \
-  --mount=from=out-a6d6afef7bffa60c,dst=/target/release/deps/libutf8parse-a6d6afef7bffa60c.rlib,source=/libutf8parse-a6d6afef7bffa60c.rlib \
   --mount=from=out-a6d6afef7bffa60c,dst=/target/release/deps/libutf8parse-a6d6afef7bffa60c.rmeta,source=/libutf8parse-a6d6afef7bffa60c.rmeta \
-  --mount=from=out-e85cc6d593f4b5ea,dst=/target/release/deps/libanstyle_parse-e85cc6d593f4b5ea.rlib,source=/libanstyle_parse-e85cc6d593f4b5ea.rlib \
   --mount=from=out-e85cc6d593f4b5ea,dst=/target/release/deps/libanstyle_parse-e85cc6d593f4b5ea.rmeta,source=/libanstyle_parse-e85cc6d593f4b5ea.rmeta \
-  --mount=from=out-848fc07ab7a1cff3,dst=/target/release/deps/libanstyle_query-848fc07ab7a1cff3.rlib,source=/libanstyle_query-848fc07ab7a1cff3.rlib \
   --mount=from=out-848fc07ab7a1cff3,dst=/target/release/deps/libanstyle_query-848fc07ab7a1cff3.rmeta,source=/libanstyle_query-848fc07ab7a1cff3.rmeta \
-  --mount=from=out-10d857d95cbcc4ab,dst=/target/release/deps/libcolorchoice-10d857d95cbcc4ab.rlib,source=/libcolorchoice-10d857d95cbcc4ab.rlib \
   --mount=from=out-10d857d95cbcc4ab,dst=/target/release/deps/libcolorchoice-10d857d95cbcc4ab.rmeta,source=/libcolorchoice-10d857d95cbcc4ab.rmeta \
-  --mount=from=out-5e4ef27975f66d55,dst=/target/release/deps/libis_terminal_polyfill-5e4ef27975f66d55.rlib,source=/libis_terminal_polyfill-5e4ef27975f66d55.rlib \
   --mount=from=out-5e4ef27975f66d55,dst=/target/release/deps/libis_terminal_polyfill-5e4ef27975f66d55.rmeta,source=/libis_terminal_polyfill-5e4ef27975f66d55.rmeta \
-  --mount=from=out-22923f2776dd92a7,dst=/target/release/deps/libanstream-22923f2776dd92a7.rlib,source=/libanstream-22923f2776dd92a7.rlib \
   --mount=from=out-22923f2776dd92a7,dst=/target/release/deps/libanstream-22923f2776dd92a7.rmeta,source=/libanstream-22923f2776dd92a7.rmeta \
-  --mount=from=out-fe3439128fe1bd2f,dst=/target/release/deps/libclap_lex-fe3439128fe1bd2f.rlib,source=/libclap_lex-fe3439128fe1bd2f.rlib \
   --mount=from=out-fe3439128fe1bd2f,dst=/target/release/deps/libclap_lex-fe3439128fe1bd2f.rmeta,source=/libclap_lex-fe3439128fe1bd2f.rmeta \
-  --mount=from=out-f0689cc68077fae2,dst=/target/release/deps/libstrsim-f0689cc68077fae2.rlib,source=/libstrsim-f0689cc68077fae2.rlib \
   --mount=from=out-f0689cc68077fae2,dst=/target/release/deps/libstrsim-f0689cc68077fae2.rmeta,source=/libstrsim-f0689cc68077fae2.rmeta \
     env CARGO_CRATE_NAME=clap \
         CARGO_INCREMENTAL=0 \
@@ -619,7 +593,6 @@ FROM rust-base AS dep-n-crossbeam-channel-0.5.15-1e508a04644a98ef
 WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-crossbeam-channel-0.5.15,source=/crossbeam-channel-0.5.15,dst=$CARGO_HOME/registry/src/index.crates.io/crossbeam-channel-0.5.15 \
-  --mount=from=out-56dc8309fe33a6a6,dst=/target/release/deps/libcrossbeam_utils-56dc8309fe33a6a6.rlib,source=/libcrossbeam_utils-56dc8309fe33a6a6.rlib \
   --mount=from=out-56dc8309fe33a6a6,dst=/target/release/deps/libcrossbeam_utils-56dc8309fe33a6a6.rmeta,source=/libcrossbeam_utils-56dc8309fe33a6a6.rmeta \
     env CARGO_CRATE_NAME=crossbeam_channel \
         CARGO_INCREMENTAL=0 \
@@ -726,7 +699,6 @@ FROM rust-base AS dep-n-gif-0.13.3-30df680f5534fb12
 WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-gif-0.13.3,source=/gif-0.13.3,dst=$CARGO_HOME/registry/src/index.crates.io/gif-0.13.3 \
-  --mount=from=out-ef9f1db5be48e246,dst=/target/release/deps/libweezl-ef9f1db5be48e246.rlib,source=/libweezl-ef9f1db5be48e246.rlib \
   --mount=from=out-ef9f1db5be48e246,dst=/target/release/deps/libweezl-ef9f1db5be48e246.rmeta,source=/libweezl-ef9f1db5be48e246.rmeta \
     env CARGO_CRATE_NAME=gif \
         CARGO_INCREMENTAL=0 \
@@ -833,7 +805,6 @@ FROM rust-base AS dep-n-rgb-0.8.51-5c805492e65eaa5e
 WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-rgb-0.8.51,source=/rgb-0.8.51,dst=$CARGO_HOME/registry/src/index.crates.io/rgb-0.8.51 \
-  --mount=from=out-cff9b16fdcd486ea,dst=/target/release/deps/libbytemuck-cff9b16fdcd486ea.rlib,source=/libbytemuck-cff9b16fdcd486ea.rlib \
   --mount=from=out-cff9b16fdcd486ea,dst=/target/release/deps/libbytemuck-cff9b16fdcd486ea.rmeta,source=/libbytemuck-cff9b16fdcd486ea.rmeta \
     env CARGO_CRATE_NAME=rgb \
         CARGO_INCREMENTAL=0 \
@@ -871,15 +842,10 @@ FROM rust-base AS dep-n-gif-dispose-5.0.1-c6243945f5085c6c
 WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-gif-dispose-5.0.1,source=/gif-dispose-5.0.1,dst=$CARGO_HOME/registry/src/index.crates.io/gif-dispose-5.0.1 \
-  --mount=from=out-30df680f5534fb12,dst=/target/release/deps/libgif-30df680f5534fb12.rlib,source=/libgif-30df680f5534fb12.rlib \
   --mount=from=out-30df680f5534fb12,dst=/target/release/deps/libgif-30df680f5534fb12.rmeta,source=/libgif-30df680f5534fb12.rmeta \
-  --mount=from=out-ef9f1db5be48e246,dst=/target/release/deps/libweezl-ef9f1db5be48e246.rlib,source=/libweezl-ef9f1db5be48e246.rlib \
   --mount=from=out-ef9f1db5be48e246,dst=/target/release/deps/libweezl-ef9f1db5be48e246.rmeta,source=/libweezl-ef9f1db5be48e246.rmeta \
-  --mount=from=out-31258ad93cdcc21b,dst=/target/release/deps/libimgref-31258ad93cdcc21b.rlib,source=/libimgref-31258ad93cdcc21b.rlib \
   --mount=from=out-31258ad93cdcc21b,dst=/target/release/deps/libimgref-31258ad93cdcc21b.rmeta,source=/libimgref-31258ad93cdcc21b.rmeta \
-  --mount=from=out-5c805492e65eaa5e,dst=/target/release/deps/librgb-5c805492e65eaa5e.rlib,source=/librgb-5c805492e65eaa5e.rlib \
   --mount=from=out-5c805492e65eaa5e,dst=/target/release/deps/librgb-5c805492e65eaa5e.rmeta,source=/librgb-5c805492e65eaa5e.rmeta \
-  --mount=from=out-cff9b16fdcd486ea,dst=/target/release/deps/libbytemuck-cff9b16fdcd486ea.rlib,source=/libbytemuck-cff9b16fdcd486ea.rlib \
   --mount=from=out-cff9b16fdcd486ea,dst=/target/release/deps/libbytemuck-cff9b16fdcd486ea.rmeta,source=/libbytemuck-cff9b16fdcd486ea.rmeta \
     env CARGO_CRATE_NAME=gif_dispose \
         CARGO_INCREMENTAL=0 \
@@ -1022,7 +988,6 @@ FROM rust-base AS dep-n-crossbeam-epoch-0.9.18-839ab6772226bc63
 WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-crossbeam-epoch-0.9.18,source=/crossbeam-epoch-0.9.18,dst=$CARGO_HOME/registry/src/index.crates.io/crossbeam-epoch-0.9.18 \
-  --mount=from=out-56dc8309fe33a6a6,dst=/target/release/deps/libcrossbeam_utils-56dc8309fe33a6a6.rlib,source=/libcrossbeam_utils-56dc8309fe33a6a6.rlib \
   --mount=from=out-56dc8309fe33a6a6,dst=/target/release/deps/libcrossbeam_utils-56dc8309fe33a6a6.rmeta,source=/libcrossbeam_utils-56dc8309fe33a6a6.rmeta \
     env CARGO_CRATE_NAME=crossbeam_epoch \
         CARGO_INCREMENTAL=0 \
@@ -1059,9 +1024,7 @@ FROM rust-base AS dep-n-crossbeam-deque-0.8.6-90b78d94c98600f2
 WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-crossbeam-deque-0.8.6,source=/crossbeam-deque-0.8.6,dst=$CARGO_HOME/registry/src/index.crates.io/crossbeam-deque-0.8.6 \
-  --mount=from=out-839ab6772226bc63,dst=/target/release/deps/libcrossbeam_epoch-839ab6772226bc63.rlib,source=/libcrossbeam_epoch-839ab6772226bc63.rlib \
   --mount=from=out-839ab6772226bc63,dst=/target/release/deps/libcrossbeam_epoch-839ab6772226bc63.rmeta,source=/libcrossbeam_epoch-839ab6772226bc63.rmeta \
-  --mount=from=out-56dc8309fe33a6a6,dst=/target/release/deps/libcrossbeam_utils-56dc8309fe33a6a6.rlib,source=/libcrossbeam_utils-56dc8309fe33a6a6.rlib \
   --mount=from=out-56dc8309fe33a6a6,dst=/target/release/deps/libcrossbeam_utils-56dc8309fe33a6a6.rmeta,source=/libcrossbeam_utils-56dc8309fe33a6a6.rmeta \
     env CARGO_CRATE_NAME=crossbeam_deque \
         CARGO_INCREMENTAL=0 \
@@ -1191,11 +1154,8 @@ FROM rust-base AS dep-n-rayon-core-1.12.1-27dc44dbca9fa02e
 WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-rayon-core-1.12.1,source=/rayon-core-1.12.1,dst=$CARGO_HOME/registry/src/index.crates.io/rayon-core-1.12.1 \
-  --mount=from=out-90b78d94c98600f2,dst=/target/release/deps/libcrossbeam_deque-90b78d94c98600f2.rlib,source=/libcrossbeam_deque-90b78d94c98600f2.rlib \
   --mount=from=out-90b78d94c98600f2,dst=/target/release/deps/libcrossbeam_deque-90b78d94c98600f2.rmeta,source=/libcrossbeam_deque-90b78d94c98600f2.rmeta \
-  --mount=from=out-56dc8309fe33a6a6,dst=/target/release/deps/libcrossbeam_utils-56dc8309fe33a6a6.rlib,source=/libcrossbeam_utils-56dc8309fe33a6a6.rlib \
   --mount=from=out-56dc8309fe33a6a6,dst=/target/release/deps/libcrossbeam_utils-56dc8309fe33a6a6.rmeta,source=/libcrossbeam_utils-56dc8309fe33a6a6.rmeta \
-  --mount=from=out-839ab6772226bc63,dst=/target/release/deps/libcrossbeam_epoch-839ab6772226bc63.rlib,source=/libcrossbeam_epoch-839ab6772226bc63.rlib \
   --mount=from=out-839ab6772226bc63,dst=/target/release/deps/libcrossbeam_epoch-839ab6772226bc63.rmeta,source=/libcrossbeam_epoch-839ab6772226bc63.rmeta \
   --mount=from=out-b35784449b72893e,dst=/target/release/build/rayon-core-b35784449b72893e/out,source=/ \
     env CARGO_CRATE_NAME=rayon_core \
@@ -1234,15 +1194,10 @@ FROM rust-base AS dep-n-rayon-1.10.0-a20b3d2e25640214
 WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-rayon-1.10.0,source=/rayon-1.10.0,dst=$CARGO_HOME/registry/src/index.crates.io/rayon-1.10.0 \
-  --mount=from=out-34c5ffdcf5142a94,dst=/target/release/deps/libeither-34c5ffdcf5142a94.rlib,source=/libeither-34c5ffdcf5142a94.rlib \
   --mount=from=out-34c5ffdcf5142a94,dst=/target/release/deps/libeither-34c5ffdcf5142a94.rmeta,source=/libeither-34c5ffdcf5142a94.rmeta \
-  --mount=from=out-27dc44dbca9fa02e,dst=/target/release/deps/librayon_core-27dc44dbca9fa02e.rlib,source=/librayon_core-27dc44dbca9fa02e.rlib \
   --mount=from=out-27dc44dbca9fa02e,dst=/target/release/deps/librayon_core-27dc44dbca9fa02e.rmeta,source=/librayon_core-27dc44dbca9fa02e.rmeta \
-  --mount=from=out-56dc8309fe33a6a6,dst=/target/release/deps/libcrossbeam_utils-56dc8309fe33a6a6.rlib,source=/libcrossbeam_utils-56dc8309fe33a6a6.rlib \
   --mount=from=out-56dc8309fe33a6a6,dst=/target/release/deps/libcrossbeam_utils-56dc8309fe33a6a6.rmeta,source=/libcrossbeam_utils-56dc8309fe33a6a6.rmeta \
-  --mount=from=out-839ab6772226bc63,dst=/target/release/deps/libcrossbeam_epoch-839ab6772226bc63.rlib,source=/libcrossbeam_epoch-839ab6772226bc63.rlib \
   --mount=from=out-839ab6772226bc63,dst=/target/release/deps/libcrossbeam_epoch-839ab6772226bc63.rmeta,source=/libcrossbeam_epoch-839ab6772226bc63.rmeta \
-  --mount=from=out-90b78d94c98600f2,dst=/target/release/deps/libcrossbeam_deque-90b78d94c98600f2.rlib,source=/libcrossbeam_deque-90b78d94c98600f2.rlib \
   --mount=from=out-90b78d94c98600f2,dst=/target/release/deps/libcrossbeam_deque-90b78d94c98600f2.rmeta,source=/libcrossbeam_deque-90b78d94c98600f2.rmeta \
     env CARGO_CRATE_NAME=rayon \
         CARGO_INCREMENTAL=0 \
@@ -1317,7 +1272,6 @@ FROM rust-base AS dep-n-thread_local-1.1.9-9ea3674f45c35bb1
 WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-thread_local-1.1.9,source=/thread_local-1.1.9,dst=$CARGO_HOME/registry/src/index.crates.io/thread_local-1.1.9 \
-  --mount=from=out-c9e929e98a8228c6,dst=/target/release/deps/libcfg_if-c9e929e98a8228c6.rlib,source=/libcfg_if-c9e929e98a8228c6.rlib \
   --mount=from=out-c9e929e98a8228c6,dst=/target/release/deps/libcfg_if-c9e929e98a8228c6.rmeta,source=/libcfg_if-c9e929e98a8228c6.rmeta \
     env CARGO_CRATE_NAME=thread_local \
         CARGO_INCREMENTAL=0 \
@@ -1354,29 +1308,17 @@ FROM rust-base AS dep-n-imagequant-4.4.1-4ac4296ac8a4bc86
 WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-imagequant-4.4.1,source=/imagequant-4.4.1,dst=$CARGO_HOME/registry/src/index.crates.io/imagequant-4.4.1 \
-  --mount=from=out-8a411802032fce88,dst=/target/release/deps/libarrayvec-8a411802032fce88.rlib,source=/libarrayvec-8a411802032fce88.rlib \
   --mount=from=out-8a411802032fce88,dst=/target/release/deps/libarrayvec-8a411802032fce88.rmeta,source=/libarrayvec-8a411802032fce88.rmeta \
-  --mount=from=out-ebfeac2613f14f0c,dst=/target/release/deps/libonce_cell-ebfeac2613f14f0c.rlib,source=/libonce_cell-ebfeac2613f14f0c.rlib \
   --mount=from=out-ebfeac2613f14f0c,dst=/target/release/deps/libonce_cell-ebfeac2613f14f0c.rmeta,source=/libonce_cell-ebfeac2613f14f0c.rmeta \
-  --mount=from=out-a20b3d2e25640214,dst=/target/release/deps/librayon-a20b3d2e25640214.rlib,source=/librayon-a20b3d2e25640214.rlib \
   --mount=from=out-a20b3d2e25640214,dst=/target/release/deps/librayon-a20b3d2e25640214.rmeta,source=/librayon-a20b3d2e25640214.rmeta \
-  --mount=from=out-34c5ffdcf5142a94,dst=/target/release/deps/libeither-34c5ffdcf5142a94.rlib,source=/libeither-34c5ffdcf5142a94.rlib \
   --mount=from=out-34c5ffdcf5142a94,dst=/target/release/deps/libeither-34c5ffdcf5142a94.rmeta,source=/libeither-34c5ffdcf5142a94.rmeta \
-  --mount=from=out-56dc8309fe33a6a6,dst=/target/release/deps/libcrossbeam_utils-56dc8309fe33a6a6.rlib,source=/libcrossbeam_utils-56dc8309fe33a6a6.rlib \
   --mount=from=out-56dc8309fe33a6a6,dst=/target/release/deps/libcrossbeam_utils-56dc8309fe33a6a6.rmeta,source=/libcrossbeam_utils-56dc8309fe33a6a6.rmeta \
-  --mount=from=out-839ab6772226bc63,dst=/target/release/deps/libcrossbeam_epoch-839ab6772226bc63.rlib,source=/libcrossbeam_epoch-839ab6772226bc63.rlib \
   --mount=from=out-839ab6772226bc63,dst=/target/release/deps/libcrossbeam_epoch-839ab6772226bc63.rmeta,source=/libcrossbeam_epoch-839ab6772226bc63.rmeta \
-  --mount=from=out-90b78d94c98600f2,dst=/target/release/deps/libcrossbeam_deque-90b78d94c98600f2.rlib,source=/libcrossbeam_deque-90b78d94c98600f2.rlib \
   --mount=from=out-90b78d94c98600f2,dst=/target/release/deps/libcrossbeam_deque-90b78d94c98600f2.rmeta,source=/libcrossbeam_deque-90b78d94c98600f2.rmeta \
-  --mount=from=out-27dc44dbca9fa02e,dst=/target/release/deps/librayon_core-27dc44dbca9fa02e.rlib,source=/librayon_core-27dc44dbca9fa02e.rlib \
   --mount=from=out-27dc44dbca9fa02e,dst=/target/release/deps/librayon_core-27dc44dbca9fa02e.rmeta,source=/librayon_core-27dc44dbca9fa02e.rmeta \
-  --mount=from=out-5c805492e65eaa5e,dst=/target/release/deps/librgb-5c805492e65eaa5e.rlib,source=/librgb-5c805492e65eaa5e.rlib \
   --mount=from=out-5c805492e65eaa5e,dst=/target/release/deps/librgb-5c805492e65eaa5e.rmeta,source=/librgb-5c805492e65eaa5e.rmeta \
-  --mount=from=out-cff9b16fdcd486ea,dst=/target/release/deps/libbytemuck-cff9b16fdcd486ea.rlib,source=/libbytemuck-cff9b16fdcd486ea.rlib \
   --mount=from=out-cff9b16fdcd486ea,dst=/target/release/deps/libbytemuck-cff9b16fdcd486ea.rmeta,source=/libbytemuck-cff9b16fdcd486ea.rmeta \
-  --mount=from=out-9ea3674f45c35bb1,dst=/target/release/deps/libthread_local-9ea3674f45c35bb1.rlib,source=/libthread_local-9ea3674f45c35bb1.rlib \
   --mount=from=out-9ea3674f45c35bb1,dst=/target/release/deps/libthread_local-9ea3674f45c35bb1.rmeta,source=/libthread_local-9ea3674f45c35bb1.rmeta \
-  --mount=from=out-c9e929e98a8228c6,dst=/target/release/deps/libcfg_if-c9e929e98a8228c6.rlib,source=/libcfg_if-c9e929e98a8228c6.rlib \
   --mount=from=out-c9e929e98a8228c6,dst=/target/release/deps/libcfg_if-c9e929e98a8228c6.rmeta,source=/libcfg_if-c9e929e98a8228c6.rmeta \
     env CARGO_CRATE_NAME=imagequant \
         CARGO_INCREMENTAL=0 \
@@ -1509,7 +1451,6 @@ FROM rust-base AS dep-n-crc32fast-1.5.0-d8a1586948b0f16b
 WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-crc32fast-1.5.0,source=/crc32fast-1.5.0,dst=$CARGO_HOME/registry/src/index.crates.io/crc32fast-1.5.0 \
-  --mount=from=out-c9e929e98a8228c6,dst=/target/release/deps/libcfg_if-c9e929e98a8228c6.rlib,source=/libcfg_if-c9e929e98a8228c6.rlib \
   --mount=from=out-c9e929e98a8228c6,dst=/target/release/deps/libcfg_if-c9e929e98a8228c6.rmeta,source=/libcfg_if-c9e929e98a8228c6.rmeta \
   --mount=from=out-8ed02ba08fd7479d,dst=/target/release/build/crc32fast-8ed02ba08fd7479d/out,source=/ \
     env CARGO_CRATE_NAME=crc32fast \
@@ -1583,7 +1524,6 @@ FROM rust-base AS dep-n-libz-rs-sys-0.5.1-dfcfe6c64f0d89b7
 WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-libz-rs-sys-0.5.1,source=/libz-rs-sys-0.5.1,dst=$CARGO_HOME/registry/src/index.crates.io/libz-rs-sys-0.5.1 \
-  --mount=from=out-f500fba8fadd5002,dst=/target/release/deps/libzlib_rs-f500fba8fadd5002.rlib,source=/libzlib_rs-f500fba8fadd5002.rlib \
   --mount=from=out-f500fba8fadd5002,dst=/target/release/deps/libzlib_rs-f500fba8fadd5002.rmeta,source=/libzlib_rs-f500fba8fadd5002.rmeta \
     env CARGO_CRATE_NAME=libz_rs_sys \
         CARGO_INCREMENTAL=0 \
@@ -1620,13 +1560,9 @@ FROM rust-base AS dep-n-flate2-1.1.2-862f6ee9922d8bc1
 WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-flate2-1.1.2,source=/flate2-1.1.2,dst=$CARGO_HOME/registry/src/index.crates.io/flate2-1.1.2 \
-  --mount=from=out-d8a1586948b0f16b,dst=/target/release/deps/libcrc32fast-d8a1586948b0f16b.rlib,source=/libcrc32fast-d8a1586948b0f16b.rlib \
   --mount=from=out-d8a1586948b0f16b,dst=/target/release/deps/libcrc32fast-d8a1586948b0f16b.rmeta,source=/libcrc32fast-d8a1586948b0f16b.rmeta \
-  --mount=from=out-c9e929e98a8228c6,dst=/target/release/deps/libcfg_if-c9e929e98a8228c6.rlib,source=/libcfg_if-c9e929e98a8228c6.rlib \
   --mount=from=out-c9e929e98a8228c6,dst=/target/release/deps/libcfg_if-c9e929e98a8228c6.rmeta,source=/libcfg_if-c9e929e98a8228c6.rmeta \
-  --mount=from=out-dfcfe6c64f0d89b7,dst=/target/release/deps/liblibz_rs_sys-dfcfe6c64f0d89b7.rlib,source=/liblibz_rs_sys-dfcfe6c64f0d89b7.rlib \
   --mount=from=out-dfcfe6c64f0d89b7,dst=/target/release/deps/liblibz_rs_sys-dfcfe6c64f0d89b7.rmeta,source=/liblibz_rs_sys-dfcfe6c64f0d89b7.rmeta \
-  --mount=from=out-f500fba8fadd5002,dst=/target/release/deps/libzlib_rs-f500fba8fadd5002.rlib,source=/libzlib_rs-f500fba8fadd5002.rlib \
   --mount=from=out-f500fba8fadd5002,dst=/target/release/deps/libzlib_rs-f500fba8fadd5002.rmeta,source=/libzlib_rs-f500fba8fadd5002.rmeta \
     env CARGO_CRATE_NAME=flate2 \
         CARGO_INCREMENTAL=0 \
@@ -1797,21 +1733,13 @@ FROM rust-base AS dep-n-lodepng-3.12.1-bd5954e1be680c5b
 WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-lodepng-3.12.1,source=/lodepng-3.12.1,dst=$CARGO_HOME/registry/src/index.crates.io/lodepng-3.12.1 \
-  --mount=from=out-d8a1586948b0f16b,dst=/target/release/deps/libcrc32fast-d8a1586948b0f16b.rlib,source=/libcrc32fast-d8a1586948b0f16b.rlib \
   --mount=from=out-d8a1586948b0f16b,dst=/target/release/deps/libcrc32fast-d8a1586948b0f16b.rmeta,source=/libcrc32fast-d8a1586948b0f16b.rmeta \
-  --mount=from=out-c9e929e98a8228c6,dst=/target/release/deps/libcfg_if-c9e929e98a8228c6.rlib,source=/libcfg_if-c9e929e98a8228c6.rlib \
   --mount=from=out-c9e929e98a8228c6,dst=/target/release/deps/libcfg_if-c9e929e98a8228c6.rmeta,source=/libcfg_if-c9e929e98a8228c6.rmeta \
-  --mount=from=out-862f6ee9922d8bc1,dst=/target/release/deps/libflate2-862f6ee9922d8bc1.rlib,source=/libflate2-862f6ee9922d8bc1.rlib \
   --mount=from=out-862f6ee9922d8bc1,dst=/target/release/deps/libflate2-862f6ee9922d8bc1.rmeta,source=/libflate2-862f6ee9922d8bc1.rmeta \
-  --mount=from=out-f500fba8fadd5002,dst=/target/release/deps/libzlib_rs-f500fba8fadd5002.rlib,source=/libzlib_rs-f500fba8fadd5002.rlib \
   --mount=from=out-f500fba8fadd5002,dst=/target/release/deps/libzlib_rs-f500fba8fadd5002.rmeta,source=/libzlib_rs-f500fba8fadd5002.rmeta \
-  --mount=from=out-dfcfe6c64f0d89b7,dst=/target/release/deps/liblibz_rs_sys-dfcfe6c64f0d89b7.rlib,source=/liblibz_rs_sys-dfcfe6c64f0d89b7.rlib \
   --mount=from=out-dfcfe6c64f0d89b7,dst=/target/release/deps/liblibz_rs_sys-dfcfe6c64f0d89b7.rmeta,source=/liblibz_rs_sys-dfcfe6c64f0d89b7.rmeta \
-  --mount=from=out-c479d7f6719c82be,dst=/target/release/deps/liblibc-c479d7f6719c82be.rlib,source=/liblibc-c479d7f6719c82be.rlib \
   --mount=from=out-c479d7f6719c82be,dst=/target/release/deps/liblibc-c479d7f6719c82be.rmeta,source=/liblibc-c479d7f6719c82be.rmeta \
-  --mount=from=out-5c805492e65eaa5e,dst=/target/release/deps/librgb-5c805492e65eaa5e.rlib,source=/librgb-5c805492e65eaa5e.rlib \
   --mount=from=out-5c805492e65eaa5e,dst=/target/release/deps/librgb-5c805492e65eaa5e.rmeta,source=/librgb-5c805492e65eaa5e.rmeta \
-  --mount=from=out-cff9b16fdcd486ea,dst=/target/release/deps/libbytemuck-cff9b16fdcd486ea.rlib,source=/libbytemuck-cff9b16fdcd486ea.rlib \
   --mount=from=out-cff9b16fdcd486ea,dst=/target/release/deps/libbytemuck-cff9b16fdcd486ea.rmeta,source=/libbytemuck-cff9b16fdcd486ea.rmeta \
     env CARGO_CRATE_NAME=lodepng \
         CARGO_INCREMENTAL=0 \
@@ -1848,7 +1776,6 @@ FROM rust-base AS dep-n-loop9-0.1.5-c03c818eede66cf7
 WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-loop9-0.1.5,source=/loop9-0.1.5,dst=$CARGO_HOME/registry/src/index.crates.io/loop9-0.1.5 \
-  --mount=from=out-31258ad93cdcc21b,dst=/target/release/deps/libimgref-31258ad93cdcc21b.rlib,source=/libimgref-31258ad93cdcc21b.rlib \
   --mount=from=out-31258ad93cdcc21b,dst=/target/release/deps/libimgref-31258ad93cdcc21b.rmeta,source=/libimgref-31258ad93cdcc21b.rmeta \
     env CARGO_CRATE_NAME=loop9 \
         CARGO_INCREMENTAL=0 \
@@ -2088,9 +2015,7 @@ FROM rust-base AS dep-n-ordered-channel-1.2.0-12600996bbed579a
 WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-ordered-channel-1.2.0,source=/ordered-channel-1.2.0,dst=$CARGO_HOME/registry/src/index.crates.io/ordered-channel-1.2.0 \
-  --mount=from=out-1e508a04644a98ef,dst=/target/release/deps/libcrossbeam_channel-1e508a04644a98ef.rlib,source=/libcrossbeam_channel-1e508a04644a98ef.rlib \
   --mount=from=out-1e508a04644a98ef,dst=/target/release/deps/libcrossbeam_channel-1e508a04644a98ef.rmeta,source=/libcrossbeam_channel-1e508a04644a98ef.rmeta \
-  --mount=from=out-56dc8309fe33a6a6,dst=/target/release/deps/libcrossbeam_utils-56dc8309fe33a6a6.rlib,source=/libcrossbeam_utils-56dc8309fe33a6a6.rlib \
   --mount=from=out-56dc8309fe33a6a6,dst=/target/release/deps/libcrossbeam_utils-56dc8309fe33a6a6.rmeta,source=/libcrossbeam_utils-56dc8309fe33a6a6.rmeta \
     env CARGO_CRATE_NAME=ordered_channel \
         CARGO_INCREMENTAL=0 \
@@ -2127,11 +2052,8 @@ FROM rust-base AS dep-n-pbr-1.1.1-3176471a367ee017
 WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-pbr-1.1.1,source=/pbr-1.1.1,dst=$CARGO_HOME/registry/src/index.crates.io/pbr-1.1.1 \
-  --mount=from=out-1e508a04644a98ef,dst=/target/release/deps/libcrossbeam_channel-1e508a04644a98ef.rlib,source=/libcrossbeam_channel-1e508a04644a98ef.rlib \
   --mount=from=out-1e508a04644a98ef,dst=/target/release/deps/libcrossbeam_channel-1e508a04644a98ef.rmeta,source=/libcrossbeam_channel-1e508a04644a98ef.rmeta \
-  --mount=from=out-56dc8309fe33a6a6,dst=/target/release/deps/libcrossbeam_utils-56dc8309fe33a6a6.rlib,source=/libcrossbeam_utils-56dc8309fe33a6a6.rlib \
   --mount=from=out-56dc8309fe33a6a6,dst=/target/release/deps/libcrossbeam_utils-56dc8309fe33a6a6.rmeta,source=/libcrossbeam_utils-56dc8309fe33a6a6.rmeta \
-  --mount=from=out-c479d7f6719c82be,dst=/target/release/deps/liblibc-c479d7f6719c82be.rlib,source=/liblibc-c479d7f6719c82be.rlib \
   --mount=from=out-c479d7f6719c82be,dst=/target/release/deps/liblibc-c479d7f6719c82be.rmeta,source=/liblibc-c479d7f6719c82be.rmeta \
     env CARGO_CRATE_NAME=pbr \
         CARGO_INCREMENTAL=0 \
@@ -2204,21 +2126,13 @@ FROM rust-base AS dep-n-resize-0.8.8-6c0d3ec55d606bda
 WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-resize-0.8.8,source=/resize-0.8.8,dst=$CARGO_HOME/registry/src/index.crates.io/resize-0.8.8 \
-  --mount=from=out-a20b3d2e25640214,dst=/target/release/deps/librayon-a20b3d2e25640214.rlib,source=/librayon-a20b3d2e25640214.rlib \
   --mount=from=out-a20b3d2e25640214,dst=/target/release/deps/librayon-a20b3d2e25640214.rmeta,source=/librayon-a20b3d2e25640214.rmeta \
-  --mount=from=out-34c5ffdcf5142a94,dst=/target/release/deps/libeither-34c5ffdcf5142a94.rlib,source=/libeither-34c5ffdcf5142a94.rlib \
   --mount=from=out-34c5ffdcf5142a94,dst=/target/release/deps/libeither-34c5ffdcf5142a94.rmeta,source=/libeither-34c5ffdcf5142a94.rmeta \
-  --mount=from=out-56dc8309fe33a6a6,dst=/target/release/deps/libcrossbeam_utils-56dc8309fe33a6a6.rlib,source=/libcrossbeam_utils-56dc8309fe33a6a6.rlib \
   --mount=from=out-56dc8309fe33a6a6,dst=/target/release/deps/libcrossbeam_utils-56dc8309fe33a6a6.rmeta,source=/libcrossbeam_utils-56dc8309fe33a6a6.rmeta \
-  --mount=from=out-839ab6772226bc63,dst=/target/release/deps/libcrossbeam_epoch-839ab6772226bc63.rlib,source=/libcrossbeam_epoch-839ab6772226bc63.rlib \
   --mount=from=out-839ab6772226bc63,dst=/target/release/deps/libcrossbeam_epoch-839ab6772226bc63.rmeta,source=/libcrossbeam_epoch-839ab6772226bc63.rmeta \
-  --mount=from=out-90b78d94c98600f2,dst=/target/release/deps/libcrossbeam_deque-90b78d94c98600f2.rlib,source=/libcrossbeam_deque-90b78d94c98600f2.rlib \
   --mount=from=out-90b78d94c98600f2,dst=/target/release/deps/libcrossbeam_deque-90b78d94c98600f2.rmeta,source=/libcrossbeam_deque-90b78d94c98600f2.rmeta \
-  --mount=from=out-27dc44dbca9fa02e,dst=/target/release/deps/librayon_core-27dc44dbca9fa02e.rlib,source=/librayon_core-27dc44dbca9fa02e.rlib \
   --mount=from=out-27dc44dbca9fa02e,dst=/target/release/deps/librayon_core-27dc44dbca9fa02e.rmeta,source=/librayon_core-27dc44dbca9fa02e.rmeta \
-  --mount=from=out-5c805492e65eaa5e,dst=/target/release/deps/librgb-5c805492e65eaa5e.rlib,source=/librgb-5c805492e65eaa5e.rlib \
   --mount=from=out-5c805492e65eaa5e,dst=/target/release/deps/librgb-5c805492e65eaa5e.rmeta,source=/librgb-5c805492e65eaa5e.rmeta \
-  --mount=from=out-cff9b16fdcd486ea,dst=/target/release/deps/libbytemuck-cff9b16fdcd486ea.rlib,source=/libbytemuck-cff9b16fdcd486ea.rlib \
   --mount=from=out-cff9b16fdcd486ea,dst=/target/release/deps/libbytemuck-cff9b16fdcd486ea.rmeta,source=/libbytemuck-cff9b16fdcd486ea.rmeta \
     env CARGO_CRATE_NAME=resize \
         CARGO_INCREMENTAL=0 \
@@ -2325,13 +2239,9 @@ FROM rust-base AS dep-n-yuv-0.1.9-9f83d0f0e70cdaf3
 WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-yuv-0.1.9,source=/yuv-0.1.9,dst=$CARGO_HOME/registry/src/index.crates.io/yuv-0.1.9 \
-  --mount=from=out-c3d4e43a145962c1,dst=/target/release/deps/libnum_traits-c3d4e43a145962c1.rlib,source=/libnum_traits-c3d4e43a145962c1.rlib \
   --mount=from=out-c3d4e43a145962c1,dst=/target/release/deps/libnum_traits-c3d4e43a145962c1.rmeta,source=/libnum_traits-c3d4e43a145962c1.rmeta \
-  --mount=from=out-81dde520d9a6f110,dst=/target/release/deps/libautocfg-81dde520d9a6f110.rlib,source=/libautocfg-81dde520d9a6f110.rlib \
   --mount=from=out-81dde520d9a6f110,dst=/target/release/deps/libautocfg-81dde520d9a6f110.rmeta,source=/libautocfg-81dde520d9a6f110.rmeta \
-  --mount=from=out-5c805492e65eaa5e,dst=/target/release/deps/librgb-5c805492e65eaa5e.rlib,source=/librgb-5c805492e65eaa5e.rlib \
   --mount=from=out-5c805492e65eaa5e,dst=/target/release/deps/librgb-5c805492e65eaa5e.rmeta,source=/librgb-5c805492e65eaa5e.rmeta \
-  --mount=from=out-cff9b16fdcd486ea,dst=/target/release/deps/libbytemuck-cff9b16fdcd486ea.rlib,source=/libbytemuck-cff9b16fdcd486ea.rlib \
   --mount=from=out-cff9b16fdcd486ea,dst=/target/release/deps/libbytemuck-cff9b16fdcd486ea.rmeta,source=/libbytemuck-cff9b16fdcd486ea.rmeta \
     env CARGO_CRATE_NAME=yuv \
         CARGO_INCREMENTAL=0 \

@@ -251,7 +251,6 @@ FROM rust-base AS dep-n-os_info-3.12.0-99e1b74dcbc37d10
 WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-os_info-3.12.0,source=/os_info-3.12.0,dst=$CARGO_HOME/registry/src/index.crates.io/os_info-3.12.0 \
-  --mount=from=out-5d1f965d123fc9a9,dst=/target/release/deps/liblog-5d1f965d123fc9a9.rlib,source=/liblog-5d1f965d123fc9a9.rlib \
   --mount=from=out-5d1f965d123fc9a9,dst=/target/release/deps/liblog-5d1f965d123fc9a9.rmeta,source=/liblog-5d1f965d123fc9a9.rmeta \
     env CARGO_CRATE_NAME=os_info \
         CARGO_INCREMENTAL=0 \
@@ -381,13 +380,9 @@ FROM rust-base AS dep-n-kani-verifier-0.66.0-e96a45def5cfa65b
 WORKDIR /target/release/deps
 RUN \
   --mount=from=cratesio-kani-verifier-0.66.0,source=/kani-verifier-0.66.0,dst=$CARGO_HOME/registry/src/index.crates.io/kani-verifier-0.66.0 \
-  --mount=from=out-aa9a328f978a9bce,dst=/target/release/deps/libanyhow-aa9a328f978a9bce.rlib,source=/libanyhow-aa9a328f978a9bce.rlib \
   --mount=from=out-aa9a328f978a9bce,dst=/target/release/deps/libanyhow-aa9a328f978a9bce.rmeta,source=/libanyhow-aa9a328f978a9bce.rmeta \
-  --mount=from=out-384d1fb2cc99fe82,dst=/target/release/deps/libhome-384d1fb2cc99fe82.rlib,source=/libhome-384d1fb2cc99fe82.rlib \
   --mount=from=out-384d1fb2cc99fe82,dst=/target/release/deps/libhome-384d1fb2cc99fe82.rmeta,source=/libhome-384d1fb2cc99fe82.rmeta \
-  --mount=from=out-99e1b74dcbc37d10,dst=/target/release/deps/libos_info-99e1b74dcbc37d10.rlib,source=/libos_info-99e1b74dcbc37d10.rlib \
   --mount=from=out-99e1b74dcbc37d10,dst=/target/release/deps/libos_info-99e1b74dcbc37d10.rmeta,source=/libos_info-99e1b74dcbc37d10.rmeta \
-  --mount=from=out-5d1f965d123fc9a9,dst=/target/release/deps/liblog-5d1f965d123fc9a9.rlib,source=/liblog-5d1f965d123fc9a9.rlib \
   --mount=from=out-5d1f965d123fc9a9,dst=/target/release/deps/liblog-5d1f965d123fc9a9.rmeta,source=/liblog-5d1f965d123fc9a9.rmeta \
   --mount=from=out-737549d94e13a8a8,dst=/target/release/build/kani-verifier-737549d94e13a8a8/out,source=/ \
     env CARGO_CRATE_NAME=kani_verifier \

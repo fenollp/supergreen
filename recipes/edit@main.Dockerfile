@@ -300,7 +300,6 @@ WORKDIR /target/release/deps
 WORKDIR $CARGO_HOME/git/checkouts/edit-d235d8189188b09c/91a9a5f
 RUN \
   --mount=from=checkout-edit-d235d8189188b09c-91a9a5f808af7711810b0d0f9df23c42884263e2,dst=$CARGO_HOME/git/checkouts/edit-d235d8189188b09c/91a9a5f \
-  --mount=from=out-392aeff92c0e8f19,dst=/target/release/deps/liblibc-392aeff92c0e8f19.rlib,source=/liblibc-392aeff92c0e8f19.rlib \
   --mount=from=out-392aeff92c0e8f19,dst=/target/release/deps/liblibc-392aeff92c0e8f19.rmeta,source=/liblibc-392aeff92c0e8f19.rmeta \
   --mount=from=out-5229da92903ebe58,dst=/target/release/build/edit-5229da92903ebe58/out,source=/ \
     env CARGO_CRATE_NAME=edit \
