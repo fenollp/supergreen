@@ -1036,9 +1036,9 @@ jobs:
       run: |
         err=0
         grep Finished  ../_
-        grep Finished  ../_ | grep -E [0123]...s || ((err+=1))
-        grep Dirty     ../_                      && ((err+=2))
-        grep Compiling ../_                      && ((err+=4))
+        grep Finished  ../_ | grep -E ....s || ((err+=1))
+        grep Dirty     ../_                 && ((err+=2))
+        grep Compiling ../_                 && ((err+=4))
         exit $err
     - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
@@ -1322,9 +1322,9 @@ jobs:
       run: |
         err=0
         grep Finished  ../_
-        grep Finished  ../_ | grep -E [0123]...s || ((err+=1))
-        grep Dirty     ../_                      && ((err+=2))
-        grep Compiling ../_                      && ((err+=4))
+        grep Finished  ../_ | grep -E ....s || ((err+=1))
+        grep Dirty     ../_                 && ((err+=2))
+        grep Compiling ../_                 && ((err+=4))
         exit $err
     - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
@@ -1608,9 +1608,9 @@ jobs:
       run: |
         err=0
         grep Finished  ../_
-        grep Finished  ../_ | grep -E [0123]...s || ((err+=1))
-        grep Dirty     ../_                      && ((err+=2))
-        grep Compiling ../_                      && ((err+=4))
+        grep Finished  ../_ | grep -E ....s || ((err+=1))
+        grep Dirty     ../_                 && ((err+=2))
+        grep Compiling ../_                 && ((err+=4))
         exit $err
     - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
@@ -1894,9 +1894,9 @@ jobs:
       run: |
         err=0
         grep Finished  ../_
-        grep Finished  ../_ | grep -E [0123]...s || ((err+=1))
-        grep Dirty     ../_                      && ((err+=2))
-        grep Compiling ../_                      && ((err+=4))
+        grep Finished  ../_ | grep -E ....s || ((err+=1))
+        grep Dirty     ../_                 && ((err+=2))
+        grep Compiling ../_                 && ((err+=4))
         exit $err
     - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322
@@ -2396,9 +2396,9 @@ jobs:
       run: |
         err=0
         grep Finished  ../_
-        grep Finished  ../_ | grep -E [0123]...s || ((err+=1))
-        grep Dirty     ../_                      && ((err+=2))
-        grep Compiling ../_                      && ((err+=4))
+        grep Finished  ../_ | grep -E ....s || ((err+=1))
+        grep Dirty     ../_                 && ((err+=2))
+        grep Compiling ../_                 && ((err+=4))
         exit $err
     - if: ${{ job.steps.do-try.outcome != 'success' && job.steps.do-try-jobs1.outcome != 'success' }}
       name: 🔴 =means=> it's again that cargo issue https://github.com/rust-lang/cargo/pull/14322

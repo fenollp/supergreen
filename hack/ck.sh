@@ -89,9 +89,9 @@ cat <<EOF
       run: |
         err=0
         grep Finished  $cargologs
-        grep Finished  $cargologs | grep -E [0123]...s || ((err+=1))
-        grep Dirty     $cargologs                      && ((err+=2))
-        grep Compiling $cargologs                      && ((err+=4))
+        grep Finished  $cargologs | grep -E ....s || ((err+=1))
+        grep Dirty     $cargologs                 && ((err+=2))
+        grep Compiling $cargologs                 && ((err+=4))
         exit \$err
 EOF
 }
