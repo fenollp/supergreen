@@ -48,7 +48,7 @@ cargo_green_fetch() {
     - name: cargo fetch
       run: |
 $(unset_action_envs)
-        cargo green -vv fetch |& tee ../_
+        cargo green fetch |& tee ../_
 $(postconds ../_)
 EOF
 }
@@ -123,7 +123,7 @@ $(bin_jobdef 'installs')
     steps:
 $(postbin_steps)
 $(cache_usage)
-$(try_then_fallback_single_threaded cargo green -vv install --locked --force --path=./cargo-green)
+$(try_then_fallback_single_threaded cargo green install --locked --force --path=./cargo-green)
 $(cache_usage)
 
 
@@ -137,7 +137,7 @@ $(cache_usage)
     - name: 🔵 cargo audit net=ON cache=OFF remote=OFF
       run: |
 $(unset_action_envs)
-        cargo green -vv audit |& tee ../_
+        cargo green audit |& tee ../_
     - run: grep Scanning ../_
 $(postconds ../_)
 $(cache_usage)
@@ -169,9 +169,9 @@ $(bin_jobdef 'builds')
 $(postbin_steps)
 $(cache_usage)
 $(cargo_green_fetch)
-$(try_then_fallback_single_threaded cargo green -vv build --all-targets --all-features --locked --frozen --offline)
+$(try_then_fallback_single_threaded cargo green build --all-targets --all-features --locked --frozen --offline)
 $(cache_usage)
-$(run_again_ensuring_freshly_result cargo green -vv build --all-targets --all-features --locked --frozen --offline)
+$(run_again_ensuring_freshly_result cargo green build --all-targets --all-features --locked --frozen --offline)
 $(cache_usage)
 
 
@@ -180,9 +180,9 @@ $(bin_jobdef 'tests')
 $(postbin_steps)
 $(cache_usage)
 $(cargo_green_fetch)
-$(try_then_fallback_single_threaded cargo green -vv test --all-targets --all-features --locked --frozen --offline)
+$(try_then_fallback_single_threaded cargo green test --all-targets --all-features --locked --frozen --offline)
 $(cache_usage)
-$(run_again_ensuring_freshly_result cargo green -vv test --all-targets --all-features --locked --frozen --offline)
+$(run_again_ensuring_freshly_result cargo green test --all-targets --all-features --locked --frozen --offline)
 $(cache_usage)
 
 
@@ -191,9 +191,9 @@ $(bin_jobdef 'checks')
 $(postbin_steps)
 $(cache_usage)
 $(cargo_green_fetch)
-$(try_then_fallback_single_threaded cargo green -vv check --all-targets --all-features --locked --frozen --offline)
+$(try_then_fallback_single_threaded cargo green check --all-targets --all-features --locked --frozen --offline)
 $(cache_usage)
-$(run_again_ensuring_freshly_result cargo green -vv check --all-targets --all-features --locked --frozen --offline)
+$(run_again_ensuring_freshly_result cargo green check --all-targets --all-features --locked --frozen --offline)
 $(cache_usage)
 
 
@@ -213,10 +213,10 @@ $(bin_jobdef 'packages')
 $(postbin_steps)
 $(cache_usage)
 $(cargo_green_fetch)
-$(try_then_fallback_single_threaded cargo green -vv package --all-features --locked --frozen --offline)
+$(try_then_fallback_single_threaded cargo green package --all-features --locked --frozen --offline)
 $(cache_usage)
 # FIXME: 'Dirty [..]: the file `src/[..]` has changed ([..], 19s after last build at [..])'
-# \$(run_again_ensuring_freshly_result cargo green -vv package --all-features --locked --frozen --offline)
+# \$(run_again_ensuring_freshly_result cargo green package --all-features --locked --frozen --offline)
 # \$(cache_usage)
 
 
@@ -226,8 +226,8 @@ $(postbin_steps)
     - run: rustup component add clippy
 $(cache_usage)
 $(cargo_green_fetch)
-$(try_then_fallback_single_threaded cargo green -vv clippy --all-targets --all-features --locked --frozen --offline)
+$(try_then_fallback_single_threaded cargo green clippy --all-targets --all-features --locked --frozen --offline)
 $(cache_usage)
-$(run_again_ensuring_freshly_result cargo green -vv clippy --all-targets --all-features --locked --frozen --offline)
+$(run_again_ensuring_freshly_result cargo green clippy --all-targets --all-features --locked --frozen --offline)
 $(cache_usage)
 EOF
