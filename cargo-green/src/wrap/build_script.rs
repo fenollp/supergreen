@@ -1,4 +1,5 @@
 use std::{
+    collections::HashSet,
     env,
     fs::{self},
 };
@@ -163,22 +164,41 @@ async fn do_exec(
     let workdir = rewrite_cratesio_index(&workdir);
     run_block.push_str(&format!("WORKDIR {workdir}\n"));
 
+    let mount_flag = |name, src: Option<_>, dst, swappity| {
+        let src = src.as_deref().map(|src| format!(",source={src}")).unwrap_or_default();
+        let mount = if swappity { format!(",dst={dst}{src}") } else { format!("{src},dst={dst}") };
+        format!("  --mount=from={name}{mount} \\\n")
+    };
+
     run_block.push_str("RUN \\\n");
     run_block.push_str(&format!(
         "  --mount=from={previous_out_stage},source={previous_out_dst},dst={exe} \\\n",
         exe = virtual_target_dir(&exe)
     ));
+    let code_stage_name = code_stage.name().to_string();
+    let mut mounted: HashSet<_> = [code_stage_name.clone()].into();
     for (src, dst, swappity) in code_stage.mounts() {
-        let name = code_stage.name();
-        let src = src.as_deref().map(|src| format!(",source={src}")).unwrap_or_default();
-        let mount = if swappity { format!(",dst={dst}{src}") } else { format!("{src},dst={dst}") };
-        run_block.push_str(&format!("  --mount=from={name}{mount} \\\n"));
+        run_block.push_str(&mount_flag(&code_stage_name, src, dst, swappity));
     }
 
     let mut extern_mds = mds.load_all(previous_md.deps())?;
     extern_mds.push(previous_md);
     let mds = md.sort_deps(extern_mds)?;
     info!("sorted {} deps", mds.len());
+
+    if green.buildscriptsources() {
+        // Mounts build scripts' dependencies' sources so build scripts that
+        // read a dependency's bundled files at execution time may find them
+        // (eg. https://lib.rs/crates/protoc-bin-vendored ships `protoc` binaries).
+        for dep in &mds {
+            let Some(dep_code) = dep.code_stage() else { continue };
+            let name = dep_code.name();
+            let true = mounted.insert(name.to_string()) else { continue };
+            for (src, dst, swappity) in dep_code.mounts() {
+                run_block.push_str(&mount_flag(name, src, dst, swappity));
+            }
+        }
+    }
 
     md.call_block(
         (&run_stage, run_block),
