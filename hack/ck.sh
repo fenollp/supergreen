@@ -104,6 +104,7 @@ cat <<EOF
     - name: Check that generated binary executes and set sha256
       run: |
         ls -lha $root/bin/$binname
+        file $root/bin/$binname
         $root/bin/$binname --help || true
         echo "BINHASHED=\$(sha256sum $root/bin/$binname)" >>\$GITHUB_ENV
 EOF

@@ -282,6 +282,7 @@ jobs:
     - name: Check that generated binary executes and set sha256
       run: |
         ls -lha /tmp/bin/btm
+        file /tmp/bin/btm
         /tmp/bin/btm --help || true
         echo "BINHASHED=$(sha256sum /tmp/bin/btm)" >>$GITHUB_ENV
 
@@ -742,6 +743,7 @@ jobs:
     - name: Check that generated binary executes and set sha256
       run: |
         ls -lha /tmp/bin/alacritty
+        file /tmp/bin/alacritty
         /tmp/bin/alacritty --help || true
         echo "BINHASHED=$(sha256sum /tmp/bin/alacritty)" >>$GITHUB_ENV
 
@@ -1202,6 +1204,7 @@ jobs:
     - name: Check that generated binary executes and set sha256
       run: |
         ls -lha /tmp/bin/cargo-rail
+        file /tmp/bin/cargo-rail
         /tmp/bin/cargo-rail --help || true
         echo "BINHASHED=$(sha256sum /tmp/bin/cargo-rail)" >>$GITHUB_ENV
 
