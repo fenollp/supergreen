@@ -198,8 +198,8 @@ impl Green {
         {
             let origin = validate_csv(field, var)?;
             for f in field.iter().filter(|f| !f.contains('=')) {
-                warn!("{origin} is missing version constraints on {f:?}");
-                eprintln!("{origin} is missing version constraints on {f:?}");
+                warn!("warning: config {origin} is missing version constraints on {f:?}");
+                eprintln!("warning: config {origin} is missing version constraints on {f:?}");
             }
         }
 
