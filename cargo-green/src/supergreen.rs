@@ -334,7 +334,19 @@ fn all_envs(green: &Green) -> Vec<(&str, &'static str, Option<String>)> {
         var!(ENV_ADD_APT!(), csv(&green.add.apt)),
         var!(ENV_ADD_APK!(), csv(&green.add.apk)),
         var!(ENV_EXPERIMENT!(), csv(&green.experiment)),
+        var!(ENV_RESULTS_BASE_URL!(), env::var(ENV_RESULTS_BASE_URL!()).ok()),
+        var!(ENV_RESULTS_S3_ENDPOINT!(), env::var(ENV_RESULTS_S3_ENDPOINT!()).ok()),
+        var!(ENV_RESULTS_S3_BUCKET!(), env::var(ENV_RESULTS_S3_BUCKET!()).ok()),
+        var!(ENV_RESULTS_S3_REGION!(), env::var(ENV_RESULTS_S3_REGION!()).ok()),
+        var!(ENV_RESULTS_S3_ACCESS_KEY_ID!(), env::var(ENV_RESULTS_S3_ACCESS_KEY_ID!()).ok()),
+        // Redacted: never print the secret's value, only whether it is set.
+        var!(ENV_RESULTS_S3_SECRET_ACCESS_KEY!(), redacted(ENV_RESULTS_S3_SECRET_ACCESS_KEY!())),
     ]
+}
+
+/// Report whether a (secret) env var is set, without revealing its value.
+fn redacted(var: &str) -> Option<String> {
+    env::var(var).ok().map(|_| "<set>".to_owned())
 }
 
 fn for_all_or_filtered(

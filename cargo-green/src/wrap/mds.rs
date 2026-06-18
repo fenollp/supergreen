@@ -164,6 +164,9 @@ impl Md {
 
             result.finalize(md_ser).await?;
             info!("wrote result");
+
+            // Best-effort: push the new result to the remote store for other machines to reuse.
+            green.publish_result(stage).await?;
         }
 
         let final_stage = format!(

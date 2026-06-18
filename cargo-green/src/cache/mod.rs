@@ -2,8 +2,48 @@ use serde::{Deserialize, Serialize};
 
 use crate::image_uri::ImageUri;
 
+// Remote results store (R2). Defined before the submodules so `result`/`s3` can use them.
+// Env-only settings (no `Cargo.toml` counterpart): deployment/CI knobs and credentials.
+
+macro_rules! ENV_RESULTS_BASE_URL {
+    () => {
+        "CARGOGREEN_RESULTS_BASE_URL"
+    };
+}
+
+macro_rules! ENV_RESULTS_S3_ENDPOINT {
+    () => {
+        "CARGOGREEN_RESULTS_S3_ENDPOINT"
+    };
+}
+
+macro_rules! ENV_RESULTS_S3_BUCKET {
+    () => {
+        "CARGOGREEN_RESULTS_S3_BUCKET"
+    };
+}
+
+macro_rules! ENV_RESULTS_S3_REGION {
+    () => {
+        "CARGOGREEN_RESULTS_S3_REGION"
+    };
+}
+
+macro_rules! ENV_RESULTS_S3_ACCESS_KEY_ID {
+    () => {
+        "CARGOGREEN_RESULTS_S3_ACCESS_KEY_ID"
+    };
+}
+
+macro_rules! ENV_RESULTS_S3_SECRET_ACCESS_KEY {
+    () => {
+        "CARGOGREEN_RESULTS_S3_SECRET_ACCESS_KEY"
+    };
+}
+
 pub(crate) mod buildkit;
 pub(crate) mod result;
+pub(crate) mod s3;
 
 // TODO: conf for github actions caching
 // CARGOGREEN_CACHE_FROM: type=gha

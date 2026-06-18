@@ -110,7 +110,10 @@ impl Green {
         let Some(ref dirs) = self.dirs else { return Ok(false) };
         let src = dirs.result_from_stage(target);
         if !src.exists() {
-            return Ok(false);
+            // Local-disk miss: try pulling a published result from the R2 custom domain.
+            if !dirs.fetch_remote_result(target, &src).await? {
+                return Ok(false);
+            }
         }
         info!("reusing exported result {src}");
 
@@ -136,6 +139,16 @@ impl Green {
             bail!("Reused result of a failed rustc (exit code {code})")
         }
         Ok(true)
+    }
+
+    /// Best-effort publish of a freshly finalized result tarball to the remote store (R2).
+    pub(crate) async fn publish_result(&self, target: &Stage) -> Result<()> {
+        let Some(ref dirs) = self.dirs else { return Ok(()) };
+        let src = dirs.result_from_stage(target);
+        if !src.exists() {
+            return Ok(());
+        }
+        dirs.publish_remote_result(target, &src).await
     }
 
     async fn build(
