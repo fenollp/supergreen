@@ -374,6 +374,12 @@ $(login_to_readonly_hub)
         toolchain: \${{ matrix.toolchain }}
         rustflags: ''
         cache-on-failure: true
+    - name: Drop Rust annotations
+      run: |
+        echo '::remove-matcher owner=rust::'
+        echo '::remove-matcher owner=rustfmt::'
+        echo '::remove-matcher owner=clippy::'
+
 
 $(restore_bin)
 $(restore_builder_data)
