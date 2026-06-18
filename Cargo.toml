@@ -52,7 +52,7 @@ nutype = { version = "0, >=0.4", features = [ "serde" ], default-features = fals
 phf = { version = "0, >=0.13", features = [ "macros" ], default-features = false }
 pico-args = { version = "0, >=0.5", features = [ "eq-separator" ], default-features = false }
 pretty_assertions = { version = "1", features = [ "std" ], default-features = false }
-reqwest = { version = "0, >=0.13", features = [ "rustls-no-provider" ], default-features = false }
+reqwest = { version = "0, >=0.13", features = [ "rustls-no-provider", "stream" ], default-features = false }
 rustc-host = { version = "0, >=0.1", default-features = false }
 rustflags = { version = "0, >=0.1", default-features = false }
 rustls = { version = "0, >=0.23", features = [ "ring" ], default-features = false }
@@ -69,6 +69,7 @@ termimad = { version = "0, >=0.34", default-features = false }
 test-case = { version = "3", default-features = false }
 tokio = { version = "1", features = [ "io-util", "macros", "process", "rt-multi-thread", "time" ], default-features = false }
 tokio-stream = { version = "0, >=0.1", default-features = false }
+tokio-util = { version = "0, >=0.7", features = [ "io" ], default-features = false }
 toml = { version = "1", features = [ "display", "parse", "serde" ], default-features = false }
 uuid = { version = "1", features = [ "v4" ], default-features = false }
 version-compare = { version = "0, >=0.2", default-features = false }
