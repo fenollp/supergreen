@@ -36,6 +36,12 @@
   - [`$CARGOGREEN_ADD_APT`](#cargogreen_add_apt)
   - [`$CARGOGREEN_ADD_APK`](#cargogreen_add_apk)
   - [`$CARGOGREEN_EXPERIMENT`](#cargogreen_experiment)
+  - [`$CARGOGREEN_RESULTS_BASE_URL`](#cargogreen_results_base_url)
+  - [`$CARGOGREEN_RESULTS_S3_ENDPOINT`](#cargogreen_results_s3_endpoint)
+  - [`$CARGOGREEN_RESULTS_S3_BUCKET`](#cargogreen_results_s3_bucket)
+  - [`$CARGOGREEN_RESULTS_S3_REGION`](#cargogreen_results_s3_region)
+  - [`$CARGOGREEN_RESULTS_S3_ACCESS_KEY_ID`](#cargogreen_results_s3_access_key_id)
+  - [`$CARGOGREEN_RESULTS_S3_SECRET_ACCESS_KEY`](#cargogreen_results_s3_secret_access_key)
 - [Alternatives](#alternatives)
 - [Origins](#origins)
 
@@ -539,6 +545,68 @@ A name that does not match exactly is an error.
 *Use by setting this environment variable (no `Cargo.toml` setting):*
 ```shell
 export CARGOGREEN_EXPERIMENT="finalpathnonprimary,repro"
+```
+
+### `$CARGOGREEN_RESULTS_BASE_URL`
+
+Base URL of a read-only, public store of build results (crate artifact tarballs), tried on a
+local-disk cache miss before falling back to building. Defaults to `https://results.cargo.green`.
+
+Downloads are streamed and verified against a published `{name}.tar.gz.sha256` sidecar when present.
+Set to the empty string to disable remote fetching. Skipped entirely when offline (`--offline`/`--frozen`).
+
+*Use by setting this environment variable (no `Cargo.toml` setting):*
+```shell
+export CARGOGREEN_RESULTS_BASE_URL="https://results.cargo.green"
+```
+
+### `$CARGOGREEN_RESULTS_S3_ENDPOINT`
+
+S3-compatible endpoint used to *publish* build results, signed with AWS Signature Version 4 — no
+proxy or Worker needed. For Cloudflare R2 this is `https://<account-id>.r2.cloudflarestorage.com`.
+
+Publishing happens only when this and the other `$CARGOGREEN_RESULTS_S3_*` variables are all set.
+
+*Use by setting this environment variable (no `Cargo.toml` setting):*
+```shell
+export CARGOGREEN_RESULTS_S3_ENDPOINT="https://<account-id>.r2.cloudflarestorage.com"
+```
+
+### `$CARGOGREEN_RESULTS_S3_BUCKET`
+
+Bucket name that results (and their `.sha256` sidecars) are `PUT` into when publishing.
+
+*Use by setting this environment variable (no `Cargo.toml` setting):*
+```shell
+export CARGOGREEN_RESULTS_S3_BUCKET="my-cargo-green-results"
+```
+
+### `$CARGOGREEN_RESULTS_S3_REGION`
+
+Region used when signing publish requests. Defaults to `auto` (correct for Cloudflare R2).
+
+*Use by setting this environment variable (no `Cargo.toml` setting):*
+```shell
+export CARGOGREEN_RESULTS_S3_REGION="auto"
+```
+
+### `$CARGOGREEN_RESULTS_S3_ACCESS_KEY_ID`
+
+Access key ID for the S3 endpoint used when publishing. A secret: keep it out of `Cargo.toml`.
+
+*Use by setting this environment variable (no `Cargo.toml` setting):*
+```shell
+export CARGOGREEN_RESULTS_S3_ACCESS_KEY_ID="…"
+```
+
+### `$CARGOGREEN_RESULTS_S3_SECRET_ACCESS_KEY`
+
+Secret access key for the S3 endpoint used when publishing. A secret: keep it out of `Cargo.toml`;
+`cargo green supergreen env` only reports whether it is set, never its value.
+
+*Use by setting this environment variable (no `Cargo.toml` setting):*
+```shell
+export CARGOGREEN_RESULTS_S3_SECRET_ACCESS_KEY="…"
 ```
 
 ## Alternatives
