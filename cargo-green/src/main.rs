@@ -1,6 +1,6 @@
 use std::{env, ffi::OsStr, fs, path::PathBuf};
 
-use anyhow::{anyhow, bail, Result};
+use anyhow::{Result, anyhow, bail};
 use tokio::process::Command;
 
 use crate::dirs::{create_current_target_dir, hashed_args, tmp};
@@ -169,7 +169,8 @@ async fn actual_main() -> Result<()> {
             .unwrap_or_else(|_| tmp().join(format!("{PKG}-{}.log", hashed_args())).to_string());
         let path = camino::absolute_utf8(path)
             .map_err(|e| anyhow!("Failed canonicalizing ${var}: {e}"))?;
-        env::set_var(var, &path);
+        // SAFETY: environment access only happens in single-threaded code.
+        unsafe { env::set_var(var, &path) };
         cmd.env(var, &path);
         let _ = fs::OpenOptions::new().create(true).truncate(false).append(true).open(path);
     }
@@ -201,7 +202,8 @@ async fn actual_main() -> Result<()> {
 
     let target_dir = create_current_target_dir(command.as_deref())?;
     cmd.env("CARGO_TARGET_DIR", &target_dir);
-    env::set_var("CARGO_TARGET_DIR", target_dir);
+    // SAFETY: environment access only happens in single-threaded code.
+    unsafe { env::set_var("CARGO_TARGET_DIR", target_dir) };
 
     if !cmd.status().await?.success() {
         bail!(EEXIT)

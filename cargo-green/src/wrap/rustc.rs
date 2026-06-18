@@ -4,11 +4,12 @@ use std::{
     future::Future,
 };
 
-use anyhow::{anyhow, bail, Result};
+use anyhow::{Result, anyhow, bail};
 use camino::{Utf8Path, Utf8PathBuf};
 use log::{error, info, warn};
 
 use crate::{
+    ENV, PKG, VSN,
     base_image::rewrite_cargo_home,
     checkouts,
     cratesio::{self, rewrite_cratesio_index},
@@ -17,11 +18,10 @@ use crate::{
     logging::{self},
     md::{BuildContext, Md, NamedMount},
     relative,
-    rustc_arguments::{as_rustc, RustcArgs},
-    stage::{AsStage, Stage, RST, RUST},
+    rustc_arguments::{RustcArgs, as_rustc},
+    stage::{AsStage, RST, RUST, Stage},
     target_dir::{virtual_target_dir, virtual_target_dir_str},
     wrap::{build_script::is_buildrs_executable, call_config, envs::safeify},
-    ENV, PKG, VSN,
 };
 
 pub(crate) async fn wrap_rustc(
@@ -30,7 +30,8 @@ pub(crate) async fn wrap_rustc(
     fallback: impl Future<Output = Result<()>>,
 ) -> Result<()> {
     assert!(env::var_os(ENV!()).is_none(), "It's turtles all the way down!");
-    env::set_var(ENV!(), "1");
+    // SAFETY: environment access only happens in single-threaded code.
+    unsafe { env::set_var(ENV!(), "1") };
 
     let pwd = pwd();
 
@@ -197,14 +198,13 @@ async fn do_wrap_rustc(
 
     md.do_build(&green, &md_path, &containerfile_path, &out_stage, &out_dir).await?;
 
-    if let Some(incremental) = incremental {
-        if let (_, _, _, _, Err(e)) = green
+    if let Some(incremental) = incremental
+        && let (_, _, _, _, Err(e)) = green
             .build_out(&containerfile_path, &incremental_stage, &md.contexts, &incremental)
             .await
-        {
-            warn!("Error building incremental data: {e}");
-            return Err(e);
-        }
+    {
+        warn!("Error building incremental data: {e}");
+        return Err(e);
     }
 
     drop(code_stage); // Some impl cleans up files

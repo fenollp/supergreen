@@ -1,6 +1,6 @@
 use std::{ffi::OsStr, process::Output};
 
-use anyhow::{anyhow, Result};
+use anyhow::{Result, anyhow};
 use log::info;
 
 pub(crate) trait Popped: Clone {

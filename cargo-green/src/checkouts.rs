@@ -1,6 +1,6 @@
 use std::fs::read_to_string;
 
-use anyhow::{anyhow, bail, Result};
+use anyhow::{Result, anyhow, bail};
 use camino::{Utf8Path, Utf8PathBuf};
 use log::info;
 use serde::{Deserialize, Serialize};

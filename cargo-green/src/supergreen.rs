@@ -5,16 +5,16 @@ use std::{
     process::Stdio,
 };
 
-use anyhow::{bail, Result};
+use anyhow::{Result, bail};
 use camino::Utf8Path;
 use clap::{Parser, Subcommand};
-use futures::stream::{iter, StreamExt, TryStreamExt};
+use futures::stream::{StreamExt, TryStreamExt, iter};
 use serde_jsonlines::AsyncBufReadJsonLines;
 use tokio::io::BufReader;
 
 use crate::{
-    base_image::CARGO_HOME, ext::CommandExt, green::Green, image_uri::ImageUri, wrap::safeify, PKG,
-    REPO, VSN,
+    PKG, REPO, VSN, base_image::CARGO_HOME, ext::CommandExt, green::Green, image_uri::ImageUri,
+    wrap::safeify,
 };
 
 macro_rules! description {
@@ -145,8 +145,8 @@ pub(crate) async fn main(mut green: Green) -> Result<()> {
 }
 
 pub(crate) fn just_help() -> bool {
-    use clap::error::ErrorKind;
     use GreenCli::*;
+    use clap::error::ErrorKind;
 
     match Cli::try_parse() {
         Ok(Cli { cli: Some(Green { sub: Some(SupergreenCli::Supergreen { sub: None }) }) }) => true,
@@ -251,13 +251,12 @@ impl Green {
                     .stdout(Stdio::null())
                     .stderr(Stdio::null());
 
-                if let Ok(mut o) = cmd.spawn() {
-                    if let Ok(o) = o.wait().await {
-                        if o.success() {
-                            println!("Pushing {img}:{tag}... done!");
-                            return Ok(());
-                        }
-                    }
+                if let Ok(mut o) = cmd.spawn()
+                    && let Ok(o) = o.wait().await
+                    && o.success()
+                {
+                    println!("Pushing {img}:{tag}... done!");
+                    return Ok(());
                 }
                 bail!("Pushing {img}:{tag} failed!")
             }
@@ -407,18 +406,18 @@ impl Green {
             let cmd = format!("ln -s {host} {guest}");
             println!("{cmd}");
             eprintln!();
-            if let Err(e) = symlink::symlink_dir(host, guest) {
-                if e.kind() != ErrorKind::AlreadyExists {
-                    bail!(
-                        "Trying to ensure guest $CARGO_HOME is followable from host, but:
+            if let Err(e) = symlink::symlink_dir(host, guest)
+                && e.kind() != ErrorKind::AlreadyExists
+            {
+                bail!(
+                    "Trying to ensure guest $CARGO_HOME is followable from host, but:
 Could not `{cmd}`:
     {e}
 
 Please try:
     {usage}
 "
-                    )
-                }
+                )
             }
         }
 

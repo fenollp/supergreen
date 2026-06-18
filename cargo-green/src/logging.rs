@@ -4,7 +4,7 @@ use std::{
     io::Write,
 };
 
-use anyhow::{anyhow, Result};
+use anyhow::{Result, anyhow};
 use chrono::Utc;
 use env_logger::{Builder, Env, Target};
 use log::Level;

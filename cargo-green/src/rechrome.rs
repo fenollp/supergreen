@@ -20,10 +20,10 @@ fn suggest(original: &str, suggestion: &str, msg: &str) -> Option<String> {
 // Matches (ANSI colors dropped) '''= note: /usr/bin/ld: cannot find -lpq: No such file or directory'''
 #[must_use]
 pub(crate) fn lib_not_found(msg: &str) -> Option<&str> {
-    if let Some((_, rhs)) = msg.split_once(r#"cannot find -l"#) {
-        if let Some((lib, _)) = rhs.split_once(": No such file or directory") {
-            return Some(lib);
-        }
+    if let Some((_, rhs)) = msg.split_once(r#"cannot find -l"#)
+        && let Some((lib, _)) = rhs.split_once(": No such file or directory")
+    {
+        return Some(lib);
     }
     None
 }
@@ -214,10 +214,10 @@ fn suggesting_add_ansi() {
 // Matches (ANSI colors dropped) '''"rendered":"error: environment variable `[^`]+` not defined at compile time'''
 #[must_use]
 pub(crate) fn env_not_comptime_defined(msg: &str) -> Option<&str> {
-    if let Some((_, rhs)) = msg.split_once(r#"environment variable `"#) {
-        if let Some((var, _)) = rhs.split_once("` not defined at compile time") {
-            return Some(var);
-        }
+    if let Some((_, rhs)) = msg.split_once(r#"environment variable `"#)
+        && let Some((var, _)) = rhs.split_once("` not defined at compile time")
+    {
+        return Some(var);
     }
     None
 }

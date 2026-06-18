@@ -2,7 +2,7 @@ use std::{
     collections::HashMap, env, ffi::OsStr, fmt, process::Stdio, str::FromStr, sync::OnceLock,
 };
 
-use anyhow::{anyhow, bail, Result};
+use anyhow::{Result, anyhow, bail};
 use camino::Utf8PathBuf;
 use log::info;
 use serde::{Deserialize, Serialize};

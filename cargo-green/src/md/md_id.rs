@@ -1,6 +1,6 @@
 use std::fmt;
 
-use anyhow::{bail, Result};
+use anyhow::{Result, bail};
 use camino::{Utf8Path, Utf8PathBuf};
 use serde::{Deserialize, Serialize};
 

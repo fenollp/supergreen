@@ -1,4 +1,4 @@
-use anyhow::{bail, Result};
+use anyhow::{Result, bail};
 use camino::{Utf8Path, Utf8PathBuf};
 use indexmap::IndexSet;
 
@@ -110,10 +110,10 @@ pub(crate) fn as_rustc(
                 _ => {}
             },
             "-L" => {
-                if let Some(("dependency", v)) = val.split_once('=') {
-                    if !v.starts_with('/') {
-                        val = format!("dependency={}", pwd.join(v));
-                    }
+                if let Some(("dependency", v)) = val.split_once('=')
+                    && !v.starts_with('/')
+                {
+                    val = format!("dependency={}", pwd.join(v));
                 }
             }
             "--extern" => {
@@ -221,7 +221,7 @@ mod tests {
     use camino::Utf8PathBuf;
     use pretty_assertions::assert_eq;
 
-    use super::{as_rustc, RustcArgs};
+    use super::{RustcArgs, as_rustc};
 
     const HOME: &str = "/home/maison";
     const PWD: &str = "$HOME/⺟/rustcbuildx.git";

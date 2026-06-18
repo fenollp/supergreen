@@ -1,7 +1,7 @@
 //! Build results are the artifacts of the runner's `rustc` (and build scripts)
 //! invocations bundled as a tarball.
 
-use anyhow::{anyhow, bail, Result};
+use anyhow::{Result, anyhow, bail};
 use async_compression::tokio::{bufread::GzipDecoder, write::GzipEncoder};
 use camino::{Utf8Path, Utf8PathBuf};
 use log::{debug, info};

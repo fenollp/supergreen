@@ -12,7 +12,7 @@ use std::{
     time::{Duration, Instant},
 };
 
-use anyhow::{anyhow, bail, Error, Result};
+use anyhow::{Error, Result, anyhow, bail};
 use atomic_write_file::AtomicWriteFile;
 use camino::{Utf8Path, Utf8PathBuf};
 use indexmap::{IndexMap, IndexSet};
@@ -30,19 +30,19 @@ use tokio_stream::StreamExt;
 use tokio_tar::{Archive as TarArchive, Entry as TarEntry, EntryType, Header as TarHeader};
 
 use crate::{
+    PKG,
     base_image::un_rewrite_cargo_home,
-    cache::result::{assert_tarball_header, extract_just, ResultWriter},
+    cache::result::{ResultWriter, assert_tarball_header, extract_just},
     dirs::Dirs,
     ext::CommandExt,
+    r#final::is_primary,
     green::Green,
     md::{BuildContext, DIESES},
-    r#final::is_primary,
     rechrome,
     retrier::Retrier,
     runner::Runner,
     stage::Stage,
     target_dir::un_virtual_target_dir_str,
-    PKG,
 };
 
 pub(crate) const ERRCODE: &str = "errcode";
@@ -89,10 +89,10 @@ impl Green {
                 self.build(containerfile, target, contexts, None, Some(&dst)).await.4
             }
         );
-        if let Err(e) = cached {
-            if built.4.is_ok() {
-                warn!("troubles saving runner cache: {e}");
-            }
+        if let Err(e) = cached
+            && built.4.is_ok()
+        {
+            warn!("troubles saving runner cache: {e}");
         }
         built
     }
@@ -123,10 +123,10 @@ impl Green {
         let _ = fwd_stderr(&err_buf, "✖", &self.cargo_home);
         info!("reused {} files from {src}", written.len());
 
-        if let Some(code) = errcode {
-            if code != 0 {
-                bail!("Reused result of a failed rustc (exit code {code})")
-            }
+        if let Some(code) = errcode
+            && code != 0
+        {
+            bail!("Reused result of a failed rustc (exit code {code})")
         }
         Ok(true)
     }
@@ -264,12 +264,12 @@ impl Green {
         if let Some(dst) = export {
             cmd.arg(self.builder.export_arg(dst));
         }
-        if let Some(ref dirs) = self.dirs {
-            if self.runner.is_buildkit() && self.cachebuildkit() {
-                if let Some(src) = dirs.runner_cache(target) {
-                    cmd.arg(self.builder.import_arg(&src));
-                }
-            }
+        if let Some(ref dirs) = self.dirs
+            && self.runner.is_buildkit()
+            && self.cachebuildkit()
+            && let Some(src) = dirs.runner_cache(target)
+        {
+            cmd.arg(self.builder.import_arg(&src));
         }
 
         // cmd.arg("--build-arg=BUILDKIT_MULTI_PLATFORM=1"); // "deterministic output"? adds /linux_amd64/ to extracted cratesio
@@ -475,7 +475,10 @@ impl Effects {
         }
 
         if failed_downloading(self.stderr.iter().map(AsRef::as_ref)) {
-            return (true, anyhow!("Failed while downloading a crate's source code, please check your connection and try again"));
+            let e = anyhow!(
+                "Failed while downloading a crate's source code, please check your connection and try again"
+            );
+            return (true, e);
         }
         if buildkit_interrupted(self.stderr.iter().map(AsRef::as_ref)) {
             return (true, anyhow!("Runner daemon was possibly restarted, please try again"));
@@ -686,10 +689,10 @@ async fn build_stderr(stderr: ChildStderr, mut tx_err: Option<Sender<String>>) -
 
         // Capture some approximate stats the runner gives us
 
-        if line.starts_with("ERROR: ") {
-            if let Some(tx_err) = tx_err.take() {
-                let _ = tx_err.send(line.trim_start_matches("ERROR: ").to_owned());
-            }
+        if line.starts_with("ERROR: ")
+            && let Some(tx_err) = tx_err.take()
+        {
+            let _ = tx_err.send(line.trim_start_matches("ERROR: ").to_owned());
         }
 
         // Show data transfers (Bytes, maybe also timings?)
@@ -898,12 +901,11 @@ fn hide_credentials_on_rate_limit(msg: &mut String) {
     const SEP: &str = "': ";
     const RHS: &str =
         ". You may increase the limit by upgrading. https://www.docker.com/increase-rate-limit";
-    if let Some(("", rest)) = msg.split_once(LHS) {
-        if let Some((userpart, rest)) = rest.split_once(SEP) {
-            if let Some((secret, "")) = rest.split_once(RHS) {
-                *msg = format!("{LHS}{userpart}{SEP}{}{RHS}", "*".repeat(secret.len()));
-            }
-        }
+    if let Some(("", rest)) = msg.split_once(LHS)
+        && let Some((userpart, rest)) = rest.split_once(SEP)
+        && let Some((secret, "")) = rest.split_once(RHS)
+    {
+        *msg = format!("{LHS}{userpart}{SEP}{}{RHS}", "*".repeat(secret.len()));
     }
 }
 
@@ -911,8 +913,10 @@ fn hide_credentials_on_rate_limit(msg: &mut String) {
 fn hide_credentials_from_final_log() {
     let mut msg = "toomanyrequests: You have reached your pull rate limit as 'hubuser': dckr_jti_tookeeeennn-H0jyHY3m7bYZruA=. You may increase the limit by upgrading. https://www.docker.com/increase-rate-limit".to_owned();
     hide_credentials_on_rate_limit(&mut msg);
-    assert_eq!(msg,
-        "toomanyrequests: You have reached your pull rate limit as 'hubuser': *************************************. You may increase the limit by upgrading. https://www.docker.com/increase-rate-limit");
+    assert_eq!(
+        msg,
+        "toomanyrequests: You have reached your pull rate limit as 'hubuser': *************************************. You may increase the limit by upgrading. https://www.docker.com/increase-rate-limit"
+    );
 }
 
 #[must_use]

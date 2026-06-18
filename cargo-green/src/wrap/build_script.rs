@@ -3,18 +3,18 @@ use std::{
     fs::{self},
 };
 
-use anyhow::{anyhow, bail, Result};
+use anyhow::{Result, anyhow, bail};
 use camino::{Utf8Path, Utf8PathBuf};
 use log::{error, info, trace};
 
 use crate::{
+    ENV, PKG, VSN,
     green::Green,
     logging::{self},
     md::{Md, MdId, Mds},
-    stage::{AsStage, Stage, RST, RUST},
+    stage::{AsStage, RST, RUST, Stage},
     target_dir::virtual_target_dir,
     wrap::call_config,
-    ENV, PKG, VSN,
 };
 
 #[macro_export]
@@ -53,7 +53,8 @@ pub(crate) async fn exec_build_script(green: Green, exe: Utf8PathBuf) -> Result<
     if let Some(weird) = env::var_os(ENV!()) {
         panic!("It's turtles all the way down! ({weird:?})");
     }
-    env::set_var(ENV!(), "1");
+    // SAFETY: environment access only happens in single-threaded code.
+    unsafe { env::set_var(ENV!(), "1") };
 
     let (crate_name, pkg_name, pkg_version, _) = call_config();
 

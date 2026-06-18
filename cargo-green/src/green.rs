@@ -3,13 +3,14 @@ use std::{
     env,
 };
 
-use anyhow::{anyhow, bail, Result};
+use anyhow::{Result, anyhow, bail};
 use camino::Utf8PathBuf;
 use cargo_toml::Manifest;
 use log::warn;
 use serde::{Deserialize, Serialize};
 
 use crate::{
+    ENV_RUNNER, PKG,
     add::Add,
     base_image::BaseImage,
     builder::Builder,
@@ -17,11 +18,10 @@ use crate::{
     cache::Cache,
     containerfile::Containerfile,
     dirs::Dirs,
-    image_uri::{ImageUri, BAD_CHARS},
-    lockfile::find_manifest_path,
     r#final::Final,
+    image_uri::{BAD_CHARS, ImageUri},
+    lockfile::find_manifest_path,
     runner::Runner,
-    ENV_RUNNER, PKG,
 };
 
 macro_rules! ENV_REGISTRY_MIRRORS {

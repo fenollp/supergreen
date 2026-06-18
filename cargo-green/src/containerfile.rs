@@ -1,10 +1,10 @@
 use std::fs;
 
-use anyhow::{anyhow, Result};
+use anyhow::{Result, anyhow};
 use camino::Utf8Path;
 use log::{info, trace};
 
-use crate::{dirs::hash, image_uri::ImageUri, logging::maybe_log, REPO, VSN};
+use crate::{REPO, VSN, dirs::hash, image_uri::ImageUri, logging::maybe_log};
 
 pub(crate) struct Containerfile {
     script: String,

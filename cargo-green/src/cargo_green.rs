@@ -3,22 +3,22 @@ use std::{
     fs::{self},
 };
 
-use anyhow::{anyhow, bail, Result};
+use anyhow::{Result, anyhow, bail};
 use log::{debug, info, warn};
 
 use crate::{
+    PKG, VSN,
     base_image::{BASE_IMAGE, BASE_IMAGE_LOCKED},
     cratesio::{self},
     dirs::{cargo_home, pwd},
     experiments::EXPERIMENTS,
-    green::{validate_csv, Green},
-    image_uri::{fetch_digest, SYNTAX_IMAGE, SYNTAX_IMAGE_LOCKED},
+    green::{Green, validate_csv},
+    image_uri::{SYNTAX_IMAGE, SYNTAX_IMAGE_LOCKED, fetch_digest},
     lockfile::{find_lockfile, locked_crates},
     logging::{self, maybe_log},
     network::Network,
-    runner::{Runner, BUILDKIT_HOST, DOCKER_BUILDKIT, DOCKER_CONTEXT, DOCKER_HOST},
-    stage::{Stage, RST},
-    PKG, VSN,
+    runner::{BUILDKIT_HOST, DOCKER_BUILDKIT, DOCKER_CONTEXT, DOCKER_HOST, Runner},
+    stage::{RST, Stage},
 };
 
 pub(crate) async fn main() -> Result<Green> {
@@ -75,16 +75,18 @@ pub(crate) async fn main() -> Result<Green> {
         bail!("builder-name can only be set through the environment variable")
     }
     let builder = green.runner_envs.get(var);
-    if let Some(name) = builder {
-        if !green.runner.is_none() {
-            info!("${var} is set to {name:?}");
-            eprintln!("${var} is set to {name:?}");
+    if let Some(name) = builder
+        && !green.runner.is_none()
+    {
+        info!("${var} is set to {name:?}");
+        eprintln!("${var} is set to {name:?}");
 
-            if !name.is_empty() {
-                if let Some(val) = buildkit_host {
-                    bail!("Overriding ${BUILDKIT_HOST}={val:?} while setting ${var}={name:?} is unsupported")
-                }
-            }
+        if !name.is_empty()
+            && let Some(val) = buildkit_host
+        {
+            bail!(
+                "Overriding ${BUILDKIT_HOST}={val:?} while setting ${var}={name:?} is unsupported"
+            )
         }
     }
 
@@ -184,10 +186,10 @@ pub(crate) async fn main() -> Result<Green> {
     if let Ok(val) = env::var(var) {
         green.base.with_network = val.parse().map_err(|e| anyhow!("${var}={val:?} {e}"))?;
     }
-    if let Ok(val) = env::var("CARGO_NET_OFFLINE") {
-        if val == "1" {
-            green.base.with_network = Network::None;
-        }
+    if let Ok(val) = env::var("CARGO_NET_OFFLINE")
+        && val == "1"
+    {
+        green.base.with_network = Network::None;
     }
 
     // TODO? docker dial-stdio proxy
@@ -245,10 +247,9 @@ impl Green {
             Ok(())
         }
         .await
+            && require_lockfile
         {
-            if require_lockfile {
-                return Err(e);
-            }
+            return Err(e);
         }
 
         let stage = Stage::new("prebuild").unwrap();

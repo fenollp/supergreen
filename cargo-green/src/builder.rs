@@ -1,6 +1,6 @@
 use std::{fs, str::FromStr, sync::LazyLock, time::Duration};
 
-use anyhow::{anyhow, bail, Result};
+use anyhow::{Result, anyhow, bail};
 use camino::Utf8PathBuf;
 use indexmap::IndexSet;
 use log::info;
@@ -11,7 +11,7 @@ use crate::{
     buildkitd,
     ext::CommandExt,
     green::Green,
-    image_uri::{fetch_digest, ImageUri},
+    image_uri::{ImageUri, fetch_digest},
     tmp,
 };
 
@@ -129,12 +129,12 @@ impl Green {
         let stdout = String::from_utf8_lossy(&stdout);
         let inspect: Vec<DockerInspect> = serde_json::from_str(&stdout)
             .map_err(|e| anyhow!("Failed decoding docker inspect: {e}"))?;
-        if let Some(DockerInspect { id, mounts }) = inspect.into_iter().next() {
-            if !id.is_empty() {
-                self.builder.id = Some(id);
-                if let Some(InspectMount { source }) = mounts.into_iter().next() {
-                    self.builder.data = Some(source);
-                }
+        if let Some(DockerInspect { id, mounts }) = inspect.into_iter().next()
+            && !id.is_empty()
+        {
+            self.builder.id = Some(id);
+            if let Some(InspectMount { source }) = mounts.into_iter().next() {
+                self.builder.data = Some(source);
             }
         }
 
@@ -164,13 +164,15 @@ impl Green {
         if let Some(existing) = builder {
             let mut recreate = false;
 
-            if let Some(ref img) = self.builder.image {
-                if !existing.uses_image(img) {
-                    if !managed {
-                        bail!("Existing ${BUILDX_BUILDER}={name:?} does not match ${ENV_BUILDER_IMAGE}={img:?}")
-                    }
-                    recreate = true;
+            if let Some(ref img) = self.builder.image
+                && !existing.uses_image(img)
+            {
+                if !managed {
+                    bail!(
+                        "Existing ${BUILDX_BUILDER}={name:?} does not match ${ENV_BUILDER_IMAGE}={img:?}"
+                    )
                 }
+                recreate = true;
             }
 
             if !existing.uses_version_newer_or_equal_to(&LATEST_BUILDKIT) {
