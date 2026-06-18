@@ -9,7 +9,7 @@ jobs:
       run:
         shell: bash -euo pipefail {0}
     steps:
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@v7
     - run: ./hack/gen.sh
     - run: git --no-pager diff --exit-code
     - name: Run shellcheck
@@ -22,14 +22,14 @@ jobs:
   hit:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@v7
     - run: ./hack/hit.sh
 
 
   portable:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@v7
     - run: ./hack/portable.sh
 
 
@@ -40,7 +40,7 @@ jobs:
       run:
         shell: bash -euo pipefail {0}
     steps:
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@v7
     - run: ./hack/latest_buildkit.sh | tee cargo-green/latest_buildkit.txt
     - run: git --no-pager diff --exit-code -- cargo-green/latest_buildkit.txt || echo "::warning file=cargo-green/latest_buildkit.txt,line=1,col=1::New version out"
 
@@ -61,7 +61,7 @@ jobs:
     - run: docker buildx build --help
     - run: podman version || true
     - run: docker buildx prune --all --force
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@v7
     - uses: actions-rust-lang/setup-rust-toolchain@v1
       with:
         toolchain: stable
