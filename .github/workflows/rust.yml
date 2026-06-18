@@ -11,7 +11,7 @@ jobs:
         toolchain: stable
         cache-all-crates: true
         cache-workspace-crates: true
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@v7
     - uses: taiki-e/install-action@nextest
     - name: Cache `cargo fetch`
       uses: actions/cache@v5
@@ -44,7 +44,7 @@ jobs:
         cache-all-crates: true
         cache-workspace-crates: true
     - run: rustup component add rustfmt
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@v7
     - run: cargo fmt --check --all
 
   clippy:
@@ -57,7 +57,7 @@ jobs:
         cache-all-crates: true
         cache-workspace-crates: true
     - run: rustup component add clippy
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@v7
     - name: Cache `cargo fetch`
       uses: actions/cache@v5
       with:
