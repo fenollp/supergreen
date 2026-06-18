@@ -3,7 +3,10 @@ use std::{env, ffi::OsStr, fs, path::PathBuf};
 use anyhow::{anyhow, bail, Result};
 use tokio::process::Command;
 
-use crate::dirs::{create_current_target_dir, hashed_args, tmp};
+use crate::{
+    dirs::{create_current_target_dir, hashed_args, tmp},
+    ext::CommandExt,
+};
 
 #[macro_use]
 mod add;
@@ -203,8 +206,19 @@ async fn actual_main() -> Result<()> {
     cmd.env("CARGO_TARGET_DIR", &target_dir);
     env::set_var("CARGO_TARGET_DIR", target_dir);
 
-    if !cmd.status().await?.success() {
+    let mut child = cmd.spawn()?;
+    let stdin = child.stdin.take(); // Take STDIN so .wait() can't close it under us
+    let handle = tokio::spawn(async move {
+        child.wait().await.map_err(|e| anyhow!("Failed spawning {}: {e}", cmd.show()))
+    });
+
+    eprintln!(">>> OK SO NOW WE WAIT");
+    let (es,) = tokio::join!(handle);
+    drop(stdin);
+    if !es??.success() {
         bail!(EEXIT)
     }
+    eprintln!(">>> OK SO WE WAITED");
+
     Ok(())
 }
