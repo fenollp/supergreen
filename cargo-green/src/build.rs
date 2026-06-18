@@ -68,7 +68,13 @@ impl Green {
         containerfile: &Utf8Path,
         target: &Stage,
     ) -> Result<()> {
-        self.build(containerfile, target, &[].into(), None, None).await.4
+        let contexts = [].into();
+        // TODO: ^C handling that kills both builds (and retries)
+        let (_tui, matched) = join!(
+            self.build(containerfile, target, &contexts, None, None, true),
+            self.build(containerfile, target, &contexts, None, None, false),
+        );
+        matched.4
     }
 
     pub(crate) async fn build_out(
@@ -78,15 +84,16 @@ impl Green {
         contexts: &IndexSet<BuildContext>,
         out_dir: &Utf8Path,
     ) -> (String, String, Effects, Option<ResultWriter>, Result<()>) {
+        let tui = false;
         let (built, cached) = join!(biased;
-            self.build(containerfile, target, contexts, Some(out_dir), None),
+            self.build(containerfile, target, contexts, Some(out_dir), None, tui),
             async {
                 let true = self.runner.is_buildkit() else { return Ok(()) };
                 // Concurrently run same build just to export runner cache
                 let true = self.cachebuildkit() else { return Ok(()) }; // TODO: drop experiment
                 let Some(ref dirs) = self.dirs else { return Ok(()) };
                 let Some(dst) = dirs.new_runner_cache(target)? else { return Ok(()) };
-                self.build(containerfile, target, contexts, None, Some(&dst)).await.4
+                self.build(containerfile, target, contexts, None, Some(&dst), tui).await.4
             }
         );
         if let Err(e) = cached
@@ -138,6 +145,7 @@ impl Green {
         contexts: &IndexSet<BuildContext>,
         out_dir: Option<&Utf8Path>,
         export: Option<&Utf8Path>,
+        tui: bool,
     ) -> (String, String, Effects, Option<ResultWriter>, Result<()>) {
         assert!(!self.runner.is_none(), "build() called with Runner::None");
 
@@ -149,12 +157,19 @@ impl Green {
             };
             cmd.arg("build");
 
-            let (call, envs) =
-                self.with_docker_args(&mut cmd, containerfile, target, contexts, out_dir, export);
+            let (call, envs) = self.with_docker_args(
+                &mut cmd,
+                containerfile,
+                target,
+                contexts,
+                out_dir,
+                export,
+                tui,
+            );
 
             let mut effects = Effects::default();
             let (status, result) = match self
-                .run_build(&mut effects, cmd, &call, containerfile, target, out_dir)
+                .run_build(&mut effects, cmd, &call, containerfile, target, out_dir, tui)
                 .await
             {
                 Ok((status, result)) => (status, result),
@@ -176,6 +191,7 @@ impl Green {
         }
     }
 
+    #[expect(clippy::too_many_arguments)]
     fn with_docker_args(
         &self,
         cmd: &mut Command,
@@ -184,6 +200,7 @@ impl Green {
         contexts: &IndexSet<BuildContext>,
         out_dir: Option<&Utf8Path>,
         export: Option<&Utf8Path>,
+        tui: bool,
     ) -> (String, String) {
         //TODO: if allowing additional-build-arguments, deny: --build-arg=BUILDKIT_SYNTAX=
 
@@ -286,15 +303,17 @@ impl Green {
         if out_dir.is_some() {
             cmd.stdout(Stdio::piped());
             cmd.stderr(Stdio::piped());
-        } else {
-            // cacheonly: tee to CLI + to Effects.stderr to try_to_help
-            cmd.stderr(Stdio::piped());
+        } else if !tui {
+            cmd.stderr(Stdio::piped()); // tee to Effects.stderr: to try_to_help
         }
+        // else: BuildKit's ANSI progress UI
 
         let call = cmd.show();
         let envs = cmd.envs_string(&self.runner.buildnoop_envs());
-        info!("Starting `{envs} {call} <{containerfile}`");
-        eprintln!("Starting `{envs} {call} <{containerfile}`");
+        if !tui {
+            info!("Starting `{envs} {call} <{containerfile}`");
+            eprintln!("Starting `{envs} {call} <{containerfile}`");
+        }
         let call = call
             .split_whitespace()
             .filter(|flag| !self.runner.buildnoop_flags().any(|prefix| flag.starts_with(prefix)))
@@ -310,6 +329,7 @@ impl Green {
         (call, envs)
     }
 
+    #[expect(clippy::too_many_arguments)]
     async fn run_build(
         &self,
         effects: &mut Effects,
@@ -318,6 +338,7 @@ impl Green {
         containerfile: &Utf8Path,
         target: &Stage,
         out_dir: Option<&Utf8Path>,
+        tui: bool,
     ) -> Result<(ExitStatus, Option<ResultWriter>)> {
         let start = Instant::now();
         let mut child = cmd.spawn().map_err(|e| anyhow!("Failed starting `{call}`: {e}"))?;
@@ -351,6 +372,8 @@ impl Green {
             });
 
             (Some((dbg_out, dbg_err)), None)
+        } else if tui {
+            (None, None) // stdio inherited
         } else {
             let tee_err = spawn({
                 let stderr = child.stderr.take().expect("started");
@@ -388,7 +411,7 @@ impl Green {
         const SOME_TIME: Duration = Duration::from_mins(30);
 
         let Some((dbg_out, dbg_err)) = handles else {
-            let Some(tee_err) = tee_err else { unreachable!("either handles or tee_err") };
+            let Some(tee_err) = tee_err else { return Ok((status, None)) };
             let joined = timeout(SOME_TIME, tee_err).await;
             drop(child);
             match joined {
@@ -716,13 +739,11 @@ async fn build_stderr(stderr: ChildStderr, mut tx_err: Option<Sender<String>>) -
     Ok(())
 }
 
-/// Show in cli but still keep ~1MB rolling text buffer stderr
+/// Keep a ~1MB rolling text buffer of stderr for try_to_help
 async fn tee_stderr(stderr: ChildStderr) -> String {
     let mut lines = BufReader::new(stderr).lines();
     let mut ring = VecDeque::new();
     while let Ok(Some(line)) = lines.next_line().await {
-        eprintln!("{line}"); // Tee to CLI
-
         ring.extend(line.as_bytes());
         ring.push_back(b'\n');
         const CAP: usize = 1 << 20; // 1 MiB
