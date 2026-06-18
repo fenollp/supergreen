@@ -129,6 +129,20 @@ impl Md {
         self.externs.iter()
     }
 
+    #[must_use]
+    pub(crate) fn externs_len(&self) -> usize {
+        self.externs.len()
+    }
+
+    /// Keep only the externs `rustc` actually reads (`keep`, basenames), plus any proc-macro `.so`
+    /// (never listed by `-Z binary-dep-depinfo`). See [`crate::discover`].
+    pub(crate) fn retain_externs(&mut self, keep: &IndexSet<String>) {
+        self.externs.retain(|nm| {
+            let f = nm.mount.as_str();
+            f.ends_with(".so") || keep.contains(f)
+        });
+    }
+
     pub(crate) fn deps(&self) -> impl Iterator<Item = MdId> + use<'_> {
         self.deps.iter().cloned()
     }

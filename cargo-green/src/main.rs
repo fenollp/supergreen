@@ -33,6 +33,7 @@ mod checkouts;
 mod containerfile;
 mod cratesio;
 mod dirs;
+mod discover;
 mod du;
 mod ext;
 mod image_uri;

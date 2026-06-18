@@ -65,6 +65,7 @@ pub(crate) async fn wrap_rustc(
         Stage::dep(&full_pkg_id.replace(' ', "-"))?,
         pwd,
         args,
+        &arguments,
         out_dir_var,
         st,
     )
@@ -81,6 +82,7 @@ async fn do_wrap_rustc(
     rustc_stage: Stage,
     pwd: Utf8PathBuf,
     args: Vec<String>,
+    arguments: &[String],
     out_dir_var: Option<Utf8PathBuf>,
     RustcArgs { externs, mdid, incremental, input, out_dir, target_path }: RustcArgs,
 ) -> Result<()> {
@@ -146,7 +148,30 @@ async fn do_wrap_rustc(
         info!("loading 1 build context");
     }
 
+    // rmeta-consuming (library) builds over-mount their whole transitive closure; bins/tests link
+    // and genuinely need the rlibs, so a metadata-only read-set would wrongly drop them.
+    let prunable = green.binarydepinfo() && externs.iter().any(|x| x.ends_with(".rmeta"));
+
     let mds = md.assemble_build_dependencies(externs, out_dir_var, &target_path)?;
+
+    // Prune the over-approximated closure down to what rustc actually reads (CARGOGREEN_EXPERIMENT
+    // =binarydepinfo). Fail-safe: discovery returning None leaves the full closure untouched.
+    if prunable && md.externs_len() >= 100 {
+        if let Some(readset) = crate::discover::discover_readset(
+            &green,
+            arguments,
+            &mdid.to_string(),
+            &pwd,
+            &target_path,
+        )
+        .await
+        {
+            let before = md.externs_len();
+            md.retain_externs(&readset);
+            info!("binarydepinfo: {rustc_stage} externs {before} -> {}", md.externs_len());
+        }
+    }
+
     for NamedMount { name, mount } in md.externs() {
         let dst = virtual_target_dir(&target_path).join("deps").join(mount);
         rustc_block.push_str(&format!("  --mount=from={name},dst={dst},source=/{mount} \\\n"));
