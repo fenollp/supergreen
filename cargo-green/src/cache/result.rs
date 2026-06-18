@@ -1,23 +1,162 @@
 //! Build results are the artifacts of the runner's `rustc` (and build scripts)
 //! invocations bundled as a tarball.
 
+use std::{env, time::Duration};
+
 use anyhow::{Result, anyhow, bail};
 use async_compression::tokio::{bufread::GzipDecoder, write::GzipEncoder};
 use camino::{Utf8Path, Utf8PathBuf};
-use log::{debug, info};
+use log::{debug, info, warn};
+use reqwest::{
+    Body, Client, StatusCode,
+    header::{CONTENT_LENGTH, CONTENT_TYPE},
+};
 use tokio::{
     fs::{self, File, OpenOptions},
     io::{AsyncReadExt, AsyncWriteExt, BufReader, BufWriter},
 };
 use tokio_stream::StreamExt;
 use tokio_tar::{Archive as TarArchive, Builder as TarBuilder, EntryType, Header};
+use tokio_util::io::ReaderStream;
 use uuid::Uuid;
 
 use crate::{build::SOURCE_DATE_EPOCH, dirs::Dirs, stage::Stage};
 
+/// R2 custom domain serving published build-result tarballs (`{stage}.tar.gz`).
+/// Override with `$CARGOGREEN_RESULTS_BASE_URL`; set it empty to disable remote fetching.
+pub(crate) const RESULTS_BASE_URL: &str = "https://results.cargo.green";
+
+/// Whether cargo is operating offline (`--offline`/`--frozen` surface as this env).
+/// When set, all remote results traffic (fetch + publish) is skipped.
+fn offline() -> bool {
+    matches!(env::var("CARGO_NET_OFFLINE").as_deref(), Ok("1" | "true"))
+}
+
 impl Dirs {
     pub(crate) fn result_from_stage(&self, target: &Stage) -> Utf8PathBuf {
         self.results.join(format!("{target}.tar.gz"))
+    }
+
+    /// On a local-disk miss, try fetching `{target}.tar.gz` from the remote results store
+    /// (R2 custom domain) into `dst`. Returns whether the result is now present locally.
+    ///
+    /// Any network/HTTP failure (offline, 404, 5xx, …) is treated as a cache miss
+    /// (`Ok(false)`) so the caller falls back to building. Only local filesystem
+    /// errors bubble up.
+    pub(crate) async fn fetch_remote_result(&self, target: &Stage, dst: &Utf8Path) -> Result<bool> {
+        if offline() {
+            debug!("offline: skipping remote result fetch for {target}");
+            return Ok(false);
+        }
+        let base = match env::var("CARGOGREEN_RESULTS_BASE_URL") {
+            Ok(base) if base.is_empty() => return Ok(false), // remote results explicitly disabled
+            Ok(base) => base,
+            Err(_) => RESULTS_BASE_URL.to_owned(),
+        };
+        let url = format!("{base}/{target}.tar.gz");
+
+        let client = Client::builder()
+            .connect_timeout(Duration::from_secs(4))
+            .build()
+            .map_err(|e| anyhow!("HTTP client's config/TLS failed: {e}"))?;
+
+        info!("GETing {url}");
+        let resp = match client.get(&url).send().await {
+            Ok(resp) => resp,
+            Err(e) => {
+                debug!("remote results unreachable ({url}): {e}");
+                return Ok(false);
+            }
+        };
+        if resp.status() == StatusCode::NOT_FOUND {
+            debug!("no remote result for {target} at {url}");
+            return Ok(false);
+        }
+        let resp = match resp.error_for_status() {
+            Ok(resp) => resp,
+            Err(e) => {
+                debug!("remote results error for {url}: {e}");
+                return Ok(false);
+            }
+        };
+
+        // Stream body to a temp file on the same partition, then atomically move into place.
+        let tmp = self.tmp.join(format!("{}.tar.gz", Uuid::new_v4()));
+        let mut f = File::create(&tmp)
+            .await
+            .map_err(|e| anyhow!("Failed opening (W) downloaded result {tmp}: {e}"))?;
+        let mut written: u64 = 0;
+        let mut stream = resp.bytes_stream();
+        while let Some(chunk) = stream.next().await {
+            let chunk = match chunk {
+                Ok(chunk) => chunk,
+                Err(e) => {
+                    debug!("Failed downloading {url}: {e}");
+                    let _ = fs::remove_file(&tmp).await;
+                    return Ok(false);
+                }
+            };
+            f.write_all(&chunk).await.map_err(|e| anyhow!("Failed writing {tmp}: {e}"))?;
+            written += chunk.len() as u64;
+        }
+        f.flush().await.map_err(|e| anyhow!("Failed flushing {tmp}: {e}"))?;
+        info!("fetched {written} bytes from {url}");
+
+        // NOTE: TOCTOU on dst is okay as long as `mv` is atomic
+        if dst.exists() {
+            fs::remove_file(&tmp).await.map_err(|e| anyhow!("Failed `rm {tmp}`: {e}"))?;
+        } else {
+            info!("moving downloaded result to {dst}");
+            fs::rename(&tmp, dst).await.map_err(|e| anyhow!("Failed `mv {tmp} {dst}`: {e}"))?;
+        }
+        Ok(true)
+    }
+
+    /// Publish a freshly written result tarball (`src`) to the remote results store via PUT,
+    /// streaming the file body. No-op unless `$CARGOGREEN_RESULTS_UPLOAD_URL` is set (writes
+    /// need credentials, unlike public reads). `$CARGOGREEN_RESULTS_TOKEN`, if set, is sent as
+    /// a bearer token. Best-effort: network/HTTP failures only `warn!` so builds never break.
+    pub(crate) async fn publish_remote_result(&self, target: &Stage, src: &Utf8Path) -> Result<()> {
+        if offline() {
+            debug!("offline: skipping remote result publish for {target}");
+            return Ok(());
+        }
+        let base = match env::var("CARGOGREEN_RESULTS_UPLOAD_URL") {
+            Ok(base) if !base.is_empty() => base,
+            _ => return Ok(()), // publishing disabled (default)
+        };
+        let url = format!("{base}/{target}.tar.gz");
+
+        let file = File::open(src)
+            .await
+            .map_err(|e| anyhow!("Failed opening (RO) {src} to publish: {e}"))?;
+        let len = file.metadata().await.map(|m| m.len()).ok();
+        let body = Body::wrap_stream(ReaderStream::new(file));
+
+        let client = Client::builder()
+            .connect_timeout(Duration::from_secs(4))
+            .build()
+            .map_err(|e| anyhow!("HTTP client's config/TLS failed: {e}"))?;
+
+        let mut req = client.put(&url).header(CONTENT_TYPE, "application/gzip");
+        if let Some(len) = len {
+            req = req.header(CONTENT_LENGTH, len);
+        }
+        if let Ok(token) = env::var("CARGOGREEN_RESULTS_TOKEN")
+            && !token.is_empty()
+        {
+            req = req.bearer_auth(token);
+        }
+
+        info!("PUTing {url}");
+        match req.body(body).send().await {
+            Ok(resp) => match resp.error_for_status() {
+                Ok(_) => info!("published result {target} to {url}"),
+                Err(e) => warn!("failed publishing result to {url}: {e}"),
+            },
+            Err(e) => warn!("failed reaching {url} to publish result: {e}"),
+        }
+        Ok(())
     }
 
     pub(crate) async fn new_result(&self, target: &Stage) -> Result<Option<ResultWriter>> {
