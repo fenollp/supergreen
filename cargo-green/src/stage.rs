@@ -1,6 +1,6 @@
 use std::sync::LazyLock;
 
-use anyhow::{anyhow, bail, Error, Result};
+use anyhow::{Error, Result, anyhow, bail};
 use camino::Utf8PathBuf;
 use nutype::nutype;
 use serde::{Deserialize, Serialize};

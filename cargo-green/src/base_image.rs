@@ -1,17 +1,17 @@
 use std::sync::LazyLock;
 
-use anyhow::{anyhow, bail, Result};
+use anyhow::{Result, anyhow, bail};
 use camino::Utf8Path;
 use serde::{Deserialize, Serialize};
 
 use crate::{
+    REPO,
     add::Add,
     image_uri::ImageUri,
     network::Network,
     rustup::{CHECKSUMS, VERSION},
     stage::RST,
     target_dir::replace_carefully,
-    REPO,
 };
 
 macro_rules! ENV_BASE_IMAGE {

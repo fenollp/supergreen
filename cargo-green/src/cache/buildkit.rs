@@ -5,7 +5,7 @@
 
 use std::fs;
 
-use anyhow::{anyhow, Result};
+use anyhow::{Result, anyhow};
 use camino::{Utf8Path, Utf8PathBuf};
 
 use crate::{builder::Builder, dirs::Dirs, stage::Stage};

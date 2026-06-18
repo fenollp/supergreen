@@ -2,7 +2,7 @@
 members = [
     "cargo-green",
 ]
-resolver = "2"
+resolver = "3"
 
 # [workspace.metadata.green]
 # registry-mirrors = [ "mirror.gcr.io", "public.ecr.aws/docker" ]
@@ -15,7 +15,7 @@ categories = [
     "concurrency",
     "development-tools::build-utils",
 ]
-edition = "2021"
+edition = "2024"
 keywords = [
     "DOCKER_HOST",
     "RUSTC_WRAPPER",

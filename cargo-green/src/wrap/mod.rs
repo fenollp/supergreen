@@ -1,6 +1,6 @@
 use std::{collections::BTreeMap, env};
 
-use anyhow::{anyhow, bail, Result};
+use anyhow::{Result, anyhow, bail};
 use camino::Utf8PathBuf;
 use tokio::process::Command;
 
@@ -49,7 +49,9 @@ pub(crate) async fn rustc(
         }
         [_driver, bin, ..] if is_rustc(bin) => call_rustc(bin, argv(2)).await,
         [bin, ..] if is_rustc(bin) => call_rustc(bin, argv(1)).await,
-        _ => panic!("BUG: RUSTC_WRAPPER={arg0:?}'s input unexpected:\n\targz = {argz:?}\n\targs = {args:?}\n\tenvs = {vars:?}\n"),
+        _ => panic!(
+            "BUG: RUSTC_WRAPPER={arg0:?}'s input unexpected:\n\targz = {argz:?}\n\targs = {args:?}\n\tenvs = {vars:?}\n"
+        ),
     }
 }
 

@@ -1,11 +1,12 @@
 use std::{collections::HashSet, env};
 
-use anyhow::{anyhow, Result};
+use anyhow::{Result, anyhow};
 use camino::Utf8Path;
 use log::{debug, info, warn};
 
 use crate::{
-    build::{Effects, ERRCODE, STDERR, STDOUT},
+    ENV,
+    build::{ERRCODE, Effects, STDERR, STDOUT},
     green::Green,
     md::Md,
     stage::Stage,
@@ -14,7 +15,6 @@ use crate::{
         build_script::{exe_dance, is_buildrs_executable},
         envs::{fmap_env, rewrite_env},
     },
-    ENV,
 };
 
 impl Md {
@@ -90,11 +90,11 @@ impl Md {
         block.push_str(&format!("        2>          {out_dir}/{out_stage}-{STDERR} \\\n"));
         block.push_str(&format!("        || echo $? >{out_dir}/{out_stage}-{ERRCODE}\\\n"));
 
-        if let Some(crate_name) = crate_name {
-            if is_buildrs_executable(crate_name) {
-                block.push_str(&exe_dance(self.this(), crate_name, &out_dir));
-                block.push_str(&format!(" || echo $? >{out_dir}/{out_stage}-{ERRCODE} \\\n"));
-            }
+        if let Some(crate_name) = crate_name
+            && is_buildrs_executable(crate_name)
+        {
+            block.push_str(&exe_dance(self.this(), crate_name, &out_dir));
+            block.push_str(&format!(" || echo $? >{out_dir}/{out_stage}-{ERRCODE} \\\n"));
         }
 
         // TODO: [`COPY --rewrite-timestamp ...` to apply SOURCE_DATE_EPOCH build arg value to the timestamps of the files](https://github.com/moby/buildkit/issues/6348)

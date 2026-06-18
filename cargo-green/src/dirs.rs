@@ -1,11 +1,11 @@
 use std::{env, fs, os::unix::fs::MetadataExt};
 
-use anyhow::{anyhow, bail, Result};
+use anyhow::{Result, anyhow, bail};
 use camino::{Utf8Path, Utf8PathBuf};
 use directories::ProjectDirs;
 use serde::{Deserialize, Serialize};
 
-use crate::{green::Green, wrap::pass_env, PKG, VSN};
+use crate::{PKG, VSN, green::Green, wrap::pass_env};
 
 pub(crate) fn tmp() -> Utf8PathBuf {
     env::temp_dir().try_into().expect("$TMPDIR is not utf-8")

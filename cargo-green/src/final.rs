@@ -12,7 +12,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::{
     green::Green,
-    md::{BuildContext, Md, DIESES},
+    md::{BuildContext, DIESES, Md},
 };
 
 #[macro_export]
@@ -39,10 +39,10 @@ pub(crate) fn is_primary() -> bool {
 impl Green {
     // NOTE: using $CARGO_PRIMARY_PACKAGE still makes >1 hits in rustc calls history: lib + bin, at least.
     fn should_write_final_path(&self) -> Option<&Utf8Path> {
-        if let Some(path) = self.r#final.path.as_deref() {
-            if self.finalpathnonprimary() || is_primary() {
-                return Some(path);
-            }
+        if let Some(path) = self.r#final.path.as_deref()
+            && (self.finalpathnonprimary() || is_primary())
+        {
+            return Some(path);
         }
         None
     }

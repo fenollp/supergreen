@@ -2,7 +2,7 @@
 
 use std::{env, fs, io::ErrorKind, rc::Rc, str::FromStr};
 
-use anyhow::{anyhow, bail, Result};
+use anyhow::{Result, anyhow, bail};
 use camino::{Utf8Path, Utf8PathBuf};
 use indexmap::{IndexMap, IndexSet};
 use log::{info, trace, warn};
@@ -10,12 +10,12 @@ use serde::{Deserialize, Serialize};
 use szyk::Node;
 
 use crate::{
+    PKG,
     build::SOURCE_DATE_EPOCH,
     green::Green,
     logging::maybe_log,
-    stage::{AsBlock, AsStage, NamedStage, Script, Stage, RST},
+    stage::{AsBlock, AsStage, NamedStage, RST, Script, Stage},
     target_dir::virtual_target_dir,
-    PKG,
 };
 
 mod build_context;

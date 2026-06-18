@@ -4,7 +4,7 @@ use std::{
     time::Duration,
 };
 
-use anyhow::{anyhow, bail, Error, Result};
+use anyhow::{Error, Result, anyhow, bail};
 use camino::Utf8Path;
 use log::info;
 use nutype::nutype;
@@ -16,7 +16,7 @@ use crate::{
     ext::CommandExt,
     green::Green,
     retrier::Retrier,
-    runner::{Runner, DOCKER_HOST},
+    runner::{DOCKER_HOST, Runner},
 };
 
 pub(crate) const BAD_CHARS: &[char] = &[' ', '\'', '"', ';', '\\', ','];
