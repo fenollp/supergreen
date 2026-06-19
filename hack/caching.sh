@@ -10,7 +10,7 @@ install_root=$(mktemp -d)
 export CARGOGREEN_FINAL_PATH=./recipes/$install_package.Dockerfile
 export CARGOGREEN_SYNTAX_IMAGE=docker-image://docker.io/docker/dockerfile:1@sha256:2780b5c3bab67f1f76c781860de469442999ed1a0d7992a5efdf2cffc0e3d769
 export CARGOGREEN_BASE_IMAGE=docker-image://docker.io/library/debian:trixie-slim@sha256:cedb1ef40439206b673ee8b33a46a03a0c9fa90bf3732f54704f99cb061d2c5a
-CARGO='cargo +1.84.1'
+CARGO='cargo +1.85.1'
 export CARGOGREEN_LOG=trace
 export CARGOGREEN_LOG_PATH=/tmp/cargo-green--hack-caching--$install_package.log
 export CARGO_TARGET_DIR=/tmp/cargo-green--hack-caching--target-dir
@@ -195,7 +195,7 @@ echo
 #---
 
 
-CARGO='cargo +1.84.0'
+CARGO='cargo +1.85.0'
 
 rm -rf $CARGO_TARGET_DIR/* >/dev/null
 rm -rf $CARGOGREEN_LOG_PATH >/dev/null
@@ -205,8 +205,8 @@ $CARGO green install --locked --frozen --offline --force $install_package --root
 git --no-pager diff -- $CARGOGREEN_FINAL_PATH
 echo 'Change rustc => changes base image (at least)'
 cat <<EOF | diff -u - <(git --no-pager diff -- $CARGOGREEN_FINAL_PATH | head -n12 | tail -n+9)
--FROM scratch AS rustup-1.84.1-x86_64-unknown-linux-gnu
-+FROM scratch AS rustup-1.84.0-x86_64-unknown-linux-gnu
+-FROM scratch AS rustup-1.85.1-x86_64-unknown-linux-gnu
++FROM scratch AS rustup-1.85.0-x86_64-unknown-linux-gnu
  ADD --chmod=0144 --checksum=sha256:4acc9acc76d5079515b46346a485974457b5a79893cfb01112423c89aeb5aa10 \\
    https://static.rust-lang.org/rustup/archive/1.29.0/x86_64-unknown-linux-gnu/rustup-init /rustup-init
 EOF

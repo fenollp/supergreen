@@ -5,7 +5,7 @@ use std::{
 
 use anyhow::{Result, anyhow, bail};
 use camino::Utf8PathBuf;
-use cargo_toml::Manifest;
+use cargo_toml::{Manifest, Package, Value as MetadataValue};
 use log::warn;
 use serde::{Deserialize, Serialize};
 
@@ -122,18 +122,22 @@ impl Green {
 
     // TODO: handle worskpace cfg + merging fields
     // TODO: find a way to read cfg on `cargo install <non-local code>` cc https://github.com/rust-lang/cargo/issues/9700#issuecomment-2748617896
-    pub(crate) async fn new_from_env_then_manifest() -> Result<Self> {
-        let manifest_path =
-            find_manifest_path().await.map_err(|e| anyhow!("Can't find package manifest: {e}"))?;
-        let manifest = Manifest::from_path(&manifest_path)
-            .map_err(|e| anyhow!("Can't read package manifest {manifest_path}: {e}"))?;
+    pub(crate) async fn new_from_env_then_manifest(is_install: bool) -> Result<Self> {
+        let manifest = if is_install {
+            let empty_manifest: Manifest<MetadataValue> = Manifest::from_str("").unwrap();
+            empty_manifest
+        } else {
+            let manifest_path = find_manifest_path()
+                .await
+                .map_err(|e| anyhow!("Can't find package manifest: {e}"))?;
+            Manifest::from_path(&manifest_path)
+                .map_err(|e| anyhow!("Can't read package manifest {manifest_path}: {e}"))?
+        };
 
         Self::try_new(manifest).map_err(|e| anyhow!("Failed reading {PKG} configuration: {e}"))
     }
 
     fn try_new(manifest: Manifest) -> Result<Self> {
-        use cargo_toml::Package;
-
         let mut green = Self::default();
 
         if let Manifest { package: Some(Package { metadata: Some(metadata), .. }), .. } = manifest {
