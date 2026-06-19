@@ -151,6 +151,7 @@ async fn actual_main() -> Result<()> {
                 "publish" | "r" | "run" | "rustc" | "rustdoc" | "t" | "test"
             )
     });
+    let is_install = command.as_deref() == Some("install");
 
     if !handled {
         if !cmd.status().await?.success() {
@@ -184,7 +185,7 @@ async fn actual_main() -> Result<()> {
         return Ok(());
     }
 
-    let green = cargo_green::main().await?;
+    let green = cargo_green::main(is_install).await?;
     cmd.env(ENV_ROOT_PACKAGE_SETTINGS, serde_json::to_string(&green)?);
 
     if command.as_deref() == Some("supergreen") {
@@ -196,9 +197,9 @@ async fn actual_main() -> Result<()> {
         if !cmd.status().await?.success() {
             bail!(EEXIT)
         }
-        return green.prebuild(true).await;
+        return green.prebuild(true, is_install).await;
     }
-    green.prebuild(false).await?;
+    green.prebuild(false, is_install).await?;
 
     let target_dir = create_current_target_dir(command.as_deref())?;
     cmd.env("CARGO_TARGET_DIR", &target_dir);

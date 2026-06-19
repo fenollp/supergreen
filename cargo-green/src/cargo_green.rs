@@ -21,8 +21,8 @@ use crate::{
     stage::{RST, Stage},
 };
 
-pub(crate) async fn main() -> Result<Green> {
-    let mut green = Green::new_from_env_then_manifest().await?;
+pub(crate) async fn main(is_install: bool) -> Result<Green> {
+    let mut green = Green::new_from_env_then_manifest(is_install).await?;
 
     // Setting runner first as it's needed by many calls
     let mut var = ENV_RUNNER!();
@@ -231,22 +231,23 @@ impl Green {
     /// * no cargo.lock needed, but use deps if available
     /// * pull images as they are given (maybe locked)
     /// * TODO: push caches (tags?) ~ find last containerfile and rerun that build with cacheto
-    pub(crate) async fn prebuild(&self, require_lockfile: bool) -> Result<()> {
+    pub(crate) async fn prebuild(&self, require_lockfile: bool, is_install: bool) -> Result<()> {
         logging::setup("prebuild");
         let _ = maybe_log();
         info!("{PKG}@{VSN} original args: {:?} pwd={:?}", env::args(), pwd());
 
         let mut packages = vec![];
-        if let Err(e) = async {
-            let manifest_path_lockfile = find_lockfile().await?;
-            debug!("using lockfile at {manifest_path_lockfile}");
+        if !is_install
+            && let Err(e) = async {
+                let manifest_path_lockfile = find_lockfile().await?;
+                debug!("using lockfile at {manifest_path_lockfile}");
 
-            packages = locked_crates(&manifest_path_lockfile).await?;
-            info!("found {} packages", packages.len());
+                packages = locked_crates(&manifest_path_lockfile).await?;
+                info!("found {} packages", packages.len());
 
-            Ok(())
-        }
-        .await
+                Ok(())
+            }
+            .await
             && require_lockfile
         {
             return Err(e);
