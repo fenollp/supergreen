@@ -12,6 +12,7 @@ use crate::{
     ext::CommandExt,
     green::Green,
     image_uri::{ImageUri, fetch_digest},
+    retrier::Retrier,
     tmp,
 };
 
@@ -224,14 +225,6 @@ then run your cargo command again.
     }
 
     pub(crate) async fn create_builder(&mut self, name: &str) -> Result<()> {
-        self.do_create_builder(name, 1).await
-    }
-
-    async fn do_create_builder(&mut self, name: &str, attempts: u8) -> Result<()> {
-        if attempts == 5 {
-            bail!("Could not create builder after {attempts} attempts. Is {} OK?", self.runner)
-        }
-
         let mut config = buildkitd::Config::default();
         if !self.registry_mirrors.is_empty() {
             config.set_registry_mirrors("docker.io", self.registry_mirrors.clone());
@@ -284,18 +277,16 @@ then run your cargo command again.
             None
         };
 
-        assert!(!self.runner.is_none(), "create_builder() called with Runner::None");
-        let mut cmd = self.cmd()?;
-        cmd.args(["buildx", "create", "--bootstrap"])
-            .args(["--name", name])
-            .args(["--driver", BUILDER_DRIVER]);
+        let mut args = vec!["buildx", "create", "--bootstrap"];
+        args.extend_from_slice(&["--name", name]);
+        args.extend_from_slice(&["--driver", BUILDER_DRIVER]);
         if let Some(ref cfg) = cfg {
-            cmd.args(["--buildkitd-config", cfg.as_str()]);
+            args.extend_from_slice(&["--buildkitd-config", cfg.as_str()]);
         }
 
         if use_host_network {
             // From [Insecure Entitlement "network.host" not working](https://github.com/docker/buildx/issues/835)
-            cmd.args([
+            args.extend_from_slice(&[
                 "--driver-opt=network=host",
                 "--buildkitd-flags",
                 "--allow-insecure-entitlement network.host",
@@ -307,15 +298,38 @@ then run your cargo command again.
         } else {
             fetch_digest(&self.runner, &BUILDKIT_IMAGE).await?
         };
-        cmd.arg(format!("--driver-opt=image={}", img.noscheme()));
+        let image = format!("--driver-opt=image={}", img.noscheme());
+        args.push(&image);
 
-        let (succeeded, _, stderr) = cmd.exec().await?;
-        if !succeeded {
-            let stderr = String::from_utf8_lossy(&stderr);
+        fn builder_transient_error(stderr: &str) -> Result<anyhow::Error> {
             if stderr.contains("existing instance") && stderr.contains("but no append mode") {
-                return Box::pin(self.do_create_builder(name, attempts + 1)).await;
+                return Ok(anyhow!("A builder with the same name already exists..."));
             }
-            bail!("BUG: failed to create builder: {stderr}")
+            if stderr.contains(" context deadline exceeded ") {
+                return Ok(anyhow!("Network connection mishap..."));
+            }
+            bail!("Failed to create builder: {stderr}")
+        }
+
+        let mut retrier = Retrier::with_max_attempts(5);
+        loop {
+            assert!(!self.runner.is_none(), "create_builder() called with Runner::None");
+            let mut cmd = self.cmd()?;
+            cmd.args(&args);
+            let (succeeded, _, stderr) = cmd.exec().await?;
+            if succeeded {
+                break;
+            }
+            let stderr = String::from_utf8_lossy(&stderr);
+            if retrier.continues() {
+                retrier.backoff("build", builder_transient_error(&stderr)?).await;
+                continue;
+            }
+            bail!(
+                "Could not create builder after {} attempts. Is {} OK?\n{stderr}",
+                retrier.max(),
+                self.runner
+            )
         }
 
         if let Some(cfg) = cfg {
