@@ -3,6 +3,7 @@
     "targets": [ "buildxargs"
                , "edit"
                , "cargo-kani"
+               , "libfutures.rmeta"
                , "CreuSAT"
                , "vixargs"
                , "rg"
@@ -65,6 +66,11 @@
   , "cargo-kani": {
       "context": "recipes",
       "dockerfile": "kani-verifier@0.66.0.Dockerfile",
+      "output": ["."]
+    }
+  , "libfutures.rmeta": {
+      "context": "recipes",
+      "dockerfile": "rapidraw@main.Dockerfile",
       "output": ["."]
     }
   , "CreuSAT": {
