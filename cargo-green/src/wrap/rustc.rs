@@ -156,8 +156,9 @@ async fn do_wrap_rustc(
 
     // Prune the over-approximated closure down to what rustc actually reads (CARGOGREEN_EXPERIMENT
     // =binarydepinfo). Fail-safe: discovery returning None leaves the full closure untouched.
-    if prunable && md.externs_len() >= 100 {
-        if let Some(readset) = crate::discover::discover_readset(
+    if prunable
+        && md.externs_len() >= 100
+        && let Some(readset) = crate::discover::discover_readset(
             &green,
             arguments,
             &mdid.to_string(),
@@ -165,11 +166,10 @@ async fn do_wrap_rustc(
             &target_path,
         )
         .await
-        {
-            let before = md.externs_len();
-            md.retain_externs(&readset);
-            info!("binarydepinfo: {rustc_stage} externs {before} -> {}", md.externs_len());
-        }
+    {
+        let before = md.externs_len();
+        md.retain_externs(&readset);
+        info!("binarydepinfo: {rustc_stage} externs {before} -> {}", md.externs_len());
     }
 
     for NamedMount { name, mount } in md.externs() {

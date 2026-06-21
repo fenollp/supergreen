@@ -18,7 +18,7 @@
 
 use std::env;
 
-use anyhow::{anyhow, bail, Result};
+use anyhow::{Result, anyhow, bail};
 use camino::{Utf8Path, Utf8PathBuf};
 use indexmap::IndexSet;
 use log::{info, warn};
@@ -54,13 +54,12 @@ fn filter_args(flags: &[String]) -> Vec<String> {
             it.next(); // drop the value too
             continue;
         }
-        if a == "-C" {
-            if let Some(v) = it.peek() {
-                if C_DROP.iter().any(|p| v.starts_with(p)) {
-                    it.next();
-                    continue;
-                }
-            }
+        if a == "-C"
+            && let Some(v) = it.peek()
+            && C_DROP.iter().any(|p| v.starts_with(p))
+        {
+            it.next();
+            continue;
         }
         if PREFIXES.iter().any(|p| a.starts_with(p)) {
             continue;
@@ -230,6 +229,7 @@ crates/settings/src/settings.rs:
 
     #[test]
     fn filter_drops_emit_outdir_and_incremental() {
+        #[rustfmt::skip]
         let flags: Vec<String> = [
             "--crate-name", "settings",
             "--emit=dep-info,metadata,link",
