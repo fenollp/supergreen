@@ -28,7 +28,7 @@ jobs:
     - run: rustup show
 
     - name: Cache `cargo fetch`
-      uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
+      uses: actions/cache@2c8a9bd7457de244a408f35966fab2fb45fda9c8 # v6.0.0
       with:
         path: |
           ~/.cargo/registry/index/
@@ -38,7 +38,7 @@ jobs:
         restore-keys: ${{ github.job }}-${{ runner.os }}-cargo-deps-
 
     - name: Cache `cargo install`
-      uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
+      uses: actions/cache@2c8a9bd7457de244a408f35966fab2fb45fda9c8 # v6.0.0
       with:
         path: ~/instmp
         key: ${{ runner.os }}-cargo-install-${{ hashFiles('**/Cargo.lock') }}
@@ -150,7 +150,7 @@ jobs:
         mkdir -p /tmp/.local-registry-new
     - name: 🔵 Restore local private registry cache
       if: ${{ env.CARGOGREEN_CACHE_FROM_IMAGES != '' || env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
-      uses: actions/cache/restore@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
+      uses: actions/cache/restore@2c8a9bd7457de244a408f35966fab2fb45fda9c8 # v6.0.0
       with:
         path: /tmp/.local-registry
         # github.run_id: https://github.com/actions/toolkit/issues/658#issuecomment-2640690759
@@ -617,7 +617,7 @@ jobs:
         mkdir -p /tmp/.local-registry-new
     - name: 🔵 Restore local private registry cache
       if: ${{ env.CARGOGREEN_CACHE_FROM_IMAGES != '' || env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
-      uses: actions/cache/restore@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
+      uses: actions/cache/restore@2c8a9bd7457de244a408f35966fab2fb45fda9c8 # v6.0.0
       with:
         path: /tmp/.local-registry
         # github.run_id: https://github.com/actions/toolkit/issues/658#issuecomment-2640690759
@@ -1084,7 +1084,7 @@ jobs:
         mkdir -p /tmp/.local-registry-new
     - name: 🔵 Restore local private registry cache
       if: ${{ env.CARGOGREEN_CACHE_FROM_IMAGES != '' || env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
-      uses: actions/cache/restore@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
+      uses: actions/cache/restore@2c8a9bd7457de244a408f35966fab2fb45fda9c8 # v6.0.0
       with:
         path: /tmp/.local-registry
         # github.run_id: https://github.com/actions/toolkit/issues/658#issuecomment-2640690759
@@ -1551,7 +1551,7 @@ jobs:
         mkdir -p /tmp/.local-registry-new
     - name: 🔵 Restore local private registry cache
       if: ${{ env.CARGOGREEN_CACHE_FROM_IMAGES != '' || env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
-      uses: actions/cache/restore@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
+      uses: actions/cache/restore@2c8a9bd7457de244a408f35966fab2fb45fda9c8 # v6.0.0
       with:
         path: /tmp/.local-registry
         # github.run_id: https://github.com/actions/toolkit/issues/658#issuecomment-2640690759
@@ -2018,7 +2018,7 @@ jobs:
         mkdir -p /tmp/.local-registry-new
     - name: 🔵 Restore local private registry cache
       if: ${{ env.CARGOGREEN_CACHE_FROM_IMAGES != '' || env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
-      uses: actions/cache/restore@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
+      uses: actions/cache/restore@2c8a9bd7457de244a408f35966fab2fb45fda9c8 # v6.0.0
       with:
         path: /tmp/.local-registry
         # github.run_id: https://github.com/actions/toolkit/issues/658#issuecomment-2640690759
@@ -2485,7 +2485,7 @@ jobs:
         mkdir -p /tmp/.local-registry-new
     - name: 🔵 Restore local private registry cache
       if: ${{ env.CARGOGREEN_CACHE_FROM_IMAGES != '' || env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
-      uses: actions/cache/restore@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
+      uses: actions/cache/restore@2c8a9bd7457de244a408f35966fab2fb45fda9c8 # v6.0.0
       with:
         path: /tmp/.local-registry
         # github.run_id: https://github.com/actions/toolkit/issues/658#issuecomment-2640690759
@@ -2952,7 +2952,7 @@ jobs:
         mkdir -p /tmp/.local-registry-new
     - name: 🔵 Restore local private registry cache
       if: ${{ env.CARGOGREEN_CACHE_FROM_IMAGES != '' || env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
-      uses: actions/cache/restore@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
+      uses: actions/cache/restore@2c8a9bd7457de244a408f35966fab2fb45fda9c8 # v6.0.0
       with:
         path: /tmp/.local-registry
         # github.run_id: https://github.com/actions/toolkit/issues/658#issuecomment-2640690759
@@ -3419,7 +3419,7 @@ jobs:
         mkdir -p /tmp/.local-registry-new
     - name: 🔵 Restore local private registry cache
       if: ${{ env.CARGOGREEN_CACHE_FROM_IMAGES != '' || env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
-      uses: actions/cache/restore@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
+      uses: actions/cache/restore@2c8a9bd7457de244a408f35966fab2fb45fda9c8 # v6.0.0
       with:
         path: /tmp/.local-registry
         # github.run_id: https://github.com/actions/toolkit/issues/658#issuecomment-2640690759
@@ -3886,7 +3886,7 @@ jobs:
         mkdir -p /tmp/.local-registry-new
     - name: 🔵 Restore local private registry cache
       if: ${{ env.CARGOGREEN_CACHE_FROM_IMAGES != '' || env.CARGOGREEN_CACHE_TO_IMAGES != '' }}
-      uses: actions/cache/restore@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5.0.5
+      uses: actions/cache/restore@2c8a9bd7457de244a408f35966fab2fb45fda9c8 # v6.0.0
       with:
         path: /tmp/.local-registry
         # github.run_id: https://github.com/actions/toolkit/issues/658#issuecomment-2640690759
