@@ -5,8 +5,8 @@ stable=1.96.0 # Closest to latest stable, as official Rust images availability p
 fixed=1.94.0 # Some fixed rustc version
 
 
-action__cache='actions/cache@2c8a9bd7457de244a408f35966fab2fb45fda9c8 # v6.0.0'
-action__cache_restore='actions/cache/restore@2c8a9bd7457de244a408f35966fab2fb45fda9c8 # v6.0.0'
+action__cache='actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0'
+action__cache_restore='actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0'
 action__checkout='actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0'
 action__docker_login='docker/login-action@4907a6ddec9925e35a0a9e82d7399ccc52663121 # v4.1.0'
 action__download_artifact='actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1'
