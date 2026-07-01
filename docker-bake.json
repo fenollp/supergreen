@@ -35,6 +35,7 @@
                , "rublk"
                , "cargo-make"
                , "binsider"
+               , "whiteboard"
                , "cargo-authors"
                , "cargo-audit"
                , "cargo-deny"
@@ -225,6 +226,11 @@
   , "binsider": {
       "context": "recipes",
       "dockerfile": "binsider@0.3.0.Dockerfile",
+      "output": ["."]
+    }
+  , "whiteboard": {
+      "context": "recipes",
+      "dockerfile": "marauder@master.Dockerfile",
       "output": ["."]
     }
   , "cargo-authors": {

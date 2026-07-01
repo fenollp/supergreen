@@ -6,7 +6,7 @@ FROM --platform=$BUILDPLATFORM docker.io/tonistiigi/xx:1.6.1@sha256:923441d7c25f
 FROM scratch AS rustup-1.94.0-x86_64-unknown-linux-gnu
 ADD --chmod=0144 --checksum=sha256:4acc9acc76d5079515b46346a485974457b5a79893cfb01112423c89aeb5aa10 \
   https://static.rust-lang.org/rustup/archive/1.29.0/x86_64-unknown-linux-gnu/rustup-init /rustup-init
-FROM --platform=$BUILDPLATFORM docker.io/library/debian:trixie-slim@sha256:cedb1ef40439206b673ee8b33a46a03a0c9fa90bf3732f54704f99cb061d2c5a AS rust-base
+FROM docker.io/library/debian:trixie-slim@sha256:cedb1ef40439206b673ee8b33a46a03a0c9fa90bf3732f54704f99cb061d2c5a AS rust-base
 SHELL ["/bin/sh", "-eux", "-c"]
 ENV       CARGO_HOME=/usr/local/cargo \
          RUSTUP_HOME=/usr/local/rustup \
@@ -588,6 +588,7 @@ WORKDIR $CARGO_HOME/registry/src/index.crates.io/ahash-0.8.12
 RUN \
   --mount=from=out-1b0614bacf16dfc6,source=/_build_script_build-1b0614bacf16dfc6,dst=/target/release/build/ahash-1b0614bacf16dfc6/build-script-build \
   --mount=from=cratesio-ahash-0.8.12,source=/ahash-0.8.12,dst=$CARGO_HOME/registry/src/index.crates.io/ahash-0.8.12 \
+  --mount=from=cratesio-version_check-0.9.5,source=/version_check-0.9.5,dst=$CARGO_HOME/registry/src/index.crates.io/version_check-0.9.5 \
     env CARGO_CFG_FEATURE=default,getrandom,no-rng,runtime-rng,std \
         CARGO_CFG_PANIC=unwind \
         CARGO_CFG_TARGET_ABI= \
@@ -4102,6 +4103,7 @@ WORKDIR $CARGO_HOME/registry/src/index.crates.io/wayland-sys-0.31.7
 RUN \
   --mount=from=out-68465cf00666271a,source=/_build_script_build-68465cf00666271a,dst=/target/release/build/wayland-sys-68465cf00666271a/build-script-build \
   --mount=from=cratesio-wayland-sys-0.31.7,source=/wayland-sys-0.31.7,dst=$CARGO_HOME/registry/src/index.crates.io/wayland-sys-0.31.7 \
+  --mount=from=cratesio-pkg-config-0.3.32,source=/pkg-config-0.3.32,dst=$CARGO_HOME/registry/src/index.crates.io/pkg-config-0.3.32 \
     env CARGO_CFG_FEATURE=client,dlopen,egl,once_cell \
         CARGO_CFG_PANIC=unwind \
         CARGO_CFG_TARGET_ABI= \
@@ -4362,6 +4364,9 @@ WORKDIR $CARGO_HOME/registry/src/index.crates.io/wayland-backend-0.3.11
 RUN \
   --mount=from=out-53d7f2be9f487794,source=/_build_script_build-53d7f2be9f487794,dst=/target/release/build/wayland-backend-53d7f2be9f487794/build-script-build \
   --mount=from=cratesio-wayland-backend-0.3.11,source=/wayland-backend-0.3.11,dst=$CARGO_HOME/registry/src/index.crates.io/wayland-backend-0.3.11 \
+  --mount=from=cratesio-find-msvc-tools-0.1.3,source=/find-msvc-tools-0.1.3,dst=$CARGO_HOME/registry/src/index.crates.io/find-msvc-tools-0.1.3 \
+  --mount=from=cratesio-shlex-1.3.0,source=/shlex-1.3.0,dst=$CARGO_HOME/registry/src/index.crates.io/shlex-1.3.0 \
+  --mount=from=cratesio-cc-1.2.40,source=/cc-1.2.40,dst=$CARGO_HOME/registry/src/index.crates.io/cc-1.2.40 \
     env CARGO_CFG_FEATURE=client_system,dlopen \
         CARGO_CFG_PANIC=unwind \
         CARGO_CFG_TARGET_ABI= \
@@ -5916,6 +5921,10 @@ WORKDIR $CARGO_HOME/registry/src/index.crates.io/freetype-sys-0.20.1
 RUN \
   --mount=from=out-e8e33c391757163b,source=/_build_script_build-e8e33c391757163b,dst=/target/release/build/freetype-sys-e8e33c391757163b/build-script-build \
   --mount=from=cratesio-freetype-sys-0.20.1,source=/freetype-sys-0.20.1,dst=$CARGO_HOME/registry/src/index.crates.io/freetype-sys-0.20.1 \
+  --mount=from=cratesio-find-msvc-tools-0.1.3,source=/find-msvc-tools-0.1.3,dst=$CARGO_HOME/registry/src/index.crates.io/find-msvc-tools-0.1.3 \
+  --mount=from=cratesio-shlex-1.3.0,source=/shlex-1.3.0,dst=$CARGO_HOME/registry/src/index.crates.io/shlex-1.3.0 \
+  --mount=from=cratesio-cc-1.2.40,source=/cc-1.2.40,dst=$CARGO_HOME/registry/src/index.crates.io/cc-1.2.40 \
+  --mount=from=cratesio-pkg-config-0.3.32,source=/pkg-config-0.3.32,dst=$CARGO_HOME/registry/src/index.crates.io/pkg-config-0.3.32 \
     env CARGO_CFG_FEATURE= \
         CARGO_CFG_PANIC=unwind \
         CARGO_CFG_TARGET_ABI= \
@@ -6137,6 +6146,7 @@ WORKDIR $CARGO_HOME/registry/src/index.crates.io/yeslogic-fontconfig-sys-5.0.0
 RUN \
   --mount=from=out-5e49d7eecc0aa0bb,source=/_build_script_build-5e49d7eecc0aa0bb,dst=/target/release/build/yeslogic-fontconfig-sys-5e49d7eecc0aa0bb/build-script-build \
   --mount=from=cratesio-yeslogic-fontconfig-sys-5.0.0,source=/yeslogic-fontconfig-sys-5.0.0,dst=$CARGO_HOME/registry/src/index.crates.io/yeslogic-fontconfig-sys-5.0.0 \
+  --mount=from=cratesio-pkg-config-0.3.32,source=/pkg-config-0.3.32,dst=$CARGO_HOME/registry/src/index.crates.io/pkg-config-0.3.32 \
     env CARGO_CFG_FEATURE= \
         CARGO_CFG_PANIC=unwind \
         CARGO_CFG_TARGET_ABI= \
@@ -6276,6 +6286,7 @@ WORKDIR $CARGO_HOME/registry/src/index.crates.io/crossfont-0.8.1
 RUN \
   --mount=from=out-50b88c0172307523,source=/_build_script_build-50b88c0172307523,dst=/target/release/build/crossfont-50b88c0172307523/build-script-build \
   --mount=from=cratesio-crossfont-0.8.1,source=/crossfont-0.8.1,dst=$CARGO_HOME/registry/src/index.crates.io/crossfont-0.8.1 \
+  --mount=from=cratesio-pkg-config-0.3.32,source=/pkg-config-0.3.32,dst=$CARGO_HOME/registry/src/index.crates.io/pkg-config-0.3.32 \
     env CARGO_CFG_FEATURE= \
         CARGO_CFG_PANIC=unwind \
         CARGO_CFG_TARGET_ABI= \
@@ -6674,6 +6685,10 @@ WORKDIR $CARGO_HOME/registry/src/index.crates.io/glutin_egl_sys-0.7.1
 RUN \
   --mount=from=out-01279aa33d25e3a1,source=/_build_script_build-01279aa33d25e3a1,dst=/target/release/build/glutin_egl_sys-01279aa33d25e3a1/build-script-build \
   --mount=from=cratesio-glutin_egl_sys-0.7.1,source=/glutin_egl_sys-0.7.1,dst=$CARGO_HOME/registry/src/index.crates.io/glutin_egl_sys-0.7.1 \
+  --mount=from=cratesio-khronos_api-3.1.0,source=/khronos_api-3.1.0,dst=$CARGO_HOME/registry/src/index.crates.io/khronos_api-3.1.0 \
+  --mount=from=cratesio-log-0.4.28,source=/log-0.4.28,dst=$CARGO_HOME/registry/src/index.crates.io/log-0.4.28 \
+  --mount=from=cratesio-xml-rs-0.8.27,source=/xml-rs-0.8.27,dst=$CARGO_HOME/registry/src/index.crates.io/xml-rs-0.8.27 \
+  --mount=from=cratesio-gl_generator-0.14.0,source=/gl_generator-0.14.0,dst=$CARGO_HOME/registry/src/index.crates.io/gl_generator-0.14.0 \
     env CARGO_CFG_FEATURE= \
         CARGO_CFG_PANIC=unwind \
         CARGO_CFG_TARGET_ABI= \
@@ -6804,6 +6819,7 @@ WORKDIR $CARGO_HOME/registry/src/index.crates.io/x11-dl-2.21.0
 RUN \
   --mount=from=out-dab0cd7028786cbb,source=/_build_script_build-dab0cd7028786cbb,dst=/target/release/build/x11-dl-dab0cd7028786cbb/build-script-build \
   --mount=from=cratesio-x11-dl-2.21.0,source=/x11-dl-2.21.0,dst=$CARGO_HOME/registry/src/index.crates.io/x11-dl-2.21.0 \
+  --mount=from=cratesio-pkg-config-0.3.32,source=/pkg-config-0.3.32,dst=$CARGO_HOME/registry/src/index.crates.io/pkg-config-0.3.32 \
     env CARGO_CFG_FEATURE= \
         CARGO_CFG_PANIC=unwind \
         CARGO_CFG_TARGET_ABI= \
@@ -6940,6 +6956,10 @@ WORKDIR $CARGO_HOME/registry/src/index.crates.io/glutin_glx_sys-0.6.1
 RUN \
   --mount=from=out-d33d6077e89f24fb,source=/_build_script_build-d33d6077e89f24fb,dst=/target/release/build/glutin_glx_sys-d33d6077e89f24fb/build-script-build \
   --mount=from=cratesio-glutin_glx_sys-0.6.1,source=/glutin_glx_sys-0.6.1,dst=$CARGO_HOME/registry/src/index.crates.io/glutin_glx_sys-0.6.1 \
+  --mount=from=cratesio-khronos_api-3.1.0,source=/khronos_api-3.1.0,dst=$CARGO_HOME/registry/src/index.crates.io/khronos_api-3.1.0 \
+  --mount=from=cratesio-log-0.4.28,source=/log-0.4.28,dst=$CARGO_HOME/registry/src/index.crates.io/log-0.4.28 \
+  --mount=from=cratesio-xml-rs-0.8.27,source=/xml-rs-0.8.27,dst=$CARGO_HOME/registry/src/index.crates.io/xml-rs-0.8.27 \
+  --mount=from=cratesio-gl_generator-0.14.0,source=/gl_generator-0.14.0,dst=$CARGO_HOME/registry/src/index.crates.io/gl_generator-0.14.0 \
     env CARGO_CFG_FEATURE= \
         CARGO_CFG_PANIC=unwind \
         CARGO_CFG_TARGET_ABI= \
@@ -7145,6 +7165,7 @@ WORKDIR $CARGO_HOME/registry/src/index.crates.io/glutin-0.32.3
 RUN \
   --mount=from=out-26c9d56756f8fda5,source=/_build_script_build-26c9d56756f8fda5,dst=/target/release/build/glutin-26c9d56756f8fda5/build-script-build \
   --mount=from=cratesio-glutin-0.32.3,source=/glutin-0.32.3,dst=$CARGO_HOME/registry/src/index.crates.io/glutin-0.32.3 \
+  --mount=from=cratesio-cfg_aliases-0.2.1,source=/cfg_aliases-0.2.1,dst=$CARGO_HOME/registry/src/index.crates.io/cfg_aliases-0.2.1 \
     env CARGO_CFG_FEATURE=egl,glutin_egl_sys,glutin_glx_sys,glutin_wgl_sys,glx,libloading,wayland,wayland-sys,wgl,windows-sys,x11,x11-dl \
         CARGO_CFG_PANIC=unwind \
         CARGO_CFG_TARGET_ABI= \
@@ -9173,6 +9194,7 @@ WORKDIR $CARGO_HOME/registry/src/index.crates.io/winit-0.30.13
 RUN \
   --mount=from=out-c4ef4c7302223177,source=/_build_script_build-c4ef4c7302223177,dst=/target/release/build/winit-c4ef4c7302223177/build-script-build \
   --mount=from=cratesio-winit-0.30.13,source=/winit-0.30.13,dst=$CARGO_HOME/registry/src/index.crates.io/winit-0.30.13 \
+  --mount=from=cratesio-cfg_aliases-0.2.1,source=/cfg_aliases-0.2.1,dst=$CARGO_HOME/registry/src/index.crates.io/cfg_aliases-0.2.1 \
     env CARGO_CFG_FEATURE=ahash,bytemuck,memmap2,percent-encoding,rwh_06,sctk,sctk-adwaita,serde,wayland,wayland-backend,wayland-client,wayland-csd-adwaita-crossfont,wayland-dlopen,wayland-protocols,wayland-protocols-plasma,x11,x11-dl,x11rb \
         CARGO_CFG_PANIC=unwind \
         CARGO_CFG_TARGET_ABI= \
@@ -9443,6 +9465,10 @@ WORKDIR $CARGO_HOME/registry/src/index.crates.io/alacritty-0.17.0
 RUN \
   --mount=from=out-5f20025bdfc891c6,source=/_build_script_build-5f20025bdfc891c6,dst=/target/release/build/alacritty-5f20025bdfc891c6/build-script-build \
   --mount=from=cratesio-alacritty-0.17.0,source=/alacritty-0.17.0,dst=$CARGO_HOME/registry/src/index.crates.io/alacritty-0.17.0 \
+  --mount=from=cratesio-khronos_api-3.1.0,source=/khronos_api-3.1.0,dst=$CARGO_HOME/registry/src/index.crates.io/khronos_api-3.1.0 \
+  --mount=from=cratesio-log-0.4.28,source=/log-0.4.28,dst=$CARGO_HOME/registry/src/index.crates.io/log-0.4.28 \
+  --mount=from=cratesio-xml-rs-0.8.27,source=/xml-rs-0.8.27,dst=$CARGO_HOME/registry/src/index.crates.io/xml-rs-0.8.27 \
+  --mount=from=cratesio-gl_generator-0.14.0,source=/gl_generator-0.14.0,dst=$CARGO_HOME/registry/src/index.crates.io/gl_generator-0.14.0 \
     env CARGO_CFG_FEATURE=default,png,wayland,x11 \
         CARGO_CFG_PANIC=unwind \
         CARGO_CFG_TARGET_ABI= \

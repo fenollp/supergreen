@@ -6,7 +6,7 @@ FROM --platform=$BUILDPLATFORM docker.io/tonistiigi/xx:1.6.1@sha256:923441d7c25f
 FROM scratch AS rustup-1.94.0-x86_64-unknown-linux-gnu
 ADD --chmod=0144 --checksum=sha256:4acc9acc76d5079515b46346a485974457b5a79893cfb01112423c89aeb5aa10 \
   https://static.rust-lang.org/rustup/archive/1.29.0/x86_64-unknown-linux-gnu/rustup-init /rustup-init
-FROM --platform=$BUILDPLATFORM docker.io/library/debian:trixie-slim@sha256:cedb1ef40439206b673ee8b33a46a03a0c9fa90bf3732f54704f99cb061d2c5a AS rust-base
+FROM docker.io/library/debian:trixie-slim@sha256:cedb1ef40439206b673ee8b33a46a03a0c9fa90bf3732f54704f99cb061d2c5a AS rust-base
 SHELL ["/bin/sh", "-eux", "-c"]
 ENV       CARGO_HOME=/usr/local/cargo \
          RUSTUP_HOME=/usr/local/rustup \
@@ -812,6 +812,7 @@ WORKDIR $CARGO_HOME/registry/src/index.crates.io/slab-0.4.9
 RUN \
   --mount=from=out-31e1689cc5e1dc4c,source=/_build_script_build-31e1689cc5e1dc4c,dst=/target/release/build/slab-31e1689cc5e1dc4c/build-script-build \
   --mount=from=cratesio-slab-0.4.9,source=/slab-0.4.9,dst=$CARGO_HOME/registry/src/index.crates.io/slab-0.4.9 \
+  --mount=from=cratesio-autocfg-1.4.0,source=/autocfg-1.4.0,dst=$CARGO_HOME/registry/src/index.crates.io/autocfg-1.4.0 \
     env CARGO_CFG_FEATURE=default,std \
         CARGO_CFG_PANIC=unwind \
         CARGO_CFG_TARGET_ABI= \
@@ -5481,6 +5482,7 @@ WORKDIR $CARGO_HOME/registry/src/index.crates.io/lock_api-0.4.13
 RUN \
   --mount=from=out-6a966516208cf01f,source=/_build_script_build-6a966516208cf01f,dst=/target/release/build/lock_api-6a966516208cf01f/build-script-build \
   --mount=from=cratesio-lock_api-0.4.13,source=/lock_api-0.4.13,dst=$CARGO_HOME/registry/src/index.crates.io/lock_api-0.4.13 \
+  --mount=from=cratesio-autocfg-1.4.0,source=/autocfg-1.4.0,dst=$CARGO_HOME/registry/src/index.crates.io/autocfg-1.4.0 \
     env CARGO_CFG_FEATURE=atomic_usize,default \
         CARGO_CFG_PANIC=unwind \
         CARGO_CFG_TARGET_ABI= \
@@ -6360,6 +6362,7 @@ WORKDIR $CARGO_HOME/registry/src/index.crates.io/num-traits-0.2.19
 RUN \
   --mount=from=out-06e12cd322a9104d,source=/_build_script_build-06e12cd322a9104d,dst=/target/release/build/num-traits-06e12cd322a9104d/build-script-build \
   --mount=from=cratesio-num-traits-0.2.19,source=/num-traits-0.2.19,dst=$CARGO_HOME/registry/src/index.crates.io/num-traits-0.2.19 \
+  --mount=from=cratesio-autocfg-1.4.0,source=/autocfg-1.4.0,dst=$CARGO_HOME/registry/src/index.crates.io/autocfg-1.4.0 \
     env CARGO_CFG_FEATURE=default,std \
         CARGO_CFG_PANIC=unwind \
         CARGO_CFG_TARGET_ABI= \
@@ -6902,6 +6905,10 @@ WORKDIR $CARGO_HOME/registry/src/index.crates.io/libsqlite3-sys-0.33.0
 RUN \
   --mount=from=out-50bdf316ea5ccde1,source=/_build_script_build-50bdf316ea5ccde1,dst=/target/release/build/libsqlite3-sys-50bdf316ea5ccde1/build-script-build \
   --mount=from=cratesio-libsqlite3-sys-0.33.0,source=/libsqlite3-sys-0.33.0,dst=$CARGO_HOME/registry/src/index.crates.io/libsqlite3-sys-0.33.0 \
+  --mount=from=cratesio-shlex-1.3.0,source=/shlex-1.3.0,dst=$CARGO_HOME/registry/src/index.crates.io/shlex-1.3.0 \
+  --mount=from=cratesio-cc-1.2.21,source=/cc-1.2.21,dst=$CARGO_HOME/registry/src/index.crates.io/cc-1.2.21 \
+  --mount=from=cratesio-pkg-config-0.3.32,source=/pkg-config-0.3.32,dst=$CARGO_HOME/registry/src/index.crates.io/pkg-config-0.3.32 \
+  --mount=from=cratesio-vcpkg-0.2.15,source=/vcpkg-0.2.15,dst=$CARGO_HOME/registry/src/index.crates.io/vcpkg-0.2.15 \
     env CARGO_CFG_FEATURE=bundled,bundled_bindings,cc,default,min_sqlite_version_3_14_0,pkg-config,vcpkg \
         CARGO_CFG_PANIC=unwind \
         CARGO_CFG_TARGET_ABI= \

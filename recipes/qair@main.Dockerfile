@@ -6,7 +6,7 @@ FROM --platform=$BUILDPLATFORM docker.io/tonistiigi/xx:1.6.1@sha256:923441d7c25f
 FROM scratch AS rustup-1.78.0-x86_64-unknown-linux-gnu
 ADD --chmod=0144 --checksum=sha256:4acc9acc76d5079515b46346a485974457b5a79893cfb01112423c89aeb5aa10 \
   https://static.rust-lang.org/rustup/archive/1.29.0/x86_64-unknown-linux-gnu/rustup-init /rustup-init
-FROM --platform=$BUILDPLATFORM docker.io/library/debian:trixie-slim@sha256:cedb1ef40439206b673ee8b33a46a03a0c9fa90bf3732f54704f99cb061d2c5a AS rust-base
+FROM docker.io/library/debian:trixie-slim@sha256:cedb1ef40439206b673ee8b33a46a03a0c9fa90bf3732f54704f99cb061d2c5a AS rust-base
 SHELL ["/bin/sh", "-eux", "-c"]
 ENV       CARGO_HOME=/usr/local/cargo \
          RUSTUP_HOME=/usr/local/rustup \
@@ -260,6 +260,7 @@ WORKDIR $CARGO_HOME/registry/src/index.crates.io/num-traits-0.2.11
 RUN \
   --mount=from=out-4cd2f294e2c1fb0f,source=/_build_script_build-4cd2f294e2c1fb0f,dst=/target/release/build/num-traits-4cd2f294e2c1fb0f/build-script-build \
   --mount=from=cratesio-num-traits-0.2.11,source=/num-traits-0.2.11,dst=$CARGO_HOME/registry/src/index.crates.io/num-traits-0.2.11 \
+  --mount=from=cratesio-autocfg-1.0.0,source=/autocfg-1.0.0,dst=$CARGO_HOME/registry/src/index.crates.io/autocfg-1.0.0 \
     env CARGO_CFG_PANIC=unwind \
         CARGO_CFG_TARGET_ABI= \
         CARGO_CFG_TARGET_ARCH=x86_64 \
@@ -388,6 +389,7 @@ WORKDIR $CARGO_HOME/registry/src/index.crates.io/num-integer-0.1.42
 RUN \
   --mount=from=out-1678d55620e30238,source=/_build_script_build-1678d55620e30238,dst=/target/release/build/num-integer-1678d55620e30238/build-script-build \
   --mount=from=cratesio-num-integer-0.1.42,source=/num-integer-0.1.42,dst=$CARGO_HOME/registry/src/index.crates.io/num-integer-0.1.42 \
+  --mount=from=cratesio-autocfg-1.0.0,source=/autocfg-1.0.0,dst=$CARGO_HOME/registry/src/index.crates.io/autocfg-1.0.0 \
     env CARGO_CFG_PANIC=unwind \
         CARGO_CFG_TARGET_ABI= \
         CARGO_CFG_TARGET_ARCH=x86_64 \
@@ -519,6 +521,7 @@ WORKDIR $CARGO_HOME/registry/src/index.crates.io/num-iter-0.1.40
 RUN \
   --mount=from=out-87177ecce5fe6c51,source=/_build_script_build-87177ecce5fe6c51,dst=/target/release/build/num-iter-87177ecce5fe6c51/build-script-build \
   --mount=from=cratesio-num-iter-0.1.40,source=/num-iter-0.1.40,dst=$CARGO_HOME/registry/src/index.crates.io/num-iter-0.1.40 \
+  --mount=from=cratesio-autocfg-1.0.0,source=/autocfg-1.0.0,dst=$CARGO_HOME/registry/src/index.crates.io/autocfg-1.0.0 \
     env CARGO_CFG_PANIC=unwind \
         CARGO_CFG_TARGET_ABI= \
         CARGO_CFG_TARGET_ARCH=x86_64 \
@@ -2613,6 +2616,7 @@ WORKDIR $CARGO_HOME/registry/src/index.crates.io/unicase-1.4.2
 RUN \
   --mount=from=out-1bb19a73b083cd61,source=/_build_script_build-1bb19a73b083cd61,dst=/target/release/build/unicase-1bb19a73b083cd61/build-script-build \
   --mount=from=cratesio-unicase-1.4.2,source=/unicase-1.4.2,dst=$CARGO_HOME/registry/src/index.crates.io/unicase-1.4.2 \
+  --mount=from=cratesio-version_check-0.1.5,source=/version_check-0.1.5,dst=$CARGO_HOME/registry/src/index.crates.io/version_check-0.1.5 \
     env CARGO_CFG_PANIC=unwind \
         CARGO_CFG_TARGET_ABI= \
         CARGO_CFG_TARGET_ARCH=x86_64 \
@@ -3118,6 +3122,7 @@ WORKDIR $CARGO_HOME/registry/src/index.crates.io/unicase-1.4.2
 RUN \
   --mount=from=out-1bb19a73b083cd61,source=/_build_script_build-1bb19a73b083cd61,dst=/target/release/build/unicase-1bb19a73b083cd61/build-script-build \
   --mount=from=cratesio-unicase-1.4.2,source=/unicase-1.4.2,dst=$CARGO_HOME/registry/src/index.crates.io/unicase-1.4.2 \
+  --mount=from=cratesio-version_check-0.1.5,source=/version_check-0.1.5,dst=$CARGO_HOME/registry/src/index.crates.io/version_check-0.1.5 \
     env CARGO_CFG_PANIC=unwind \
         CARGO_CFG_TARGET_ABI= \
         CARGO_CFG_TARGET_ARCH=x86_64 \
@@ -3513,6 +3518,7 @@ WORKDIR $CARGO_HOME/registry/src/index.crates.io/rand_chacha-0.1.1
 RUN \
   --mount=from=out-db997507b088d988,source=/_build_script_build-db997507b088d988,dst=/target/release/build/rand_chacha-db997507b088d988/build-script-build \
   --mount=from=cratesio-rand_chacha-0.1.1,source=/rand_chacha-0.1.1,dst=$CARGO_HOME/registry/src/index.crates.io/rand_chacha-0.1.1 \
+  --mount=from=cratesio-autocfg-0.1.7,source=/autocfg-0.1.7,dst=$CARGO_HOME/registry/src/index.crates.io/autocfg-0.1.7 \
     env CARGO_CFG_PANIC=unwind \
         CARGO_CFG_TARGET_ABI= \
         CARGO_CFG_TARGET_ARCH=x86_64 \
@@ -3789,6 +3795,7 @@ WORKDIR $CARGO_HOME/registry/src/index.crates.io/rand_pcg-0.1.2
 RUN \
   --mount=from=out-aa9dd14e810a843f,source=/_build_script_build-aa9dd14e810a843f,dst=/target/release/build/rand_pcg-aa9dd14e810a843f/build-script-build \
   --mount=from=cratesio-rand_pcg-0.1.2,source=/rand_pcg-0.1.2,dst=$CARGO_HOME/registry/src/index.crates.io/rand_pcg-0.1.2 \
+  --mount=from=cratesio-autocfg-0.1.7,source=/autocfg-0.1.7,dst=$CARGO_HOME/registry/src/index.crates.io/autocfg-0.1.7 \
     env CARGO_CFG_PANIC=unwind \
         CARGO_CFG_TARGET_ABI= \
         CARGO_CFG_TARGET_ARCH=x86_64 \
@@ -3956,6 +3963,7 @@ WORKDIR $CARGO_HOME/registry/src/index.crates.io/rand-0.6.5
 RUN \
   --mount=from=out-4ff04a666d808c7b,source=/_build_script_build-4ff04a666d808c7b,dst=/target/release/build/rand-4ff04a666d808c7b/build-script-build \
   --mount=from=cratesio-rand-0.6.5,source=/rand-0.6.5,dst=$CARGO_HOME/registry/src/index.crates.io/rand-0.6.5 \
+  --mount=from=cratesio-autocfg-0.1.7,source=/autocfg-0.1.7,dst=$CARGO_HOME/registry/src/index.crates.io/autocfg-0.1.7 \
     env CARGO_CFG_PANIC=unwind \
         CARGO_CFG_TARGET_ABI= \
         CARGO_CFG_TARGET_ARCH=x86_64 \
@@ -4229,6 +4237,25 @@ WORKDIR $CARGO_HOME/registry/src/index.crates.io/mime_guess-1.8.8
 RUN \
   --mount=from=out-d91473156ba5ed8f,source=/_build_script_build-d91473156ba5ed8f,dst=/target/release/build/mime_guess-d91473156ba5ed8f/build-script-build \
   --mount=from=cratesio-mime_guess-1.8.8,source=/mime_guess-1.8.8,dst=$CARGO_HOME/registry/src/index.crates.io/mime_guess-1.8.8 \
+  --mount=from=cratesio-siphasher-0.2.3,source=/siphasher-0.2.3,dst=$CARGO_HOME/registry/src/index.crates.io/siphasher-0.2.3 \
+  --mount=from=cratesio-version_check-0.1.5,source=/version_check-0.1.5,dst=$CARGO_HOME/registry/src/index.crates.io/version_check-0.1.5 \
+  --mount=from=cratesio-unicase-1.4.2,source=/unicase-1.4.2,dst=$CARGO_HOME/registry/src/index.crates.io/unicase-1.4.2 \
+  --mount=from=cratesio-phf_shared-0.7.24,source=/phf_shared-0.7.24,dst=$CARGO_HOME/registry/src/index.crates.io/phf_shared-0.7.24 \
+  --mount=from=cratesio-phf-0.7.24,source=/phf-0.7.24,dst=$CARGO_HOME/registry/src/index.crates.io/phf-0.7.24 \
+  --mount=from=cratesio-libc-0.2.68,source=/libc-0.2.68,dst=$CARGO_HOME/registry/src/index.crates.io/libc-0.2.68 \
+  --mount=from=cratesio-rand_core-0.4.2,source=/rand_core-0.4.2,dst=$CARGO_HOME/registry/src/index.crates.io/rand_core-0.4.2 \
+  --mount=from=cratesio-rand_core-0.3.1,source=/rand_core-0.3.1,dst=$CARGO_HOME/registry/src/index.crates.io/rand_core-0.3.1 \
+  --mount=from=cratesio-autocfg-0.1.7,source=/autocfg-0.1.7,dst=$CARGO_HOME/registry/src/index.crates.io/autocfg-0.1.7 \
+  --mount=from=cratesio-rand_chacha-0.1.1,source=/rand_chacha-0.1.1,dst=$CARGO_HOME/registry/src/index.crates.io/rand_chacha-0.1.1 \
+  --mount=from=cratesio-rand_hc-0.1.0,source=/rand_hc-0.1.0,dst=$CARGO_HOME/registry/src/index.crates.io/rand_hc-0.1.0 \
+  --mount=from=cratesio-rand_isaac-0.1.1,source=/rand_isaac-0.1.1,dst=$CARGO_HOME/registry/src/index.crates.io/rand_isaac-0.1.1 \
+  --mount=from=cratesio-rand_jitter-0.1.4,source=/rand_jitter-0.1.4,dst=$CARGO_HOME/registry/src/index.crates.io/rand_jitter-0.1.4 \
+  --mount=from=cratesio-rand_os-0.1.3,source=/rand_os-0.1.3,dst=$CARGO_HOME/registry/src/index.crates.io/rand_os-0.1.3 \
+  --mount=from=cratesio-rand_pcg-0.1.2,source=/rand_pcg-0.1.2,dst=$CARGO_HOME/registry/src/index.crates.io/rand_pcg-0.1.2 \
+  --mount=from=cratesio-rand_xorshift-0.1.1,source=/rand_xorshift-0.1.1,dst=$CARGO_HOME/registry/src/index.crates.io/rand_xorshift-0.1.1 \
+  --mount=from=cratesio-rand-0.6.5,source=/rand-0.6.5,dst=$CARGO_HOME/registry/src/index.crates.io/rand-0.6.5 \
+  --mount=from=cratesio-phf_generator-0.7.24,source=/phf_generator-0.7.24,dst=$CARGO_HOME/registry/src/index.crates.io/phf_generator-0.7.24 \
+  --mount=from=cratesio-phf_codegen-0.7.24,source=/phf_codegen-0.7.24,dst=$CARGO_HOME/registry/src/index.crates.io/phf_codegen-0.7.24 \
     env CARGO_CFG_PANIC=unwind \
         CARGO_CFG_TARGET_ABI= \
         CARGO_CFG_TARGET_ARCH=x86_64 \
@@ -6016,6 +6043,7 @@ WORKDIR $CARGO_HOME/registry/src/index.crates.io/proc-macro-error-attr-0.4.12
 RUN \
   --mount=from=out-2bf085e36322b635,source=/_build_script_build-2bf085e36322b635,dst=/target/release/build/proc-macro-error-attr-2bf085e36322b635/build-script-build \
   --mount=from=cratesio-proc-macro-error-attr-0.4.12,source=/proc-macro-error-attr-0.4.12,dst=$CARGO_HOME/registry/src/index.crates.io/proc-macro-error-attr-0.4.12 \
+  --mount=from=cratesio-version_check-0.9.1,source=/version_check-0.9.1,dst=$CARGO_HOME/registry/src/index.crates.io/version_check-0.9.1 \
     env CARGO_CFG_PANIC=unwind \
         CARGO_CFG_TARGET_ABI= \
         CARGO_CFG_TARGET_ARCH=x86_64 \
@@ -6147,6 +6175,7 @@ WORKDIR $CARGO_HOME/registry/src/index.crates.io/proc-macro-error-0.4.12
 RUN \
   --mount=from=out-1fd1528ce3065f6c,source=/_build_script_build-1fd1528ce3065f6c,dst=/target/release/build/proc-macro-error-1fd1528ce3065f6c/build-script-build \
   --mount=from=cratesio-proc-macro-error-0.4.12,source=/proc-macro-error-0.4.12,dst=$CARGO_HOME/registry/src/index.crates.io/proc-macro-error-0.4.12 \
+  --mount=from=cratesio-version_check-0.9.1,source=/version_check-0.9.1,dst=$CARGO_HOME/registry/src/index.crates.io/version_check-0.9.1 \
     env CARGO_CFG_PANIC=unwind \
         CARGO_CFG_TARGET_ABI= \
         CARGO_CFG_TARGET_ARCH=x86_64 \

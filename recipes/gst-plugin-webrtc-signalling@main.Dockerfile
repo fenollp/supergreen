@@ -6,7 +6,7 @@ FROM --platform=$BUILDPLATFORM docker.io/tonistiigi/xx:1.6.1@sha256:923441d7c25f
 FROM scratch AS rustup-1.94.0-x86_64-unknown-linux-gnu
 ADD --chmod=0144 --checksum=sha256:4acc9acc76d5079515b46346a485974457b5a79893cfb01112423c89aeb5aa10 \
   https://static.rust-lang.org/rustup/archive/1.29.0/x86_64-unknown-linux-gnu/rustup-init /rustup-init
-FROM --platform=$BUILDPLATFORM docker.io/library/debian:trixie-slim@sha256:cedb1ef40439206b673ee8b33a46a03a0c9fa90bf3732f54704f99cb061d2c5a AS rust-base
+FROM docker.io/library/debian:trixie-slim@sha256:cedb1ef40439206b673ee8b33a46a03a0c9fa90bf3732f54704f99cb061d2c5a AS rust-base
 SHELL ["/bin/sh", "-eux", "-c"]
 ENV       CARGO_HOME=/usr/local/cargo \
          RUSTUP_HOME=/usr/local/rustup \
@@ -1742,6 +1742,9 @@ WORKDIR $CARGO_HOME/registry/src/index.crates.io/ring-0.17.14
 RUN \
   --mount=from=out-cdab0e3ffaedd9e8,source=/_build_script_build-cdab0e3ffaedd9e8,dst=/target/release/build/ring-cdab0e3ffaedd9e8/build-script-build \
   --mount=from=cratesio-ring-0.17.14,source=/ring-0.17.14,dst=$CARGO_HOME/registry/src/index.crates.io/ring-0.17.14 \
+  --mount=from=cratesio-find-msvc-tools-0.1.9,source=/find-msvc-tools-0.1.9,dst=$CARGO_HOME/registry/src/index.crates.io/find-msvc-tools-0.1.9 \
+  --mount=from=cratesio-shlex-1.3.0,source=/shlex-1.3.0,dst=$CARGO_HOME/registry/src/index.crates.io/shlex-1.3.0 \
+  --mount=from=cratesio-cc-1.2.56,source=/cc-1.2.56,dst=$CARGO_HOME/registry/src/index.crates.io/cc-1.2.56 \
     env CARGO_CFG_FEATURE=alloc,default,dev_urandom_fallback \
         CARGO_CFG_PANIC=unwind \
         CARGO_CFG_TARGET_ABI= \
@@ -3042,6 +3045,7 @@ WORKDIR $CARGO_HOME/registry/src/index.crates.io/generic-array-0.14.7
 RUN \
   --mount=from=out-1fce6b3c766c0022,source=/_build_script_build-1fce6b3c766c0022,dst=/target/release/build/generic-array-1fce6b3c766c0022/build-script-build \
   --mount=from=cratesio-generic-array-0.14.7,source=/generic-array-0.14.7,dst=$CARGO_HOME/registry/src/index.crates.io/generic-array-0.14.7 \
+  --mount=from=cratesio-version_check-0.9.5,source=/version_check-0.9.5,dst=$CARGO_HOME/registry/src/index.crates.io/version_check-0.9.5 \
     env CARGO_CFG_FEATURE=more_lengths \
         CARGO_CFG_PANIC=unwind \
         CARGO_CFG_TARGET_ABI= \

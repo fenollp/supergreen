@@ -1,4 +1,5 @@
 use std::{
+    collections::HashSet,
     env,
     fs::{self},
 };
@@ -9,6 +10,8 @@ use log::{error, info, trace};
 
 use crate::{
     ENV, PKG, VSN,
+    base_image::rewrite_cargo_home,
+    cratesio::rewrite_cratesio_index,
     green::Green,
     logging::{self},
     md::{Md, MdId, Mds},
@@ -56,7 +59,7 @@ pub(crate) async fn exec_build_script(green: Green, exe: Utf8PathBuf) -> Result<
     // SAFETY: environment access only happens in single-threaded code.
     unsafe { env::set_var(ENV!(), "1") };
 
-    let (crate_name, pkg_name, pkg_version, _) = call_config();
+    let (crate_name, pkg_name, pkg_version, pkg_manifest_dir) = call_config();
 
     // exe: /target/release/build/proc-macro2-2f938e044e3f79bf/build-script-build
     let Some((previous_mdid, target_path)) = || -> Option<_> {
@@ -100,6 +103,7 @@ pub(crate) async fn exec_build_script(green: Green, exe: Utf8PathBuf) -> Result<
         green,
         crate_name.as_deref(),
         &pkg_name,
+        &pkg_manifest_dir,
         full_pkg_id.replace(' ', "-"),
         out_dir_var,
         exe,
@@ -116,6 +120,7 @@ async fn do_exec(
     green: Green,
     crate_name: Option<&str>,
     pkg_name: &str,
+    pkg_manifest_dir: &Utf8Path,
     crate_id: String,
     out_dir_var: Utf8PathBuf,
     exe: Utf8PathBuf,
@@ -153,12 +158,17 @@ async fn do_exec(
 
     run_block.push_str(&format!("WORKDIR {}\n", virtual_target_dir(&out_dir_var)));
     let mut code_stage_mounts = code_stage.mounts();
-    let Some((_, code_dst, _)) = code_stage_mounts.pop() else {
+    let Some(_) = code_stage_mounts.pop() else {
         bail!("BUG: a crate should only have one build script")
     };
     assert_eq!(code_stage_mounts, vec![]);
-    let code_dst = virtual_target_dir(&code_dst);
-    run_block.push_str(&format!("WORKDIR {code_dst}\n"));
+    // cargo runs build scripts with CWD = the crate's manifest dir (`CARGO_MANIFEST_DIR`). For a
+    // workspace member that's a subdir of the mounted checkout — NOT the checkout/workspace root
+    // (the code-stage's mount dst). Mirror cargo so manifest-relative paths (e.g. tonic-build's
+    // `compile_protos("proto/whiteboard.proto")`) resolve.
+    let workdir =
+        rewrite_cratesio_index(&rewrite_cargo_home(&green.cargo_home, pkg_manifest_dir.as_str()));
+    run_block.push_str(&format!("WORKDIR {workdir}\n"));
 
     run_block.push_str("RUN \\\n");
     run_block.push_str(&format!(
@@ -171,11 +181,32 @@ async fn do_exec(
         let mount = if swappity { format!(",dst={dst}{src}") } else { format!("{src},dst={dst}") };
         run_block.push_str(&format!("  --mount=from={name}{mount} \\\n"));
     }
+    // Captured before `previous_md` is moved below: the build script's own source is already mounted.
+    let mut mounted: HashSet<String> = [code_stage.name().to_string()].into();
 
     let mut extern_mds = mds.load_all(previous_md.deps())?;
     extern_mds.push(previous_md);
     let mds = md.sort_deps(extern_mds)?;
     info!("sorted {} deps", mds.len());
+
+    // Also mount the build script's (transitive) dependency crate-sources, so build scripts that read
+    // a dependency's bundled files at runtime can find them — e.g. `protoc-bin-vendored` ships its
+    // `protoc` binary inside its crate source and panics if it's absent. These are the very mounts
+    // cargo-green uses when compiling those deps; without them the build script runs in a sandbox
+    // missing files it expects under $CARGO_HOME/registry/src.
+    for dep in &mds {
+        let Some(dep_code) = dep.code_stage() else { continue };
+        let name = dep_code.name();
+        if !mounted.insert(name.to_string()) {
+            continue;
+        }
+        for (src, dst, swappity) in dep_code.mounts() {
+            let src = src.as_deref().map(|src| format!(",source={src}")).unwrap_or_default();
+            let mount =
+                if swappity { format!(",dst={dst}{src}") } else { format!("{src},dst={dst}") };
+            run_block.push_str(&format!("  --mount=from={name}{mount} \\\n"));
+        }
+    }
 
     md.call_block(
         (&run_stage, run_block),
