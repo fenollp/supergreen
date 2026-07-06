@@ -3,6 +3,7 @@
     "targets": [ "buildxargs"
                , "edit"
                , "cargo-kani"
+               , "liblz4.a"
                , "CreuSAT"
                , "vixargs"
                , "rg"
@@ -68,6 +69,11 @@
   , "cargo-kani": {
       "context": "recipes",
       "dockerfile": "kani-verifier@0.66.0.Dockerfile",
+      "output": ["."]
+    }
+  , "liblz4.a": {
+      "context": "recipes",
+      "dockerfile": "servo@main.Dockerfile",
       "output": ["."]
     }
   , "CreuSAT": {
