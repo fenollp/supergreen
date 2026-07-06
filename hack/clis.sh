@@ -543,7 +543,7 @@ if [[ $# = 0 ]]; then
     ((perpage+=1))
     [[ $perpage = 10 ]] && { perpage=1 ; ((page+=1)) ; }
     [[ $perpage = 1 ]] && header $page | tee .github/workflows/clis-$page.yml
-    cli "$name_at_version" "${binaries["$name_at_version"]}" "$cargo" "${nvs_args["$i"]}" | tee --append .github/workflows/clis-$page.yml
+    cli "$name_at_version" "${binaries["$name_at_version"]:-NOBINYET}" "$cargo" "${nvs_args["$i"]}" | tee --append .github/workflows/clis-$page.yml
   done
 
   echo
