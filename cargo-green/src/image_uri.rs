@@ -396,6 +396,15 @@ pub(crate) async fn fetch_digest(runner: &Runner, img: &ImageUri) -> Result<Imag
         return Ok(img.to_owned());
     }
 
+    // Only Docker Hub exposes the registry API queried below. Images served elsewhere
+    // (local/custom registries, locally-built images passed through
+    // $CARGOGREEN_BUILDER_IMAGE / $CARGOGREEN_SYNTAX_IMAGE) are used verbatim: their
+    // digest, if any is wanted, must already be part of the given URI.
+    if !img.noscheme().starts_with("docker.io/") {
+        info!("Skipping fetching image digest for non-Docker Hub image {img}");
+        return Ok(img.to_owned());
+    }
+
     const DOMAIN: &str = "registry.hub.docker.com";
 
     fn request(img: &ImageUri) -> Result<(ReqwestClient, Request)> {

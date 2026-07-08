@@ -231,14 +231,29 @@ then run your cargo command again.
         }
 
         let mut use_host_network = false;
-        let hosts = self
+        let mut hosts: IndexSet<String> = self
             .cache
             .from_images
             .iter()
             .chain(self.cache.to_images.iter())
             .chain(self.cache.images.iter())
-            .map(ImageUri::host)
-            .collect::<IndexSet<_>>();
+            .map(|img| img.host().to_owned())
+            .collect();
+        // The runner pulls the builder image and the builder (buildkitd) pulls the
+        // frontend (syntax) image. When either lives on a local registry (e.g.
+        // localhost:5000) the builder needs host networking + an insecure-registry
+        // entry to reach it. See $CARGOGREEN_BUILDER_IMAGE / $CARGOGREEN_SYNTAX_IMAGE.
+        if let Some(ref img) = self.builder.image
+            && img.noscheme().contains('/')
+        {
+            hosts.insert(img.host().to_owned());
+        }
+        if let Ok(syntax) = std::env::var(crate::ENV_SYNTAX_IMAGE!())
+            && let Ok(img) = ImageUri::try_new(syntax)
+            && img.noscheme().contains('/')
+        {
+            hosts.insert(img.host().to_owned());
+        }
 
         let mut clt = reqwest::Client::builder()
             .connect_timeout(Duration::from_secs(4))
@@ -251,7 +266,7 @@ then run your cargo command again.
             Ok(())
         }
 
-        for domain in hosts {
+        for domain in &hosts {
             // TODO: do better
             if ["localhost", "127.0.0.1", "::1"].iter().any(|pat| domain.starts_with(pat)) {
                 use_host_network = true;

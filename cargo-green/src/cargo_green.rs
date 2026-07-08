@@ -136,8 +136,10 @@ pub(crate) async fn main(toolchain: &str, is_install: bool) -> Result<Green> {
     if !green.syntax.is_empty() {
         bail!("${var} can only be set through the environment variable")
     }
+    let mut syntax_overridden = false;
     if let Ok(syntax) = env::var(var) {
         green.syntax = syntax.as_str().try_into().map_err(|e| anyhow!("${var}={syntax:?} {e}"))?;
+        syntax_overridden = true;
     }
     if green.syntax.is_empty() {
         // TODO: dynamically lock, if network is up.
