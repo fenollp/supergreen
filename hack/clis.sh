@@ -534,8 +534,8 @@ if [[ $# = 0 ]]; then
     name_at_version=${nvs["$i"]}
     o=${oks[$i]}
     case "${o:0:1}" in
-        O) slows[i]=recipes/$name_at_version.Dockerfile ; continue ;;
-        o) ((actual+=1)) ;; # Skip big Os: they take too long
+        O) slows[i]=$name_at_version ; continue ;;
+        o) ((actual+=1)) ;;
         *) continue ;;
     esac
     case "$name_at_version" in
@@ -556,9 +556,9 @@ if [[ $# = 0 ]]; then
   echo
   echo Too slow to use:
   for slow in "${!slows[@]}"; do
-    echo "${slows[$slow]}"
+    echo "  ${slows[$slow]}"
   done | sort
-  echo Produced: "$actual" jobs in "$page" workflows
+  echo Produced: "$actual" / "$((actual + ${#slows[@]}))" jobs in "$page" workflows
   exit
 fi
 
