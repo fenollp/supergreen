@@ -265,19 +265,6 @@ https://stackoverflow.com/a/73734760/1418165
 
 ---
 
---target armv7-unknown-linux-musleabihf
-
-https://github.com/fenollp/reMarkable-tools/blob/master/Makefile#L82
-
-https://github.com/cross-rs/cross/pkgs/container/armv7-unknown-linux-musleabihf/68145882?tag=0.2.5
-
-https://github.com/cross-rs/cross/blob/v0.2.5/docker/Dockerfile.armv7-unknown-linux-musleabihf
-
-
-https://github.com/cross-rs/cross/wiki/Contributing#how-cross-works
-
----
-
 buildctl runner
 
 https://github.com/denzp/rust-buildkit
@@ -624,10 +611,6 @@ salti@0.5.1
 
 ---
 
-https://github.com/sonos/tract
-
----
-
 sudo apt install build-essential libasound2-dev libpulse-dev libgtk-4-dev libsoup-3.0-dev libadwaita-1-dev libdbus-1-dev -y
 cargo install songrec --no-default-features -F gui,ffmpeg,pulse,mpris
 https://github.com/marin-m/SongRec
@@ -846,24 +829,6 @@ Dockerfile now supports special arg definitions SOURCE_DATE_EPOCH=context and SO
 https://github.com/sharkdp/fd
 
 https://crates.io/crates/ring/reverse_dependencies?page=54
-https://lib.rs/crates/lychee
-https://lib.rs/crates/redbpf
-https://lib.rs/crates/s3m
-https://lib.rs/crates/cargo-resources
-https://lib.rs/crates/rustup-mirror
-https://lib.rs/crates/aati
-https://crates.io/crates/voila
-https://crates.io/crates/slugid
-https://lib.rs/crates/rmd
-https://lib.rs/crates/cratery
-https://lib.rs/crates/hfile
-https://lib.rs/crates/gauth
-https://lib.rs/crates/muid
-https://lib.rs/crates/pbcli
-https://lib.rs/crates/yayo
-https://lib.rs/crates/duplicate-checker
-https://lib.rs/crates/mediafire_rs
-https://lib.rs/crates/pw
 
 ---
 

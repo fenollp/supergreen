@@ -214,6 +214,16 @@ fn target_path_from_out_dir() {
         let res = out_dir_to_target_path(out_dir.into());
         assert_eq!(res, Some("$CARGO_TARGET_DIR/$PROFILE".into()));
     }
+
+    // When cross-compiling:
+    for out_dir in [
+        "$CARGO_TARGET_DIR/armv7-unknown-linux-musleabihf/$PROFILE/deps",
+        "$CARGO_TARGET_DIR/armv7-unknown-linux-musleabihf/$PROFILE/build/ring-2a01a00f5bdd1924",
+        "$CARGO_TARGET_DIR/armv7-unknown-linux-musleabihf/$PROFILE/build/slab-3e929764daead7d0/out",
+    ] {
+        let res = out_dir_to_target_path(out_dir.into());
+        assert_eq!(res, Some("$CARGO_TARGET_DIR/armv7-unknown-linux-musleabihf/$PROFILE".into()));
+    }
 }
 
 #[cfg(test)]

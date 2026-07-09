@@ -3,6 +3,7 @@ use std::{env, fs, os::unix::fs::MetadataExt};
 use anyhow::{Result, anyhow, bail};
 use camino::{Utf8Path, Utf8PathBuf};
 use directories::ProjectDirs;
+use pico_args::Arguments;
 use serde::{Deserialize, Serialize};
 
 use crate::{PKG, VSN, green::Green, wrap::pass_env};

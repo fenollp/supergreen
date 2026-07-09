@@ -180,7 +180,10 @@ pub(crate) async fn main(is_install: bool) -> Result<Green> {
         green.base.image = fetch_digest(&green.runner, &base).await?;
     }
     let toolchain = env::var("RUSTUP_TOOLCHAIN").expect("$RUSTUP_TOOLCHAIN");
-    green.base = green.base.make_block(&toolchain, &green.components, &green.add)?;
+    let target: Option<String> =
+        pico_args::Arguments::from_env().opt_value_from_str("--target").ok().flatten();
+    green.base =
+        green.base.make_block(&toolchain, &green.components, target.as_deref(), &green.add)?;
 
     var = ENV_WITH_NETWORK!();
     if let Ok(val) = env::var(var) {

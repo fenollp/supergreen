@@ -20,7 +20,7 @@ use crate::{
     relative,
     rustc_arguments::{RustcArgs, as_rustc},
     stage::{AsStage, RST, RUST, Stage},
-    target_dir::{virtual_target_dir, virtual_target_dir_str},
+    target_dir::{host_profile_dir, locate_path, virtual_target_dir, virtual_target_dir_str},
     wrap::{build_script::is_buildrs_executable, call_config, envs::safeify},
 };
 
@@ -148,7 +148,12 @@ async fn do_wrap_rustc(
 
     let mds = md.assemble_build_dependencies(externs, out_dir_var, &target_path)?;
     for NamedMount { name, mount } in md.externs() {
-        let dst = virtual_target_dir(&target_path).join("deps").join(mount);
+        let located = locate_path(
+            |path| path.join("deps").join(mount),
+            &target_path,
+            host_profile_dir(&target_path).as_deref(),
+        );
+        let dst = virtual_target_dir(&located);
         rustc_block.push_str(&format!("  --mount=from={name},dst={dst},source=/{mount} \\\n"));
     }
     for NamedMount { name, mount } in &md.mounts {
