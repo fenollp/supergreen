@@ -47,10 +47,41 @@ pub(crate) fn virtual_target_dir(path: &Utf8Path) -> Utf8PathBuf {
         .unwrap_or_else(|_| path.to_owned())
 }
 
+/// Set to `$CARGO_TARGET_DIR/$PROFILE` when cross-compiling, `None` otherwise.
+/// Never to `$CARGO_TARGET_DIR/<target triple>/$PROFILE`: that's `target_path`.
+#[must_use]
+pub(crate) fn host_profile_dir(target_path: &Utf8Path) -> Option<Utf8PathBuf> {
+    let profile = target_path.file_name()?; // "release" | "debug" | $PROFILE
+    let host = Utf8Path::new(TARGET_DIR.as_str()).join(profile);
+    (host != target_path).then_some(host)
+}
+
+/// Cross-compilation -safe way of making target paths.
+#[must_use]
+pub(crate) fn locate_path(
+    f: impl Fn(&Utf8Path) -> Utf8PathBuf,
+    target_path: &Utf8Path,
+    host_path: Option<&Utf8Path>,
+) -> Utf8PathBuf {
+    if let Some(host_path) = host_path {
+        let host = f(host_path);
+        if host.exists() {
+            return host;
+        }
+    }
+    f(target_path) // `Md::from_file` can emit its helpful not-found message
+}
+
 #[test]
-fn replace_target_dirs() {
+fn target_dir_var() {
     temp_env::with_var("CARGO_TARGET_DIR", Some("/some/path/"), || {
         assert_eq!(TARGET_DIR.as_str(), "/some/path/");
+
+        assert_eq!(host_profile_dir("/some/path/release".into()), None);
+        assert_eq!(
+            host_profile_dir("/some/path/armv7-unknown-linux-musleabihf/release".into()),
+            Some("/some/path/release".into())
+        );
 
         assert_eq!(
             virtual_target_dir("/some/path/release/deps/target_lexicon-8a85e67f3430b2ca.d".into()),

@@ -78,6 +78,7 @@ impl BaseImage {
         &self,
         toolchain: &str,
         components: &[String],
+        target: Option<&str>,
         add: &Add,
     ) -> Result<Self> {
         // TODO: multiplatformify (using auto ARG.s?)
@@ -94,6 +95,14 @@ impl BaseImage {
         } else {
             "".to_owned()
         };
+
+        // https://scribe.rip/com/better-programming/cross-compiling-rust-from-mac-to-linux-7fad5a454ab1
+        // https://github.com/rust-cross/cargo-zigbuild/blob/f36f2f23c169937b680a963595e5002cf79f1cc8/src/zig.rs#L879
+        // https://github.com/cross-rs/cross/pkgs/container/armv7-unknown-linux-musleabihf/68145882?tag=0.2.5
+        // https://github.com/cross-rs/cross/blob/v0.2.5/docker/Dockerfile.armv7-unknown-linux-musleabihf
+        // https://github.com/cross-rs/cross/wiki/Contributing#how-cross-works
+
+        let target = target.map(|target| format!(" --target {target}")).unwrap_or_default();
 
         // Rewrite host cargo/rustc so the base_image ones can be used
         // Also, propagate RUSTUP_TOOLCHAIN so Rustup skips looking for rust-toolchain.toml
@@ -117,7 +126,7 @@ ENV CARGO=$RUSTUP_HOME/toolchains/$RUSTUP_TOOLCHAIN/bin/cargo \
 RUN \
   --mount=from=rustup-{toolchain},source=/rustup-init,dst=/rustup-init \
     set -eux \
- && /rustup-init --verbose -y --no-modify-path --profile minimal --default-toolchain {toolchain} --default-host {host}{components} \
+ && /rustup-init --verbose -y --no-modify-path --profile minimal --default-toolchain {toolchain} --default-host {host}{target}{components} \
  && chmod -R a+w $RUSTUP_HOME $CARGO_HOME
 "#,
             shell = ["/bin/sh", "-eux", "-c"],
@@ -208,7 +217,7 @@ fn base_make_block(toolchain: &str) {
     assert!(base.image_inline.is_empty());
     assert_eq!(base.with_network, Network::None);
 
-    let res = base.make_block(toolchain, &[], &Add::default()).unwrap();
+    let res = base.make_block(toolchain, &[], None, &Add::default()).unwrap();
     assert_eq!(res.image, base_image);
     assert!(
         res.image_inline.contains(&format!(" {} ", base_image.noscheme())),
