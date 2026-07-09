@@ -9,6 +9,8 @@ use log::{error, info, trace};
 
 use crate::{
     ENV, PKG, VSN,
+    base_image::rewrite_cargo_home,
+    cratesio::rewrite_cratesio_index,
     green::Green,
     logging::{self},
     md::{Md, MdId, Mds},
@@ -56,7 +58,7 @@ pub(crate) async fn exec_build_script(green: Green, exe: Utf8PathBuf) -> Result<
     // SAFETY: environment access only happens in single-threaded code.
     unsafe { env::set_var(ENV!(), "1") };
 
-    let (crate_name, pkg_name, pkg_version, _) = call_config();
+    let (crate_name, pkg_name, pkg_version, pkg_manifest_dir) = call_config();
 
     // exe: /target/release/build/proc-macro2-2f938e044e3f79bf/build-script-build
     let Some((previous_mdid, target_path)) = || -> Option<_> {
@@ -100,6 +102,7 @@ pub(crate) async fn exec_build_script(green: Green, exe: Utf8PathBuf) -> Result<
         green,
         crate_name.as_deref(),
         &pkg_name,
+        &pkg_manifest_dir,
         full_pkg_id.replace(' ', "-"),
         out_dir_var,
         exe,
@@ -116,6 +119,7 @@ async fn do_exec(
     green: Green,
     crate_name: Option<&str>,
     pkg_name: &str,
+    pkg_manifest_dir: &Utf8Path,
     crate_id: String,
     out_dir_var: Utf8PathBuf,
     exe: Utf8PathBuf,
@@ -152,13 +156,12 @@ async fn do_exec(
     let mut run_block = format!("FROM {RST} AS {run_stage}\n");
 
     run_block.push_str(&format!("WORKDIR {}\n", virtual_target_dir(&out_dir_var)));
-    let mut code_stage_mounts = code_stage.mounts();
-    let Some((_, code_dst, _)) = code_stage_mounts.pop() else {
-        bail!("BUG: a crate should only have one build script")
-    };
-    assert_eq!(code_stage_mounts, vec![]);
-    let code_dst = virtual_target_dir(&code_dst);
-    run_block.push_str(&format!("WORKDIR {code_dst}\n"));
+    // Cargo runs build scripts with their current dir set to $CARGO_MANIFEST_DIR, not the code
+    // mount root. These coincide for single-crate deps (crates.io), but for a workspace member of
+    // a git checkout the manifest dir is a subdir of the mounted checkout. (TEST= pyrefly)
+    let workdir = rewrite_cargo_home(&green.cargo_home, pkg_manifest_dir.as_str());
+    let workdir = rewrite_cratesio_index(&workdir);
+    run_block.push_str(&format!("WORKDIR {workdir}\n"));
 
     run_block.push_str("RUN \\\n");
     run_block.push_str(&format!(
