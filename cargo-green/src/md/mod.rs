@@ -189,7 +189,7 @@ impl Md {
     fn rust_stage(&self) -> String {
         format!(
             "{}\nARG SOURCE_DATE_EPOCH={SOURCE_DATE_EPOCH}\n",
-            &self.stages.iter().find(|ns| ns.is_rust()).and_then(AsBlock::as_block).unwrap()
+            self.stages.iter().find(|ns| ns.is_rust()).and_then(AsBlock::as_block).unwrap()
         )
     }
 
