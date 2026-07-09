@@ -468,6 +468,9 @@ pub(crate) struct Effects {
 
 impl Effects {
     fn try_to_help(&self, runner: &Runner, cargo_home: &str) -> (bool, Error) {
+        const TRANSIENT: bool = true;
+        let e;
+
         let rewrite = |msg: &str| {
             let msg = un_virtual_target_dir_str(msg);
             un_rewrite_cargo_home(&msg, cargo_home)
@@ -487,43 +490,44 @@ impl Effects {
         // https://doc.rust-lang.org/cargo/reference/build-scripts.html#cargo-error
         let cargo_errors = cargo_msgs("cargo:error=", "cargo::error=", self.stdout.iter());
         if !cargo_warnings.is_empty() || !cargo_errors.is_empty() {
-            return (false, anyhow!("Runner failed.\n{cargo_warnings}\n{cargo_errors}\n"));
+            e = anyhow!("Runner failed.\n{cargo_warnings}\n{cargo_errors}\n");
+            return (false, e);
         }
 
         if self.stderr.iter().any(|line| line.contains("you have held broken packages")) {
             let pkgs = broken_packages(self.stderr.iter().map(AsRef::as_ref));
             if !pkgs.is_empty() {
-                return (false, anyhow!("Unable to install these system packages: {pkgs:?}"));
+                e = anyhow!("Unable to install these system packages: {pkgs:?}");
+                return (false, e);
             }
         }
 
         if failed_downloading(self.stderr.iter().map(AsRef::as_ref)) {
-            let e = anyhow!(
+            e = anyhow!(
                 "Failed while downloading a crate's source code, please check your connection and try again"
             );
-            return (true, e);
+            return (TRANSIENT, e);
         }
         if buildkit_interrupted(self.stderr.iter().map(AsRef::as_ref)) {
-            return (true, anyhow!("Runner daemon was possibly restarted, please try again"));
+            e = anyhow!("Runner daemon was possibly restarted, please try again");
+            return (TRANSIENT, e);
         }
 
         let logs = env::var(ENV_LOG_PATH!())
             .map(|val| format!("\nCheck logs at {val}"))
             .unwrap_or_default();
-        (
-            false,
-            anyhow!(
-                "Runner failed.{logs}\n{stdout}\n{stderr}\n
+        e = anyhow!(
+            "Runner failed.{logs}\n{stdout}\n{stderr}\n
 Please report an issue along with information from the following:
 * {runner} buildx version
 * {runner} info
 * {runner} buildx ls
 * cargo green supergreen env
 ",
-                stdout = self.stdout.iter().map(|x| rewrite(x)).collect::<Vec<_>>().join("\n"),
-                stderr = self.stderr.iter().map(|x| rewrite(x)).collect::<Vec<_>>().join("\n"),
-            ),
-        )
+            stdout = self.stdout.iter().map(|x| rewrite(x)).collect::<Vec<_>>().join("\n"),
+            stderr = self.stderr.iter().map(|x| rewrite(x)).collect::<Vec<_>>().join("\n"),
+        );
+        (false, e)
     }
 }
 
