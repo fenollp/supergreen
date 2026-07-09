@@ -41,9 +41,12 @@ pub(crate) fn fmap_env((var, val): (String, String), buildrs: bool) -> Option<(S
 }
 
 /// <https://doc.rust-lang.org/cargo/reference/environment-variables.html#environment-variables-cargo-sets-for-crates>
+///
+/// <https://doc.rust-lang.org/cargo/reference/environment-variables.html#configuration-environment-variables>
+///
+/// Thanks <https://github.com/cross-rs/cross/blob/44011c8854cb2eaac83b173cc323220ccdff18ea/src/docker/shared.rs#L969>
 #[must_use]
 pub(crate) fn pass_env(var: &str) -> (bool, bool, bool) {
-    // Thanks https://github.com/cross-rs/cross/blob/44011c8854cb2eaac83b173cc323220ccdff18ea/src/docker/shared.rs#L969
     let passthrough = [
         "BROWSER",
         "http_proxy",
@@ -56,21 +59,37 @@ pub(crate) fn pass_env(var: &str) -> (bool, bool, bool) {
         "RUSTFLAGS",
         "TERM", // Actually gets skipped later on
     ];
+    let skipprefs = [
+        // Never affect rustc's inputs
+        "CARGO_ALIAS_",
+        "CARGO_HTTP_",
+        "CARGO_NET_",
+        "CARGO_REGISTRIES_",
+        "CARGO_REGISTRY_",
+        "CARGO_TERM_",
+    ];
     let skiplist = [
-        "CARGO_BUILD_JOBS",                    // TODO? drop
-        "CARGO_BUILD_RUSTC",                   // TODO? drop
-        "CARGO_BUILD_RUSTC_WORKSPACE_WRAPPER", // TODO? drop
-        "CARGO_BUILD_RUSTC_WRAPPER",           // TODO? drop
-        "CARGO_BUILD_RUSTDOC",                 // TODO? drop
-        "CARGO_BUILD_TARGET_DIR",              // TODO? drop
-        "CARGO_BUILD_WARNINGS",                // cargo-only
-        "CARGO_HOME",                          // Set in base image
-        "CARGO_MAKEFLAGS",                     // TODO: probably drop
-        "CARGO_TARGET_DIR",                    // TODO? drop
-        "LD_LIBRARY_PATH",                     // TODO: probably drop
-        "RUSTC_WORKSPACE_WRAPPER",             // TODO? drop
-        "RUSTC_WRAPPER",                       // TODO? drop
-        "RUSTUP_HOME",                         // Set in base image
+        "CARGO_BUILD_BUILD_DIR",                  // cargo-only
+        "CARGO_BUILD_INCREMENTAL",                // passes '-C incremental=<path>' when true
+        "CARGO_BUILD_JOBS",                       // cargo-only
+        "CARGO_BUILD_RUSTC",                      // TODO? drop
+        "CARGO_BUILD_RUSTC_WORKSPACE_WRAPPER",    // TODO? drop
+        "CARGO_BUILD_RUSTC_WRAPPER",              // TODO? drop
+        "CARGO_BUILD_RUSTDOC",                    // TODO? drop
+        "CARGO_BUILD_TARGET_DIR",                 // cargo-only
+        "CARGO_BUILD_WARNINGS",                   // cargo-only
+        "CARGO_CACHE_AUTO_CLEAN_FREQUENCY",       // cargo-only
+        "CARGO_CARGO_NEW_VCS",                    // cargo-only
+        "CARGO_FUTURE_INCOMPAT_REPORT_FREQUENCY", // cargo-only
+        "CARGO_HOME",                             // Set in base image
+        "CARGO_LOG",                              // cargo-only
+        "CARGO_MAKEFLAGS",                        // cargo's jobserver subprocesses TODO
+        "CARGO_MESSAGE_FORMAT",                   // cargo-only
+        "CARGO_TARGET_DIR",                       // cargo-only
+        "LD_LIBRARY_PATH",                        // TODO: probably drop
+        "RUSTC_WORKSPACE_WRAPPER",                // TODO? drop
+        "RUSTC_WRAPPER",                          // TODO? drop
+        "RUSTUP_HOME",                            // Set in base image
     ];
     let buildrs_only = [
         "DEBUG",
@@ -88,7 +107,7 @@ pub(crate) fn pass_env(var: &str) -> (bool, bool, bool) {
     ];
     (
         var.starts_with("CARGO_") || passthrough.contains(&var),
-        skiplist.contains(&var),
+        skipprefs.iter().any(|pref| var.starts_with(pref)) || skiplist.contains(&var),
         var.starts_with("DEP_") || buildrs_only.contains(&var),
     )
 }
