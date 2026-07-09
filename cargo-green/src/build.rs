@@ -1009,17 +1009,29 @@ fn un_rewrites_target_dir_before_outputting_to_cargo() {
 
 #[must_use]
 fn buildkit_interrupted<'a>(mut it: impl Iterator<Item = &'a str>) -> bool {
-    it.any(|line| line.contains(" received prior goaway:"))
+    #[expect(clippy::nonminimal_bool)]
+    it.any(|line| {
+        false
+            || line.contains(" received prior goaway:")
+            || line.contains("error reading from server: EOF")
+    })
 }
 
 #[test]
 fn interrupted_runner() {
-    let stderr = r#"
+    let stderrs = vec![
+        r#"
     > resolve image config for docker-image://docker.io/docker/dockerfile:1@sha256:2780b5c3bab67f1f76c781860de469442999ed1a0d7992a5efdf2cffc0e3d769:
     ------
     ERROR: failed to build: failed to receive status: rpc error: code = Unavailable desc = closing transport due to: connection error: desc = "error reading from server: EOF", received prior goaway: code: NO_ERROR, debug data: "graceful_stop"
-    "#;
-    assert!(buildkit_interrupted(stderr.lines()), "In: {stderr}");
+    "#,
+        r#"
+    Error: Runner failed to build: failed to receive status: rpc error: code = Unavailable desc = error reading from server: EOF
+    "#,
+    ];
+    for stderr in stderrs {
+        assert!(buildkit_interrupted(stderr.lines()), "In: {stderr}");
+    }
 }
 
 #[test]
