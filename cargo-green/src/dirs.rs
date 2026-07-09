@@ -26,21 +26,19 @@ pub(crate) fn cargo_home() -> Result<Utf8PathBuf> {
 }
 
 pub(crate) fn create_current_target_dir(command: Option<&str>) -> Result<String> {
-    let target_dir = if let Some(target_dir) = {
-        let mut args = pico_args::Arguments::from_env();
-        args.opt_value_from_str("--target-dir")?
-    } {
-        target_dir
-    } else if let Ok(target_dir) = env::var("CARGO_TARGET_DIR") {
-        target_dir
-    } else if false {
-        todo!("check build.target-dir in config.toml.s")
-    } else if command == Some("install") {
-        tmp().join(hashed_args()).to_string()
-    } else {
-        // TODO: fallback to workspace root, not necessarily pwd()
-        pwd().join("target").to_string()
-    };
+    let target_dir =
+        if let Some(target_dir) = Arguments::from_env().opt_value_from_str("--target-dir")? {
+            target_dir
+        } else if let Ok(target_dir) = env::var("CARGO_TARGET_DIR") {
+            target_dir
+        } else if false {
+            todo!("check build.target-dir in config.toml.s")
+        } else if command == Some("install") {
+            tmp().join(hashed_args()).to_string()
+        } else {
+            // TODO: fallback to workspace root, not necessarily pwd()
+            pwd().join("target").to_string()
+        };
 
     fs::create_dir_all(&target_dir)?;
 
