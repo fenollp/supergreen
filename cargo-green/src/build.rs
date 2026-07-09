@@ -598,6 +598,7 @@ async fn untar_into(
         debug!("produced {}B {name} 0x{}", buf.len(), sha256::digest(&buf));
 
         match name.as_str().trim_start_matches(&format!("{target}-")) {
+            ERRCODE => rcd = str::from_utf8(&buf).ok().and_then(|s| s.trim().parse::<i32>().ok()),
             STDOUT => {
                 out_handle =
                     String::from_utf8(buf).map_err(|e| anyhow!("Corrupted result STDOUT: {e}"))?
@@ -605,10 +606,6 @@ async fn untar_into(
             STDERR => {
                 err_handle =
                     String::from_utf8(buf).map_err(|e| anyhow!("Corrupted result STDERR: {e}"))?
-            }
-            ERRCODE => {
-                let line = BufReader::new(f).lines().next_line().await;
-                rcd = line.ok().flatten().and_then(|x| x.parse::<i32>().ok());
             }
             _ => {
                 written.push(name.clone());
