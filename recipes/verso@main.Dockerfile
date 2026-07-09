@@ -4610,7 +4610,7 @@ COPY --link --from=dep-x-verso-0.0.3-ced6f7a8e395d530 /target/release/build/vers
 
 FROM rust-base AS run-z-verso-0.0.3-f7185de04a6ee86c
 WORKDIR /target/release/build/verso-f7185de04a6ee86c/out
-WORKDIR $CARGO_HOME/git/checkouts/verso-144ecdd6ab82f47d/eb719bd
+WORKDIR $CARGO_HOME/git/checkouts/verso-144ecdd6ab82f47d/eb719bd/verso
 RUN \
   --mount=from=out-ced6f7a8e395d530,source=/_build_script_build-ced6f7a8e395d530,dst=/target/release/build/verso-ced6f7a8e395d530/build-script-build \
   --mount=from=checkout-eb719bd-eb719bdd6c7b4a22b640d33ea55c6d440a5a850d,dst=$CARGO_HOME/git/checkouts/verso-144ecdd6ab82f47d/eb719bd \
