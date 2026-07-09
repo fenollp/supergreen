@@ -63,6 +63,7 @@ pub(crate) fn pass_env(var: &str) -> (bool, bool, bool) {
         "CARGO_BUILD_RUSTC_WRAPPER",           // TODO? drop
         "CARGO_BUILD_RUSTDOC",                 // TODO? drop
         "CARGO_BUILD_TARGET_DIR",              // TODO? drop
+        "CARGO_BUILD_WARNINGS",                // cargo-only
         "CARGO_HOME",                          // Set in base image
         "CARGO_MAKEFLAGS",                     // TODO: probably drop
         "CARGO_TARGET_DIR",                    // TODO? drop
