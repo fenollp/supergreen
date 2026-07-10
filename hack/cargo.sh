@@ -6,54 +6,38 @@ set -x
 #   ./cargo-green.sh <cargo-green args...>
 #
 # Knobs (env vars):
-#   REBUILD=1   force re-clone / re-patch / re-build of BuildKit
-#   REGISTRY=localhost:5000      local registry hosting the patched images
-#   MSG_SIZE_MULT=4              multiplier on the 16 MiB default (4 -> 64 MiB)
-#
-# Note: assumes a *local* Docker daemon. A remote $DOCKER_HOST cannot reach the
-# localhost registry that serves the frontend image.
+#   REBUILD=1                    force re-clone / re-patch / re-build of BuildKit
+#   REGISTRY=fenollexai          Docker Hub account hosting the patched images
+#   MSG_SIZE_MB=128              replace the 16 MiB default (16 -> 128 MiB)
 
 repo_root=$(realpath "$(dirname "$(dirname "$0")")")
 
-REGISTRY=fenollexai # ${REGISTRY:-localhost:5000}
-MSG_SIZE_MULT=6 # ${MSG_SIZE_MULT:-4}
-BUILDKIT_REF=v0.31 # $(tr -d '[:space:]' <"$repo_root"/cargo-green/latest_buildkit.txt)
+REBUILD=${REBUILD:-0}
+REGISTRY=${REGISTRY:-fenollexai}
+MSG_SIZE_MB=${MSG_SIZE_MB:-128}
+BUILDKIT_REF=$(cat "$repo_root"/cargo-green/latest_buildkit.txt | sed -E 's/([0-9]+[.][0-9]+).+/v\1/')
 
 BUILDER_REPO=$REGISTRY/moby_buildkit
 FRONTEND_REPO=$REGISTRY/docker_dockerfile
 TAG=patched-$BUILDKIT_REF
 
-STATE_DIR=$repo_root/target/cargo-green-patched
-SRC_DIR=$STATE_DIR/buildkit-src
-mkdir -p "$STATE_DIR"
-
-log() { printf '\033[1;32m[cargo-green.sh]\033[0m %s\n' "$*" >&2; }
-die() { printf '\033[1;31m[cargo-green.sh] ERROR:\033[0m %s\n' "$*" >&2; exit 1; }
-
-build_patched_buildkit() {
-  log "cloning BuildKit $BUILDKIT_REF into $SRC_DIR"
+patch_and_build() {
+  local SRC_DIR=$repo_root/target/cargo-green-patched/buildkit-src
+  mkdir -p "$SRC_DIR"
   rm -rf "$SRC_DIR"
-  git clone --quiet --depth 1 --branch "$BUILDKIT_REF" \
+  git clone --quiet --depth=1 --branch "$BUILDKIT_REF" \
     https://github.com/moby/buildkit.git "$SRC_DIR"
 
-  log "patching gRPC max message size: 16 MiB x ${MSG_SIZE_MULT} = $((16 * MSG_SIZE_MULT)) MiB"
-  local files=()
-  mapfile -t files < <(grep -rlE '\.DefaultMax(Recv|Send)MsgSize' \
-    --include='*.go' "$SRC_DIR" | grep -v '/vendor/' || true)
-  [ "${#files[@]}" -gt 0 ] || die "no DefaultMax{Recv,Send}MsgSize references found in BuildKit $BUILDKIT_REF"
-  local f
-  for f in "${files[@]}"; do
-    # Wrap each `<pkg>.DefaultMax{Recv,Send}MsgSize` as `(<pkg>.DefaultMax... * N)`.
-    # Keeps the import used (compiles) and multiplies the 16 MiB default by N.
-    sed -i -E \
-      -e "s/([A-Za-z_][A-Za-z0-9_]*\.DefaultMaxRecvMsgSize)/(\1 * ${MSG_SIZE_MULT})/g" \
-      -e "s/([A-Za-z_][A-Za-z0-9_]*\.DefaultMaxSendMsgSize)/(\1 * ${MSG_SIZE_MULT})/g" \
-      "$f"
-    log "  patched ${f#"$SRC_DIR"/}"
-  done
-  log "patched message-size call sites:"
-  grep -rnE '\.DefaultMax(Recv|Send)MsgSize \* ' --include='*.go' "$SRC_DIR" \
-    | grep -v '/vendor/' | sed "s|$SRC_DIR/|    |" >&2 || true
+  sed -i -E \
+    -e "s/DefaultMaxRecvMsgSize = 16 << 20/DefaultMaxRecvMsgSize = $MSG_SIZE_MB << 20/" \
+    -e "s/DefaultMaxSendMsgSize = 16 << 20/DefaultMaxSendMsgSize = $MSG_SIZE_MB << 20/" \
+    "$SRC_DIR"/vendor/github.com/containerd/containerd/v2/defaults/defaults.go
+
+  sed -i -E \
+    -e 's%(package grpcclient)%\1\nimport "github.com/containerd/containerd/v2/defaults"%' \
+    -e "s/grpc.MaxCallRecvMsgSize\(16 << 20\)/grpc.MaxCallRecvMsgSize(defaults.DefaultMaxRecvMsgSize)/" \
+    -e "s/grpc.MaxCallSendMsgSize\(16 << 20\)/grpc.MaxCallSendMsgSize(defaults.DefaultMaxSendMsgSize)/" \
+    "$SRC_DIR"/frontend/gateway/grpcclient/client.go
 
   docker buildx build "$SRC_DIR" --target buildkit --push --load --tag "$BUILDER_REPO:$TAG"
 
@@ -64,22 +48,19 @@ build_patched_buildkit() {
 
 repo_digest() {
   local tag=$1 repo=$2 d
-  d=$(docker inspect --format '{{range .RepoDigests}}{{println .}}{{end}}' "$tag" \
-        | grep "^${repo}@" | head -n1 || true)
-  [ -n "$d" ] || die "no pushed digest found for $tag under $repo (push failed?)"
+  d=$(docker inspect --format '{{range .RepoDigests}}{{println .}}{{end}}' "$tag" | grep "^${repo}@" | head -n1)
   printf '%s' "$d"
 }
 
-if [ "${REBUILD:-0}" = 1 ]; then
-  build_patched_buildkit
+if [ $REBUILD = 1 ]; then
+    patch_and_build
+fi
 
-  export CARGOGREEN_BUILDER_IMAGE="docker-image://$(repo_digest "$BUILDER_REPO:$TAG"  "$BUILDER_REPO")"
-  export CARGOGREEN_SYNTAX_IMAGE="docker-image://$(repo_digest "$FRONTEND_REPO:$TAG" "$FRONTEND_REPO")"
+export CARGOGREEN_BUILDER_IMAGE="docker-image://$(repo_digest "$BUILDER_REPO:$TAG"  "$BUILDER_REPO")"
+export CARGOGREEN_SYNTAX_IMAGE="docker-image://$(repo_digest "$FRONTEND_REPO:$TAG" "$FRONTEND_REPO")"
 
+if [ $REBUILD = 1 ]; then
   cargo green supergreen builder recreate
-else
-  export CARGOGREEN_BUILDER_IMAGE="docker-image://$(repo_digest "$BUILDER_REPO:$TAG"  "$BUILDER_REPO")"
-  export CARGOGREEN_SYNTAX_IMAGE="docker-image://$(repo_digest "$FRONTEND_REPO:$TAG" "$FRONTEND_REPO")"
 fi
 
 # export CARGOGREEN_ADD_APT='build-essential,clang,cmake,curl,elfutils,g++,gcc,gettext-base,git,jq,libasound2-dev,libfontconfig-dev,libgit2-dev,libglib2.0-dev,libsqlite3-dev,libssl-dev(>=3.5),libva-dev,libvulkan1,libwayland-dev,libx11-xcb-dev,libxkbcommon-x11-dev,libzstd-dev,lld,llvm,make,musl-dev,musl-tools,pipewire,xdg-desktop-portal'
