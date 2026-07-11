@@ -9,7 +9,7 @@ how to cache with this tho
 
 ---
 
-moby/ubildkit tags
+moby/buildkit tags
 https://github.com/moby/buildkit/pull/5944#issue-3015470909
 https://hub.docker.com/r/moby/buildkit
 
@@ -262,15 +262,6 @@ CARGOGREEN_LOG_PATH=- CARGOGREEN_LOG=debug
 write logs with eprintln
 
 https://stackoverflow.com/a/73734760/1418165
-
----
-
-buildctl runner
-
-https://github.com/denzp/rust-buildkit
-https://github.com/cicadahq/buildkit-rs
-
-https://users.rust-lang.org/t/is-it-possible-to-incorporate-one-executable-program-into-your-rust-code/58854/21 ?
 
 ---
 

@@ -1,3 +1,5 @@
+//! TODO: MAY switch to using <https://lib.rs/crates/buildkit-rs-reference>
+
 use std::{
     error::Error as StdError,
     sync::{LazyLock, Once},
