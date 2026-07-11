@@ -232,7 +232,7 @@ as_env() {
     mussh@*) envvars+=(CARGOGREEN_ADD_APT='libsqlite3-dev,"libssl-dev(>=3.5)",pkg-config,zlib1g-dev') ;;
     nanometers@*) envvars+=(CARGOGREEN_ADD_APT='libwayland-dev,libglib2.0-dev,libdbus-1-dev,libpangocairo-1.0-0,libasound2-dev,libcairo2-dev,libpango-1.0-0,libpango1.0-dev,libssl-dev=3.5.5-1~deb13u2,libxcb-render0-dev,libxcb-shape0-dev,libxcb-xfixes0-dev,libxkbcommon-dev,libx11-dev,libxcursor-dev,libxcb1-dev,libxi-dev,libxkbcommon-x11-dev,xvfb') ;;
     ntpd@*) envvars+=(NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b); envvars+=(NTPD_RS_GIT_DATE=2025-05-09) ;; # Any commit, just fixed + Time of commit
-    privaxy@*) envvars+=(CARGOGREEN_ADD_APT='build-essential,libayatana-appindicator3-dev,libgtk-3-dev,librsvg2-dev,libsoup2.4-dev,"libssl-dev(>=3.5)",pkg-config'); envvars+=(CARGOGREEN_SET_ENVS='OPENSSL_NO_VENDOR'); envvars+=(OPENSSL_NO_VENDOR=1) ;; # Force using OS's SSL
+    privaxy@*) envvars+=(CARGOGREEN_ADD_APT='build-essential,libayatana-appindicator3-dev,libgtk-3-dev,librsvg2-dev,libsoup2.4-dev,"libssl-dev(>=3.5)",pkg-config') ;;
     pyrefly@*) envvars+=(CARGOGREEN_ADD_APT='make') ;;
     rapidraw@*) envvars+=(CARGOGREEN_ADD_APT='g++,libgtk-3-dev,libjavascriptcoregtk-4.1-dev,libsoup-3.0-dev,libssl-dev=3.5.5-1~deb13u2,libwebkit2gtk-4.1-dev') ;;
     rublk@*) envvars+=(CARGOGREEN_ADD_APT='libclang-dev') ;;
