@@ -113,6 +113,11 @@ async fn actual_main() -> Result<()> {
         bail!(EEXIT)
     }
 
+    let Some(cargo) = env::var_os("CARGO") else {
+        eprintln!("This cargo plugin must be run like `cargo green ...`");
+        bail!(EEXIT)
+    };
+
     let arg2 = args.next();
 
     // https://rust-lang.github.io/rustup/overrides.html#toolchain-override-shorthand
@@ -127,7 +132,7 @@ async fn actual_main() -> Result<()> {
         return cmd.status().await.map(|_| ()).map_err(Into::into);
     }
 
-    let mut cmd = Command::new(env::var_os("CARGO").expect("$CARGO"));
+    let mut cmd = Command::new(cargo);
     cmd.kill_on_drop(true);
     if let Some(ref arg2) = arg2 {
         cmd.arg(arg2);
