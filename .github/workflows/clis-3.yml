@@ -670,7 +670,7 @@ jobs:
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
-        env CARGOGREEN_ADD_APT=build-essential,libayatana-appindicator3-dev,libgtk-3-dev,librsvg2-dev,libsoup2.4-dev,"libssl-dev(>=3.5)",pkg-config \
+        env CARGOGREEN_ADD_APT=build-essential,libayatana-appindicator3-dev,libgtk-3-dev,librsvg2-dev,libsoup2.4-dev,"libssl-dev(>=3.5)",pkg-config CARGOGREEN_SET_ENVS=OPENSSL_NO_VENDOR OPENSSL_NO_VENDOR=1 \
           cargo green -vv install --locked --force --root=/tmp privaxy --git https://github.com/Barre/privaxy.git --rev=5dad688538bc7397d71d1c9cfd9d9d53bcf68032 |& tee _
     - name: 🔵 cargo install jobs=1
       id: do-try-jobs1
@@ -681,7 +681,7 @@ jobs:
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
-        env CARGOGREEN_ADD_APT=build-essential,libayatana-appindicator3-dev,libgtk-3-dev,librsvg2-dev,libsoup2.4-dev,"libssl-dev(>=3.5)",pkg-config \
+        env CARGOGREEN_ADD_APT=build-essential,libayatana-appindicator3-dev,libgtk-3-dev,librsvg2-dev,libsoup2.4-dev,"libssl-dev(>=3.5)",pkg-config CARGOGREEN_SET_ENVS=OPENSSL_NO_VENDOR OPENSSL_NO_VENDOR=1 \
           cargo green -vv install --jobs=1 --locked --force --root=/tmp privaxy --git https://github.com/Barre/privaxy.git --rev=5dad688538bc7397d71d1c9cfd9d9d53bcf68032 |& tee _ && printf '' >_
     - if: ${{ always() && matrix.toolchain != '1.96.0' }}
       uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
@@ -765,7 +765,7 @@ jobs:
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
-        env CARGOGREEN_ADD_APT=build-essential,libayatana-appindicator3-dev,libgtk-3-dev,librsvg2-dev,libsoup2.4-dev,"libssl-dev(>=3.5)",pkg-config \
+        env CARGOGREEN_ADD_APT=build-essential,libayatana-appindicator3-dev,libgtk-3-dev,librsvg2-dev,libsoup2.4-dev,"libssl-dev(>=3.5)",pkg-config CARGOGREEN_SET_ENVS=OPENSSL_NO_VENDOR OPENSSL_NO_VENDOR=1 \
           cargo green -vv install --locked --force --root=/tmp privaxy --git https://github.com/Barre/privaxy.git --rev=5dad688538bc7397d71d1c9cfd9d9d53bcf68032 |& tee _
     - name: ...doesn't recompile anything
       run: |
@@ -839,7 +839,7 @@ jobs:
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
-        env CARGOGREEN_ADD_APT=build-essential,libayatana-appindicator3-dev,libgtk-3-dev,librsvg2-dev,libsoup2.4-dev,"libssl-dev(>=3.5)",pkg-config CARGOGREEN_RUNNER=none \
+        env CARGOGREEN_ADD_APT=build-essential,libayatana-appindicator3-dev,libgtk-3-dev,librsvg2-dev,libsoup2.4-dev,"libssl-dev(>=3.5)",pkg-config CARGOGREEN_SET_ENVS=OPENSSL_NO_VENDOR OPENSSL_NO_VENDOR=1 CARGOGREEN_RUNNER=none \
           cargo green -vv install --locked --force --root=/tmp privaxy --git https://github.com/Barre/privaxy.git --rev=5dad688538bc7397d71d1c9cfd9d9d53bcf68032 |& tee _
     - name: ...doesn't recompile anything
       run: |
@@ -914,7 +914,7 @@ jobs:
         unset CARGO_REGISTRIES_CRATES_IO_PROTOCOL
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
-        env CARGOGREEN_ADD_APT=build-essential,libayatana-appindicator3-dev,libgtk-3-dev,librsvg2-dev,libsoup2.4-dev,"libssl-dev(>=3.5)",pkg-config CARGOGREEN_RUNNER=none \
+        env CARGOGREEN_ADD_APT=build-essential,libayatana-appindicator3-dev,libgtk-3-dev,librsvg2-dev,libsoup2.4-dev,"libssl-dev(>=3.5)",pkg-config CARGOGREEN_SET_ENVS=OPENSSL_NO_VENDOR OPENSSL_NO_VENDOR=1 CARGOGREEN_RUNNER=none \
           cargo green -vv install --locked --force --root=/tmp privaxy --git https://github.com/Barre/privaxy.git --rev=5dad688538bc7397d71d1c9cfd9d9d53bcf68032 |& tee _
     - name: ...is blazingly fearlessly lightspeed fast
       run: |

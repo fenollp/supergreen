@@ -89,21 +89,6 @@ declare -a nvs nvs_args toolchain
 #========> patch all this up together
 
 ((i+=1)); nvs[i]=privaxy@main;                oks[i]=ok; nvs_args[i]='--git https://github.com/Barre/privaxy.git --rev=5dad688538bc7397d71d1c9cfd9d9d53bcf68032'
-# I 26/02/07 18:43:08.958 Z openssl-sys 0.9.78-d183b817a1884996 appending (AW) to final path /home/runner/work/supergreen/supergreen/recipes/privaxy@main.Dockerfile
-# E 26/02/07 18:43:08.958 Z openssl-sys 0.9.78-d183b817a1884996 Error: Runner failed.
-# Check logs at /home/runner/work/supergreen/supergreen/logs.txt
-# cargo:rustc-cfg=const_fn
-# cargo:rustc-cfg=openssl
-# cargo:rerun-if-env-changed=X86_64_UNKNOWN_LINUX_GNU_OPENSSL_NO_VENDOR
-# X86_64_UNKNOWN_LINUX_GNU_OPENSSL_NO_VENDOR unset
-# cargo:rerun-if-env-changed=OPENSSL_NO_VENDOR
-# OPENSSL_NO_VENDOR unset
-# thread 'main' panicked at /home/runner/.cargo/registry/src/index.crates.io-0000000000000000/openssl-src-111.18.0+1.1.1n/src/lib.rs:496:32:
-# called `Result::unwrap()` on an `Err` value: Os { code: 2, kind: NotFound, message: "No such file or directory" }
-# note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
-# Please report an issue along with information from the following:
-# * docker buildx version
-# # Pinned on 2025/12/03 # BUG: $CARGO_HOME/registry/src/index.crates.io-0000000000000000/openssl-src-111.18.0+1.1.1n/src/lib.rs:496:32: No such file or directory
 
 ((i+=1)); nvs[i]=miri@master;                 oks[i]=ko; nvs_args[i]='--git https://github.com/rust-lang/miri.git --rev=1fe9d5ba386064c14eb517aacfa8e3d5a1acf97c'; toolchain[i]='nightly-2026-03-16' # Pinned on 2026/03/19
 # 174 | fn make_miri_codegen_backend(sess: &Session) -> Box<dyn CodegenBackend> {
@@ -247,7 +232,7 @@ as_env() {
     mussh@*) envvars+=(CARGOGREEN_ADD_APT='libsqlite3-dev,"libssl-dev(>=3.5)",pkg-config,zlib1g-dev') ;;
     nanometers@*) envvars+=(CARGOGREEN_ADD_APT='libwayland-dev,libglib2.0-dev,libdbus-1-dev,libpangocairo-1.0-0,libasound2-dev,libcairo2-dev,libpango-1.0-0,libpango1.0-dev,libssl-dev=3.5.5-1~deb13u2,libxcb-render0-dev,libxcb-shape0-dev,libxcb-xfixes0-dev,libxkbcommon-dev,libx11-dev,libxcursor-dev,libxcb1-dev,libxi-dev,libxkbcommon-x11-dev,xvfb') ;;
     ntpd@*) envvars+=(NTPD_RS_GIT_REV=c7945250c378f65f65b2a75748132edf75063b3b); envvars+=(NTPD_RS_GIT_DATE=2025-05-09) ;; # Any commit, just fixed + Time of commit
-    privaxy@*) envvars+=(CARGOGREEN_ADD_APT='build-essential,libayatana-appindicator3-dev,libgtk-3-dev,librsvg2-dev,libsoup2.4-dev,"libssl-dev(>=3.5)",pkg-config') ;;
+    privaxy@*) envvars+=(CARGOGREEN_ADD_APT='build-essential,libayatana-appindicator3-dev,libgtk-3-dev,librsvg2-dev,libsoup2.4-dev,"libssl-dev(>=3.5)",pkg-config'); envvars+=(CARGOGREEN_SET_ENVS='OPENSSL_NO_VENDOR'); envvars+=(OPENSSL_NO_VENDOR=1) ;; # Force using OS's SSL
     pyrefly@*) envvars+=(CARGOGREEN_ADD_APT='make') ;;
     rapidraw@*) envvars+=(CARGOGREEN_ADD_APT='g++,libgtk-3-dev,libjavascriptcoregtk-4.1-dev,libsoup-3.0-dev,libssl-dev=3.5.5-1~deb13u2,libwebkit2gtk-4.1-dev') ;;
     rublk@*) envvars+=(CARGOGREEN_ADD_APT='libclang-dev') ;;
