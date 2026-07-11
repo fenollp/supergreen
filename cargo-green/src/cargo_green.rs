@@ -13,7 +13,7 @@ use crate::{
     dirs::{cargo_home, pwd},
     experiments::EXPERIMENTS,
     green::{Green, validate_csv},
-    image_uri::{SYNTAX_IMAGE, SYNTAX_IMAGE_LOCKED, fetch_digest},
+    image_uri::{SYNTAX_IMAGE_LOCKED, fetch_digest},
     lockfile::{find_lockfile, locked_crates},
     logging::{self, maybe_log},
     network::Network,
@@ -146,10 +146,6 @@ pub(crate) async fn main(is_install: bool) -> Result<Green> {
     green.syntax = green.maybe_lock_image(&green.syntax).await?;
     // otherwise default to a hash found through some Web API
     green.syntax = fetch_digest(&green.runner, &green.syntax).await?;
-    if !green.syntax.stable_syntax_frontend() {
-        // Enforce a known stable syntax + allow pinning to digest
-        bail!("${var} must be a digest of {}", SYNTAX_IMAGE.as_str())
-    }
 
     var = ENV_FINAL_PATH!();
     if green.r#final.path.is_some() {

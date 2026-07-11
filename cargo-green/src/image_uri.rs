@@ -77,11 +77,6 @@ impl ImageUri {
     }
 
     #[must_use]
-    pub(crate) fn stable_syntax_frontend(&self) -> bool {
-        self.starts_with(SYNTAX_IMAGE.as_str())
-    }
-
-    #[must_use]
     pub(crate) fn locked(&self) -> bool {
         self.contains("@sha256:")
     }
@@ -144,13 +139,11 @@ fn imageuri_syntax() {
     assert!(!SYNTAX_IMAGE.locked());
     assert!(SYNTAX_IMAGE.tagged());
     assert!(SYNTAX_IMAGE.is_empty());
-    assert!(SYNTAX_IMAGE.stable_syntax_frontend());
     assert_eq!(SYNTAX_IMAGE.host(), "docker.io");
 
     assert!(SYNTAX_IMAGE_LOCKED.locked());
     assert!(SYNTAX_IMAGE_LOCKED.tagged());
     assert!(!SYNTAX_IMAGE_LOCKED.is_empty());
-    assert!(SYNTAX_IMAGE_LOCKED.stable_syntax_frontend());
     assert_eq!(SYNTAX_IMAGE_LOCKED.host(), "docker.io");
 }
 
@@ -162,14 +155,12 @@ fn imageuri_basic() {
     assert!(!img.locked());
     assert!(!img.tagged());
     assert!(!img.is_empty());
-    assert!(!img.stable_syntax_frontend());
     assert_eq!(img.path_and_tag(), ("registry.com/fenollp/supergreen", "latest"));
     assert_eq!(img.host(), "registry.com");
     let img = img.lock(DIGEST);
     assert!(img.locked());
     assert!(!img.tagged());
     assert!(!img.is_empty());
-    assert!(!img.stable_syntax_frontend());
     assert_eq!(img.host(), "registry.com");
     assert_eq!(img.digest(), DIGEST);
 
@@ -177,14 +168,12 @@ fn imageuri_basic() {
     assert!(!img.locked());
     assert!(img.tagged());
     assert!(!img.is_empty());
-    assert!(!img.stable_syntax_frontend());
     assert_eq!(img.path_and_tag(), ("registry.com/fenollp/supergreen", "tagged"));
     assert_eq!(img.host(), "registry.com");
     let img = img.lock(DIGEST);
     assert!(img.locked());
     assert!(img.tagged());
     assert!(!img.is_empty());
-    assert!(!img.stable_syntax_frontend());
     assert_eq!(img.host(), "registry.com");
     assert_eq!(img.digest(), DIGEST);
 
@@ -192,7 +181,6 @@ fn imageuri_basic() {
     assert!(img.locked());
     assert!(img.tagged());
     assert!(!img.is_empty());
-    assert!(!img.stable_syntax_frontend());
     assert_eq!(img.digest(), DIGEST);
     assert_eq!(img.host(), "registry.com");
     assert_eq!(
@@ -204,7 +192,6 @@ fn imageuri_basic() {
     assert!(img.locked());
     assert!(!img.tagged());
     assert!(!img.is_empty());
-    assert!(!img.stable_syntax_frontend());
     assert_eq!(img.digest(), DIGEST);
     assert_eq!(img.host(), "registry.com");
     assert_eq!(
@@ -221,14 +208,12 @@ fn imageuri_with_port() {
     assert!(!img.locked());
     assert!(!img.tagged());
     assert!(!img.is_empty());
-    assert!(!img.stable_syntax_frontend());
     assert_eq!(img.path_and_tag(), ("localhost:5000/fenollp/supergreen", "latest"));
     assert_eq!(img.host(), "localhost:5000");
     let img = img.lock(DIGEST);
     assert!(img.locked());
     assert!(!img.tagged());
     assert!(!img.is_empty());
-    assert!(!img.stable_syntax_frontend());
     assert_eq!(img.host(), "localhost:5000");
     assert_eq!(img.digest(), DIGEST);
 
@@ -236,14 +221,12 @@ fn imageuri_with_port() {
     assert!(!img.locked());
     assert!(img.tagged());
     assert!(!img.is_empty());
-    assert!(!img.stable_syntax_frontend());
     assert_eq!(img.path_and_tag(), ("localhost:5000/fenollp/supergreen", "tagged"));
     assert_eq!(img.host(), "localhost:5000");
     let img = img.lock(DIGEST);
     assert!(img.locked());
     assert!(img.tagged());
     assert!(!img.is_empty());
-    assert!(!img.stable_syntax_frontend());
     assert_eq!(img.host(), "localhost:5000");
     assert_eq!(img.digest(), DIGEST);
 
@@ -251,7 +234,6 @@ fn imageuri_with_port() {
     assert!(img.locked());
     assert!(img.tagged());
     assert!(!img.is_empty());
-    assert!(!img.stable_syntax_frontend());
     assert_eq!(img.digest(), DIGEST);
     assert_eq!(img.host(), "localhost:5000");
     assert_eq!(
@@ -263,7 +245,6 @@ fn imageuri_with_port() {
     assert!(img.locked());
     assert!(!img.tagged());
     assert!(!img.is_empty());
-    assert!(!img.stable_syntax_frontend());
     assert_eq!(img.digest(), DIGEST);
     assert_eq!(img.host(), "localhost:5000");
     assert_eq!(
@@ -281,7 +262,6 @@ fn imageuri_ipv6() {
     assert!(!img.locked());
     assert!(!img.tagged());
     assert!(!img.is_empty());
-    assert!(!img.stable_syntax_frontend());
     assert_eq!(
         img.path_and_tag(),
         ("[2001:db8:1f70::999:de8:7648:6e8]:100/fenollp/supergreen", "latest")
@@ -295,7 +275,6 @@ fn imageuri_ipv6() {
     assert!(!img.locked());
     assert!(img.tagged());
     assert!(!img.is_empty());
-    assert!(!img.stable_syntax_frontend());
     assert_eq!(
         img.path_and_tag(),
         ("[2001:db8:1f70::999:de8:7648:6e8]:100/fenollp/supergreen", "tagged")
@@ -306,7 +285,6 @@ fn imageuri_ipv6() {
     assert!(img.locked());
     assert!(img.tagged());
     assert!(!img.is_empty());
-    assert!(!img.stable_syntax_frontend());
     assert_eq!(
         img.digest(),
         "sha256:27086352fd5e1907ea2b934eb1023f217c5ae087992eb59fde121dce9c9ff21e"
@@ -317,7 +295,6 @@ fn imageuri_ipv6() {
     assert!(img.locked());
     assert!(!img.tagged());
     assert!(!img.is_empty());
-    assert!(!img.stable_syntax_frontend());
     assert_eq!(
         img.digest(),
         "sha256:27086352fd5e1907ea2b934eb1023f217c5ae087992eb59fde121dce9c9ff21e"
