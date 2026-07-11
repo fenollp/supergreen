@@ -30,9 +30,10 @@ patch_and_build() {
 #actually buildx also needs patching
 # git clone --depth 1 --branch v0.35.0 https://github.com/docker/buildx
 # go build -mod=vendor -trimpath \
-#   -ldflags "-X github.com/docker/buildx/version.Version=v0.35.0-msgsize128 -X github.com/docker/buildx/version.Revision=a319e5b15052cf6557ceb666eb8ff6e32380b782 -X github.com/docker/buildx/version.Package=github.com/docker/buildx" \
+#   -ldflags "-X github.com/docker/buildx/version.Version=v0.35.0-msgsize128-bis -X github.com/docker/buildx/version.Revision=a319e5b15052cf6557ceb666eb8ff6e32380b782 -X github.com/docker/buildx/version.Package=github.com/docker/buildx" \
 #   -o bin/docker-buildx ./cmd/buildx
-# cp to ~/.docker/cli-plugins/
+# cp bin/docker-buildx ~/.docker/cli-plugins/
+# docker buildx version
 
   sed -i -E \
     -e "s/DefaultMaxRecvMsgSize = 16 << 20/DefaultMaxRecvMsgSize = $MSG_SIZE_MB << 20/" \
@@ -56,16 +57,18 @@ if [ $REBUILD = 1 ]; then
   cargo green supergreen builder recreate
 fi
 
-# zed's proto crate uses prost-build 0.9 which execs its own bundled protoc binary
-# from within its crate sources => mount build scripts' deps' sources.
-export CARGOGREEN_EXPERIMENT=buildscriptsources
-export CARGOGREEN_ADD_APT='build-essential,clang,cmake,curl,elfutils,g++,gcc,gettext-base,git,jq,libasound2-dev,libfontconfig-dev,libgit2-dev,libglib2.0-dev,libsqlite3-dev,libssl-dev(>=3.5),libva-dev,libvulkan1,libwayland-dev,libx11-xcb-dev,libxkbcommon-x11-dev,libzstd-dev,lld,llvm,make,musl-dev,musl-tools,pipewire,protobuf-compiler,xdg-desktop-portal'
-export CARGO_TARGET_DIR=/tmp/zed
-# ./hack/cargo.sh  green install zed --git https://github.com/zed-industries/zed.git --tag=v1.0.0 --jobs=1
+# # zed's proto crate uses prost-build 0.9 which execs its own bundled protoc binary
+# # from within its crate sources => mount build scripts' deps' sources.
+# export CARGOGREEN_EXPERIMENT=buildscriptsources
+# export CARGOGREEN_ADD_APT='build-essential,clang,cmake,curl,elfutils,g++,gcc,gettext-base,git,jq,libasound2-dev,libfontconfig-dev,libgit2-dev,libglib2.0-dev,libsqlite3-dev,libssl-dev(>=3.5),libva-dev,libvulkan1,libwayland-dev,libx11-xcb-dev,libxkbcommon-x11-dev,libzstd-dev,lld,llvm,make,musl-dev,musl-tools,pipewire,protobuf-compiler,xdg-desktop-portal'
+# export CARGO_TARGET_DIR=/tmp/zed
+# # ./hack/cargo.sh  green install zed --git https://github.com/zed-industries/zed.git --tag=v1.0.0 --jobs=1
 
-# export CARGOGREEN_ADD_APT='make'
-# export CARGO_TARGET_DIR=/tmp/uv
-# # ./hack/cargo.sh  green +1.91 install --locked uv --git https://github.com/astral-sh/uv.git --rev=2748dce --jobs=1
+export CARGOGREEN_ADD_APT='make'
+export CARGO_TARGET_DIR=/tmp/uv
+export CARGOGREEN_EXPERIMENT=finalpathnonprimary
+export CARGOGREEN_FINAL_PATH=recipes/uv@main.Dockerfile
+# ./hack/cargo.sh  green +1.91 install --locked uv --git https://github.com/astral-sh/uv.git --rev=2748dce --bin=uv --jobs=1
 
 cargo green supergreen env
 
