@@ -125,6 +125,10 @@ declare -a nvs nvs_args toolchain
 ((i+=1)); nvs[i]=verso@main;                  oks[i]=ok; nvs_args[i]='--git https://github.com/versotile-org/verso.git --rev eb719bdd6c7b verso' # Pinned on 2025/12/03
 ((i+=1)); nvs[i]=cargo-udeps@0.1.60;          oks[i]=Ok; nvs_args[i]=''
 
+((i+=1)); nvs[i]=servo@main;                  oks[i]=ok; nvs_args[i]='--git=https://github.com/servo/servo --rev=69dbc1601414030826b4772d76a6004925b2b056 servoshell'
+# {"$message_type":"diagnostic","message":"couldn't read `/usr/local/cargo/git/checkouts/stylo-482338307e42a9ea/96ceb54/selectors/build.rs`: No such file or directory (os error 2)","code":null,"level":"error","spans":[],"children":[],"rendered":"\u001b[1m\u001b[91merror\u001b[0m\u001b[1m: couldn't read `/usr/local/cargo/git/checkouts/stylo-482338307e42a9ea/96ceb54/selectors/build.rs`: No such file or directory (os error 2)\u001b[0m\n\n"}
+# {"$message_type":"diagnostic","message":"aborting due to 1 previous error","code":null,"level":"error","spans":[],"children":[],"rendered":"\u001b[1m\u001b[91merror\u001b[0m\u001b[1m: aborting due to 1 previous error\u001b[0m\n\n"}
+
 ((i+=1)); nvs[i]=a-mir-formality@main;        oks[i]=ok; nvs_args[i]='--git https://github.com/rust-lang/a-mir-formality.git --rev=3fc2f38319bb729fbf2f59c38e15e23a9b774716 a-mir-formality' # Pinned 2025/12/03
 
 ((i+=1)); nvs[i]=kani-verifier@0.66.0;        oks[i]=ok; nvs_args[i]='--bin=cargo-kani'
@@ -251,6 +255,7 @@ as_env() {
     pyrefly@*) envvars+=(CARGOGREEN_ADD_APT='make') ;;
     rapidraw@*) envvars+=(CARGOGREEN_ADD_APT='g++,libgtk-3-dev,libjavascriptcoregtk-4.1-dev,libsoup-3.0-dev,libssl-dev=3.5.5-1~deb13u2,libwebkit2gtk-4.1-dev') ;;
     rublk@*) envvars+=(CARGOGREEN_ADD_APT='libclang-dev') ;;
+    servo@*) envvars+=(CARGOGREEN_ADD_APT='build-essential,ca-certificates,ccache,clang,cmake,curl,g++,git,gperf,gstreamer1.0-libav,gstreamer1.0-plugins-bad,gstreamer1.0-plugins-base,gstreamer1.0-plugins-good,gstreamer1.0-plugins-ugly,gstreamer1.0-tools,libdbus-1-dev,libegl1-mesa-dev,libfreetype6-dev,libges-1.0-dev,libgl1-mesa-dri,libgles2-mesa-dev,libglib2.0-dev,libgstreamer-plugins-bad1.0-dev,libgstreamer-plugins-base1.0-dev,libgstrtspserver-1.0-dev,libharfbuzz-dev,liblzma-dev,libudev-dev,libunwind-dev,libvulkan1,libx11-dev,libxcb-render0-dev,libxcb-shape0-dev,libxcb-xfixes0-dev,libxkbcommon-x11-0,libxkbcommon0,libxmu-dev,libxmu6,llvm-dev,m4,xorg-dev') ;; # From https://github.com/servo/servo/tree/69dbc1601414030826b4772d76a6004925b2b056/python/servo/platform/linux_packages/apt
     sccache@*) envvars+=(CARGOGREEN_ADD_APT='libssl-dev=3.5.5-1~deb13u2,pkg-config,zlib1g-dev') ;;
     torrust-index@*) envvars+=(CARGOGREEN_ADD_APT='libssl-dev=3.5.5-1~deb13u2,pkg-config,zlib1g-dev') ;;
     zed@*) envvars+=(CARGOGREEN_ADD_APT='build-essential,clang,cmake,curl,elfutils,g++,gcc,gettext-base,git,jq,libasound2-dev,libfontconfig-dev,libgit2-dev,libglib2.0-dev,libsqlite3-dev,libssl-dev=3.5.5-1~deb13u2,libva-dev,libvulkan1,libwayland-dev,libx11-xcb-dev,libxkbcommon-x11-dev,libzstd-dev,lld,llvm,make,musl-dev,musl-tools,pipewire,xdg-desktop-portal') ;; # From https://github.com/zed-industries/zed/blob/v0.233.10/script/linux#L25-L52
