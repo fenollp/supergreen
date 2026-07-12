@@ -68,6 +68,9 @@ impl Green {
         containerfile: &Utf8Path,
         target: &Stage,
     ) -> Result<()> {
+        if self.runner.is_buildctl() {
+            return self.buildctl_build_cacheonly(containerfile, target).await;
+        }
         let contexts = [].into();
         // TODO: ^C handling that kills both builds (and retries)
         let (_tui, matched) = join!(
@@ -84,6 +87,9 @@ impl Green {
         contexts: &IndexSet<BuildContext>,
         out_dir: &Utf8Path,
     ) -> (String, String, Effects, Option<ResultWriter>, Result<()>) {
+        if self.runner.is_buildctl() {
+            return self.buildctl_build_out(containerfile, target, contexts, out_dir).await;
+        }
         let tui = false;
         let (built, cached) = join!(biased;
             self.build(containerfile, target, contexts, Some(out_dir), None, tui),
@@ -330,7 +336,7 @@ impl Green {
     }
 
     #[expect(clippy::too_many_arguments)]
-    async fn run_build(
+    pub(crate) async fn run_build(
         &self,
         effects: &mut Effects,
         mut cmd: Command,
@@ -343,11 +349,13 @@ impl Green {
         let start = Instant::now();
         let mut child = cmd.spawn().map_err(|e| anyhow!("Failed starting `{call}`: {e}"))?;
 
-        spawn({
-            let containerfile = containerfile.to_owned();
-            let stdin = child.stdin.take().expect("started");
-            async move { send_containerfile(stdin, containerfile).await }
-        });
+        // buildctl reads the containerfile from a synced dir, not STDIN
+        if let Some(stdin) = child.stdin.take() {
+            spawn({
+                let containerfile = containerfile.to_owned();
+                async move { send_containerfile(stdin, containerfile).await }
+            });
+        }
 
         // ---
 
@@ -467,7 +475,7 @@ pub(crate) struct Effects {
 }
 
 impl Effects {
-    fn try_to_help(&self, runner: &Runner, cargo_home: &str) -> (bool, Error) {
+    pub(crate) fn try_to_help(&self, runner: &Runner, cargo_home: &str) -> (bool, Error) {
         const TRANSIENT: bool = true;
         let e;
 

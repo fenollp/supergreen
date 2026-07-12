@@ -27,6 +27,7 @@ mod runner;
 mod wrap;
 
 mod build;
+mod build_buildkit;
 mod buildkitd;
 mod cargo_green;
 mod checkouts;

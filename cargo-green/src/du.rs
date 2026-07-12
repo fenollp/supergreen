@@ -73,7 +73,7 @@ impl Green {
             return Ok(got);
         }
 
-        if self.runner.is_none() {
+        if !self.runner.has_cli() {
             info!("Skipping inspecting builder cache (runner:{})", self.runner);
             let _ = ARRAY.set(vec![]);
             return Ok(ARRAY.get().unwrap());

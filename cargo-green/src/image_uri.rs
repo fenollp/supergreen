@@ -367,7 +367,7 @@ impl Green {
     ///
     /// <https://docs.docker.com/dhi/core-concepts/digests/>
     async fn maybe_lock_from_image_cache(&self, img: &ImageUri) -> Result<Option<ImageUri>> {
-        if self.runner.is_none() {
+        if !self.runner.has_cli() {
             info!("Skipping inspecting image cache (runner:{})", self.runner);
             return Ok(None);
         }

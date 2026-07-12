@@ -30,12 +30,17 @@ const DOCKER_DEFAULT_PLATFORM: &str = "DOCKER_DEFAULT_PLATFORM";
 const DOCKER_HIDE_LEGACY_COMMANDS: &str = "DOCKER_HIDE_LEGACY_COMMANDS";
 pub(crate) const DOCKER_HOST: &str = "DOCKER_HOST";
 
+/// Overrides which `buildctl` binary [`Runner::BuildKit`] resolves to.
+pub(crate) const ENV_BUILDCTL: &str = "CARGOGREEN_BUILDCTL";
+
 #[derive(Debug, Copy, Clone, Default, Serialize, Deserialize, Eq, PartialEq)]
 #[serde(rename_all = "kebab-case")]
 pub(crate) enum Runner {
     #[default]
     Docker,
     Podman,
+    #[serde(rename = "buildkit")]
+    BuildKit,
     None,
 }
 
@@ -44,6 +49,7 @@ impl fmt::Display for Runner {
         match self {
             Self::Docker => write!(f, "docker"),
             Self::Podman => write!(f, "podman"),
+            Self::BuildKit => write!(f, "buildkit"),
             Self::None => write!(f, "none"),
         }
     }
@@ -56,9 +62,10 @@ impl FromStr for Runner {
         match s {
             "docker" => Ok(Self::Docker),
             "podman" => Ok(Self::Podman),
+            "buildkit" => Ok(Self::BuildKit),
             "none" => Ok(Self::None),
             _ => {
-                let all: Vec<_> = [Self::Docker, Self::Podman, Self::None]
+                let all: Vec<_> = [Self::Docker, Self::Podman, Self::BuildKit, Self::None]
                     .iter()
                     .map(ToString::to_string)
                     .collect();
@@ -76,6 +83,18 @@ impl Runner {
 
     #[must_use]
     pub(crate) fn is_buildkit(&self) -> bool {
+        matches!(self, Self::Docker | Self::Podman | Self::BuildKit)
+    }
+
+    /// Whether builds go through `buildctl`, talking to a bare `buildkitd`.
+    #[must_use]
+    pub(crate) fn is_buildctl(&self) -> bool {
+        matches!(self, Self::BuildKit)
+    }
+
+    /// Whether runner comes with a Docker-compatible CLI for non-build calls (inspect, du, ...)
+    #[must_use]
+    pub(crate) fn has_cli(&self) -> bool {
         matches!(self, Self::Docker | Self::Podman)
     }
 
@@ -86,7 +105,10 @@ impl Runner {
             return Ok(exe);
         }
 
-        let runner = self.to_string();
+        let runner = match self {
+            Self::BuildKit => env::var(ENV_BUILDCTL).unwrap_or_else(|_| "buildctl".to_owned()),
+            _ => self.to_string(),
+        };
         let exe = which::which(&runner).map_err(|e| anyhow!("No such {self} runner: {e}"))?;
         let exe = exe.try_into().map_err(|e| anyhow!("Path to {runner} is not utf-8: {e}"))?;
 
@@ -162,6 +184,8 @@ impl Runner {
             .into_iter()
             .map(OsStr::new)
             .collect()
+        } else if *self == Self::BuildKit {
+            [BUILDKIT_HOST, "PATH"].into_iter().map(OsStr::new).collect()
         } else {
             vec![OsStr::new("PATH")]
         }
@@ -169,7 +193,11 @@ impl Runner {
 
     /// Strip out flags that don't affect a build's outputs:
     pub(crate) fn buildnoop_flags(&self) -> impl Iterator<Item = &str> {
-        ["--cache-from=", "--cache-to=", "--no-cache"].into_iter()
+        if self.is_buildctl() {
+            ["--import-cache=", "--export-cache=", "--no-cache"].into_iter()
+        } else {
+            ["--cache-from=", "--cache-to=", "--no-cache"].into_iter()
+        }
     }
 }
 
@@ -204,9 +232,21 @@ impl Green {
 fn runner_is_what() {
     assert!(!Runner::Docker.is_none());
     assert!(!Runner::Podman.is_none());
+    assert!(!Runner::BuildKit.is_none());
     assert!(Runner::None.is_none());
 
     assert!(Runner::Docker.is_buildkit());
     assert!(Runner::Podman.is_buildkit());
+    assert!(Runner::BuildKit.is_buildkit());
     assert!(!Runner::None.is_buildkit());
+
+    assert!(!Runner::Docker.is_buildctl());
+    assert!(!Runner::Podman.is_buildctl());
+    assert!(Runner::BuildKit.is_buildctl());
+    assert!(!Runner::None.is_buildctl());
+
+    assert!(Runner::Docker.has_cli());
+    assert!(Runner::Podman.has_cli());
+    assert!(!Runner::BuildKit.has_cli());
+    assert!(!Runner::None.has_cli());
 }

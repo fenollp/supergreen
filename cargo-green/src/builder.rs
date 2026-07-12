@@ -143,7 +143,8 @@ impl Green {
     }
 
     pub(crate) async fn maybe_setup_builder(&mut self, env: Option<String>) -> Result<()> {
-        if self.runner.is_none() {
+        if self.runner.is_none() || self.runner.is_buildctl() {
+            // With buildctl, the bare buildkitd at $BUILDKIT_HOST plays the builder role.
             info!("Skipping builder setup (runner:{})", self.runner);
             return Ok(());
         }

@@ -1,4 +1,8 @@
-Pick which executor to use: `"docker"` (default), `"podman"` or `"none"`.
+Pick which executor to use: `"docker"` (default), `"podman"`, `"buildkit"` or `"none"`.
+
+When runner is set to `buildkit`, builds run against a bare `buildkitd` daemon through the `buildctl` client:
+* the daemon is addressed with [`$BUILDKIT_HOST`](https://github.com/moby/buildkit#connecting-to-buildkit) (defaults to `unix:///run/buildkit/buildkitd.sock`)
+* the client binary resolves through `$CARGOGREEN_BUILDCTL`, falling back to `buildctl` in `$PATH`
 
 The [runner gets forwarded these environment variables](https://docs.docker.com/engine/reference/commandline/cli/#environment-variables):
 * `$BUILDKIT_COLORS`
