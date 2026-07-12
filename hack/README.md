@@ -158,6 +158,8 @@ all:
 * [ ] [`buildkit`: `COPY --rewrite-timestamp ...` to apply SOURCE_DATE_EPOCH build arg value to the timestamps of the files](https://github.com/moby/buildkit/issues/6348)
 * [ ] [`buildkit`: Dockerfile frontend: `ADD --checksum=.. https://..` hides HTTP error](https://github.com/moby/buildkit/issues/6380)
 * [ ] [`buildkit`: Support passing `--local context=FILE`](https://github.com/moby/buildkit/issues/6410)
+* [ ] [`buildkit`: dockerfile: use containerd's defaults.DefaultMax{Recv,Send}MsgSize where constants were hardcoded](https://github.com/moby/buildkit/pull/6951)
+* [ ] [`buildkit`: dockerfile: treat ADD source as git URL when --keep-git-dir is set](https://github.com/moby/buildkit/pull/6952)
 
 
 ## En vrac
