@@ -8,6 +8,7 @@ use log::{debug, info, warn};
 
 use crate::{
     PKG, VSN,
+    all_our_envs::find_unknowns,
     base_image::{BASE_IMAGE, BASE_IMAGE_LOCKED},
     cratesio::{self},
     dirs::{cargo_home, pwd},
@@ -218,6 +219,11 @@ pub(crate) async fn main(is_install: bool) -> Result<Green> {
         green.experiment.iter().filter(|ex| !EXPERIMENTS.contains(&ex.as_str())).collect();
     if !nopes.is_empty() {
         bail!("${var} contains unknown experiment names: {nopes:?}")
+    }
+
+    let unknowns = find_unknowns();
+    if !unknowns.is_empty() {
+        bail!("Ignored environment variable(s): {}", unknowns.join(" "))
     }
 
     green.setup_dirs()?;

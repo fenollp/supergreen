@@ -75,6 +75,12 @@ diff -y \
 	<(ordered_envs)
 echo
 
+echo "Compared with what's in all_our_envs.rs:"
+diff -y \
+	<(grep -Eo 'ENV_[A-Z_]+!\(\)' cargo-green/src/all_our_envs.rs | cut -d! -f1 | sed 's%(%%;s%^ENV_%CARGOGREEN_%') \
+	<(ordered_envs | grep -v BUILDX_BUILDER)
+echo
+
 echo "Compared with what's documented in README.md:"
 diff -y \
 	<(grep -E '^  - \[`\$' README.md | cut -d '`' -f2 | cut -d '$' -f2) \
