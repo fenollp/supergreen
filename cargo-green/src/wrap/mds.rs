@@ -85,22 +85,36 @@ impl Md {
         let out_dir = out_dir.map(virtual_target_dir).unwrap_or(".".into());
         // TODO: let out_dir = out_dir.map(|_| "$OLDPWD").unwrap_or("$PWD"); whence  https://github.com/moby/buildkit/issues/6698  [frontend] $OLDPWD is unset (after >1 WORKDIR layers)
 
+        // Build scripts may wipe their own $OUT_DIR (eg. dtolnay/scratch's build.rs
+        // remove_dir_all's it): keep stdout/stderr/errcode files in its parent dir.
+        let mark_dir = if self.buildrs {
+            out_dir.parent().map(Utf8Path::to_path_buf).unwrap_or_else(|| out_dir.clone())
+        } else {
+            out_dir.clone()
+        };
+
         block.push_str(&format!("      {call} \\\n"));
-        block.push_str(&format!("        1>          {out_dir}/{out_stage}-{STDOUT} \\\n"));
-        block.push_str(&format!("        2>          {out_dir}/{out_stage}-{STDERR} \\\n"));
-        block.push_str(&format!("        || echo $? >{out_dir}/{out_stage}-{ERRCODE}\\\n"));
+        block.push_str(&format!("        1>          {mark_dir}/{out_stage}-{STDOUT} \\\n"));
+        block.push_str(&format!("        2>          {mark_dir}/{out_stage}-{STDERR} \\\n"));
+        block.push_str(&format!("        || echo $? >{mark_dir}/{out_stage}-{ERRCODE}\\\n"));
 
         if let Some(crate_name) = crate_name
             && is_buildrs_executable(crate_name)
         {
             block.push_str(&exe_dance(self.this(), crate_name, &out_dir));
-            block.push_str(&format!(" || echo $? >{out_dir}/{out_stage}-{ERRCODE} \\\n"));
+            block.push_str(&format!(" || echo $? >{mark_dir}/{out_stage}-{ERRCODE} \\\n"));
         }
 
         // TODO: [`COPY --rewrite-timestamp ...` to apply SOURCE_DATE_EPOCH build arg value to the timestamps of the files](https://github.com/moby/buildkit/issues/6348)
-        let pattern = if self.buildrs { "*".to_owned() } else { format!("*-{}*", self.this()) };
-        block.push_str(&format!("  ; find {out_dir}/{pattern} -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{{}}' + \\\n"));
-        block.push_str(&format!(" || echo $? >{out_dir}/{out_stage}-{ERRCODE}\n"));
+        if self.buildrs {
+            // `mkdir -p`: $OUT_DIR may be gone; also `find {out_dir}/*` fails when it is empty
+            block.push_str(&format!("  ; mkdir -p {out_dir} \\\n"));
+            block.push_str(&format!(" && find {out_dir} {mark_dir}/{out_stage}-* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{{}}' + \\\n"));
+        } else {
+            let pattern = format!("*-{}*", self.this());
+            block.push_str(&format!("  ; find {out_dir}/{pattern} -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{{}}' + \\\n"));
+        }
+        block.push_str(&format!(" || echo $? >{mark_dir}/{out_stage}-{ERRCODE}\n"));
 
         self.push_block(stage, &block);
         Ok(())
@@ -119,6 +133,9 @@ impl Md {
         let out_dir = virtual_target_dir(out_dir);
         if buildrs {
             block.push_str(&format!("COPY --link --from={prev} {out_dir} /\n"));
+            // stdout/stderr/errcode files live next to $OUT_DIR, see Md::call_block
+            let mark_dir = out_dir.parent().unwrap_or(&out_dir);
+            block.push_str(&format!("COPY --link --from={prev} {mark_dir}/{stage}-* /\n"));
         } else {
             let mdid = self.this();
             block.push_str(&format!("COPY --link --from={prev} {out_dir}/*-{mdid}* /\n"));

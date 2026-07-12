@@ -13,40 +13,46 @@ use crate::{
 
 pub(crate) const HOME: &str = "registry/src";
 
+pub(crate) const CACHE: &str = "registry/cache";
+
 const INDEX: &str = "index.crates.io";
 
 impl Green {
     pub(crate) fn maybe_arrange_cratesio_index(&self) -> Result<()> {
-        let crates_home = self.cargo_home.join(HOME);
-        info!("Listing directory {crates_home}");
-        if !crates_home.exists() {
-            info!("making usre {crates_home} exists...");
-            // No root rights needed here
-            fs::create_dir_all(&crates_home)
-                .map_err(|e| anyhow!("Failed to `mkdir -p {crates_home}`: {e}"))?;
-        }
-        if let Some(youngest) = crates_home
-            .read_dir_utf8()
-            .map_err(|e| anyhow!("Failed `ls {crates_home}`: {e}"))?
-            .filter_map(Result::ok)
-            .inspect(|entry| info!("Found {}: {:?}", entry.path(), entry.file_type()))
-            .filter(|entry| entry.file_type().map(|f| f.is_dir()).unwrap_or(false))
-            .filter(|dir| {
-                dir.path()
-                    .file_name()
-                    .map(|name| name.starts_with(INDEX) && name != INDEX)
-                    .unwrap_or(false)
-            })
-            .filter_map(|dir| Some((dir.path().to_owned(), dir.metadata().ok()?.modified().ok()?)))
-            .max_by_key(|&(_, modified)| modified)
-            .map(|(path, _)| path)
-        {
-            let link = youngest.with_file_name(INDEX);
-            if let Err(e) = symlink::remove_symlink_dir(&link) {
-                info!("Failed cleaning previous symlink {link}: {e}");
+        for home in [HOME, CACHE] {
+            let crates_home = self.cargo_home.join(home);
+            info!("Listing directory {crates_home}");
+            if !crates_home.exists() {
+                info!("making usre {crates_home} exists...");
+                // No root rights needed here
+                fs::create_dir_all(&crates_home)
+                    .map_err(|e| anyhow!("Failed to `mkdir -p {crates_home}`: {e}"))?;
             }
-            if let Err(e) = symlink::symlink_dir(&youngest, &link) {
-                bail!("Could not symlink {link} to {youngest}: {e}")
+            if let Some(youngest) = crates_home
+                .read_dir_utf8()
+                .map_err(|e| anyhow!("Failed `ls {crates_home}`: {e}"))?
+                .filter_map(Result::ok)
+                .inspect(|entry| info!("Found {}: {:?}", entry.path(), entry.file_type()))
+                .filter(|entry| entry.file_type().map(|f| f.is_dir()).unwrap_or(false))
+                .filter(|dir| {
+                    dir.path()
+                        .file_name()
+                        .map(|name| name.starts_with(INDEX) && name != INDEX)
+                        .unwrap_or(false)
+                })
+                .filter_map(|dir| {
+                    Some((dir.path().to_owned(), dir.metadata().ok()?.modified().ok()?))
+                })
+                .max_by_key(|&(_, modified)| modified)
+                .map(|(path, _)| path)
+            {
+                let link = youngest.with_file_name(INDEX);
+                if let Err(e) = symlink::remove_symlink_dir(&link) {
+                    info!("Failed cleaning previous symlink {link}: {e}");
+                }
+                if let Err(e) = symlink::symlink_dir(&youngest, &link) {
+                    bail!("Could not symlink {link} to {youngest}: {e}")
+                }
             }
         }
         Ok(())
@@ -115,7 +121,7 @@ pub(crate) async fn named_stage<'a>(
     let stage = Stage::cratesio(name_dash_version)?;
 
     let cached = pkg_manifest_dir.to_string() + ".crate";
-    let cached = cached.replace(&format!("/{HOME}/"), "/registry/cache/");
+    let cached = cached.replace(&format!("/{HOME}/"), &format!("/{CACHE}/"));
 
     info!("opening (RO) crate tarball {cached}");
     let hash = sha256::try_async_digest(&cached) //TODO: read from lockfile, see cargo_green::prebuild()

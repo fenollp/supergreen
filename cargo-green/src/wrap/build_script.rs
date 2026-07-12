@@ -11,7 +11,7 @@ use log::{error, info, trace};
 use crate::{
     ENV, PKG, VSN,
     base_image::rewrite_cargo_home,
-    cratesio::rewrite_cratesio_index,
+    cratesio::{self, rewrite_cratesio_index},
     green::Green,
     logging::{self},
     md::{Md, MdId, Mds, NamedMount},
@@ -115,6 +115,17 @@ pub(crate) async fn exec_build_script(green: Green, exe: Utf8PathBuf) -> Result<
     .inspect_err(|e| error!("Error: {e}"))
 }
 
+fn mount_flag(
+    name: impl std::fmt::Display,
+    src: Option<Utf8PathBuf>,
+    dst: Utf8PathBuf,
+    swappity: bool,
+) -> String {
+    let src = src.as_deref().map(|src| format!(",source={src}")).unwrap_or_default();
+    let mount = if swappity { format!(",dst={dst}{src}") } else { format!("{src},dst={dst}") };
+    format!("  --mount=from={name}{mount} \\\n")
+}
+
 #[expect(clippy::too_many_arguments)]
 async fn do_exec(
     green: Green,
@@ -164,12 +175,6 @@ async fn do_exec(
     let workdir = rewrite_cratesio_index(&workdir);
     run_block.push_str(&format!("WORKDIR {workdir}\n"));
 
-    let mount_flag = |name, src: Option<_>, dst, swappity| {
-        let src = src.as_deref().map(|src| format!(",source={src}")).unwrap_or_default();
-        let mount = if swappity { format!(",dst={dst}{src}") } else { format!("{src},dst={dst}") };
-        format!("  --mount=from={name}{mount} \\\n")
-    };
-
     run_block.push_str("RUN \\\n");
     run_block.push_str(&format!(
         "  --mount=from={previous_out_stage},source={previous_out_dst},dst={exe} \\\n",
@@ -186,27 +191,45 @@ async fn do_exec(
     // Build scripts of crates that depend on a `links = ".."` crate receive DEP_<links>_<key>
     // vars set by that crate's build script. Values may be paths into that build script's
     // $OUT_DIR (eg. tree-sitter's build script passes "-I $DEP_WASMTIME_C_API_INCLUDE" to cc,
-    // pointing inside wasmtime-c-api-impl's buildrs out dir): mount these so such paths resolve.
+    // pointing inside wasmtime-c-api-impl's buildrs out dir) or into that crate's sources
+    // (eg. cxx's build script exports DEP_CXXBRIDGE1_HEADER=<cxx's crate dir>/include/cxx.h
+    // that cxx-build, in dependents' build scripts, symlinks under their $OUT_DIR/cxxbridge):
+    // mount these so such paths resolve.
     for (var, val) in env::vars() {
         if !var.starts_with("DEP_") {
             continue;
         }
-        let Some(out_dir) = buildrs_out_dir(Utf8Path::new(&val)) else { continue };
-        let mount = virtual_target_dir(out_dir);
-        if mount == out_dir {
-            continue; // Not under $CARGO_TARGET_DIR
+        let path = Utf8Path::new(&val);
+        if let Some(out_dir) = buildrs_out_dir(path) {
+            let mount = virtual_target_dir(out_dir);
+            if mount == out_dir {
+                continue; // Not under $CARGO_TARGET_DIR
+            }
+            let dep_mdid = MdId::from_out_dir_var(out_dir);
+            if !md.mounts.insert(NamedMount { name: Stage::output(dep_mdid)?, mount }) {
+                continue;
+            }
+            info!("mounting buildrs out dir {out_dir} (${var})");
+            if extern_mds.iter().any(|xmd| xmd.this() == dep_mdid) {
+                continue;
+            }
+            let dep_md = mds.load(dep_mdid)?;
+            extern_mds.extend(mds.load_all(dep_md.deps())?);
+            extern_mds.push(dep_md);
+        } else if let Some(crate_dir) = cratesio_crate_dir(path) {
+            let Some(name) = cratesio_crate_name(crate_dir.file_name().unwrap_or_default()) else {
+                continue;
+            };
+            let stage = cratesio::named_stage(&green.cargo_home, name, crate_dir).await?;
+            if !mounted.insert(stage.name().to_string()) {
+                continue;
+            }
+            info!("mounting crate sources {crate_dir} (${var})");
+            for (src, dst, swappity) in stage.mounts() {
+                run_block.push_str(&mount_flag(stage.name(), src, dst, swappity));
+            }
+            md.push_stage(&stage);
         }
-        let dep_mdid = MdId::from_out_dir_var(out_dir);
-        if !md.mounts.insert(NamedMount { name: Stage::output(dep_mdid)?, mount }) {
-            continue;
-        }
-        info!("mounting buildrs out dir {out_dir} (${var})");
-        if extern_mds.iter().any(|xmd| xmd.this() == dep_mdid) {
-            continue;
-        }
-        let dep_md = mds.load(dep_mdid)?;
-        extern_mds.extend(mds.load_all(dep_md.deps())?);
-        extern_mds.push(dep_md);
     }
 
     extern_mds.push(previous_md);
@@ -262,6 +285,59 @@ fn buildrs_out_dir(val: &Utf8Path) -> Option<&Utf8Path> {
         }()
         .is_some()
     })
+}
+
+/// The crates.io sources dir prefix of a DEP_<links>_<key> env value, if any.
+///
+/// E.g. DEP_CXXBRIDGE1_HEADER=$CARGO_HOME/registry/src/index.crates.io-<hash>/cxx-1.0.197/include/cxx.h
+/// gives $CARGO_HOME/registry/src/index.crates.io-<hash>/cxx-1.0.197
+fn cratesio_crate_dir(val: &Utf8Path) -> Option<&Utf8Path> {
+    val.ancestors().find(|crate_dir| {
+        || -> Option<()> {
+            let index = crate_dir.parent()?;
+            index.file_name()?.starts_with("index.crates.io").then_some(())?;
+            (index.parent()?.file_name()? == "src").then_some(())
+        }()
+        .is_some()
+    })
+}
+
+/// "cxx-1.0.197" -> "cxx"
+fn cratesio_crate_name(name_dash_version: &str) -> Option<&str> {
+    let bytes = name_dash_version.as_bytes();
+    (1..bytes.len().checked_sub(1)?)
+        .rev()
+        .find(|&i| bytes[i] == b'-' && bytes[i + 1].is_ascii_digit())
+        .map(|i| &name_dash_version[..i])
+}
+
+#[test]
+fn cratesio_crate_dir_from_dep_env_values() {
+    fn f(val: &str) -> Option<&str> {
+        cratesio_crate_dir(Utf8Path::new(val)).map(Utf8Path::as_str)
+    }
+
+    assert_eq!(
+        f("/home/pete/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/cxx-1.0.197/include/cxx.h"),
+        Some("/home/pete/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/cxx-1.0.197")
+    );
+    assert_eq!(
+        f("/usr/local/cargo/registry/src/index.crates.io/zstd-sys-2.0.16/zstd/lib"),
+        Some("/usr/local/cargo/registry/src/index.crates.io/zstd-sys-2.0.16")
+    );
+
+    assert_eq!(f("1.0.197"), None);
+    assert_eq!(f("/usr/include"), None);
+    assert_eq!(f("/home/pete/.cargo/registry/cache/index.crates.io-1949cf8c6b5b557f/cxx-1.0.197.crate"), None);
+}
+
+#[test]
+fn crate_name_from_name_dash_version() {
+    assert_eq!(cratesio_crate_name("cxx-1.0.197"), Some("cxx"));
+    assert_eq!(cratesio_crate_name("unicode-xid-0.2.4"), Some("unicode-xid"));
+    assert_eq!(cratesio_crate_name("zstd-sys-2.0.16+zstd.1.5.7"), Some("zstd-sys"));
+    assert_eq!(cratesio_crate_name("cxx"), None);
+    assert_eq!(cratesio_crate_name(""), None);
 }
 
 #[test]
