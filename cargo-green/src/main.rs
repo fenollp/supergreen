@@ -114,7 +114,8 @@ async fn actual_main() -> Result<()> {
         bail!(EEXIT)
     }
 
-    let Some(cargo) = env::var_os("CARGO") else {
+    let Some((cargo, toolchain)) = env::var_os("CARGO").zip(env::var("RUSTUP_TOOLCHAIN").ok())
+    else {
         eprintln!("This cargo plugin must be run like `cargo green ...`");
         bail!(EEXIT)
     };
@@ -191,7 +192,7 @@ async fn actual_main() -> Result<()> {
         return Ok(());
     }
 
-    let green = cargo_green::main(is_install).await?;
+    let green = cargo_green::main(&toolchain, is_install).await?;
     cmd.env(ENV_ROOT_PACKAGE_SETTINGS, serde_json::to_string(&green)?);
 
     if command.as_deref() == Some("supergreen") {

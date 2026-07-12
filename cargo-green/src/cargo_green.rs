@@ -22,7 +22,7 @@ use crate::{
     stage::{RST, Stage},
 };
 
-pub(crate) async fn main(is_install: bool) -> Result<Green> {
+pub(crate) async fn main(toolchain: &str, is_install: bool) -> Result<Green> {
     let mut green = Green::new_from_env_then_manifest(is_install).await?;
 
     // Setting runner first as it's needed by many calls
@@ -176,11 +176,10 @@ pub(crate) async fn main(is_install: bool) -> Result<Green> {
         let base = green.maybe_lock_image(&green.base.image).await?;
         green.base.image = fetch_digest(&green.runner, &base).await?;
     }
-    let toolchain = env::var("RUSTUP_TOOLCHAIN").expect("$RUSTUP_TOOLCHAIN");
     let target: Option<String> =
         pico_args::Arguments::from_env().opt_value_from_str("--target").ok().flatten();
     green.base =
-        green.base.make_block(&toolchain, &green.components, target.as_deref(), &green.add)?;
+        green.base.make_block(toolchain, &green.components, target.as_deref(), &green.add)?;
 
     var = ENV_WITH_NETWORK!();
     if let Ok(val) = env::var(var) {
