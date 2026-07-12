@@ -86,21 +86,21 @@ impl Md {
         // TODO: let out_dir = out_dir.map(|_| "$OLDPWD").unwrap_or("$PWD"); whence  https://github.com/moby/buildkit/issues/6698  [frontend] $OLDPWD is unset (after >1 WORKDIR layers)
 
         block.push_str(&format!("      {call} \\\n"));
-        block.push_str(&format!("        1>          {out_dir}/{out_stage}-{STDOUT} \\\n"));
-        block.push_str(&format!("        2>          {out_dir}/{out_stage}-{STDERR} \\\n"));
-        block.push_str(&format!("        || echo $? >{out_dir}/{out_stage}-{ERRCODE}\\\n"));
+        block.push_str(&format!("        1>          {out_dir}/../{out_stage}-{STDOUT} \\\n"));
+        block.push_str(&format!("        2>          {out_dir}/../{out_stage}-{STDERR} \\\n"));
+        block.push_str(&format!("        || echo $? >{out_dir}/../{out_stage}-{ERRCODE}\\\n"));
 
         if let Some(crate_name) = crate_name
             && is_buildrs_executable(crate_name)
         {
             block.push_str(&exe_dance(self.this(), crate_name, &out_dir));
-            block.push_str(&format!(" || echo $? >{out_dir}/{out_stage}-{ERRCODE} \\\n"));
+            block.push_str(&format!(" || echo $? >{out_dir}/../{out_stage}-{ERRCODE} \\\n"));
         }
 
         // TODO: [`COPY --rewrite-timestamp ...` to apply SOURCE_DATE_EPOCH build arg value to the timestamps of the files](https://github.com/moby/buildkit/issues/6348)
-        let pattern = if self.buildrs { "*".to_owned() } else { format!("*-{}*", self.this()) };
-        block.push_str(&format!("  ; find {out_dir}/{pattern} -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{{}}' + \\\n"));
-        block.push_str(&format!(" || echo $? >{out_dir}/{out_stage}-{ERRCODE}\n"));
+        let pattern = if self.buildrs { "" } else { &format!(" -name '*-{}*'", self.this()) };
+        block.push_str(&format!("  ; find {out_dir}/ {out_dir}/../{out_stage}-*{pattern} -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{{}}' + \\\n"));
+        block.push_str(&format!(" || echo $? >{out_dir}/../{out_stage}-{ERRCODE}\n"));
 
         self.push_block(stage, &block);
         Ok(())
@@ -108,21 +108,12 @@ impl Md {
 
     /// TODO? in Dockerfile, when using outputs:
     /// => skip the COPY (--mount=from=out-08c4d63ed4366a99) use the stage directly
-    pub(crate) fn out_block(
-        &mut self,
-        stage: &Stage,
-        prev: &Stage,
-        out_dir: &Utf8Path,
-        buildrs: bool,
-    ) {
+    pub(crate) fn out_block(&mut self, stage: &Stage, prev: &Stage, out_dir: &Utf8Path) {
         let mut block = format!("FROM scratch AS {stage}\n");
         let out_dir = virtual_target_dir(out_dir);
-        if buildrs {
-            block.push_str(&format!("COPY --link --from={prev} {out_dir} /\n"));
-        } else {
-            let mdid = self.this();
-            block.push_str(&format!("COPY --link --from={prev} {out_dir}/*-{mdid}* /\n"));
-        }
+        let base = out_dir.file_name().expect("PROOF: out_dir has a file name");
+        block.push_str(&format!("COPY --link --from={prev} {out_dir} /{base}\n"));
+        block.push_str(&format!("COPY --link --from={prev} {out_dir}/../{stage}-* /\n"));
         self.push_block(stage, &block);
     }
 
@@ -166,22 +157,21 @@ impl Md {
             info!("wrote result");
         }
 
+        let base = virtual_target_dir(out_dir);
+        let base = base.file_name().expect("PROOF: out_dir has a file name");
         let final_stage = format!(
             "FROM scratch\n{}\n",
             self.writes
                 .iter()
-                .filter_map(|f| f.file_name())
-                .filter(|f| !f.ends_with(".d"))
-                .filter(|f| f != &format!("{stage}-{STDOUT}"))
-                .filter(|f| f != &format!("{stage}-{STDERR}"))
-                .filter(|f| f != &format!("{stage}-{ERRCODE}"))
-                .map(|f| (
-                    f,
-                    f.replace(&format!("-{}", self.this()), "")
-                        .replace("_", "-") // cargo-install rewrites underscores
-                        .replace(".dwp", "") // cargo-install drops that extension
-                ))
-                .map(|(src, dst)| format!("COPY --link --from={stage} /{src} /{dst}"))
+                .filter_map(|w| w.file_name().map(|f| (w, f)))
+                .filter(|(_, f)| !f.ends_with(".d"))
+                .filter(|(_, f)| f != &format!("{stage}-{STDOUT}"))
+                .filter(|(_, f)| f != &format!("{stage}-{STDERR}"))
+                .filter(|(_, f)| f != &format!("{stage}-{ERRCODE}"))
+                .map(|(w, f)| (w, f.replace(&format!("-{}", self.this()), "")))
+                .map(|(w, f)| (w, f.replace("_", "-"))) // cargo-install rewrites underscores
+                .map(|(w, f)| (w, f.replace(".dwp", ""))) // cargo-install drops that extension
+                .map(|(src, dst)| format!("COPY --link --from={stage} /{base}/{src} /{dst}"))
                 .collect::<Vec<_>>()
                 .join("\n")
         );

@@ -154,10 +154,11 @@ async fn do_wrap_rustc(
             host_profile_dir(&target_path).as_deref(),
         );
         let dst = virtual_target_dir(&located);
-        rustc_block.push_str(&format!("  --mount=from={name},dst={dst},source=/{mount} \\\n"));
+        rustc_block.push_str(&format!("  --mount=from={name},dst={dst},source=/deps/{mount} \\\n"));
     }
     for NamedMount { name, mount } in &md.mounts {
-        rustc_block.push_str(&format!("  --mount=from={name},dst={mount},source=/ \\\n"));
+        let base = mount.file_name().expect("PROOF: OUT_DIR mounts end in /out");
+        rustc_block.push_str(&format!("  --mount=from={name},dst={mount},source=/{base} \\\n"));
     }
 
     let out_stage = Stage::output(mdid)?;
@@ -191,7 +192,7 @@ async fn do_wrap_rustc(
         md.push_block(&incremental_stage, &incremental_block);
     }
 
-    md.out_block(&out_stage, &rustc_stage, &out_dir, false);
+    md.out_block(&out_stage, &rustc_stage, &out_dir);
 
     let (md_path, containerfile_path) = md.finalize(&green, &target_path, pkg_name, &mds)?;
 
