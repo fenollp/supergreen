@@ -318,7 +318,9 @@ fn cratesio_crate_dir_from_dep_env_values() {
     }
 
     assert_eq!(
-        f("/home/pete/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/cxx-1.0.197/include/cxx.h"),
+        f(
+            "/home/pete/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/cxx-1.0.197/include/cxx.h"
+        ),
         Some("/home/pete/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/cxx-1.0.197")
     );
     assert_eq!(
@@ -328,7 +330,10 @@ fn cratesio_crate_dir_from_dep_env_values() {
 
     assert_eq!(f("1.0.197"), None);
     assert_eq!(f("/usr/include"), None);
-    assert_eq!(f("/home/pete/.cargo/registry/cache/index.crates.io-1949cf8c6b5b557f/cxx-1.0.197.crate"), None);
+    assert_eq!(
+        f("/home/pete/.cargo/registry/cache/index.crates.io-1949cf8c6b5b557f/cxx-1.0.197.crate"),
+        None
+    );
 }
 
 #[test]
