@@ -14,7 +14,7 @@ use crate::{
     cratesio::rewrite_cratesio_index,
     green::Green,
     logging::{self},
-    md::{Md, MdId, Mds},
+    md::{Md, MdId, Mds, NamedMount},
     stage::{AsStage, RST, RUST, Stage},
     target_dir::virtual_target_dir,
     wrap::call_config,
@@ -182,6 +182,33 @@ async fn do_exec(
     }
 
     let mut extern_mds = mds.load_all(previous_md.deps())?;
+
+    // Build scripts of crates that depend on a `links = ".."` crate receive DEP_<links>_<key>
+    // vars set by that crate's build script. Values may be paths into that build script's
+    // $OUT_DIR (eg. tree-sitter's build script passes "-I $DEP_WASMTIME_C_API_INCLUDE" to cc,
+    // pointing inside wasmtime-c-api-impl's buildrs out dir): mount these so such paths resolve.
+    for (var, val) in env::vars() {
+        if !var.starts_with("DEP_") {
+            continue;
+        }
+        let Some(out_dir) = buildrs_out_dir(Utf8Path::new(&val)) else { continue };
+        let mount = virtual_target_dir(out_dir);
+        if mount == out_dir {
+            continue; // Not under $CARGO_TARGET_DIR
+        }
+        let dep_mdid = MdId::from_out_dir_var(out_dir);
+        if !md.mounts.insert(NamedMount { name: Stage::output(dep_mdid)?, mount }) {
+            continue;
+        }
+        info!("mounting buildrs out dir {out_dir} (${var})");
+        if extern_mds.iter().any(|xmd| xmd.this() == dep_mdid) {
+            continue;
+        }
+        let dep_md = mds.load(dep_mdid)?;
+        extern_mds.extend(mds.load_all(dep_md.deps())?);
+        extern_mds.push(dep_md);
+    }
+
     extern_mds.push(previous_md);
     let mds = md.sort_deps(extern_mds)?;
     info!("sorted {} deps", mds.len());
@@ -200,6 +227,10 @@ async fn do_exec(
         }
     }
 
+    for NamedMount { name, mount } in &md.mounts {
+        run_block.push_str(&format!("  --mount=from={name},dst={mount},source=/ \\\n"));
+    }
+
     md.call_block(
         (&run_stage, run_block),
         crate_name,
@@ -214,4 +245,50 @@ async fn do_exec(
     let (md_path, containerfile_path) = md.finalize(&green, &target_path, pkg_name, &mds)?;
 
     md.do_build(&green, &md_path, &containerfile_path, &out_stage, &out_dir_var).await
+}
+
+/// The $OUT_DIR-shaped prefix of a DEP_<links>_<key> env value, if any.
+///
+/// E.g. DEP_WASMTIME_C_API_INCLUDE=$CARGO_TARGET_DIR/release/build/wasmtime-c-api-impl-2e37cf3b1e7a2fbd/out/include
+/// gives $CARGO_TARGET_DIR/release/build/wasmtime-c-api-impl-2e37cf3b1e7a2fbd/out
+fn buildrs_out_dir(val: &Utf8Path) -> Option<&Utf8Path> {
+    val.ancestors().find(|out_dir| {
+        || -> Option<()> {
+            (out_dir.file_name()? == "out").then_some(())?;
+            let crate_dir = out_dir.parent()?;
+            (crate_dir.parent()?.file_name()? == "build").then_some(())?;
+            let mdid = crate_dir.file_name()?.rsplit('-').next()?;
+            (mdid.len() == 16 && mdid.bytes().all(|b| b.is_ascii_hexdigit())).then_some(())
+        }()
+        .is_some()
+    })
+}
+
+#[test]
+fn buildrs_out_dir_from_dep_env_values() {
+    fn f(val: &str) -> Option<&str> {
+        buildrs_out_dir(Utf8Path::new(val)).map(Utf8Path::as_str)
+    }
+
+    assert_eq!(
+        f("/tmp/zed/release/build/wasmtime-c-api-impl-2e37cf3b1e7a2fbd/out/include"),
+        Some("/tmp/zed/release/build/wasmtime-c-api-impl-2e37cf3b1e7a2fbd/out")
+    );
+    assert_eq!(
+        f("/tmp/zed/release/build/zstd-sys-0123456789abcdef/out"),
+        Some("/tmp/zed/release/build/zstd-sys-0123456789abcdef/out")
+    );
+    // Deeper subpath, even one containing another "out" dir
+    assert_eq!(
+        f("/tmp/zed/debug/build/foo-0123456789abcdef/out/nested/out"),
+        Some("/tmp/zed/debug/build/foo-0123456789abcdef/out")
+    );
+
+    // Non-path metadata values
+    assert_eq!(f("1.5.7"), None);
+    assert_eq!(f("include"), None);
+    // Paths not shaped like $CARGO_TARGET_DIR/$PROFILE/build/<crate>-<mdid>/out
+    assert_eq!(f("/usr/include"), None);
+    assert_eq!(f("/tmp/zed/release/build/nope-badhex/out"), None);
+    assert_eq!(f("/tmp/zed/release/deps/foo-0123456789abcdef/out"), None);
 }
