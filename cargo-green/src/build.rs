@@ -612,9 +612,12 @@ async fn untar_into(
                     String::from_utf8(buf).map_err(|e| anyhow!("Corrupted result STDERR: {e}"))?
             }
             _ => {
-                written.push(name.clone());
+                let base = out_dir.file_name().expect("PROOF: out_dir has filename");
+                let name = name.strip_prefix(base).unwrap_or(&name);
+                let false = name.as_str().is_empty() else { continue }; // The base dir itself
+                written.push(name.to_owned());
                 info!("creating (RW) {name:?}");
-                let fname = out_dir.join(&name);
+                let fname = out_dir.join(name);
                 write_build_artifact(header, cargo_home, fname, buf, &f)?;
             }
         }

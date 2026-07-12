@@ -149,9 +149,10 @@ async fn do_exec(
 
     let previous_out_stage = Stage::output(previous_mdid)?;
     let previous_out_dst = {
-        let name = exe.file_name().expect("PROOF: already ensured path has file_name");
+        let name = exe.file_name().expect("PROOF: exe has file_name");
         let name = name.replacen('-', "_", 2);
-        format!("/_{name}-{previous_mdid}")
+        let base = exe.parent().and_then(Utf8Path::file_name).expect("PROOF: exe has parent");
+        format!("/{base}/_{name}-{previous_mdid}")
     };
 
     let mut run_block = format!("FROM {RST} AS {run_stage}\n");
@@ -209,7 +210,7 @@ async fn do_exec(
         (&out_stage, Some(&out_dir_var)),
     )?;
 
-    md.out_block(&out_stage, &run_stage, &out_dir_var, true);
+    md.out_block(&out_stage, &run_stage, &out_dir_var);
 
     let (md_path, containerfile_path) = md.finalize(&green, &target_path, pkg_name, &mds)?;
 
