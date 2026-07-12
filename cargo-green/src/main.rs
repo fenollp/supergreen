@@ -26,6 +26,7 @@ mod runner;
 #[macro_use]
 mod wrap;
 
+mod all_our_envs;
 mod build;
 mod buildkitd;
 mod cargo_green;
