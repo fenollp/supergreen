@@ -1,6 +1,6 @@
 // Our own MetaData utils
 
-use std::{env, fs, io::ErrorKind, rc::Rc, str::FromStr};
+use std::{fs, io::ErrorKind, rc::Rc, str::FromStr};
 
 use anyhow::{Result, anyhow, bail};
 use camino::{Utf8Path, Utf8PathBuf};
@@ -15,7 +15,7 @@ use crate::{
     green::Green,
     logging::maybe_log,
     stage::{AsBlock, AsStage, NamedStage, RST, Script, Stage},
-    target_dir::virtual_target_dir,
+    target_dir::{TARGET_DIR, virtual_target_dir},
 };
 
 mod build_context;
@@ -30,9 +30,14 @@ pub(crate) use named_mount::*;
 
 pub(crate) const DIESES: &str = "##";
 
+pub(crate) const STAMP: u8 = 1; // Compatibility gate
+
 #[derive(Debug, Clone, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
 pub(crate) struct Md {
+    #[serde(default)]
+    stamp: u8,
+
     this: MdId,
 
     #[serde(default, skip_serializing_if = "IndexSet::is_empty")]
@@ -92,6 +97,7 @@ impl FromStr for Md {
 impl From<MdId> for Md {
     fn from(this: MdId) -> Self {
         Self {
+            stamp: STAMP,
             this,
 
             externs: IndexSet::new(),
@@ -144,14 +150,30 @@ impl Md {
     Let's remove the current $CARGO_TARGET_DIR {target_dir}
     then run your command again.
 "#,
-                    target_dir = env::var("CARGO_TARGET_DIR").unwrap_or_default(),
+                    target_dir = TARGET_DIR.as_str(),
                 );
             }
 
             anyhow!("Failed reading Md {path}: {e}")
         })?;
 
-        Self::from_str(&txt).map_err(|e| anyhow!("Failed deserializing Md {path}: {e}"))
+        let md =
+            Self::from_str(&txt).map_err(|e| anyhow!("Failed deserializing Md {path}: {e}"))?;
+
+        if md.stamp != STAMP {
+            warn!("found incompatible Md, unexpectedly: suggesting a clean slate");
+            bail!(
+                r#"
+    Md {path} was written by an incompatible `{PKG}` (stamp: {stamp}, expected: {STAMP}).
+    Let's remove the current $CARGO_TARGET_DIR {target_dir}
+    then run your command again.
+"#,
+                stamp = md.stamp,
+                target_dir = TARGET_DIR.as_str(),
+            )
+        }
+
+        Ok(md)
     }
 
     pub(crate) fn write_to(&self, path: &Utf8Path) -> Result<String> {
@@ -433,6 +455,7 @@ fn md_ser() {
     use crate::stage::RUST;
 
     let md = Md {
+        stamp: STAMP,
         this: 0x711ba64e1183a234.into(),
         externs: [NamedMount { name: RUST.clone(), mount: "blop".into() }].into(),
         deps: [0x81529f4c2380d9ec.into(), 0x88a4324b2aff6db9.into()].into(),
@@ -462,6 +485,7 @@ fn md_ser() {
 
     pretty_assertions::assert_eq!(
         r#"
+stamp = 1
 this = "711ba64e1183a234"
 deps = [
     "81529f4c2380d9ec",
