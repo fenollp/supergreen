@@ -6,7 +6,7 @@ const REWRITE_TARGETDIR: bool = true; // TODO: turn into a CARGOGREEN_EXPERIMENT
 
 pub(crate) const VIRTUAL_TARGET_DIR: &str = "/target/";
 
-static TARGET_DIR: LazyLock<Utf8PathBuf> = LazyLock::new(|| {
+pub(crate) static TARGET_DIR: LazyLock<Utf8PathBuf> = LazyLock::new(|| {
     env::var("CARGO_TARGET_DIR")
         .expect("BUG: $CARGO_TARGET_DIR is unset (or not utf-8 encoded)")
         .into()
