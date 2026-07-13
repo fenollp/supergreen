@@ -725,3 +725,7 @@ fi
 echo "$name_at_version"
 echo "Target dir: $tmptrgt"
 echo "Logs: $tmplogs"
+
+for arg in "$@"; do
+  "$0" "$arg"
+done
