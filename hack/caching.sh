@@ -115,6 +115,8 @@ echo
 reg1=$(mktemp -d) ; prt1=12345
 reg2=$(mktemp -d) ; prt2=23456
 registry_proxy=mirror.gcr.io # dockerhub gets annoying
+docker kill regis3-1 >/dev/null 2>&1 || true
+docker kill regis3-2 >/dev/null 2>&1 || true
 docker run --rm -it --name regis3-1 -d --user $(id -u):$(id -g) -p $prt1:5000 -v $reg1:/var/lib/registry $registry_proxy/registry:3
 docker run --rm -it --name regis3-2 -d --user $(id -u):$(id -g) -p $prt2:5000 -v $reg2:/var/lib/registry $registry_proxy/registry:3
 export CARGOGREEN_CACHE_IMAGES=docker-image://localhost:$prt1/ca/ching,docker-image://localhost:$prt2/ca/ching # read & write
