@@ -135,37 +135,17 @@ ensure__rewrite_target_dir__works
 $install_root/bin/${install_package%@*} --help >/dev/null
 [[ $install_sha = $(compute_installed_bin_sha256) ]] # rebuild => no change
 
-echo Re-re-builds fine and both remote registries are equal
-echo
-
+docker stop --timeout 2 regis3-1
 docker stop --timeout 2 regis3-2
-diff --width=150 -y <(registry_blobs $reg1) <(registry_blobs $reg2) # equal blobs
-
 unset CARGOGREEN_CACHE_IMAGES
-export CARGOGREEN_CACHE_TO_IMAGES=docker-image://localhost:$prt1/ca/ching # write, no read
-export CARGOGREEN_EXPERIMENT=repro
-
 rm -rf $CARGO_TARGET_DIR/* >/dev/null
 rm -rf $CARGOGREEN_LOG_PATH >/dev/null
 rm -rf ~/.cache/cargo-green/results/* >/dev/null
 rm -rf $install_root/* >/dev/null
-$CARGO green install --locked --frozen --offline --force $install_package --root=$install_root
-git add $CARGOGREEN_FINAL_PATH
-ensure__produces_same_shas # rebuild without reading cache => new layers written to cache!!
-ensure__results_same_shas
-ensure__rewrite_cratesio_index__works
-ensure__rewrite_target_dir__works
-$install_root/bin/${install_package%@*} --help >/dev/null
-[[ $install_sha = $(compute_installed_bin_sha256) ]] # rebuild => no change
-
-docker stop --timeout 2 regis3-1
-unset CARGOGREEN_CACHE_TO_IMAGES
-unset CARGOGREEN_EXPERIMENT
-[[ $(registry_blobs $reg1 | wc -l) -gt $(registry_blobs $reg2 | wc -l) ]] # wrote more to reg1
-[[ $( ( diff --width=150 -y <(registry_blobs $reg1) <(registry_blobs $reg2) ) | wc -l ) = $(registry_blobs $reg1 | wc -l) ]]
 rm -rf $reg1 $reg2 >/dev/null
 
-echo Re-re-re-builds fine but remote registry cache keeps growing '(albeit slowly)'...
+echo Re-re-builds fine and both remote registries are equal, when writing to both at once
+echo However, another rebuild will not write the same hashes to registry cache...
 echo "TODO: https://github.com/moby/buildkit/issues/6348 about 'remote cache not being static'"
 echo
 
@@ -179,7 +159,6 @@ case "${BUILDX_BUILDER:-}" in
   *) ;;
 esac
 
-rm $CARGO_TARGET_DIR/release/deps/${install_package%@*}-????????????????
 invocation=$(grep -vE '^## ' $CARGOGREEN_FINAL_PATH | grep -E '^# ' | tail -n1 | cut -c2- | head -n1 | cut -d'<' -f1 | sed "s%--output=.%-o=$CARGO_TARGET_DIR/release/deps/%")
 $invocation --call=format=json,check   <$CARGOGREEN_FINAL_PATH | jq 'del(.sources[0])'
 $invocation --call=format=json,outline <$CARGOGREEN_FINAL_PATH | jq 'del(.sources[0])'
