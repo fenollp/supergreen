@@ -156,9 +156,10 @@ all:
 * [ ] [`buildx`: `--cache-from` takes longer than actual (cached) build](https://github.com/docker/buildx/issues/3491)
 * [ ] [`buildx`: The cache export step hangs](https://github.com/docker/buildx/issues/537)
 * [ ] [`buildkit`: `COPY --rewrite-timestamp ...` to apply SOURCE_DATE_EPOCH build arg value to the timestamps of the files](https://github.com/moby/buildkit/issues/6348)
+  * [*remote cache not meant to be "static"*](https://github.com/moby/buildkit/issues/6348#issuecomment-3517990176)
 * [ ] [`buildkit`: Dockerfile frontend: `ADD --checksum=.. https://..` hides HTTP error](https://github.com/moby/buildkit/issues/6380)
 * [ ] [`buildkit`: Support passing `--local context=FILE`](https://github.com/moby/buildkit/issues/6410)
-* [ ] [`buildkit`: dockerfile: use containerd's defaults.DefaultMax{Recv,Send}MsgSize where constants were hardcoded](https://github.com/moby/buildkit/pull/6951)
+* [x] [`buildkit`: dockerfile: use containerd's defaults.DefaultMax{Recv,Send}MsgSize where constants were hardcoded](https://github.com/moby/buildkit/pull/6951)
 * [ ] [`buildkit`: dockerfile: treat ADD source as git URL when --keep-git-dir is set](https://github.com/moby/buildkit/pull/6952)
 
 
