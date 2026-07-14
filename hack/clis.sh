@@ -454,7 +454,7 @@ $(unset_action_envs)
       run: |
 $(unset_action_envs)
         env ${envvars[@]} \\
-          $cargo green -vv install --jobs=1 --locked --force --root=$root $(as_install "$name_at_version") $@ |& tee _
+          $cargo green -vv install --jobs=1 --locked --force --root=$root $(as_install "$name_at_version") $@ |& tee _ && printf '' >_
     - if: \${{ always() && matrix.toolchain != '$stable' }}
       uses: $action__upload_artifact
       name: Upload recipe

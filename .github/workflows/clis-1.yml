@@ -215,7 +215,7 @@ jobs:
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env  \
-          cargo green -vv install --jobs=1 --locked --force --root=/tmp buildxargs --git https://github.com/fenollp/buildxargs.git |& tee _
+          cargo green -vv install --jobs=1 --locked --force --root=/tmp buildxargs --git https://github.com/fenollp/buildxargs.git |& tee _ && printf '' >_
     - if: ${{ always() && matrix.toolchain != '1.96.0' }}
       uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
       name: Upload recipe
@@ -682,7 +682,7 @@ jobs:
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env  \
-          cargo green -vv install --jobs=1 --locked --force --root=/tmp cargo-audit@0.22.0 --features=fix |& tee _
+          cargo green -vv install --jobs=1 --locked --force --root=/tmp cargo-audit@0.22.0 --features=fix |& tee _ && printf '' >_
     - if: ${{ always() && matrix.toolchain != '1.96.0' }}
       uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
       name: Upload recipe
@@ -1149,7 +1149,7 @@ jobs:
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env  \
-          cargo green -vv install --jobs=1 --locked --force --root=/tmp cargo-deny@0.18.5  |& tee _
+          cargo green -vv install --jobs=1 --locked --force --root=/tmp cargo-deny@0.18.5  |& tee _ && printf '' >_
     - if: ${{ always() && matrix.toolchain != '1.96.0' }}
       uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
       name: Upload recipe
@@ -1616,7 +1616,7 @@ jobs:
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env  \
-          cargo green -vv install --jobs=1 --locked --force --root=/tmp cargo-fuzz@0.13.1  |& tee _
+          cargo green -vv install --jobs=1 --locked --force --root=/tmp cargo-fuzz@0.13.1  |& tee _ && printf '' >_
     - if: ${{ always() && matrix.toolchain != '1.96.0' }}
       uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
       name: Upload recipe
@@ -2083,7 +2083,7 @@ jobs:
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env CARGOGREEN_COMPONENTS=llvm-tools-preview \
-          cargo green -vv install --jobs=1 --locked --force --root=/tmp cargo-llvm-cov@0.6.21  |& tee _
+          cargo green -vv install --jobs=1 --locked --force --root=/tmp cargo-llvm-cov@0.6.21  |& tee _ && printf '' >_
     - if: ${{ always() && matrix.toolchain != '1.96.0' }}
       uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
       name: Upload recipe
@@ -2550,7 +2550,7 @@ jobs:
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env  \
-          cargo green -vv install --jobs=1 --locked --force --root=/tmp cargo-nextest@0.9.114  |& tee _
+          cargo green -vv install --jobs=1 --locked --force --root=/tmp cargo-nextest@0.9.114  |& tee _ && printf '' >_
     - if: ${{ always() && matrix.toolchain != '1.96.0' }}
       uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
       name: Upload recipe
@@ -3017,7 +3017,7 @@ jobs:
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env  \
-          cargo green -vv install --jobs=1 --locked --force --root=/tmp cross@0.2.5 --git https://github.com/cross-rs/cross.git --rev=49cd054de9b832dfc11a4895c72b0aef533b5c6a --bin=cross |& tee _
+          cargo green -vv install --jobs=1 --locked --force --root=/tmp cross@0.2.5 --git https://github.com/cross-rs/cross.git --rev=49cd054de9b832dfc11a4895c72b0aef533b5c6a --bin=cross |& tee _ && printf '' >_
     - if: ${{ always() && matrix.toolchain != '1.96.0' }}
       uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
       name: Upload recipe
@@ -3484,7 +3484,7 @@ jobs:
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env  \
-          cargo green -vv install --jobs=1 --locked --force --root=/tmp dbcc@2.2.1  |& tee _
+          cargo green -vv install --jobs=1 --locked --force --root=/tmp dbcc@2.2.1  |& tee _ && printf '' >_
     - if: ${{ always() && matrix.toolchain != '1.96.0' }}
       uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
       name: Upload recipe
@@ -3951,7 +3951,7 @@ jobs:
         unset CARGO_TERM_COLOR
         unset CARGO_UNSTABLE_SPARSE_REGISTRY
         env CARGOGREEN_ADD_APT=libpq-dev \
-          cargo green -vv install --jobs=1 --locked --force --root=/tmp diesel_cli@2.3.4 --no-default-features --features=postgres |& tee _
+          cargo green -vv install --jobs=1 --locked --force --root=/tmp diesel_cli@2.3.4 --no-default-features --features=postgres |& tee _ && printf '' >_
     - if: ${{ always() && matrix.toolchain != '1.96.0' }}
       uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
       name: Upload recipe
