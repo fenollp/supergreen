@@ -18,11 +18,9 @@
                , "flamegraph"
                , "rqcow2"
                , "verso"
-               , "ntp_daemon"
                , "ntp-daemon"
                , "mussh"
                , "cargo-tally"
-               , "cargo_osdk"
                , "cargo-osdk"
                , "gst-webrtc-signalling-server"
                , "shpool"
@@ -41,7 +39,7 @@
                , "cargo-deny"
                , "sccache"
                , "tract"
-               , "cargo_udeps"
+               , "cargo-udeps"
                , "cfr"
                , "cargo-cbuild"
                , "cargo-nextest"
@@ -51,7 +49,7 @@
                , "stu"
                , "crater"
                , "topiary"
-               , "torrust_index"
+               , "torrust-index"
                ]}},
 
   "target":
@@ -145,11 +143,6 @@
       "dockerfile": "verso@main.Dockerfile",
       "output": ["."]
     }
-  , "ntp_daemon": {
-      "context": "recipes",
-      "dockerfile": "ntpd@1.7.0-alpha.20251003.Dockerfile",
-      "output": ["."]
-    }
   , "ntp-daemon": {
       "context": "recipes",
       "dockerfile": "ntpd@1.7.1.Dockerfile",
@@ -163,11 +156,6 @@
   , "cargo-tally": {
       "context": "recipes",
       "dockerfile": "cargo-tally@1.0.71.Dockerfile",
-      "output": ["."]
-    }
-  , "cargo_osdk": {
-      "context": "recipes",
-      "dockerfile": "asterinas@main.Dockerfile",
       "output": ["."]
     }
   , "cargo-osdk": {
@@ -260,7 +248,7 @@
       "dockerfile": "tract@0.22.1.Dockerfile",
       "output": ["."]
     }
-  , "cargo_udeps": {
+  , "cargo-udeps": {
       "context": "recipes",
       "dockerfile": "cargo-udeps@0.1.60.Dockerfile",
       "output": ["."]
@@ -310,7 +298,7 @@
       "dockerfile": "topiary-cli@0.7.3.Dockerfile",
       "output": ["."]
     }
-  , "torrust_index": {
+  , "torrust-index": {
       "context": "recipes",
       "dockerfile": "torrust-index@4.0.0-develop.Dockerfile",
       "output": ["."]
