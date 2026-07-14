@@ -238,7 +238,7 @@ as_env() {
     cargo-authors@*) envvars+=(CARGOGREEN_ADD_APT='libcurl4-openssl-dev,"libssl-dev(>=3.5)",pkg-config') ;;
     cargo-c@*) envvars+=(CARGOGREEN_ADD_APT='libcurl4-openssl-dev,"libssl-dev(>=3.5)",pkg-config') ;;
     cargo-llvm-cov@*) envvars+=(CARGOGREEN_COMPONENTS='llvm-tools-preview') ;;
-    cargo-udeps@*) envvars+=(CARGOGREEN_ADD_APT='libcurl4-openssl-dev,libssl-dev=3.5.5-1~deb13u2,pkg-config,zlib1g-dev') ;;
+    cargo-udeps@*) envvars+=(CARGOGREEN_ADD_APT='libcurl4-openssl-dev,"libssl-dev(>=3.5)",pkg-config,zlib1g-dev') ;;
     coccinelleforrust@*) envvars+=(CARGOGREEN_ADD_APT='python3-dev') ;;
     crater@*) envvars+=(CARGOGREEN_ADD_APT='build-essential,ca-certificates,cmake,curl,git,libsqlite3-dev,libssh2-1-dev,libssl-dev,pkg-config,zlib1g-dev') ;; # From https://github.com/rust-lang/crater/blob/102a0c7b0e4298e7f21c8e177120b6e143409d63/Dockerfile#L11-L18
     diesel_cli@*) envvars+=(CARGOGREEN_ADD_APT='libpq-dev') ;;
@@ -251,8 +251,8 @@ as_env() {
     pyrefly@*) envvars+=(CARGOGREEN_ADD_APT='make') ;;
     rapidraw@*) envvars+=(CARGOGREEN_ADD_APT='g++,libgtk-3-dev,libjavascriptcoregtk-4.1-dev,libsoup-3.0-dev,libssl-dev=3.5.5-1~deb13u2,libwebkit2gtk-4.1-dev') ;;
     rublk@*) envvars+=(CARGOGREEN_ADD_APT='libclang-dev') ;;
-    sccache@*) envvars+=(CARGOGREEN_ADD_APT='libssl-dev=3.5.5-1~deb13u2,pkg-config,zlib1g-dev') ;;
-    torrust-index@*) envvars+=(CARGOGREEN_ADD_APT='libssl-dev=3.5.5-1~deb13u2,pkg-config,zlib1g-dev') ;;
+    sccache@*) envvars+=(CARGOGREEN_ADD_APT='"libssl-dev(>=3.5)",pkg-config,zlib1g-dev') ;;
+    torrust-index@*) envvars+=(CARGOGREEN_ADD_APT='"libssl-dev(>=3.5)",pkg-config,zlib1g-dev') ;;
     zed@*) envvars+=(CARGOGREEN_ADD_APT='build-essential,clang,cmake,curl,elfutils,g++,gcc,gettext-base,git,jq,libasound2-dev,libfontconfig-dev,libgit2-dev,libglib2.0-dev,libsqlite3-dev,libssl-dev=3.5.5-1~deb13u2,libva-dev,libvulkan1,libwayland-dev,libx11-xcb-dev,libxkbcommon-x11-dev,libzstd-dev,lld,llvm,make,musl-dev,musl-tools,pipewire,xdg-desktop-portal') ;; # From https://github.com/zed-industries/zed/blob/v0.233.10/script/linux#L25-L52
     *) ;;
   esac
