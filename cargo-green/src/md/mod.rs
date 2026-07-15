@@ -196,7 +196,7 @@ impl Md {
         if maybe_log().is_some() {
             match fs::read_to_string(path) {
                 Ok(data) => data,
-                Err(e) => e.to_string(),
+                Err(e) => format!("Failed reading {path}: {e}"),
             }
             .lines()
             .filter(|x| !x.is_empty())
