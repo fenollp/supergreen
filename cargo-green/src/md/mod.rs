@@ -1,8 +1,14 @@
 // Our own MetaData utils
 
-use std::{fs, io::ErrorKind, rc::Rc, str::FromStr};
+use std::{
+    fs,
+    io::{ErrorKind, Write},
+    rc::Rc,
+    str::FromStr,
+};
 
 use anyhow::{Result, anyhow, bail};
+use atomic_write_file::AtomicWriteFile;
 use camino::{Utf8Path, Utf8PathBuf};
 use indexmap::{IndexMap, IndexSet};
 use log::{info, trace, warn};
@@ -177,11 +183,15 @@ impl Md {
     }
 
     pub(crate) fn write_to(&self, path: &Utf8Path) -> Result<String> {
-        let md_ser =
-            self.to_string_pretty().map_err(|e| anyhow!("Failed serializing Md {path}: {e}"))?;
+        let md_ser = self
+            .to_string_pretty()
+            .map_err(|e| anyhow!("Failed serializing Md {}: {e}", self.this))?;
 
-        info!("opening (RW) Md {path}");
-        fs::write(path, &md_ser).map_err(|e| anyhow!("Failed creating {path}: {e}"))?;
+        info!("opening (Watomic) Md {path}");
+        let mut file = AtomicWriteFile::open(path)
+            .map_err(|e| anyhow!("Failed opening atomic {path}: {e}"))?;
+        file.write_all(md_ser.as_bytes()).map_err(|e| anyhow!("Failed writing {path}: {e}"))?;
+        file.commit().map_err(|e| anyhow!("Failed committing {path}: {e}"))?;
 
         if maybe_log().is_some() {
             match fs::read_to_string(path) {
