@@ -4,7 +4,7 @@ use std::{
     io::Write,
 };
 
-use anyhow::Result;
+use anyhow::{Result, anyhow};
 use camino::{Utf8Path, Utf8PathBuf};
 use indexmap::IndexSet;
 use log::info;
@@ -65,7 +65,9 @@ impl Green {
                 info!("writing (AW) final path {path}");
                 opts.append(true);
             } else {
-                for line in fs::read_to_string(containerfile)?.lines() {
+                let whole = fs::read_to_string(containerfile)
+                    .map_err(|e| anyhow!("Failed opening (RO) {containerfile}: {e}"))?;
+                for line in whole.lines() {
                     if !line.starts_with(DIESES) {
                         fbuf.push_str(line);
                         fbuf.push('\n');
@@ -103,7 +105,9 @@ impl Green {
 
             if self.finalpathcomments() {
                 fbuf.push('\n');
-                for md_line in fs::read_to_string(md_path)?.lines() {
+                let whole = fs::read_to_string(md_path)
+                    .map_err(|e| anyhow!("Failed opening (RO) {md_path}: {e}"))?;
+                for md_line in whole.lines() {
                     Md::comment_pretty(md_line, &mut fbuf);
                 }
             }
