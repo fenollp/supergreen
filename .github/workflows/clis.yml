@@ -127,7 +127,7 @@ jobs:
         - {"nv":"gifski@1.34.0","bin":"gifski","sha1":"cb547af1c1286f104cb9d2a7c58a280833b4a13f"}
         - {"nv":"flamegraph@0.6.10","args":"--bin=flamegraph","bin":"flamegraph","sha1":"afc66dca62b5aef70bfcfc0fa5643f107bae7aa3"}
         - {"nv":"qair@main","args":"--git https://codeberg.org/willempx/qair.git --tag=0.7.0","cargo":"cargo +1.78.0","bin":"qair","sha1":"793ce894437ffd56570abda5bfda0bd07267716e"}
-        - {"nv":"rusty-man@master","args":"--git https://git.sr.ht/~ireas/rusty-man --tag=v0.5.0","cargo":"cargo +1.78.0","envs":{"CARGOGREEN_SYNTAX_IMAGE":"docker-image://docker.io/fenollexai/moby_buildkit:addgit@sha256:6181f8816e13703882d97fd9e616d18edef346bbb55d06b847eec8be6854729f"},"bin":"NOBINYET","sha1":"5610aed5380181e1ae28d9aae54e2f3c2b18974e"}
+        - {"nv":"rusty-man@master","args":"--git https://git.sr.ht/~ireas/rusty-man --tag=v0.5.0","cargo":"cargo +1.78.0","envs":{"CARGOGREEN_SYNTAX_IMAGE":"docker-image://docker.io/fenollexai/moby_buildkit:addgit@sha256:6181f8816e13703882d97fd9e616d18edef346bbb55d06b847eec8be6854729f"},"bin":"rusty-man","sha1":"8f269ac1e5c56a02ec49137b537ef87a62bbd22d"}
         - {"nv":"cargo-osdk@main","args":"--git=https://github.com/asterinas/asterinas --tag=v0.16.1","bin":"cargo-osdk","sha1":"50f5f457249793006f4aeabbabdbe9a2d3ce4bad"}
         - {"nv":"fargo@main","args":"--git https://fuchsia.googlesource.com/fargo --rev=a7d967b","cargo":"cargo +1.78.0","bin":"fargo","sha1":"c41ccb45b3de760dfd651c5954574f672a33ff29"}
         - {"nv":"harper-ls@master","args":"--git https://github.com/Automattic/harper.git --tag=v1.1.0","bin":"harper-ls","sha1":"86e98ed095a3c291acf99d34d4968d8c1f0c1372"}
