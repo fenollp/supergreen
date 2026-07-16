@@ -573,9 +573,21 @@ async fn build_stdout(
         return Ok((errcode, effects, None));
     }
 
-    let mut result = if let Some(ref dirs) = dirs { dirs.new_result(&target).await? } else { None };
-    if let Some(ref mut result) = result {
-        result.add_tarball(&buf).await?;
+    // Let's not fail when we can't store results
+    let mut result = None;
+    if let Some(ref dirs) = dirs {
+        match dirs.new_result(&target).await {
+            Err(e) => warn!("unable to create build results: {e}"),
+            Ok(None) => {}
+            Ok(Some(mut res)) => {
+                if let Err(e) = res.add_tarball(&buf).await {
+                    warn!("unable to write build results: {e}");
+                    res.discard().await;
+                    return Ok((errcode, effects, None));
+                }
+                result = Some(res);
+            }
+        }
     }
 
     Ok((errcode, effects, result))
