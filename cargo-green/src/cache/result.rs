@@ -4,7 +4,7 @@
 use anyhow::{Result, anyhow, bail};
 use async_compression::tokio::{bufread::GzipDecoder, write::GzipEncoder};
 use camino::{Utf8Path, Utf8PathBuf};
-use log::{debug, info};
+use log::{debug, info, warn};
 use tokio::{
     fs::{self, File, OpenOptions},
     io::{AsyncReadExt, AsyncWriteExt, BufReader, BufWriter},
@@ -58,7 +58,7 @@ impl ResultWriter {
             .map_err(|e| anyhow!("Failed appending tar to result: {e}"))
     }
 
-    pub(crate) async fn finalize(self, md_ser: String) -> Result<()> {
+    pub(crate) async fn finalize(self, md_ser: &str) -> Result<()> {
         let Self { tmp, dst, mut w } = self;
 
         let header = header_for("md.toml", md_ser.len())?;
@@ -71,12 +71,22 @@ impl ResultWriter {
         finished_encoder.shutdown().await.map_err(|e| anyhow!("Failed flushing result: {e}"))?;
 
         if dst.exists() {
+            debug!("{dst} already exists, dropping work");
             fs::remove_file(&tmp).await.map_err(|e| anyhow!("Failed `rm {tmp}`: {e}"))?;
         } else {
             info!("moving result to {dst}");
             fs::rename(&tmp, &dst).await.map_err(|e| anyhow!("Failed `mv {tmp} {dst}`: {e}"))?;
         }
         Ok(())
+    }
+
+    /// Drops a result that must not be reused (e.g. from a failed rustc call).
+    pub(crate) async fn discard(self) {
+        let Self { tmp, w, .. } = self;
+        drop(w);
+        if let Err(e) = fs::remove_file(&tmp).await {
+            warn!("Failed discarding result {tmp}: {e}");
+        }
     }
 }
 
