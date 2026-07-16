@@ -6,7 +6,7 @@ use log::{debug, info, warn};
 
 use crate::{
     ENV,
-    build::{ERRCODE, Effects, STDERR, STDOUT},
+    build::{ERRCODE, Effects, STDERR, STDOUT, fwd_stderr_to_cargo, fwd_stdout_to_cargo},
     green::Green,
     md::Md,
     stage::Stage,
@@ -142,6 +142,11 @@ impl Md {
             info!("re-opening (RW) crate's md {md_path}");
             md_ser = Some(self.write_to(md_path)?);
         }
+
+        // Now that Md is ready for other processes to use, let's emit to cargo, finally.
+        self.stdout.iter().for_each(|line| fwd_stdout_to_cargo(line, &green.cargo_home));
+        self.stderr.iter().for_each(|line| fwd_stderr_to_cargo(line, &green.cargo_home));
+
         if let Some(result) = result {
             if built.is_ok() {
                 let md_ser = Ok(md_ser)

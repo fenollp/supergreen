@@ -135,8 +135,8 @@ impl Green {
         }
 
         // Forward the wrapped rustc's stdio so cargo behaves as if it had run rustc itself.
-        let _ = fwd_stdout(&out_buf, "➤", &self.cargo_home);
-        let _ = fwd_stderr(&err_buf, "✖", &self.cargo_home);
+        let _ = fwd_stdout(&out_buf, None, &self.cargo_home);
+        let _ = fwd_stderr(&err_buf, None, &self.cargo_home);
         info!("reused {} files from {src}", written.len());
         Ok(true)
     }
@@ -192,6 +192,7 @@ impl Green {
     }
 
     #[expect(clippy::too_many_arguments)]
+    #[must_use]
     fn with_docker_args(
         &self,
         cmd: &mut Command,
@@ -456,6 +457,7 @@ pub(crate) struct Effects {
 }
 
 impl Effects {
+    #[must_use]
     fn try_to_help(&self, runner: &Runner, cargo_home: &str) -> (bool, Error) {
         const TRANSIENT: bool = true;
         let e;
@@ -556,9 +558,11 @@ async fn build_stdout(
     let (errcode, out_buf, err_buf, written) =
         untar_into(&buf, &target, &out_dir, cargo_home.as_str()).await?;
 
-    let FromStdout { stdout, rustc_envs } = fwd_stdout(&out_buf, "➤", &cargo_home);
+    // NOTE: postponing emitting to cargo to after all writes to Md are completed
+    // this way we ensure sibling concurrent processes may never miss Md data (such as .writes)
+    let FromStdout { stdout, rustc_envs } = fwd_stdout(&out_buf, Some("➤"), &cargo_home);
     info!("Buildscript {PKG}-specific config: envs:{}", rustc_envs.len());
-    let FromStderr { stderr, envs, libs } = fwd_stderr(&err_buf, "✖", &cargo_home);
+    let FromStderr { stderr, envs, libs } = fwd_stderr(&err_buf, Some("✖"), &cargo_home);
     info!("Suggested {PKG}-specific config: envs:{} libs:{}", envs.len(), libs.len());
     let effects = Effects { stdout, stderr, rustc_envs, written };
 
@@ -747,6 +751,7 @@ async fn build_stderr(stderr: ChildStderr, mut tx_err: Option<Sender<String>>) -
 }
 
 /// Keep a ~1MB rolling text buffer of stderr for try_to_help
+#[must_use]
 async fn tee_stderr(stderr: ChildStderr) -> String {
     let mut lines = BufReader::new(stderr).lines();
     let mut ring = VecDeque::new();
@@ -761,6 +766,20 @@ async fn tee_stderr(stderr: ChildStderr) -> String {
     String::from_utf8_lossy(ring.make_contiguous()).into_owned()
 }
 
+fn fwd_to_cargo(fwder: impl Fn(String), line: &str, cargo_home: &Utf8Path) {
+    let line = un_virtual_target_dir_str(line);
+    let line = un_rewrite_cargo_home(&line, cargo_home.as_str());
+    fwder(line);
+}
+
+pub(crate) fn fwd_stderr_to_cargo(line: &str, cargo_home: &Utf8Path) {
+    fwd_to_cargo(|line| eprintln!("{line}"), line, cargo_home)
+}
+
+pub(crate) fn fwd_stdout_to_cargo(line: &str, cargo_home: &Utf8Path) {
+    fwd_to_cargo(|line| println!("{line}"), line, cargo_home)
+}
+
 #[derive(Debug, Default)]
 struct FromStderr {
     stderr: Vec<String>,
@@ -768,16 +787,15 @@ struct FromStderr {
     libs: IndexSet<String>,
 }
 
-fn fwd_stderr(stderr: &str, badge: &'static str, cargo_home: &Utf8Path) -> FromStderr {
+#[must_use]
+fn fwd_stderr(stderr: &str, badge: Option<&'static str>, cargo_home: &Utf8Path) -> FromStderr {
     let mut acc = FromStderr::default();
     for line in stderr.lines() {
-        if line.is_empty() {
-            continue;
-        }
+        let false = line.is_empty() else { continue };
+        let Some(msg) = lift_stdio(line) else { continue };
 
-        debug!("{badge} {}", strip_ansi_escapes(line));
-
-        if let Some(msg) = lift_stdio(line) {
+        if let Some(badge) = badge {
+            debug!("{badge} {}", strip_ansi_escapes(line));
             let mut msg = msg.to_owned();
 
             if let Some(var) = rechrome::env_not_comptime_defined(&msg) {
@@ -799,9 +817,8 @@ fn fwd_stderr(stderr: &str, badge: &'static str, cargo_home: &Utf8Path) -> FromS
             hide_credentials_on_rate_limit(&mut msg);
 
             acc.stderr.push(msg.clone());
-            let msg = un_virtual_target_dir_str(&msg);
-            let msg = un_rewrite_cargo_home(&msg, cargo_home.as_str());
-            eprintln!("{msg}");
+        } else {
+            fwd_stderr_to_cargo(msg, cargo_home);
         }
     }
     acc
@@ -813,17 +830,15 @@ struct FromStdout {
     rustc_envs: IndexMap<String, String>,
 }
 
-fn fwd_stdout(stdout: &str, badge: &'static str, cargo_home: &Utf8Path) -> FromStdout {
+#[must_use]
+fn fwd_stdout(stdout: &str, badge: Option<&'static str>, cargo_home: &Utf8Path) -> FromStdout {
     let mut acc = FromStdout::default();
     for line in stdout.lines() {
-        if line.is_empty() {
-            continue;
-        }
+        let false = line.is_empty() else { continue };
+        let Some(msg) = lift_stdio(line) else { continue };
 
-        debug!("{badge} {}", strip_ansi_escapes(line));
-
-        if let Some(msg) = lift_stdio(line) {
-            info!("(To cargo's STDOUT): {msg}");
+        if let Some(badge) = badge {
+            debug!("{badge} {}", strip_ansi_escapes(line));
 
             if let Some((_, rhs)) = msg.split_once("cargo::").xor(msg.split_once("cargo:")) {
                 // https://doc.rust-lang.org/cargo/reference/build-scripts.html#outputs-of-the-build-script
@@ -879,15 +894,15 @@ fn fwd_stdout(stdout: &str, badge: &'static str, cargo_home: &Utf8Path) -> FromS
             }
 
             acc.stdout.push(msg.to_owned());
-            let msg = un_virtual_target_dir_str(msg);
-            let msg = un_rewrite_cargo_home(&msg, cargo_home.as_str());
-            println!("{msg}");
+        } else {
+            fwd_stdout_to_cargo(msg, cargo_home);
         }
     }
     acc
 }
 
 /// Extract system packages that apt-satisfy wasn't able to install
+#[must_use]
 fn broken_packages<'a>(it: impl Iterator<Item = &'a str>) -> HashSet<&'a str> {
     it.filter_map(|line| line.split_once(" Depends: "))
         .map(|(_, rhs)| rhs)
