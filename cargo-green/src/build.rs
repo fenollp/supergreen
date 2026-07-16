@@ -122,19 +122,22 @@ impl Green {
         std::fs::create_dir_all(out_dir)
             .map_err(|e| anyhow!("Failed to `mkdir -p {out_dir}`: {e}"))?;
 
-        let (out_buf, err_buf, errcode, written) =
+        let (errcode, out_buf, err_buf, written) =
             untar_into(&tarball, target, out_dir, self.cargo_home.as_str()).await?;
+
+        // Shouldn't happen: we're not caching build failures
+        if let Some(code) = errcode
+            && code != 0
+        {
+            warn!("discarding failed result (exit code {code}): {src}");
+            let _ = std::fs::remove_file(&src);
+            return Ok(false);
+        }
 
         // Forward the wrapped rustc's stdio so cargo behaves as if it had run rustc itself.
         let _ = fwd_stdout(&out_buf, "➤", &self.cargo_home);
         let _ = fwd_stderr(&err_buf, "✖", &self.cargo_home);
         info!("reused {} files from {src}", written.len());
-
-        if let Some(code) = errcode
-            && code != 0
-        {
-            bail!("Reused result of a failed rustc (exit code {code})")
-        }
         Ok(true)
     }
 
@@ -167,14 +170,11 @@ impl Green {
                 tui,
             );
 
-            let mut effects = Effects::default();
-            let (status, result) = match self
-                .run_build(&mut effects, cmd, &call, containerfile, target, out_dir, tui)
-                .await
-            {
-                Ok((status, result)) => (status, result),
-                Err(e) => return (call, envs, effects, None, Err(e)),
-            };
+            let (status, effects, result) =
+                match self.run_build(cmd, &call, containerfile, target, out_dir, tui).await {
+                    Ok((status, effects, result)) => (status, effects, result),
+                    Err(e) => return (call, envs, Effects::default(), None, Err(e)),
+                };
 
             // Something is very wrong here. Try to be helpful by logging some info about runner config:
             if !status.success() {
@@ -329,17 +329,15 @@ impl Green {
         (call, envs)
     }
 
-    #[expect(clippy::too_many_arguments)]
     async fn run_build(
         &self,
-        effects: &mut Effects,
         mut cmd: Command,
         call: &str,
         containerfile: &Utf8Path,
         target: &Stage,
         out_dir: Option<&Utf8Path>,
         tui: bool,
-    ) -> Result<(ExitStatus, Option<ResultWriter>)> {
+    ) -> Result<(ExitStatus, Effects, Option<ResultWriter>)> {
         let start = Instant::now();
         let mut child = cmd.spawn().map_err(|e| anyhow!("Failed starting `{call}`: {e}"))?;
 
@@ -361,7 +359,7 @@ impl Green {
                 let target = target.to_owned();
                 let out_dir = out_dir.to_owned();
                 let dirs = self.dirs.clone();
-                let cargo_home = self.cargo_home.to_string();
+                let cargo_home = self.cargo_home.clone();
                 let stdout = child.stdout.take().expect("started");
                 async move { build_stdout(stdout, target, out_dir, dirs, cargo_home).await }
             });
@@ -411,7 +409,8 @@ impl Green {
         const SOME_TIME: Duration = Duration::from_mins(30);
 
         let Some((dbg_out, dbg_err)) = handles else {
-            let Some(tee_err) = tee_err else { return Ok((status, None)) };
+            let mut effects = Effects::default();
+            let Some(tee_err) = tee_err else { return Ok((status, effects, None)) };
             let joined = timeout(SOME_TIME, tee_err).await;
             drop(child);
             match joined {
@@ -423,7 +422,7 @@ impl Green {
                 Ok(Err(e)) => bail!("BUG: stderr tee panic'd or crashed: {e}"),
                 Err(Elapsed { .. }) => bail!("BUG: build took longer than {SOME_TIME:?}"),
             }
-            return Ok((status, None));
+            return Ok((status, effects, None));
         };
         let joined = join!(timeout(SOME_TIME, dbg_out), timeout(SOME_TIME, dbg_err));
         drop(child);
@@ -441,18 +440,8 @@ impl Green {
             (Ok(Ok(Err(e))), _) => {
                 bail!("Something went wrong (maybe retry?): {e}")
             }
-            (Ok(Ok(Ok((out_buf, err_buf, errcode, written, result)))), _) => {
-                let FromStdout { stdout, rustc_envs } = fwd_stdout(&out_buf, "➤", &self.cargo_home);
-                info!("Buildscript {PKG}-specific config: envs:{}", rustc_envs.len());
-                effects.cargo_rustc_env = rustc_envs;
-
-                let FromStderr { stderr, envs, libs } = fwd_stderr(&err_buf, "✖", &self.cargo_home);
-                info!("Suggested {PKG}-specific config: envs:{} libs:{}", envs.len(), libs.len());
-                effects.stdout = stdout;
-                effects.stderr = stderr;
-                effects.written = written;
-
-                Ok((errcode.map(ExitStatus::from_raw).unwrap_or(status), result))
+            (Ok(Ok(Ok((errcode, effects, result)))), _) => {
+                Ok((errcode.map(ExitStatus::from_raw).unwrap_or(status), effects, result))
             }
         }
     }
@@ -463,7 +452,7 @@ pub(crate) struct Effects {
     pub(crate) written: Vec<Utf8PathBuf>,
     pub(crate) stdout: Vec<String>,
     pub(crate) stderr: Vec<String>,
-    pub(crate) cargo_rustc_env: IndexMap<String, String>,
+    pub(crate) rustc_envs: IndexMap<String, String>,
 }
 
 impl Effects {
@@ -554,24 +543,38 @@ async fn build_stdout(
     target: Stage,
     out_dir: Utf8PathBuf,
     dirs: Option<Dirs>,
-    cargo_home: String,
-) -> Result<(String, String, Option<i32>, Vec<Utf8PathBuf>, Option<ResultWriter>)> {
-    let mut result = if let Some(ref dirs) = dirs { dirs.new_result(&target).await? } else { None };
-
-    info!("running untar on STDOUT");
+    cargo_home: Utf8PathBuf,
+) -> Result<(Option<i32>, Effects, Option<ResultWriter>)> {
+    info!("reading TARed build output");
     let mut buf = Vec::new();
     BufReader::new(stdout)
         .read_to_end(&mut buf)
         .await
-        .map_err(|e| anyhow!("Failed getting all the buffer: {e}"))?;
+        .map_err(|e| anyhow!("Failed reading TARed build output: {e}"))?;
     debug!("produced {target} {}B 0x{}", buf.len(), sha256::digest(&buf));
+
+    let (errcode, out_buf, err_buf, written) =
+        untar_into(&buf, &target, &out_dir, cargo_home.as_str()).await?;
+
+    let FromStdout { stdout, rustc_envs } = fwd_stdout(&out_buf, "➤", &cargo_home);
+    info!("Buildscript {PKG}-specific config: envs:{}", rustc_envs.len());
+    let FromStderr { stderr, envs, libs } = fwd_stderr(&err_buf, "✖", &cargo_home);
+    info!("Suggested {PKG}-specific config: envs:{} libs:{}", envs.len(), libs.len());
+    let effects = Effects { stdout, stderr, rustc_envs, written };
+
+    if let Some(code) = errcode
+        && code != 0
+    {
+        warn!("discarding failed result since build failed with exit code {code}");
+        return Ok((errcode, effects, None));
+    }
+
+    let mut result = if let Some(ref dirs) = dirs { dirs.new_result(&target).await? } else { None };
     if let Some(ref mut result) = result {
         result.add_tarball(&buf).await?;
     }
 
-    let (out_handle, err_handle, rcd, written) =
-        untar_into(&buf, &target, &out_dir, &cargo_home).await?;
-    Ok((out_handle, err_handle, rcd, written, result))
+    Ok((errcode, effects, result))
 }
 
 async fn untar_into(
@@ -579,12 +582,13 @@ async fn untar_into(
     target: &Stage,
     out_dir: &Utf8Path,
     cargo_home: &str,
-) -> Result<(String, String, Option<i32>, Vec<Utf8PathBuf>)> {
+) -> Result<(Option<i32>, String, String, Vec<Utf8PathBuf>)> {
     let mut err_handle = String::new();
     let mut out_handle = String::new();
     let mut rcd = None;
     let mut written = vec![];
 
+    info!("unTARing a {} bytes archive", buf.len());
     let mut ar = TarArchive::new(BufReader::new(buf));
     let mut entries = ar.entries().map_err(|e| anyhow!("Failed reading TAR: {e}"))?;
     while let Some(Ok(mut f)) = entries.next().await {
@@ -617,14 +621,13 @@ async fn untar_into(
                 let false = name.as_str().is_empty() else { continue }; // The base dir itself
                 written.push(name.to_owned());
                 info!("creating (RW) {name:?}");
-                let fname = out_dir.join(name);
-                write_build_artifact(header, cargo_home, fname, buf, &f)?;
+                write_build_artifact(header, cargo_home, out_dir.join(name), buf, &f)?;
             }
         }
     }
     info!("rustc wrote {} files:", written.len());
     written.sort();
-    Ok((out_handle, err_handle, rcd, written))
+    Ok((rcd, out_handle, err_handle, written))
 }
 
 fn write_build_artifact(

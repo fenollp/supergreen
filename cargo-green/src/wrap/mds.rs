@@ -125,7 +125,7 @@ impl Md {
         stage: &Stage,
         out_dir: &Utf8Path,
     ) -> Result<()> {
-        let (call, envs, Effects { written, stdout, stderr, cargo_rustc_env }, result, built) =
+        let (call, envs, Effects { written, stdout, stderr, rustc_envs }, result, built) =
             green.build_out(containerfile_path, stage, &self.contexts, out_dir).await;
 
         green
@@ -133,28 +133,25 @@ impl Md {
             .map_err(|e| anyhow!("Failed producing final path: {e}"))?;
 
         let mut md_ser = None;
-        if !written.is_empty()
-            || !stdout.is_empty()
-            || !stderr.is_empty()
-            || !cargo_rustc_env.is_empty()
+        if !written.is_empty() || !stdout.is_empty() || !stderr.is_empty() || !rustc_envs.is_empty()
         {
             self.writes = written;
             self.stdout = stdout;
             self.stderr = stderr;
-            self.set_envs = cargo_rustc_env;
+            self.set_envs = rustc_envs;
             info!("re-opening (RW) crate's md {md_path}");
             md_ser = Some(self.write_to(md_path)?);
         }
         if let Some(result) = result {
-            let md_ser = if let Some(md_ser) = md_ser {
-                md_ser
+            if built.is_ok() {
+                let md_ser = Ok(md_ser)
+                    .transpose()
+                    .unwrap_or_else(|| self.to_string_pretty())
+                    .map_err(|e| anyhow!("Failed serializing Md {md_path}: {e}"))?;
+                result.finalize(&md_ser).await?;
             } else {
-                self.to_string_pretty()
-                    .map_err(|e| anyhow!("Failed serializing Md {md_path}: {e}"))?
-            };
-
-            result.finalize(md_ser).await?;
-            info!("wrote result");
+                result.discard().await
+            }
         }
 
         let base = virtual_target_dir(out_dir);
