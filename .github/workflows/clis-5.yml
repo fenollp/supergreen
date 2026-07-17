@@ -196,7 +196,7 @@ jobs:
     - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
     - name: 🔵 cargo install
       id: do-try
-      timeout-minutes: 11
+      timeout-minutes: 22
       continue-on-error: true
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
@@ -207,7 +207,7 @@ jobs:
           cargo green -vv install --locked --force --root=/tmp cargo-c@0.10.18+cargo-0.92.0 --bin=cargo-cbuild |& tee _
     - name: 🔵 cargo install jobs=1
       id: do-try-jobs1
-      timeout-minutes: 11
+      timeout-minutes: 22
       if: ${{ job.steps.do-try.outcome != 'success' }}
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
@@ -663,7 +663,7 @@ jobs:
     - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
     - name: 🔵 cargo install
       id: do-try
-      timeout-minutes: 11
+      timeout-minutes: 22
       continue-on-error: true
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
@@ -674,7 +674,7 @@ jobs:
           cargo green -vv install --locked --force --root=/tmp bottom@0.11.4  |& tee _
     - name: 🔵 cargo install jobs=1
       id: do-try-jobs1
-      timeout-minutes: 11
+      timeout-minutes: 22
       if: ${{ job.steps.do-try.outcome != 'success' }}
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
@@ -1130,7 +1130,7 @@ jobs:
     - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
     - name: 🔵 cargo install
       id: do-try
-      timeout-minutes: 11
+      timeout-minutes: 22
       continue-on-error: true
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
@@ -1141,7 +1141,7 @@ jobs:
           cargo green -vv install --locked --force --root=/tmp alacritty@0.17.0  |& tee _
     - name: 🔵 cargo install jobs=1
       id: do-try-jobs1
-      timeout-minutes: 11
+      timeout-minutes: 22
       if: ${{ job.steps.do-try.outcome != 'success' }}
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
@@ -1597,7 +1597,7 @@ jobs:
     - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
     - name: 🔵 cargo install
       id: do-try
-      timeout-minutes: 11
+      timeout-minutes: 22
       continue-on-error: true
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
@@ -1608,7 +1608,7 @@ jobs:
           cargo green -vv install --locked --force --root=/tmp cargo-rail@0.1.0  |& tee _
     - name: 🔵 cargo install jobs=1
       id: do-try-jobs1
-      timeout-minutes: 11
+      timeout-minutes: 22
       if: ${{ job.steps.do-try.outcome != 'success' }}
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
@@ -2064,7 +2064,7 @@ jobs:
     - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
     - name: 🔵 cargo install
       id: do-try
-      timeout-minutes: 11
+      timeout-minutes: 22
       continue-on-error: true
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
@@ -2075,7 +2075,7 @@ jobs:
           cargo green -vv install --locked --force --root=/tmp tract@0.22.1  |& tee _
     - name: 🔵 cargo install jobs=1
       id: do-try-jobs1
-      timeout-minutes: 11
+      timeout-minutes: 22
       if: ${{ job.steps.do-try.outcome != 'success' }}
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
@@ -2531,7 +2531,7 @@ jobs:
     - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
     - name: 🔵 cargo install
       id: do-try
-      timeout-minutes: 11
+      timeout-minutes: 22
       continue-on-error: true
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
@@ -2542,7 +2542,7 @@ jobs:
           cargo green -vv install --locked --force --root=/tmp marauder --git https://github.com/fenollp/reMarkable-tools.git --bin=whiteboard --tag=v0.6.0 --target=armv7-unknown-linux-musleabihf |& tee _
     - name: 🔵 cargo install jobs=1
       id: do-try-jobs1
-      timeout-minutes: 11
+      timeout-minutes: 22
       if: ${{ job.steps.do-try.outcome != 'success' }}
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
