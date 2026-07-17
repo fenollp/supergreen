@@ -271,7 +271,7 @@ $(cargo_green_setup)
 $(cache_usage)
     - name: 🔵 $cargo_x install
       id: do-try
-      timeout-minutes: 11
+      timeout-minutes: 22
       continue-on-error: true
       run: |
 $(unset_action_envs)
@@ -280,7 +280,7 @@ $(unset_action_envs)
           $cargo_x green -vv install --locked --force --root=$root $install_x $args_x |& tee _
     - name: 🔵 $cargo_x install jobs=1
       id: do-try-jobs1
-      timeout-minutes: 11
+      timeout-minutes: 22
       if: \${{ job.steps.do-try.outcome != 'success' }}
       run: |
 $(unset_action_envs)

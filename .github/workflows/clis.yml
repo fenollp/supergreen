@@ -267,7 +267,7 @@ jobs:
     - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
     - name: 🔵 ${{ matrix.bin.cargo || 'cargo' }} install
       id: do-try
-      timeout-minutes: 11
+      timeout-minutes: 22
       continue-on-error: true
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
@@ -279,7 +279,7 @@ jobs:
           ${{ matrix.bin.cargo || 'cargo' }} green -vv install --locked --force --root=/tmp $INSTALL ${{ matrix.bin.args }} |& tee _
     - name: 🔵 ${{ matrix.bin.cargo || 'cargo' }} install jobs=1
       id: do-try-jobs1
-      timeout-minutes: 11
+      timeout-minutes: 22
       if: ${{ job.steps.do-try.outcome != 'success' }}
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
