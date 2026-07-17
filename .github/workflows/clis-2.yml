@@ -196,7 +196,7 @@ jobs:
     - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
     - name: 🔵 cargo install
       id: do-try
-      timeout-minutes: 11
+      timeout-minutes: 22
       continue-on-error: true
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
@@ -207,7 +207,7 @@ jobs:
           cargo green -vv install --locked --force --root=/tmp hickory-dns@0.26.0-alpha.1  |& tee _
     - name: 🔵 cargo install jobs=1
       id: do-try-jobs1
-      timeout-minutes: 11
+      timeout-minutes: 22
       if: ${{ job.steps.do-try.outcome != 'success' }}
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
@@ -663,7 +663,7 @@ jobs:
     - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
     - name: 🔵 cargo install
       id: do-try
-      timeout-minutes: 11
+      timeout-minutes: 22
       continue-on-error: true
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
@@ -674,7 +674,7 @@ jobs:
           cargo green -vv install --locked --force --root=/tmp mussh@3.1.3  |& tee _
     - name: 🔵 cargo install jobs=1
       id: do-try-jobs1
-      timeout-minutes: 11
+      timeout-minutes: 22
       if: ${{ job.steps.do-try.outcome != 'success' }}
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
@@ -1130,7 +1130,7 @@ jobs:
     - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
     - name: 🔵 cargo install
       id: do-try
-      timeout-minutes: 11
+      timeout-minutes: 22
       continue-on-error: true
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
@@ -1141,7 +1141,7 @@ jobs:
           cargo green -vv install --locked --force --root=/tmp ntpd@1.7.1 --bin=ntp-daemon |& tee _
     - name: 🔵 cargo install jobs=1
       id: do-try-jobs1
-      timeout-minutes: 11
+      timeout-minutes: 22
       if: ${{ job.steps.do-try.outcome != 'success' }}
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
@@ -1597,7 +1597,7 @@ jobs:
     - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
     - name: 🔵 cargo install
       id: do-try
-      timeout-minutes: 11
+      timeout-minutes: 22
       continue-on-error: true
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
@@ -1608,7 +1608,7 @@ jobs:
           cargo green -vv install --locked --force --root=/tmp qcow2-rs@0.1.6  |& tee _
     - name: 🔵 cargo install jobs=1
       id: do-try-jobs1
-      timeout-minutes: 11
+      timeout-minutes: 22
       if: ${{ job.steps.do-try.outcome != 'success' }}
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
@@ -2064,7 +2064,7 @@ jobs:
     - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
     - name: 🔵 cargo install
       id: do-try
-      timeout-minutes: 11
+      timeout-minutes: 22
       continue-on-error: true
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
@@ -2075,7 +2075,7 @@ jobs:
           cargo green -vv install --locked --force --root=/tmp ripgrep@15.1.0  |& tee _
     - name: 🔵 cargo install jobs=1
       id: do-try-jobs1
-      timeout-minutes: 11
+      timeout-minutes: 22
       if: ${{ job.steps.do-try.outcome != 'success' }}
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
@@ -2531,7 +2531,7 @@ jobs:
     - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
     - name: 🔵 cargo install
       id: do-try
-      timeout-minutes: 11
+      timeout-minutes: 22
       continue-on-error: true
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
@@ -2542,7 +2542,7 @@ jobs:
           cargo green -vv install --locked --force --root=/tmp rublk@0.2.13  |& tee _
     - name: 🔵 cargo install jobs=1
       id: do-try-jobs1
-      timeout-minutes: 11
+      timeout-minutes: 22
       if: ${{ job.steps.do-try.outcome != 'success' }}
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
@@ -2998,7 +2998,7 @@ jobs:
     - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
     - name: 🔵 cargo install
       id: do-try
-      timeout-minutes: 11
+      timeout-minutes: 22
       continue-on-error: true
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
@@ -3009,7 +3009,7 @@ jobs:
           cargo green -vv install --locked --force --root=/tmp shpool@0.9.3  |& tee _
     - name: 🔵 cargo install jobs=1
       id: do-try-jobs1
-      timeout-minutes: 11
+      timeout-minutes: 22
       if: ${{ job.steps.do-try.outcome != 'success' }}
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
@@ -3465,7 +3465,7 @@ jobs:
     - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
     - name: 🔵 cargo install
       id: do-try
-      timeout-minutes: 11
+      timeout-minutes: 22
       continue-on-error: true
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
@@ -3476,7 +3476,7 @@ jobs:
           cargo green -vv install --locked --force --root=/tmp cargo-authors@0.5.5  |& tee _
     - name: 🔵 cargo install jobs=1
       id: do-try-jobs1
-      timeout-minutes: 11
+      timeout-minutes: 22
       if: ${{ job.steps.do-try.outcome != 'success' }}
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
@@ -3932,7 +3932,7 @@ jobs:
     - run: BUILDX_BUILDER=supergreen docker buildx du --verbose
     - name: 🔵 cargo install
       id: do-try
-      timeout-minutes: 11
+      timeout-minutes: 22
       continue-on-error: true
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
@@ -3943,7 +3943,7 @@ jobs:
           cargo green -vv install --locked --force --root=/tmp vixargs@0.1.0  |& tee _
     - name: 🔵 cargo install jobs=1
       id: do-try-jobs1
-      timeout-minutes: 11
+      timeout-minutes: 22
       if: ${{ job.steps.do-try.outcome != 'success' }}
       run: |
         unset CARGO_PROFILE_DEV_DEBUG
