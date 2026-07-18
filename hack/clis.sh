@@ -29,8 +29,6 @@ source "$repo_root"/hack/ck.sh
 # * a matrix of earlier and earlier versions of: buildkit x buildx/docker x cargo/rustc
 # * a local + cached DockerHub proxy
 
-# TODO: set -x in ci
-
 # TODO: set about green's overhead with --timings
 
 # ok: builds | ko: doesn't build | [ok]D: ok|ko but old: shows too many cfg warnings | Ok: takes >=8min in CI
@@ -671,11 +669,99 @@ set -x
     ;;
 esac
 
+
 session_name=$(slugify "$name_at_version") #$(slugify "${DOCKER_HOST:-}")
 tmptrgt=/tmp/clis-$session_name
 tmplogs=$tmptrgt.logs.txt
 tmpgooo=$tmptrgt.state
 tmpbins=/tmp
+
+envvars=(CARGO_INCREMENTAL=0)
+envvars+=(PATH=$shortPATH)
+envvars+=(CARGOGREEN_LOG=debug)
+envvars+=(CARGOGREEN_LOG_PATH="$tmplogs")
+envvars+=(CARGO_TARGET_DIR="$tmptrgt")
+if [[ "$final" = '1' ]]; then
+  envvars+=(CARGOGREEN_FINAL_PATH=recipes/$name_at_version.Dockerfile)
+  envvars+=(CARGOGREEN_EXPERIMENT=finalpathnonprimary) #,finalpathcomments)
+fi
+
+
+
+RUNNER_PATCHED=${RUNNER_PATCHED:-0}                    # Use custom BuildKit+buildx
+if [[ $RUNNER_PATCHED = 1 ]]; then
+  set -x
+  RUNNER_PATCHED_REBUILD=${RUNNER_PATCHED_REBUILD:-0}  # Force patch_and_build_buildkit & _buildx
+  HUBACCOUNT=${HUBACCOUNT:-fenollexai}                 # DockerHub account hosting the patched images
+  MSG_SIZE_MULT=${MSG_SIZE_MULT:-8}                    # Multiply the 16 MiB default (8*16 -> 128 MiB)
+
+  BUILDKIT_REF=9037f21f69a23c8839693910d66ef9e502f63c09
+  BUILDKIT_REF=${BUILDKIT_REF:-$(cat "$repo_root"/cargo-green/latest_buildkit.txt | sed -E 's/([0-9]+[.][0-9]+).+/v\1/')}
+  TAG=patched-$BUILDKIT_REF
+  BUILDER=$HUBACCOUNT/moby_buildkit:$TAG
+  FRONTEND=$HUBACCOUNT/docker_dockerfile:$TAG
+
+  patch_msgsize() {
+    local dir=$1; shift
+    [[ $# -eq 0 ]]
+    for f in $(grep -rlE 'defaults.DefaultMax(Recv|Send)MsgSize' "$dir"); do
+      sed -i -E \
+        -e "s/\((defaults\.DefaultMaxRecvMsgSize)\)/($MSG_SIZE_MULT * \1)/g" \
+        -e "s/\((defaults\.DefaultMaxSendMsgSize)\)/($MSG_SIZE_MULT * \1)/g" \
+        "$f"
+    done
+  }
+
+  patch_and_build_buildkit() {
+    local SRC_DIR=$repo_root/target/cargo-green-patched/buildkit-src
+    mkdir -p "$SRC_DIR"
+    rm -rf "$SRC_DIR"
+    git clone --quiet --depth=1 https://github.com/moby/buildkit.git "$SRC_DIR"
+    pushd "$SRC_DIR"
+    git fetch --quiet --depth=1 origin "$BUILDKIT_REF"
+    git checkout --quiet "$BUILDKIT_REF"
+    popd
+    patch_msgsize "$SRC_DIR"
+    docker buildx build "$SRC_DIR" --target buildkit --push --load \
+      --tag "$BUILDER"
+    docker buildx build "$SRC_DIR" --push --load --file "$SRC_DIR/frontend/dockerfile/cmd/dockerfile-frontend/Dockerfile" \
+      --tag "$FRONTEND"
+  }
+
+  patch_and_build_buildx() {
+    local ref=v0.35.0
+    local SRC_DIR=$repo_root/target/cargo-green-patched/buildx-src
+    mkdir -p "$SRC_DIR"
+    rm -rf "$SRC_DIR"
+    git clone --quiet --depth=1 --branch="$ref" https://github.com/docker/buildx "$SRC_DIR"
+    patch_msgsize "$SRC_DIR"
+    pushd "$SRC_DIR"
+    go build -mod=vendor -trimpath \
+      -ldflags "-X github.com/docker/buildx/version.Version=patched-$ref -X github.com/docker/buildx/version.Revision=a319e5b15052cf6557ceb666eb8ff6e32380b782 -X github.com/docker/buildx/version.Package=github.com/docker/buildx" \
+      -o bin/docker-buildx ./cmd/buildx
+    popd
+    cp "$SRC_DIR"/bin/docker-buildx ~/.docker/cli-plugins/
+    docker buildx version | grep -F "$ref"
+  }
+
+  if [[ $RUNNER_PATCHED_REBUILD = 1 ]]; then
+    patch_and_build_buildkit
+    patch_and_build_buildx
+  fi
+  builder_image="$(docker inspect -f '{{range .RepoDigests}}{{.}}{{end}}' "$BUILDER")"
+  syntax_image="$(docker inspect -f '{{range .RepoDigests}}{{.}}{{end}}' "$FRONTEND")"
+  if [[ $RUNNER_PATCHED_REBUILD = 1 ]]; then
+    docker buildx rm --builder=superpatched --force || true
+    # NOTE: missing many settings with just this command:
+    docker buildx create --bootstrap --name=superpatched --driver=docker-container --driver-opt=image="$builder_image"
+  fi
+  envvars+=(CARGOGREEN_BUILDER_IMAGE=docker-image://$builder_image)
+  envvars+=(CARGOGREEN_SYNTAX_IMAGE=docker-image://$syntax_image)
+  envvars+=(BUILDX_BUILDER=superpatched)
+  set +x
+fi
+
+
 
 if [[ "$rmrf" = '1' ]]; then
   rm -rf "$tmptrgt"/*
@@ -700,15 +786,6 @@ tmux split-window
 
 # RUSTFLAGS="--remap-path-prefix=$tmptrgt="
 
-envvars=(CARGO_INCREMENTAL=0)
-envvars+=(PATH=$shortPATH)
-envvars+=(CARGOGREEN_LOG=debug)
-envvars+=(CARGOGREEN_LOG_PATH="$tmplogs")
-envvars+=(CARGO_TARGET_DIR="$tmptrgt")
-if [[ "$final" = '1' ]]; then
-  envvars+=(CARGOGREEN_FINAL_PATH=recipes/$name_at_version.Dockerfile)
-  envvars+=(CARGOGREEN_EXPERIMENT=finalpathnonprimary) #,finalpathcomments)
-fi
 as_env "$name_at_version"
 send \
   'until' '[[' -f "$tmpgooo".installed ']];' 'do' sleep '.1;' 'done' '&&' rm "$tmpgooo".* \
