@@ -73,7 +73,7 @@ RUN \
         2>          ./../out-597235feaecc7b35-stderr \
         || echo $? >./../out-597235feaecc7b35-errcode\
   ; mv ./build_script_build-597235feaecc7b35 ./_build_script_build-597235feaecc7b35 \
- && printf '#!/bin/sh\nenv CARGOGREEN_EXECUTE_BUILDRS_=$0 cargo-green\n' >./build_script_build-597235feaecc7b35 \
+ && printf '#!/bin/sh\nenv CARGOGREEN_EXECUTEBUILDSCRIPT=$0 cargo-green\n' >./build_script_build-597235feaecc7b35 \
  && chmod +x ./build_script_build-597235feaecc7b35 \
  || echo $? >./../out-597235feaecc7b35-errcode \
   ; find ./ ./../out-597235feaecc7b35-* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' + \
@@ -243,7 +243,7 @@ RUN \
         2>          ./../out-4d5d773b76b7033b-stderr \
         || echo $? >./../out-4d5d773b76b7033b-errcode\
   ; mv ./build_script_build-4d5d773b76b7033b ./_build_script_build-4d5d773b76b7033b \
- && printf '#!/bin/sh\nenv CARGOGREEN_EXECUTE_BUILDRS_=$0 cargo-green\n' >./build_script_build-4d5d773b76b7033b \
+ && printf '#!/bin/sh\nenv CARGOGREEN_EXECUTEBUILDSCRIPT=$0 cargo-green\n' >./build_script_build-4d5d773b76b7033b \
  && chmod +x ./build_script_build-4d5d773b76b7033b \
  || echo $? >./../out-4d5d773b76b7033b-errcode \
   ; find ./ ./../out-4d5d773b76b7033b-* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' + \
@@ -495,7 +495,7 @@ RUN \
         2>          ./../out-428f17aacfa0e1d7-stderr \
         || echo $? >./../out-428f17aacfa0e1d7-errcode\
   ; mv ./build_script_build-428f17aacfa0e1d7 ./_build_script_build-428f17aacfa0e1d7 \
- && printf '#!/bin/sh\nenv CARGOGREEN_EXECUTE_BUILDRS_=$0 cargo-green\n' >./build_script_build-428f17aacfa0e1d7 \
+ && printf '#!/bin/sh\nenv CARGOGREEN_EXECUTEBUILDSCRIPT=$0 cargo-green\n' >./build_script_build-428f17aacfa0e1d7 \
  && chmod +x ./build_script_build-428f17aacfa0e1d7 \
  || echo $? >./../out-428f17aacfa0e1d7-errcode \
   ; find ./ ./../out-428f17aacfa0e1d7-* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' + \
@@ -636,7 +636,7 @@ RUN \
         2>          ./../out-536881358d17decb-stderr \
         || echo $? >./../out-536881358d17decb-errcode\
   ; mv ./build_script_build-536881358d17decb ./_build_script_build-536881358d17decb \
- && printf '#!/bin/sh\nenv CARGOGREEN_EXECUTE_BUILDRS_=$0 cargo-green\n' >./build_script_build-536881358d17decb \
+ && printf '#!/bin/sh\nenv CARGOGREEN_EXECUTEBUILDSCRIPT=$0 cargo-green\n' >./build_script_build-536881358d17decb \
  && chmod +x ./build_script_build-536881358d17decb \
  || echo $? >./../out-536881358d17decb-errcode \
   ; find ./ ./../out-536881358d17decb-* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' + \
@@ -818,7 +818,7 @@ RUN \
         2>          ./../out-c28220131becb7a3-stderr \
         || echo $? >./../out-c28220131becb7a3-errcode\
   ; mv ./build_script_build-c28220131becb7a3 ./_build_script_build-c28220131becb7a3 \
- && printf '#!/bin/sh\nenv CARGOGREEN_EXECUTE_BUILDRS_=$0 cargo-green\n' >./build_script_build-c28220131becb7a3 \
+ && printf '#!/bin/sh\nenv CARGOGREEN_EXECUTEBUILDSCRIPT=$0 cargo-green\n' >./build_script_build-c28220131becb7a3 \
  && chmod +x ./build_script_build-c28220131becb7a3 \
  || echo $? >./../out-c28220131becb7a3-errcode \
   ; find ./ ./../out-c28220131becb7a3-* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' + \
@@ -1069,7 +1069,7 @@ RUN \
         2>          ./../out-e10d6e1d913d5196-stderr \
         || echo $? >./../out-e10d6e1d913d5196-errcode\
   ; mv ./build_script_build-e10d6e1d913d5196 ./_build_script_build-e10d6e1d913d5196 \
- && printf '#!/bin/sh\nenv CARGOGREEN_EXECUTE_BUILDRS_=$0 cargo-green\n' >./build_script_build-e10d6e1d913d5196 \
+ && printf '#!/bin/sh\nenv CARGOGREEN_EXECUTEBUILDSCRIPT=$0 cargo-green\n' >./build_script_build-e10d6e1d913d5196 \
  && chmod +x ./build_script_build-e10d6e1d913d5196 \
  || echo $? >./../out-e10d6e1d913d5196-errcode \
   ; find ./ ./../out-e10d6e1d913d5196-* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' + \
@@ -1253,7 +1253,7 @@ RUN \
         2>          ./../out-8a995a7f7750f100-stderr \
         || echo $? >./../out-8a995a7f7750f100-errcode\
   ; mv ./build_script_build-8a995a7f7750f100 ./_build_script_build-8a995a7f7750f100 \
- && printf '#!/bin/sh\nenv CARGOGREEN_EXECUTE_BUILDRS_=$0 cargo-green\n' >./build_script_build-8a995a7f7750f100 \
+ && printf '#!/bin/sh\nenv CARGOGREEN_EXECUTEBUILDSCRIPT=$0 cargo-green\n' >./build_script_build-8a995a7f7750f100 \
  && chmod +x ./build_script_build-8a995a7f7750f100 \
  || echo $? >./../out-8a995a7f7750f100-errcode \
   ; find ./ ./../out-8a995a7f7750f100-* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' + \
@@ -2003,7 +2003,7 @@ RUN \
         2>          ./../out-3a692f347f0234a9-stderr \
         || echo $? >./../out-3a692f347f0234a9-errcode\
   ; mv ./build_script_build-3a692f347f0234a9 ./_build_script_build-3a692f347f0234a9 \
- && printf '#!/bin/sh\nenv CARGOGREEN_EXECUTE_BUILDRS_=$0 cargo-green\n' >./build_script_build-3a692f347f0234a9 \
+ && printf '#!/bin/sh\nenv CARGOGREEN_EXECUTEBUILDSCRIPT=$0 cargo-green\n' >./build_script_build-3a692f347f0234a9 \
  && chmod +x ./build_script_build-3a692f347f0234a9 \
  || echo $? >./../out-3a692f347f0234a9-errcode \
   ; find ./ ./../out-3a692f347f0234a9-* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' + \
@@ -2251,7 +2251,7 @@ RUN \
         2>          ./../out-fdedcd4255fffbd1-stderr \
         || echo $? >./../out-fdedcd4255fffbd1-errcode\
   ; mv ./build_script_build-fdedcd4255fffbd1 ./_build_script_build-fdedcd4255fffbd1 \
- && printf '#!/bin/sh\nenv CARGOGREEN_EXECUTE_BUILDRS_=$0 cargo-green\n' >./build_script_build-fdedcd4255fffbd1 \
+ && printf '#!/bin/sh\nenv CARGOGREEN_EXECUTEBUILDSCRIPT=$0 cargo-green\n' >./build_script_build-fdedcd4255fffbd1 \
  && chmod +x ./build_script_build-fdedcd4255fffbd1 \
  || echo $? >./../out-fdedcd4255fffbd1-errcode \
   ; find ./ ./../out-fdedcd4255fffbd1-* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' + \
@@ -2504,7 +2504,7 @@ RUN \
         2>          ./../out-42aab15b9570b99a-stderr \
         || echo $? >./../out-42aab15b9570b99a-errcode\
   ; mv ./build_script_build-42aab15b9570b99a ./_build_script_build-42aab15b9570b99a \
- && printf '#!/bin/sh\nenv CARGOGREEN_EXECUTE_BUILDRS_=$0 cargo-green\n' >./build_script_build-42aab15b9570b99a \
+ && printf '#!/bin/sh\nenv CARGOGREEN_EXECUTEBUILDSCRIPT=$0 cargo-green\n' >./build_script_build-42aab15b9570b99a \
  && chmod +x ./build_script_build-42aab15b9570b99a \
  || echo $? >./../out-42aab15b9570b99a-errcode \
   ; find ./ ./../out-42aab15b9570b99a-* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' + \
@@ -2638,7 +2638,7 @@ RUN \
         2>          ./../out-6c9330925f7680f2-stderr \
         || echo $? >./../out-6c9330925f7680f2-errcode\
   ; mv ./build_script_build-6c9330925f7680f2 ./_build_script_build-6c9330925f7680f2 \
- && printf '#!/bin/sh\nenv CARGOGREEN_EXECUTE_BUILDRS_=$0 cargo-green\n' >./build_script_build-6c9330925f7680f2 \
+ && printf '#!/bin/sh\nenv CARGOGREEN_EXECUTEBUILDSCRIPT=$0 cargo-green\n' >./build_script_build-6c9330925f7680f2 \
  && chmod +x ./build_script_build-6c9330925f7680f2 \
  || echo $? >./../out-6c9330925f7680f2-errcode \
   ; find ./ ./../out-6c9330925f7680f2-* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' + \
@@ -2808,7 +2808,7 @@ RUN \
         2>          ./../out-86bee118675d759f-stderr \
         || echo $? >./../out-86bee118675d759f-errcode\
   ; mv ./build_script_build-86bee118675d759f ./_build_script_build-86bee118675d759f \
- && printf '#!/bin/sh\nenv CARGOGREEN_EXECUTE_BUILDRS_=$0 cargo-green\n' >./build_script_build-86bee118675d759f \
+ && printf '#!/bin/sh\nenv CARGOGREEN_EXECUTEBUILDSCRIPT=$0 cargo-green\n' >./build_script_build-86bee118675d759f \
  && chmod +x ./build_script_build-86bee118675d759f \
  || echo $? >./../out-86bee118675d759f-errcode \
   ; find ./ ./../out-86bee118675d759f-* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' + \
@@ -2949,7 +2949,7 @@ RUN \
         2>          ./../out-6b4bed48f49c1f80-stderr \
         || echo $? >./../out-6b4bed48f49c1f80-errcode\
   ; mv ./build_script_build-6b4bed48f49c1f80 ./_build_script_build-6b4bed48f49c1f80 \
- && printf '#!/bin/sh\nenv CARGOGREEN_EXECUTE_BUILDRS_=$0 cargo-green\n' >./build_script_build-6b4bed48f49c1f80 \
+ && printf '#!/bin/sh\nenv CARGOGREEN_EXECUTEBUILDSCRIPT=$0 cargo-green\n' >./build_script_build-6b4bed48f49c1f80 \
  && chmod +x ./build_script_build-6b4bed48f49c1f80 \
  || echo $? >./../out-6b4bed48f49c1f80-errcode \
   ; find ./ ./../out-6b4bed48f49c1f80-* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' + \
@@ -3234,7 +3234,7 @@ RUN \
         2>          ./../out-dcfdd52c8f031d18-stderr \
         || echo $? >./../out-dcfdd52c8f031d18-errcode\
   ; mv ./build_script_build-dcfdd52c8f031d18 ./_build_script_build-dcfdd52c8f031d18 \
- && printf '#!/bin/sh\nenv CARGOGREEN_EXECUTE_BUILDRS_=$0 cargo-green\n' >./build_script_build-dcfdd52c8f031d18 \
+ && printf '#!/bin/sh\nenv CARGOGREEN_EXECUTEBUILDSCRIPT=$0 cargo-green\n' >./build_script_build-dcfdd52c8f031d18 \
  && chmod +x ./build_script_build-dcfdd52c8f031d18 \
  || echo $? >./../out-dcfdd52c8f031d18-errcode \
   ; find ./ ./../out-dcfdd52c8f031d18-* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' + \
@@ -3405,7 +3405,7 @@ RUN \
         2>          ./../out-627e8732e02ab4ed-stderr \
         || echo $? >./../out-627e8732e02ab4ed-errcode\
   ; mv ./build_script_build-627e8732e02ab4ed ./_build_script_build-627e8732e02ab4ed \
- && printf '#!/bin/sh\nenv CARGOGREEN_EXECUTE_BUILDRS_=$0 cargo-green\n' >./build_script_build-627e8732e02ab4ed \
+ && printf '#!/bin/sh\nenv CARGOGREEN_EXECUTEBUILDSCRIPT=$0 cargo-green\n' >./build_script_build-627e8732e02ab4ed \
  && chmod +x ./build_script_build-627e8732e02ab4ed \
  || echo $? >./../out-627e8732e02ab4ed-errcode \
   ; find ./ ./../out-627e8732e02ab4ed-* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' + \
@@ -4245,7 +4245,7 @@ RUN \
         2>          ./../out-80e215e99b127c32-stderr \
         || echo $? >./../out-80e215e99b127c32-errcode\
   ; mv ./build_script_build-80e215e99b127c32 ./_build_script_build-80e215e99b127c32 \
- && printf '#!/bin/sh\nenv CARGOGREEN_EXECUTE_BUILDRS_=$0 cargo-green\n' >./build_script_build-80e215e99b127c32 \
+ && printf '#!/bin/sh\nenv CARGOGREEN_EXECUTEBUILDSCRIPT=$0 cargo-green\n' >./build_script_build-80e215e99b127c32 \
  && chmod +x ./build_script_build-80e215e99b127c32 \
  || echo $? >./../out-80e215e99b127c32-errcode \
   ; find ./ ./../out-80e215e99b127c32-* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' + \

@@ -74,7 +74,7 @@ RUN \
         2>          ./../out-511472849bd6a7b9-stderr \
         || echo $? >./../out-511472849bd6a7b9-errcode\
   ; mv ./build_script_build-511472849bd6a7b9 ./_build_script_build-511472849bd6a7b9 \
- && printf '#!/bin/sh\nenv CARGOGREEN_EXECUTE_BUILDRS_=$0 cargo-green\n' >./build_script_build-511472849bd6a7b9 \
+ && printf '#!/bin/sh\nenv CARGOGREEN_EXECUTEBUILDSCRIPT=$0 cargo-green\n' >./build_script_build-511472849bd6a7b9 \
  && chmod +x ./build_script_build-511472849bd6a7b9 \
  || echo $? >./../out-511472849bd6a7b9-errcode \
   ; find ./ ./../out-511472849bd6a7b9-* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' + \
@@ -223,7 +223,7 @@ RUN \
         2>          /target/release/build/edit-ef0e44c03f8f6e35/../out-ef0e44c03f8f6e35-stderr \
         || echo $? >/target/release/build/edit-ef0e44c03f8f6e35/../out-ef0e44c03f8f6e35-errcode\
   ; mv /target/release/build/edit-ef0e44c03f8f6e35/build_script_build-ef0e44c03f8f6e35 /target/release/build/edit-ef0e44c03f8f6e35/_build_script_build-ef0e44c03f8f6e35 \
- && printf '#!/bin/sh\nenv CARGOGREEN_EXECUTE_BUILDRS_=$0 cargo-green\n' >/target/release/build/edit-ef0e44c03f8f6e35/build_script_build-ef0e44c03f8f6e35 \
+ && printf '#!/bin/sh\nenv CARGOGREEN_EXECUTEBUILDSCRIPT=$0 cargo-green\n' >/target/release/build/edit-ef0e44c03f8f6e35/build_script_build-ef0e44c03f8f6e35 \
  && chmod +x /target/release/build/edit-ef0e44c03f8f6e35/build_script_build-ef0e44c03f8f6e35 \
  || echo $? >/target/release/build/edit-ef0e44c03f8f6e35/../out-ef0e44c03f8f6e35-errcode \
   ; find /target/release/build/edit-ef0e44c03f8f6e35/ /target/release/build/edit-ef0e44c03f8f6e35/../out-ef0e44c03f8f6e35-* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' + \
