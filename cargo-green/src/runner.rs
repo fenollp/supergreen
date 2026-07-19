@@ -10,15 +10,6 @@ use tokio::process::Command;
 
 use crate::green::Green;
 
-// Envs from BuildKit/Buildx/Docker/Podman that we read
-const BUILDKIT_COLORS: &str = "BUILDKIT_COLORS";
-const BUILDKIT_PROGRESS: &str = "BUILDKIT_PROGRESS";
-const BUILDKIT_TTY_LOG_LINES: &str = "BUILDKIT_TTY_LOG_LINES";
-const BUILDX_CPU_PROFILE: &str = "BUILDX_CPU_PROFILE";
-const BUILDX_MEM_PROFILE: &str = "BUILDX_MEM_PROFILE";
-const DOCKER_DEFAULT_PLATFORM: &str = "DOCKER_DEFAULT_PLATFORM";
-const DOCKER_HIDE_LEGACY_COMMANDS: &str = "DOCKER_HIDE_LEGACY_COMMANDS";
-
 #[derive(Debug, Copy, Clone, Default, Serialize, Deserialize, Eq, PartialEq)]
 #[serde(rename_all = "kebab-case")]
 pub(crate) enum Runner {
@@ -86,74 +77,57 @@ impl Runner {
     /// Read envs used by runner, once.
     ///
     /// * <https://docs.docker.com/engine/reference/commandline/cli/#environment-variables>
+    ///   * `BUILDKIT_PROGRESS`
+    ///   * `DOCKER_*`
+    ///   * `HTTP_PROXY`
+    ///   * `HTTPS_PROXY`
+    ///   * `NO_COLOR`
+    ///   * `NO_PROXY`
     /// * <https://docs.docker.com/build/building/variables/#build-tool-configuration-variables>
+    ///   * `BUILDKIT_*`
+    ///   * `BUILDX_*`
+    ///   * `EXPERIMENTAL_BUILDKIT_*`
     pub(crate) fn envs(&self) -> HashMap<String, String> {
-        [
-            BUILDKIT_COLORS,
-            BUILDKIT_HOST!(),
-            BUILDKIT_PROGRESS,
-            BUILDKIT_TTY_LOG_LINES,
-            "BUILDX_BAKE_GIT_AUTH_HEADER",
-            "BUILDX_BAKE_GIT_AUTH_TOKEN",
-            "BUILDX_BAKE_GIT_SSH",
-            BUILDX_BUILDER!(),
-            DOCKER_BUILDKIT!(),
-            "BUILDX_CONFIG",
-            BUILDX_CPU_PROFILE,
-            "BUILDX_EXPERIMENTAL",
-            "BUILDX_GIT_CHECK_DIRTY",
-            "BUILDX_GIT_INFO",
-            "BUILDX_GIT_LABELS",
-            BUILDX_MEM_PROFILE,
-            "BUILDX_METADATA_PROVENANCE",
-            "BUILDX_METADATA_WARNINGS",
-            "BUILDX_NO_DEFAULT_ATTESTATIONS",
-            "BUILDX_NO_DEFAULT_LOAD",
-            "DOCKER_API_VERSION",
-            "DOCKER_CERT_PATH",
-            "DOCKER_CONFIG",
-            "DOCKER_CONTENT_TRUST",
-            "DOCKER_CONTENT_TRUST_SERVER",
-            DOCKER_CONTEXT!(),
-            DOCKER_DEFAULT_PLATFORM,
-            DOCKER_HIDE_LEGACY_COMMANDS,
-            DOCKER_HOST!(),
-            "DOCKER_TLS",
-            "DOCKER_TLS_VERIFY",
-            "EXPERIMENTAL_BUILDKIT_SOURCE_POLICY",
-            "HTTP_PROXY",  //TODO: hinders reproducibility
-            "HTTPS_PROXY", //TODO: hinders reproducibility
-            "NO_PROXY",    //TODO: hinders reproducibility
-            PATH!(),       // Required at least on macOS
-        ]
-        .into_iter()
-        .filter_map(|k| env::var(k).ok().map(|v| (k.to_owned(), v)))
-        .collect()
+        env::vars()
+            .filter(|(k, _)| {
+                [
+                    "HTTP_PROXY",  //TODO: hinders reproducibility
+                    "HTTPS_PROXY", //TODO: hinders reproducibility
+                    "NO_PROXY",    //TODO: hinders reproducibility
+                    PATH!(),       // Required at least on macOS
+                    "NO_COLOR",
+                ]
+                .contains(&k.as_str())
+                    || ["BUILDKIT_", "BUILDX_", "DOCKER_", "EXPERIMENTAL_BUILDKIT_"]
+                        .iter()
+                        .any(|prefix| k.starts_with(prefix))
+            })
+            .collect()
     }
 
     /// Strip out envs that don't affect a build's outputs:
     pub(crate) fn buildnoop_envs(&self) -> Vec<&OsStr> {
+        let mut noops = vec![
+            // Common regardless of Runner
+            OsStr::new("NO_COLOR"),
+            OsStr::new(PATH!()),
+        ];
         if *self == Self::Docker {
-            [
-                BUILDKIT_COLORS,
-                BUILDKIT_HOST!(),
-                BUILDKIT_PROGRESS,
-                BUILDKIT_TTY_LOG_LINES,
-                BUILDX_BUILDER!(),
-                BUILDX_CPU_PROFILE,
-                BUILDX_MEM_PROFILE,
-                DOCKER_CONTEXT!(),
-                DOCKER_DEFAULT_PLATFORM,
-                DOCKER_HIDE_LEGACY_COMMANDS,
-                DOCKER_HOST!(),
-                PATH!(),
-            ]
-            .into_iter()
-            .map(OsStr::new)
-            .collect()
-        } else {
-            vec![OsStr::new(PATH!())]
+            noops.extend_from_slice(&[
+                OsStr::new("BUILDKIT_COLORS"),
+                OsStr::new(BUILDKIT_HOST!()),
+                OsStr::new("BUILDKIT_PROGRESS"),
+                OsStr::new("BUILDKIT_TTY_LOG_LINES"),
+                OsStr::new(BUILDX_BUILDER!()),
+                OsStr::new("BUILDX_CPU_PROFILE"),
+                OsStr::new("BUILDX_MEM_PROFILE"),
+                OsStr::new(DOCKER_CONTEXT!()),
+                OsStr::new("DOCKER_DEFAULT_PLATFORM"),
+                OsStr::new("DOCKER_HIDE_LEGACY_COMMANDS"),
+                OsStr::new(DOCKER_HOST!()),
+            ]);
         }
+        noops
     }
 
     /// Strip out flags that don't affect a build's outputs:
