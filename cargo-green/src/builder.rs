@@ -41,12 +41,12 @@ fn uses_version_newer_or_equal_to() {
 #[serde(default)]
 #[serde(deny_unknown_fields)]
 pub(crate) struct Builder {
-    #[doc = include_str!(concat!("../docs/",BUILDX_BUILDER!(),".md"))]
+    #[doc = envdocs!(BUILDX_BUILDER)]
     #[serde(skip_serializing_if = "Option::is_none")]
     #[serde(rename = "builder-name")]
     pub(crate) name: Option<String>,
 
-    #[doc = include_str!(concat!("../docs/",CARGOGREEN_BUILDER_IMAGE!(),".md"))]
+    #[doc = envdocs!(CARGOGREEN_BUILDER_IMAGE)]
     #[serde(skip_serializing_if = "Option::is_none")]
     #[serde(rename = "builder-image")]
     pub(crate) image: Option<ImageUri>,

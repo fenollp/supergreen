@@ -46,7 +46,7 @@ use crate::{
 #[derive(Debug, Serialize, Deserialize, Default, PartialEq, Eq)]
 #[serde(default, deny_unknown_fields, rename_all = "kebab-case")]
 pub(crate) struct Green {
-    #[doc = include_str!(concat!("../docs/",CARGOGREEN_RUNNER!(),".md"))]
+    #[doc = envdocs!(CARGOGREEN_RUNNER)]
     pub(crate) runner: Runner,
 
     /// Memoized $CARGO_HOME
@@ -65,10 +65,10 @@ pub(crate) struct Green {
     #[serde(flatten)]
     pub(crate) builder: Builder,
 
-    #[doc = include_str!(concat!("../docs/",CARGOGREEN_SYNTAX_IMAGE!(),".md"))]
+    #[doc = envdocs!(CARGOGREEN_SYNTAX_IMAGE)]
     pub(crate) syntax: ImageUri,
 
-    #[doc = include_str!(concat!("../docs/",CARGOGREEN_REGISTRY_MIRRORS!(),".md"))]
+    #[doc = envdocs!(CARGOGREEN_REGISTRY_MIRRORS)]
     #[serde(skip_serializing_if = "Vec::is_empty")]
     pub(crate) registry_mirrors: Vec<String>,
 
@@ -81,18 +81,18 @@ pub(crate) struct Green {
     #[serde(flatten)]
     pub(crate) base: BaseImage,
 
-    #[doc = include_str!(concat!("../docs/",CARGOGREEN_SET_ENVS!(),".md"))]
+    #[doc = envdocs!(CARGOGREEN_SET_ENVS)]
     #[serde(skip_serializing_if = "Vec::is_empty")]
     pub(crate) set_envs: Vec<String>,
 
     #[serde(skip_serializing_if = "Add::is_empty")]
     pub(crate) add: Add,
 
-    #[doc = include_str!(concat!("../docs/",CARGOGREEN_EXPERIMENT!(),".md"))]
+    #[doc = envdocs!(CARGOGREEN_EXPERIMENT)]
     #[serde(skip_serializing_if = "Vec::is_empty")]
     pub(crate) experiment: Vec<String>,
 
-    #[doc = include_str!(concat!("../docs/",CARGOGREEN_COMPONENTS!(),".md"))]
+    #[doc = envdocs!(CARGOGREEN_COMPONENTS)]
     #[serde(skip_serializing_if = "Vec::is_empty")]
     pub(crate) components: Vec<String>,
 }

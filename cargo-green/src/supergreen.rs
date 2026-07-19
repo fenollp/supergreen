@@ -307,33 +307,33 @@ fn csv_uris(xs: &[ImageUri]) -> Option<String> {
 }
 
 macro_rules! var {
-    ($env:expr, $repr:expr) => {
-        ($env, include_str!(concat!("../docs/", $env, ".md")), $repr)
+    ($env:ident, $repr:expr) => {
+        ($env!(), envdocs!($env), $repr)
     };
 }
 
 fn all_envs(green: &Green) -> Vec<(&str, &'static str, Option<String>)> {
     vec![
         // var!(CARGOGREEN!(), env::var(CARGOGREEN!()).ok()),
-        var!(CARGOGREEN_LOG_PATH!(), env::var(CARGOGREEN_LOG_PATH!()).ok()),
-        var!(CARGOGREEN_LOG!(), env::var(CARGOGREEN_LOG!()).ok()),
-        var!(CARGOGREEN_LOG_STYLE!(), env::var(CARGOGREEN_LOG_STYLE!()).ok()),
-        var!(CARGOGREEN_RUNNER!(), Some(green.runner.to_string())),
-        var!(BUILDX_BUILDER!(), green.builder.name.as_deref().map(ToOwned::to_owned)),
-        var!(CARGOGREEN_BUILDER_IMAGE!(), green.builder.image.as_deref().map(ToString::to_string)),
-        var!(CARGOGREEN_SYNTAX_IMAGE!(), Some(green.syntax.to_string())),
-        var!(CARGOGREEN_REGISTRY_MIRRORS!(), csv(&green.registry_mirrors)),
-        var!(CARGOGREEN_CACHE_IMAGES!(), csv_uris(&green.cache.images)),
-        var!(CARGOGREEN_CACHE_FROM_IMAGES!(), csv_uris(&green.cache.from_images)),
-        var!(CARGOGREEN_CACHE_TO_IMAGES!(), csv_uris(&green.cache.to_images)),
-        var!(CARGOGREEN_FINAL_PATH!(), green.r#final.path.as_deref().map(ToString::to_string)),
-        var!(CARGOGREEN_BASE_IMAGE!(), Some(green.base.image.to_string())),
-        var!(CARGOGREEN_SET_ENVS!(), csv(&green.set_envs)),
-        var!(CARGOGREEN_WITH_NETWORK!(), Some(green.base.with_network.to_string())),
-        var!(CARGOGREEN_COMPONENTS!(), csv(&green.components)),
-        var!(CARGOGREEN_ADD_APT!(), csv(&green.add.apt)),
-        var!(CARGOGREEN_ADD_APK!(), csv(&green.add.apk)),
-        var!(CARGOGREEN_EXPERIMENT!(), csv(&green.experiment)),
+        var!(CARGOGREEN_LOG_PATH, env::var(CARGOGREEN_LOG_PATH!()).ok()),
+        var!(CARGOGREEN_LOG, env::var(CARGOGREEN_LOG!()).ok()),
+        var!(CARGOGREEN_LOG_STYLE, env::var(CARGOGREEN_LOG_STYLE!()).ok()),
+        var!(CARGOGREEN_RUNNER, Some(green.runner.to_string())),
+        var!(BUILDX_BUILDER, green.builder.name.as_deref().map(ToOwned::to_owned)),
+        var!(CARGOGREEN_BUILDER_IMAGE, green.builder.image.as_deref().map(ToString::to_string)),
+        var!(CARGOGREEN_SYNTAX_IMAGE, Some(green.syntax.to_string())),
+        var!(CARGOGREEN_REGISTRY_MIRRORS, csv(&green.registry_mirrors)),
+        var!(CARGOGREEN_CACHE_IMAGES, csv_uris(&green.cache.images)),
+        var!(CARGOGREEN_CACHE_FROM_IMAGES, csv_uris(&green.cache.from_images)),
+        var!(CARGOGREEN_CACHE_TO_IMAGES, csv_uris(&green.cache.to_images)),
+        var!(CARGOGREEN_FINAL_PATH, green.r#final.path.as_deref().map(ToString::to_string)),
+        var!(CARGOGREEN_BASE_IMAGE, Some(green.base.image.to_string())),
+        var!(CARGOGREEN_SET_ENVS, csv(&green.set_envs)),
+        var!(CARGOGREEN_WITH_NETWORK, Some(green.base.with_network.to_string())),
+        var!(CARGOGREEN_COMPONENTS, csv(&green.components)),
+        var!(CARGOGREEN_ADD_APT, csv(&green.add.apt)),
+        var!(CARGOGREEN_ADD_APK, csv(&green.add.apk)),
+        var!(CARGOGREEN_EXPERIMENT, csv(&green.experiment)),
     ]
 }
 

@@ -30,11 +30,11 @@ pub(crate) static BASE_IMAGE_LOCKED: LazyLock<ImageUri> = LazyLock::new(|| {
 #[serde(default)]
 #[serde(deny_unknown_fields)]
 pub(crate) struct BaseImage {
-    #[doc = include_str!(concat!("../docs/",CARGOGREEN_WITH_NETWORK!(),".md"))]
+    #[doc = envdocs!(CARGOGREEN_WITH_NETWORK)]
     #[serde(rename = "with-network")]
     pub(crate) with_network: Network,
 
-    #[doc = include_str!(concat!("../docs/",CARGOGREEN_BASE_IMAGE!(),".md"))]
+    #[doc = envdocs!(CARGOGREEN_BASE_IMAGE)]
     #[serde(rename = "base-image")]
     pub(crate) image: ImageUri,
 
