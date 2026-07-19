@@ -8,7 +8,7 @@ use log::{debug, info, warn};
 
 use crate::{
     PKG, VSN,
-    all_our_envs::find_unknowns,
+    all_our_envs::{BUILDKIT_HOST, DOCKER_BUILDKIT, DOCKER_CONTEXT, DOCKER_HOST, find_unknowns},
     base_image::{BASE_IMAGE, BASE_IMAGE_LOCKED},
     cratesio::{self},
     dirs::{cargo_home, pwd},
@@ -18,7 +18,7 @@ use crate::{
     lockfile::{find_lockfile, locked_crates},
     logging::{self, maybe_log},
     network::Network,
-    runner::{BUILDKIT_HOST, DOCKER_BUILDKIT, DOCKER_CONTEXT, DOCKER_HOST, Runner},
+    runner::Runner,
     stage::{RST, Stage},
 };
 
@@ -48,27 +48,29 @@ pub(crate) async fn main(toolchain: &str, is_install: bool) -> Result<Green> {
     green.runner_envs = green.runner.envs();
 
     // Cf. https://docs.docker.com/build/buildkit/#getting-started
-    if green.runner_envs.get(DOCKER_BUILDKIT).is_some_and(|x| x != "1") {
-        bail!("This requires ${DOCKER_BUILDKIT}=1")
+    if green.runner.is_buildkit()
+        && green.runner_envs.get(DOCKER_BUILDKIT!()).is_some_and(|x| x != "1")
+    {
+        bail!("This requires {DOCKER_BUILDKIT}=1")
     }
 
     // Cf. https://docs.docker.com/engine/security/protect-access/
-    if let Some(val) = green.runner_envs.get(DOCKER_HOST) {
-        info!("${DOCKER_HOST} is set to {val:?}");
-        eprintln!("${DOCKER_HOST} is set to {val:?}");
+    if let Some(val) = green.runner_envs.get(DOCKER_HOST!()) {
+        info!("{DOCKER_HOST} is set to {val:?}");
+        eprintln!("{DOCKER_HOST} is set to {val:?}");
     }
 
     // Cf. https://docs.docker.com/reference/cli/docker/#environment-variables
-    if let Some(val) = green.runner_envs.get(DOCKER_CONTEXT) {
-        info!("${DOCKER_CONTEXT} is set to {val:?}");
-        eprintln!("${DOCKER_CONTEXT} is set to {val:?}");
+    if let Some(val) = green.runner_envs.get(DOCKER_CONTEXT!()) {
+        info!("{DOCKER_CONTEXT} is set to {val:?}");
+        eprintln!("{DOCKER_CONTEXT} is set to {val:?}");
     }
 
     // Cf. https://docs.docker.com/build/building/variables/#buildkit_host
-    let buildkit_host = green.runner_envs.get(BUILDKIT_HOST);
+    let buildkit_host = green.runner_envs.get(BUILDKIT_HOST!());
     if let Some(val) = buildkit_host {
-        info!("${BUILDKIT_HOST} is set to {val:?}");
-        eprintln!("${BUILDKIT_HOST} is set to {val:?}");
+        info!("{BUILDKIT_HOST} is set to {val:?}");
+        eprintln!("{BUILDKIT_HOST} is set to {val:?}");
     }
 
     var = BUILDX_BUILDER!();
@@ -85,9 +87,7 @@ pub(crate) async fn main(toolchain: &str, is_install: bool) -> Result<Green> {
         if !name.is_empty()
             && let Some(val) = buildkit_host
         {
-            bail!(
-                "Overriding ${BUILDKIT_HOST}={val:?} while setting ${var}={name:?} is unsupported"
-            )
+            bail!("Overriding {BUILDKIT_HOST}={val:?} while setting ${var}={name:?} is unsupported")
         }
     }
 

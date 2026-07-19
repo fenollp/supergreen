@@ -26,6 +26,7 @@ macro_rules! envname {
     };
 }
 
+envname!(BUILDKIT_HOST);
 envname!(BUILDX_BUILDER); // buildx'
 envname!(CARGO); // rustup setting we read
 envname!(CARGO_CRATE_NAME); // cargo setting we read
@@ -56,7 +57,11 @@ envname!(CARGOGREEN_RUNNER);
 envname!(CARGOGREEN_SET_ENVS);
 envname!(CARGOGREEN_SYNTAX_IMAGE);
 envname!(CARGOGREEN_WITH_NETWORK);
+envname!(DOCKER_BUILDKIT);
+envname!(DOCKER_CONTEXT);
+envname!(DOCKER_HOST);
 envname!(OUT_DIR); // cargo setting we read
+envname!(PATH);
 envname!(RUSTC_WRAPPER); // cargo setting we read/write
 envname!(RUSTUP_TOOLCHAIN); // rustup setting we read
 

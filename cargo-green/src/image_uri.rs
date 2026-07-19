@@ -12,11 +12,7 @@ use reqwest::{Client as ReqwestClient, Request};
 use serde::Deserialize;
 
 use crate::{
-    du::lock_from_builder_cache,
-    ext::CommandExt,
-    green::Green,
-    retrier::Retrier,
-    runner::{DOCKER_HOST, Runner},
+    du::lock_from_builder_cache, ext::CommandExt, green::Green, retrier::Retrier, runner::Runner,
 };
 
 pub(crate) const BAD_CHARS: &[char] = &[' ', '\'', '"', ';', '\\', ','];
@@ -358,7 +354,7 @@ impl Green {
 
             let mut help = "";
             if stderr.to_lowercase().contains(" executable file not found in ")
-                && self.runner_envs.contains_key(DOCKER_HOST)
+                && self.runner_envs.contains_key(DOCKER_HOST!())
             {
                 // TODO: find actual solutions to 'executable file not found in $PATH'
                 // error during connect: Get "http://docker.example.com/v1.51/containers/docker.io/docker/dockerfile:1/json": exec: "ssh": executable file not found in $PATH
