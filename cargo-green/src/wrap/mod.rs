@@ -4,7 +4,11 @@ use anyhow::{Result, anyhow, bail};
 use camino::Utf8PathBuf;
 use tokio::process::Command;
 
-use crate::{ext::CommandExt, green::Green};
+use crate::{
+    all_our_envs::{CARGO_MANIFEST_DIR, CARGO_PKG_NAME, CARGO_PKG_VERSION, RUSTC_WRAPPER},
+    ext::CommandExt,
+    green::Green,
+};
 
 mod build_script;
 mod envs;
@@ -42,7 +46,7 @@ pub(crate) async fn rustc(
         [_driver, bin, ..] if is_rustc(bin) => call_rustc(bin, argv(2)).await,
         [bin, ..] if is_rustc(bin) => call_rustc(bin, argv(1)).await,
         _ => panic!(
-            "BUG: RUSTC_WRAPPER={arg0:?}'s input unexpected:\n\targz = {argz:?}\n\targs = {args:?}\n\tenvs = {vars:?}\n"
+            "BUG: {RUSTC_WRAPPER}={arg0:?}'s input unexpected:\n\targz = {argz:?}\n\targs = {args:?}\n\tenvs = {vars:?}\n"
         ),
     }
 }
@@ -103,9 +107,9 @@ async fn call_rustc(rustc: &str, args: Vec<String>) -> Result<()> {
 
 pub(crate) fn call_config() -> (Option<String>, String, String, Utf8PathBuf) {
     (
-        env::var("CARGO_CRATE_NAME").ok(), // Unset when executing buildrs (always set when building)
-        env::var("CARGO_PKG_NAME").expect("$CARGO_PKG_NAME"),
-        env::var("CARGO_PKG_VERSION").expect("$CARGO_PKG_VERSION"),
-        env::var("CARGO_MANIFEST_DIR").expect("$CARGO_MANIFEST_DIR").into(),
+        env::var(CARGO_CRATE_NAME!()).ok(), // Unset when executing buildrs (always set when building)
+        env::var(CARGO_PKG_NAME!()).expect(CARGO_PKG_NAME),
+        env::var(CARGO_PKG_VERSION!()).expect(CARGO_PKG_VERSION),
+        env::var(CARGO_MANIFEST_DIR!()).expect(CARGO_MANIFEST_DIR).into(),
     )
 }

@@ -10,6 +10,7 @@ use log::{error, info, trace};
 
 use crate::{
     PKG, VSN,
+    all_our_envs::OUT_DIR,
     base_image::rewrite_cargo_home,
     cratesio::rewrite_cratesio_index,
     green::Green,
@@ -69,7 +70,7 @@ pub(crate) async fn exec_build_script(green: Green, exe: Utf8PathBuf) -> Result<
     };
 
     // $OUT_DIR: /target/release/build/proc-macro2-b97492fdd0201a99/out
-    let out_dir_var: Utf8PathBuf = env::var("OUT_DIR").expect("$OUT_DIR").into();
+    let out_dir_var: Utf8PathBuf = env::var(OUT_DIR!()).expect(OUT_DIR).into();
     let Some(mdid) = || -> Option<_> {
         // name: proc-macro2-b97492fdd0201a99
         let name = out_dir_var.parent()?.file_name()?;
@@ -77,7 +78,7 @@ pub(crate) async fn exec_build_script(green: Green, exe: Utf8PathBuf) -> Result<
         let mdid: MdId = name.rsplit('-').next()?.into();
         Some(mdid)
     }() else {
-        bail!("BUG: malformed $OUT_DIR {out_dir_var:?}")
+        bail!("BUG: malformed {OUT_DIR}={out_dir_var:?}")
     };
 
     // Z: for eggZecuting build scripts

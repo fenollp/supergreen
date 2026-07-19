@@ -2,13 +2,15 @@ use std::{env, sync::LazyLock};
 
 use camino::{Utf8Path, Utf8PathBuf};
 
+use crate::all_our_envs::CARGO_TARGET_DIR;
+
 const REWRITE_TARGETDIR: bool = true; // TODO: turn into a CARGOGREEN_EXPERIMENT
 
 pub(crate) const VIRTUAL_TARGET_DIR: &str = "/target/";
 
 pub(crate) static TARGET_DIR: LazyLock<Utf8PathBuf> = LazyLock::new(|| {
-    env::var("CARGO_TARGET_DIR")
-        .expect("BUG: $CARGO_TARGET_DIR is unset (or not utf-8 encoded)")
+    env::var(CARGO_TARGET_DIR!())
+        .unwrap_or_else(|_| panic!("BUG: {CARGO_TARGET_DIR} is unset (or not utf-8 encoded)"))
         .into()
 });
 
@@ -74,7 +76,7 @@ pub(crate) fn locate_path(
 
 #[test]
 fn target_dir_var() {
-    temp_env::with_var("CARGO_TARGET_DIR", Some("/some/path/"), || {
+    temp_env::with_var(CARGO_TARGET_DIR!(), Some("/some/path/"), || {
         assert_eq!(TARGET_DIR.as_str(), "/some/path/");
 
         assert_eq!(host_profile_dir("/some/path/release".into()), None);

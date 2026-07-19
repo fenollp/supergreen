@@ -26,7 +26,7 @@ pub(crate) struct Final {
 }
 
 pub(crate) fn is_primary() -> bool {
-    env::var("CARGO_PRIMARY_PACKAGE").is_ok()
+    env::var(CARGO_PRIMARY_PACKAGE!()).is_ok()
 }
 
 impl Green {

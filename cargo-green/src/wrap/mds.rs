@@ -35,7 +35,7 @@ impl Md {
         };
 
         let mut set: HashSet<_> =
-            ["CARGO".to_owned(), "RUSTC".to_owned(), "RUSTUP_TOOLCHAIN".to_owned()].into();
+            [CARGO!().to_owned(), "RUSTC".to_owned(), RUSTUP_TOOLCHAIN!().to_owned()].into();
 
         let mut vars = env::vars().collect::<Vec<_>>();
         vars.sort_by(|(a, _), (b, _)| a.cmp(b));

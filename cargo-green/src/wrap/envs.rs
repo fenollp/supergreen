@@ -147,7 +147,7 @@ pub(crate) fn rewrite_env(val: &str, cargo_home: &Utf8Path) -> Result<String> {
 
 #[test]
 fn test_rewrite_env() {
-    temp_env::with_var("CARGO_TARGET_DIR", Some("/some/path/"), || {
+    temp_env::with_var(CARGO_TARGET_DIR!(), Some("/some/path/"), || {
         let cargo_home: camino::Utf8PathBuf = "/some/other/path".into();
 
         assert_eq!(
