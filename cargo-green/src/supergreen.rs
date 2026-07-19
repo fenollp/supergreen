@@ -314,7 +314,7 @@ macro_rules! var {
 
 fn all_envs(green: &Green) -> Vec<(&str, &'static str, Option<String>)> {
     vec![
-        // var!(CARGOGREEN!(), env::var(CARGOGREEN!()).ok()),
+        // var!(CARGOGREEN, env::var(CARGOGREEN!()).ok()),
         var!(CARGOGREEN_LOG_PATH, env::var(CARGOGREEN_LOG_PATH!()).ok()),
         var!(CARGOGREEN_LOG, env::var(CARGOGREEN_LOG!()).ok()),
         var!(CARGOGREEN_LOG_STYLE, env::var(CARGOGREEN_LOG_STYLE!()).ok()),

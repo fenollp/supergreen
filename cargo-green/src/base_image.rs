@@ -7,6 +7,7 @@ use serde::{Deserialize, Serialize};
 use crate::{
     REPO,
     add::Add,
+    all_our_envs::RUSTUP_TOOLCHAIN,
     image_uri::ImageUri,
     network::Network,
     rustup::{CHECKSUMS, VERSION},
@@ -102,8 +103,8 @@ SHELL {shell:?}
 ENV       CARGO_HOME={CARGO_HOME} \
          RUSTUP_HOME={RUSTUP_HOME} \
     RUSTUP_TOOLCHAIN={toolchain}
-ENV CARGO=$RUSTUP_HOME/toolchains/$RUSTUP_TOOLCHAIN/bin/cargo \
-    RUSTC=$RUSTUP_HOME/toolchains/$RUSTUP_TOOLCHAIN/bin/rustc \
+ENV CARGO=$RUSTUP_HOME/toolchains/{RUSTUP_TOOLCHAIN}/bin/cargo \
+    RUSTC=$RUSTUP_HOME/toolchains/{RUSTUP_TOOLCHAIN}/bin/rustc \
      PATH=$CARGO_HOME/bin:$PATH
 RUN \
   --mount=from=rustup-{toolchain},source=/rustup-init,dst=/rustup-init \
@@ -172,9 +173,12 @@ pub(crate) fn rewrite_rustup_home(val: &str) -> String {
 
 #[test]
 fn test_rewrite_rustup_home() {
+    use crate::all_our_envs::RUSTUP_TOOLCHAIN;
     assert_eq!(
-        "$RUSTUP_HOME/toolchains/$RUSTUP_TOOLCHAIN/bin/rustdoc",
-        rewrite_rustup_home("/home/runner/.rustup/toolchains/$RUSTUP_TOOLCHAIN/bin/rustdoc")
+        format!("$RUSTUP_HOME/toolchains/{RUSTUP_TOOLCHAIN}/bin/rustdoc"),
+        rewrite_rustup_home(&format!(
+            "/home/runner/.rustup/toolchains/{RUSTUP_TOOLCHAIN}/bin/rustdoc"
+        ))
     );
 }
 
@@ -182,7 +186,7 @@ fn maybe_get_local_host_triple(toolchain: &str) -> Result<String> {
     use std::str::FromStr;
 
     let toolchain = rustup_toolchain_manifest::Toolchain::from_str(toolchain)
-        .map_err(|e| anyhow!("Failed parsing $RUSTUP_TOOLCHAIN={toolchain:?}: {e}"))?;
+        .map_err(|e| anyhow!("Failed parsing {RUSTUP_TOOLCHAIN}={toolchain:?}: {e}"))?;
 
     if let Some(host) = toolchain.host.map(|h| h.target_triple) {
         Ok(host.to_owned())

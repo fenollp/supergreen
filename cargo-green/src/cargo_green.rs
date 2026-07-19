@@ -185,7 +185,7 @@ pub(crate) async fn main(toolchain: &str, is_install: bool) -> Result<Green> {
     if let Ok(val) = env::var(var) {
         green.base.with_network = val.parse().map_err(|e| anyhow!("${var}={val:?} {e}"))?;
     }
-    if let Ok(val) = env::var("CARGO_NET_OFFLINE")
+    if let Ok(val) = env::var(CARGO_NET_OFFLINE!())
         && val == "1"
     {
         green.base.with_network = Network::None;

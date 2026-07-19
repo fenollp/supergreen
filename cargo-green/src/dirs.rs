@@ -30,7 +30,7 @@ pub(crate) fn create_current_target_dir(command: Option<&str>) -> Result<String>
     let target_dir =
         if let Some(target_dir) = Arguments::from_env().opt_value_from_str("--target-dir")? {
             target_dir
-        } else if let Ok(target_dir) = env::var("CARGO_TARGET_DIR") {
+        } else if let Ok(target_dir) = env::var(CARGO_TARGET_DIR!()) {
             target_dir
         } else if false {
             todo!("check build.target-dir in config.toml.s")

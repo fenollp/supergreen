@@ -4,7 +4,7 @@ use anyhow::{Result, anyhow, bail};
 use tokio::process::Command;
 
 use crate::{
-    all_our_envs::{CARGOGREEN_LOG_PATH, CARGOGREEN_PLUGINSETTINGS},
+    all_our_envs::{CARGOGREEN_LOG_PATH, CARGOGREEN_PLUGINSETTINGS, RUSTC_WRAPPER},
     dirs::{create_current_target_dir, hashed_args, tmp},
 };
 
@@ -77,11 +77,11 @@ async fn actual_main() -> Result<()> {
         bail!("This binary should be named `{PKG}`")
     }
 
-    if let Ok(wrapper) = env::var("RUSTC_WRAPPER") {
+    if let Ok(wrapper) = env::var(RUSTC_WRAPPER!()) {
         // Now running as a subprocess
 
         if PathBuf::from(&wrapper).file_name() != Some(OsStr::new(PKG)) {
-            bail!("A $RUSTC_WRAPPER other than `{PKG}` is already set: {wrapper}")
+            bail!("A {RUSTC_WRAPPER} other than `{PKG}` is already set: {wrapper}")
         }
 
         let green = env::var(CARGOGREEN_PLUGINSETTINGS!())
@@ -105,7 +105,7 @@ async fn actual_main() -> Result<()> {
         bail!(EEXIT)
     }
 
-    let Some((cargo, toolchain)) = env::var_os("CARGO").zip(env::var("RUSTUP_TOOLCHAIN").ok())
+    let Some((cargo, toolchain)) = env::var_os(CARGO!()).zip(env::var(RUSTUP_TOOLCHAIN!()).ok())
     else {
         eprintln!("This cargo plugin must be run like `cargo green ...`");
         bail!(EEXIT)
@@ -157,7 +157,7 @@ async fn actual_main() -> Result<()> {
         }
         return Ok(());
     }
-    cmd.env("RUSTC_WRAPPER", arg0);
+    cmd.env(RUSTC_WRAPPER!(), arg0);
 
     // TODO: TUI above cargo output (? https://docs.rs/prodash )
 
@@ -199,9 +199,9 @@ async fn actual_main() -> Result<()> {
     green.prebuild(false, is_install).await?;
 
     let target_dir = create_current_target_dir(command.as_deref())?;
-    cmd.env("CARGO_TARGET_DIR", &target_dir);
+    cmd.env(CARGO_TARGET_DIR!(), &target_dir);
     // SAFETY: environment access only happens in single-threaded code.
-    unsafe { env::set_var("CARGO_TARGET_DIR", target_dir) };
+    unsafe { env::set_var(CARGO_TARGET_DIR!(), target_dir) };
 
     if !cmd.status().await?.success() {
         bail!(EEXIT)

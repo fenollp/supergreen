@@ -35,7 +35,7 @@ pub(crate) async fn wrap_rustc(
 
     let pwd = pwd();
 
-    let out_dir_var = env::var("OUT_DIR").ok().map(Utf8PathBuf::from);
+    let out_dir_var = env::var(OUT_DIR!()).ok().map(Utf8PathBuf::from);
 
     let (st @ RustcArgs { mdid, .. }, args) = as_rustc(&pwd, &arguments, out_dir_var.as_deref())?;
     let mdid = mdid.expect("mdid set");

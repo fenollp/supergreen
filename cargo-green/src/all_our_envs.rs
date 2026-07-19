@@ -27,6 +27,14 @@ macro_rules! envname {
 }
 
 envname!(BUILDX_BUILDER); // buildx'
+envname!(CARGO); // rustup setting we read
+envname!(CARGO_CRATE_NAME); // cargo setting we read
+envname!(CARGO_MANIFEST_DIR); // cargo setting we read
+envname!(CARGO_NET_OFFLINE); // cargo setting we read
+envname!(CARGO_PKG_NAME); // cargo setting we read
+envname!(CARGO_PKG_VERSION); // cargo setting we read
+envname!(CARGO_PRIMARY_PACKAGE); // cargo setting we read
+envname!(CARGO_TARGET_DIR); // cargo setting we read/write
 envname!(CARGOGREEN); // sentinel
 envname!(CARGOGREEN_ADD_APK);
 envname!(CARGOGREEN_ADD_APT);
@@ -48,6 +56,9 @@ envname!(CARGOGREEN_RUNNER);
 envname!(CARGOGREEN_SET_ENVS);
 envname!(CARGOGREEN_SYNTAX_IMAGE);
 envname!(CARGOGREEN_WITH_NETWORK);
+envname!(OUT_DIR); // cargo setting we read
+envname!(RUSTC_WRAPPER); // cargo setting we read/write
+envname!(RUSTUP_TOOLCHAIN); // rustup setting we read
 
 const OURS: &[&str] = &[
     CARGOGREEN_LOG_PATH!(),

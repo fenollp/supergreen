@@ -17,6 +17,7 @@ use szyk::Node;
 
 use crate::{
     PKG,
+    all_our_envs::CARGO_TARGET_DIR,
     build::SOURCE_DATE_EPOCH,
     green::Green,
     logging::maybe_log,
@@ -153,7 +154,7 @@ impl Md {
                 return anyhow!(
                     r#"
     Looks like `{PKG}` ran on an unkempt project. That's alright!
-    Let's remove the current $CARGO_TARGET_DIR {target_dir}
+    Let's remove the current {CARGO_TARGET_DIR} {target_dir}
     then run your command again.
 "#,
                     target_dir = TARGET_DIR.as_str(),

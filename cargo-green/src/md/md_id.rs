@@ -4,6 +4,8 @@ use anyhow::{Result, bail};
 use camino::{Utf8Path, Utf8PathBuf};
 use serde::{Deserialize, Serialize};
 
+use crate::all_our_envs::OUT_DIR;
+
 // FIXME: replace with our own, knowing we own relative/absolute paths
 /// An ID unique to crate+version+crate-type+.. extracted from the rustc arg "extrafn"
 ///
@@ -81,7 +83,7 @@ impl MdId {
     /// E.g. OUT_DIR="/tmp/clis-vixargs_0-1-0/release/build/proc-macro-error-attr-de2f43c37de3bfce/out"
     #[must_use]
     pub(crate) fn from_out_dir_var(out_dir: &Utf8Path) -> Self {
-        assert_eq!(out_dir.file_name(), Some("out"), "BUG: unexpected $OUT_DIR={out_dir} format");
+        assert_eq!(out_dir.file_name(), Some("out"), "BUG: unexpected {OUT_DIR}={out_dir} format");
         out_dir
             .parent()
             .unwrap()
