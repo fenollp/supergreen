@@ -1,11 +1,5 @@
 use crate::green::Green;
 
-macro_rules! ENV_EXPERIMENT {
-    () => {
-        "CARGOGREEN_EXPERIMENT"
-    };
-}
-
 pub(crate) const EXPERIMENTS: &[&str] = &[
     //
     "buildscriptsources",

@@ -10,13 +10,6 @@ use tokio::process::Command;
 
 use crate::green::Green;
 
-#[macro_export]
-macro_rules! ENV_RUNNER {
-    () => {
-        "CARGOGREEN_RUNNER"
-    };
-}
-
 // Envs from BuildKit/Buildx/Docker/Podman that we read
 const BUILDKIT_COLORS: &str = "BUILDKIT_COLORS";
 pub(crate) const BUILDKIT_HOST: &str = "BUILDKIT_HOST";

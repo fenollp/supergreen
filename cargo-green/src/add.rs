@@ -2,28 +2,16 @@ use serde::{Deserialize, Serialize};
 
 use crate::network::Network;
 
-macro_rules! ENV_ADD_APK {
-    () => {
-        "CARGOGREEN_ADD_APK"
-    };
-}
-
-macro_rules! ENV_ADD_APT {
-    () => {
-        "CARGOGREEN_ADD_APT"
-    };
-}
-
 #[derive(Debug, Serialize, Deserialize, Default, PartialEq, Eq)]
 #[serde(default)]
 #[serde(deny_unknown_fields)]
 #[serde(rename_all = "kebab-case")]
 pub(crate) struct Add {
-    #[doc = include_str!(concat!("../docs/",ENV_ADD_APK!(),".md"))]
+    #[doc = include_str!(concat!("../docs/",CARGOGREEN_ADD_APK!(),".md"))]
     #[serde(skip_serializing_if = "Vec::is_empty")]
     pub(crate) apk: Vec<String>,
 
-    #[doc = include_str!(concat!("../docs/",ENV_ADD_APT!(),".md"))]
+    #[doc = include_str!(concat!("../docs/",CARGOGREEN_ADD_APT!(),".md"))]
     #[serde(skip_serializing_if = "Vec::is_empty")]
     pub(crate) apt: Vec<String>,
 }

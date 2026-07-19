@@ -10,8 +10,9 @@ use log::warn;
 use serde::{Deserialize, Serialize};
 
 use crate::{
-    ENV_RUNNER, PKG,
+    PKG,
     add::Add,
+    all_our_envs::{self},
     base_image::BaseImage,
     builder::Builder,
     buildkitd::MIRRORS,
@@ -23,25 +24,6 @@ use crate::{
     lockfile::find_manifest_path,
     runner::Runner,
 };
-
-macro_rules! ENV_REGISTRY_MIRRORS {
-    () => {
-        "CARGOGREEN_REGISTRY_MIRRORS"
-    };
-}
-
-macro_rules! ENV_SET_ENVS {
-    () => {
-        "CARGOGREEN_SET_ENVS"
-    };
-}
-
-#[macro_export]
-macro_rules! ENV_SYNTAX_IMAGE {
-    () => {
-        "CARGOGREEN_SYNTAX_IMAGE"
-    };
-}
 
 // from https://github.com/PRQL/prql/pull/3773/files
 // [profile.release.package.prql-compiler]
@@ -64,7 +46,7 @@ macro_rules! ENV_SYNTAX_IMAGE {
 #[derive(Debug, Serialize, Deserialize, Default, PartialEq, Eq)]
 #[serde(default, deny_unknown_fields, rename_all = "kebab-case")]
 pub(crate) struct Green {
-    #[doc = include_str!(concat!("../docs/",ENV_RUNNER!(),".md"))]
+    #[doc = include_str!(concat!("../docs/",CARGOGREEN_RUNNER!(),".md"))]
     pub(crate) runner: Runner,
 
     /// Memoized $CARGO_HOME
@@ -83,10 +65,10 @@ pub(crate) struct Green {
     #[serde(flatten)]
     pub(crate) builder: Builder,
 
-    #[doc = include_str!(concat!("../docs/",ENV_SYNTAX_IMAGE!(),".md"))]
+    #[doc = include_str!(concat!("../docs/",CARGOGREEN_SYNTAX_IMAGE!(),".md"))]
     pub(crate) syntax: ImageUri,
 
-    #[doc = include_str!(concat!("../docs/",ENV_REGISTRY_MIRRORS!(),".md"))]
+    #[doc = include_str!(concat!("../docs/",CARGOGREEN_REGISTRY_MIRRORS!(),".md"))]
     #[serde(skip_serializing_if = "Vec::is_empty")]
     pub(crate) registry_mirrors: Vec<String>,
 
@@ -99,18 +81,18 @@ pub(crate) struct Green {
     #[serde(flatten)]
     pub(crate) base: BaseImage,
 
-    #[doc = include_str!(concat!("../docs/",ENV_SET_ENVS!(),".md"))]
+    #[doc = include_str!(concat!("../docs/",CARGOGREEN_SET_ENVS!(),".md"))]
     #[serde(skip_serializing_if = "Vec::is_empty")]
     pub(crate) set_envs: Vec<String>,
 
     #[serde(skip_serializing_if = "Add::is_empty")]
     pub(crate) add: Add,
 
-    #[doc = include_str!(concat!("../docs/",ENV_EXPERIMENT!(),".md"))]
+    #[doc = include_str!(concat!("../docs/",CARGOGREEN_EXPERIMENT!(),".md"))]
     #[serde(skip_serializing_if = "Vec::is_empty")]
     pub(crate) experiment: Vec<String>,
 
-    #[doc = include_str!(concat!("../docs/",ENV_COMPONENTS!(),".md"))]
+    #[doc = include_str!(concat!("../docs/",CARGOGREEN_COMPONENTS!(),".md"))]
     #[serde(skip_serializing_if = "Vec::is_empty")]
     pub(crate) components: Vec<String>,
 }
@@ -150,7 +132,7 @@ impl Green {
             }
         }
 
-        let var = ENV_REGISTRY_MIRRORS!();
+        let var = CARGOGREEN_REGISTRY_MIRRORS!();
         let mut origin = setting(var);
         let mut was_reset = false;
         if let Ok(val) = env::var(var) {
@@ -172,9 +154,9 @@ impl Green {
         }
 
         for (field, var) in [
-            (&mut green.cache.from_images, ENV_CACHE_FROM_IMAGES!()),
-            (&mut green.cache.to_images, ENV_CACHE_TO_IMAGES!()),
-            (&mut green.cache.images, ENV_CACHE_IMAGES!()),
+            (&mut green.cache.from_images, CARGOGREEN_CACHE_FROM_IMAGES!()),
+            (&mut green.cache.to_images, CARGOGREEN_CACHE_TO_IMAGES!()),
+            (&mut green.cache.images, CARGOGREEN_CACHE_IMAGES!()),
         ] {
             let mut origin = setting(var);
             if let Ok(val) = env::var(var) {
@@ -197,9 +179,10 @@ impl Green {
             }
         }
 
-        for (field, var) in
-            [(&mut green.add.apk, ENV_ADD_APK!()), (&mut green.add.apt, ENV_ADD_APT!())]
-        {
+        for (field, var) in [
+            (&mut green.add.apk, CARGOGREEN_ADD_APK!()),
+            (&mut green.add.apt, CARGOGREEN_ADD_APT!()),
+        ] {
             let origin = validate_csv(field, var)?;
             for f in field.iter().filter(|f| !f.contains('=')) {
                 warn!("warning: config {origin} is missing version constraints on {f:?}");
@@ -207,19 +190,19 @@ impl Green {
             }
         }
 
-        validate_csv(&mut green.components, ENV_COMPONENTS!())?;
+        validate_csv(&mut green.components, CARGOGREEN_COMPONENTS!())?;
 
         if !green.base.image_inline.is_empty() {
             bail!("'base-image-inline' setting cannot be set")
         }
-        let var = ENV_BASE_IMAGE!();
+        let var = CARGOGREEN_BASE_IMAGE!();
         if let Ok(val) = env::var(var) {
             green.base.image = val.try_into().map_err(|e| anyhow!("${var} {e}"))?;
         }
 
-        validate_csv(&mut green.set_envs, ENV_SET_ENVS!())?;
-        if green.set_envs.iter().any(|var| var.starts_with("CARGOGREEN_")) {
-            bail!("{origin} contains CARGOGREEN_* names")
+        validate_csv(&mut green.set_envs, CARGOGREEN_SET_ENVS!())?;
+        if green.set_envs.iter().any(|var| var.starts_with(all_our_envs::PREFIX)) {
+            bail!("{origin} contains {}* names", all_our_envs::PREFIX)
         }
 
         Ok(green)
@@ -227,7 +210,7 @@ impl Green {
 }
 
 fn env_as_toml(var: &str) -> String {
-    var.replace("CARGOGREEN_", "").replace('_', "-").to_lowercase()
+    var.replace(all_our_envs::PREFIX, "").replace('_', "-").to_lowercase()
 }
 
 fn setting(var: &str) -> String {
@@ -376,7 +359,7 @@ components = [ "a", "b", "a" ]
     }
 
     mod add {
-        use super::super::{Green, Manifest};
+        use super::super::{Green, Manifest, all_our_envs::CARGOGREEN_ADD_APT};
 
         #[test]
         fn ok() {
@@ -399,12 +382,11 @@ add.apk = [ "libpq-dev", "pkgconf" ]
         #[test]
         fn empty_var() {
             use crate::green::{parse_csv, validate_csv};
-            let var = ENV_ADD_APT!();
-            temp_env::with_var(var, Some("a=1,,b"), || {
-                let mut field = parse_csv(&std::env::var(var).unwrap());
-                let err = validate_csv(&mut field, var).err().unwrap().to_string();
-                assert!(err.contains("empty"), "In: {err}");
-                assert!(err.contains(&format!("${}", var)), "In: {err}");
+            temp_env::with_var(CARGOGREEN_ADD_APT!(), Some("a=1,,b"), || {
+                let mut field = parse_csv(&std::env::var(CARGOGREEN_ADD_APT!()).unwrap());
+                let err = validate_csv(&mut field, CARGOGREEN_ADD_APT!()).err().unwrap();
+                assert!(err.to_string().contains("empty"), "In: {err}");
+                assert!(err.to_string().contains(CARGOGREEN_ADD_APT), "In: {err}");
             });
         }
 
