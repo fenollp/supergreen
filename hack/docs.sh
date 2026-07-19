@@ -66,7 +66,7 @@ done
 
 ordered_envs() {
 	[[ $# -eq 0 ]]
-	grep -E '^ +var!' cargo-green/src/supergreen.rs | cut -d! -f2 | sed 's%(%%'
+	grep -E '^ +var!' cargo-green/src/supergreen.rs | cut -d, -f1 | cut -d'(' -f2
 }
 
 echo "Compared with what's coded in supergreen.rs:"

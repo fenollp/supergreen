@@ -19,7 +19,7 @@ use crate::{
 #[serde(default)]
 #[serde(deny_unknown_fields)]
 pub(crate) struct Final {
-    #[doc = include_str!(concat!("../docs/",CARGOGREEN_FINAL_PATH!(),".md"))]
+    #[doc = envdocs!(CARGOGREEN_FINAL_PATH)]
     #[serde(skip_serializing_if = "Option::is_none")]
     #[serde(rename = "final-path")]
     pub(crate) path: Option<Utf8PathBuf>,

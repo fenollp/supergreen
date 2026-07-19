@@ -1,5 +1,17 @@
 use std::{collections::HashSet, env::vars};
 
+macro_rules! envdocs {
+    ($name:ident) => {
+        include_str!(concat!("../docs/", $name!(), ".md"))
+    };
+}
+
+macro_rules! envdocs2 {
+    ($name:ident) => {
+        include_str!(concat!("../../docs/", $name!(), ".md"))
+    };
+}
+
 macro_rules! envname {
     ($name:ident) => {
         // Eponym string literal
