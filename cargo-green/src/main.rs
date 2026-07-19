@@ -183,24 +183,22 @@ async fn actual_main() -> Result<()> {
     let green = cargo_green::main(&toolchain, is_install).await?;
     cmd.env(CARGOGREEN_PLUGINSETTINGS!(), serde_json::to_string(&green)?);
 
-    if command.as_deref() == Some("supergreen") {
-        return supergreen::main(green).await;
-    }
-
-    if command.as_deref() == Some("fetch") {
-        // Runs actual `cargo fetch`
-        if !cmd.status().await?.success() {
-            bail!(EEXIT)
+    match command.as_deref() {
+        Some("supergreen") => supergreen::main(green).await,
+        Some("fetch") => {
+            // Runs actual `cargo fetch`
+            if !cmd.status().await?.success() {
+                bail!(EEXIT)
+            }
+            green.prebuild(true, is_install).await
         }
-        return green.prebuild(true, is_install).await;
+        _ => {
+            green.prebuild(false, is_install).await?;
+            cmd.env(CARGO_TARGET_DIR!(), create_current_target_dir(is_install)?);
+            if !cmd.status().await?.success() {
+                bail!(EEXIT)
+            }
+            Ok(())
+        }
     }
-    green.prebuild(false, is_install).await?;
-
-    let target_dir = create_current_target_dir(command.as_deref())?;
-    cmd.env(CARGO_TARGET_DIR!(), &target_dir);
-
-    if !cmd.status().await?.success() {
-        bail!(EEXIT)
-    }
-    Ok(())
 }
