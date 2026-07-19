@@ -12,16 +12,12 @@ use crate::green::Green;
 
 // Envs from BuildKit/Buildx/Docker/Podman that we read
 const BUILDKIT_COLORS: &str = "BUILDKIT_COLORS";
-pub(crate) const BUILDKIT_HOST: &str = "BUILDKIT_HOST";
 const BUILDKIT_PROGRESS: &str = "BUILDKIT_PROGRESS";
 const BUILDKIT_TTY_LOG_LINES: &str = "BUILDKIT_TTY_LOG_LINES";
 const BUILDX_CPU_PROFILE: &str = "BUILDX_CPU_PROFILE";
 const BUILDX_MEM_PROFILE: &str = "BUILDX_MEM_PROFILE";
-pub(crate) const DOCKER_BUILDKIT: &str = "DOCKER_BUILDKIT";
-pub(crate) const DOCKER_CONTEXT: &str = "DOCKER_CONTEXT";
 const DOCKER_DEFAULT_PLATFORM: &str = "DOCKER_DEFAULT_PLATFORM";
 const DOCKER_HIDE_LEGACY_COMMANDS: &str = "DOCKER_HIDE_LEGACY_COMMANDS";
-pub(crate) const DOCKER_HOST: &str = "DOCKER_HOST";
 
 #[derive(Debug, Copy, Clone, Default, Serialize, Deserialize, Eq, PartialEq)]
 #[serde(rename_all = "kebab-case")]
@@ -94,14 +90,14 @@ impl Runner {
     pub(crate) fn envs(&self) -> HashMap<String, String> {
         [
             BUILDKIT_COLORS,
-            BUILDKIT_HOST,
+            BUILDKIT_HOST!(),
             BUILDKIT_PROGRESS,
             BUILDKIT_TTY_LOG_LINES,
             "BUILDX_BAKE_GIT_AUTH_HEADER",
             "BUILDX_BAKE_GIT_AUTH_TOKEN",
             "BUILDX_BAKE_GIT_SSH",
             BUILDX_BUILDER!(),
-            DOCKER_BUILDKIT,
+            DOCKER_BUILDKIT!(),
             "BUILDX_CONFIG",
             BUILDX_CPU_PROFILE,
             "BUILDX_EXPERIMENTAL",
@@ -118,17 +114,17 @@ impl Runner {
             "DOCKER_CONFIG",
             "DOCKER_CONTENT_TRUST",
             "DOCKER_CONTENT_TRUST_SERVER",
-            DOCKER_CONTEXT,
+            DOCKER_CONTEXT!(),
             DOCKER_DEFAULT_PLATFORM,
             DOCKER_HIDE_LEGACY_COMMANDS,
-            DOCKER_HOST,
+            DOCKER_HOST!(),
             "DOCKER_TLS",
             "DOCKER_TLS_VERIFY",
             "EXPERIMENTAL_BUILDKIT_SOURCE_POLICY",
             "HTTP_PROXY",  //TODO: hinders reproducibility
             "HTTPS_PROXY", //TODO: hinders reproducibility
             "NO_PROXY",    //TODO: hinders reproducibility
-            "PATH",        // Required at least on macOS
+            PATH!(),       // Required at least on macOS
         ]
         .into_iter()
         .filter_map(|k| env::var(k).ok().map(|v| (k.to_owned(), v)))
@@ -140,23 +136,23 @@ impl Runner {
         if *self == Self::Docker {
             [
                 BUILDKIT_COLORS,
-                BUILDKIT_HOST,
+                BUILDKIT_HOST!(),
                 BUILDKIT_PROGRESS,
                 BUILDKIT_TTY_LOG_LINES,
                 BUILDX_BUILDER!(),
                 BUILDX_CPU_PROFILE,
                 BUILDX_MEM_PROFILE,
-                DOCKER_CONTEXT,
+                DOCKER_CONTEXT!(),
                 DOCKER_DEFAULT_PLATFORM,
                 DOCKER_HIDE_LEGACY_COMMANDS,
-                DOCKER_HOST,
-                "PATH",
+                DOCKER_HOST!(),
+                PATH!(),
             ]
             .into_iter()
             .map(OsStr::new)
             .collect()
         } else {
-            vec![OsStr::new("PATH")]
+            vec![OsStr::new(PATH!())]
         }
     }
 
@@ -175,14 +171,14 @@ impl Green {
             cmd.arg("--debug");
         }
         cmd.env_clear(); // Pass all envs explicitly only
-        cmd.env(DOCKER_BUILDKIT, "1"); // BuildKit is used by either runner
+        cmd.env(DOCKER_BUILDKIT!(), "1"); // BuildKit is used by either runner
 
         if let Some(ref name) = self.builder.name {
             cmd.env(BUILDX_BUILDER!(), name);
         }
 
         for (var, val) in &self.runner_envs {
-            if [BUILDX_BUILDER!(), DOCKER_BUILDKIT].contains(&var.as_str()) {
+            if [BUILDX_BUILDER!(), DOCKER_BUILDKIT!()].contains(&var.as_str()) {
                 continue;
             }
             info!("passing through runner setting: ${var}={val:?}");
