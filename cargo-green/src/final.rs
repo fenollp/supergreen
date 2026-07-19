@@ -15,18 +15,11 @@ use crate::{
     md::{BuildContext, DIESES, Md},
 };
 
-#[macro_export]
-macro_rules! ENV_FINAL_PATH {
-    () => {
-        "CARGOGREEN_FINAL_PATH"
-    };
-}
-
 #[derive(Debug, Serialize, Deserialize, Default, PartialEq, Eq)]
 #[serde(default)]
 #[serde(deny_unknown_fields)]
 pub(crate) struct Final {
-    #[doc = include_str!(concat!("../docs/",ENV_FINAL_PATH!(),".md"))]
+    #[doc = include_str!(concat!("../docs/",CARGOGREEN_FINAL_PATH!(),".md"))]
     #[serde(skip_serializing_if = "Option::is_none")]
     #[serde(rename = "final-path")]
     pub(crate) path: Option<Utf8PathBuf>,

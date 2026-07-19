@@ -5,7 +5,6 @@ use camino::Utf8Path;
 use log::{debug, info, warn};
 
 use crate::{
-    ENV,
     build::{ERRCODE, Effects, STDERR, STDOUT, fwd_stderr_to_cargo, fwd_stdout_to_cargo},
     green::Green,
     md::Md,
@@ -47,7 +46,7 @@ impl Md {
             push(&mut block, &var, &val)?;
             set.insert(var.clone());
         }
-        block.push_str(&format!("        {}=1 \\\n", ENV!()));
+        block.push_str(&format!("        {}=1 \\\n", CARGOGREEN!()));
 
         for (var, val) in &self.set_envs {
             if set.contains(var) {

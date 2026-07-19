@@ -1,4 +1,7 @@
-use crate::PKG;
+use crate::{
+    PKG,
+    all_our_envs::{CARGOGREEN_ADD_APT, CARGOGREEN_SET_ENVS},
+};
 
 #[must_use]
 fn suggest(original: &str, suggestion: &str, msg: &str) -> Option<String> {
@@ -31,7 +34,6 @@ pub(crate) fn lib_not_found(msg: &str) -> Option<&str> {
 // TODO: cleanup how this suggestion appears
 #[must_use]
 pub(crate) fn suggest_add(lib: &str, msg: &str) -> Option<String> {
-    const ENV_ADD_APT: &str = ENV_ADD_APT!();
     let original = format!("cannot find -l{lib}: No such file or directory");
 
     let lib = match lib {
@@ -39,7 +41,7 @@ pub(crate) fn suggest_add(lib: &str, msg: &str) -> Option<String> {
         _ => format!("lib{lib}-dev"),
     };
     let suggestion = format!(
-        r#"{PKG}: add `{lib:?}` to either ${ENV_ADD_APT} (or apk) or to this crate's or your root crate's [package.metadata.green.add] apt list"#
+        r#"{PKG}: add `{lib:?}` to either {CARGOGREEN_ADD_APT} (or apk) or to this crate's or your root crate's [package.metadata.green.add] apt list"#
     );
 
     suggest(&original, &suggestion, msg)
@@ -224,11 +226,9 @@ pub(crate) fn env_not_comptime_defined(msg: &str) -> Option<&str> {
 
 #[must_use]
 pub(crate) fn suggest_set_envs(var: &str, msg: &str) -> Option<String> {
-    const ENV_SET_ENVS: &str = ENV_SET_ENVS!();
-
     let original = format!(r#"use `std::env::var("{var}")` to read the variable at run time"#);
     let suggestion = format!(
-        r#"{PKG}: add `"{var}"` to either ${ENV_SET_ENVS} or to this crate's or your root crate's [package.metadata.green] set-envs list"#
+        r#"{PKG}: add `"{var}"` to either {CARGOGREEN_SET_ENVS} or to this crate's or your root crate's [package.metadata.green] set-envs list"#
     );
     suggest(&original, &suggestion, msg)
 }

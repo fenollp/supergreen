@@ -14,24 +14,6 @@ use crate::{
     target_dir::replace_carefully,
 };
 
-macro_rules! ENV_BASE_IMAGE {
-    () => {
-        "CARGOGREEN_BASE_IMAGE"
-    };
-}
-
-macro_rules! ENV_WITH_NETWORK {
-    () => {
-        "CARGOGREEN_WITH_NETWORK"
-    };
-}
-
-macro_rules! ENV_COMPONENTS {
-    () => {
-        "CARGOGREEN_COMPONENTS"
-    };
-}
-
 pub(crate) const CARGO_HOME: &str = "/usr/local/cargo";
 pub(crate) const RUSTUP_HOME: &str = "/usr/local/rustup";
 
@@ -48,11 +30,11 @@ pub(crate) static BASE_IMAGE_LOCKED: LazyLock<ImageUri> = LazyLock::new(|| {
 #[serde(default)]
 #[serde(deny_unknown_fields)]
 pub(crate) struct BaseImage {
-    #[doc = include_str!(concat!("../docs/",ENV_WITH_NETWORK!(),".md"))]
+    #[doc = include_str!(concat!("../docs/",CARGOGREEN_WITH_NETWORK!(),".md"))]
     #[serde(rename = "with-network")]
     pub(crate) with_network: Network,
 
-    #[doc = include_str!(concat!("../docs/",ENV_BASE_IMAGE!(),".md"))]
+    #[doc = include_str!(concat!("../docs/",CARGOGREEN_BASE_IMAGE!(),".md"))]
     #[serde(rename = "base-image")]
     pub(crate) image: ImageUri,
 

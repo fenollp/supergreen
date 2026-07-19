@@ -3,51 +3,45 @@ use std::{env, ffi::OsStr, fs, path::PathBuf};
 use anyhow::{Result, anyhow, bail};
 use tokio::process::Command;
 
-use crate::dirs::{create_current_target_dir, hashed_args, tmp};
+use crate::{
+    all_our_envs::{CARGOGREEN_LOG_PATH, CARGOGREEN_PLUGINSETTINGS},
+    dirs::{create_current_target_dir, hashed_args, tmp},
+};
 
 #[macro_use]
-mod add;
-#[macro_use]
-mod base_image;
-#[macro_use]
-mod builder;
-#[macro_use]
-mod cache;
-#[macro_use]
-mod experiments;
-#[macro_use]
-mod r#final;
-#[macro_use]
-mod green;
-#[macro_use]
-mod logging;
-#[macro_use]
-mod runner;
-#[macro_use]
-mod wrap;
-
 mod all_our_envs;
+
+mod add;
+mod base_image;
 mod build;
+mod builder;
 mod buildkitd;
+mod cache;
 mod cargo_green;
 mod checkouts;
 mod containerfile;
 mod cratesio;
 mod dirs;
 mod du;
+mod experiments;
 mod ext;
+mod r#final;
+mod green;
 mod image_uri;
 mod lockfile;
+mod logging;
 mod md;
 mod network;
 mod rechrome;
 mod relative;
 mod retrier;
+mod runner;
 mod rustc_arguments;
 mod rustup;
 mod stage;
 mod supergreen;
 mod target_dir;
+mod wrap;
 
 const PKG: &str = env!("CARGO_PKG_NAME");
 const REPO: &str = env!("CARGO_PKG_REPOSITORY");
@@ -83,9 +77,6 @@ async fn actual_main() -> Result<()> {
         bail!("This binary should be named `{PKG}`")
     }
 
-    // Internal env used to pass config from cargo plugin to rustc wrapper
-    const ENV_ROOT_PACKAGE_SETTINGS: &str = "CARGOGREEN_ROOT_PACKAGE_SETTINGS_";
-
     if let Ok(wrapper) = env::var("RUSTC_WRAPPER") {
         // Now running as a subprocess
 
@@ -93,13 +84,13 @@ async fn actual_main() -> Result<()> {
             bail!("A $RUSTC_WRAPPER other than `{PKG}` is already set: {wrapper}")
         }
 
-        let green = env::var(ENV_ROOT_PACKAGE_SETTINGS)
-            .map_err(|_| anyhow!("BUG: ${ENV_ROOT_PACKAGE_SETTINGS} is unset"))?;
+        let green = env::var(CARGOGREEN_PLUGINSETTINGS!())
+            .map_err(|_| anyhow!("BUG: {CARGOGREEN_PLUGINSETTINGS} is unset"))?;
         let green = serde_json::from_str(&green)
-            .map_err(|e| anyhow!("BUG: ${ENV_ROOT_PACKAGE_SETTINGS} is unreadable: {e}"))?;
+            .map_err(|e| anyhow!("BUG: {CARGOGREEN_PLUGINSETTINGS} is unreadable: {e}"))?;
 
         // Dance to wrap build script execution: we patched the build.rs to call us back through here.
-        if let Ok(exe) = env::var(ENV_EXECUTE_BUILDRS!()) {
+        if let Ok(exe) = env::var(CARGOGREEN_EXECUTEBUILDSCRIPT!()) {
             return wrap::exec_build_script(green, exe.into()).await;
         }
 
@@ -170,21 +161,20 @@ async fn actual_main() -> Result<()> {
 
     // TODO: TUI above cargo output (? https://docs.rs/prodash )
 
-    if let Ok(log) = env::var(ENV_LOG!()) {
-        cmd.env(ENV_LOG!(), log);
-        let var = ENV_LOG_PATH!();
-        let path = env::var(var)
+    if let Ok(log) = env::var(CARGOGREEN_LOG!()) {
+        cmd.env(CARGOGREEN_LOG!(), log);
+        let path = env::var(CARGOGREEN_LOG_PATH!())
             .unwrap_or_else(|_| tmp().join(format!("{PKG}-{}.log", hashed_args())).to_string());
         let path = camino::absolute_utf8(path)
-            .map_err(|e| anyhow!("Failed canonicalizing ${var}: {e}"))?;
+            .map_err(|e| anyhow!("Failed canonicalizing {CARGOGREEN_LOG_PATH}: {e}"))?;
         // SAFETY: environment access only happens in single-threaded code.
-        unsafe { env::set_var(var, &path) };
-        cmd.env(var, &path);
+        unsafe { env::set_var(CARGOGREEN_LOG_PATH!(), &path) };
+        cmd.env(CARGOGREEN_LOG_PATH!(), &path);
         let _ = fs::OpenOptions::new().create(true).truncate(false).append(true).open(path);
     }
 
-    assert!(env::var_os(ENV!()).is_none());
-    assert!(env::var_os(ENV_ROOT_PACKAGE_SETTINGS).is_none());
+    assert!(env::var_os(CARGOGREEN!()).is_none());
+    assert!(env::var_os(CARGOGREEN_PLUGINSETTINGS!()).is_none());
 
     // Shortcut here just for `cargo green supergreen --help` to avoid some calculations
     if supergreen::just_help() {
@@ -193,7 +183,7 @@ async fn actual_main() -> Result<()> {
     }
 
     let green = cargo_green::main(&toolchain, is_install).await?;
-    cmd.env(ENV_ROOT_PACKAGE_SETTINGS, serde_json::to_string(&green)?);
+    cmd.env(CARGOGREEN_PLUGINSETTINGS!(), serde_json::to_string(&green)?);
 
     if command.as_deref() == Some("supergreen") {
         return supergreen::main(green).await;

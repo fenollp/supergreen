@@ -9,7 +9,7 @@ use camino::{Utf8Path, Utf8PathBuf};
 use log::{error, info, trace};
 
 use crate::{
-    ENV, PKG, VSN,
+    PKG, VSN,
     base_image::rewrite_cargo_home,
     cratesio::rewrite_cratesio_index,
     green::Green,
@@ -19,13 +19,6 @@ use crate::{
     target_dir::virtual_target_dir,
     wrap::call_config,
 };
-
-#[macro_export]
-macro_rules! ENV_EXECUTE_BUILDRS {
-    () => {
-        "CARGOGREEN_EXECUTE_BUILDRS_"
-    };
-}
 
 const BUILDRS_NAME: &str = "build_script_build";
 const BUILDRS_LEGACY: &str = "build_script_main";
@@ -40,6 +33,7 @@ pub(crate) fn is_buildrs_executable(name: &str) -> bool {
 // TODO: one trick even further: pull a quine: a Shell script that calls to PKG
 //       but still manages to embed the whole compiled build script. Thus leaving
 //       only one file.
+#[must_use]
 pub(crate) fn exe_dance(mdid: MdId, crate_name: &str, out_dir: &Utf8Path) -> String {
     format!(
         r#"
@@ -47,17 +41,17 @@ pub(crate) fn exe_dance(mdid: MdId, crate_name: &str, out_dir: &Utf8Path) -> Str
  && printf '#!/bin/sh\nenv {var}=$0 {PKG}\n' >{out_dir}/{crate_name}-{mdid} \
  && chmod +x {out_dir}/{crate_name}-{mdid} \
 "#,
-        var = ENV_EXECUTE_BUILDRS!(),
+        var = CARGOGREEN_EXECUTEBUILDSCRIPT!(),
     )[1..]
         .to_owned()
 }
 
 pub(crate) async fn exec_build_script(green: Green, exe: Utf8PathBuf) -> Result<()> {
-    if let Some(weird) = env::var_os(ENV!()) {
+    if let Some(weird) = env::var_os(CARGOGREEN!()) {
         panic!("It's turtles all the way down! ({weird:?})");
     }
     // SAFETY: environment access only happens in single-threaded code.
-    unsafe { env::set_var(ENV!(), "1") };
+    unsafe { env::set_var(CARGOGREEN!(), "1") };
 
     let (crate_name, pkg_name, pkg_version, pkg_manifest_dir) = call_config();
 

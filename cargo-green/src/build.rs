@@ -504,7 +504,7 @@ impl Effects {
             return (TRANSIENT, e);
         }
 
-        let logs = env::var(ENV_LOG_PATH!())
+        let logs = env::var(CARGOGREEN_LOG_PATH!())
             .map(|val| format!("\nCheck logs at {val}"))
             .unwrap_or_default();
         e = anyhow!(

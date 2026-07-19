@@ -66,7 +66,7 @@ done
 
 ordered_envs() {
 	[[ $# -eq 0 ]]
-	grep -E '^ +var!' cargo-green/src/supergreen.rs | cut -d! -f2 | sed 's%(%%;s%^ENV_%CARGOGREEN_%'
+	grep -E '^ +var!' cargo-green/src/supergreen.rs | cut -d! -f2 | sed 's%(%%'
 }
 
 echo "Compared with what's coded in supergreen.rs:"
@@ -77,7 +77,7 @@ echo
 
 echo "Compared with what's in all_our_envs.rs:"
 diff -y \
-	<(grep -Eo 'ENV_[A-Z_]+!\(\)' cargo-green/src/all_our_envs.rs | cut -d! -f1 | sed 's%(%%;s%^ENV_%CARGOGREEN_%') \
+	<(grep -Eo 'CARGOGREEN_[A-Z_]+!\(\)' cargo-green/src/all_our_envs.rs | cut -d! -f1 | sed 's%(%%') \
 	<(ordered_envs | grep -v BUILDX_BUILDER)
 echo
 

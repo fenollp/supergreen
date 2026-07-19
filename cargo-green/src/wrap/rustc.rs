@@ -9,7 +9,7 @@ use camino::{Utf8Path, Utf8PathBuf};
 use log::{error, info, warn};
 
 use crate::{
-    ENV, PKG, VSN,
+    PKG, VSN,
     base_image::rewrite_cargo_home,
     checkouts,
     cratesio::{self, rewrite_cratesio_index},
@@ -29,9 +29,9 @@ pub(crate) async fn wrap_rustc(
     arguments: Vec<String>,
     fallback: impl Future<Output = Result<()>>,
 ) -> Result<()> {
-    assert!(env::var_os(ENV!()).is_none(), "It's turtles all the way down!");
+    assert!(env::var_os(CARGOGREEN!()).is_none(), "It's turtles all the way down!");
     // SAFETY: environment access only happens in single-threaded code.
-    unsafe { env::set_var(ENV!(), "1") };
+    unsafe { env::set_var(CARGOGREEN!(), "1") };
 
     let pwd = pwd();
 

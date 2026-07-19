@@ -26,7 +26,7 @@ pub(crate) async fn main(toolchain: &str, is_install: bool) -> Result<Green> {
     let mut green = Green::new_from_env_then_manifest(is_install).await?;
 
     // Setting runner first as it's needed by many calls
-    let mut var = ENV_RUNNER!();
+    let mut var = CARGOGREEN_RUNNER!();
     if green.runner != Runner::default() {
         bail!("${var} can only be set through the environment variable")
     }
@@ -116,7 +116,7 @@ pub(crate) async fn main(toolchain: &str, is_install: bool) -> Result<Green> {
     //https://dev.to/aboozar/build-docker-multi-platform-image-using-buildx-remote-builder-node-5631
 
     // Then the builder: needed by cmd calls
-    var = ENV_BUILDER_IMAGE!();
+    var = CARGOGREEN_BUILDER_IMAGE!();
     if green.builder.image.is_some() {
         bail!("${var} can only be set through the environment variable")
     }
@@ -132,7 +132,7 @@ pub(crate) async fn main(toolchain: &str, is_install: bool) -> Result<Green> {
     green.maybe_setup_builder(builder.cloned()).await?;
     green.maybe_inspect_builder().await?;
 
-    var = ENV_SYNTAX_IMAGE!();
+    var = CARGOGREEN_SYNTAX_IMAGE!();
     if !green.syntax.is_empty() {
         bail!("${var} can only be set through the environment variable")
     }
@@ -148,7 +148,7 @@ pub(crate) async fn main(toolchain: &str, is_install: bool) -> Result<Green> {
     // otherwise default to a hash found through some Web API
     green.syntax = fetch_digest(&green.runner, &green.syntax).await?;
 
-    var = ENV_FINAL_PATH!();
+    var = CARGOGREEN_FINAL_PATH!();
     if green.r#final.path.is_some() {
         bail!("${var} can only be set through the environment variable")
     }
@@ -181,7 +181,7 @@ pub(crate) async fn main(toolchain: &str, is_install: bool) -> Result<Green> {
     green.base =
         green.base.make_block(toolchain, &green.components, target.as_deref(), &green.add)?;
 
-    var = ENV_WITH_NETWORK!();
+    var = CARGOGREEN_WITH_NETWORK!();
     if let Ok(val) = env::var(var) {
         green.base.with_network = val.parse().map_err(|e| anyhow!("${var}={val:?} {e}"))?;
     }
@@ -209,11 +209,11 @@ pub(crate) async fn main(toolchain: &str, is_install: bool) -> Result<Green> {
     // https://crates.io/crates/async-ssh2-tokio
     // https://crates.io/crates/russh
 
-    var = ENV_EXPERIMENT!();
+    var = CARGOGREEN_EXPERIMENT!();
     if !green.experiment.is_empty() {
         bail!("${var} can only be set through the environment variable")
     }
-    validate_csv(&mut green.experiment, ENV_EXPERIMENT!())?;
+    validate_csv(&mut green.experiment, var)?;
     let nopes: Vec<_> =
         green.experiment.iter().filter(|ex| !EXPERIMENTS.contains(&ex.as_str())).collect();
     if !nopes.is_empty() {

@@ -8,6 +8,7 @@ use serde::{Deserialize, Serialize};
 use version_compare::Version;
 
 use crate::{
+    all_our_envs::{BUILDX_BUILDER, CARGOGREEN_BUILDER_IMAGE},
     buildkitd,
     ext::CommandExt,
     green::Green,
@@ -15,21 +16,6 @@ use crate::{
     retrier::Retrier,
     tmp,
 };
-
-macro_rules! BUILDX_BUILDER {
-    () => {
-        "BUILDX_BUILDER"
-    };
-}
-
-macro_rules! ENV_BUILDER_IMAGE {
-    () => {
-        "CARGOGREEN_BUILDER_IMAGE"
-    };
-}
-
-const BUILDX_BUILDER: &str = BUILDX_BUILDER!();
-const ENV_BUILDER_IMAGE: &str = ENV_BUILDER_IMAGE!();
 
 /// TODO: move to `:rootless`
 static BUILDKIT_IMAGE: LazyLock<ImageUri> =
@@ -60,7 +46,7 @@ pub(crate) struct Builder {
     #[serde(rename = "builder-name")]
     pub(crate) name: Option<String>,
 
-    #[doc = include_str!(concat!("../docs/",ENV_BUILDER_IMAGE!(),".md"))]
+    #[doc = include_str!(concat!("../docs/",CARGOGREEN_BUILDER_IMAGE!(),".md"))]
     #[serde(skip_serializing_if = "Option::is_none")]
     #[serde(rename = "builder-image")]
     pub(crate) image: Option<ImageUri>,
@@ -152,7 +138,7 @@ impl Green {
             None | Some("supergreen") => (true, "supergreen"),
             Some("") => {
                 if let Some(ref img) = self.builder.image {
-                    bail!("Not using a builder, however ${ENV_BUILDER_IMAGE}={img:?} is set")
+                    bail!("Not using a builder, however {CARGOGREEN_BUILDER_IMAGE}={img:?} is set")
                 }
                 return Ok(());
             }
@@ -170,7 +156,7 @@ impl Green {
             {
                 if !managed {
                     bail!(
-                        "Existing ${BUILDX_BUILDER}={name:?} does not match ${ENV_BUILDER_IMAGE}={img:?}"
+                        "Existing {BUILDX_BUILDER}={name:?} does not match {CARGOGREEN_BUILDER_IMAGE}={img:?}"
                     )
                 }
                 recreate = true;
@@ -182,7 +168,7 @@ impl Green {
                 } else {
                     eprintln!(
                         "
-Existing ${BUILDX_BUILDER}={name:?} runs a BuildKit version older than v{latest}
+Existing {BUILDX_BUILDER}={name:?} runs a BuildKit version older than v{latest}
 Maybe try to remove and re-create your builder with:
     docker buildx rm {name} --keep-state
 then run your cargo command again.
@@ -197,7 +183,7 @@ then run your cargo command again.
                 self.create_builder(name).await?;
             }
         } else if !managed {
-            bail!("${BUILDX_BUILDER}={name} does not exist")
+            bail!("{BUILDX_BUILDER}={name} does not exist")
         } else {
             self.create_builder(name).await?;
         }

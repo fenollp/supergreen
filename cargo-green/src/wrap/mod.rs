@@ -6,7 +6,6 @@ use tokio::process::Command;
 
 use crate::{ext::CommandExt, green::Green};
 
-#[macro_use]
 mod build_script;
 mod envs;
 mod mds;
@@ -18,13 +17,6 @@ pub(crate) use rustc::*;
 
 // NOTE: this RUSTC_WRAPPER program only ever gets called by `cargo`, so we save
 //       ourselves some trouble and assume std::path::{Path, PathBuf} are UTF-8.
-
-#[macro_export]
-macro_rules! ENV {
-    () => {
-        "CARGOGREEN"
-    };
-}
 
 pub(crate) async fn rustc(
     green: Green,
