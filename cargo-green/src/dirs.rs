@@ -26,22 +26,24 @@ pub(crate) fn cargo_home() -> Result<Utf8PathBuf> {
         .map_err(|e| anyhow!("Corrupted $CARGO_HOME path: {e}"))
 }
 
-pub(crate) fn create_current_target_dir(command: Option<&str>) -> Result<String> {
-    let target_dir =
-        if let Some(target_dir) = Arguments::from_env().opt_value_from_str("--target-dir")? {
-            target_dir
-        } else if let Ok(target_dir) = env::var(CARGO_TARGET_DIR!()) {
-            target_dir
-        } else if false {
-            todo!("check build.target-dir in config.toml.s")
-        } else if command == Some("install") {
-            tmp().join(hashed_args()).to_string()
-        } else {
-            // TODO: fallback to workspace root, not necessarily pwd()
-            pwd().join("target").to_string()
-        };
+pub(crate) fn create_current_target_dir(is_install: bool) -> Result<String> {
+    let target_dir = Arguments::from_env()
+        .opt_value_from_str("--target-dir")
+        .map_err(|e| anyhow!("Bad --target-dir argument: {e}"))?;
+    let target_dir = if let Some(target_dir) = target_dir {
+        target_dir
+    } else if let Ok(target_dir) = env::var(CARGO_TARGET_DIR!()) {
+        target_dir
+    } else if false {
+        todo!("check build.target-dir in config.toml.s")
+    } else if is_install {
+        tmp().join(hashed_args()).to_string()
+    } else {
+        pwd().join("target").to_string() // TODO: fallback to workspace root, not necessarily pwd()
+    };
 
-    fs::create_dir_all(&target_dir)?;
+    fs::create_dir_all(&target_dir)
+        .map_err(|e| anyhow!("Failed to `mkdir -p {target_dir}`: {e}"))?;
 
     let target_dir = Utf8PathBuf::from(&target_dir)
         .canonicalize_utf8()
