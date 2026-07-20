@@ -7,7 +7,7 @@ fixed=1.94.0 # Some fixed rustc version
 
 action__cache='actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0'
 action__cache_restore='actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0'
-action__checkout='actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0'
+action__checkout='actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1'
 action__docker_login='docker/login-action@4907a6ddec9925e35a0a9e82d7399ccc52663121 # v4.1.0'
 action__download_artifact='actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1'
 action__install_action='taiki-e/install-action@1329c298aa20c3257846c9b2e0e55967df3e3c37 # v2.75.25'
