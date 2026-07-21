@@ -862,13 +862,15 @@ fn fwd_stdout(stdout: &str, badge: &'static str, cargo_home: &Utf8Path) -> FromS
                     // MESSAGE — Displays a warning on the terminal.
                 } else if rhs.starts_with("metadata=") {
                     // KEY=VALUE — Metadata, used by links scripts.
-                } else {
-                    // Probably the ≤1.77 way of passing metadata:
+                } else if msg.starts_with("cargo:") {
+                    // rhs contains the ≤1.77 way of passing metadata:
+                    // KEY=VALUE — Metadata, used by links scripts.
                     //   https://doc.rust-lang.org/cargo/reference/build-scripts.html#the-links-manifest-key
-                    warn!("unexpected cargo directive {rhs:?}")
                     // e.g: crate zstd-sys prints cargo:include=/some/path
                     //   which cargo actually interprets as cargo::metadata=include=/some/path
                     //     which then sets env DEP_ZSTD_INCLUDE=/some/path
+                } else {
+                    warn!("unexpected cargo directive {rhs:?}")
                 }
             }
 
