@@ -735,10 +735,10 @@ async fn build_stderr(stderr: ChildStderr, mut tx_err: Option<Sender<String>>) -
 
         // Capture some approximate stats the runner gives us
 
-        if line.starts_with("ERROR: ")
+        if let Some((_, rhs)) = line.split_once("ERROR: ")
             && let Some(tx_err) = tx_err.take()
         {
-            let _ = tx_err.send(line.trim_start_matches("ERROR: ").to_owned());
+            let _ = tx_err.send(rhs.to_owned());
         }
 
         // Show data transfers (Bytes, maybe also timings?)
