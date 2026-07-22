@@ -29,8 +29,6 @@ source "$repo_root"/hack/ck.sh
 # * a matrix of earlier and earlier versions of: buildkit x buildx/docker x cargo/rustc
 # * a local + cached DockerHub proxy
 
-# TODO: set -x in ci
-
 # TODO: set about green's overhead with --timings
 
 # ok: builds | ko: doesn't build | [ok]D: ok|ko but old: shows too many cfg warnings | Ok: takes >=8min in CI
@@ -115,12 +113,8 @@ declare -a nvs nvs_args toolchain
 #     = note: required for the cast from `Box<fn(&Session) -> Box<...> {make_miri_codegen_backend}>` to `Box<dyn FnOnce(&Options, &Target) -> Box<dyn CodegenBackend> + Send>`
 #     = note: the full name for the type has been written to '/target/release/deps/miri-e9f47534ee52cbf9.long-type-13241406945400517937.txt'
 #     = note: consider using `--verbose` to print the full type name to the console
-((i+=1)); nvs[i]=zed@main;                    oks[i]=ko; nvs_args[i]='--git https://github.com/zed-industries/zed.git --tag=v0.233.10';
-# In file included from /home/pete/.cargo/registry/src/index.crates.io/tree-sitter-0.26.8/src/lib.c:13:
-# /home/pete/.cargo/registry/src/index.crates.io/tree-sitter-0.26.8/src/./wasm_store.c:16:10: fatal error: wasm.h: No such file or directory
-#    16 | #include <wasm.h>
-#       |          ^~~~~~~~
-# compilation terminated.
+
+((i+=1)); nvs[i]=zed@main;                    oks[i]=ko; nvs_args[i]='--git https://github.com/zed-industries/zed.git --tag=v1.0.0';
 
 ((i+=1)); nvs[i]=verso@main;                  oks[i]=ok; nvs_args[i]='--git https://github.com/versotile-org/verso.git --rev eb719bdd6c7b verso' # Pinned on 2025/12/03
 ((i+=1)); nvs[i]=cargo-udeps@0.1.60;          oks[i]=Ok; nvs_args[i]=''
@@ -157,7 +151,7 @@ declare -a nvs nvs_args toolchain
 
 # TODO: https://belmoussaoui.com/blog/8-how-to-flatpak-a-rust-application/
 
-((i+=1)); nvs[i]=uv@main;                     oks[i]=ko; nvs_args[i]='--git https://github.com/astral-sh/uv.git --rev=2748dce'; toolchain[i]='1.91' # failed to solve: ResourceExhausted: trying to send message larger than max (17778013 vs. 16777216)
+((i+=1)); nvs[i]=uv@main;                     oks[i]=ko; nvs_args[i]='--git https://github.com/astral-sh/uv.git --rev=2748dce --bin=uv'; toolchain[i]='1.91' # failed to solve: ResourceExhausted: trying to send message larger than max (17778013 vs. 16777216)
 
 ((i+=1)); nvs[i]=flamegraph@0.6.10;           oks[i]=ok; nvs_args[i]='--bin=flamegraph'
 
@@ -253,9 +247,15 @@ as_env() {
     rublk@*) envvars+=(CARGOGREEN_ADD_APT='libclang-dev') ;;
     sccache@*) envvars+=(CARGOGREEN_ADD_APT='"libssl-dev(>=3.5)",pkg-config,zlib1g-dev') ;;
     torrust-index@*) envvars+=(CARGOGREEN_ADD_APT='"libssl-dev(>=3.5)",pkg-config,zlib1g-dev') ;;
-    zed@*) envvars+=(CARGOGREEN_ADD_APT='build-essential,clang,cmake,curl,elfutils,g++,gcc,gettext-base,git,jq,libasound2-dev,libfontconfig-dev,libgit2-dev,libglib2.0-dev,libsqlite3-dev,libssl-dev=3.5.5-1~deb13u2,libva-dev,libvulkan1,libwayland-dev,libx11-xcb-dev,libxkbcommon-x11-dev,libzstd-dev,lld,llvm,make,musl-dev,musl-tools,pipewire,xdg-desktop-portal') ;; # From https://github.com/zed-industries/zed/blob/v0.233.10/script/linux#L25-L52
+    uv@*) envvars+=(CARGOGREEN_ADD_APT='make') ;;
+    zed@*) envvars+=(CARGOGREEN_ADD_APT='build-essential,clang,cmake,curl,elfutils,g++,gcc,gettext-base,git,jq,libasound2-dev,libfontconfig-dev,libgit2-dev,libglib2.0-dev,libsqlite3-dev,"libssl-dev(>=3.5)",libva-dev,libvulkan1,libwayland-dev,libx11-xcb-dev,libxkbcommon-x11-dev,libzstd-dev,lld,llvm,make,musl-dev,musl-tools,pipewire,protobuf-compiler,xdg-desktop-portal') ;; # From https://github.com/zed-industries/zed/blob/v0.233.10/script/linux#L25-L52
     *) ;;
   esac
+
+# # zed's proto crate uses prost-build 0.9 which execs its own bundled protoc binary
+# # from within its crate sources => mount build scripts' deps' sources.
+# export CARGOGREEN_EXPERIMENT=buildscriptsources,finalpathnonprimary
+# export CARGOGREEN_FINAL_PATH=recipes/zed@main.Dockerfile
 
   if [[ -n "${DOCKER_HOST:-}" ]]; then
     echo Using DOCKER_HOST="$DOCKER_HOST"
@@ -669,11 +669,114 @@ set -x
     ;;
 esac
 
+
 session_name=$(slugify "$name_at_version") #$(slugify "${DOCKER_HOST:-}")
 tmptrgt=/tmp/clis-$session_name
 tmplogs=$tmptrgt.logs.txt
 tmpgooo=$tmptrgt.state
 tmpbins=/tmp
+
+envvars=(CARGO_INCREMENTAL=0)
+envvars+=(PATH=$shortPATH)
+envvars+=(CARGOGREEN_LOG=debug)
+envvars+=(CARGOGREEN_LOG_PATH="$tmplogs")
+envvars+=(CARGO_TARGET_DIR="$tmptrgt")
+if [[ "$final" = '1' ]]; then
+  envvars+=(CARGOGREEN_FINAL_PATH=recipes/$name_at_version.Dockerfile)
+  envvars+=(CARGOGREEN_EXPERIMENT=finalpathnonprimary) #,finalpathcomments)
+fi
+
+
+
+RUNNER_PATCHED=${RUNNER_PATCHED:-0}                    # Use custom BuildKit+buildx
+if [[ $RUNNER_PATCHED = 1 ]]; then
+  set -x
+  RUNNER_PATCHED_REBUILD=${RUNNER_PATCHED_REBUILD:-0}  # Force patch_and_build_buildkit & _buildx
+  HUBACCOUNT=${HUBACCOUNT:-fenollexai}                 # DockerHub account hosting the patched images
+  MSG_SIZE_MULT=${MSG_SIZE_MULT:-8}                    # Multiply the 16 MiB default (8*16 -> 128 MiB)
+
+  BUILDKIT_REF=9037f21f69a23c8839693910d66ef9e502f63c09
+  BUILDKIT_REF=${BUILDKIT_REF:-$(cat "$repo_root"/cargo-green/latest_buildkit.txt | sed -E 's/([0-9]+[.][0-9]+).+/v\1/')}
+  TAG=patched-$BUILDKIT_REF
+  BUILDER=$HUBACCOUNT/moby_buildkit:$TAG
+  FRONTEND=$HUBACCOUNT/docker_dockerfile:$TAG
+
+  patch_msgsize() {
+    local dir=$1; shift
+    [[ $# -eq 0 ]]
+    for f in $(grep -rlE 'defaults.DefaultMax(Recv|Send)MsgSize' "$dir"); do
+      case "$f" in
+#buildx
+        # */vendor/github.com/moby/buildkit/client/client.go) ;; # needed
+        */vendor/github.com/moby/buildkit/session/grpc.go) continue ;; #not needed
+
+#buildkit
+        # */client/client.go) continue ;; # needed
+        # */cmd/buildkitd/main.go) continue ;; # needed
+        # */cmd/buildkitd/main_oci_worker.go) continue ;; # not needed (weirdly)
+        # */frontend/gateway/gateway.go) continue ;; # needed
+        # */frontend/gateway/grpcclient/client.go) continue ;; # needed
+        */session/grpc.go) continue ;; # not needed
+        */vendor/github.com/containerd/containerd/v2/client/client.go) continue ;; # not needed
+      esac
+
+      sed -i -E \
+        -e "s/\((defaults\.DefaultMaxRecvMsgSize)\)/($MSG_SIZE_MULT * \1)/g" \
+        -e "s/\((defaults\.DefaultMaxSendMsgSize)\)/($MSG_SIZE_MULT * \1)/g" \
+        "$f"
+    done
+  }
+
+  patch_and_build_buildkit() {
+    local SRC_DIR=$repo_root/target/cargo-green-patched/buildkit-src
+    mkdir -p "$SRC_DIR"
+    rm -rf "$SRC_DIR"
+    git clone --quiet --depth=1 https://github.com/moby/buildkit.git "$SRC_DIR"
+    pushd "$SRC_DIR"
+    git fetch --quiet --depth=1 origin "$BUILDKIT_REF"
+    git checkout --quiet "$BUILDKIT_REF"
+    popd
+    patch_msgsize "$SRC_DIR"
+    docker buildx build "$SRC_DIR" --target buildkit --push --load \
+      --tag "$BUILDER"
+    docker buildx build "$SRC_DIR" --push --load --file "$SRC_DIR/frontend/dockerfile/cmd/dockerfile-frontend/Dockerfile" \
+      --tag "$FRONTEND"
+  }
+
+  patch_and_build_buildx() {
+    local ref=v0.35.0
+    local SRC_DIR=$repo_root/target/cargo-green-patched/buildx-src
+    mkdir -p "$SRC_DIR"
+    rm -rf "$SRC_DIR"
+    git clone --quiet --depth=1 --branch="$ref" https://github.com/docker/buildx "$SRC_DIR"
+    patch_msgsize "$SRC_DIR"
+    pushd "$SRC_DIR"
+    go build -mod=vendor -trimpath \
+      -ldflags "-X github.com/docker/buildx/version.Version=patched-$ref -X github.com/docker/buildx/version.Revision=a319e5b15052cf6557ceb666eb8ff6e32380b782 -X github.com/docker/buildx/version.Package=github.com/docker/buildx" \
+      -o bin/docker-buildx ./cmd/buildx
+    popd
+    cp "$SRC_DIR"/bin/docker-buildx ~/.docker/cli-plugins/
+    docker buildx version | grep -F "$ref"
+  }
+
+  if [[ $RUNNER_PATCHED_REBUILD = 1 ]]; then
+    patch_and_build_buildkit
+    patch_and_build_buildx
+  fi
+  builder_image="$(docker inspect -f '{{range .RepoDigests}}{{.}}{{end}}' "$BUILDER")"
+  syntax_image="$(docker inspect -f '{{range .RepoDigests}}{{.}}{{end}}' "$FRONTEND")"
+  if [[ $RUNNER_PATCHED_REBUILD = 1 ]]; then
+    docker buildx rm --builder=superpatched --force || true
+    # NOTE: missing many settings with just this command:
+    docker buildx create --bootstrap --name=superpatched --driver=docker-container --driver-opt=image="$builder_image"
+  fi
+  envvars+=(CARGOGREEN_BUILDER_IMAGE=docker-image://$builder_image)
+  envvars+=(CARGOGREEN_SYNTAX_IMAGE=docker-image://$syntax_image)
+  envvars+=(BUILDX_BUILDER=superpatched)
+  set +x
+fi
+
+
 
 if [[ "$rmrf" = '1' ]]; then
   rm -rf "$tmptrgt"/*
@@ -698,15 +801,6 @@ tmux split-window
 
 # RUSTFLAGS="--remap-path-prefix=$tmptrgt="
 
-envvars=(CARGO_INCREMENTAL=0)
-envvars+=(PATH=$shortPATH)
-envvars+=(CARGOGREEN_LOG=debug)
-envvars+=(CARGOGREEN_LOG_PATH="$tmplogs")
-envvars+=(CARGO_TARGET_DIR="$tmptrgt")
-if [[ "$final" = '1' ]]; then
-  envvars+=(CARGOGREEN_FINAL_PATH=recipes/$name_at_version.Dockerfile)
-  envvars+=(CARGOGREEN_EXPERIMENT=finalpathnonprimary) #,finalpathcomments)
-fi
 as_env "$name_at_version"
 send \
   'until' '[[' -f "$tmpgooo".installed ']];' 'do' sleep '.1;' 'done' '&&' rm "$tmpgooo".* \
