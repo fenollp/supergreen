@@ -134,7 +134,7 @@ declare -a nvs nvs_args toolchain
 ((i+=1)); nvs[i]=cargo-make@0.37.24;          oks[i]=ok; nvs_args[i]='--bin=cargo-make'
 
 #rust-toolchain.toml
-((i+=1)); nvs[i]=coccinelleforrust@main;      oks[i]=Ko; nvs_args[i]='--git https://gitlab.inria.fr/coccinelle/coccinelleforrust.git --rev=50612e285' # Pinned on 2025/12/03 # Dirty ra_ap_stdx v0.0.312: the environment variable CI changed
+((i+=1)); nvs[i]=coccinelleforrust@main;      oks[i]=ok; nvs_args[i]='--git https://gitlab.inria.fr/coccinelle/coccinelleforrust.git --rev=50612e285' # Pinned on 2025/12/03
 ((i+=1)); nvs[i]=edit@main;                   oks[i]=ok; nvs_args[i]='--git https://github.com/microsoft/edit --tag=v1.2.1 edit'; toolchain[i]='nightly-2026-03-16' # Pinned 2025/12/04
 ((i+=1)); nvs[i]=pyrefly@main;                oks[i]=Ok; nvs_args[i]='--git https://github.com/facebook/pyrefly --tag=0.44.0'; toolchain[i]='nightly-2025-09-14' # from its rust-toolchain.toml
 
