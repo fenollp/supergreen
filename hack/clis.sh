@@ -163,7 +163,7 @@ declare -a nvs nvs_args toolchain
 
 ((i+=1)); nvs[i]=qair@main;                   oks[i]=ok; nvs_args[i]='--git https://codeberg.org/willempx/qair.git --tag=0.7.0'; toolchain[i]='1.78.0' # Pinned 2020/06/14
 
-((i+=1)); nvs[i]=rusty-man@master;            oks[i]=ko; nvs_args[i]='--git https://git.sr.ht/~ireas/rusty-man --tag=v0.5.0'; toolchain[i]='1.78.0' # Pinned 2025/12/04 # BUG: error: couldn't read `src/main.rs`: No such file or directory (os error 2)
+((i+=1)); nvs[i]=rusty-man@master;            oks[i]=ok; nvs_args[i]='--git https://git.sr.ht/~ireas/rusty-man --tag=v0.5.0'; toolchain[i]='1.78.0' # Pinned 2025/12/04
 
 ((i+=1)); nvs[i]=cargo-osdk@main;             oks[i]=ok; nvs_args[i]='--git=https://github.com/asterinas/asterinas --tag=v0.16.1'
 
@@ -251,6 +251,7 @@ as_env() {
     pyrefly@*) envvars+=(CARGOGREEN_ADD_APT='make') ;;
     rapidraw@*) envvars+=(CARGOGREEN_ADD_APT='g++,libgtk-3-dev,libjavascriptcoregtk-4.1-dev,libsoup-3.0-dev,libssl-dev=3.5.5-1~deb13u2,libwebkit2gtk-4.1-dev') ;;
     rublk@*) envvars+=(CARGOGREEN_ADD_APT='libclang-dev') ;;
+    rusty-man@*) envvars+=(CARGOGREEN_SYNTAX_IMAGE=docker-image://docker.io/fenollexai/moby_buildkit:addgit@sha256:6181f8816e13703882d97fd9e616d18edef346bbb55d06b847eec8be6854729f) ;;
     sccache@*) envvars+=(CARGOGREEN_ADD_APT='"libssl-dev(>=3.5)",pkg-config,zlib1g-dev') ;;
     torrust-index@*) envvars+=(CARGOGREEN_ADD_APT='"libssl-dev(>=3.5)",pkg-config,zlib1g-dev') ;;
     zed@*) envvars+=(CARGOGREEN_ADD_APT='build-essential,clang,cmake,curl,elfutils,g++,gcc,gettext-base,git,jq,libasound2-dev,libfontconfig-dev,libgit2-dev,libglib2.0-dev,libsqlite3-dev,libssl-dev=3.5.5-1~deb13u2,libva-dev,libvulkan1,libwayland-dev,libx11-xcb-dev,libxkbcommon-x11-dev,libzstd-dev,lld,llvm,make,musl-dev,musl-tools,pipewire,xdg-desktop-portal') ;; # From https://github.com/zed-industries/zed/blob/v0.233.10/script/linux#L25-L52
