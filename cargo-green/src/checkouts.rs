@@ -55,7 +55,7 @@ pub(crate) async fn as_stage(
     cargo_home: &Utf8Path,
     pkg_manifest_dir: &Utf8Path,
 ) -> Result<NamedStage> {
-    let head = get_remote_origin_url(pkg_manifest_dir).await?;
+    let head = get_remote_origin_url_maybe_up_the_tree(pkg_manifest_dir).await?;
     info!("opening (RO) git db head file: {head}");
     // e.g.: $CARGO_HOME/git/db/remarkable-tools-9f4e9942cc4e93a3/FETCH_HEAD
     let head = read_to_string(&head).map_err(|e| anyhow!("Failed reading {head}: {e}"))?;
@@ -78,6 +78,19 @@ pub(crate) async fn as_stage(
     }))
 }
 
+async fn get_remote_origin_url_maybe_up_the_tree(
+    pkg_manifest_dir: &Utf8Path,
+) -> Result<Utf8PathBuf> {
+    let mut dir = Some(pkg_manifest_dir);
+    while let Some(folder) = dir {
+        if let Ok(head) = get_remote_origin_url(folder).await {
+            return Ok(head);
+        }
+        dir = folder.parent();
+    }
+    bail!("Failed getting repository origin url: exhausted tree")
+}
+
 async fn get_remote_origin_url(pkg_manifest_dir: &Utf8Path) -> Result<Utf8PathBuf> {
     use gix_config::{File, Source};
 
@@ -91,6 +104,8 @@ async fn get_remote_origin_url(pkg_manifest_dir: &Utf8Path) -> Result<Utf8PathBu
     let config = File::from_path_no_includes(config_path, Source::Local).map_err(|e| {
         anyhow!("Failed getting repository origin url from {pkg_manifest_dir}: {e}")
     })?;
+
+    //FIXME: try .gitmodules ?
 
     let url = config
         .string("remote.origin.url")

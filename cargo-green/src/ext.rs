@@ -47,7 +47,7 @@ impl CommandExt for tokio::process::Command {
         let envs = self.envs_string(except_envs);
 
         info!("Calling {envs} {call}");
-        eprintln!("Calling {envs} {call}");
+        eprintln!("Calling {envs} {call} in {:?}", self.as_std().get_current_dir());
 
         let Output { status, stdout, stderr } =
             self.output().await.map_err(|e| anyhow!("Failed to spawn {envs} {call}: {e}"))?;
