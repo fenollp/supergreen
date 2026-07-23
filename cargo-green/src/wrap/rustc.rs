@@ -29,10 +29,6 @@ pub(crate) async fn wrap_rustc(
     arguments: Vec<String>,
     fallback: impl Future<Output = Result<()>>,
 ) -> Result<()> {
-    assert!(env::var_os(CARGOGREEN!()).is_none(), "It's turtles all the way down!");
-    // SAFETY: environment access only happens in single-threaded code.
-    unsafe { env::set_var(CARGOGREEN!(), "1") };
-
     let pwd = pwd();
 
     let out_dir_var = env::var(OUT_DIR!()).ok().map(Utf8PathBuf::from);

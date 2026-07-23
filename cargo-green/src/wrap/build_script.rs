@@ -48,12 +48,6 @@ pub(crate) fn exe_dance(mdid: MdId, crate_name: &str, out_dir: &Utf8Path) -> Str
 }
 
 pub(crate) async fn exec_build_script(green: Green, exe: Utf8PathBuf) -> Result<()> {
-    if let Some(weird) = env::var_os(CARGOGREEN!()) {
-        panic!("It's turtles all the way down! ({weird:?})");
-    }
-    // SAFETY: environment access only happens in single-threaded code.
-    unsafe { env::set_var(CARGOGREEN!(), "1") };
-
     let (crate_name, pkg_name, pkg_version, pkg_manifest_dir) = call_config();
 
     // exe: /target/release/build/proc-macro2-2f938e044e3f79bf/build-script-build

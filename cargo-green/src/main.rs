@@ -54,9 +54,8 @@ cargo_subcommand_metadata::description! {
 
 const EEXIT: &str = "";
 
-#[tokio::main]
-async fn main() -> Result<()> {
-    if let Err(e) = actual_main().await {
+fn main() -> Result<()> {
+    if let Err(e) = actual_main() {
         if format!("{e}") == EEXIT {
             std::process::exit(1)
         }
@@ -65,7 +64,7 @@ async fn main() -> Result<()> {
     Ok(())
 }
 
-async fn actual_main() -> Result<()> {
+fn actual_main() -> Result<()> {
     rustls::crypto::ring::default_provider()
         .install_default()
         .expect("Failed to install rustls crypto provider");
@@ -85,21 +84,37 @@ async fn actual_main() -> Result<()> {
         }
 
         let green = env::var(CARGOGREEN_PLUGINSETTINGS!())
-            .map_err(|_| anyhow!("BUG: {CARGOGREEN_PLUGINSETTINGS} is unset"))?;
+            .map_err(|e| anyhow!("BUG: {CARGOGREEN_PLUGINSETTINGS} is unset: {e}"))?;
         let green = serde_json::from_str(&green)
             .map_err(|e| anyhow!("BUG: {CARGOGREEN_PLUGINSETTINGS} is unreadable: {e}"))?;
 
-        // Dance to wrap build script execution: we patched the build.rs to call us back through here.
-        if let Ok(exe) = env::var(CARGOGREEN_EXECUTEBUILDSCRIPT!()) {
-            return wrap::exec_build_script(green, exe.into()).await;
+        if let Some(weird) = env::var_os(CARGOGREEN!()) {
+            bail!("It's turtles all the way down! ({weird:?})")
         }
+        // SAFETY: environment access only happens in single-threaded code.
+        unsafe { env::set_var(CARGOGREEN!(), "1") };
 
-        let arg0 = env::args().nth(1);
-        let args = env::args().skip(1).collect();
-        let vars = env::vars().collect();
-        return wrap::rustc(green, arg0, args, vars).await;
+        return block_on(async {
+            // Dance to wrap build script execution: we patched the build.rs to call us back through here.
+            if let Ok(exe) = env::var(CARGOGREEN_EXECUTEBUILDSCRIPT!()) {
+                return wrap::exec_build_script(green, exe.into()).await;
+            }
+
+            let arg0 = env::args().nth(1);
+            let args = env::args().skip(1).collect();
+            let vars = env::vars().collect();
+            wrap::rustc(green, arg0, args, vars).await
+        });
     }
 
+    block_on(really_actual_main(arg0, args))
+}
+
+fn block_on(f: impl Future<Output = Result<()>>) -> Result<()> {
+    tokio::runtime::Builder::new_multi_thread().enable_all().name(PKG).build().unwrap().block_on(f)
+}
+
+async fn really_actual_main(arg0: String, mut args: env::Args) -> Result<()> {
     if args.next().as_deref() != Some("green") {
         supergreen::help();
         bail!(EEXIT)
