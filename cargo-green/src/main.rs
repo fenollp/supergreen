@@ -17,6 +17,7 @@ mod build;
 mod builder;
 mod buildkitd;
 mod cache;
+mod cargo_arguments;
 mod cargo_green;
 mod checkouts;
 mod containerfile;
@@ -147,8 +148,7 @@ async fn really_actual_main(arg0: String, mut args: env::Args) -> Result<()> {
     }
     cmd.args(args);
 
-    // TODO: handle `-Z bla` (works: `-Zbla`)
-    let command = env::args().skip(2).find(|arg| !arg.starts_with('-'));
+    let command = cargo_arguments::subcommand(env::args().skip(2));
 
     #[rustfmt::skip]
     let handled = command.as_deref().is_some_and(|arg| {
