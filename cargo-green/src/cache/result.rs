@@ -100,7 +100,8 @@ pub(crate) async fn extract_just(src: &Utf8Path, fname: &str) -> Result<Vec<u8>>
     let mut inner = Vec::new();
     let mut ar = TarArchive::new(GzipDecoder::new(BufReader::new(gz.as_slice())));
     let mut entries = ar.entries().map_err(|e| anyhow!("Failed reading {src}: {e}"))?;
-    while let Some(Ok(mut f)) = entries.next().await {
+    while let Some(entry) = entries.next().await {
+        let mut f = entry.map_err(|e| anyhow!("Failed streaming tarball {src}: {e}"))?;
         let name = f
             .path()
             .map_err(|e| anyhow!("Failed decoding {src} entry name: {e}"))?
