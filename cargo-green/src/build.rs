@@ -710,16 +710,6 @@ fn write_build_artifact(
     Ok(())
 }
 
-#[inline]
-#[must_use]
-fn strip_ansi_escapes(line: &str) -> String {
-    line.replace("\\u001b[0m", "")
-        .replace("\\u001b[1m", "")
-        .replace("\\u001b[33m", "")
-        .replace("\\u001b[38;5;12m", "")
-        .replace("\\u001b[38;5;9m", "")
-}
-
 async fn build_stderr(stderr: ChildStderr, mut tx_err: Option<Sender<String>>) -> Result<()> {
     let mut lines = BufReader::new(stderr).lines();
 
@@ -728,7 +718,7 @@ async fn build_stderr(stderr: ChildStderr, mut tx_err: Option<Sender<String>>) -
     let mut cacheds = 0;
     while let Some(line) = lines.next_line().await.transpose() {
         let line = line.map_err(|e| anyhow!("Failed streaming STDERR: {e}"))?;
-        let line = strip_ansi_escapes(&line);
+        let line = strip_ansi_escapes::strip_str(&line);
         let false = line.is_empty() else { continue };
         info!("✖ {line}");
 
@@ -807,7 +797,7 @@ fn fwd_stderr(stderr: &str, badge: Option<&'static str>, cargo_home: &Utf8Path) 
         let Some(msg) = lift_stdio(line) else { continue };
 
         if let Some(badge) = badge {
-            debug!("{badge} {}", strip_ansi_escapes(line));
+            debug!("{badge} {}", strip_ansi_escapes::strip_str(line));
             let mut msg = msg.to_owned();
 
             if let Some(var) = rechrome::env_not_comptime_defined(&msg) {
@@ -850,7 +840,7 @@ fn fwd_stdout(stdout: &str, badge: Option<&'static str>, cargo_home: &Utf8Path) 
         let Some(msg) = lift_stdio(line) else { continue };
 
         if let Some(badge) = badge {
-            debug!("{badge} {}", strip_ansi_escapes(line));
+            debug!("{badge} {}", strip_ansi_escapes::strip_str(line));
 
             if let Some((_, rhs)) = msg.split_once("cargo::").xor(msg.split_once("cargo:")) {
                 // https://doc.rust-lang.org/cargo/reference/build-scripts.html#outputs-of-the-build-script
