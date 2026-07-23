@@ -528,12 +528,11 @@ async fn send_containerfile(mut stdin: ChildStdin, containerfile: Utf8PathBuf) -
         .map_err(|e| anyhow!("Failed opening (RO) {containerfile}: {e}"))?;
 
     let mut lines = BufReader::new(reader).lines();
-    while let Ok(Some(line)) = lines.next_line().await {
-        if line.starts_with(DIESES) {
-            continue;
-        }
-
+    while let Some(line) = lines.next_line().await.transpose() {
         let errf = |e| anyhow!("Failed piping containerfile: {e}");
+        let line = line.map_err(errf)?;
+        let false = line.starts_with(DIESES) else { continue };
+
         stdin.write_all(line.as_bytes()).await.map_err(errf)?;
         stdin.write_u8(b'\n').await.map_err(errf)?;
     }
@@ -607,7 +606,8 @@ async fn untar_into(
     info!("unTARing a {} bytes archive", buf.len());
     let mut ar = TarArchive::new(BufReader::new(buf));
     let mut entries = ar.entries().map_err(|e| anyhow!("Failed reading TAR: {e}"))?;
-    while let Some(Ok(mut f)) = entries.next().await {
+    while let Some(entry) = entries.next().await {
+        let mut f = entry.map_err(|e| anyhow!("Failed streaming tarball: {e}"))?;
         let name: Utf8PathBuf = f
             .path()
             .map_err(|e| anyhow!("Failed decoding TAR entry name: {e}"))?
@@ -726,11 +726,10 @@ async fn build_stderr(stderr: ChildStderr, mut tx_err: Option<Sender<String>>) -
     let mut details: BTreeMap<String, String> = [].into();
     let mut dones = 0;
     let mut cacheds = 0;
-    while let Ok(Some(line)) = lines.next_line().await {
+    while let Some(line) = lines.next_line().await.transpose() {
+        let line = line.map_err(|e| anyhow!("Failed streaming STDERR: {e}"))?;
         let line = strip_ansi_escapes(&line);
-        if line.is_empty() {
-            continue;
-        }
+        let false = line.is_empty() else { continue };
         info!("✖ {line}");
 
         // Capture some approximate stats the runner gives us
@@ -767,6 +766,7 @@ async fn build_stderr(stderr: ChildStderr, mut tx_err: Option<Sender<String>>) -
 async fn tee_stderr(stderr: ChildStderr) -> String {
     let mut lines = BufReader::new(stderr).lines();
     let mut ring = VecDeque::new();
+    // Ignore errors: we're just toying with logs here
     while let Ok(Some(line)) = lines.next_line().await {
         ring.extend(line.as_bytes());
         ring.push_back(b'\n');
