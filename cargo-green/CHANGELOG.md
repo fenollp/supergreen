@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.27.1](https://github.com/fenollp/supergreen/compare/v0.27.0...v0.27.1) - 2026-07-24
+
+### Other
+
+- release v0.27.0
+
 ## [0.27.0](https://github.com/fenollp/supergreen/compare/v0.26.0...v0.27.0) - 2026-07-24
 
 ### Added
