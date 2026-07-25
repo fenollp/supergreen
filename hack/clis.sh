@@ -14,7 +14,7 @@ source "$repo_root"/hack/ck.sh
 # Usage:    jobs=1 $0 ..                           #=> cargo --jobs=$jobs
 # Usage: offline=1 $0 ..                           #=> cargo --frozen (defaults to just: --locked)
 # Usage:    rmrf=1 $0 ..                           #=> rm -rf $CARGO_TARGET_DIR/*; cargo ...
-# Usage:   reset=1 $0 ..                           #=> docker buildx rm $BUILDX_BUILDER; cargo ...
+# Usage:   reset=1 $0 ..                           #=> cargo green supergreen builder rm --clean; cargo ...
 # Usage:   clean=1 $0 ..                           #=> Both reset=1 + rmrf=1
 # Usage:   final=0 $0 ..                           #=> Don't generate final Containerfile
 # Usage:   build=0 $0 ..                           #=> Use already installed cargo-green
@@ -574,12 +574,6 @@ frozen=--locked ; [[ "${offline:-}" = '1' ]] && frozen=--frozen
 final=${final:-1}
 build=${build:-1}
 
-case "${BUILDX_BUILDER:-}" in
-  '') BUILDX_BUILDER=supergreen ;;
-  'empty') BUILDX_BUILDER= ;;
-  *) ;;
-esac
-
 install_dir=$repo_root/target
 
 # Ad-hoc $PATH otherwise macOS has troubles with string length
@@ -616,7 +610,7 @@ set -x
     tmplogs=$tmptrgt.logs.txt
     mkdir -p "$tmptrgt"
     if [[ "$rmrf" = '1' ]]; then rm -rf "$tmptrgt"/* || exit 1; fi
-    if [[ "$reset" = 1 ]]; then docker buildx rm "$BUILDX_BUILDER" --force || exit 1; fi
+    if [[ "$reset" = 1 ]]; then cargo green supergreen builder rm --clean || exit 1; fi
     if [[ "$build" = 1 ]]; then CARGO_TARGET_DIR=$install_dir cargo install $frozen --force --root=$install_dir --path="$PWD"/cargo-green || exit 1; fi
     ls -lha $install_dir/bin/cargo-green
     rm $tmplogs >/dev/null 2>&1 || true
@@ -804,7 +798,7 @@ tmux split-window
 as_env "$name_at_version"
 send \
   'until' '[[' -f "$tmpgooo".installed ']];' 'do' sleep '.1;' 'done' '&&' rm "$tmpgooo".* \
-  '&&' 'if' '[[' "$reset" '=' '1' ']];' 'then' docker buildx rm "$BUILDX_BUILDER" --force '||' 'exit' '1;' 'fi' \
+  '&&' 'if' '[[' "$reset" '=' '1' ']];' 'then' $cargo green supergreen builder rm --clean '||' 'exit' '1;' 'fi' \
   '&&' "${envvars[@]}" $cargo green -vv install $timings $jobs --root=$tmpbins $frozen --force "$(as_install "$name_at_version")" "$args" \
   '&&' tmux kill-session -t "$session_name"
 tmux select-layout even-vertical
