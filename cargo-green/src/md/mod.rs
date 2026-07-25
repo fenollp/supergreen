@@ -215,6 +215,13 @@ impl Md {
         NamedMount { name: self.last_stage(), mount: out_dir.to_owned() }
     }
 
+    /// The `out-<mdid>` stage mount of a build script run's $OUT_DIR, when it wrote anything
+    #[must_use]
+    pub(crate) fn buildrs_out_mount(&self) -> Option<NamedMount> {
+        let out_dir = self.writes_to.as_ref()?;
+        (!self.writes.is_empty()).then(|| self.out_dir_mount(out_dir))
+    }
+
     #[must_use]
     fn rust_stage(&self) -> String {
         format!(
