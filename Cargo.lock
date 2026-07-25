@@ -246,6 +246,7 @@ dependencies = [
  "sha256",
  "shell-quote",
  "strip-ansi-escapes",
+ "strsim",
  "symlink",
  "szyk",
  "temp-env",
