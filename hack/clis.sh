@@ -269,6 +269,8 @@ as_env() {
   if [[ -n "${CARGOGREEN_LOG:-}" ]]; then
     echo Using CARGOGREEN_LOG="$CARGOGREEN_LOG"
     envvars+=(CARGOGREEN_LOG="$CARGOGREEN_LOG")
+  elif [[ "${fromcli:-0}" = 0 ]]; then
+    envvars+=(CARGOGREEN_LOG=debug)
   fi
   if [[ -n "${CARGOGREEN_LOG_STYLE:-}" ]]; then
     echo Using CARGOGREEN_LOG_STYLE="$CARGOGREEN_LOG_STYLE"
@@ -354,7 +356,7 @@ cli() {
   local registry_new=$registry-new
   local root=/tmp
   local envvars=()
-  as_env "$name_at_version"
+  fromcli=1 as_env "$name_at_version"
 
 	cat <<EOF
 $(jobdef "$(slugify "$name_at_version")")
@@ -574,6 +576,8 @@ frozen=--locked ; [[ "${offline:-}" = '1' ]] && frozen=--frozen
 final=${final:-1}
 build=${build:-1}
 
+envvars=()
+
 install_dir=$repo_root/target
 
 # Ad-hoc $PATH otherwise macOS has troubles with string length
@@ -586,6 +590,7 @@ while read -d: -r path; do
     shortPATH="$shortPATH:$path"
   fi
 done <<<"$PATH"
+envvars+=(PATH=$shortPATH)
 
 
 # Special first arg handling..
@@ -598,8 +603,8 @@ case "$arg1" in
           o|O) ;;
           *) continue ;;
       esac
-      nv=${nvs[$i]}
-      "$0" "${nv#*@}"
+      name_at_version=${nvs[$i]}
+      "$0" "${name_at_version#*@}"
     done
     exit $? ;;
 
@@ -623,22 +628,18 @@ set -x
 
     cargo=cargo ; [[ "${CARGO:-}" != '' ]] && cargo="cargo +$CARGO"
 
+    envvars+=(CARGOGREEN_LOG_PATH=$tmplogs)
+    envvars+=(CARGOGREEN_EXPERIMENT=finalpathnonprimary)
+    envvars+=(CARGOGREEN_FINAL_PATH=$tmptrgt/cargo-green.Dockerfile)
+    as_env cargo-green
+
     echo "$arg1"
     echo "Target dir: $tmptrgt"
     echo "Logs: $tmplogs"
-    CARGOGREEN_LOG=debug \
-    CARGOGREEN_LOG_PATH="$tmplogs" \
-    CARGOGREEN_FINAL_PATH="$tmptrgt/cargo-green-fetched.Dockerfile" \
-    CARGOGREEN_EXPERIMENT=finalpathnonprimary \
-    PATH=$shortPATH \
-      $cargo green fetch
-    CARGOGREEN_LOG=debug \
-    CARGOGREEN_LOG_PATH="$tmplogs" \
-    CARGOGREEN_FINAL_PATH="$tmptrgt/cargo-green.Dockerfile" \
-    CARGOGREEN_EXPERIMENT=finalpathnonprimary \
-    PATH=$shortPATH \
-    CARGO_TARGET_DIR="$tmptrgt" \
-      $cargo green -vv $arg1 $jobs --all-features $frozen -p cargo-green
+    env "${envvars[@]}" $cargo green fetch
+    printf '\n\n#FETCHED\n\n' >>$tmptrgt/cargo-green.Dockerfile
+    envvars+=(CARGO_TARGET_DIR=$tmptrgt)
+    env "${envvars[@]}" $cargo green -vv $arg1 $jobs --all-features $frozen -p cargo-green
     exit ;;
 
   *)
@@ -670,9 +671,7 @@ tmplogs=$tmptrgt.logs.txt
 tmpgooo=$tmptrgt.state
 tmpbins=/tmp
 
-envvars=(CARGO_INCREMENTAL=0)
-envvars+=(PATH=$shortPATH)
-envvars+=(CARGOGREEN_LOG=debug)
+envvars+=(CARGO_INCREMENTAL=0)
 envvars+=(CARGOGREEN_LOG_PATH="$tmplogs")
 envvars+=(CARGO_TARGET_DIR="$tmptrgt")
 if [[ "$final" = '1' ]]; then
