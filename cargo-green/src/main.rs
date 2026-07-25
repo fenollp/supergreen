@@ -150,6 +150,14 @@ async fn really_actual_main(arg0: String, mut args: env::Args) -> Result<()> {
 
     let command = cargo_arguments::subcommand(env::args().skip(2));
 
+    if let Some(ref command) = command {
+        let close = matches!(strsim::damerau_levenshtein("green", command), 0..=2)
+            || matches!(strsim::damerau_levenshtein("supergreen", command), 1..=3);
+        if close {
+            bail!("Did you mean 'supergreen' by typing {command:?}?")
+        }
+    }
+
     #[rustfmt::skip]
     let handled = command.as_deref().is_some_and(|arg| {
         // Subcommands that needn't our wrapping:
