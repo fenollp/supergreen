@@ -62,6 +62,13 @@ pub(crate) struct Green {
     #[serde(skip_serializing_if = "HashMap::is_empty")]
     pub(crate) runner_envs: HashMap<String, String>,
 
+    /// Unix socket path of the SSH connection pool bridging to a remote ssh://
+    /// $DOCKER_HOST daemon, when one runs. Set by the `cargo green` parent,
+    /// read by [`Green::cmd`]. Not user-settable.
+    #[doc(hidden)]
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub(crate) docker_pool_sock: Option<String>,
+
     #[serde(flatten)]
     pub(crate) builder: Builder,
 

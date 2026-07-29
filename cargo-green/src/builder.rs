@@ -8,8 +8,9 @@ use serde::{Deserialize, Serialize};
 use version_compare::Version;
 
 use crate::{
-    all_our_envs::{BUILDX_BUILDER, CARGOGREEN_BUILDER_IMAGE},
+    all_our_envs::{BUILDX_BUILDER, CARGOGREEN_BUILDER_IMAGE, DOCKER_HOST},
     buildkitd,
+    docker_pool::POOL_SOCK_PREFIX,
     ext::CommandExt,
     green::Green,
     image_uri::{ImageUri, fetch_digest},
@@ -128,6 +129,15 @@ impl Green {
         Ok(())
     }
 
+    /// The docker endpoint `buildx create` would record right now: the pool
+    /// socket when remoting through one, else $DOCKER_HOST, else the local daemon.
+    fn expected_builder_endpoint(&self) -> Option<String> {
+        if let Some(ref sock) = self.docker_pool_sock {
+            return Some(format!("unix://{sock}"));
+        }
+        self.runner_envs.get(DOCKER_HOST!()).cloned()
+    }
+
     pub(crate) async fn maybe_setup_builder(&mut self, env: Option<String>) -> Result<()> {
         if self.runner.is_none() {
             info!("Skipping builder setup (runner:{})", self.runner);
@@ -160,6 +170,26 @@ impl Green {
                     )
                 }
                 recreate = true;
+            }
+
+            // A builder pins its docker endpoint at `buildx create` time: reusing
+            // one that points elsewhere (another daemon, a dead pool socket)
+            // silently builds on the wrong host.
+            let expected = self.expected_builder_endpoint();
+            if !existing.endpoint_matches(expected.as_deref()) {
+                if managed {
+                    recreate = true;
+                } else {
+                    eprintln!(
+                        "
+Existing {BUILDX_BUILDER}={name:?} does not point at {expected}
+so builds may not run where ${DOCKER_HOST} points. Maybe re-create your builder with:
+    docker buildx rm {name} --keep-state
+then run your cargo command again.
+",
+                        expected = expected.as_deref().unwrap_or("the local docker daemon"),
+                    );
+                }
             }
 
             if !existing.uses_version_newer_or_equal_to(&LATEST_BUILDKIT) {
@@ -388,6 +418,7 @@ fn find_builders() {
             driver: BUILDER_DRIVER.to_owned(),
             nodes: vec![BuilderNode {
                 version: Some("v0.22.0".to_owned()),
+                endpoint: Some("unix:///var/run/docker.sock".to_owned()),
                 driver_opts: Some(DriverOpts {
                     image: Some("docker.io/moby/buildkit:buildx-stable-1".to_owned()),
                 }),
@@ -404,9 +435,55 @@ fn find_builders() {
         &BuildxBuilder {
             name: "default".to_owned(),
             driver: "docker".to_owned(),
-            nodes: vec![BuilderNode { version: Some("v0.23.2".to_owned()), driver_opts: None }],
+            nodes: vec![BuilderNode {
+                version: Some("v0.23.2".to_owned()),
+                endpoint: Some("default".to_owned()),
+                driver_opts: None,
+            }],
         }
     );
+}
+
+#[test]
+fn builder_endpoint_matching() {
+    fn with_endpoints(endpoints: &[Option<&str>]) -> BuildxBuilder {
+        BuildxBuilder {
+            name: "b".to_owned(),
+            driver: BUILDER_DRIVER.to_owned(),
+            nodes: endpoints
+                .iter()
+                .map(|ep| BuilderNode {
+                    driver_opts: None,
+                    endpoint: ep.map(ToOwned::to_owned),
+                    version: None,
+                })
+                .collect(),
+        }
+    }
+    let pool_sock = "unix:///run/user/1000/supergreen-docker-cafe1234.sock";
+
+    //
+
+    assert!(with_endpoints(&[Some(pool_sock)]).endpoint_matches(Some(pool_sock)));
+    assert!(
+        !with_endpoints(&[Some("unix:///var/run/docker.sock")]).endpoint_matches(Some(pool_sock))
+    );
+    assert!(
+        !with_endpoints(&[Some("unix:///var/run/docker.sock")]).endpoint_matches(Some("ssh://gol"))
+    );
+    assert!(with_endpoints(&[Some("ssh://gol")]).endpoint_matches(Some("ssh://gol")));
+
+    // Local daemon expected: remote leftovers + stale pool sockets get rejected
+    assert!(with_endpoints(&[Some("unix:///var/run/docker.sock")]).endpoint_matches(None));
+    assert!(with_endpoints(&[Some("default")]).endpoint_matches(None));
+    assert!(!with_endpoints(&[Some("ssh://gol")]).endpoint_matches(None));
+    assert!(!with_endpoints(&[Some("tcp://oomph:2375")]).endpoint_matches(None));
+    assert!(!with_endpoints(&[Some(pool_sock)]).endpoint_matches(None));
+
+    // buildx didn't report endpoints: assume OK rather than churn
+    assert!(with_endpoints(&[None]).endpoint_matches(Some("ssh://gol")));
+    assert!(with_endpoints(&[None]).endpoint_matches(None));
+    assert!(with_endpoints(&[]).endpoint_matches(Some(pool_sock)));
 }
 
 #[derive(Debug, Deserialize)]
@@ -414,6 +491,7 @@ fn find_builders() {
 #[serde(rename_all = "PascalCase")]
 struct BuilderNode {
     driver_opts: Option<DriverOpts>,
+    endpoint: Option<String>,
     version: Option<String>,
 }
 
@@ -446,6 +524,22 @@ impl BuildxBuilder {
                 }
             })
         })
+    }
+
+    /// Whether this builder's nodes point where our runner children will point.
+    /// `expected=None` means the local daemon: then reject remote leftovers and
+    /// (possibly dead) pool sockets recorded by earlier remoting runs.
+    fn endpoint_matches(&self, expected: Option<&str>) -> bool {
+        let known: Vec<_> = self.nodes.iter().filter_map(|n| n.endpoint.as_deref()).collect();
+        if known.is_empty() {
+            return true; // buildx didn't report endpoints: assume OK rather than churn
+        }
+        match expected {
+            Some(want) => known.contains(&want),
+            None => !known.iter().any(|e| {
+                e.starts_with("ssh://") || e.starts_with("tcp://") || e.contains(POOL_SOCK_PREFIX)
+            }),
+        }
     }
 
     fn uses_version_newer_or_equal_to(&self, latest: &Version) -> bool {

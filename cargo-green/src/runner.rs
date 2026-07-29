@@ -161,10 +161,10 @@ impl Green {
 
         // If the parent `cargo green` started a connection pool (remote ssh:// host),
         // redirect just this child to the local pool socket. Our own remote-detection
-        // keeps reading the real ssh:// $DOCKER_HOST, so it is unaffected.
-        if let Some(host) = crate::docker_pool::pooled_docker_host() {
-            info!("routing {DOCKER_HOST} through connection pool: {host}");
-            cmd.env(DOCKER_HOST!(), host);
+        // keeps reading the real ssh:// $DOCKER_HOST from runner_envs, unaffected.
+        if let Some(ref sock) = self.docker_pool_sock {
+            info!("routing {DOCKER_HOST} through connection pool: unix://{sock}");
+            cmd.env(DOCKER_HOST!(), format!("unix://{sock}"));
         }
 
         Ok(cmd)

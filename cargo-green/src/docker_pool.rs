@@ -1,4 +1,4 @@
-//! Warm, multiplexed Docker/BuildKit connections for cargo-green's remote builds.
+//! Warm, multiplexed SSH connections for remote (`DOCKER_HOST=ssh://…`) builds.
 //!
 //! cargo-green runs **one BuildKit build per `rustc` invocation** by shelling out
 //! to `docker buildx`. With `DOCKER_HOST=ssh://extra-oomph` each of those calls
@@ -6,42 +6,43 @@
 //! handshake (TCP + key exchange + auth). Across a workspace that is thousands of
 //! handshakes — pure latency.
 //!
-//! This module removes that cost. The **long-lived `cargo green` process** owns a
-//! pool of warm SSH connections and exposes them on a local **unix socket**. The
-//! short-lived `rustc`-wrapper subprocesses (and the `docker buildx` they spawn)
-//! connect to that socket instead of opening their own SSH connection:
+//! The **long-lived `cargo green` parent** starts a [`DockerPool`]: a local unix
+//! socket backed by a small pool of `ssh -o ControlMaster` connections, each
+//! channel running `docker system dial-stdio` on the remote:
 //!
 //! ```text
 //!   cargo green (main, owns the pool)
-//!     ├── unix:///run/user/1000/supergreen-docker-<pid>.sock   <-- the pool
+//!     ├── unix:///run/user/1000/supergreen-docker-<target-hash>.sock
 //!     └── spawns: cargo
 //!            └── spawns: cargo-green (RUSTC_WRAPPER, per crate)
 //!                   └── spawns: docker buildx build   --DOCKER_HOST=unix://…sock-->
 //! ```
 //!
-//! Design notes, mirroring moby's `docker system dial-stdio`
-//! (cli/command/system/dial_stdio.go):
+//! Design notes:
 //!
+//! * The remote command is `docker system dial-stdio`: a transparent pipe to the
+//!   remote **dockerd Engine API** socket — the exact protocol `docker` expects
+//!   behind a `DOCKER_HOST`, and what its own ssh:// connhelper runs. REST,
+//!   hijacked streams and buildx's gRPC-over-Engine-API all pass through
+//!   unchanged. Its cousin `docker buildx dial-stdio` instead exposes a builder's
+//!   BuildKit **gRPC** API: only suitable as a `BUILDKIT_HOST`/`remote`-driver
+//!   endpoint, never as a `DOCKER_HOST`.
+//! * The socket path is a stable function of the ssh target, not of the run:
+//!   `buildx create` records the then-current `DOCKER_HOST` as the managed
+//!   builder's node endpoint, and that recorded endpoint must resolve again on
+//!   the next run. A later `cargo green` rebinds the socket, or joins a live one
+//!   as [`DockerPool::Shared`].
+//! * Wrapper subprocesses learn the path through the `Green` config they
+//!   deserialize (`Green::docker_pool_sock`); `Green::cmd()` points just the
+//!   spawned `docker` at it. cargo-green's own remote-detection keeps reading
+//!   the real ssh:// value from `runner_envs`, unaffected.
 //! * The transport drives the **system `ssh` binary** with `ControlMaster=auto`
-//!   and `ControlPersist`, so the handshake happens once and every later dial is a
-//!   cheap multiplexed channel running `docker system dial-stdio` on the remote.
-//!   Using real `ssh` keeps `~/.ssh/config` working — `Host` aliases like
-//!   `extra-oomph`, `ProxyJump`, `IdentityFile` — which supergreen relies on.
-//! * The proxy is a **transparent byte pipe** to the remote daemon socket, so all
-//!   Docker traffic works unchanged: the HTTP/1.1 REST API and, crucially, the
-//!   HTTP/2 **gRPC** that buildx uses to talk to BuildKit. gRPC stream
-//!   multiplexing is preserved end to end between the local buildx process and
-//!   remote buildkitd; the proxy never parses or reframes it.
+//!   and `ControlPersist`, so the handshake happens once and every later dial is
+//!   a cheap multiplexed channel. Real `ssh` keeps `~/.ssh/config` working —
+//!   `Host` aliases like `extra-oomph`, `ProxyJump`, `IdentityFile`.
 //! * A small **lane pool** spreads concurrent channels across several SSH master
 //!   connections so we don't exceed the server's `MaxSessions` (default 10):
 //!   N parallel builds cost a handful of handshakes total, not N.
-//!
-//! Two entry points are provided:
-//!   * [`PoolProxy`] — the async API, used by cargo-green's `#[tokio::main]` parent.
-//!   * [`ProxyHandle`] — a fully synchronous wrapper around it, for a sync `main`.
-
-// Fuller API surface (sync handle, accessors) than the parent currently wires up.
-#![allow(dead_code)]
 
 use std::{
     collections::hash_map::DefaultHasher,
@@ -58,33 +59,70 @@ use std::{
 use anyhow::{Context, Result, anyhow, bail};
 use log::{debug, info, warn};
 use tokio::{
-    io::Join,
+    io::AsyncWriteExt,
     net::{UnixListener, UnixStream},
     process::{Child, ChildStdin, ChildStdout, Command as TokioCommand},
     sync::{OnceCell, OwnedSemaphorePermit, Semaphore, watch},
     task::JoinHandle,
 };
 
-/// Env var the main process sets so wrapper subprocesses know where the pool is.
-/// The runner reads it via [`pooled_docker_host`] and points `docker` at it.
-pub const POOL_SOCK_ENV: &str = "CARGOGREEN_DOCKER_POOL_SOCK";
+use crate::{green::Green, runner::Runner};
 
-/// For the subprocess side: if a pool socket was published by the main process,
-/// return the `DOCKER_HOST` value to set on the spawned `docker`/`podman` command.
-///
-/// ```ignore
-/// let mut docker = std::process::Command::new("docker");
-/// // …build args…
-/// if let Some(host) = crate::docker_pool::pooled_docker_host() {
-///     docker.env("DOCKER_HOST", host); // redirect just this child to the pool
-/// }
-/// ```
-///
-/// Note: this only overrides `DOCKER_HOST` for the `docker` child. cargo-green's
-/// own "am I building remotely?" logic keeps reading the real `ssh://` value, so
-/// remote/local detection is unaffected.
-pub fn pooled_docker_host() -> Option<String> {
-    std::env::var(POOL_SOCK_ENV).ok().map(|s| format!("unix://{s}"))
+/// Pool sockets are named `{POOL_SOCK_PREFIX}{target-hash}.sock`. builder.rs
+/// also uses this marker to spot (possibly dead) pool endpoints recorded in
+/// buildx's state from earlier remoting runs.
+pub(crate) const POOL_SOCK_PREFIX: &str = "supergreen-docker-";
+
+/// The pool, if one is warranted: [`Runner::Docker`] with an ssh:// `DOCKER_HOST`.
+pub(crate) enum DockerPool {
+    /// This process owns the socket and the SSH masters behind it.
+    Owned(PoolProxy),
+    /// Another live `cargo green` (same ssh target) already serves this socket:
+    /// piggyback on it. If its owner exits first, later dials fail and `docker`
+    /// calls surface that error.
+    Shared(PathBuf),
+}
+
+impl DockerPool {
+    /// Start (or join) a pool when `green` builds through a remote ssh:// docker
+    /// daemon. `Ok(None)` otherwise: local/tcp daemons don't need pooling.
+    pub(crate) async fn maybe_start(green: &Green) -> Result<Option<Self>> {
+        if green.runner != Runner::Docker {
+            return Ok(None);
+        }
+        let Some(host) = green.runner_envs.get(DOCKER_HOST!()) else { return Ok(None) };
+        if !host.starts_with("ssh://") {
+            return Ok(None);
+        }
+        let target = parse_ssh_url(host)
+            .ok_or_else(|| anyhow!("dockerpool: unusable ssh {}={host:?}", DOCKER_HOST!()))?;
+
+        let socket_path = socket_path_for(&target);
+        if UnixStream::connect(&socket_path).await.is_ok() {
+            info!("dockerpool: joining live pool socket unix://{}", socket_path.display());
+            return Ok(Some(Self::Shared(socket_path)));
+        }
+        let _ = std::fs::remove_file(&socket_path); // Stale leftover, if any
+
+        let proxy = PoolProxy::start(target, socket_path, PoolOpts::default()).await?;
+        Ok(Some(Self::Owned(proxy)))
+    }
+
+    pub(crate) fn socket_path(&self) -> &Path {
+        match self {
+            Self::Owned(proxy) => proxy.socket_path(),
+            Self::Shared(socket_path) => socket_path,
+        }
+    }
+
+    /// Stop accepting, tear down the SSH masters, and remove the socket.
+    /// No-op for a [`DockerPool::Shared`] socket: its owner cleans up.
+    pub(crate) async fn shutdown(self) {
+        match self {
+            Self::Owned(proxy) => proxy.shutdown().await,
+            Self::Shared(..) => {}
+        }
+    }
 }
 
 // ----------------------------------------------------------------------------
@@ -93,10 +131,10 @@ pub fn pooled_docker_host() -> Option<String> {
 
 /// A parsed `ssh://[user@]host[:port]` destination.
 #[derive(Clone, Debug)]
-pub struct SshTarget {
-    pub user: Option<String>,
-    pub host: String,
-    pub port: Option<String>,
+pub(crate) struct SshTarget {
+    pub(crate) user: Option<String>,
+    pub(crate) host: String,
+    pub(crate) port: Option<String>,
 }
 
 impl SshTarget {
@@ -111,7 +149,7 @@ impl SshTarget {
 }
 
 /// Parse a `DOCKER_HOST` ssh URL. Returns `None` if it isn't a usable ssh URL.
-pub fn parse_ssh_url(s: &str) -> Option<SshTarget> {
+pub(crate) fn parse_ssh_url(s: &str) -> Option<SshTarget> {
     let rest = s.strip_prefix("ssh://")?;
     // Authority is everything before any path/query.
     let authority = rest.split(['/', '?']).next().unwrap_or(rest);
@@ -136,24 +174,23 @@ pub fn parse_ssh_url(s: &str) -> Option<SshTarget> {
 
 /// Tunables for the pool. `Default` is sensible for a developer laptop.
 #[derive(Clone, Debug)]
-pub struct PoolOpts {
+pub(crate) struct PoolOpts {
     /// ssh binary name/path. Default `"ssh"`.
-    pub ssh_bin: String,
-    /// Command run on the remote side of each channel.
-    /// Default `["docker", "system", "dial-stdio"]`. Use
-    /// `["docker", "buildx", "dial-stdio"]` to land on the BuildKit gRPC API.
-    pub remote_cmd: Vec<String>,
+    pub(crate) ssh_bin: String,
+    /// Command run on the remote side of each channel. Must speak the Engine API
+    /// (see module docs), hence `["docker", "system", "dial-stdio"]`.
+    pub(crate) remote_cmd: Vec<String>,
     /// Max number of SSH master connections (each its own handshake). Default 4.
-    pub max_lanes: usize,
+    pub(crate) max_lanes: usize,
     /// Max concurrent channels per master, kept under the server's `MaxSessions`
     /// (OpenSSH default 10). Default 8.
-    pub max_per_lane: usize,
+    pub(crate) max_per_lane: usize,
     /// ssh `ControlPersist` (seconds, or a duration like `"10m"`). Default `"600"`.
-    pub control_persist: String,
+    pub(crate) control_persist: String,
     /// ssh `ConnectTimeout` in seconds. Default `"20"`.
-    pub connect_timeout: String,
+    pub(crate) connect_timeout: String,
     /// Extra ssh args, e.g. `["-o", "BatchMode=yes"]`.
-    pub extra_ssh_args: Vec<String>,
+    pub(crate) extra_ssh_args: Vec<String>,
 }
 
 impl Default for PoolOpts {
@@ -176,7 +213,6 @@ impl Default for PoolOpts {
 
 /// One SSH master connection and its live-channel count.
 struct Lane {
-    #[allow(dead_code)]
     id: usize,
     control_path: PathBuf,
     active: AtomicUsize,
@@ -190,7 +226,7 @@ impl Lane {
 }
 
 /// The pool of warm SSH master connections. Owned by the main process.
-pub struct Pool {
+struct Pool {
     target: SshTarget,
     opts: PoolOpts,
     control_dir: PathBuf,
@@ -202,7 +238,7 @@ pub struct Pool {
 }
 
 impl Pool {
-    pub fn new(target: SshTarget, opts: PoolOpts) -> Self {
+    fn new(target: SshTarget, opts: PoolOpts) -> Self {
         let control_dir = std::env::temp_dir().join("supergreen-ssh");
         if let Err(e) = std::fs::create_dir_all(&control_dir) {
             warn!("dockerpool: cannot create {}: {e}", control_dir.display());
@@ -279,7 +315,7 @@ impl Pool {
     }
 
     /// Warm the first lane so the very first build is fast.
-    pub async fn prewarm(&self) -> Result<()> {
+    async fn prewarm(&self) -> Result<()> {
         let lane = {
             let mut lanes = self.lanes.lock().unwrap();
             if let Some(l) = lanes.first() {
@@ -322,7 +358,7 @@ impl Pool {
         lane
     }
 
-    fn spawn_dial_stdio(&self, lane: &Lane) -> Result<(Child, Join<ChildStdout, ChildStdin>)> {
+    fn spawn_dial_stdio(&self, lane: &Lane) -> Result<(Child, ChildStdin, ChildStdout)> {
         let mut args = self.ctrl_args(lane);
         args.push(self.target.host.clone());
         args.extend(self.opts.remote_cmd.iter().cloned());
@@ -335,13 +371,12 @@ impl Pool {
             .spawn()?;
         let stdin = child.stdin.take().context("dockerpool: no ssh stdin")?;
         let stdout = child.stdout.take().context("dockerpool: no ssh stdout")?;
-        // join() presents (stdout-as-reader, stdin-as-writer) as one duplex conn.
-        Ok((child, tokio::io::join(stdout, stdin)))
+        Ok((child, stdin, stdout))
     }
 
     /// Open a fresh, multiplexed channel to the remote daemon. Cheap once a lane
     /// is warm: just an SSH session over the existing master.
-    pub async fn dial(&self) -> Result<Upstream> {
+    async fn dial(&self) -> Result<Upstream> {
         let permit = self.sem.clone().acquire_owned().await.context("dockerpool: pool closed")?;
         let lane = self.choose_lane();
 
@@ -350,7 +385,13 @@ impl Pool {
             return Err(e);
         }
         match self.spawn_dial_stdio(&lane) {
-            Ok((child, io)) => Ok(Upstream { child, io, _permit: permit, lane }),
+            Ok((child, stdin, stdout)) => Ok(Upstream {
+                child,
+                stdin: Some(stdin),
+                stdout: Some(stdout),
+                _permit: permit,
+                lane,
+            }),
             Err(e) => {
                 lane.active.fetch_sub(1, Ordering::Relaxed);
                 Err(e)
@@ -359,7 +400,7 @@ impl Pool {
     }
 
     /// Tear down every master connection (`ssh -O exit`) and remove control sockets.
-    pub async fn shutdown(&self) {
+    async fn shutdown(&self) {
         let lanes = { self.lanes.lock().unwrap().clone() };
         for lane in lanes {
             let mut args = self.ctrl_args(&lane);
@@ -381,9 +422,11 @@ impl Pool {
 /// A live channel to the remote daemon. Holds its lane slot + semaphore permit
 /// for its whole lifetime; dropping it frees both and (via `kill_on_drop`) reaps
 /// the ssh process if it hasn't exited.
-pub struct Upstream {
+struct Upstream {
     child: Child,
-    io: Join<ChildStdout, ChildStdin>,
+    /// Taken by [`handle`]; dropping it closes the fd = EOF for the remote.
+    stdin: Option<ChildStdin>,
+    stdout: Option<ChildStdout>,
     _permit: OwnedSemaphorePermit,
     lane: Arc<Lane>,
 }
@@ -403,13 +446,12 @@ impl Drop for Upstream {
 }
 
 // ----------------------------------------------------------------------------
-// Async proxy
+// Proxy
 // ----------------------------------------------------------------------------
 
 /// The unix-socket proxy. Accepts local connections and bridges each to a warm
-/// pooled channel. Usually you want [`ProxyHandle`] instead, which wraps this in
-/// a synchronous API.
-pub struct PoolProxy {
+/// pooled channel. Start it through [`DockerPool::maybe_start`].
+pub(crate) struct PoolProxy {
     socket_path: PathBuf,
     pool: Arc<Pool>,
     accept_stop: watch::Sender<bool>,
@@ -417,18 +459,8 @@ pub struct PoolProxy {
 }
 
 impl PoolProxy {
-    /// Read `DOCKER_HOST`; if it is `ssh://…`, build and start a proxy. Otherwise
-    /// return `None` (local/tcp daemons don't need pooling).
-    pub async fn maybe_start_from_env() -> Result<Option<Self>> {
-        let Some(target) = ssh_target_from_env()? else { return Ok(None) };
-        Ok(Some(Self::start(target, opts_from_env()).await?))
-    }
-
     /// Bind the socket, warm the first lane, and start accepting.
-    pub async fn start(target: SshTarget, opts: PoolOpts) -> Result<Self> {
-        let socket_path = default_socket_path();
-        // Remove a stale socket so bind() doesn't fail with EADDRINUSE.
-        let _ = std::fs::remove_file(&socket_path);
+    async fn start(target: SshTarget, socket_path: PathBuf, opts: PoolOpts) -> Result<Self> {
         let listener = UnixListener::bind(&socket_path)?;
         // Owner-only: this socket is a direct line to the (remote) daemon.
         std::fs::set_permissions(&socket_path, std::fs::Permissions::from_mode(0o600))?;
@@ -457,25 +489,34 @@ impl PoolProxy {
         Ok(Self { socket_path, pool, accept_stop, task })
     }
 
-    /// The `DOCKER_HOST` value clients should use.
-    pub fn docker_host(&self) -> String {
-        format!("unix://{}", self.socket_path.display())
-    }
-
-    pub fn socket_path(&self) -> &Path {
+    fn socket_path(&self) -> &Path {
         &self.socket_path
     }
 
     /// Stop accepting, tear down the SSH masters, and remove the socket.
-    pub async fn shutdown(self) {
+    async fn shutdown(mut self) {
         let _ = self.accept_stop.send(true);
-        let _ = self.task.await;
+        let _ = (&mut self.task).await;
         self.pool.shutdown().await;
         let _ = std::fs::remove_file(&self.socket_path);
     }
 }
 
+impl Drop for PoolProxy {
+    fn drop(&mut self) {
+        // Best-effort for panic/early-exit paths ([`PoolProxy::shutdown`] is the
+        // graceful route; a second remove is harmless). The ssh masters aren't
+        // reachable from a sync Drop: they self-expire through `ControlPersist`.
+        let _ = std::fs::remove_file(&self.socket_path);
+    }
+}
+
 /// Bridge one accepted local connection to a pooled upstream channel.
+///
+/// Copies each direction independently (not `copy_bidirectional`: tokio's
+/// `ChildStdin::poll_shutdown` doesn't close the fd) so that EOF propagates as a
+/// half-close both ways — the `CloseWrite` dance moby's commandconn does. The
+/// draining side keeps flowing after the other side finishes.
 async fn handle(pool: Arc<Pool>, mut local: UnixStream) {
     let mut up = match pool.dial().await {
         Ok(u) => u,
@@ -484,167 +525,48 @@ async fn handle(pool: Arc<Pool>, mut local: UnixStream) {
             return; // dropping `local` closes it
         }
     };
-    // copy_bidirectional copies both ways and does the half-close dance moby's
-    // dial-stdio does: when one side hits EOF it shuts down the peer's write half
-    // (CloseWrite) rather than closing fully, so the other direction can drain.
-    match tokio::io::copy_bidirectional(&mut local, &mut up.io).await {
-        Ok((to_remote, to_local)) => {
-            debug!("dockerpool: session done ({to_remote} up / {to_local} down bytes)")
+    let mut to_remote = up.stdin.take().expect("set in dial()");
+    let mut from_remote = up.stdout.take().expect("set in dial()");
+    let (mut local_read, mut local_write) = local.split();
+
+    let up_dir = async {
+        let n = tokio::io::copy(&mut local_read, &mut to_remote).await;
+        drop(to_remote); // close ssh's stdin: the remote reads EOF
+        n
+    };
+    let down_dir = async {
+        let n = tokio::io::copy(&mut from_remote, &mut local_write).await;
+        let _ = local_write.shutdown().await; // half-close towards the local client
+        n
+    };
+    match tokio::join!(up_dir, down_dir) {
+        (Ok(to_remote), Ok(to_local)) => {
+            debug!("dockerpool: session done ({to_remote} up / {to_local} down bytes)");
         }
-        Err(e) => debug!("dockerpool: session ended: {e}"),
+        (up_res, down_res) => {
+            debug!("dockerpool: session ended: up:{up_res:?} down:{down_res:?}");
+        }
     }
     up.finish().await;
 }
 
-// ----------------------------------------------------------------------------
-// Synchronous handle for a (sync) cargo-green main
-// ----------------------------------------------------------------------------
-
-/// Fully synchronous front door. Runs the async proxy on a dedicated thread and
-/// returns once the socket is bound and the first lane is warm.
-///
-/// ```ignore
-/// // In the top-level `cargo green` command, BEFORE spawning cargo:
-/// let proxy = crate::docker_pool::ProxyHandle::maybe_start_from_env()?;
-/// let mut cargo = std::process::Command::new("cargo");
-/// cargo.args(forwarded_args);
-/// if let Some(p) = &proxy {
-///     // Tell the rustc-wrapper subprocesses where the pool is. They inherit it
-///     // through cargo and redirect their `docker` child via pooled_docker_host().
-///     cargo.env(crate::docker_pool::POOL_SOCK_ENV, p.socket_path());
-/// }
-/// let status = cargo.status()?;
-/// drop(proxy); // or proxy.shutdown(): stops accepting + `ssh -O exit`
-/// std::process::exit(status.code().unwrap_or(1));
-/// ```
-pub struct ProxyHandle {
-    socket_path: PathBuf,
-    shutdown_tx: Option<tokio::sync::oneshot::Sender<()>>,
-    join: Option<std::thread::JoinHandle<()>>,
-}
-
-impl ProxyHandle {
-    /// `Ok(None)` when `DOCKER_HOST` isn't `ssh://…` (nothing to pool).
-    pub fn maybe_start_from_env() -> Result<Option<Self>> {
-        let Some(target) = ssh_target_from_env()? else { return Ok(None) };
-        Ok(Some(Self::start(target, opts_from_env())?))
-    }
-
-    pub fn start(target: SshTarget, opts: PoolOpts) -> Result<Self> {
-        let (ready_tx, ready_rx) = std::sync::mpsc::channel::<Result<PathBuf>>();
-        let (shutdown_tx, shutdown_rx) = tokio::sync::oneshot::channel::<()>();
-
-        let join =
-            std::thread::Builder::new().name("supergreen-dockerpool".into()).spawn(move || {
-                let rt = match tokio::runtime::Runtime::new() {
-                    Ok(rt) => rt,
-                    Err(e) => {
-                        let _ = ready_tx.send(Err(e.into()));
-                        return;
-                    }
-                };
-                rt.block_on(async move {
-                    let proxy = match PoolProxy::start(target, opts).await {
-                        Ok(p) => p,
-                        Err(e) => {
-                            let _ = ready_tx.send(Err(e));
-                            return;
-                        }
-                    };
-                    let _ = ready_tx.send(Ok(proxy.socket_path().to_path_buf()));
-                    // Serve until the sync side drops or shuts down the handle.
-                    let _ = shutdown_rx.await;
-                    proxy.shutdown().await;
-                });
-            })?;
-
-        match ready_rx.recv() {
-            Ok(Ok(socket_path)) => {
-                Ok(Self { socket_path, shutdown_tx: Some(shutdown_tx), join: Some(join) })
-            }
-            Ok(Err(e)) => {
-                let _ = join.join();
-                Err(e)
-            }
-            Err(_) => Err(anyhow!("dockerpool: proxy thread exited before ready")),
-        }
-    }
-
-    pub fn socket_path(&self) -> &Path {
-        &self.socket_path
-    }
-
-    pub fn docker_host(&self) -> String {
-        format!("unix://{}", self.socket_path.display())
-    }
-
-    /// Explicit, blocking shutdown. (Drop does the same if you don't call it.)
-    pub fn shutdown(mut self) {
-        self.stop();
-    }
-
-    fn stop(&mut self) {
-        if let Some(tx) = self.shutdown_tx.take() {
-            let _ = tx.send(()); // oneshot::Sender::send is synchronous
-        }
-        if let Some(j) = self.join.take() {
-            let _ = j.join(); // waits for `ssh -O exit` + socket cleanup
-        }
-    }
-}
-
-impl Drop for ProxyHandle {
-    fn drop(&mut self) {
-        self.stop();
-    }
-}
-
-// ----------------------------------------------------------------------------
-// Shared helpers
-// ----------------------------------------------------------------------------
-
-fn ssh_target_from_env() -> Result<Option<SshTarget>> {
-    let host = match std::env::var("DOCKER_HOST") {
-        Ok(h) => h,
-        Err(_) => return Ok(None),
-    };
-    if !host.starts_with("ssh://") {
-        return Ok(None);
-    }
-    parse_ssh_url(&host)
-        .map(Some)
-        .ok_or_else(|| anyhow!("dockerpool: bad ssh DOCKER_HOST {host:?}"))
-}
-
-fn opts_from_env() -> PoolOpts {
-    let mut opts = PoolOpts::default();
-    if let Ok(cmd) = std::env::var("CARGOGREEN_DIAL_STDIO_CMD") {
-        let parts: Vec<String> = cmd.split_whitespace().map(String::from).collect();
-        if !parts.is_empty() {
-            opts.remote_cmd = parts;
-        }
-    }
-    if let Some(n) = std::env::var("CARGOGREEN_POOL_MAX_LANES").ok().and_then(|s| s.parse().ok()) {
-        opts.max_lanes = n;
-    }
-    if let Some(n) = std::env::var("CARGOGREEN_POOL_MAX_PER_LANE").ok().and_then(|s| s.parse().ok())
-    {
-        opts.max_per_lane = n;
-    }
-    opts
-}
-
-fn default_socket_path() -> PathBuf {
+/// Stable per-target socket path: the managed builder records it as its node
+/// endpoint at `buildx create` time and must find it live on later runs too.
+fn socket_path_for(target: &SshTarget) -> PathBuf {
+    let mut h = DefaultHasher::new();
+    target.key().hash(&mut h);
     // XDG_RUNTIME_DIR (e.g. /run/user/1000) is short and tmpfs-backed on Linux.
     // Falls back to the temp dir elsewhere. NOTE on macOS: the temp dir path can
     // be long and unix sockets are capped (~104 bytes); set a short $TMPDIR if so.
     let dir =
         std::env::var_os("XDG_RUNTIME_DIR").map(PathBuf::from).unwrap_or_else(std::env::temp_dir);
-    dir.join(format!("supergreen-docker-{}.sock", std::process::id()))
+    dir.join(format!("{POOL_SOCK_PREFIX}{:016x}.sock", h.finish()))
 }
 
 #[cfg(test)]
 mod tests {
+    use tokio::io::{AsyncReadExt, AsyncWriteExt};
+
     use super::*;
 
     #[test]
@@ -664,5 +586,45 @@ mod tests {
 
         assert!(parse_ssh_url("tcp://localhost:2375").is_none());
         assert!(parse_ssh_url("ssh://").is_none());
+    }
+
+    #[test]
+    fn socket_path_is_stable_per_target() {
+        let a = SshTarget { user: None, host: "gol".into(), port: None };
+        let b = SshTarget { user: Some("me".into()), host: "gol".into(), port: None };
+        assert_eq!(socket_path_for(&a), socket_path_for(&a));
+        assert_ne!(socket_path_for(&a), socket_path_for(&b));
+        let name = socket_path_for(&a).file_name().unwrap().to_str().unwrap().to_owned();
+        assert!(name.starts_with(POOL_SOCK_PREFIX), "{name}");
+    }
+
+    /// End to end through a fake `ssh` that pipes stdio like dial-stdio would:
+    /// bytes round-trip, and (crucially) the client's half-close reaches the
+    /// remote command as EOF — otherwise `cat` would never terminate.
+    #[tokio::test]
+    async fn pool_proxy_pipes_and_half_closes() -> Result<()> {
+        let dir = std::env::temp_dir().join(format!("supergreen-pooltest-{}", std::process::id()));
+        std::fs::create_dir_all(&dir)?;
+        let fake_ssh = dir.join("fake-ssh");
+        std::fs::write(&fake_ssh, "#!/bin/sh\nexec cat\n")?;
+        std::fs::set_permissions(&fake_ssh, std::fs::Permissions::from_mode(0o755))?;
+
+        let target = SshTarget { user: None, host: "pooltest".into(), port: None };
+        let opts = PoolOpts { ssh_bin: fake_ssh.display().to_string(), ..PoolOpts::default() };
+        let socket_path = dir.join("pool.sock");
+        let _ = std::fs::remove_file(&socket_path);
+        let proxy = PoolProxy::start(target, socket_path.clone(), opts).await?;
+
+        let mut conn = UnixStream::connect(&socket_path).await?;
+        conn.write_all(b"ping through the pool").await?;
+        conn.shutdown().await?; // half-close: cat sees EOF, echoes, exits
+        let mut echoed = Vec::new();
+        conn.read_to_end(&mut echoed).await?;
+        assert_eq!(echoed, b"ping through the pool");
+
+        proxy.shutdown().await;
+        assert!(!socket_path.exists());
+        let _ = std::fs::remove_dir_all(&dir);
+        Ok(())
     }
 }

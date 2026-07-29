@@ -47,6 +47,10 @@ pub(crate) async fn main(toolchain: &str, is_install: bool) -> Result<Green> {
     }
     green.runner_envs = green.runner.envs();
 
+    if green.docker_pool_sock.is_some() {
+        bail!("'docker_pool_sock' setting cannot be set")
+    }
+
     // Cf. https://docs.docker.com/build/buildkit/#getting-started
     if green.runner.is_buildkit()
         && green.runner_envs.get(DOCKER_BUILDKIT!()).is_some_and(|x| x != "1")
@@ -129,8 +133,9 @@ pub(crate) async fn main(toolchain: &str, is_install: bool) -> Result<Green> {
         green.builder.image = Some(fetch_digest(&green.runner, &img).await?);
     }
 
-    green.maybe_setup_builder(builder.cloned()).await?;
-    green.maybe_inspect_builder().await?;
+    // NOTE: the builder is set up later, by main: when remoting, its (endpoint
+    // pinning) `buildx create` call must go through the connection pool, which
+    // only starts once this fn returns a Green. See really_actual_main.
 
     var = CARGOGREEN_SYNTAX_IMAGE!();
     if !green.syntax.is_empty() {

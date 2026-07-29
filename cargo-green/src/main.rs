@@ -196,44 +196,64 @@ async fn really_actual_main(arg0: String, mut args: env::Args) -> Result<()> {
         return Ok(());
     }
 
-    let green = cargo_green::main(&toolchain, is_install).await?;
-    cmd.env(CARGOGREEN_PLUGINSETTINGS!(), serde_json::to_string(&green)?);
+    let mut green = cargo_green::main(&toolchain, is_install).await?;
 
-    // For a remote (ssh://) $DOCKER_HOST: start a warm, multiplexed connection pool
-    // in this long-lived parent and publish its unix socket. The rustc-wrapper
-    // subprocesses (and our own prebuild) inherit $CARGOGREEN_DOCKER_POOL_SOCK and
-    // redirect their `docker`/`podman` child to it, so the whole workspace pays one
-    // SSH handshake instead of one per `rustc` invocation. `None` for local/tcp.
-    let proxy = docker_pool::PoolProxy::maybe_start_from_env().await?;
-    if let Some(ref p) = proxy {
-        // SAFETY: environment access only happens in single-threaded code.
-        unsafe {
-            env::set_var(docker_pool::POOL_SOCK_ENV, p.socket_path());
+    // For a remote (ssh://) $DOCKER_HOST: start (or join) a warm, multiplexed SSH
+    // connection pool in this long-lived parent and bridge it to a local unix
+    // socket, so the whole workspace pays a handful of SSH handshakes instead of
+    // one per `rustc` invocation. Green carries the socket path to our own
+    // prebuild and to the rustc-wrapper subprocesses: their `docker` children get
+    // pointed at it by Green::cmd. `None` for local/tcp daemons; on pool failure,
+    // `docker` falls back to dialing ssh:// itself, one handshake per call.
+    let pool = match docker_pool::DockerPool::maybe_start(&green).await {
+        Ok(pool) => pool,
+        Err(e) => {
+            log::warn!("continuing without an SSH connection pool: {e}");
+            eprintln!("Continuing without an SSH connection pool: {e}");
+            None
         }
-        cmd.env(docker_pool::POOL_SOCK_ENV, p.socket_path()); //this should be enough
+    };
+    if let Some(ref pool) = pool {
+        let sock = pool.socket_path();
+        let sock =
+            sock.to_str().ok_or_else(|| anyhow!("BUG: non-utf8 pool socket path {sock:?}"))?;
+        green.docker_pool_sock = Some(sock.to_owned());
     }
 
-    match command.as_deref() {
-        Some("supergreen") => supergreen::main(green).await?,
-        Some("fetch") => {
-            // Runs actual `cargo fetch`
-            if !cmd.status().await?.success() {
-                bail!(EEXIT)
+    let res = async {
+        // Needs any pool up first: when remoting, `buildx create` must record the
+        // pool socket (the $DOCKER_HOST that runner children will actually see)
+        // as the managed builder's node endpoint.
+        let builder_env = green.runner_envs.get(BUILDX_BUILDER!()).cloned();
+        green.maybe_setup_builder(builder_env).await?;
+        green.maybe_inspect_builder().await?;
+        cmd.env(CARGOGREEN_PLUGINSETTINGS!(), serde_json::to_string(&green)?);
+
+        match command.as_deref() {
+            Some("supergreen") => supergreen::main(green).await,
+            Some("fetch") => {
+                // Runs actual `cargo fetch`
+                if !cmd.status().await?.success() {
+                    bail!(EEXIT)
+                }
+                green.prebuild(true, is_install).await
             }
-            green.prebuild(true, is_install).await?;
-        }
-        _ => {
-            green.prebuild(false, is_install).await?;
-            cmd.env(CARGO_TARGET_DIR!(), create_current_target_dir(is_install)?);
-            if !cmd.status().await?.success() {
-                bail!(EEXIT)
+            _ => {
+                green.prebuild(false, is_install).await?;
+                cmd.env(CARGO_TARGET_DIR!(), create_current_target_dir(is_install)?);
+                if !cmd.status().await?.success() {
+                    bail!(EEXIT)
+                }
+                Ok(())
             }
         }
     }
+    .await;
 
-    if let Some(p) = proxy {
-        p.shutdown().await;
+    // Tear down (ssh -O exit + socket removal) on failure too, not just success.
+    if let Some(pool) = pool {
+        pool.shutdown().await;
     }
 
-    Ok(())
+    res
 }
