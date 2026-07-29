@@ -1,4 +1,4 @@
-use std::{env, sync::LazyLock};
+use std::{env, sync::OnceLock};
 
 use camino::{Utf8Path, Utf8PathBuf};
 
@@ -8,24 +8,35 @@ const REWRITE_TARGETDIR: bool = true; // TODO: turn into a CARGOGREEN_EXPERIMENT
 
 pub(crate) const VIRTUAL_TARGET_DIR: &str = "/target/";
 
-pub(crate) static TARGET_DIR: LazyLock<Utf8PathBuf> = LazyLock::new(|| {
-    env::var(CARGO_TARGET_DIR!())
-        .unwrap_or_else(|_| panic!("BUG: {CARGO_TARGET_DIR} is unset (or not utf-8 encoded)"))
-        .into()
-});
+static TARGET_DIR: OnceLock<Utf8PathBuf> = OnceLock::new();
+
+/// The `cargo green` parent calls this once, with `create_current_target_dir`'s
+/// value: its own environment never has ${CARGO_TARGET_DIR} set. Wrapper
+/// subprocesses don't call it: cargo hands them the actual value.
+pub(crate) fn set_target_dir(dir: impl Into<Utf8PathBuf>) {
+    let _ = TARGET_DIR.set(dir.into());
+}
+
+pub(crate) fn target_dir() -> &'static Utf8Path {
+    TARGET_DIR.get_or_init(|| {
+        env::var(CARGO_TARGET_DIR!())
+            .unwrap_or_else(|_| panic!("BUG: {CARGO_TARGET_DIR} is unset (or not utf-8 encoded)"))
+            .into()
+    })
+}
 
 pub(crate) fn un_virtual_target_dir_str(txt: &str) -> String {
     if !REWRITE_TARGETDIR {
         return txt.to_owned();
     }
-    replace_carefully(txt, VIRTUAL_TARGET_DIR, TARGET_DIR.as_str())
+    replace_carefully(txt, VIRTUAL_TARGET_DIR, target_dir().as_str())
 }
 
 pub(crate) fn virtual_target_dir_str(txt: &str) -> String {
     if !REWRITE_TARGETDIR {
         return txt.to_owned();
     }
-    replace_carefully(txt, TARGET_DIR.as_str(), VIRTUAL_TARGET_DIR)
+    replace_carefully(txt, target_dir().as_str(), VIRTUAL_TARGET_DIR)
 }
 
 #[expect(clippy::let_and_return)]
@@ -44,7 +55,7 @@ pub(crate) fn virtual_target_dir(path: &Utf8Path) -> Utf8PathBuf {
     if !REWRITE_TARGETDIR {
         return path.to_owned();
     }
-    path.strip_prefix(TARGET_DIR.as_path())
+    path.strip_prefix(target_dir())
         .map(|path| Utf8Path::new(VIRTUAL_TARGET_DIR).join(path))
         .unwrap_or_else(|_| path.to_owned())
 }
@@ -54,7 +65,7 @@ pub(crate) fn virtual_target_dir(path: &Utf8Path) -> Utf8PathBuf {
 #[must_use]
 pub(crate) fn host_profile_dir(target_path: &Utf8Path) -> Option<Utf8PathBuf> {
     let profile = target_path.file_name()?; // "release" | "debug" | $PROFILE
-    let host = Utf8Path::new(TARGET_DIR.as_str()).join(profile);
+    let host = target_dir().join(profile);
     (host != target_path).then_some(host)
 }
 
@@ -77,7 +88,7 @@ pub(crate) fn locate_path(
 #[test]
 fn target_dir_var() {
     temp_env::with_var(CARGO_TARGET_DIR!(), Some("/some/path/"), || {
-        assert_eq!(TARGET_DIR.as_str(), "/some/path/");
+        assert_eq!(target_dir().as_str(), "/some/path/");
 
         assert_eq!(host_profile_dir("/some/path/release".into()), None);
         assert_eq!(

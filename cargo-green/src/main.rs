@@ -198,6 +198,12 @@ async fn really_actual_main(arg0: String, mut args: env::Args) -> Result<()> {
 
     let mut green = cargo_green::main(&toolchain, is_install).await?;
 
+    // Our own environment never has $CARGO_TARGET_DIR set (only the cargo child
+    // gets it, below): give target_dir() the same value so that prebuild's
+    // logs+errors get their /target/ paths rewritten instead of panicking.
+    let target_dir = create_current_target_dir(is_install)?;
+    target_dir::set_target_dir(target_dir.as_str());
+
     // For a remote (ssh://) $DOCKER_HOST: start (or join) a warm, multiplexed SSH
     // connection pool in this long-lived parent and bridge it to a local unix
     // socket, so the whole workspace pays a handful of SSH handshakes instead of
@@ -240,7 +246,7 @@ async fn really_actual_main(arg0: String, mut args: env::Args) -> Result<()> {
             }
             _ => {
                 green.prebuild(false, is_install).await?;
-                cmd.env(CARGO_TARGET_DIR!(), create_current_target_dir(is_install)?);
+                cmd.env(CARGO_TARGET_DIR!(), &target_dir);
                 if !cmd.status().await?.success() {
                     bail!(EEXIT)
                 }
