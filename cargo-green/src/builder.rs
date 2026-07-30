@@ -340,7 +340,10 @@ then run your cargo command again.
         let (succeeded, _, stderr) = cmd.exec().await?;
         if !succeeded {
             let stderr = String::from_utf8_lossy(&stderr);
-            bail!("Failed to remove builder {name}: {stderr}")
+            if stderr.contains(&format!("no builder {name:?} found")) {
+                return Ok(());
+            }
+            bail!("Failed to remove builder {name:?}: {stderr}")
         }
         Ok(())
     }
