@@ -83,23 +83,27 @@ impl Md {
 
         let out_dir = out_dir.map(virtual_target_dir).unwrap_or(".".into());
         // TODO: let out_dir = out_dir.map(|_| "$OLDPWD").unwrap_or("$PWD"); whence  https://github.com/moby/buildkit/issues/6698  [frontend] $OLDPWD is unset (after >1 WORKDIR layers)
+        let outdir_stdio = format!("{out_dir}/..")
+            .replace("./..", "..")
+            .replace("/out/..", "")
+            .replace("/deps/..", "");
 
         block.push_str(&format!("      {call} \\\n"));
-        block.push_str(&format!("        1>          {out_dir}/../{out_stage}-{STDOUT} \\\n"));
-        block.push_str(&format!("        2>          {out_dir}/../{out_stage}-{STDERR} \\\n"));
-        block.push_str(&format!("        || echo $? >{out_dir}/../{out_stage}-{ERRCODE}\\\n"));
+        block.push_str(&format!("        1>          {outdir_stdio}/{out_stage}-{STDOUT} \\\n"));
+        block.push_str(&format!("        2>          {outdir_stdio}/{out_stage}-{STDERR} \\\n"));
+        block.push_str(&format!("        || echo $? >{outdir_stdio}/{out_stage}-{ERRCODE}\\\n"));
 
         if let Some(crate_name) = crate_name
             && is_buildrs_executable(crate_name)
         {
             block.push_str(&exe_dance(self.this(), crate_name, &out_dir));
-            block.push_str(&format!(" || echo $? >{out_dir}/../{out_stage}-{ERRCODE} \\\n"));
+            block.push_str(&format!(" || echo $? >{outdir_stdio}/{out_stage}-{ERRCODE} \\\n"));
         }
 
         // TODO: [`COPY --rewrite-timestamp ...` to apply SOURCE_DATE_EPOCH build arg value to the timestamps of the files](https://github.com/moby/buildkit/issues/6348)
         let pattern = if self.buildrs { "" } else { &format!(" -name '*-{}*'", self.this()) };
-        block.push_str(&format!("  ; find {out_dir}/ {out_dir}/../{out_stage}-*{pattern} -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{{}}' + \\\n"));
-        block.push_str(&format!(" || echo $? >{out_dir}/../{out_stage}-{ERRCODE}\n"));
+        block.push_str(&format!("  ; find {out_dir}/ {outdir_stdio}/{out_stage}-*{pattern} -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{{}}' + \\\n"));
+        block.push_str(&format!(" || echo $? >{outdir_stdio}/{out_stage}-{ERRCODE}\n"));
 
         self.push_block(stage, &block);
         Ok(())
@@ -112,7 +116,8 @@ impl Md {
         let out_dir = virtual_target_dir(out_dir);
         let base = out_dir.file_name().expect("PROOF: out_dir has a file name");
         block.push_str(&format!("COPY --link --from={prev} {out_dir} /{base}\n"));
-        block.push_str(&format!("COPY --link --from={prev} {out_dir}/../{stage}-* /\n"));
+        let up_out_dir = out_dir.parent().expect("PROOF: out_dir has parents");
+        block.push_str(&format!("COPY --link --from={prev} {up_out_dir}/{stage}-* /\n"));
         self.push_block(stage, &block);
     }
 
