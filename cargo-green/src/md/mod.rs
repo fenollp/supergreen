@@ -22,7 +22,7 @@ use crate::{
     green::Green,
     logging::maybe_log,
     stage::{AsBlock, AsStage, NamedStage, RST, Script, Stage},
-    target_dir::{TARGET_DIR, virtual_target_dir},
+    target_dir::{HOST_TARGET_DIR, virtual_target_dir},
 };
 
 mod build_context;
@@ -157,7 +157,7 @@ impl Md {
     Let's remove the current {CARGO_TARGET_DIR} {target_dir}
     then run your command again.
 "#,
-                    target_dir = TARGET_DIR.as_str(),
+                    target_dir = HOST_TARGET_DIR.as_str(),
                 );
             }
 
@@ -176,7 +176,7 @@ impl Md {
     then run your command again.
 "#,
                 stamp = md.stamp,
-                target_dir = TARGET_DIR.as_str(),
+                target_dir = HOST_TARGET_DIR.as_str(),
             )
         }
 
