@@ -70,18 +70,18 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
       rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("align", "const-extern-fn", "default", "extra_traits", "rustc-dep-of-std", "rustc-std-workspace-core", "std", "use_std"))' --crate-name build_script_build --crate-type bin --edition 2021 --emit dep-info,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/build/libc-511472849bd6a7b9 -C debug-assertions'=off' -C embed-bitcode'=no' -C extra-filename'=-511472849bd6a7b9' -C metadata'=e3bff975e271c406' -C strip'=symbols' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/libc-0.2.172/build.rs \
-        1>          ./../out-511472849bd6a7b9-stdout \
-        2>          ./../out-511472849bd6a7b9-stderr \
-        || echo $? >./../out-511472849bd6a7b9-errcode\
+        1>          ../out-511472849bd6a7b9-stdout \
+        2>          ../out-511472849bd6a7b9-stderr \
+        || echo $? >../out-511472849bd6a7b9-errcode\
   ; mv ./build_script_build-511472849bd6a7b9 ./_build_script_build-511472849bd6a7b9 \
  && printf '#!/bin/sh\nenv CARGOGREEN_EXECUTEBUILDSCRIPT=$0 cargo-green\n' >./build_script_build-511472849bd6a7b9 \
  && chmod +x ./build_script_build-511472849bd6a7b9 \
- || echo $? >./../out-511472849bd6a7b9-errcode \
-  ; find ./ ./../out-511472849bd6a7b9-* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' + \
- || echo $? >./../out-511472849bd6a7b9-errcode
+ || echo $? >../out-511472849bd6a7b9-errcode \
+  ; find ./ ../out-511472849bd6a7b9-* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' + \
+ || echo $? >../out-511472849bd6a7b9-errcode
 FROM scratch AS out-511472849bd6a7b9
 COPY --link --from=dep-x-libc-0.2.172-511472849bd6a7b9 /target/release/build/libc-511472849bd6a7b9 /libc-511472849bd6a7b9
-COPY --link --from=dep-x-libc-0.2.172-511472849bd6a7b9 /target/release/build/libc-511472849bd6a7b9/../out-511472849bd6a7b9-* /
+COPY --link --from=dep-x-libc-0.2.172-511472849bd6a7b9 /target/release/build/out-511472849bd6a7b9-* /
 
 FROM rust-base AS run-z-libc-0.2.172-04a03301ee2772a2
 WORKDIR /target/release/build/libc-04a03301ee2772a2/out
@@ -144,14 +144,14 @@ RUN \
         TARGET=x86_64-unknown-linux-gnu \
         CARGOGREEN=1 \
       /target/release/build/libc-511472849bd6a7b9/build-script-build \
-        1>          /target/release/build/libc-04a03301ee2772a2/out/../out-04a03301ee2772a2-stdout \
-        2>          /target/release/build/libc-04a03301ee2772a2/out/../out-04a03301ee2772a2-stderr \
-        || echo $? >/target/release/build/libc-04a03301ee2772a2/out/../out-04a03301ee2772a2-errcode\
-  ; find /target/release/build/libc-04a03301ee2772a2/out/ /target/release/build/libc-04a03301ee2772a2/out/../out-04a03301ee2772a2-* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' + \
- || echo $? >/target/release/build/libc-04a03301ee2772a2/out/../out-04a03301ee2772a2-errcode
+        1>          /target/release/build/libc-04a03301ee2772a2/out-04a03301ee2772a2-stdout \
+        2>          /target/release/build/libc-04a03301ee2772a2/out-04a03301ee2772a2-stderr \
+        || echo $? >/target/release/build/libc-04a03301ee2772a2/out-04a03301ee2772a2-errcode\
+  ; find /target/release/build/libc-04a03301ee2772a2/out/ /target/release/build/libc-04a03301ee2772a2/out-04a03301ee2772a2-* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' + \
+ || echo $? >/target/release/build/libc-04a03301ee2772a2/out-04a03301ee2772a2-errcode
 FROM scratch AS out-04a03301ee2772a2
 COPY --link --from=run-z-libc-0.2.172-04a03301ee2772a2 /target/release/build/libc-04a03301ee2772a2/out /out
-COPY --link --from=run-z-libc-0.2.172-04a03301ee2772a2 /target/release/build/libc-04a03301ee2772a2/out/../out-04a03301ee2772a2-* /
+COPY --link --from=run-z-libc-0.2.172-04a03301ee2772a2 /target/release/build/libc-04a03301ee2772a2/out-04a03301ee2772a2-* /
 
 
 FROM rust-base AS dep-n-libc-0.2.172-392aeff92c0e8f19
@@ -181,14 +181,14 @@ RUN \
         OUT_DIR=/target/release/build/libc-04a03301ee2772a2/out \
         CARGOGREEN=1 \
       rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --cfg freebsd11 --cfg libc_const_extern_fn --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(emscripten_old_stat_abi)' --check-cfg cfg'(espidf_time32)' --check-cfg cfg'(feature, values("align", "const-extern-fn", "default", "extra_traits", "rustc-dep-of-std", "rustc-std-workspace-core", "std", "use_std"))' --check-cfg cfg'(freebsd10)' --check-cfg cfg'(freebsd11)' --check-cfg cfg'(freebsd12)' --check-cfg cfg'(freebsd13)' --check-cfg cfg'(freebsd14)' --check-cfg cfg'(freebsd15)' --check-cfg cfg'(gnu_file_offset_bits64)' --check-cfg cfg'(libc_const_extern_fn)' --check-cfg cfg'(libc_ctest)' --check-cfg cfg'(libc_deny_warnings)' --check-cfg cfg'(libc_thread_local)' --check-cfg cfg'(linux_time_bits64)' --check-cfg cfg'(target_arch,values("loongarch64","mips32r6","mips64r6","csky"))' --check-cfg cfg'(target_env,values("illumos","wasi","aix","ohos","nto71_iosock","nto80"))' --check-cfg cfg'(target_os,values("switch","aix","ohos","hurd","rtems","visionos","nuttx","cygwin"))' --crate-name libc --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C codegen-units'=1' -C debuginfo'=2' -C extra-filename'=-392aeff92c0e8f19' -C linker-plugin-lto -C metadata'=0475c5b9aea04c55' -C opt-level'=s' -C panic'=abort' -C split-debuginfo'=packed' -C strip'=symbols' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/libc-0.2.172/src/lib.rs \
-        1>          ./../out-392aeff92c0e8f19-stdout \
-        2>          ./../out-392aeff92c0e8f19-stderr \
-        || echo $? >./../out-392aeff92c0e8f19-errcode\
-  ; find ./ ./../out-392aeff92c0e8f19-* -name '*-392aeff92c0e8f19*' -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' + \
- || echo $? >./../out-392aeff92c0e8f19-errcode
+        1>          ../out-392aeff92c0e8f19-stdout \
+        2>          ../out-392aeff92c0e8f19-stderr \
+        || echo $? >../out-392aeff92c0e8f19-errcode\
+  ; find ./ ../out-392aeff92c0e8f19-* -name '*-392aeff92c0e8f19*' -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' + \
+ || echo $? >../out-392aeff92c0e8f19-errcode
 FROM scratch AS out-392aeff92c0e8f19
 COPY --link --from=dep-n-libc-0.2.172-392aeff92c0e8f19 /target/release/deps /deps
-COPY --link --from=dep-n-libc-0.2.172-392aeff92c0e8f19 /target/release/deps/../out-392aeff92c0e8f19-* /
+COPY --link --from=dep-n-libc-0.2.172-392aeff92c0e8f19 /target/release/out-392aeff92c0e8f19-* /
 
 FROM scratch AS checkout-edit-d235d8189188b09c-91a9a5f808af7711810b0d0f9df23c42884263e2
 ADD --keep-git-dir=false \
@@ -230,7 +230,7 @@ RUN \
  || echo $? >/target/release/build/edit-ef0e44c03f8f6e35/../out-ef0e44c03f8f6e35-errcode
 FROM scratch AS out-ef0e44c03f8f6e35
 COPY --link --from=dep-x-edit-1.2.1-ef0e44c03f8f6e35 /target/release/build/edit-ef0e44c03f8f6e35 /edit-ef0e44c03f8f6e35
-COPY --link --from=dep-x-edit-1.2.1-ef0e44c03f8f6e35 /target/release/build/edit-ef0e44c03f8f6e35/../out-ef0e44c03f8f6e35-* /
+COPY --link --from=dep-x-edit-1.2.1-ef0e44c03f8f6e35 /target/release/build/out-ef0e44c03f8f6e35-* /
 
 FROM rust-base AS run-z-edit-1.2.1-5229da92903ebe58
 WORKDIR /target/release/build/edit-5229da92903ebe58/out
@@ -290,14 +290,14 @@ RUN \
         TARGET=x86_64-unknown-linux-gnu \
         CARGOGREEN=1 \
       /target/release/build/edit-ef0e44c03f8f6e35/build-script-build \
-        1>          /target/release/build/edit-5229da92903ebe58/out/../out-5229da92903ebe58-stdout \
-        2>          /target/release/build/edit-5229da92903ebe58/out/../out-5229da92903ebe58-stderr \
-        || echo $? >/target/release/build/edit-5229da92903ebe58/out/../out-5229da92903ebe58-errcode\
-  ; find /target/release/build/edit-5229da92903ebe58/out/ /target/release/build/edit-5229da92903ebe58/out/../out-5229da92903ebe58-* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' + \
- || echo $? >/target/release/build/edit-5229da92903ebe58/out/../out-5229da92903ebe58-errcode
+        1>          /target/release/build/edit-5229da92903ebe58/out-5229da92903ebe58-stdout \
+        2>          /target/release/build/edit-5229da92903ebe58/out-5229da92903ebe58-stderr \
+        || echo $? >/target/release/build/edit-5229da92903ebe58/out-5229da92903ebe58-errcode\
+  ; find /target/release/build/edit-5229da92903ebe58/out/ /target/release/build/edit-5229da92903ebe58/out-5229da92903ebe58-* -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' + \
+ || echo $? >/target/release/build/edit-5229da92903ebe58/out-5229da92903ebe58-errcode
 FROM scratch AS out-5229da92903ebe58
 COPY --link --from=run-z-edit-1.2.1-5229da92903ebe58 /target/release/build/edit-5229da92903ebe58/out /out
-COPY --link --from=run-z-edit-1.2.1-5229da92903ebe58 /target/release/build/edit-5229da92903ebe58/out/../out-5229da92903ebe58-* /
+COPY --link --from=run-z-edit-1.2.1-5229da92903ebe58 /target/release/build/edit-5229da92903ebe58/out-5229da92903ebe58-* /
 
 
 FROM rust-base AS dep-n-edit-1.2.1-7a81b7a4ac7326d1
@@ -329,14 +329,14 @@ RUN \
         OUT_DIR=/target/release/build/edit-5229da92903ebe58/out \
         CARGOGREEN=1 \
       rustc --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("debug-latency"))' --crate-name edit --crate-type lib --edition 2024 --emit dep-info,metadata,link --error-format json --extern libc'=/target/release/deps/liblibc-392aeff92c0e8f19.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C codegen-units'=1' -C debuginfo'=2' -C extra-filename'=-7a81b7a4ac7326d1' -C linker-plugin-lto -C metadata'=808342abdecd2089' -C opt-level'=s' -C panic'=abort' -C split-debuginfo'=packed' -C strip'=symbols' -L dependency'=/target/release/deps' src/lib.rs \
-        1>          /target/release/deps/../out-7a81b7a4ac7326d1-stdout \
-        2>          /target/release/deps/../out-7a81b7a4ac7326d1-stderr \
-        || echo $? >/target/release/deps/../out-7a81b7a4ac7326d1-errcode\
-  ; find /target/release/deps/ /target/release/deps/../out-7a81b7a4ac7326d1-* -name '*-7a81b7a4ac7326d1*' -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' + \
- || echo $? >/target/release/deps/../out-7a81b7a4ac7326d1-errcode
+        1>          /target/release/out-7a81b7a4ac7326d1-stdout \
+        2>          /target/release/out-7a81b7a4ac7326d1-stderr \
+        || echo $? >/target/release/out-7a81b7a4ac7326d1-errcode\
+  ; find /target/release/deps/ /target/release/out-7a81b7a4ac7326d1-* -name '*-7a81b7a4ac7326d1*' -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' + \
+ || echo $? >/target/release/out-7a81b7a4ac7326d1-errcode
 FROM scratch AS out-7a81b7a4ac7326d1
 COPY --link --from=dep-n-edit-1.2.1-7a81b7a4ac7326d1 /target/release/deps /deps
-COPY --link --from=dep-n-edit-1.2.1-7a81b7a4ac7326d1 /target/release/deps/../out-7a81b7a4ac7326d1-* /
+COPY --link --from=dep-n-edit-1.2.1-7a81b7a4ac7326d1 /target/release/out-7a81b7a4ac7326d1-* /
 
 
 FROM rust-base AS dep-n-edit-1.2.1-08c0b4c9bb99f4a2
@@ -370,14 +370,14 @@ RUN \
         OUT_DIR=/target/release/build/edit-5229da92903ebe58/out \
         CARGOGREEN=1 \
       rustc --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("debug-latency"))' --crate-name edit --crate-type bin --edition 2024 --emit dep-info,link --error-format json --extern edit'=/target/release/deps/libedit-7a81b7a4ac7326d1.rlib' --extern libc'=/target/release/deps/liblibc-392aeff92c0e8f19.rlib' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C codegen-units'=1' -C debuginfo'=2' -C extra-filename'=-08c0b4c9bb99f4a2' -C lto -C metadata'=ce41918c1019fdd1' -C opt-level'=s' -C panic'=abort' -C split-debuginfo'=packed' -C strip'=symbols' -L dependency'=/target/release/deps' src/bin/edit/main.rs \
-        1>          /target/release/deps/../out-08c0b4c9bb99f4a2-stdout \
-        2>          /target/release/deps/../out-08c0b4c9bb99f4a2-stderr \
-        || echo $? >/target/release/deps/../out-08c0b4c9bb99f4a2-errcode\
-  ; find /target/release/deps/ /target/release/deps/../out-08c0b4c9bb99f4a2-* -name '*-08c0b4c9bb99f4a2*' -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' + \
- || echo $? >/target/release/deps/../out-08c0b4c9bb99f4a2-errcode
+        1>          /target/release/out-08c0b4c9bb99f4a2-stdout \
+        2>          /target/release/out-08c0b4c9bb99f4a2-stderr \
+        || echo $? >/target/release/out-08c0b4c9bb99f4a2-errcode\
+  ; find /target/release/deps/ /target/release/out-08c0b4c9bb99f4a2-* -name '*-08c0b4c9bb99f4a2*' -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' + \
+ || echo $? >/target/release/out-08c0b4c9bb99f4a2-errcode
 FROM scratch AS out-08c0b4c9bb99f4a2
 COPY --link --from=dep-n-edit-1.2.1-08c0b4c9bb99f4a2 /target/release/deps /deps
-COPY --link --from=dep-n-edit-1.2.1-08c0b4c9bb99f4a2 /target/release/deps/../out-08c0b4c9bb99f4a2-* /
+COPY --link --from=dep-n-edit-1.2.1-08c0b4c9bb99f4a2 /target/release/out-08c0b4c9bb99f4a2-* /
 
 # Pipe this file to:
 # DOCKER_BUILDKIT="1" \
