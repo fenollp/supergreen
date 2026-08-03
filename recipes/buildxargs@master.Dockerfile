@@ -69,14 +69,14 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
       rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="eq-separator"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("combined-flags", "default", "eq-separator", "short-space-opt"))' --crate-name pico_args --crate-type lib --edition 2018 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-032c3c86f219fdca' -C metadata'=1d00c79421eeb237' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/pico-args-0.5.0/src/lib.rs \
-        1>          ./../out-032c3c86f219fdca-stdout \
-        2>          ./../out-032c3c86f219fdca-stderr \
-        || echo $? >./../out-032c3c86f219fdca-errcode\
-  ; find ./ ./../out-032c3c86f219fdca-* -name '*-032c3c86f219fdca*' -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' + \
- || echo $? >./../out-032c3c86f219fdca-errcode
+        1>          ../out-032c3c86f219fdca-stdout \
+        2>          ../out-032c3c86f219fdca-stderr \
+        || echo $? >../out-032c3c86f219fdca-errcode\
+  ; find ./ ../out-032c3c86f219fdca-* -name '*-032c3c86f219fdca*' -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' + \
+ || echo $? >../out-032c3c86f219fdca-errcode
 FROM scratch AS out-032c3c86f219fdca
 COPY --link --from=dep-n-pico-args-0.5.0-032c3c86f219fdca /target/release/deps /deps
-COPY --link --from=dep-n-pico-args-0.5.0-032c3c86f219fdca /target/release/deps/../out-032c3c86f219fdca-* /
+COPY --link --from=dep-n-pico-args-0.5.0-032c3c86f219fdca /target/release/out-032c3c86f219fdca-* /
 
 FROM scratch AS cratesio-shlex-1.3.0
 ADD --chmod=0664 --unpack --checksum=sha256:0fda2ff0d084019ba4d7c6f371c95d8fd75ce3524c3cb8fb653a3023f6323e64 \
@@ -105,14 +105,14 @@ RUN \
         CARGO_PKG_VERSION_PRE= \
         CARGOGREEN=1 \
       rustc --cap-lints warn --cfg feature'="default"' --cfg feature'="std"' --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values("default", "std"))' --crate-name shlex --crate-type lib --edition 2015 --emit dep-info,metadata,link --error-format json --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-0a241a4d93417b0d' -C metadata'=7da847104053bd98' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' $CARGO_HOME/registry/src/index.crates.io/shlex-1.3.0/src/lib.rs \
-        1>          ./../out-0a241a4d93417b0d-stdout \
-        2>          ./../out-0a241a4d93417b0d-stderr \
-        || echo $? >./../out-0a241a4d93417b0d-errcode\
-  ; find ./ ./../out-0a241a4d93417b0d-* -name '*-0a241a4d93417b0d*' -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' + \
- || echo $? >./../out-0a241a4d93417b0d-errcode
+        1>          ../out-0a241a4d93417b0d-stdout \
+        2>          ../out-0a241a4d93417b0d-stderr \
+        || echo $? >../out-0a241a4d93417b0d-errcode\
+  ; find ./ ../out-0a241a4d93417b0d-* -name '*-0a241a4d93417b0d*' -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' + \
+ || echo $? >../out-0a241a4d93417b0d-errcode
 FROM scratch AS out-0a241a4d93417b0d
 COPY --link --from=dep-n-shlex-1.3.0-0a241a4d93417b0d /target/release/deps /deps
-COPY --link --from=dep-n-shlex-1.3.0-0a241a4d93417b0d /target/release/deps/../out-0a241a4d93417b0d-* /
+COPY --link --from=dep-n-shlex-1.3.0-0a241a4d93417b0d /target/release/out-0a241a4d93417b0d-* /
 
 FROM scratch AS checkout-buildxargs-76dd4ee9dadcdcf0-0060a682a2f84b295cfd2cff36602784f36ed9cf
 ADD --keep-git-dir=false \
@@ -145,14 +145,14 @@ RUN \
         CARGO_PRIMARY_PACKAGE=1 \
         CARGOGREEN=1 \
       rustc --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name buildxargs --crate-type lib --edition 2021 --emit dep-info,metadata,link --error-format json --extern pico_args'=/target/release/deps/libpico_args-032c3c86f219fdca.rmeta' --extern shlex'=/target/release/deps/libshlex-0a241a4d93417b0d.rmeta' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-0cc8c700f758d6b3' -C metadata'=9f90eb1e4a4e6be8' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' src/lib.rs \
-        1>          /target/release/deps/../out-0cc8c700f758d6b3-stdout \
-        2>          /target/release/deps/../out-0cc8c700f758d6b3-stderr \
-        || echo $? >/target/release/deps/../out-0cc8c700f758d6b3-errcode\
-  ; find /target/release/deps/ /target/release/deps/../out-0cc8c700f758d6b3-* -name '*-0cc8c700f758d6b3*' -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' + \
- || echo $? >/target/release/deps/../out-0cc8c700f758d6b3-errcode
+        1>          /target/release/out-0cc8c700f758d6b3-stdout \
+        2>          /target/release/out-0cc8c700f758d6b3-stderr \
+        || echo $? >/target/release/out-0cc8c700f758d6b3-errcode\
+  ; find /target/release/deps/ /target/release/out-0cc8c700f758d6b3-* -name '*-0cc8c700f758d6b3*' -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' + \
+ || echo $? >/target/release/out-0cc8c700f758d6b3-errcode
 FROM scratch AS out-0cc8c700f758d6b3
 COPY --link --from=dep-n-buildxargs-1.4.0-0cc8c700f758d6b3 /target/release/deps /deps
-COPY --link --from=dep-n-buildxargs-1.4.0-0cc8c700f758d6b3 /target/release/deps/../out-0cc8c700f758d6b3-* /
+COPY --link --from=dep-n-buildxargs-1.4.0-0cc8c700f758d6b3 /target/release/out-0cc8c700f758d6b3-* /
 
 
 FROM rust-base AS dep-n-buildxargs-1.4.0-e4b32e5f783993ac
@@ -185,14 +185,14 @@ RUN \
         CARGO_PRIMARY_PACKAGE=1 \
         CARGOGREEN=1 \
       rustc --check-cfg cfg'(docsrs,test)' --check-cfg cfg'(feature, values())' --crate-name buildxargs --crate-type bin --edition 2021 --emit dep-info,link --error-format json --extern buildxargs'=/target/release/deps/libbuildxargs-0cc8c700f758d6b3.rlib' --extern pico_args'=/target/release/deps/libpico_args-032c3c86f219fdca.rlib' --extern shlex'=/target/release/deps/libshlex-0a241a4d93417b0d.rlib' --json diagnostic-rendered-ansi,artifacts,future-incompat --out-dir /target/release/deps -C embed-bitcode'=no' -C extra-filename'=-e4b32e5f783993ac' -C metadata'=d341b9c12f5d6040' -C opt-level'=3' -C strip'=debuginfo' -L dependency'=/target/release/deps' src/main.rs \
-        1>          /target/release/deps/../out-e4b32e5f783993ac-stdout \
-        2>          /target/release/deps/../out-e4b32e5f783993ac-stderr \
-        || echo $? >/target/release/deps/../out-e4b32e5f783993ac-errcode\
-  ; find /target/release/deps/ /target/release/deps/../out-e4b32e5f783993ac-* -name '*-e4b32e5f783993ac*' -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' + \
- || echo $? >/target/release/deps/../out-e4b32e5f783993ac-errcode
+        1>          /target/release/out-e4b32e5f783993ac-stdout \
+        2>          /target/release/out-e4b32e5f783993ac-stderr \
+        || echo $? >/target/release/out-e4b32e5f783993ac-errcode\
+  ; find /target/release/deps/ /target/release/out-e4b32e5f783993ac-* -name '*-e4b32e5f783993ac*' -exec touch --no-dereference --date=@$SOURCE_DATE_EPOCH '{}' + \
+ || echo $? >/target/release/out-e4b32e5f783993ac-errcode
 FROM scratch AS out-e4b32e5f783993ac
 COPY --link --from=dep-n-buildxargs-1.4.0-e4b32e5f783993ac /target/release/deps /deps
-COPY --link --from=dep-n-buildxargs-1.4.0-e4b32e5f783993ac /target/release/deps/../out-e4b32e5f783993ac-* /
+COPY --link --from=dep-n-buildxargs-1.4.0-e4b32e5f783993ac /target/release/out-e4b32e5f783993ac-* /
 
 # Pipe this file to:
 # DOCKER_BUILDKIT="1" \
