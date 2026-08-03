@@ -15422,12 +15422,14 @@ FROM scratch AS out-1b58f43ff3d0c2b9
 COPY --link --from=dep-x-harper-tree-sitter-dart-0.0.5-1b58f43ff3d0c2b9 /target/release/build/harper-tree-sitter-dart-1b58f43ff3d0c2b9 /harper-tree-sitter-dart-1b58f43ff3d0c2b9
 COPY --link --from=dep-x-harper-tree-sitter-dart-0.0.5-1b58f43ff3d0c2b9 /target/release/build/out-1b58f43ff3d0c2b9-* /
 
+
 FROM rust-base AS run-z-harper-tree-sitter-dart-0.0.5-ec0aeacf2545e1ee
 WORKDIR /target/release/build/harper-tree-sitter-dart-ec0aeacf2545e1ee/out
 WORKDIR $CARGO_HOME/registry/src/index.crates.io/harper-tree-sitter-dart-0.0.5
 RUN \
   --mount=from=out-1b58f43ff3d0c2b9,source=/harper-tree-sitter-dart-1b58f43ff3d0c2b9/_build_script_build-1b58f43ff3d0c2b9,dst=/target/release/build/harper-tree-sitter-dart-1b58f43ff3d0c2b9/build-script-build \
   --mount=from=cratesio-harper-tree-sitter-dart-0.0.5,source=/harper-tree-sitter-dart-0.0.5,dst=$CARGO_HOME/registry/src/index.crates.io/harper-tree-sitter-dart-0.0.5 \
+  --mount=from=cratesio-tree-sitter-0.25.10,source=/tree-sitter-0.25.10,dst=$CARGO_HOME/registry/src/index.crates.io/tree-sitter-0.25.10 \
     env CARGO_CFG_FEATURE= \
         CARGO_CFG_PANIC=unwind \
         CARGO_CFG_TARGET_ABI= \
@@ -15987,12 +15989,14 @@ FROM scratch AS out-c8c833f1c77d3808
 COPY --link --from=dep-x-tree-sitter-clojure-0.1.0-c8c833f1c77d3808 /target/release/build/tree-sitter-clojure-c8c833f1c77d3808 /tree-sitter-clojure-c8c833f1c77d3808
 COPY --link --from=dep-x-tree-sitter-clojure-0.1.0-c8c833f1c77d3808 /target/release/build/out-c8c833f1c77d3808-* /
 
+
 FROM rust-base AS run-z-tree-sitter-clojure-0.1.0-5f60ec0aafda2d7c
 WORKDIR /target/release/build/tree-sitter-clojure-5f60ec0aafda2d7c/out
 WORKDIR $CARGO_HOME/registry/src/index.crates.io/tree-sitter-clojure-0.1.0
 RUN \
   --mount=from=out-c8c833f1c77d3808,source=/tree-sitter-clojure-c8c833f1c77d3808/_build_script_build-c8c833f1c77d3808,dst=/target/release/build/tree-sitter-clojure-c8c833f1c77d3808/build-script-build \
   --mount=from=cratesio-tree-sitter-clojure-0.1.0,source=/tree-sitter-clojure-0.1.0,dst=$CARGO_HOME/registry/src/index.crates.io/tree-sitter-clojure-0.1.0 \
+  --mount=from=cratesio-tree-sitter-0.25.10,source=/tree-sitter-0.25.10,dst=$CARGO_HOME/registry/src/index.crates.io/tree-sitter-0.25.10 \
     env CARGO_CFG_FEATURE= \
         CARGO_CFG_PANIC=unwind \
         CARGO_CFG_TARGET_ABI= \
@@ -19193,12 +19197,14 @@ FROM scratch AS out-af5e0a032baccec0
 COPY --link --from=dep-x-tree-sitter-jjdescription-0.0.1-af5e0a032baccec0 /target/release/build/tree-sitter-jjdescription-af5e0a032baccec0 /tree-sitter-jjdescription-af5e0a032baccec0
 COPY --link --from=dep-x-tree-sitter-jjdescription-0.0.1-af5e0a032baccec0 /target/release/build/out-af5e0a032baccec0-* /
 
+
 FROM rust-base AS run-z-tree-sitter-jjdescription-0.0.1-9ff52e939bd8ee74
 WORKDIR /target/release/build/tree-sitter-jjdescription-9ff52e939bd8ee74/out
 WORKDIR $CARGO_HOME/registry/src/index.crates.io/tree-sitter-jjdescription-0.0.1
 RUN \
   --mount=from=out-af5e0a032baccec0,source=/tree-sitter-jjdescription-af5e0a032baccec0/_build_script_build-af5e0a032baccec0,dst=/target/release/build/tree-sitter-jjdescription-af5e0a032baccec0/build-script-build \
   --mount=from=cratesio-tree-sitter-jjdescription-0.0.1,source=/tree-sitter-jjdescription-0.0.1,dst=$CARGO_HOME/registry/src/index.crates.io/tree-sitter-jjdescription-0.0.1 \
+  --mount=from=cratesio-tree-sitter-0.25.10,source=/tree-sitter-0.25.10,dst=$CARGO_HOME/registry/src/index.crates.io/tree-sitter-0.25.10 \
     env CARGO_CFG_FEATURE= \
         CARGO_CFG_PANIC=unwind \
         CARGO_CFG_TARGET_ABI= \
