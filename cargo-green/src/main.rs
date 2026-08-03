@@ -1,4 +1,4 @@
-use std::{env, ffi::OsStr, fs, path::PathBuf};
+use std::{env, ffi::OsStr, fs, path::PathBuf, process::ExitCode};
 
 use anyhow::{Result, anyhow, bail};
 use tokio::process::Command;
@@ -53,19 +53,18 @@ cargo_subcommand_metadata::description! {
     "Sandbox & cache cargo builds and execute jobs remotely"
 }
 
-const EEXIT: &str = "";
-
-fn main() -> Result<()> {
-    if let Err(e) = actual_main() {
-        if format!("{e}") == EEXIT {
-            std::process::exit(1)
+fn main() -> ExitCode {
+    match actual_main() {
+        Ok(true) => ExitCode::SUCCESS,
+        Ok(false) => ExitCode::FAILURE,
+        Err(e) => {
+            eprintln!("Error: {e}");
+            ExitCode::FAILURE
         }
-        return Err(e);
     }
-    Ok(())
 }
 
-fn actual_main() -> Result<()> {
+fn actual_main() -> Result<bool> {
     rustls::crypto::ring::default_provider()
         .install_default()
         .expect("Failed to install rustls crypto provider");
@@ -98,33 +97,32 @@ fn actual_main() -> Result<()> {
         return block_on(async {
             // Dance to wrap build script execution: we patched the build.rs to call us back through here.
             if let Ok(exe) = env::var(CARGOGREEN_EXECUTEBUILDSCRIPT!()) {
-                return wrap::exec_build_script(green, exe.into()).await;
+                return wrap::exec_build_script(green, exe.into()).await.map(|()| true);
             }
 
             let arg0 = env::args().nth(1);
             let args = env::args().skip(1).collect();
             let vars = env::vars().collect();
-            wrap::rustc(green, arg0, args, vars).await
+            wrap::rustc(green, arg0, args, vars).await.map(|()| true)
         });
     }
 
     block_on(really_actual_main(arg0, args))
 }
 
-fn block_on(f: impl Future<Output = Result<()>>) -> Result<()> {
-    tokio::runtime::Builder::new_multi_thread().enable_all().name(PKG).build().unwrap().block_on(f)
+fn block_on(f: impl Future<Output = Result<bool>>) -> Result<bool> {
+    tokio::runtime::Builder::new_multi_thread().enable_all().name(PKG).build()?.block_on(f)
 }
 
-async fn really_actual_main(arg0: String, mut args: env::Args) -> Result<()> {
+async fn really_actual_main(arg0: String, mut args: env::Args) -> Result<bool> {
     if args.next().as_deref() != Some("green") {
         supergreen::help();
-        bail!(EEXIT)
+        return Ok(false);
     }
 
     let Some((cargo, toolchain)) = env::var_os(CARGO!()).zip(env::var(RUSTUP_TOOLCHAIN!()).ok())
     else {
-        eprintln!("This cargo plugin must be run like `cargo green ...`");
-        bail!(EEXIT)
+        bail!("This cargo plugin must be run like `cargo green ...`")
     };
 
     let arg2 = args.next();
@@ -138,7 +136,7 @@ async fn really_actual_main(arg0: String, mut args: env::Args) -> Result<()> {
         cmd.arg("green");
         cmd.args(args);
         cmd.kill_on_drop(true);
-        return cmd.status().await.map(|_| ()).map_err(Into::into);
+        return Ok(cmd.status().await?.success());
     }
 
     let mut cmd = Command::new(cargo);
@@ -175,10 +173,7 @@ async fn really_actual_main(arg0: String, mut args: env::Args) -> Result<()> {
     let is_install = command.as_deref() == Some("install");
 
     if !handled {
-        if !cmd.status().await?.success() {
-            bail!(EEXIT)
-        }
-        return Ok(());
+        return Ok(cmd.status().await?.success());
     }
     cmd.env(RUSTC_WRAPPER!(), arg0);
 
@@ -200,28 +195,20 @@ async fn really_actual_main(arg0: String, mut args: env::Args) -> Result<()> {
     // Shortcut here just for `cargo green supergreen --help` to avoid some calculations
     if supergreen::just_help() {
         supergreen::help();
-        return Ok(());
+        return Ok(true);
     }
 
     let green = cargo_green::main(&toolchain, is_install).await?;
     cmd.env(CARGOGREEN_PLUGINSETTINGS!(), serde_json::to_string(&green)?);
 
     match command.as_deref() {
-        Some("supergreen") => supergreen::main(green).await,
-        Some("fetch") => {
-            // Runs actual `cargo fetch`
-            if !cmd.status().await?.success() {
-                bail!(EEXIT)
-            }
-            green.prebuild(true, is_install).await
-        }
+        Some("supergreen") => supergreen::main(green).await.map(|()| true),
+        Some("fetch") if !cmd.status().await?.success() => Ok(false),
+        Some("fetch") => green.prebuild(true, is_install).await.map(|()| true),
         _ => {
             green.prebuild(false, is_install).await?;
             cmd.env(CARGO_TARGET_DIR!(), create_current_target_dir(is_install)?);
-            if !cmd.status().await?.success() {
-                bail!(EEXIT)
-            }
-            Ok(())
+            Ok(cmd.status().await?.success())
         }
     }
 }
