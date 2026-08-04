@@ -11,7 +11,7 @@ use crate::{
     all_our_envs::{BUILDKIT_HOST, DOCKER_BUILDKIT, DOCKER_CONTEXT, DOCKER_HOST, find_unknowns},
     base_image::{BASE_IMAGE, BASE_IMAGE_LOCKED},
     cratesio::{self},
-    dirs::{cargo_home, pwd},
+    dirs::{cargo_home, pwd, setup_dirs},
     experiments::EXPERIMENTS,
     green::{Green, validate_csv},
     image_uri::{SYNTAX_IMAGE_LOCKED, fetch_digest},
@@ -35,11 +35,11 @@ pub(crate) async fn main(toolchain: &str, is_install: bool) -> Result<Green> {
     }
 
     // Get $CARGO_HOME only once and disallow conf overrides
-    if green.cargo_home != "" {
+    if green.paths.cargo_home != "" {
         bail!("'cargo_home' setting cannot be set")
     }
-    green.cargo_home = cargo_home()?;
-    green.setup()?;
+    green.paths.cargo_home = cargo_home()?;
+    green.paths.setup()?;
 
     // Read runner's envs only once and disallow conf overrides
     if !green.runner_envs.is_empty() {
@@ -225,7 +225,7 @@ pub(crate) async fn main(toolchain: &str, is_install: bool) -> Result<Green> {
         bail!("Ignored environment variable(s): {}", unknowns.join(" "))
     }
 
-    green.setup_dirs()?;
+    green.paths.dirs = setup_dirs()?;
 
     Ok(green)
 }

@@ -6,8 +6,8 @@ use anyhow::Result;
 use camino::{Utf8Path, Utf8PathBuf};
 
 use crate::{
+    dirs::{Paths, locate_path},
     md::{Md, MdId},
-    target_dir::{host_profile_dir, locate_path},
 };
 
 /// A file cache
@@ -21,27 +21,31 @@ pub(crate) struct Mds {
     /// This is `None` when not given `--target`.
     host_path: Option<Utf8PathBuf>,
 
+    /// Copy of Paths'
+    host_target_dir: Utf8PathBuf,
+
     cache: HashMap<MdId, Rc<Md>>,
 }
 
-impl Mds {
-    pub(crate) fn new(path: &Utf8Path) -> Self {
-        Self {
+impl Paths {
+    pub(crate) fn new_mds_cache(&self, path: &Utf8Path) -> Mds {
+        Mds {
             target_path: path.to_owned(),
-            host_path: host_profile_dir(path),
+            host_path: self.host_profile_dir(path),
+            host_target_dir: self.target_dir().to_owned(),
             cache: HashMap::default(),
         }
     }
+}
 
+impl Mds {
     pub(crate) fn load(&mut self, mdid: MdId) -> Result<Rc<Md>> {
         if let Some(md) = self.cache.get(&mdid) {
             return Ok(Rc::clone(md));
         }
-        let md = Md::from_file(&locate_path(
-            |path| mdid.path(path),
-            &self.target_path,
-            self.host_path.as_deref(),
-        ))?;
+        let located =
+            locate_path(|path| mdid.path(path), &self.target_path, self.host_path.as_deref());
+        let md = Md::from_file(&located, &self.host_target_dir)?;
         let md = Rc::new(md);
         let _ = self.cache.insert(mdid, Rc::clone(&md));
         Ok(md)

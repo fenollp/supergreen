@@ -1,21 +1,13 @@
 use core::str;
-use std::{
-    env, fs,
-    io::{Cursor, ErrorKind},
-    process::Stdio,
-};
+use std::{env, io::Cursor, process::Stdio};
 
 use anyhow::{Result, bail};
-use camino::Utf8Path;
 use clap::{Parser, Subcommand};
 use futures::stream::{StreamExt, TryStreamExt, iter};
 use serde_jsonlines::AsyncBufReadJsonLines;
 use tokio::io::BufReader;
 
-use crate::{
-    PKG, REPO, VSN, base_image::CARGO_HOME, ext::CommandExt, green::Green, image_uri::ImageUri,
-    wrap::safeify,
-};
+use crate::{PKG, REPO, VSN, ext::CommandExt, green::Green, image_uri::ImageUri, wrap::safeify};
 
 macro_rules! description {
     () => {
@@ -391,37 +383,5 @@ impl Green {
                 Ok(())
             },
         )
-    }
-}
-
-impl Green {
-    pub(crate) fn setup(&self) -> Result<()> {
-        let _ = fs::create_dir_all(&self.cargo_home);
-        let usage = "{ cargo green supergreen setup 2>/dev/null || true; } | sudo /bin/sh -xe";
-
-        let (guest, host) = (Utf8Path::new(CARGO_HOME), &self.cargo_home);
-        if !guest.exists() {
-            eprintln!("Execute the following commands, or pipe them with: `{usage}`");
-            eprintln!();
-            let cmd = format!("ln -s {host} {guest}");
-            println!("{cmd}");
-            eprintln!();
-            if let Err(e) = symlink::symlink_dir(host, guest)
-                && e.kind() != ErrorKind::AlreadyExists
-            {
-                bail!(
-                    "Trying to ensure guest $CARGO_HOME is followable from host, but:
-Could not `{cmd}`:
-    {e}
-
-Please try:
-    {usage}
-"
-                )
-            }
-        }
-
-        self.maybe_arrange_cratesio_index()?;
-        Ok(())
     }
 }

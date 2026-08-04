@@ -1,17 +1,22 @@
 use std::{env, fs, os::unix::fs::MetadataExt};
 
-use anyhow::{Result, anyhow, bail};
+use anyhow::{Result, anyhow};
 use camino::{Utf8Path, Utf8PathBuf};
 use directories::ProjectDirs;
-use pico_args::Arguments;
 use serde::{Deserialize, Serialize};
 
-use crate::{PKG, green::Green, wrap::pass_env};
-
-mod sentinel;
+use crate::{PKG, wrap::pass_env};
 
 mod cargo_home;
+mod cross;
+mod paths;
+mod sentinel;
+mod target_dir;
+
 pub(crate) use cargo_home::*;
+pub(crate) use cross::*;
+pub(crate) use paths::*;
+pub(crate) use target_dir::*;
 
 pub(crate) fn tmp() -> Utf8PathBuf {
     env::temp_dir().try_into().expect("$TMPDIR is not utf-8")
@@ -22,31 +27,6 @@ pub(crate) fn pwd() -> Utf8PathBuf {
         .expect("$PWD does not exist or is otherwise unreadable")
         .try_into()
         .expect("$PWD is not utf-8")
-}
-
-pub(crate) fn create_current_target_dir(is_install: bool) -> Result<String> {
-    let target_dir = Arguments::from_env()
-        .opt_value_from_str("--target-dir")
-        .map_err(|e| anyhow!("Bad --target-dir argument: {e}"))?;
-    let target_dir = if let Some(target_dir) = target_dir {
-        target_dir
-    } else if let Ok(target_dir) = env::var(CARGO_TARGET_DIR!()) {
-        target_dir
-    } else if false {
-        todo!("check build.target-dir in config.toml.s")
-    } else if is_install {
-        tmp().join(hashed_args()).to_string()
-    } else {
-        pwd().join("target").to_string() // TODO: fallback to workspace root, not necessarily pwd()
-    };
-
-    fs::create_dir_all(&target_dir)
-        .map_err(|e| anyhow!("Failed to `mkdir -p {target_dir}`: {e}"))?;
-
-    let target_dir = Utf8PathBuf::from(&target_dir)
-        .canonicalize_utf8()
-        .map_err(|e| anyhow!("Failed to canonicalize target dir {target_dir}: {e}"))?;
-    Ok(format!("{target_dir}/")) // Trailing slash required when replacing strings
 }
 
 pub(crate) fn hash(string: &str) -> String {
@@ -62,6 +42,18 @@ pub(crate) fn hashed_args() -> String {
     let envs = env::vars().filter_map(|(k, _)| keep(&k).then_some(k)).collect::<Vec<_>>().join(" ");
     let args = env::args().collect::<Vec<_>>().join(" ");
     format!("{}{}", hash(&envs), hash(&args))
+}
+
+#[expect(clippy::let_and_return)]
+pub(crate) fn replace_carefully(txt: &str, from: &str, to: &str) -> String {
+    let txt = if txt.starts_with(from) { txt.replacen(from, to, 1) } else { txt.to_owned() };
+    let txt = txt.replace(&format!("\n{from}"), &format!("\n{to}"));
+    let txt = txt.replace(&format!(" {from}"), &format!(" {to}"));
+    let txt = txt.replace(&format!("'{from}"), &format!("'{to}"));
+    let txt = txt.replace(&format!("\"{from}"), &format!("\"{to}"));
+    let txt = txt.replace(&format!("={from}"), &format!("={to}"));
+    let txt = txt.replace(&format!("`{from}"), &format!("`{to}"));
+    txt
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize, PartialEq, Eq)]
@@ -81,32 +73,29 @@ pub(crate) struct Dirs {
     pub(crate) buildkit: Utf8PathBuf,
 }
 
-impl Green {
-    pub(crate) fn setup_dirs(&mut self) -> Result<()> {
-        let Some(xdg) = ProjectDirs::from("", "", PKG) else {
-            bail!("BUG: no valid $HOME could be retrieved from the OS")
-        };
+pub(crate) fn setup_dirs() -> Result<Option<Dirs>> {
+    let Some(xdg) = ProjectDirs::from("", "", PKG) else {
+        eprintln!("BUG: no valid $HOME could be retrieved from the OS");
+        return Ok(None);
+    };
 
-        // Root for all the folders we should ever need: all deletable.
-        let app_cache_dir = xdg.cache_dir().to_owned();
-        let app_cache_dir: Utf8PathBuf =
-            app_cache_dir.try_into().map_err(|e| anyhow!("Corrupted app cache dir path: {e}"))?;
-        fs::create_dir_all(&app_cache_dir)
-            .map_err(|e| anyhow!("Failed to `mkdir -p {app_cache_dir}`: {e}"))?;
+    // Root for all the folders we should ever need: all deletable.
+    let app_cache_dir = xdg.cache_dir().to_owned();
+    let app_cache_dir: Utf8PathBuf =
+        app_cache_dir.try_into().map_err(|e| anyhow!("Corrupted app cache dir path: {e}"))?;
+    fs::create_dir_all(&app_cache_dir)
+        .map_err(|e| anyhow!("Failed to `mkdir -p {app_cache_dir}`: {e}"))?;
 
-        let tmp = pick_same_partition_temp_dir(&app_cache_dir)?;
-        fs::create_dir_all(&tmp).map_err(|e| anyhow!("Failed to `mkdir -p {tmp}`: {e}"))?;
+    let tmp = pick_same_partition_temp_dir(&app_cache_dir)?;
+    fs::create_dir_all(&tmp).map_err(|e| anyhow!("Failed to `mkdir -p {tmp}`: {e}"))?;
 
-        let results = app_cache_dir.join("results");
-        fs::create_dir_all(&results).map_err(|e| anyhow!("Failed to `mkdir -p {results}`: {e}"))?;
+    let results = app_cache_dir.join("results");
+    fs::create_dir_all(&results).map_err(|e| anyhow!("Failed to `mkdir -p {results}`: {e}"))?;
 
-        let buildkit = app_cache_dir.join("buildkit");
-        fs::create_dir_all(&buildkit)
-            .map_err(|e| anyhow!("Failed to `mkdir -p {buildkit}`: {e}"))?;
+    let buildkit = app_cache_dir.join("buildkit");
+    fs::create_dir_all(&buildkit).map_err(|e| anyhow!("Failed to `mkdir -p {buildkit}`: {e}"))?;
 
-        self.dirs = Some(Dirs { tmp, results, buildkit });
-        Ok(())
-    }
+    Ok(Some(Dirs { tmp, results, buildkit }))
 }
 
 /// Use a temp dir we know a `rename` works atomically

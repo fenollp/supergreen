@@ -41,7 +41,6 @@ mod rustc_arguments;
 mod rustup;
 mod stage;
 mod supergreen;
-mod target_dir;
 mod wrap;
 
 const PKG: &str = env!("CARGO_PKG_NAME");
@@ -175,7 +174,6 @@ async fn really_actual_main(arg0: String, mut args: env::Args) -> Result<bool> {
     if !handled {
         return Ok(cmd.status().await?.success());
     }
-    cmd.env(RUSTC_WRAPPER!(), arg0);
 
     // TODO: TUI above cargo output (? https://docs.rs/prodash )
 
@@ -198,7 +196,7 @@ async fn really_actual_main(arg0: String, mut args: env::Args) -> Result<bool> {
         return Ok(true);
     }
 
-    let green = cargo_green::main(&toolchain, is_install).await?;
+    let mut green = cargo_green::main(&toolchain, is_install).await?;
 
     match command.as_deref() {
         Some("supergreen") => supergreen::main(green).await.map(|()| true),
@@ -208,7 +206,12 @@ async fn really_actual_main(arg0: String, mut args: env::Args) -> Result<bool> {
         }
         _ => {
             green.prebuild(false, is_install).await?;
-            cmd.env(CARGO_TARGET_DIR!(), create_current_target_dir(is_install)?);
+
+            let target_dir = create_current_target_dir(is_install)?;
+            cmd.env(CARGO_TARGET_DIR!(), target_dir.as_str());
+            green.paths.host_target_dir = Some(target_dir);
+
+            cmd.env(RUSTC_WRAPPER!(), arg0);
             cmd.env(CARGOGREEN_PLUGINSETTINGS!(), serde_json::to_string(&green)?);
             Ok(cmd.status().await?.success())
         }

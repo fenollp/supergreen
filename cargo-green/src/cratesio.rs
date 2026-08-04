@@ -6,18 +6,17 @@ use log::{debug, info};
 use serde::{Deserialize, Serialize};
 
 use crate::{
-    base_image::rewrite_cargo_home,
-    green::Green,
+    dirs::Paths,
     stage::{AsBlock, AsStage, NamedStage, Stage},
 };
 
-pub(crate) const HOME: &str = "registry/src";
+const HOME: &str = "registry/src";
 
 const INDEX: &str = "index.crates.io";
 
-impl Green {
+impl Paths {
     pub(crate) fn maybe_arrange_cratesio_index(&self) -> Result<()> {
-        let crates_home = self.cargo_home.join(HOME);
+        let crates_home = self.cratesio_home();
         info!("Listing directory {crates_home}");
         if !crates_home.exists() {
             info!("making usre {crates_home} exists...");
@@ -50,6 +49,18 @@ impl Green {
             }
         }
         Ok(())
+    }
+}
+
+impl Paths {
+    #[must_use]
+    pub(crate) fn cratesio_home(&self) -> Utf8PathBuf {
+        self.cargo_home.join(HOME)
+    }
+
+    #[must_use]
+    pub(crate) fn is_cratesio(&self, path: &Utf8Path) -> bool {
+        path.starts_with(self.cratesio_home())
     }
 }
 
@@ -107,7 +118,7 @@ impl AsStage<'_> for Cratesio {
 
 /// CARGO_MANIFEST_DIR="$CARGO_HOME/registry/src/index.crates.io-1949cf8c6b5b557f/pico-args-0.5.0"
 pub(crate) async fn named_stage<'a>(
-    cargo_home: &Utf8Path,
+    paths: &Paths,
     name: &'a str,
     pkg_manifest_dir: &'a Utf8Path,
 ) -> Result<NamedStage> {
@@ -123,12 +134,9 @@ pub(crate) async fn named_stage<'a>(
         .map_err(|e| anyhow!("Failed reading {cached}: {e}"))?;
     debug!("crate sha256 for {stage}: {hash}");
 
-    let pkg_manifest_dir = rewrite_cargo_home(cargo_home, pkg_manifest_dir.as_str());
-    let extracted = rewrite_cratesio_index(&pkg_manifest_dir);
-
     Ok(NamedStage::Cratesio(Cratesio {
         stage,
-        extracted: extracted.into(),
+        extracted: paths.rewrite(pkg_manifest_dir).into(),
         name: name.to_owned(),
         name_dash_version: name_dash_version.to_owned(),
         hash,

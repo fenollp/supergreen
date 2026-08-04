@@ -22,7 +22,6 @@ use crate::{
     green::Green,
     logging::maybe_log,
     stage::{AsBlock, AsStage, NamedStage, RST, Script, Stage},
-    target_dir::{HOST_TARGET_DIR, virtual_target_dir},
 };
 
 mod build_context;
@@ -146,7 +145,7 @@ impl Md {
         self.deps.iter().cloned()
     }
 
-    fn from_file(path: &Utf8Path) -> Result<Self> {
+    fn from_file(path: &Utf8Path, target_dir: &Utf8Path) -> Result<Self> {
         info!("opening (RO) md {path}");
         let txt = fs::read_to_string(path).map_err(|e| {
             if e.kind() == ErrorKind::NotFound {
@@ -156,8 +155,7 @@ impl Md {
     Looks like `{PKG}` ran on an unkempt project. That's alright!
     Let's remove the current {CARGO_TARGET_DIR} {target_dir}
     then run your command again.
-"#,
-                    target_dir = HOST_TARGET_DIR.as_str(),
+"#
                 );
             }
 
@@ -176,7 +174,6 @@ impl Md {
     then run your command again.
 "#,
                 stamp = md.stamp,
-                target_dir = HOST_TARGET_DIR.as_str(),
             )
         }
 
@@ -282,24 +279,23 @@ impl Md {
     //   https://github.com/rust-lang/rust/issues/63012 : Tracking issue for -Z binary-dep-depinfo
     pub(crate) fn assemble_build_dependencies(
         &mut self,
+        mds: &mut Mds,
         externs: IndexSet<String>,
         out_dir_var: Option<Utf8PathBuf>,
-        target_path: &Utf8Path,
     ) -> Result<Vec<Rc<Self>>> {
-        let mut mds = Mds::new(target_path);
         let has_rmetas = externs.iter().any(|xtern| xtern.ends_with(".rmeta"));
 
-        let (buildrs_results, mounts, extern_mdids) = walk_transitives(&mut mds, externs)?;
+        let (buildrs_results, mounts, extern_mdids) = walk_transitives(mds, externs)?;
         self.mounts = mounts;
         self.buildrs_results = buildrs_results;
-        let (filtered, mut extern_mds) = keep_result_providers(&mut mds, extern_mdids, has_rmetas)?;
+        let (filtered, mut extern_mds) = keep_result_providers(mds, extern_mdids, has_rmetas)?;
         self.externs = filtered;
 
         if let Some(out_dir) = out_dir_var {
-            let z_dep_md = Self::from_out_dir_var(&mut mds, &out_dir)?;
+            let z_dep_md = Self::from_out_dir_var(mds, &out_dir)?;
             self.buildrs_results.insert(z_dep_md.this);
             info!("also mounting buildrs out dir {out_dir}");
-            self.mounts.insert(z_dep_md.out_dir_mount(&virtual_target_dir(&out_dir)));
+            self.mounts.insert(z_dep_md.out_dir_mount(&out_dir));
 
             for (var, val) in &z_dep_md.set_envs {
                 self.set_envs.entry(var.to_owned()).or_insert_with(|| val.to_owned());
@@ -529,8 +525,6 @@ script = "FROM rust AS rust-base"
 
 #[test]
 fn md_utils() {
-    use crate::cratesio::HOME;
-
     let origin = &r#"
 this = "9494aa6093cd94c9"
 deps = ["0dc1fe2644e3176a"]
@@ -545,10 +539,8 @@ stages = []
     let contexts = [
         BuildContext {
             name: "input_src_lib_rs--rustversion-1.0.9".try_into().unwrap(),
-            uri: format!(
-                "/home/maison/.cargo/{HOME}/github.com-1ecc6299db9ec823/rustversion-1.0.9"
-            )
-            .into(),
+            uri: "/home/maison/.cargo/registry/src/github.com-1ecc6299db9ec823/rustversion-1.0.9"
+                .into(),
         },
         BuildContext {
             name: "crate_out-...".try_into().unwrap(),
