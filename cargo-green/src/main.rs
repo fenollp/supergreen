@@ -203,8 +203,10 @@ async fn really_actual_main(arg0: String, mut args: env::Args) -> Result<bool> {
 
     match command.as_deref() {
         Some("supergreen") => supergreen::main(green).await.map(|()| true),
-        Some("fetch") if !cmd.status().await?.success() => Ok(false),
-        Some("fetch") => green.prebuild(true, is_install).await.map(|()| true),
+        Some("fetch") => {
+            let true = cmd.status().await?.success() else { return Ok(false) };
+            green.prebuild(true, is_install).await.map(|()| true)
+        }
         _ => {
             green.prebuild(false, is_install).await?;
             cmd.env(CARGO_TARGET_DIR!(), create_current_target_dir(is_install)?);
