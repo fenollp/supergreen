@@ -6,7 +6,12 @@ use directories::ProjectDirs;
 use pico_args::Arguments;
 use serde::{Deserialize, Serialize};
 
-use crate::{PKG, VSN, green::Green, wrap::pass_env};
+use crate::{PKG, green::Green, wrap::pass_env};
+
+mod sentinel;
+
+mod cargo_home;
+pub(crate) use cargo_home::*;
 
 pub(crate) fn tmp() -> Utf8PathBuf {
     env::temp_dir().try_into().expect("$TMPDIR is not utf-8")
@@ -17,13 +22,6 @@ pub(crate) fn pwd() -> Utf8PathBuf {
         .expect("$PWD does not exist or is otherwise unreadable")
         .try_into()
         .expect("$PWD is not utf-8")
-}
-
-pub(crate) fn cargo_home() -> Result<Utf8PathBuf> {
-    home::cargo_home()
-        .map_err(|e| anyhow!("Bad $CARGO_HOME or something: {e}"))?
-        .try_into()
-        .map_err(|e| anyhow!("Corrupted $CARGO_HOME path: {e}"))
 }
 
 pub(crate) fn create_current_target_dir(is_install: bool) -> Result<String> {
@@ -123,12 +121,4 @@ fn pick_same_partition_temp_dir(app_cache_dir: &Utf8Path) -> Result<Utf8PathBuf>
         return Ok(tmp_dir);
     }
     Ok(app_cache_dir.join("tmp"))
-}
-
-impl Green {
-    /// Includes builder container ID so its recreation retries builds
-    pub(crate) fn sentinel_path(&self, name: &str, ext: &str) -> Utf8PathBuf {
-        let builder = self.builder.id.as_deref().map(|id| format!("x{id:.12}")).unwrap_or_default();
-        tmp().join(format!("{PKG}v{VSN}{builder}-{name}.{ext}"))
-    }
 }
