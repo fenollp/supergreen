@@ -6,9 +6,9 @@ use log::{debug, info, warn};
 use serde::{Deserialize, Serialize};
 
 use crate::{
+    dirs::is_named_same_as_virtual_target_dir,
     md::MdId,
     stage::{AsBlock, AsStage, NamedStage, Stage},
-    target_dir::VIRTUAL_TARGET_DIR,
 };
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash)]
@@ -96,7 +96,7 @@ pub(crate) async fn as_stage(mdid: MdId, pwd: &Utf8Path) -> Result<NamedStage> {
                 debug!("excluding {fname}");
                 return false;
             }
-            if fname == VIRTUAL_TARGET_DIR.trim_matches('/') {
+            if is_named_same_as_virtual_target_dir(fname) {
                 debug!("excluding {fname} or it will clash with internal target dir");
                 return false;
             }

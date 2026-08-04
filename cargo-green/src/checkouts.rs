@@ -6,11 +6,11 @@ use log::info;
 use serde::{Deserialize, Serialize};
 
 use crate::{
-    base_image::rewrite_cargo_home,
+    dirs::Paths,
     stage::{AsBlock, AsStage, NamedStage, Stage},
 };
 
-pub(crate) const HOME: &str = "git/checkouts";
+const HOME: &str = "git/checkouts";
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash)]
 pub(crate) struct Checkouts {
@@ -51,10 +51,7 @@ impl AsStage<'_> for Checkouts {
 
 /// <https://docs.docker.com/reference/dockerfile/#add---keep-git-dir>
 /// `--build-arg BUILDKIT_CONTEXT_KEEP_GIT_DIR=0` <https://docs.docker.com/engine/reference/builder/#buildkit-built-in-build-args>
-pub(crate) async fn as_stage(
-    cargo_home: &Utf8Path,
-    pkg_manifest_dir: &Utf8Path,
-) -> Result<NamedStage> {
+pub(crate) async fn as_stage(paths: &Paths, pkg_manifest_dir: &Utf8Path) -> Result<NamedStage> {
     let head = get_remote_origin_url(pkg_manifest_dir).await?;
     info!("opening (RO) git db head file: {head}");
     // e.g.: $CARGO_HOME/git/db/remarkable-tools-9f4e9942cc4e93a3/FETCH_HEAD
@@ -68,13 +65,13 @@ pub(crate) async fn as_stage(
     let dir = pkg_manifest_dir.parent().unwrap().file_name().unwrap();
     let stage = Stage::checkout(dir, commit)?;
 
-    let workdir = git_mount(cargo_home, pkg_manifest_dir).expect("we asserted path prefix");
+    let workdir = paths.git_mount(pkg_manifest_dir).expect("we asserted path prefix");
 
     Ok(NamedStage::Checkouts(Checkouts {
         stage,
         repo: repo.to_owned(),
         commit: commit.to_owned(),
-        mount: rewrite_cargo_home(cargo_home, workdir.as_str()).into(),
+        mount: paths.rewrite_cargo_home(workdir.as_str()).into(),
     }))
 }
 
@@ -156,23 +153,37 @@ a89c01034a6c17db095c806132ca828bbf1e8830		https://github.com/fenollp/reMarkable-
     }
 }
 
-fn git_mount(cargo_home: &Utf8Path, path: &Utf8Path) -> Option<Utf8PathBuf> {
-    if path.starts_with(cargo_home.join(HOME)) {
-        let n = cargo_home.components().count() + 2/*HOME's components*/ + 2/*repo's components*/;
-        return Some(path.components().take(n).collect());
+impl Paths {
+    #[must_use]
+    pub(crate) fn checkouts_home(&self) -> Utf8PathBuf {
+        self.cargo_home.join(HOME)
     }
-    None
+
+    #[must_use]
+    pub(crate) fn is_checkout(&self, path: &Utf8Path) -> bool {
+        path.starts_with(self.checkouts_home())
+    }
+
+    fn git_mount(&self, path: &Utf8Path) -> Option<Utf8PathBuf> {
+        if self.is_checkout(path) {
+            let n = self.cargo_home.components().count() + 2/*HOME's components*/ + 2/*repo's components*/;
+            return Some(path.components().take(n).collect());
+        }
+        None
+    }
 }
 
 #[test]
 fn gitmount() {
+    let paths = Paths { cargo_home: "$CARGO_HOME".into(), ..Default::default() };
+
     for path in [
         "$CARGO_HOME/git/checkouts/code_reload-a4960c8e3a9a144c/fc16bd2".into(),
         "$CARGO_HOME/git/checkouts/code_reload-a4960c8e3a9a144c/fc16bd2/blip/blop".into(),
     ] {
         assert_eq!(
             Some("$CARGO_HOME/git/checkouts/code_reload-a4960c8e3a9a144c/fc16bd2".into()),
-            git_mount("$CARGO_HOME".into(), path)
+            paths.git_mount(path)
         );
     }
 }

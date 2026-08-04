@@ -4,7 +4,6 @@ use std::{
 };
 
 use anyhow::{Result, anyhow, bail};
-use camino::Utf8PathBuf;
 use cargo_toml::{Manifest, Package, Value as MetadataValue};
 use log::warn;
 use serde::{Deserialize, Serialize};
@@ -18,7 +17,7 @@ use crate::{
     buildkitd::MIRRORS,
     cache::Cache,
     containerfile::Containerfile,
-    dirs::Dirs,
+    dirs::Paths,
     r#final::Final,
     image_uri::{BAD_CHARS, ImageUri},
     lockfile::find_manifest_path,
@@ -49,13 +48,9 @@ pub(crate) struct Green {
     #[doc = envdocs!(CARGOGREEN_RUNNER)]
     pub(crate) runner: Runner,
 
-    /// Memoized $CARGO_HOME
-    #[doc(hidden)]
-    pub(crate) cargo_home: Utf8PathBuf,
-
     /// Various paths. Not user-settable.
     #[doc(hidden)]
-    pub(crate) dirs: Option<Dirs>,
+    pub(crate) paths: Paths,
 
     /// Snapshot of runner's envs. Not user-settable.
     #[doc(hidden)]

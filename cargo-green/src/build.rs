@@ -31,9 +31,8 @@ use tokio_tar::{Archive as TarArchive, Entry as TarEntry, EntryType, Header as T
 
 use crate::{
     PKG,
-    base_image::un_rewrite_cargo_home,
     cache::result::{ResultWriter, assert_tarball_header, extract_just},
-    dirs::Dirs,
+    dirs::Paths,
     ext::CommandExt,
     r#final::is_primary,
     green::Green,
@@ -42,7 +41,6 @@ use crate::{
     retrier::Retrier,
     runner::Runner,
     stage::Stage,
-    target_dir::un_virtual_target_dir_str,
 };
 
 pub(crate) const ERRCODE: &str = "errcode";
@@ -61,6 +59,44 @@ pub(crate) const STDOUT: &str = "stdout";
 // When building from a Git commit, the context timestamp is the commit timestamp, and when building from a remote URL,
 // the timestamp is resolved from the metadata of files in the TAR archive or from the Last-Modified header of the URL #6602
 pub(crate) const SOURCE_DATE_EPOCH: u64 = 42;
+
+impl Paths {
+    /// Returns whether `target`'s result was extracted into `out_dir`.
+    pub(crate) async fn reuse_out(&self, target: &Stage, out_dir: &Utf8Path) -> Result<bool> {
+        debug!("trying to reuse exported result for {target}");
+        let Some(ref dirs) = self.dirs else { return Ok(false) };
+        let src = dirs.result_from_stage(target);
+        if !src.exists() {
+            return Ok(false);
+        }
+        info!("reusing exported result {src}");
+
+        let tarball = extract_just(&src, "result.tar").await?;
+        if tarball.is_empty() {
+            bail!("Corrupted result {src}: missing result.tar")
+        }
+
+        std::fs::create_dir_all(out_dir)
+            .map_err(|e| anyhow!("Failed to `mkdir -p {out_dir}`: {e}"))?;
+
+        let (errcode, out, err, written) = self.untar_into(&tarball, target, out_dir).await?;
+
+        // Shouldn't happen: we're not caching build failures
+        if let Some(code) = errcode
+            && code != 0
+        {
+            warn!("discarding failed result (exit code {code}): {src}");
+            let _ = std::fs::remove_file(&src);
+            return Ok(false);
+        }
+
+        // Forward the wrapped rustc's stdio so cargo behaves as if it had run rustc itself.
+        let _ = self.fwd_stdout(&out, None);
+        let _ = self.fwd_stderr(&err, None);
+        info!("reused {} files from {src}", written.len());
+        Ok(true)
+    }
+}
 
 impl Green {
     pub(crate) async fn build_cacheonly(
@@ -91,7 +127,7 @@ impl Green {
                 let true = self.runner.is_buildkit() else { return Ok(()) };
                 // Concurrently run same build just to export runner cache
                 let true = self.cachebuildkit() else { return Ok(()) }; // TODO: drop experiment
-                let Some(ref dirs) = self.dirs else { return Ok(()) };
+                let Some(ref dirs) = self.paths.dirs else { return Ok(()) };
                 let Some(dst) = dirs.new_runner_cache(target)? else { return Ok(()) };
                 self.build(containerfile, target, contexts, None, Some(&dst), tui).await.4
             }
@@ -102,43 +138,6 @@ impl Green {
             warn!("troubles saving runner cache: {e}");
         }
         built
-    }
-
-    /// Returns whether `target`'s result was extracted into `out_dir`.
-    pub(crate) async fn reuse_out(&self, target: &Stage, out_dir: &Utf8Path) -> Result<bool> {
-        debug!("trying to reuse exported result for {target}");
-        let Some(ref dirs) = self.dirs else { return Ok(false) };
-        let src = dirs.result_from_stage(target);
-        if !src.exists() {
-            return Ok(false);
-        }
-        info!("reusing exported result {src}");
-
-        let tarball = extract_just(&src, "result.tar").await?;
-        if tarball.is_empty() {
-            bail!("Corrupted result {src}: missing result.tar")
-        }
-
-        std::fs::create_dir_all(out_dir)
-            .map_err(|e| anyhow!("Failed to `mkdir -p {out_dir}`: {e}"))?;
-
-        let (errcode, out_buf, err_buf, written) =
-            untar_into(&tarball, target, out_dir, self.cargo_home.as_str()).await?;
-
-        // Shouldn't happen: we're not caching build failures
-        if let Some(code) = errcode
-            && code != 0
-        {
-            warn!("discarding failed result (exit code {code}): {src}");
-            let _ = std::fs::remove_file(&src);
-            return Ok(false);
-        }
-
-        // Forward the wrapped rustc's stdio so cargo behaves as if it had run rustc itself.
-        let _ = fwd_stdout(&out_buf, None, &self.cargo_home);
-        let _ = fwd_stderr(&err_buf, None, &self.cargo_home);
-        info!("reused {} files from {src}", written.len());
-        Ok(true)
     }
 
     async fn build(
@@ -178,7 +177,7 @@ impl Green {
 
             // Something is very wrong here. Try to be helpful by logging some info about runner config:
             if !status.success() {
-                let (retryme, e) = effects.try_to_help(&self.runner, self.cargo_home.as_str());
+                let (retryme, e) = effects.try_to_help(&self.runner, &self.paths);
                 if retryme && retrier.continues() {
                     retrier.backoff("build", e).await;
                     continue;
@@ -282,7 +281,7 @@ impl Green {
         if let Some(dst) = export {
             cmd.arg(self.builder.export_arg(dst));
         }
-        if let Some(ref dirs) = self.dirs
+        if let Some(ref dirs) = self.paths.dirs
             && self.runner.is_buildkit()
             && self.cachebuildkit()
             && let Some(src) = dirs.runner_cache(target)
@@ -359,10 +358,9 @@ impl Green {
             let dbg_out = spawn({
                 let target = target.to_owned();
                 let out_dir = out_dir.to_owned();
-                let dirs = self.dirs.clone();
-                let cargo_home = self.cargo_home.clone();
+                let paths = self.paths.to_owned();
                 let stdout = child.stdout.take().expect("started");
-                async move { build_stdout(stdout, target, out_dir, dirs, cargo_home).await }
+                async move { paths.build_stdout(stdout, target, out_dir).await }
             });
 
             let dbg_err = spawn({
@@ -458,20 +456,15 @@ pub(crate) struct Effects {
 
 impl Effects {
     #[must_use]
-    fn try_to_help(&self, runner: &Runner, cargo_home: &str) -> (bool, Error) {
+    fn try_to_help(&self, runner: &Runner, paths: &Paths) -> (bool, Error) {
         const TRANSIENT: bool = true;
         let e;
-
-        let rewrite = |msg: &str| {
-            let msg = un_virtual_target_dir_str(msg);
-            un_rewrite_cargo_home(&msg, cargo_home)
-        };
 
         let cargo_msgs = |legacy, pat, it: core::slice::Iter<'_, String>| -> String {
             it.filter_map(|line| {
                 line.split_once(legacy).xor(line.split_once(pat)).map(|(_, rhs)| rhs)
             })
-            .map(rewrite)
+            .map(|x| paths.un_rewrite_str(x))
             .collect::<Vec<_>>()
             .join("\n")
         };
@@ -515,8 +508,10 @@ Please report an issue along with information from the following:
 * {runner} buildx ls
 * cargo green supergreen env
 ",
-            stdout = self.stdout.iter().map(|x| rewrite(x)).collect::<Vec<_>>().join("\n"),
-            stderr = self.stderr.iter().map(|x| rewrite(x)).collect::<Vec<_>>().join("\n"),
+            stdout =
+                self.stdout.iter().map(|x| paths.un_rewrite_str(x)).collect::<Vec<_>>().join("\n"),
+            stderr =
+                self.stderr.iter().map(|x| paths.un_rewrite_str(x)).collect::<Vec<_>>().join("\n"),
         );
         (false, e)
     }
@@ -539,175 +534,173 @@ async fn send_containerfile(mut stdin: ChildStdin, containerfile: Utf8PathBuf) -
     Ok(())
 }
 
-async fn build_stdout(
-    stdout: ChildStdout,
-    target: Stage,
-    out_dir: Utf8PathBuf,
-    dirs: Option<Dirs>,
-    cargo_home: Utf8PathBuf,
-) -> Result<(Option<i32>, Effects, Option<ResultWriter>)> {
-    info!("reading TARed build output");
-    let mut buf = Vec::new();
-    BufReader::new(stdout)
-        .read_to_end(&mut buf)
-        .await
-        .map_err(|e| anyhow!("Failed reading TARed build output: {e}"))?;
-    debug!("produced {target} {}B 0x{}", buf.len(), sha256::digest(&buf));
-
-    let (errcode, out_buf, err_buf, written) =
-        untar_into(&buf, &target, &out_dir, cargo_home.as_str()).await?;
-
-    // NOTE: postponing emitting to cargo to after all writes to Md are completed
-    // this way we ensure sibling concurrent processes may never miss Md data (such as .writes)
-    let FromStdout { stdout, rustc_envs } = fwd_stdout(&out_buf, Some("➤"), &cargo_home);
-    info!("Buildscript {PKG}-specific config: envs:{}", rustc_envs.len());
-    let FromStderr { stderr, envs, libs } = fwd_stderr(&err_buf, Some("✖"), &cargo_home);
-    info!("Suggested {PKG}-specific config: envs:{} libs:{}", envs.len(), libs.len());
-    let effects = Effects { stdout, stderr, rustc_envs, written };
-
-    if let Some(code) = errcode
-        && code != 0
-    {
-        warn!("discarding failed result since build failed with exit code {code}");
-        return Ok((errcode, effects, None));
-    }
-
-    // Let's not fail when we can't store results
-    let mut result = None;
-    if let Some(ref dirs) = dirs {
-        match dirs.new_result(&target).await {
-            Err(e) => warn!("unable to create build results: {e}"),
-            Ok(None) => {}
-            Ok(Some(mut res)) => {
-                if let Err(e) = res.add_tarball(&buf).await {
-                    warn!("unable to write build results: {e}");
-                    res.discard().await;
-                    return Ok((errcode, effects, None));
-                }
-                result = Some(res);
-            }
-        }
-    }
-
-    Ok((errcode, effects, result))
-}
-
-async fn untar_into(
-    buf: &[u8],
-    target: &Stage,
-    out_dir: &Utf8Path,
-    cargo_home: &str,
-) -> Result<(Option<i32>, String, String, Vec<Utf8PathBuf>)> {
-    let mut err_handle = String::new();
-    let mut out_handle = String::new();
-    let mut rcd = None;
-    let mut written = vec![];
-
-    info!("unTARing a {} bytes archive", buf.len());
-    let mut ar = TarArchive::new(BufReader::new(buf));
-    let mut entries = ar.entries().map_err(|e| anyhow!("Failed reading TAR: {e}"))?;
-    while let Some(entry) = entries.next().await {
-        let mut f = entry.map_err(|e| anyhow!("Failed streaming tarball: {e}"))?;
-        let name: Utf8PathBuf = f
-            .path()
-            .map_err(|e| anyhow!("Failed decoding TAR entry name: {e}"))?
-            .to_string_lossy()
-            .to_string()
-            .into();
-
-        // No async: entries MUST be consumed in sequence
+impl Paths {
+    async fn build_stdout(
+        &self,
+        stdout: ChildStdout,
+        target: Stage,
+        out_dir: Utf8PathBuf,
+    ) -> Result<(Option<i32>, Effects, Option<ResultWriter>)> {
+        info!("reading TARed build output");
         let mut buf = Vec::new();
-        f.read_to_end(&mut buf).await.map_err(|e| anyhow!("Failed unTARing {name}: {e}"))?;
-        let header = f.header();
-        debug!("produced {}B {name} 0x{}", buf.len(), sha256::digest(&buf));
+        BufReader::new(stdout)
+            .read_to_end(&mut buf)
+            .await
+            .map_err(|e| anyhow!("Failed reading TARed build output: {e}"))?;
+        debug!("produced {target} {}B 0x{}", buf.len(), sha256::digest(&buf));
 
-        match name.as_str().trim_start_matches(&format!("{target}-")) {
-            ERRCODE => rcd = str::from_utf8(&buf).ok().and_then(|s| s.trim().parse::<i32>().ok()),
-            STDOUT => {
-                out_handle =
-                    String::from_utf8(buf).map_err(|e| anyhow!("Corrupted result STDOUT: {e}"))?
-            }
-            STDERR => {
-                err_handle =
-                    String::from_utf8(buf).map_err(|e| anyhow!("Corrupted result STDERR: {e}"))?
-            }
-            _ => {
-                let base = out_dir.file_name().expect("PROOF: out_dir has filename");
-                let name = name.strip_prefix(base).unwrap_or(&name);
-                let false = name.as_str().is_empty() else { continue }; // The base dir itself
-                written.push(name.to_owned());
-                info!("creating (RW) {name:?}");
-                write_build_artifact(header, cargo_home, out_dir.join(name), buf, &f)?;
-            }
-        }
-    }
-    info!("rustc wrote {} files:", written.len());
-    written.sort();
-    Ok((rcd, out_handle, err_handle, written))
-}
+        let (errcode, out, err, written) = self.untar_into(&buf, &target, &out_dir).await?;
 
-fn write_build_artifact(
-    header: &TarHeader,
-    cargo_home: &str,
-    fname: Utf8PathBuf,
-    buf: Vec<u8>,
-    f: &TarEntry<TarArchive<BufReader<&[u8]>>>,
-) -> Result<()> {
-    let mode = header.mode().map_err(|e| anyhow!("Corrupted result mode: {e}"))?;
+        // NOTE: postponing emitting to cargo to after all writes to Md are completed
+        // this way we ensure sibling concurrent processes may never miss Md data (such as .writes)
+        let FromStdout { stdout, rustc_envs } = self.fwd_stdout(&out, Some("➤"));
+        info!("Buildscript {PKG}-specific config: envs:{}", rustc_envs.len());
+        let FromStderr { stderr, envs, libs } = self.fwd_stderr(&err, Some("✖"));
+        info!("Suggested {PKG}-specific config: envs:{} libs:{}", envs.len(), libs.len());
+        let effects = Effects { stdout, stderr, rustc_envs, written };
 
-    assert_tarball_header(header);
-
-    match header.entry_type() {
-        EntryType::Regular => {
-            info!("opening (Watomic) file {fname}");
-            let mut opts = AtomicWriteFile::options();
-            opts.mode(mode);
-            let mut file =
-                opts.open(&fname).map_err(|e| anyhow!("Failed opening atomic {fname}: {e}"))?;
-            if fname.as_str().ends_with(".d") {
-                let buf = str::from_utf8(&buf).map_err(|e| anyhow!("Corrupted result .d: {e}"))?;
-                // NOTE: rewrite text here so cargo shows host paths and keeps the illusion
-                // but really binaries (rlib, rmeta and such) cannot be modified.
-                let buf = un_virtual_target_dir_str(buf);
-                let buf = un_rewrite_cargo_home(&buf, cargo_home);
-                file.write_all(buf.as_bytes())
-            } else {
-                file.write_all(&buf)
-            }
-            .map_err(|e| anyhow!("Failed writing unTARed: {e}"))?;
-            file.commit().map_err(|e| anyhow!("Failed committing unTARed: {e}"))?;
+        if let Some(code) = errcode
+            && code != 0
+        {
+            warn!("discarding failed result since build failed with exit code {code}");
+            return Ok((errcode, effects, None));
         }
 
-        EntryType::Directory => {
-            info!("creating path {fname}");
-            DirBuilder::new()
-                .mode(mode)
-                .recursive(true) //= mkdir "-p"
-                .create(&fname)
-                .map_err(|e| anyhow!("Failed `mkdir -p {fname}`: {e}"))?;
+        // Let's not fail when we can't store results
+        let mut result = None;
+        if let Some(ref dirs) = self.dirs {
+            match dirs.new_result(&target).await {
+                Err(e) => warn!("unable to create build results: {e}"),
+                Ok(None) => {}
+                Ok(Some(mut res)) => {
+                    if let Err(e) = res.add_tarball(&buf).await {
+                        warn!("unable to write build results: {e}");
+                        res.discard().await;
+                        return Ok((errcode, effects, None));
+                    }
+                    result = Some(res);
+                }
+            }
         }
 
-        EntryType::Symlink => {
-            info!("creating symlink {fname}");
-            let name =
-                f.link_name().map_err(|e| anyhow!("Failed reading link name of {fname}: {e}"))?;
-            let Some(name) = name else { bail!("Link name not present for {fname}") };
-            let _ = symlink::remove_symlink_file(&fname);
-            symlink::symlink_file(&name, &fname)
-                .map_err(|e| anyhow!("Failed `ln -s {name:?} {fname}`: {e}"))?;
-        }
-
-        entryty => bail!("BUG: unexpected entry type {entryty:?}"),
+        Ok((errcode, effects, result))
     }
 
-    assert_eq!(
-        fname.symlink_metadata().unwrap_or_else(|e| panic!("{fname}: {e}")).mode() & 0o777,
-        mode,
-        "Unexpected untared-then-written file mode {:#o} vs: {mode:#o} {:?} for {fname}",
-        fname.symlink_metadata().unwrap_or_else(|e| panic!("{fname}: {e}")).mode(),
-        fname.symlink_metadata()
-    );
-    Ok(())
+    async fn untar_into(
+        &self,
+        buf: &[u8],
+        target: &Stage,
+        out_dir: &Utf8Path,
+    ) -> Result<(Option<i32>, String, String, Vec<Utf8PathBuf>)> {
+        let mut err = String::new();
+        let mut out = String::new();
+        let mut rcd = None;
+        let mut written = vec![];
+
+        info!("unTARing a {} bytes archive", buf.len());
+        let mut ar = TarArchive::new(BufReader::new(buf));
+        let mut entries = ar.entries().map_err(|e| anyhow!("Failed reading TAR: {e}"))?;
+        while let Some(entry) = entries.next().await {
+            let mut f = entry.map_err(|e| anyhow!("Failed streaming tarball: {e}"))?;
+            let name: Utf8PathBuf = f
+                .path()
+                .map_err(|e| anyhow!("Failed decoding TAR entry name: {e}"))?
+                .to_string_lossy()
+                .to_string()
+                .into();
+
+            // No async: entries MUST be consumed in sequence
+            let mut buf = Vec::new();
+            f.read_to_end(&mut buf).await.map_err(|e| anyhow!("Failed unTARing {name}: {e}"))?;
+            let header = f.header();
+            debug!("produced {}B {name} 0x{}", buf.len(), sha256::digest(&buf));
+
+            let errf = |e, stdio| anyhow!("Corrupted result {stdio}: {e}");
+            match name.as_str().trim_start_matches(&format!("{target}-")) {
+                ERRCODE => {
+                    rcd = str::from_utf8(&buf).ok().and_then(|s| s.trim().parse::<i32>().ok())
+                }
+                STDOUT => out = String::from_utf8(buf).map_err(|e| errf(e, "STDOUT"))?,
+                STDERR => err = String::from_utf8(buf).map_err(|e| errf(e, "STDERR"))?,
+                _ => {
+                    let base = out_dir.file_name().expect("PROOF: out_dir has filename");
+                    let name = name.strip_prefix(base).unwrap_or(&name);
+                    let false = name.as_str().is_empty() else { continue }; // The base dir itself
+                    written.push(name.to_owned());
+                    info!("creating (RW) {name:?}");
+                    self.write_build_artifact(header, out_dir.join(name), buf, &f)?;
+                }
+            }
+        }
+        info!("rustc wrote {} files:", written.len());
+        written.sort();
+        Ok((rcd, out, err, written))
+    }
+
+    fn write_build_artifact(
+        &self,
+        header: &TarHeader,
+        fname: Utf8PathBuf,
+        buf: Vec<u8>,
+        f: &TarEntry<TarArchive<BufReader<&[u8]>>>,
+    ) -> Result<()> {
+        let mode = header.mode().map_err(|e| anyhow!("Corrupted result mode: {e}"))?;
+
+        assert_tarball_header(header);
+
+        match header.entry_type() {
+            EntryType::Regular => {
+                info!("opening (Watomic) file {fname}");
+                let mut opts = AtomicWriteFile::options();
+                opts.mode(mode);
+                let mut file =
+                    opts.open(&fname).map_err(|e| anyhow!("Failed opening atomic {fname}: {e}"))?;
+                if fname.as_str().ends_with(".d") {
+                    let buf =
+                        str::from_utf8(&buf).map_err(|e| anyhow!("Corrupted result .d: {e}"))?;
+                    // NOTE: rewrite text here so cargo shows host paths and keeps the illusion
+                    // but really binaries (rlib, rmeta and such) cannot be modified.
+                    let buf = self.un_rewrite_str(buf);
+                    file.write_all(buf.as_bytes())
+                } else {
+                    file.write_all(&buf)
+                }
+                .map_err(|e| anyhow!("Failed writing unTARed: {e}"))?;
+                file.commit().map_err(|e| anyhow!("Failed committing unTARed: {e}"))?;
+            }
+
+            EntryType::Directory => {
+                info!("creating path {fname}");
+                DirBuilder::new()
+                    .mode(mode)
+                    .recursive(true) //= mkdir "-p"
+                    .create(&fname)
+                    .map_err(|e| anyhow!("Failed `mkdir -p {fname}`: {e}"))?;
+            }
+
+            EntryType::Symlink => {
+                info!("creating symlink {fname}");
+                let name = f
+                    .link_name()
+                    .map_err(|e| anyhow!("Failed reading link name of {fname}: {e}"))?;
+                let Some(name) = name else { bail!("Link name not present for {fname}") };
+                let _ = symlink::remove_symlink_file(&fname);
+                symlink::symlink_file(&name, &fname)
+                    .map_err(|e| anyhow!("Failed `ln -s {name:?} {fname}`: {e}"))?;
+            }
+
+            entryty => bail!("BUG: unexpected entry type {entryty:?}"),
+        }
+
+        assert_eq!(
+            fname.symlink_metadata().unwrap_or_else(|e| panic!("{fname}: {e}")).mode() & 0o777,
+            mode,
+            "Unexpected untared-then-written file mode {:#o} vs: {mode:#o} {:?} for {fname}",
+            fname.symlink_metadata().unwrap_or_else(|e| panic!("{fname}: {e}")).mode(),
+            fname.symlink_metadata()
+        );
+        Ok(())
+    }
 }
 
 async fn build_stderr(stderr: ChildStderr, mut tx_err: Option<Sender<String>>) -> Result<()> {
@@ -768,18 +761,19 @@ async fn tee_stderr(stderr: ChildStderr) -> String {
     String::from_utf8_lossy(ring.make_contiguous()).into_owned()
 }
 
-fn fwd_to_cargo(fwder: impl Fn(String), line: &str, cargo_home: &Utf8Path) {
-    let line = un_virtual_target_dir_str(line);
-    let line = un_rewrite_cargo_home(&line, cargo_home.as_str());
-    fwder(line);
-}
+impl Paths {
+    fn fwd_to_cargo(&self, fwder: impl Fn(String), line: &str) {
+        let line = self.un_rewrite_str(line);
+        fwder(line);
+    }
 
-pub(crate) fn fwd_stderr_to_cargo(line: &str, cargo_home: &Utf8Path) {
-    fwd_to_cargo(|line| eprintln!("{line}"), line, cargo_home)
-}
+    pub(crate) fn fwd_stderr_to_cargo(&self, line: &str) {
+        self.fwd_to_cargo(|line| eprintln!("{line}"), line)
+    }
 
-pub(crate) fn fwd_stdout_to_cargo(line: &str, cargo_home: &Utf8Path) {
-    fwd_to_cargo(|line| println!("{line}"), line, cargo_home)
+    pub(crate) fn fwd_stdout_to_cargo(&self, line: &str) {
+        self.fwd_to_cargo(|line| println!("{line}"), line)
+    }
 }
 
 #[derive(Debug, Default)]
@@ -789,41 +783,43 @@ struct FromStderr {
     libs: IndexSet<String>,
 }
 
-#[must_use]
-fn fwd_stderr(stderr: &str, badge: Option<&'static str>, cargo_home: &Utf8Path) -> FromStderr {
-    let mut acc = FromStderr::default();
-    for line in stderr.lines() {
-        let false = line.is_empty() else { continue };
-        let Some(msg) = lift_stdio(line) else { continue };
+impl Paths {
+    #[must_use]
+    fn fwd_stderr(&self, stderr: &str, badge: Option<&'static str>) -> FromStderr {
+        let mut acc = FromStderr::default();
+        for line in stderr.lines() {
+            let false = line.is_empty() else { continue };
+            let Some(msg) = lift_stdio(line) else { continue };
 
-        if let Some(badge) = badge {
-            debug!("{badge} {}", strip_ansi_escapes::strip_str(line));
-            let mut msg = msg.to_owned();
+            if let Some(badge) = badge {
+                debug!("{badge} {}", strip_ansi_escapes::strip_str(line));
+                let mut msg = msg.to_owned();
 
-            if let Some(var) = rechrome::env_not_comptime_defined(&msg) {
-                acc.envs.insert(var.to_owned());
-                if let Some(new_msg) = rechrome::suggest_set_envs(var, &msg) {
-                    info!("suggesting to passthrough missing env with set-envs {var:?}");
-                    msg = new_msg;
+                if let Some(var) = rechrome::env_not_comptime_defined(&msg) {
+                    acc.envs.insert(var.to_owned());
+                    if let Some(new_msg) = rechrome::suggest_set_envs(var, &msg) {
+                        info!("suggesting to passthrough missing env with set-envs {var:?}");
+                        msg = new_msg;
+                    }
                 }
-            }
 
-            if let Some(lib) = rechrome::lib_not_found(&msg) {
-                acc.libs.insert(lib.to_owned());
-                if let Some(new_msg) = rechrome::suggest_add(lib, &msg) {
-                    info!("suggesting to add lib to base image {lib:?}");
-                    msg = new_msg;
+                if let Some(lib) = rechrome::lib_not_found(&msg) {
+                    acc.libs.insert(lib.to_owned());
+                    if let Some(new_msg) = rechrome::suggest_add(lib, &msg) {
+                        info!("suggesting to add lib to base image {lib:?}");
+                        msg = new_msg;
+                    }
                 }
+
+                hide_credentials_on_rate_limit(&mut msg);
+
+                acc.stderr.push(msg.clone());
+            } else {
+                self.fwd_stderr_to_cargo(msg);
             }
-
-            hide_credentials_on_rate_limit(&mut msg);
-
-            acc.stderr.push(msg.clone());
-        } else {
-            fwd_stderr_to_cargo(msg, cargo_home);
         }
+        acc
     }
-    acc
 }
 
 #[derive(Debug, Default)]
@@ -832,77 +828,81 @@ struct FromStdout {
     rustc_envs: IndexMap<String, String>,
 }
 
-#[must_use]
-fn fwd_stdout(stdout: &str, badge: Option<&'static str>, cargo_home: &Utf8Path) -> FromStdout {
-    let mut acc = FromStdout::default();
-    for line in stdout.lines() {
-        let false = line.is_empty() else { continue };
-        let Some(msg) = lift_stdio(line) else { continue };
+impl Paths {
+    #[must_use]
+    fn fwd_stdout(&self, stdout: &str, badge: Option<&'static str>) -> FromStdout {
+        let mut acc = FromStdout::default();
+        for line in stdout.lines() {
+            let false = line.is_empty() else { continue };
+            let Some(msg) = lift_stdio(line) else { continue };
 
-        if let Some(badge) = badge {
-            debug!("{badge} {}", strip_ansi_escapes::strip_str(line));
+            if let Some(badge) = badge {
+                debug!("{badge} {}", strip_ansi_escapes::strip_str(line));
 
-            if let Some((_, rhs)) = msg.split_once("cargo::").xor(msg.split_once("cargo:")) {
-                // https://doc.rust-lang.org/cargo/reference/build-scripts.html#outputs-of-the-build-script
-                // > MSRV: 1.77 is required for cargo::KEY=VALUE syntax. To support older versions, use the cargo:KEY=VALUE syntax.
-                if rhs.starts_with("rerun-if-changed=") {
-                    // PATH — Tells Cargo when to re-run the script.
-                } else if rhs.starts_with("rerun-if-env-changed=") {
-                    // VAR — Tells Cargo when to re-run the script.
-                } else if rhs.starts_with("rustc-link-arg=") {
-                    // FLAG — Passes custom flags to a linker for benchmarks, binaries, cdylib crates, examples, and tests.
-                } else if rhs.starts_with("rustc-link-arg-cdylib=") {
-                    // FLAG — Passes custom flags to a linker for cdylib crates.
-                } else if rhs.starts_with("rustc-link-arg-bin=BIN=") {
-                    // FLAG — Passes custom flags to a linker for the binary BIN.
-                } else if rhs.starts_with("rustc-link-arg-bins=") {
-                    // FLAG — Passes custom flags to a linker for binaries.
-                } else if rhs.starts_with("rustc-link-arg-tests=") {
-                    // FLAG — Passes custom flags to a linker for tests.
-                } else if rhs.starts_with("rustc-link-arg-examples=") {
-                    // FLAG — Passes custom flags to a linker for examples.
-                } else if rhs.starts_with("rustc-link-arg-benches=") {
-                    // FLAG — Passes custom flags to a linker for benchmarks.
-                } else if rhs.starts_with("rustc-link-lib=") {
-                    // LIB — Adds a library to link.
-                } else if rhs.starts_with("rustc-link-search=") {
-                    // [KIND=]PATH — Adds to the library search path.
-                } else if rhs.starts_with("rustc-flags=") {
-                    // FLAGS — Passes certain flags to the compiler.
-                } else if rhs.starts_with("rustc-cfg=") {
-                    // KEY[="VALUE"] — Enables compile-time cfg settings.
-                } else if rhs.starts_with("rustc-check-cfg=") {
-                    // CHECK_CFG – Register custom cfgs as expected for compile-time checking of configs.
-                } else if rhs.starts_with("rustc-env=") {
-                    // VAR=VALUE — Sets an environment variable.
-                    if let Some((var, val)) = rhs.trim_start_matches("rustc-env=").split_once("=") {
-                        // NOTE: cargo errors if second '=' doesn't exist
-                        acc.rustc_envs.insert(var.to_owned(), val.to_owned());
+                if let Some((_, rhs)) = msg.split_once("cargo::").xor(msg.split_once("cargo:")) {
+                    // https://doc.rust-lang.org/cargo/reference/build-scripts.html#outputs-of-the-build-script
+                    // > MSRV: 1.77 is required for cargo::KEY=VALUE syntax. To support older versions, use the cargo:KEY=VALUE syntax.
+                    if rhs.starts_with("rerun-if-changed=") {
+                        // PATH — Tells Cargo when to re-run the script.
+                    } else if rhs.starts_with("rerun-if-env-changed=") {
+                        // VAR — Tells Cargo when to re-run the script.
+                    } else if rhs.starts_with("rustc-link-arg=") {
+                        // FLAG — Passes custom flags to a linker for benchmarks, binaries, cdylib crates, examples, and tests.
+                    } else if rhs.starts_with("rustc-link-arg-cdylib=") {
+                        // FLAG — Passes custom flags to a linker for cdylib crates.
+                    } else if rhs.starts_with("rustc-link-arg-bin=BIN=") {
+                        // FLAG — Passes custom flags to a linker for the binary BIN.
+                    } else if rhs.starts_with("rustc-link-arg-bins=") {
+                        // FLAG — Passes custom flags to a linker for binaries.
+                    } else if rhs.starts_with("rustc-link-arg-tests=") {
+                        // FLAG — Passes custom flags to a linker for tests.
+                    } else if rhs.starts_with("rustc-link-arg-examples=") {
+                        // FLAG — Passes custom flags to a linker for examples.
+                    } else if rhs.starts_with("rustc-link-arg-benches=") {
+                        // FLAG — Passes custom flags to a linker for benchmarks.
+                    } else if rhs.starts_with("rustc-link-lib=") {
+                        // LIB — Adds a library to link.
+                    } else if rhs.starts_with("rustc-link-search=") {
+                        // [KIND=]PATH — Adds to the library search path.
+                    } else if rhs.starts_with("rustc-flags=") {
+                        // FLAGS — Passes certain flags to the compiler.
+                    } else if rhs.starts_with("rustc-cfg=") {
+                        // KEY[="VALUE"] — Enables compile-time cfg settings.
+                    } else if rhs.starts_with("rustc-check-cfg=") {
+                        // CHECK_CFG – Register custom cfgs as expected for compile-time checking of configs.
+                    } else if rhs.starts_with("rustc-env=") {
+                        // VAR=VALUE — Sets an environment variable.
+                        if let Some((var, val)) =
+                            rhs.trim_start_matches("rustc-env=").split_once("=")
+                        {
+                            // NOTE: cargo errors if second '=' doesn't exist
+                            acc.rustc_envs.insert(var.to_owned(), val.to_owned());
+                        }
+                    } else if rhs.starts_with("error=") {
+                        // MESSAGE — Displays an error on the terminal.
+                    } else if rhs.starts_with("warning=") {
+                        // MESSAGE — Displays a warning on the terminal.
+                    } else if rhs.starts_with("metadata=") {
+                        // KEY=VALUE — Metadata, used by links scripts.
+                    } else if msg.starts_with("cargo:") {
+                        // rhs contains the ≤1.77 way of passing metadata:
+                        // KEY=VALUE — Metadata, used by links scripts.
+                        //   https://doc.rust-lang.org/cargo/reference/build-scripts.html#the-links-manifest-key
+                        // e.g: crate zstd-sys prints cargo:include=/some/path
+                        //   which cargo actually interprets as cargo::metadata=include=/some/path
+                        //     which then sets env DEP_ZSTD_INCLUDE=/some/path
+                    } else {
+                        warn!("unexpected cargo directive {rhs:?}")
                     }
-                } else if rhs.starts_with("error=") {
-                    // MESSAGE — Displays an error on the terminal.
-                } else if rhs.starts_with("warning=") {
-                    // MESSAGE — Displays a warning on the terminal.
-                } else if rhs.starts_with("metadata=") {
-                    // KEY=VALUE — Metadata, used by links scripts.
-                } else if msg.starts_with("cargo:") {
-                    // rhs contains the ≤1.77 way of passing metadata:
-                    // KEY=VALUE — Metadata, used by links scripts.
-                    //   https://doc.rust-lang.org/cargo/reference/build-scripts.html#the-links-manifest-key
-                    // e.g: crate zstd-sys prints cargo:include=/some/path
-                    //   which cargo actually interprets as cargo::metadata=include=/some/path
-                    //     which then sets env DEP_ZSTD_INCLUDE=/some/path
-                } else {
-                    warn!("unexpected cargo directive {rhs:?}")
                 }
-            }
 
-            acc.stdout.push(msg.to_owned());
-        } else {
-            fwd_stdout_to_cargo(msg, cargo_home);
+                acc.stdout.push(msg.to_owned());
+            } else {
+                self.fwd_stdout_to_cargo(msg);
+            }
         }
+        acc
     }
-    acc
 }
 
 /// Extract system packages that apt-satisfy wasn't able to install
@@ -1015,21 +1015,21 @@ fn download_failed() {
 
 #[test]
 fn un_rewrites_target_dir_before_outputting_to_cargo() {
-    temp_env::with_var(CARGO_TARGET_DIR!(), Some("/some/path/"), || {
-        let msg = r#"
+    let paths = Paths { host_target_dir: Some("/some/path".into()), ..Default::default() };
+
+    let msg = r#"
     {"$message_type":"artifact","artifact":"/target/release/deps/libclap_derive-fcea659dae5440c4.so","emit":"link"}
     {"$message_type":"diagnostic","message":"2 warnings emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"warning: 2 warnings emitted\n\n"}
     hi!
     "#;
-        assert_eq!(
-            un_virtual_target_dir_str(msg),
-            r#"
+    assert_eq!(
+        paths.un_virtual_target_dir_str(msg),
+        r#"
     {"$message_type":"artifact","artifact":"/some/path/release/deps/libclap_derive-fcea659dae5440c4.so","emit":"link"}
     {"$message_type":"diagnostic","message":"2 warnings emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"warning: 2 warnings emitted\n\n"}
     hi!
     "#
-        );
-    })
+    );
 }
 
 #[must_use]

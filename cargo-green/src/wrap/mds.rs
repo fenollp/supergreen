@@ -5,14 +5,14 @@ use camino::Utf8Path;
 use log::{debug, info, warn};
 
 use crate::{
-    build::{ERRCODE, Effects, STDERR, STDOUT, fwd_stderr_to_cargo, fwd_stdout_to_cargo},
+    build::{ERRCODE, Effects, STDERR, STDOUT},
+    dirs::Paths,
     green::Green,
     md::Md,
     stage::Stage,
-    target_dir::virtual_target_dir,
     wrap::{
         build_script::{exe_dance, is_buildrs_executable},
-        envs::{fmap_env, rewrite_env},
+        envs::fmap_env,
     },
 };
 
@@ -21,14 +21,14 @@ impl Md {
         &mut self,
         (stage, mut block): (&Stage, String),
         crate_name: Option<&str>,
-        cargo_home: &Utf8Path,
+        paths: &Paths,
         green_set_envs: &[String],
         call: &str,
         (out_stage, out_dir): (&Stage, Option<&Utf8Path>),
     ) -> Result<()> {
         let mut first = true;
         let mut push = |block: &mut String, var: &str, val: &String| -> Result<_> {
-            let val = rewrite_env(val, cargo_home)?;
+            let val = paths.rewrite_env(val)?;
             block.push_str(&format!("    {} {var}={val} \\\n", if first { "env" } else { "   " }));
             first = false;
             Ok(())
@@ -81,7 +81,7 @@ impl Md {
             }
         }
 
-        let out_dir = out_dir.map(virtual_target_dir).unwrap_or(".".into());
+        let out_dir = out_dir.map(|d| paths.virtual_target_dir(d)).unwrap_or(".".into());
         // TODO: let out_dir = out_dir.map(|_| "$OLDPWD").unwrap_or("$PWD"); whence  https://github.com/moby/buildkit/issues/6698  [frontend] $OLDPWD is unset (after >1 WORKDIR layers)
         let outdir_stdio = format!("{out_dir}/..")
             .replace("./..", "..")
@@ -111,9 +111,15 @@ impl Md {
 
     /// TODO? in Dockerfile, when using outputs:
     /// => skip the COPY (--mount=from=out-08c4d63ed4366a99) use the stage directly
-    pub(crate) fn out_block(&mut self, stage: &Stage, prev: &Stage, out_dir: &Utf8Path) {
+    pub(crate) fn out_block(
+        &mut self,
+        stage: &Stage,
+        prev: &Stage,
+        paths: &Paths,
+        out_dir: &Utf8Path,
+    ) {
         let mut block = format!("FROM scratch AS {stage}\n");
-        let out_dir = virtual_target_dir(out_dir);
+        let out_dir = paths.virtual_target_dir(out_dir);
         let base = out_dir.file_name().expect("PROOF: out_dir has a file name");
         block.push_str(&format!("COPY --link --from={prev} {out_dir} /{base}\n"));
         let up_out_dir = out_dir.parent().expect("PROOF: out_dir has parents");
@@ -148,8 +154,8 @@ impl Md {
         }
 
         // Now that Md is ready for other processes to use, let's emit to cargo, finally.
-        self.stdout.iter().for_each(|line| fwd_stdout_to_cargo(line, &green.cargo_home));
-        self.stderr.iter().for_each(|line| fwd_stderr_to_cargo(line, &green.cargo_home));
+        self.stdout.iter().for_each(|line| green.paths.fwd_stdout_to_cargo(line));
+        self.stderr.iter().for_each(|line| green.paths.fwd_stderr_to_cargo(line));
 
         if let Some(result) = result {
             if built.is_ok() {
@@ -169,7 +175,7 @@ impl Md {
             }
         }
 
-        let base = virtual_target_dir(out_dir);
+        let base = green.paths.virtual_target_dir(out_dir);
         let base = base.file_name().expect("PROOF: out_dir has a file name");
         let final_stage = format!(
             "FROM scratch\n{}\n",

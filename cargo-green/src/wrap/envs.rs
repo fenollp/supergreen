@@ -1,12 +1,5 @@
 use anyhow::{Result, anyhow};
-use camino::Utf8Path;
 use log::{debug, trace};
-
-use crate::{
-    base_image::{rewrite_cargo_home, rewrite_rustup_home},
-    cratesio::rewrite_cratesio_index,
-    target_dir::virtual_target_dir_str,
-};
 
 pub(crate) fn fmap_env((var, val): (String, String), buildrs: bool) -> Option<(String, String)> {
     let (pass, skip, only_buildrs) = pass_env(&var);
@@ -133,41 +126,4 @@ a\
 l'"#
         .to_owned()
     );
-}
-
-pub(crate) fn rewrite_env(val: &str, cargo_home: &Utf8Path) -> Result<String> {
-    let val = safeify(val)?;
-    let val = virtual_target_dir_str(&val);
-    let val = rewrite_rustup_home(&val);
-    let val = rewrite_cratesio_index(&val);
-    let val = rewrite_cargo_home(cargo_home, &val);
-    // TODO: in rustc's args: replace last WORKDIR with $PWD (--out-dir ..., OUT_DIR=..., maybe others)
-    Ok(val)
-}
-
-#[test]
-fn test_rewrite_env() {
-    temp_env::with_var(CARGO_TARGET_DIR!(), Some("/some/path/"), || {
-        let cargo_home: camino::Utf8PathBuf = "/some/other/path".into();
-
-        assert_eq!(
-            "https'://github.com/dtolnay/anyhow'",
-            rewrite_env("https://github.com/dtolnay/anyhow", &cargo_home).unwrap()
-        );
-
-        assert_eq!(
-            "$CARGO_HOME/registry/src/index.crates.io'+zstd.1.5.7/zstd/lib'",
-            rewrite_env(
-                "/some/other/path/registry/src/index.crates.io+zstd.1.5.7/zstd/lib",
-                &cargo_home
-            )
-            .unwrap()
-        );
-
-        assert_eq!(
-            "/target/release/build/zstd-safe-f387b30b22c9cb23/out",
-            rewrite_env("/some/path/release/build/zstd-safe-f387b30b22c9cb23/out", &cargo_home)
-                .unwrap()
-        );
-    });
 }

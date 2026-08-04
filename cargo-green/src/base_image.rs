@@ -1,4 +1,4 @@
-use std::sync::LazyLock;
+use std::{fs, io::ErrorKind, sync::LazyLock};
 
 use anyhow::{Result, anyhow, bail};
 use camino::Utf8Path;
@@ -8,15 +8,15 @@ use crate::{
     REPO,
     add::Add,
     all_our_envs::RUSTUP_TOOLCHAIN,
+    dirs::{Paths, replace_carefully},
     image_uri::ImageUri,
     network::Network,
     rustup::{CHECKSUMS, VERSION},
     stage::RST,
-    target_dir::replace_carefully,
 };
 
-pub(crate) const CARGO_HOME: &str = "/usr/local/cargo";
-pub(crate) const RUSTUP_HOME: &str = "/usr/local/rustup";
+const CARGO_HOME: &str = "/usr/local/cargo";
+const RUSTUP_HOME: &str = "/usr/local/rustup";
 
 /// Default base image: `docker-image://docker.io/library/debian:trixie-slim`
 pub(crate) static BASE_IMAGE: LazyLock<ImageUri> =
@@ -154,12 +154,18 @@ RUN \
     }
 }
 
-pub(crate) fn rewrite_cargo_home(cargo_home: &Utf8Path, path: &str) -> String {
-    path.replacen(CARGO_HOME, "$CARGO_HOME", 1).replacen(cargo_home.as_str(), "$CARGO_HOME", 1)
-}
+impl Paths {
+    pub(crate) fn rewrite_cargo_home(&self, path: &str) -> String {
+        path.replacen(CARGO_HOME, "$CARGO_HOME", 1).replacen(
+            self.cargo_home.as_str(),
+            "$CARGO_HOME",
+            1,
+        )
+    }
 
-pub(crate) fn un_rewrite_cargo_home(txt: &str, to: &str) -> String {
-    replace_carefully(txt, CARGO_HOME, to)
+    pub(crate) fn un_rewrite_cargo_home(&self, txt: &str) -> String {
+        replace_carefully(txt, CARGO_HOME, self.cargo_home.as_str())
+    }
 }
 
 pub(crate) fn rewrite_rustup_home(val: &str) -> String {
@@ -211,4 +217,36 @@ fn base_make_block(toolchain: &str) {
         res.image_inline
     );
     assert_eq!(res.with_network, Network::Default);
+}
+
+impl Paths {
+    pub(crate) fn setup(&self) -> Result<()> {
+        let _ = fs::create_dir_all(&self.cargo_home);
+        let usage = "{ cargo green supergreen setup 2>/dev/null || true; } | sudo /bin/sh -xe";
+
+        let (guest, host) = (Utf8Path::new(CARGO_HOME), &self.cargo_home);
+        if !guest.exists() {
+            eprintln!("Execute the following commands, or pipe them with: `{usage}`");
+            eprintln!();
+            let cmd = format!("ln -s {host} {guest}");
+            println!("{cmd}");
+            eprintln!();
+            if let Err(e) = symlink::symlink_dir(host, guest)
+                && e.kind() != ErrorKind::AlreadyExists
+            {
+                bail!(
+                    "Trying to ensure guest $CARGO_HOME is followable from host, but:
+Could not `{cmd}`:
+    {e}
+
+Please try:
+    {usage}
+"
+                )
+            }
+        }
+
+        self.maybe_arrange_cratesio_index()?;
+        Ok(())
+    }
 }

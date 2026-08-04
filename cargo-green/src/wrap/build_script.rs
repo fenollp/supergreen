@@ -11,13 +11,10 @@ use log::{error, info, trace};
 use crate::{
     PKG, VSN,
     all_our_envs::OUT_DIR,
-    base_image::rewrite_cargo_home,
-    cratesio::rewrite_cratesio_index,
     green::Green,
     logging::{self},
-    md::{Md, MdId, Mds},
+    md::{Md, MdId},
     stage::{AsStage, RST, RUST, Stage},
-    target_dir::virtual_target_dir,
     wrap::call_config,
 };
 
@@ -82,7 +79,7 @@ pub(crate) async fn exec_build_script(green: Green, exe: Utf8PathBuf) -> Result<
     info!("{PKG}@{VSN} original args: {exe:?} green={green:?}");
 
     if green.runner.is_none() {
-        if green.reuse_out(&Stage::output(mdid)?, &out_dir_var).await? {
+        if green.paths.reuse_out(&Stage::output(mdid)?, &out_dir_var).await? {
             return Ok(());
         }
         todo!("fallback()");
@@ -118,7 +115,7 @@ async fn do_exec(
     mdid: MdId,
 ) -> Result<()> {
     let mut md: Md = mdid.into();
-    md.build_script_writes_to(virtual_target_dir(&out_dir_var));
+    md.build_script_writes_to(green.paths.virtual_target_dir(&out_dir_var));
     md.push_block(&RUST, &green.base.image_inline);
 
     fs::create_dir_all(&out_dir_var)
@@ -127,7 +124,7 @@ async fn do_exec(
     let run_stage = Stage::try_new(format!("run-{crate_id}"))?;
     let out_stage = Stage::output(mdid)?;
 
-    let mut mds = Mds::new(&target_path);
+    let mut mds = green.paths.new_mds_cache(&target_path);
 
     let previous_md = mds.load(previous_mdid)?;
     trace!("previous_md = {previous_md:?}");
@@ -146,13 +143,9 @@ async fn do_exec(
 
     let mut run_block = format!("FROM {RST} AS {run_stage}\n");
 
-    run_block.push_str(&format!("WORKDIR {}\n", virtual_target_dir(&out_dir_var)));
-    // Cargo runs build scripts with their current dir set to $CARGO_MANIFEST_DIR, not the code
-    // mount root. These coincide for single-crate deps (crates.io), but for a workspace member of
-    // a git checkout the manifest dir is a subdir of the mounted checkout. (TEST= pyrefly)
-    let workdir = rewrite_cargo_home(&green.cargo_home, pkg_manifest_dir.as_str());
-    let workdir = rewrite_cratesio_index(&workdir);
-    run_block.push_str(&format!("WORKDIR {workdir}\n"));
+    run_block.push_str(&format!("WORKDIR {}\n", green.paths.virtual_target_dir(&out_dir_var)));
+    // Cargo runs build scripts with $PWD set to $CARGO_MANIFEST_DIR, not the code's dir. (TEST= pyrefly)
+    run_block.push_str(&format!("WORKDIR {}\n", green.paths.rewrite(pkg_manifest_dir)));
 
     let mount_flag = |name, src: Option<_>, dst, swappity| {
         let src = src.as_deref().map(|src| format!(",source={src}")).unwrap_or_default();
@@ -160,10 +153,10 @@ async fn do_exec(
         format!("  --mount=from={name}{mount} \\\n")
     };
 
+    let exe = green.paths.virtual_target_dir(&exe);
     run_block.push_str("RUN \\\n");
     run_block.push_str(&format!(
-        "  --mount=from={previous_out_stage},source={previous_out_dst},dst={exe} \\\n",
-        exe = virtual_target_dir(&exe)
+        "  --mount=from={previous_out_stage},source={previous_out_dst},dst={exe} \\\n"
     ));
     let code_stage_name = code_stage.name().to_string();
     let mut mounted: HashSet<_> = [code_stage_name.clone()].into();
@@ -193,13 +186,13 @@ async fn do_exec(
     md.call_block(
         (&run_stage, run_block),
         crate_name,
-        &green.cargo_home,
+        &green.paths,
         &green.set_envs,
-        virtual_target_dir(&exe).as_str(),
+        exe.as_str(),
         (&out_stage, Some(&out_dir_var)),
     )?;
 
-    md.out_block(&out_stage, &run_stage, &out_dir_var);
+    md.out_block(&out_stage, &run_stage, &green.paths, &out_dir_var);
 
     let (md_path, containerfile_path) = md.finalize(&green, &target_path, pkg_name, &mds)?;
 

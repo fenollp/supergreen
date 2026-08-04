@@ -9,18 +9,15 @@ use camino::{Utf8Path, Utf8PathBuf};
 use log::{error, info, warn};
 
 use crate::{
-    PKG, VSN,
-    base_image::rewrite_cargo_home,
-    checkouts,
-    cratesio::{self, rewrite_cratesio_index},
-    dirs::pwd,
+    PKG, VSN, checkouts,
+    cratesio::{self},
+    dirs::{locate_path, pwd},
     green::Green,
     logging::{self},
     md::{BuildContext, Md, NamedMount},
     relative,
     rustc_arguments::{RustcArgs, as_rustc},
     stage::{AsStage, RST, RUST, Stage},
-    target_dir::{host_profile_dir, locate_path, virtual_target_dir, virtual_target_dir_str},
     wrap::{build_script::is_buildrs_executable, call_config, envs::safeify},
 };
 
@@ -47,7 +44,7 @@ pub(crate) async fn wrap_rustc(
     info!("{PKG}@{VSN} original args: {arguments:?} pwd={pwd} st={st:?} green={green:?}");
 
     if green.runner.is_none() {
-        if green.reuse_out(&Stage::output(mdid)?, &st.out_dir).await? {
+        if green.paths.reuse_out(&Stage::output(mdid)?, &st.out_dir).await? {
             return Ok(());
         }
         return fallback.await;
@@ -97,12 +94,10 @@ async fn do_wrap_rustc(
 
     let mut rustc_block = format!("FROM {RST} AS {rustc_stage}\n");
 
-    rustc_block.push_str(&format!("WORKDIR {out_dir}\n", out_dir = virtual_target_dir(&out_dir)));
-    let not_a_cratesio_crate = !pwd.starts_with(green.cargo_home.join(cratesio::HOME));
+    rustc_block.push_str(&format!("WORKDIR {}\n", green.paths.virtual_target_dir(&out_dir)));
+    let not_a_cratesio_crate = !green.paths.is_cratesio(&pwd);
     if not_a_cratesio_crate {
-        let pwd = virtual_target_dir(&pwd);
-        let pwd = rewrite_cargo_home(&green.cargo_home, pwd.as_str());
-        rustc_block.push_str(&format!("WORKDIR {pwd}\n"));
+        rustc_block.push_str(&format!("WORKDIR {}\n", green.paths.rewrite(&pwd)));
     }
     if let Some(ref incremental) = incremental {
         rustc_block.push_str(&format!("WORKDIR {incremental}\n"));
@@ -110,15 +105,15 @@ async fn do_wrap_rustc(
 
     // TODO: support non-crates.io crates managers + proxies
     // TODO: use --secret mounts for private deps (and secret direct artifacts)
-    let mut code_stage = if input.starts_with(green.cargo_home.join(cratesio::HOME)) {
+    let mut code_stage = if green.paths.is_cratesio(&input) {
         // Input is of a crate dep (hosted at crates.io)
         // Let's optimize this case by fetching & caching crate tarball
 
-        cratesio::named_stage(&green.cargo_home, pkg_name, pkg_manifest_dir).await?
-    } else if pkg_manifest_dir.starts_with(green.cargo_home.join(checkouts::HOME)) {
+        cratesio::named_stage(&green.paths, pkg_name, pkg_manifest_dir).await?
+    } else if green.paths.is_checkout(pkg_manifest_dir) {
         // Input is of a git checked out dep
 
-        checkouts::as_stage(&green.cargo_home, pkg_manifest_dir).await?
+        checkouts::as_stage(&green.paths, pkg_manifest_dir).await?
     } else if input.is_relative() {
         // Input is local code
 
@@ -130,7 +125,7 @@ async fn do_wrap_rustc(
     rustc_block.push_str("RUN \\\n");
     for (src, dst, swappity) in code_stage.mounts() {
         let name = code_stage.name();
-        let dst = virtual_target_dir(&dst);
+        let dst = green.paths.virtual_target_dir(&dst);
         let src = src.as_deref().map(|src| format!(",source={src}")).unwrap_or_default();
         let mount = if swappity { format!(",dst={dst}{src}") } else { format!("{src},dst={dst}") };
         rustc_block.push_str(&format!("  --mount=from={name}{mount} \\\n"));
@@ -142,14 +137,18 @@ async fn do_wrap_rustc(
         info!("loading 1 build context");
     }
 
-    let mds = md.assemble_build_dependencies(externs, out_dir_var, &target_path)?;
+    let mds = md.assemble_build_dependencies(
+        &mut green.paths.new_mds_cache(&target_path),
+        externs,
+        out_dir_var.map(|out_dir| green.paths.virtual_target_dir(&out_dir)),
+    )?;
     for NamedMount { name, mount } in md.externs() {
         let located = locate_path(
             |path| path.join("deps").join(mount),
             &target_path,
-            host_profile_dir(&target_path).as_deref(),
+            green.paths.host_profile_dir(&target_path).as_deref(),
         );
-        let dst = virtual_target_dir(&located);
+        let dst = green.paths.virtual_target_dir(&located);
         rustc_block.push_str(&format!("  --mount=from={name},dst={dst},source=/deps/{mount} \\\n"));
     }
     for NamedMount { name, mount } in &md.mounts {
@@ -160,12 +159,11 @@ async fn do_wrap_rustc(
     let out_stage = Stage::output(mdid)?;
 
     let call = {
-        let input = rewrite_cratesio_index(input.as_str());
-        let input = rewrite_cargo_home(&green.cargo_home, &input);
+        let input = green.paths.rewrite_str(input.as_str());
 
         let args = args
             .into_iter()
-            .map(|ref x| virtual_target_dir_str(x))
+            .map(|ref x| green.paths.virtual_target_dir_str(x))
             .map(|arg| safeify(&arg).unwrap())
             .collect::<Vec<_>>()
             .join(" ");
@@ -175,7 +173,7 @@ async fn do_wrap_rustc(
     md.call_block(
         (&rustc_stage, rustc_block),
         crate_name,
-        &green.cargo_home,
+        &green.paths,
         &green.set_envs,
         &call,
         (&out_stage, not_a_cratesio_crate.then_some(&out_dir)),
@@ -188,7 +186,7 @@ async fn do_wrap_rustc(
         md.push_block(&incremental_stage, &incremental_block);
     }
 
-    md.out_block(&out_stage, &rustc_stage, &out_dir);
+    md.out_block(&out_stage, &rustc_stage, &green.paths, &out_dir);
 
     let (md_path, containerfile_path) = md.finalize(&green, &target_path, pkg_name, &mds)?;
 
