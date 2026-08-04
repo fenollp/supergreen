@@ -199,7 +199,6 @@ async fn really_actual_main(arg0: String, mut args: env::Args) -> Result<bool> {
     }
 
     let green = cargo_green::main(&toolchain, is_install).await?;
-    cmd.env(CARGOGREEN_PLUGINSETTINGS!(), serde_json::to_string(&green)?);
 
     match command.as_deref() {
         Some("supergreen") => supergreen::main(green).await.map(|()| true),
@@ -210,6 +209,7 @@ async fn really_actual_main(arg0: String, mut args: env::Args) -> Result<bool> {
         _ => {
             green.prebuild(false, is_install).await?;
             cmd.env(CARGO_TARGET_DIR!(), create_current_target_dir(is_install)?);
+            cmd.env(CARGOGREEN_PLUGINSETTINGS!(), serde_json::to_string(&green)?);
             Ok(cmd.status().await?.success())
         }
     }
