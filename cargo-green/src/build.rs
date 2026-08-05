@@ -1023,7 +1023,7 @@ fn un_rewrites_target_dir_before_outputting_to_cargo() {
     hi!
     "#;
     assert_eq!(
-        paths.un_virtual_target_dir_str(msg),
+        paths.un_rewrite_target_dir_str(msg),
         r#"
     {"$message_type":"artifact","artifact":"/some/path/release/deps/libclap_derive-fcea659dae5440c4.so","emit":"link"}
     {"$message_type":"diagnostic","message":"2 warnings emitted","code":null,"level":"warning","spans":[],"children":[],"rendered":"warning: 2 warnings emitted\n\n"}

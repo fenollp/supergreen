@@ -81,7 +81,7 @@ impl Md {
             }
         }
 
-        let out_dir = out_dir.map(|d| paths.virtual_target_dir(d)).unwrap_or(".".into());
+        let out_dir = out_dir.map(|d| paths.rewrite_target_dir(d)).unwrap_or(".".into());
         // TODO: let out_dir = out_dir.map(|_| "$OLDPWD").unwrap_or("$PWD"); whence  https://github.com/moby/buildkit/issues/6698  [frontend] $OLDPWD is unset (after >1 WORKDIR layers)
         let outdir_stdio = format!("{out_dir}/..")
             .replace("./..", "..")
@@ -119,7 +119,7 @@ impl Md {
         out_dir: &Utf8Path,
     ) {
         let mut block = format!("FROM scratch AS {stage}\n");
-        let out_dir = paths.virtual_target_dir(out_dir);
+        let out_dir = paths.rewrite_target_dir(out_dir);
         let base = out_dir.file_name().expect("PROOF: out_dir has a file name");
         block.push_str(&format!("COPY --link --from={prev} {out_dir} /{base}\n"));
         let up_out_dir = out_dir.parent().expect("PROOF: out_dir has parents");
@@ -175,7 +175,7 @@ impl Md {
             }
         }
 
-        let base = green.paths.virtual_target_dir(out_dir);
+        let base = green.paths.rewrite_target_dir(out_dir);
         let base = base.file_name().expect("PROOF: out_dir has a file name");
         let final_stage = format!(
             "FROM scratch\n{}\n",

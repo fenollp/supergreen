@@ -42,15 +42,17 @@ impl Paths {
         self.host_target_dir.as_deref().expect("PROOF: set in main for wrap'd commands")
     }
 
-    pub(crate) fn un_virtual_target_dir_str(&self, txt: &str) -> String {
-        replace_carefully(txt, VIRTUAL_TARGET_DIR, &format!("{}/", self.target_dir()))
+    pub(crate) fn un_rewrite_target_dir_str(&self, txt: &str) -> String {
+        let target_dir = format!("{}/", self.target_dir());
+        replace_carefully(txt, VIRTUAL_TARGET_DIR, &target_dir)
     }
 
-    pub(crate) fn virtual_target_dir_str(&self, txt: &str) -> String {
-        replace_carefully(txt, &format!("{}/", self.target_dir()), VIRTUAL_TARGET_DIR)
+    pub(crate) fn rewrite_target_dir_str(&self, txt: &str) -> String {
+        let target_dir = format!("{}/", self.target_dir());
+        replace_carefully(txt, &target_dir, VIRTUAL_TARGET_DIR)
     }
 
-    pub(crate) fn virtual_target_dir(&self, path: &Utf8Path) -> Utf8PathBuf {
+    pub(crate) fn rewrite_target_dir(&self, path: &Utf8Path) -> Utf8PathBuf {
         path.strip_prefix(self.target_dir())
             .map(|path| Utf8Path::new(VIRTUAL_TARGET_DIR).join(path))
             .unwrap_or_else(|_| path.to_owned())
@@ -71,40 +73,40 @@ fn target_dir_var() {
 
     assert_eq!(
         paths
-            .virtual_target_dir("/some/path/release/deps/target_lexicon-8a85e67f3430b2ca.d".into()),
+            .rewrite_target_dir("/some/path/release/deps/target_lexicon-8a85e67f3430b2ca.d".into()),
         "/target/release/deps/target_lexicon-8a85e67f3430b2ca.d"
     );
 
     assert_eq!(
-        paths.virtual_target_dir_str(
+        paths.rewrite_target_dir_str(
             "/some/path/release/deps/target_lexicon-8a85e67f3430b2ca.d: /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/target-lexicon-0.12.16/src/lib.rs"
         ),
         "/target/release/deps/target_lexicon-8a85e67f3430b2ca.d: /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/target-lexicon-0.12.16/src/lib.rs"
     );
 
     assert_eq!(
-        paths.virtual_target_dir_str(
+        paths.rewrite_target_dir_str(
             "/some/path/debug/deps/cc-63321ad70751c592.d: /home/pete/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/cc-1.2.47/src/lib.rs /home/pete/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/cc-1.2.47/src/target.rs /home/pete/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/cc-1.2.47/src/target/apple.rs"
         ),
         "/target/debug/deps/cc-63321ad70751c592.d: /home/pete/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/cc-1.2.47/src/lib.rs /home/pete/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/cc-1.2.47/src/target.rs /home/pete/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/cc-1.2.47/src/target/apple.rs"
     );
 
     assert_eq!(
-        paths.un_virtual_target_dir_str(
+        paths.un_rewrite_target_dir_str(
             "/target/release/deps/target_lexicon-8a85e67f3430b2ca.d: /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/target-lexicon-0.12.16/src/lib.rs"
         ),
         "/some/path/release/deps/target_lexicon-8a85e67f3430b2ca.d: /home/pete/.cargo/registry/src/index.crates.io-0000000000000000/target-lexicon-0.12.16/src/lib.rs"
     );
 
     assert_eq!(
-        paths.un_virtual_target_dir_str(
+        paths.un_rewrite_target_dir_str(
             "/target/debug/deps/cc-63321ad70751c592.d: /home/pete/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/cc-1.2.47/src/lib.rs /home/pete/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/cc-1.2.47/src/target.rs /home/pete/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/cc-1.2.47/src/target/apple.rs"
         ),
         "/some/path/debug/deps/cc-63321ad70751c592.d: /home/pete/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/cc-1.2.47/src/lib.rs /home/pete/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/cc-1.2.47/src/target.rs /home/pete/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/cc-1.2.47/src/target/apple.rs"
     );
 
     assert_eq!(
-        paths.un_virtual_target_dir_str(
+        paths.un_rewrite_target_dir_str(
             "error: couldn't read `/target/armv7-unknown-linux-musleabihf/release/build/pb-bd1e88e219ae6eda/out/hypercards.rs`: No such file or directory (os error 2)"
         ),
         "error: couldn't read `/some/path/armv7-unknown-linux-musleabihf/release/build/pb-bd1e88e219ae6eda/out/hypercards.rs`: No such file or directory (os error 2)"

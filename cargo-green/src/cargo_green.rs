@@ -41,6 +41,17 @@ pub(crate) async fn main(toolchain: &str, is_install: bool) -> Result<Green> {
     green.paths.cargo_home = cargo_home()?;
     green.paths.setup()?;
 
+    // Disallow conf overrides + set in main
+    if green.paths.host_target_dir.is_some() {
+        bail!("'host_target_dir' setting cannot be set")
+    }
+
+    // Disallow conf overrides
+    if green.paths.dirs.is_some() {
+        bail!("'dirs' setting cannot be set")
+    }
+    green.paths.dirs = setup_dirs()?;
+
     // Read runner's envs only once and disallow conf overrides
     if !green.runner_envs.is_empty() {
         bail!("'runner_envs' setting cannot be set")
@@ -224,8 +235,6 @@ pub(crate) async fn main(toolchain: &str, is_install: bool) -> Result<Green> {
     if !unknowns.is_empty() {
         bail!("Ignored environment variable(s): {}", unknowns.join(" "))
     }
-
-    green.paths.dirs = setup_dirs()?;
 
     Ok(green)
 }

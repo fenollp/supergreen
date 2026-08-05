@@ -94,7 +94,7 @@ async fn do_wrap_rustc(
 
     let mut rustc_block = format!("FROM {RST} AS {rustc_stage}\n");
 
-    rustc_block.push_str(&format!("WORKDIR {}\n", green.paths.virtual_target_dir(&out_dir)));
+    rustc_block.push_str(&format!("WORKDIR {}\n", green.paths.rewrite_target_dir(&out_dir)));
     let not_a_cratesio_crate = !green.paths.is_cratesio(&pwd);
     if not_a_cratesio_crate {
         rustc_block.push_str(&format!("WORKDIR {}\n", green.paths.rewrite(&pwd)));
@@ -125,7 +125,7 @@ async fn do_wrap_rustc(
     rustc_block.push_str("RUN \\\n");
     for (src, dst, swappity) in code_stage.mounts() {
         let name = code_stage.name();
-        let dst = green.paths.virtual_target_dir(&dst);
+        let dst = green.paths.rewrite(&dst);
         let src = src.as_deref().map(|src| format!(",source={src}")).unwrap_or_default();
         let mount = if swappity { format!(",dst={dst}{src}") } else { format!("{src},dst={dst}") };
         rustc_block.push_str(&format!("  --mount=from={name}{mount} \\\n"));
@@ -140,7 +140,7 @@ async fn do_wrap_rustc(
     let mds = md.assemble_build_dependencies(
         &mut green.paths.new_mds_cache(&target_path),
         externs,
-        out_dir_var.map(|out_dir| green.paths.virtual_target_dir(&out_dir)),
+        out_dir_var.map(|out_dir| green.paths.rewrite_target_dir(&out_dir)),
     )?;
     for NamedMount { name, mount } in md.externs() {
         let located = locate_path(
@@ -148,7 +148,7 @@ async fn do_wrap_rustc(
             &target_path,
             green.paths.host_profile_dir(&target_path).as_deref(),
         );
-        let dst = green.paths.virtual_target_dir(&located);
+        let dst = green.paths.rewrite_target_dir(&located);
         rustc_block.push_str(&format!("  --mount=from={name},dst={dst},source=/deps/{mount} \\\n"));
     }
     for NamedMount { name, mount } in &md.mounts {
@@ -163,7 +163,7 @@ async fn do_wrap_rustc(
 
         let args = args
             .into_iter()
-            .map(|ref x| green.paths.virtual_target_dir_str(x))
+            .map(|ref x| green.paths.rewrite_target_dir_str(x))
             .map(|arg| safeify(&arg).unwrap())
             .collect::<Vec<_>>()
             .join(" ");
