@@ -115,7 +115,7 @@ async fn do_exec(
     mdid: MdId,
 ) -> Result<()> {
     let mut md: Md = mdid.into();
-    md.build_script_writes_to(green.paths.virtual_target_dir(&out_dir_var));
+    md.build_script_writes_to(green.paths.rewrite_target_dir(&out_dir_var));
     md.push_block(&RUST, &green.base.image_inline);
 
     fs::create_dir_all(&out_dir_var)
@@ -143,7 +143,7 @@ async fn do_exec(
 
     let mut run_block = format!("FROM {RST} AS {run_stage}\n");
 
-    run_block.push_str(&format!("WORKDIR {}\n", green.paths.virtual_target_dir(&out_dir_var)));
+    run_block.push_str(&format!("WORKDIR {}\n", green.paths.rewrite_target_dir(&out_dir_var)));
     // Cargo runs build scripts with $PWD set to $CARGO_MANIFEST_DIR, not the code's dir. (TEST= pyrefly)
     run_block.push_str(&format!("WORKDIR {}\n", green.paths.rewrite(pkg_manifest_dir)));
 
@@ -153,7 +153,7 @@ async fn do_exec(
         format!("  --mount=from={name}{mount} \\\n")
     };
 
-    let exe = green.paths.virtual_target_dir(&exe);
+    let exe = green.paths.rewrite_target_dir(&exe);
     run_block.push_str("RUN \\\n");
     run_block.push_str(&format!(
         "  --mount=from={previous_out_stage},source={previous_out_dst},dst={exe} \\\n"

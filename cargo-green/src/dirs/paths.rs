@@ -17,7 +17,7 @@ pub(crate) struct Paths {
     #[doc(hidden)]
     pub(crate) host_target_dir: Option<Utf8PathBuf>,
 
-    /// Various paths. Not user-settable.
+    /// XDG base directories
     #[doc(hidden)]
     pub(crate) dirs: Option<Dirs>,
 }
@@ -33,7 +33,7 @@ impl Paths {
     #[expect(clippy::let_and_return)]
     #[must_use]
     pub(crate) fn rewrite(&self, path: &Utf8Path) -> String {
-        let path = self.virtual_target_dir(path);
+        let path = self.rewrite_target_dir(path);
         let path = rewrite_cratesio_index(path.as_str());
         let path = rewrite_rustup_home(&path);
         let path = self.rewrite_cargo_home(&path);
@@ -43,7 +43,7 @@ impl Paths {
     #[expect(clippy::let_and_return)]
     #[must_use]
     pub(crate) fn rewrite_str(&self, txt: &str) -> String {
-        let txt = self.virtual_target_dir_str(txt);
+        let txt = self.rewrite_target_dir_str(txt);
         let txt = rewrite_cratesio_index(&txt);
         let txt = rewrite_rustup_home(&txt);
         let txt = self.rewrite_cargo_home(&txt);
@@ -53,7 +53,7 @@ impl Paths {
     #[expect(clippy::let_and_return)]
     #[must_use]
     pub(crate) fn un_rewrite_str(&self, txt: &str) -> String {
-        let txt = self.un_virtual_target_dir_str(txt);
+        let txt = self.un_rewrite_target_dir_str(txt);
         let txt = self.un_rewrite_cargo_home(&txt);
         txt
     }
@@ -62,8 +62,8 @@ impl Paths {
 #[test]
 fn test_rewrite_env() {
     let paths = Paths {
-        host_target_dir: Some("/some/path".into()),
         cargo_home: "/some/other/path".into(),
+        host_target_dir: Some("/some/path".into()),
         ..Default::default()
     };
 
