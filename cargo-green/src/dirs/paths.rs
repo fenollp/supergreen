@@ -68,12 +68,12 @@ fn test_rewrite_env() {
     };
 
     assert_eq!(
-        "https'://github.com/dtolnay/anyhow'",
+        "https://github.com/dtolnay/anyhow",
         paths.rewrite_env("https://github.com/dtolnay/anyhow").unwrap()
     );
 
     assert_eq!(
-        "$CARGO_HOME/registry/src/index.crates.io'+zstd.1.5.7/zstd/lib'",
+        "$CARGO_HOME/registry/src/index.crates.io+zstd.1.5.7/zstd/lib",
         paths
             .rewrite_env("/some/other/path/registry/src/index.crates.io+zstd.1.5.7/zstd/lib")
             .unwrap()
